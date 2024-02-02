@@ -1,4 +1,5 @@
 """Convert all script files to json files."""
+
 import json
 import os
 

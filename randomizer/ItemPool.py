@@ -1,23 +1,24 @@
 """Contains functions related to setting up the pool of shuffled items."""
+
 import itertools
-from random import shuffle
+import random
 
 import randomizer.Enums.Kongs as KongObject
-from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
+from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
+from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
-from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Patching.Lib import IsItemSelected
 
 
-def PlaceConstants(settings):
+def PlaceConstants(spoiler):
     """Place items which are to be put in a hard-coded location."""
     # Settings-dependent locations
+    settings = spoiler.settings
     # Determine what types of locations are being shuffled
     typesOfItemsShuffled = []
     if settings.kong_rando:
@@ -34,18 +35,18 @@ def PlaceConstants(settings):
     # Invert this list because I think it'll be faster
     typesOfItemsNotShuffled = [typ for typ in Types if typ not in typesOfItemsShuffled]
     # Place the default item at every location of a type we're not shuffling
-    for location in LocationList:
-        if LocationList[location].type in typesOfItemsNotShuffled:
-            LocationList[location].PlaceDefaultItem()
+    for location in spoiler.LocationList:
+        if spoiler.LocationList[location].type in typesOfItemsNotShuffled:
+            spoiler.LocationList[location].PlaceDefaultItem(spoiler)
         else:
-            LocationList[location].constant = False
-            LocationList[location].item = None
+            spoiler.LocationList[location].constant = False
+            spoiler.LocationList[location].item = None
         # While we're looping here, also reset shops that became inaccessible due to fill lockouts
-        if LocationList[location].type == Types.Shop:
-            LocationList[location].inaccessible = LocationList[location].smallerShopsInaccessible
+        if spoiler.LocationList[location].type == Types.Shop:
+            spoiler.LocationList[location].inaccessible = spoiler.LocationList[location].smallerShopsInaccessible
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
-        LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, Items.HideoutHelmKey)
     # Handle key placements
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
@@ -53,23 +54,67 @@ def PlaceConstants(settings):
         for level in LevelInfoList.values():
             # If level exit isn't shuffled, use vanilla key
             if not ShufflableExits[level.TransitionTo].shuffled:
-                LocationList[level.KeyLocation].PlaceConstantItem(level.KeyItem)
+                spoiler.LocationList[level.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
             else:
                 # Find the transition this exit is attached to, and use that to get the proper location to place this key
                 dest = ShufflableExits[level.TransitionTo].shuffledId
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
-                LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
+                spoiler.LocationList[shuffledTo.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
         # The key in Helm is always Key 8 in these settings
-        LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.HideoutHelmKey)
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:
-        LocationList[Locations.DiddyKong].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
+        spoiler.LocationList[Locations.DiddyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.LankyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.TinyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.ChunkyKong].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.shockwave_status == ShockwaveStatus.start_with:
-        LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
+        spoiler.LocationList[Locations.CameraAndShockwave].PlaceConstantItem(spoiler, Items.NoItem)
+    if settings.start_with_slam:
+        spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(spoiler, Items.ProgressiveSlam)
+
+    # Plando items are placed with constants but should not change locations to Constant type
+    settings.plandomizer_items_placed = []
+    if settings.enable_plandomizer:
+        for location_id, plando_item in settings.plandomizer_dict["locations"].items():
+            item = random.choice(GetItemsFromPlandoItem(plando_item))
+            spoiler.LocationList[int(location_id)].PlaceItem(spoiler, item)
+            settings.plandomizer_items_placed.append(item)
+
+
+def AllItemsUnrestricted(settings):
+    """Return all placeable items regardless of shuffle status."""
+    allItems = []
+    allItems.extend(Blueprints())
+    allItems.extend(GoldenBananaItems())
+    allItems.extend(ToughGoldenBananaItems())
+    allItems.extend(CompanyCoinItems())
+    allItems.extend(BattleCrownItems())
+    allItems.extend(Keys())
+    allItems.extend(BananaMedalItems())
+    allItems.extend(MiscItemRandoItems())
+    allItems.extend(FairyItems())
+    allItems.extend(RainbowCoinItems())
+    allItems.extend(MelonCrateItems())
+    allItems.extend(EnemyItems())
+    allItems.extend(FakeItems())
+    allItems.extend(JunkItems())
+    allItems.extend(DonkeyMoves)
+    allItems.extend(DiddyMoves)
+    allItems.extend(LankyMoves)
+    allItems.extend(TinyMoves)
+    allItems.extend(ChunkyMoves)
+    allItems.extend(ImportantSharedMoves)
+    allItems.extend(JunkSharedMoves)
+    allItems.extend(TrainingBarrelAbilities().copy())
+    if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+        allItems.append(Items.Camera)
+        allItems.append(Items.Shockwave)
+    else:
+        allItems.append(Items.CameraAndShockwave)
+    allItems.extend(Kongs(settings))
+    return allItems
 
 
 def AllItems(settings):
@@ -95,6 +140,10 @@ def AllItems(settings):
         allItems.extend(FairyItems())
     if Types.RainbowCoin in settings.shuffled_location_types:
         allItems.extend(RainbowCoinItems())
+    if Types.CrateItem in settings.shuffled_location_types:
+        allItems.extend(MelonCrateItems())
+    if Types.Enemies in settings.shuffled_location_types:
+        allItems.extend(EnemyItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -106,6 +155,7 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
+
         if settings.training_barrels == TrainingBarrels.shuffled:
             allItems.extend(TrainingBarrelAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
@@ -141,6 +191,10 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(FairyItems())
     if Types.RainbowCoin in settings.shuffled_location_types:
         allItems.extend(RainbowCoinItems())
+    if Types.CrateItem in settings.shuffled_location_types:
+        allItems.extend(MelonCrateItems())
+    if Types.Enemies in settings.shuffled_location_types:
+        allItems.extend(EnemyItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -283,33 +337,29 @@ def Upgrades(settings):
     if settings.training_barrels == TrainingBarrels.shuffled:
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
-    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1))  # -1 for starting slam
-    if settings.progressive_upgrades:
-        upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
-    else:
-        upgrades.extend(
-            [
-                Items.BaboonBlast,
-                Items.StrongKong,
-                Items.GorillaGrab,
-                Items.ChimpyCharge,
-                Items.RocketbarrelBoost,
-                Items.SimianSpring,
-                Items.Orangstand,
-                Items.BaboonBalloon,
-                Items.OrangstandSprint,
-                Items.MiniMonkey,
-                Items.PonyTailTwirl,
-                Items.Monkeyport,
-                Items.HunkyChunky,
-                Items.PrimatePunch,
-                Items.GorillaGone,
-            ]
-        )
+    slam_count = 3
+    if settings.start_with_slam:
+        slam_count = 2
+    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, slam_count))
+    upgrades.extend(
+        [
+            Items.BaboonBlast,
+            Items.StrongKong,
+            Items.GorillaGrab,
+            Items.ChimpyCharge,
+            Items.RocketbarrelBoost,
+            Items.SimianSpring,
+            Items.Orangstand,
+            Items.BaboonBalloon,
+            Items.OrangstandSprint,
+            Items.MiniMonkey,
+            Items.PonyTailTwirl,
+            Items.Monkeyport,
+            Items.HunkyChunky,
+            Items.PrimatePunch,
+            Items.GorillaGone,
+        ]
+    )
     upgrades.append(Items.HomingAmmo)
     upgrades.append(Items.SniperSight)
     upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
@@ -388,6 +438,16 @@ def RainbowCoinItems():
     return itemPool
 
 
+def MelonCrateItems():
+    """Return a list of No Items to be placed."""
+    return []
+
+
+def EnemyItems():
+    """Return a list of No Items to be placed."""
+    return []
+
+
 def FairyItems():
     """Return a list of Fairies to be placed."""
     itemPool = []
@@ -446,6 +506,10 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(MiscItemRandoItems())  # Covers Bean and Pearls
     if Types.RainbowCoin in unplacedTypes:
         itemPool.extend(RainbowCoinItems())
+    if Types.CrateItem in unplacedTypes:
+        itemPool.extend(MelonCrateItems())
+    if Types.Enemies in unplacedTypes:
+        itemPool.extend(EnemyItems())
     if Types.ToughBanana in unplacedTypes:
         itemPool.extend(ToughGoldenBananaItems())
     # Never logic-affecting items
@@ -475,6 +539,6 @@ DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.Rocketbarrel
 LankyMoves = [Items.Grape, Items.Trombone, Items.Orangstand, Items.BaboonBalloon, Items.OrangstandSprint]
 TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwirl, Items.Monkeyport]
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
-ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
+ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
 JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
 ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}

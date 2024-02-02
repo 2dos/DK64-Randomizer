@@ -1,28 +1,59 @@
 """Module used to handle setting and randomizing bonus barrels."""
-import random
 
-import js
-import randomizer.Fill as Fill
+from __future__ import annotations
+
+import random
+from typing import TYPE_CHECKING, List
+
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Settings import MinigameBarrels, MinigamesListSelected
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Settings import Settings
 
 
-def Reset(barrelLocations):
+def Reset(barrelLocations: List[Locations]) -> None:
     """Reset bonus barrel associations."""
     for key in barrelLocations:
         BarrelMetaData[key].minigame = Minigames.NoGame
 
 
-def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
+def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations], helm_minigame_available: bool):
+    """Apply plandomized minigame placement."""
+    preplaced_minigame_locations = []
+    for loc in barrelLocations:
+        minigame_placed = False
+        if str(loc.value) in settings.plandomizer_dict["plando_bonus_barrels"].keys():
+            plando_minigame = settings.plandomizer_dict["plando_bonus_barrels"][str(loc.value)]
+            if validate_minigame(loc, plando_minigame, helm_minigame_available):
+                BarrelMetaData[loc].minigame = plando_minigame
+                minigame_placed = True
+            else:
+                raise Ex.PlandoIncompatibleException(f"Invalid minigame for {loc.name}: {plando_minigame.name}")
+        if minigame_placed:
+            preplaced_minigame_locations.append(loc)
+    for preplaced in preplaced_minigame_locations:
+        barrelLocations.remove(preplaced)
+
+
+def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
     """Shuffle minigames to different barrels."""
     random.shuffle(barrelLocations)
-    random.shuffle(minigamePool)
+    helm_minigame_available = False
+    for minigame in minigamePool:
+        # Check if any minigames can be placed in helm
+        if MinigameRequirements[minigame].helm_enabled:
+            helm_minigame_available = True
+
+    # Apply plandomized minigame placement
+    if settings.enable_plandomizer and settings.plandomizer_dict["plando_bonus_barrels"] != -1:
+        PreplacePlandoMinigames(settings, barrelLocations, helm_minigame_available)
+    # Apply randomized minigame placement
     while len(barrelLocations) > 0:
         location = barrelLocations.pop()
+        random.shuffle(minigamePool)
         # Don't bother shuffling or validating barrel locations which are skipped
         if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == MinigameBarrels.skip:
             continue
@@ -30,37 +61,28 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
             continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
-        helm_minigame_available = False
         for minigame in minigamePool:
-            # Check if any minigames can be placed in helm
-            if MinigameRequirements[minigame].helm_enabled:
-                helm_minigame_available = True
-        for minigame in minigamePool:
-            # If this minigame isn't a minigame for the kong of this location, don't use it
-            if BarrelMetaData[location].kong not in MinigameRequirements[minigame].kong_list:
-                continue
-            # If there is a minigame that can be placed in Helm, skip banned minigames, otherwise continue as normal
-            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm_minigame_available is True:
-                continue
-            # Place the minigame
-            BarrelMetaData[location].minigame = minigame
-            # Remove the minigame from the pool
-            minigamePool.remove(minigame)
-            # It is a random chance that the minigame will return to the pool
-            replacement_index = random.randint(int(len(minigamePool) / 2), len(minigamePool))
-            if settings.bonus_barrels != MinigameBarrels.selected and (settings.helm_barrels == MinigameBarrels.skip or not settings.minigames_list_selected):
-                replacement_index = random.randint(20, len(minigamePool))
-            if MinigameRequirements[minigame].repeat:
-                if replacement_index >= len(minigamePool):
-                    minigamePool.append(minigame)
-                else:
-                    minigamePool.insert(replacement_index, minigame)
-            success = True
+            # If this minigame isn't valid, don't use it
+            if validate_minigame(location, minigame, helm_minigame_available):
+                # Place the minigame
+                BarrelMetaData[location].minigame = minigame
+                success = True
         if not success:
             raise Ex.BarrelOutOfMinigames
 
 
-def BarrelShuffle(settings: Settings):
+def validate_minigame(location: Locations, minigame: Minigames, helm_minigame_available: bool):
+    """Decide whether or not the given minigame is suitable for the given location."""
+    valid = False
+    # If this minigame isn't a minigame for the kong of this location, it's not valid
+    if BarrelMetaData[location].kong in MinigameRequirements[minigame].kong_list:
+        # If there is a minigame that can be placed in Helm, don't validate banned minigames, otherwise continue as normal
+        if (MinigameRequirements[minigame].helm_enabled or BarrelMetaData[location].map != Maps.HideoutHelm) or helm_minigame_available is False:
+            valid = True
+    return valid
+
+
+def BarrelShuffle(settings: Settings) -> None:
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = list(BarrelMetaData.keys())
@@ -98,27 +120,21 @@ def BarrelShuffle(settings: Settings):
                 Minigames.ChunkyHiddenKremling,
                 Minigames.ChunkyShooting,
             ],
+            MinigamesListSelected.arenas: [Minigames.RambiArena, Minigames.EnguardeArena],
+            MinigamesListSelected.training_minigames: [Minigames.OrangeBarrel, Minigames.BarrelBarrel, Minigames.VineBarrel, Minigames.DiveBarrel],
         }
+        # If Stealthy Snoop is not selected, don't include the Stash Snatch variant with Kops
+        if MinigamesListSelected.stealthy_snoop not in settings.minigames_list_selected:
+            minigame_dict[MinigamesListSelected.stash_snatch].remove(Minigames.StashSnatchHard)
         minigamePool = []
-    else:
-        minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
-    if settings.bonus_barrels == MinigameBarrels.selected or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected):
         for name, value in minigame_dict.items():
             if name in settings.minigames_list_selected:
                 minigamePool.extend([x for x in MinigameRequirements.keys() if x in value])
-    retries = 0
-    while True:
-        try:
-            # Shuffle barrels
-            Reset(barrelLocations)
-            ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
-            # Verify world by assuring all locations are still reachable
-            if not Fill.VerifyWorld(settings):
-                raise Ex.BarrelPlacementException
-            return
-        except Ex.BarrelPlacementException:
-            if retries == 5:
-                js.postMessage("Minigame placement failed, out of retries.")
-                raise Ex.BarrelAttemptCountExceeded
-            retries += 1
-            js.postMessage("Minigame placement failed. Retrying. Tries: " + str(retries))
+    else:
+        minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
+    if settings.disable_hard_minigames:
+        minigamePool = [game for game in minigamePool if MinigameRequirements[game].difficulty < 3]
+    # Shuffle barrels
+    Reset(barrelLocations)
+    ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
+    return

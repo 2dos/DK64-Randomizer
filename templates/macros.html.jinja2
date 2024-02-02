@@ -1,4 +1,4 @@
-{% macro list_selector(list, name, title, tooltip, size) %}
+{% macro list_selector(list, name, title, tooltip, size, includeDisclaimer=False) %}
     <!-- Icon triggers modal -->
     <input class="customize"
            type="button"
@@ -27,7 +27,7 @@
             <div class="modal-body">
                 <div class="item-multiselect" style="margin-left: 105px;">
                     <div class="color-selector">
-                        <div class="input-group mb-3">
+                        <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text search">
                                     <input type="text"
@@ -52,6 +52,26 @@
                         </div>
                     </div>
                 </div>
+                {% if includeDisclaimer %}
+                    <div class="fst-italic">
+                        <div>If nothing is selected, all options are treated as selected.</div>
+                        <div>Disable the setting slider to disable all options.</div>
+                    </div>
+                {% endif %}
+                {% if name == "minigames_list" %}
+                    <div class="form-check form-switch" style="padding-left: 1.5em;">
+                        <label data-toggle="tooltip"
+                            style="font-size:14px;"
+                            title="The hardest variants of minigames are removed.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="disable_hard_minigames"
+                                id="disable_hard_minigames"
+                                value="True"/>
+                            No Hard Minigames
+                        </label>
+                    </div>
+                {% endif %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="{{ name }}_select_all">Select All</button>
@@ -131,15 +151,29 @@
                         {% for item in list %}
                             <div class="item-select" style="margin:0;flex:0;min-width:150px;">
                                 <p class="select-title">{{ item.name }}</p>
-                                <input min="-32768"
-                                       max="32767"
-                                       name="{{ name }}_{{ item.value }}"
-                                       id="{{ name }}_{{ item.value }}"
-                                       style="width:15%"
-                                       class="form-control center-div"
-                                       type="number"
-                                       value="{{ item.default }}"
-                                       default_val="{{ item.default }}">
+                                {% if item.name == "Starting Time" %}
+                                    <input 
+                                    min="0"
+                                    max="65535"
+                                    name="{{ name }}_{{ item.value }}"
+                                    id="{{ name }}_{{ item.value }}"
+                                    style="width:15%"
+                                    class="form-control center-div"
+                                    type="number"
+                                    value="{{ item.default }}"
+                                    default_val="{{ item.default }}">
+                                {% else %}
+                                    <input 
+                                    min="-32768"
+                                    max="32767"
+                                    name="{{ name }}_{{ item.value }}"
+                                    id="{{ name }}_{{ item.value }}"
+                                    style="width:15%"
+                                    class="form-control center-div"
+                                    type="number"
+                                    value="{{ item.default }}"
+                                    default_val="{{ item.default }}">
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>

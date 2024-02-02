@@ -1,4 +1,5 @@
 """Convert file setup."""
+
 import os
 import shutil
 
@@ -62,6 +63,7 @@ def modify(file_name, map_index):
         added_caves_tns = False
         added_helm_faces = False
         added_5di_strongkong = False
+        added_library_strongkong = False
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
@@ -139,6 +141,16 @@ def modify(file_name, map_index):
                     repl_byte += int(float_to_hex(c), 16).to_bytes(4, "big")
                 for x in range(0x30 - 0xC):
                     repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                byte_stream = repl_byte
+            elif map_index == 7 and _id == 0x68:
+                # Stump GB
+                repl_byte = b""
+                new_stump_scale = 0.15
+                for x in range(0xC):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += int(float_to_hex(new_stump_scale), 16).to_bytes(4, "big")
+                for x in range(0x30 - 0x10):
+                    repl_byte += byte_stream[x + 0x10].to_bytes(1, "big")
                 byte_stream = repl_byte
             elif (map_index == 0x1A and _id == 0x13E) or (map_index == 5 and _id == 2):
                 # Nintendo/Rareware Coin
@@ -269,6 +281,16 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x8):
                     repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
                 byte_stream = repl_byte
+            elif map_index == 0x1A and _id in [0x1CD, 0x1CE, 0x1CF]:
+                # Diddy Storage, Shelved Coins
+                repl_byte = b""
+                new_y = int(float_to_hex(178.5), 16)
+                for x in range(0x4):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += new_y.to_bytes(4, "big")
+                for x in range(0x30 - 0x8):
+                    repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                byte_stream = repl_byte
             data = {"stream": byte_stream, "type": _type}
             model2.append(data)
             read_location += 0x30
@@ -358,6 +380,22 @@ def modify(file_name, map_index):
                     }
                 )
                 added_5di_strongkong = True
+            elif map_index == 0x72 and not added_library_strongkong:
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(2668), 16),
+                        "y": int(float_to_hex(216), 16),
+                        "z": int(float_to_hex(287), 16),
+                        "id": 0x20,
+                        "type": 0x39 - 16,
+                        "rx": 0,
+                        "ry": 1024,
+                        "rz": 0,
+                        "scale": int(float_to_hex(1), 16),
+                    }
+                )
+                added_library_strongkong = True
             # Vine Memes
             if len(vine_data["add"]) > 0:
                 for vine_add in vine_data["add"]:

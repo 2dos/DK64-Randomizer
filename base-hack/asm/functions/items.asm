@@ -17,3 +17,4 @@
 .definelabel getSequentialPurchase, 0x80026804
 .definelabel BananaMedalGet, 0x80687C48
 .definelabel CrownGet, 0x80687CC8
+.definelabel getTotalGBs, 0x806FB418

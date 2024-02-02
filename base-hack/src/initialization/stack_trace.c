@@ -22,6 +22,8 @@
     lo, hi
 */
 
+static char version_string[] = "DK64R 3.0\n";
+
 typedef struct crash_handler_info {
     /* 0x000 */ char unk_000[0x28];
     /* 0x028 */ int general_registers[30][2];
@@ -31,7 +33,7 @@ typedef struct crash_handler_info {
     /* 0x124 */ int va;
     /* 0x128 */ char unk_128[0x12C-0x128];
     /* 0x12C */ int fcsr;
-    /* 0x130 */ float float_registers[32];
+    /* 0x130 */ int float_registers[32]; // float type, but will be represented as int on stack trace
 } crash_handler_info;
 
 static char* general_text[] = {
@@ -93,8 +95,8 @@ static char* float_causes[] = {
 
 void CrashHandler(crash_handler_info* info) {
     StackTraceSize = 2; // Pixel Size
-    *(short*)(0x807FEF84) = -1;
-    *(short*)(0x807FEF86) = 1;
+    *(short*)(0x807FEF84) = -1; // Letter Color
+    *(short*)(0x807FEF86) = 1; // Background Color
     int x = 0;
     int y = 0;
     StackTraceX = x;
@@ -152,11 +154,12 @@ void CrashHandler(crash_handler_info* info) {
     StackTraceX = stack_x;
     StackTraceStartX = stack_x;
     StackTraceSize = 2; // Pixel Size
+    printDebugText(version_string, 0, 0, 0, 0);
     printDebugText("STACK TRACE:\n",0,0,0,0);
     printDebugText("%X\n", (int)info->pc, 0, 0, 0);
     printDebugText("%X\n", (int)info->general_registers[27][1], 0, 0, 0);
     if (*(int*)(0x807563B8) > 3) {
-        for (int i = 0; i < *(int*)(0x807FF018); i++) { // Stack Depth
+        for (int i = 1; i < *(int*)(0x807FF018); i++) { // Stack Depth
             printDebugText("%X\n", (int)StackTraceAddresses[i].address, 0, 0, 0);
         }
     }

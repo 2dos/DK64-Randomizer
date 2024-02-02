@@ -1,4 +1,5 @@
 """Hint enums for kong type and locations."""
+
 from enum import IntEnum, auto
 
 

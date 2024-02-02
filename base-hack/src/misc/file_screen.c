@@ -70,6 +70,7 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 138, .max_x = 146, .min_y = 60, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
 	{.min_x = 146, .max_x = 152, .min_y = 54, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
 	{.min_x = 144, .max_x = 146, .min_y = 52, .max_y = 55, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 132, .max_x = 152, .min_y = 46, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM_HAS}, // Slam Has
 	{.min_x = 134, .max_x = 149, .min_y = 66, .max_y = 79, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HOMING}, // Homing
 	{.min_x = 132, .max_x = 152, .min_y = 92, .max_y = 104, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIPER}, // Sniper
 	{.min_x = 0, .max_x = 20, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_DIVE}, // Dive
@@ -159,6 +160,7 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_SHOCKWAVE:
 			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
 		case TRACKER_TYPE_SLAM:
+		case TRACKER_TYPE_SLAM_HAS:
 			return initFile_getSlamLevel(1);
 		case TRACKER_TYPE_HOMING:
 			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
@@ -288,6 +290,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_SHOCKWAVE:
 			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_SLAM:
+		case TRACKER_TYPE_SLAM_HAS:
 			return MovesBase[KONG_DK].simian_slam;
 		case TRACKER_TYPE_HOMING:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
@@ -303,7 +306,7 @@ int getEnabledState(int index) {
 			return checkFlagDuplicate(FLAG_TBARREL_VINE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_MELON_2:
 			for (int i = 0; i < 5; i++) {
-				if (MovesBase[i].instrument_bitfield & 1) {
+				if (MovesBase[i].instrument_bitfield != 0) {
 					return 1;
 				}
 			}
@@ -359,17 +362,27 @@ void updateEnabledStates(void) {
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
-	for (int i = 0; i < 4; i++) {
-		if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
-			int subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
-			if (subtype == 0) {
-				slam_screen_level += 1;
-			} else if (subtype == 1) {
-				belt_screen_level += 1;
-			} else if (subtype == 2) {
-				ins_screen_level += 1;
+	for (int i = 0; i < 5; i++) {
+		int subtype = -1;
+		if (i < 4) {
+			// Training Moves
+			if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
+				subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+			}
+		} else if (i == 4) {
+			// First Move
+			if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
+				subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
 			}
 		}
+		if (subtype == 0) {
+			slam_screen_level += 1;
+		} else if (subtype == 1) {
+			belt_screen_level += 1;
+		} else if (subtype == 2) {
+			ins_screen_level += 1;
+		}
+		
 	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
@@ -394,6 +407,8 @@ void resetTracker(void) {
 	updated_tracker = 0;
 	WipeImageCache();
 }
+
+#define TRACKER_FADE 0.3f
 
 void modifyTrackerImage(int dl_offset) {
 	/**
@@ -425,10 +440,12 @@ void modifyTrackerImage(int dl_offset) {
 						unsigned short new_rgba = 1;
 						int update = 0;
 						if (tracker_info[i].type == TRACKER_TYPE_SLAM) {
-							if (!enabled) {
-								new_rgba = 0;
-								update = 1;
-							} else {
+							if (enabled) {
+								/*
+									If slam is illuminated, but white, that means that
+									the calculated slam count is higher than slam 3.
+									As a result, should be fixed
+								*/
 								int subdue[] = {0,0,0};
 								if (enabled == 1) {
 									subdue[0] = 1; // B
@@ -469,7 +486,7 @@ void modifyTrackerImage(int dl_offset) {
 								for (int c = 0; c < 3; c++) {
 									int shift = (5 * c) + 1;
 									float channel = (init_rgba >> shift) & 31;
-									channel *= 0.3f; // Depreciation
+									channel *= TRACKER_FADE; // Depreciation
 									new_rgba |= (((int)(channel) & 31) << shift);
 								}
 								update = 1;
@@ -485,6 +502,14 @@ void modifyTrackerImage(int dl_offset) {
 	}
 }
 
+int getTrackerYOffset(void) {
+	float y_temp = DEFAULT_TRACKER_Y_OFFSET;
+	if ((Rando.true_widescreen) && (CurrentMap == MAP_MAINMENU)) {
+		y_temp = DEFAULT_TRACKER_Y_OFFSET * (SCREEN_HD_FLOAT / 240.0f);
+	}
+	return y_temp;
+}
+
 int* display_file_images(int* dl, int y_offset) {
 	/**
 	 * @brief Display images on the file screen
@@ -494,7 +519,11 @@ int* display_file_images(int* dl, int y_offset) {
 	 * 
 	 * @return New Display List Address
 	 */
-	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 150,1.0f, 1.0f,0xFF);
+	int tracker_x = 160;
+	if (Rando.true_widescreen) {
+		tracker_x = SCREEN_WD >> 1;
+	}
+	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + getTrackerYOffset(),1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	return dl;
 }
@@ -508,6 +537,9 @@ int* display_text(int* dl) {
 	 * @return New Display List Address
 	 */
 	int y = FileScreenDLOffset - 320;
+	if (Rando.true_widescreen) {
+		y -= ((DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset()) * 2);
+	}
 	// Balanced IGT
 	// y += LINE_GAP;
 	int secs = IGT % 60;
@@ -516,19 +548,25 @@ int* display_text(int* dl) {
 	int hm = IGT / 60;
 	int minutes = hm % 60;
 	int hours = hm / 60;
+	float stat_x = 410;
+	if (Rando.true_widescreen) {
+		stat_x = SCREEN_WD + 90.0f;
+	}
 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
-	dl = drawText(dl, 1, 410, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
+	dl = drawText(dl, 1, stat_x, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	// Percentage Counter
 	dk_strFormat((char*)perc_str, "%d%%", FilePercentage);
-	dl = drawText(dl, 1, 410, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	dl = drawText(dl, 1, stat_x, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
 	// GB Count
 	dk_strFormat((char*)gb_str, "%03d", *(int*)(0x8003380C));
-	dl = drawText(dl, 1, 435, y + 20, (char*)gb_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	dl = drawText(dl, 1, stat_x + 25.0f, y + 20, (char*)gb_str, 0xFF, 0xFF, 0xFF, 0xFF);
 	dl = display_file_images(dl, FileScreenDLOffset - 720);
 	return dl;
 }
 
 static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
+#define INFO_Y_DIFF 50
+
 int* displayHash(int* dl, int y_offset) {
 	/**
 	 * @brief Display seed hash on the file screen
@@ -540,7 +578,22 @@ int* displayHash(int* dl, int y_offset) {
 	 */
 	for (int i = 0; i < 5; i++) {
 		int hash_index = Rando.hash[i] % 10;
-		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, 440 + (100 * i), 920 - y_offset, 3.0f, 3.0f, 0xFF);
+		int starting_x = 440.0f;
+		int hash_y = 920;
+		if (Rando.true_widescreen) {
+			starting_x = (SCREEN_WD << 1) - 200;
+			hash_y = (4 * SCREEN_HD) - 40;
+		}
+		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, starting_x + (100 * i), hash_y - y_offset, 3.0f, 3.0f, 0xFF);
+	}
+	int info_y = 480 - y_offset;
+	if (Rando.rom_flags.plando) {
+		dl = displayCenteredText(dl, info_y / 4, "PLANDOMIZER", 1);
+		info_y += INFO_Y_DIFF;
+	}
+	if (Rando.rom_flags.spoiler) {
+		dl = displayCenteredText(dl, info_y / 4, "SPOILER GENNED", 1);
+		info_y += INFO_Y_DIFF;
 	}
 	return dl;
 }
@@ -607,8 +660,12 @@ void giveCollectables(void) {
 		}
 	}
 	int energy = max/2;
-	for (int instrument_kong = 0; instrument_kong < 5; instrument_kong++) {
-		MovesBase[instrument_kong].instrument_energy = energy;
+	if (Rando.quality_of_life.global_instrument) {
+		CollectableBase.InstrumentEnergy = energy;
+	} else {
+		for (int instrument_kong = 0; instrument_kong < 5; instrument_kong++) {
+			MovesBase[instrument_kong].instrument_energy = energy;
+		}
 	}
 	CollectableBase.Health = CollectableBase.Melons * 4;
 	CollectableBase.StandardAmmo = 25 * (1 << MovesBase[0].ammo_belt);
@@ -632,6 +689,7 @@ void wipeFileStats(void) {
 		ResetExtraData(EGD_FILENAME, i);
 	}
 	ResetExtraData(EGD_HELMHURRYIGT, 0);
+	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -668,7 +726,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					openCrownDoor();
 					giveCollectables();
 					activateBananaports();
-					if(Rando.fast_gbs) {
+					if(Rando.faster_checks.rabbit_race) {
 						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
 					}
 					if (Rando.quality_of_life.caves_kosha_dead) {
@@ -684,6 +742,10 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
 					SaveToGlobal();
+					if (Rando.galleon_water_raised) {
+						setPermFlag(FLAG_MODIFIER_GALLEONWATER);
+					}
+					handleTimeOfDay(TODCALL_INITFILE);
 				} else {
 					// Dirty File
 					Character = Rando.starting_kong;
@@ -709,6 +771,13 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					paad->next_screen = 5;
 				} else {
 					playSFX(Wrong);
+				}
+			} else if (buttons & 0x80) { // CD
+				// Go to filename editing
+				if (ENABLE_FILENAME) {
+					playSFX(0x2C9);
+					paad->prevent_action = 0;
+					paad->next_screen = 7;
 				}
 			}
 		}
@@ -764,6 +833,11 @@ void setPrevSaveMap(void) {
 	 * @brief Set Previous map where a save occurred for the in-level IGT functionality
 	 */
 	previous_map_save = Rando.starting_map;
+}
+
+void QuitGame(void) {
+	save();
+	LoadGameOver();
 }
 
 int updateLevelIGT(void) {

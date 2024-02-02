@@ -3,7 +3,8 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 
 
 class Fence:
@@ -433,7 +434,7 @@ fairy_locations = {
             region=Regions.BeyondHatch,
             fence=Fence(1820, 526, 2079, 874),
             spawn_y=60,
-            logic=lambda l: l.camera and l.punch and l.chunky,
+            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.phasewalk),
         ),
         FairyData(
             name="Crusher Room",
@@ -599,7 +600,7 @@ fairy_locations = {
             region=Regions.FungiForestStart,
             fence=Fence(2067, 3098, 2335, 3237),
             spawn_y=540,
-            logic=lambda l: l.camera and l.vines,
+            logic=lambda l: l.camera and (l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)),
         ),
         FairyData(
             name="Above BBlast Entrance",
@@ -1027,7 +1028,7 @@ fairy_locations = {
             region=Regions.FungiForestLobby,
             is_vanilla=True,
             spawn_xyz=[472, 163, 612],
-            logic=lambda l: l.camera and l.feather and l.tiny,
+            logic=lambda l: l.camera and l.hasMoveSwitchsanity(Switches.IslesFungiLobbyFeather, False),
             natural_index=1,
         ),
         FairyData(
@@ -1086,7 +1087,7 @@ fairy_locations = {
             region=Regions.AngryAztecLobby,
             fence=Fence(945, 487, 1090, 746),
             spawn_y=72,
-            logic=lambda l: l.camera and ((l.feather and l.tiny) or l.phasewalk),
+            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk),
         ),
         FairyData(
             name="Creepy Castle Lobby",
@@ -1136,36 +1137,25 @@ fairy_locations = {
         FairyData(
             name="Key 8 Room (1)",
             map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,
+            region=Regions.HideoutHelmKeyRoom,
             is_vanilla=True,
             spawn_xyz=[164, 118, 5213],
-            logic=lambda l: l.camera and Events.HelmKeyAccess in l.Events,
             natural_index=0,
         ),
         FairyData(
             name="Key 8 Room (2)",
             map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,
+            region=Regions.HideoutHelmKeyRoom,
             is_vanilla=True,
             spawn_xyz=[135, 98, 5224],
-            logic=lambda l: l.camera and Events.HelmKeyAccess in l.Events,
             natural_index=1,
         ),
         FairyData(
             name="Pineapple Switch Room",
             map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,  # Not HideoutHelmStart because you could start in BoM room, requiring you to beat Helm in order to access this
+            region=Regions.HideoutHelmSwitchRoom,
             fence=Fence(1034, 1201, 1088, 1328),
             spawn_y=-150,
-            logic=lambda l: l.camera and (l.handstand and l.lanky),
-        ),
-        FairyData(
-            name="Under Grate",
-            map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,  # Not HideoutHelmStart because you could start in BoM room, requiring you to beat Helm in order to access this
-            fence=Fence(1108, 2206, 1162, 2321),
-            spawn_y=-164,
-            logic=lambda l: l.camera and (l.handstand and l.lanky) and (l.chunky and l.pineapple and l.vines),
         ),
         FairyData(
             name="Under Chunky Room Stairs",

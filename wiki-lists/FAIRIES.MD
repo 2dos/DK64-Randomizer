@@ -68,7 +68,7 @@
 | Frantic Factory | Toy Monster Room | l.camera and ((l.triangle and l.punch and l.ischunky) or l.CanAccessRNDRoom()) | 
 | Frantic Factory | Diddy Research and Development Room | l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()) | 
 | Frantic Factory | Chute to Storage Room | l.camera | 
-| Frantic Factory | Dark Room | l.camera and l.punch and l.chunky | 
+| Frantic Factory | Dark Room | l.camera and ((l.punch and l.chunky) or l.phasewalk) | 
 | Factory Crusher | Crusher Room | l.camera | 
 </details>
 
@@ -107,7 +107,7 @@
 | Forest Rafters | Dark Rafters | l.guitar and l.isdiddy and l.camera | 
 | Fungi Forest | Above Blue Tunnel | l.camera | 
 | Fungi Forest | Above the Clock | l.camera | 
-| Fungi Forest | Above the Well | l.camera and l.vines | 
+| Fungi Forest | Above the Well | l.camera and (l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)) | 
 | Fungi Forest | Above BBlast Entrance | l.camera | 
 | Fungi Forest | Near Crown | l.camera | 
 | Fungi Forest | Top of Giant Mushroom | l.camera | 
@@ -189,7 +189,7 @@
 | Isles | Small Island | l.camera | 
 | Isles | Upper Krem Isles | l.camera | 
 | Frantic Factory Lobby | Factory Lobby | l.camera and l.punch and l.chunky | 
-| Fungi Forest Lobby | Fungi Lobby | l.camera and l.feather and l.tiny | 
+| Fungi Forest Lobby | Fungi Lobby | l.camera and l.hasMoveSwitchsanity(Switches.IslesFungiLobbyFeather, False) | 
 | Isles | Aztec Roof | l.camera | 
 | Isles | Behind Fungi Building | l.camera | 
 | Isles | On Banana Fairy Island | l.camera and l.jetpack and l.isdiddy and Events.IslesDiddyBarrelSpawn in l.Events | 
@@ -197,7 +197,7 @@
 | Isles | On K. Lumsy | l.camera | 
 | Isles | In Front of Krem Isles | l.camera | 
 | Banana Fairy Room | Inside Fairy Island | l.camera | 
-| Angry Aztec Lobby | Angry Aztec Lobby | l.camera and ((l.feather and l.tiny) or l.phasewalk) | 
+| Angry Aztec Lobby | Angry Aztec Lobby | l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk) | 
 | Creepy Castle Lobby | Creepy Castle Lobby | l.camera | 
 | Crystal Caves Lobby | Crystal Caves Lobby | l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip) | 
 | Isles Snide Room | Snide Room | l.camera | 
@@ -212,10 +212,9 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Hideout Helm | Key 8 Room (1) | l.camera and Events.HelmKeyAccess in l.Events | 
-| Hideout Helm | Key 8 Room (2) | l.camera and Events.HelmKeyAccess in l.Events | 
-| Hideout Helm | Pineapple Switch Room | l.camera and (l.handstand and l.lanky) | 
-| Hideout Helm | Under Grate | l.camera and (l.handstand and l.lanky) and (l.chunky and l.pineapple and l.vines) | 
+| Hideout Helm | Key 8 Room (1) | l.camera | 
+| Hideout Helm | Key 8 Room (2) | l.camera | 
+| Hideout Helm | Pineapple Switch Room | l.camera | 
 | Hideout Helm | Under Chunky Room Stairs | l.camera | 
 | Hideout Helm | Above the Blast-o-Matic | l.camera and l.jetpack and l.isdiddy | 
 | Hideout Helm | Navigation Room | l.camera | 

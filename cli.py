@@ -1,22 +1,24 @@
 """CLI script for running seed generation."""
+
 import argparse
 import codecs
 import json
 import os
-import time
 import random
 import sys
-import zipfile
-import boto3
-from io import BytesIO
+import time
 import traceback
+import zipfile
+from io import BytesIO
+
+import boto3
 
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
+from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
-from randomizer.Patching.Patcher import load_base_rom
 
 load_base_rom()
 dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
@@ -39,7 +41,7 @@ def generate(generate_settings, file_name):
                 "spoiler_log": str(json.dumps(spoiler_log)),
             }
         )
-    sections_to_retain = ["Settings", "Cosmetics"]
+    sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Human Readable"]
     if spoiler.settings.generate_spoilerlog is False:
         spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
 
@@ -80,9 +82,8 @@ def main():
                 sys.exit(2)
         elif args.preset is not None:
             presets = json.load(open("static/presets/preset_files.json"))
-            default = json.load(open("static/presets/default.json"))
             found = False
-            for file in presets.get("progression"):
+            for file in presets:
                 with open("static/presets/" + file, "r") as preset_file:
                     data = json.load(preset_file)
                     if args.preset == data.get("name"):

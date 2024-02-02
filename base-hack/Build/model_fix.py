@@ -2,9 +2,10 @@
 
 import os
 import zlib
+import math
 
 from BuildEnums import TableNames
-from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset
+from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00
@@ -142,6 +143,8 @@ if os.path.exists(krusha_file):
     with open(krusha_file, "r") as fh:
         krusha_kong = int(fh.read())
 
+BARREL_BASE = 0xE3  # 0x75
+
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
     actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -238,41 +241,86 @@ with open(ROMName, "rb") as rom:
                     bp_y += 65536
                 fh.seek(vtx_addr)
                 fh.write(bp_y.to_bytes(2, "big"))
-    barrel_skins = (
-        "dk",
-        "diddy",
-        "lanky",
-        "tiny",
-        "chunky",
-        "bp",
-        "nin_coin",
-        "rw_coin",
-        "key",
-        "crown",
-        "medal",
-        "potion",
-        "bean",
-        "pearl",
-        "fairy",
-        "rainbow",
-        "fakegb",
-        "melon",
-    )
-    rom.seek(actor_table + (0x75 << 2))
+    rom.seek(actor_table + (BARREL_BASE << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
-    for bi, b in enumerate(barrel_skins):
-        rom.seek(model_start)
-        with open(f"barrel_skin_{b}.bin", "wb") as fh:
-            compress = rom.read(model_size)
-            decompress = zlib.decompress(compress, (15 + 32))
-            fh.write(decompress)
-        with open(f"barrel_skin_{b}.bin", "r+b") as fh:
-            fh.seek(0x59C)
-            fh.write((6026 + (2 * bi) + 1).to_bytes(4, "big"))
-            fh.seek(0x63C)
-            fh.write((6026 + (2 * bi)).to_bytes(4, "big"))
+    BASE_TEXTURE = 0xC
+    rom.seek(model_start)
+    with open(f"barrel_skin_base.bin", "wb") as fh:
+        compress = rom.read(model_size)
+        decompress = zlib.decompress(compress, (15 + 32))
+        fh.write(decompress[:-4])
+        fh.write((2).to_bytes(2, "big"))
+        texture_count = len(barrel_skins)
+        if BARREL_BASE == 0x75:
+            texture_count += 1
+        second_count = 1
+        for x in range(2):
+            fh.write(texture_count.to_bytes(2, "big"))
+            fh.write((BASE_TEXTURE + x).to_bytes(2, "big"))
+            fh.write(second_count.to_bytes(2, "big"))
+            if BARREL_BASE == 0x75:
+                base_texture = 0x128A - x
+                fh.write(base_texture.to_bytes(2, "big"))
+            for bi in range(len(barrel_skins)):
+                fh.write((6026 + (2 * bi) + x).to_bytes(2, "big"))
+        raw_size = fh.tell()
+        offset = raw_size & 3
+        if offset != 0:
+            for x in range(4 - offset):
+                fh.write((0).to_bytes(1, "big"))
+    with open(f"barrel_skin_base.bin", "r+b") as fh:
+        fh.seek(0x59C)
+        if BARREL_BASE == 0xE3:
+            fh.seek(0x13C4)
+        fh.write(((BASE_TEXTURE + 1) << 24).to_bytes(4, "big"))  # 1289
+        fh.seek(0x63C)
+        if BARREL_BASE == 0xE3:
+            fh.seek(0x1484)
+        fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big"))  # 128A
+        if BARREL_BASE == 0xE3:
+            vert_count = int((0xFC8 - 0x28) / 0x10)
+            for i in range(vert_count):
+                fh.seek(0x28 + (0x10 * i) + 2)
+                y = int.from_bytes(fh.read(2), "big")
+                if y > 32767:
+                    y -= 65536
+                ymag = abs(y)
+                radius = 0
+                if ymag == 72:
+                    radius = 45
+                elif ymag < 24:
+                    radius = 60
+                else:
+                    diff = ymag - 24
+                    diff_range = 72 - 24
+                    radius_diff = int((diff / diff_range) * 15)
+                    radius = 60 - radius_diff
+                fh.seek(0x28 + (0x10 * i))
+                x = int.from_bytes(fh.read(2), "big")
+                fh.seek(0x28 + (0x10 * i) + 4)
+                z = int.from_bytes(fh.read(2), "big")
+                if x > 32767:
+                    x -= 65536
+                if z > 32767:
+                    z -= 65536
+                normal_radius = math.sqrt((x * x) + (z * z))
+                if normal_radius > 10:
+                    ratio = radius / normal_radius
+                    x = int(x * ratio)
+                    z = int(z * ratio)
+                    if x < 0:
+                        x += 65536
+                    if z < 0:
+                        z += 65536
+                    fh.seek(0x28 + (0x10 * i))
+                    fh.write(x.to_bytes(2, "big"))
+                    fh.seek(0x28 + (0x10 * i) + 4)
+                    fh.write(z.to_bytes(2, "big"))
+            fh.seek(0x114C)
+            fh.write(getBonusSkinOffset(5).to_bytes(4, "big"))
+
     # Fake Item - Model Two
     rom.seek(modeltwo_table + (0x74 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -288,7 +336,7 @@ with open(ROMName, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xF4)
-        fh.write((6062).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(0).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):
@@ -296,7 +344,7 @@ with open(ROMName, "rb") as rom:
     with open("fake_item.bin", "wb") as fh:
         fh.write(data)
     # Fake Item - Actor
-    rom.seek(actor_table + (0x68 << 2))
+    rom.seek(actor_table + (0x87 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
@@ -310,10 +358,33 @@ with open(ROMName, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xACC)
-        fh.write((6062).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(0).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):
         os.remove("temp.bin")
     with open("fake_item_actor.bin", "wb") as fh:
         fh.write(data)
+    # Multiplayer Pad
+    rom.seek(modeltwo_table + (0x214 << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("temp.bin", "wb") as fh:
+        fh.write(data)
+    # Base tex:
+    #
+    # Top
+    # 0xEC (0xDF9), 0x164 (0xDFA)
+    #
+    # Rim
+    # 0x1CE (0xBB2), 0x274 (0xBB3)
+    #
+    # Number
+    # 0x374 (0xDFB)

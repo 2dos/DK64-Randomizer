@@ -1,15 +1,19 @@
 """Apply misc setup changes."""
+
 import math
 import random
 
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected
-from randomizer.Lists.MapsAndExits import LevelMapTable, Maps
-from randomizer.Lists.Patches import DirtPatchLocations
-from randomizer.Patching.Lib import float_to_hex
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.SwitchTypes import SwitchType
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected
+from randomizer.Lists.CustomLocations import CustomLocations
+from randomizer.Enums.Maps import Maps
+from randomizer.Lists.MapsAndExits import LevelMapTable
+from randomizer.Patching.Lib import IsItemSelected, float_to_hex, intf_to_float
+from randomizer.Patching.Patcher import LocalROM
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
@@ -141,14 +145,17 @@ def randomize_setup(spoiler):
         for count in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
+    arcade_r1_shortened = IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
+    lighthouse_on = IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.galleon_seasick_ship)
     allowed_settings = [
-        spoiler.settings.fast_gbs,
+        arcade_r1_shortened,
         spoiler.settings.randomize_pickups,
         spoiler.settings.random_patches,
         spoiler.settings.puzzle_rando,
-        spoiler.settings.hard_bosses,
-        spoiler.settings.high_req,
-        MiscChangesSelected.raise_fungi_dirt_patch in spoiler.settings.misc_changes_selected,
+        IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.extra_hard_bosses),  # Pufftoss Stars Raised
+        IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_bosses),  # Pufftoss Stars Shuffled
+        lighthouse_on,
+        IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.raise_fungi_dirt_patch),
     ]
     enabled = False
     for setting in allowed_settings:
@@ -196,7 +203,9 @@ def randomize_setup(spoiler):
         chunky_5dc_pads = pickChunkyCabinPadPositions()
         random.shuffle(vase_puzzle_positions)
         vase_puzzle_rando_progress = 0
-        raise_patch = (MiscChangesSelected.raise_fungi_dirt_patch in spoiler.settings.misc_changes_selected) or (len(spoiler.settings.misc_changes_selected) == 0)
+        raise_patch = IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.raise_fungi_dirt_patch)
+        random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_bosses)
+        higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.extra_hard_bosses)
         for cont_map_id in range(216):
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(cont_map_setup_address)
@@ -214,14 +223,15 @@ def randomize_setup(spoiler):
                 for swap in swap_list:
                     if swap["map"] == cont_map_id and item_type in swap["item_list"]:
                         is_swap = True
-                if item_type == 0x196 and spoiler.settings.fast_gbs and cont_map_id == Maps.FactoryBaboonBlast:
+                if item_type == 0x196 and arcade_r1_shortened and cont_map_id == Maps.FactoryBaboonBlast:
                     ROM_COPY.seek(item_start + 0x28)
                     ROM_COPY.writeMultipleBytes(0x74, 2)
                     ROM_COPY.seek(item_start + 0xC)
                     ROM_COPY.writeMultipleBytes(0x3F000000, 4)  # Scale: 0.5
                 elif item_type in pickup_list and spoiler.settings.randomize_pickups:
-                    ROM_COPY.seek(item_start + 0x28)
-                    ROM_COPY.writeMultipleBytes(random.choice(pickup_list), 2)
+                    if cont_map_id != Maps.OrangeBarrel:
+                        ROM_COPY.seek(item_start + 0x28)
+                        ROM_COPY.writeMultipleBytes(random.choice(pickup_list), 2)
                 elif is_swap:
                     if spoiler.settings.puzzle_rando:
                         offsets.append(item_start)
@@ -232,7 +242,7 @@ def randomize_setup(spoiler):
                         ROM_COPY.seek(item_start + 0x1C)
                         ry = int.from_bytes(ROM_COPY.readBytes(4), "big")
                         positions.append([x, y, z, ry])
-                elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
+                elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
                     if cont_map_id == Maps.HideoutHelm:
                         y_position = random.uniform(-131, 500)
                         star_donut_center = [1055.704, 3446.966]
@@ -261,7 +271,7 @@ def randomize_setup(spoiler):
                         star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
                         ROM_COPY.seek(item_start + 4)
                         ROM_COPY.writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
-                elif item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and spoiler.settings.high_req:
+                elif item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and lighthouse_on:
                     new_gb_coords = [407.107, 720, 501.02]
                     for coord_i, coord in enumerate(new_gb_coords):
                         ROM_COPY.seek(item_start + (coord_i * 4))
@@ -304,6 +314,10 @@ def randomize_setup(spoiler):
                     ROM_COPY.seek(item_start + 8)
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                     chunky_5dc_pads["index"] += 1
+                # Regular if because it can be combined with regular hard bosses
+                if item_type == 0x235 and cont_map_id == Maps.GalleonBoss and higher_pufftoss_stars:
+                    ROM_COPY.seek(item_start + 4)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(345), 16), 4)
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:
@@ -359,22 +373,23 @@ def randomize_setup(spoiler):
             if spoiler.settings.random_patches:
                 new_actor_id = 0x20
                 for dirt_item in spoiler.dirt_patch_placement:
-                    for patch in DirtPatchLocations:
-                        if patch.map_id == cont_map_id and patch.name == dirt_item["name"]:
+                    for patch in CustomLocations[dirt_item["level"]]:
+                        if patch.map == cont_map_id and patch.name == dirt_item["name"]:
+                            patch_scale = min(patch.max_size / 64, 1)
                             if new_actor_id in used_actor_ids:
                                 while new_actor_id in used_actor_ids:
                                     new_actor_id += 1
                             dirt_bytes = []
-                            dirt_bytes.append(int(float_to_hex(patch.x), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.coords[0]), 16))
                             if patch.is_fungi_hidden_patch and raise_patch:
                                 dirt_bytes.append(int(float_to_hex(155), 16))
                             else:
-                                dirt_bytes.append(int(float_to_hex(patch.y), 16))
-                            dirt_bytes.append(int(float_to_hex(patch.z), 16))
-                            dirt_bytes.append(int(float_to_hex(patch.scale), 16))
+                                dirt_bytes.append(int(float_to_hex(patch.coords[1]), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.coords[2]), 16))
+                            dirt_bytes.append(int(float_to_hex(patch_scale), 16))
                             for x in range(8):
                                 dirt_bytes.append(0)
-                            rot_type_hex = hex(patch.rotation) + "007B"
+                            rot_type_hex = hex(patch.rot_y) + "007B"
                             dirt_bytes.append(int(rot_type_hex, 16))
                             id_something_hex = hex(new_actor_id) + "46D0"
                             used_actor_ids.append(new_actor_id)
@@ -389,7 +404,6 @@ def randomize_setup(spoiler):
             # Re-run through actor stuff for changes
             ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
             actor_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
-            diddy_5di_pos = []
             for actor_item in range(actor_count):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
                 ROM_COPY.seek(actor_start + 0x32)
@@ -450,3 +464,172 @@ def updateRandomSwitches(spoiler):
                                 if item_type in switches[kong]:
                                     ROM_COPY.seek(item_start + 0x28)
                                     ROM_COPY.writeMultipleBytes(switches[kong][switch_level], 2)
+
+
+def updateSwitchsanity(spoiler):
+    """Update setup to account for switchsanity."""
+    if spoiler.settings.switchsanity:
+        ROM_COPY = LocalROM()
+        switches = {
+            SwitchType.SlamSwitch: [
+                0x94,
+                0x16C,
+                0x167,  # DK
+                0x93,
+                0x16B,
+                0x166,  # Diddy
+                0x95,
+                0x16D,
+                0x168,  # Lanky
+                0x96,
+                0x16E,
+                0x169,  # Tiny
+                0xB8,
+                0x16A,
+                0x165,  # Chunky
+            ],
+            SwitchType.GunSwitch: [0x129, 0x126, 0x128, 0x127, 0x125],
+            SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB],
+            SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
+            SwitchType.MiscActivator: [0x28, 0xC3],
+        }
+        switchsanity_maps = []
+        # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table
+        for slot in spoiler.settings.switchsanity_data:
+            map_id = spoiler.settings.switchsanity_data[slot].map_id
+            if map_id not in switchsanity_maps:
+                switchsanity_maps.append(map_id)
+        for map_id in switchsanity_maps:
+            # Get list of ids of objects in map which are affected by switchsanity
+            ids_in_map = []
+            for slot in spoiler.settings.switchsanity_data:
+                if map_id == spoiler.settings.switchsanity_data[slot].map_id:
+                    obj_ids = spoiler.settings.switchsanity_data[slot].ids
+                    ids_in_map.extend(obj_ids)
+            # Handle setup
+            file_start = js.pointer_addresses[9]["entries"][map_id]["pointing_to"]
+            ROM_COPY.seek(file_start)
+            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            for model2_item in range(model2_count):
+                item_start = file_start + 4 + (model2_item * 0x30)
+                ROM_COPY.seek(item_start + 0x2A)
+                item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if item_id in ids_in_map:
+                    switch_kong = None
+                    switch_type = None
+                    switch_offset = None
+                    switch_slot = None
+                    for slot in spoiler.settings.switchsanity_data:
+                        if map_id == spoiler.settings.switchsanity_data[slot].map_id:
+                            if item_id in spoiler.settings.switchsanity_data[slot].ids:
+                                switch_kong = spoiler.settings.switchsanity_data[slot].kong
+                                switch_type = spoiler.settings.switchsanity_data[slot].switch_type
+                                switch_offset = int(switch_kong)
+                                switch_slot = slot
+                                if switch_type == SwitchType.SlamSwitch:
+                                    ROM_COPY.seek(item_start + 0x28)
+                                    old_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                                    old_level = switches[SwitchType.SlamSwitch].index(old_type) % 3
+                                    switch_offset = (3 * int(switch_kong)) + old_level
+                    if switch_kong is not None and switch_type is not None and switch_offset is not None:
+                        new_obj = switches[switch_type][switch_offset]
+                        ROM_COPY.seek(item_start + 0x28)
+                        ROM_COPY.writeMultipleBytes(new_obj, 2)
+                        if switch_slot == Switches.IslesHelmLobbyGone and switch_type == SwitchType.MiscActivator:
+                            if switch_kong == Kongs.diddy:
+                                ROM_COPY.seek(item_start + 0xC)
+                                ROM_COPY.writeMultipleBytes(0x3F400000, 4)
+                            # elif switch_kong == Kongs.donkey:
+                            #     ROM_COPY.seek(item_start + 0x1C)
+                            #     ROM_COPY.writeMultipleBytes(0, 4)
+
+
+def updateKrushaMoveNames(spoiler):
+    """Replace move names for the kong that Krusha replaces."""
+    if spoiler.settings.krusha_kong is not None:
+        move_data = {
+            Kongs.donkey: [
+                {"textbox_index": 36, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 6, "mode": "replace_whole", "target": "KANNON BLAST"},
+                {"textbox_index": 8, "mode": "replace_whole", "target": "STRONG KROC"},
+                {"textbox_index": 10, "mode": "replace_whole", "target": "GATOR GRAB"},
+                {"textbox_index": 62, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
+                {"textbox_index": 81, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.diddy: [
+                {"textbox_index": 37, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 12, "mode": "replace_whole", "target": "KREMLING KHARGE"},
+                {"textbox_index": 14, "mode": "replace_whole", "target": "ROCKET REPTILE"},
+                {"textbox_index": 16, "mode": "replace_whole", "target": "SALAMANDER SPRING"},
+                {"textbox_index": 63, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
+                {"textbox_index": 82, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.lanky: [
+                {"textbox_index": 38, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 18, "mode": "replace_whole", "target": "KREMSTAND"},
+                {"textbox_index": 20, "mode": "replace_whole", "target": "KABOOM BALLOON"},
+                {"textbox_index": 22, "mode": "replace_whole", "target": "KREMSTAND SPRINT"},
+                {"textbox_index": 64, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
+                {"textbox_index": 83, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.tiny: [
+                {"textbox_index": 39, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 24, "mode": "replace_whole", "target": "MINI DILE"},
+                {"textbox_index": 26, "mode": "replace_whole", "target": "LIZARD TWIRL"},
+                {"textbox_index": 28, "mode": "replace_whole", "target": "KROCOPORT"},
+                {"textbox_index": 65, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
+                {"textbox_index": 84, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.chunky: [
+                {"textbox_index": 40, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 30, "mode": "replace_whole", "target": "HUNKY KRUSHY"},
+                {"textbox_index": 32, "mode": "replace_whole", "target": "KREMLING PUNCH"},
+                {"textbox_index": 34, "mode": "replace_whole", "target": "KHAMELEO GONE"},
+                {"textbox_index": 66, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
+                {"textbox_index": 85, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+        }
+        spoiler.text_changes[39] = move_data[spoiler.settings.krusha_kong]
+        name_replacements = {
+            Kongs.donkey: [
+                {"old": "Coconut Gun", "new": "LIME BAZOOKA"},
+                {"old": "Baboon Blast", "new": "KANNON BLAST"},
+                {"old": "Strong Kong", "new": "STRONG KROC"},
+                {"old": "Gorilla Grab", "new": "GATOR GRAB"},
+                {"old": "Donkey Kong", "new": "KRUSHA"},
+            ],
+            Kongs.diddy: [
+                {"old": "Peanut Popguns", "new": "LIME BAZOOKA"},
+                {"old": "Chimpy Charge", "new": "KREMLING KHARGE"},
+                {"old": "Rocketbarrel Boost", "new": "ROCKET REPTILE"},
+                {"old": "Simian Spring", "new": "SALAMANDER SPRING"},
+                {"old": "Diddy Kong", "new": "KRUSHA"},
+            ],
+            Kongs.lanky: [
+                {"old": "Grape Shooter", "new": "LIME BAZOOKA"},
+                {"old": "Orangstand", "new": "KREMSTAND"},
+                {"old": "Baboon Balloon", "new": "KABOOM BALLOON"},
+                {"old": "Orangstand Sprint", "new": "KREMSTAND SPRINT"},
+                {"old": "Lanky Kong", "new": "KRUSHA"},
+            ],
+            Kongs.tiny: [
+                {"old": "Feather Bow", "new": "LIME BAZOOKA"},
+                {"old": "Mini Monkey", "new": "MINI DILE"},
+                {"old": "Pony Tail Twirl", "new": "LIZARD TWIRL"},
+                {"old": "Monkeyport", "new": "KROCOPORT"},
+                {"old": "Tiny Kong", "new": "KRUSHA"},
+            ],
+            Kongs.chunky: [
+                {"old": "Pineapple Launcher", "new": "LIME BAZOOKA"},
+                {"old": "Hunky Chunky", "new": "HUNKY KRUSHY"},
+                {"old": "Primate Punch", "new": "KREMLING PUNCH"},
+                {"old": "Gorilla Gone", "new": "KHAMELEO GONE"},
+                {"old": "Chunky Kong", "new": "KRUSHA"},
+            ],
+        }
+        chosen_replacements = name_replacements[spoiler.settings.krusha_kong]
+        for reference in spoiler.location_references:
+            for replacement in chosen_replacements:
+                if reference.item_name == replacement["old"]:
+                    reference.item_name = replacement["new"]
+                    chosen_replacements.remove(replacement)

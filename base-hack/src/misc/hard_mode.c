@@ -1,0 +1,379 @@
+/**
+ * @file hard_mode.c
+ * @author Ballaam
+ * @brief 
+ * @version 0.1
+ * @date 2023-08-01
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#include "../../include/common.h"
+
+#define DARK_WORLD_BRIGHTNESS 0.01f
+#define LIGHT_BRIGHTNESS 0xFF
+
+/*
+    Misc hard mode stuff in case it comes up:
+    Disable map geo rendering (donk in the sky):
+    - 0x80651598 > 0xA1E00002
+*/
+
+static const map_bitfield is_dark_world_mc = {
+    .test_map = 0,
+    .funkys_store = 0,
+    .dk_arcade = 0,
+    .k_rool_barrel_lankys_maze = 0, // Reason: Maze is short enough
+    .jungle_japes_mountain = 0,
+    .crankys_lab = 1,
+    .jungle_japes_minecart = 1,
+    .jungle_japes = 0, // Reason: Lag
+    .jungle_japes_army_dillo = 1,
+    .jetpac = 0,
+    .kremling_kosh_very_easy = 1,
+    .stealthy_snoop_normal_no_logo = 0,
+    .jungle_japes_shell = 1,
+    .jungle_japes_lankys_cave = 1,
+    .angry_aztec_beetle_race = 1, // Reason: Not a constant stream of coins
+    .snides_hq = 0,
+    .angry_aztec_tinys_temple = 1, // Reason: No peeking
+    .hideout_helm = 1,
+    .teetering_turtle_trouble_very_easy = 1,
+    .angry_aztec_five_door_temple_dk = 0,
+    .angry_aztec_llama_temple = 1,
+    .angry_aztec_five_door_temple_diddy = 0,
+    .angry_aztec_five_door_temple_tiny = 0,
+    .angry_aztec_five_door_temple_lanky = 0,
+    .angry_aztec_five_door_temple_chunky = 0,
+    .candys_music_shop = 1,
+    .frantic_factory = 0, // Reason: Lag
+    .frantic_factory_car_race = 1,
+    .hideout_helm_level_intros_game_over = 1, // Reason: Consistent with Helm
+    .frantic_factory_power_shed = 1,
+    .gloomy_galleon = 1,
+    .gloomy_galleon_k_rools_ship = 1,
+    .batty_barrel_bandit_very_easy = 1,
+    .jungle_japes_chunkys_cave = 0, // Reason: Essentially is DW-lite in Vanilla
+    .dk_isles_overworld = 1, // Reason: Lobby 6 Entry
+    .k_rool_barrel_dks_target_game = 0,
+    .frantic_factory_crusher_room = 1, // Reason: No item peek
+    .jungle_japes_barrel_blast = 0, // Reason: Cannon Barrels in DW is bad
+    .angry_aztec = 1,
+    .gloomy_galleon_seal_race = 0,
+    .nintendo_logo = 0,
+    .angry_aztec_barrel_blast = 0, // Reason: Cannon Barrels in DW is bad
+    .troff_n_scoff = 1,
+    .gloomy_galleon_shipwreck_diddy_lanky_chunky = 0,
+    .gloomy_galleon_treasure_chest = 0,
+    .gloomy_galleon_mermaid = 0,
+    .gloomy_galleon_shipwreck_dk_tiny = 0,
+    .gloomy_galleon_shipwreck_lanky_tiny = 0,
+    .fungi_forest = 1,
+    .gloomy_galleon_lighthouse = 0,
+    .k_rool_barrel_tinys_mushroom_game = 0,
+    .gloomy_galleon_mechanical_fish = 0,
+    .fungi_forest_ant_hill = 1,
+    .battle_arena_beaver_brawl = 0,
+    .gloomy_galleon_barrel_blast = 0, // Reason: Cannon Barrels in DW is bad
+    .fungi_forest_minecart = 1,
+    .fungi_forest_diddys_barn = 0, // Reason: Vanilla is essentially DW, Sky is a bad idea
+    .fungi_forest_diddys_attic = 0,
+    .fungi_forest_lankys_attic = 0,
+    .fungi_forest_dks_barn = 0,
+    .fungi_forest_spider = 1,
+    .fungi_forest_front_part_of_mill = 1, // Reason: Lever Combo
+    .fungi_forest_rear_part_of_mill = 1,
+    .fungi_forest_mushroom_puzzle = 0,
+    .fungi_forest_giant_mushroom = 1,
+    .stealthy_snoop_normal = 1,
+    .mad_maze_maul_hard = 1,
+    .stash_snatch_normal = 1,
+    .mad_maze_maul_easy = 1,
+    .mad_maze_maul_normal = 1,
+    .fungi_forest_mushroom_leap = 1,
+    .fungi_forest_shooting_game = 0,
+    .crystal_caves = 1,
+    .battle_arena_kritter_karnage = 1,
+    .stash_snatch_easy = 1,
+    .stash_snatch_hard = 1,
+    .dk_rap = 0,
+    .minecart_mayhem_easy = 1,
+    .busy_barrel_barrage_easy = 1, // Reason: Offers Challenge
+    .busy_barrel_barrage_normal = 1, // Reason: Offers Challenge
+    .main_menu = 0,
+    .title_screen_not_for_resale_version = 0,
+    .crystal_caves_beetle_race = 0, // Reason: Light Strobing
+    .fungi_forest_dogadon = 1, // Reason: Framebuffer
+    .crystal_caves_igloo_tiny = 1,
+    .crystal_caves_igloo_lanky = 1,
+    .crystal_caves_igloo_dk = 0, // Reason: Maze in DW lol
+    .creepy_castle = 1, // Reason: Sky makes climb too hard
+    .creepy_castle_ballroom = 1,
+    .crystal_caves_rotating_room = 0, // Reason: Has no impact because room is obj
+    .crystal_caves_shack_chunky = 1,
+    .crystal_caves_shack_dk = 1,
+    .crystal_caves_shack_diddy_middle_part = 0,
+    .crystal_caves_shack_tiny = 0,
+    .crystal_caves_lankys_hut = 0,
+    .crystal_caves_igloo_chunky = 1,
+    .splish_splash_salvage_normal = 0,
+    .k_lumsy = 1,
+    .crystal_caves_ice_castle = 1,
+    .speedy_swing_sortie_easy = 1,
+    .crystal_caves_igloo_diddy = 1,
+    .krazy_kong_klamour_easy = 0,
+    .big_bug_bash_very_easy = 0,
+    .searchlight_seek_very_easy = 0,
+    .beaver_bother_easy = 1,
+    .creepy_castle_tower = 0,
+    .creepy_castle_minecart = 1,
+    .kong_battle_battle_arena = 0,
+    .creepy_castle_crypt_lanky_tiny = 0,
+    .kong_battle_arena_1 = 0,
+    .frantic_factory_barrel_blast = 1, // Reason: The only good DW BBlast
+    .gloomy_galleon_pufftoss = 0,
+    .creepy_castle_crypt_dk_diddy_chunky = 1, // Reason: Lever Combo
+    .creepy_castle_museum = 0,
+    .creepy_castle_library = 1,
+    .kremling_kosh_easy = 1,
+    .kremling_kosh_normal = 1,
+    .kremling_kosh_hard = 1,
+    .teetering_turtle_trouble_easy = 1,
+    .teetering_turtle_trouble_normal = 1,
+    .teetering_turtle_trouble_hard = 1,
+    .batty_barrel_bandit_easy = 1,
+    .batty_barrel_bandit_normal = 1,
+    .batty_barrel_bandit_hard = 1,
+    .mad_maze_maul_insane = 1,
+    .stash_snatch_insane = 1,
+    .stealthy_snoop_very_easy = 1,
+    .stealthy_snoop_easy = 1,
+    .stealthy_snoop_hard = 1,
+    .minecart_mayhem_normal = 1,
+    .minecart_mayhem_hard = 1,
+    .busy_barrel_barrage_hard = 1, // Reason: Offers Challenge
+    .splish_splash_salvage_hard = 0,
+    .splish_splash_salvage_easy = 0,
+    .speedy_swing_sortie_normal = 1,
+    .speedy_swing_sortie_hard = 1,
+    .beaver_bother_normal = 1,
+    .beaver_bother_hard = 1,
+    .searchlight_seek_easy = 0,
+    .searchlight_seek_normal = 0,
+    .searchlight_seek_hard = 0,
+    .krazy_kong_klamour_normal = 0,
+    .krazy_kong_klamour_hard = 0,
+    .krazy_kong_klamour_insane = 0,
+    .peril_path_panic_very_easy = 1,
+    .peril_path_panic_easy = 1,
+    .peril_path_panic_normal = 1,
+    .peril_path_panic_hard = 1,
+    .big_bug_bash_easy = 0,
+    .big_bug_bash_normal = 0,
+    .big_bug_bash_hard = 0,
+    .creepy_castle_dungeon = 1, // Reason: Gas makes sky too easy
+    .hideout_helm_intro_story = 1,
+    .dk_isles_dk_theatre = 1,
+    .frantic_factory_mad_jack = 1, // Reason: Better Challenge, FBuffer
+    .battle_arena_arena_ambush = 1,
+    .battle_arena_more_kritter_karnage = 0,
+    .battle_arena_forest_fracas = 1,
+    .battle_arena_bish_bash_brawl = 0,
+    .battle_arena_kamikaze_kremlings = 1,
+    .battle_arena_plinth_panic = 0,
+    .battle_arena_pinnacle_palaver = 1,
+    .battle_arena_shockwave_showdown = 0,
+    .creepy_castle_basement = 1,
+    .creepy_castle_tree = 0, // Reason: Sniper Challenge in DW is bad
+    .k_rool_barrel_diddys_kremling_game = 1,
+    .creepy_castle_chunkys_toolshed = 1,
+    .creepy_castle_trash_can = 1,
+    .creepy_castle_greenhouse = 1, // Reason: Sky maze lol
+    .jungle_japes_lobby = 1,
+    .hideout_helm_lobby = 1,
+    .dks_house = 1,
+    .rock_intro_story = 0,
+    .angry_aztec_lobby = 1,
+    .gloomy_galleon_lobby = 1,
+    .frantic_factory_lobby = 1,
+    .training_grounds = 0,
+    .dive_barrel = 1,
+    .fungi_forest_lobby = 1,
+    .gloomy_galleon_submarine = 1,
+    .orange_barrel = 1,
+    .barrel_barrel = 1,
+    .vine_barrel = 1,
+    .creepy_castle_crypt = 1,
+    .enguarde_arena = 0,
+    .creepy_castle_car_race = 1,
+    .crystal_caves_barrel_blast = 0, // Reason: Cannon Barrels in DW is bad
+    .creepy_castle_barrel_blast = 0, // Reason: Cannon Barrels in DW is bad
+    .fungi_forest_barrel_blast = 0, // Reason: Cannon Barrels in DW is bad
+    .fairy_island = 1, // Reason: No RW reward peek
+    .kong_battle_arena_2 = 0,
+    .rambi_arena = 1,
+    .kong_battle_arena_3 = 0,
+    .creepy_castle_lobby = 0,
+    .crystal_caves_lobby = 1,
+    .dk_isles_snides_room = 0,
+    .crystal_caves_army_dillo = 1,
+    .angry_aztec_dogadon = 1, // Reason: Framebuffer
+    .training_grounds_end_sequence = 1, // Reason: Framebuffer
+    .creepy_castle_king_kut_out = 1,
+    .crystal_caves_shack_diddy_upper_part = 0,
+    .k_rool_barrel_diddys_rocketbarrel_game = 1,
+    .k_rool_barrel_lankys_shooting_game = 1,
+    .k_rool_fight_dk_phase = 0,
+    .k_rool_fight_diddy_phase = 0,
+    .k_rool_fight_lanky_phase = 0,
+    .k_rool_fight_tiny_phase = 0,
+    .k_rool_fight_chunky_phase = 0,
+    .bloopers_ending = 0,
+    .k_rool_barrel_chunkys_hidden_kremling_game = 1,
+    .k_rool_barrel_tinys_pony_tail_twirl_game = 1,
+    .k_rool_barrel_chunkys_shooting_game = 0,
+    .k_rool_barrel_dks_rambi_game = 1,
+    .k_lumsy_ending = 1,
+    .k_rools_shoe = 0,
+    .k_rools_arena = 0,
+};
+
+typedef enum challenge_type {
+    /* 0x000 */ CHALLENGE_NONE,
+    /* 0x001 */ CHALLENGE_SKY,
+    /* 0x002 */ CHALLENGE_DARK_WORLD,
+} challenge_type;
+
+static short banned_challenge_maps[] = {
+    MAP_TESTMAP,
+    MAP_DKARCADE,
+    MAP_JETPAC,
+    MAP_SNOOP_NORMALNOLOGO,
+    MAP_NINTENDOLOGO,
+    MAP_FUNGIDIDDYBARN,
+    MAP_DKRAP,
+    MAP_CAVESROTATINGROOM,
+    MAP_NFRTITLESCREEN,
+};
+
+challenge_type getMemoryChallengeType(maps map) {
+    if (inShortList(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps) >> 1)) {
+        return CHALLENGE_NONE;
+    }
+    int offset = map >> 3;
+    int check = map % 8;
+    int is_dw = *(unsigned char*)((unsigned char*)(&is_dark_world_mc) + offset) & (0x80 >> check);
+    if (is_dw) {
+        return CHALLENGE_DARK_WORLD;
+    }
+    return CHALLENGE_SKY;
+}
+
+int isDarkWorld(maps map, int chunk) {
+    if (Rando.hard_mode.memory_challenge) {
+        return getMemoryChallengeType(map) == CHALLENGE_DARK_WORLD;
+    }
+    if ((map == MAP_MAINMENU) || (map == MAP_ISLES)) {
+        return 0;
+    }
+    if (map == MAP_JAPES) {
+        if (chunk == 3) { // Japes Main
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void alterChunkLighting(int chunk) {
+	loadMapChunkLighting(chunk);
+	if (chunk == -1) {
+		return;
+	}
+    if (!isDarkWorld(CurrentMap, chunk)) {
+        return;
+    }
+	if (chunk_count > 0) {
+		for (int i = 0; i < chunk_count; i++) {
+			ChunkLighting_Red[i] = DARK_WORLD_BRIGHTNESS;
+			ChunkLighting_Green[i] = DARK_WORLD_BRIGHTNESS;
+			ChunkLighting_Blue[i] = DARK_WORLD_BRIGHTNESS;
+		}
+	}
+}
+
+void alterChunkData(void* data) {
+	loadChunks(data);
+	if (chunk_count > 0) {
+		for (int i = 0; i < chunk_count; i++) {
+			chunkArray[i].reference_dynamic_lighting = isDarkWorld(CurrentMap, i);    
+		}
+	}
+}
+
+#define SHINE_DISTANCE 30
+#define SHINE_RADIUS 40
+#define USE_POSITIONAL_SHINE 1
+
+void shineLight(actorData* actor, int kongType) {
+    genericKongCode(actor, kongType);
+    playerData* player = (playerData*)actor;
+    if (!isDarkWorld(CurrentMap, player->chunk)) {
+        return;
+    }
+    if (USE_POSITIONAL_SHINE) {
+        float shine_x = determineXRatioMovement(actor->rot_y) * SHINE_DISTANCE;
+        float shine_z = determineZRatioMovement(actor->rot_y) * SHINE_DISTANCE;
+        shine_x += actor->xPos;
+        shine_z += actor->zPos;
+        renderLight(shine_x, actor->yPos + 10, shine_z, shine_x, actor->yPos + 20, shine_z, SHINE_RADIUS, 0, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS);
+    }
+}
+
+int isSkyWorld(maps map) {
+    if (Rando.hard_mode.no_geo) {
+        return 1;
+    }
+    if (Rando.hard_mode.memory_challenge) {
+        return getMemoryChallengeType(map) == CHALLENGE_SKY;
+    }
+    return 0;
+}
+
+int* displayNoGeoChunk(int* dl, int chunk_index, int shift) {
+    if (!isSkyWorld(CurrentMap)) {
+        return displayChunk(dl, chunk_index, shift);
+    }
+    *(int*)(dl++) = 0xE7000000;
+    *(int*)(dl++) = 0;
+    return dl;
+}
+
+static unsigned char fall_damage_immunity = 0;
+
+void setFallDamageImmunity(int value) {
+    fall_damage_immunity = value;
+}
+
+void handleFallDamageImmunity(void) {
+    if (ObjectModel2Timer > 0) {
+        if (fall_damage_immunity > 0) {
+            fall_damage_immunity -= 1;
+        }
+    }
+}
+
+void transformBarrelImmunity(void) {
+    setFallDamageImmunity(60);
+    DisplayExplosionSprite();
+}
+
+void fallDamageWrapper(int action, void* actor, int player_index) {
+    if (ObjectModel2Timer < 100) {
+        return;
+    }
+    if (fall_damage_immunity > 0) {
+        return;
+    }
+    setAction(action, actor, player_index);
+}

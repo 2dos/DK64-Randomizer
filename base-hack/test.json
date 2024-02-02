@@ -25,6 +25,10 @@
    "fast_start_helm":1,
    "crown_door_open":1,
    "coin_door_open":1,
+   "true_widescreen":0,
+   "pppanic_fairy_model":73,
+   "tttrouble_turtle_model":60,
+   "cutscene_skip_setting":1,
    "quality_of_life":{
       "reduce_lag":true,
       "remove_cutscenes":true,
@@ -44,7 +48,10 @@
       "homing_balloons":true,
       "save_krool_progress":true,
       "fast_hints":true,
-      "brighten_mmm_enemies":true
+      "brighten_mmm_enemies":true,
+      "global_instrument":true,
+      "fast_pause_transitions":true,
+      "cannon_game_speed":true
    },
    "moves_pregiven":{
       "blast":true,
@@ -63,7 +70,7 @@
       "punch":true,
       "gone":true,
       "slam_upgrade_0":false,
-      "slam_upgrade_1":true,
+      "slam_upgrade_1":false,
       "slam_upgrade_2":false,
       "coconut":true,
       "peanut":false,
@@ -89,6 +96,32 @@
       "camera":true,
       "shockwave":true
    },
+   "disabled_music": {
+      "wrinkly":false,
+      "shops":false,
+      "events":false,
+      "transform":false,
+      "pause":false,
+      "chunk_songs":true
+   },
+   "hard_mode": {
+      "easy_fall":true,
+      "lava_water":true,
+      "bosses":true,
+      "enemies":true,
+      "dark_world":false,
+      "no_geo":false
+   },
+   "jetpac_enemy_order": [
+      5,
+      7,
+      1,
+      0,
+      2,
+      2,
+      5,
+      4
+   ],
    "price_rando_on":1,
    "k_rool_order":[
       1,
@@ -131,6 +164,7 @@
       2,
       3
    ],
+   "enemy_item_rando": 1,
    "move_rando_on":1,
    "remove_blockers":127,
    "resolve_bonus":0,
@@ -146,6 +180,7 @@
    "short_bosses":1,
    "fast_warp":1,
    "activate_all_bananaports":1,
+   "progressive_hint_gb_cap":1,
    "arcade_order":[
       2,
       3,
@@ -173,14 +208,18 @@
    "remove_high_requirements":1,
    "open_level_sections":1,
    "auto_keys":0,
-   "starting_map":207,
+   "starting_map":34,
    "starting_exit":0,
    "disco_chunky":1,
-   "krusha_slot":2,
+   "krusha_slot":255,
    "starting_kong":0,
+   "rom_flags":{
+      "plando":true,
+      "spoiler":true
+   },
    "test_zone":[
-      174,
-      1
+      48,
+      0
    ],
    "klaptrap_color_bbother":150,
    "kut_out_phases":[
@@ -210,15 +249,15 @@
    "vulture_item":47,
    "japes_rock_item":76,
    "medal_cb_req":5,
-   "hard_enemies":1,
    "remove_oscillation_effects":1,
    "rareware_gb_fairies":1,
    "call_parent_filter":0,
    "location_visuals":7,
    "microhints":2,
-   "misc_cosmetic_on":1,
+   "misc_cosmetic_on":0,
    "seasonal_changes":2,
-   "colorblind_mode":1,
+   "colorblind_mode":0,
+   "fungi_time_of_day_setting": 0,
    "wrinkly_rgb":[
       0,
       0,

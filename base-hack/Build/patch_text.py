@@ -3,8 +3,10 @@
 import shutil
 
 from BuildEnums import Icons
+from BuildClasses import hint_region_list
 from text_decoder import grabText
 from text_encoder import writeText
+from typing import BinaryIO
 
 move_hints = [
     {
@@ -439,7 +441,7 @@ move_hints = [
         "kong": "~",
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD TO SAVE YOUR FRIEND.",
         "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. FRIENDS DON'T GROW ON TREES!",
-        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO FREE YOUR FRIEND.",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO RECRUIT YOUR FRIEND.",
     },
 ]
 
@@ -745,6 +747,79 @@ text_enum = [
 ]
 
 
+# Item Locations
+class ItemReference:
+    """Class to store information regarding an item's location."""
+
+    def __init__(self, item: str, locations):
+        """Initialize with given parameters."""
+        self.item = item
+        self.locations = [locations] if isinstance(locations, str) else locations
+
+
+location_references = [
+    # DK Moves
+    ItemReference("Baboon Blast", "DK Japes Cranky"),
+    ItemReference("Strong Kong", "DK Aztec Cranky"),
+    ItemReference("Gorilla Grab", "DK Factory Cranky"),
+    ItemReference("Coconut Gun", "DK Japes Funky"),
+    ItemReference("Bongo Blast", "DK Aztec Candy"),
+    # Diddy Moves
+    ItemReference("Chimpy Charge", "Diddy Japes Cranky"),
+    ItemReference("Rocketbarrel Boost", "Diddy Aztec Cranky"),
+    ItemReference("Simian Spring", "Diddy Factory Cranky"),
+    ItemReference("Peanut Popguns", "Diddy Japes Funky"),
+    ItemReference("Guitar Gazump", "Diddy Aztec Candy"),
+    # Lanky Moves
+    ItemReference("Orangstand", "Lanky Japes Cranky"),
+    ItemReference("Baboon Balloon", "Lanky Factory Cranky"),
+    ItemReference("Orangstand Sprint", "Lanky Caves Cranky"),
+    ItemReference("Grape Shooter", "Lanky Japes Funky"),
+    ItemReference("Trombone Tremor", "Lanky Aztec Candy"),
+    # Tiny Moves
+    ItemReference("Mini Monkey", "Tiny Japes Cranky"),
+    ItemReference("Pony Tail Twirl", "Tiny Factory Cranky"),
+    ItemReference("Monkeyport", "Tiny Caves Cranky"),
+    ItemReference("Feather Bow", "Tiny Japes Funky"),
+    ItemReference("Saxophone Slam", "Tiny Aztec Candy"),
+    # Chunky Moves
+    ItemReference("Hunky Chunky", "Chunky Japes Cranky"),
+    ItemReference("Primate Punch", "Chunky Factory Cranky"),
+    ItemReference("Gorilla Gone", "Chunky Caves Cranky"),
+    ItemReference("Pineapple Launcher", "Chunky Japes Funky"),
+    ItemReference("Triangle Trample", "Chunky Aztec Candy"),
+    # Gun Upgrades
+    ItemReference("Homing Ammo", "Shared Forest Funky"),
+    ItemReference("Sniper Scope", "Shared Castle Funky"),
+    ItemReference("Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+    # Basic Moves
+    ItemReference("Diving", "Dive Barrel"),
+    ItemReference("Orange Throwing", "Orange Barrel"),
+    ItemReference("Barrel Throwing", "Barrel Barrel"),
+    ItemReference("Vine Swinging", "Vine Barrel"),
+    ItemReference("Fairy Camera", "Banana Fairy Gift"),
+    ItemReference("Shockwave", "Banana Fairy Gift"),
+    # Instrument Upgrades & Slams
+    ItemReference("Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
+    ItemReference("Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),
+    # Kongs
+    ItemReference("Donkey Kong", "Starting Kong"),
+    ItemReference("Diddy Kong", "Japes Diddy Cage"),
+    ItemReference("Lanky Kong", "Llama Lanky Cage"),
+    ItemReference("Tiny Kong", "Aztec Tiny Cage"),
+    ItemReference("Chunky Kong", "Factory Chunky Cage"),
+    # Early Keys
+    ItemReference("Key 1", "Japes Boss Defeated"),
+    ItemReference("Key 2", "Aztec Boss Defeated"),
+    ItemReference("Key 3", "Factory Boss Defeated"),
+    ItemReference("Key 4", "Galleon Boss Defeated"),
+    # Late Keys
+    ItemReference("Key 5", "Forest Boss Defeated"),
+    ItemReference("Key 6", "Caves Boss Defeated"),
+    ItemReference("Key 7", "Castle Boss Defeated"),
+    ItemReference("Key 8", "The End of Helm"),
+]
+
 with open("src/randomizers/move_text.c", "w") as fh:
     with open("include/text_items.h", "w") as fg:
         fh.write('#include "../../include/common.h"\n\n')
@@ -754,6 +829,10 @@ with open("src/randomizers/move_text.c", "w") as fh:
             fh.write(line)
             fg.write(line)
 
+        loc_count = 0
+        for ref in location_references:
+            loc_count += 1 + len(ref.locations)
+        fg.write(f"#define LOCATION_ITEM_COUNT {loc_count}\n")
         fg.write("typedef struct name_latin_struct {\n")
         fg.write("\t/* 0x000 */ unsigned char name;\n")
         fg.write("\t/* 0x001 */ unsigned char latin;\n")
@@ -776,7 +855,14 @@ with open("src/randomizers/move_text.c", "w") as fh:
                     fh.write(f"\t{text_enum[index_data[move_type]['indexes'][divisor * item_index]]},\n")
             fh.write("};\n\n")
 
+location_items_arr = []
+for ref in location_references:
+    location_items_arr.append([{"text": [ref.item.upper()]}])
+    for loc in ref.locations:
+        location_items_arr.append([{"text": [loc.upper()]}])
+
 writeText("move_names.bin", move_names_arr)
+writeText("item_locations.bin", location_items_arr)
 
 move_explanations = [
     {
@@ -877,9 +963,79 @@ squawks_text.append(
     [
         {
             "text": [
-                "LADIES AND GENTLEMEN! IT APPEARS THAT ONE FIGHTER HAS COME UNEQUIPPED TO PROPERLY HANDLE THIS REPTILLIAN BEAST. PERHAPS THEY SHOULD HAVE LOOKED IN \x07FUNGI FOREST\x07 OR \x09CREEPY CASTLE\x09 FOR THE ELUSIVE SLAM."
+                "LADIES AND GENTLEMEN! IT APPEARS THAT ONE FIGHTER HAS COME UNEQUIPPED TO PROPERLY HANDLE THIS REPTILIAN BEAST. PERHAPS THEY SHOULD HAVE LOOKED IN \x07FUNGI FOREST\x07 OR \x09CREEPY CASTLE\x09 FOR THE ELUSIVE SLAM."
             ]
         }
     ]
 )
+squawks_text.append([{"text": ["A \x04GOLDEN BANANA\x04 FOR YOU IF YOU SAVE ME FROM THESE FIREBALLS. HEE HEE."]}])
 writeText("misc_squawks_text.bin", squawks_text)
+
+hint_region_text = []
+for region in hint_region_list:
+    hint_region_text.append([{"text": [region.region_name.upper()]}])
+writeText("hint_region_text.bin", hint_region_text)
+writeText("short_wrinkly.bin", grabText(41))
+
+
+misc_char_table = {
+    "6": "h",
+    "4": "f",
+    "t": "{",  # Trademark
+    ".": "[",
+    "r": "~",  # R symbol
+}
+
+
+class ExpansionMessageInfo:
+    """Class to store information regarding the expansion pak messages."""
+
+    def __init__(self, limit: int, address: int, old_message: str, new_message: str):
+        """Initialize with given parameters."""
+        self.limit = limit
+        self.address = address
+        self.old_message = old_message
+        self.new_message = new_message
+        self.old_message_padding = len(old_message) - limit
+
+    def convertNewMessage(self):
+        """Convert new message to filter out any bad characters."""
+        new_str = ""
+        for x in self.new_message:
+            if x in list(misc_char_table.keys()):
+                new_str += misc_char_table[x]
+            else:
+                new_str += x
+        total_length = len(self.old_message) + (2 * self.old_message_padding)
+        new_padding = int((total_length - len(self.new_message)) / 2)
+        max_padding = self.limit - len(self.new_message)
+        new_padding = min(new_padding, max_padding)
+        padding_str = ""
+        if new_padding > 0:
+            for x in range(new_padding):
+                padding_str += " "
+        self.new_message = padding_str + new_str + "\0"
+
+    def writeMessage(self, fh: BinaryIO):
+        """Write message to ROM."""
+        self.convertNewMessage()
+        if self.limit >= (len(self.new_message) - 1):  # Message is short enough
+            fh.seek(self.address)
+            fh.write((self.new_message).encode("ascii"))
+            # diff = self.limit - len(self.new_message)
+            # for d in range(diff):
+            #     fh.write((0).to_bytes(1, "big"))
+
+
+def writeNoExpPakMessages(fh: BinaryIO):
+    """Write no expansion pak messages to ROM."""
+    noexp_msg = [
+        ExpansionMessageInfo(25, 0xF924, "N64 EXPANSION PAKt", "NO EXPANSION PAK FOUND."),
+        ExpansionMessageInfo(23, 0xF940, "NOT INSTALLED.", "THIS IS LIKELY DUE TO"),
+        ExpansionMessageInfo(31, 0xF958, "THE N64 EXPANSION PAK ACCESSORY", "AN INCORRECTLY SET UP EMULATOR"),
+        ExpansionMessageInfo(33, 0xF978, "MUST BE INSTALLED IN THE N64r FOR", "OR CONSOLE. PLEASE CONTACT THE"),
+        ExpansionMessageInfo(32, 0xF99C, "THIS GAME. SEE THE N64 EXPANSION", "DISCORD FOR HELP."),
+        ExpansionMessageInfo(27, 0xF9C0, "PAK INSTRUCTION BOOKLET.", "DISCORD.DK64RANDOMIZER.COM"),
+    ]
+    for m in noexp_msg:
+        m.writeMessage(fh)

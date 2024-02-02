@@ -1,4 +1,5 @@
 """Event enum."""
+
 from enum import IntEnum, auto
 
 
@@ -31,6 +32,7 @@ class Events(IntEnum):
     # Angry Aztec events
     FedTotem = auto()
     LlamaFreed = auto()
+    AztecGuitarPad = auto()
     AztecDonkeySwitch = auto()
     AztecLlamaSpit = auto()
 
@@ -50,7 +52,8 @@ class Events(IntEnum):
     GalleonTinySwitch = auto()
     LighthouseGateOpened = auto()
     ShipyardGateOpened = auto()
-    WaterSwitch = auto()
+    WaterRaised = auto()
+    WaterLowered = auto()
     LighthouseEnguarde = auto()
     SealReleased = auto()
     MechafishSummoned = auto()
@@ -66,6 +69,7 @@ class Events(IntEnum):
     GalleonCannonRoomOpened = auto()
 
     # Fungi Forest events
+    Day = auto()
     Night = auto()
     WormGatesOpened = auto()
     HollowTreeGateOpened = auto()
@@ -88,12 +92,13 @@ class Events(IntEnum):
 
     # Hideout Helm Events
     HelmDoorsOpened = auto()
+    HelmGatesPunched = auto()
     HelmDonkeyDone = auto()
     HelmChunkyDone = auto()
     HelmTinyDone = auto()
     HelmLankyDone = auto()
     HelmDiddyDone = auto()
-    HelmKeyAccess = auto()
+    HelmFinished = auto()
 
     # K Rool Phases
     KRoolDonkey = auto()

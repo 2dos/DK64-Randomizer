@@ -6,6 +6,8 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import DamageAmount
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
@@ -16,7 +18,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.pineapple or l.phasewalk, None, 4),
     ],
     Regions.AngryAztecOasis: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.coconut or l.phasewalk) and l.strongKong, None, 2),
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and l.strongKong, None, 2),
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 3),
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 3),
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
@@ -36,7 +38,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut, None, 1),  # On Guitar pad
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut, None, 1),  # On Guitar pad
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
@@ -89,7 +91,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.vines, None, 4),  # Vines by Snide's
     ],
     Regions.AztecDonkeyQuicksandCave: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 4),
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong, None, 4),
 
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
 
@@ -128,9 +130,9 @@ LogicRegions = {
     Regions.LlamaTemple: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 15),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 6),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: True, None, 1),  # Warp 1
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: lambda l: (((Events.AztecLlamaSpit in l.Events or l.CanPhaseswim()) and l.swim) or l.phasewalk) and l.grape, None, 2),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: (l.grape or l.phasewalk) and l.vines, None, 1),  # Matching game
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.phasewalk) and l.grape, None, 2),
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.grape or l.phasewalk) and l.vines, None, 1),  # Matching game
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),
@@ -141,7 +143,7 @@ LogicRegions = {
     ],
     Regions.LlamaTempleBack: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl, None, 2),  # Behind Mini tunnel
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming), None, 2),  # Behind Mini tunnel
     ],
     Regions.AngryAztecConnectorTunnel: [
     ],

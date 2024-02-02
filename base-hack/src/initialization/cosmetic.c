@@ -175,7 +175,20 @@ void initSkyboxRando(void) {
      * @brief Initialize the skybox cosmetic randomization
      * 
      */
-    if (Rando.misc_cosmetic_on) {
+    if (Rando.colorblind_mode != COLORBLIND_OFF) {
+        for (int i = 0; i < 8; i++) {
+            Rando.skybox_colors[i].red = 0x31;
+            Rando.skybox_colors[i].green = 0x33;
+            Rando.skybox_colors[i].blue = 0x38;
+        }
+    } else if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
+        for (int i = 0; i < 8; i++) {
+            Rando.skybox_colors[i].red = 0;
+            Rando.skybox_colors[i].green = 0;
+            Rando.skybox_colors[i].blue = 0;
+        }
+    }
+    if ((Rando.misc_cosmetic_on) || (Rando.colorblind_mode != COLORBLIND_OFF) || (Rando.seasonal_changes == SEASON_HALLOWEEN)) {
         for (int i = 0; i < 8; i++) {
             SkyboxBlends[i].top.red = Rando.skybox_colors[i].red;
             SkyboxBlends[i].top.green = Rando.skybox_colors[i].green;
@@ -214,55 +227,38 @@ void initSkyboxRando(void) {
     }
 }
 
-void initKlaptraps(void) {
-    /**
-     * @brief Fix Klaptraps in Beaver Bother, so if no model is selected, it will default to a green klaptrap.
-     * 
-     */
-    // Change Beaver Bother Klaptrap Model
-    if (Rando.klaptrap_color_bbother == 0) {
-        Rando.klaptrap_color_bbother = 0x21; // Set to default model if no model assigned
-    }
-}
-
-void initWrinklyColoring(void) {
-    /**
-     * @brief Alter Wrinkly's color. Do not change color if misc cosmetics off or all fields are 0.
-     * 
-     */
-    if (Rando.misc_cosmetic_on) {
-        int pass = 0;
-        for (int i = 0; i < 3; i++) {
-            if (Rando.wrinkly_rgb[i] > 0) {
-                pass = 1;
-            }
-        }
-        if (pass) {
-            *(short*)(0x8064F052) = Rando.wrinkly_rgb[0];
-            *(short*)(0x8064F04A) = Rando.wrinkly_rgb[1];
-            *(short*)(0x8064F046) = Rando.wrinkly_rgb[2];
-        }
-    }
-}
-
 void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
         *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
+
+        // Chains
+        *(short*)(0x8069901A) = 0xE; // Vine param
+        *(short*)(0x8069903A) = 0xE; // Vine param
+        *(int*)(0x80698754) = 0; // Cancel branch
+        *(int*)(0x80698B6C) = 0; // Cancel branch
+        *(short*)(0x80698B74) = 0x1000; // Force branch
     } else if (Rando.seasonal_changes == SEASON_CHRISTMAS) {
-        for (int i = 0; i < 6; i++) {
-            *WeatherData[i].texture_pointer = 0x173B;
-            WeatherData[i].width = 0x40;
-            WeatherData[i].height = 0x40;
-            WeatherData[i].codec_info = 0x0301;
-            WeatherData[i].frame_count = 1;
-        }
-        int addr = 0x80759EC4;
-        for (int i = 0; i < 6; i++) {
-            *(int*)(addr + (4 * i)) = 0x8068B5D8;
-        }
-        *(int*)(0x80711A64) = 0x24140010;
-        *(int*)(0x80711A5C) = 0x24140010;
-        *(int*)(0x80711A70) = 0x24140010;
+        // Make santa visit Isles
+        *(short*)(0x8070637E) = 115; // Moon Image
+        *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
+        *(int*)(0x806682C8) = 0x240E0004; // Set ground sfx to snow
+        *(int*)(0x806682CC) = 0x240C0004; // Set ground sfx to snow
+        *(int*)(0x806682DC) = 0x240E0004; // Set ground sfx to snow
+
+        // for (int i = 0; i < 6; i++) {
+        //     *WeatherData[i].texture_pointer = 0x173B;
+        //     WeatherData[i].width = 0x40;
+        //     WeatherData[i].height = 0x40;
+        //     WeatherData[i].codec_info = 0x0301;
+        //     WeatherData[i].frame_count = 1;
+        // }
+        // int addr = 0x80759EC4;
+        // for (int i = 0; i < 6; i++) {
+        //     *(int*)(addr + (4 * i)) = 0x8068B5D8;
+        // }
+        // *(int*)(0x80711A64) = 0x24140010;
+        // *(int*)(0x80711A5C) = 0x24140010;
+        // *(int*)(0x80711A70) = 0x24140010;
     }
 }
 
@@ -290,6 +286,26 @@ int determineShockwaveColor(actorData* shockwave) {
     return model;
 }
 
+void writeRGBColor(int value, short* upper_address, short* lower_address) {
+    int upper = value >> 8;
+    int lower = ((value & 0xFF) << 8) | 0xFF;
+    *upper_address = upper;
+    *lower_address = lower;
+}
+
+typedef struct crosshair_colors {
+    /* 0x000 */ int regular;
+    /* 0x004 */ int homing;
+    /* 0x008 */ int sniper;
+} crosshair_colors;
+
+static const crosshair_colors crosshairs[4] = {
+    {.regular=0xC80000, .homing=0x00C800, .sniper=0xFFD700},
+    {.regular=0x0072FF, .homing=0xFFFFFF, .sniper=0xFDE400},
+    {.regular=0x318DFF, .homing=0xFFFFFF, .sniper=0xE3A900},
+    {.regular=0xC72020, .homing=0xFFFFFF, .sniper=0x13C4D8},
+};
+
 void initColorblindChanges(void) {
     if (Rando.colorblind_mode != COLORBLIND_OFF) {
         writeFunction(0x8069E968, &determineShockwaveColor); // Shockwave handler
@@ -297,6 +313,15 @@ void initColorblindChanges(void) {
         *(int*)(0x8069E9B0) = 0; // Prevent write
         *(int*)(0x8069E9B4) = 0; // Prevent write
         *(int*)(0x8069E9BC) = 0; // Prevent write
+    }
+    crosshair_colors* hair = (crosshair_colors*)&crosshairs[(int)Rando.colorblind_mode];
+    if (hair) {
+        // Gun (Sniper) function
+        writeRGBColor(hair->sniper, (short*)0x806FFA92, (short*)0x806FFA96);
+        writeRGBColor(hair->homing, (short*)0x806FFA76, (short*)0x806FFA7A);
+        // Gun (No Sniper) function
+        writeRGBColor(hair->regular, (short*)0x806FF0C6, (short*)0x806FF0CA);
+        writeRGBColor(hair->homing, (short*)0x806FF0AA, (short*)0x806FF0AE);
     }
 }
 
@@ -313,8 +338,7 @@ void initCosmetic(void) {
     initDiscoChunky();
     initKrusha();
     initSkyboxRando();
-    initKlaptraps();
-    initWrinklyColoring();
     initSeasonalChanges();
     initColorblindChanges();
+    //loadWidescreen(OVERLAY_BOOT);
 }

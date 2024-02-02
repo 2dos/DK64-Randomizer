@@ -1,4 +1,5 @@
-"""Event enum."""
+"""Enemy Subtypes enum."""
+
 from enum import IntEnum, auto
 
 
@@ -9,3 +10,4 @@ class EnemySubtype(IntEnum):
     GroundBeefy = auto()
     Air = auto()
     Water = auto()
+    NoType = auto()

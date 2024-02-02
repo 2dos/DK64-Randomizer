@@ -1,4 +1,5 @@
 """Item enum."""
+
 from enum import IntEnum, auto
 
 
@@ -20,6 +21,7 @@ class Items(IntEnum):
     Barrels = auto()
 
     ProgressiveSlam = auto()
+    ProgressiveSlam2 = auto()
 
     ProgressiveDonkeyPotion = auto()
     BaboonBlast = auto()
@@ -54,6 +56,7 @@ class Items(IntEnum):
     HomingAmmo = auto()
     SniperSight = auto()
     ProgressiveAmmoBelt = auto()
+    ProgressiveAmmoBelt2 = auto()
 
     Bongos = auto()
     Guitar = auto()
@@ -61,6 +64,8 @@ class Items(IntEnum):
     Saxophone = auto()
     Triangle = auto()
     ProgressiveInstrumentUpgrade = auto()
+    ProgressiveInstrumentUpgrade2 = auto()
+    ProgressiveInstrumentUpgrade3 = auto()
 
     Camera = auto()
     Shockwave = auto()
@@ -105,6 +110,8 @@ class Items(IntEnum):
     JunkAmmo = auto()
     JunkFilm = auto()
     JunkOrange = auto()
+    CrateMelon = auto()  # Separate from junk melon due to separate settings
+    EnemyItem = auto()  # Separate item
 
     BananaHoard = auto()
 
@@ -144,7 +151,7 @@ class Items(IntEnum):
     CastleTinyHint = auto()
     CastleChunkyHint = auto()
 
-    # Blueprint items are intentionally grouped together in this specific order for Kasplat location logic.
+    # Blueprint items are intentionally grouped together in this specific order for various fill purposes. If you want specifics, ctrl-f for the first one.
     JungleJapesDonkeyBlueprint = auto()
     JungleJapesDiddyBlueprint = auto()
     JungleJapesLankyBlueprint = auto()
@@ -185,3 +192,6 @@ class Items(IntEnum):
     DKIslesLankyBlueprint = auto()
     DKIslesTinyBlueprint = auto()
     DKIslesChunkyBlueprint = auto()
+
+    # Adding new items to the end of the list preserves existing item selectors
+    ProgressiveSlam3 = auto()

@@ -1,4 +1,5 @@
 """Select CB Location selection."""
+
 import random
 
 import js
@@ -20,9 +21,7 @@ import randomizer.Lists.CBLocations.JungleJapesCBLocations
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Logic import CollectibleRegions
 from randomizer.LogicClasses import Collectible
-from randomizer.Spoiler import Spoiler
 
 from .Enums.Collectibles import Collectibles
 
@@ -62,7 +61,7 @@ level_data = {
 }
 
 
-def ShuffleCBs(spoiler: Spoiler):
+def ShuffleCBs(spoiler):
     """Shuffle CBs selected from location files."""
     retries = 0
     while True:
@@ -72,9 +71,9 @@ def ShuffleCBs(spoiler: Spoiler):
             total_bunches = 0
             cb_data = []
             # First, remove all placed colored bananas
-            for region_id in CollectibleRegions.keys():
-                CollectibleRegions[region_id] = [
-                    collectible for collectible in CollectibleRegions[region_id] if collectible.type not in [Collectibles.balloon, Collectibles.bunch, Collectibles.banana]
+            for region_id in spoiler.CollectibleRegions.keys():
+                spoiler.CollectibleRegions[region_id] = [
+                    collectible for collectible in spoiler.CollectibleRegions[region_id] if collectible.type not in [Collectibles.balloon, Collectibles.bunch, Collectibles.banana]
                 ]
             for level_index, level in enumerate(level_data):
                 level_placement = []
@@ -108,7 +107,7 @@ def ShuffleCBs(spoiler: Spoiler):
                             kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
                             level_placement.append({"id": balloon.id, "name": balloon.name, "kong": selected_kong, "level": level, "type": "balloons", "map": balloon.map})
                             placed_balloons += 1
-                            CollectibleRegions[balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1, name=balloon.name))
+                            spoiler.CollectibleRegions[balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1, name=balloon.name))
                 # Model Two CBs
                 bunches_left = max_bunches - total_bunches
                 singles_left = max_singles - total_singles
@@ -157,9 +156,9 @@ def ShuffleCBs(spoiler: Spoiler):
                                 bunches_in_lesser_group += int(loc[0] == 5)
                                 singles_in_lesser_group += int(loc[0] == 1)
                             if bunches_in_lesser_group > 0:
-                                CollectibleRegions[group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group, name=group.name))
+                                spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group, name=group.name))
                             if singles_in_lesser_group > 0:
-                                CollectibleRegions[group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group, name=group.name))
+                                spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group, name=group.name))
                             level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map, "locations": group.locations})
                         placed_bunches += bunches_in_group
                         placed_singles += singles_in_group
@@ -182,8 +181,8 @@ def ShuffleCBs(spoiler: Spoiler):
             if total_bunches + total_singles > 1127:
                 print(f"WARNING: {total_bunches + total_singles} banana objects placed, exceeding cap of 1127")
                 raise Ex.CBFillFailureException
-            Fill.Reset()
-            if not Fill.VerifyWorld(spoiler.settings):
+            spoiler.Reset()
+            if not Fill.VerifyWorld(spoiler):
                 raise Ex.CBFillFailureException
             spoiler.cb_placements = cb_data
             return

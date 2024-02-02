@@ -1,3 +1,51 @@
-{
-  "progression": ["blank.json", "season2.json", "sandbox.json", "balanced_lzr.json", "nostyle_allkeys.json", "another_day.json", "hell.json", "qol_only.json"]
-}
+[
+  {
+    "name": "-- Select a Preset --",
+    "description": " "
+  },
+  {
+    "name": "Beginner Settings",
+    "description": "Settings tailored to beginner players learning the game. Ideal for first-time players. Check out the wiki for tips and tricks!",
+    "settings_string": "bKEFCSKzzecrKEDRAejpFjAIbiDLWIQXr5/ANnj4YTRzu6leyszOKbOrYvhTgfVA8IhkQlS2Nc+EZU8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENMntkKR6ieZyJSLk0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIYCTWbN57EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVD5mNpjBxaFpXLArQ5bDQnFgqMBMGBGJCmOKKTIjUoAqgEuAhk4AA"
+  },
+  {
+    "name": "Season 2 Race Settings",
+    "description": "Racing preset for season 2",
+    "settings_string": "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoBzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqMBMGBGJCmOKaTyKTIjUoAqgEuAhk4AA"
+  },
+  {
+    "name": "Sandbox Mode",
+    "description": "Preset focused on making DK64 as close to a sandbox game as possible.",
+    "settings_string": "bKEGCRorPE3nKyhB4KiQ9HSLGAQ3EGWsQgvXz+AbPHwwmjnd1K9lZmcU2dWxfCnA+qBoRDIhKlsa58B+I0eu0uXxC205Yo0wIUBR6QHRWmr4CkFup6/YkgGTRQmiSqMgusllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCA0Ie2QpHqKhnKlMubRbwI9PkW4KfoqYseCbCgOvWuORu1X++yKBzFiKAM2eRJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LhU6YQkX0CckGGEqpzMYwcWhaVywK0OWw0JxYUDATBgRiQpjimk8ikyI1KAKoBLgIZOAA"
+  },
+  {
+    "name": "Balanced LZR",
+    "description": "Preset focused on making loading zone randomizer seeds with reduced (but far from zero) chaos.",
+    "settings_string": "bKsoQREB6H1QNCIZEJUtjXPgPxGj12ly+IU6Ym04IUAHaPSA6K01fAUgt1PX4EkAyaKGUSMgusllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCFCGlD2AFIhRUM5EpFySURaRcFP0VEWPBMRQHXrXHI3ar/fZFA5ixFAGazZlEkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjLQtK5YFaHLYaE4sFRgJgwIxoUxxTyKTIjIQAOgFKAKoBLgIZOAA"
+  },
+  {
+    "name": "No Style, All Keys",
+    "description": "Alternative consistent settings focused on getting all of the keys with seed completion time under 3 hours for experienced players.",
+    "settings_string": "bKEHCRorPNXm96soQMSwVEh6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDwiGRCVLY1z4RkPxGj12ly+IU5Ym04IUEHaPSA6K01fAUgt1PX7EkAyaKE0SMgusllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCFCGoz2+lKhRUM5UplzaLeBnB0eotwU/RVxYPE4FARetccjdqv99kUDmLEUAZs8iSLAAmMAAmNAAeOAAePAAWQAAWRAAOSAAOTAAOUAANTlyhyXCp0wl9AnJBhhKqczG0xloWlcsCtDlsNCcWCowEwYEYkKY4ppPIpMiNSgCqAS4CGTgA"
+  },
+  {
+    "name": "Another Day",
+    "description": "Vanilla, but items are in new custom locations.",
+    "settings_string": "VhCAMMSwVfwNywcYytEg+u0uX04Yg0gIUBSA6K01fJ6/AkAETRQmiRkFwFAXQeAwK6ngHD3ZkBA87voJMniWBSC814LUHrIBjIoQ08e2QpHqMtnolUuqTCLcDP0VAWBBMBQCXrXHI3ar/fZFA5iRFAGbPIkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADUxcoclwpsToeU4fCJHCBmNpjBxaUYCEAtNxXLArQ5bDQnFgqMhlMBMGBGNBIUxxTSeRSZEZUAKUAVQCXBQgJCgsM"
+  },
+  {
+    "name": "Hitlist",
+    "description": "Preset based on the hitlist goal format, completing the worst checks in the game.",
+    "settings_string": "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZYKAOgBBgB1AQOAOwDCAB3AgSAPAFCgB5AwWAPQHDABQhp49shSMUVDOVKRcmi3gpwcnR2eOCn6KiLAImIoAr1rjkbtV/vsigcxYigBNnkSxYAExgAExoADxwADx4ACyAACyIAByQAByYABygABzNTFyhyXCp0whJBF9AnJBhhKqczG0xg4tC0rlgVocthoTiwVGQwEwYEYikhTHFNJ5FCNSgCqAS4CGTgA"
+  },
+  {
+    "name": "Hell Mode",
+    "description": "Pain (May have a hard time generating)",
+    "settings_string": "bM7VlCAMMSwVfwNywcYytEh6H1QGEMpkJH4jR67S5fELNbbHTtijTAjQVIDorTV8BU9fmSACJoobRavWJXh41J5ZGcX2SywUAdACDADqAgcAdgGEADuBAkAeAKFADyBgsAegOGAChDZZ7yCk8o0GeiVS6pMJFwM/RUhYBEyFAFetccjdqvsigcxIigFNnkSRYAExgAExoADxwADx4ACyAACyIAByQAByYABygABqcuUOS4VTg4tKMQC03FsVGAmDAjGgiqY4n9NJ5FJkRkIAHQB8AKUAhgBVAJcA"
+  },
+  {
+    "name": "Vanilla Game But Better",
+    "description": "Just the quality of life changes from the randomizer.",
+    "settings_string": "VhCAIgnDEGkBCgKQHRWmr5P34EgAiaKE0SMguAoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGnj2yFI9Rls9Eql1SYRbgZ+ioCwIJgKAS9HLVfZFA5iRDACbPIkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADUxckuFNidMISQRfQJyQYYSoeB4fCJHLpLF4QMxtMYOLSjAQgFpuK5YFaHLYaE4sFRkMpgJgwIxoJCmOJrDZ/TSeRSZEZDUoAqgEuChASFBYY"
+  }
+]

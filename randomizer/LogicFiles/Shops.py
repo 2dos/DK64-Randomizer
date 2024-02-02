@@ -2,11 +2,9 @@
 """Logic file for shops."""
 
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Lists.Location import Location
 from randomizer.LogicClasses import LocationLogic, Region, TransitionFront
 
 LogicRegions = {
@@ -245,7 +243,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
-    Regions.CrankyIsles: Region("Cranky Isles", "Isles Shop", Levels.Shops, False, None, [
+    Regions.CrankyIsles: Region("Cranky Isles", "Isles Shops", Levels.Shops, False, None, [
         LocationLogic(Locations.SimianSlam, lambda l: l.CanBuy(Locations.SimianSlam)),
         LocationLogic(Locations.DonkeyIslesPotion, lambda l: l.isdonkey and l.CanBuy(Locations.DonkeyIslesPotion)),
         LocationLogic(Locations.DiddyIslesPotion, lambda l: l.isdiddy and l.CanBuy(Locations.DiddyIslesPotion)),

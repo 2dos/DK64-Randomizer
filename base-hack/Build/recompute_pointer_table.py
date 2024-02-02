@@ -1,4 +1,5 @@
 """Recompute all the pointers within the rom."""
+
 import hashlib
 import json
 from typing import BinaryIO
@@ -7,12 +8,12 @@ from BuildClasses import PointerFile, ROMPointerFile, TableEntry, pointer_tables
 from BuildEnums import TableNames
 from BuildLib import heap_size, main_pointer_table_offset
 from BuildNames import maps
+from recompute_overlays import getOverlayTotalSize
 
 # The address of the next available byte of free space in ROM
 # used when appending files to the end of the ROM
-# next_available_free_space = 0x1FED020
-# next_available_free_space = 0x2000000
-next_available_free_space = 0x2000000 + heap_size
+
+available_writes = [[0x2000000 + heap_size + getOverlayTotalSize(), 0x3FFFFFF]]
 
 # These will be indexed by pointer table index then by SHA1 hash of the data
 pointer_table_files = []
@@ -244,20 +245,45 @@ def shouldRelocatePointerTable(index: int):
     return getPointerTableCompressedSize(index) > pointer_tables[index].original_compressed_size
 
 
+def allocateSpace(size: int) -> int:
+    """Allocate space for pointer table in ROM. Aim for location with least slack."""
+    free_location = None
+    slack = 0x4000000
+    for index, location in enumerate(available_writes):
+        available_space = location[1] - location[0]
+        if available_space > size:
+            proposed_slack = available_space - size
+            if proposed_slack < slack:
+                slack = proposed_slack
+                free_location = index
+    return free_location
+
+
 def writeModifiedPointerTablesToROM(fh: BinaryIO):
     """Write the modified pointer tables to the rom file."""
-    global next_available_free_space
+    global available_writes
 
     # Reserve pointer table space and write new data
-    for x in pointer_tables:
+    for x in pointer_tables[::-1]:  # Enumerate backwards since ptr 25 is the biggest table. Makes for smaller ROM. TODO: Calculate order dynamically
         if not shouldWritePointerTable(x.index):
             continue
+
+        # Get new size of entire table
+        data_size = 0
+        for y in x.entries:
+            file_info = getFileInfo(x.index, y.index)
+            if file_info:
+                if len(file_info.data) > 0:
+                    data_size += len(file_info.data)
 
         # Reserve free space for the pointer table in ROM
         space_required = x.num_entries * 4 + 4
         should_relocate = shouldRelocatePointerTable(x.index)
+        write_allocation = None
+        start_location = x.new_absolute_address
         if should_relocate:
-            x.new_absolute_address = next_available_free_space
+            write_allocation = allocateSpace(space_required + data_size)
+            x.new_absolute_address = available_writes[write_allocation][0]
 
         write_pointer = x.new_absolute_address + space_required
         earliest_file_address = write_pointer
@@ -274,8 +300,10 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
 
         # If the files have been appended to ROM, we need to move the free space pointer along by the number of bytes written
         if should_relocate:
-            next_available_free_space += space_required  # For the pointer table itself
-            next_available_free_space += write_pointer - earliest_file_address  # For all of the files
+            available_writes[write_allocation][0] += space_required  # For the pointer table itself
+            available_writes[write_allocation][0] += write_pointer - earliest_file_address  # For all of the files
+            # Add old pointer table location to available write locations
+            available_writes.append([start_location, start_location + pointer_tables[x.index].original_compressed_size])
 
     # Recompute the pointer tables using the new file addresses and write them in the reserved space
     for x in reversed(pointer_tables):

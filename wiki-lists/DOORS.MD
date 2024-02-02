@@ -24,8 +24,8 @@
 | Jungle Japes | Jungle Japes: Beehive Area - Next to Beehive - left | Both |  | 
 | Jungle Japes | Jungle Japes: Behind Rambi Door - watery room - left | Both |  | 
 | Jungle Japes | Jungle Japes: Behind Rambi Door - watery room - right | Both |  | 
-| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - left | Wrinkly | l.islanky and l.handstand | 
-| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - right | Wrinkly | l.islanky and l.handstand | 
+| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - left | Wrinkly | (l.islanky and l.handstand) or l.phasewalk | 
+| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - right | Wrinkly | (l.islanky and l.handstand) or l.phasewalk | 
 | Jungle Japes | Jungle Japes: Underwater by Warp 2 | Both | l.swim | 
 | Jungle Japes | Jungle Japes: Underwater by Chunky's underground | Both | l.swim | 
 | Jungle Japes | Jungle Japes: Next to Funky - right | Both |  | 
@@ -49,7 +49,7 @@
 | Japes Tiny Hive | Jungle Japes: Beehive Room 2 - left | Wrinkly | l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips | 
 | Japes Tiny Hive | Jungle Japes: Beehive Room 2 - right | Wrinkly | l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips | 
 | Japes Lanky Cave | Jungle Japes: Painting Room - Next to the Entrance | Both |  | 
-| Japes Mountain | Jungle Japes: Diddy Mountain - Next to Conveyor Controls | Wrinkly | l.charge and l.isdiddy | 
+| Japes Mountain | Jungle Japes: Diddy Mountain - Next to Conveyor Controls | Wrinkly | (l.charge and l.isdiddy) or l.phasewalk | 
 | Japes Mountain | Jungle Japes: Diddy Mountain - between River and GB switch | Wrinkly |  | 
 | Japes Mountain | Jungle Japes: Diddy Mountain - between River and Peanut Switch | Wrinkly |  | 
 </details>
@@ -64,7 +64,7 @@
 | Angry Aztec Lobby | Angry Aztec: Lobby - Lower Right | Wrinkly |  | 
 | Angry Aztec Lobby | Angry Aztec: Lobby - Left of Portal | Wrinkly |  | 
 | Angry Aztec Lobby | Angry Aztec: Lobby - Right of Portal | Wrinkly |  | 
-| Angry Aztec Lobby | Angry Aztec: Lobby - Behind Feather Door | Wrinkly | (l.tiny and l.feather) or l.phasewalk | 
+| Angry Aztec Lobby | Angry Aztec: Lobby - Behind Feather Door | Wrinkly | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Angry Aztec | Angry Aztec: Near Funky's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Cranky's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Candy's | Both |  | 
@@ -118,9 +118,9 @@
 | Map | Name | Door types acceptable in location | Logic |
 | --- | ---- | --------------------------------- | ----- |
 | Frantic Factory Lobby | Frantic Factory: Lobby - Low Left | Wrinkly |  | 
-| Frantic Factory Lobby | Frantic Factory: Lobby - Top Left | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
-| Frantic Factory Lobby | Frantic Factory: Lobby - Top Center | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
-| Frantic Factory Lobby | Frantic Factory: Lobby - Top Right | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
+| Frantic Factory Lobby | Frantic Factory: Lobby - Top Left | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)) | 
+| Frantic Factory Lobby | Frantic Factory: Lobby - Top Center | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or l.advanced_platforming | 
+| Frantic Factory Lobby | Frantic Factory: Lobby - Top Right | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)) | 
 | Frantic Factory Lobby | Frantic Factory: Lobby - Low Right | Wrinkly |  | 
 | Frantic Factory | Frantic Factory: Arcade Room | Both |  | 
 | Frantic Factory | Frantic Factory: Production Room | Both |  | 
@@ -157,9 +157,9 @@
 | Frantic Factory | Frantic Factory: Clock Room - back left | Both |  | 
 | Frantic Factory | Frantic Factory: Clock Room - front right | Both |  | 
 | Frantic Factory | Frantic Factory: Top of Pipe Near Kong-freeing Switch | Wrinkly | l.islanky and l.handstand | 
-| Frantic Factory | Frantic Factory: Pin Code Room - front-right | Wrinkly | l.isdiddy and (l.guitar or l.CanAccessRNDRoom()) | 
-| Frantic Factory | Frantic Factory: Lanky's Piano Room - right | Wrinkly | l.islanky and (l.trombone or l.CanAccessRNDRoom()) | 
-| Frantic Factory | Frantic Factory: Lanky's Piano Room - left | Wrinkly | l.islanky and (l.trombone or l.CanAccessRNDRoom()) | 
+| Frantic Factory | Frantic Factory: Pin Code Room - front-right | Wrinkly | (l.isdiddy and l.guitar) or l.CanAccessRNDRoom() | 
+| Frantic Factory | Frantic Factory: Lanky's Piano Room - right | Wrinkly | (l.islanky and l.trombone) or l.CanAccessRNDRoom() | 
+| Frantic Factory | Frantic Factory: Lanky's Piano Room - left | Wrinkly | (l.islanky and l.trombone) or l.CanAccessRNDRoom() | 
 | Frantic Factory | Frantic Factory: Chunky's Dark Room | Both | (l.chunky and l.punch) or l.phasewalk or l.generalclips | 
 | Factory Crusher | Frantic Factory: Crusher Room - start | Both |  | 
 </details>
@@ -230,7 +230,7 @@
 | Fungi Forest Lobby | Fungi Forest: Lobby - Near Entrance | Wrinkly |  | 
 | Fungi Forest | Fungi Forest: Behind DK Barn | Both |  | 
 | Fungi Forest | Fungi Forest: Beanstalk Area | Both | Events.Night in l.Events | 
-| Fungi Forest | Fungi Forest: Near Snide's | Both |  | 
+| Fungi Forest | Fungi Forest: Near Snide's | Both | Events.Day in l.Events | 
 | Fungi Forest | Fungi Forest: Top of Giant Mushroom | Both |  | 
 | Fungi Forest | Fungi Forest: Owl Area | Both |  | 
 | Fungi Forest | Fungi Forest: On top of Cage outside Conveyor Belt | Both |  | 
@@ -276,7 +276,7 @@
 | Map | Name | Door types acceptable in location | Logic |
 | --- | ---- | --------------------------------- | ----- |
 | Crystal Caves Lobby | Crystal Caves: Lobby - Far Left | Wrinkly |  | 
-| Crystal Caves Lobby | Crystal Caves: Lobby - Top Ledge | Wrinkly | l.isdiddy and l.jetpack | 
+| Crystal Caves Lobby | Crystal Caves: Lobby - Top Ledge | Wrinkly | (l.isdiddy and l.jetpack) or l.CanMoonkick() | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Left | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Far Right | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Right | Wrinkly |  | 

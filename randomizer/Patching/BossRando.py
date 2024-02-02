@@ -1,5 +1,6 @@
 """Apply Boss Locations."""
-from randomizer.Patching.Patcher import ROM, LocalROM
+
+from randomizer.Patching.Patcher import LocalROM
 
 
 def randomize_bosses(spoiler):

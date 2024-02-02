@@ -1,0 +1,1472 @@
+[
+  {
+    "name": "Easy",
+    "description": "The generated settings will be of lesser difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be lower than their defaults. Many of the more difficult settings will never be set.",
+    "activate_all_bananaports": {
+      "off": 0.2,
+      "all": 0.6,
+      "isles": 0.2
+    },
+    "alter_switch_allocation": 0,
+    "auto_keys": 1,
+    "bananaport_rando": {
+      "off": 1
+    },
+    "blocker_text": {
+      "min": 30,
+      "max": 70,
+      "mean": 50
+    },
+    "bonus_barrel_auto_complete": 0.5,
+    "bonus_barrel_rando": 0.7,
+    "boss_kong_rando": 0.5,
+    "boss_location_rando": 0.8,
+    "cb_rando": 0.3,
+    "coin_door_item": {
+      "vanilla": 0.2,
+      "opened": 0.6,
+      "easy_random": 0.2
+    },
+    "coin_door_item_count": {
+      "min": 1,
+      "max": 6,
+      "mean": 4
+    },
+    "coin_rando": 0.5,
+    "crown_door_item": {
+      "vanilla": 0.2,
+      "opened": 0.6,
+      "easy_random": 0.2
+    },
+    "crown_door_item_count": {
+      "min": 1,
+      "max": 2,
+      "mean": 1
+    },
+    "crown_enemy_rando": {
+      "off": 0.2,
+      "easy": 0.5,
+      "medium": 0.3
+    },
+    "crown_placement_rando": 0,
+    "damage_amount": {
+      "default": 0.5,
+      "double": 0.5
+    },
+    "dim_solved_hints": 1,
+    "disable_tag_barrels": 0.5,
+    "enable_plandomizer": 0,
+    "enable_progressive_hints": 0.5,
+    "enable_shop_hints": 1,
+    "enable_tag_anywhere": 1,
+    "enemies_selected": {},
+    "enemy_drop_rando": 0,
+    "enemy_rando": 0.95,
+    "enemy_speed_rando": 0.5,
+    "faster_checks_enabled": 1,
+    "faster_checks_selected": {
+      "factory_toy_monster_fight": 1,
+      "factory_piano_game": 1,
+      "factory_diddy_rnd": 1,
+      "factory_arcade_round_1": 1,
+      "factory_car_race": 1,
+      "galleon_seal_race": 1,
+      "galleon_mech_fish": 1,
+      "galleon_mermaid_gb": 1,
+      "forest_mill_conveyor": 1,
+      "forest_owl_race": 1,
+      "forest_rabbit_race": 1,
+      "caves_ice_tomato_minigame": 1,
+      "castle_minecart": 1,
+      "castle_car_race": 1,
+      "jetpac": 1
+    },
+    "fast_warps": 1,
+    "free_trade_setting": {
+      "not_blueprints": 0.3,
+      "major_collectibles": 0.7
+    },
+    "fungi_time": {
+      "day": 0.2,
+      "night": 0.2,
+      "random": 0.3,
+      "dusk": 0.15,
+      "progressive": 0.15
+    },
+    "galleon_water": {
+      "random": 1
+    },
+    "glitches_selected": {},
+    "hard_blockers": 0,
+    "hard_level_progression": 0,
+    "hard_mode": 0,
+    "hard_mode_selected": {},
+    "hard_shooting": 0,
+    "hard_troff_n_scoff": 0,
+    "helm_hurry": 0,
+    "helm_phase_order_rando": 0.8,
+    "helm_random": 1,
+    "helm_setting": {
+      "skip_start": 0.7,
+      "skip_all": 0.3
+    },
+    "helmhurry_list_banana_medal": {
+      "min": 30,
+      "max": 120,
+      "mean": 60
+    },
+    "helmhurry_list_battle_crown": {
+      "min": 30,
+      "max": 150,
+      "mean": 90
+    },
+    "helmhurry_list_bean": {
+      "min": 30,
+      "max": 180,
+      "mean": 120
+    },
+    "helmhurry_list_blueprint": {
+      "min": 30,
+      "max": 120,
+      "mean": 45
+    },
+    "helmhurry_list_boss_key": {
+      "min": 90,
+      "max": 300,
+      "mean": 150
+    },
+    "helmhurry_list_colored_bananas": {
+      "min": 1,
+      "max": 5,
+      "mean": 3
+    },
+    "helmhurry_list_company_coins": {
+      "min": 120,
+      "max": 600,
+      "mean": 300
+    },
+    "helmhurry_list_fairies": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_golden_banana": {
+      "min": 10,
+      "max": 60,
+      "mean": 20
+    },
+    "helmhurry_list_ice_traps": {
+      "min": -60,
+      "max": -15,
+      "mean": -40
+    },
+    "helmhurry_list_kongs": {
+      "min": 120,
+      "max": 600,
+      "mean": 240
+    },
+    "helmhurry_list_move": {
+      "min": 15,
+      "max": 90,
+      "mean": 30
+    },
+    "helmhurry_list_pearl": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_rainbow_coin": {
+      "min": 5,
+      "max": 30,
+      "mean": 15
+    },
+    "helmhurry_list_starting_time": {
+      "min": 900,
+      "max": 1800,
+      "mean": 1200
+    },
+    "item_rando_list_selected": {
+      "shop": 0.95,
+      "banana": 0.95,
+      "crown": 0.7,
+      "blueprint": 0.7,
+      "key": 0.85,
+      "medal": 0.7,
+      "coin": 0.7,
+      "kong": 0.85,
+      "rainbowcoin": 0.5,
+      "beanpearl": 0.5,
+      "junkitem": 0.5
+    },
+    "item_reward_previews": 1,
+    "kasplat_rando_setting": {
+      "off": 0.3,
+      "vanilla_locations": 0.7
+    },
+    "key_8_helm": 0.5,
+    "keys_random": 1,
+    "kong_rando": 1,
+    "krool_access": 0.7,
+    "krool_phase_order_rando": 0.8,
+    "krool_random": 1,
+    "k_rool_vanilla_requirement": 0,
+    "krusha_ui": {
+      "no_slot": 0.5,
+      "random": 0.5
+    },
+    "level_randomization": {
+      "vanilla": 0.5,
+      "level_order": 0.5
+    },
+    "logic_type": {
+      "glitchless": 1
+    },
+    "maximize_helm_blocker": 0.15,
+    "medal_cb_req": {
+      "min": 15,
+      "max": 60,
+      "mean": 30
+    },
+    "microhints_enabled": {
+      "base": 0.25,
+      "all": 0.75
+    },
+    "minigames_list_selected": {},
+    "misc_changes_selected": {},
+    "move_rando": {
+      "cross_purchase": 1
+    },
+    "no_healing": 0,
+    "no_melons": 0,
+    "open_lobbies": 0.9,
+    "perma_death": 0,
+    "portal_numbers": 1,
+    "progressive_hint_text": {
+      "min": 30,
+      "max": 60,
+      "mean": 45
+    },
+    "puzzle_rando": 0.5,
+    "quality_of_life": 1,
+    "random_crates": 0,
+    "random_fairies": 0,
+    "random_medal_requirement": 1,
+    "random_patches": 0,
+    "random_prices": {
+      "vanilla": 0.2,
+      "free": 0.2,
+      "low": 0.3,
+      "medium": 0.3
+    },
+    "random_starting_move_list_selected": {},
+    "random_starting_region": 0,
+    "randomize_blocker_required_amounts": 1,
+    "randomize_cb_required_amounts": 1,
+    "randomize_pickups": 0.6,
+    "rareware_gb_fairies": {
+      "min": 1,
+      "max": 10,
+      "mean": 5
+    },
+    "remove_barriers_enabled": 1,
+    "remove_barriers_selected": {
+      "japes_coconut_gates": 0.75,
+      "japes_shellhive_gate": 0.75,
+      "aztec_tunnel_door": 0.75,
+      "aztec_5dtemple_switches": 1,
+      "aztec_llama_switches": 0.75,
+      "factory_production_room": 1,
+      "factory_testing_gate": 0.75,
+      "galleon_lighthouse_gate": 0.75,
+      "galleon_shipyard_area_gate": 0.75,
+      "galleon_shipwreck_gates": 1,
+      "galleon_seasick_ship": 1,
+      "forest_green_tunnel": 0.75,
+      "forest_yellow_tunnel": 0.75,
+      "caves_igloo_pads": 1
+    },
+    "select_keys": 0,
+    "shockwave_status": {
+      "vanilla": 0.3,
+      "shuffled": 0.2,
+      "start_with": 0.5
+    },
+    "shop_indicator": 1,
+    "shorten_boss": 1,
+    "shuffle_items": 1,
+    "shuffle_shops": 0.5,
+    "smaller_shops": 0.5,
+    "starting_keys_list_selected": {},
+    "starting_kong": {
+      "any": 1
+    },
+    "starting_move_list_selected": {},
+    "starting_moves_count": {
+      "min": 4,
+      "max": 10,
+      "mean": 4
+    },
+    "starting_random": 1,
+    "switchsanity": {
+      "off": 1
+    },
+    "tns_location_rando": 0,
+    "troff_text": {
+      "min": 100,
+      "max": 300,
+      "mean": 200
+    },
+    "vanilla_door_rando": 0,
+    "warp_level_list_selected": {},
+    "warp_to_isles": 1,
+    "win_condition": {
+      "beat_krool": 0.7,
+      "get_key8": 0.3
+    },
+    "wrinkly_available": 1,
+    "wrinkly_hints": {
+      "standard": 1
+    },
+    "wrinkly_location_rando": 0
+  },
+  {
+    "name": "Standard",
+    "description": "The generated settings will be of average difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will be roughly around their defaults. Some of the most difficult settings will never be set.",
+    "activate_all_bananaports": {
+      "off": 0.4,
+      "all": 0.4,
+      "isles": 0.2
+    },
+    "alter_switch_allocation": 0.5,
+    "auto_keys": 1,
+    "bananaport_rando": {
+      "off": 0.5,
+      "in_level": 0.3,
+      "crossmap_coupled": 0.2
+    },
+    "blocker_text": {
+      "min": 40,
+      "max": 100,
+      "mean": 60
+    },
+    "bonus_barrel_auto_complete": 0.3,
+    "bonus_barrel_rando": 0.7,
+    "boss_kong_rando": 0.5,
+    "boss_location_rando": 0.8,
+    "cb_rando": 0.5,
+    "coin_door_item": {
+      "vanilla": 0.2,
+      "opened": 0.2,
+      "medium_random": 0.4,
+      "easy_random": 0.2
+    },
+    "coin_door_item_count": {
+      "min": 1,
+      "max": 10,
+      "mean": 4
+    },
+    "coin_rando": 0.5,
+    "crown_door_item": {
+      "vanilla": 0.2,
+      "opened": 0.2,
+      "medium_random": 0.4,
+      "easy_random": 0.2
+    },
+    "crown_door_item_count": {
+      "min": 1,
+      "max": 2,
+      "mean": 1
+    },
+    "crown_enemy_rando": {
+      "off": 0.1,
+      "easy": 0.3,
+      "medium": 0.4,
+      "hard": 0.2
+    },
+    "crown_placement_rando": 0.3,
+    "damage_amount": {
+      "default": 0.5,
+      "double": 0.35,
+      "quad": 0.15
+    },
+    "dim_solved_hints": 0.5,
+    "disable_tag_barrels": 0.5,
+    "enable_plandomizer": 0,
+    "enable_progressive_hints": 0.5,
+    "enable_shop_hints": 0.9,
+    "enable_tag_anywhere": 1,
+    "enemies_selected": {},
+    "enemy_drop_rando": 0.25,
+    "enemy_rando": 0.95,
+    "enemy_speed_rando": 0.5,
+    "faster_checks_enabled": 1,
+    "faster_checks_selected": {
+      "factory_toy_monster_fight": 0.7,
+      "factory_piano_game": 0.7,
+      "factory_diddy_rnd": 0.7,
+      "factory_arcade_round_1": 0.7,
+      "factory_car_race": 0.7,
+      "galleon_seal_race": 0.7,
+      "galleon_mech_fish": 0.7,
+      "galleon_mermaid_gb": 0.7,
+      "forest_mill_conveyor": 0.7,
+      "forest_owl_race": 0.7,
+      "forest_rabbit_race": 0.7,
+      "caves_ice_tomato_minigame": 0.7,
+      "castle_minecart": 0.7,
+      "castle_car_race": 0.7,
+      "jetpac": 0.7
+    },
+    "fast_warps": 1,
+    "free_trade_setting": {
+      "none": 0.1,
+      "not_blueprints": 0.3,
+      "major_collectibles": 0.6
+    },
+    "fungi_time": {
+      "day": 0.2,
+      "night": 0.2,
+      "random": 0.3,
+      "dusk": 0.15,
+      "progressive": 0.15
+    },
+    "galleon_water": {
+      "random": 1
+    },
+    "glitches_selected": {},
+    "hard_blockers": 0.2,
+    "hard_level_progression": 0.4,
+    "hard_mode": 0,
+    "hard_mode_selected": {},
+    "hard_shooting": 0.5,
+    "hard_troff_n_scoff": 0.2,
+    "helm_hurry": 0,
+    "helm_phase_order_rando": 0.8,
+    "helm_random": 1,
+    "helm_setting": {
+      "default": 0.2,
+      "skip_start": 0.6,
+      "skip_all": 0.2
+    },
+    "helmhurry_list_banana_medal": {
+      "min": 30,
+      "max": 120,
+      "mean": 60
+    },
+    "helmhurry_list_battle_crown": {
+      "min": 30,
+      "max": 150,
+      "mean": 90
+    },
+    "helmhurry_list_bean": {
+      "min": 30,
+      "max": 180,
+      "mean": 120
+    },
+    "helmhurry_list_blueprint": {
+      "min": 30,
+      "max": 120,
+      "mean": 45
+    },
+    "helmhurry_list_boss_key": {
+      "min": 90,
+      "max": 300,
+      "mean": 150
+    },
+    "helmhurry_list_colored_bananas": {
+      "min": 1,
+      "max": 5,
+      "mean": 3
+    },
+    "helmhurry_list_company_coins": {
+      "min": 120,
+      "max": 600,
+      "mean": 300
+    },
+    "helmhurry_list_fairies": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_golden_banana": {
+      "min": 10,
+      "max": 60,
+      "mean": 20
+    },
+    "helmhurry_list_ice_traps": {
+      "min": -60,
+      "max": -15,
+      "mean": -40
+    },
+    "helmhurry_list_kongs": {
+      "min": 120,
+      "max": 600,
+      "mean": 240
+    },
+    "helmhurry_list_move": {
+      "min": 15,
+      "max": 90,
+      "mean": 30
+    },
+    "helmhurry_list_pearl": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_rainbow_coin": {
+      "min": 5,
+      "max": 30,
+      "mean": 15
+    },
+    "helmhurry_list_starting_time": {
+      "min": 900,
+      "max": 1800,
+      "mean": 1200
+    },
+    "item_rando_list_selected": {
+      "shop": 0.95,
+      "banana": 0.95,
+      "toughbanana": 0.5,
+      "crown": 0.7,
+      "blueprint": 0.7,
+      "key": 0.85,
+      "medal": 0.7,
+      "coin": 0.7,
+      "kong": 0.85,
+      "fairy": 0.7,
+      "rainbowcoin": 0.7,
+      "beanpearl": 0.7,
+      "fakeitem": 0.5,
+      "junkitem": 0.5,
+      "crateitem": 0.5
+    },
+    "item_reward_previews": 1,
+    "kasplat_rando_setting": {
+      "off": 0.15,
+      "vanilla_locations": 0.55,
+      "location_shuffle": 0.3
+    },
+    "key_8_helm": 0.5,
+    "keys_random": 1,
+    "kong_rando": 1,
+    "krool_access": 0.7,
+    "krool_phase_order_rando": 0.8,
+    "krool_random": 1,
+    "k_rool_vanilla_requirement": 0,
+    "krusha_ui": {
+      "no_slot": 0.5,
+      "random": 0.5
+    },
+    "level_randomization": {
+      "vanilla": 0.2,
+      "level_order": 0.65,
+      "loadingzone": 0.15
+    },
+    "logic_type": {
+      "glitchless": 1
+    },
+    "maximize_helm_blocker": 0.15,
+    "medal_cb_req": {
+      "min": 15,
+      "max": 90,
+      "mean": 40
+    },
+    "microhints_enabled": {
+      "off": 0.3,
+      "base": 0.35,
+      "all": 0.35
+    },
+    "minigames_list_selected": {},
+    "misc_changes_selected": {},
+    "move_rando": {
+      "on": 0.3,
+      "cross_purchase": 0.7
+    },
+    "no_healing": 0.5,
+    "no_melons": 0.2,
+    "open_lobbies": 0.6,
+    "perma_death": 0,
+    "portal_numbers": 1,
+    "progressive_hint_text": {
+      "min": 30,
+      "max": 100,
+      "mean": 60
+    },
+    "puzzle_rando": 0.5,
+    "quality_of_life": 1,
+    "random_crates": 0.3,
+    "random_fairies": 0.2,
+    "random_medal_requirement": 1,
+    "random_patches": 0.2,
+    "random_prices": {
+      "vanilla": 0.1,
+      "free": 0.1,
+      "low": 0.2,
+      "medium": 0.35,
+      "high": 0.25
+    },
+    "random_starting_move_list_selected": {},
+    "random_starting_region": 0.3,
+    "randomize_blocker_required_amounts": 1,
+    "randomize_cb_required_amounts": 1,
+    "randomize_pickups": 0.6,
+    "rareware_gb_fairies": {
+      "min": 1,
+      "max": 20,
+      "mean": 10
+    },
+    "remove_barriers_enabled": 1,
+    "remove_barriers_selected": {
+      "japes_coconut_gates": 0.75,
+      "japes_shellhive_gate": 0.75,
+      "aztec_tunnel_door": 0.75,
+      "aztec_5dtemple_switches": 0.8,
+      "aztec_llama_switches": 0.75,
+      "factory_production_room": 0.8,
+      "factory_testing_gate": 0.75,
+      "galleon_lighthouse_gate": 0.75,
+      "galleon_shipyard_area_gate": 0.75,
+      "galleon_shipwreck_gates": 0.8,
+      "galleon_seasick_ship": 0.8,
+      "forest_green_tunnel": 0.75,
+      "forest_yellow_tunnel": 0.75,
+      "caves_igloo_pads": 0.8
+    },
+    "select_keys": 0,
+    "shockwave_status": {
+      "vanilla": 0.2,
+      "shuffled": 0.2,
+      "shuffled_decoupled": 0.2,
+      "start_with": 0.4
+    },
+    "shop_indicator": 1,
+    "shorten_boss": 1,
+    "shuffle_items": 1,
+    "shuffle_shops": 0.5,
+    "smaller_shops": 0.5,
+    "starting_keys_list_selected": {},
+    "starting_kong": {
+      "any": 1
+    },
+    "starting_move_list_selected": {},
+    "starting_moves_count": {
+      "min": 2,
+      "max": 10,
+      "mean": 4
+    },
+    "starting_random": 1,
+    "switchsanity": {
+      "off": 0.85,
+      "helm_access": 0.1,
+      "all": 0.05
+    },
+    "tns_location_rando": 0.3,
+    "troff_text": {
+      "min": 150,
+      "max": 400,
+      "mean": 300
+    },
+    "vanilla_door_rando": 0.4,
+    "warp_level_list_selected": {},
+    "warp_to_isles": 1,
+    "win_condition": {
+      "beat_krool": 0.6,
+      "get_key8": 0.25,
+      "all_keys": 0.15
+    },
+    "wrinkly_available": 0.9,
+    "wrinkly_hints": {
+      "standard": 0.5,
+      "cryptic": 0.2,
+      "item_hinting": 0.3
+    },
+    "wrinkly_location_rando": 0.3
+  },
+  {
+    "name": "Difficult",
+    "description": "The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. All settings have a chance to be set.",
+    "activate_all_bananaports": {
+      "off": 0.6,
+      "all": 0.2,
+      "isles": 0.2
+    },
+    "alter_switch_allocation": 0.8,
+    "auto_keys": 1,
+    "bananaport_rando": {
+      "off": 0.5,
+      "in_level": 0.3,
+      "crossmap_coupled": 0.1,
+      "crossmap_decoupled": 0.1
+    },
+    "blocker_text": {
+      "min": 50,
+      "max": 140,
+      "mean": 80
+    },
+    "bonus_barrel_auto_complete": 0.1,
+    "bonus_barrel_rando": 0.7,
+    "boss_kong_rando": 0.5,
+    "boss_location_rando": 0.8,
+    "cb_rando": 0.5,
+    "coin_door_item": {
+      "vanilla": 0.3,
+      "hard_random": 0.3,
+      "medium_random": 0.2,
+      "easy_random": 0.2
+    },
+    "coin_door_item_count": {
+      "min": 1,
+      "max": 10,
+      "mean": 7
+    },
+    "coin_rando": 0.5,
+    "crown_door_item": {
+      "vanilla": 0.3,
+      "hard_random": 0.3,
+      "medium_random": 0.2,
+      "easy_random": 0.2
+    },
+    "crown_door_item_count": {
+      "min": 1,
+      "max": 2,
+      "mean": 2
+    },
+    "crown_enemy_rando": {
+      "off": 0.2,
+      "medium": 0.5,
+      "hard": 0.3
+    },
+    "crown_placement_rando": 0.7,
+    "damage_amount": {
+      "default": 0.4,
+      "double": 0.3,
+      "quad": 0.2,
+      "ohko": 0.1
+    },
+    "dim_solved_hints": 0,
+    "disable_tag_barrels": 0.5,
+    "enable_plandomizer": 0,
+    "enable_progressive_hints": 0.5,
+    "enable_shop_hints": 0.5,
+    "enable_tag_anywhere": 1,
+    "enemies_selected": {},
+    "enemy_drop_rando": 0.6,
+    "enemy_rando": 0.95,
+    "enemy_speed_rando": 0.7,
+    "faster_checks_enabled": 1,
+    "faster_checks_selected": {
+      "factory_toy_monster_fight": 0.7,
+      "factory_piano_game": 0.7,
+      "factory_diddy_rnd": 0.7,
+      "factory_arcade_round_1": 0.7,
+      "factory_car_race": 0.7,
+      "galleon_seal_race": 0.7,
+      "galleon_mech_fish": 0.7,
+      "galleon_mermaid_gb": 0.7,
+      "forest_mill_conveyor": 0.7,
+      "forest_owl_race": 0.7,
+      "forest_rabbit_race": 0.7,
+      "caves_ice_tomato_minigame": 0.7,
+      "castle_minecart": 0.7,
+      "castle_car_race": 0.7,
+      "jetpac": 0.7
+    },
+    "fast_warps": 1,
+    "free_trade_setting": {
+      "none": 0.2,
+      "not_blueprints": 0.3,
+      "major_collectibles": 0.5
+    },
+    "fungi_time": {
+      "day": 0.2,
+      "night": 0.2,
+      "random": 0.3,
+      "dusk": 0.15,
+      "progressive": 0.15
+    },
+    "galleon_water": {
+      "random": 1
+    },
+    "glitches_selected": {
+      "advanced_platforming": 1
+    },
+    "hard_blockers": 0.6,
+    "hard_level_progression": 0.6,
+    "hard_mode": 0.2,
+    "hard_mode_selected": {
+      "hard_bosses": 0.6,
+      "extra_hard_bosses": 0.25,
+      "hard_enemies": 0.6,
+      "water_is_lava": 0.25,
+      "reduced_fall_damage_threshold": 0.5
+    },
+    "hard_shooting": 0.5,
+    "hard_troff_n_scoff": 0.5,
+    "helm_hurry": 0.05,
+    "helm_phase_order_rando": 0.8,
+    "helm_random": 1,
+    "helm_setting": {
+      "default": 0.3,
+      "skip_start": 0.7
+    },
+    "helmhurry_list_banana_medal": {
+      "min": 30,
+      "max": 120,
+      "mean": 60
+    },
+    "helmhurry_list_battle_crown": {
+      "min": 30,
+      "max": 150,
+      "mean": 90
+    },
+    "helmhurry_list_bean": {
+      "min": 30,
+      "max": 180,
+      "mean": 120
+    },
+    "helmhurry_list_blueprint": {
+      "min": 30,
+      "max": 120,
+      "mean": 45
+    },
+    "helmhurry_list_boss_key": {
+      "min": 90,
+      "max": 300,
+      "mean": 150
+    },
+    "helmhurry_list_colored_bananas": {
+      "min": 1,
+      "max": 5,
+      "mean": 3
+    },
+    "helmhurry_list_company_coins": {
+      "min": 120,
+      "max": 600,
+      "mean": 300
+    },
+    "helmhurry_list_fairies": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_golden_banana": {
+      "min": 10,
+      "max": 60,
+      "mean": 20
+    },
+    "helmhurry_list_ice_traps": {
+      "min": -60,
+      "max": -15,
+      "mean": -40
+    },
+    "helmhurry_list_kongs": {
+      "min": 120,
+      "max": 600,
+      "mean": 240
+    },
+    "helmhurry_list_move": {
+      "min": 15,
+      "max": 90,
+      "mean": 30
+    },
+    "helmhurry_list_pearl": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_rainbow_coin": {
+      "min": 5,
+      "max": 30,
+      "mean": 15
+    },
+    "helmhurry_list_starting_time": {
+      "min": 900,
+      "max": 1800,
+      "mean": 1200
+    },
+    "item_rando_list_selected": {
+      "shop": 0.95,
+      "banana": 0.95,
+      "toughbanana": 0.95,
+      "crown": 0.7,
+      "blueprint": 0.7,
+      "key": 0.85,
+      "medal": 0.7,
+      "coin": 0.7,
+      "kong": 0.85,
+      "fairy": 0.7,
+      "rainbowcoin": 0.7,
+      "beanpearl": 0.7,
+      "fakeitem": 0.7,
+      "junkitem": 0.7,
+      "crateitem": 0.7
+    },
+    "item_reward_previews": 1,
+    "kasplat_rando_setting": {
+      "off": 0.15,
+      "vanilla_locations": 0.55,
+      "location_shuffle": 0.3
+    },
+    "key_8_helm": 0.5,
+    "keys_random": 1,
+    "kong_rando": 1,
+    "krool_access": 0.7,
+    "krool_phase_order_rando": 0.8,
+    "krool_random": 1,
+    "k_rool_vanilla_requirement": 0,
+    "krusha_ui": {
+      "no_slot": 0.5,
+      "random": 0.5
+    },
+    "level_randomization": {
+      "vanilla": 0.2,
+      "level_order": 0.4,
+      "loadingzone": 0.3,
+      "loadingzonesdecoupled": 0.1
+    },
+    "logic_type": {
+      "glitchless": 0.8,
+      "glitch": 0.2
+    },
+    "maximize_helm_blocker": 0.5,
+    "medal_cb_req": {
+      "min": 35,
+      "max": 90,
+      "mean": 60
+    },
+    "microhints_enabled": {
+      "off": 0.3,
+      "base": 0.35,
+      "all": 0.35
+    },
+    "minigames_list_selected": {},
+    "misc_changes_selected": {
+      "auto_dance_skip": 1,
+      "fast_boot": 1,
+      "calm_caves": 0.5,
+      "animal_buddies_grab_items": 1,
+      "reduced_lag": 1,
+      "remove_extraneous_cutscenes": 1,
+      "hint_textbox_hold": 1,
+      "remove_wrinkly_puzzles": 0.5,
+      "fast_picture_taking": 1,
+      "hud_hotkey": 1,
+      "ammo_swap": 1,
+      "homing_balloons": 0.5,
+      "fast_transform_animation": 1,
+      "troff_n_scoff_audio_indicator": 1,
+      "lowered_aztec_lobby_bonus": 1,
+      "quicker_galleon_star": 1,
+      "vanilla_bug_fixes": 1,
+      "save_k_rool_progress": 1,
+      "small_bananas_always_visible": 1,
+      "fast_hints": 1,
+      "brighten_mad_maze_maul_enemies": 1,
+      "raise_fungi_dirt_patch": 1,
+      "global_instrument": 1,
+      "fast_pause_transitions": 1,
+      "cannon_game_better_control": 1
+    },
+    "move_rando": {
+      "on": 0.3,
+      "cross_purchase": 0.7
+    },
+    "no_healing": 0.5,
+    "no_melons": 0.5,
+    "open_lobbies": 0.6,
+    "perma_death": 0,
+    "portal_numbers": 1,
+    "progressive_hint_text": {
+      "min": 30,
+      "max": 100,
+      "mean": 70
+    },
+    "puzzle_rando": 0.5,
+    "quality_of_life": 1,
+    "random_crates": 0.6,
+    "random_fairies": 0.6,
+    "random_medal_requirement": 1,
+    "random_patches": 0.6,
+    "random_prices": {
+      "vanilla": 0.1,
+      "low": 0.2,
+      "medium": 0.4,
+      "high": 0.2,
+      "extreme": 0.1
+    },
+    "random_starting_move_list_selected": {},
+    "random_starting_region": 0.6,
+    "randomize_blocker_required_amounts": 1,
+    "randomize_cb_required_amounts": 1,
+    "randomize_pickups": 0.6,
+    "rareware_gb_fairies": {
+      "min": 1,
+      "max": 20,
+      "mean": 20
+    },
+    "remove_barriers_enabled": 1,
+    "remove_barriers_selected": {
+      "japes_coconut_gates": 0.75,
+      "japes_shellhive_gate": 0.75,
+      "aztec_tunnel_door": 0.75,
+      "aztec_5dtemple_switches": 0.8,
+      "aztec_llama_switches": 0.75,
+      "factory_production_room": 0.8,
+      "factory_testing_gate": 0.75,
+      "galleon_lighthouse_gate": 0.75,
+      "galleon_shipyard_area_gate": 0.75,
+      "galleon_shipwreck_gates": 0.8,
+      "galleon_seasick_ship": 0.8,
+      "forest_green_tunnel": 0.75,
+      "forest_yellow_tunnel": 0.75,
+      "caves_igloo_pads": 0.8
+    },
+    "select_keys": 0,
+    "shockwave_status": {
+      "vanilla": 0.2,
+      "shuffled": 0.3,
+      "shuffled_decoupled": 0.3,
+      "start_with": 0.2
+    },
+    "shop_indicator": 1,
+    "shorten_boss": 0.8,
+    "shuffle_items": 1,
+    "shuffle_shops": 0.7,
+    "smaller_shops": 0.5,
+    "starting_keys_list_selected": {},
+    "starting_kong": {
+      "any": 1
+    },
+    "starting_move_list_selected": {},
+    "starting_moves_count": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
+    },
+    "starting_random": 1,
+    "switchsanity": {
+      "off": 0.5,
+      "helm_access": 0.4,
+      "all": 0.1
+    },
+    "tns_location_rando": 0.5,
+    "troff_text": {
+      "min": 150,
+      "max": 450,
+      "mean": 300
+    },
+    "vanilla_door_rando": 0.6,
+    "warp_level_list_selected": {},
+    "warp_to_isles": 1,
+    "win_condition": {
+      "beat_krool": 0.45,
+      "get_key8": 0.25,
+      "all_fairies": 0.05,
+      "all_blueprints": 0.05,
+      "all_medals": 0.05,
+      "poke_snap": 0.05,
+      "all_keys": 0.1
+    },
+    "wrinkly_available": 0.75,
+    "wrinkly_hints": {
+      "standard": 0.4,
+      "cryptic": 0.3,
+      "item_hinting": 0.3
+    },
+    "wrinkly_location_rando": 0.6
+  },
+  {
+    "name": "Difficult with QoL Shuffle",
+    "description": "The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. Quality of life options may be disabled. All settings have a chance to be set.",
+    "activate_all_bananaports": {
+      "off": 0.6,
+      "all": 0.2,
+      "isles": 0.2
+    },
+    "alter_switch_allocation": 0.8,
+    "auto_keys": 0.5,
+    "bananaport_rando": {
+      "off": 0.5,
+      "in_level": 0.3,
+      "crossmap_coupled": 0.1,
+      "crossmap_decoupled": 0.1
+    },
+    "blocker_text": {
+      "min": 50,
+      "max": 140,
+      "mean": 80
+    },
+    "bonus_barrel_auto_complete": 0.1,
+    "bonus_barrel_rando": 0.7,
+    "boss_kong_rando": 0.5,
+    "boss_location_rando": 0.8,
+    "cb_rando": 0.5,
+    "coin_door_item": {
+      "vanilla": 0.3,
+      "hard_random": 0.3,
+      "medium_random": 0.2,
+      "easy_random": 0.2
+    },
+    "coin_door_item_count": {
+      "min": 1,
+      "max": 10,
+      "mean": 7
+    },
+    "coin_rando": 0.5,
+    "crown_door_item": {
+      "vanilla": 0.3,
+      "hard_random": 0.3,
+      "medium_random": 0.2,
+      "easy_random": 0.2
+    },
+    "crown_door_item_count": {
+      "min": 1,
+      "max": 2,
+      "mean": 2
+    },
+    "crown_enemy_rando": {
+      "off": 0.2,
+      "medium": 0.5,
+      "hard": 0.3
+    },
+    "crown_placement_rando": 0.7,
+    "damage_amount": {
+      "default": 0.4,
+      "double": 0.3,
+      "quad": 0.2,
+      "ohko": 0.1
+    },
+    "dim_solved_hints": 0,
+    "disable_tag_barrels": 0.5,
+    "enable_plandomizer": 0,
+    "enable_progressive_hints": 0.5,
+    "enable_shop_hints": 0.5,
+    "enable_tag_anywhere": 0.9,
+    "enemies_selected": {},
+    "enemy_drop_rando": 0.6,
+    "enemy_rando": 0.95,
+    "enemy_speed_rando": 0.7,
+    "faster_checks_enabled": 1,
+    "faster_checks_selected": {
+      "factory_toy_monster_fight": 0.7,
+      "factory_piano_game": 0.7,
+      "factory_diddy_rnd": 0.7,
+      "factory_arcade_round_1": 0.7,
+      "factory_car_race": 0.7,
+      "galleon_seal_race": 0.7,
+      "galleon_mech_fish": 0.7,
+      "galleon_mermaid_gb": 0.7,
+      "forest_mill_conveyor": 0.7,
+      "forest_owl_race": 0.7,
+      "forest_rabbit_race": 0.7,
+      "caves_ice_tomato_minigame": 0.7,
+      "castle_minecart": 0.7,
+      "castle_car_race": 0.7,
+      "jetpac": 0.7
+    },
+    "fast_warps": 0.8,
+    "free_trade_setting": {
+      "none": 0.2,
+      "not_blueprints": 0.3,
+      "major_collectibles": 0.5
+    },
+    "fungi_time": {
+      "day": 0.2,
+      "night": 0.2,
+      "random": 0.3,
+      "dusk": 0.15,
+      "progressive": 0.15
+    },
+    "galleon_water": {
+      "random": 1
+    },
+    "glitches_selected": {
+      "advanced_platforming": 1
+    },
+    "hard_blockers": 0.6,
+    "hard_level_progression": 0.6,
+    "hard_mode": 0.2,
+    "hard_mode_selected": {
+      "hard_bosses": 0.6,
+      "extra_hard_bosses": 0.25,
+      "hard_enemies": 0.6,
+      "water_is_lava": 0.25,
+      "reduced_fall_damage_threshold": 0.5
+    },
+    "hard_shooting": 0.5,
+    "hard_troff_n_scoff": 0.5,
+    "helm_hurry": 0.05,
+    "helm_phase_order_rando": 0.8,
+    "helm_random": 1,
+    "helm_setting": {
+      "default": 0.3,
+      "skip_start": 0.7
+    },
+    "helmhurry_list_banana_medal": {
+      "min": 30,
+      "max": 120,
+      "mean": 60
+    },
+    "helmhurry_list_battle_crown": {
+      "min": 30,
+      "max": 150,
+      "mean": 90
+    },
+    "helmhurry_list_bean": {
+      "min": 30,
+      "max": 180,
+      "mean": 120
+    },
+    "helmhurry_list_blueprint": {
+      "min": 30,
+      "max": 120,
+      "mean": 45
+    },
+    "helmhurry_list_boss_key": {
+      "min": 90,
+      "max": 300,
+      "mean": 150
+    },
+    "helmhurry_list_colored_bananas": {
+      "min": 1,
+      "max": 5,
+      "mean": 3
+    },
+    "helmhurry_list_company_coins": {
+      "min": 120,
+      "max": 600,
+      "mean": 300
+    },
+    "helmhurry_list_fairies": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_golden_banana": {
+      "min": 10,
+      "max": 60,
+      "mean": 20
+    },
+    "helmhurry_list_ice_traps": {
+      "min": -60,
+      "max": -15,
+      "mean": -40
+    },
+    "helmhurry_list_kongs": {
+      "min": 120,
+      "max": 600,
+      "mean": 240
+    },
+    "helmhurry_list_move": {
+      "min": 15,
+      "max": 90,
+      "mean": 30
+    },
+    "helmhurry_list_pearl": {
+      "min": 30,
+      "max": 120,
+      "mean": 50
+    },
+    "helmhurry_list_rainbow_coin": {
+      "min": 5,
+      "max": 30,
+      "mean": 15
+    },
+    "helmhurry_list_starting_time": {
+      "min": 900,
+      "max": 1800,
+      "mean": 1200
+    },
+    "item_rando_list_selected": {
+      "shop": 0.95,
+      "banana": 0.95,
+      "toughbanana": 0.95,
+      "crown": 0.7,
+      "blueprint": 0.7,
+      "key": 0.85,
+      "medal": 0.7,
+      "coin": 0.7,
+      "kong": 0.85,
+      "fairy": 0.7,
+      "rainbowcoin": 0.7,
+      "beanpearl": 0.7,
+      "fakeitem": 0.7,
+      "junkitem": 0.7,
+      "crateitem": 0.7
+    },
+    "item_reward_previews": 0.75,
+    "kasplat_rando_setting": {
+      "off": 0.15,
+      "vanilla_locations": 0.55,
+      "location_shuffle": 0.3
+    },
+    "key_8_helm": 0.5,
+    "keys_random": 1,
+    "kong_rando": 1,
+    "krool_access": 0.7,
+    "krool_phase_order_rando": 0.8,
+    "krool_random": 1,
+    "k_rool_vanilla_requirement": 0,
+    "krusha_ui": {
+      "no_slot": 0.5,
+      "random": 0.5
+    },
+    "level_randomization": {
+      "vanilla": 0.2,
+      "level_order": 0.4,
+      "loadingzone": 0.3,
+      "loadingzonesdecoupled": 0.1
+    },
+    "logic_type": {
+      "glitchless": 0.8,
+      "glitch": 0.2
+    },
+    "maximize_helm_blocker": 0.5,
+    "medal_cb_req": {
+      "min": 35,
+      "max": 90,
+      "mean": 60
+    },
+    "microhints_enabled": {
+      "off": 0.3,
+      "base": 0.35,
+      "all": 0.35
+    },
+    "minigames_list_selected": {},
+    "misc_changes_selected": {
+      "auto_dance_skip": 0.8,
+      "fast_boot": 0.75,
+      "calm_caves": 0.5,
+      "animal_buddies_grab_items": 0.8,
+      "reduced_lag": 1,
+      "remove_extraneous_cutscenes": 0.9,
+      "hint_textbox_hold": 0.9,
+      "remove_wrinkly_puzzles": 0.5,
+      "fast_picture_taking": 0.9,
+      "hud_hotkey": 1,
+      "ammo_swap": 1,
+      "homing_balloons": 0.5,
+      "fast_transform_animation": 0.8,
+      "troff_n_scoff_audio_indicator": 0.5,
+      "lowered_aztec_lobby_bonus": 0.5,
+      "quicker_galleon_star": 0.8,
+      "vanilla_bug_fixes": 1,
+      "save_k_rool_progress": 0.9,
+      "small_bananas_always_visible": 0.6,
+      "fast_hints": 0.9,
+      "brighten_mad_maze_maul_enemies": 0.5,
+      "raise_fungi_dirt_patch": 0.75,
+      "global_instrument": 1,
+      "fast_pause_transitions": 0.9,
+      "cannon_game_better_control": 0.5
+    },
+    "move_rando": {
+      "on": 0.3,
+      "cross_purchase": 0.7
+    },
+    "no_healing": 0.5,
+    "no_melons": 0.5,
+    "open_lobbies": 0.6,
+    "perma_death": 0,
+    "portal_numbers": 0.5,
+    "progressive_hint_text": {
+      "min": 30,
+      "max": 100,
+      "mean": 70
+    },
+    "puzzle_rando": 0.5,
+    "quality_of_life": 1,
+    "random_crates": 0.6,
+    "random_fairies": 0.6,
+    "random_medal_requirement": 1,
+    "random_patches": 0.6,
+    "random_prices": {
+      "vanilla": 0.1,
+      "low": 0.2,
+      "medium": 0.4,
+      "high": 0.2,
+      "extreme": 0.1
+    },
+    "random_starting_move_list_selected": {},
+    "random_starting_region": 0.6,
+    "randomize_blocker_required_amounts": 1,
+    "randomize_cb_required_amounts": 1,
+    "randomize_pickups": 0.6,
+    "rareware_gb_fairies": {
+      "min": 1,
+      "max": 20,
+      "mean": 20
+    },
+    "remove_barriers_enabled": 1,
+    "remove_barriers_selected": {
+      "japes_coconut_gates": 0.75,
+      "japes_shellhive_gate": 0.75,
+      "aztec_tunnel_door": 0.75,
+      "aztec_5dtemple_switches": 0.8,
+      "aztec_llama_switches": 0.75,
+      "factory_production_room": 0.8,
+      "factory_testing_gate": 0.75,
+      "galleon_lighthouse_gate": 0.75,
+      "galleon_shipyard_area_gate": 0.75,
+      "galleon_shipwreck_gates": 0.8,
+      "galleon_seasick_ship": 0.8,
+      "forest_green_tunnel": 0.75,
+      "forest_yellow_tunnel": 0.75,
+      "caves_igloo_pads": 0.8
+    },
+    "select_keys": 0,
+    "shockwave_status": {
+      "vanilla": 0.2,
+      "shuffled": 0.3,
+      "shuffled_decoupled": 0.3,
+      "start_with": 0.2
+    },
+    "shop_indicator": 0.5,
+    "shorten_boss": 0.8,
+    "shuffle_items": 1,
+    "shuffle_shops": 0.7,
+    "smaller_shops": 0.5,
+    "starting_keys_list_selected": {},
+    "starting_kong": {
+      "any": 1
+    },
+    "starting_move_list_selected": {},
+    "starting_moves_count": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
+    },
+    "starting_random": 1,
+    "switchsanity": {
+      "off": 0.5,
+      "helm_access": 0.4,
+      "all": 0.1
+    },
+    "tns_location_rando": 0.5,
+    "troff_text": {
+      "min": 150,
+      "max": 450,
+      "mean": 300
+    },
+    "vanilla_door_rando": 0.6,
+    "warp_level_list_selected": {},
+    "warp_to_isles": 0.9,
+    "win_condition": {
+      "beat_krool": 0.45,
+      "get_key8": 0.25,
+      "all_fairies": 0.05,
+      "all_blueprints": 0.05,
+      "all_medals": 0.05,
+      "poke_snap": 0.05,
+      "all_keys": 0.1
+    },
+    "wrinkly_available": 0.75,
+    "wrinkly_hints": {
+      "off": 0.1,
+      "standard": 0.4,
+      "cryptic": 0.2,
+      "item_hinting": 0.3
+    },
+    "wrinkly_location_rando": 0.6
+  }
+]

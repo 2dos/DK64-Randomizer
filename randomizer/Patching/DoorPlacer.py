@@ -1,13 +1,12 @@
 """Apply Door Locations."""
-import random
 
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
 from randomizer.Lists.DoorLocations import door_locations
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Maps import Maps
+from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID
+from randomizer.Patching.Patcher import LocalROM
 
 
 def remove_existing_indicators(spoiler):
@@ -53,7 +52,17 @@ def remove_existing_indicators(spoiler):
 
 def place_door_locations(spoiler):
     """Place Wrinkly Doors, and eventually T&S Doors."""
-    if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles:
+    enabled = False
+    settings_enable = [
+        spoiler.settings.wrinkly_location_rando,
+        spoiler.settings.tns_location_rando,
+        spoiler.settings.remove_wrinkly_puzzles,
+        spoiler.settings.enable_progressive_hints,
+    ]
+    for boolean in settings_enable:
+        if boolean:
+            enabled = True
+    if enabled:
         ROM_COPY = LocalROM()
         wrinkly_doors = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
         # Also remove
@@ -75,7 +84,7 @@ def place_door_locations(spoiler):
                 ROM_COPY.seek(item_start + 0x28)
                 item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 retain = True
-                if spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles:
+                if spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.enable_progressive_hints:
                     if item_type in wrinkly_doors:
                         retain = False
                     if cont_map_id == Maps.AngryAztecLobby and item_type in (0x23C, 0x18):
@@ -118,25 +127,26 @@ def place_door_locations(spoiler):
                     if door.map == cont_map_id:
                         if door_type == "wrinkly" and (
                             spoiler.settings.wrinkly_location_rando
-                            or (MiscChangesSelected.remove_wrinkly_puzzles in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0)
+                            or IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles)
                         ):
-                            kong = data[2]
-                            item_data = []
-                            for coord_index in range(3):
-                                item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
-                            item_data.append(int(float_to_hex(door.scale), 16))  # Scale
-                            item_data.append(0x5F0)
-                            item_data.append(0x80121B00)
-                            item_data.append(int(float_to_hex(door.rx), 16))  # rx
-                            item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
-                            item_data.append(int(float_to_hex(door.rz), 16))  # rz
-                            item_data.append(0)
-                            id = getNextFreeID(cont_map_id, door_ids)
-                            map_wrinkly_ids.append(id)
-                            door_ids.append(id)
-                            item_data.append((wrinkly_doors[kong] << 16) | id)
-                            item_data.append(1 << 16)
-                            retained_model2.append(item_data)
+                            if not spoiler.settings.enable_progressive_hints:
+                                kong = data[2]
+                                item_data = []
+                                for coord_index in range(3):
+                                    item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
+                                item_data.append(int(float_to_hex(door.scale), 16))  # Scale
+                                item_data.append(0x5F0)
+                                item_data.append(0x80121B00)
+                                item_data.append(int(float_to_hex(door.rx), 16))  # rx
+                                item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
+                                item_data.append(int(float_to_hex(door.rz), 16))  # rz
+                                item_data.append(0)
+                                id = getNextFreeID(cont_map_id, door_ids)
+                                map_wrinkly_ids.append(id)
+                                door_ids.append(id)
+                                item_data.append((wrinkly_doors[kong] << 16) | id)
+                                item_data.append(1 << 16)
+                                retained_model2.append(item_data)
                         elif door_type == "tns" and spoiler.settings.tns_location_rando:
                             lim = 2
                             if not spoiler.settings.portal_numbers:

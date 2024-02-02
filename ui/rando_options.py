@@ -1,11 +1,19 @@
 """Options for the main rando tab."""
+
 import random
+import re
 
 import js
 from js import document
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
+from randomizer.Lists.Item import StartingMoveOptions
+from randomizer.Lists.Songs import MusicSelectionPanel
+from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
-from ui.bindings import bind
+from ui.bindings import bind, bindList
+from ui.randomize_settings import randomize_settings
 
 
 def randomseed(evt):
@@ -37,6 +45,18 @@ def on_input(event):
         min_max(event, 0, 200)
 
 
+@bind("focusout", "progressive_hint_text")
+def handle_progressive_hint_text(event):
+    """Validate blocker input on loss of focus."""
+    progressive_hint_text = js.document.getElementById("progressive_hint_text")
+    if not progressive_hint_text.value:
+        progressive_hint_text.value = 60
+    elif int(progressive_hint_text.value) < 1:
+        progressive_hint_text.value = 1
+    elif int(progressive_hint_text.value) > 201:
+        progressive_hint_text.value = 201
+
+
 @bind("focusout", "blocker_text")
 def max_randomized_blocker(event):
     """Validate blocker input on loss of focus."""
@@ -63,6 +83,18 @@ def max_randomized_troff(event):
 def max_music(event):
     """Validate music input on loss of focus."""
     music_text = js.document.getElementById("music_volume")
+    if not music_text.value:
+        music_text.value = 100
+    elif int(music_text.value) > 100:
+        music_text.value = 100
+    elif int(music_text.value) < 0:
+        music_text.value = 0
+
+
+@bind("focusout", "custom_music_proportion")
+def max_music_proportion(event):
+    """Validate music input on loss of focus."""
+    music_text = js.document.getElementById("custom_music_proportion")
     if not music_text.value:
         music_text.value = 100
     elif int(music_text.value) > 100:
@@ -120,7 +152,6 @@ def max_randomized_fairies(event):
 
 
 @bind("click", "shuffle_items")
-@bind("change", "training_barrels")
 @bind("change", "move_rando")
 @bind("focusout", "starting_moves_count")
 def max_starting_moves_count(event):
@@ -128,13 +159,9 @@ def max_starting_moves_count(event):
     move_count = js.document.getElementById("starting_moves_count")
     moves = js.document.getElementById("move_rando")
     item_rando = js.document.getElementById("shuffle_items")
-    training_barrels = js.document.getElementById("training_barrels")
-    max_starting_moves = 40
+    max_starting_moves = 41
     if not item_rando.checked and moves.value != "off":
-        if training_barrels.value == "normal":
-            max_starting_moves = 0
-        else:
-            max_starting_moves = 4
+        max_starting_moves = 4
     if not move_count.value:
         move_count.value = 4
     elif 0 > int(move_count.value):
@@ -143,11 +170,14 @@ def max_starting_moves_count(event):
         move_count.value = max_starting_moves
 
 
+DISABLED_HELM_DOOR_VALUES = ("easy_random", "medium_random", "hard_random", "opened")
+
+
 @bind("change", "crown_door_item")
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
     door_one_selection = js.document.getElementById("crown_door_item")
-    disabled = (door_one_selection.value == "random") or (door_one_selection.value == "opened")
+    disabled = door_one_selection.value in DISABLED_HELM_DOOR_VALUES
     door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
         door_one_req.setAttribute("disabled", "disabled")
@@ -205,7 +235,7 @@ def updateDoorOneCountText(evt):
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
     door_two_selection = js.document.getElementById("coin_door_item")
-    disabled = (door_two_selection.value == "random") or (door_two_selection.value == "opened")
+    disabled = door_two_selection.value in DISABLED_HELM_DOOR_VALUES
     door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
         door_two_req.setAttribute("disabled", "disabled")
@@ -363,6 +393,25 @@ def key_down(event):
         pass
 
 
+def set_random_weights_options():
+    """Set the random settings presets on the page."""
+    element = document.getElementById("random-weights")
+    children = []
+    # Take note of the items currently in the dropdown.
+    for child in element.children:
+        children.append(child.value)
+    # Add all of the random weights presets.
+    for val in js.random_settings_presets:
+        if val.get("name") not in children:
+            opt = document.createElement("option")
+            opt.value = val.get("name")
+            opt.innerHTML = val.get("name")
+            opt.title = val.get("description")
+            element.appendChild(opt)
+            if val.get("name") == "Standard":
+                opt.selected = True
+
+
 def set_preset_options():
     """Set the Blocker presets on the page."""
     # Check what the selected dropdown item is
@@ -505,16 +554,20 @@ def disable_colors(evt):
     disabled = False
     if js.document.getElementById("random_colors").checked:
         disabled = True
-    for i in ["dk", "diddy", "tiny", "lanky", "chunky", "rambi", "enguarde"]:
-        color = js.document.getElementById(f"{i}_colors")
-        try:
-            if disabled:
-                color.setAttribute("disabled", "disabled")
-            else:
-                color.removeAttribute("disabled")
-        except AttributeError:
-            pass
-    hide_rgb(None)
+    KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
+    for kong in KONG_ZONES:
+        for zone in KONG_ZONES[kong]:
+            color = js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors")
+            picker = js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color")
+            try:
+                if disabled:
+                    color.setAttribute("disabled", "disabled")
+                    picker.setAttribute("disabled", "disabled")
+                else:
+                    color.removeAttribute("disabled")
+                    picker.removeAttribute("disabled")
+            except AttributeError:
+                pass
 
 
 @bind("click", "enable_tag_anywhere")
@@ -584,7 +637,7 @@ def disable_krool_phases(evt):
 
 @bind("click", "helm_random")
 def disable_helm_phases(evt):
-    """Disable K Rool options when Randomize All is selected."""
+    """Disable Helm options when Randomize All is selected."""
     disabled = False
     helm = js.document.getElementById("helm_phase_count")
     if js.document.getElementById("helm_random").checked:
@@ -598,6 +651,53 @@ def disable_helm_phases(evt):
         pass
 
 
+@bind("click", "krool_random")
+@bind("change", "krool_phase_count")
+def plando_hide_krool_options(evt):
+    """Hide the plando options to select Kongs for certain K. Rool phases if those phases are disabled."""
+    krool_phase_count = int(js.document.getElementById("krool_phase_count").value)
+    krool_random = js.document.getElementById("krool_random").checked
+    for i in range(0, 5):
+        krool_phase_plando_div = js.document.getElementById(f"plando_krool_order_div_{i}")
+        krool_phase_plando = js.document.getElementById(f"plando_krool_order_{i}")
+        if i < krool_phase_count or krool_random:
+            krool_phase_plando_div.classList.remove("disabled-select")
+            krool_phase_plando.removeAttribute("disabled")
+        else:
+            krool_phase_plando_div.classList.add("disabled-select")
+            krool_phase_plando.setAttribute("disabled", "disabled")
+            krool_phase_plando.value = ""
+
+
+@bind("click", "helm_random")
+@bind("change", "helm_phase_count")
+def plando_hide_helm_options(evt):
+    """Hide the plando options to select Kongs for certain Helm phases if those phases are disabled."""
+    helm_phase_count = int(js.document.getElementById("helm_phase_count").value)
+    helm_random = js.document.getElementById("helm_random").checked
+    for i in range(0, 5):
+        helm_phase_plando_div = js.document.getElementById(f"plando_helm_order_div_{i}")
+        helm_phase_plando = js.document.getElementById(f"plando_helm_order_{i}")
+        if i < helm_phase_count or helm_random:
+            helm_phase_plando_div.classList.remove("disabled-select")
+            helm_phase_plando.removeAttribute("disabled")
+        else:
+            helm_phase_plando_div.classList.add("disabled-select")
+            helm_phase_plando.setAttribute("disabled", "disabled")
+            helm_phase_plando.value = ""
+
+
+@bind("click", "nav-plando-tab")
+def plando_propagate_options(evt):
+    """Make changes to the plando tab based on other settings.
+
+    This is partly a workaround for issues with the Bootstrap slider.
+    """
+    plando_hide_krool_options(evt)
+    plando_hide_helm_options(evt)
+    plando_disable_camera_shockwave(evt)
+
+
 @bind("change", "move_rando")
 def disable_move_shuffles(evt):
     """Disable some settings based on the move rando setting."""
@@ -606,6 +706,7 @@ def disable_move_shuffles(evt):
     training_barrels = js.document.getElementById("training_barrels")
     shockwave_status = js.document.getElementById("shockwave_status")
     starting_moves_count = js.document.getElementById("starting_moves_count")
+    start_with_slam = js.document.getElementById("start_with_slam")
     try:
         if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
@@ -613,21 +714,26 @@ def disable_move_shuffles(evt):
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
-            starting_moves_count.value = 40
+            starting_moves_count.value = 41
             starting_moves_count.setAttribute("disabled", "disabled")
+            start_with_slam.checked = True
+            start_with_slam.setAttribute("disabled", "disabled")
         elif moves.value == "off":
             prices.removeAttribute("disabled")
             training_barrels.value = "normal"
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
-            starting_moves_count.value = 40
+            starting_moves_count.value = 41
             starting_moves_count.setAttribute("disabled", "disabled")
+            start_with_slam.checked = True
+            start_with_slam.setAttribute("disabled", "disabled")
         else:
             prices.removeAttribute("disabled")
             training_barrels.removeAttribute("disabled")
             shockwave_status.removeAttribute("disabled")
             starting_moves_count.removeAttribute("disabled")
+            start_with_slam.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -664,6 +770,39 @@ def disable_enemy_modal(evt):
         pass
 
 
+@bind("click", "hard_mode")
+def disable_hard_mode_modal(evt):
+    """Disable Hard Mode Selector when Hard Mode is off."""
+    disabled = True
+    selector = js.document.getElementById("hard_mode_modal")
+    if js.document.getElementById("hard_mode").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "nav-music-tab")
+@bind("click", "songs_excluded")
+def disable_excluded_songs_modal(evt):
+    """Disable Excluded Song Selector when Excluded Songs is off."""
+    disabled = True
+    selector = js.document.getElementById("excluded_songs_modal")
+    if js.document.getElementById("songs_excluded").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("click", "shuffle_items")
 def toggle_item_rando(evt):
     """Enable and disable settings based on Item Rando being on/off."""
@@ -674,6 +813,9 @@ def toggle_item_rando(evt):
     shockwave = document.getElementById("shockwave_status_shuffled")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
+    enemy_drop_rando = document.getElementById("enemy_drop_rando")
+    non_item_rando_warning = document.getElementById("non_item_rando_warning")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -689,17 +831,24 @@ def toggle_item_rando(evt):
         disabled = False
     try:
         if disabled:
-            # Prevent item rando modal from opening and smaller shop setting
+            # Prevent item rando modal from opening, smaller shop setting, and dropsanity setting
             selector.setAttribute("disabled", "disabled")
             smaller_shops.setAttribute("disabled", "disabled")
             smaller_shops.checked = False
             shockwave.removeAttribute("disabled")
             move_vanilla.removeAttribute("disabled")
             move_rando.removeAttribute("disabled")
+            enemy_drop_rando.setAttribute("disabled", "disabled")
+            enemy_drop_rando.checked = False
+            non_item_rando_warning.removeAttribute("hidden")
+            shared_shop_warning.removeAttribute("hidden")
         else:
-            # Enable item rando modal, prevent shockwave/camera coupling, and enable smaller shops if it's in the pool
+            # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
+            enemy_drop_rando.removeAttribute("disabled")
+            non_item_rando_warning.setAttribute("hidden", "hidden")
             if shops_in_pool:
+                shared_shop_warning.setAttribute("hidden", "hidden")
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True
                 if move_vanilla.selected is True or move_rando.selected is True:
@@ -727,6 +876,7 @@ def item_rando_list_changed(evt):
     smaller_shops = document.getElementById("smaller_shops")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -742,6 +892,7 @@ def item_rando_list_changed(evt):
         item_rando_disabled = False
     if shops_in_pool and not item_rando_disabled:
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
+        shared_shop_warning.setAttribute("hidden", "hidden")
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
         if move_vanilla.selected is True or move_rando.selected is True:
@@ -751,16 +902,29 @@ def item_rando_list_changed(evt):
         move_rando.setAttribute("disabled", "disabled")
         smaller_shops.removeAttribute("disabled")
         # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
-        js.document.getElementById("training_barrels").removeAttribute("disabled")
         js.document.getElementById("shockwave_status").removeAttribute("disabled")
         js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
         # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
+        shared_shop_warning.removeAttribute("hidden")
         shockwave.removeAttribute("disabled")
         move_vanilla.removeAttribute("disabled")
         move_rando.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
+
+
+def should_reset_select_on_preset(selectElement):
+    """Return true if the element should be reset when applying a preset."""
+    if js.document.querySelector("#nav-cosmetics").contains(selectElement):
+        return False
+    if selectElement.name.startswith("plando_"):
+        return False
+    if selectElement.name.startswith("music_select_"):
+        return False
+    if selectElement.id == "random-weights":
+        return False
+    return True
 
 
 @bind("click", "apply_preset")
@@ -775,8 +939,11 @@ def preset_select_changed(event):
         # Pass in setting string
         settings = decrypt_settings_string_enum(presets["settings_string"])
         for select in js.document.getElementsByTagName("select"):
-            if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+            if should_reset_select_on_preset(select):
                 select.selectedIndex = -1
+        # Uncheck all starting move radio buttons for the import to then set them correctly
+        for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+            starting_move_button.checked = False
         js.document.getElementById("presets").selectedIndex = 0
         for key in settings:
             try:
@@ -789,6 +956,16 @@ def preset_select_changed(event):
                         js.document.getElementsByName(key)[0].checked = True
                     js.jq(f"#{key}").removeAttr("disabled")
                 elif type(settings[key]) is list:
+                    if key in ("starting_move_list_selected", "random_starting_move_list_selected"):
+                        for item in settings[key]:
+                            radio_buttons = js.document.getElementsByName("starting_move_box_" + str(int(item)))
+                            if key == "starting_move_list_selected":
+                                start_button = [button for button in radio_buttons if button.id.startswith("start")][0]
+                                start_button.checked = True
+                            else:
+                                random_button = [button for button in radio_buttons if button.id.startswith("random")][0]
+                                random_button.checked = True
+                        continue
                     selector = js.document.getElementById(key)
                     if selector.tagName == "SELECT":
                         for item in settings[key]:
@@ -840,6 +1017,13 @@ def preset_select_changed(event):
                     js.jq(f"#{key}").removeAttr("disabled")
             except Exception as e:
                 pass
+    update_ui_states(None)
+    js.savesettings()
+
+
+@bind("custom-update-ui-event", "apply_preset")
+def update_ui_states(event):
+    """Trigger any function that would update the status of a UI element based on the current settings configuration."""
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     update_boss_required(None)
@@ -847,41 +1031,144 @@ def preset_select_changed(event):
     disable_music(None)
     disable_move_shuffles(None)
     max_randomized_blocker(None)
+    handle_progressive_hint_text(None)
     max_randomized_troff(None)
     max_music(None)
+    max_music_proportion(None)
     max_sfx(None)
     disable_barrel_modal(None)
     item_rando_list_changed(None)
     toggle_item_rando(None)
     disable_enemy_modal(None)
+    disable_hard_mode_modal(None)
+    disable_excluded_songs_modal(None)
     toggle_bananaport_selector(None)
     disable_helm_hurry(None)
+    disable_remove_barriers(None)
+    disable_faster_checks(None)
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
+    updateDoorOneNumAccess(None)
+    updateDoorOneCountText(None)
+    updateDoorTwoNumAccess(None)
+    updateDoorTwoCountText(None)
+    disable_tag_spawn(None)
+    disable_krool_phases(None)
+    disable_helm_phases(None)
+    enable_plandomizer(None)
+    disable_switchsanity_with_plandomizer(None)
+    toggle_medals_box(None)
+    toggle_extreme_prices_option(None)
+    toggle_vanilla_door_rando(None)
 
 
-@bind("change", "dk_colors")
-@bind("change", "diddy_colors")
-@bind("change", "lanky_colors")
-@bind("change", "tiny_colors")
-@bind("change", "chunky_colors")
-@bind("change", "rambi_colors")
-@bind("change", "enguarde_colors")
-def hide_rgb(event):
-    """Show RGB Selector if Custom Color is selected."""
-    for i in ["dk", "diddy", "lanky", "tiny", "chunky", "rambi", "enguarde"]:
-        hidden = True
-        color = js.document.getElementById(f"{i}_custom")
-        if js.document.getElementById(f"{i}_colors").value == "custom":
-            hidden = False
-        try:
-            if hidden or js.document.getElementById("random_colors").checked:
-                color.style.display = "none"
-            else:
-                color.style = ""
-        except AttributeError:
-            pass
+@bind("click", "enable_plandomizer")
+def enable_plandomizer(evt):
+    """Enable and disable the Plandomizer tab."""
+    disabled = True
+    plando_tab = js.document.getElementById("nav-plando-tab")
+    if js.document.getElementById("enable_plandomizer").checked:
+        disabled = False
+    try:
+        if disabled:
+            plando_tab.style.display = "none"
+        else:
+            plando_tab.style = ""
+    except AttributeError:
+        pass
+
+
+@bind("click", "enable_plandomizer")
+def disable_switchsanity_with_plandomizer(evt):
+    """Disable Switchsanity if the Plandomizer is being used."""
+    disabled = False
+    switchsanity = js.document.getElementsByName("switchsanity")[0]
+    if js.document.getElementById("enable_plandomizer").checked:
+        disabled = True
+    try:
+        if disabled:
+            switchsanity.checked = False
+            switchsanity.setAttribute("disabled", "disabled")
+        else:
+            switchsanity.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("change", "plando_starting_kongs_selected")
+def plando_disable_kong_items(evt):
+    """Do not allow starting Kongs to be placed as items."""
+    starting_kongs = js.document.getElementById("plando_starting_kongs_selected")
+    selected_kongs = {x.value for x in starting_kongs.selectedOptions}
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    for kong in ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]:
+        if kong.lower() in selected_kongs:
+            kong_options = js.document.getElementsByClassName(f"plando-{kong}-option")
+            # Disable this Kong as a dropdown option.
+            for option in kong_options:
+                option.setAttribute("disabled", "disabled")
+            # De-select this Kong everywhere they are selected.
+            for dropdown in item_dropdowns:
+                if dropdown.value == kong:
+                    dropdown.value = ""
+        else:
+            kong_options = js.document.getElementsByClassName(f"plando-{kong}-option")
+            # Re-enable this Kong as a dropdown option.
+            for option in kong_options:
+                option.removeAttribute("disabled")
+
+
+startingMoveValues = [str(item.value) for item in StartingMoveOptions]
+
+
+@bindList("click", startingMoveValues, prefix="none-")
+@bindList("click", startingMoveValues, prefix="start-")
+@bindList("click", startingMoveValues, prefix="random-")
+def plando_disable_starting_moves(evt):
+    """Do not allow starting moves to be placed as items."""
+    # Create a list of selected starting moves.
+    selectedStartingMoves = set()
+    for startingMove in startingMoveValues:
+        selectedElem = js.document.getElementById(f"start-{startingMove}")
+        if selectedElem.checked:
+            selectedStartingMoves.add(Items(int(startingMove)))
+
+    # Obtain the list of PlandoItems moves to disable.
+    progressiveMoves = [PlandoItems.ProgressiveAmmoBelt, PlandoItems.ProgressiveInstrumentUpgrade, PlandoItems.ProgressiveSlam]
+    selectedPlandoMoves = set([ItemToPlandoItemMap[move] for move in selectedStartingMoves if ItemToPlandoItemMap[move] not in progressiveMoves])
+    # Progressive moves are handled differently. Only disable these if all
+    # instances are included as starting moves.
+    if set([Items.ProgressiveSlam, Items.ProgressiveSlam2, Items.ProgressiveSlam3]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveSlam)
+    if set([Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt2]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveAmmoBelt)
+    if set([Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveInstrumentUpgrade)
+
+    # Disable all the plando moves across the dropdowns.
+    for moveName in MoveSet:
+        moveEnum = PlandoItems[moveName]
+        # Ignore these moves.
+        if moveEnum in {PlandoItems.Camera, PlandoItems.Shockwave}:
+            continue
+        move_options = js.document.getElementsByClassName(f"plando-{moveName}-option")
+        if moveEnum in selectedPlandoMoves:
+            # Disable this move as a dropdown option.
+            for option in move_options:
+                option.setAttribute("disabled", "disabled")
+        else:
+            # Re-enable this move as a dropdown option.
+            for option in move_options:
+                option.removeAttribute("disabled")
+    # Deselect all the plando moves across the dropdowns.
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    for dropdown in item_dropdowns:
+        if dropdown.value == "":
+            continue
+        move = PlandoItems[dropdown.value]
+        if move in selectedPlandoMoves:
+            dropdown.value = ""
 
 
 @bind("click", "random_medal_requirement")
@@ -910,6 +1197,27 @@ def toggle_extreme_prices_option(event):
         price_option = document.getElementById("random_prices")
         if price_option.value == "extreme":
             price_option.value = "high"
+
+
+@bind("change", "shockwave_status")
+def plando_disable_camera_shockwave(evt):
+    """Disable placement of camera/shockwave if they are not shuffled."""
+    shockwave_status = document.getElementById("shockwave_status").value
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    move_options = js.document.getElementsByClassName(f"plando-camera-shockwave-option")
+    disabled = shockwave_status == "start_with" or shockwave_status == "vanilla"
+    if disabled:
+        # Disable Camera and Shockwave dropdown options.
+        for option in move_options:
+            option.setAttribute("disabled", "disabled")
+        # Remove these items anywhere they've been selected.
+        for dropdown in item_dropdowns:
+            if dropdown.value == "Camera" or dropdown.value == "Shockwave":
+                dropdown.value = ""
+    else:
+        # Re-enable Camera and Shockwave dropdown options.
+        for option in move_options:
+            option.removeAttribute("disabled")
 
 
 @bind("change", "logic_type")
@@ -958,6 +1266,62 @@ def hide_override_cosmetics(event):
     document.getElementById("override_cosmetics").checked = True
 
 
+@bind("click", "nav-music-tab")
+@bind("change", "music_bgm_randomized")
+def rename_default_bgm_options(evt):
+    """Rename the default options for BGM music selection."""
+    toggleElem = js.document.getElementById(f"music_bgm_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"BGM-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
+
+
+@bind("click", "nav-music-tab")
+@bind("change", "music_majoritems_randomized")
+def rename_default_majoritems_options(evt):
+    """Rename the default options for major item music selection."""
+    toggleElem = js.document.getElementById(f"music_majoritems_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"MajorItem-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
+
+
+@bind("click", "nav-music-tab")
+@bind("change", "music_minoritems_randomized")
+def rename_default_minoritems_options(evt):
+    """Rename the default options for minor item music selection."""
+    toggleElem = js.document.getElementById(f"music_minoritems_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"MinorItem-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
+
+
+@bind("click", "nav-music-tab")
+@bind("change", "music_events_randomized")
+def rename_default_events_options(evt):
+    """Rename the default options for event music selection."""
+    toggleElem = js.document.getElementById(f"music_events_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"Event-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
+
+
 @bind("click", "select_keys")
 def toggle_key_settings(event):
     """Disable other keys settings when selecting keys. Toggle Key Selector Modal."""
@@ -978,12 +1342,80 @@ def toggle_key_settings(event):
         selector.setAttribute("disabled", "disabled")
 
 
+@bind("click", "key_8_helm")
+@bind("click", "select_keys")
+@bind("click", "starting_keys_list_selected")
+def plando_disable_keys(evt):
+    """Disable keys from being selected for locations in the plandomizer, depending on the current settings."""
+    # This dict will map our key strings to enum values.
+    keyDict = {1: "JungleJapesKey", 2: "AngryAztecKey", 3: "FranticFactoryKey", 4: "GloomyGalleonKey", 5: "FungiForestKey", 6: "CrystalCavesKey", 7: "CreepyCastleKey", 8: "HideoutHelmKey"}
+    # Determine which keys are enabled and which are disabled.
+    disabled_keys = set()
+    if js.document.getElementById("select_keys").checked:
+        starting_keys_list_selected = js.document.getElementById("starting_keys_list_selected")
+        # All keys the user starts with are disabled.
+        disabled_keys.update({x.value for x in starting_keys_list_selected.selectedOptions})
+    # If Key 8 is locked in Helm, it gets disabled.
+    if js.document.getElementById("key_8_helm").checked:
+        disabled_keys.add("HideoutHelmKey")
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    # Look at every key and react if it's enabled or disabled.
+    for i in range(1, 9):
+        key_string = keyDict[i]
+        if key_string in disabled_keys:
+            key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
+            # Disable this key as a dropdown option.
+            for option in key_options:
+                option.setAttribute("disabled", "disabled")
+            # De-select this key everywhere it is selected.
+            for dropdown in item_dropdowns:
+                if dropdown.value == key_string:
+                    dropdown.value = ""
+        else:
+            key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
+            # Re-enable this key as a dropdown option.
+            for option in key_options:
+                option.removeAttribute("disabled")
+
+
 @bind("click", "helm_hurry")
 def disable_helm_hurry(evt):
     """Disable Helm Hurry Selector when Helm Hurry is off."""
     disabled = True
     selector = js.document.getElementById("helmhurry_list_modal")
     if js.document.getElementById("helm_hurry").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "remove_barriers_enabled")
+def disable_remove_barriers(evt):
+    """Disable Remove Barriers Selector when Remove Barriers is off."""
+    disabled = True
+    selector = js.document.getElementById("remove_barriers_modal")
+    if js.document.getElementById("remove_barriers_enabled").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "faster_checks_enabled")
+def disable_faster_checks(evt):
+    """Disable Faster Checks Selector when Faster Checks is off."""
+    disabled = True
+    selector = js.document.getElementById("faster_checks_modal")
+    if js.document.getElementById("faster_checks_enabled").checked:
         disabled = False
     try:
         if disabled:
@@ -1008,3 +1440,57 @@ def toggle_vanilla_door_rando(evt):
     else:
         wrinkly_rando.removeAttribute("disabled")
         tns_rando.removeAttribute("disabled")
+
+
+@bind("click", "starting_moves_reset")
+def reset_starting_moves(evt):
+    """Reset the starting move selector to have nothing selected."""
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("none")
+    # Update the plandomizer dropdowns.
+    plando_disable_starting_moves(evt)
+
+
+@bind("click", "starting_moves_start_all")
+def start_all_starting_moves(evt):
+    """Update the starting move selector to start with all items."""
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("start")
+    # Update the plandomizer dropdowns.
+    plando_disable_starting_moves(evt)
+
+
+@bind("click", "randomize_settings")
+def shuffle_settings(evt):
+    """Randomize all non-cosmetic settings."""
+    randomize_settings()
+
+    # Run additional functions to ensure there are no conflicts.
+    update_ui_states(evt)
+
+
+musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.keys()]
+
+
+@bind("click", "settings_table_collapse_toggle")
+@bindList("click", musicToggles, suffix="_collapse_toggle")
+def toggle_collapsible_container(evt):
+    """Show or hide a collapsible container."""
+    targetElement = evt.target
+    if "collapse_toggle" not in targetElement.id:
+        # Get the parent of this element.
+        targetElement = targetElement.parentElement
+    toggledElement = re.search("^(.+)_collapse_toggle$", targetElement.id)[1]
+    """Open or close the settings table on the Seed Info tab."""
+    settingsTable = js.document.getElementById(toggledElement)
+    settingsTable.classList.toggle("collapsed")
+    toggledArrow = f'{toggledElement.replace("_", "-")}-expand-arrow'
+    settingsArrow = js.document.getElementsByClassName(toggledArrow).item(0)
+    settingsArrow.classList.toggle("flipped")
+
+
+@bind("click", "plando_toggle_color_table")
+def toggle_plando_hint_color_table(evt):
+    """Show or hide the table that shows possible hint colors."""
+    hintColorTable = js.document.getElementById("plando_hint_color_table")
+    hintColorTable.classList.toggle("hidden")

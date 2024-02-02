@@ -1,20 +1,21 @@
 """Crown Randomizer Placement Code."""
+
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Lists.CrownLocations import CrownLocations
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.CustomLocations import CustomLocations
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 
 class CrownPlacementShortData:
     """Class to store small parts of information relevant to the placement algorithm."""
 
-    def __init__(self, map, coords, scale, default, vanilla):
+    def __init__(self, map, coords, max_size, default, vanilla):
         """Initialize with provided data."""
         self.map = map
         self.coords = coords
-        self.scale = scale
+        self.max_size = max_size
         self.default = default
         self.vanilla = vanilla
 
@@ -40,12 +41,12 @@ def randomize_crown_pads(spoiler):
         ROM_COPY = LocalROM()
         for level in spoiler.crown_locations:
             for crown in spoiler.crown_locations[level]:
-                crown_data = CrownLocations[level][crown]
+                crown_data = CustomLocations[level][crown]
                 idx = spoiler.crown_locations[level][crown]
-                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.scale, idx, crown_data.is_vanilla))
-                if crown_data.is_vanilla:
+                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.max_size, idx, crown_data.vanilla_crown))
+                if crown_data.vanilla_crown:
                     new_vanilla_crowns.append(crown_data.map)
-                if not crown_data.is_vanilla:
+                if not crown_data.vanilla_crown:
                     if crown_data.map not in action_maps:
                         action_maps.append(crown_data.map)
         for cont_map_id in action_maps:
@@ -77,6 +78,7 @@ def randomize_crown_pads(spoiler):
                 for crown in placements:
                     if crown.map == cont_map_id and not crown.vanilla:
                         # Place new crown
+                        crown_scale = crown.max_size / 160
                         selected_id = getNextFreeID(cont_map_id, crown_ids)
                         crown_ids.append(selected_id)
                         persisted_m2.append(
@@ -84,7 +86,7 @@ def randomize_crown_pads(spoiler):
                                 int(float_to_hex(crown.coords[0]), 16),
                                 int(float_to_hex(crown.coords[1]), 16),
                                 int(float_to_hex(crown.coords[2]), 16),
-                                int(float_to_hex(crown.scale), 16),
+                                int(float_to_hex(crown_scale), 16),
                                 0x6B0BEE32,
                                 0x9B4D326F,
                                 0,

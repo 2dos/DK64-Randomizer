@@ -1,10 +1,9 @@
 """Rando write bananaport locations."""
-from imp import source_from_cache
 
 import js
 from randomizer.Enums.Settings import BananaportRando
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 
 def randomize_bananaport(spoiler):
@@ -25,7 +24,7 @@ def randomize_bananaport(spoiler):
                 ROM_COPY.seek(start + 0x28)
                 obj_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 if obj_type in pad_types:
-                    pad_index = pad_types.index(obj_type)
+                    pad_types.index(obj_type)
                     ROM_COPY.seek(start + 0x2A)
                     obj_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     ROM_COPY.seek(start + 0)

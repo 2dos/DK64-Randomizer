@@ -1,5 +1,7 @@
 """Library functions for the build procedure."""
+
 import struct
+from PIL import Image
 
 main_pointer_table_offset = 0x101C50
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
@@ -8,7 +10,35 @@ newROMName = "rom/dk64-randomizer-base.z64"
 finalROM = "rom/dk64-randomizer-base-dev.z64"
 music_size = 0x8000
 heap_size = 0x34000 + music_size
-flut_size = 0x640
+flut_size = 0
+MODEL_DIRECTORY = "assets/models/"
+
+barrel_skins = (
+    "gb",
+    "dk",
+    "diddy",
+    "lanky",
+    "tiny",
+    "chunky",
+    "bp",
+    "nin_coin",
+    "rw_coin",
+    "key",
+    "crown",
+    "medal",
+    "potion",
+    "bean",
+    "pearl",
+    "fairy",
+    "rainbow",
+    "fakegb",
+    "melon",
+)
+
+
+def getBonusSkinOffset(offset: int):
+    """Get texture index after the barrel skins."""
+    return 6026 + (2 * len(barrel_skins)) + offset
 
 
 def intf_to_float(intf):
@@ -24,3 +54,24 @@ def float_to_hex(f):
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
+
+def hueShift(im: Image, amount: int):
+    """Apply a hue shift on an image."""
+    hsv_im = im.convert("HSV")
+    im_px = im.load()
+    w, h = hsv_im.size
+    hsv_px = hsv_im.load()
+    for y in range(h):
+        for x in range(w):
+            old = list(hsv_px[x, y]).copy()
+            old[0] = (old[0] + amount) % 360
+            hsv_px[x, y] = (old[0], old[1], old[2])
+    rgb_im = hsv_im.convert("RGB")
+    rgb_px = rgb_im.load()
+    for y in range(h):
+        for x in range(w):
+            new = list(rgb_px[x, y])
+            new.append(list(im_px[x, y])[3])
+            im_px[x, y] = (new[0], new[1], new[2], new[3])
+    return im

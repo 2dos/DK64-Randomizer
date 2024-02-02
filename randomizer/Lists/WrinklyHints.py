@@ -1,4 +1,9 @@
 """Hint location data for Wrinkly hints."""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, List, Union
+
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.WrinklyKong import WrinklyLocation
@@ -7,7 +12,7 @@ from randomizer.Enums.WrinklyKong import WrinklyLocation
 class HintLocation:
     """Hint object for Wrinkly hint data locations."""
 
-    def __init__(self, name, kong: Kongs, location: WrinklyLocation, hint, level: Levels, banned_keywords=[]):
+    def __init__(self, name: str, kong: Kongs, location: WrinklyLocation, hint: str, level: Levels, banned_keywords: List[Union[Any, str]] = []) -> None:
         """Create wrinkly hint object.
 
         Args:
@@ -20,9 +25,12 @@ class HintLocation:
         self.kong = kong
         self.location = location
         self.hint = hint
+        self.short_hint = None
         self.hint_type = -1
         self.banned_keywords = banned_keywords.copy()
         self.level = level
+        self.related_location = None
+        self.related_flag = None
 
 
 hints = [
@@ -67,8 +75,25 @@ hints = [
 ]
 
 
-def ClearHintMessages():
+def ClearHintMessages() -> None:
     """Reset the hint message for all hints."""
     for hint in hints:
         if hint.name != "First Time Talk":
             hint.hint = ""
+
+
+PointSpreadSelector = []
+PointSpreadBase = [
+    ("Kongs", 9),
+    ("Keys", 9),
+    ("Guns", 7),
+    ("Instruments", 7),
+    ("Training Moves", 5),
+    ("Important Shared", 5),
+    ("Pad Moves", 3),
+    ("Barrel Moves", 3),
+    ("Active Moves", 3),
+    ("Bean", 3),
+]
+for item in PointSpreadBase:
+    PointSpreadSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

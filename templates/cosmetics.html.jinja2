@@ -1,3 +1,4 @@
+{% from 'macros.html.jinja2' import list_selector %}
 <div class="container" style="margin-top: 20px;">
     <div id="override_div"
          class="form-check form-switch item-switch center-flex"
@@ -9,117 +10,21 @@
                    name="override_cosmetics"
                    id="override_cosmetics"
                    value="True"
+                   display_name="Override Default Cosmetics"
                    checked/>
             Override Default Cosmetics
         </label>
     </div>
     <div class="row">
         <div class="col border panel">
-            <h2 class="title">MUSIC RANDO
-                <label data-toggle="tooltip" 
-                        title="Randomizes all Music Selections.">
-                    <input class="dice_checkbox"
-                            type="checkbox"
-                            name="random_music"
-                            id="random_music"
-                            value="True"/>
-                    <label for="random_music"></label>
-                </label>
-            </h2>
-            <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Randomizes Background Music.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="music_bgm_randomized"
-                                id="music_bgm_randomized"
-                                value="True"/>
-                        Random Background Music
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Randomizes Major Item Themes.">
-                        <input class="form-check-input"
-                            type="checkbox"
-                            name="music_majoritems_randomized"
-                            id="music_majoritems_randomized"
-                            value="True"/>
-                        Random Major Item Themes
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Randomizes Minor Item Themes.">
-                        <input class="form-check-input"
-                            type="checkbox"
-                            name="music_minoritems_randomized"
-                            id="music_minoritems_randomized"
-                            value="True"/>
-                        Random Minor Item Themes
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Randomizes Event Themes.">
-                        <input class="form-check-input"
-                            type="checkbox"
-                            name="music_events_randomized"
-                            id="music_events_randomized"
-                            value="True"/>
-                        Random Event Themes
-                    </label>
-                </div>
-                <div class="spacer"></div>
-            </div>
-            <hr />
-            <h2 class="title">CUSTOM MUSIC</h2>
-            <p class="select-title">Cosmetics ZIP (Check <a style="text-decoration:underline" target="_blank" href="https://github.com/2dos/DK64-Randomizer/wiki/Creating-Cosmetics-Data-packs">wiki</a> for format)</p>
-            <input accept=".zip"
-                   class="form-control"
-                   type="file"
-                   id="music_file"
-                   name="music_file"/>
-            <hr />
             <div class="row">
                 <h2 class="title">MISCELLANEOUS</h2>
                 <div class="flex-container">
-                    <div class="item-multiselect">
-                        <div class="color-selector">
-                            <p class="select-title">Beaver Bother Klaptrap</p>
-                            <select name="klaptrap_model"
-                                    id="klaptrap_model"
-                                    class="form-select multi-select"
-                                    aria-label="Klaptrap"
-                                    multiple
-                                    size="5">
-                                <option selected value="green">
-                                    Green
-                                </option>
-                                <option value="purple">
-                                    Purple
-                                </option>
-                                <option value="red">
-                                    Red
-                                </option>
-                                <option value="random_klap"
-                                        data-toggle="tooltip"
-                                        title="Selects a random Klaptrap color (Green, Purple, or Red).">
-                                    Random Klaptrap Variant
-                                </option>
-                                <option value="random_model"
-                                        data-toggle="tooltip"
-                                        title="Selects a random model from the game from a pre-determined list.">
-                                    Random Model
-                                </option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="item-select">
                         <p class="select-title">D-Pad Display</p>
                         <select name="dpad_display"
                                 id="dpad_display"
+                                display_name="D-Pad Display"
                                 class="form-select center-div"
                                 aria-label="Randomization type"
                                 data-toggle="tooltip"
@@ -135,6 +40,26 @@
                             </option>
                         </select>
                     </div>
+                    <div class="item-select">
+                        <p class="select-title">Random Models</p>
+                        <select name="random_models"
+                                id="random_models"
+                                display_name="Random Models"
+                                class="form-select center-div"
+                                aria-label="Random Models"
+                                data-toggle="tooltip"
+                                title="Changes various models in the game">
+                            <option selected id="off" value="off" title="">
+                                Off
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="extreme" value="extreme">
+                                Extreme
+                            </option>
+                        </select>
+                    </div>
                 </div>
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
@@ -144,6 +69,7 @@
                                    type="checkbox"
                                    name="misc_cosmetics"
                                    id="misc_cosmetics"
+                                   display_name="Random Miscellaneous Cosmetics"
                                    value="True"/>
                             Random Miscellaneous Cosmetics
                         </label>
@@ -155,6 +81,7 @@
                                 type="checkbox"
                                 name="disco_chunky"
                                 id="disco_chunky"
+                                display_name="Disco Chunky"
                                 value="True"/>
                             Disco Chunky
                         </label>
@@ -166,6 +93,7 @@
                                 type="checkbox"
                                 name="dark_mode_textboxes"
                                 id="dark_mode_textboxes"
+                                display_name="Dark Mode Textboxes"
                                 value="True"/>
                             Dark Mode Textboxes
                         </label>
@@ -176,13 +104,28 @@
                                title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="holiday_setting"
-                                   id="holiday_setting"
+                                   name="holiday_setting_offseason"
+                                   id="holiday_setting_offseason"
+                                   display_name="Holiday Mode"
                                    value="False"/>
                             Holiday Mode
                         </label>
                     </div>
                     <div class="spacer holiday" hidden></div>
+                    {# 
+                    HANDLING HOLIDAY MODE:
+                    Supported Holiday Mode (Is currently a holiday season)
+                    - Remove "hidden" from holiday spacer
+                    - Remove "hidden" from holiday item-switch
+                    - Set input name/id to "holiday_setting"
+                    - Set input value to "True"
+
+                    Off-season:
+                    - Add "hidden" from holiday spacer
+                    - Add "hidden" from holiday item-switch
+                    - Set input name/id to "holiday_setting_offseason"
+                    - Set input value to "False"
+                     #}
                 </div>
             </div>
             <hr />
@@ -196,6 +139,7 @@
                                    type="checkbox"
                                    name="remove_water_oscillation"
                                    id="remove_water_oscillation"
+                                   display_name="Remove Water Oscillation"
                                    value="True"/>
                             Remove Water Oscillation
                         </label>
@@ -207,8 +151,33 @@
                                    type="checkbox"
                                    name="head_balloons"
                                    id="head_balloons"
+                                   display_name="Kong Head on Balloons"
                                    value="True"/>
                             Kong Head on Balloons
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Brightens the door-opening sequence in Troff 'n' Scoff to make the reward easier to see.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="troff_brighten"
+                                   id="troff_brighten"
+                                   display_name="Brighten Boss Door Opening"
+                                   value="True"/>
+                            Brighten Boss Door Opening
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="The crosshair used in various situations, like shooting your gun, will have a black outline.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="crosshair_outline"
+                                   id="crosshair_outline"
+                                   display_name="Outlined Crosshair"
+                                   value="True"/>
+                            Outlined Crosshair
                         </label>
                     </div>
                 </div>
@@ -219,6 +188,7 @@
                         </p>
                         <select name="colorblind_mode"
                                 id="colorblind_mode"
+                                display_name="Colorblind Mode"
                                 class="form-select"
                                 aria-label="Colorblind Mode">
                             <option selected value="off">
@@ -250,217 +220,35 @@
                     <label for="random_colors"></label>
                 </label>
             </h2>
+            {% set kong_zones = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]} %}
             <div class="flex-container">
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">DK</p>
-                        <select name="dk_colors"
-                                id="dk_colors"
-                                class="form-select multi-select"
-                                aria-label="DK"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="dk_custom">
-                            <div class="input-group mb-3 dkColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="dk_custom_color"
-                                       id="dk_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                {% for kong in kong_zones %}
+                    <div class="flex-container" style="flex-direction:column">
+                        <div class="item-color-select">
+                            <div class="color-selector">
+                                <p class="select-title">{{ kong }}</p>
+                                {% for zone in kong_zones[kong] %}
+                                    <div id="{{ kong.lower() }}_{{ zone.lower() }}_custom">
+                                        <div class="input-group mb-3 {{ kong.lower() }}{{ zone.lower() }}ColorPicker" style="display:flex">
+                                            <select name="{{ kong.lower() }}_{{ zone.lower() }}_colors" id="{{ kong.lower() }}_{{ zone.lower() }}_colors" class="form-select" aria-label="{{ kong }} {{ zone }}">
+                                                <option selected value="vanilla">{{ zone }}: Vanilla</option>
+                                                <option value="randomized">{{ zone }}: Randomized</option>
+                                                <option value="custom">{{ zone }}: Custom</option>
+                                            </select>
+                                            <div class="color-input-container">
+                                                <input type="color"
+                                                    name="{{ kong.lower() }}_{{ zone.lower() }}_custom_color"
+                                                    id="{{ kong.lower() }}_{{ zone.lower() }}_custom_color"
+                                                    default="#000000"
+                                                    class="color-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Diddy</p>
-                        <select name="diddy_colors"
-                                id="diddy_colors"
-                                class="form-select multi-select"
-                                aria-label="Diddy"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="diddy_custom">
-                            <div class="input-group mb-3 diddyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="diddy_custom_color"
-                                       id="diddy_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Lanky</p>
-                        <select name="lanky_colors"
-                                id="lanky_colors"
-                                class="form-select multi-select"
-                                aria-label="Lanky"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="lanky_custom">
-                            <div class="input-group mb-3 lankyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="lanky_custom_color"
-                                       id="lanky_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Tiny</p>
-                        <select name="tiny_colors"
-                                id="tiny_colors"
-                                class="form-select multi-select"
-                                aria-label="Tiny"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="tiny_custom">
-                            <div class="input-group mb-3 tinyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="tiny_custom_color"
-                                       id="tiny_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Chunky</p>
-                        <select name="chunky_colors"
-                                id="chunky_colors"
-                                class="form-select multi-select"
-                                aria-label="Chunky"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="chunky_custom">
-                            <div class="input-group mb-3 chunkyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="chunky_custom_color"
-                                       id="chunky_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Rambi</p>
-                        <select name="rambi_colors"
-                                id="rambi_colors"
-                                class="form-select multi-select"
-                                aria-label="Rambi"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="rambi_custom">
-                            <div class="input-group mb-3 rambiColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="rambi_custom_color"
-                                       id="rambi_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Enguarde</p>
-                        <select name="enguarde_colors"
-                                id="enguarde_colors"
-                                class="form-select multi-select"
-                                aria-label="Enguarde"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="enguarde_custom">
-                            <div class="input-group mb-3 enguardeColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="enguarde_custom_color"
-                                       id="enguarde_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             <hr />
             <div class="row">
@@ -468,22 +256,12 @@
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="NOTE: This isn't true widescreen, just the game's version of it.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="camera_is_widescreen"
-                                   id="camera_is_widescreen"
-                                   value="True"/>
-                            Anamorphic Widescreen
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
                                title="If enabled, the camera will look up when the player holds up on the stick, the opposite of how the vanilla game behaves.">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="camera_is_not_inverted"
                                    id="camera_is_not_inverted"
+                                   display_name="Disable Y-Inverted First Person Camera"
                                    value="True"/>
                             Disable Y-Inverted First Person Camera
                         </label>
@@ -495,11 +273,26 @@
                                    type="checkbox"
                                    name="camera_is_follow"
                                    id="camera_is_follow"
+                                   display_name="Follow Cam"
                                    value="True"/>
                             Follow Cam
                         </label>
                     </div>
-                    <div class="spacer"></div>
+                    <div class="flex-container" id="widescreen_row">
+                        <div class="form-check form-switch item-switch">
+                            <label data-toggle="tooltip"
+                                title="IN DEVELOPMENT: 16:9 version of DK64, based off the standalone hack by gamemasterplc. EMULATOR ONLY: Consoles don't like this.">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="true_widescreen"
+                                    id="true_widescreen"
+                                    display_name="Widescreen (Emulator Only)"
+                                    value="True"/>
+                                Widescreen (Emulator Only)
+                            </label>
+                        </div>
+                        <div class="spacer"></div>
+                    </div>
                 </div>
                 {# <div class="flex-container">
                     <div class="item-select">
@@ -530,6 +323,7 @@
                             max="100"
                             name="music_volume"
                             id="music_volume"
+                            display_name="Music Volume"
                             type="number"
                             data-toggle="tooltip"
                             title="Music Volume"
@@ -543,6 +337,7 @@
                             max="100"
                             name="sfx_volume"
                             id="sfx_volume"
+                            display_name="SFX Volume"
                             type="number"
                             data-toggle="tooltip"
                             title="SFX Volume"
@@ -555,76 +350,29 @@
     </div>
 </div>
 <script>
-    $(function() {
-        $('.dkColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#dk_custom_color').trigger("change")
-            }
-        })
-        $('.diddyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#diddy_custom_color').trigger("change")
-            }
-        })
-        $('.lankyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#lanky_custom_color').trigger("change")
-            }
-        })
-        $('.tinyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#tiny_custom_color').trigger("change")
-            }
-        })
-        $('.chunkyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#chunky_custom_color').trigger("change")
-            }
-        })
-        $('.rambiColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#rambi_custom_color').trigger("change")
-            }
-        })
-        $('.enguardeColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#enguarde_custom_color').trigger("change")
-            }
-        })
-    })
+    KONG_ZONES = {
+        "DK": ["Fur", "Tie"], 
+        "Diddy": ["Clothes"], 
+        "Lanky": ["Clothes", "Fur"], 
+        "Tiny": ["Clothes", "Hair"], 
+        "Chunky": ["Main", "Other"], 
+        "Rambi": ["Skin"], 
+        "Enguarde": ["Skin"]
+    }
     
     $('.nav-tabs').click(function() {
         var settings = (document.cookie).split('saved_settings=')
         if (typeof settings[1] !== 'undefined') {
             var object = JSON.parse(settings[1])
-            if (object.hasOwnProperty('dk_custom_color')) {
-                $('.dkColorPicker').attr('style', 'background-color:' + object.dk_custom_color + ';')
-            }
-            if (object.hasOwnProperty('diddy_custom_color')) {
-                $('.diddyColorPicker').attr('style', 'background-color:' + object.diddy_custom_color + ';')
-            }
-            if (object.hasOwnProperty('lanky_custom_color')) {
-                $('.lankyColorPicker').attr('style', 'background-color:' + object.lanky_custom_color + ';')
-            }
-            if (object.hasOwnProperty('tiny_custom_color')) {
-                $('.tinyColorPicker').attr('style', 'background-color:' + object.tiny_custom_color + ';')
-            }
-            if (object.hasOwnProperty('chunky_custom_color')) {
-                $('.chunkyColorPicker').attr('style', 'background-color:' + object.chunky_custom_color + ';')
-            }
-            if (object.hasOwnProperty('rambi_custom_color')) {
-                $('.rambiColorPicker').attr('style', 'background-color:' + object.rambi_custom_color + ';')
-            }
-            if (object.hasOwnProperty('enguarde_custom_color')) {
-                $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
-            }
+            Object.keys(KONG_ZONES).forEach(kong => {
+                KONG_ZONES[kong].forEach(zone => {
+                    const attribute = `${kong.toLowerCase()}_${zone.toLowerCase()}_custom_color`;
+                    const cls = `.${kong.toLowerCase()}${zone.toLowerCase()}ColorPicker`;
+                    if (object.hasOwnProperty(attribute)) {
+                        $(cls).attr('style', 'background-color:' + object[attribute] + ';')
+                    }
+                })
+            })
         }
     })
     $(function() {

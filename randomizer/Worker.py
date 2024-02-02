@@ -1,8 +1,10 @@
 """Task file to run functions in the background via webworkers."""
+
 import json
-import uuid
-import js
 import time
+import uuid
+
+import js
 
 
 def background(body):
@@ -21,11 +23,13 @@ def background(body):
             branch = "master"
             url = "https://generate.dk64rando.com/generate"
         else:
-            url = "https://generate.dk64rando.com/generate"
+            url = "https://dev-generate.dk64rando.com/generate"
     else:
-        url = "http://" + str(js.window.location.hostname) + ":5000/generate"
+        url = "http://" + str(js.window.location.hostname) + ":8000/generate"
         branch = "dev"
     # Get the current time in milliseconds so we can use it as a key for the future.
     current_time = str(time.time()) + str(uuid.uuid1())
     url = url + "?gen_key=" + current_time
+    js.wipeToastHistory()
+    js.postToastMessage("Initializing", False, 0)
     js.generate_seed(url, json.dumps(body), branch)

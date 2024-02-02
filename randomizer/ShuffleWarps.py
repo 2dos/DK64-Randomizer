@@ -1,10 +1,8 @@
 """Randomizes Bananaports."""
+
 import random
 
-import js
-import randomizer.Logic as Logic
-from randomizer.Enums.Warps import Warps
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla, VanillaBananaportSelector
 from randomizer.LogicClasses import TransitionFront
 
@@ -142,15 +140,15 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
                         selected_warp_list.append(warp.swap_index)
 
 
-def LinkWarps():
+def LinkWarps(spoiler):
     """Given the current state of warps, create the transitions between them."""
     # Remove all existing transitions that are warp transitions - this prevents warp logic from bleeding between seed gens
-    for region in Logic.Regions.values():
+    for region in spoiler.RegionList.values():
         region.exits = [exit for exit in region.exits if not exit.isBananaportTransition]
     # For each warp, identify the source and destination regions
     for warp_data in BananaportVanilla.values():
         destination_warp_data = getWarpFromSwapIndex(warp_data.tied_index)
         if warp_data.region_id != destination_warp_data.region_id:
-            source_region = Logic.Regions[warp_data.region_id]
+            source_region = spoiler.RegionList[warp_data.region_id]
             # The source region gets a transition to the destination region conditionally based on the destination warp being tagged
             source_region.exits.append(TransitionFront(destination_warp_data.region_id, destination_warp_data.event_logic, isBananaportTransition=True))

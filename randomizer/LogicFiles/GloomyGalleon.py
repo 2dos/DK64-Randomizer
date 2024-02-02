@@ -7,13 +7,14 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ShuffleLoadingZones
+from randomizer.Enums.Settings import ShuffleLoadingZones, GalleonWaterSetting, FasterChecksSelected, RemovedBarriersSelected
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.GloomyGalleonMedals: Region("Gloomy Galleon Medals", "Gloomy Galleon Medal Rewards", Levels.GloomyGalleon, False, None, [
+    Regions.GloomyGalleonMedals: Region("Gloomy Galleon Medals", "Galleon Medal Rewards", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkeyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonDiddyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonLankyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= l.settings.medal_cb_req),
@@ -25,23 +26,30 @@ LogicRegions = {
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
         LocationLogic(Locations.GalleonBattleArena, lambda l: (not l.settings.crown_placement_rando and ((l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)))),
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
+        LocationLogic(Locations.GalleonMainEnemy_ChestRoom0, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_ChestRoom1, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_NearVineCannon, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_CrankyCannon, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_PeanutTunnel, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_CoconutTunnel, lambda l: True),
     ], [
         Event(Events.GalleonEntered, lambda l: True),
-        Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.settings.high_req)),
-        Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.settings.high_req)),
-        Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
-        # Gate to shipyard always open in rando
-        Event(Events.ShipyardGateOpened, lambda l: True),
-        Event(Events.GalleonCannonRoomOpened, lambda l: l.pineapple and l.ischunky),
+        Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
+        Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
+        Event(Events.LighthouseGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)),
+        Event(Events.ShipyardGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)),
+        Event(Events.GalleonCannonRoomOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonCannonGame, False)),
         Event(Events.GalleonW1aTagged, lambda l: True),
         Event(Events.GalleonW2aTagged, lambda l: True),
+        Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
+        Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
         TransitionFront(Regions.GalleonPastVines, lambda l: l.vines or l.CanMoonkick()),
-        TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterSwitch in l.Events)),
-        TransitionFront(Regions.LighthouseSurface, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events or l.phasewalk or l.CanSkew(False)),
-        TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardGateOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterSwitch in l.Events)),
+        TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)),
+        TransitionFront(Regions.LighthouseSurface, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or Events.LighthouseGateOpened in l.Events or l.phasewalk or l.CanSkew(False)),
+        TransitionFront(Regions.Shipyard, lambda l: (l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or Events.ShipyardGateOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)) and (not l.IsLavaWater() or l.Melons >= 2)),
         TransitionFront(Regions.CrankyGalleon, lambda l: True),
     ]),
 
@@ -61,27 +69,29 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.CanPhaseswim() or (l.phasewalk and l.CanGetOnCannonGamePlatform())),
-        TransitionFront(Regions.Shipyard, lambda l: l.CanPhaseswim() or (l.phasewalk and l.CanGetOnCannonGamePlatform())),
+        TransitionFront(Regions.Shipyard, lambda l: (l.CanPhaseswim() or (l.phasewalk and l.CanGetOnCannonGamePlatform())) and (not l.IsLavaWater() or l.Melons >= 2)),
     ]),
 
     Regions.LighthouseSurface: Region("Lighthouse Surface", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonKasplatLighthouseArea, lambda l: not l.settings.kasplat_rando),
     ], [
-        Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.settings.high_req)),
-        Event(Events.ActivatedLighthouse, lambda l: l.settings.high_req),
+        Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates)) and Events.WaterLowered in l.Events),
+        Event(Events.ActivatedLighthouse, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship)),
+        Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
+        Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
-        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
-        TransitionFront(Regions.LighthouseUnderwater, lambda l: l.swim),
-        TransitionFront(Regions.LighthousePlatform, lambda l: Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
-        TransitionFront(Regions.LighthouseSnideAlcove, lambda l: Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
+        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or Events.LighthouseGateOpened in l.Events),
+        TransitionFront(Regions.LighthouseUnderwater, lambda l: l.swim and (not l.IsLavaWater() or l.Melons >= 3)),
+        TransitionFront(Regions.LighthousePlatform, lambda l: Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
+        TransitionFront(Regions.LighthouseSnideAlcove, lambda l: Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: l.CanPhaseswim()),
     ]),
 
     Regions.LighthousePlatform: Region("Lighthouse Platform", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDiddyShipSwitch, lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.Slam and l.isdiddy),
     ], [
-        Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar and l.isdiddy),
+        Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar and l.canTravelToMechFish() and l.isdiddy),
         Event(Events.GalleonW1bTagged, lambda l: True),
         Event(Events.GalleonW5aTagged, lambda l: True),
     ], [
@@ -96,7 +106,8 @@ LogicRegions = {
     Regions.LighthouseUnderwater: Region("Lighthouse Underwater", "Lighthouse Area", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonLankyEnguardeChest, lambda l: Events.LighthouseEnguarde in l.Events and l.lanky),
     ], [
-        Event(Events.WaterSwitch, lambda l: True),
+        Event(Events.WaterLowered, lambda l: True),
+        Event(Events.WaterRaised, lambda l: True),
         Event(Events.LighthouseEnguarde, lambda l: l.lanky),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -122,7 +133,9 @@ LogicRegions = {
 
     Regions.Lighthouse: Region("Lighthouse", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items)),
-        LocationLogic(Locations.RainbowCoin_Location09, lambda l: l. shockwave),
+        LocationLogic(Locations.RainbowCoin_Location09, lambda l: True),
+        LocationLogic(Locations.GalleonLighthouseEnemy_Enemy0, lambda l: True),
+        LocationLogic(Locations.GalleonLighthouseEnemy_Enemy1, lambda l: True),
     ], [
         Event(Events.ActivatedLighthouse, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.grab and l.isdonkey),
     ], [
@@ -131,7 +144,7 @@ LogicRegions = {
     ]),
 
     Regions.MermaidRoom: Region("Mermaid Room", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonTinyPearls, lambda l: ((l.Pearls >= 1 and l.settings.fast_gbs) or l.Pearls >= 5) and (l.istiny or l.settings.free_trade_items)),
+        LocationLogic(Locations.GalleonTinyPearls, lambda l: ((l.Pearls >= 1 and l.checkFastCheck(FasterChecksSelected.galleon_mermaid_gb)) or l.Pearls >= 5) and (l.istiny or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseUnderwater, lambda l: True, Transitions.GalleonMermaidToLighthouseArea),
@@ -147,20 +160,23 @@ LogicRegions = {
     Regions.Shipyard: Region("Shipyard", "Shipyard Outskirts", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and (l.isdonkey or l.settings.free_trade_items)),
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.MelonCrate_Location05, lambda l: True),
     ], [
-        Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and (Events.WaterSwitch in l.Events or l.advanced_platforming)),
-        Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.settings.high_req)),
-        Event(Events.GalleonDiddyPad, lambda l: l.guitar and l.isdiddy and (l.swim or l.settings.high_req)),
-        Event(Events.GalleonLankyPad, lambda l: l.trombone and l.islanky and (l.swim or l.settings.high_req)),
-        Event(Events.GalleonTinyPad, lambda l: l.saxophone and l.istiny and (l.swim or l.settings.high_req)),
+        Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.advanced_platforming)),
+        Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
+        Event(Events.GalleonDiddyPad, lambda l: l.guitar and l.isdiddy and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates)) and Events.WaterLowered in l.Events),
+        Event(Events.GalleonLankyPad, lambda l: l.trombone and l.islanky and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates)) and Events.WaterLowered in l.Events),
+        Event(Events.GalleonTinyPad, lambda l: l.saxophone and l.istiny and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
         Event(Events.GalleonW2bTagged, lambda l: True),
         Event(Events.GalleonW4bTagged, lambda l: True),
         Event(Events.GalleonW5bTagged, lambda l: True),
+        Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
+        Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.ShipyardGateOpened in l.Events),
-        TransitionFront(Regions.ShipyardUnderwater, lambda l: l.swim),
-        TransitionFront(Regions.SealRace, lambda l: (Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey) or l.CanPhaseswim(), Transitions.GalleonShipyardToSeal),
+        TransitionFront(Regions.ShipyardUnderwater, lambda l: l.swim and (not l.IsLavaWater() or l.Melons >= 3)),
+        TransitionFront(Regions.SealRace, lambda l: (Events.SealReleased in l.Events and Events.WaterRaised in l.Events and l.isdonkey) or l.CanPhaseswim(), Transitions.GalleonShipyardToSeal),
         TransitionFront(Regions.CandyGalleon, lambda l: True),
         TransitionFront(Regions.FunkyGalleon, lambda l: True),
     ]),
@@ -169,7 +185,7 @@ LogicRegions = {
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
-        TransitionFront(Regions.Shipyard, lambda l: True),
+        TransitionFront(Regions.Shipyard, lambda l: not l.IsLavaWater() or l.Melons >= 2),
         TransitionFront(Regions.TreasureRoom, lambda l: Events.ShipyardTreasureRoomOpened in l.Events or l.CanPhaseswim()),
         TransitionFront(Regions.Submarine, lambda l: ((l.mini or l.CanSTS()) and l.istiny) or l.CanPhaseswim(), Transitions.GalleonShipyardToSubmarine),
         TransitionFront(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy),
@@ -186,17 +202,20 @@ LogicRegions = {
     Regions.SealRace: Region("Seal Race", "Shipyard Outskirts", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey or l.settings.free_trade_items),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonSealToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: not l.IsLavaWater() or l.Melons >= 2, Transitions.GalleonSealToShipyard),
     ], Transitions.GalleonShipyardToSeal
     ),
 
     Regions.TreasureRoom: Region("Treasure Room", "Treasure Room", Levels.GloomyGalleon, True, None, [
-        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: ((Events.WaterSwitch in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) and l.balloon and l.islanky) or (l.CanMoonkick() and l.settings.free_trade_items), MinigameType.BonusBarrel),
-    ], [], [
+        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: ((Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) and l.balloon and l.islanky) or (l.CanMoonkick() and l.settings.free_trade_items), MinigameType.BonusBarrel),
+    ], [
+        Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
+        Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
+    ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: (Events.ShipyardTreasureRoomOpened in l.Events or l.CanPhaseswim()) and l.swim),
         TransitionFront(Regions.TinyChest, lambda l: (l.mini and l.istiny and l.swim) or l.CanPhaseswim(), Transitions.GalleonTreasureToChest),
-        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: (Events.WaterSwitch in l.Events and l.spring and l.diddy) or l.CanMoonkick() or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming and l.balloon and l.islanky)),
+        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: (Events.WaterRaised in l.Events and l.spring and l.diddy) or l.CanMoonkick() or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming and l.balloon and l.islanky)),
     ]),
 
     Regions.TreasureRoomDiddyGoldTower: Region("Treasure Room Diddy Gold Tower", "Treasure Room", Levels.GloomyGalleon, False, None, [  # Deathwarp is possible without the kasplat, but you can only take fall damage once
@@ -235,7 +254,7 @@ LogicRegions = {
     ]),
 
     Regions.LankyShip: Region("Lanky Ship", "Shipyard Outskirts", Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonLanky2DoorShip, lambda l: l.islanky),
+        LocationLogic(Locations.GalleonLanky2DoorShip, lambda l: l.islanky or (l.settings.free_trade_items and l.CanPhaseswim())),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonLankyToShipyard),

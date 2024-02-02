@@ -57,27 +57,39 @@ static const short default_ftt_flags[] = {
     FLAG_BUY_GUNS, // Buy Guns
     FLAG_ICEMELT, // Tiny Temple Ice Melted
     FLAG_HATCH, // Hatch opened in Factory
-    FLAG_PEANUTGATE, // Peanut Gate Opened in Galleon
     FLAG_FIRSTJAPESGATE, // First Switch in Japes
     FLAG_FTT_BLOCKER, // B Locker
 };
 
-static const short openlevels_flags[] = {
-    FLAG_PROGRESSION_SHELLHIVEGATE, // Beehive Gate
-    FLAG_PROGRESSION_AZTECTUNNEL, // Aztec Tunnel Door
-    FLAG_PROGRESSION_FACTORY_NEUTRALSWITCH, // Factory neutral gate open
-    FLAG_COCONUTGATE, // Galleon Coconut Gate Opened
-    FLAG_PROGRESSION_FUNGIGREENTUNNEL_FEATHER, // Fungi Green Path Open (Feather)
-    FLAG_PROGRESSION_FUNGIGREENTUNNEL_PINEAPPLE, // Fungi Green Path Open (Pineapple)
-    FLAG_PROGRESSION_FUNGIGOLDTUNNEL, // Fungi Gold Path Open
+typedef struct flag_checker {
+    /* 0x000 */ int flag;
+    /* 0x004 */ ENUM_RemovedBarriers index;
+} flag_checker;
+
+static const flag_checker barrier_checks[] = {
+    {.flag=FLAG_PROGRESSION_SHELLHIVEGATE, .index=REMOVEDBARRIERS_ENUM_SHELLHIVEGATE}, // Beehive Gate
+    {.flag=FLAG_PROGRESSION_AZTECTUNNEL, .index=REMOVEDBARRIERS_ENUM_AZTECTUNNELDOOR}, // Aztec Tunnel Door
+    {.flag=FLAG_PROGRESSION_FACTORY_NEUTRALSWITCH, .index=REMOVEDBARRIERS_ENUM_FACTORYTESTINGGATE}, // Factory neutral gate open
+    {.flag=FLAG_COCONUTGATE, .index=REMOVEDBARRIERS_ENUM_LIGHTHOUSEGATE}, // Galleon Coconut Gate Opened
+    {.flag=FLAG_PROGRESSION_FUNGIGREENTUNNEL_FEATHER, .index=REMOVEDBARRIERS_ENUM_FUNGIGREENTUNNEL}, // Fungi Green Path Open (Feather)
+    {.flag=FLAG_PROGRESSION_FUNGIGREENTUNNEL_PINEAPPLE, .index=REMOVEDBARRIERS_ENUM_FUNGIGREENTUNNEL}, // Fungi Green Path Open (Pineapple)
+    {.flag=FLAG_PROGRESSION_FUNGIGOLDTUNNEL, .index=REMOVEDBARRIERS_ENUM_FUNGIYELLOWTUNNEL}, // Fungi Gold Path Open
+    {.flag=FLAG_5DT_SPAWNED, .index=REMOVEDBARRIERS_ENUM_FIVEDTSWITCHES}, // 5DT Switches Spawned
+    {.flag=FLAG_MODIFIER_PRODROOM, .index=REMOVEDBARRIERS_ENUM_PRODUCTIONROOMON}, // Prod Room On
+    {.flag=FLAG_MODIFIER_GALLEONSHIP, .index=REMOVEDBARRIERS_ENUM_SEASICKSHIPSPAWNED}, // Galleon Ship Spawned
+    {.flag=FLAG_PROGRESSION_5DIPADS, .index=REMOVEDBARRIERS_ENUM_IGLOOPADSSPAWNED}, // Caves 5DI Pads Spawned
+    {.flag=FLAG_PEANUTGATE, .index=REMOVEDBARRIERS_ENUM_SHIPWRECKGATE}, // Peanut Gate Opened in Galleon
 };
 
-static const short highreq_flags[] = {
-    FLAG_5DT_SPAWNED, // 5DT Switches Spawned
-    FLAG_MODIFIER_PRODROOM, // Prod Room On
-    FLAG_MODIFIER_GALLEONSHIP, // Galleon Ship Spawned
-    FLAG_PROGRESSION_5DIPADS, // Caves 5DI Pads Spawned
-};
+int checkBarrierSetting(ENUM_RemovedBarriers index) {
+    int addr = (int)&Rando.removed_barriers;
+    int offset = index >> 3;
+    addr += offset;
+    int mask = 0x80 >> (index & 7);
+    int value = *(unsigned char*)(addr);
+    value &= mask;
+    return value != 0;
+}
 
 void qualityOfLife_shorteners(void) {
 	if (Rando.quality_of_life.remove_cutscenes) {
@@ -89,7 +101,7 @@ void qualityOfLife_shorteners(void) {
 		TempFlagBlock[0xC] |= 0x80;
 		TempFlagBlock[0xD] |= 0x3F;
     }
-	if ((Rando.quality_of_life.reduce_lag) && (Rando.seasonal_changes != SEASON_CHRISTMAS)) {
+	if (Rando.quality_of_life.reduce_lag) {
         if (CurrentMap == MAP_CASTLE) {
             if (ObjectModel2Timer <= 5) {
                 actorData* lzcontroller = (actorData*)findActorWithType(0xC);
@@ -102,14 +114,9 @@ void qualityOfLife_shorteners(void) {
         for (int i = 0; i < sizeof(default_ftt_flags) / 2; i++) {
             setPermFlag(default_ftt_flags[i]);
         }
-        if (Rando.open_level_sections) {
-            for (int i = 0; i < sizeof(openlevels_flags)/2; i++) {
-                setPermFlag(openlevels_flags[i]);
-            }
-        }
-        if (Rando.remove_high_requirements) {
-            for (int i = 0; i < sizeof(highreq_flags)/2; i++) {
-                setPermFlag(highreq_flags[i]);
+        for (int i = 0; i < sizeof(barrier_checks)/sizeof(flag_checker); i++) {
+            if (checkBarrierSetting(barrier_checks[i].index)) {
+                setPermFlag(barrier_checks[i].flag);
             }
         }
     }
@@ -117,7 +124,9 @@ void qualityOfLife_shorteners(void) {
 
 void fastWarp(void* actor, int player_index) {
     unkMultiplayerWarpFunction(actor,player_index);
-    renderScreenTransition(3);
+    if ((!Rando.true_widescreen) || (!WS_REMOVE_TRANSITIONS)) {
+        renderScreenTransition(3);
+    }
 }
 
 void fastWarp_playMusic(void* actor) {

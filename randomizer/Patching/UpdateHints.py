@@ -1,12 +1,12 @@
 """Update wrinkly hints compressed file."""
+
 import random
-from io import BytesIO
 
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
 from randomizer.Patching.Lib import grabText, writeText
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 
 def writeWrinklyHints(file_start_offset, text):
@@ -88,11 +88,17 @@ def updateRandomHint(message: str, kongs_req=[], keywords=[], levels=[]):
 def PushHints(spoiler):
     """Update the ROM with all hints."""
     hint_arr = []
+    short_hint_arr = []
     for replacement_hint in spoiler.hint_list.values():
         if replacement_hint == "":
-            replacement_hint = "PLACEHOLDER HINT"
+            replacement_hint = "error: missing hint - report this error to the discord"
         hint_arr.append([replacement_hint.upper()])
+    for short_hint in spoiler.short_hint_list.values():
+        if short_hint == "":
+            short_hint = "error: missing hint - report this error to the discord"
+        short_hint_arr.append([short_hint.upper()])
     writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
+    writeWrinklyHints(js.pointer_addresses[12]["entries"][45]["pointing_to"], short_hint_arr)
     spoiler.hint_list.pop("First Time Talk")  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
@@ -101,6 +107,16 @@ def wipeHints():
     for x in range(len(hints)):
         if hints[x].kong != Kongs.any:
             hints[x].hint = ""
+
+
+def PushItemLocations(spoiler):
+    """Push item hints to ROM."""
+    text_arr = []
+    for loc in spoiler.location_references:
+        text_arr.append([loc.item_name.upper()])
+        for subloc in loc.locations:
+            text_arr.append([subloc.upper()])
+    writeWrinklyHints(js.pointer_addresses[12]["entries"][44]["pointing_to"], text_arr)
 
 
 def replaceIngameText(spoiler):
@@ -123,3 +139,10 @@ def replaceIngameText(spoiler):
                 # print(mod["target"])
                 old_text[mod["textbox_index"]] = ({"text": [mod["target"]]},)
         writeText(file_index, old_text)
+
+
+def PushHelpfulHints(spoiler, ROM_COPY: LocalROM):
+    """Push the flags to ROM which control the dim_solved_hints setting."""
+    for index, flag in enumerate(spoiler.tied_hint_flags.values()):
+        ROM_COPY.seek(0x1FFE000 + (2 * index))
+        ROM_COPY.writeMultipleBytes(flag, 2)

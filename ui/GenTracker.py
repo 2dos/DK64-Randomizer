@@ -1,4 +1,5 @@
 """File which generates a basic HTML tracker table for your seed."""
+
 import json
 
 import js

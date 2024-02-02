@@ -16,7 +16,7 @@
 | Jungle Japes | Japes Kasplat: Near Painting Room |  | 
 | Jungle Japes | Japes Kasplat: Inside Tiny's Cage | ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny) | 
 | Jungle Japes | Japes Kasplat: Starting Area |  | 
-| Jungle Japes | Japes Kasplat: Diddy Cave |  | 
+| Jungle Japes | Japes Kasplat: Diddy Peanut Cave |  | 
 | Jungle Japes | Japes Kasplat: In the river | l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)) | 
 | Jungle Japes | Japes Kasplat: Rambi Water Pool | l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)) | 
 | Jungle Japes | Japes Kasplat: Near Cranky's |  | 
@@ -37,7 +37,7 @@
 | Angry Aztec | Aztec Kasplat: On the Oasis |  | 
 | Angry Aztec | Aztec Kasplat: On Llama Cage | l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick() | 
 | Angry Aztec | Aztec Kasplat: Near giant boulder |  | 
-| Angry Aztec | Aztec Kasplat: Behind DK Stone Door | l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
+| Angry Aztec | Aztec Kasplat: Behind DK Stone Door | l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
 | Aztec Llama Temple | Aztec Kasplat: Llama Temple Lava |  | 
 | Angry Aztec | Aztec Kasplat: Hunky Chunky Barrel |  | 
 | Angry Aztec | Aztec Kasplat: On Tiny Temple | l.jetpack | 
@@ -94,7 +94,7 @@
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's |  | 
 | Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse |  | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish |  | 
-| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | (Events.WaterSwitch in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) | 
+| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) | 
 | Galleon Sick Bay | Galleon Kasplat: Sickbay |  | 
 | Gloomy Galleon | Galleon Kasplat: Middle Deck of Shipwreck |  | 
 | Gloomy Galleon | Galleon Kasplat: Starting Area |  | 
@@ -149,6 +149,7 @@
 | Crystal Caves | Caves Kasplat: By the Far Warp 2 |  | 
 | Crystal Caves | Caves Kasplat: On 5-Door Igloo |  | 
 | Crystal Caves | Caves Kasplat: Water by Blast Pad |  | 
+| Crystal Caves | Caves Kasplat: Tied to the Bananaport Spire |  | 
 | Crystal Caves | Caves Kasplat: Between Funky and Castle |  | 
 | Caves Lanky Race | Caves Kasplat: In the Beetle Race |  | 
 | Crystal Caves | Caves Kasplat: With the Giant Kosha |  | 
@@ -192,7 +193,7 @@
 | Map | Name | Logic |
 | --- | ---- | ----- |
 | Isles | Isles Kasplat: Beaver Beach |  | 
-| Frantic Factory Lobby | Isles Kasplat: Factory Lobby above Portal | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
+| Frantic Factory Lobby | Isles Kasplat: Factory Lobby above Portal | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)) | 
 | Hideout Helm Lobby | Isles Kasplat: Helm Lobby | (l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming) | 
 | Creepy Castle Lobby | Isles Kasplat: Castle Lobby | (l.coconut and l.donkey) or l.phasewalk | 
 | Crystal Caves Lobby | Isles Kasplat: Caves Lobby Punch | (l.punch and l.chunky) or l.phasewalk or l.ledgeclip | 
@@ -203,7 +204,7 @@
 | Isles | Isles Kasplat: Big X Platform |  | 
 | Isles | Isles Kasplat: Back of Cabin Isle |  | 
 | Crystal Caves Lobby | Isles Kasplat: Caves Lobby Platform | l.jetpack | 
-| Angry Aztec Lobby | Isles Kasplat: Aztec Lobby Feather Gate | l.feather or l.phasewalk | 
+| Angry Aztec Lobby | Isles Kasplat: Aztec Lobby Feather Gate | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | KLumsy | Isles Kasplat: Prison Sprint Cage | (l.sprint and l.lanky) or l.phasewalk | 
 | Jungle Japes Lobby | Isles Kasplat: Japes Lobby |  | 
 | Isles | Isles Kasplat: Upper Monkeyport |  | 

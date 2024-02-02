@@ -1,4 +1,5 @@
 """Vendor enum."""
+
 from enum import IntEnum, auto
 
 

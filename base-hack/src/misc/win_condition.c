@@ -3,9 +3,11 @@
 static unsigned char game_beat_countdown = 0;
 
 void beatGame(void) {
-    setPermFlag(FLAG_GAME_BEATEN);
-    if (game_beat_countdown == 0) {
-        game_beat_countdown = 6;
+    if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
+        setPermFlag(FLAG_GAME_BEATEN);
+        if (game_beat_countdown == 0) {
+            game_beat_countdown = 6;
+        }
     }
 }
 

@@ -36,3 +36,4 @@ typedef enum new_custom_actors {
 	/* 0x015 */ NEWACTOR_JETPACITEMOVERLAY, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
+#define DROP_COUNT 32

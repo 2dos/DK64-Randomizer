@@ -1,4 +1,5 @@
 """Hint Type enum."""
+
 from enum import IntEnum, auto
 
 
@@ -23,3 +24,8 @@ class HintType(IntEnum):
     WothLocation = auto()
     FoolishMove = auto()
     FoolishRegion = auto()
+    ForeseenPathless = auto()
+    Multipath = auto()
+    RegionItemCount = auto()
+    ItemRegion = auto()
+    Plando = auto()

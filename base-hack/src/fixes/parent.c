@@ -131,7 +131,7 @@ void callParentMapFilter(void) {
 		if (ObjectModel2Timer == 2) {
 			int curr = CurrentMap;
 			int level = levelIndexMapping[curr];
-			if (level < 7) {
+			if (level <= LEVEL_CASTLE) {
 				// Set permanent flag to clear the story cutscene of the level you're in
 				setPermFlag(FLAG_STORY_JAPES + level);
 			}
@@ -141,7 +141,7 @@ void callParentMapFilter(void) {
 					banned = 1;
 				}
 			}
-			if ((level == 9) || (level == 0xD)) {
+			if ((level == LEVEL_BONUS) || (level == LEVEL_SHARED)) {
 				banned = 1;
 			}
 			if (isPreventCutscenePlaying()) {

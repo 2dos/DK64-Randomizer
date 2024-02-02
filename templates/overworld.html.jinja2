@@ -11,6 +11,7 @@
                                type="checkbox"
                                name="bonus_barrel_auto_complete"
                                id="bonus_barrel_auto_complete"
+                               display_name="Auto Complete Bonus Barrels"
                                value="True"/>
                         Auto Complete Bonus Barrels
                     </label>
@@ -21,48 +22,48 @@
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="open_lobbies"
+                                   display_name="Open Lobbies"
                                    value="True"/>
                             Open Lobbies
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Levels will have key elements of them pre-opened:&#10;- Jungle Japes coconut gates that lead to caves and feather gate to the giant tree area.&#10;- Angry Aztec door that connects the two portions of the level.&#10;- Frantic Factory gate to the right of the entrance.&#10;- Gloomy Galleon gate to the Lighthouse area (Shipyard area open by default).&#10;- Fungi Forest gates to the worm and hollow tree areas.">
+                            title="Various barriers to progression will be removed.">
                             <input class="form-check-input"
-                                   type="checkbox"
-                                   name="open_levels"
-                                   value="True"/>
-                            Open Levels
+                                type="checkbox"
+                                name="remove_barriers_enabled"
+                                id="remove_barriers_enabled"
+                                display_name="Remove Barriers"
+                                value="True"/>
+                            Remove Barriers
                         </label>
-                    </div>
+                        {{ list_selector(remove_barriers, "remove_barriers", "REMOVE BARRIERS", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12, True) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Simian Slam switches will be adjusted to match the level order so that tougher switches will always be in later levels.&#10;The first four levels will have green switches, the next two will have blue and the final level will have red switches.&#10;In LZR, these are assigned to random levels with no regard for level order.">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="alter_switch_allocation"
+                                   display_name="Progressive Switch Strength"
                                    value="True"/>
                             Progressive Switch Strength
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Speeds up areas locked behind slow/high requirements:&#10;- Aztec: 5 Door Temple Switches Spawned&#10;- Factory: Prod Room On&#10;- Galleon: K Rool Ship Spawned&#10;- Galleon: Instruments open 5 Door Ship Permanently&#10;- Caves: 5 Door Igloo Pads Spawned">
-                            <input class="form-check-input" type="checkbox" name="high_req" value="True"/>
-                            Remove High Requirements
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Speeds up several of the 'Slower' Checks in the game.">
-                            <input class="form-check-input" type="checkbox" name="fast_gbs" value="True"/>
+                            title="Speeds up several of the 'Slower' Checks in the game.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="faster_checks_enabled"
+                                id="faster_checks_enabled"
+                                display_name="Faster Checks"
+                                value="True"/>
                             Faster Checks
                         </label>
-                        <a href="https://github.com/2dos/DK64-Randomizer/wiki/Feature-Explanations#faster-checks"
-                           target="_blank">
-                            <img class="icon" src="./static/img/external_link.png">
-                        </a>
-                    </div>
+                        {{ list_selector(faster_checks, "faster_checks", "FASTER CHECKS", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, True) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Donkey Kong 64 with a few twists:&#10;- Hideout Helm timer starts as soon as you load up a file.&#10;- Picking up a blueprint gives you 2 extra minutes on the clock. Each kong freed gives you 5 minutes. Every Golden Banana collected gives you 30 seconds.&#10;- As soon as the time runs out, saving is disabled on your file.&#10;Aim is to get the highest percentage you can before the clock runs out.">
@@ -70,10 +71,11 @@
                                    type="checkbox"
                                    name="helm_hurry"
                                    id="helm_hurry"
+                                   display_name="Helm Hurry Mode"
                                    value="True"/>
                             Helm Hurry Mode
                         </label>
-                        {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
+                        {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what how much time each item will give you.") }}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                             title="Item rando with shops only. Reduces the number of items offered in shops to a maximum of 3."
@@ -82,10 +84,12 @@
                                 type="checkbox"
                                 name="smaller_shops"
                                 id="smaller_shops"
+                                display_name="Smaller Shops"
                                 value="True"/>
                             Smaller Shops
                         </label>
                     </div>
+                    <div class="spacer"></div>
                     </div>
                     <div class="flex-container">
                         <div class="item-select">
@@ -93,6 +97,7 @@
                             <div class="customize-select">
                             <select name="logic_type"
                                     id="logic_type"
+                                    display_name="Logic"
                                     class="form-select"
                                     aria-label="Logic"
                                     data-toggle="tooltip"
@@ -108,7 +113,7 @@
                                 </option>
                             </select>
                             <div style="padding: 5px;">
-                                {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16) }}
+                                {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16, True) }}
                                 {# Remove end </div> as it's included in the macro for formatting #}
                             </div>
                         </div>
@@ -116,6 +121,7 @@
                             <p class="select-title">Win Condition</p>
                             <select name="win_condition"
                                     id="win_condition"
+                                    display_name="Win Condition"
                                     class="form-select center-div"
                                     aria-label="Win Condition"
                                     data-toggle="tooltip"
@@ -149,6 +155,7 @@
                                     id="free_trade_setting"
                                     class="form-select"
                                     aria-label="Randomization type"
+                                    display_name="Free Trade Agreement"
                                     data-toggle="tooltip"
                                     title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
                                 <option id="none" selected value="none">
@@ -168,6 +175,7 @@
                                     id="activate_all_bananaports"
                                     class="form-select"
                                     aria-label="Activate Bananaports"
+                                    display_name="Activate Bananaports"
                                     data-toggle="tooltip"
                                     title="Determines which (if any) bananaports are activated by default.&#10;-Off: Bananaports are off by default.&#10;-Isles Only: Only the Bananaports in Isles are on by default.&#10;-All: All Bananaports are on by default.">
                                 <option selected id="off" value="off">
@@ -185,6 +193,7 @@
                             <p class="select-title">Krusha Slot</p>
                             <select name="krusha_ui"
                                     id="krusha_ui"
+                                    display_name="Krusha Slot"
                                     class="form-select"
                                     aria-label="Krusha">
                                 <option selected value="no_slot">
@@ -212,6 +221,36 @@
                                 </option>
                             </select>
                         </div>
+                        <div class="item-select">
+                            <p class="select-title">Fungi Time</p>
+                            <select name="fungi_time"
+                                    id="fungi_time"
+                                    class="form-select center-div"
+                                    aria-label="Fungi Time"
+                                    display_name="Fungi Time"
+                                    data-toggle="tooltip"
+                                    title="Alter the time of day in Fungi.">
+                                <option selected id="day" value="day">Daytime Start</option>
+                                <option id="night" value="night">Nighttime Start</option>
+                                <option id="random" value="random">Random Start</option>
+                                <option id="dusk" value="dusk" title="All time-specific gates are closed.">Dusk</option>
+                                <option id="progressive" value="progressive" title="Time of day progressively changes.">Progressive</option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Galleon Water</p>
+                            <select name="galleon_water"
+                                    id="galleon_water"
+                                    display_name="Galleon Water"
+                                    class="form-select center-div"
+                                    aria-label="Galleon Water"
+                                    data-toggle="tooltip"
+                                    title="Alter the water level in Galleon.">
+                                <option selected id="lowered" value="lowered">Lowered</option>
+                                <option id="raised" value="raised">Raised</option>
+                                <option id="random" value="random">Random</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="col border panel">
@@ -223,6 +262,7 @@
                         <input class="form-check-input"
                                type="checkbox"
                                name="no_healing"
+                               display_name="No Heals"
                                value="True"/>
                         No Heals
                     </label>
@@ -232,6 +272,7 @@
                         <input class="form-check-input"
                                type="checkbox"
                                name="no_melons"
+                               display_name="No Melon Slice Drops"
                                value="True"/>
                         No Melon Slice Drops
                     </label>
@@ -242,26 +283,31 @@
                         <input class="form-check-input"
                                type="checkbox"
                                name="hard_shooting"
+                               display_name="Hard Shooting"
                                value="True"/>
                         Hard Shooting
                     </label>
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                           title="Enables potentially harder versions of boss fights:&#10;- Mad Jack: if Boss Kong Shuffle is on, you may be required to fight the boss as Donkey or Chunky.&#10;- Pufftoss: Stars are placed randomly in random orientations.&#10;- King Kut Out: Phases are shuffled, including the unused Phase 4.">
+                           title="This option enables various harder gameplay features.">
                         <input class="form-check-input"
                                type="checkbox"
-                               name="hard_bosses"
+                               name="hard_mode"
+                               id="hard_mode"
+                               display_name="Hard Mode"
                                value="True"/>
-                        Hard Bosses
+                        Hard Mode
                     </label>
-                </div>
+                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 5) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                            title="When a kong dies you can no longer use the kong excluding for boss fights, you can enter any boss arena with any kong and it will force you to the required kong, if a kong is dead all moves will be granted.&#10;WARNING: Seeds might become unbeatable.">
                         <input class="form-check-input"
                                type="checkbox"
                                name="perma_death"
+                               display_name="Irondonk"
                                value="True"/>
                         Irondonk
                     </label>
@@ -273,6 +319,7 @@
                                type="checkbox"
                                name="disable_tag_barrels"
                                id="disable_tag_barrels"
+                               display_name="Tag Barrels Disabled"
                                value="True"/>
                         Tag Barrels Disabled
                     </label>
@@ -285,6 +332,7 @@
                                type="checkbox"
                                name="hard_blockers"
                                id="hard_blockers"
+                               display_name="Hard B. Lockers"
                                value="True"/>
                         Hard B. Lockers
                     </label>
@@ -297,6 +345,7 @@
                                type="checkbox"
                                name="hard_troff_n_scoff"
                                id="hard_troff_n_scoff"
+                               display_name="Hard Troff n' Scoff"
                                value="True"/>
                         Hard Troff N' Scoff
                     </label>
@@ -309,28 +358,19 @@
                                type="checkbox"
                                name="hard_level_progression"
                                id="hard_level_progression"
+                               display_name="Complex Level Progression"
                                value="True"/>
                         Complex Level Progression
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Makes certain enemies tougher:&#10;- Kasplats have a 6% higher chance to shockwave.&#10;- Guards have a higher health."
-                           style="text-align: left">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_enemies"
-                               id="hard_enemies"
-                               value="True"/>
-                        Hard Enemies
-                    </label>
-                </div>
+                <div class="spacer"></div>
             </div>
             <div class = "flex-container">
                 <div class="item-select">
                     <p class="select-title">Damage</p>
                     <select name="damage_amount"
                             id="damage_amount"
+                            display_name="Damage Multiplier"
                             class="form-select center-div"
                             aria-label="Damage Options">
                         <option selected value="default">
@@ -351,6 +391,7 @@
                     <p class="select-title">Crown Enemies</p>
                     <select name="crown_enemy_rando"
                             id="crown_enemy_rando"
+                            display_name="Crown Enemy Randomizer"
                             class="form-select"
                             aria-label="Activate Bananaports"
                             data-toggle="tooltip"

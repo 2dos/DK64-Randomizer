@@ -4,13 +4,14 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 
 
 class KasplatLocation:
     """Class which stores name and logic for a kasplat location."""
 
-    def __init__(self, *, name="No Location", map_id=0, kong_lst=[], coords=[0, 0, 0], xmin=0, xmax=0, zmin=0, zmax=0, region, additional_logic=None, vanilla=False):
+    def __init__(self, *, name="No Location", map_id=0, kong_lst=[], coords=[0, 0, 0], xmin=0, xmax=0, zmin=0, zmax=0, region, additional_logic=None, vanilla=False, scale=1):
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
@@ -19,6 +20,7 @@ class KasplatLocation:
         self.bounds = [xmin, xmax, zmin, zmax]
         self.selected = False
         self.vanilla = vanilla
+        self.scale = scale
         self.region_id = region
         if additional_logic is None:
             self.additional_logic = lambda l: True
@@ -131,7 +133,7 @@ KasplatLocationList = {
             region=Regions.JungleJapesStart,
         ),
         KasplatLocation(
-            name="Japes Kasplat: Diddy Cave",
+            name="Japes Kasplat: Diddy Peanut Cave",
             map_id=Maps.JungleJapes,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[2461, 280, 548],
@@ -185,7 +187,7 @@ KasplatLocationList = {
             xmax=800,
             zmin=2295,
             zmax=2380,
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesTnSAlcove,
         ),
         KasplatLocation(
             name="Japes Kasplat: Inside the Mountain", map_id=Maps.JapesMountain, kong_lst=[Kongs.diddy], coords=[551, 101, 1192], xmin=525, xmax=576, zmin=1078, zmax=1236, region=Regions.Mine
@@ -269,7 +271,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.tiny],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
+            additional_logic=lambda l: l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             vanilla=True,
         ),
         KasplatLocation(
@@ -739,7 +741,7 @@ KasplatLocationList = {
             zmin=481,
             zmax=498,
             region=Regions.TreasureRoom,
-            additional_logic=lambda l: (Events.WaterSwitch in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))
+            additional_logic=lambda l: (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))
             and l.balloon,
         ),
         KasplatLocation(name="Galleon Kasplat: Sickbay", map_id=Maps.GalleonSickBay, kong_lst=[Kongs.chunky], coords=[571, 21, 922], xmin=522, xmax=637, zmin=852, zmax=944, region=Regions.SickBay),
@@ -1114,6 +1116,18 @@ KasplatLocationList = {
             zmin=1920,
             zmax=2170,
             region=Regions.CrystalCavesMain,
+            scale=1.3,
+        ),
+        KasplatLocation(
+            name="Caves Kasplat: Tied to the Bananaport Spire",
+            map_id=Maps.CrystalCaves,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1169, 25, 1912],
+            xmin=1168,
+            xmax=1170,
+            zmin=1911,
+            zmax=1913,
+            region=Regions.CrystalCavesMain,
         ),
         KasplatLocation(
             name="Caves Kasplat: Between Funky and Castle",
@@ -1392,7 +1406,7 @@ KasplatLocationList = {
             zmin=330,
             zmax=430,
             region=Regions.FranticFactoryLobby,
-            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)),
+            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)),
         ),
         KasplatLocation(
             name="Isles Kasplat: Helm Lobby",
@@ -1518,7 +1532,7 @@ KasplatLocationList = {
             zmin=653,
             zmax=708,
             region=Regions.AngryAztecLobby,
-            additional_logic=lambda l: l.feather or l.phasewalk,
+            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
         ),
         # Problematic - Can't tag anywhere in here in LZR which makes it super feels bad.
         # KasplatLocation(

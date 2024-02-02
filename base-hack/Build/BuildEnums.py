@@ -1,4 +1,5 @@
 """Enums for the build process."""
+
 from enum import IntEnum, auto
 
 
@@ -467,3 +468,330 @@ class Icons(IntEnum):
     FaceChunky = 0xAD
     FairyTick = 0xAE
     Wrinkly = 0xAF
+
+
+class CreditsDirection(IntEnum):
+    """Credits Direction Enum."""
+
+    top = 0
+    left = 1
+    bottom = 2
+    right = 3
+
+
+class CreditsType(IntEnum):
+    """Credits Type Enum."""
+
+    normal = auto()
+    header = auto()
+    longheader = auto()
+
+
+class Enemies(IntEnum):
+    """List of Enemies with in-game index."""
+
+    BeaverBlue = 0
+    GiantClam = 1
+    Krash = 2
+    Book = 3
+    ZingerCharger = 5
+    Klobber = 6
+    Snide = 7
+    ArmyDillo = 8
+    Klump = 9
+    Cranky = 11
+    Funky = 12
+    Candy = 13
+    Beetle = 14
+    Mermaid = 15
+    Kaboom = 16
+    VultureTemple = 17
+    Squawks = 18
+    CutsceneDK = 19
+    CutsceneDiddy = 20
+    CutsceneLanky = 21
+    CutsceneTiny = 22
+    CutsceneChunky = 23
+    TandSPadlock = 24
+    Llama = 25
+    MadJack = 26
+    KlaptrapGreen = 27
+    ZingerLime = 28
+    VultureRace = 29
+    KlaptrapPurple = 30
+    KlaptrapRed = 31
+    GetOut = 32
+    BeaverGold = 33
+    FireColumn = 35
+    TNTMinecart0 = 36
+    TNTMinecart1 = 37
+    Pufftoss = 38
+    SeasickCannon = 39
+    KRoolFoot = 40
+    Fireball = 42
+    MushroomMan = 44
+    Troff = 46
+    BadHitDetectionMan = 48
+    Ruler = 51
+    ToyBox = 52
+    Squawks1 = 53
+    Seal = 54
+    Scoff = 55
+    RoboKremling = 56
+    Dogadon = 57
+    Kremling = 59
+    SpotlightFish = 60
+    KasplatDK = 61
+    KasplatDiddy = 62
+    KasplatLanky = 63
+    KasplatTiny = 64
+    KasplatChunky = 65
+    MechFish = 66
+    Seal1 = 67
+    Fairy = 68
+    SquawksSpotlight = 69
+    Rabbit = 72
+    Owl = 73
+    NintendoLogo = 74
+    FireBreath = 75
+    MinigameController = 76
+    BattleCrownController = 77
+    ToyCar = 78
+    TNTMinecart2 = 79
+    CutsceneObject = 80
+    Guard = 81
+    RarewareLogo = 82
+    ZingerRobo = 83
+    Krossbones = 84
+    Shuri = 85
+    Gimpfish = 86
+    MrDice0 = 87
+    SirDomino = 88
+    MrDice1 = 89
+    Rabbit1 = 90
+    FireballGlasses = 92
+    KLumsy = 93
+    SpiderBoss = 94
+    SpiderSmall = 95
+    Squawks2 = 96
+    KRoolDK = 97
+    SkeletonHead = 98
+    Bat = 99
+    EvilTomato = 100
+    Ghost = 101
+    Pufftup = 102
+    Kosha = 103
+    EnemyCar = 105
+    KRoolDiddy = 106
+    KRoolLanky = 107
+    KRoolTiny = 108
+    KRoolChunky = 109
+    Bug = 110
+    FairyQueen = 111
+    IceTomato = 112
+
+
+class Kong(IntEnum):
+    """Kong Enum."""
+
+    DK = 0
+    Diddy = auto()
+    Lanky = auto()
+    Tiny = auto()
+    Chunky = auto()
+
+
+class Song(IntEnum):
+    """Song Enum."""
+
+    Silence = 0
+    JapesStart = auto()
+    Cranky = auto()
+    JapesCart = auto()
+    JapesDillo = auto()
+    JapesCaves = auto()
+    Funky = auto()
+    UnusedCoin = auto()
+    Minigames = auto()
+    Triangle = auto()
+    Guitar = auto()
+    Bongos = auto()
+    Trombone = auto()
+    Saxophone = auto()
+    AztecMain = auto()
+    Transformation = auto()
+    MiniMonkey = auto()
+    HunkyChunky = auto()
+    GBGet = auto()
+    AztecBeetle = auto()
+    OhBanana = auto()
+    AztecTemple = auto()
+    CompanyCoinGet = auto()
+    BananaCoinGet = auto()
+    VultureRing = auto()
+    AztecDogadon = auto()
+    Aztec5DT = auto()
+    FactoryCarRace = auto()
+    FactoryMain = auto()
+    Snide = auto()
+    JapesTunnels = auto()
+    Candy = auto()
+    MinecartCoinGet = auto()
+    MelonSliceGet = auto()
+    PauseMenu = auto()
+    CrystalCoconutGet = auto()
+    Rambi = auto()
+    AztecTunnels = auto()
+    WaterDroplets = auto()
+    FactoryJack = auto()
+    Success = auto()
+    StartPause = auto()
+    Failure = auto()
+    TransitionOpen = auto()
+    TransitionClose = auto()
+    JapesHighPitched = auto()
+    FairyTick = auto()
+    MelonSliceDrop = auto()
+    AztecChunkyKlaptraps = auto()
+    FactoryCrusher = auto()
+    JapesBlast = auto()
+    FactoryResearchAndDevelopment = auto()
+    FactoryProduction = auto()
+    TroffNScoff = auto()
+    BossDefeat = auto()
+    AztecBlast = auto()
+    GalleonOutside = auto()
+    BossUnlock = auto()
+    AwaitingBossEntry = auto()
+    TwinklySounds = auto()
+    GalleonPufftoss = auto()
+    GalleonSealRace = auto()
+    GalleonTunnels = auto()
+    GalleonLighthouse = auto()
+    BattleArena = auto()
+    DropCoins = auto()
+    FairyNearby = auto()
+    Checkpoint = auto()
+    ForestDay = auto()
+    BlueprintGet = auto()
+    ForestNight = auto()
+    StrongKong = auto()
+    Rocketbarrel = auto()
+    Sprint = auto()
+    ForestCart = auto()
+    DKRap = auto()
+    BlueprintDrop = auto()
+    Galleon2DS = auto()
+    Galleon5DS = auto()
+    GalleonChest = auto()
+    GalleonMermaid = auto()
+    ForestDogadon = auto()
+    MadMazeMaul = auto()
+    Caves = auto()
+    CavesTantrum = auto()
+    NintendoLogoOld = auto()
+    SuccessRaces = auto()
+    FailureRaces = auto()
+    BonusBarrelIntroduction = auto()
+    StealthySnoop = auto()
+    MinecartMayhem = auto()
+    GalleonMechFish = auto()
+    GalleonBlast = auto()
+    ForestAnthill = auto()
+    ForestBarn = auto()
+    ForestMill = auto()
+    SeasideSounds = auto()
+    ForestSpider = auto()
+    ForestMushroomRooms = auto()
+    ForestMushroom = auto()
+    BossIntroduction = auto()
+    TagBarrel = auto()
+    CavesBeetleRace = auto()
+    CavesIgloos = auto()
+    MiniBoss = auto()
+    Castle = auto()
+    CastleCart = auto()
+    BaboonBalloon = auto()
+    GorillaGone = auto()
+    Isles = auto()
+    IslesKremIsle = auto()
+    IslesBFI = auto()
+    IslesKLumsy = auto()
+    HelmBoMOn = auto()
+    MoveGet = auto()
+    GunGet = auto()
+    HelmBoMOff = auto()
+    HelmBonus = auto()
+    CavesCabins = auto()
+    CavesRotatingRoom = auto()
+    CavesIceCastle = auto()
+    CastleTunnels = auto()
+    IntroStory = auto()
+    TrainingGrounds = auto()
+    Enguarde = auto()
+    KLumsyCelebration = auto()
+    CastleCrypt = auto()
+    HeadphonesGet = auto()
+    PearlGet = auto()
+    CastleDungeon_Chains = auto()
+    AztecLobby = auto()
+    JapesLobby = auto()
+    FactoryLobby = auto()
+    GalleonLobby = auto()
+    MainMenu = auto()
+    CastleInnerCrypts = auto()
+    CastleBallroom = auto()
+    CastleGreenhouse = auto()
+    KRoolTheme = auto()
+    ForestWinch = auto()
+    CastleTower = auto()
+    CastleTree = auto()
+    CastleMuseum = auto()
+    BBlastFinalStar = auto()
+    DropRainbowCoin = auto()
+    RainbowCoinGet = auto()
+    NormalStar = auto()
+    BeanGet = auto()
+    CavesDillo = auto()
+    CastleKutOut = auto()
+    CastleDungeon_NoChains = auto()
+    BananaMedalGet = auto()
+    KRoolBattle = auto()
+    ForestLobby = auto()
+    CavesLobby = auto()
+    CastleLobby = auto()
+    HelmLobby = auto()
+    CastleTrash = auto()
+    EndSequence = auto()
+    KLumsyEnding = auto()
+    JapesMain = auto()
+    JapesStorm = auto()
+    KRoolTakeoff = auto()
+    CavesBlast = auto()
+    ForestBlast = auto()
+    CastleBlast = auto()
+    IslesSnideRoom = auto()
+    KRoolEntrance = auto()
+    MonkeySmash = auto()
+    ForestRabbitRace = auto()
+    GameOver = auto()
+    WrinklyKong = auto()
+    FinalCBGet = auto()
+    KRoolDefeat = auto()
+    NintendoLogo = auto()
+
+
+class Overlay(IntEnum):
+    """Overlay Enum."""
+
+    Boot = 0
+    Static = 1
+    Menu = 2
+    Multiplayer = 3
+    Minecart = 4
+    Race = 5
+    Critter = 6
+    Boss = 7
+    Bonus = 8
+    Arcade = 9
+    Jetpac = 10

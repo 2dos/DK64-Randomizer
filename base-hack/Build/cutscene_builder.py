@@ -1,4 +1,5 @@
 """Build cutscene files from a series of modifications and return changes to the file dict in CL."""
+
 import json
 import os
 import zlib

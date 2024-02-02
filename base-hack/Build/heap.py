@@ -1,5 +1,6 @@
 """Handle heap size."""
 
+from datetime import datetime
 from BuildLib import flut_size, heap_size, music_size
 
 code_end = 0x805FAE00
@@ -30,7 +31,7 @@ def handleHeap(size: int, rando_flut_size: int):
         fh.write(getLabel("heap_start_upper", variables["upper"]))
         fh.write(getLabel("heap_start_lower", variables["lower"]))
         fh.write(getLabel("heap_size", size))
-        fh.write(getLabel("ItemRando_FLUT", 0x805FAE00 - rando_flut_size))
+        # fh.write(getLabel("ItemRando_FLUT", 0x805FAE00 - rando_flut_size))
     with open("asm/header.asm", "w") as fh:
         fh.write(f".headersize {hex(0x7E000000 | (variables['start'] & 0xFFFFFF))}\n")
         fh.write(f".org {hex(variables['start'])}")

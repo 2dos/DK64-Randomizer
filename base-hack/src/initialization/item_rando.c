@@ -21,14 +21,22 @@ typedef struct patch_db_item {
 	/* 0x003 */ unsigned char world;
 } patch_db_item;
 
+typedef struct meloncrate_db_item {
+    /* 0x000 */ short id;
+    /* 0x002 */ unsigned char map;
+    /* 0x003 */ unsigned char world;
+} meloncrate_db_item;
+
 static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
 static unsigned char medal_item_table[40] = {}; // Medal Rewards
 static unsigned short crown_item_table[10] = {}; // Crown Rewards
 static unsigned short key_item_table[8] = {}; // Boss Rewards
 static short fairy_item_table[20] = {}; // Fairy Rewards
 static unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
+static unsigned short crate_item_table[16] = {}; // Crate Rewards
 static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
 bonus_barrel_info bonus_data[95] = {}; // Bonus Barrel Rewards
+static meloncrate_db_item crate_flags[16] = {}; // Melon crate table
 
 int getBPItem(int index) {
     /**
@@ -110,6 +118,17 @@ int getRainbowCoinItem(int old_flag) {
 	return getActorIndex(rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0]);
 }
 
+int getCrateItem(int old_flag) {
+	/**
+	 * @brief Get Crate reward from the old flag
+     * 
+     * @param old_flag Original flag of the crate
+	 * 
+     * @return Actor Index of the reward
+	 */
+	return getActorIndex(crate_item_table[old_flag - FLAG_MELONCRATE_0]);
+}
+
 int getPatchFlag(int id) {
     /**
      * @brief Get Patch flag from the ID of the patch
@@ -139,6 +158,35 @@ int getPatchWorld(int index) {
 	return patch_flags[index].world;
 }
 
+int getCrateFlag(int id) {
+    /**
+     * @brief Get Melon Crate flag from the ID of the Melon Crate
+     * 
+     * @param id Melon Crate ID inside the map
+     * 
+     * @return flag index of the crate
+     */
+	for (int i = 0; i < 16; i++) {
+		if (CurrentMap == crate_flags[i].map) {
+			if (id == crate_flags[i].id) {
+				return FLAG_MELONCRATE_0 + i;
+			}
+		}
+	}
+	return 0;
+}
+
+int getCrateWorld(int index) {
+    /**
+     * @brief Gets the world which the melon crate is in
+     * 
+     * @param index Crate Index inside the flag table
+     * 
+     * @return World index of the crate
+     */
+	return crate_flags[index].world;
+}
+
 void populatePatchItem(int id, int map, int index, int world) {
     /**
      * @brief Populate the patch table with a dirt patch
@@ -153,6 +201,20 @@ void populatePatchItem(int id, int map, int index, int world) {
     patch_flags[index].world = world;
 }
 
+void populateCrateItem(int id, int map, int index, int world) {
+    /**
+     * @brief Populate the Crate table with a Melon Crate
+     * 
+     * @param id Crate ID
+     * @param map Crate Map
+     * @param index Index inside the Crate table
+     * @param world World where the Crate is
+     */
+    crate_flags[index].id = id;
+    crate_flags[index].map = map;
+    crate_flags[index].world = world;
+}
+
 int getBonusFlag(int index) {
     /**
      * @brief Get bonus barrel flag from barrel index
@@ -165,6 +227,104 @@ int getBonusFlag(int index) {
         return -1;
     }
     return bonus_data[index].flag;
+}
+
+typedef struct barrel_skin_tie {
+    /* 0x000 */ unsigned short actor;
+    /* 0x002 */ unsigned short skin;
+} barrel_skin_tie;
+
+typedef enum enum_bonus_skin {
+    /* 0x000 */ SKIN_GB,
+    /* 0x001 */ SKIN_KONG_DK,
+    /* 0x002 */ SKIN_KONG_DIDDY,
+    /* 0x003 */ SKIN_KONG_LANKY,
+    /* 0x004 */ SKIN_KONG_TINY,
+    /* 0x005 */ SKIN_KONG_CHUNKY,
+    /* 0x006 */ SKIN_BLUEPRINT,
+    /* 0x007 */ SKIN_NINTENDO_COIN,
+    /* 0x008 */ SKIN_RAREWARE_COIN,
+    /* 0x009 */ SKIN_KEY,
+    /* 0x00A */ SKIN_CROWN,
+    /* 0x00B */ SKIN_MEDAL,
+    /* 0x00C */ SKIN_POTION,
+    /* 0x00D */ SKIN_BEAN,
+    /* 0x00E */ SKIN_PEARL,
+    /* 0x00F */ SKIN_FAIRY,
+    /* 0x010 */ SKIN_RAINBOW_COIN,
+    /* 0x011 */ SKIN_FAKE_ITEM,
+    /* 0x012 */ SKIN_JUNK_ITEM,
+    /* ----- */ SKIN_TERMINATOR,
+} enum_bonus_skin;
+
+static const barrel_skin_tie bonus_skins[] = {
+    {.actor = 78, .skin=SKIN_BLUEPRINT},
+    {.actor = 75, .skin=SKIN_BLUEPRINT},
+    {.actor = 77, .skin=SKIN_BLUEPRINT},
+    {.actor = 79, .skin=SKIN_BLUEPRINT},
+    {.actor = 76, .skin=SKIN_BLUEPRINT},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_NINTENDOCOIN, .skin=SKIN_NINTENDO_COIN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_RAREWARECOIN, .skin=SKIN_RAREWARE_COIN},
+    {.actor = 72, .skin=SKIN_KEY},
+    {.actor = 86, .skin=SKIN_CROWN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_MEDAL, .skin=SKIN_MEDAL},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONDK, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONDIDDY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONLANKY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONTINY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONCHUNKY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONANY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGDK, .skin=SKIN_KONG_DK},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGDIDDY, .skin=SKIN_KONG_DIDDY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGLANKY, .skin=SKIN_KONG_LANKY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGTINY, .skin=SKIN_KONG_TINY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGCHUNKY, .skin=SKIN_KONG_CHUNKY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_BEAN, .skin=SKIN_BEAN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_PEARL, .skin=SKIN_PEARL},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAIRY, .skin=SKIN_FAIRY},
+    {.actor = 140, .skin=SKIN_RAINBOW_COIN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAKEITEM, .skin=SKIN_FAKE_ITEM},
+    {.actor = 0x2F, .skin=SKIN_JUNK_ITEM},
+};
+
+enum_bonus_skin getBarrelSkinIndex(int actor) {
+    for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
+        if (bonus_skins[i].actor == actor) {
+            return bonus_skins[i].skin;
+        }
+    }
+    return SKIN_GB;
+}
+
+// #define BONUS_CACHE_SIZE SKIN_TERMINATOR * 2
+// static void* bonus_texture_data[BONUS_CACHE_SIZE] = {};
+// static unsigned char bonus_texture_load[BONUS_CACHE_SIZE] = {};
+
+// void* loadBonusTexture(int texture_offset) {
+// 	if (bonus_texture_load[texture_offset] == 0) {
+// 		bonus_texture_data[texture_offset] = getMapData(TABLE_TEXTURES, 6026 + texture_offset, 1, 1);
+// 	}
+// 	bonus_texture_load[texture_offset] = 3;
+// 	return bonus_texture_data[texture_offset];
+// }
+
+int alterBonusVisuals(int index) {
+    if (Rando.location_visuals & 1) {
+        if (index < 95) {
+            int actor = bonus_data[index].spawn_actor;
+            enum_bonus_skin skin = getBarrelSkinIndex(actor);
+            if (skin != SKIN_GB) {
+                for (int i = 0; i < 2; i++) {
+                    //retextureZone(CurrentActorPointer_0, i, skin);
+                    blink(CurrentActorPointer_0, i, 1);
+                    applyImageToActor(CurrentActorPointer_0, i, 0);
+                    adjustColorPalette(CurrentActorPointer_0, i, skin, 0.0f);
+                    unkPaletteFunc(CurrentActorPointer_0, i, 0);
+                }
+            }
+        }
+    }
+    return getBonusFlag(index);
 }
 
 void initItemRando(void) {
@@ -205,7 +365,7 @@ void initItemRando(void) {
     bonus_data[94].flag = 215;
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
-    writeFunction(0x80680AE8, &getBonusFlag); // Get Bonus Flag Check
+    writeFunction(0x80680AE8, &alterBonusVisuals); // Get Bonus Flag Check
     writeFunction(0x80681854, &getBonusFlag); // Get Bonus Flag Check
     writeFunction(0x806C63A8, &getBonusFlag); // Get Bonus Flag Check
     writeFunction(0x806F78B8, &getKongFromBonusFlag); // Reward Table Kong Check
@@ -220,6 +380,7 @@ void initItemRando(void) {
     writeFunction(0x806A86BC, &changePauseScreen); // Change screen hook
     writeFunction(0x806A8D20, &changeSelectedLevel); // Change selected level on checks screen
     writeFunction(0x806A84F8, &checkItemDB); // Populate Item Databases
+    writeFunction(0x806A9978, &displayHintRegion); // Display hint region
     if (Rando.item_rando) {
         *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
         *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);
@@ -260,10 +421,8 @@ void initItemRando(void) {
         writeFunction(0x806C5F04, &giveFairyItem); // Fairy Flag Set
         // Rainbow Coins
         writeFunction(0x806A2268, &spawnDirtPatchReward); // Spawn Reward
-        if (Rando.location_visuals & 1) {
-            // Barrel Aesthetic
-            initBarrelChange();
-        }
+        // Melon Crate
+        *(int*)(0x80747EB0) = (int)&melonCrateItemHandler;
         // Mill GB
         writeFunction(0x806F633C, &isObjectTangible_detailed); // Change object tangibility check function
         
@@ -275,57 +434,45 @@ void initItemRando(void) {
 
     // BP Table
     int bp_size = 0x28;
-    unsigned short* bp_write = dk_malloc(bp_size << 1);
-    int* bp_file_size;
-    *(int*)(&bp_file_size) = bp_size << 1;
-    copyFromROM(0x1FF0E00,bp_write,&bp_file_size,0,0,0,0);
+    unsigned short* bp_write = getFile(bp_size << 1, 0x1FF0E00);
     for (int i = 0; i < bp_size; i++) {
         bp_item_table[i] = bp_write[i];
     }
     // Medal Table
     int medal_size = 0x28;
-    unsigned char* medal_write = dk_malloc(medal_size);
-    int* medal_file_size;
-    *(int*)(&medal_file_size) = medal_size;
-    copyFromROM(0x1FF1080,medal_write,&medal_file_size,0,0,0,0);
+    unsigned char* medal_write = getFile(medal_size, 0x1FF1080);
     for (int i = 0; i < medal_size; i++) {
         medal_item_table[i] = medal_write[i];
     }
     // Crown Table
     int crown_size = 0xA;
-    unsigned short* crown_write = dk_malloc(crown_size << 1);
-    int* crown_file_size;
-    *(int*)(&crown_file_size) = crown_size << 1;
-    copyFromROM(0x1FF10C0,crown_write,&crown_file_size,0,0,0,0);
+    unsigned short* crown_write = getFile(crown_size << 1, 0x1FF10C0);
     for (int i = 0; i < crown_size; i++) {
         crown_item_table[i] = crown_write[i];
     }
     // Key Table
     int key_size = 0x8;
-    unsigned short* key_write = dk_malloc(key_size << 1);
-    int* key_file_size;
-    *(int*)(&key_file_size) = key_size << 1;
-    copyFromROM(0x1FF1000,key_write,&key_file_size,0,0,0,0);
+    unsigned short* key_write = getFile(key_size << 1, 0x1FF1000);
     for (int i = 0; i < key_size; i++) {
         key_item_table[i] = key_write[i];
     }
     // Fairy Table
     int fairy_size = 40;
-    unsigned short* fairy_write = dk_malloc(fairy_size);
-    int* fairy_file_size;
-    *(int*)(&fairy_file_size) = fairy_size;
-    copyFromROM(0x1FF1040,fairy_write,&fairy_file_size,0,0,0,0);
+    unsigned short* fairy_write = getFile(fairy_size, 0x1FF1040);
     for (int i = 0; i < (fairy_size>>1); i++) {
         fairy_item_table[i] = fairy_write[i];
     }
     // Rainbow Coin Table
     int rainbow_size = 0x10;
-    unsigned short* rainbow_write = dk_malloc(rainbow_size << 1);
-    int* rainbow_file_size;
-    *(int*)(&rainbow_file_size) = rainbow_size << 1;
-    copyFromROM(0x1FF10E0,rainbow_write,&rainbow_file_size,0,0,0,0);
+    unsigned short* rainbow_write = getFile(rainbow_size << 1, 0x1FF10E0);
     for (int i = 0; i < rainbow_size; i++) {
         rcoin_item_table[i] = rainbow_write[i];
+    }
+    // Melon Crate Table
+    int crate_size = 0x10;
+    unsigned short* crate_write = getFile(crate_size << 1, 0x1FF0E80);
+    for (int i = 0; i < crate_size; i++) {
+        crate_item_table[i] = crate_write[i];
     }
     // Reward Table
     for (int i = 0; i < 40; i++) {
@@ -333,11 +480,7 @@ void initItemRando(void) {
         bonus_data[54 + i].kong_actor = (i % 5) + 2;
         bonus_data[54 + i].spawn_actor = getBPItem(i);
     }
-    int reward_size = 0x100;
-    reward_rom_struct* reward_write = dk_malloc(medal_size);
-    int* reward_file_size;
-    *(int*)(&reward_file_size) = reward_size;
-    copyFromROM(0x1FF1200,reward_write,&reward_file_size,0,0,0,0);
+    reward_rom_struct* reward_write = getFile(0x100, 0x1FF1200);
     for (int i = 0; i < 0x40; i++) {
         if (reward_write[i].flag > -1) {
             for (int j = 0; j < 95; j++) {

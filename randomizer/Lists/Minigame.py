@@ -1,9 +1,13 @@
 """Stores the requirements for each minigame."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 
 class Minigame:
@@ -11,7 +15,7 @@ class Minigame:
 
     def __init__(
         self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0, kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-    ):
+    ) -> None:
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
@@ -57,6 +61,7 @@ MinigameRequirements = {
         name="Busy Barrel Barrage (45 seconds, Slow Respawn)",
         group="Busy Barrel Barrage",
         map_id=Maps.BusyBarrelBarrageEasy,
+        difficulty_lvl=2,
         logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
         kong_list=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
     ),
@@ -64,7 +69,7 @@ MinigameRequirements = {
         name="Busy Barrel Barrage (45 seconds, Medium Respawn)",
         group="Busy Barrel Barrage",
         map_id=Maps.BusyBarrelBarrageNormal,
-        difficulty_lvl=1,
+        difficulty_lvl=3,
         logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
         kong_list=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
     ),
@@ -72,7 +77,7 @@ MinigameRequirements = {
         name="Busy Barrel Barrage (60 seconds, Random Spawns)",
         group="Busy Barrel Barrage",
         map_id=Maps.BusyBarrelBarrageHard,
-        difficulty_lvl=2,
+        difficulty_lvl=4,
         logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
         kong_list=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
     ),
@@ -84,24 +89,24 @@ MinigameRequirements = {
         group="Mad Maze Maul",
         map_id=Maps.MadMazeMaulHard,
         helm_enabled=False,
-        difficulty_lvl=2,
+        difficulty_lvl=3,
         logic=lambda l: (l.shockwave or l.oranges) and l.HasGun(Kongs.any),
     ),
     Minigames.MadMazeMaulInsane: Minigame(
         name="Mad Maze Maul (125 seconds, 10 enemies, need gun)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: l.HasGun(Kongs.any)
     ),
     # Minecart Mayhem - Higher two difficulties are too hard for those who don't have a guide to do in Helm
-    Minigames.MinecartMayhemEasy: Minigame(name="Minecart Mayhem (30 seconds, 1 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemEasy, logic=lambda l: True),
+    Minigames.MinecartMayhemEasy: Minigame(name="Minecart Mayhem (30 seconds, 1 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemEasy, difficulty_lvl=2, logic=lambda l: True),
     Minigames.MinecartMayhemNormal: Minigame(
-        name="Minecart Mayhem (45 seconds, 2 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemNormal, helm_enabled=False, difficulty_lvl=1, logic=lambda l: True
+        name="Minecart Mayhem (45 seconds, 2 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemNormal, helm_enabled=False, difficulty_lvl=3, logic=lambda l: True
     ),
     Minigames.MinecartMayhemHard: Minigame(
-        name="Minecart Mayhem (60 seconds, 2 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: True
+        name="Minecart Mayhem (60 seconds, 2 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemHard, helm_enabled=False, difficulty_lvl=4, logic=lambda l: True
     ),
     # Beaver Bother - Banned from Helm due to widespread difficulty
-    Minigames.BeaverBotherEasy: Minigame(name="Beaver Bother (12 Beavers)", group="Beaver Bother", map_id=Maps.BeaverBotherEasy, helm_enabled=False, logic=lambda l: True),
-    Minigames.BeaverBotherNormal: Minigame(name="Beaver Bother (15 Slow Beavers)", group="Beaver Bother", map_id=Maps.BeaverBotherNormal, helm_enabled=False, difficulty_lvl=1, logic=lambda l: True),
-    Minigames.BeaverBotherHard: Minigame(name="Beaver Bother (15 Fast Beavers)", group="Beaver Bother", map_id=Maps.BeaverBotherHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: True),
+    Minigames.BeaverBotherEasy: Minigame(name="Beaver Bother (12 Beavers)", group="Beaver Bother", map_id=Maps.BeaverBotherEasy, helm_enabled=False, difficulty_lvl=2, logic=lambda l: True),
+    Minigames.BeaverBotherNormal: Minigame(name="Beaver Bother (15 Slow Beavers)", group="Beaver Bother", map_id=Maps.BeaverBotherNormal, helm_enabled=False, difficulty_lvl=3, logic=lambda l: True),
+    Minigames.BeaverBotherHard: Minigame(name="Beaver Bother (15 Fast Beavers)", group="Beaver Bother", map_id=Maps.BeaverBotherHard, helm_enabled=False, difficulty_lvl=4, logic=lambda l: True),
     # Teetering Turtle Trouble
     Minigames.TeeteringTurtleTroubleVEasy: Minigame(
         name="Teetering Turtle Trouble (45 seconds, 2.5% help chance)", group="Teetering Turtle Trouble", map_id=Maps.TeeteringTurtleTroubleVEasy, logic=lambda l: True
@@ -118,15 +123,15 @@ MinigameRequirements = {
     # Stealthy Snoop
     Minigames.StealthySnoopVEasy: Minigame(name="Stealthy Snoop (50 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopVEasy, logic=lambda l: True),
     Minigames.StealthySnoopEasy: Minigame(name="Stealthy Snoop (60 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopEasy, difficulty_lvl=1, logic=lambda l: True),
-    Minigames.StealthySnoopNormal: Minigame(name="Stealthy Snoop (70 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopNormal, difficulty_lvl=2, logic=lambda l: True),
-    Minigames.StealthySnoopHard: Minigame(name="Stealthy Snoop (90 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopHard, difficulty_lvl=3, logic=lambda l: True),
+    Minigames.StealthySnoopNormal: Minigame(name="Stealthy Snoop (70 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopNormal, difficulty_lvl=3, logic=lambda l: True),
+    Minigames.StealthySnoopHard: Minigame(name="Stealthy Snoop (90 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopHard, difficulty_lvl=4, logic=lambda l: True),
     # Stash Snatch - SSnatch Hybrid determined too difficulty for Helm
     Minigames.StashSnatchEasy: Minigame(name="Stash Snatch (60 seconds, 6 coins)", group="Stash Snatch", map_id=Maps.StashSnatchEasy, logic=lambda l: True),
     Minigames.StashSnatchNormal: Minigame(name="Stash Snatch (60 seconds, 16 coins)", group="Stash Snatch", map_id=Maps.StashSnatchNormal, difficulty_lvl=1, logic=lambda l: True),
     Minigames.StashSnatchHard: Minigame(
-        name="Stash Snatch (120 seconds, 4 coins, Stash Snatch Hybrid)", group="Stash Snatch", map_id=Maps.StashSnatchHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: True
+        name="Stash Snatch (120 seconds, 4 coins, Stash Snatch Hybrid)", group="Stash Snatch", map_id=Maps.StashSnatchHard, helm_enabled=False, difficulty_lvl=4, logic=lambda l: True
     ),
-    Minigames.StashSnatchInsane: Minigame(name="Stash Snatch (120 seconds, 33 coins)", group="Stash Snatch", map_id=Maps.StashSnatchInsane, difficulty_lvl=3, logic=lambda l: True),
+    Minigames.StashSnatchInsane: Minigame(name="Stash Snatch (120 seconds, 33 coins)", group="Stash Snatch", map_id=Maps.StashSnatchInsane, difficulty_lvl=4, logic=lambda l: True),
     # Splish Splash Salvage
     Minigames.SplishSplashSalvageEasy: Minigame(name="Splish Splash Salvage (8 coins)", group="Splish Splash Salvage", map_id=Maps.SplishSplashSalvageEasy, logic=lambda l: l.swim and l.vines),
     Minigames.SplishSplashSalvageNormal: Minigame(
@@ -144,7 +149,7 @@ MinigameRequirements = {
         kong_list=[Kongs.tiny],
     ),
     Minigames.SpeedySwingSortieHard: Minigame(
-        name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: l.vines
+        name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: l.vines
     ),
     # Krazy Kong Klamour - Fast flicker games banned from Helm because Wii U semi-requires pause buffer to hit Bananas. Not expecting users to know this trick
     Minigames.KrazyKongKlamourEasy: Minigame(name="Krazy Kong Klamour (10 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourEasy, logic=lambda l: True),
@@ -152,10 +157,10 @@ MinigameRequirements = {
         name="Krazy Kong Klamour (15 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourNormal, difficulty_lvl=1, logic=lambda l: True
     ),
     Minigames.KrazyKongKlamourHard: Minigame(
-        name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: True
+        name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: True
     ),
     Minigames.KrazyKongKlamourInsane: Minigame(
-        name="Krazy Kong Klamour (10 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourInsane, helm_enabled=False, difficulty_lvl=3, logic=lambda l: True
+        name="Krazy Kong Klamour (10 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourInsane, helm_enabled=False, difficulty_lvl=4, logic=lambda l: True
     ),
     # Searchlight Seek
     Minigames.SearchlightSeekVEasy: Minigame(name="Searchlight Seek (4 Klaptraps)", group="Searchlight Seek", map_id=Maps.SearchlightSeekVEasy, logic=lambda l: True),
@@ -174,7 +179,9 @@ MinigameRequirements = {
     Minigames.PerilPathPanicHard: Minigame(name="Peril Path Panic (12 points)", group="Peril Path Panic", map_id=Maps.PerilPathPanicHard, difficulty_lvl=3, logic=lambda l: True),
     # Helm barrels
     Minigames.DonkeyRambi: Minigame(name="Hideout Helm: DK Rambi", group="Helm Minigames", map_id=Maps.HelmBarrelDKRambi, can_repeat=True, logic=lambda l: True),
-    Minigames.DonkeyTarget: Minigame(name="Hideout Helm: DK Targets", group="Helm Minigames", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, logic=lambda l: l.isdonkey, kong_list=[Kongs.donkey]),
+    Minigames.DonkeyTarget: Minigame(
+        name="Hideout Helm: DK Targets", group="Helm Minigames", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, difficulty_lvl=3, logic=lambda l: l.isdonkey, kong_list=[Kongs.donkey]
+    ),
     Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),
     Minigames.DiddyRocketbarrel: Minigame(
         name="Hideout Helm: Diddy Rocketbarrel",
@@ -217,8 +224,51 @@ MinigameRequirements = {
         group="Helm Minigames",
         map_id=Maps.HelmBarrelChunkyShooting,
         can_repeat=True,
+        difficulty_lvl=3,
         logic=lambda l: (l.scope or l.homing or l.settings.hard_shooting)
         and ((l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)),
+    ),
+    Minigames.RambiArena: Minigame(
+        name="Rambi Arena",
+        group="Arenas",
+        map_id=Maps.RambiArena,
+        can_repeat=True,
+        logic=lambda l: True,
+    ),
+    Minigames.EnguardeArena: Minigame(
+        name="Enguarde Arena",
+        group="Arenas",
+        map_id=Maps.EnguardeArena,
+        can_repeat=True,
+        logic=lambda l: l.swim,
+    ),
+    Minigames.BarrelBarrel: Minigame(
+        name="Barrel Training",
+        group="Training Minigames",
+        map_id=Maps.BarrelBarrel,
+        can_repeat=True,
+        logic=lambda l: l.barrels,
+    ),
+    Minigames.OrangeBarrel: Minigame(
+        name="Orange Training",
+        group="Training Minigames",
+        map_id=Maps.OrangeBarrel,
+        can_repeat=True,
+        logic=lambda l: l.oranges,
+    ),
+    Minigames.VineBarrel: Minigame(
+        name="Vine Training",
+        group="Training Minigames",
+        map_id=Maps.VineBarrel,
+        can_repeat=True,
+        logic=lambda l: l.vines,
+    ),
+    Minigames.DiveBarrel: Minigame(
+        name="Dive Training",
+        group="Training Minigames",
+        map_id=Maps.DiveBarrel,
+        can_repeat=True,
+        logic=lambda l: l.swim,
     ),
 }
 
@@ -236,7 +286,7 @@ for minigame in MinigameRequirements.values():
 class MinigameLocationData:
     """Class which stores container map and barrel id for a minigame barrel."""
 
-    def __init__(self, map_id, barrel_id, minigame, kong):
+    def __init__(self, map_id: Maps, barrel_id: int, minigame: Minigames, kong: Kongs) -> None:
         """Initialize with given parameters."""
         self.map = map_id
         self.barrel_id = barrel_id

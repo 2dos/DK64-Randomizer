@@ -1,4 +1,5 @@
 """Adjust exits to prevent logical problems with LZR."""
+
 import os
 import zlib
 from typing import BinaryIO
@@ -192,6 +193,9 @@ def adjustExits(fh):
                                 coords.append(int(intf_to_float(int.from_bytes(fg.read(4), "big"))))
                             coords[1] += 5
                         exit_coords.append(coords.copy())
+                if map_index == 0x22:
+                    # Isles
+                    exit_coords.append([2524, 1724, 3841])  # Top of Krem Isles
             if os.path.exists(temp_file):
                 os.remove(temp_file)
         exit_additions.append(exit_coords.copy())

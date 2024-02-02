@@ -16,8 +16,16 @@ CoinHUDReposition:
         addiu $t8, $zero, 0x4C
 
     CoinHUDReposition_Finish:
+        lui $t7, hi(WidescreenEnabled)
+        lbu $t7, lo(WidescreenEnabled) ($t7)
+        bnez $t7, CoinHUDReposition_Widescreen
+        nop
         j 0x806F88D0
         addiu $t7, $zero, 0x122
+
+    CoinHUDReposition_Widescreen:
+        j 0x806F88D0
+        addiu $t7, $zero, hud_screen_wd - 30
 
 GiveItemPointerToMulti:
     lui $t8, hi(MultiBunchCount)
@@ -91,6 +99,10 @@ HomingHUDHandle:
         or $a1, $zero, $zero
 
 SkipCutscenePans:
+    lui $t1, hi(enable_skip_check)
+    lbu $t1, lo(enable_skip_check) ($t1)
+    beqz $t1, SkipCutscenePans_Persist
+    nop
     lui $t1, hi(CutsceneActive)
     addiu v0, $zero, 1
     lbu $t1, lo(CutsceneActive) ($t1)
@@ -149,6 +161,10 @@ SkipCutscenePans:
         nop
 
 PlayCutsceneVelocity:
+    lui $t1, hi(enable_skip_check)
+    lbu $t1, lo(enable_skip_check) ($t1)
+    beqz $t1, PlayCutsceneVelocity_Finish
+    nop
     lui $t9, hi(CutsceneStateBitfield)
     lhu $t9, lo(CutsceneStateBitfield) ($t9)
     andi $t9, $t9, 4
@@ -256,3 +272,9 @@ FixKrushaAmmoHUDSize:
     FixKrushaAmmoHUDSize_Finish:
         j 0x806f97f0
         nop
+
+RecolorMenuBackground:
+    lui $t7, hi(MenuDarkness)
+    lw $t7, lo(MenuDarkness) ($t7)
+    j 0x807070a8
+    sw $t7, 0x4 ($a1)

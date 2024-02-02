@@ -22,6 +22,7 @@
 .definelabel __osDisableInt, 0x80009020
 .definelabel __osRestoreInt, 0x80009040
 .definelabel __osEepromProbe, 0x80007D20
+.definelabel __osVirtualToPhysical, 0x80008FA0
 .definelabel copyFunc, 0x805FB750
 .definelabel getMapData, 0x8066B0F8
 .definelabel loadSetup, 0x806886E0
@@ -72,3 +73,5 @@
 .definelabel alterSFXVolume, 0x80737B58
 .definelabel alterMusicVolume, 0x8060A398
 .definelabel adjustSFXType_Internal, 0x80737C20
+.definelabel loadChunks, 0x80650ECC
+.definelabel regularFrameLoop, 0x805FC2B0

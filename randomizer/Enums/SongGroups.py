@@ -1,4 +1,5 @@
 """Enum for Song Groups."""
+
 from enum import IntEnum, auto
 
 
@@ -9,6 +10,13 @@ class SongGroup(IntEnum):
             IntEnum (int): Enum of the song.
     """
 
+    Fight = auto()
+    LobbyShop = auto()
+    Interiors = auto()
+    Exteriors = auto()
+    Minigames = auto()
+    Happy = auto()
+    Gloomy = auto()
     Calm = auto()
-    Bouncy = auto()
-    Loud = auto()
+    Spawning = auto()
+    Collection = auto()

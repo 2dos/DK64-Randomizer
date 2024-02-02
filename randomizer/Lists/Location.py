@@ -8,7 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 
 class MapIDCombo:
@@ -70,7 +70,7 @@ class Location:
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
             self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.Coin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin):
+        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.Coin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies):
             if data is None:
                 self.map_id_list = []
             else:
@@ -80,67 +80,68 @@ class Location:
         if self.default_mapid_data is not None and len(self.default_mapid_data) > 0 and type(self.default_mapid_data[0]) is MapIDCombo and self.default_mapid_data[0].id == -1 and self.type != Types.Kong:
             self.is_reward = True
 
-    def PlaceItem(self, item):
+    def PlaceItem(self, spoiler, item):
         """Place item at this location."""
         self.item = item
         # If we're placing a real move here, lock out mutually exclusive shop locations
         if item != Items.NoItem and self.type == Types.Shop:
             for location in ShopLocationReference[self.level][self.vendor]:
-                if LocationList[location].smallerShopsInaccessible:
+                if spoiler.LocationList[location].smallerShopsInaccessible:
                     continue
                 # If this is a shared spot, lock out kong-specific locations in this shop
-                if self.kong == Kongs.any and LocationList[location].kong != Kongs.any:
-                    LocationList[location].inaccessible = True
+                if self.kong == Kongs.any and spoiler.LocationList[location].kong != Kongs.any:
+                    spoiler.LocationList[location].inaccessible = True
                 # If this is a kong-specific spot, lock out the shared location in this shop
-                if self.kong != Kongs.any and LocationList[location].kong == Kongs.any:
-                    LocationList[location].inaccessible = True
+                if self.kong != Kongs.any and spoiler.LocationList[location].kong == Kongs.any:
+                    spoiler.LocationList[location].inaccessible = True
                     break  # There's only one shared spot to block
 
-    def PlaceConstantItem(self, item):
+    def PlaceConstantItem(self, spoiler, item):
         """Place item at this location, and set constant so it's ignored in the spoiler."""
-        self.PlaceItem(item)
+        self.PlaceItem(spoiler, item)
         self.constant = True
 
     def SetDelayedItem(self, item):
         """Set an item to be added back later."""
         self.delayedItem = item
 
-    def PlaceDelayedItem(self):
+    def PlaceDelayedItem(self, spoiler):
         """Place the delayed item at this location."""
-        self.PlaceItem(self.delayedItem)
+        self.PlaceItem(spoiler, self.delayedItem)
         self.delayedItem = None
 
-    def PlaceDefaultItem(self):
+    def PlaceDefaultItem(self, spoiler):
         """Place whatever this location's default (vanilla) item is at it."""
-        self.PlaceItem(self.default)
+        self.PlaceItem(spoiler, self.default)
         self.constant = True
 
-    def UnplaceItem(self):
+    def UnplaceItem(self, spoiler):
         """Unplace an item here, which may affect the placement of other items."""
         self.item = None
         # If this is a shop location, we may have locked out a location we now need to undo
         if self.type == Types.Shop:
             # Check other locations in this shop
             for location_id in ShopLocationReference[self.level][self.vendor]:
-                if LocationList[location_id].smallerShopsInaccessible:
+                if spoiler.LocationList[location_id].smallerShopsInaccessible:
                     continue
-                if LocationList[location_id].kong == Kongs.any and LocationList[location_id].inaccessible:
+                if spoiler.LocationList[location_id].kong == Kongs.any and spoiler.LocationList[location_id].inaccessible:
                     # If there are no other items remaining in this shop, then we can unlock the shared location
-                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if LocationList[location].item not in (None, Items.NoItem)])
+                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if spoiler.LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
-                        LocationList[location_id].inaccessible = False
+                        spoiler.LocationList[location_id].inaccessible = False
                 # Locations are only inaccessible due to lockouts. If any exist, they're because this location caused them to be locked out.
-                elif LocationList[location_id].inaccessible:
-                    LocationList[location_id].inaccessible = False
+                elif spoiler.LocationList[location_id].inaccessible:
+                    spoiler.LocationList[location_id].inaccessible = False
 
 
-LocationList = {
+LocationListOriginal = {
     # Training Barrel locations
     Locations.IslesVinesTrainingBarrel: Location(Levels.DKIsles, "Isles Vines Training Barrel", Items.Vines, Types.TrainingBarrel, Kongs.any, [123]),
     Locations.IslesSwimTrainingBarrel: Location(Levels.DKIsles, "Isles Dive Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
     Locations.IslesOrangesTrainingBarrel: Location(Levels.DKIsles, "Isles Oranges Training Barrel", Items.Oranges, Types.TrainingBarrel, Kongs.any, [121]),
     Locations.IslesBarrelsTrainingBarrel: Location(Levels.DKIsles, "Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel, Kongs.any, [122]),
     # Pre-Given Moves
+    Locations.IslesFirstMove: Location(Levels.DKIsles, "Isles Cranky's First Move", Items.ProgressiveSlam, Types.PreGivenMove),
     Locations.PreGiven_Location00: Location(Levels.DKIsles, "Pre-Given Move (00)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location01: Location(Levels.DKIsles, "Pre-Given Move (01)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location02: Location(Levels.DKIsles, "Pre-Given Move (02)", Items.NoItem, Types.PreGivenMove),
@@ -717,6 +718,449 @@ LocationList = {
     Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Rear Tunnel", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
     Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AC)]),  # Banana Hoard
     Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2AD)]),  # Castle Lobby
+
+    Locations.MelonCrate_Location00: Location(Levels.JungleJapes, "Japes Crate: Behind the Mountain", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AC)]),  # Japes behind mountain
+    Locations.MelonCrate_Location01: Location(Levels.JungleJapes, "Japes Crate: In the Rambi Cave", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AD)]),  # Japes near cb boulder
+    Locations.MelonCrate_Location02: Location(Levels.AngryAztec, "Aztec Crate: Llama Temple Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x3AE)]),  # Llama Temple
+    Locations.MelonCrate_Location03: Location(Levels.FranticFactory, "Factory Crate: Near Funky", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3AF)]),  # Factory near funky
+    Locations.MelonCrate_Location04: Location(Levels.FranticFactory, "Factory Crate: Near Candy", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3B0)]),  # Factory near candy/cranky
+    Locations.MelonCrate_Location05: Location(Levels.GloomyGalleon, "Galleon Crate: Near Cactus", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x3B1)]),  # Galleon near cactus
+    Locations.MelonCrate_Location06: Location(Levels.AngryAztec, "Aztec Crate: On Llama Temple", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3B2)]),  # Aztec on Llama
+    Locations.MelonCrate_Location07: Location(Levels.AngryAztec, "Aztec Crate: Near Gong Tower", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3B3)]),  # Aztec near gong tower
+    Locations.MelonCrate_Location08: Location(Levels.FungiForest, "Forest Crate: Near Owl Tree", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B4)]),  # Fungi near owl tree
+    Locations.MelonCrate_Location09: Location(Levels.FungiForest, "Forest Crate: Near Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B5)]),  # Fungi near DK barn
+    Locations.MelonCrate_Location10: Location(Levels.FungiForest, "Forest Crate: Behind Dark Attic", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B6)]),  # Fungi behind dark attic
+    Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate: In Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
+    Locations.MelonCrate_Location12: Location(Levels.CreepyCastle, "Castle Crate: Behind Mausoleum Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x3B8)]),  # Crypt behind Mausoleum entrance
+
+    Locations.JapesMainEnemy_Start: Location(Levels.JungleJapes, "Jungle Japes Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c2)]),
+    Locations.JapesMainEnemy_DiddyCavern: Location(Levels.JungleJapes, "Jungle Japes Enemy: Diddy Cavern", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c3)]),
+    Locations.JapesMainEnemy_Tunnel0: Location(Levels.JungleJapes, "Jungle Japes Enemy: Tunnel (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c4)]),
+    Locations.JapesMainEnemy_Tunnel1: Location(Levels.JungleJapes, "Jungle Japes Enemy: Tunnel (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c5)]),
+    Locations.JapesMainEnemy_Storm0: Location(Levels.JungleJapes, "Jungle Japes Enemy: Storm (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c6)]),
+    Locations.JapesMainEnemy_Storm1: Location(Levels.JungleJapes, "Jungle Japes Enemy: Storm (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c7)]),
+    Locations.JapesMainEnemy_Storm2: Location(Levels.JungleJapes, "Jungle Japes Enemy: Storm (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c8)]),
+    Locations.JapesMainEnemy_Hive0: Location(Levels.JungleJapes, "Jungle Japes Enemy: Hive (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3c9)]),
+    Locations.JapesMainEnemy_Hive1: Location(Levels.JungleJapes, "Jungle Japes Enemy: Hive (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3ca)]),
+    Locations.JapesMainEnemy_Hive2: Location(Levels.JungleJapes, "Jungle Japes Enemy: Hive (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3cb)]),
+    Locations.JapesMainEnemy_Hive3: Location(Levels.JungleJapes, "Jungle Japes Enemy: Hive (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3cc)]),
+    Locations.JapesMainEnemy_Hive4: Location(Levels.JungleJapes, "Jungle Japes Enemy: Hive (4)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3cd)]),
+    Locations.JapesMainEnemy_KilledInDemo: Location(Levels.JungleJapes, "Jungle Japes Enemy: Killed In Demo", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3ce)]),
+    Locations.JapesMainEnemy_NearUnderground: Location(Levels.JungleJapes, "Jungle Japes Enemy: Near Underground", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3cf)]),
+    Locations.JapesMainEnemy_NearPainting0: Location(Levels.JungleJapes, "Jungle Japes Enemy: Near Painting (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3d0)]),
+    Locations.JapesMainEnemy_NearPainting1: Location(Levels.JungleJapes, "Jungle Japes Enemy: Near Painting (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3d1)]),
+    Locations.JapesMainEnemy_NearPainting2: Location(Levels.JungleJapes, "Jungle Japes Enemy: Near Painting (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3d2)]),
+    Locations.JapesMainEnemy_Mountain: Location(Levels.JungleJapes, "Jungle Japes Enemy: Mountain", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3d3)]),
+    Locations.JapesMainEnemy_FeatherTunnel: Location(Levels.JungleJapes, "Jungle Japes Enemy: Feather Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3d4)]),
+    Locations.JapesMainEnemy_MiddleTunnel: Location(Levels.JungleJapes, "Jungle Japes Enemy: Middle Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3d5)]),
+    Locations.JapesLobbyEnemy_Enemy0: Location(Levels.DKIsles, "Jungle Japes Lobby Enemy: Enemy (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapesLobby, -1, 0x3d6)]),
+    Locations.JapesLobbyEnemy_Enemy1: Location(Levels.DKIsles, "Jungle Japes Lobby Enemy: Enemy (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapesLobby, -1, 0x3d7)]),
+    # Locations.JapesPaintingEnemy_Gauntlet0: Location(Levels.JungleJapes, "Japes Lanky Cave Enemy: Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesLankyCave, -1, 0x3d8)]),
+    # Locations.JapesPaintingEnemy_Gauntlet1: Location(Levels.JungleJapes, "Japes Lanky Cave Enemy: Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesLankyCave, -1, 0x3d9)]),
+    # Locations.JapesPaintingEnemy_Gauntlet2: Location(Levels.JungleJapes, "Japes Lanky Cave Enemy: Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesLankyCave, -1, 0x3da)]),
+    # Locations.JapesPaintingEnemy_Gauntlet3: Location(Levels.JungleJapes, "Japes Lanky Cave Enemy: Gauntlet3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesLankyCave, -1, 0x3db)]),
+    # Locations.JapesPaintingEnemy_Gauntlet4: Location(Levels.JungleJapes, "Japes Lanky Cave Enemy: Gauntlet4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesLankyCave, -1, 0x3dc)]),
+    Locations.JapesMountainEnemy_Start0: Location(Levels.JungleJapes, "Japes Mountain Enemy: Start (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3dd)]),
+    Locations.JapesMountainEnemy_Start1: Location(Levels.JungleJapes, "Japes Mountain Enemy: Start (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3de)]),
+    Locations.JapesMountainEnemy_Start2: Location(Levels.JungleJapes, "Japes Mountain Enemy: Start (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3df)]),
+    Locations.JapesMountainEnemy_Start3: Location(Levels.JungleJapes, "Japes Mountain Enemy: Start (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3e0)]),
+    Locations.JapesMountainEnemy_Start4: Location(Levels.JungleJapes, "Japes Mountain Enemy: Start (4)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3e1)]),
+    Locations.JapesMountainEnemy_NearGateSwitch0: Location(Levels.JungleJapes, "Japes Mountain Enemy: Near Gate Switch (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3e2)]),
+    Locations.JapesMountainEnemy_NearGateSwitch1: Location(Levels.JungleJapes, "Japes Mountain Enemy: Near Gate Switch (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3e3)]),
+    Locations.JapesMountainEnemy_HiLo: Location(Levels.JungleJapes, "Japes Mountain Enemy: Hi Lo", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3e4)]),
+    Locations.JapesMountainEnemy_Conveyor0: Location(Levels.JungleJapes, "Japes Mountain Enemy: Conveyor0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3e5)]),
+    Locations.JapesMountainEnemy_Conveyor1: Location(Levels.JungleJapes, "Japes Mountain Enemy: Conveyor1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesMountain, -1, 0x3e6)]),
+    Locations.JapesShellhiveEnemy_FirstRoom: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: First Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3e7)]),
+    Locations.JapesShellhiveEnemy_SecondRoom0: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Second Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3e8)]),
+    Locations.JapesShellhiveEnemy_SecondRoom1: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Second Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3e9)]),
+    Locations.JapesShellhiveEnemy_ThirdRoom0: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Third Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3ea)]),
+    Locations.JapesShellhiveEnemy_ThirdRoom1: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Third Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3eb)]),
+    Locations.JapesShellhiveEnemy_ThirdRoom2: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Third Room (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3ec)]),
+    Locations.JapesShellhiveEnemy_ThirdRoom3: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Third Room (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3ed)]),
+    Locations.JapesShellhiveEnemy_MainRoom: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Main Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3ee)]),
+
+    Locations.AztecMainEnemy_VaseRoom0: Location(Levels.AngryAztec, "Angry Aztec Enemy: Vase Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3ef)]),
+    Locations.AztecMainEnemy_VaseRoom1: Location(Levels.AngryAztec, "Angry Aztec Enemy: Vase Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f0)]),
+    Locations.AztecMainEnemy_TunnelPad0: Location(Levels.AngryAztec, "Angry Aztec Enemy: Tunnel Pad (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f1)]),
+    Locations.AztecMainEnemy_TunnelCage0: Location(Levels.AngryAztec, "Angry Aztec Enemy: Tunnel Cage (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f2)]),
+    Locations.AztecMainEnemy_TunnelCage1: Location(Levels.AngryAztec, "Angry Aztec Enemy: Tunnel Cage (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f3)]),
+    Locations.AztecMainEnemy_TunnelCage2: Location(Levels.AngryAztec, "Angry Aztec Enemy: Tunnel Cage (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f4)]),
+    Locations.AztecMainEnemy_StartingTunnel0: Location(Levels.AngryAztec, "Angry Aztec Enemy: Starting Tunnel (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f5)]),
+    Locations.AztecMainEnemy_StartingTunnel1: Location(Levels.AngryAztec, "Angry Aztec Enemy: Starting Tunnel (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f6)]),
+    Locations.AztecMainEnemy_OasisDoor: Location(Levels.AngryAztec, "Angry Aztec Enemy: Oasis Door", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f7)]),
+    Locations.AztecMainEnemy_TunnelCage3: Location(Levels.AngryAztec, "Angry Aztec Enemy: Tunnel Cage (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f8)]),
+    Locations.AztecMainEnemy_OutsideLlama: Location(Levels.AngryAztec, "Angry Aztec Enemy: Outside Llama", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f9)]),
+    Locations.AztecMainEnemy_OutsideTower: Location(Levels.AngryAztec, "Angry Aztec Enemy: Outside Tower", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3fa)]),
+    Locations.AztecMainEnemy_TunnelPad1: Location(Levels.AngryAztec, "Angry Aztec Enemy: Tunnel Pad (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3fb)]),
+    Locations.AztecMainEnemy_NearCandy: Location(Levels.AngryAztec, "Angry Aztec Enemy: Near Candy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3fc)]),
+    Locations.AztecMainEnemy_AroundTotem: Location(Levels.AngryAztec, "Angry Aztec Enemy: Around Totem", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3fd)]),
+    Locations.AztecMainEnemy_StartingTunnel2: Location(Levels.AngryAztec, "Angry Aztec Enemy: Starting Tunnel (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3fe)]),
+    Locations.AztecMainEnemy_StartingTunnel3: Location(Levels.AngryAztec, "Angry Aztec Enemy: Starting Tunnel (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3ff)]),
+    Locations.AztecMainEnemy_Outside5DT: Location(Levels.AngryAztec, "Angry Aztec Enemy: Outside5DT", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x400)]),
+    Locations.AztecMainEnemy_NearSnoopTunnel: Location(Levels.AngryAztec, "Angry Aztec Enemy: Near Snoop Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x401)]),
+    # Locations.AztecLobbyEnemy_Pad0: Location(Levels.DKIsles, "Angry Aztec Lobby Enemy: Pad0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztecLobby, -1, 0x402)]),
+    # Locations.AztecLobbyEnemy_Pad1: Location(Levels.DKIsles, "Angry Aztec Lobby Enemy: Pad1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztecLobby, -1, 0x403)]),
+    Locations.AztecDK5DTEnemy_StartTrap0: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: Start Trap (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x404)]),
+    Locations.AztecDK5DTEnemy_StartTrap1: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: Start Trap (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x405)]),
+    Locations.AztecDK5DTEnemy_StartTrap2: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: Start Trap (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x406)]),
+    Locations.AztecDK5DTEnemy_EndTrap0: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Trap (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x407)]),
+    Locations.AztecDK5DTEnemy_EndTrap1: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Trap (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x408)]),
+    Locations.AztecDK5DTEnemy_EndTrap2: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Trap (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x409)]),
+    Locations.AztecDK5DTEnemy_EndPath0: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Path (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x40a)]),
+    Locations.AztecDK5DTEnemy_EndPath1: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Path (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x40b)]),
+    Locations.AztecDK5DTEnemy_StartPath: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: Start Pat (h)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x40c)]),
+    Locations.AztecDiddy5DTEnemy_EndTrap0: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: End Trap (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x40d)]),
+    Locations.AztecDiddy5DTEnemy_EndTrap1: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: End Trap (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x40e)]),
+    Locations.AztecDiddy5DTEnemy_EndTrap2: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: End Trap (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x40f)]),
+    Locations.AztecDiddy5DTEnemy_StartLeft0: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: Start Left (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x410)]),
+    Locations.AztecDiddy5DTEnemy_StartLeft1: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: Start Left (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x411)]),
+    Locations.AztecDiddy5DTEnemy_Reward: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: Reward", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x412)]),
+    Locations.AztecDiddy5DTEnemy_SecondSwitch: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: Second Switch", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x413)]),
+    Locations.AztecLanky5DTEnemy_JoiningPaths: Location(Levels.AngryAztec, "Aztec Lanky5DTemple Enemy: Joining Paths", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLanky5DTemple, -1, 0x414)]),
+    Locations.AztecLanky5DTEnemy_EndTrap: Location(Levels.AngryAztec, "Aztec Lanky5DTemple Enemy: End Trap", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLanky5DTemple, -1, 0x415)]),
+    Locations.AztecLanky5DTEnemy_Reward: Location(Levels.AngryAztec, "Aztec Lanky5DTemple Enemy: Reward", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLanky5DTemple, -1, 0x416)]),
+    Locations.AztecTiny5DTEnemy_StartRightFront: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Start Right Front", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x417)]),
+    Locations.AztecTiny5DTEnemy_StartLeftBack: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Start Left Back", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x418)]),
+    Locations.AztecTiny5DTEnemy_StartRightBack: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Start Right Back", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x419)]),
+    Locations.AztecTiny5DTEnemy_StartLeftFront: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Start Left Front", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x41a)]),
+    Locations.AztecTiny5DTEnemy_Reward0: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Reward (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x41b)]),
+    Locations.AztecTiny5DTEnemy_Reward1: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Reward (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x41c)]),
+    Locations.AztecTiny5DTEnemy_DeadEnd0: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Dead End (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x41d)]),
+    Locations.AztecTiny5DTEnemy_DeadEnd1: Location(Levels.AngryAztec, "Aztec Tiny5DTemple Enemy: Dead End (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 0x41e)]),
+    Locations.AztecChunky5DTEnemy_StartRight: Location(Levels.AngryAztec, "Aztec Chunky5DTemple Enemy: Start Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x41f)]),
+    Locations.AztecChunky5DTEnemy_StartLeft: Location(Levels.AngryAztec, "Aztec Chunky5DTemple Enemy: Start Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x420)]),
+    Locations.AztecChunky5DTEnemy_SecondRight: Location(Levels.AngryAztec, "Aztec Chunky5DTemple Enemy: Second Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x421)]),
+    Locations.AztecChunky5DTEnemy_SecondLeft: Location(Levels.AngryAztec, "Aztec Chunky5DTemple Enemy: Second Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x422)]),
+    Locations.AztecChunky5DTEnemy_Reward: Location(Levels.AngryAztec, "Aztec Chunky5DTemple Enemy: Reward", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x423)]),
+    Locations.AztecLlamaEnemy_KongFreeInstrument: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Kong Free Instrument", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x424)]),
+    Locations.AztecLlamaEnemy_DinoInstrument: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Dino Instrument", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x425)]),
+    # Locations.AztecLlamaEnemy_Matching0: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Matching0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x426)]),
+    # Locations.AztecLlamaEnemy_Matching1: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Matching1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x427)]),
+    Locations.AztecLlamaEnemy_Right: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x428)]),
+    Locations.AztecLlamaEnemy_Left: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x429)]),
+    Locations.AztecLlamaEnemy_MelonCrate: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Melon Crate", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x42a)]),
+    Locations.AztecLlamaEnemy_SlamSwitch: Location(Levels.AngryAztec, "Aztec Llama Temple Enemy: Slam Switch", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x42b)]),
+    # Locations.AztecTempleEnemy_Rotating00: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x42c)]),
+    # Locations.AztecTempleEnemy_Rotating01: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x42d)]),
+    # Locations.AztecTempleEnemy_Rotating02: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x42e)]),
+    # Locations.AztecTempleEnemy_Rotating03: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x42f)]),
+    # Locations.AztecTempleEnemy_Rotating04: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating04", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x430)]),
+    # Locations.AztecTempleEnemy_Rotating05: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating05", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x431)]),
+    # Locations.AztecTempleEnemy_Rotating06: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating06", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x432)]),
+    # Locations.AztecTempleEnemy_Rotating07: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating07", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x433)]),
+    # Locations.AztecTempleEnemy_Rotating08: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating08", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x434)]),
+    # Locations.AztecTempleEnemy_Rotating09: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating09", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x435)]),
+    # Locations.AztecTempleEnemy_Rotating10: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating10", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x436)]),
+    # Locations.AztecTempleEnemy_Rotating11: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating11", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x437)]),
+    # Locations.AztecTempleEnemy_Rotating12: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating12", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x438)]),
+    # Locations.AztecTempleEnemy_Rotating13: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating13", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x439)]),
+    # Locations.AztecTempleEnemy_Rotating14: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating14", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x43a)]),
+    # Locations.AztecTempleEnemy_Rotating15: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Rotating15", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x43b)]),
+    # Locations.AztecTempleEnemy_MiniRoom00: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Mini Room00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x43c)]),
+    # Locations.AztecTempleEnemy_MiniRoom01: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Mini Room01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x43d)]),
+    # Locations.AztecTempleEnemy_MiniRoom02: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Mini Room02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x43e)]),
+    # Locations.AztecTempleEnemy_MiniRoom03: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Mini Room03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x43f)]),
+    Locations.AztecTempleEnemy_GuardRotating0: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Guard Rotating (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x440)]),
+    Locations.AztecTempleEnemy_GuardRotating1: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Guard Rotating (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x441)]),
+    Locations.AztecTempleEnemy_MainRoom0: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Main Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x442)]),
+    Locations.AztecTempleEnemy_MainRoom1: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Main Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x443)]),
+    Locations.AztecTempleEnemy_MainRoom2: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Main Room (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x444)]),
+    Locations.AztecTempleEnemy_KongRoom0: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Kong Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x445)]),
+    Locations.AztecTempleEnemy_KongRoom1: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Kong Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x446)]),
+    Locations.AztecTempleEnemy_KongRoom2: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Kong Room (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x447)]),
+    Locations.AztecTempleEnemy_KongRoom3: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Kong Room (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x448)]),
+    Locations.AztecTempleEnemy_KongRoom4: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Kong Room (4)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x449)]),
+    # Locations.AztecTempleEnemy_Underwater: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Underwater", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x44a)]),
+
+    Locations.FactoryMainEnemy_CandyCranky0: Location(Levels.FranticFactory, "Frantic Factory Enemy: Candy Cranky (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44b)]),
+    Locations.FactoryMainEnemy_CandyCranky1: Location(Levels.FranticFactory, "Frantic Factory Enemy: Candy Cranky (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44c)]),
+    Locations.FactoryMainEnemy_LobbyLeft: Location(Levels.FranticFactory, "Frantic Factory Enemy: Lobby Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44d)]),
+    Locations.FactoryMainEnemy_LobbyRight: Location(Levels.FranticFactory, "Frantic Factory Enemy: Lobby Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44e)]),
+    Locations.FactoryMainEnemy_StorageRoom: Location(Levels.FranticFactory, "Frantic Factory Enemy: Storage Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44f)]),
+    Locations.FactoryMainEnemy_BlockTower0: Location(Levels.FranticFactory, "Frantic Factory Enemy: Block Tower (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x450)]),
+    Locations.FactoryMainEnemy_BlockTower1: Location(Levels.FranticFactory, "Frantic Factory Enemy: Block Tower (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x451)]),
+    Locations.FactoryMainEnemy_BlockTower2: Location(Levels.FranticFactory, "Frantic Factory Enemy: Block Tower (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x452)]),
+    Locations.FactoryMainEnemy_TunnelToHatch: Location(Levels.FranticFactory, "Frantic Factory Enemy: Tunnel To Hatch", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x453)]),
+    Locations.FactoryMainEnemy_TunnelToProd0: Location(Levels.FranticFactory, "Frantic Factory Enemy: Tunnel To Prod (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x454)]),
+    Locations.FactoryMainEnemy_TunnelToProd1: Location(Levels.FranticFactory, "Frantic Factory Enemy: Tunnel To Prod (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x455)]),
+    Locations.FactoryMainEnemy_TunnelToBlockTower: Location(Levels.FranticFactory, "Frantic Factory Enemy: Tunnel To Block Tower", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x456)]),
+    Locations.FactoryMainEnemy_TunnelToRace0: Location(Levels.FranticFactory, "Frantic Factory Enemy: Tunnel To Race (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x457)]),
+    Locations.FactoryMainEnemy_TunnelToRace1: Location(Levels.FranticFactory, "Frantic Factory Enemy: Tunnel To Race (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x458)]),
+    Locations.FactoryMainEnemy_LowWarp4: Location(Levels.FranticFactory, "Frantic Factory Enemy: Low Warp 4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x459)]),
+    Locations.FactoryMainEnemy_DiddySwitch: Location(Levels.FranticFactory, "Frantic Factory Enemy: Diddy Switch", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x45a)]),
+    Locations.FactoryMainEnemy_ToBlockTowerTunnel: Location(Levels.FranticFactory, "Frantic Factory Enemy: To Block Tower Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x45b)]),
+    Locations.FactoryMainEnemy_DarkRoom0: Location(Levels.FranticFactory, "Frantic Factory Enemy: Dark Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x45c)]),
+    Locations.FactoryMainEnemy_DarkRoom1: Location(Levels.FranticFactory, "Frantic Factory Enemy: Dark Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x45d)]),
+    # Locations.FactoryMainEnemy_BHDM0: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x45e)]),
+    # Locations.FactoryMainEnemy_BHDM1: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x45f)]),
+    # Locations.FactoryMainEnemy_BHDM2: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x460)]),
+    # Locations.FactoryMainEnemy_BHDM3: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x461)]),
+    # Locations.FactoryMainEnemy_BHDM4: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x462)]),
+    # Locations.FactoryMainEnemy_BHDM5: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM5", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x463)]),
+    # Locations.FactoryMainEnemy_BHDM6: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM6", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x464)]),
+    # Locations.FactoryMainEnemy_BHDM7: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM7", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x465)]),
+    # Locations.FactoryMainEnemy_BHDM8: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM8", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x466)]),
+    # Locations.FactoryMainEnemy_BHDM9: Location(Levels.FranticFactory, "Frantic Factory Enemy: BHDM9", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x467)]),
+    # Locations.FactoryMainEnemy_1342Gauntlet0: Location(Levels.FranticFactory, "Frantic Factory Enemy: 1342Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x468)]),
+    # Locations.FactoryMainEnemy_1342Gauntlet1: Location(Levels.FranticFactory, "Frantic Factory Enemy: 1342Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x469)]),
+    # Locations.FactoryMainEnemy_1342Gauntlet2: Location(Levels.FranticFactory, "Frantic Factory Enemy: 1342Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x46a)]),
+    # Locations.FactoryMainEnemy_3124Gauntlet0: Location(Levels.FranticFactory, "Frantic Factory Enemy: 3124Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x46b)]),
+    # Locations.FactoryMainEnemy_3124Gauntlet1: Location(Levels.FranticFactory, "Frantic Factory Enemy: 3124Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x46c)]),
+    # Locations.FactoryMainEnemy_3124Gauntlet2: Location(Levels.FranticFactory, "Frantic Factory Enemy: 3124Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x46d)]),
+    # Locations.FactoryMainEnemy_4231Gauntlet0: Location(Levels.FranticFactory, "Frantic Factory Enemy: 4231Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x46e)]),
+    # Locations.FactoryMainEnemy_4231Gauntlet1: Location(Levels.FranticFactory, "Frantic Factory Enemy: 4231Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x46f)]),
+    Locations.FactoryLobbyEnemy_Enemy0: Location(Levels.DKIsles, "Frantic Factory Lobby Enemy: Enemy (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactoryLobby, -1, 0x470)]),
+    Locations.GalleonMainEnemy_ChestRoom0: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: Chest Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x471)]),
+    Locations.GalleonMainEnemy_ChestRoom1: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: Chest Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x472)]),
+    Locations.GalleonMainEnemy_NearVineCannon: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: Near Vine Cannon", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x473)]),
+    Locations.GalleonMainEnemy_CrankyCannon: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: Cranky Cannon", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x474)]),
+    # Locations.GalleonMainEnemy_Submarine: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: Submarine", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x475)]),
+    # Locations.GalleonMainEnemy_5DS0: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: 5DS0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x476)]),
+    # Locations.GalleonMainEnemy_5DS1: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: 5DS1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x477)]),
+    Locations.GalleonMainEnemy_PeanutTunnel: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: Peanut Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x478)]),
+    Locations.GalleonMainEnemy_CoconutTunnel: Location(Levels.GloomyGalleon, "Gloomy Galleon Enemy: Coconut Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x479)]),
+    Locations.GalleonLighthouseEnemy_Enemy0: Location(Levels.GloomyGalleon, "Galleon Lighthouse Enemy: Enemy (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x47a)]),
+    Locations.GalleonLighthouseEnemy_Enemy1: Location(Levels.GloomyGalleon, "Galleon Lighthouse Enemy: Enemy (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x47b)]),
+    # Locations.Galleon5DSDLCEnemy_Diddy: Location(Levels.GloomyGalleon, "Galleon5DShip Diddy Lanky Chunky Enemy: Diddy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDiddyLankyChunky, -1, 0x47c)]),
+    # Locations.Galleon5DSDLCEnemy_Chunky: Location(Levels.GloomyGalleon, "Galleon5DShip Diddy Lanky Chunky Enemy: Chunky", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDiddyLankyChunky, -1, 0x47d)]),
+    # Locations.Galleon5DSDLCEnemy_Lanky: Location(Levels.GloomyGalleon, "Galleon5DShip Diddy Lanky Chunky Enemy: Lanky", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDiddyLankyChunky, -1, 0x47e)]),
+    # Locations.Galleon5DSDTEnemy_DK0: Location(Levels.GloomyGalleon, "Galleon5DShip DKTiny Enemy: DK0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDKTiny, -1, 0x47f)]),
+    # Locations.Galleon5DSDTEnemy_DK1: Location(Levels.GloomyGalleon, "Galleon5DShip DKTiny Enemy: DK1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDKTiny, -1, 0x480)]),
+    # Locations.Galleon5DSDTEnemy_DK2: Location(Levels.GloomyGalleon, "Galleon5DShip DKTiny Enemy: DK2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDKTiny, -1, 0x481)]),
+    # Locations.Galleon5DSDTEnemy_TinyCage: Location(Levels.GloomyGalleon, "Galleon5DShip DKTiny Enemy: Tiny Cage", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDKTiny, -1, 0x482)]),
+    # Locations.Galleon5DSDTEnemy_TinyBed: Location(Levels.GloomyGalleon, "Galleon5DShip DKTiny Enemy: Tiny Bed", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon5DShipDKTiny, -1, 0x483)]),
+    # Locations.Galleon2DSEnemy_Tiny0: Location(Levels.GloomyGalleon, "Galleon2DShip Enemy: Tiny0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon2DShip, -1, 0x484)]),
+    # Locations.Galleon2DSEnemy_Tiny1: Location(Levels.GloomyGalleon, "Galleon2DShip Enemy: Tiny1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Galleon2DShip, -1, 0x485)]),
+    # Locations.GalleonSubEnemy_Enemy0: Location(Levels.GloomyGalleon, "Galleon Submarine Enemy: Enemy0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GalleonSubmarine, -1, 0x486)]),
+    # Locations.GalleonSubEnemy_Enemy1: Location(Levels.GloomyGalleon, "Galleon Submarine Enemy: Enemy1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GalleonSubmarine, -1, 0x487)]),
+    # Locations.GalleonSubEnemy_Enemy2: Location(Levels.GloomyGalleon, "Galleon Submarine Enemy: Enemy2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GalleonSubmarine, -1, 0x488)]),
+    # Locations.GalleonSubEnemy_Enemy3: Location(Levels.GloomyGalleon, "Galleon Submarine Enemy: Enemy3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.GalleonSubmarine, -1, 0x489)]),
+    Locations.ForestMainEnemy_HollowTree0: Location(Levels.FungiForest, "Fungi Forest Enemy: Hollow Tree (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x48a)]),
+    Locations.ForestMainEnemy_HollowTree1: Location(Levels.FungiForest, "Fungi Forest Enemy: Hollow Tree (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x48b)]),
+    Locations.ForestMainEnemy_HollowTreeEntrance: Location(Levels.FungiForest, "Fungi Forest Enemy: Hollow Tree Entrance", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x48c)]),
+    Locations.ForestMainEnemy_TreeMelonCrate0: Location(Levels.FungiForest, "Fungi Forest Enemy: Tree Melon Crate (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x48d)]),
+    Locations.ForestMainEnemy_TreeMelonCrate1: Location(Levels.FungiForest, "Fungi Forest Enemy: Tree Melon Crate (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x48e)]),
+    Locations.ForestMainEnemy_TreeMelonCrate2: Location(Levels.FungiForest, "Fungi Forest Enemy: Tree Melon Crate (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x48f)]),
+    # Locations.ForestMainEnemy_AppleGauntlet0: Location(Levels.FungiForest, "Fungi Forest Enemy: Apple Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x490)]),
+    # Locations.ForestMainEnemy_AppleGauntlet1: Location(Levels.FungiForest, "Fungi Forest Enemy: Apple Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x491)]),
+    # Locations.ForestMainEnemy_AppleGauntlet2: Location(Levels.FungiForest, "Fungi Forest Enemy: Apple Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x492)]),
+    # Locations.ForestMainEnemy_AppleGauntlet3: Location(Levels.FungiForest, "Fungi Forest Enemy: Apple Gauntlet3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x493)]),
+    Locations.ForestMainEnemy_NearBeanstalk0: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Beanstalk (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x494)]),
+    Locations.ForestMainEnemy_NearBeanstalk1: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Beanstalk (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x495)]),
+    Locations.ForestMainEnemy_GreenTunnel: Location(Levels.FungiForest, "Fungi Forest Enemy: Green Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x496)]),
+    Locations.ForestMainEnemy_NearLowWarp5: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Low Warp 5", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x497)]),
+    Locations.ForestMainEnemy_NearPinkTunnelBounceTag: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Pink Tunnel Bounce Tag", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x498)]),
+    Locations.ForestMainEnemy_NearGMRocketbarrel: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Giant Mushroom Rocketbarrel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x499)]),
+    Locations.ForestMainEnemy_BetweenRBAndYellowTunnel: Location(Levels.FungiForest, "Fungi Forest Enemy: Between RBAnd Yellow Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x49a)]),
+    Locations.ForestMainEnemy_NearCranky: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Cranky", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x49b)]),
+    Locations.ForestMainEnemy_NearPinkTunnelGM: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Pink Tunnel Giant Mushroom", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x49c)]),
+    Locations.ForestMainEnemy_GMRearTag: Location(Levels.FungiForest, "Fungi Forest Enemy: Giant Mushroom Rear Tag", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x49d)]),
+    Locations.ForestMainEnemy_NearFacePuzzle: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Face Puzzle", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x49e)]),
+    Locations.ForestMainEnemy_NearCrown: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Crown", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x49f)]),
+    Locations.ForestMainEnemy_NearHighWarp5: Location(Levels.FungiForest, "Fungi Forest Enemy: Near High Warp5", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a0)]),
+    Locations.ForestMainEnemy_TopOfMushroom: Location(Levels.FungiForest, "Fungi Forest Enemy: Top Of Mushroom", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a1)]),
+    Locations.ForestMainEnemy_NearAppleDropoff: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Apple Dropoff", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a2)]),
+    Locations.ForestMainEnemy_NearDKPortal: Location(Levels.FungiForest, "Fungi Forest Enemy: Near DKPortal", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a3)]),
+    Locations.ForestMainEnemy_NearWellTag: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Well Tag", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a4)]),
+    Locations.ForestMainEnemy_YellowTunnel0: Location(Levels.FungiForest, "Fungi Forest Enemy: Yellow Tunnel (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a5)]),
+    Locations.ForestMainEnemy_YellowTunnel1: Location(Levels.FungiForest, "Fungi Forest Enemy: Yellow Tunnel (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a6)]),
+    Locations.ForestMainEnemy_YellowTunnel2: Location(Levels.FungiForest, "Fungi Forest Enemy: Yellow Tunnel (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a7)]),
+    Locations.ForestMainEnemy_YellowTunnel3: Location(Levels.FungiForest, "Fungi Forest Enemy: Yellow Tunnel (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a8)]),
+    Locations.ForestMainEnemy_NearSnide: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Snide", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4a9)]),
+    Locations.ForestMainEnemy_NearIsoCoin: Location(Levels.FungiForest, "Fungi Forest Enemy: Near the hidden Rainbow Coin", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4aa)]),
+    Locations.ForestMainEnemy_NearBBlast: Location(Levels.FungiForest, "Fungi Forest Enemy: Near BBlast", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4ab)]),
+    Locations.ForestMainEnemy_NearDarkAttic: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Dark Attic", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4ac)]),
+    Locations.ForestMainEnemy_NearWellExit: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Well Exit", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4ad)]),
+    Locations.ForestMainEnemy_NearBlueTunnel: Location(Levels.FungiForest, "Fungi Forest Enemy: Near Blue Tunnel", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4ae)]),
+    Locations.ForestMainEnemy_Thornvine0: Location(Levels.FungiForest, "Fungi Forest Enemy: Thornvine (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4af)]),
+    Locations.ForestMainEnemy_Thornvine1: Location(Levels.FungiForest, "Fungi Forest Enemy: Thornvine (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4b0)]),
+    Locations.ForestMainEnemy_Thornvine2: Location(Levels.FungiForest, "Fungi Forest Enemy: Thornvine (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4b1)]),
+    Locations.ForestMainEnemy_ThornvineEntrance: Location(Levels.FungiForest, "Fungi Forest Enemy: Thornvine Entrance", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x4b2)]),
+    Locations.ForestAnthillEnemy_Gauntlet0: Location(Levels.FungiForest, "Forest Anthill Enemy: Gauntlet (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestAnthill, -1, 0x4b3)]),
+    Locations.ForestAnthillEnemy_Gauntlet1: Location(Levels.FungiForest, "Forest Anthill Enemy: Gauntlet (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestAnthill, -1, 0x4b4)]),
+    Locations.ForestAnthillEnemy_Gauntlet2: Location(Levels.FungiForest, "Forest Anthill Enemy: Gauntlet (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestAnthill, -1, 0x4b5)]),
+    Locations.ForestAnthillEnemy_Gauntlet3: Location(Levels.FungiForest, "Forest Anthill Enemy: Gauntlet (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestAnthill, -1, 0x4b6)]),
+    Locations.ForestWinchEnemy_Enemy: Location(Levels.FungiForest, "Forest Winch Room Enemy: Enemy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestWinchRoom, -1, 0x4b7)]),
+    Locations.ForestThornBarnEnemy_Enemy: Location(Levels.FungiForest, "Forest Thornvine Barn Enemy: Enemy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x4b8)]),
+    Locations.ForestMillFrontEnemy_Enemy: Location(Levels.FungiForest, "Forest Mill Front Enemy: Enemy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x4b9)]),
+    Locations.ForestMillRearEnemy_Enemy: Location(Levels.FungiForest, "Forest Mill Back Enemy: Enemy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x4ba)]),
+    Locations.ForestGMEnemy_AboveNightDoor: Location(Levels.FungiForest, "Forest Giant Mushroom Enemy: Above Night Door", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestGiantMushroom, -1, 0x4bb)]),
+    Locations.ForestGMEnemy_Path0: Location(Levels.FungiForest, "Forest Giant Mushroom Enemy: Path (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestGiantMushroom, -1, 0x4bc)]),
+    Locations.ForestGMEnemy_Path1: Location(Levels.FungiForest, "Forest Giant Mushroom Enemy: Path (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestGiantMushroom, -1, 0x4bd)]),
+    # Locations.ForestLankyAtticEnemy_Gauntlet0: Location(Levels.FungiForest, "Forest Mill Attic Enemy: Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestMillAttic, -1, 0x4be)]),
+    # Locations.ForestLankyAtticEnemy_Gauntlet1: Location(Levels.FungiForest, "Forest Mill Attic Enemy: Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestMillAttic, -1, 0x4bf)]),
+    # Locations.ForestLankyAtticEnemy_Gauntlet2: Location(Levels.FungiForest, "Forest Mill Attic Enemy: Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestMillAttic, -1, 0x4c0)]),
+    Locations.ForestLeapEnemy_Enemy0: Location(Levels.FungiForest, "Forest Lanky Zingers Room Enemy: Enemy (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestLankyZingersRoom, -1, 0x4c1)]),
+    Locations.ForestLeapEnemy_Enemy1: Location(Levels.FungiForest, "Forest Lanky Zingers Room Enemy: Enemy (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestLankyZingersRoom, -1, 0x4c2)]),
+    Locations.ForestFacePuzzleEnemy_Enemy: Location(Levels.FungiForest, "Forest Chunky Face Room Enemy: Enemy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestChunkyFaceRoom, -1, 0x4c3)]),
+    # Locations.ForestSpiderEnemy_Gauntlet0: Location(Levels.FungiForest, "Forest Spider Enemy: Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestSpider, -1, 0x4c4)]),
+    # Locations.ForestSpiderEnemy_Gauntlet1: Location(Levels.FungiForest, "Forest Spider Enemy: Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestSpider, -1, 0x4c5)]),
+    # Locations.ForestSpiderEnemy_Gauntlet2: Location(Levels.FungiForest, "Forest Spider Enemy: Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.ForestSpider, -1, 0x4c6)]),
+    Locations.CavesMainEnemy_Start: Location(Levels.CrystalCaves, "Crystal Caves Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4c7)]),
+    Locations.CavesMainEnemy_NearIceCastle: Location(Levels.CrystalCaves, "Crystal Caves Enemy: Near Ice Castle", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4c8)]),
+    Locations.CavesMainEnemy_Outside5DC: Location(Levels.CrystalCaves, "Crystal Caves Enemy: Outside 5DC", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4c9)]),
+    Locations.CavesMainEnemy_1DCWaterfall: Location(Levels.CrystalCaves, "Crystal Caves Enemy: 1DC Waterfall", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4ca)]),
+    Locations.CavesMainEnemy_NearFunky: Location(Levels.CrystalCaves, "Crystal Caves Enemy: Near Funky", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4cb)]),
+    Locations.CavesMainEnemy_NearSnide: Location(Levels.CrystalCaves, "Crystal Caves Enemy: Near Snide", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4cc)]),
+    Locations.CavesMainEnemy_NearBonusRoom: Location(Levels.CrystalCaves, "Crystal Caves Enemy: Near Bonus Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4cd)]),
+    Locations.CavesMainEnemy_1DCHeadphones: Location(Levels.CrystalCaves, "Crystal Caves Enemy: 1DC Headphones", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4ce)]),
+    # Locations.CavesMainEnemy_GiantKosha: Location(Levels.CrystalCaves, "Crystal Caves Enemy: Giant Kosha", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x4cf)]),
+    Locations.Caves5DIDKEnemy_Right: Location(Levels.CrystalCaves, "Caves Donkey Igloo Enemy: Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyIgloo, -1, 0x4d0)]),
+    Locations.Caves5DIDKEnemy_Left: Location(Levels.CrystalCaves, "Caves Donkey Igloo Enemy: Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyIgloo, -1, 0x4d1)]),
+    # Locations.Caves5DILankyEnemy_First0: Location(Levels.CrystalCaves, "Caves Lanky Igloo Enemy: First (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesLankyIgloo, -1, 0x4d2)]),
+    # Locations.Caves5DILankyEnemy_First1: Location(Levels.CrystalCaves, "Caves Lanky Igloo Enemy: First (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesLankyIgloo, -1, 0x4d3)]),
+    # Locations.Caves5DILankyEnemy_Second0: Location(Levels.CrystalCaves, "Caves Lanky Igloo Enemy: Second (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesLankyIgloo, -1, 0x4d4)]),
+    # Locations.Caves5DILankyEnemy_Second1: Location(Levels.CrystalCaves, "Caves Lanky Igloo Enemy: Second (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesLankyIgloo, -1, 0x4d5)]),
+    # Locations.Caves5DILankyEnemy_Second2: Location(Levels.CrystalCaves, "Caves Lanky Igloo Enemy: Second (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesLankyIgloo, -1, 0x4d6)]),
+    Locations.Caves5DITinyEnemy_BigEnemy: Location(Levels.CrystalCaves, "Caves Tiny Igloo Enemy: Big Enemy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesTinyIgloo, -1, 0x4d7)]),
+    # Locations.Caves5DIChunkyEnemy_Gauntlet00: Location(Levels.CrystalCaves, "Caves Chunky Igloo Enemy: Gauntlet00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesChunkyIgloo, -1, 0x4d8)]),
+    # Locations.Caves5DIChunkyEnemy_Gauntlet01: Location(Levels.CrystalCaves, "Caves Chunky Igloo Enemy: Gauntlet01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesChunkyIgloo, -1, 0x4d9)]),
+    # Locations.Caves5DIChunkyEnemy_Gauntlet02: Location(Levels.CrystalCaves, "Caves Chunky Igloo Enemy: Gauntlet02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesChunkyIgloo, -1, 0x4da)]),
+    # Locations.Caves5DIChunkyEnemy_Gauntlet03: Location(Levels.CrystalCaves, "Caves Chunky Igloo Enemy: Gauntlet03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesChunkyIgloo, -1, 0x4db)]),
+    # Locations.Caves5DIChunkyEnemy_Gauntlet04: Location(Levels.CrystalCaves, "Caves Chunky Igloo Enemy: Gauntlet04", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesChunkyIgloo, -1, 0x4dc)]),
+    Locations.Caves1DCEnemy_Near: Location(Levels.CrystalCaves, "Caves Lanky Cabin Enemy: Near", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesLankyCabin, -1, 0x4dd)]),
+    # Locations.Caves1DCEnemy_Far: Location(Levels.CrystalCaves, "Caves Lanky Cabin Enemy: Far", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesLankyCabin, -1, 0x4de)]),
+    # Locations.Caves5DCDKEnemy_Gauntlet0: Location(Levels.CrystalCaves, "Caves Donkey Cabin Enemy: Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyCabin, -1, 0x4df)]),
+    # Locations.Caves5DCDKEnemy_Gauntlet1: Location(Levels.CrystalCaves, "Caves Donkey Cabin Enemy: Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyCabin, -1, 0x4e0)]),
+    # Locations.Caves5DCDKEnemy_Gauntlet2: Location(Levels.CrystalCaves, "Caves Donkey Cabin Enemy: Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyCabin, -1, 0x4e1)]),
+    # Locations.Caves5DCDKEnemy_Gauntlet3: Location(Levels.CrystalCaves, "Caves Donkey Cabin Enemy: Gauntlet3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyCabin, -1, 0x4e2)]),
+    # Locations.Caves5DCDKEnemy_Gauntlet4: Location(Levels.CrystalCaves, "Caves Donkey Cabin Enemy: Gauntlet4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyCabin, -1, 0x4e3)]),
+    # Locations.Caves5DCDKEnemy_Gauntlet5: Location(Levels.CrystalCaves, "Caves Donkey Cabin Enemy: Gauntlet5", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDonkeyCabin, -1, 0x4e4)]),
+    # Locations.Caves5DCDiddyLowEnemy_CloseRight: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Close Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4e5)]),
+    # Locations.Caves5DCDiddyLowEnemy_FarRight: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Far Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4e6)]),
+    # Locations.Caves5DCDiddyLowEnemy_CloseLeft: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Close Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4e7)]),
+    # Locations.Caves5DCDiddyLowEnemy_FarLeft: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Far Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4e8)]),
+    # Locations.Caves5DCDiddyLowEnemy_Center0: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Center0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4e9)]),
+    # Locations.Caves5DCDiddyLowEnemy_Center1: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Center1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4ea)]),
+    # Locations.Caves5DCDiddyLowEnemy_Center2: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Center2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4eb)]),
+    # Locations.Caves5DCDiddyLowEnemy_Center3: Location(Levels.CrystalCaves, "Caves Diddy Lower Cabin Enemy: Center3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyLowerCabin, -1, 0x4ec)]),
+    # Locations.Caves5DCDiddyUpperEnemy_Enemy0: Location(Levels.CrystalCaves, "Caves Diddy Upper Cabin Enemy: Enemy (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyUpperCabin, -1, 0x4ed)]),
+    # Locations.Caves5DCDiddyUpperEnemy_Enemy1: Location(Levels.CrystalCaves, "Caves Diddy Upper Cabin Enemy: Enemy (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesDiddyUpperCabin, -1, 0x4ee)]),
+    # Locations.Caves5DCTinyEnemy_Gauntlet0: Location(Levels.CrystalCaves, "Caves Tiny Cabin Enemy: Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesTinyCabin, -1, 0x4ef)]),
+    # Locations.Caves5DCTinyEnemy_Gauntlet1: Location(Levels.CrystalCaves, "Caves Tiny Cabin Enemy: Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesTinyCabin, -1, 0x4f0)]),
+    # Locations.Caves5DCTinyEnemy_Gauntlet2: Location(Levels.CrystalCaves, "Caves Tiny Cabin Enemy: Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesTinyCabin, -1, 0x4f1)]),
+    # Locations.Caves5DCTinyEnemy_Gauntlet3: Location(Levels.CrystalCaves, "Caves Tiny Cabin Enemy: Gauntlet3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesTinyCabin, -1, 0x4f2)]),
+    # Locations.Caves5DCTinyEnemy_Gauntlet4: Location(Levels.CrystalCaves, "Caves Tiny Cabin Enemy: Gauntlet4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CavesTinyCabin, -1, 0x4f3)]),
+    Locations.CastleMainEnemy_NearBridge0: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Near Bridge (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4f4)]),
+    Locations.CastleMainEnemy_NearBridge1: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Near Bridge (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4f5)]),
+    Locations.CastleMainEnemy_WoodenExtrusion0: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Wooden Extrusion (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4f6)]),
+    Locations.CastleMainEnemy_WoodenExtrusion1: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Wooden Extrusion (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4f7)]),
+    Locations.CastleMainEnemy_NearShed: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Near Shed", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4f8)]),
+    Locations.CastleMainEnemy_NearLibrary: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Near Library", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4f9)]),
+    Locations.CastleMainEnemy_NearTower: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Near Tower", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4fa)]),
+    Locations.CastleMainEnemy_MuseumSteps: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Museum Steps", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4fb)]),
+    Locations.CastleMainEnemy_NearLowCave: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Near Low Cave", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4fc)]),
+    Locations.CastleMainEnemy_PathToLowKasplat: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Path To Low Kasplat", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4fd)]),
+    Locations.CastleMainEnemy_LowTnS: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Low TnS", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4fe)]),
+    Locations.CastleMainEnemy_PathToDungeon: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Path To Dungeon", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x4ff)]),
+    Locations.CastleMainEnemy_NearHeadphones: Location(Levels.CreepyCastle, "Creepy Castle Enemy: Near Headphones", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x500)]),
+    Locations.CastleLobbyEnemy_Left: Location(Levels.DKIsles, "Creepy Castle Lobby Enemy: Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x501)]),
+    Locations.CastleLobbyEnemy_FarRight: Location(Levels.DKIsles, "Creepy Castle Lobby Enemy: Far Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x502)]),
+    Locations.CastleLobbyEnemy_NearRight: Location(Levels.DKIsles, "Creepy Castle Lobby Enemy: Near Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x503)]),
+    # Locations.CastleBallroomEnemy_Board00: Location(Levels.CreepyCastle, "Castle Ballroom Enemy: Board00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBallroom, -1, 0x504)]),
+    # Locations.CastleBallroomEnemy_Board01: Location(Levels.CreepyCastle, "Castle Ballroom Enemy: Board01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBallroom, -1, 0x505)]),
+    # Locations.CastleBallroomEnemy_Board02: Location(Levels.CreepyCastle, "Castle Ballroom Enemy: Board02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBallroom, -1, 0x506)]),
+    # Locations.CastleBallroomEnemy_Board03: Location(Levels.CreepyCastle, "Castle Ballroom Enemy: Board03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBallroom, -1, 0x507)]),
+    # Locations.CastleBallroomEnemy_Board04: Location(Levels.CreepyCastle, "Castle Ballroom Enemy: Board04", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBallroom, -1, 0x508)]),
+    Locations.CastleBallroomEnemy_Start: Location(Levels.CreepyCastle, "Castle Ballroom Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBallroom, -1, 0x509)]),
+    Locations.CastleDungeonEnemy_FaceRoom: Location(Levels.CreepyCastle, "Castle Dungeon Enemy: Face Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleDungeon, -1, 0x50a)]),
+    Locations.CastleDungeonEnemy_ChairRoom: Location(Levels.CreepyCastle, "Castle Dungeon Enemy: Chair Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleDungeon, -1, 0x50b)]),
+    Locations.CastleDungeonEnemy_OutsideLankyRoom: Location(Levels.CreepyCastle, "Castle Dungeon Enemy: Outside Lanky Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleDungeon, -1, 0x50c)]),
+    # Locations.CastleShedEnemy_Gauntlet00: Location(Levels.CreepyCastle, "Castle Shed Enemy: Gauntlet00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x50d)]),
+    # Locations.CastleShedEnemy_Gauntlet01: Location(Levels.CreepyCastle, "Castle Shed Enemy: Gauntlet01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x50e)]),
+    # Locations.CastleShedEnemy_Gauntlet02: Location(Levels.CreepyCastle, "Castle Shed Enemy: Gauntlet02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x50f)]),
+    # Locations.CastleShedEnemy_Gauntlet03: Location(Levels.CreepyCastle, "Castle Shed Enemy: Gauntlet03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x510)]),
+    # Locations.CastleShedEnemy_Gauntlet04: Location(Levels.CreepyCastle, "Castle Shed Enemy: Gauntlet04", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x511)]),
+    Locations.CastleLowCaveEnemy_NearCrypt: Location(Levels.CreepyCastle, "Castle Lower Cave Enemy: Near Crypt", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x512)]),
+    Locations.CastleLowCaveEnemy_StairRight: Location(Levels.CreepyCastle, "Castle Lower Cave Enemy: Stair Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x513)]),
+    Locations.CastleLowCaveEnemy_StairLeft: Location(Levels.CreepyCastle, "Castle Lower Cave Enemy: Stair Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x514)]),
+    Locations.CastleLowCaveEnemy_NearMausoleum: Location(Levels.CreepyCastle, "Castle Lower Cave Enemy: Near Mausoleum", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x515)]),
+    Locations.CastleLowCaveEnemy_NearFunky: Location(Levels.CreepyCastle, "Castle Lower Cave Enemy: Near Funky", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x516)]),
+    Locations.CastleLowCaveEnemy_NearTag: Location(Levels.CreepyCastle, "Castle Lower Cave Enemy: Near Tag", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x517)]),
+    Locations.CastleCryptEnemy_DiddyCoffin0: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Diddy Coffin (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x518)]),
+    Locations.CastleCryptEnemy_DiddyCoffin1: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Diddy Coffin (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x519)]),
+    Locations.CastleCryptEnemy_DiddyCoffin2: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Diddy Coffin (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x51a)]),
+    Locations.CastleCryptEnemy_DiddyCoffin3: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Diddy Coffin (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x51b)]),
+    Locations.CastleCryptEnemy_ChunkyCoffin0: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Chunky Coffin (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x51c)]),
+    Locations.CastleCryptEnemy_ChunkyCoffin1: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Chunky Coffin (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x51d)]),
+    Locations.CastleCryptEnemy_ChunkyCoffin2: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Chunky Coffin (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x51e)]),
+    Locations.CastleCryptEnemy_ChunkyCoffin3: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Chunky Coffin (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x51f)]),
+    Locations.CastleCryptEnemy_MinecartEntry: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Minecart Entry", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x520)]),
+    Locations.CastleCryptEnemy_Fork: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Fork", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x521)]),
+    Locations.CastleCryptEnemy_NearDiddy: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Near Diddy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x522)]),
+    Locations.CastleCryptEnemy_NearChunky: Location(Levels.CreepyCastle, "Castle Crypt Enemy: Near Chunky", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleCrypt, -1, 0x523)]),
+    Locations.CastleMausoleumEnemy_TinyPath: Location(Levels.CreepyCastle, "Castle Mausoleum Enemy: Tiny Path", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMausoleum, -1, 0x524)]),
+    Locations.CastleMausoleumEnemy_LankyPath0: Location(Levels.CreepyCastle, "Castle Mausoleum Enemy: Lanky Path (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMausoleum, -1, 0x525)]),
+    Locations.CastleMausoleumEnemy_LankyPath1: Location(Levels.CreepyCastle, "Castle Mausoleum Enemy: Lanky Path (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMausoleum, -1, 0x526)]),
+    Locations.CastleUpperCaveEnemy_NearDungeon: Location(Levels.CreepyCastle, "Castle Upper Cave Enemy: Near Dungeon", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleUpperCave, -1, 0x527)]),
+    # Locations.CastleUpperCaveEnemy_Pit: Location(Levels.CreepyCastle, "Castle Upper Cave Enemy: Pit", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleUpperCave, -1, 0x528)]),
+    Locations.CastleUpperCaveEnemy_NearPit: Location(Levels.CreepyCastle, "Castle Upper Cave Enemy: Near Pit", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleUpperCave, -1, 0x529)]),
+    Locations.CastleUpperCaveEnemy_NearEntrance: Location(Levels.CreepyCastle, "Castle Upper Cave Enemy: Near Entrance", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleUpperCave, -1, 0x52a)]),
+    # Locations.CastleKKOEnemy_CenterEnemy: Location(Levels.CreepyCastle, "Castle Boss Enemy: Center Enemy", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBoss, -1, 0x52b)]),
+    # Locations.CastleKKOEnemy_WaterEnemy00: Location(Levels.CreepyCastle, "Castle Boss Enemy: Water Enemy00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBoss, -1, 0x52c)]),
+    # Locations.CastleKKOEnemy_WaterEnemy01: Location(Levels.CreepyCastle, "Castle Boss Enemy: Water Enemy01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBoss, -1, 0x52d)]),
+    # Locations.CastleKKOEnemy_WaterEnemy02: Location(Levels.CreepyCastle, "Castle Boss Enemy: Water Enemy02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBoss, -1, 0x52e)]),
+    # Locations.CastleKKOEnemy_WaterEnemy03: Location(Levels.CreepyCastle, "Castle Boss Enemy: Water Enemy03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleBoss, -1, 0x52f)]),
+    # Locations.CastleLibraryEnemy_Gauntlet00: Location(Levels.CreepyCastle, "Castle Library Enemy: Gauntlet00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x530)]),
+    # Locations.CastleLibraryEnemy_Gauntlet01: Location(Levels.CreepyCastle, "Castle Library Enemy: Gauntlet01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x531)]),
+    # Locations.CastleLibraryEnemy_Gauntlet02: Location(Levels.CreepyCastle, "Castle Library Enemy: Gauntlet02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x532)]),
+    # Locations.CastleLibraryEnemy_Gauntlet03: Location(Levels.CreepyCastle, "Castle Library Enemy: Gauntlet03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x533)]),
+    # Locations.CastleLibraryEnemy_Corridor00: Location(Levels.CreepyCastle, "Castle Library Enemy: Corridor00", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x534)]),
+    # Locations.CastleLibraryEnemy_Corridor01: Location(Levels.CreepyCastle, "Castle Library Enemy: Corridor01", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x535)]),
+    # Locations.CastleLibraryEnemy_Corridor02: Location(Levels.CreepyCastle, "Castle Library Enemy: Corridor02", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x536)]),
+    # Locations.CastleLibraryEnemy_Corridor03: Location(Levels.CreepyCastle, "Castle Library Enemy: Corridor03", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x537)]),
+    # Locations.CastleLibraryEnemy_Corridor04: Location(Levels.CreepyCastle, "Castle Library Enemy: Corridor04", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x538)]),
+    # Locations.CastleLibraryEnemy_Corridor05: Location(Levels.CreepyCastle, "Castle Library Enemy: Corridor05", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x539)]),
+    Locations.CastleLibraryEnemy_ForkLeft0: Location(Levels.CreepyCastle, "Castle Library Enemy: Fork Left (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x53a)]),
+    Locations.CastleLibraryEnemy_ForkLeft1: Location(Levels.CreepyCastle, "Castle Library Enemy: Fork Left (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x53b)]),
+    Locations.CastleLibraryEnemy_ForkCenter: Location(Levels.CreepyCastle, "Castle Library Enemy: Fork Center", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x53c)]),
+    Locations.CastleLibraryEnemy_ForkRight: Location(Levels.CreepyCastle, "Castle Library Enemy: Fork Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleLibrary, -1, 0x53d)]),
+    Locations.CastleMuseumEnemy_MainFloor0: Location(Levels.CreepyCastle, "Castle Museum Enemy: Main Floor (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x53e)]),
+    Locations.CastleMuseumEnemy_MainFloor1: Location(Levels.CreepyCastle, "Castle Museum Enemy: Main Floor (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x53f)]),
+    Locations.CastleMuseumEnemy_MainFloor2: Location(Levels.CreepyCastle, "Castle Museum Enemy: Main Floor (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x540)]),
+    Locations.CastleMuseumEnemy_MainFloor3: Location(Levels.CreepyCastle, "Castle Museum Enemy: Main Floor (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x541)]),
+    Locations.CastleMuseumEnemy_Start: Location(Levels.CreepyCastle, "Castle Museum Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x542)]),
+    # Locations.CastleTowerEnemy_Gauntlet0: Location(Levels.CreepyCastle, "Castle Tower Enemy: Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTower, -1, 0x543)]),
+    # Locations.CastleTowerEnemy_Gauntlet1: Location(Levels.CreepyCastle, "Castle Tower Enemy: Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTower, -1, 0x544)]),
+    # Locations.CastleTowerEnemy_Gauntlet2: Location(Levels.CreepyCastle, "Castle Tower Enemy: Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTower, -1, 0x545)]),
+    # Locations.CastleTowerEnemy_Gauntlet3: Location(Levels.CreepyCastle, "Castle Tower Enemy: Gauntlet3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTower, -1, 0x546)]),
+    # Locations.CastleTowerEnemy_Gauntlet4: Location(Levels.CreepyCastle, "Castle Tower Enemy: Gauntlet4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTower, -1, 0x547)]),
+    # Locations.CastleTrashEnemy_Gauntlet0: Location(Levels.CreepyCastle, "Castle Trash Can Enemy: Gauntlet0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTrashCan, -1, 0x548)]),
+    # Locations.CastleTrashEnemy_Gauntlet1: Location(Levels.CreepyCastle, "Castle Trash Can Enemy: Gauntlet1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTrashCan, -1, 0x549)]),
+    # Locations.CastleTrashEnemy_Gauntlet2: Location(Levels.CreepyCastle, "Castle Trash Can Enemy: Gauntlet2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTrashCan, -1, 0x54a)]),
+    # Locations.CastleTrashEnemy_Gauntlet3: Location(Levels.CreepyCastle, "Castle Trash Can Enemy: Gauntlet3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTrashCan, -1, 0x54b)]),
+    # Locations.CastleTrashEnemy_Gauntlet4: Location(Levels.CreepyCastle, "Castle Trash Can Enemy: Gauntlet4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTrashCan, -1, 0x54c)]),
+    Locations.CastleTreeEnemy_StartRoom0: Location(Levels.CreepyCastle, "Castle Tree Enemy: Start Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTree, -1, 0x54d)]),
+    Locations.CastleTreeEnemy_StartRoom1: Location(Levels.CreepyCastle, "Castle Tree Enemy: Start Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.CastleTree, -1, 0x54e)]),
+    Locations.HelmMainEnemy_Start0: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Start (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x54f)]),
+    Locations.HelmMainEnemy_Start1: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Start (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x550)]),
+    Locations.HelmMainEnemy_Hill: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Hill", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x551)]),
+    Locations.HelmMainEnemy_SwitchRoom0: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Switch Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x552)]),
+    Locations.HelmMainEnemy_SwitchRoom1: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Switch Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x553)]),
+    Locations.HelmMainEnemy_MiniRoom0: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Mini Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x554)]),
+    Locations.HelmMainEnemy_MiniRoom1: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Mini Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x555)]),
+    Locations.HelmMainEnemy_MiniRoom2: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Mini Room (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x556)]),
+    Locations.HelmMainEnemy_MiniRoom3: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Mini Room (3)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x557)]),
+    Locations.HelmMainEnemy_DKRoom: Location(Levels.HideoutHelm, "Hideout Helm Enemy: DKRoom", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x558)]),
+    Locations.HelmMainEnemy_ChunkyRoom0: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Chunky Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x559)]),
+    Locations.HelmMainEnemy_ChunkyRoom1: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Chunky Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x55a)]),
+    Locations.HelmMainEnemy_TinyRoom: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Tiny Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x55b)]),
+    Locations.HelmMainEnemy_LankyRoom0: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Lanky Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x55c)]),
+    Locations.HelmMainEnemy_LankyRoom1: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Lanky Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x55d)]),
+    Locations.HelmMainEnemy_DiddyRoom0: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Diddy Room (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x55e)]),
+    Locations.HelmMainEnemy_DiddyRoom1: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Diddy Room (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x55f)]),
+    Locations.HelmMainEnemy_NavRight: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Nav Right", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x560)]),
+    Locations.HelmMainEnemy_NavLeft: Location(Levels.HideoutHelm, "Hideout Helm Enemy: Nav Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.HideoutHelm, -1, 0x561)]),
+    Locations.IslesMainEnemy_PineappleCage0: Location(Levels.DKIsles, "Isles Enemy: Pineapple Cage (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x562)]),
+    Locations.IslesMainEnemy_FungiCannon0: Location(Levels.DKIsles, "Isles Enemy: Fungi Cannon (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x563)]),
+    Locations.IslesMainEnemy_JapesEntrance: Location(Levels.DKIsles, "Isles Enemy: Japes Entrance", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x564)]),
+    Locations.IslesMainEnemy_MonkeyportPad: Location(Levels.DKIsles, "Isles Enemy: Monkeyport Pad", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x565)]),
+    Locations.IslesMainEnemy_UpperFactoryPath: Location(Levels.DKIsles, "Isles Enemy: Upper Factory Path", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x566)]),
+    Locations.IslesMainEnemy_NearAztec: Location(Levels.DKIsles, "Isles Enemy: Near Aztec", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x567)]),
+    Locations.IslesMainEnemy_FungiCannon1: Location(Levels.DKIsles, "Isles Enemy: Fungi Cannon (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x568)]),
+    Locations.IslesMainEnemy_PineappleCage1: Location(Levels.DKIsles, "Isles Enemy: Pineapple Cage (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x569)]),
+    Locations.IslesMainEnemy_LowerFactoryPath0: Location(Levels.DKIsles, "Isles Enemy: Lower Factory Path (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x56a)]),
+    Locations.IslesMainEnemy_LowerFactoryPath1: Location(Levels.DKIsles, "Isles Enemy: Lower Factory Path (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x56b)]),
 }
 
 TrainingBarrelLocations = {
@@ -886,6 +1330,7 @@ SharedShopLocations = {
     Locations.SharedCavesPotion,
 }
 PreGivenLocations = {
+    Locations.IslesFirstMove,
     Locations.PreGiven_Location00,
     Locations.PreGiven_Location01,
     Locations.PreGiven_Location02,
@@ -1087,10 +1532,3 @@ ShopLocationReference[Levels.CreepyCastle][VendorType.Funky] = [
 ]
 ShopLocationReference[Levels.DKIsles] = {}
 ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
-
-
-def ResetLocationList():
-    """Reset the LocationList to values conducive to a new fill."""
-    for location in LocationList.values():
-        location.PlaceDefaultItem()
-    # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns

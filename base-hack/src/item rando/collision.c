@@ -125,6 +125,15 @@ item_collision* writeItemActorScale(void) {
     return data;
 }
 
+int getItemRequiredKong(maps map, int id) {
+    if (map == MAP_JAPES) {
+        if (id == 0x68) {
+            return KONG_TINY + 2;
+        }
+    }
+    return 0;
+}
+
 int isObjectTangible_detailed(int id) {
     /**
      * @brief Override function for object tangibility
@@ -139,7 +148,42 @@ int isObjectTangible_detailed(int id) {
     return isObjectTangible(id);
 }
 
+static short spherical_items[] = {
+    // CB Single
+    0x0A,
+    0x0D,
+    0x16,
+    0x1E,
+    0x1F,
+    0x1CF,
+    0x1D0,
+    // CB Bunch
+    0x2B,
+    0x205,
+    0x206,
+    0x207,
+    0x208,
+    // Coins
+    0x1C,
+    0x1D,
+    0x23,
+    0x24,
+    0x27,
+};
+
+int isCollidingWithSphere(item_collision* item, player_collision_info* player_collision, playerData* player) {
+    int dx = player->xPos - item->x;
+    int dy = player->yPos - item->y;
+    int dz = player->zPos - item->z;
+    int dist = (dx * dx) + (dy * dy) + (dz * dz);
+    int radius = player_collision->scale;
+    return dist < (radius * radius);
+}
+
 int isCollidingWithCylinder(item_collision* item, player_collision_info* player_collision, playerData* player) {
+    if (inShortList(item->obj_type, &spherical_items[0], sizeof(spherical_items)>>1)) {
+        return isCollidingWithSphere(item, player_collision, player);
+    }
     if ((item->y + 20) < player->floor) {
         return 0; // Provision to ensure items aren't grabbable from above if there's a floor between the player and 10 units above the object
     }

@@ -2,9 +2,10 @@
 
 import subprocess
 from typing import BinaryIO
+import zlib
 
 import encoders
-from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
+from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
 from BuildLib import float_to_hex, main_pointer_table_offset
 from image_converter import convertToRGBA32
 
@@ -478,3 +479,138 @@ class ROMPointerFile:
         self.size = self.end - self.start
         rom.seek(self.start)
         self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
+
+
+BOOT_OVERLAY_RDRAM = 0x80000450
+
+
+class OverlayInfo:
+    """Class to store information about an overlay."""
+
+    def __init__(
+        self,
+        overlay: Overlay,
+        code_rom: int,
+        data_rom: int,
+        data_size_compressed: int,
+        code_write_upper: int,
+        code_write_lower: int,
+        data_write_upper: int,
+        data_write_lower: int,
+        default_code_size: int,
+        default_data_size: int,
+    ):
+        """Initialize with given data."""
+        self.overlay = overlay
+        self.code_rom = code_rom
+        self.data_rom = data_rom
+        self.code_size_compressed = self.data_rom - self.code_rom
+        self.data_size_compressed = data_size_compressed
+        self.no_gzip_footer_length = self.data_size_compressed - 8
+
+        self.code_write_upper = code_write_upper - BOOT_OVERLAY_RDRAM
+        self.code_write_lower = code_write_lower - BOOT_OVERLAY_RDRAM
+        self.data_write_upper = data_write_upper - BOOT_OVERLAY_RDRAM
+        self.data_write_lower = data_write_lower - BOOT_OVERLAY_RDRAM
+
+        self.code = None
+        self.data = None
+        self.code_decompressed = None
+        self.data_decompressed = None
+        self.code_size = default_code_size
+        self.data_size = default_data_size
+        self.code_start = None
+        self.data_start = None
+        self.data_end = None
+
+    def setCode(self, bytestream: bytes, footer: bytes):
+        """Set code values."""
+        self.code = bytestream
+        self.code_decompressed = zlib.decompress(bytestream + footer, (15 + 32))
+        self.code_size = len(self.code_decompressed)
+
+    def setData(self, bytestream: bytes, footer: bytes):
+        """Set data values."""
+        self.data = bytestream
+        self.data_decompressed = zlib.decompress(bytestream + footer, (15 + 32))
+        self.data_size = len(self.data_decompressed)
+
+
+class HintRegion:
+    """Class to store information regarding a hint region."""
+
+    def __init__(self, region_name: str, enum_name: str):
+        """Initialize with given data."""
+        self.region_name = region_name
+        self.enum_name = enum_name
+
+
+hint_region_list = [
+    # Shops
+    HintRegion("Isles Shops", "ShopIsles"),
+    HintRegion("Japes Shops", "ShopJapes"),
+    HintRegion("Aztec Shops", "ShopAztec"),
+    HintRegion("Factory Shops", "ShopFactory"),
+    HintRegion("Galleon Shops", "ShopGalleon"),
+    HintRegion("Forest Shops", "ShopFungi"),
+    HintRegion("Caves Shops", "ShopCaves"),
+    HintRegion("Castle Shops", "ShopCastle"),
+    HintRegion("Jetpac Game", "Jetpac"),  # Shouldn't really be accessible
+    # Medals
+    HintRegion("Japes Medal Rewards", "MedalsJapes"),  # Shouldn't be accessible
+    HintRegion("Aztec Medal Rewards", "MedalsAztec"),  # Shouldn't be accessible
+    HintRegion("Factory Medal Rewards", "MedalsFactory"),  # Shouldn't be accessible
+    HintRegion("Galleon Medal Rewards", "MedalsGalleon"),  # Shouldn't be accessible
+    HintRegion("Forest Medal Rewards", "MedalsFungi"),  # Shouldn't be accessible
+    HintRegion("Caves Medal Rewards", "MedalsCaves"),  # Shouldn't be accessible
+    HintRegion("Castle Medal Rewards", "MedalsCastle"),  # Shouldn't be accessible
+    # Isles
+    HintRegion("Main Isle", "IslesMain"),
+    HintRegion("Outer Isles", "IslesOuter"),
+    HintRegion("Krem Isle", "IslesKrem"),
+    HintRegion("Rareware Banana Room", "IslesRareware"),
+    HintRegion("Japes - Forest Lobbies", "IslesLobbies0"),
+    HintRegion("Caves - Helm Lobbies", "IslesLobbies1"),
+    HintRegion("K Rool Arena", "IslesKRool"),  # No checks here right now
+    # Japes
+    HintRegion("Japes Lowlands", "JapesLow"),
+    HintRegion("Japes Hillside", "JapesHigh"),
+    HintRegion("Stormy Tunnel Area", "JapesStorm"),
+    HintRegion("Hive Tunnel Area", "JapesHive"),
+    HintRegion("Japes Caves and Mines", "JapesCaverns"),
+    # Aztec
+    HintRegion("Aztec Oasis and Totem Area", "AztecOasisTotem"),
+    HintRegion("Tiny Temple", "AztecTiny"),
+    HintRegion("5 Door Temple", "AztecGetOut"),
+    HintRegion("Llama Temple", "AztecLlama"),
+    HintRegion("Various Aztec Tunnels", "AztecTunnels"),
+    # Factory
+    HintRegion("Frantic Factory Start", "FactoryStart"),
+    HintRegion("Testing Area", "FactoryTesting"),
+    HintRegion("Research and Development Area", "FactoryResearch"),
+    HintRegion("Storage and Arcade", "FactoryStorage"),
+    HintRegion("Production Room", "FactoryProd"),
+    # Galleon
+    HintRegion("Galleon Caverns", "GalleonCaverns"),
+    HintRegion("Lighthouse Area", "GalleonLighthouse"),
+    HintRegion("Shipyard Outskirts", "GalleonShipyard"),
+    HintRegion("Treasure Room", "GalleonTreasure"),
+    HintRegion("5 Door Ship", "GalleonShip"),
+    # Forest
+    HintRegion("Forest Center and Beanstalk", "ForestStart"),
+    HintRegion("Giant Mushroom Exterior", "ForestGMExt"),
+    HintRegion("Giant Mushroom Insides", "ForestGMInt"),
+    HintRegion("Owl Tree", "ForestOwl"),
+    HintRegion("Forest Mills", "ForestMills"),
+    # Caves
+    HintRegion("Main Caves Area", "CavesMain"),
+    HintRegion("Igloo Area", "CavesIgloo"),
+    HintRegion("Cabins Area", "CavesCabins"),
+    # Castle
+    HintRegion("Castle Surroundings", "CastleExt"),
+    HintRegion("Castle Rooms", "CastleRooms"),
+    HintRegion("Castle Underground", "CastleUnderground"),
+    # Other
+    HintRegion("Hideout Helm", "OtherHelm"),
+    HintRegion("Troff n Scoff", "OtherTnS"),
+]

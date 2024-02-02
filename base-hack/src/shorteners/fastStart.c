@@ -2,11 +2,7 @@
 
 void applyFastStart(void) {
 	if (Rando.fast_start_beginning) {
-		if (MovesBase[0].simian_slam == 0) {
-			for (int i = 0; i < 5; i++) {
-				MovesBase[i].simian_slam = 1;
-			}
-		}
+		setLocationStatus(LOCATION_FIRSTMOVE);
 		for (int i = 0; i < 4; i++) {
 			setLocationStatus(LOCATION_DIVE + i); // Training Barrels Complete
 		}

@@ -4,8 +4,7 @@
 .definelabel ExpandPauseMenu, 0x807FFFF8
 .definelabel InitialPauseHeight, 0x807FFFF6
 .definelabel LoadedHooks, 0x807FFFEF // u8
-.definelabel WarpToIslesEnabled, 0x807FFFEE // u8
-.definelabel permaLossMode, 0x807FFFEC // u8
+.definelabel WidescreenEnabled, 0x807FFFEE // u8
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel TextHoldOn, 0x807FFFE8 // u8
@@ -49,4 +48,7 @@
 .definelabel FunkyMoves_New, 0x807FF5E0
 .definelabel TrainingMoves_New, 0x807FF6D0
 .definelabel BFIMove_New, 0x807FF6E8
+.definelabel FirstMove_New, 0x807FF6EE
 .definelabel ExtraSaveData, 0x807ED2A8
+.definelabel ItemRando_FLUT, 0x807E2EE0 // Used to be occupied by music channel 0 // Vanilla 0x807E00C0
+.definelabel MenuDarkness, 0x8075EAE4

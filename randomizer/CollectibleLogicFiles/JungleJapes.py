@@ -6,11 +6,12 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.JungleJapesStart: [
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.vines or l.advanced_platforming, None, 5),  # Starting area
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.vines or (l.advanced_platforming and l.settings.krusha_kong != Kongs.donkey), None, 5),  # Starting area
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # W3
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Above underground
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Starting area
@@ -21,7 +22,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Around entrance to underground
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In first tunnel
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, None, 3),  # Around BBlast pad
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines or l.CanMoonkick(), None, 3),  # Around BBlast pad
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.swim, None, 3),  # In river
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.swim, None, 2),  # In river
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
@@ -33,7 +34,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Funky's
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by cannon
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Diddy's cage
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Snide's
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),  # Around mountain
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, Painting room side
@@ -45,6 +45,9 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
+    ],
+    Regions.JapesTnSAlcove: [
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
@@ -61,7 +64,7 @@ LogicRegions = {
     ],
     Regions.JapesBeyondCoconutGate2: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 9),  # Path to Cranky
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.coconut or l.phasewalk, None, 1),  # Under Rambi box
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk, None, 1),  # Under Rambi box
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.Rambi in l.Events or l.phasewalk, None, 1),  # In breakable hut
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In front of Cranky's
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # By Diddy BP
@@ -78,8 +81,8 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # By hut
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On Cranky's Lab
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 1),  # Between vines
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut or l.phasewalk, None, 3),  # In rambi box cage
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, None, 1),  # Between vines
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk, None, 3),  # In rambi box cage
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # By Diddy BP
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # By Lanky BP
     ],
@@ -102,11 +105,11 @@ LogicRegions = {
     Regions.Mine: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # In stream
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On mound by peanut switch
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) or l.advanced_platforming, None, 1),  # On box by conveyors
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk), None, 1),  # On box by conveyors
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut, None, 1),  # In conveyor room
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On bridge to switch
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut or l.advanced_platforming, None, 1),  # On bridge to switch
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On coal pile
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge or l.phasewalk, None, 1),  # Next to conveyor control
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk, None, 1),  # Under conveyors
@@ -142,6 +145,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),
 
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.vines and l.pineapple and l.ischunky) or l.phasewalk, None, 3),
     ]
 }

@@ -1,44 +1,20 @@
 """File containing main UI button events that travel between tabs."""
+
 import asyncio
 import json
 import random
 
-from pyodide import create_proxy
+from pyodide.ffi import create_proxy
 
 import js
 from randomizer.Enums.Settings import SettingsMap
-from randomizer.Patching.ApplyLocal import patching_response
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
-from ui.bindings import bind, serialize_settings
+from ui.bindings import bind
+from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
-from ui.rando_options import (
-    disable_barrel_modal,
-    disable_colors,
-    disable_enemy_modal,
-    disable_helm_hurry,
-    disable_helm_phases,
-    disable_krool_phases,
-    disable_move_shuffles,
-    disable_music,
-    item_rando_list_changed,
-    max_music,
-    max_randomized_blocker,
-    max_randomized_troff,
-    max_sfx,
-    max_starting_moves_count,
-    toggle_b_locker_boxes,
-    toggle_bananaport_selector,
-    toggle_counts_boxes,
-    toggle_item_rando,
-    toggle_key_settings,
-    toggle_logic_type,
-    update_boss_required,
-    updateDoorOneCountText,
-    updateDoorOneNumAccess,
-    updateDoorTwoCountText,
-    updateDoorTwoNumAccess,
-)
+from ui.rando_options import update_ui_states
+from ui.serialize_settings import serialize_settings
 
 
 @bind("click", "export_settings")
@@ -64,8 +40,11 @@ def import_settings_string(event):
     settings = decrypt_settings_string_enum(settings_string)
     # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
     for select in js.document.getElementsByTagName("select"):
-        if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+        if js.document.querySelector("#nav-cosmetics").contains(select) is False and not select.name.startswith("plando_"):
             select.selectedIndex = -1
+    # Uncheck all starting move radio buttons for the import to then set them correctly
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = False
     js.document.getElementById("presets").selectedIndex = 0
     for key in settings:
         try:
@@ -78,6 +57,16 @@ def import_settings_string(event):
                     js.document.getElementsByName(key)[0].checked = True
                 js.jq(f"#{key}").removeAttr("disabled")
             elif type(settings[key]) is list:
+                if key in ("starting_move_list_selected", "random_starting_move_list_selected"):
+                    for item in settings[key]:
+                        radio_buttons = js.document.getElementsByName("starting_move_box_" + str(int(item)))
+                        if key == "starting_move_list_selected":
+                            start_button = [button for button in radio_buttons if button.id.startswith("start")][0]
+                            start_button.checked = True
+                        else:
+                            random_button = [button for button in radio_buttons if button.id.startswith("random")][0]
+                            random_button.checked = True
+                    continue
                 selector = js.document.getElementById(key)
                 if selector.tagName == "SELECT":
                     for item in settings[key]:
@@ -104,29 +93,8 @@ def import_settings_string(event):
         except Exception as e:
             print(e)
             pass
-    toggle_counts_boxes(None)
-    toggle_b_locker_boxes(None)
-    update_boss_required(None)
-    disable_colors(None)
-    disable_music(None)
-    disable_move_shuffles(None)
-    max_randomized_blocker(None)
-    max_randomized_troff(None)
-    max_music(None)
-    max_sfx(None)
-    disable_barrel_modal(None)
-    updateDoorOneCountText(None)
-    updateDoorTwoCountText(None)
-    item_rando_list_changed(None)
-    toggle_item_rando(None)
-    disable_enemy_modal(None)
-    toggle_bananaport_selector(None)
-    disable_helm_hurry(None)
-    toggle_logic_type(None)
-    toggle_key_settings(None)
-    disable_krool_phases(None)
-    disable_helm_phases(None)
-    max_starting_moves_count(None)
+    update_ui_states(None)
+    js.savesettings()
 
 
 @bind("change", "patchfileloader")
@@ -169,7 +137,10 @@ async def generate_previous_seed(event):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
         js.apply_conversion()
-        await patching_response(str(js.get_previous_seed_data()), True)
+        lanky_from_history = js.document.getElementById("load_patch_file").checked
+        from randomizer.Patching.ApplyLocal import patching_response
+
+        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history, True)
 
 
 @bind("click", "generate_lanky_seed")
@@ -186,41 +157,98 @@ async def generate_seed_from_patch(event):
             js.document.getElementById("patchfileloader").classList.add("is-invalid")
     else:
         js.apply_conversion()
+        from randomizer.Patching.ApplyLocal import patching_response
+
         await patching_response(str(js.loaded_patch), True)
 
 
-@bind("click", "generate_seed")
+@bind("click", "trigger_download_event")
 def generate_seed(event):
     """Generate a seed based off the current settings.
 
     Args:
         event (event): Javascript click event.
     """
+    # Hide the div for settings errors.
+    settings_errors_element = js.document.getElementById("settings_errors")
+    settings_errors_element.style.display = "none"
     # Check if the rom filebox has a file loaded in it.
     if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
         js.document.getElementById("rom").select()
         if "is-invalid" not in list(js.document.getElementById("rom").classList):
             js.document.getElementById("rom").classList.add("is-invalid")
     else:
+        # The data is serialized outside of the loop, because validation occurs
+        # here and we might stop before attempting to generate a seed.
+        plando_enabled = js.document.getElementById("enable_plandomizer").checked
+        form_data = serialize_settings(include_plando=plando_enabled)
+
+        if form_data["enable_plandomizer"]:
+            plando_errors = validate_plando_options(form_data)
+            # If errors are returned, the plandomizer options are invalid.
+            # Do not attempt to generate a seed.
+            if len(plando_errors) > 0:
+                joined_errors = "<br>".join(plando_errors)
+                error_html = f"ERROR:<br>{joined_errors}"
+                # Show and populate the div for settings errors.
+                settings_errors_element.innerHTML = error_html
+                settings_errors_element.style = ""
+                return
+
         # Start the progressbar
+        from randomizer.Patching.Hash import get_hash_images
+
+        gif_fairy = get_hash_images("browser", "loading-fairy")
+        gif_dead = get_hash_images("browser", "loading-dead")
+        js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
+        js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
+
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
-        form_data = serialize_settings()
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_conversion()
         background(form_data)
 
 
-@bind("click", "download_patch_file")
-def update_seed_text(event):
-    """Set seed text based on the download_patch_file click event.
+@bind("click", "load_patch_file")
+def update_patch_file(event):
+    """Set historical seed text based on the load_patch_file click event.
 
     Args:
         event (DOMEvent): Javascript dom click event.
     """
     # When we click the download json event just change the button text
-    if js.document.getElementById("download_patch_file").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File"
+    if js.document.getElementById("load_patch_file").checked:
+        js.document.getElementById("generate_pastgen_seed").value = "Generate Patch File from History"
     else:
-        js.document.getElementById("generate_seed").value = "Generate Seed"
+        js.document.getElementById("generate_pastgen_seed").value = "Generate Seed from History"
+
+
+async def get_args():
+    """Get the args from the url and then load the seed from the server if it exists."""
+    args = js.window.location.search
+    if args.startswith("?"):
+        args = args[1:]
+    if "&" in args:
+        args = args.split("&")
+    else:
+        args = [args]
+    args_dict = {}
+
+    for arg in args:
+        try:
+            arg_split = arg.split("=")
+            args_dict[arg_split[0]] = arg_split[1]
+        except Exception:
+            pass
+    # If someone provided seed_id in the url, lets pull the seed data from the webserver
+    if "seed_id" in args_dict:
+        # Wait for the page to load
+        print("Getting the seed from the server")
+        resp = js.get_seed_from_server(args_dict["seed_id"])
+        from randomizer.Patching.ApplyLocal import patching_response
+
+        await patching_response(str(resp), False)
+    js.document.getElementById("visual_indicator").setAttribute("hidden", "true")
+    js.document.getElementById("tab-data").removeAttribute("hidden")

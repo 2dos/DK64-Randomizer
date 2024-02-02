@@ -1,9 +1,11 @@
 """Randomize Entrances passed from Misc options."""
+
 import js
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, MapExitTable, Maps
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Maps import Maps
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, MapExitTable
+from randomizer.Patching.Patcher import LocalROM
 
 valid_lz_types = [9, 12, 13, 16]
 
@@ -215,19 +217,36 @@ def filterEntranceType():
                 ROM_COPY.writeMultipleBytes(0, 2)
 
 
-def enableSpiderText(spoiler):
-    """Change the cutscene trigger in Spider Boss to the specific item reward cutscene."""
+class ItemPreviewCutscene:
+    """Class to store information regarding an item preview cutscene."""
+
+    def __init__(self, map: Maps, old_cutscene: int, new_cutscene: int):
+        """Initialize with given parameters."""
+        self.map = map
+        self.old_cutscene = old_cutscene
+        self.new_cutscene = new_cutscene
+
+
+ITEM_PREVIEW_CUTSCENES = [
+    ItemPreviewCutscene(Maps.ForestSpider, 3, 9),
+    # ItemPreviewCutscene(Maps.CavesChunkyIgloo, 0, 5),
+]
+
+
+def enableTriggerText(spoiler):
+    """Change the cutscene trigger in Spider Boss and Chunky Igloo to the specific item reward cutscene."""
     if spoiler.settings.item_reward_previews:
         ROM_COPY = LocalROM()
-        cont_map_lzs_address = js.pointer_addresses[18]["entries"][Maps.ForestSpider]["pointing_to"]
-        ROM_COPY.seek(cont_map_lzs_address)
-        lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        for lz_id in range(lz_count):
-            start = (lz_id * 0x38) + 2
-            ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
-            lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            lz_cutscene = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            if lz_type == 10 and lz_cutscene == 3:
-                # Change cutscene to 9
-                ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
-                ROM_COPY.writeMultipleBytes(9, 2)
+        for cs in ITEM_PREVIEW_CUTSCENES:
+            cont_map_lzs_address = js.pointer_addresses[18]["entries"][cs.map]["pointing_to"]
+            ROM_COPY.seek(cont_map_lzs_address)
+            lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            for lz_id in range(lz_count):
+                start = (lz_id * 0x38) + 2
+                ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                lz_cutscene = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if lz_type == 10 and lz_cutscene == cs.old_cutscene:
+                    # Change cutscene
+                    ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
+                    ROM_COPY.writeMultipleBytes(cs.new_cutscene, 2)

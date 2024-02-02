@@ -1,5 +1,9 @@
 """Stores information about levels, currently specifically used for assigning keys."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
@@ -9,7 +13,7 @@ from randomizer.Enums.Transitions import Transitions
 class LevelInfo:
     """Class which stores some information about levels."""
 
-    def __init__(self, TransitionTo, TransitionFrom, KeyLocation, KeyItem):
+    def __init__(self, TransitionTo: Transitions, TransitionFrom: Transitions, KeyLocation: Locations, KeyItem: Items) -> None:
         """Initialize with given parameters."""
         self.TransitionTo = TransitionTo
         self.TransitionsFrom = TransitionFrom

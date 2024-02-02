@@ -3,7 +3,8 @@
 import os
 
 import PIL
-from PIL import Image, ImageDraw, ImageEnhance
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+from BuildLib import hueShift
 
 pre = "../"
 cwd = os.getcwd()
@@ -17,27 +18,6 @@ if last_part.upper() == "BUILD":
 def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
-
-
-def hueShift(im, amount):
-    """Apply a hue shift on an image."""
-    hsv_im = im.convert("HSV")
-    im_px = im.load()
-    w, h = hsv_im.size
-    hsv_px = hsv_im.load()
-    for y in range(h):
-        for x in range(w):
-            old = list(hsv_px[x, y]).copy()
-            old[0] = (old[0] + amount) % 360
-            hsv_px[x, y] = (old[0], old[1], old[2])
-    rgb_im = hsv_im.convert("RGB")
-    rgb_px = rgb_im.load()
-    for y in range(h):
-        for x in range(w):
-            new = list(rgb_px[x, y])
-            new.append(list(im_px[x, y])[3])
-            im_px[x, y] = (new[0], new[1], new[2], new[3])
-    return im
 
 
 def maskImage(im_f, min_y, rgb: list):
@@ -60,6 +40,19 @@ def maskImage(im_f, min_y, rgb: list):
                     base[channel] = int(mask[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
+
+
+def stroke(img: Image, stroke_color: tuple = (255, 255, 255), stroke_radius: int = 5) -> Image:
+    """Give an image an outline."""
+    rgba = tuple(list(stroke_color) + [255])
+    stroke_image = Image.new("RGBA", img.size, rgba)
+    img_alpha = img.getchannel(3).point(lambda x: 255 if x > 0 else 0)
+    stroke_alpha = img_alpha.filter(ImageFilter.MaxFilter(stroke_radius))
+    # optionally, smooth the result
+    stroke_alpha = stroke_alpha.filter(ImageFilter.SMOOTH)
+    stroke_image.putalpha(stroke_alpha)
+    output = Image.alpha_composite(stroke_image, img)
+    return output
 
 
 print("Composing complex images")
@@ -451,6 +444,7 @@ for x in range(16):
 barrel_skin_0 = barrel_skin.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
 skins = {
+    "gb": ("gb", None, "displays"),
     "dk": ("dk_face_1", "dk_face_0", "hash"),
     "diddy": ("diddy_face_0", "diddy_face_1", "hash"),
     "lanky": ("lanky_face_0", "lanky_face_1", "hash"),
@@ -470,22 +464,44 @@ skins = {
     "fakegb": ("fake_gb", None, "displays"),
     "melon": ("melon_slice", None, "hash"),
 }
+BARREL_BASE_IS_HELM = True
+BASE_SIZE = 32
+if BARREL_BASE_IS_HELM:
+    BASE_SIZE = 64
+
 for skin_type in skins:
     skin_data = list(skins[skin_type])
     skin_dir = getDir(f"assets/{skin_data[2]}/")
-    if skin_data[1] is None:
-        whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((32, 32))
-        left = whole.crop((0, 0, 16, 32))
-        right = whole.crop((16, 0, 32, 32))
+    if skin_data[1] is not None:
+        left = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((BASE_SIZE >> 1, BASE_SIZE))
+        right = Image.open(f"{skin_dir}{skin_data[1]}.png").resize((BASE_SIZE >> 1, BASE_SIZE))
+        whole = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
+        whole.paste(left, (0, 0), left)
+        whole.paste(right, (BASE_SIZE >> 1, 0), right)
     else:
-        left = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((16, 32))
-        right = Image.open(f"{skin_dir}{skin_data[1]}.png").resize((16, 32))
-    left = left.transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-    right = right.transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-    barrel_0 = barrel_skin.copy()
-    barrel_1 = barrel_skin_0.copy()
-    barrel_0.paste(left, (0, 16), left)
-    barrel_1.paste(right, (0, 16), right)
+        whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((BASE_SIZE, BASE_SIZE))
+    if skin_type != "fakegb":
+        whole = whole.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    # Resize image to combat stretching
+    whole_0 = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
+    whole = whole.resize((BASE_SIZE, int(BASE_SIZE * 0.8)))
+    whole_0.paste(whole, (0, int(BASE_SIZE * 0.1)), whole)
+    whole = whole_0
+    # Segment
+    left = whole.crop((0, 0, BASE_SIZE >> 1, BASE_SIZE))
+    right = whole.crop((BASE_SIZE >> 1, 0, BASE_SIZE, BASE_SIZE))
+    left = left.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    right = right.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    left = left.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    right = right.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    if BARREL_BASE_IS_HELM:
+        barrel_0 = left
+        barrel_1 = right
+    else:
+        barrel_0 = barrel_skin.copy()
+        barrel_1 = barrel_skin_0.copy()
+        barrel_0.paste(left, (0, BASE_SIZE), left)
+        barrel_1.paste(right, (0, BASE_SIZE), right)
     barrel_0.save(f"{disp_dir}barrel_{skin_type}_0.png")
     barrel_1.save(f"{disp_dir}barrel_{skin_type}_1.png")
 
@@ -558,6 +574,50 @@ for y in range(h):
         bubble_px[x, y] = (0, 0, 0, base[3])
 bubble_im.save(f"{disp_dir}text_bubble_dark.png")
 
+# Warp pad stuff
+warp_top_im_total = Image.new(mode="RGBA", size=(64, 64))
+rim_ims = []
+for x in range(2):
+    warp_top_im = Image.open(f"{hash_dir}warp_top_{x}.png")
+    warp_top_im_total.paste(warp_top_im, (32 * x, 0), warp_top_im)
+    rim_ims.append(Image.open(f"{hash_dir}warp_rim_{x}.png"))
+overlay = Image.new(mode="RGBA", size=(64, 64), color="black")
+draw = ImageDraw.Draw(overlay)
+overlay_edge = 4
+tl = overlay_edge
+br = 62 - overlay_edge
+draw.ellipse((tl, tl, br, br), fill="white")
+overlay_px = overlay.load()
+base_px = warp_top_im_total.load()
+warp_top_edge = Image.new(mode="RGBA", size=(64, 64))
+warp_top_center = Image.new(mode="RGBA", size=(64, 64))
+edge_px = warp_top_edge.load()
+center_px = warp_top_center.load()
+for y in range(64):
+    for x in range(64):
+        o_r, o_g, o_b, o_a = overlay_px[x, y]
+        if o_r == 0 and o_g == 0 and o_b == 0:
+            # Is Rim
+            edge_px[x, y] = base_px[x, y]
+        else:
+            # Is Center
+            center_px[x, y] = base_px[x, y]
+warp_hue_shift = 240
+hueShift(warp_top_edge, warp_hue_shift)
+hueShift(warp_top_center, warp_hue_shift)
+hueShift(rim_ims[0], warp_hue_shift)
+hueShift(rim_ims[1], warp_hue_shift)
+warp_top_edge.paste(warp_top_center, (0, 0), warp_top_center)
+warp_left = warp_top_edge.crop((0, 0, 32, 64))
+warp_right = warp_top_edge.crop((32, 0, 64, 64))
+warp_left.save(f"{disp_dir}warp_left.png")
+warp_right.save(f"{disp_dir}warp_right.png")
+for x in range(2):
+    rim_ims[x].save(f"{disp_dir}warp_rim_{x}.png")
+
+# Gun Crosshair
+crosshair_im = Image.open(f"{hash_dir}gun_crosshair.png")
+stroke(crosshair_im, (0, 0, 0)).save(f"{disp_dir}crosshair.png")
 
 rmve = [
     "01234.png",
@@ -586,6 +646,11 @@ rmve = [
     "gb_shine.png",
     "rainbow_coin_noflip.png",
     "text_bubble.png",
+    "warp_rim_0.png",
+    "warp_rim_1.png",
+    "warp_top_0.png",
+    "warp_top_1.png",
+    "gun_crosshair.png",
 ]
 for kong in kongs:
     for x in range(2):

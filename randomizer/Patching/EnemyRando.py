@@ -1,12 +1,15 @@
 """Apply Boss Locations."""
+
 import random
 
 import js
 from randomizer.Enums.EnemySubtypes import EnemySubtype
-from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
-from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount, WinCondition
+from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
+from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
+from randomizer.Patching.Patcher import LocalROM
 
 
 class PkmnSnapEnemy:
@@ -198,47 +201,6 @@ banned_enemy_maps = {
     Enemies.Guard: [Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin],
 }
 ENABLE_BBBARRAGE_ENEMY_RANDO = False
-
-
-def isBanned(new_enemy_id: Enemies, cont_map_id: Maps, spawner: Spawner, no_ground_simple_selected: bool) -> bool:
-    """Define if enemy is banned in current circumstances."""
-    if new_enemy_id in banned_enemy_maps:
-        if cont_map_id in banned_enemy_maps[new_enemy_id]:
-            return True
-    if no_ground_simple_selected:
-        if cont_map_id == Maps.AztecTinyTemple and spawner.index in list(range(20, 24)):
-            return True
-        if cont_map_id == Maps.CastleBallroom and spawner.index <= 5:
-            return True
-        if cont_map_id == Maps.CastleLibrary and spawner.index <= 4:
-            return True
-    if cont_map_id == Maps.ForestSpider and EnemyMetaData[new_enemy_id].aggro == 4:
-        return True
-    if cont_map_id == Maps.ForestGiantMushroom and spawner.index in (3, 4):
-        return True
-    if new_enemy_id == Enemies.Guard and cont_map_id == Maps.JapesMountain and spawner.index == 15:
-        return True
-    if new_enemy_id == Enemies.Guard and cont_map_id == Maps.FranticFactory:
-        if spawner.index in (59, 62, 63, 73, 87, 88):  # Various enemies that are in tight hallways that are difficult to navigate around
-            return True
-    gun_enemy_gauntlets = (
-        Maps.ForestMillAttic,
-        Maps.CavesDonkeyCabin,
-        Maps.JapesLankyCave,
-        Maps.CastleShed,
-    )
-    enemies_cant_kill_gun = (
-        Enemies.Klump,
-        Enemies.RoboKremling,
-        Enemies.Kosha,
-        Enemies.Klobber,
-        Enemies.Kaboom,
-        Enemies.KlaptrapPurple,
-        Enemies.Guard,
-    )
-    if (cont_map_id in gun_enemy_gauntlets or (cont_map_id == Maps.AztecTinyTemple and spawner.index < 17)) and new_enemy_id in enemies_cant_kill_gun:
-        return True
-    return False
 
 
 def resetPkmnSnap():
@@ -491,59 +453,46 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
                 ROM_COPY.writeMultipleBytes(new_speed, 1)
 
 
+def randomize_enemies_0(spoiler):
+    """Determine randomized enemies."""
+    data = {}
+    pkmn = []
+    resetPkmnSnap()
+    for loc in enemy_location_list:
+        if enemy_location_list[loc].enable_randomization:
+            new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected, True)
+            setPkmnSnapEnemy(new_enemy)
+            map = enemy_location_list[loc].map
+            if map not in data:
+                data[map] = []
+            data[map].append(
+                {"enemy": new_enemy, "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed], "id": enemy_location_list[loc].id, "location": Locations(loc).name}
+            )
+    spoiler.enemy_rando_data = data
+    for enemy in pkmn_snap_enemies:
+        pkmn.append(enemy.spawned)
+    spoiler.pkmn_snap_data = pkmn
+
+
 def randomize_enemies(spoiler):
     """Write replaced enemies to ROM."""
     # Define Enemy Classes, Used for detection of if an enemy will be replaced
-    enemy_classes = {
-        EnemySubtype.GroundSimple: [
-            Enemies.BeaverBlue,
-            Enemies.KlaptrapGreen,
-            Enemies.BeaverGold,
-            Enemies.MushroomMan,
-            Enemies.Ruler,
-            Enemies.Kremling,
-            Enemies.Krossbones,
-            Enemies.MrDice0,
-            Enemies.MrDice1,
-            Enemies.SirDomino,
-            Enemies.FireballGlasses,
-            Enemies.SpiderSmall,
-            Enemies.Ghost,
-        ],
-        EnemySubtype.Air: [
-            Enemies.ZingerCharger,
-            Enemies.ZingerLime,
-            Enemies.ZingerRobo,
-            Enemies.Bat,
-            # Enemies.Bug, # Crashes on N64
-            # Enemies.Book, # Causes way too many problems
-        ],
-        EnemySubtype.GroundBeefy: [
-            Enemies.Klump,
-            Enemies.RoboKremling,
-            # Enemies.EvilTomato, # Causes way too many problems
-            Enemies.Kosha,
-            Enemies.Klobber,
-            Enemies.Kaboom,
-            Enemies.KlaptrapPurple,
-            Enemies.KlaptrapRed,
-            Enemies.Guard,
-        ],
-        EnemySubtype.Water: [Enemies.Shuri, Enemies.Gimpfish, Enemies.Pufftup],
-    }
-    resetPkmnSnap()
+    enemy_classes = {}
+    for enemy in EnemyMetaData:
+        data = EnemyMetaData[enemy]
+        if data.e_type != EnemySubtype.NoType and data.placeable:
+            if data.e_type not in enemy_classes:
+                enemy_classes[data.e_type] = []
+            enemy_classes[data.e_type].append(enemy)
 
     # Define Enemies that can be placed in those classes
     enemy_placement_classes = {}
     banned_classes = []
-    no_ground_simple_selected = False
     for enemy_class in enemy_classes:
         class_list = []
         for enemy in enemy_classes[enemy_class]:
             if enemy in spoiler.settings.enemies_selected:
                 class_list.append(enemy)
-        if enemy_class == EnemySubtype.GroundSimple and len(class_list) == 0:
-            no_ground_simple_selected = True
         if len(class_list) == 0:
             # Nothing present, use backup
             for repl_type in replacement_priority[enemy_class]:
@@ -615,18 +564,15 @@ def randomize_enemies(spoiler):
                 extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append(Spawner(enemy_id, init_offset, enemy_index))
-            if spoiler.settings.enemy_rando and cont_map_id in valid_maps:
-                for enemy_class in enemy_swaps:
-                    arr = enemy_swaps[enemy_class]
-                    class_types = enemy_classes[enemy_class]
-                    sub_index = 0
+            if spoiler.settings.enemy_rando and cont_map_id in spoiler.enemy_rando_data:
+                referenced_spawner = None
+                for enemy in spoiler.enemy_rando_data[cont_map_id]:
                     for spawner in vanilla_spawners:
-                        if spawner.enemy_id in class_types:
-                            if cont_map_id != Maps.FranticFactory or spawner.index < 35 or spawner.index > 44:
-                                new_enemy_id = arr[sub_index]
-                                sub_index += 1
-                                if not isBanned(new_enemy_id, cont_map_id, spawner, no_ground_simple_selected):
-                                    writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
+                        if spawner.index == enemy["id"]:
+                            referenced_spawner = spawner
+                            break
+                    if referenced_spawner is not None:
+                        writeEnemy(spoiler, cont_map_spawner_address, enemy["enemy"], referenced_spawner, cont_map_id, 0)
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
@@ -670,33 +616,52 @@ def randomize_enemies(spoiler):
                     elif spawner.enemy_id == Enemies.BattleCrownController:
                         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xB)
                         ROM_COPY.writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
-            non_pkmn_snap_maps = [Maps.ForestSpider, Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin, Maps.CastleBoss]
-            if cont_map_id in valid_maps and cont_map_id not in non_pkmn_snap_maps:
-                # Check Pokemon Snap
-                for spawner in vanilla_spawners:
-                    if cont_map_id == Maps.AztecTinyTemple and spawner.index < 17:
-                        # Prevent One-Time-Only Enemies in Tiny Temple from being required
-                        continue
-                    if cont_map_id == Maps.CastleBallroom and spawner.index < 6:
-                        # Prevent One-Time-Only Enemies in Castle BallRoom from being required
-                        continue
-                    if cont_map_id == Maps.CastleLibrary and spawner.index < 5:
-                        # Prevent One-Time-Only Enemies in Castle Library from being required
-                        continue
-                    if cont_map_id == Maps.AztecTinyTemple and spawner.index > 19 and spawner.index < 24:
-                        # Prevent One-Time-Only Enemies in Tiny Temple from being required
-                        continue
-                    if cont_map_id == Maps.FranticFactory and spawner.index > 34 and spawner.index < 45:
-                        # Prevent One-Time-Only Enemies in Toy Boss Fight from being required
-                        continue
-                    if cont_map_id == Maps.CrystalCaves and spawner.index < 10:
-                        # Prevent Unused Enemies in Caves
-                        continue
-                    ROM_COPY.seek(cont_map_spawner_address + spawner.offset)
-                    setPkmnSnapEnemy(int.from_bytes(ROM_COPY.readBytes(1), "big"))
+        if spoiler.settings.win_condition == WinCondition.poke_snap:
+            # Pkmn snap handler
             values = [0, 0, 0, 0, 0]
-            for enemy_index, enemy in enumerate(pkmn_snap_enemies):
-                if enemy.spawned:
+            # In some cases, the Pkmn Snap data hasn't yet been initialized (enemy rando disabled)
+            # so we use the default values
+            if len(spoiler.pkmn_snap_data) == 0:
+                # Pkmn Snap Default Enemies
+                spoiler.pkmn_snap_data = [
+                    True,  # Kaboom
+                    True,  # Blue Beaver
+                    True,  # Book
+                    True,  # Klobber
+                    True,  # Zinger (Charger)
+                    True,  # Klump
+                    True,  # Klaptrap (Green)
+                    True,  # Zinger (Bomber)
+                    True,  # Klaptrap (Purple)
+                    False,  # Klaptrap (Red)
+                    False,  # Gold Beaver
+                    True,  # Mushroom Man
+                    True,  # Ruler
+                    True,  # Robo-Kremling
+                    True,  # Kremling
+                    True,  # Kasplat (DK)
+                    True,  # Kasplat (Diddy)
+                    True,  # Kasplat (Lanky)
+                    True,  # Kasplat (Tiny)
+                    True,  # Kasplat (Chunky)
+                    False,  # Kop
+                    True,  # Robo-Zinger
+                    True,  # Krossbones
+                    True,  # Shuri
+                    True,  # Gimpfish
+                    True,  # Mr. Dice (Green)
+                    True,  # Sir Domino
+                    True,  # Mr. Dice (Red)
+                    True,  # Fireball w/ Glasses
+                    True,  # Small Spider
+                    True,  # Bat
+                    True,  # Tomato
+                    True,  # Ghost
+                    True,  # Pufftup
+                    True,  # Kosha
+                ]
+            for enemy_index, spawned in enumerate(spoiler.pkmn_snap_data):
+                if spawned:
                     offset = enemy_index >> 3
                     shift = enemy_index & 7
                     values[offset] |= 1 << shift

@@ -1,17 +1,16 @@
 """Apply cosmetic elements of Kong Rando."""
-import random
 
 import js
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
-from randomizer.Lists.EnemyTypes import Enemies
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Enemies import Enemies
+from randomizer.Patching.Patcher import LocalROM
 
 
 def apply_kongrando_cosmetic(spoiler):
-    """Rando write bananaport locations."""
+    """Write kong cage changes for kong rando."""
     if Types.Kong in spoiler.settings.shuffled_location_types:
         kong_locations = [x for x in spoiler.item_assignment if x.location in (Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong)]
         kong_flag_data = {

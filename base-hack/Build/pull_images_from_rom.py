@@ -1,4 +1,5 @@
 """Pull hash images from ROM."""
+
 import os
 import zlib
 
@@ -89,6 +90,12 @@ images = [
     ImageData("melon_resized", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 544, 48, 42, False, False),
     ImageData("melon_slice", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 0x142, 48, 42, False, True),
     ImageData("text_bubble", TextureFormat.IA8, TableNames.TexturesHUD, 0x52, 96, 64, False, False),
+    ImageData("warp_top_0", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF9, 32, 64, False, False),
+    ImageData("warp_top_1", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDFA, 32, 64, False, False),
+    ImageData("warp_rim_0", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xBB2, 32, 16, False, False),
+    ImageData("warp_rim_1", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xBB3, 32, 16, False, False),
+    ImageData("gun_crosshair", TextureFormat.IA8, TableNames.TexturesHUD, 0x38, 64, 64, False, False),
+    ImageData("scoff_head", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC9D, 48, 42, False, True),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

@@ -8,8 +8,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Lists.Location import LocationList
-from randomizer.Spoiler import Spoiler
 
 
 class LocationSelection:
@@ -75,44 +73,10 @@ class MoveData:
         self.count = count
 
 
-move_list = {
-    Items.BaboonBlast: MoveData(0, Kongs.donkey, 1),
-    Items.ChimpyCharge: MoveData(0, Kongs.diddy, 1),
-    Items.Orangstand: MoveData(0, Kongs.lanky, 1),
-    Items.MiniMonkey: MoveData(0, Kongs.tiny, 1),
-    Items.HunkyChunky: MoveData(0, Kongs.chunky, 1),
-    Items.Coconut: MoveData(2, Kongs.donkey, 1),
-    Items.Peanut: MoveData(2, Kongs.diddy, 1),
-    Items.Grape: MoveData(2, Kongs.lanky, 1),
-    Items.Feather: MoveData(2, Kongs.tiny, 1),
-    Items.Pineapple: MoveData(2, Kongs.chunky, 1),
-    Items.StrongKong: MoveData(0, Kongs.donkey, 2),
-    Items.RocketbarrelBoost: MoveData(0, Kongs.diddy, 2),
-    Items.Bongos: MoveData(4, Kongs.donkey, 1),
-    Items.Guitar: MoveData(4, Kongs.diddy, 1),
-    Items.Trombone: MoveData(4, Kongs.lanky, 1),
-    Items.Saxophone: MoveData(4, Kongs.tiny, 1),
-    Items.Triangle: MoveData(4, Kongs.chunky, 1),
-    Items.GorillaGrab: MoveData(0, Kongs.donkey, 3),
-    Items.SimianSpring: MoveData(0, Kongs.diddy, 3),
-    Items.BaboonBalloon: MoveData(0, Kongs.lanky, 2),
-    Items.PonyTailTwirl: MoveData(0, Kongs.tiny, 2),
-    Items.PrimatePunch: MoveData(0, Kongs.chunky, 2),
-    Items.ProgressiveAmmoBelt: MoveData(3, Kongs.any, 1, True, 2),
-    Items.ProgressiveInstrumentUpgrade: MoveData(4, Kongs.any, 2, True, 3),
-    Items.ProgressiveSlam: MoveData(1, Kongs.any, 2, True, 2),
-    Items.HomingAmmo: MoveData(2, Kongs.any, 2, True, 1),
-    Items.OrangstandSprint: MoveData(0, Kongs.lanky, 3),
-    Items.Monkeyport: MoveData(0, Kongs.tiny, 3),
-    Items.GorillaGone: MoveData(0, Kongs.chunky, 3),
-    Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
-}
-
-
-def ShuffleItems(spoiler: Spoiler):
+def ShuffleItems(spoiler):
     """Shuffle items into assortment."""
     progressive_move_flag_dict = {
-        Items.ProgressiveSlam: [0x290, 0x291],
+        Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
         Items.FakeItem: list(range(0x2AE, 0x2BE)),
@@ -123,8 +87,8 @@ def ShuffleItems(spoiler: Spoiler):
     locations_not_needing_flags = []
     locations_needing_flags = []
 
-    for location_enum in LocationList:
-        item_location = LocationList[location_enum]
+    for location_enum in spoiler.LocationList:
+        item_location = spoiler.LocationList[location_enum]
         # If location is a shuffled one...
         if (
             (
@@ -208,7 +172,10 @@ def ShuffleItems(spoiler: Spoiler):
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
             if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
-                flag_dict[item_location.type] = []
+                if item_location.type == Types.ToughBanana and Types.Banana not in flag_dict.keys():
+                    flag_dict[Types.Banana] = []
+                else:
+                    flag_dict[item_location.type] = []
             # Add this location's vanilla flag as a valid flag for this type of item/kong pairing
             vanilla_item_type = ItemList[item_location.default].type
             if item_location.type == Types.Shop:  # Except for shop locations - many of these are non-vanilla locations and won't have a valid vanilla item
@@ -223,23 +190,23 @@ def ShuffleItems(spoiler: Spoiler):
     for location in locations_needing_flags:
         if location.new_flag is None:
             if location.new_item == Types.Blueprint:
-                location.new_flag = blueprint_flag_dict[LocationList[location.location].item]
+                location.new_flag = blueprint_flag_dict[spoiler.LocationList[location.location].item]
             else:
                 location.new_flag = flag_dict[location.new_item].pop()
 
     # If we failed to give any location a flag, something is very wrong
     if any([data for data in locations_needing_flags if data.new_flag is None]):
-        debug_flags = [data for data in locations_needing_flags if data.new_flag is None]
+        [data for data in locations_needing_flags if data.new_flag is None]
         raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
     spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags
     # Generate human-readable version for debugging purposes
-    human_item_data = {}
-    for loc in spoiler.item_assignment:
-        name = "Nothing"
-        if loc.new_item is not None:
-            name = ItemList[LocationList[loc.location].item].name
-        location_name = loc.name
-        if "Kasplat" in location_name:
-            location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
-        human_item_data[location_name] = name
-    spoiler.debug_human_item_assignment = human_item_data
+    # human_item_data = {}
+    # for loc in spoiler.item_assignment:
+    #     name = "Nothing"
+    #     if loc.new_item is not None:
+    #         name = ItemList[spoiler.LocationList[loc.location].item].name
+    #     location_name = loc.name
+    #     if "Kasplat" in location_name:
+    #         location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
+    #     human_item_data[location_name] = name
+    # spoiler.debug_human_item_assignment = human_item_data

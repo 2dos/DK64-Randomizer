@@ -1,4 +1,5 @@
 """Build the ROM."""
+
 import gzip
 import json
 import os
@@ -11,17 +12,18 @@ import create_helm_geo
 import generate_disco_models
 import generate_watch_file
 import model_fix
-import model_port
+from pull_guns_and_instruments import pullHandModels
+from model_port import loadNewModels
 
 # Patcher functions for the extracted files
-import patch_text
+from patch_text import writeNoExpPakMessages
 import portal_instance_script
 import shop_instance_script
 from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
@@ -34,7 +36,7 @@ from model_shrink import shrinkModel
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
 from populateSongData import writeVanillaSongData
-from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
+from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM, writeUncompressedOverlays
 from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
@@ -44,6 +46,8 @@ if os.path.exists(newROMName):
     os.remove(newROMName)
 shutil.copyfile(ROMName, newROMName)
 
+# pullHandModels()
+loadNewModels()
 BuildInstanceScripts()
 
 portal_images = []
@@ -58,20 +62,20 @@ getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
 
 file_dict = [
-    File(
-        name="Static ASM Code",
-        subtype=ChangeType.FixedLocation,
-        start=0x113F0,
-        compressed_size=0xB15E4,
-        source_file="StaticCode.bin",
-        compression_method=CompressionMethods.ExternalGzip,
-        patcher=patchStaticCode,
-    ),
+    # File(
+    #     name="Static ASM Code",
+    #     subtype=ChangeType.FixedLocation,
+    #     start=0x113F0,
+    #     compressed_size=0xB15E4,
+    #     source_file="StaticCode.bin",
+    #     compression_method=CompressionMethods.ExternalGzip,
+    #     patcher=patchStaticCode,
+    # ),
     File(name="Dolby Logo", pointer_table_index=TableNames.TexturesHUD, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
     File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
     File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
     File(name="Spin Transition Image", pointer_table_index=TableNames.TexturesHUD, file_index=95, source_file="assets/transition/transition-body.png", texture_format=TextureFormat.IA4),
-    File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
+    # File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
     File(name="Tag Barrel Shell Texture", pointer_table_index=TableNames.TexturesGeometry, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551),
     File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
@@ -123,6 +127,7 @@ file_dict = [
     File(name="Potion (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True, bloat_compression=True),
     File(name="Potion (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True, bloat_compression=True),
     File(name="Potion (Any) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
         name="Krusha Head",
         subtype=ChangeType.FixedLocation,
@@ -182,7 +187,7 @@ file_dict = [
     File(
         name="Fake GB Shine",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=6062,
+        file_index=getBonusSkinOffset(0),
         source_file="assets/displays/gb_shine.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -190,7 +195,7 @@ file_dict = [
     File(
         name="Melon Surface",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=6066,
+        file_index=getBonusSkinOffset(4),
         source_file="assets/hash/melon_resized.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -201,6 +206,18 @@ file_dict = [
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
+    File(name="Base Barrel Skin", pointer_table_index=TableNames.ActorGeometry, file_index=0x75, source_file="barrel_skin_base.bin", do_not_delete_source=True),
+    File(
+        name="Base Barrel Shell",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(5),
+        source_file="assets/tagbarrel/plain_shell.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
+    File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=113, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -227,7 +244,7 @@ for klap_tex in [0xF31, 0xF32, 0xF33, 0xF35, 0xF37, 0xF38, 0xF39, 0xF3C, 0xF3D, 
         )
     )
 
-for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
+for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136, 2007):
     file_dict.append(
         File(
             name=f"Snow Texture {hex(img)}",
@@ -274,7 +291,7 @@ for item in range(3):
         File(
             name=f"Rainbow Coin ({item})",
             pointer_table_index=TableNames.TexturesGeometry,
-            file_index=6063 + item,
+            file_index=getBonusSkinOffset(item + 1),
             source_file=f"assets/hash/rainbow_{item}.png",
             do_not_extract=True,
             texture_format=TextureFormat.RGBA5551,
@@ -749,10 +766,14 @@ for x in range(5):
 
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
+    0xE8D: [(43, 32), "checkered"],  # DK Tie Hang
     0xE66: [(32, 32), "block"],  # Diddy Cap/Shirt
     0xE69: [(32, 32), "block"],  # Lanky Overalls
+    0xE9A: [(32, 32), "block"],  # Lanky Fur (Front)
+    0xE94: [(32, 32), "block"],  # Lanky Fur
     0xEB9: [(43, 32), "checkered"],  # Chunky Checkered Shirt
     0xE67: [(32, 32), "block"],  # Chunky Shirt Front
+    0xE68: [(32, 32), "block"],  # Tiny Hair
     3826: [(32, 32), "block"],  # Rambi
     3847: [(32, 32), "block"],  # Enguarde
     3734: [(43, 32), "checkered"],  # Lanky Patch
@@ -770,7 +791,7 @@ for x in kong_palettes:
 for tex in range(0x273, 0x27D):
     file_dict.append(File(name=f"Head Expansion ({hex(tex)})", pointer_table_index=TableNames.TexturesGeometry, file_index=tex, source_file=f"head_{tex}.bin", target_compressed_size=32 * 64 * 2))
 
-colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64]]
+colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64], [0xBB2, 0xBB3, 32, 16], [0xCE0, 0xCEB, 48, 42]]
 for change in colorblind_changes:
     for file_index in range(change[0], change[1] + 1):
         file_dict.append(
@@ -782,26 +803,7 @@ for change in colorblind_changes:
                 target_size=2 * change[2] * change[3],
             )
         )
-barrel_skins = (
-    "dk",
-    "diddy",
-    "lanky",
-    "tiny",
-    "chunky",
-    "bp",
-    "nin_coin",
-    "rw_coin",
-    "key",
-    "crown",
-    "medal",
-    "potion",
-    "bean",
-    "pearl",
-    "fairy",
-    "rainbow",
-    "fakegb",
-    "melon",
-)
+
 for bi, b in enumerate(barrel_skins):
     for x in range(2):
         file_dict.append(
@@ -823,6 +825,12 @@ shrinkModel(True, "potion_tiny_om1.bin", 0, 0.08, "shrink_potion_tiny.bin", Fals
 shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
 shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
+shrinkModel(True, "dk_base.bin", 0, 1 / 0.15, "shrink_dk.bin", True)  # DK
+shrinkModel(True, "diddy_base.bin", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
+shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
+shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
+shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
+shrinkModel(True, "fake_item_actor.bin", 0, 0.15, "shrink_ice_trap.bin", False),
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -849,11 +857,16 @@ model_changes = [
     ModelChange(0xF9, "shrink_potion_chunky.bin", True),
     ModelChange(0xFA, "shrink_potion_any.bin", True),
     ModelChange(0xFB, "shrink_fairy.bin"),
-    ModelChange(0x10E, "fake_item_actor.bin"),
+    ModelChange(0xFC, "fake_item_actor.bin"),
+    ModelChange(0xFD, "shrink_dk.bin"),
+    ModelChange(0xFE, "shrink_diddy.bin"),
+    ModelChange(0xFF, "shrink_lanky.bin"),
+    ModelChange(0x100, "shrink_tiny.bin"),
+    ModelChange(0x101, "shrink_chunky.bin"),
+    ModelChange(0x102, "shrink_ice_trap.bin"),
     ModelChange(0xA3, "counter.bin"),
+    # ModelChange(0xC0, "guitar_om1.bin"),
 ]
-for bi, b in enumerate(barrel_skins):
-    model_changes.append(ModelChange(0xFC + bi, f"barrel_skin_{b}.bin"))
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
 for x in model_changes:
@@ -956,10 +969,13 @@ text_files = (
     TextChange("Pause Menu", 0, ""),
     TextChange("Main Menu", 0, "menu_text.bin"),
     TextChange("Race Positions", 0, ""),
-    TextChange("Move Names", 0, "move_names.bin"),
+    TextChange("Move Names", 0x2000, "move_names.bin"),  # Expanded for the Krusha move names feature
     TextChange("Fairy Queen Rareware Door", 0, "fairy_rw_text.bin"),
     TextChange("Wrinkly", 0x2800, ""),
     TextChange("Snide's Bonus Games", 0, ""),
+    TextChange("Hint Regions", 0, "hint_region_text.bin"),
+    TextChange("Item Locations", 0x2800, "item_locations.bin"),
+    TextChange("Wrinkly Short", 0x2800, "short_wrinkly.bin"),
 )
 
 for index, text in enumerate(text_files):
@@ -1149,6 +1165,7 @@ with open(newROMName, "r+b") as fh:
             if not x.do_not_delete_source:
                 if os.path.exists(x.source_file):
                     os.remove(x.source_file)
+    writeUncompressedOverlays(fh)
 
     print("[5 / 7] - Writing recomputed pointer tables to ROM")
     writeModifiedPointerTablesToROM(fh)
@@ -1298,6 +1315,14 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF10E0)
     for x in range(16):
         fh.write((0x8C).to_bytes(2, "big"))
+    # Melon Crates
+    fh.seek(0x1FF0E80)
+    for x in range(16):
+        fh.write((0x2F).to_bytes(2, "big"))
+    # Enemies
+    fh.seek(0x1FF9000)
+    for x in range(426):
+        fh.write((0).to_bytes(4, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
@@ -1305,6 +1330,11 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFD000)
     for x in range(64):
         fh.write((0).to_bytes(4, "big"))
+
+    # Hint Flags
+    fh.seek(0x1FFE000)
+    for x in range(35):
+        fh.write((0xFFFF).to_bytes(2, "big"))
 
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
@@ -1396,6 +1426,11 @@ with open(newROMName, "r+b") as fh:
         "melon_surface",
         "melon_resized",
         "text_bubble_dark",
+        "warp_left",
+        "warp_right",
+        "warp_rim_0",
+        "warp_rim_1",
+        "crosshair",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
@@ -1444,6 +1479,7 @@ with open(newROMName, "r+b") as fh:
         "bonus_Skin",
         "melon_resized",
         "melon_slice",
+        "scoff_head",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]
@@ -1494,6 +1530,7 @@ with open(newROMName, "r+b") as fh:
     # pth = "assets/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)
+    writeNoExpPakMessages(fh)
 
 # Get BPS Data
 with open(newROMName, "r+b") as fh:

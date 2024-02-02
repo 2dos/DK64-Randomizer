@@ -1,7 +1,6 @@
 """Push jinja2 file to spoiler."""
 
 import json
-import time
 
 from jinja2 import Environment, FunctionLoader
 
@@ -16,8 +15,7 @@ def ajax_call(file):
 
 def loader_func(template_name):
     """Load template file."""
-    milliseconds = int(round(time.time() * 1000))
-    return ajax_call("templates/" + f"{template_name}?currtime={milliseconds}")
+    return ajax_call("templates/" + f"{template_name}")
 
 
 async def GenerateSpoiler(spoiler):

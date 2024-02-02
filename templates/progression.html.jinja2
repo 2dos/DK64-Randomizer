@@ -13,6 +13,7 @@
                                     type="checkbox"
                                     name="randomize_blocker_required_amounts"
                                     id="randomize_blocker_required_amounts"
+                                    display_name="Random B. Locker Amounts"
                                     value="True"/>
                             <label for="randomize_blocker_required_amounts"></label>
                         </label>
@@ -24,6 +25,7 @@
                                     type="checkbox"
                                     name="randomize_cb_required_amounts"
                                     id="randomize_cb_required_amounts"
+                                    display_name="Randomize CB Required Amounts"
                                     value="True"/>
                             <label for="randomize_cb_required_amounts"></label>
                         </label>
@@ -62,45 +64,50 @@
                 {% endfor %}
             </table>
             <div class="flex-container">
-                <div class="group-spacer"></div>
-                <div class="item-group">
-                    <p class="select-title">B Locker Max:</p>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend"
-                             data-toggle="tooltip"
-                             title="Check box to ensure Helm is 'Max Value'.">
-                            <div class="input-group-text">
-                                <input type="checkbox"
-                                       value="True"
-                                       id="maximize_helm_blocker"
-                                       name="maximize_helm_blocker">
+                <div style="width:50%">
+                    <div class="item-group" style="margin-left:auto;margin-right:auto">
+                        <p class="select-title">B Locker Max:</p>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend"
+                                data-toggle="tooltip"
+                                title="Check box to ensure Helm is 'Max Value'.">
+                                <div class="input-group-text">
+                                    <input type="checkbox"
+                                        value="True"
+                                        id="maximize_helm_blocker"
+                                        name="maximize_helm_blocker"
+                                        display_name="Maximize Helm B. Locker">
+                                </div>
                             </div>
+                            <input class="form-control"
+                                min="0"
+                                max="200"
+                                name="blocker_text"
+                                id="blocker_text"
+                                display_name="B. Locker Max"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Maximum Randomized value"
+                                default="50"
+                                placeholder="50"/>
                         </div>
-                        <input class="form-control"
-                               min="0"
-                               max="200"
-                               name="blocker_text"
-                               id="blocker_text"
-                               type="number"
-                               data-toggle="tooltip"
-                               title="Maximum Randomized value"
-                               default="50"
-                               placeholder="50"/>
                     </div>
                 </div>
-                <div class="group-spacer"></div>
-                <div class="item-group">
-                    <p class="select-title">Troff N' Scoff Max:</p>
-                    <input class="form-control"
-                           min="0"
-                           max="500"
-                           name="troff_text"
-                           id="troff_text"
-                           type="number"
-                           data-toggle="tooltip"
-                           title="Maximum Randomized value"
-                           default="300"
-                           placeholder="300"/>
+                <div style="width:50%">
+                    <div class="item-group" style="margin-left:auto;margin-right:auto">
+                        <p class="select-title">Troff N' Scoff Max:</p>
+                        <input class="form-control"
+                            min="0"
+                            max="500"
+                            name="troff_text"
+                            id="troff_text"
+                            display_name="Troff n' Scoff Max"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Maximum Randomized value"
+                            default="300"
+                            placeholder="300"/>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -114,14 +121,16 @@
                                 type="checkbox"
                                 name="random_medal_requirement"
                                 id="random_medal_requirement"
+                                display_name="Randomize Medals for Rareware Coin"
                                 value="True"/>
                         <label for="random_medal_requirement"></label>
                         </label>
                     </p>
                     <input min="0"
-                            max="40"
+                            max="41"
                             name="medal_requirement"
                             id="medal_requirement"
+                            display_name="Medals for Rareware Coin"
                             style="width: 15%"
                             class="form-control center-div"
                             type="number"
@@ -136,6 +145,7 @@
                             max="100"
                             name="medal_cb_req"
                             id="medal_cb_req"
+                            display_name="Randomize Medal CB Requirement"
                             style="width: 15%"
                             class="form-control center-div"
                             type="number"
@@ -152,6 +162,7 @@
                             max="20"
                             name="rareware_gb_fairies"
                             id="rareware_gb_fairies"
+                            display_name="Fairies for Rareware GB"
                             style="width: 15%"
                             class="form-control center-div"
                             type="number"
@@ -170,6 +181,7 @@
                     <input class="dice_checkbox"
                             type="checkbox"
                             name="krool_random"
+                            display_name="Random K. Rool Phase Count"
                             onchange="toggle_clicks()"
                             id="krool_random"
                             value="True"/>
@@ -179,6 +191,7 @@
                 <input type="text"
                         name="krool_phase_count"
                         id="krool_phase_count"
+                        display_name="K. Rool Phase Count"
                         data-provide="slider"
                         data-slider-ticks="[1, 2, 3, 4, 5]"
                         data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
@@ -197,6 +210,7 @@
                             name="helm_random"
                             onchange="toggle_clicks()"
                             id="helm_random"
+                            display_name="Random Helm Length"
                             value="True"/>
                     <label for="helm_random"></label>
                 </label></h5>
@@ -204,6 +218,7 @@
                 <input type="text"
                         name="helm_phase_count"
                         id="helm_phase_count"
+                        display_name="Helm Length"
                         data-provide="slider"
                         data-slider-ticks="[1, 2, 3, 4, 5]"
                         data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
@@ -221,10 +236,29 @@
                             type="checkbox"
                             name="keys_random"
                             id="keys_random"
+                            display_name="Randomize Keys Required to Beat K. Rool"
                             onchange="toggle_clicks()"
                             value="True"/>
                     <label for="keys_random"></label>
                 </label></h5>
+            <div class="flex-container" style="justify-content: space-between; width: 90%; margin: auto;">
+                <div style="display: flex;">Start with More Keys</div>
+                <div style="display: flex;">Start with Fewer Keys</div>
+            </div>
+            <div class="flex-container flex-center">
+                <input type="text"
+                        name="krool_key_count"
+                        id="krool_key_count"
+                        display_name="Keys required to Beat K. Rool"
+                        data-provide="slider"
+                        data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
+                        data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
+                        data-slider-min="0"
+                        data-slider-max="8"
+                        data-slider-step="1"
+                        data-slider-value="8"
+                        style="width: 80%">
+            </div>
             <div class="flex-container">
                 <div class="form-check form-switch item-switch center-flex">
                     <label data-toggle="tooltip" title="Select the exact keys you start with.">
@@ -232,6 +266,7 @@
                                 type="checkbox"
                                 name="select_keys"
                                 id="select_keys"
+                                display_name="Select Starting Keys"
                                 onchange="toggle_clicks()"
                                 value="True"/>
                         Select Starting Keys
@@ -239,41 +274,43 @@
                     {{ list_selector(keys, "starting_keys_list", "STARTING KEYS SELECTOR", "This will open a popup that will let you customize what Keys you start with.&#10;This defaults to starting with no keys if none are selected.", 8) }}
                 </div>
                 <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
+                    <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                 title="If Key 8 were to be shuffled, force Key 8 to be in its vanilla location in Helm.">
                             <input class="form-check-input"
                                     type="checkbox"
                                     name="key_8_helm"
                                     id="key_8_helm"
+                                    display_name="Lock Key 8 in Helm"
                                     value="True"/>
                             Lock Key 8 in Helm
                         </label>
                     </div>
-                    <div class="form-check form-switch item-switch center-flex">
+                    <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                 title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
                             <input class="form-check-input"
                                     type="checkbox"
                                     name="krool_access"
                                     id="krool_access"
+                                    display_name="Key 8 Required"
                                     value="True"/>
                             Key 8 Required
                         </label>
                     </div>
-                </div>
-                <div>
-                    <input type="text"
-                            name="krool_key_count"
-                            id="krool_key_count"
-                            data-provide="slider"
-                            data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
-                            data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
-                            data-slider-min="0"
-                            data-slider-max="8"
-                            data-slider-step="1"
-                            data-slider-value="8"
-                            style="width: 80%">
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                                title="K. Rool will require only keys 3 and 8 to appear, just like in the vanilla game.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="k_rool_vanilla_requirement"
+                                    id="k_rool_vanilla_requirement"
+                                    display_name="Vanilla K. Rool Requirement"
+                                    value="True"/>
+                            Vanilla K. Rool Requirement
+                        </label>
+                    </div>
+                    <div class="spacer"></div>
                 </div>
                 <hr>
                 <h5 class="select-title">Number of Starting Kongs
@@ -283,21 +320,55 @@
                                 type="checkbox"
                                 name="starting_random"
                                 id="starting_random"
+                                display_name="Randomize number of starting Kongs"
                                 onchange="toggle_clicks()"
                                 value="True"/>
                         <label for="starting_random"></label>
-                    </label></h5>
+                    </label>
+                </h5>
                 <input type="text"
-                        name="starting_kongs_count"
-                        id="starting_kongs_count"
-                        data-provide="slider"
-                        data-slider-ticks="[1, 2, 3, 4, 5]"
-                        data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                        data-slider-min="1"
-                        data-slider-max="5"
-                        data-slider-step="1"
-                        data-slider-value="5"
-                        style="width: 80%">
+                    name="starting_kongs_count"
+                    id="starting_kongs_count"
+                    display_name="Starting Kongs count"
+                    data-provide="slider"
+                    data-slider-ticks="[1, 2, 3, 4, 5]"
+                    data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                    data-slider-min="1"
+                    data-slider-max="5"
+                    data-slider-step="1"
+                    data-slider-value="5"
+                    style="width: 80%">
+                <div class="flex-container" style="justify-content: center;">
+                    <div class="item-select">
+                        <p class="select-title">Select Starting Kong</p>
+                        <select name="starting_kong"
+                                id="starting_kong"
+                                display_name="Selected Starting Kongs"
+                                class="form-select center-div"
+                                aria-label="Door 1 Requirements"
+                                data-toggle="tooltip"
+                                title="Specify your starting Kong. This kong will always be included in your starting set. Leave as Any to remain random.">
+                            <option selected id="any" value="any">
+                                Any
+                            </option>
+                            <option id="donkey" value="donkey">
+                                Donkey
+                            </option>
+                            <option id="diddy" value="diddy">
+                                Diddy
+                            </option>
+                            <option id="lanky" value="lanky">
+                                Lanky
+                            </option>
+                            <option id="tiny" value="tiny">
+                                Tiny
+                            </option>
+                            <option id="chunky" value="chunky">
+                                Chunky
+                            </option>
+                        </select>
+                    </div>
+                </div>
                 <hr>
                 <h5 class="select-title">Helm Door Requirements</h5>
                 <div class="flex-container">
@@ -305,6 +376,7 @@
                         <p class="select-title">Door 1 Requirements</p>
                         <select name="crown_door_item"
                                 id="crown_door_item"
+                                display_name="Helm Door 1 Requirement Item"
                                 class="form-select center-div"
                                 aria-label="Door 1 Requirements"
                                 data-toggle="tooltip"
@@ -315,8 +387,14 @@
                             <option id="opened" value="opened">
                                 Opened
                             </option>
-                            <option id="random" value="random">
-                                Random
+                            <option id="easy_random" value="easy_random">
+                                Random (Easy)
+                            </option>
+                            <option id="medium_random" value="medium_random">
+                                Random (Medium)
+                            </option>
+                            <option id="hard_random" value="hard_random">
+                                Random (Hard)
                             </option>
                             <option id="req_gb" value="req_gb">
                                 Golden Bananas
@@ -353,6 +431,7 @@
                                 max="201"
                                 name="crown_door_item_count"
                                 id="crown_door_item_count"
+                                display_name="Helm Door 1 Requirement Count"
                                 style="width: 15%"
                                 class="form-control center-div"
                                 type="number"
@@ -367,6 +446,7 @@
                         <p class="select-title">Door 2 Requirements</p>
                         <select name="coin_door_item"
                                 id="coin_door_item"
+                                display_name="Helm Door 2 Requirement Item"
                                 class="form-select center-div"
                                 aria-label="Door 2 Requirements"
                                 data-toggle="tooltip"
@@ -377,8 +457,14 @@
                             <option id="opened" value="opened">
                                 Opened
                             </option>
-                            <option id="random" value="random">
-                                Random
+                            <option id="easy_random" value="easy_random">
+                                Random (Easy)
+                            </option>
+                            <option id="medium_random" value="medium_random">
+                                Random (Medium)
+                            </option>
+                            <option id="hard_random" value="hard_random">
+                                Random (Hard)
                             </option>
                             <option id="req_gb" value="req_gb">
                                 Golden Bananas
@@ -415,6 +501,7 @@
                                 max="201"
                                 name="coin_door_item_count"
                                 id="coin_door_item_count"
+                                display_name="Helm Door 2 Requirement Count"
                                 style="width: 15%"
                                 class="form-control center-div"
                                 type="number"

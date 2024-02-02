@@ -1,4 +1,5 @@
 """Minigames enum."""
+
 from enum import IntEnum, auto
 
 
@@ -71,3 +72,9 @@ class Minigames(IntEnum):
     TinyPonyTailTwirl = auto()
     ChunkyHiddenKremling = auto()
     ChunkyShooting = auto()
+    RambiArena = auto()
+    EnguardeArena = auto()
+    DiveBarrel = auto()
+    OrangeBarrel = auto()
+    BarrelBarrel = auto()
+    VineBarrel = auto()

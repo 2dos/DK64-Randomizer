@@ -76,7 +76,7 @@ void guardCatch(void) {
             Player->control_state_progress = 0;
             Player->yVelocity = 0;
             Player->hSpeed = 0;
-            playSong(42,0x3F800000);
+            playSong(SONG_FAILURE, 1.0f);
         }
     }
 }
@@ -118,7 +118,7 @@ void catchWarpHandle(void) {
 
 int inRabbitRace(void) {
     if (CurrentMap == MAP_FUNGI) {
-        return *(int*)(0x807FBB64) | 4; // In Rabbit Race
+        return *(int*)(0x807FBB64) & 4; // In Rabbit Race
     }
     return 0;
 }

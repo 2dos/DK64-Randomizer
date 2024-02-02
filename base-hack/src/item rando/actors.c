@@ -21,7 +21,7 @@ void spriteCode(int sprite_index, float scale) {
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(4.5f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, sprite_table[sprite_index], *(int*)(&scale));
+        assignGIFToActor(paad, sprite_table[sprite_index], scale);
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -57,7 +57,7 @@ void beanCode(void) {
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(12.0f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, &bean_sprite, 0x3F800000);
+        assignGIFToActor(paad, &bean_sprite, 1.0f);
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -72,7 +72,7 @@ void pearlCode(void) {
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(12.0f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, &pearl_sprite, 0x3F800000);
+        assignGIFToActor(paad, &pearl_sprite, 1.0f);
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -108,10 +108,6 @@ void KongDropCode(void) {
      * @brief Kong Actors actor code
      */
     GoldenBananaCode();
-    scaleBounceDrop(0.15f);
-    if (CurrentActorPointer_0->yVelocity > 500.0f) {
-        CurrentActorPointer_0->yVelocity = 500.0f;
-    }
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
         int kong = current_type - NEWACTOR_KONGDK;
@@ -148,10 +144,6 @@ void FakeGBCode(void) {
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
      */
     GoldenBananaCode();
-    scaleBounceDrop(0.10f);
-    if (CurrentActorPointer_0->yVelocity > 500.0f) {
-        CurrentActorPointer_0->yVelocity = 500.0f;
-    }
     CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
 }
 
@@ -160,7 +152,7 @@ void mermaidCheck(void) {
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
     int requirement = 5;
-    if (Rando.fast_gbs) {
+    if (Rando.faster_checks.mermaid) {
         requirement = 1; // Fast GBs pearl requirement
     }
     int count = 0;
@@ -215,6 +207,7 @@ void fairyQueenCutsceneCheck(void) {
 #define STORED_COUNT 18
 static int stored_maps[STORED_COUNT] = {};
 static unsigned char stored_kasplat[STORED_COUNT] = {};
+static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
 
 int setupHook(int map) {
     /**
@@ -228,6 +221,9 @@ int setupHook(int map) {
             if (getParentIndex(stored_maps[i]) == -1) {
                 stored_maps[i] = -1;
                 stored_kasplat[i] = -1;
+                for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+                    stored_enemies[j][i] = -1;
+                }
             }
         }
     }
@@ -237,6 +233,9 @@ int setupHook(int map) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
             stored_kasplat[i] = KasplatSpawnBitfield;
+            for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+                stored_enemies[j][i] = enemy_rewards_spawned[j];
+            }
         }
     }
     if (place_new) {
@@ -244,6 +243,9 @@ int setupHook(int map) {
             if (place_new) {
                 if (stored_maps[i] == -1) {
                     stored_kasplat[i] = KasplatSpawnBitfield;
+                    for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+                        stored_enemies[j][i] = enemy_rewards_spawned[j];
+                    }
                     stored_maps[i] = PreviousMap;
                     place_new = 0;
                 }
@@ -258,12 +260,21 @@ int setupHook(int map) {
             if (index == -1) {
                 // Setup refreshed
                 stored_kasplat[i] = 0;
+                for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+                    enemy_rewards_spawned[j] = 0;
+                }
             }
             KasplatSpawnBitfield = stored_kasplat[i];
+            for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+                enemy_rewards_spawned[j] = stored_enemies[j][i];
+            }
         }
     }
     if (!in_chain) {
         KasplatSpawnBitfield = 0;
+        for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+            enemy_rewards_spawned[j] = 0;
+        }
     }
     return index;
 }
@@ -293,6 +304,9 @@ void CheckKasplatSpawnBitfield(void) {
                         int kong = (flag - FLAG_BP_JAPES_DK_HAS) % 5;
                         int shift = 1 << kong;
                         KasplatSpawnBitfield &= (0xFF - shift);
+                    } else if (isFlagInRange(flag, FLAG_ENEMY_KILLED_0, ENEMIES_TOTAL)) {
+                        // Is Enemy Drop
+                        setSpawnBitfieldFromFlag(flag, 0);
                     }
                 }
                 // Get Next Spawner

@@ -1,14 +1,15 @@
 """Randomize Boss Locations."""
+
 import random
 from array import array
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Settings import HardModeSelected
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
-from randomizer.Lists.Location import LocationList
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
+from randomizer.Patching.Lib import IsItemSelected
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
 
@@ -19,6 +20,11 @@ def ShuffleBosses(boss_location_rando: bool):
     if boss_location_rando:
         random.shuffle(boss_maps)
     return boss_maps
+
+
+def HardBossesEnabled(settings) -> bool:
+    """Return whether the hard bosses setting is on."""
+    return IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_bosses)
 
 
 def ShuffleBossKongs(settings):
@@ -37,7 +43,7 @@ def ShuffleBossKongs(settings):
     for level in range(7):
         boss_map = settings.boss_maps[level]
         if settings.boss_kong_rando:
-            kong = SelectRandomKongForBoss(boss_map, settings.hard_bosses)
+            kong = SelectRandomKongForBoss(boss_map, HardBossesEnabled(settings))
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
@@ -105,14 +111,19 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         if not settings.kong_rando and not settings.boss_location_rando and 4 not in forestBossOptions:
             raise ItemPlacementException("Items not placed to allow vanilla Dogadon 2.")
         # Then find levels we can place Mad jack (next most restrictive)
-        # Then find levels we can place Mad jack (next most restrictive)
-        factoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x]]
-        if settings.hard_bosses:
+        tinyFactoryBossOptions = [
+            x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])
+        ]
+        donkeyFactoryBossOptions = []
+        chunkyFactoryBossOptions = []
+        if HardBossesEnabled(settings):
+            if settings.krusha_kong != Kongs.tiny:
+                tinyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
             if settings.krusha_kong != Kongs.donkey:
-                factoryBossOptions.extend([x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x]])
+                donkeyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
             if settings.krusha_kong != Kongs.chunky:
-                factoryBossOptions.extend([x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x]])
-            factoryBossOptions = list(set(factoryBossOptions))
+                chunkyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
+        factoryBossOptions = list(set(tinyFactoryBossOptions + donkeyFactoryBossOptions + chunkyFactoryBossOptions))
         # This sequence of placing Dogadon 2 and Mad Jack will only fail if both Hunky Chunky and Twirl are placed in level 7
         # If we have fewer options for Dogadon 2, place that first
         forestBossKong = None
@@ -124,14 +135,16 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
                 factoryBossOptions.remove(forestBossIndex)
         # Otherwise place Factory first
         bossTryingToBePlaced = "Mad Jack"
-        if settings.hard_bosses:
+        if HardBossesEnabled(settings):
             factoryBossIndex = random.choice(factoryBossOptions)
-            factoryBossKongOptions = set(ownedKongs[factoryBossIndex]).intersection({Kongs.donkey, Kongs.chunky})
-            if Kongs.tiny in ownedKongs[factoryBossIndex] and Items.PonyTailTwirl in ownedMoves[factoryBossIndex]:
-                factoryBossKongOptions.add(Kongs.tiny)
-            if settings.krusha_kong in factoryBossKongOptions and settings.krusha_kong != Kongs.tiny:
-                factoryBossKongOptions.remove(settings.krusha_kong)
-            factoryBossKong = random.choice(list(factoryBossKongOptions))
+            factoryBossKongOptions = []
+            if factoryBossIndex in tinyFactoryBossOptions:
+                factoryBossKongOptions.append(Kongs.tiny)
+            if factoryBossIndex in donkeyFactoryBossOptions:
+                factoryBossKongOptions.append(Kongs.donkey)
+            if factoryBossIndex in chunkyFactoryBossOptions:
+                factoryBossKongOptions.append(Kongs.chunky)
+            factoryBossKong = random.choice(factoryBossKongOptions)
         else:
             factoryBossIndex = random.choice(factoryBossOptions)
             factoryBossKong = Kongs.tiny
@@ -264,10 +277,10 @@ def ShuffleTinyPhaseToes():
 
 def CorrectBossKongLocations(spoiler):
     """Correct the Kong assigned to each boss Location for more accurate hints."""
-    LocationList[Locations.JapesKey].kong = spoiler.settings.boss_kongs[0]
-    LocationList[Locations.AztecKey].kong = spoiler.settings.boss_kongs[1]
-    LocationList[Locations.FactoryKey].kong = spoiler.settings.boss_kongs[2]
-    LocationList[Locations.GalleonKey].kong = spoiler.settings.boss_kongs[3]
-    LocationList[Locations.ForestKey].kong = spoiler.settings.boss_kongs[4]
-    LocationList[Locations.CavesKey].kong = spoiler.settings.boss_kongs[5]
-    LocationList[Locations.CastleKey].kong = spoiler.settings.boss_kongs[6]
+    spoiler.LocationList[Locations.JapesKey].kong = spoiler.settings.boss_kongs[0]
+    spoiler.LocationList[Locations.AztecKey].kong = spoiler.settings.boss_kongs[1]
+    spoiler.LocationList[Locations.FactoryKey].kong = spoiler.settings.boss_kongs[2]
+    spoiler.LocationList[Locations.GalleonKey].kong = spoiler.settings.boss_kongs[3]
+    spoiler.LocationList[Locations.ForestKey].kong = spoiler.settings.boss_kongs[4]
+    spoiler.LocationList[Locations.CavesKey].kong = spoiler.settings.boss_kongs[5]
+    spoiler.LocationList[Locations.CastleKey].kong = spoiler.settings.boss_kongs[6]

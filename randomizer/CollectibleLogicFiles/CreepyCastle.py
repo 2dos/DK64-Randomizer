@@ -2,7 +2,6 @@
 """Collectible logic file for Creepy Castle."""
 
 from randomizer.Enums.Collectibles import Collectibles
-from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
@@ -42,9 +41,11 @@ LogicRegions = {
     ],
     Regions.Library: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # In switch room
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.strongKong, None, 2),  # In haunted books corridor
-
     ],
+    Regions.LibraryPastSlam: [
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 2),  # In haunted books corridor
+    ],
+    Regions.LibraryPastBooks: [],
     Regions.Ballroom: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 3),  # On candles
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # By bonus barrel
@@ -78,7 +79,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),
     ],
     Regions.Museum: [
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.barrels) or l.phasewalk, None, 1),  # In boulder
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.barrels) or l.phasewalk, None, 1),  # Inside boulder (Chunky)
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
@@ -96,18 +97,18 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # On W2
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On W1
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips) and l.peanut, None, 1),  # In Diddy's room
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk, None, 2),  # In tombs in Chunky's room
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips or l.phasewalk) and l.peanut, None, 1),  # In Diddy's room
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.generalclips or l.phasewalk, None, 2),  # In tombs in Chunky's room
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: (l.charge and l.peanut) or l.phasewalk, None, 3),  # In Diddy's room
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk, None, 3),  # In tombs in Chunky's room
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: (l.charge and l.peanut) or l.phasewalk or l.generalclips, None, 3),  # In Diddy's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk or l.generalclips, None, 3),  # In tombs in Chunky's room
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk), None, 1),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny), None, 1),  # In Green Goo Gap
 
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk, None, 3),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.phasewalk, None, 2),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk and ((l.trombone and l.vines) or l.advanced_platforming), None, 3),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny) or l.phasewalk, None, 2),
     ],
     Regions.UpperCave: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 30),

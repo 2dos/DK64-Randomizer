@@ -14,8 +14,8 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
                                        LevelRandomization, LogicType,
                                        MicrohintsEnabled, MoveRando,
                                        RandomPrices, SettingsMap,
-                                       ShockwaveStatus, TrainingBarrels,
-                                       WinCondition, WrinklyHints)
+                                       ShockwaveStatus, SpoilerHints, TrainingBarrels,
+                                       WinCondition, WrinklyHints, ExtraCutsceneSkips)
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_settings_string_enum
@@ -96,13 +96,12 @@ def generate_lo_rando_race_settings():
     data["no_healing"] = False
     data["no_melons"] = False
     data["hard_shooting"] = False
-    data["hard_bosses"] = False
     data["perma_death"] = False
     data["disable_tag_barrels"] = False
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
     data["hard_level_progression"] = False  # likely to be False
-    data["hard_enemies"] = False
+    data["hard_mode"] = False
 
     data["damage_amount"] = DamageAmount.default
     data["crown_enemy_rando"] = CrownEnemyRando.easy
@@ -174,6 +173,7 @@ def generate_lo_rando_race_settings():
     data["wrinkly_hints"] = WrinklyHints.standard
     data["helm_setting"] = HelmSetting.skip_start
     data["microhints_enabled"] = MicrohintsEnabled.base  # off/base/all
+    data["more_cutscene_skips"] = ExtraCutsceneSkips.auto
 
     # Other
     data["fps_display"] = False
@@ -217,13 +217,19 @@ def test_with_settings_string_1():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
     # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
-    # settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgMTEUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
+    settings_string = "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoBzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqMBMGBGJCmOKaTyKTIjUoAqgEuAhk4AA"
     # This one is for ease of testing, go wild with it
-    settings_string = "bKsnPCCCWCwNywdEB6Hx+I0eu0uXxCnTE2nBAOgVBkFup6/AkgGTQMgusllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCFCGlD2AFIhRUM5EpFyRaRSUcEKiLAYmIoGL1rjkbtV/vsigeATFU5coclsJfDBmNpjLRZFpXLArFBbDQnFgqFJgJgwIxoOIjIQAOgCoAKoA"
+    # settings_string = "bKEFCRpE1e8rKEBYYlgq/gblGMrRIejo/jAIbmWsQgvXz+AbPhhOd3Ur2VmZxTZ1bF8KcD6oGDIVKltc+EZU8Ro9dpcviFmttOWItOCNBUekDhI0VniavN4CkGlAXT1+BIAKmihtFjILrJZYKAugLBgF1PAOAuy0CAF3eASAvEsCgF5tAWAvWQDFBQhqg9mRgqR6iyZ6JVLqkwi0i4GforosAiYCgCvVUSEMpjoSpbHRlStr5HI3ar7A5iRDAKazZDPYkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADUxcoclwqdQYfMYOLQtNxXLArQ5bDQnFgqJgwIxoUxxNZ/ESKTIjPgBLk4QEhQWGBtKRFYeICJGWCYoKkhaLjAySlw2ODpMXj5AQk5QUlRgYmU4AA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+
+    # Plando testing - fill the data with a json string
+    # settings_dict["enable_plandomizer"] = True
+    # settings_dict["plandomizer_data"] = '{"plando_starting_kongs_selected": [-1], "plando_kong_rescue_diddy": -1, "plando_kong_rescue_lanky": -1, "plando_kong_rescue_tiny": -1, "plando_kong_rescue_chunky": -1, "plando_level_order_0": -1, "plando_level_order_1": -1, "plando_level_order_2": -1, "plando_level_order_3": -1, "plando_level_order_4": -1, "plando_level_order_5": -1, "plando_level_order_6": -1, "plando_krool_order_0": -1, "plando_krool_order_1": -1, "plando_krool_order_2": -1, "plando_krool_order_3": -1, "plando_krool_order_4": -1, "plando_helm_order_0": -1, "plando_helm_order_1": -1, "plando_helm_order_2": -1, "plando_helm_order_3": -1, "plando_helm_order_4": -1, "locations": {}, "prices": {}, "plando_bonus_barrels": {"57": 33, "64": 34, "69": 31, "71": 32}, "hints": {}}'
+
     settings = Settings(settings_dict)
+    # settings.extreme_debugging = True  # Greatly slows seed gen, use with caution
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)
     print(spoiler)
@@ -234,11 +240,14 @@ def test_with_settings_string_1():
     print("test 1 done")
 
 
+# Every test from here down is outdated - if you want to utilize multiple tests running at once you'll have to update every settings string
+
+
 def test_with_settings_string_2():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
     # non-item rando seed
-    settings_string = "Vi5oQVEE4Yi0gIJ+/AkAETQMguAoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGnj2yFI9Rls9Eql1SKSjgRUBYEEwFAJejlqvsigeADEUxcktsMISQRfQJyQYYDwPD4RI5dJYvCBmNpjBxaLICIIgFpuK5YFYoLYaE4sFQpMhlMBMGBGNBFOJrDZ/EZDKoA"
+    settings_string = "VlCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgp6/AkgGTQMgusllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCFCGnj2yFI9RUM5UplzaLeBnB0eotwU/RURYBExFAFetccjdqv99kUDmLEUAZs8iSLAAmMAAmNAAeOAAePAAWQAAWRAAOSAAOTAAOUAANTlyhyXCmxOmEJIIvoE5IMMJUzG0xg4tFkWm4rlgVocthoTiwVGAmDAjEg4ppPIpMiMOgCqAS4BOAA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly

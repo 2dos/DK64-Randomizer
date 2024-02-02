@@ -30,6 +30,9 @@ call :runscript "Pulling Images from ROM", "build\pull_images_from_rom.py"
 call :runscript "Modifying images from ROM", "build\createComplexImages.py"
 call :runscript "Building Cutscene Database", "build\build_cutscene_dict.py"
 call :runscript "Building Item Database", "build\item_dictionaries.py"
+call :runscript "Adjusting Pause Menu Variables", "build\adjust_pause_rotation.py"
+call :runscript "Building Hint Regions", "build\build_hint_regions.py"
+call :runscript "Building Dynamic Bitfields", "build\build_dynamic_bitfields.py"
 call :runscript "Compile C Code", "build\compile.py"
 
 <nul set /p=Running ARMIPS (Jumplist)!CR!
@@ -42,13 +45,14 @@ call :runscript "Running Cranky's Lab", "build\build.py"
 
 <nul set /p=Building Symbols File!CR!
 call :setstart
-build\armips.exe asm/main.asm -sym rom\dk64-randomizer-base-dev.sym
+build\armips.exe asm/main.asm -sym rom\dev-symbols.sym
 call :setfinish runtime
 echo Building Symbols File [32mDONE[0m (%runtime%)
 
 rmdir /s /q .\obj > NUL
 
 call :runscript "Align ROM File Size", "build\correct_file_size.py"
+call :runscript "Assessing Function Sizes", "build/assess_rom.py"
 
 if %test_on% == --test (
 	echo Applying test variables >> rom/build.log
@@ -82,7 +86,7 @@ del rom\dk64-randomizer-base-temp.z64
 del rom\dk64-randomizer-base.z64
 del rom\dk64-randomizer-base-dev.z64
 del rom\dk64-randomizer-base.wch
-del rom\dk64-randomizer-base-dev.sym
+del rom\dev-symbols.sym
 del rom\patch.bps
 
 :finish

@@ -1,5 +1,9 @@
 """Stores the item class and a list of each item with its attributes."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, List, Optional, Union
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -10,7 +14,9 @@ from randomizer.Enums.Types import Types
 class Item:
     """Stores information about an item."""
 
-    def __init__(self, name, playthrough, type, kong, data=None):
+    def __init__(
+        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[Levels], List[int]]] = None
+    ) -> None:
         """Initialize with given parameters."""
         if data is None:
             data = []
@@ -39,7 +45,7 @@ class Item:
             self.flag = data[0]
 
 
-def ItemFromKong(kong):
+def ItemFromKong(kong: Kongs) -> Items:
     """Get the item representation of a Kong enum."""
     if kong == Kongs.donkey:
         return Items.Donkey
@@ -55,7 +61,7 @@ def ItemFromKong(kong):
         return Items.NoItem
 
 
-def NameFromKong(kong):
+def NameFromKong(kong: Kongs) -> str:
     """Get the name of a kong from its Kong enum value."""
     if kong == Kongs.donkey:
         return "Donkey"
@@ -71,7 +77,7 @@ def NameFromKong(kong):
         return "No Kong"
 
 
-def KongFromItem(item):
+def KongFromItem(item: Items) -> Kongs:
     """Get the Kong enum representation of a kong item."""
     if item == Items.Donkey:
         return Kongs.donkey
@@ -100,6 +106,8 @@ ItemList = {
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
+    Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
+    Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, -1]),
     Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, 0x8001]),
     Items.StrongKong: Item("Strong Kong", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 2, 0x8002]),
@@ -128,12 +136,15 @@ ItemList = {
     Items.HomingAmmo: Item("Homing Ammo", True, Types.Shop, Kongs.any, [MoveTypes.Guns, 2, 0xD202]),
     Items.SniperSight: Item("Sniper Sight", True, Types.Shop, Kongs.any, [MoveTypes.Guns, 3, 0xD203]),
     Items.ProgressiveAmmoBelt: Item("Progressive Ammo Belt", False, Types.Shop, Kongs.any, [MoveTypes.AmmoBelt, 1, -1]),
+    Items.ProgressiveAmmoBelt2: Item("Progressive Ammo Belt ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.Bongos: Item("Bongos", True, Types.Shop, Kongs.donkey, [MoveTypes.Instruments, 1, 0x8401]),
     Items.Guitar: Item("Guitar", True, Types.Shop, Kongs.diddy, [MoveTypes.Instruments, 1, 0x9401]),
     Items.Trombone: Item("Trombone", True, Types.Shop, Kongs.lanky, [MoveTypes.Instruments, 1, 0xA401]),
     Items.Saxophone: Item("Saxophone", True, Types.Shop, Kongs.tiny, [MoveTypes.Instruments, 1, 0xB401]),
     Items.Triangle: Item("Triangle", True, Types.Shop, Kongs.chunky, [MoveTypes.Instruments, 1, 0xC401]),
     Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop, Kongs.any, [MoveTypes.Instruments, 2, -1]),
+    Items.ProgressiveInstrumentUpgrade2: Item("Progressive Instrument Upgrade ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
+    Items.ProgressiveInstrumentUpgrade3: Item("Progressive Instrument Upgrade  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera", 0x2FD]),
     Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "shockwave", 377]),
     Items.CameraAndShockwave: Item(
@@ -163,7 +174,7 @@ ItemList = {
     Items.BananaFairy: Item("Banana Fairy", False, Types.Fairy, Kongs.any),
     Items.BananaMedal: Item("Banana Medal", False, Types.Medal, Kongs.any),
     Items.BattleCrown: Item("Battle Crown", False, Types.Crown, Kongs.any),
-    Items.Bean: Item("Bean", False, Types.Bean, Kongs.any),
+    Items.Bean: Item("The Bean", False, Types.Bean, Kongs.any),
     Items.Pearl: Item("Pearl", False, Types.Pearl, Kongs.any),
     Items.RainbowCoin: Item("Rainbow Coin", False, Types.RainbowCoin, Kongs.any),
     Items.FakeItem: Item("Ice Trap", False, Types.FakeItem, Kongs.any),
@@ -172,6 +183,8 @@ ItemList = {
     Items.JunkAmmo: Item("Junk Item (Ammo Crate)", False, Types.JunkItem, Kongs.any),
     Items.JunkFilm: Item("Junk Item (Film)", False, Types.JunkItem, Kongs.any),
     Items.JunkOrange: Item("Junk Item (Orange)", False, Types.JunkItem, Kongs.any),
+    Items.CrateMelon: Item("Crate Melon", False, Types.CrateItem, Kongs.any),
+    Items.EnemyItem: Item("Enemy Item", False, Types.Enemies, Kongs.any),
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),
@@ -270,3 +283,49 @@ HHItems = [
 ]
 for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
+
+CustomStartingMoveSelector = []
+StartingMoveOptions = [
+    Items.Vines,
+    Items.Swim,
+    Items.Oranges,
+    Items.Barrels,
+    Items.ProgressiveSlam,
+    Items.ProgressiveSlam2,
+    Items.ProgressiveSlam3,
+    Items.Coconut,
+    Items.Bongos,
+    Items.BaboonBlast,
+    Items.StrongKong,
+    Items.GorillaGrab,
+    Items.Peanut,
+    Items.Guitar,
+    Items.ChimpyCharge,
+    Items.RocketbarrelBoost,
+    Items.SimianSpring,
+    Items.Grape,
+    Items.Trombone,
+    Items.Orangstand,
+    Items.BaboonBalloon,
+    Items.OrangstandSprint,
+    Items.Feather,
+    Items.Saxophone,
+    Items.MiniMonkey,
+    Items.PonyTailTwirl,
+    Items.Monkeyport,
+    Items.Pineapple,
+    Items.Triangle,
+    Items.HunkyChunky,
+    Items.PrimatePunch,
+    Items.GorillaGone,
+    Items.HomingAmmo,
+    Items.SniperSight,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveAmmoBelt2,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade2,
+    Items.ProgressiveInstrumentUpgrade3,
+]
+
+for item in StartingMoveOptions:
+    CustomStartingMoveSelector.append({"name": ItemList[item].name, "value": item.value, "tooltip": "", "state": 0})

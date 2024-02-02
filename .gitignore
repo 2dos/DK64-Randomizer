@@ -145,6 +145,10 @@ cython_debug/
 # Jekyll
 _site/
 
+# Base Hack C# Build
+base-hack/build-cs/bin
+base-hack/build-cs/obj
+
 # Randomizer specific
 spoilerlog*.txt
 settings*.asm
@@ -173,6 +177,7 @@ randomizer/test.py
 test.py
 output.json
 *.sym
+base-hack/rom/*
 base-hack/obj
 base-hack/rom/patch.bps
 base-hack/rom/dk64-randomizer-base.wch
@@ -193,3 +198,7 @@ test.bps
 rom_tester.html
 tools/dumps
 test-result-*.json
+current_total.cfg
+last_generated_time.cfg
+generated_seeds/*
+local_presets.json

@@ -20,3 +20,5 @@
 .definelabel WeatherData, 0x80755264
 .definelabel ReverseMillLeverOrder, 0x807482E0
 .definelabel ReverseCryptLeverOrder, 0x807482E8
+.definelabel JetpacEnemyFunctions, 0x8002E8F4
+.definelabel SurfaceTypeInformation, 0x80748A90

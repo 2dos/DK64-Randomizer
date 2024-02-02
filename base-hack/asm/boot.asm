@@ -3,7 +3,7 @@
 .definelabel musicInfo, 0x01FFF000
 .definelabel itemROM, 0x01FF2000
 .definelabel codeEnd, 0x805FAE00
-.definelabel itemdatasize, 0x640
+.definelabel itemdatasize, 0xD00
 
 START:
 	displacedBootCode:
@@ -24,10 +24,15 @@ START:
 		LUI a1, hi(itemROM + itemdatasize)
 		ADDIU a1, a1, lo(itemROM + itemdatasize)
 		ADDIU a0, a0, lo(itemROM)
-		LUI a2, hi(codeEnd - itemdatasize)
+		LUI a2, hi(ItemRando_FLUT)
 		JAL dmaFileTransfer
-		ADDIU a2, a2, lo(codeEnd - itemdatasize)
+		ADDIU a2, a2, lo(ItemRando_FLUT)
 
+		// Very Early WS Boot Stuff
+		JAL loadWidescreen
+		ADDIU a0, r0, 0
+		JAL writeFunctionLoop
+		NOP
 		LUI v0, 0x8074
 		ADDIU t3, r0, 0xD00 ; New size of bank 0
 		SW t3, 0x52B0 (v0)
@@ -36,7 +41,7 @@ START:
 		SH t3, 0xDA2 (v0)
 		ADDIU t3, r0, 0x70 ; Virtual Voice Count
 		SH t3, 0xDA6 (v0)
-
+    
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
@@ -58,12 +63,7 @@ START:
 		ADDIU t3, t3, 1
 		LUI t4, 0x8073
 		SW t3, 0xE76C (t4)
-		//write per frame hook
-		//
-		LUI t3, hi(mainASMFunctionJump)
-		LW t3, lo(mainASMFunctionJump) (t3)
-		LUI t4, 0x8060
-		SW t3, 0xC164 (t4) //store per frame hook
+
 		// Write Init Hook
 		LUI t3, hi(initHook)
 		LW t3, lo(initHook) (t3)
@@ -73,30 +73,13 @@ START:
 
 		LUI t3, 0
 		LUI t4, 1
-		LUI t5, 1
-		LUI t9, 0xD
-		LUI t8, 0xD
+		LUI t5, static_code_upper
+		LUI t9, static_data_upper
+		LUI t8, multi_code_upper
 		J 0x80000784
-		LUI t6, 0x000D
+		LUI t6, multi_data_upper
 		//end of boot code
 		/////////////////////////////////////////////////////
-
-mainASMFunction:
-	JAL	0x805FC2B0
-	NOP
-	JAL cFuncLoop
-	NOP
-	NOP
-	J 0x805FC16C
-	NOP
-
-mainASMFunctionJump:
-	J mainASMFunction //instruction copied and used as a hook
-	NOP
-
-mainASMFunctionVanilla:
-	JAL	0x805FC2B0
-	NOP
 
 LobbyReplaceCode1:
 	LUI t7, hi(ReplacementLobbiesArray)
@@ -138,6 +121,14 @@ getObjectArrayAddr:
 	MFLO	a1
 	JR 		ra
 	ADD 	v0, a0, a1
+
+getFloatUpper:
+	; f12 = Float Value
+	mfc1 	$v0, $f12
+	sra 	$v0, $v0, 16
+	JR 		ra
+	andi 	$v0, $v0, 0xFFFF
+
 	
 .align 0x10
 END:

@@ -102,7 +102,11 @@ void handleSentItem(void) {
             queueIceTrap();
             break;
         case TRANSFER_ITEM_JUNKITEM:
-            applyDamage(0, 1);
+            if (DAMAGE_MASKING) {
+                applyDamageMask(0, 1);
+            } else {
+                applyDamage(0, 1);
+            }
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:

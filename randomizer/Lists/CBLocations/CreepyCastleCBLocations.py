@@ -1,10 +1,9 @@
 """Stores the data for the locations of colored bananas and balloons in Angry Aztec."""
 
-from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 ColoredBananaGroupList = [
@@ -982,7 +981,7 @@ ColoredBananaGroupList = [
         name="In DK's room behind puzzle",
         konglist=[Kongs.donkey],
         region=Regions.Dungeon,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk,
         locations=[[1, 1.0, 1494, 170, 1897], [1, 1.0, 1494, 170, 1973], [1, 1.0, 1494, 170, 2049], [1, 1.0, 1494, 170, 2125], [1, 1.0, 1494, 170, 2100]],
     ),
     ColoredBananaGroup(
@@ -991,7 +990,7 @@ ColoredBananaGroupList = [
         name="In Diddy's room between chains",
         konglist=[Kongs.diddy],
         region=Regions.Dungeon,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk,
         locations=[[5, 1.2, 539, 155, 3092], [5, 1.2, 533, 132, 3357]],
     ),
     ColoredBananaGroup(
@@ -1000,7 +999,7 @@ ColoredBananaGroupList = [
         name="On BB pads",
         konglist=[Kongs.lanky],
         region=Regions.Dungeon,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.trombone and l.balloon,
+        logic=lambda l: (l.balloon and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3)) or l.phasewalk),
         locations=[[5, 1.0, 542, 120, 1010], [5, 1.0, 462, 120, 769], [5, 1.0, 608, 120, 504]],
     ),
     ColoredBananaGroup(
@@ -1027,7 +1026,9 @@ ColoredBananaGroupList = [
             [1, 1.0, 402, 0, 495],
         ],
     ),
-    ColoredBananaGroup(group=87, map_id=Maps.CastleShed, name="On Gorilla Gone pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch, locations=[[5, 1.0, 304, 12, 354]]),
+    ColoredBananaGroup(
+        group=87, map_id=Maps.CastleShed, name="On Gorilla Gone pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch or l.phasewalk, locations=[[5, 1.0, 304, 12, 354]]
+    ),
     ColoredBananaGroup(
         group=88,
         map_id=Maps.CastleLowerCave,
@@ -1185,7 +1186,7 @@ ColoredBananaGroupList = [
         name="Back corners of DK's room",
         konglist=[Kongs.donkey],
         region=Regions.Crypt,
-        logic=lambda l: l.coconut,
+        logic=lambda l: l.coconut or l.phasewalk,
         locations=[[5, 1.0, 1338, 85, 2500], [5, 1.0, 1678, 85, 2500]],
     ),
     ColoredBananaGroup(
@@ -1194,7 +1195,7 @@ ColoredBananaGroupList = [
         name="Bunch on coffin with pentagon of singles around it",
         konglist=[Kongs.diddy],
         region=Regions.Crypt,
-        logic=lambda l: l.peanut,
+        logic=lambda l: l.peanut or l.phasewalk,
         locations=[[5, 1.0, 2071, 81, 394], [1, 1.0, 2071, 81, 370], [1, 1.0, 2048, 81, 387], [1, 1.0, 2057, 81, 413], [1, 1.0, 2085, 81, 413], [1, 1.0, 2094, 81, 387]],
     ),
     ColoredBananaGroup(
@@ -1252,7 +1253,7 @@ ColoredBananaGroupList = [
         name="Behind Tiny's bonus barrel",
         konglist=[Kongs.tiny],
         region=Regions.UpperCave,
-        logic=lambda l: l.twirl,
+        logic=lambda l: l.twirl or l.phasewalk,
         locations=[[5, 1.0, 1227, 200, 825], [5, 1.0, 1224, 200, 883]],
     ),
     ColoredBananaGroup(group=107, map_id=Maps.CastleGreenhouse, name="Near osprint barrel", konglist=[Kongs.lanky], region=Regions.Greenhouse, locations=[[5, 1.0, 325, 0, 873]]),
@@ -1368,7 +1369,7 @@ ColoredBananaGroupList = [
         name="Around hole on DK's side",
         konglist=[Kongs.donkey],
         region=Regions.CastleTree,
-        logic=lambda l: l.coconut,
+        logic=lambda l: l.coconut or l.phasewalk,
         locations=[
             [1, 1.0, 929, 400, 1836],
             [1, 1.0, 1002, 400, 1812],
@@ -1388,7 +1389,7 @@ ColoredBananaGroupList = [
         name="Path to Chunky's cage",
         konglist=[Kongs.chunky],
         region=Regions.CastleTree,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.punch or l.phasewalk,
         locations=[
             [1, 1.0, 962, 400, 572],
             [1, 1.0, 968, 382, 464],
@@ -1475,7 +1476,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.Mausoleum,
         vanilla=True,
-        logic=lambda l: l.twirl,
+        logic=lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny),
         locations=[[5, 1.0, 985.779541015625, 195.0, 1721.02587890625]],
     ),
     ColoredBananaGroup(
@@ -1485,7 +1486,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.Crypt,
         vanilla=True,
-        logic=lambda l: l.pineapple and l.punch,
+        logic=lambda l: (l.punch and l.pineapple) or l.phasewalk or l.generalclips,
         locations=[[5, 1.0, 1405.1158447265625, 190.46810913085938, 2753.63671875], [5, 1.0, 1404.5225830078125, 190.34698486328125, 2951.347412109375]],
     ),
     ColoredBananaGroup(
@@ -1504,7 +1505,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.MuseumBehindGlass,
         vanilla=True,
-        logic=lambda l: l.monkeyport,
+        logic=lambda l: l.monkeyport or l.phasewalk,
         locations=[[5, 1.0, 928.7748413085938, 230.0, 1512.7412109375]],
     ),
     ColoredBananaGroup(
@@ -1514,7 +1515,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.Museum,
         vanilla=True,
-        logic=lambda l: l.punch and l.barrels,
+        logic=lambda l: (l.punch and l.barrels) or l.phasewalk,
         locations=[[5, 1.0, 773.6740112304688, 159.0, 298.97247314453125]],
     ),
     ColoredBananaGroup(
@@ -1531,9 +1532,9 @@ ColoredBananaGroupList = [
         map_id=Maps.CastleLibrary,
         name="In ghost book hallway (Donkey)",
         konglist=[Kongs.donkey],
-        region=Regions.Library,
+        region=Regions.LibraryPastSlam,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong,
+        logic=lambda l: l.strongKong,
         locations=[[5, 1.0, 2278.738037109375, 250.0, 370.8821716308594], [5, 1.0, 2556.36669921875, 250.0, 372.7164611816406]],
     ),
     ColoredBananaGroup(
@@ -1603,7 +1604,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk,
         locations=[[5, 1.0, 1330.8004150390625, 191.0, 1996.9613037109375]],
     ),
     ColoredBananaGroup(
@@ -1613,7 +1614,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: l.punch or l.phasewalk,
         locations=[[5, 1.0, 798.5471801757812, 195.0, 2207.813232421875], [5, 1.0, 796.4816284179688, 195.0, 1786.9832763671875]],
     ),
     ColoredBananaGroup(
@@ -1623,7 +1624,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: l.punch or l.phasewalk,
         locations=[[5, 1.0, 326.51983642578125, 115.0, 1479.533203125], [5, 1.0, 745.7207641601562, 115.0, 1478.4139404296875]],
     ),
     ColoredBananaGroup(
@@ -1904,7 +1905,7 @@ BalloonList = [
         speed=10,
         konglist=[Kongs.donkey],
         region=Regions.Dungeon,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk,
         points=[[1500, 260, 1922], [1538, 275, 2092], [1382, 270, 2033]],
     ),
     Balloon(
@@ -1956,7 +1957,14 @@ BalloonList = [
         id=27, map_id=Maps.CastleMausoleum, name="In and out of green goo pit", speed=11, konglist=[Kongs.lanky, Kongs.tiny], region=Regions.Mausoleum, points=[[1002, 220, 1731], [1002, 0, 1731]]
     ),
     Balloon(
-        id=28, map_id=Maps.CastleMausoleum, name="Above green goo room", speed=8, konglist=[Kongs.tiny], region=Regions.Mausoleum, logic=lambda l: l.twirl, points=[[1304, 240, 2150], [967, 230, 2140]]
+        id=28,
+        map_id=Maps.CastleMausoleum,
+        name="Above green goo room",
+        speed=8,
+        konglist=[Kongs.tiny],
+        region=Regions.Mausoleum,
+        logic=lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny),
+        points=[[1304, 240, 2150], [967, 230, 2140]],
     ),
     Balloon(
         id=29,
@@ -1992,8 +2000,7 @@ BalloonList = [
         name="In GB room",
         speed=8,
         konglist=[Kongs.donkey],
-        region=Regions.Library,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong,
+        region=Regions.LibraryPastBooks,
         points=[[2707, 270, 255], [2850, 270, 280], [2857, 280, 492], [2682, 290, 476]],
     ),
     Balloon(id=34, map_id=Maps.CastleMuseum, name="In hallway to main room", speed=7, konglist=[Kongs.chunky], region=Regions.Museum, points=[[787, 260, 1850], [778, 280, 1540]]),
@@ -2053,7 +2060,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.Mausoleum,
         vanilla=True,
-        logic=lambda l: l.sprint,
+        logic=lambda l: l.sprint or l.generalclips or l.phasewalk,
         points=[[2366, 134, 465], [2399, 124, 652], [2270, 126, 563]],
     ),
     Balloon(
@@ -2064,7 +2071,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.Crypt,
         vanilla=True,
-        logic=lambda l: l.charge,
+        logic=lambda l: (l.charge or l.generalclips or l.phasewalk),
         points=[[2044, 25, 59], [2061, 28, 56]],
     ),
     Balloon(id=42, map_id=Maps.CastleCrypt, name="In DK's room (Donkey)", speed=6, konglist=[Kongs.donkey], region=Regions.Crypt, vanilla=True, points=[[1628, 132, 2476], [1434, 128, 2452]]),
@@ -2076,7 +2083,7 @@ BalloonList = [
         konglist=[Kongs.tiny],
         region=Regions.MuseumBehindGlass,
         vanilla=True,
-        logic=lambda l: l.monkeyport,
+        logic=lambda l: l.feather and (l.monkeyport or l.phasewalk),
         points=[[1274, 268, 1475], [1238, 284, 1629], [1080, 248, 1628], [1022, 266, 1437], [1220, 288, 1390]],
     ),
     Balloon(
@@ -2097,7 +2104,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
+        logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk),
         points=[[603, 126, 3473], [476, 146, 3415], [594, 186, 3334]],
     ),
     Balloon(
@@ -2108,7 +2115,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.trombone and l.balloon,
+        logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon,
         points=[[617, 144, 261], [480, 144, 253]],
     ),
     Balloon(
@@ -2119,7 +2126,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: (l.punch or l.phasewalk or l.generalclips),
         points=[[751, 145, 2510], [753, 145, 2533]],
     ),
     Balloon(
@@ -2130,7 +2137,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
+        logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk),
         points=[[453, 156, 820], [661, 154, 805]],
     ),
     Balloon(
@@ -2141,7 +2148,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: (l.punch or l.phasewalk or l.generalclips),
         points=[[322, 137, 2535], [322, 137, 2516]],
     ),
     Balloon(
@@ -2162,7 +2169,7 @@ BalloonList = [
         konglist=[Kongs.chunky],
         region=Regions.CastleTree,
         vanilla=True,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.punch or l.phasewalk,
         points=[[1676, 381, 289], [1510, 399, 382], [1402, 371, 326], [1300, 389, 406], [1202, 404, 304], [1053, 412, 378]],
     ),
     Balloon(id=52, map_id=Maps.CastleShed, name="In shed (Chunky)", speed=7, konglist=[Kongs.chunky], region=Regions.Shed, vanilla=True, points=[[404, 86, 451], [216, 72, 475]]),

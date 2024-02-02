@@ -26,6 +26,9 @@ void qualityOfLife_fixes(void) {
 		// Set some flags in-game
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		fixkey8();
+		if (ENABLE_SAVE_LOCK_REMOVAL) {
+			*(short*)(0x8060D60A) = 0; // Enable poll input during saving
+		}
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == MAP_JAPES) {
 			if (Player) {
@@ -41,7 +44,7 @@ void qualityOfLife_fixes(void) {
 					Player->xPos = 317.0f;
 					Player->yPos = 124.0f;
 					Player->zPos = 295.0f;
-					displaySpriteAtXYZ(sprite_table[19], 0x3F800000, Player->xPos, Player->yPos, Player->zPos);
+					displaySpriteAtXYZ(sprite_table[19], 1.0f, Player->xPos, Player->yPos, Player->zPos);
 				}
 			}
 		} else {
@@ -63,23 +66,20 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
-void checkNinWarp(void) {
-	/**
-	 * @brief Change the warp destination upon booting the game
-	 */
-	if (Rando.quality_of_life.fast_boot) {
-		WarpToDKTV();
-		TransitionType = 0;
-	} else {
-		initiateTransitionFade(MAP_DKRAP,0,2); // DK Rap
-	}
-}
-
 int CanDive_WithCheck(void) {
 	if (ObjectModel2Timer < 5) {
 		return 1;
 	}
 	return CanDive();
+}
+
+void playTransformationSong(songs song, float volume) {
+	if (CurrentMap == MAP_FUNGI) {
+		if (song == SONG_SPRINT) {
+			return;
+		}
+	}
+	playSong(song, volume);
 }
 
 static unsigned short previous_total_cbs = 0xFFFF;
@@ -96,28 +96,72 @@ static const short tnsportal_flags[] = {
 	FLAG_PORTAL_CASTLE,
 };
 
-typedef struct sprite_info {
-	/* 0x000 */ char unk_00[0x358];
-	/* 0x358 */ int timer;
-	/* 0x35C */ char unk_35C[0x360-0x35C];
-	/* 0x360 */ float scale_x;
-	/* 0x364 */ float scale_z;
-	/* 0x368 */ char unk_368[0x36A-0x368];
-	/* 0x36A */ unsigned char red;
-	/* 0x36B */ unsigned char green;
-	/* 0x36C */ unsigned char blue;
-	/* 0x36D */ unsigned char alpha;
-} sprite_info;
-
-#define SPRITE_ALPHA_IN 8
-#define SPRITE_ALPHA_OUT 44
+#define SPRITE_ALPHA_OUT 8
+#define SPRITE_ALPHA_IN 44
 #define SPRITE_ALPHA_END 52
+
+static unsigned char ding_sprite_timer = 0;
+
+int hasEnoughCBs(void) {
+	int world = getWorld(CurrentMap, 1);
+	if (world < 7) {
+		int total_cbs = getTotalCBCount();
+		int req_cbs = TroffNScoffReqArray[world];
+		return total_cbs >= req_cbs;
+	}
+	return 0;
+}
+
+int shouldDing(void) {
+	int world = getWorld(CurrentMap, 1);
+	if (world < 7) {
+		int req_cbs = TroffNScoffReqArray[world];
+		if ((previous_total_cbs < req_cbs) && (hasEnoughCBs()) && (previous_world == world) && (CurrentMap != MAP_TROFFNSCOFF)) { // Ban in T&S because of delayed update to turn in array
+			if (!checkFlag(tnsportal_flags[world],FLAGTYPE_PERMANENT)) {
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+int* renderDingSprite(int* dl) {
+	if (ding_sprite_timer == 0) {
+		return dl;
+	}
+	ding_sprite_timer -= 1;
+	int offset = 0;
+	if (ding_sprite_timer > SPRITE_ALPHA_IN) {
+		offset = ding_sprite_timer - SPRITE_ALPHA_IN;
+	} else if (ding_sprite_timer < SPRITE_ALPHA_OUT) {
+		offset = SPRITE_ALPHA_OUT - ding_sprite_timer;
+	}
+	float alpha = 0xFF;
+	if (!hasEnoughCBs()) {
+		alpha = 0x80;
+	}
+	alpha *= (SPRITE_ALPHA_OUT - offset);
+	alpha /= SPRITE_ALPHA_OUT;
+	int y = 825 + (offset * 5);
+	int alpha_i = alpha;
+	if (alpha_i > 255) {
+		alpha_i = 255;
+	} else if (alpha_i < 0) {
+		return dl;
+	}
+	return drawImage(dl, 114, RGBA16, 48, 42, 900, y, 2.0f, 2.0f, alpha_i);
+}
+
+void initDingSprite(void) {
+	ding_sprite_timer = SPRITE_ALPHA_END;
+}
 
 void playCBDing(void) {
 	/**
 	 * @brief Play Bell Ding sound effect
 	 */
 	playSFX(Bell);
+	initDingSprite();
 }
 
 void CBDing(void) {
@@ -126,21 +170,11 @@ void CBDing(void) {
 	 */
 	if (Rando.quality_of_life.cb_indicator) {
 		int world = getWorld(CurrentMap, 1);
-		int total_cbs = 0;
-		if (world < 7) {
-			total_cbs = CBTurnedInArray[world];
-			for (int kong = 0; kong < 5; kong++) {
-				total_cbs += MovesBase[kong].cb_count[world];
-			}
-			int req_cbs = TroffNScoffReqArray[world];
-			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world) && (CurrentMap != MAP_TROFFNSCOFF)) { // Ban in T&S because of delayed update to turn in array
-				if (!checkFlag(tnsportal_flags[world],FLAGTYPE_PERMANENT)) {
-					playCBDing();
-				}
-			}
+		if (shouldDing()) {
+			playCBDing();
 		}
 		previous_world = world;
-		previous_total_cbs = total_cbs;
+		previous_total_cbs = getTotalCBCount();
 	}
 }
 
@@ -225,14 +259,7 @@ void updateMultibunchCount(void) {
 	 * @brief Get the total amount of colored bananas for a level.
 	 * Used in the multibunch display
 	 */
-	int world = getWorld(CurrentMap,1);
-	int count = 0;
-	if (world < 7) {
-		count = CBTurnedInArray[world];
-		for (int kong = 0; kong < 5; kong++) {
-			count += MovesBase[kong].cb_count[world];
-		}
-	}
+	int count = getTotalCBCount();
 	MultiBunchCount = count;
 	if (HUD) {
 		HUD->item[0xA].visual_item_count = count;
@@ -329,7 +356,7 @@ void exitTrapBubbleController(void) {
 static const char test_file_name[] = "BALLAAM";
 
 void writeDefaultFilename(void) {
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < FILENAME_LENGTH; i++) {
 		SaveExtraData(EGD_FILENAME, i, test_file_name[i]);
 	}
 }

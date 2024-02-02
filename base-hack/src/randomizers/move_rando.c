@@ -48,12 +48,7 @@ int getMoveKong(int value) {
 }
 
 move_block* getMoveBlock(void) {
-	int size = 0x200;
-	move_block* write_space = dk_malloc(size);
-	int* file_size;
-	*(int*)(&file_size) = size;
-	copyFromROM(0x1FEF000,write_space,&file_size,0,0,0,0);
-	return write_space;
+	return getFile(0x200, 0x1FEF000);
 }
 
 void moveTransplant(void) {
@@ -139,6 +134,9 @@ void moveTransplant(void) {
 		BFIMove_New.purchase_type = getMoveType(move_data->bfi_move.move_master_data);
 		BFIMove_New.move_kong = getMoveKong(move_data->bfi_move.move_master_data);
 		BFIMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->bfi_move);
+		FirstMove_New.purchase_type = getMoveType(move_data->first_move.move_master_data);
+		FirstMove_New.move_kong = getMoveKong(move_data->first_move.move_master_data);
+		FirstMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->first_move);
 	}
 	complex_free(move_data);
 }
@@ -364,29 +362,30 @@ purchase_classification getPurchaseClassification(int purchase_type, int flag) {
 	return PCLASS_NOTHING;
 }
 
+static helm_hurry_items hh_item_list[] = {
+	HHITEM_NOTHING, // PCLASS_NOTHING,
+	HHITEM_MOVE, // PCLASS_MOVE,
+	HHITEM_MOVE, // PCLASS_INSTRUMENT,
+	HHITEM_MOVE, // PCLASS_GUN,
+	HHITEM_MOVE, // PCLASS_CAMERA,
+	HHITEM_MOVE, // PCLASS_SHOCKWAVE,
+	HHITEM_MOVE, // PCLASS_CAMSHOCK,
+	HHITEM_NOTHING, // PCLASS_GB, - Handled separately
+	HHITEM_BLUEPRINT, // PCLASS_BLUEPRINT,
+	HHITEM_COMPANYCOIN, // PCLASS_COMPANYCOIN,
+	HHITEM_MEDAL, // PCLASS_MEDAL,
+	HHITEM_RAINBOWCOIN, // PCLASS_RAINBOWCOIN,
+	HHITEM_KEY, // PCLASS_KEY,
+	HHITEM_CROWN, // PCLASS_CROWN,
+	HHITEM_BEAN, // PCLASS_BEAN,
+	HHITEM_PEARL, // PCLASS_PEARL,
+	HHITEM_KONG, // PCLASS_KONG,
+	HHITEM_FAIRY, // PCLASS_FAIRY,
+	HHITEM_FAKEITEM, // PCLASS_FAKEITEM,
+};
+
 void addHelmHurryPurchaseTime(int purchase_type, int flag) {
 	purchase_classification pclass = getPurchaseClassification(purchase_type, flag);
-	helm_hurry_items hh_item_list[] = {
-		HHITEM_NOTHING, // PCLASS_NOTHING,
-		HHITEM_MOVE, // PCLASS_MOVE,
-		HHITEM_MOVE, // PCLASS_INSTRUMENT,
-		HHITEM_MOVE, // PCLASS_GUN,
-		HHITEM_MOVE, // PCLASS_CAMERA,
-		HHITEM_MOVE, // PCLASS_SHOCKWAVE,
-		HHITEM_MOVE, // PCLASS_CAMSHOCK,
-		HHITEM_NOTHING, // PCLASS_GB, - Handled separately
-		HHITEM_BLUEPRINT, // PCLASS_BLUEPRINT,
-		HHITEM_COMPANYCOIN, // PCLASS_COMPANYCOIN,
-		HHITEM_MEDAL, // PCLASS_MEDAL,
-		HHITEM_RAINBOWCOIN, // PCLASS_RAINBOWCOIN,
-		HHITEM_KEY, // PCLASS_KEY,
-		HHITEM_CROWN, // PCLASS_CROWN,
-		HHITEM_BEAN, // PCLASS_BEAN,
-		HHITEM_PEARL, // PCLASS_PEARL,
-		HHITEM_KONG, // PCLASS_KONG,
-		HHITEM_FAIRY, // PCLASS_FAIRY,
-		HHITEM_FAKEITEM, // PCLASS_FAKEITEM,
-	};
 	helm_hurry_items hh_item = hh_item_list[(int)pclass];
 	if (hh_item != HHITEM_NOTHING) {
 		addHelmTime(hh_item, 1);
@@ -604,6 +603,9 @@ void setLocationStatus(location_list location_index) {
 	} else if (location_index == LOCATION_BFI) {
 		// BFI
 		setLocation((purchase_struct*)&BFIMove_New);
+	} else if (location_index == LOCATION_FIRSTMOVE) {
+		// First Move (Normally Slam 1)
+		setLocation((purchase_struct*)&FirstMove_New);
 	}
 }
 
@@ -611,10 +613,13 @@ int getLocationStatus(location_list location_index) {
 	int location_int = (int)location_index;
 	if (location_int < 4) {
 		// TBarrels
-		return getLocation((purchase_struct*)&TrainingMoves_New[location_int]);
+		return getLocation(&TrainingMoves_New[location_int]);
 	} else if (location_index == LOCATION_BFI) {
 		// BFI
-		return getLocation((purchase_struct*)&BFIMove_New);
+		return getLocation(&BFIMove_New);
+	} else if (location_index == LOCATION_FIRSTMOVE) {
+		// First Move (Normally Slam 1)
+		return getLocation(&FirstMove_New);
 	}
 	return 0;
 }
@@ -708,11 +713,11 @@ void getNextMoveText(void) {
 	shop_paad* shop_data = 0;
 	int is_jetpac = CurrentActorPointer_0->actorType == getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY);
 	if (!is_jetpac) {
-		if ((shop_owner == 0) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
+		if ((shop_owner == 0) && (inShop(CurrentMap, 0))) {
 			shop_owner = getSpawnerTiedActor(1,0);
 			paad->shop_owner = shop_owner;
 		}
-		if ((paad->shop_owner) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
+		if ((paad->shop_owner) && (inShop(CurrentMap, 0))) {
 			shop_data = shop_owner->paad2;
 		}
 	}
@@ -776,12 +781,19 @@ void getNextMoveText(void) {
 			mtx_item mtx0;
 			mtx_item mtx1;
 			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
-			float position = 800.0f - (overlay_count * 100.0f); // Gap of 100.0f
-			int pos_f = *(int*)&position;
-			_guTranslateF(&mtx1, 0x44200000, pos_f, 0x0);
+			float start_y = 800.0f;
+			if (Rando.true_widescreen) {
+				start_y = (4 * SCREEN_HD_FLOAT) - 160.0f;
+			}
+			float position = start_y - (overlay_count * 100.0f); // Gap of 100.0f
+			float move_x = 640.0f;
+			if (Rando.true_widescreen) {
+				move_x = SCREEN_WD_FLOAT * 2;
+			}
+			_guTranslateF(&mtx1, move_x, position, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);
-			_guTranslateF(&mtx1, 0, 0x42400000, 0);
+			_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_50);
 			paad->timer = 0x82;

@@ -1,4 +1,5 @@
 """Apply item rando changes."""
+
 from enum import IntEnum, auto
 
 import js
@@ -9,10 +10,12 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Lists.EnemyTypes import enemy_location_list
+from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName
+from randomizer.Patching.Patcher import LocalROM
+from randomizer.CompileHints import getHelmProgItems
 
 
 class CustomActors(IntEnum):
@@ -110,7 +113,7 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: 0x10F,
+    Types.FakeItem: 0x103,
 }
 
 kong_flags = (385, 6, 70, 66, 117)
@@ -167,6 +170,7 @@ textboxes = [
     TextboxChange(Locations.CastleTinyCarRace, 34, 4, "BANANA", Types.Banana),
     TextboxChange(Locations.ForestDiddyOwlRace, 21, 0, "WHEN YOU CAN FLY", Types.Banana, "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |"),
     TextboxChange(Locations.ForestTinySpiderBoss, 19, 32, "\x04GOLDEN BANANA\x04", Types.Banana),
+    TextboxChange(Locations.CavesChunky5DoorIgloo, 19, 34, "\x04GOLDEN BANANA\x04", Types.Banana),
 ]
 
 rareware_coin_reward = ("\x04RAREWARE COIN\x04", "\x04DOUBLOON OF THE RAREST KIND\x04")
@@ -187,7 +191,7 @@ text_rewards = {
     Types.Pearl: ("\x04PEARL\x04", "\x04BLACK PEARL\x04"),
     Types.RainbowCoin: ("\x04RAINBOW COIN\x04", "\x04COLORFUL COIN HIDDEN FOR 17 YEARS\x04"),
     Types.FakeItem: ("\x04GLODEN BANANE\x04", "\x04BANANA OF FOOLS GOLD\x04"),
-    Types.JunkItem: ("\x04JUNK ITEM\x04", "\x04SOME HEAP OF JUNK\x04"),
+    Types.JunkItem: ("\x04JUNK ITEM\x04", "\x04HEAP OF JUNK\x04"),
     Types.NoItem: ("\x04NOTHING\x04", "\x04DIDDLY SQUAT\x04"),
 }
 
@@ -209,21 +213,22 @@ kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "L
 def pushItemMicrohints(spoiler):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
-        hinted_items = {
+        helm_prog_items = getHelmProgItems(spoiler)
+        hinted_items = [
             # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
-            Items.Monkeyport: (26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            Items.GorillaGone: (25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            Items.Bongos: (27, [MicrohintsEnabled.all]),
-            Items.Triangle: (28, [MicrohintsEnabled.all]),
-            Items.Saxophone: (29, [MicrohintsEnabled.all]),
-            Items.Trombone: (30, [MicrohintsEnabled.all]),
-            Items.Guitar: (31, [MicrohintsEnabled.all]),
-            Items.ProgressiveSlam: (33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        }
-        for item_hint in hinted_items:
-            if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][1]):
-                if ItemList[item_hint].name in spoiler.microhints:
-                    data = {"textbox_index": hinted_items[item_hint][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
+            (helm_prog_items[0], 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            (helm_prog_items[1], 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            (Items.Bongos, 27, [MicrohintsEnabled.all]),
+            (Items.Triangle, 28, [MicrohintsEnabled.all]),
+            (Items.Saxophone, 29, [MicrohintsEnabled.all]),
+            (Items.Trombone, 30, [MicrohintsEnabled.all]),
+            (Items.Guitar, 31, [MicrohintsEnabled.all]),
+            (Items.ProgressiveSlam, 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        ]
+        for item_hint, item_data in enumerate(hinted_items):
+            if spoiler.settings.microhints_enabled in list(item_data[2]):
+                if ItemList[item_data[0]].name in spoiler.microhints:
+                    data = {"textbox_index": item_data[1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_data[0]].name]}
                     if 19 in spoiler.text_changes:
                         spoiler.text_changes[19].append(data)
                     else:
@@ -503,6 +508,19 @@ def place_randomized_items(spoiler):
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
                         else:
                             print("Dirt Patch Item Placement Error")
+                    elif item.location >= Locations.MelonCrate_Location00 and item.location <= Locations.MelonCrate_Location12:
+                        index = item.location - Locations.MelonCrate_Location00
+                        if index < 13:
+                            ROM_COPY.seek(0x1FF0E80 + (index * 2))
+                            ROM_COPY.writeMultipleBytes(actor_index, 2)
+                        else:
+                            print("Melon Crate Item Placement Error")
+                    elif item.location >= Locations.JapesMainEnemy_Start and item.location <= Locations.IslesMainEnemy_LowerFactoryPath1:
+                        index = item.location - Locations.JapesMainEnemy_Start
+                        ROM_COPY.seek(0x1FF9000 + (index * 4))
+                        ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].map, 1)
+                        ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].id, 1)
+                        ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Medal:
                         # Write to Medal Table
                         # Just need offset of subtype:
@@ -556,7 +574,7 @@ def place_randomized_items(spoiler):
                         ROM_COPY.seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6
-                            if item.new_flag in (0x290, 0x291):
+                            if item.new_flag in (0x3BC, 0x3BD, 0x3BE):
                                 medal_index = 6
                             elif item.new_flag in (0x292, 0x293):
                                 medal_index = 7
@@ -614,6 +632,14 @@ def place_randomized_items(spoiler):
                 else:
                     data.append(item.new_flag)
                 flut_items.append(data)
+            ref_index = 0
+            if item.new_subitem == Items.ProgressiveAmmoBelt:
+                ref_index = item.new_flag - 0x292
+            elif item.new_subitem == Items.ProgressiveInstrumentUpgrade:
+                ref_index = item.new_flag - 0x294
+            elif item.new_subitem == Items.ProgressiveSlam:
+                ref_index = item.new_flag - 0x3BC
+            setItemReferenceName(spoiler, item.new_subitem, ref_index, spoiler.LocationList[item.location].name)
         # Text stuff
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:

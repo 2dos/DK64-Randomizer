@@ -1,9 +1,14 @@
 """File containing enums to represent all settings."""
-from enum import IntEnum, auto
 
+from __future__ import annotations
+
+from enum import IntEnum, auto
+from typing import TYPE_CHECKING
+
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 # Each select-based setting should have its own associated enum class. The enum
 # values should exactly match the input values in the HTML (not the IDs).
@@ -114,6 +119,57 @@ class DPadDisplays(IntEnum):
     minimal = 2
 
 
+class ExcludedSongs(IntEnum):
+    """Determines the types of songs excluded."""
+
+    wrinkly = 1
+    transformation = 2
+    pause_music = 3
+    sub_areas = 4
+    # shops = 5
+    # events = 6
+
+
+class ExtraCutsceneSkips(IntEnum):
+    """Controls how extra cutscenes are handled.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: Extra Cutscenes can't be skipped.
+    press: Cutscenes can be skipped by pressing start.
+    auto: Cutscenes are skipped automatically.
+    """
+
+    off = 0
+    press = 1
+    auto = 2
+
+
+class FasterChecksSelected(IntEnum):
+    """Various faster check changes that can be applied.
+
+    These values are tied to the FasterCheckSelector in randomizer.Lists.Multiselectors. More
+    details on each can be found in that file.
+    """
+
+    factory_toy_monster_fight = 1
+    factory_piano_game = 2
+    factory_diddy_rnd = 3
+    factory_arcade_round_1 = 4
+    factory_car_race = 5
+    galleon_seal_race = 6
+    galleon_mech_fish = 7
+    galleon_mermaid_gb = 8
+    forest_mill_conveyor = 9
+    forest_owl_race = 10
+    forest_rabbit_race = 11
+    caves_ice_tomato_minigame = 12
+    castle_minecart = 13
+    castle_car_race = 14
+    jetpac = 15
+
+
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.
 
@@ -125,11 +181,13 @@ class FillAlgorithm(IntEnum):
         those locations will be valid. More likely to place items deeper into
         a seed.
     random: Places items with no regard for logic.
+    careful_random: Places items with no regard for anything except coin logic. Probably.
     """
 
     forward = auto()
     assumed = auto()
     random = auto()
+    careful_random = auto()
 
 
 class FreeTradeSetting(IntEnum):
@@ -144,6 +202,36 @@ class FreeTradeSetting(IntEnum):
     none = 0
     not_blueprints = 1
     major_collectibles = 2
+
+
+class FungiTimeSetting(IntEnum):
+    """Determines the starting time of day.
+
+    day: Start at daytime.
+    night: Start at nighttime.
+    random: Random starting time.
+    dusk: All time-specific gates are removed.
+    progressive: Time of day progresses naturally when in Fungi.
+    """
+
+    day = auto()
+    night = auto()
+    random = auto()
+    dusk = auto()
+    progressive = auto()
+
+
+class GalleonWaterSetting(IntEnum):
+    """Determines the starting water level.
+
+    lowered: Start lowered.
+    raised: Start raised.
+    random: Random level.
+    """
+
+    lowered = auto()
+    raised = auto()
+    random = auto()
 
 
 class GlitchesSelected(IntEnum):
@@ -174,7 +262,7 @@ class HelmDoorItem(IntEnum):
     vanilla: The originally required item (crowns for door 1, company coins for
         door 2).
     opened: The door is automatically opened.
-    random: The door is opened by a randomly selected item.
+    medium_random: The door is opened by a randomly selected item (Medium difficulty).
     req_gb: Golden Bananas.
     req_bp: Blueprints.
     req_companycoins: The Rareware and Nintendo coins.
@@ -185,11 +273,13 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin: Rainbow Coins.
     req_bean: The bean.
     req_pearl: Pearls.
+    easy_random: The door is opened by a randomly selected item (Easy difficulty).
+    hard_random: The door is opened by a randomly selected item (Hard difficulty).
     """
 
     vanilla = 0
     opened = 1
-    random = 2
+    medium_random = 2
     req_gb = 3
     req_bp = 4
     req_companycoins = 5
@@ -200,6 +290,8 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin = 10
     req_bean = 11
     req_pearl = 12
+    easy_random = 13
+    hard_random = 14
 
 
 class HelmSetting(IntEnum):
@@ -217,6 +309,20 @@ class HelmSetting(IntEnum):
     default = 0
     skip_start = 1
     skip_all = 2
+
+
+class HardModeSelected(IntEnum):
+    """Various hard mode changes that can be applied.
+
+    These values are tied to the HardSelector in randomizer.Lists.HardMode. More
+    details on each can be found in that file.
+    """
+
+    hard_bosses = 1
+    extra_hard_bosses = 2
+    hard_enemies = 3
+    water_is_lava = 4
+    reduced_fall_damage_threshold = 5
 
 
 # TODO: merge this with the Types enum.
@@ -241,6 +347,7 @@ class ItemRandoListSelected(IntEnum):
     beanpearl = 12
     fakeitem = 13
     junkitem = 14
+    crateitem = 15
 
 
 class KasplatRandoSetting(IntEnum):
@@ -258,14 +365,12 @@ class KasplatRandoSetting(IntEnum):
     location_shuffle = 2
 
 
-class KlaptrapModel(IntEnum):
-    """Determines which model is used for Klaptrap in Beaver Bother."""
+class RandomModels(IntEnum):
+    """Determines the random model level."""
 
-    green = auto()
-    purple = auto()
-    red = auto()
-    random_klap = auto()
-    random_model = auto()
+    off = auto()
+    random = auto()
+    extreme = auto()
 
 
 class KrushaUi(IntEnum):
@@ -368,12 +473,14 @@ class MinigamesListSelected(IntEnum):
     kremling_kosh = 14
     peril_path_panic = 15
     helm_minigames = 16
+    arenas = 17
+    training_minigames = 18
 
 
 class MiscChangesSelected(IntEnum):
     """Various quality of life fixes that can be applied.
 
-    These values are tied to the QoLSelector in randomizer.Lists.QoL. More
+    These values are tied to the QoLSelector in randomizer.Lists.Multiselectors. More
     details on each can be found in that file.
     """
 
@@ -399,6 +506,9 @@ class MiscChangesSelected(IntEnum):
     fast_hints = 20
     brighten_mad_maze_maul_enemies = 21
     raise_fungi_dirt_patch = 22
+    global_instrument = 23
+    fast_pause_transitions = 24
+    cannon_game_better_control = 25
 
 
 class MoveRando(IntEnum):
@@ -438,6 +548,29 @@ class RandomPrices(IntEnum):
     medium = 3
     high = 4
     extreme = 5
+
+
+class RemovedBarriersSelected(IntEnum):
+    """Various barriers that can be removed that can be applied.
+
+    These values are tied to the RemovedBarrierSelector in randomizer.Lists.Multiselectors. More
+    details on each can be found in that file.
+    """
+
+    japes_coconut_gates = 1
+    japes_shellhive_gate = 2
+    aztec_tunnel_door = 3
+    aztec_5dtemple_switches = 4
+    aztec_llama_switches = 5
+    factory_production_room = 6
+    factory_testing_gate = 7
+    galleon_lighthouse_gate = 8
+    galleon_shipyard_area_gate = 9
+    galleon_shipwreck_gates = 10
+    galleon_seasick_ship = 11
+    forest_green_tunnel = 12
+    forest_yellow_tunnel = 13
+    caves_igloo_pads = 14
 
 
 class ShockwaveStatus(IntEnum):
@@ -485,6 +618,19 @@ class SoundType(IntEnum):
     surround = 2
 
 
+class SwitchsanityLevel(IntEnum):
+    """Determines what switches are shuffled in switchsanity.
+
+    none: No switches are altered.
+    helm_access: Only the monkeyport pad and the gorilla gone pad on the path to Helm are shuffled.
+    all: All switches are shuffled.
+    """
+
+    off = 0
+    helm_access = auto()
+    all = auto()
+
+
 class TrainingBarrels(IntEnum):
     """Determines if and how training barrels are randomized.
 
@@ -528,12 +674,29 @@ class WrinklyHints(IntEnum):
     standard: Normal randomizer hints are provided.
     cryptic: Cryptic randomizer hints are provided.
     fixed_racing: Fixed distribution - this one is for the S2 racing preset.
+    item_hinting: All Kongs, Keys, and as many moves as possible are hinted, prioritizing WotH moves.
+    item_hinting_advanced: Same as previous, but intentionally more vague.
     """
 
     off = 0
     standard = 1
     cryptic = 2
     fixed_racing = 3
+    item_hinting = 4
+    item_hinting_advanced = 5
+
+
+class SpoilerHints(IntEnum):
+    """Whether or not spoiler-style hints are generated within the spoiler log for external trackers to use.
+
+    off: No hints are generated.
+    vial_colors: The keys, kongs, and non-junk vials with their color will be hinted for each level. Includes K. Rool and Helm order.
+    points: Assign a number of points to each level based on the items that level contains. Point values per item can be specified. Includes K. Rool and Helm order.
+    """
+
+    off = 0
+    vial_colors = 1
+    points = 2
 
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
@@ -554,13 +717,16 @@ SettingsMap = {
     "dpad_display": DPadDisplays,
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
+    "excluded_songs_selected": ExcludedSongs,
     "free_trade_setting": FreeTradeSetting,
+    "fungi_time": FungiTimeSetting,
+    "galleon_water": GalleonWaterSetting,
     "glitches_selected": GlitchesSelected,
+    "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
     "helm_setting": HelmSetting,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
-    "klaptrap_model": KlaptrapModel,
     "krusha_ui": KrushaUi,
     "lanky_colors": CharacterColors,
     "level_randomization": LevelRandomization,
@@ -568,18 +734,27 @@ SettingsMap = {
     "microhints_enabled": MicrohintsEnabled,
     "minigames_list_selected": MinigamesListSelected,
     "misc_changes_selected": MiscChangesSelected,
+    "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
     "rambi_colors": CharacterColors,
+    "random_models": RandomModels,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
     "shuffle_loading_zones": ShuffleLoadingZones,
     "sound_type": SoundType,
     "starting_keys_list_selected": Items,
+    "starting_move_list_selected": Items,
+    "switchsanity": SwitchsanityLevel,
+    "random_starting_move_list_selected": Items,
     "tiny_colors": CharacterColors,
     "training_barrels": TrainingBarrels,
     "warp_level_list_selected": Maps,
     "win_condition": WinCondition,
     "wrinkly_hints": WrinklyHints,
+    "spoiler_hints": SpoilerHints,
+    "starting_kong": Kongs,
+    "remove_barriers_selected": RemovedBarriersSelected,
+    "faster_checks_selected": FasterChecksSelected,
 }
 
 
@@ -627,7 +802,7 @@ class SettingsStringEnum(IntEnum):
     enemies_selected = 29
     enemy_rando = 30
     enemy_speed_rando = 31
-    fast_gbs = 32
+    faster_checks_enabled = 32
     fast_start_beginning_of_game = 33
     fast_warps = 34
     fps_display = 35
@@ -728,13 +903,51 @@ class SettingsStringEnum(IntEnum):
     coin_rando = 130
     vanilla_door_rando = 131
     starting_moves_count = 132
+    enable_plandomizer = 133
+    hard_mode_selected = 134
+    hard_mode = 135
+    more_cutscene_skips = 136
+    spoiler_hints = 137
+    spoiler_include_woth_count = 138
+    points_list_kongs = 139
+    points_list_keys = 140
+    points_list_guns = 141
+    points_list_instruments = 142
+    points_list_training_moves = 143
+    points_list_important_shared = 144
+    points_list_pad_moves = 145
+    points_list_barrel_moves = 146
+    points_list_active_moves = 147
+    points_list_bean = 148
+    random_crates = 149
+    choose_starting_moves = 150
+    starting_move_list_selected = 151
+    start_with_slam = 152
+    spoiler_include_level_order = 153
+    enable_progressive_hints = 154
+    progressive_hint_text = 155
+    random_starting_move_list_selected = 156
+    enemy_drop_rando = 157
+    dim_solved_hints = 158
+    starting_kong = 159
+    switchsanity = 160
+    fungi_time = 161
+    galleon_water = 162
+    remove_barriers_enabled = 163
+    remove_barriers_selected = 164
+    faster_checks_selected = 165
+    k_rool_vanilla_requirement = 166
+    disable_hard_minigames = 167
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
 # from the enum above.
 DeprecatedSettings = {
-    # Example
-    # SettingsStringEnum.cb_rando,
+    SettingsStringEnum.hard_bosses,
+    SettingsStringEnum.hard_enemies,
+    SettingsStringEnum.choose_starting_moves,
+    SettingsStringEnum.open_levels,
+    SettingsStringEnum.high_req,
 }
 
 
@@ -752,6 +965,8 @@ class SettingsStringDataType(IntEnum):
     var_int = auto()
     str = auto()
     list = auto()
+    # Can represent up to 65,536 values (0 to 65535)
+    u16 = auto()
 
 
 # ALL SETTINGS NEED AN ENTRY HERE!
@@ -786,25 +1001,29 @@ SettingsStringTypeMap = {
     SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.random_crates: SettingsStringDataType.bool,
+    SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
-    SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_rando: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_speed_rando: SettingsStringDataType.bool,
-    SettingsStringEnum.fast_gbs: SettingsStringDataType.bool,
+    SettingsStringEnum.faster_checks_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.fast_start_beginning_of_game: SettingsStringDataType.bool,
     SettingsStringEnum.fast_warps: SettingsStringDataType.bool,
     SettingsStringEnum.fps_display: SettingsStringDataType.bool,
     SettingsStringEnum.free_trade_setting: FreeTradeSetting,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
+    SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
+    SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.hard_bosses: SettingsStringDataType.bool,
     SettingsStringEnum.hard_enemies: SettingsStringDataType.bool,
@@ -830,7 +1049,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.helmhurry_list_move: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_pearl: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_rainbow_coin: SettingsStringDataType.int16,
-    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.int16,
+    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.u16,
     SettingsStringEnum.high_req: SettingsStringDataType.bool,
     SettingsStringEnum.item_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.item_reward_previews: SettingsStringDataType.bool,
@@ -852,6 +1071,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
+    SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
     SettingsStringEnum.no_healing: SettingsStringDataType.bool,
     SettingsStringEnum.no_melons: SettingsStringDataType.bool,
@@ -898,6 +1118,36 @@ SettingsStringTypeMap = {
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.spoiler_hints: SpoilerHints,
+    SettingsStringEnum.spoiler_include_woth_count: SettingsStringDataType.bool,
+    SettingsStringEnum.points_list_kongs: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_keys: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_guns: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_instruments: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_training_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_important_shared: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_pad_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_barrel_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_active_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_bean: SettingsStringDataType.int16,
+    SettingsStringEnum.choose_starting_moves: SettingsStringDataType.bool,
+    SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
+    SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
+    SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.starting_kong: Kongs,
+    SettingsStringEnum.switchsanity: SwitchsanityLevel,
+    SettingsStringEnum.fungi_time: FungiTimeSetting,
+    SettingsStringEnum.galleon_water: GalleonWaterSetting,
+    SettingsStringEnum.remove_barriers_enabled: SettingsStringDataType.bool,
+    SettingsStringEnum.remove_barriers_selected: SettingsStringDataType.list,
+    SettingsStringEnum.faster_checks_selected: SettingsStringDataType.list,
+    SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
+    SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
@@ -910,13 +1160,18 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
+    SettingsStringEnum.hard_mode_selected: HardModeSelected,
+    SettingsStringEnum.starting_move_list_selected: Items,
+    SettingsStringEnum.random_starting_move_list_selected: Items,
+    SettingsStringEnum.remove_barriers_selected: RemovedBarriersSelected,
+    SettingsStringEnum.faster_checks_selected: FasterChecksSelected,
 }
 
 # This map specifies the minimum and maximum values for numeric settings.
 SettingsStringIntRangeMap = {}
 
 
-def addSettingIntRange(settingEnum, maxVal, minVal=0):
+def addSettingIntRange(settingEnum: SettingsStringEnum, maxVal: int, minVal: int = 0) -> None:
     """Add an entry to the SettingsStringIntRangeMap."""
     SettingsStringIntRangeMap[settingEnum] = {"max": maxVal, "min": minVal}
 
@@ -950,3 +1205,4 @@ addSettingIntRange(SettingsStringEnum.troff_4, 500)
 addSettingIntRange(SettingsStringEnum.troff_5, 500)
 addSettingIntRange(SettingsStringEnum.troff_6, 500)
 addSettingIntRange(SettingsStringEnum.troff_text, 500)
+addSettingIntRange(SettingsStringEnum.progressive_hint_text, 201)

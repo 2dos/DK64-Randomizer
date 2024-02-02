@@ -1,4 +1,5 @@
 """Region enum."""
+
 from enum import IntEnum, auto
 
 
@@ -42,6 +43,7 @@ class Regions(IntEnum):
     JungleJapesMedals = auto()
     JungleJapesStart = auto()
     JungleJapesMain = auto()
+    JapesTnSAlcove = auto()
     JapesBeyondPeanutGate = auto()
     JapesBeyondCoconutGate1 = auto()
     JapesBeyondFeatherGate = auto()
@@ -195,6 +197,8 @@ class Regions(IntEnum):
     CastleWaterfall = auto()
     CastleTree = auto()
     Library = auto()
+    LibraryPastSlam = auto()
+    LibraryPastBooks = auto()
     Ballroom = auto()
     MuseumBehindGlass = auto()
     CastleTinyRace = auto()
@@ -214,7 +218,10 @@ class Regions(IntEnum):
     CastleBaboonBlast = auto()
 
     # Hideout Helm Regions
+    HideoutHelmEntry = auto()
     HideoutHelmStart = auto()
+    HideoutHelmSwitchRoom = auto()
+    HideoutHelmMiniRoom = auto()
     HideoutHelmMain = auto()
     HideoutHelmDonkeyRoom = auto()
     HideoutHelmDiddyRoom = auto()
@@ -222,6 +229,10 @@ class Regions(IntEnum):
     HideoutHelmTinyRoom = auto()
     HideoutHelmChunkyRoom = auto()
     HideoutHelmAfterBoM = auto()
+    HideoutHelmThroneRoom = auto()
+    HideoutHelmKeyRoom = auto()
+    HideoutHelmOOBChunky = auto()
+    HideoutHelmOOBLanky = auto()
 
     # Shop Regions
     FunkyGeneric = auto()

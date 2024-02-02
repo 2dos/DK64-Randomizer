@@ -16,12 +16,8 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Time import Time
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
-from randomizer.Logic import CollectibleRegions
 from randomizer.LogicClasses import Collectible
-from randomizer.Spoiler import Spoiler
 
 KONG_COIN_REQUIREMENT = 100
 KONG_COIN_CAP = 125  # Can never exceed 175 due to overflow if you collect over 255 coins
@@ -44,7 +40,7 @@ def getCoinRequirement() -> int:
     return int(random.randint(KONG_COIN_REQUIREMENT, KONG_COIN_CAP) / 8)
 
 
-def ShuffleCoins(spoiler: Spoiler):
+def ShuffleCoins(spoiler):
     """Shuffle Coins selected from location files."""
     retries = 0
     while True:
@@ -52,8 +48,8 @@ def ShuffleCoins(spoiler: Spoiler):
             total_coins = 0
             coin_data = []
             # First, remove all placed coins (excl. Rabbit Race R1)
-            for region_id in CollectibleRegions.keys():
-                CollectibleRegions[region_id] = [collectible for collectible in CollectibleRegions[region_id] if collectible.type != Collectibles.coin or collectible.locked]
+            for region_id in spoiler.CollectibleRegions.keys():
+                spoiler.CollectibleRegions[region_id] = [collectible for collectible in spoiler.CollectibleRegions[region_id] if collectible.type != Collectibles.coin or collectible.locked]
             for level_index, level in enumerate(level_data):
                 level_placement = []
                 global_divisor = 7 - level_index
@@ -91,7 +87,7 @@ def ShuffleCoins(spoiler: Spoiler):
                             # Calculate the number of coins we have to place by lesser group so different coins in the same group can have different logic
                             coins_in_group = len(group.locations)
                             if coins_in_group > 0:
-                                CollectibleRegions[group.region].append(Collectible(Collectibles.coin, selected_kong, group.logic, None, coins_in_group, name=group.name))
+                                spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.coin, selected_kong, group.logic, None, coins_in_group, name=group.name))
                             level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "map": group.map, "locations": group.locations})
                         placed_coins += group_weight
                     # If all kongs have 0 unplaced, we're done here
@@ -100,8 +96,8 @@ def ShuffleCoins(spoiler: Spoiler):
 
                 # Placement is valid
                 coin_data.extend(level_placement.copy())
-            Fill.Reset()
-            if not Fill.VerifyWorld(spoiler.settings):
+            spoiler.Reset()
+            if not Fill.VerifyWorld(spoiler):
                 raise Ex.CoinFillFailureException
             spoiler.coin_placements = coin_data
             return

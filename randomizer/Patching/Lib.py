@@ -1,10 +1,24 @@
 """Library functions for patching."""
+
+from __future__ import annotations
+
 import struct
 from enum import IntEnum, auto
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
+import random
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Maps import Maps
+
+if TYPE_CHECKING:
+    from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected
+    from randomizer.Lists.MapsAndExits import Maps
 
 icon_db = {
     0x0: "waterfall_tall",
@@ -186,21 +200,143 @@ icon_db = {
 }
 
 
-def float_to_hex(f):
+class MenuTexture:
+    """Class to store information regarding a texture compatible with the main menu background."""
+
+    def __init__(self, name: str, is32by32: bool, table: int = 25, weight: int = 100, is_color: bool = False):
+        """Initialize with given parameters."""
+        self.name = name
+        self.is32by32 = is32by32
+        self.table = table
+        self.weight = weight
+        self.is_color = is_color
+
+
+compatible_background_textures = {
+    0x47A: MenuTexture("Gold Tower Stack", False),
+    0x9DD: MenuTexture("Book", False),
+    0x5C8: MenuTexture("Bricks", False),
+    0x76F: MenuTexture("Bricks", False),
+    0xAAF: MenuTexture("Floodlights", False),
+    0x33D: MenuTexture("Wooden Board", False),
+    0x79C: MenuTexture("Grassy Brick", False),
+    0x992: MenuTexture("Wooden Door", False),
+    0x39B: MenuTexture("C Block", True, 25, 7),
+    0x39C: MenuTexture("G Block", True, 25, 7),
+    0x39D: MenuTexture("9 Block", True, 25, 7),
+    0x39F: MenuTexture("R Block", True, 25, 7),
+    0x3A0: MenuTexture("S Block", True, 25, 7),
+    0x3A1: MenuTexture("1 Block", True, 25, 7),
+    0x3A2: MenuTexture("F Block", True, 25, 7),
+    0x3A3: MenuTexture("8 Block", True, 25, 7),
+    0x3A4: MenuTexture("7 Block", True, 25, 7),
+    0x3A5: MenuTexture("B Block", True, 25, 7),
+    0x3A6: MenuTexture("4 Block", True, 25, 7),
+    0x3A7: MenuTexture("N Block", True, 25, 7),
+    0x3A8: MenuTexture("D Block", True, 25, 7),
+    0x3A9: MenuTexture("Q Block", True, 25, 7),
+    0x7B2: MenuTexture("Up Arrow", True, 25, 50),
+    0x7B3: MenuTexture("Down Arrow", True, 25, 50),
+    0xAC: MenuTexture("TNT", True),
+    0x7CD: MenuTexture("Night Sign", True),
+    0x3DE: MenuTexture("Color", True, 7, 50, True),
+}
+
+
+class SwitchInfo:
+    """Store information regarding a switch."""
+
+    def __init__(self, name: str, kong: Kongs, switch_type: SwitchType, rom_offset: int, map_id: int, ids: list, tied_settings: list = []):
+        """Initialize with given parameters."""
+        self.name = name
+        self.kong = kong
+        self.switch_type = switch_type
+        self.rom_offset = rom_offset
+        self.map_id = map_id
+        self.ids = ids
+        self.tied_settings = tied_settings
+
+
+class HelmDoorRandomInfo:
+    """Store information regarding helm door random boundaries."""
+
+    def __init__(self, min_bound: int, max_bound: int, selection_weight: float):
+        """Initialize with given parameters."""
+        self.min_bound = min_bound
+        self.max_bound = max_bound
+        self.selection_weight = selection_weight
+        self.selected_amount = None
+
+    def chooseAmount(self) -> int:
+        """Choose amount for the helm door."""
+        raw_float = random.triangular(self.min_bound, self.max_bound)
+        self.selected_amount = round(raw_float)
+        return self.selected_amount
+
+
+class HelmDoorInfo:
+    """Store information about helm door requirements."""
+
+    def __init__(self, absolute_max: int, hard: HelmDoorRandomInfo = None, medium: HelmDoorRandomInfo = None, easy: HelmDoorRandomInfo = None):
+        """Initialize with given parameters."""
+        self.absolute_max = absolute_max
+        self.hard = hard
+        self.medium = medium
+        self.easy = easy
+
+    def getDifficultyInfo(self, difficulty: int) -> HelmDoorRandomInfo:
+        """Get the random info pertaining to the difficulty."""
+        if difficulty == 0:
+            return self.easy
+        if difficulty == 1:
+            return self.medium
+        if difficulty == 2:
+            return self.hard
+        return None
+
+
+class PaletteFillType(IntEnum):
+    """Palette Fill Type enum."""
+
+    block = auto()
+    patch = auto()
+    sparkle = auto()
+    checkered = auto()
+    radial = auto()
+    kong = auto()
+
+
+class Overlay(IntEnum):
+    """Overlay enum."""
+
+    Boot = 0
+    Static = 1
+    Menu = 2
+    Multiplayer = 3
+    Minecart = 4
+    Race = 5
+    Critter = 6
+    Boss = 7
+    Bonus = 8
+    Arcade = 9
+    Jetpac = 10
+
+
+def float_to_hex(f: Union[float, int]) -> str:
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
 
-def short_to_ushort(short):
+def short_to_ushort(short: int) -> int:
     """Convert short to unsigned short format."""
     if short < 0:
         return short + 65536
     return short
 
 
-def intf_to_float(intf):
+def intf_to_float(intf: int) -> float:
     """Convert float as int format to float."""
     if intf == 0:
         return 0
@@ -226,7 +362,7 @@ def int_to_list(num: int, size: int):
     return arr
 
 
-def getNextFreeID(cont_map_id: int, ignore=[]):
+def getNextFreeID(cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] = []) -> int:
     """Get next available Model 2 ID."""
     ROM_COPY = LocalROM()
     setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -250,7 +386,7 @@ def getNextFreeID(cont_map_id: int, ignore=[]):
     return 0  # Shouldn't ever hit this. This is a case if there's no vacant IDs in range [0,599]
 
 
-def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
+def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: ScriptTypes) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
     ROM_COPY = LocalROM()
     script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
@@ -293,6 +429,10 @@ def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
         subscript_type = -5
     elif type == ScriptTypes.CrownIsles2:
         subscript_type = -6
+    elif type == ScriptTypes.MelonCrate:
+        subscript_type = -13
+    elif type == ScriptTypes.DeleteItem:
+        subscript_type = -16
     for item_id in item_ids:
         script_arr = [
             item_id,
@@ -314,7 +454,7 @@ def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def grabText(file_index: int) -> list:
+def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
     """Pull text from ROM with a particular file index."""
     ROM_COPY = LocalROM()
     file_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
@@ -331,7 +471,7 @@ def grabText(file_index: int) -> list:
         section_3_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(file_start + data_start + 5)
         start = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        size = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        int.from_bytes(ROM_COPY.readBytes(2), "big")
         block_start = 1
         blocks = []
         for k in range(section_1_count):
@@ -385,7 +525,7 @@ def grabText(file_index: int) -> list:
                 if item3["type"] == "normal":
                     start = item3["start"] + data_start + 2
                     # print(hex(start))
-                    end = start + item3["size"]
+                    start + item3["size"]
                     ROM_COPY.seek(file_start + start)
                     temp.append(ROM_COPY.readBytes(item3["size"]).decode())
                 elif item3["type"] == "sprite":
@@ -402,7 +542,7 @@ def grabText(file_index: int) -> list:
     return formatted_text
 
 
-def writeText(file_index: int, text: list):
+def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]]) -> None:
     """Write the text to ROM."""
     text_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
     ROM_COPY = LocalROM()
@@ -499,6 +639,111 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
     return None
 
 
+def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscChangesSelected, Any]], check: Union[HardModeSelected, MiscChangesSelected]) -> bool:
+    """Determine whether a multiselector setting is enabled."""
+    if not bool_setting:
+        return False
+    if len(multiselector_setting) == 0:
+        return True
+    return check in multiselector_setting
+
+
+class SpawnerChange:
+    """Information regarding a spawner change."""
+
+    def __init__(self, map: Maps, spawner_id: int):
+        """Initialize with given variables."""
+        self.map_target = map
+        self.spawner_target = spawner_id
+        self.new_enemy = None
+        self.new_scale = None
+        self.new_speed_0 = None
+        self.new_speed_1 = None
+
+
+def applyCharacterSpawnerChanges(changes: list[SpawnerChange], fence_speed_factor: float = None):
+    """Apply a series of changes to character spawners."""
+    ROM_COPY = ROM()
+    formatted_changes = {}
+    id_changes_in_map = {}
+    for change in changes:
+        if change.map_target not in formatted_changes:
+            formatted_changes[change.map_target] = {}
+            id_changes_in_map[change.map_target] = []
+        formatted_changes[change.map_target][change.spawner_target] = change
+        id_changes_in_map[change.map_target].append(change.spawner_target)
+    for map_id in formatted_changes:
+        file_start = js.pointer_addresses[16]["entries"][map_id]["pointing_to"]
+        ROM_COPY.seek(file_start)
+        fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        offset = 2
+        used_fence_ids = []
+        if fence_count > 0:
+            for x in range(fence_count):
+                fence = []
+                fence_start = file_start + offset
+                ROM_COPY.seek(file_start + offset)
+                point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                offset += (point_count * 6) + 2
+                ROM_COPY.seek(file_start + offset)
+                point0_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if fence_speed_factor is not None:
+                    for y in range(point0_count):
+                        ROM_COPY.seek(file_start + offset + 2 + (y * 10) + 8)
+                        old_value = int.from_bytes(ROM_COPY.readBytes(1), "big")
+                        new_value = int(old_value * fence_speed_factor)
+                        ROM_COPY.seek(file_start + offset + 2 + (y * 10) + 8)
+                        ROM_COPY.write(new_value)
+                offset += (point0_count * 10) + 6
+                fence_finish = file_start + offset
+                fence_size = fence_finish - fence_start
+                ROM_COPY.seek(fence_finish - 4)
+                used_fence_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                ROM_COPY.seek(fence_start)
+                for y in range(int(fence_size / 2)):
+                    fence.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                ROM_COPY.seek(fence_finish)
+        spawner_count_location = file_start + offset
+        ROM_COPY.seek(spawner_count_location)
+        spawner_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        offset += 2
+        for x in range(spawner_count):
+            # Parse spawners
+            ROM_COPY.seek(file_start + offset + 0x13)
+            enemy_index = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            init_offset = offset
+            if enemy_index in id_changes_in_map[map_id]:
+                change_data = formatted_changes[map_id][enemy_index]
+                if change_data.new_enemy is not None:
+                    ROM_COPY.seek(file_start + init_offset)
+                    ROM_COPY.write(change_data.new_enemy)
+                if change_data.new_scale is not None:
+                    ROM_COPY.seek(file_start + init_offset + 0xF)
+                    ROM_COPY.write(change_data.new_scale)
+                if change_data.new_speed_0 is not None:
+                    ROM_COPY.seek(file_start + init_offset + 0xC)
+                    ROM_COPY.write(change_data.new_speed_0)
+                if change_data.new_speed_1 is not None:
+                    ROM_COPY.seek(file_start + init_offset + 0xD)
+                    ROM_COPY.write(change_data.new_speed_1)
+            ROM_COPY.seek(file_start + offset + 0x11)
+            extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            offset += 0x16 + (extra_count * 2)
+
+
+def camelCaseToWords(string: str):
+    """Convert camel case string to separated words."""
+    words = [[string[0]]]
+
+    for c in string[1:]:
+        if words[-1][-1].islower() and c.isupper():
+            words.append(list(c))
+        else:
+            words[-1].append(c)
+
+    return " ".join(["".join(word) for word in words])
+
+
 class TextureFormat(IntEnum):
     """Texture Format Enum."""
 
@@ -570,3 +815,14 @@ def recalculatePointerJSON(ROM_COPY: ROM):
             table_data["entries"].append(local_data)
         new_data[x] = table_data
     js.pointer_addresses = new_data
+
+
+def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
+    """Set new name for a location of an item."""
+    if item == Items.CameraAndShockwave:
+        setItemReferenceName(spoiler, Items.Camera, index, new_name)
+        setItemReferenceName(spoiler, Items.Shockwave, index, new_name)
+    else:
+        for loc in spoiler.location_references:
+            if loc.item == item:
+                loc.setLocation(index, new_name)

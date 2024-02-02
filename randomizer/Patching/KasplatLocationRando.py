@@ -1,9 +1,10 @@
 """Apply Kasplat Locations."""
+
 import js
-from randomizer.Lists.EnemyTypes import Enemies
+from randomizer.Enums.Enemies import Enemies
 from randomizer.Lists.KasplatLocations import KasplatLocationList
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Maps import Maps
+from randomizer.Patching.Patcher import LocalROM
 
 
 def randomize_kasplat_locations(spoiler):
@@ -123,6 +124,7 @@ def randomize_kasplat_locations(spoiler):
                             while fence_index in used_fence_ids:
                                 fence_index += 1
                             used_fence_ids.append(fence_index)
+                        scale = int(kasplat.scale * 0x32) & 0xFF
                         # Spawner
                         data_bytes = []
                         kong_idx = spoiler.shuffled_kasplat_map[kasplat.name]
@@ -140,7 +142,7 @@ def randomize_kasplat_locations(spoiler):
                         data_bytes.append(0x23)  # Idle Speed
                         data_bytes.append(0x3C)  # Aggro Speed
                         data_bytes.append(fence_index)  # Fence ID
-                        data_bytes.append(0x32)  # Scale
+                        data_bytes.append(scale)  # Scale
                         data_bytes.append(1)  # Init Control State
                         data_bytes.append(0)  # Extra Data Count
                         data_bytes.append(2)  # Init Spawn State

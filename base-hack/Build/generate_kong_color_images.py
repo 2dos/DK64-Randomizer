@@ -1,4 +1,5 @@
 """Convert RGB colors into a kong color palette."""
+
 import gzip
 import math
 import os
@@ -6,7 +7,7 @@ import zlib
 
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
-from BuildLib import finalROM, main_pointer_table_offset
+from BuildLib import finalROM, main_pointer_table_offset, hueShift, getBonusSkinOffset
 from PIL import Image, ImageEnhance
 
 color_palettes = [
@@ -19,7 +20,15 @@ color_palettes = [
         ],
     },  # 2da1ad
     {"kong": "diddy", "zones": [{"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "block"}]},
-    {"kong": "lanky", "zones": [{"zone": "overalls", "image": 3689, "colors": ["#3e1c73"], "fill_type": "block"}, {"zone": "patch", "image": 3734, "colors": ["#3e1c73"], "fill_type": "patch"}]},
+    {
+        "kong": "lanky",
+        "zones": [
+            {"zone": "overalls", "image": 3689, "colors": ["#3e1c73"], "fill_type": "block"},
+            {"zone": "patch", "image": 3734, "colors": ["#3e1c73"], "fill_type": "patch"},
+            {"zone": "fur", "image": 0xE9A, "colors": ["#34EB49"], "fill_type": "block"},
+            {"zone": "fur", "image": 0xE94, "colors": ["#34EB49"], "fill_type": "block"},
+        ],
+    },
     {
         "kong": "tiny",
         "zones": [
@@ -217,34 +226,13 @@ def convertColors():
                 fh.write(comp)
 
 
-def hueShift(im, amount):
-    """Apply a hue shift on an image."""
-    hsv_im = im.convert("HSV")
-    im_px = im.load()
-    w, h = hsv_im.size
-    hsv_px = hsv_im.load()
-    for y in range(h):
-        for x in range(w):
-            old = list(hsv_px[x, y]).copy()
-            old[0] = (old[0] + amount) % 360
-            hsv_px[x, y] = (old[0], old[1], old[2])
-    rgb_im = hsv_im.convert("RGB")
-    rgb_px = rgb_im.load()
-    for y in range(h):
-        for x in range(w):
-            new = list(rgb_px[x, y])
-            new.append(list(im_px[x, y])[3])
-            im_px[x, y] = (new[0], new[1], new[2], new[3])
-    return im
-
-
 def applyMelonMask(shift: int):
     """Apply a mask to the melon sprites."""
     with open(finalROM, "r+b") as fh:
         data = {
             7: (0x13C, 0x147),
             14: (0x5A, 0x5D),
-            25: (0x17B2, 0x17B2),
+            25: (getBonusSkinOffset(4), getBonusSkinOffset(4)),
         }
         for table in data:
             fh.seek(main_pointer_table_offset + (table * 0x4))
@@ -262,7 +250,7 @@ def applyMelonMask(shift: int):
                 temp_name = "temp.bin"
                 with open(temp_name, "wb") as fg:
                     fg.write(file_data)
-                if table == 25 and img == 0x17B2:
+                if table == 25 and img == getBonusSkinOffset(4):
                     dims = (32, 32)
                 else:
                     dims = (48, 42)

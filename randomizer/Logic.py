@@ -1,4 +1,5 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
+
 from math import ceil
 
 import randomizer.CollectibleLogicFiles.AngryAztec
@@ -26,17 +27,34 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import ActivateAllBananaports, DamageAmount, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
+from randomizer.Enums.Settings import (
+    ActivateAllBananaports,
+    BananaportRando,
+    DamageAmount,
+    FasterChecksSelected,
+    GlitchesSelected,
+    HardModeSelected,
+    HelmDoorItem,
+    LogicType,
+    RemovedBarriersSelected,
+    ShockwaveStatus,
+    ShuffleLoadingZones,
+    TrainingBarrels,
+    WinCondition,
+    HelmSetting,
+)
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Prices import CanBuy, GetPriceAtLocation
+from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
-STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
+STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 
 
 def IsGlitchEnabled(settings, glitch_enum):
@@ -47,12 +65,11 @@ def IsGlitchEnabled(settings, glitch_enum):
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
-    def __init__(self, settings=None):
+    def __init__(self, spoiler):
         """Initialize with given parameters."""
-        if settings is None:
-            return
+        settings = spoiler.settings
         self.settings = settings
-
+        self.spoiler = spoiler
         # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
         self.assumeFillSuccess = False
         # See CalculateWothPaths method for details on these assumptions
@@ -173,6 +190,7 @@ class LogicVarHolder:
         self.Slam = STARTING_SLAM
         self.AmmoBelts = 0
         self.InstUpgrades = 0
+        self.Melons = 0
 
         self.GoldenBananas = 0
         self.BananaFairies = 0
@@ -253,14 +271,6 @@ class LogicVarHolder:
         self.RainbowCoins = 0
         self.SpentCoins = [0] * 5
 
-        # These access variables based on current region
-        # Shouldn't be checked unless updated directly beforehand
-        self.donkeyAccess = False
-        self.diddyAccess = False
-        self.lankyAccess = False
-        self.tinyAccess = False
-        self.chunkyAccess = False
-
         self.kong = self.startkong
 
         self.bananaHoard = False
@@ -269,6 +279,8 @@ class LogicVarHolder:
 
     def isPriorHelmComplete(self, kong: Kongs):
         """Determine if there is access to the kong's helm room."""
+        if self.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in self.Events:
+            return True
         room_seq = (Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy)
         kong_evt = (Events.HelmDonkeyDone, Events.HelmDiddyDone, Events.HelmLankyDone, Events.HelmTinyDone, Events.HelmChunkyDone)
         desired_index = room_seq.index(kong)
@@ -278,7 +290,7 @@ class LogicVarHolder:
             if sequence_slot > 0:
                 prior_kong = room_seq[helm_order[sequence_slot - 1]]
                 return kong_evt[prior_kong] in self.Events
-        return Events.HelmDoorsOpened in self.Events
+        return True
 
     def UpdateCoins(self):
         """Update coin total."""
@@ -369,6 +381,11 @@ class LogicVarHolder:
             self.Slam = STARTING_SLAM
         self.AmmoBelts = sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
         self.InstUpgrades = sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+        self.Melons = 1
+        if self.bongos or self.guitar or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0:
+            self.Melons = 2
+        if self.InstUpgrades >= 2:
+            self.Melons = 3
 
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
@@ -416,6 +433,62 @@ class LogicVarHolder:
             return self.superDuperSlam
         return self.Slam
 
+    def IsLavaWater(self) -> bool:
+        """Determine whether the water is lava water or not."""
+        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.water_is_lava)
+
+    def HardBossesEnabled(self) -> bool:
+        """Determine whether the hard bosses feature is enabled or not."""
+        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.hard_bosses)
+
+    def IsHardFallDamage(self) -> bool:
+        """Determine whether the lowered fall damage height threshold is enabled or not."""
+        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
+
+    def checkFastCheck(self, check: FasterChecksSelected):
+        """Determine whether a fast check is selected."""
+        return IsItemSelected(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, check)
+
+    def checkBarrier(self, check: RemovedBarriersSelected):
+        """Determine whether a barrier has been removed by the removed barriers setting."""
+        return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
+
+    def canOpenLlamaTemple(self):
+        """Determine whether the switches on the Llama Temple can be shot."""
+        if not (self.checkBarrier(RemovedBarriersSelected.aztec_llama_switches) or Events.LlamaFreed in self.Events):
+            return False
+        return self.hasMoveSwitchsanity(Switches.AztecLlamaCoconut) or self.hasMoveSwitchsanity(Switches.AztecLlamaGrape) or self.hasMoveSwitchsanity(Switches.AztecLlamaFeather)
+
+    def canTravelToMechFish(self):
+        """Determine whether or not there is a fast enough path to the Mech Fish is open."""
+        if self.settings.shuffle_loading_zones != ShuffleLoadingZones.all or self.settings.bananaport_rando == BananaportRando.off:
+            return self.swim
+        lighthouse_gate = self.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or self.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)
+        shipyard_gate = self.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or self.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
+        return self.swim and lighthouse_gate and shipyard_gate
+
+    def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
+        """Determine whether the kong has the necessary moves based on the switchsanity data."""
+        data = self.settings.switchsanity_data[switchsanity_setting]
+        kong_data = self.IsKong(data.kong)
+        if not kong_needs_current:
+            kong_data = self.HasKong(data.kong)
+        if data.switch_type == SwitchType.PadMove:
+            pad_abilities = [self.blast, self.spring, self.balloon, self.monkeyport, self.gorillaGone]
+            return kong_data and pad_abilities[data.kong]
+        elif data.switch_type == SwitchType.MiscActivator:
+            misc_abilities = [self.grab, self.charge, False, False, False]
+            return kong_data and misc_abilities[data.kong]
+        elif data.switch_type == SwitchType.GunSwitch:
+            gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
+            return kong_data and gun_abilities[data.kong]
+        elif data.switch_type == SwitchType.InstrumentPad:
+            instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            return kong_data and instrument_abilities[data.kong]
+        elif data.switch_type == SwitchType.SlamSwitch:
+            return kong_data and self.CanSlamSwitch(level, default_slam_level)
+        return False
+
     def CanPhaseswim(self):
         """Determine whether the player can perform phase swim."""
         return self.phaseswim and self.swim
@@ -438,7 +511,7 @@ class LogicVarHolder:
 
     def CanGetOnCannonGamePlatform(self):
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
-        return Events.WaterSwitch in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.krusha_kong != Kongs.lanky)))
+        return Events.WaterRaised in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.krusha_kong != Kongs.lanky)))
 
     def CanSkew(self, swim, kong_req=Kongs.any):
         """Determine whether the player can skew."""
@@ -575,11 +648,11 @@ class LogicVarHolder:
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
-        return LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
+        return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
 
     def CanOpenJapesGates(self):
         """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
-        caged_item_id = LocationList[Locations.JapesDonkeyFreeDiddy].item
+        caged_item_id = self.spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].item
         # If it's NoItem, then the gates are already open
         if caged_item_id == Items.NoItem:
             return True
@@ -605,7 +678,7 @@ class LogicVarHolder:
 
     def CanFreeTiny(self):
         """Check if kong at Tiny location can be freed, requires either chimpy charge or primate punch."""
-        if LocationList[Locations.TinyKong].item == Items.NoItem:
+        if self.spoiler.LocationList[Locations.TinyKong].item == Items.NoItem:
             return self.IsKong(self.settings.tiny_freeing_kong) or self.settings.free_trade_items
         elif self.settings.tiny_freeing_kong == Kongs.diddy:
             return self.charge and self.isdiddy
@@ -621,26 +694,18 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return (self.HasGun(self.settings.lanky_freeing_kong) or LocationList[Locations.LankyKong].item == Items.NoItem) and (
+        return (self.HasGun(self.settings.lanky_freeing_kong) or self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem) and (
             (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.phasewalk or self.CanPhaseswim()
         )
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
         # If the cage is empty, the item is just lying on the ground
-        if LocationList[Locations.ChunkyKong].item == Items.NoItem:
+        if self.spoiler.LocationList[Locations.ChunkyKong].item == Items.NoItem:
             return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
         # Otherwise you need the right slam level (usually 1)
         else:
             return self.CanSlamSwitch(Levels.FranticFactory, 1) and self.IsKong(self.settings.chunky_freeing_kong)
-
-    def UpdateCurrentRegionAccess(self, region):
-        """Set access of current region."""
-        self.donkeyAccess = region.donkeyAccess
-        self.diddyAccess = region.diddyAccess
-        self.lankyAccess = region.lankyAccess
-        self.tinyAccess = region.tinyAccess
-        self.chunkyAccess = region.chunkyAccess
 
     def LevelEntered(self, level):
         """Check whether a level, or any level above it, has been entered."""
@@ -685,7 +750,7 @@ class LogicVarHolder:
 
     def PurchaseShopItem(self, location_id):
         """Purchase from this location and subtract price from logical coin counts."""
-        location = LocationList[location_id]
+        location = self.spoiler.LocationList[location_id]
         price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
         if price is None:  # This shouldn't happen but it's probably harmless
             return  # TODO: solve this
@@ -701,24 +766,22 @@ class LogicVarHolder:
             self.SpentCoins[location.kong] += price
             return
 
-    @staticmethod
-    def HasAccess(region, kong):
+    def HasAccess(self, region, kong):
         """Check if a certain kong has access to a certain region.
 
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
-        return Regions[region].HasAccess(kong)
+        return self.spoiler.RegionList[region].HasAccess(kong)
 
-    @staticmethod
-    def TimeAccess(region, time):
-        """Check if a certain region has the given time of day access."""
+    def TimeAccess(self, region, time):
+        """Check if a certain region has the given time of day access for current kong."""
         if time == Time.Day:
-            return Regions[region].dayAccess
+            return self.spoiler.RegionList[region].dayAccess[self.kong]
         elif time == Time.Night:
-            return Regions[region].nightAccess
+            return self.spoiler.RegionList[region].nightAccess[self.kong]
         # Not sure when this'd be used
         else:  # if time == Time.Both
-            return Regions[region].dayAccess or Regions[region].nightAccess
+            return self.spoiler.RegionList[region].dayAccess[self.kong] or self.spoiler.RegionList[region].nightAccess[self.kong]
 
     def BlueprintAccess(self, item):
         """Check if we are the correct kong for this blueprint item."""
@@ -730,17 +793,43 @@ class LogicVarHolder:
         """Check if we are the right kong for this hint door."""
         if location.item is None:
             return False
+        # In progressive hints, the door locations are always available all the time by everybody as long as you reach the location by meeting the GB threshold
+        if self.spoiler.settings.enable_progressive_hints:
+            return True
         # The only weird exception: vanilla Fungi Lobby hint doors only check for Chunky, not the current Kong, and all besides Chunky's needs grab
         if not self.settings.wrinkly_location_rando and not self.settings.remove_wrinkly_puzzles and region_id == RegionEnum.FungiForestLobby:
             return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))
         return self.HasKong(location.kong)
 
-    def CanBuy(self, location):
+    def CanBuy(self, location, buy_empty=False):
         """Check if there are enough coins to purchase this location."""
-        return CanBuy(location, self)
+        return CanBuy(self.spoiler, location, self, buy_empty)
+
+    def AnyKongCanBuy(self, location, buy_empty=False):
+        """Check if there are enough coins for any owned kong to purchase this location."""
+        return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
+        required_base_keys = [
+            Events.JapesKeyTurnedIn,
+            Events.AztecKeyTurnedIn,
+            Events.FactoryKeyTurnedIn,
+            Events.GalleonKeyTurnedIn,
+            Events.ForestKeyTurnedIn,
+            Events.CavesKeyTurnedIn,
+            Events.CastleKeyTurnedIn,
+            Events.HelmKeyTurnedIn,
+        ]
+        if self.settings.k_rool_vanilla_requirement:
+            required_base_keys = [
+                Events.FactoryKeyTurnedIn,
+                Events.HelmKeyTurnedIn,
+            ]
+        return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required if keyRequired in required_base_keys)
+
+    def IsKLumsyFree(self):
+        """Check all keys."""
         return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required)
 
     def IsBossReachable(self, level):
@@ -772,12 +861,16 @@ class LogicVarHolder:
         bossFight = self.settings.boss_maps[level]
         # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.settings.hard_bosses and self.settings.krusha_kong != Kongs.tiny):
-            hasRequiredMoves = self.twirl
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesEnabled() and self.settings.krusha_kong != Kongs.tiny):
+            hasRequiredMoves = self.twirl and self.Slam
+        elif bossFight == Maps.FactoryBoss:
+            hasRequiredMoves = self.Slam
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
+        elif bossFight == Maps.CastleBoss and self.IsLavaWater():
+            hasRequiredMoves = self.Melons >= 3
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
         if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
@@ -787,7 +880,7 @@ class LogicVarHolder:
                     order_of_level = level_order
             if order_of_level == 4 and not self.barrels:  # Prevent Barrels on boss 3
                 return False
-            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses)):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
+            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.HardBossesEnabled())):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
                 return False
         return self.IsKong(requiredKong) and hasRequiredMoves
 
@@ -818,10 +911,10 @@ class LogicVarHolder:
                 if not self.swim or not self.barrels or not self.vines:
                     return False
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
-                if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
+                if not self.HardBossesEnabled() and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
                 # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
-                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or self.settings.hard_bosses)):
+                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or self.HardBossesEnabled())):
                     return False
             # Make sure we have access to all prior required keys before entering the next level - this prevents keys from being placed in levels beyond what they unlock
             if order_of_level > 1 and not self.JapesKey:
@@ -1028,48 +1121,28 @@ class LogicVarHolder:
         )
 
 
-LogicVariables = LogicVarHolder()
-
 # Import regions from logic files
-Regions = {}
-Regions.update(randomizer.LogicFiles.DKIsles.LogicRegions)
-Regions.update(randomizer.LogicFiles.JungleJapes.LogicRegions)
-Regions.update(randomizer.LogicFiles.AngryAztec.LogicRegions)
-Regions.update(randomizer.LogicFiles.FranticFactory.LogicRegions)
-Regions.update(randomizer.LogicFiles.GloomyGalleon.LogicRegions)
-Regions.update(randomizer.LogicFiles.FungiForest.LogicRegions)
-Regions.update(randomizer.LogicFiles.CrystalCaves.LogicRegions)
-Regions.update(randomizer.LogicFiles.CreepyCastle.LogicRegions)
-Regions.update(randomizer.LogicFiles.HideoutHelm.LogicRegions)
-Regions.update(randomizer.LogicFiles.Shops.LogicRegions)
+RegionsOriginal = {
+    **randomizer.LogicFiles.DKIsles.LogicRegions,
+    **randomizer.LogicFiles.JungleJapes.LogicRegions,
+    **randomizer.LogicFiles.AngryAztec.LogicRegions,
+    **randomizer.LogicFiles.FranticFactory.LogicRegions,
+    **randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.LogicFiles.FungiForest.LogicRegions,
+    **randomizer.LogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.LogicFiles.CreepyCastle.LogicRegions,
+    **randomizer.LogicFiles.HideoutHelm.LogicRegions,
+    **randomizer.LogicFiles.Shops.LogicRegions,
+}
 
 # Auxillary regions for colored bananas and banana coins
-CollectibleRegions = {}
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.DKIsles.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.FungiForest.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions)
-
-
-def ResetRegionAccess():
-    """Reset kong access for all regions."""
-    for region in Regions.values():
-        region.ResetAccess()
-
-
-def ResetCollectibleRegions():
-    """Reset if each collectible has been added."""
-    for region in CollectibleRegions.values():
-        for collectible in region:
-            collectible.added = False
-            # collectible.enabled = collectible.vanilla
-
-
-def ClearAllLocations():
-    """Clear item from every location."""
-    for location in LocationList.values():
-        location.item = None
+CollectibleRegionsOriginal = {
+    **randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
+    **randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
+    **randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
+    **randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
+}

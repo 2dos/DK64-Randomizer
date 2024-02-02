@@ -77,7 +77,9 @@ typedef struct bonedata {
 typedef struct actorData {
 	/* 0x000 */ void* model;
 	/* 0x004 */ renderingParamsData* render;
-	/* 0x008 */ char unk_08[0x58-0x8];
+	/* 0x008 */ char unk_08[0x4C-0x8];
+	/* 0x04C */ void* model_file;
+	/* 0x050 */ char unk_50[0x58-0x50];
 	/* 0x058 */ int actorType;
 	/* 0x05C */ char unk_5C[0x60-0x5C];
 	/* 0x060 */ int obj_props_bitfield;
@@ -95,7 +97,8 @@ typedef struct actorData {
 	/* 0x0C4 */ float yAccel;
 	/* 0x0C8 */ char unk_C8[0xCC-0xC8];
 	/* 0x0CC */ char unk_CC;
-	/* 0x0CD */ char unk_CD[0xE6-0xCD];
+	/* 0x0CD */ char unk_CD[0xE4-0xCD];
+	/* 0x0E4 */ short rot_x;
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
@@ -214,7 +217,9 @@ typedef struct playerData {
 	/* 0x128 */ short strong_kong_value;
 	/* 0x12A */ char unk_12A[2];
 	/* 0x12C */ short chunk;
-	/* 0x12E */ char unk_12E[0x13C - 0x12E];
+	/* 0x12E */ char unk_12E[0x132 - 0x12E];
+	/* 0x132 */ short unk_132;
+	/* 0x134 */ char unk_134[0x13C - 0x134];
 	/* 0x13C */ int* collision_queue_pointer;
 	/* 0x140 */ bonedata* bone_data;
 	/* 0x144 */ char noclip;
@@ -225,7 +230,9 @@ typedef struct playerData {
 	/* 0x155 */ char control_state_progress;
 	/* 0x156 */ char unk_156[0x16A-0x156];
 	/* 0x16A */ unsigned char rgb_components[3];
-	/* 0x16D */ char unk_16D[0x18A-0x16D];
+	/* 0x16D */ char unk_16D;
+	/* 0x16E */ char unk_16E; // shadow width or something
+	/* 0x16F */ char unk_16F[0x18A-0x16F];
 	/* 0x18A */ short moving_angle;
 	/* 0x18C */ char unk_18C[0x1B0-0x18C];
 	/* 0x1B0 */ float unk_1B0;
@@ -237,7 +244,9 @@ typedef struct playerData {
 	/* 0x1CC */ short old_tag_state;
 	/* 0x1CE */ char unk_1CE[0x1D0-0x1CE];
 	/* 0x1D0 */ short ostand_value;
-	/* 0x1D2 */ char unk_1D2[0x1E8-0x1D2];
+	/* 0x1D2 */ char unk_1D2[0x1D4-0x1D2];
+	/* 0x1D4 */ float blast_y_velocity;
+	/* 0x1D8 */ char unk_1D8[0x1E8-0x1D8];
 	/* 0x1E8 */ float unk_1E8;
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
@@ -261,7 +270,8 @@ typedef struct playerData {
 	/* 0x32C */ actorData* held_actor;
 	/* 0x330 */ char unk_330[0x340 - 0x330];
 	/* 0x340 */ float scale[6];
-	/* 0x358 */ char unk_358[0x36C - 0x358];
+	/* 0x358 */ char unk_358[0x368 - 0x358];
+	/* 0x368 */ unsigned int state_bitfield;
 	/* 0x36C */ char fairy_state;
 	/* 0x36D */ char unk_36D[0x36F - 0x36D];
 	/* 0x36F */ char new_kong;
@@ -271,7 +281,11 @@ typedef struct playerData {
 	/* 0x37D */ unsigned char rambi_enabled;
 	/* 0x37E */ char unk_37E[0x380 - 0x37E];
 	/* 0x380 */ short trap_bubble_timer;
-	/* 0x382 */ char unk_382[0x3BC - 0x382];
+	/* 0x382 */ char unk_382[0x3AC - 0x382];
+	/* 0x3AC */ float grab_x;
+	/* 0x3B0 */ float grab_y;
+	/* 0x3B4 */ float grab_z;
+	/* 0x3B8 */ char unk_3B8[0x3BC - 0x3A8];
 	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
@@ -305,6 +319,8 @@ typedef struct InventoryBase {
 	/* 0x00A */ char unk0A;
 	/* 0x00B */ char Health;
 	/* 0x00C */ char Melons;
+	/* 0x00D */ char StoredDamage;
+	/* 0x00E */ short InstrumentEnergy;
 } InventoryBase;
 
 typedef struct AutowalkData {
@@ -418,6 +434,15 @@ typedef struct cutscene_item_data {
 	/* 0x008 */ short* length_array;
 } cutscene_item_data;
 
+typedef struct queued_cutscene_function {
+	/* 0x000 */ void* next;
+	/* 0x004 */ void* function;
+	/* 0x008 */ int action_timer; // Has 0x8000 0000 or'd onto it for some? reason. Timer is set based on 8076a068
+	/* 0x00C */ int unk_C;
+	/* 0x010 */ int unk_10;
+	/* 0x014 */ int unk_14;
+} queued_cutscene_function;
+
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xCC];
 	/* 0x0CC */ short cutscene_count;
@@ -501,7 +526,9 @@ typedef struct actorSpawnerData {
 	/* 0x000 */ unsigned short actor_type; // Offset by 0x10
 	/* 0x002 */ char unk_02[2];
 	/* 0x004 */ floatPos positions;
-	/* 0x010 */ char unk_10[0x2C-0x10];
+	/* 0x010 */ char unk_10[0x24-0x10];
+	/* 0x024 */ int can_hide_vine;
+	/* 0x028 */ char unk_28[0x2C-0x28];
 	/* 0x02C */ float flag; // What?????
 	/* 0x030 */ char unk_30[0x40-0x30];
 	/* 0x040 */ float barrel_resolved;
@@ -745,7 +772,8 @@ typedef struct behaviour_data {
 	/* 0x068 */ unsigned short unk_68;
 	/* 0x06A */ unsigned short unk_6A;
 	/* 0x06C */ unsigned short unk_6C;
-	/* 0x06E */ char unk_6E[0x70-0x6E];
+	/* 0x06E */ char unk_6E;
+	/* 0x06F */ char unk_6F;
 	/* 0x070 */ char unk_70;
 	/* 0x071 */ char unk_71;
 	/* 0x072 */ char unk_72[0x94-0x72];
@@ -824,6 +852,7 @@ typedef struct move_block {
 	/* 0x140 */ move_rom_item candy_moves[5][8];
 	/* 0x1E0 */ move_rom_item training_moves[4];
 	/* 0x1F0 */ move_rom_item bfi_move;
+	/* 0x1F4 */ move_rom_item first_move;
 } move_block;
 
 
@@ -1218,6 +1247,9 @@ typedef struct quality_options {
 	unsigned char blueprint_compression : 1;
 	unsigned char fast_hints : 1; // 19
 	unsigned char brighten_mmm_enemies : 1;
+	unsigned char global_instrument : 1; // 21
+	unsigned char fast_pause_transitions : 1;
+	unsigned char cannon_game_speed : 1; // 23
 } quality_options;
 
 typedef struct image_cache_struct {
@@ -1325,7 +1357,9 @@ typedef struct pause_paad {
 } pause_paad;
 
 typedef struct sprite_struct {
-	/* 0x000 */ char unk0[0x340];
+	/* 0x000 */ char unk0[0x338];
+	/* 0x338 */ void* actor;
+	/* 0x33C */ char unk33C[0x340-0x33C];
 	/* 0x340 */ float x;
 	/* 0x344 */ float y;
 	/* 0x348 */ float z;
@@ -1536,3 +1570,168 @@ typedef struct Controller {
 	/* 0x002 */ char stickX;
 	/* 0x003 */ char stickY;
 } Controller;
+
+typedef struct Border {
+	/* 0x000 */ char player_count;
+	/* 0x001 */ char unk1;
+	/* 0x002 */ char unk2;
+	/* 0x003 */ char unk3;
+	/* 0x004 */ short blackness_left;
+	/* 0x006 */ short blackness_top;
+	/* 0x008 */ short blackness_right;
+	/* 0x00A */ short blackness_bottom;
+} Border;
+
+typedef struct DisabledMusicStruct {
+	unsigned char wrinkly : 1; // 0x80
+	unsigned char shops : 1; // 0x40
+	unsigned char events : 1; // 0x20
+	unsigned char transform : 1; // 0x10
+	unsigned char pause : 1; // 0x08
+	unsigned char chunk_songs : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} DisabledMusicStruct;
+
+typedef struct HardModeSettings {
+	unsigned char easy_fall : 1; // 0x80
+	unsigned char lava_water : 1; // 0x40
+	unsigned char bosses : 1; // 0x20
+	unsigned char enemies : 1; // 0x10
+	unsigned char dark_world : 1; // 0x08
+	unsigned char no_geo : 1; // 0x04
+	unsigned char memory_challenge : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} HardModeSettings;
+
+typedef struct SurfaceInfo {
+	/* 0x000 */ void* texture_loader;
+	/* 0x004 */ void* dl_writer;
+	/* 0x008 */ void* ripple_handler;
+	/* 0x00C */ void* textures[2];
+	/* 0x014 */ unsigned char unk14[4];
+} SurfaceInfo;
+
+typedef struct ChunkColorData {
+	/* 0x000 */ char unk0[0xC];
+	/* 0x00C */ rgb color;
+} ChunkColorData;
+
+typedef struct ChunkSub {
+	/* 0x000 */ char unk0[0x14];
+	/* 0X014 */ ChunkColorData* colors[4];
+} ChunkSub;
+
+typedef struct Chunk {
+	/* 0x000 */ char unk0[3];
+	/* 0x003 */ char reference_dynamic_lighting;
+	/* 0x004 */ char unk4[0x4C-0x4];
+	/* 0x04C */ ChunkSub* color_pointer;
+	/* 0x050 */ char unk50[0x1C8-0x50];
+} Chunk;
+
+typedef struct enemy_item_memory_item {
+	/* 0x000 */ unsigned short actor;
+	/* 0x002 */ unsigned short flag;
+} enemy_item_memory_item;
+
+typedef struct enemy_item_rom_item {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char char_spawner_id;
+	/* 0x002 */ unsigned short actor;
+} enemy_item_rom_item;
+
+typedef struct enemy_item_db_item {
+	/* 0x000 */ enemy_item_memory_item spawn;
+	/* 0x004 */ unsigned short global_index;
+} enemy_item_db_item;
+
+typedef struct drop_item {
+    /* 0x000 */ short source_object;
+    /* 0x002 */ short dropped_object;
+    /* 0x004 */ unsigned char drop_music;
+    /* 0x005 */ unsigned char drop_count;
+} drop_item;
+
+typedef struct sprite_info {
+	/* 0x000 */ char unk_00[0x358];
+	/* 0x358 */ int timer;
+	/* 0x35C */ char unk_35C[0x360-0x35C];
+	/* 0x360 */ float scale_x;
+	/* 0x364 */ float scale_z;
+	/* 0x368 */ char unk_368[0x36A-0x368];
+	/* 0x36A */ unsigned char red;
+	/* 0x36B */ unsigned char green;
+	/* 0x36C */ unsigned char blue;
+	/* 0x36D */ unsigned char alpha;
+} sprite_info;
+
+typedef struct RandomSwitchesIsles {
+	/* 0x000 */ unsigned char monkeyport; // 0 = monkeyport, 1 = blast, 2 = balloon
+	/* 0x001 */ unsigned char gone; // 0 = gone, 1-5 = instrument
+	/* 0x002 */ unsigned char aztec_lobby_feather;
+	/* 0x003 */ unsigned char fungi_lobby_feather;
+	/* 0x004 */ unsigned char spawn_rocketbarrel;
+} RandomSwitchesIsles;
+
+typedef struct RandomSwitchesJapes {
+	/* 0x000 */ unsigned char feather;
+	/* 0x001 */ unsigned char rambi;
+	/* 0x002 */ unsigned char painting;
+	/* 0x003 */ unsigned char diddy_cave;
+} RandomSwitchesJapes;
+
+typedef struct RandomSwitchesAztec {
+	/* 0x000 */ unsigned char bp_door;
+	/* 0x001 */ unsigned char llama_switches[3];
+	/* 0x004 */ unsigned char snoop_switch;
+	/* 0x005 */ unsigned char guitar;
+} RandomSwitchesAztec;
+
+typedef struct RandomSwitchesGalleon {
+	/* 0x000 */ unsigned char lighthouse;
+	/* 0x001 */ unsigned char shipwreck;
+	/* 0x002 */ unsigned char cannongame;
+} RandomSwitchesGalleon;
+
+typedef struct RandomSwitchesFungi {
+	/* 0x000 */ unsigned char yellow;
+	/* 0x001 */ unsigned char green_feather;
+	/* 0x002 */ unsigned char green_pineapple;
+} RandomSwitchesFungi;
+
+// Any 0s are treated as default
+typedef struct RandomSwitchesSetting {
+	/* 0x000 */ RandomSwitchesIsles isles;
+	/* 0x005 */ RandomSwitchesJapes japes;
+	/* 0x009 */ RandomSwitchesAztec aztec;
+	/* 0x00F */ RandomSwitchesGalleon galleon;
+	/* 0x012 */ RandomSwitchesFungi fungi;
+} RandomSwitchesSetting;
+
+typedef struct LZREntrance {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char exit;
+} LZREntrance;
+
+typedef struct ROMFlags {
+	unsigned char plando : 1; // 0x80
+	unsigned char spoiler : 1; // 0x40
+	unsigned char unk2 : 1; // 0x20
+	unsigned char unk3 : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} ROMFlags;
+
+typedef struct BooleanModelSwaps {
+	unsigned char ice_tomato_is_regular : 1; // 0x80
+	unsigned char regular_tomato_is_ice : 1; // 0x40
+	unsigned char beetle_is_rabbit : 1; // 0x20
+	unsigned char rabbit_is_beetle : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} BooleanModelSwaps;

@@ -10,7 +10,7 @@
  */
 #include "../../include/common.h"
 
-void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn bonus reward
      * 
@@ -29,7 +29,7 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
         object = bonus_data[index].spawn_actor;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
 
@@ -61,10 +61,7 @@ void spawnMinecartReward(int object, int flag) {
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
             if (bonus_data[i].spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-                int x_f = *(int*)(&Player->xPos);
-                int y_f = *(int*)(&Player->yPos);
-                int z_f = *(int*)(&Player->zPos);
-                spawnActorWithFlag(bonus_data[i].spawn_actor, x_f, y_f, z_f, 0, 0, flag, 0);
+                spawnActorWithFlag(bonus_data[i].spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
                 // spawnObjectAtActor(bonus_data[i].spawn_actor, flag); // Causes some interesting side-effects with collision
             }
             return;
@@ -72,7 +69,7 @@ void spawnMinecartReward(int object, int flag) {
     }
 }
 
-void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn Crown Reward
      * 
@@ -90,11 +87,11 @@ void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
         object = new_obj;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
 
-void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnBossReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn boss reward
      * 
@@ -116,9 +113,9 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
         if ((actor_master_types[object] == ACTORMASTER_SPRITE) && ((CurrentMap == MAP_FUNGIDOGADON) || (CurrentMap == MAP_AZTECDOGADON))) {
             // Sprite & Dogadon Fight
             cutscene = 1;
-            x_f = 0x43ED8000;
-            y_f = 0x43570000;
-            z_f = 0x443B8000;
+            x = 475.0f;
+            y = 215.0f;
+            z = 750.0f;
         } else if ((object != 72) && (CurrentMap == MAP_GALLEONPUFFTOSS)) {
             // Pufftoss - Not a key
             cutscene = 100;
@@ -127,13 +124,13 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
             // AD2/MJ
             cutscene = 1;
         }
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
         // Fix items which have short spawn ranges
         ActorSpawnerPointer->spawn_range = 4000000.0f;
     }
 }
 
-void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn dirt patch reward
      * 
@@ -151,12 +148,10 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
         object = new_obj;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-        for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
-            if (object == bounce_objects[i]) {
-                cutscene = 2;
-            }
+        if (isBounceObject(object)) {
+            cutscene = 2;
         }
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
 
@@ -175,7 +170,7 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
             | Golden Banana  | 0x69                       | True   | See Left      |
             | Boss Key       | 0xA5                       | True   | 0xF5          |
             | Crown          | 0xAF                       | True   | 0xF4          |
-            | Fake Item      | ----                       | ----   | 0x10F         |
+            | Fake Item      | ----                       | True   | 0x103         |
             | Potions        | 0xEE-0xF3                  | True   | 0xF6-0xFB     |
             | Kong Items     | 4, 1, 6, 9, 0xC, 0xE, 0xDB | True   | See Left      |
             +----------------+----------------------------+--------+---------------+
@@ -196,125 +191,30 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
     }
 }
 
-typedef struct packet_extra_data {
-    /* 0x000 */ char unk_00[0xA];
-    /* 0x00A */ short index;
-} packet_extra_data;
-
-int getBarrelModel(int index) {
-    /**
-     * @brief Get barrel model based on the contents inside the bonus barrel
-     * 
-     * @param index Bonus Barrel's tied reward index
-     * 
-     * @return Model Index
-     */
-    if (index < 95) {
-        int actor = bonus_data[index].spawn_actor;
-        switch (actor) {
-            case 78:
-            case 75:
-            case 77:
-            case 79:
-            case 76:
-                return 0x102; // Blueprint
-            case CUSTOM_ACTORS_START + NEWACTOR_NINTENDOCOIN:
-                return 0x103; // Nintendo Coin
-            case CUSTOM_ACTORS_START + NEWACTOR_RAREWARECOIN:
-                return 0x104; // Rareware Coin
-            case 72:
-                return 0x105; // Key
-            case 86:
-                return 0x106; // Crown
-            case CUSTOM_ACTORS_START + NEWACTOR_MEDAL:
-                return 0x107; // Medal
-            case CUSTOM_ACTORS_START + NEWACTOR_POTIONDK:
-            case CUSTOM_ACTORS_START + NEWACTOR_POTIONDIDDY:
-            case CUSTOM_ACTORS_START + NEWACTOR_POTIONLANKY:
-            case CUSTOM_ACTORS_START + NEWACTOR_POTIONTINY:
-            case CUSTOM_ACTORS_START + NEWACTOR_POTIONCHUNKY:
-            case CUSTOM_ACTORS_START + NEWACTOR_POTIONANY:
-                return 0x108; // Potion
-            case CUSTOM_ACTORS_START + NEWACTOR_KONGDK:
-            case CUSTOM_ACTORS_START + NEWACTOR_KONGDIDDY:
-            case CUSTOM_ACTORS_START + NEWACTOR_KONGLANKY:
-            case CUSTOM_ACTORS_START + NEWACTOR_KONGTINY:
-            case CUSTOM_ACTORS_START + NEWACTOR_KONGCHUNKY:
-                return 0xFD + (actor - (CUSTOM_ACTORS_START + NEWACTOR_KONGDK)); // Kong Pickup Actors
-            case CUSTOM_ACTORS_START + NEWACTOR_BEAN:
-                return 0x109; // Bean
-            case CUSTOM_ACTORS_START + NEWACTOR_PEARL:
-                return 0x10A; // Pearl
-            case CUSTOM_ACTORS_START + NEWACTOR_FAIRY:
-                return 0x10B; // Fairy
-            case 140:
-                return 0x10C; // Rainbow Coin
-            case CUSTOM_ACTORS_START + NEWACTOR_FAKEITEM:
-                return 0x10D; // Fake Item
-            case 0x2F:
-                return 0x10E; // Junk Item
-        }
+void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2) {
+    int id = ObjectModel2Pointer[convertSubIDToIndex(index)].object_id;
+    int flag = getCrateFlag(id);
+    int spawn_count = 1;
+    int object = getCrateItem(flag);
+    int cutscene = 1;
+    if (object == 0x2F) {
+        // Junk Item. Set flag as we're spawning 4 unflagged melons and we want it to update check screen
+        setFlag(flag, 1, FLAGTYPE_PERMANENT);
     }
-    return 0x76;
-}
-
-typedef struct spawnerExtraInfo {
-    /* 0x000 */ char unk_0[8];
-    /* 0x008 */ int index;
-} spawnerExtraInfo;
-
-int SpawnPreSpawnedBarrel(
-        float x, float y, int z, int unk0,
-        int sp10, int sp14, int sp18, int sp1c,
-        int sp20, int sp24, int sp28, actorSpawnerData* spawner,
-        int sp30, int sp34, int sp38, int sp3c,
-        int sp40, int sp44, spawnerExtraInfo* extra_data
-    ) {
-        /**
-         * @brief Spawn a barrel and alter the referenced model.
-         * Only for barrels that have been spawned before and need it's model reassigning correctly.
-         */
-    if (Rando.item_rando) {
-        if (spawner) {
-            if ((spawner->actor_type + 0x10) == 0x1C) {
-                int index = extra_data->index;
-                if (index < 95) {
-                    int model = getBarrelModel(index);
-                    if (model != 0) {
-                        spawner->model = model;
-                    }
-                }
-            }
-        }
+    if (checkFlag(flag, FLAGTYPE_PERMANENT) || (object == (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
+        spawn_count = 4;
+        flag = -1;
+        object = 0x2F;
+        cutscene = 1;
+    } else if (isBounceObject(object)) {
+        cutscene = 2;
     }
-    return getChunk(x, y, z, unk0);
-}
-
-void SpawnBarrel(spawnerPacket* packet) {
-    /**
-     * @brief Spawn a barrel and alter the referenced model.
-     * Only for barrels that have NOT been spawned before.
-     */
-    if ((Rando.item_rando)) {
-        packet_extra_data* data = (packet_extra_data*)packet->extra_data;
-        if (data) {
-            int index = data->index;
-            if (index < 95) {
-                int model = getBarrelModel(index);
-                if (model != 0) {
-                    packet->model = model;
-                }
-            }
-        }
+    float x = collisionPos[0];
+    float y = collisionPos[1] + 15.0f;
+    float z = collisionPos[2];
+    for (int i = 0; i < spawn_count; i++) {
+        spawnActorWithFlag(object, x, y, z, 0x400 * i, cutscene, flag, 0);
     }
-    spawn3DActor(packet);
-}
-
-void initBarrelChange(void) {
-    /**
-     * @brief Initialize the changes necessary for bonus barrels to match contents
-     */
-    actor_master_types[0x1C] = 5;
-    *(int*)(0x8074DA44) = (int)&SpawnBarrel;
-    writeFunction(0x80689368, &SpawnPreSpawnedBarrel); // Change model if barrel is being reloaded
+    unkSpriteRenderFunc_1(1);
+    displaySpriteAtXYZ(sprite_table[31], 2.5f, x, y + 15.0f, z);
 }

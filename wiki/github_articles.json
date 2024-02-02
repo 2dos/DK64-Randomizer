@@ -1,0 +1,122 @@
+[
+    {
+        "name": "Creating Cosmetic Data packs",
+        "link": "CreatingCosmeticPacks",
+        "github": "Creating-Cosmetics-Data-packs"
+    },
+    {
+        "name": "Recommended Music Editors",
+        "link": "RecommendedMusicEditors",
+        "github": "Recommendations-on-Music-Editors"
+    },
+    {
+        "name": "Feature Explanations",
+        "link": "FeatureExplanations",
+        "github": "Feature-Explanations"
+    },
+    {
+        "name": "Feature List",
+        "link": "FeatureList",
+        "github": "Feature-List"
+    },
+    {
+        "name": "Custom Locations",
+        "link": "CustomLocations",
+        "github": "Custom-Location-Lists"
+    },
+    {
+        "name": "Switchsanity Switches",
+        "link": "SwitchsanitySwitches",
+        "github": "Switchsanity-Switches"
+    },
+    {
+        "name": "Vanilla CB Locations",
+        "link": "VanillaCB_Locations",
+        "github": "Vanilla-CB-Logical-Move-Requirements"
+    },
+    {
+        "name": "Vanilla Item Locations",
+        "link": "VanillaItemLocations",
+        "github": "Vanilla-Item-Locations"
+    },
+    {
+        "name": "All About Hints",
+        "link": "AllAboutHints",
+        "github": "All-About-Hints"
+    },
+    {
+        "name": "General Strategies",
+        "link": "GeneralStrategies",
+        "github": "General-Strategies"
+    },
+    {
+        "name": "Lesser Known Game Knowledge",
+        "link": "LesserKnownGameKnowledge",
+        "github": "Lesser-known-game-knowledge"
+    },
+    {
+        "name": "Logic Tips And Tricks",
+        "link": "LogicTipsAndTricks",
+        "github": "Logic-Tips-and-Tricks"
+    },
+    {
+        "name": "Async Racing",
+        "link": "AsyncRacing",
+        "github": "Async-Races"
+    },
+    {
+        "name": "Glitchless Ruleset",
+        "link": "GlitchlessRuleset",
+        "github": "Glitchless-Ruleset"
+    },
+    {
+        "name": "NSAK Racing Rules",
+        "link": "NSAK_RacingRules",
+        "github": "NSAK-Racing-Rules"
+    },
+    {
+        "name": "Season 2 Distributions",
+        "link": "Season2Distributions",
+        "github": "Distributions"
+    },
+    {
+        "name": "Season 2 Preset",
+        "link": "Season2Preset",
+        "github": "Season-2-Preset-Settings-and-Rules"
+    },
+    {
+        "name": "Sharing a Seed",
+        "link": "SharingA_Seed",
+        "github": "Sharing-a-seed"
+    },
+    {
+        "name": "Advanced Homebrew ROM Header",
+        "link": "AdvancedHomebrewHeader",
+        "github": "Advanced-Homebrew-ROM-Header"
+    },
+    {
+        "name": "Bad Browser Extensions",
+        "link": "BadBrowserExtensions",
+        "github": "Browser-Extensions-which-cause-issues"
+    },
+    {
+        "name": "Consoles and Emulators",
+        "link": "ConsolesAndEmulators",
+        "github": "Consoles-and-Emulators"
+    },
+    {
+        "name": "Trackers",
+        "link": "Trackers",
+        "github": "Trackers"
+    },
+    {
+        "name": "Using The Website",
+        "link": "UsingTheWebsite",
+        "github": "Using-the-Program-and-Patching-Information"
+    },
+    {
+        "name": "Random Helm Door Changes",
+        "link": "RandomHelmDoorChanges",
+        "github": "Random-Helm-Door-Changes"
+    }
+]

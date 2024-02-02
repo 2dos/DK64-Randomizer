@@ -372,7 +372,7 @@ static const movement_bitfield banned_trap_movement = {
 void customDamageCode(void) {
     if (Player) {
         if (checkDeathAction(Player)) {
-            if (applyDamage(0, -1)) {
+            if (applyDamageMask(0, -1)) {
                 int animation = 0x27;
                 if (Player->grounded_bitfield & 4) {
                     animation = 0x29;
@@ -406,8 +406,7 @@ void trapPlayer_New(void) {
         Player->control_state_progress = 0;
         playActorAnimation(Player, 0x13);
         spawnActor(0x117, 0xC5);
-        actorData* trapBubble = (actorData*)CurrentActorPointer;
-        trapBubble->parent = Player;
+        LastSpawnedActor->parent = Player;
         Player->noclip = 0x3C;
     }
 }

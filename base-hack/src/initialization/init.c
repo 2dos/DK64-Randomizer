@@ -13,36 +13,28 @@
 #include "../../include/common.h"
 
 static char music_storage[MUSIC_SIZE];
+char music_types[SONG_COUNT];
 
 typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
 
-typedef enum song_types {
-	/* 0x000 */ SONGTYPE_BGM,
-	/* 0x001 */ SONGTYPE_EVENT,
-	/* 0x002 */ SONGTYPE_MAJORITEM,
-	/* 0x003 */ SONGTYPE_MINORITEM,
-} song_types;
+void writeFunctionLoop(void) {
+	writeFunction(0x805FC164, (int)&cFuncLoop);
+}
 
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
 	 * Without this, the game will crash from incorrect properties to what the song is expecting.
 	 */
-	// Music
 	if (Rando.music_rando_on) {
 		// Type bitfields
 		int size = SONG_COUNT << 1;
-		musicInfo* write_space = dk_malloc(size);
-		int* file_size;
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
+		musicInfo* write_space = getFile(size, 0x1FFF000);
 		// Type indexes
 		size = SONG_COUNT;
-		char* write_space_0 = dk_malloc(size);
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		char* write_space_0 = getFile(size, 0x1FEE200);
 		for (int i = 0; i < SONG_COUNT; i++) {
 			// Handle Bitfield
 			int subchannel = (write_space->data[i] & 6) >> 1;
@@ -66,10 +58,56 @@ void fixMusicRando(void) {
 				songVolumes[i] = volume;
 			}
 		}
+		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
+		*(float*)(0x807565D8) = 1.0f; // Funky and Candy volumes
+		*(int*)(0x80604B50) = 0; // Disable galleon outside track isolation
+		*(int*)(0x80604A54) = 0; // Disable galleon outside track isolation
+		complex_free(write_space);
+		complex_free(write_space_0);
+	}
+	/*
+	// Music
+	if (Rando.music_rando_on) {
+		// Type bitfields
+		int size = SONG_COUNT << 1;
+		musicInfo* write_space = dk_malloc(size);
+		int* file_size;
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
+		// Type indexes
+		size = SONG_COUNT;
+		char* write_space_0 = dk_malloc(size);
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		for (int i = 0; i < SONG_COUNT; i++) {
+			// Handle Bitfield
+			int subchannel = (write_space->data[i] & 6) >> 1;
+			int channel = (write_space->data[i] & 0x78) >> 3;
+			songData[i] &= 0xFF81;
+			songData[i] |= (subchannel & 3) << 1;
+			songData[i] |= (channel & 0xF) << 3;
+
+			// Handle Type Index
+			music_types[i] = write_space_0[i];
+			if (write_space_0[i] > -1) {
+				song_types type = write_space_0[i];
+				int volume = 0;
+				if (type == SONGTYPE_BGM) {
+					volume = 23000;
+				} else if (type == SONGTYPE_MAJORITEM) {
+					volume = 27000;
+				} else {
+					// Event or Minor Item
+					volume = 25000;
+				}
+				songVolumes[i] = volume;
+			}
+		}
 		complex_free(write_space);
 		complex_free(write_space_0);
 
 	}
+	*/
 }
 
 void writeEndSequence(void) {
@@ -77,9 +115,7 @@ void writeEndSequence(void) {
 	 * @brief Write our custom end sequence
 	 */
 	int size = 0x84;
-	int* file_size;
-	*(int*)(&file_size) = size;
-	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
+	copyFromROM(0x1FFF800,(int*)0x807506D0,&size,0,0,0,0);
 }
 
 float getOscillationDelta(void) {
@@ -109,7 +145,6 @@ void loadHooks(void) {
 	loadSingularHook(0x806F8610, &GiveItemPointerToMulti);
 	loadSingularHook(0x806F88C8, &CoinHUDReposition);
 	loadSingularHook(0x8060005C, &getLobbyExit);
-	loadSingularHook(0x806C9A7C, &damageMultiplerCode);
 	loadSingularHook(0x8060DEF4, &SaveHelmHurryCheck);
 	if (Rando.warp_to_isles_enabled) {
 		loadSingularHook(0x806A995C, &PauseExtraSlotCode);
@@ -118,6 +153,8 @@ void loadHooks(void) {
 		loadSingularHook(0x806A8760, &PauseExtraSlotClamp1);
 		loadSingularHook(0x806A8804, &PauseExtraSlotCustomCode);
 		loadSingularHook(0x806A9898, &PauseCounterCap);
+	} else if (Rando.true_widescreen) {
+		*(short*)(0x806A981A) = (SCREEN_HD_FLOAT * 2) - 72;
 	}
 	loadSingularHook(0x806F3E74, &AutowalkFix);
 	loadSingularHook(0x80610948, &DynamicCodeFixes);
@@ -137,7 +174,6 @@ void loadHooks(void) {
 	loadSingularHook(0x806EB574, &HomingHUDHandle);
 	loadSingularHook(0x806324C4, &DKCollectableFix);
 	loadSingularHook(0x806AF70C, &GuardDeathHandle);
-	loadSingularHook(0x807132BC, &NinWarpCode);
 	if (Rando.quality_of_life.textbox_hold) {
 		loadSingularHook(0x8070E83C, &TextHandler);
 	}
@@ -155,13 +191,28 @@ void loadHooks(void) {
 		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
 		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
 	}
+	if (Rando.enemy_item_rando){
+		loadSingularHook(0x806680b4, checkBeforeApplyingQuicksand);
+		*(int*)(0x806680b8) = 0x8E2C0058; // LW $t4, 0x58 ($s1)
+	}
+	loadSingularHook(0x806A7474, &disableHelmKeyBounce);
+	if (MenuDarkness != 0) {
+		loadSingularHook(0x807070A0, &RecolorMenuBackground);
+	}
+	loadSingularHook(0x80600674, &updateLag);
+}
+
+void skipDKTV(void) {
+	setNextTransitionType(1);
+	initiateTransition(MAP_MAINMENU, 0);
+	Mode = GAMEMODE_MAINMENU;
 }
 
 void initHack(int source) {
 	/**
 	 * @brief Initialize Hack
 	 * 
-	 * @param source 0 = CFuncLoop, 1 = ROM Boot
+	 * @param source 0 = cFuncLoop, 1 = ROM Boot
 	 * 
 	 */
 	if (LoadedHooks == 0) {
@@ -170,14 +221,9 @@ void initHack(int source) {
 			if (Rando.fast_start_beginning) {
 				*(int*)(0x80714540) = 0;
 			}
-			*(int*)(0x80731F78) = 0; // Debug 1 Column
-			*(int*)(0x8060E04C) = 0; // Prevent moves overwrite
-			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
-			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
-			DamageMultiplier = Rando.damage_multiplier;
-			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
-			permaLossMode = Rando.perma_lose_kongs;
+			WidescreenEnabled = Rando.true_widescreen;
+			grab_lock_timer = -1;
 			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
@@ -199,10 +245,7 @@ void initHack(int source) {
 			if (Rando.fairy_rando_on) {
 				// Fairy Location Table
 				int fairy_size = 20<<2;
-				fairy_location_item* fairy_write = dk_malloc(fairy_size);
-				int* fairy_file_size;
-				*(int*)(&fairy_file_size) = fairy_size;
-				copyFromROM(0x1FFC000,fairy_write,&fairy_file_size,0,0,0,0);
+				fairy_location_item* fairy_write = getFile(fairy_size, 0x1FFC000);
 				for (int i = 0; i < (fairy_size >> 2); i++) {
 					for (int j = 0; j < 0x1F; j++) {
 						if (charspawnerflags[j].tied_flag == fairy_write[i].flag) {
@@ -232,47 +275,15 @@ void initHack(int source) {
 			initActor(NEWACTOR_JETPACITEMOVERLAY, 1, &getNextMoveText, ACTORMASTER_CONTROLLER, 0, 0, 0x10, 324);
 			// Kong Rando
 			initKongRando();
-			initFiles();
 			writeFunction(0x8060CB7C, &fixChimpyCamBug);
             
-			if (Rando.no_health_refill) {
-				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
-				// *(int*)(0x8060DD10) = 0; // Load File
-				// *(int*)(0x806C8010) = 0; // Load into map with < 1 health
-				// *(int*)(0x806C94E4) = 0; // ?
-				// *(int*)(0x806C9BC0) = 0; // Multiplayer
-				*(int*)(0x806CB340) = 0; // Voiding
-				*(int*)(0x806DEFE4) = 0; // Fairies
-				// *(int*)(0x80708C9C) = 0; // Bonus Barrels (Taking Damge) & Watermelons
-				// *(int*)(0x80708CA4) = 0; // Bonus Barrels (Full Health) & Watermelons
-				*(int*)(0x806A6EA8) = 0; // Bonus Barrels
-			} else {
-				*(int*)(0x806A6EA8) = 0x0C1C2519; // Set Bonus Barrel to refill health
-			}
 			if (Rando.short_bosses) {
 				actor_health_damage[236].init_health = 44; // Dogadon Health: 3 + (62 * (2 / 3))
 				actor_health_damage[185].init_health = 3; // Dillo Health
 				actor_health_damage[251].init_health = 3; // Spider Boss Health
 			}
-			if (Rando.resolve_bonus & 1) {
-				*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
-				*(int*)(0x80681690) = 0; // Make some barrels not play a cutscene
-				*(int*)(0x8068188C) = 0; // Prevent disjoint mechanic for Caves/Fungi BBlast Bonus
-				*(short*)(0x80681898) = 0x1000;
-				*(int*)(0x8068191C) = 0; // Remove Oh Banana
-				*(short*)(0x80680986) = 0xFFFE; // Prevent Factory BBBandit Bonus dropping
-				*(short*)(0x806809C8) = 0x1000; // Prevent Fungi TTTrouble Bonus dropping
-			}
 			if (Rando.resolve_bonus) {
 				writeFunction(0x80681158, &completeBonus); // Modify Function Call
-				*(short*)(0x80681962) = 1; // Make bonus noclip	
-			}
-			if (Rando.tns_portal_rando_on) {
-				// Adjust warp code to make camera be behind player, loading portal
-				*(int*)(0x806C97D0) = 0xA06E0007; // SB $t6, 0x7 ($v1)
-			}
-			if (Rando.remove_rock_bunch) {
-				*(int*)(0x8069C2FC) = 0;
 			}
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
@@ -291,11 +302,9 @@ void initHack(int source) {
 			priceTransplant();
 
 			initStatistics();
-			if (Rando.disable_boss_kong_check) {
-				*(int*)(0x8064EC00) = 0x24020001;
-			}
+			
 			actor_functions[70] = &newCounterCode;
-			*(short*)(0x8074DC84) = 0x53; // Increase PAAD size
+			
 			fixMusicRando();
 			*(int*)(0x80748014) = (int)&spawnWrinklyWrapper; // Change function to include setFlag call	
 			// Style 6 Mtx
@@ -321,11 +330,8 @@ void initHack(int source) {
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
 			// New Mermaid Checking Code
 			writeFunction(0x806C3B5C, &mermaidCheck); // Mermaid Check
-			*(short*)(0x806C3B64) = 0x1000; // Force to branch
-			*(short*)(0x806C3BD0) = 0x1000; // Force to branch
-			*(int*)(0x806C3C20) = 0; // NOP - Cancel control state write
-			*(int*)(0x806C3C2C) = 0; // NOP - Cancel control state progress write
 			if (Rando.helm_hurry_mode) {
+				writeFunction(0x806A8A18, &QuitGame); // Save game on quit
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
@@ -333,17 +339,6 @@ void initHack(int source) {
 				writeFunction(0x80713DE0, &finishHelmHurry); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
-			}
-			if (Rando.version == 0) {
-				// Disable Graphical Debugger
-				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
-			}
-			if (Rando.fast_gbs) {
-				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
-				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
-				*(short*)(0x806C5B16) = 0x0008;
-				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
-				*(short*)(0x806BC582) = 30; // Ice Tomato Timer
 			}
 			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
@@ -353,8 +348,6 @@ void initHack(int source) {
 				}
 			}
 			KKOPhaseRandoOn = kko_phase_rando;
-			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
-			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			if (Rando.wrinkly_rando_on) {
 				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
 				writeFunction(0x8069E154, &getWrinklyLevelIndex); // Modify Function Call
@@ -386,129 +379,166 @@ void initHack(int source) {
 			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
-			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
 			// Deathwarp Handle
 			writeFunction(0x8071292C, &WarpHandle); // Check if in Helm, in which case, apply transition
-			// New Guard Code
-			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
       		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
 			writeFunction(0x806AD750, &beaverExtraHitHandle); // Remove buff until we think of something better
 			// Move Text Code
 			actor_functions[324] = &getNextMoveText;
 			actor_functions[320] = &getNextMoveText;
-			// Any Kong Items
-			if (Rando.any_kong_items & 1) {
-				// All excl. Blueprints
-				*(int*)(0x807319C0) = 0x00001025; // OR $v0, $r0, $r0 - Make all reward spots think no kong
-				*(int*)(0x80632E94) = 0x00001025; // OR $v0, $r0, $r0 - Make flag mapping think no kong
-			}
-			if (Rando.any_kong_items & 2) {
-				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
-				*(int*)(0x806A606C) = 0; // Disable translucency for blueprints
-			}
 			initPauseMenu(); // Changes to enable more items
 			// Spider Projectile
-			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
-			if (Rando.hard_enemies) {
+			if (Rando.hard_mode.enemies) {
 				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
-				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
-				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
 			}
 			// Fix some silk memes
-			*(int*)(0x806ADA6C) = 0;
 			writeFunction(0x806ADA70, &HandleSpiderSilkSpawn);
-			*(int*)(0x806ADA78) = 0;
-			// Fix spider crashes
-			int fixed_anim = 0x2F5;
-			*(short*)(0x8075F46C) = fixed_anim;
-			*(short*)(0x806ADA26) = fixed_anim; // This might fix spawning if set on non-init
-			*(short*)(0x806ADA2A) = fixed_anim;
-			*(short*)(0x806ADA32) = fixed_anim;
-			*(short*)(0x806ADBC6) = fixed_anim;
-			*(short*)(0x806ADC66) = fixed_anim;
-			*(short*)(0x806ADD3A) = fixed_anim;
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
-				*(int*)(0x80661B54) = 0; // Remove Ripple Timer 0
-				*(int*)(0x80661B64) = 0; // Remove Ripple Timer 1
-				*(int*)(0x8068BDF4) = 0; // Disable rocking in Seasick Ship
-				*(short*)(0x8068BDFC) = 0x1000; // Disable rocking in Mech Fish
-				// *(int*)(0x806609DC) = 0x44802000; // Change ripple oscillation X to 0 (mtc1 $zero, $f4)
-				// *(int*)(0x806609EC) = 0x44805000; // Change ripple oscillation Z to 0 (mtc1 $zero, $f10)
 				writeFunction(0x80660994, &getOscillationDelta);
 				writeFunction(0x806609BC, &getOscillationDelta);
 			}
+			if (DAMAGE_MASKING) {
+				// Damage mask
+				// writeFunction(0x806A6EA8, &applyDamageMask);
+				writeFunction(0x806EE138, &applyDamageMask);
+				writeFunction(0x806EE330, &applyDamageMask);
+				writeFunction(0x806EE480, &applyDamageMask);
+				writeFunction(0x806EEA20, &applyDamageMask);
+				writeFunction(0x806EEEA4, &applyDamageMask);
+				writeFunction(0x806EF910, &applyDamageMask);
+				writeFunction(0x806EF9D0, &applyDamageMask);
+				writeFunction(0x806F5860, &applyDamageMask); // Watermelon
+			}
 			// Slow Turn Fix
 			writeFunction(0x806D2FC0, &fixRBSlowTurn);
-			// CB Bunch
-			*(int*)(0x806A65B8) = 0x240A0006; // Always ensure chunky bunch sprite (Rock Bunch)
-			// Coins
-			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite (Rabbit Race 1 Reward)
-
 			// for (int i = 0; i < 10; i++) {
 			// 	*(int*)(0x8060D6A0 + (4 * i)) = 0;
 			// }
 			// *(short*)(0x8060D6C8) = 0x5000;
-			// Decouple Camera from Shockwave
-			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
-			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
-			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
-			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
-			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
-			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
-			*(short*)(0x806F916A) = FLAG_ABILITY_CAMERA; // Film max
 			// LZ Save
 			writeFunction(0x80712EC4, &postKRoolSaveCheck);
 			// Opacity fixes
 			writeFunction(0x806380B0, &handleModelTwoOpacity);
-			if (Rando.medal_cb_req > 0) {
-				// Change CB Req
-				*(short*)(0x806F934E) = Rando.medal_cb_req; // Acquisition
-				*(short*)(0x806F935A) = Rando.medal_cb_req; // Acquisition
-				*(short*)(0x806AA942) = Rando.medal_cb_req; // Pause Menu Tick
-			}
 			// Reduce TA Cooldown
 			if (Rando.tag_anywhere) {
-				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change
-				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
-				// Standard Ammo
-				*(short*)(0x806F5B68) = 0x1000;
 				writeFunction(0x806F5BE8, &tagAnywhereAmmo);
-				// Bunch
-				*(short*)(0x806F59A8) = 0x1000;
 				writeFunction(0x806F5A08, &tagAnywhereBunch);
-
-				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
-				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
 				writeFunction(0x806F6CB4, &tagAnywhereInit);
-				*(int*)(0x806F53AC) = 0; // Prevent LZ case
-
-				// initTagAnywhere();
 			}
-			// DK Face Puzzle
-			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
-			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];
-			*(unsigned char*)(0x8064AD05) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[5]];
-			*(unsigned char*)(0x8064AD09) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[7]];
-			*(unsigned char*)(0x8064AD11) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[0]];
-			*(unsigned char*)(0x8064AD15) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[1]];
-			*(unsigned char*)(0x8064AD19) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[3]];
-			*(unsigned char*)(0x8064AD1D) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[4]];
-			*(unsigned char*)(0x8064AD21) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[6]];
-			*(unsigned char*)(0x8064AD29) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[8]];
-			// Chunky Face Puzzle
-			int chunky_reg_vals[] = {0x40,0x54,0x48,0x44}; // 0 = r0, 1 = s4, 2 = t0, 3 = a0
-			*(unsigned char*)(0x8064A2D5) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[2]];
-			*(unsigned char*)(0x8064A2DD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[6]];
-			*(unsigned char*)(0x8064A2ED) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[0]];
-			*(unsigned char*)(0x8064A2F1) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[1]];
-			*(unsigned char*)(0x8064A2F5) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[3]];
-			*(unsigned char*)(0x8064A2F9) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[4]];
-			*(unsigned char*)(0x8064A2FD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[5]];
-			*(unsigned char*)(0x8064A301) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[7]];
-			*(unsigned char*)(0x8064A305) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[8]];
+			if (ENABLE_ORIGIN_WARP_FIX) {
+				writeFunction(0x8072F1E8, &handleGrabbingLock);
+				writeFunction(0x806CAB68, &handleLedgeLock);
+				writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
+				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
+				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
+			}
+			if (Rando.disabled_music.pause) {
+				*(int*)(0x805FC890) = 0; // Pause theme
+				*(int*)(0x805FC89C) = 0; // Pause Start theme
+			}
+			if (Rando.disabled_music.wrinkly) {
+				*(int*)(0x8064F180) = 0; // Wrinkly Theme
+			}
+			if (Rando.disabled_music.transform) {
+				*(int*)(0x8067E9E4) = 0; // Transform Theme
+				*(int*)(0x8067F7C0) = 0; // Transform Theme
+			}
+			if ((Rando.disabled_music.events) || (Rando.disabled_music.shops)) {
+				*(int*)(0x80602AAC) = 0x27A40018; // addiu $a0, $sp, 0x18
+				writeFunction(0x80602AB0, &filterSong);
+			}
+			if (Rando.disabled_music.chunk_songs) {
+				// *(int*)(0x806025BC) = 0; // Disable `playLevelMusic` - Map Load
+				*(int*)(0x8061DF74) = 0; // Disable `playLevelMusic`
+				*(int*)(0x806DB98C) = 0; // Disable `playLevelMusic`
+				*(short*)(0x806034F2) = 0; // Set Japes count to 0
+				*(short*)(0x80603556) = 0; // Set Az Beetle count to 0
+				*(short*)(0x80603542) = 0; // Set Factory count to 0
+				*(short*)(0x8060356A) = 0; // Set Factory Car count to 0
+				*(short*)(0x8060351A) = 0; // Set Galleon count to 0
+				//*(short*)(0x80603592) = 0; // Set Isles count to 0
+				*(short*)(0x80603506) = 0; // Set Aztec count to 0
+				*(short*)(0x8060352E) = 0; // Set Galleon Seal count to 0
+				*(short*)(0x806035C6) = 0; // Set Fungi count to 0
+				*(short*)(0x8060357E) = 0; // Set Fungi Cart count to 0
+				*(short*)(0x806035BA) = 0; // Set TGrounds count to 0
+			}
+			if (Rando.hard_mode.easy_fall) {
+				float fall_threshold = 100.0f;
+				*(short*)(0x806D3682) = getFloatUpper(fall_threshold); // Change fall too far threshold
+				writeFunction(0x806D36B4, &fallDamageWrapper);
+				writeFunction(0x8067F540, &transformBarrelImmunity);
+			}
+			if (Rando.hard_mode.lava_water) {
+				*(int*)(0x806677C4) = 0; // Dynamic Surfaces
+				// Static Surfaces
+				*(short*)(0x80667ED2) = 0x81;
+				*(short*)(0x80667EDA) = 0x81;
+				*(short*)(0x80667EEE) = 0x81;
+				*(short*)(0x80667EFA) = 0x81;
+				writeFunction(0x8062F3F0, &replaceWaterTexture); // Static water textures
+				// Dynamic Textures
+				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[7].texture_loader;
+				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer;
+				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[7].texture_loader;
+				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer;
+			} else if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
+				writeFunction(0x8062F3F0, &replaceWaterTexture_spooky); // Static water textures
+				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[6].texture_loader;
+				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
+				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[6].texture_loader;
+				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
+			}
+			if ((Rando.hard_mode.dark_world) || (Rando.hard_mode.memory_challenge)) {
+				writeFunction(0x8062F230, &alterChunkLighting);
+				writeFunction(0x8065121C, &alterChunkLighting);
+				writeFunction(0x8062F2CC, &alterChunkData);
+				writeFunction(0x806C9DF8, &shineLight);
+				writeFunction(0x806C9E28, &shineLight);
+				writeFunction(0x806C9E58, &shineLight);
+				writeFunction(0x806C9E88, &shineLight);
+				writeFunction(0x806C9EB8, &shineLight);
+				writeFunction(0x806C9EE8, &shineLight);
+				writeFunction(0x806C9F2C, &shineLight);
+				writeFunction(0x806C9F5C, &shineLight);
+				// Fungi Time of Day
+				*(float*)(0x80748280) = 0.0f;
+				*(float*)(0x80748284) = 0.0f;
+				*(float*)(0x80748288) = 0.0f;
+				*(float*)(0x8074828C) = 0.0f;
+				*(float*)(0x80748290) = 0.0f;
+				*(float*)(0x80748294) = 0.0f;
+				// Troff n Scoff
+				*(float*)(0x8075B8B4) = 0.0f;
+				*(float*)(0x8075B8B8) = 0.0f;
+				// Rain
+				*(short*)(0x8068B6AE) = 0;
+			}
+			if (!Rando.quality_of_life.fast_boot) {
+				writeFunction(0x80713258, &skipDKTV);
+			}
+			if (Rando.any_kong_items & 1) {
+				writeFunction(0x80632E94, &getItemRequiredKong);
+			}
+			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
+				writeFunction(0x80656538, &displayNoGeoChunk);
+				writeFunction(0x806562C0, &displayNoGeoChunk);
+				writeFunction(0x80656380, &displayNoGeoChunk);
+				writeFunction(0x806565F8, &displayNoGeoChunk);
+				// *(int*)(0x80651598) = 0xA1E00002;
+			}
+			if (Rando.enemy_item_rando) {
+				writeFunction(0x80729E54, &indicateCollectionStatus);
+				*(unsigned short*)(0x807278CA) = 0xFFF; // Disable enemy switching in Fungi
+				writeFunction(0x806B26A0, &fireballEnemyDeath);
+				writeFunction(0x806BB310, &rulerEnemyDeath);
+			}
+
+			initSwitchsanityChanges();
+
 			SFXVolume = Rando.default_sfx_volume;
 			MusicVolume = Rando.default_music_volume;
 			ScreenRatio = Rando.default_screen_ratio;
@@ -540,7 +570,7 @@ void quickInit(void) {
 		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
 		CutsceneWillPlay = 0;
 		Gamemode = GAMEMODE_MAINMENU;
-		Mode = 5;
+		Mode = GAMEMODE_MAINMENU;
 		StorySkip = 1;
 		*(char*)(0x80745D20) = 7;
 	}

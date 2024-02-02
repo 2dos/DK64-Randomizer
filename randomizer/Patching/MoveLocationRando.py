@@ -1,13 +1,13 @@
 """Randomize Move Locations."""
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import setItemReferenceName
+from randomizer.CompileHints import getHelmProgItems
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -58,31 +58,85 @@ level_names = [
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
+class MoveMicrohintItemData:
+    """Information about the microhint move."""
+
+    def __init__(self, subtype: str, index: int, kong: Kongs):
+        """Initialize with given parameters."""
+        self.subtype = subtype
+        self.index = index
+        self.kong = kong
+
+
+move_info_data = {
+    Items.BaboonBlast: MoveMicrohintItemData("special", 0, Kongs.donkey),
+    Items.StrongKong: MoveMicrohintItemData("special", 1, Kongs.donkey),
+    Items.GorillaGrab: MoveMicrohintItemData("special", 2, Kongs.donkey),
+    Items.ChimpyCharge: MoveMicrohintItemData("special", 0, Kongs.diddy),
+    Items.RocketbarrelBoost: MoveMicrohintItemData("special", 1, Kongs.diddy),
+    Items.SimianSpring: MoveMicrohintItemData("special", 2, Kongs.diddy),
+    Items.Orangstand: MoveMicrohintItemData("special", 0, Kongs.lanky),
+    Items.BaboonBalloon: MoveMicrohintItemData("special", 1, Kongs.lanky),
+    Items.OrangstandSprint: MoveMicrohintItemData("special", 2, Kongs.lanky),
+    Items.MiniMonkey: MoveMicrohintItemData("special", 0, Kongs.tiny),
+    Items.PonyTailTwirl: MoveMicrohintItemData("special", 1, Kongs.tiny),
+    Items.Monkeyport: MoveMicrohintItemData("special", 2, Kongs.tiny),
+    Items.HunkyChunky: MoveMicrohintItemData("special", 0, Kongs.chunky),
+    Items.PrimatePunch: MoveMicrohintItemData("special", 1, Kongs.chunky),
+    Items.GorillaGone: MoveMicrohintItemData("special", 2, Kongs.chunky),
+    Items.ProgressiveSlam: MoveMicrohintItemData("slam", 1, Kongs.any),
+    Items.Bongos: MoveMicrohintItemData("instrument", 0, Kongs.donkey),
+    Items.Guitar: MoveMicrohintItemData("instrument", 0, Kongs.diddy),
+    Items.Trombone: MoveMicrohintItemData("instrument", 0, Kongs.lanky),
+    Items.Saxophone: MoveMicrohintItemData("instrument", 0, Kongs.tiny),
+    Items.Triangle: MoveMicrohintItemData("instrument", 0, Kongs.chunky),
+    Items.Coconut: MoveMicrohintItemData("gun", 0, Kongs.donkey),
+    Items.Peanut: MoveMicrohintItemData("gun", 0, Kongs.diddy),
+    Items.Grape: MoveMicrohintItemData("gun", 0, Kongs.lanky),
+    Items.Feather: MoveMicrohintItemData("gun", 0, Kongs.tiny),
+    Items.Pineapple: MoveMicrohintItemData("gun", 0, Kongs.chunky),
+}
+
+
+class MoveMicrohints:
+    """Information about microhints."""
+
+    def __init__(self, item: Items, file: int, enabled_hint_settings: list):
+        """Initialize with given parameters."""
+        self.item = item
+        self.move = None
+        if item in list(move_info_data.keys()):
+            self.move = move_info_data[item]
+        self.file = file
+        self.enabled_hint_settings = enabled_hint_settings
+
+
 def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         if kong != Kongs.any or slot == 0:
             move = None  # Using no item for the purpose of a default
-            hinted_items = {
+            helm_prog_items = getHelmProgItems(spoiler)
+            hinted_items = [
                 # Key = Item, Value = Textbox index in text file 19
-                Items.Monkeyport: [("special", 2, Kongs.tiny), 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                Items.GorillaGone: [("special", 2, Kongs.chunky), 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                Items.Bongos: [("instrument", 0, Kongs.donkey), 27, [MicrohintsEnabled.all]],
-                Items.Triangle: [("instrument", 0, Kongs.chunky), 28, [MicrohintsEnabled.all]],
-                Items.Saxophone: [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
-                Items.Trombone: [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
-                Items.Guitar: [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
-                Items.ProgressiveSlam: [("slam", 1, Kongs.any), 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-            }
-            for item_hint in hinted_items:
-                move_data = hinted_items[item_hint][0]
-                if (move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]) or (
-                    move_dict["move_type"] == move_data[0] and move_data[0] == "slam"
+                MoveMicrohints(helm_prog_items[0], 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+                MoveMicrohints(helm_prog_items[1], 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Bongos, 27, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Triangle, 28, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Saxophone, 29, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Trombone, 30, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Guitar, 31, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.ProgressiveSlam, 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            ]
+            for item_data in hinted_items:
+                move_data = item_data.move
+                if (move_dict["move_type"] == move_data.subtype and move_dict["move_lvl"] == move_data.index and move_dict["move_kong"] == move_data.kong) or (
+                    move_dict["move_type"] == move_data.subtype and move_data.subtype == "slam"
                 ):
-                    if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
-                        move = item_hint
+                    if spoiler.settings.microhints_enabled in list(item_data.enabled_hint_settings):
+                        move = item_data
             if move is not None:
-                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
+                data = {"textbox_index": move.file, "mode": "replace_whole", "target": spoiler.microhints[ItemList[move.item].name]}
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
@@ -218,7 +272,7 @@ def getNextSlot(spoiler, item: Items) -> int:
     elif item == Items.ProgressiveInstrumentUpgrade:
         slots = [0x20, 0x21, 0x22]
     elif item == Items.ProgressiveSlam:
-        slots = [0x10, 0x11]  # 0xF excluded as slam 1 is pre-given
+        slots = [0xF, 0x10, 0x11]
     if len(slots) == 0:
         return None
     ROM_COPY = LocalROM()
@@ -278,11 +332,13 @@ def place_pregiven_moves(spoiler):
         Items.Shockwave,
     ]
     ROM_COPY = LocalROM()
+    progressives = (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam)
+    name_str = "Extra Training"
     for item in spoiler.pregiven_items:
         # print(item)
         if item is not None and item != Items.NoItem:
             new_slot = None
-            if item in (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam):
+            if item in progressives:
                 new_slot = getNextSlot(spoiler, item)
             elif item in item_order:
                 new_slot = item_order.index(item)
@@ -304,3 +360,11 @@ def place_pregiven_moves(spoiler):
                 val |= 0x80 >> check
                 ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
                 ROM_COPY.writeMultipleBytes(val, 1)
+        if item == Items.ProgressiveAmmoBelt:
+            setItemReferenceName(spoiler, item, new_slot - 0x1C, name_str)
+        elif item == Items.ProgressiveInstrumentUpgrade:
+            setItemReferenceName(spoiler, item, new_slot - 0x20, name_str)
+        elif item == Items.ProgressiveSlam:
+            setItemReferenceName(spoiler, item, new_slot - 0xF, name_str)
+        else:
+            setItemReferenceName(spoiler, item, 0, name_str)

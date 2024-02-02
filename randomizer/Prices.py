@@ -1,26 +1,14 @@
 """Functions and data for setting and calculating prices."""
 
 import random
-from math import ceil
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
-from randomizer.ItemPool import TrainingBarrelAbilities
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import (
-    ChunkyMoveLocations,
-    DiddyMoveLocations,
-    DonkeyMoveLocations,
-    LankyMoveLocations,
-    LocationList,
-    SharedMoveLocations,
-    SharedShopLocations,
-    TinyMoveLocations,
-    TrainingBarrelLocations,
-)
+from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 
 VanillaPrices = {
     Items.Vines: 0,
@@ -57,12 +45,12 @@ VanillaPrices = {
     Items.Trombone: 3,
     Items.Saxophone: 3,
     Items.Triangle: 3,
-    Items.ProgressiveSlam: [5, 7],
+    Items.ProgressiveSlam: [0, 5, 7],
     Items.ProgressiveAmmoBelt: [3, 5],
     Items.ProgressiveInstrumentUpgrade: [5, 7, 9],
 }
 
-ProgressiveMoves = {Items.ProgressiveSlam: 2, Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3}
+ProgressiveMoves = {Items.ProgressiveSlam: 3, Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3}
 
 
 def CompleteVanillaPrices():
@@ -99,11 +87,11 @@ def GetPriceWeights(weight):
     return (avg, stddev, upperLimit)
 
 
-def RandomizePrices(weight):
+def RandomizePrices(spoiler, weight):
     """Generate randomized prices for each shop location."""
     prices = {}
     parameters = GetPriceWeights(weight)
-    shopLocations = [location_id for location_id, location in LocationList.items() if location.type == Types.Shop]
+    shopLocations = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
     for location in shopLocations:
         prices[location] = GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2])
     # Progressive items get their own price pool
@@ -128,9 +116,10 @@ def GenerateRandomPrice(weight, avg, stddev, upperLimit):
     return newPrice
 
 
-def GetMaxForKong(settings, kong):
+def GetMaxForKong(spoiler, kong):
     """Get the maximum amount of coins the given kong can spend."""
     # Track shared moves specifically because their prices are stored specially
+    settings = spoiler.settings
     found_slams = 0
     found_instrument_upgrades = 0
     found_ammo_belts = 0
@@ -138,7 +127,7 @@ def GetMaxForKong(settings, kong):
     # Look for moves placed in shared move locations that have prices
     paidSharedMoveLocations = SharedMoveLocations - TrainingBarrelLocations - {Locations.CameraAndShockwave}
     for location in paidSharedMoveLocations:
-        item_id = LocationList[location].item
+        item_id = spoiler.LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
             if item_id == Items.ProgressiveSlam:
                 total_price += settings.prices[item_id][found_slams]
@@ -168,9 +157,9 @@ def GetMaxForKong(settings, kong):
         kongMoveLocations = ChunkyMoveLocations.copy()
 
     for location in kongMoveLocations:
-        if LocationList[location].inaccessible:  # Ignore any shop locations that don't even exist anymore
+        if spoiler.LocationList[location].inaccessible:  # Ignore any shop locations that don't even exist anymore
             continue
-        item_id = LocationList[location].item
+        item_id = spoiler.LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
             if item_id == Items.ProgressiveSlam:
                 total_price += settings.prices[item_id][found_slams]
@@ -263,11 +252,11 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
     return settings.prices[location_id]
 
 
-def KongCanBuy(location_id, logic, kong):
+def KongCanBuy(spoiler, location_id, logic, kong, buy_empty=False):
     """Check if given kong can logically purchase the specified location."""
-    location = LocationList[location_id]
+    location = spoiler.LocationList[location_id]
     # If nothing is sold here, return true
-    if location.item is None or location.item == Items.NoItem:
+    if not buy_empty and location.item is None or location.item == Items.NoItem:
         return True
     price = GetPriceAtLocation(logic.settings, location_id, location, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
 
@@ -281,17 +270,17 @@ def KongCanBuy(location_id, logic, kong):
         return False
 
 
-def AnyKongCanBuy(location, logic):
+def AnyKongCanBuy(spoiler, location, logic, buy_empty=False):
+    """Check if any owned kong can logically purchase this location."""
+    return any(KongCanBuy(spoiler, location, logic, kong, buy_empty) for kong in logic.GetKongs())
+
+
+def EveryKongCanBuy(spoiler, location, logic):
     """Check if any kong can logically purchase this location."""
-    return any(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+    return all(KongCanBuy(spoiler, location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
-def EveryKongCanBuy(location, logic):
-    """Check if any kong can logically purchase this location."""
-    return all(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
-
-
-def CanBuy(location, logic):
+def CanBuy(spoiler, location, logic, buy_empty=False):
     """Check if an appropriate kong can logically purchase this location."""
     # If we're assuming infinite coins, we can always acquire the item
     if logic.assumeInfiniteCoins:
@@ -301,15 +290,15 @@ def CanBuy(location, logic):
         return True
     # If this is a shared location, check if the current Kong can buy the location
     if location in SharedMoveLocations:
-        return KongCanBuy(location, logic, logic.kong)
+        return KongCanBuy(spoiler, location, logic, logic.kong, buy_empty)
     # Else a specific kong is required to buy it, so check that kong has enough coins
     elif location in DonkeyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.donkey)
+        return KongCanBuy(spoiler, location, logic, Kongs.donkey, buy_empty)
     elif location in DiddyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.diddy)
+        return KongCanBuy(spoiler, location, logic, Kongs.diddy, buy_empty)
     elif location in LankyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.lanky)
+        return KongCanBuy(spoiler, location, logic, Kongs.lanky, buy_empty)
     elif location in TinyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.tiny)
+        return KongCanBuy(spoiler, location, logic, Kongs.tiny, buy_empty)
     elif location in ChunkyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.chunky)
+        return KongCanBuy(spoiler, location, logic, Kongs.chunky, buy_empty)

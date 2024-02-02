@@ -1,20 +1,21 @@
 """File that shuffles loading zone exits."""
+
 import random
 
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
-import randomizer.Logic as Logic
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones
+from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones, RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
+from randomizer.Patching.Lib import IsItemSelected
 
 # Used when level order rando is ON
 LobbyEntrancePool = [
@@ -31,45 +32,46 @@ LobbyEntrancePool = [
 root = Regions.GameStart
 
 
-def GetRootExit(exitId):
+def GetRootExit(spoiler, exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
+    return [x for x in spoiler.RegionList[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
 
-def RemoveRootExit(exit):
+def RemoveRootExit(spoiler, exit):
     """Remove an exit from the world root."""
-    Logic.Regions[root].exits.remove(exit)
+    spoiler.RegionList[root].exits.remove(exit)
 
 
-def AddRootExit(exit):
+def AddRootExit(spoiler, exit):
     """Add an exit to the world root."""
-    Logic.Regions[root].exits.append(exit)
+    spoiler.RegionList[root].exits.append(exit)
 
 
-def Reset():
+def Reset(spoiler):
     """Reset shufflable exit properties set during shuffling."""
     for exit in ShufflableExits.values():
         exit.shuffledId = None
         exit.shuffled = False
     assumedExits = []
-    for exit in [x for x in Logic.Regions[root].exits if x.assumed]:
+    for exit in [x for x in spoiler.RegionList[root].exits if x.assumed]:
         assumedExits.append(exit)
     for exit in assumedExits:
-        RemoveRootExit(exit)
+        RemoveRootExit(spoiler, exit)
 
 
-def AttemptConnect(settings, frontExit, frontId, backExit, backId):
+def AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
+    settings = spoiler.settings
     frontReverse = None
     if not settings.decoupled_loading_zones:
         # Prevents an error if trying to assign an entrance back to itself
         if frontExit.back.reverse == backId:
             return False
-        frontReverse = GetRootExit(frontExit.back.reverse)
-        RemoveRootExit(frontReverse)
-    backRootExit = GetRootExit(backId)
-    RemoveRootExit(backRootExit)
+        frontReverse = GetRootExit(spoiler, frontExit.back.reverse)
+        RemoveRootExit(spoiler, frontReverse)
+    backRootExit = GetRootExit(spoiler, backId)
+    RemoveRootExit(spoiler, backRootExit)
     # Add connection between selected exits
     frontExit.shuffled = True
     frontExit.shuffledId = backId
@@ -78,29 +80,30 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
         backReverse.shuffled = True
         backReverse.shuffledId = frontExit.back.reverse
     # Attempt to verify world
-    valid = Fill.VerifyWorld(settings)
+    valid = Fill.VerifyWorld(spoiler)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
-        AddRootExit(backRootExit)
+        AddRootExit(spoiler, backRootExit)
         frontExit.shuffled = False
         frontExit.shuffledId = None
         if not settings.decoupled_loading_zones:
-            AddRootExit(frontReverse)
+            AddRootExit(spoiler, frontReverse)
             backReverse.shuffled = False
             backReverse.shuffledId = None
     return valid
 
 
-def ShuffleExitsInPool(settings, frontpool, backpool):
+def ShuffleExitsInPool(spoiler, frontpool, backpool):
     """Shuffle exits within a specific pool."""
-    NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
-    NonTagLeaves = [x for x in NonTagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+    settings = spoiler.settings
+    NonTagRegions = [x for x in backpool if not spoiler.RegionList[ShufflableExits[x].back.regionId].tagbarrel]
+    NonTagLeaves = [x for x in NonTagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
     random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
     random.shuffle(NonTagNonLeaves)
 
     TagRegions = [x for x in backpool if x not in NonTagRegions]
-    TagLeaves = [x for x in TagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+    TagLeaves = [x for x in TagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
     random.shuffle(TagLeaves)
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
@@ -112,14 +115,14 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
 
     # Coupled is more restrictive and need to also order the front pool to lower rate of failures
     if not settings.decoupled_loading_zones:
-        NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
-        NonTagLeaves = [x for x in NonTagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+        NonTagRegions = [x for x in frontpool if not spoiler.RegionList[ShufflableExits[x].back.regionId].tagbarrel]
+        NonTagLeaves = [x for x in NonTagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
         random.shuffle(NonTagLeaves)
         NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
         random.shuffle(NonTagNonLeaves)
 
         TagRegions = [x for x in frontpool if x not in NonTagRegions]
-        TagLeaves = [x for x in TagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+        TagLeaves = [x for x in TagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
         random.shuffle(TagLeaves)
         TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
         random.shuffle(TagNonLeaves)
@@ -154,7 +157,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         # Select a random origin
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
-            if AttemptConnect(settings, frontExit, frontId, backExit, backId):
+            if AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
                 # print("Assigned " + frontExit.name + " --> " + backExit.name)
                 frontpool.remove(frontId)
                 if not settings.decoupled_loading_zones:
@@ -171,13 +174,13 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             raise Ex.EntranceOutOfDestinations
 
 
-def AssumeExits(settings, frontpool, backpool, newpool):
+def AssumeExits(spoiler, frontpool, backpool, newpool):
     """Split exit pool into front and back pools, and assumes exits reachable from root."""
     for i in range(len(newpool)):
         exitId = newpool[i]
         exit = ShufflableExits[exitId]
         # When coupled, only transitions which have a reverse path can be included in the pools
-        if not settings.decoupled_loading_zones and exit.back.reverse is None:
+        if not spoiler.settings.decoupled_loading_zones and exit.back.reverse is None:
             continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
@@ -188,19 +191,22 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
         newExit = TransitionFront(exit.back.regionId, lambda l: True, exitId, True)
-        AddRootExit(newExit)
+        AddRootExit(spoiler, newExit)
 
 
-def ShuffleExits(settings: Settings):
+def ShuffleExits(spoiler):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
+    settings = spoiler.settings
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        new_level_order = None
         # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
         if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
-            ShuffleLevelOrderWithRestrictions(settings)
+            new_level_order = GenerateLevelOrderWithRestrictions(settings)
         else:
-            ShuffleLevelExits(settings)
+            new_level_order = GenerateLevelOrderUnrestricted(settings)
+        ShuffleLevelExits(settings, newLevelOrder=new_level_order)
         if settings.alter_switch_allocation:
             allocation = [1, 1, 1, 1, 2, 2, 3]
             for x in range(7):
@@ -208,23 +214,23 @@ def ShuffleExits(settings: Settings):
     elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
         frontpool = []
         backpool = []
-        AssumeExits(settings, frontpool, backpool, list(ShufflableExits.keys()))
+        AssumeExits(spoiler, frontpool, backpool, list(ShufflableExits.keys()))
         # Shuffle each entrance pool
-        ShuffleExitsInPool(settings, frontpool, backpool)
+        ShuffleExitsInPool(spoiler, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         UpdateLevelProgression(settings)
 
 
-def ExitShuffle(settings):
+def ExitShuffle(spoiler):
     """Facilitate shuffling of exits."""
     retries = 0
     while True:
         try:
             # Shuffle entrances based on settings
-            ShuffleExits(settings)
+            ShuffleExits(spoiler)
             # Verify world by assuring all locations are still reachable
-            if not Fill.VerifyWorld(settings):
+            if not Fill.VerifyWorld(spoiler):
                 raise Ex.EntrancePlacementException
             return
         except Ex.EntrancePlacementException:
@@ -233,7 +239,7 @@ def ExitShuffle(settings):
                 raise Ex.EntranceAttemptCountExceeded
             retries += 1
             js.postMessage("Entrance placement failed. Retrying. Tries: " + str(retries))
-            Reset()
+            Reset(spoiler)
 
 
 def UpdateLevelProgression(settings: Settings):
@@ -306,31 +312,50 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
     settings.level_order = shuffledLevelOrder
 
 
-def ShuffleLevelOrderWithRestrictions(settings: Settings):
-    """Determine level order given starting kong and the need to find more kongs along the way."""
-    if settings.hard_level_progression:
-        newLevelOrder = ShuffleLevelOrderUnrestricted(settings)
+def GenerateLevelOrderWithRestrictions(settings: Settings):
+    """Generate a level order given starting kong and the need to find more kongs along the way."""
+    # All methods here follow this Kongs vs level progression rule:
+    # Must be able to have 2 kongs no later than level 2
+    # Must be able to have 3 kongs no later than level 3
+    # Must be able to have 4 kongs no later than level 4
+    # Must be able to have 5 kongs no later than level 5
+    # Valid Example:
+    #   1. Caves - No kongs found
+    #   2. Aztec - Can free 2nd kong here, other kong is move locked
+    #   3. Japes - Can free 3rd kong here
+    #   4. Galleon - Find move to free other kong from aztec
+    #   5. Factory - Find last kong
+    #   6. Castle
+    #   7. Fungi
+    if settings.hard_level_progression:  # Unless you're CLO - you get no such restrictions
+        newLevelOrder = GenerateLevelOrderUnrestricted(settings)
     elif settings.starting_kongs_count == 1:
-        newLevelOrder = ShuffleLevelOrderForOneStartingKong(settings)
+        newLevelOrder = GenerateLevelOrderForOneStartingKong(settings)
     else:
-        newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
+        newLevelOrder = GenerateLevelOrderForMultipleStartingKongs(settings)
     if None in newLevelOrder.values():
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
-    ShuffleLevelExits(settings, newLevelOrder)
-
-
-def ShuffleLevelOrderUnrestricted(settings):
-    """Shuffle the level order without Kong placement restrictions."""
-    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
-    allLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
-    random.shuffle(allLevels)
-    for i in range(len(allLevels)):
-        newLevelOrder[i + 1] = allLevels[i]
     return newLevelOrder
 
 
-def ShuffleLevelOrderForOneStartingKong(settings):
-    """Determine level order given only starting with one kong and the need to find more kongs along the way."""
+def GenerateLevelOrderUnrestricted(settings):
+    """Generate a level order without Kong placement restrictions."""
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
+    unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+    if settings.enable_plandomizer:
+        for i in range(len(newLevelOrder.keys())):
+            if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
+                newLevelOrder[i + 1] = Levels(settings.plandomizer_dict["plando_level_order_" + str(i)])
+                unplacedLevels.remove(newLevelOrder[i + 1])
+    for i in range(len(newLevelOrder.keys())):
+        if newLevelOrder[i + 1] is None:
+            newLevelOrder[i + 1] = random.choice(unplacedLevels)
+            unplacedLevels.remove(newLevelOrder[i + 1])
+    return newLevelOrder
+
+
+def GenerateLevelOrderForOneStartingKong(settings):
+    """Generate a level order given only starting with one kong and the need to find more kongs along the way."""
     levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
     # Decide where Aztec will go
     # Diddy can reasonably make progress if Aztec is first level
@@ -410,8 +435,8 @@ def ShuffleLevelOrderForOneStartingKong(settings):
     return newLevelOrder
 
 
-def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
-    """Determine level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
+def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
+    """Generate a level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
     # Initialize level order
     newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
@@ -454,7 +479,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                     if lankyAccessible:
                         guitarDoorAccess = (
                             Kongs.diddy in settings.starting_kong_list
-                            or settings.open_levels
+                            or IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door)
                             or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == ActivateAllBananaports.all)
                         )
                         if not guitarDoorAccess or (
@@ -476,7 +501,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
         # If this happens, we got unlucky (settings dependending) and restart this process or else we crash
         # The most common instance of this is when Aztec is level 1 and you don't start with Diddy
         if levelIndexOptions == []:
-            return ShuffleLevelOrderForMultipleStartingKongs(settings)
+            return GenerateLevelOrderForMultipleStartingKongs(settings)
         # Place level in newLevelOrder and remove from list of remaining slots
         shuffledLevelIndex = random.choice(levelIndexOptions)
         levelIndicesToFill.remove(shuffledLevelIndex)

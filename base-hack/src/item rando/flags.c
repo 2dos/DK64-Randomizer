@@ -182,8 +182,14 @@ int clampFlag(int flag) {
     if ((flag >= FLAG_RAINBOWCOIN_0) && (flag < (FLAG_RAINBOWCOIN_0 + 16))) {
         return 1; // Rainbow Coins
     }
-    if (flag == 0x300) {
+    if (flag == FLAG_COLLECTABLE_BEAN) {
         return 1; // Fungi Bean
+    }
+    if ((flag >= FLAG_MELONCRATE_0) && (flag < (FLAG_MELONCRATE_0 + 16))) {
+        return 1; // Melon Crates
+    }
+    if ((flag >= FLAG_ENEMY_KILLED_0) && (flag < (FLAG_ENEMY_KILLED_0 + ENEMIES_TOTAL))) {
+        return 1; // Enemies
     }
     return 0;
 }
@@ -220,6 +226,79 @@ void displayKeyText(int flag) {
         }
     }
 }
+
+int hasMove(int flag) {
+    if (flag == 0) {
+        return 1;
+    }
+    if (flag & 0x8000) {
+        int item_kong = (flag >> 12) & 7;
+        if (item_kong > 4) {
+            item_kong = 0;
+        }
+        int item_type = (flag >> 8) & 15;
+        int item_index = flag & 0xFF;
+        if (item_type == 7) {
+            return 0;
+        } else {
+            char* temp_fba = (char*)&MovesBase[item_kong];
+            int shift = 0;
+            if (item_index != 0) {
+                shift = item_index - 1;
+            }
+            int init_val = *(char*)(temp_fba + item_type);
+            return init_val & (1 << shift);
+        }
+    } else {
+        return checkFlagDuplicate(flag, FLAGTYPE_PERMANENT);
+    }
+    return 0;
+}
+
+static unsigned char arcade_hh_bonus[] = {
+    HHITEM_COMPANYCOIN, // # 0 - Nintendo Coin / No Item
+    HHITEM_BEAN, // "bean",  # 1 - Bean
+    HHITEM_BLUEPRINT, // "blueprint",  # 2 - Blueprint
+    HHITEM_CROWN, // "crown",  # 3 - Crown
+    HHITEM_FAIRY, // "fairy",  # 4 - Fairy
+    HHITEM_GB, // "gb",  # 5 - GB
+    HHITEM_KEY, // "key",  # 6 - Key
+    HHITEM_MEDAL, // "medal",  # 7 - Medal
+    HHITEM_PEARL, // "pearl",  # 8 - Pearl
+    HHITEM_MOVE, // "potion_dk",  # 9 - Potion (DK)
+    HHITEM_MOVE, // "potion_diddy",  # 10 - Potion (Diddy)
+    HHITEM_MOVE, // "potion_lanky",  # 11 - Potion (Lanky)
+    HHITEM_MOVE, // "potion_tiny",  # 12 - Potion (Tiny)
+    HHITEM_MOVE, // "potion_chunky",  # 13 - Potion (Chunky)
+    HHITEM_MOVE, // "potion_any",  # 14 - Potion (Any)
+    HHITEM_KONG, // "dk",  # 15 - DK
+    HHITEM_KONG, // "diddy",  # 16 - Diddy
+    HHITEM_KONG, // "lanky",  # 17 - Lanky
+    HHITEM_KONG, // "tiny",  # 18 - Tiny
+    HHITEM_KONG, // "chunky",  # 19 - Chunky
+    HHITEM_RAINBOWCOIN, // "rainbow",  # 20 - Rainbow Coin
+    HHITEM_COMPANYCOIN, // "rwcoin",  # 21 - RW Coin
+    HHITEM_NOTHING, // "melon",  # 22 - Melon Slice
+};
+
+static unsigned char jetpac_hh_bonus[] = {
+    HHITEM_COMPANYCOIN, // # 0 - Rareware Coin / No Item
+    HHITEM_BEAN, // "bean",  # 1 - Bean
+    HHITEM_BLUEPRINT, // "blueprint",  # 2 - Blueprint
+    HHITEM_CROWN, // "crown",  # 3 - Crown
+    HHITEM_FAIRY, // "fairy",  # 4 - Fairy
+    HHITEM_GB, // "gb",  # 5 - GB
+    HHITEM_KEY, // "key",  # 6 - Key
+    HHITEM_MEDAL, // "medal",  # 7 - Medal
+    HHITEM_PEARL, // "pearl",  # 8 - Pearl
+    HHITEM_MOVE, // "potion",  # 9 - Potion
+    HHITEM_KONG, // "kong",  # 10 - Kong
+    HHITEM_RAINBOWCOIN, // "rainbow",  # 11 - Rainbow Coin
+    HHITEM_COMPANYCOIN, // "nintendo",  # 12 - Nintendo Coin
+    HHITEM_NOTHING, // "melon",  # 13 - Melon
+};
+
+static short banned_hh_items[] = {HHITEM_NOTHING, HHITEM_GB};
 
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
@@ -265,7 +344,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
         int item_index = 0;
         int item_kong = 0;
         if ((source == 1) && (!checkFlagDuplicate(flag_index, FLAGTYPE_PERMANENT)) && (Gamemode == GAMEMODE_ADVENTURE)) {
-            if ((flag_index == FLAG_ITEM_SLAM_0) || (flag_index == FLAG_ITEM_SLAM_1)) {
+            if ((flag_index >= FLAG_ITEM_SLAM_0) && (flag_index <= FLAG_ITEM_SLAM_2) ) {
                 // Slam
                 item_index = giveSlamLevel();
                 spawn_overlay = 1;
@@ -277,6 +356,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 for (int i = 1; i < 5; i++) {
                     MovesBase[i].ammo_belt = item_index;
                 }
+                CollectableBase.StandardAmmo = 50 * (1 << item_index);
                 spawn_overlay = 1;
                 item_type = 3;
             } else if ((flag_index >= FLAG_ITEM_INS_0) && (flag_index <= FLAG_ITEM_INS_2)) {
@@ -340,6 +420,12 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             int give_rainbow = 0;
             int give_health = 0;
             if (vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+                if (Rando.arcade_reward < sizeof(arcade_hh_bonus)) {
+                    helm_hurry_items hh_bonus = arcade_hh_bonus[(int)Rando.arcade_reward];
+                    if (!inShortList(hh_bonus, &banned_hh_items[0], 2)) {
+                        addHelmTime(hh_bonus, 1);
+                    }
+                }
                 switch (Rando.arcade_reward) {
                     case 5:
                         give_gb = 1;
@@ -356,6 +442,12 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                         break;
                 }
             } else if (vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+                if (Rando.jetpac_reward < sizeof(jetpac_hh_bonus)) {
+                    helm_hurry_items hh_bonus = jetpac_hh_bonus[(int)Rando.jetpac_reward];
+                    if (!inShortList(hh_bonus, &banned_hh_items[0], 2)) {
+                        addHelmTime(hh_bonus, 1);
+                    }
+                }
                 switch (Rando.jetpac_reward) {
                     case 5:
                         give_gb = 1;
@@ -396,7 +488,7 @@ void getFLUTSize(void) {
     /**
      * @brief Determine amount of flags in the FLUT
      */
-    for (int i = 0; i < 400; i++) {
+    for (int i = 0; i < 0xD00; i++) {
         if (ItemRando_FLUT[2 * i] == -1) {
             flut_size = i;
             return;

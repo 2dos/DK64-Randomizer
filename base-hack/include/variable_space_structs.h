@@ -34,21 +34,21 @@ typedef struct varspace {
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost
 	/* 0x058 */ char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
 	/* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On
-	/* 0x05E */ unsigned short aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
-	/* 0x060 */ unsigned short aztec_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x062 */ unsigned short caves_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x064 */ unsigned short seal_race_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x066 */ unsigned short factory_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x068 */ unsigned short castle_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06A */ unsigned short seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06C */ unsigned short fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06E */ unsigned short fungi_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x070 */ unsigned short japes_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x072 */ unsigned short castle_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x074 */ unsigned short castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x076 */ unsigned short k_rool_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x078 */ unsigned short exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x05E */ LZREntrance aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
+	/* 0x060 */ LZREntrance aztec_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x062 */ LZREntrance caves_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x064 */ LZREntrance seal_race_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x066 */ LZREntrance factory_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x068 */ LZREntrance castle_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x06A */ LZREntrance seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x06C */ LZREntrance fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x06E */ LZREntrance fungi_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x070 */ LZREntrance japes_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x072 */ LZREntrance castle_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x074 */ LZREntrance castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x076 */ LZREntrance k_rool_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x088 */ LZREntrance enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char boss_kong[7]; // Array of kongs used to fight the boss, in order of vanilla level sequence. If no changes are made, supply the vanilla values
 	/* 0x09E */ unsigned char boss_map[7]; // Array of boss maps, in order of vanilla level sequence. If no changes are made, supply the vanilla values
@@ -60,7 +60,11 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
-	/* 0x0B3 */ char unk_B0[0xC7 - 0xB3];
+	/* 0x0B3 */ char unk_B0[0xC3 - 0xB3];
+	/* 0x0C3 */ char outlined_crosshair;
+	/* 0x0C4 */ ROMFlags rom_flags;
+	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
+	/* 0x0C6 */ HardModeSettings hard_mode; // Colloquially known as "Seed of Death"
 	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
 	/* 0x0C8 */ unsigned char default_sfx_volume; // 0 - 40
 	/* 0x0C9 */ unsigned char default_music_volume; // 0 - 40
@@ -74,7 +78,7 @@ typedef struct varspace {
 	/* 0x0DC */ unsigned short japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
 	/* 0x0DE */ unsigned short vulture_item; // Actor ID of item that the vulture in Tiny Temple has
 	/* 0x0E0 */ fairy_activations fairy_triggers_disabled;
-	/* 0x0E2 */ short helm_hurry_start;
+	/* 0x0E2 */ unsigned short helm_hurry_start;
 	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
 	/* 0x100 */ char fairy_rando_on;
 	/* 0x101 */ char location_visuals; // Bitfield for visual hints of what is inside a location. 0000 0abc. a = Crowns , b = Boss Doors , c = Bonus Barrels
@@ -90,9 +94,9 @@ typedef struct varspace {
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ unsigned char medal_cb_req; // 0 = default (75). int (1-100)
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
-	/* 0x114 */ unsigned char unk114;
-	/* 0x115 */ unsigned char unk115;
-	/* 0x116 */ char hard_enemies; // 0 = Off, 1 = On
+	/* 0x114 */ unsigned char increase_tns_boss_lighting; // Increases lighting when awaiting to enter boss to make it easier to see item reward preview
+	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
+	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
@@ -106,8 +110,8 @@ typedef struct varspace {
 	/* 0x129 */ char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
 	/* 0x12F */ char disco_chunky; // 0 = Normal, 1 = Disco. Overriden by Krusha if Krusha replaces Chunky
-	/* 0x130 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x132 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
+	/* 0x130 */ LZREntrance ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
 	/* 0x136 */ unsigned char klaptrap_color_bbother; // 0 = Green, 1 = Purple, 2 = Red
@@ -159,4 +163,17 @@ typedef struct varspace {
 	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
+	/* 0x1B4 */ char true_widescreen; // Port of the widescreen hack from gamemasterplc
+	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
+	/* 0x1B6 */ unsigned char tttrouble_turtle_model; // 0 = Vanilla
+	/* 0x1B7 */ DisabledMusicStruct disabled_music;
+	/* 0x1B8 */ unsigned short diddy_rnd_codes[3]; // 4 bits assigned for each part of the combination
+	/* 0x1BE */ unsigned char jetpac_enemy_order[8]; // Indexes 0-7 to represent enemy difficulty
+	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
+	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
+	/* 0x1DC */ unsigned char galleon_water_raised;
+	/* 0x1DD */ unsigned char krool_requirements; // K Rool bitfield 8765 4321
+	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
+	/* 0x1E0 */ FasterChecks faster_checks; // Size: 2
+	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 } varspace;

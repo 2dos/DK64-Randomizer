@@ -1,10 +1,9 @@
 """Encryption and Decryption of settings strings."""
-import base64
-import collections
-import json
-from itertools import groupby
 
-import js
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Dict, Tuple
+
 from randomizer.Enums.Settings import (
     BananaportRando,
     DeprecatedSettings,
@@ -14,6 +13,7 @@ from randomizer.Enums.Settings import (
     SettingsStringIntRangeMap,
     SettingsStringListTypeMap,
     SettingsStringTypeMap,
+    SpoilerHints,
 )
 
 letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -29,7 +29,7 @@ def int_to_bin_string(num, bytesize):
     return format(num if num >= 0 else (1 << bytesize) + num, f"0{bytesize}b").zfill(bytesize)
 
 
-def bin_string_to_int(bin_str, bytesize):
+def bin_string_to_int(bin_str: str, bytesize: int) -> int:
     """Convert a binary string to an integer.
 
     This function is needed to handle negative numbers.
@@ -40,7 +40,7 @@ def bin_string_to_int(bin_str, bytesize):
         return int(bin_str, 2)
 
 
-def get_var_int_encode_details(settingEnum):
+def get_var_int_encode_details(settingEnum: SettingsStringEnum) -> Tuple[int, bool]:
     """Return key information needed to encode/decode a given var_int setting.
 
     Returns:
@@ -70,7 +70,7 @@ def encode_var_int(settingEnum, num):
     return int_to_bin_string(num, bit_len)
 
 
-def decode_var_int(settingEnum, bin_str):
+def decode_var_int(settingEnum: SettingsStringEnum, bin_str: str) -> int:
     """Convert a binary string to a variable-size integer."""
     bit_len, negatives_possible = get_var_int_encode_details(settingEnum)
     if negatives_possible:
@@ -102,18 +102,46 @@ settingsExclusionMap = {
         ]
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
+    "starting_moves_count": {0: ["random_starting_move_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
-    "bonus_barrel_rando": {False: ["minigames_list_selected"]},
+    "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
     "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
     "select_keys": {False: ["starting_keys_list_selected"], True: ["krool_key_count"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
+    "hard_mode": {False: ["hard_mode_selected"]},
+    "spoiler_hints": {
+        SpoilerHints.off: [
+            "points_list_kongs"
+            "points_list_keys"
+            "points_list_guns"
+            "points_list_instruments"
+            "points_list_training_moves"
+            "points_list_important_shared"
+            "points_list_pad_moves"
+            "points_list_barrel_moves"
+            "points_list_active_moves"
+            "points_list_bean"
+        ],
+        SpoilerHints.vial_colors: [
+            "points_list_kongs"
+            "points_list_keys"
+            "points_list_guns"
+            "points_list_instruments"
+            "points_list_training_moves"
+            "points_list_important_shared"
+            "points_list_pad_moves"
+            "points_list_barrel_moves"
+            "points_list_active_moves"
+            "points_list_bean"
+        ],
+    },
 }
 
 
 def prune_settings(settings_dict: dict):
     """Remove certain settings based on the values of other settings."""
-    settings_to_remove = []
+    settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections"]
     # Remove settings based on the exclusion map above.
     for keySetting, exclusions in settingsExclusionMap.items():
         if settings_dict[keySetting] in exclusions:
@@ -137,46 +165,64 @@ def encrypt_settings_string_enum(dict_data: dict):
     """
     for pop in [
         "download_patch_file",
+        "load_patch_file",
         "seed",
         "settings_string",
-        "chunky_colors",
-        "chunky_custom_color",
-        "diddy_colors",
-        "diddy_custom_color",
-        "dk_colors",
-        "dk_custom_color",
-        "enguarde_colors",
-        "enguarde_custom_color",
+        "chunky_main_colors",
+        "chunky_main_custom_color",
+        "chunky_other_colors",
+        "chunky_other_custom_color",
+        "diddy_clothes_colors",
+        "diddy_clothes_custom_color",
+        "dk_fur_colors",
+        "dk_fur_custom_color",
+        "dk_tie_colors",
+        "dk_tie_custom_color",
+        "enguarde_skin_colors",
+        "enguarde_skin_custom_color",
         "klaptrap_model",
+        "random_models",
         "misc_cosmetics",
         "disco_chunky",
         "dark_mode_textboxes",
-        "lanky_colors",
-        "lanky_custom_color",
-        "rambi_colors",
-        "rambi_custom_color",
+        "lanky_clothes_colors",
+        "lanky_fur_colors",
+        "lanky_clothes_custom_color",
+        "lanky_fur_custom_color",
+        "rambi_skin_colors",
+        "rambi_skin_custom_color",
         "random_colors",
         "random_music",
         "music_bgm_randomized",
         "music_events_randomized",
         "music_majoritems_randomized",
         "music_minoritems_randomized",
-        "tiny_colors",
-        "tiny_custom_color",
+        "tiny_hair_colors",
+        "tiny_clothes_colors",
+        "tiny_hair_custom_color",
+        "tiny_clothes_custom_color",
         "override_cosmetics",
         "remove_water_oscillation",
         "head_balloons",
         "colorblind_mode",
         "search",
         "holiday_setting",
+        "holiday_setting_offseason",
         "homebrew_header",
         "dpad_display",
         "camera_is_follow",
         "sfx_volume",
         "music_volume",
-        "camera_is_widescreen",
+        "true_widescreen",
         "camera_is_not_inverted",
         "sound_type",
+        "songs_excluded",
+        "excluded_songs_selected",
+        "troff_brighten",
+        "crosshair_outline",
+        "custom_music_proportion",
+        "fill_with_custom_music",
+        "delayed_spoilerlog_release",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)
@@ -198,7 +244,7 @@ def encrypt_settings_string_enum(dict_data: dict):
             bitstring += int_to_bin_string(value, 4)
         elif key_data_type == SettingsStringDataType.int8:
             bitstring += int_to_bin_string(value, 8)
-        elif key_data_type == SettingsStringDataType.int16:
+        elif key_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
             bitstring += int_to_bin_string(value, 16)
         elif key_data_type == SettingsStringDataType.var_int:
             bitstring += encode_var_int(key_enum, value)
@@ -214,7 +260,7 @@ def encrypt_settings_string_enum(dict_data: dict):
                     bitstring += int_to_bin_string(item, 4)
                 elif key_list_data_type == SettingsStringDataType.int8:
                     bitstring += int_to_bin_string(item, 8)
-                elif key_list_data_type == SettingsStringDataType.int16:
+                elif key_list_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
                     bitstring += int_to_bin_string(item, 16)
                 elif key_list_data_type == SettingsStringDataType.var_int:
                     bitstring += encode_var_int(key_enum, item)
@@ -242,7 +288,7 @@ def encrypt_settings_string_enum(dict_data: dict):
     return letter_string
 
 
-def decrypt_settings_string_enum(encrypted_string: str):
+def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
     """Take an enum-based encrypted string and return a dictionary.
 
     Args:
@@ -282,8 +328,10 @@ def decrypt_settings_string_enum(encrypted_string: str):
         elif key_data_type == SettingsStringDataType.int8:
             val = bin_string_to_int(bitstring[bit_index : bit_index + 8], 8)
             bit_index += 8
-        elif key_data_type == SettingsStringDataType.int16:
+        elif key_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
             val = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
+            if key_data_type == SettingsStringDataType.u16 and val < 0:
+                val += 65536
             bit_index += 16
         elif key_data_type == SettingsStringDataType.var_int:
             bit_len, _ = get_var_int_encode_details(key_enum)
@@ -305,8 +353,10 @@ def decrypt_settings_string_enum(encrypted_string: str):
                 elif key_list_data_type == SettingsStringDataType.int8:
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 8], 8)
                     bit_index += 8
-                elif key_list_data_type == SettingsStringDataType.int16:
+                elif key_list_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
+                    if key_data_type == SettingsStringDataType.u16 and val < 0:
+                        val += 65536
                     bit_index += 16
                 elif key_data_type == SettingsStringDataType.var_int:
                     bit_len, _ = get_var_int_encode_details(key_enum)
@@ -326,6 +376,7 @@ def decrypt_settings_string_enum(encrypted_string: str):
             val = key_data_type(int_val)
             bit_index += max_value.bit_length()
         # If this setting is not deprecated, add it.
-        if key_enum not in DeprecatedSettings:
+        # The plando setting needs to be encoded in settings strings but not applied when decoding for logging purposes.
+        if key_enum not in DeprecatedSettings and key_enum != SettingsStringEnum.enable_plandomizer:
             settings_dict[key_name] = val
     return settings_dict

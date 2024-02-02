@@ -64,7 +64,7 @@
 .definelabel ChimpyCam, 0x80744530
 .definelabel ScreenRatio, 0x807444C0
 .definelabel SoundType, 0x80745844
-.definelabel CurrentActorPointer, 0x807FBB44
+.definelabel LastSpawnedActor, 0x807FBB44
 .definelabel CurrentActorPointer_0, 0x807FBB40
 .definelabel LoadedActorCount, 0x807FBB35
 .definelabel LoadedActorArray, 0x807FB930
@@ -138,6 +138,8 @@
 .definelabel TransitionType, 0x8076AEE0
 .definelabel DKTVKong, 0x80755328
 .definelabel CutsceneBanks, 0x807F5B10
+.definelabel QueuedCutsceneFunctions, 0x807452A0
+.definelabel ActorTimer, 0x8076A068
 .definelabel EEPROMType, 0x807EDEAC
 
 .definelabel ExitPointer, 0x807FC900
@@ -169,6 +171,7 @@
 .definelabel scriptsLoaded, 0x807F60A8
 .definelabel scriptLoadsAttempted, 0x807F7140
 .definelabel BonusBarrelData, 0x80755F4C
+.definelabel ArenaScore, 0x80744518
 
 .definelabel KongUnlockedMenuArray, 0x80033804
 .definelabel FilePercentage, 0x80033F51
@@ -201,8 +204,6 @@
 .definelabel currentCharSpawner, 0x807FDC9C
 .definelabel EnemiesKilledCounter, 0x80744508
 
-.definelabel getXRatioMovement, 0x80612794
-.definelabel getZRatioMovement, 0x80612790
 .definelabel MelonArray, 0x800334DC
 .definelabel IGT, 0x80750AB0
 .definelabel LevelStateBitfield, 0x807FBB60
@@ -245,7 +246,20 @@
 .definelabel StackTraceSize, 0x807FEF78
 .definelabel StackTraceStartX, 0x807FEF7C
 
+.definelabel ChunkLighting_Red, 0x8076A0B4
+.definelabel ChunkLighting_Green, 0x8076A0B8
+.definelabel ChunkLighting_Blue, 0x8076A0BC
+.definelabel chunk_count, 0x807F6C28
+.definelabel chunkArray, 0x807F6C18
+
 .definelabel BlueprintLargeImageColors, 0x80033228
 
 .definelabel SFXVolume, 0x8074583C
 .definelabel MusicVolume, 0x80745840
+.definelabel BorderInformation, 0x80750840
+
+.definelabel RambiArenaComboTimer, 0x8002D930
+.definelabel RambiArenaComboSize, 0x8002D92C
+.definelabel RambiArenaComboChain, 0x8002DEF0
+
+.definelabel StoredOrangeCount, 0x80029FA4

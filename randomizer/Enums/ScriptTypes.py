@@ -1,4 +1,5 @@
 """Object Instance Script type enum."""
+
 from enum import IntEnum, auto
 
 
@@ -11,3 +12,5 @@ class ScriptTypes(IntEnum):
     TnsIndicator = auto()
     CrownMain = auto()
     CrownIsles2 = auto()
+    MelonCrate = auto()
+    DeleteItem = auto()

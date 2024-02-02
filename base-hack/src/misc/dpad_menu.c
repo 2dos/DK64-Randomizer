@@ -24,6 +24,17 @@
 #define DPADVISIBLE_ALL 1
 #define DPADVISIBLE_MINIMAL 2
 
+static short race_maps[] = {
+    MAP_JAPESMINECART,
+    MAP_FUNGIMINECART,
+    MAP_CASTLEMINECART,
+    MAP_AZTECBEETLE,
+    MAP_CAVESBEETLERACE,
+    MAP_FACTORYCARRACE,
+    MAP_CASTLECARRACE,
+    MAP_GALLEONSEALRACE
+};
+
 int canUseDPad(void) {
     /**
      * @brief Determines whether the player will be able to use the DPad Menu.
@@ -46,19 +57,10 @@ int canUseDPad(void) {
     if (TBVoidByte & 2) {
         return 0; // Pausing/Paused
     }
-    if ((CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_CANDY)) {
+    if (inShop(CurrentMap, 0)) {
         return 0; // In Shop
     }
-    if (
-        (CurrentMap == MAP_JAPESMINECART) || // Japes Minecart
-        (CurrentMap == MAP_FUNGIMINECART) || // Fungi Minecart
-        (CurrentMap == MAP_CASTLEMINECART) || // Castle Minecart
-        (CurrentMap == MAP_AZTECBEETLE) || // Aztec Beetle
-        (CurrentMap == MAP_CAVESBEETLERACE) || // Caves Beetle
-        (CurrentMap == MAP_FACTORYCARRACE) || // Factory Car Race
-        (CurrentMap == MAP_CASTLECARRACE) || // Castle Car Race
-        (CurrentMap == MAP_GALLEONSEALRACE) // Seal Race
-    ) {
+    if (inShortList(CurrentMap, &race_maps[0], 8)) {
         return 0; // In Race
     }
     if (inMinigame(CurrentMap)) {
@@ -85,8 +87,12 @@ int* drawDPad(int* dl) {
         return dl;
     }
     int DPAD_Y = DPAD_Y_HIGH;
+    int dpad_x_pos = DPAD_X;
+    if (Rando.true_widescreen) {
+        dpad_x_pos = (SCREEN_WD * 4) - 255;
+    }
     if (Rando.dpad_visual_enabled == DPADVISIBLE_ALL) {
-        dl = drawImage(dl, IMAGE_DPAD, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y + 70, DPAD_SCALE, DPAD_SCALE, 0xC0);
+        dl = drawImage(dl, IMAGE_DPAD, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y + 70, DPAD_SCALE, DPAD_SCALE, 0xC0);
         if ((Rando.tag_anywhere) && (Character < 5)) {
             // Tag Anywhere Faces
             int kong_left = getTagAnywhereKong(-1);
@@ -96,8 +102,8 @@ int* drawDPad(int* dl) {
             if (can_ta) {
                 ta_opacity = 0xFF;
             }
-            dl = drawImage(dl, IMAGE_KONG_START + kong_left, RGBA16, 32, 32, DPAD_X, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
-            dl = drawImage(dl, IMAGE_KONG_START + kong_right, RGBA16, 32, 32, DPAD_X + 140, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
+            dl = drawImage(dl, IMAGE_KONG_START + kong_left, RGBA16, 32, 32, dpad_x_pos, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
+            dl = drawImage(dl, IMAGE_KONG_START + kong_right, RGBA16, 32, 32, dpad_x_pos + 140, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
         }
         if (Rando.quality_of_life.ammo_swap) {
             // Homing Ammo Toggle
@@ -106,7 +112,7 @@ int* drawDPad(int* dl) {
                 if (CollectableBase.HomingAmmo == 0) {
                     render_homing = 0;
                 }
-                dl = drawImage(dl, IMAGE_AMMO_START + render_homing, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y + 145, ICON_SCALE, ICON_SCALE, 0xFF);
+                dl = drawImage(dl, IMAGE_AMMO_START + render_homing, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y + 145, ICON_SCALE, ICON_SCALE, 0xFF);
 
             }
         }
@@ -125,7 +131,7 @@ int* drawDPad(int* dl) {
                 mdl_opacity = 0xFF;
             }
         }
-        dl = drawImage(dl, 116, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, mdl_opacity);
+        dl = drawImage(dl, 116, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, mdl_opacity);
     }
     return dl;
 }
@@ -142,6 +148,7 @@ void handleDPadFunctionality(void) {
                 int world = getWorld(CurrentMap,0);
                 if ((world < 7) && (CurrentMap != MAP_TROFFNSCOFF)) {
                     displayItemOnHUD(0xA,0,0);
+                    initDingSprite();
                 }
             }
         }

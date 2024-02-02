@@ -10,3 +10,5 @@
 .definelabel DisplayExplosionSprite, 0x8067DCC0
 .definelabel displaySprite, 0x806AB4EC
 .definelabel spriteControlCode, 0x806AC07C
+.definelabel drawRetroSprite, 0x8070F2FC
+.definelabel displayPauseSpriteNumber, 0x806AB808

@@ -240,7 +240,7 @@ void OrangeGunCode(void) {
      */
     projectile_paad* paad = CurrentActorPointer_0->paad;
     projectile_extra* extra = (projectile_extra*)CurrentActorPointer_0->data_pointer;
-    int current_actor_timer = *(int*)(0x8076A068);
+    int current_actor_timer = ActorTimer;
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->grounded &= 0xFFFE;
         CurrentActorPointer_0->rot_y_copy = (extra->initial_rotation / *(float*)(0x8075A170)) * *(float*)(0x8075A174);
@@ -300,7 +300,7 @@ void OrangeGunCode(void) {
         float x = CurrentActorPointer_0->xPos;
         float y = CurrentActorPointer_0->yPos;
         float z = CurrentActorPointer_0->zPos;
-        displaySpriteAtXYZ(sprite_table[39], 0x40000000, x, y, z);
+        displaySpriteAtXYZ(sprite_table[39], 2.0f, x, y, z);
         // displaySpriteAtXYZ(sprite_table[5], 0x3EE66666, x, y, z);
         unkProjectileCode_4(CurrentActorPointer_0, 0xF6, 0xFF, 0x7F, 0x1E);
         deleteActorContainer(CurrentActorPointer_0);
@@ -309,7 +309,7 @@ void OrangeGunCode(void) {
                 unkSpriteRenderFunc_1(1);
                 unkSpriteRenderFunc_3(0xB000000 + (i << 1));
                 loadSpriteFunction(0x8071ABDC);
-                displaySpriteAtXYZ(sprite_table[38], 0x3EB33333, x, y, z);
+                displaySpriteAtXYZ(sprite_table[38], 0.35f, x, y, z);
             }
         }
     }

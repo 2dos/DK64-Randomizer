@@ -6,6 +6,8 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.Settings import FasterChecksSelected
 from randomizer.Enums.Time import Time
 from randomizer.LogicClasses import Collectible
 
@@ -17,7 +19,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Warp 4
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Warp 3
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.feather or l.phasewalk or l.CanPhaseswim(), None, 4),  # Behind feather gate only
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.phasewalk or l.CanPhaseswim(), None, 4),  # Behind feather gate only
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Minecart Entry
 
@@ -98,11 +100,11 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 3),  # To Rabbit
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # To Rabbit
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 8),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: (l.saxophone and l.mini) or l.advanced_platforming, None, 1),
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.saxophone and l.mini, None, 1),
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack and l.TimeAccess(Regions.HollowTreeArea, Time.Night), None, 4),  # Alcove in tree
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Near Lanky BP
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone, None, 3, True, True, "vanilla", True),  # Beat first rabbit race
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (not l.checkFastCheck(FasterChecksSelected.forest_rabbit_race) or l.sprint) and l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone, None, 3, True, True, "vanilla", True),  # Beat first rabbit race
     ],
     Regions.Anthill: [
     ],
@@ -132,7 +134,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
     ],
     Regions.GrinderRoom: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) or l.phasewalk, None, 1),  # In slam box
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam or l.phasewalk, None, 1),  # In slam box
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk) and l.coconut, None, 1),  # Behind gate
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
@@ -159,7 +161,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.strongKong, None, 3),  # On thorn vines
     ],
     Regions.ThornvineBarn: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) or l.phasewalk, None, 1),  # In slam box
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.Slam or l.phasewalk) and l.isdonkey, None, 1),  # In slam box
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In trough
     ],
     Regions.WormArea: [

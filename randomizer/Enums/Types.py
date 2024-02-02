@@ -1,4 +1,5 @@
 """Location/item type enum."""
+
 from enum import IntEnum, auto
 
 from randomizer.Enums.Items import Items
@@ -29,6 +30,8 @@ class Types(IntEnum):
     JunkItem = auto()
     Hint = auto()
     PreGivenMove = auto()
+    CrateItem = auto()
+    Enemies = auto()
 
 
 # If you make change to this selector, make sure to change the corresponding
@@ -52,6 +55,7 @@ ItemRandoSelector = [
     {"name": "Miscellaneous Items", "value": "beanpearl", "tooltip": "The 5 Pearls and the Bean are in the Pool&#10;Tiny's Anthill and Treasure Chest become possible locations for items."},
     {"name": "Ice Traps", "value": "fakeitem", "tooltip": "If you pick up a fake item it'll hurt and freeze you."},
     {"name": "Junk Items", "value": "junkitem", "tooltip": "Pointless items will fill no-item slots."},
+    {"name": "Melon Crates", "value": "crateitem", "tooltip": "Melon Crates become possible locations for items."},
 ]
 
 KeySelector = [

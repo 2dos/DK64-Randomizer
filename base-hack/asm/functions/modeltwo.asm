@@ -14,6 +14,8 @@
 .definelabel unkObjFunction13, 0x80604BE8
 .definelabel unkObjFunction14, 0x80605380
 .definelabel unkObjFunction15, 0x8072ECFC
+.definelabel unkObjFunction16, 0x80650D8C
+.definelabel unkObjFunction17, 0x80650B50
 .definelabel touchingModel2Object, 0x806F70A8
 .definelabel loadObjectForScripting, 0x8063B4C0
 .definelabel updateObjectScript, 0x8063E078
@@ -47,3 +49,4 @@
 .definelabel spawnModelTwoWithDelay, 0x806F5FE8
 .definelabel displayShopIcon, 0x8064826C
 .definelabel hideShop, 0x8064C9F8
+.definelabel checkLeverAngle, 0x8064BBD8
