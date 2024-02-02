@@ -29,7 +29,6 @@ jobs:
           git config --global user.name "Bump2Version"
           git config --unset-all http.https://github.com/.extraheader
           echo "Branch: $BRANCH_NAME, Commit Message: $COMMIT_MESSAGE"
-          
           if [[ "$BRANCH_NAME" == "master" || "$BRANCH_NAME" == "dev" ]]; then
               if [[ "$BRANCH_NAME" == "master" && "$COMMIT_MESSAGE" == *"Major Release"* ]]; then
                   echo "Bumping major version"
