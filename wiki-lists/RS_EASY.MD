@@ -84,7 +84,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Faster Checks Selected: 
 	- Factory Toy Monster Fight: 100%
 	- Factory Piano Game: 100%
-	- Factory Diddy Research And Development: 100%
+	- Factory Diddy Rnd: 100%
 	- Factory Arcade Round 1: 100%
 	- Factory Car Race: 100%
 	- Galleon Seal Race: 100%
@@ -171,20 +171,20 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Randomize Pickups: 60%
 - Fairies for Rareware GB: Between 1 and 10, usually close to 5
 - Remove Barriers Selected: 
-	- Japes Coconut Gates Opened: 75%
-	- Japes Shellhive Gate Opened: 75%
-	- Aztec Tunnel Door Opened: 75%
-	- Aztec 5dtemple Switches Spawned: 100%
+	- Japes Coconut Gates: 75%
+	- Japes Shellhive Gate: 75%
+	- Aztec Tunnel Door: 75%
+	- Aztec 5dtemple Switches: 100%
 	- Aztec Llama Switches: 75%
-	- Factory Production Room On: 100%
-	- Factory Testing Gate Opened: 75%
-	- Galleon Lighthouse Gate Opened: 75%
-	- Galleon Shipwreck Gate Opened: 75%
-	- Galleon Shipwreck Permanently Open: 100%
-	- Galleon Seasick Ship Spawned: 100%
-	- Forest Green Tunnel Opened: 75%
-	- Forest Yellow Tunnel Opened: 75%
-	- Caves Igloo Pads Spawned: 100%
+	- Factory Production Room: 100%
+	- Factory Testing Gate: 75%
+	- Galleon Lighthouse Gate: 75%
+	- Galleon Shipyard Area Gate: 75%
+	- Galleon Shipwreck Gates: 100%
+	- Galleon Seasick Ship: 100%
+	- Forest Green Tunnel: 75%
+	- Forest Yellow Tunnel: 75%
+	- Caves Igloo Pads: 100%
 - Banana Fairy Island Move Status: 
 	- Vanilla: 30%
 	- Shuffled: 20%
