@@ -292,9 +292,17 @@ class Spoiler:
         # GB Counts
         gb_counts = {}
         level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
-        for level_index, amount in enumerate(self.settings.EntryGBs):
-            gb_counts[level_list[level_index]] = amount
-        humanspoiler["Requirements"]["B Locker GBs"] = gb_counts
+        for level_index, amount in enumerate(self.settings.BLockerEntryCount):
+            item = self.settings.BLockerEntryItems[level_index].name
+            item_total = f" {item}s"
+            if item == "Percentage":
+                item_total = "%"
+            elif item == "Fairy" and amount != 1:
+                item_total = " Fairies" # LOL @ English Language
+            elif amount == 1:
+                item_total = f" {item}"
+            gb_counts[level_list[level_index]] = f"{amount}{item_total}"
+        humanspoiler["Requirements"]["B Locker Items"] = gb_counts
         # CB Counts
         cb_counts = {}
         for level_index, amount in enumerate(self.settings.BossBananas):

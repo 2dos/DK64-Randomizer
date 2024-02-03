@@ -228,7 +228,36 @@ class Settings:
             self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
-        if self.randomize_blocker_required_amounts:
+        self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
+        self.BLockerEntryCount = [0] * 8
+        if self.chaos_blockers:
+            limits = {
+                # Will give customization to this eventually, just need to get a proof of concept working
+                # BarrierItems.Nothing: 0,
+                BarrierItems.Kong: 5,
+                BarrierItems.Move: 20,
+                BarrierItems.GoldenBanana: 60,
+                BarrierItems.Blueprint: 15,
+                BarrierItems.Fairy: 10,
+                BarrierItems.Key: 6,
+                BarrierItems.Crown: 4,
+                BarrierItems.CompanyCoin: 1,
+                BarrierItems.Medal: 20,
+                BarrierItems.Bean: 1,
+                BarrierItems.Pearl: 3,
+                BarrierItems.RainbowCoin: 10,
+                #BarrierItems.IceTrap: 10,
+                BarrierItems.Percentage: 20,
+                # BarrierItems.ColoredBanana: 1000,
+            }
+            for slot in range(8):
+                item = random.choice(list(limits.keys()))
+                count = random.randint(0, limits[item])
+                self.BLockerEntryItems[slot] = item
+                self.BLockerEntryCount[slot] = count
+            self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
+            return
+        elif self.randomize_blocker_required_amounts:
             if self.blocker_max > 0:
                 randomlist = random.sample(range(1, self.blocker_max), 7)
                 b_lockers = randomlist
@@ -253,7 +282,8 @@ class Settings:
                 self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
-        self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
+        
+        self.BLockerEntryCount = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
         self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
     def generate_main(self):
@@ -358,6 +388,8 @@ class Settings:
         # random
         self.helm_barrels = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
+
+        self.chaos_blockers = True
 
         # hard_shooting: bool
         self.hard_shooting = False

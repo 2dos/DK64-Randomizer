@@ -532,8 +532,8 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
         currentGBCount = spoiler.LogicVariables.GoldenBananas
         gbThreshold = 1000
         for blocker in range(0, 8):
-            if settings.EntryGBs[blocker] > currentGBCount and settings.EntryGBs[blocker] < gbThreshold:
-                gbThreshold = settings.EntryGBs[blocker]
+            if settings.BLockerEntryCount[blocker] > currentGBCount and settings.BLockerEntryCount[blocker] < gbThreshold:
+                gbThreshold = settings.BLockerEntryCount[blocker]
         currentMedalCount = spoiler.LogicVariables.BananaMedals  # Jetpac access might give you another item that gives you access to more coins
         currentFairyCount = spoiler.LogicVariables.BananaFairies  # Rareware GB access might do the same
         currentPearlCount = spoiler.LogicVariables.Pearls  # Mermaid GB access might do the same
@@ -2331,7 +2331,7 @@ def WipeBLockerRequirements(settings: Settings) -> None:
     """Wipe out progression requirements to assume access through main 7 levels."""
     for i in range(0, 7):
         # Assume B.Locker amounts will be attainable for now
-        settings.EntryGBs[i] = 0
+        settings.BLockerEntryCount[i] = 0
 
 
 def WipeBossRequirements(settings: Settings) -> None:
@@ -2385,7 +2385,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         BLOCKER_MIN = 0.6
         BLOCKER_MAX = 0.95
     firstBlocker = min(settings.blocker_0, 1, goldenBananaTotals[0])  # First B. Locker shouldn't be more than 1 GB but could be 0 in full item rando
-    settings.EntryGBs = [
+    settings.BLockerEntryCount = [
         firstBlocker,
         min(settings.blocker_1, max(firstBlocker, round(uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[1]))),
         min(settings.blocker_2, max(firstBlocker, round(uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[2]))),
@@ -2400,10 +2400,10 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         for i in range(1, 7):
             # If this level is more expensive than the next level, swap the B. Lockers
             # This will never break logic - if you could get into a more expensive level 3, you could get into an equally expensive level 4
-            if settings.EntryGBs[i] > settings.EntryGBs[i + 1]:
-                temp = settings.EntryGBs[i]
-                settings.EntryGBs[i] = settings.EntryGBs[i + 1]
-                settings.EntryGBs[i + 1] = temp
+            if settings.BLockerEntryCount[i] > settings.BLockerEntryCount[i + 1]:
+                temp = settings.BLockerEntryCount[i]
+                settings.BLockerEntryCount[i] = settings.BLockerEntryCount[i + 1]
+                settings.BLockerEntryCount[i + 1] = temp
     if settings.troff_max > 0:
         settings.BossBananas = [
             min(settings.troff_0, sum(coloredBananaCounts[0]), round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
@@ -2456,10 +2456,10 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     minimumBLockerGBs = 0
 
     # Reset B. Lockers and T&S to initial values
-    settings.EntryGBs = [settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7]
+    settings.BLockerEntryCount = [settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7]
     settings.BossBananas = [settings.troff_0, settings.troff_1, settings.troff_2, settings.troff_3, settings.troff_4, settings.troff_5, settings.troff_6]
     if settings.randomize_blocker_required_amounts:  # If amounts are random, they need to be maxed out to properly generate random values
-        settings.EntryGBs = [1000, 1000, 1000, 1000, 1000, 1000, 1000, settings.blocker_7]
+        settings.BLockerEntryCount = [1000, 1000, 1000, 1000, 1000, 1000, 1000, settings.blocker_7]
     # We also need to remember T&S values in an array as we'll overwrite the settings value in the process of determining location availability
     initialTNS = [settings.troff_0, settings.troff_1, settings.troff_2, settings.troff_3, settings.troff_4, settings.troff_5, settings.troff_6]
 
@@ -2478,7 +2478,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         maxEnterableBlocker = round(runningGBTotal * BLOCKER_MAX)
         openLevels = GetAccessibleOpenLevels(spoiler)
         # Pick a random accessible B. Locker
-        accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= maxEnterableBlocker]
+        accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.BLockerEntryCount[level] <= maxEnterableBlocker]
         # If we have no levels accessible, we need to lower a B. Locker count to make one accessible
         if len(accessibleIncompleteLevels) == 0:
             openUnprogressedLevels = [level for level in openLevels if level not in levelsProgressed]
@@ -2487,7 +2487,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             # Next level chosen randomly (possible room for improvement here?) from accessible levels
             nextLevelToBeat = choice(openUnprogressedLevels)
             # If the level still isn't accessible, we have to truncate the required amount
-            if settings.EntryGBs[nextLevelToBeat] > maxEnterableBlocker:
+            if settings.BLockerEntryCount[nextLevelToBeat] > maxEnterableBlocker:
                 # Each B. Locker must be greater than the previous one and at least a specified percentage of availalbe GBs
                 highroll = maxEnterableBlocker
                 if settings.randomize_blocker_required_amounts:
@@ -2499,14 +2499,14 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                     lowroll = minimumBLockerGBs
                 if lowroll > highroll:
                     lowroll = highroll
-                settings.EntryGBs[nextLevelToBeat] = randint(lowroll, highroll)
+                settings.BLockerEntryCount[nextLevelToBeat] = randint(lowroll, highroll)
             accessibleIncompleteLevels = [nextLevelToBeat]
         else:
             nextLevelToBeat = choice(accessibleIncompleteLevels)
             # Our last few lobbies could have very low B. Lockers, this condition makes sure B. Lockers always increase in value
-            if settings.randomize_blocker_required_amounts and runningGBTotal > settings.blocker_max and settings.EntryGBs[nextLevelToBeat] < minimumBLockerGBs:
-                settings.EntryGBs[nextLevelToBeat] = randint(minimumBLockerGBs, settings.blocker_max)
-        minimumBLockerGBs = settings.EntryGBs[nextLevelToBeat]  # This B. Locker is now the minimum for the next one
+            if settings.randomize_blocker_required_amounts and runningGBTotal > settings.blocker_max and settings.BLockerEntryCount[nextLevelToBeat] < minimumBLockerGBs:
+                settings.BLockerEntryCount[nextLevelToBeat] = randint(minimumBLockerGBs, settings.blocker_max)
+        minimumBLockerGBs = settings.BLockerEntryCount[nextLevelToBeat]  # This B. Locker is now the minimum for the next one
         levelsProgressed.append(nextLevelToBeat)
 
         # Determine the Kong, GB, and Move accessibility from this level
@@ -2703,9 +2703,9 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         #     bossLocation.PlaceItem(spoiler, bossReward)
 
     # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
-    if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.EntryGBs[7] < minimumBLockerGBs:
+    if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < minimumBLockerGBs:
         # Ensure that Helm is the most expensive B. Locker
-        settings.EntryGBs[7] = randint(minimumBLockerGBs, settings.blocker_max)
+        settings.BLockerEntryCount[7] = randint(minimumBLockerGBs, settings.blocker_max)
     # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
     if not isKeyItemRando:
         # Place boss locations based on kongs and moves found for each level
@@ -2748,12 +2748,12 @@ def BlockAccessToLevel(settings: Settings, level: int) -> None:
     for i in range(0, 8):
         if i >= level - 1:
             # This level and those after it are locked out
-            settings.EntryGBs[i] = 1000
+            settings.BLockerEntryCount[i] = 1000
             if i < 7:
                 settings.BossBananas[i] = 1000
         else:
             # Previous levels assumed accessible
-            settings.EntryGBs[i] = 0
+            settings.BLockerEntryCount[i] = 0
             if i < 7:
                 settings.BossBananas[i] = 0
     # Update values based on actual level progression

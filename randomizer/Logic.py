@@ -1001,7 +1001,7 @@ class LogicVarHolder:
         can_tiny_skip = self.istiny and self.lanky_blocker_skip and level == Levels.HideoutHelm and self.generalclips
         can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch and level not in (Levels.FranticFactory, Levels.HideoutHelm)
         # To enter a level, we either need (or assume) enough GBs to get rid of B. Locker or a glitch way to bypass it
-        return self.assumeInfiniteGBs or self.GoldenBananas >= self.settings.EntryGBs[level] or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
+        return self.assumeInfiniteGBs or self.GoldenBananas >= self.settings.BLockerEntryCount[level] or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""

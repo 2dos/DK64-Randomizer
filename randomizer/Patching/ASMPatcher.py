@@ -555,8 +555,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Golden Banana Requirements
     order = 0
-    for count in spoiler.settings.EntryGBs:
+    for count in spoiler.settings.BLockerEntryCount:
         ROM_COPY.seek(spoiler.settings.rom_data + 0x17E + order)
-        ROM_COPY.writeMultipleBytes(3, 1) # GBs
+        ROM_COPY.writeMultipleBytes(int(spoiler.settings.BLockerEntryItems[order]), 1)
         writeValue(ROM_COPY, 0x807446D0 + (2 * order), Overlay.Static, count, offset_dict)
         order += 1
