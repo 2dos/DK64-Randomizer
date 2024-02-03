@@ -556,7 +556,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Golden Banana Requirements
     order = 0
     for count in spoiler.settings.EntryGBs:
-        ROM_COPY.seek(spoiler.settings.rom_data + 0x17E + (2 * order))
+        ROM_COPY.seek(spoiler.settings.rom_data + 0x17E + order)
         ROM_COPY.writeMultipleBytes(3, 1) # GBs
         writeValue(ROM_COPY, 0x807446D0 + (2 * order), Overlay.Static, count, offset_dict)
         order += 1

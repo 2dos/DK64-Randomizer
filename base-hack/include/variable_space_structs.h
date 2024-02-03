@@ -154,9 +154,8 @@ typedef struct varspace {
 	/* 0x179 */ char remove_high_requirements; // 0 = Off, 1 = On. Removes high requirements that lock certain areas.
 	/* 0x17A */ char fast_gbs; //0 = Off, 1 = On. Makes normally slow Golden Bananas faster.
 	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
-	/* 0x17E */ ItemRequirement b_locker_requirements[8];
-	/* 0x18E */ char unk_18E;
-	/* 0x18F */ char unk_18F;
+	/* 0x17E */ unsigned char b_locker_requirements[8];
+	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 	/* 0x196 */ char misc_cosmetic_on;
