@@ -25,7 +25,6 @@ from randomizer.Enums.Settings import (
     FillAlgorithm,
     FungiTimeSetting,
     HardModeSelected,
-    HelmDoorItem,
     LogicType,
     MinigameBarrels,
     MoveRando,
@@ -40,7 +39,7 @@ from randomizer.Enums.Settings import (
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
@@ -779,11 +778,11 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.append(Items.Camera)
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
-    requires_rareware = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
-    requires_nintendo = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
-    requires_crowns = spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or spoiler.settings.coin_door_item == HelmDoorItem.req_crown
+    requires_rareware = spoiler.settings.coin_door_item == BarrierItems.CompanyCoin
+    requires_nintendo = spoiler.settings.coin_door_item == BarrierItems.CompanyCoin
+    requires_crowns = spoiler.settings.crown_door_item == BarrierItems.Crown or spoiler.settings.coin_door_item == BarrierItems.Crown
     for x in (spoiler.settings.crown_door_item, spoiler.settings.coin_door_item):
-        if x == HelmDoorItem.req_companycoins:
+        if x == BarrierItems.CompanyCoin:
             requires_rareware = True
             requires_nintendo = True
 
@@ -791,19 +790,19 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.append(Items.RarewareCoin)
     if requires_nintendo:  # A vanilla Rareware Coin should be considered a major item so Grab will not be foolish
         majorItems.append(Items.NintendoCoin)
-    if spoiler.settings.win_condition == WinCondition.all_blueprints or spoiler.settings.coin_door_item == HelmDoorItem.req_bp or spoiler.settings.crown_door_item == HelmDoorItem.req_bp:
+    if spoiler.settings.win_condition == WinCondition.all_blueprints or spoiler.settings.coin_door_item == BarrierItems.Blueprint or spoiler.settings.crown_door_item == BarrierItems.Blueprint:
         majorItems.extend(ItemPool.Blueprints())
-    if spoiler.settings.win_condition == WinCondition.all_medals or spoiler.settings.coin_door_item == HelmDoorItem.req_medal or spoiler.settings.crown_door_item == HelmDoorItem.req_medal:
+    if spoiler.settings.win_condition == WinCondition.all_medals or spoiler.settings.coin_door_item == BarrierItems.Medal or spoiler.settings.crown_door_item == BarrierItems.Medal:
         majorItems.append(Items.BananaMedal)
-    if spoiler.settings.win_condition == WinCondition.all_fairies or spoiler.settings.coin_door_item == HelmDoorItem.req_fairy or spoiler.settings.crown_door_item == HelmDoorItem.req_fairy:
+    if spoiler.settings.win_condition == WinCondition.all_fairies or spoiler.settings.coin_door_item == BarrierItems.Fairy or spoiler.settings.crown_door_item == BarrierItems.Fairy:
         majorItems.append(Items.BananaFairy)
     if requires_crowns:
         majorItems.append(Items.BattleCrown)
-    if spoiler.settings.coin_door_item == HelmDoorItem.req_pearl or spoiler.settings.crown_door_item == HelmDoorItem.req_pearl:
+    if spoiler.settings.coin_door_item == BarrierItems.Pearl or spoiler.settings.crown_door_item == BarrierItems.Pearl:
         majorItems.append(Items.Pearl)
-    if spoiler.settings.coin_door_item == HelmDoorItem.req_bean or spoiler.settings.crown_door_item == HelmDoorItem.req_bean:
+    if spoiler.settings.coin_door_item == BarrierItems.Bean or spoiler.settings.crown_door_item == BarrierItems.Bean:
         majorItems.append(Items.Bean)
-    if spoiler.settings.coin_door_item == HelmDoorItem.req_rainbowcoin or spoiler.settings.crown_door_item == HelmDoorItem.req_rainbowcoin:
+    if spoiler.settings.coin_door_item == BarrierItems.RainbowCoin or spoiler.settings.crown_door_item == BarrierItems.RainbowCoin:
         majorItems.append(Items.RainbowCoin)
     # The contents of some locations can make entire classes of items not foolish
     # Loop through these locations until no new items are added to the list of major items
@@ -1695,7 +1694,7 @@ def Fill(spoiler: Spoiler) -> None:
                 crownsToPlace.remove(item)
         # Crowns can be placed randomly, but only if the helm doors don't need any
         algo = FillAlgorithm.careful_random
-        if spoiler.settings.coin_door_item == HelmDoorItem.req_crown or spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown):
+        if spoiler.settings.coin_door_item == BarrierItems.Crown or spoiler.settings.crown_door_item == BarrierItems.Crown:
             algo = spoiler.settings.algorithm
         crownsUnplaced = PlaceItems(spoiler, algo, crownsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), doubleTime=True)
         if crownsUnplaced > 0:

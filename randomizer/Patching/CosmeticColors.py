@@ -13,9 +13,10 @@ from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, RandomModels
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Types import BarrierItems
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Lib import (
     TextureFormat,
@@ -38,7 +39,7 @@ if TYPE_CHECKING:
 class HelmDoorSetting:
     """Class to store information regarding helm doors."""
 
-    def __init__(self, item_setting: HelmDoorItem, count: int, item_image: int, number_image: int) -> None:
+    def __init__(self, item_setting: BarrierItems, count: int, item_image: int, number_image: int) -> None:
         """Initialize with given parameters."""
         self.item_setting = item_setting
         self.count = count
@@ -50,7 +51,7 @@ class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
     def __init__(
-        self, setting: HelmDoorItem, image_indexes: List[int], flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551
+        self, setting: BarrierItems, image_indexes: List[int], flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551
     ) -> None:
         """Initialize with given parameters."""
         self.setting = setting
@@ -1950,26 +1951,22 @@ def numberToImage(number: int, dim: Tuple[int, int]) -> PIL.Image.Image:
 def applyHelmDoorCosmetics(settings: Settings) -> None:
     """Apply Helm Door Cosmetic Changes."""
     crown_door_required_item = settings.crown_door_item
-    if crown_door_required_item == HelmDoorItem.vanilla and settings.crown_door_item_count != 4:
-        crown_door_required_item = HelmDoorItem.req_crown
     coin_door_required_item = settings.coin_door_item
-    if coin_door_required_item == HelmDoorItem.vanilla and settings.coin_door_item_count != 2:
-        coin_door_required_item = HelmDoorItem.req_companycoins
     Doors = [
         HelmDoorSetting(crown_door_required_item, settings.crown_door_item_count, 6022, 6023),
         HelmDoorSetting(coin_door_required_item, settings.coin_door_item_count, 6024, 6025),
     ]
     Images = [
-        HelmDoorImages(HelmDoorItem.req_gb, [0x155C]),
-        HelmDoorImages(HelmDoorItem.req_bp, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
-        HelmDoorImages(HelmDoorItem.req_bean, [0], True, 6, (20, 20)),
-        HelmDoorImages(HelmDoorItem.req_pearl, [0xD5F], False, 25, (32, 32)),
-        HelmDoorImages(HelmDoorItem.req_fairy, [0x16ED], False, 25, (32, 32), TextureFormat.RGBA32),
-        HelmDoorImages(HelmDoorItem.req_key, [5877]),
-        HelmDoorImages(HelmDoorItem.req_medal, [0x156C]),
-        HelmDoorImages(HelmDoorItem.req_rainbowcoin, [5963], False, 25, (48, 42)),
-        HelmDoorImages(HelmDoorItem.req_crown, [5893]),
-        HelmDoorImages(HelmDoorItem.req_companycoins, [5905, 5912]),
+        HelmDoorImages(BarrierItems.GoldenBanana, [0x155C]),
+        HelmDoorImages(BarrierItems.Blueprint, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
+        HelmDoorImages(BarrierItems.Bean, [0], True, 6, (20, 20)),
+        HelmDoorImages(BarrierItems.Pearl, [0xD5F], False, 25, (32, 32)),
+        HelmDoorImages(BarrierItems.Fairy, [0x16ED], False, 25, (32, 32), TextureFormat.RGBA32),
+        HelmDoorImages(BarrierItems.Key, [5877]),
+        HelmDoorImages(BarrierItems.Medal, [0x156C]),
+        HelmDoorImages(BarrierItems.RainbowCoin, [5963], False, 25, (48, 42)),
+        HelmDoorImages(BarrierItems.Crown, [5893]),
+        HelmDoorImages(BarrierItems.CompanyCoin, [5905, 5912]),
     ]
     for door in Doors:
         for image_data in Images:
@@ -1997,7 +1994,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                     new_width = image_data.dimensions[0] * (44 / image_data.dimensions[1])
                     base_overlay = base_overlay.resize((int(new_width), 44))
                     base.paste(base_overlay, (int(22 - (new_width / 2)), 0), base_overlay)
-                if door.item_setting == HelmDoorItem.req_pearl:
+                if door.item_setting == BarrierItems.Pearl:
                     pearl_mask_im = Image.new("RGBA", (44, 44), (0, 0, 0, 255))
                     draw = ImageDraw.Draw(pearl_mask_im)
                     draw.ellipse((0, 0, 43, 43), fill=(0, 0, 0, 0), outline=(0, 0, 0, 0))

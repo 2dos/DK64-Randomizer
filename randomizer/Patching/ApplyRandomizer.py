@@ -15,7 +15,6 @@ from randomizer.Enums.Settings import (
     FungiTimeSetting,
     GalleonWaterSetting,
     HardModeSelected,
-    HelmDoorItem,
     MiscChangesSelected,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -234,43 +233,14 @@ def patching_response(spoiler):
     ROM_COPY.write(int(spoiler.settings.helm_setting))
 
     # Crown Door & Coin Door
-    # define DOORITEM_DEFAULT 0 // Default
-    # define DOORITEM_GB 1 // 1 - GBs
-    # define DOORITEM_BP 2 // 2 - BP
-    # define DOORITEM_BEAN 3 // 3 - Bean
-    # define DOORITEM_PEARL 4 // 4 - Pearls
-    # define DOORITEM_FAIRY 5 // 5 - Fairy
-    # define DOORITEM_KEY 6 // 6 - Key
-    # define DOORITEM_MEDAL 7 // 7 - Medal
-    # define DOORITEM_RAINBOWCOIN 8 // 8 - Rainbow Coins
-    # define DOORITEM_CROWN 9 // 9 - Crowns
-    # define DOORITEM_COMPANYCOIN 10 // 10 - Company Coins
-    door_checks = {
-        HelmDoorItem.req_gb: 3,
-        HelmDoorItem.req_bp: 4,
-        HelmDoorItem.req_bean: 0xA,
-        HelmDoorItem.req_pearl: 0xB,
-        HelmDoorItem.req_fairy: 5,
-        HelmDoorItem.req_key: 6,
-        HelmDoorItem.req_medal: 9,
-        HelmDoorItem.req_rainbowcoin: 0xC,
-        HelmDoorItem.req_crown: 7,
-        HelmDoorItem.req_companycoins: 8,
-    }
-    if spoiler.settings.crown_door_item in door_checks.keys():
-        ROM_COPY.seek(sav + 0x4C)
-        item = spoiler.settings.crown_door_item
-        if item == HelmDoorItem.vanilla:
-            item = HelmDoorItem.req_crown
-        ROM_COPY.write(door_checks.get(item, 0))
-        ROM_COPY.write(spoiler.settings.crown_door_item_count)
-    if spoiler.settings.coin_door_item in door_checks.keys():
-        ROM_COPY.seek(sav + 0x4E)
-        item = spoiler.settings.coin_door_item
-        if item == HelmDoorItem.vanilla:
-            item = HelmDoorItem.req_companycoins
-        ROM_COPY.write(door_checks.get(item, 0))
-        ROM_COPY.write(spoiler.settings.coin_door_item_count)
+    # Crown Door
+    ROM_COPY.seek(sav + 0x4C)
+    ROM_COPY.write(int(spoiler.settings.crown_door_item))
+    ROM_COPY.write(spoiler.settings.crown_door_item_count)
+    # Coin Door
+    ROM_COPY.seek(sav + 0x4E)
+    ROM_COPY.write(int(spoiler.settings.coin_door_item))
+    ROM_COPY.write(spoiler.settings.coin_door_item_count)
 
     if spoiler.settings.switchsanity:
         for slot in spoiler.settings.switchsanity_data:

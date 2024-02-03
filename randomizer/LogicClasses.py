@@ -10,6 +10,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.EnemyTypes import enemy_location_list
+from randomizer.Enums.Types import BarrierItems
 
 if TYPE_CHECKING:
     from randomizer.Enums.Collectibles import Collectibles
@@ -257,3 +258,11 @@ class Balloon:
         spawnY -= 100.0  # Most balloons are at least 100 units off the ground
         spawnZ /= len(points)
         return [int(spawnX), int(spawnY), int(spawnZ)]
+
+class BarrierItemRequirement:
+    """Class to store information about an item requirement barrier."""
+
+    def __init__(self, item: BarrierItems, requirement: int):
+        """Initialize with given parameters."""
+        self.item = item
+        self.requirement = requirement

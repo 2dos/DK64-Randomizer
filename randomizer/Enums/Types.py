@@ -33,6 +33,25 @@ class Types(IntEnum):
     CrateItem = auto()
     Enemies = auto()
 
+class BarrierItems(IntEnum):
+    """Item type enum for barrier checks."""
+    Nothing = 0
+    Kong = auto()
+    Move = auto()
+    GoldenBanana = auto()
+    Blueprint = auto()
+    Fairy = auto()
+    Key = auto()
+    Crown = auto()
+    CompanyCoin = auto()
+    Medal = auto()
+    Bean = auto()
+    Pearl = auto()
+    RainbowCoin = auto()
+    IceTrap = auto()
+    Percentage = auto()
+    ColoredBanana = auto()
+
 
 # If you make change to this selector, make sure to change the corresponding
 # ItemRandoListSelected enum in randomizer.Enums.Settings.

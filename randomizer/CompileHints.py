@@ -15,8 +15,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmDoorItem, HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
@@ -1869,21 +1869,21 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If any Helm doors are random, place a hint for each random door somewhere
     if hint_distribution[HintType.RequiredHelmDoorHint] > 0:
         helmdoor_vars = {
-            HelmDoorItem.req_gb: "Golden Banana",
-            HelmDoorItem.req_bp: "Blueprint",
-            HelmDoorItem.req_companycoins: "Special Coin",
-            HelmDoorItem.req_key: "Key",
-            HelmDoorItem.req_medal: "Medal",
-            HelmDoorItem.req_crown: "Crown",
-            HelmDoorItem.req_fairy: "Fairy",
-            HelmDoorItem.req_rainbowcoin: "Rainbow Coin",
-            HelmDoorItem.req_bean: "Bean",
-            HelmDoorItem.req_pearl: "Pearl",
+            BarrierItems.GoldenBanana: "Golden Banana",
+            BarrierItems.Blueprint: "Blueprint",
+            BarrierItems.CompanyCoin: "Special Coin",
+            BarrierItems.Key: "Key",
+            BarrierItems.Medal: "Medal",
+            BarrierItems.Crown: "Crown",
+            BarrierItems.Fairy: "Fairy",
+            BarrierItems.RainbowCoin: "Rainbow Coin",
+            BarrierItems.Bean: "Bean",
+            BarrierItems.Pearl: "Pearl",
         }
         if spoiler.settings.crown_door_random:
             item_name = helmdoor_vars[spoiler.settings.crown_door_item]
             if spoiler.settings.crown_door_item_count > 1:
-                if spoiler.settings.crown_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.crown_door_item == BarrierItems.Fairy:
                     item_name = "Fairies"  # English is so rude sometimes
                 else:
                     item_name = item_name + "s"
@@ -1894,7 +1894,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if spoiler.settings.coin_door_random:
             item_name = helmdoor_vars[spoiler.settings.coin_door_item]
             if spoiler.settings.coin_door_item_count > 1:
-                if spoiler.settings.coin_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.coin_door_item == BarrierItems.Fairy:
                     item_name = "Fairies"  # Plurals? Consistency? A pipe dream
                 else:
                     item_name = item_name + "s"
