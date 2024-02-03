@@ -108,10 +108,6 @@ void KongDropCode(void) {
      * @brief Kong Actors actor code
      */
     GoldenBananaCode();
-    scaleBounceDrop(0.15f);
-    if (CurrentActorPointer_0->yVelocity > 500.0f) {
-        CurrentActorPointer_0->yVelocity = 500.0f;
-    }
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
         int kong = current_type - NEWACTOR_KONGDK;
@@ -148,10 +144,6 @@ void FakeGBCode(void) {
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
      */
     GoldenBananaCode();
-    scaleBounceDrop(0.10f);
-    if (CurrentActorPointer_0->yVelocity > 500.0f) {
-        CurrentActorPointer_0->yVelocity = 500.0f;
-    }
     CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
 }
 

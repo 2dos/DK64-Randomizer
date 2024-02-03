@@ -1,4 +1,5 @@
 """Clean up an image to fix any alpha inaccuracies with the n64tex converter."""
+
 import tkinter as tk
 from tkinter import filedialog
 

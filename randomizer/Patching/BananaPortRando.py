@@ -1,4 +1,5 @@
 """Rando write bananaport locations."""
+
 import js
 from randomizer.Enums.Settings import BananaportRando
 from randomizer.Lists.Warps import BananaportVanilla

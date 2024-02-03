@@ -1,4 +1,5 @@
 """File containing enums to represent all settings."""
+
 from __future__ import annotations
 
 from enum import IntEnum, auto
@@ -154,7 +155,7 @@ class FasterChecksSelected(IntEnum):
 
     factory_toy_monster_fight = 1
     factory_piano_game = 2
-    factory_diddy_research_and_development = 3
+    factory_diddy_rnd = 3
     factory_arcade_round_1 = 4
     factory_car_race = 5
     galleon_seal_race = 6
@@ -261,7 +262,7 @@ class HelmDoorItem(IntEnum):
     vanilla: The originally required item (crowns for door 1, company coins for
         door 2).
     opened: The door is automatically opened.
-    random: The door is opened by a randomly selected item.
+    medium_random: The door is opened by a randomly selected item (Medium difficulty).
     req_gb: Golden Bananas.
     req_bp: Blueprints.
     req_companycoins: The Rareware and Nintendo coins.
@@ -272,11 +273,13 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin: Rainbow Coins.
     req_bean: The bean.
     req_pearl: Pearls.
+    easy_random: The door is opened by a randomly selected item (Easy difficulty).
+    hard_random: The door is opened by a randomly selected item (Hard difficulty).
     """
 
     vanilla = 0
     opened = 1
-    random = 2
+    medium_random = 2
     req_gb = 3
     req_bp = 4
     req_companycoins = 5
@@ -287,6 +290,8 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin = 10
     req_bean = 11
     req_pearl = 12
+    easy_random = 13
+    hard_random = 14
 
 
 class HelmSetting(IntEnum):
@@ -552,20 +557,20 @@ class RemovedBarriersSelected(IntEnum):
     details on each can be found in that file.
     """
 
-    japes_coconut_gates_opened = 1
-    japes_shellhive_gate_opened = 2
-    aztec_tunnel_door_opened = 3
-    aztec_5dtemple_switches_spawned = 4
+    japes_coconut_gates = 1
+    japes_shellhive_gate = 2
+    aztec_tunnel_door = 3
+    aztec_5dtemple_switches = 4
     aztec_llama_switches = 5
-    factory_production_room_on = 6
-    factory_testing_gate_opened = 7
-    galleon_lighthouse_gate_opened = 8
-    galleon_shipwreck_gate_opened = 9
-    galleon_shipwreck_permanently_open = 10
-    galleon_seasick_ship_spawned = 11
-    forest_green_tunnel_opened = 12
-    forest_yellow_tunnel_opened = 13
-    caves_igloo_pads_spawned = 14
+    factory_production_room = 6
+    factory_testing_gate = 7
+    galleon_lighthouse_gate = 8
+    galleon_shipyard_area_gate = 9
+    galleon_shipwreck_gates = 10
+    galleon_seasick_ship = 11
+    forest_green_tunnel = 12
+    forest_yellow_tunnel = 13
+    caves_igloo_pads = 14
 
 
 class ShockwaveStatus(IntEnum):
@@ -960,6 +965,8 @@ class SettingsStringDataType(IntEnum):
     var_int = auto()
     str = auto()
     list = auto()
+    # Can represent up to 65,536 values (0 to 65535)
+    u16 = auto()
 
 
 # ALL SETTINGS NEED AN ENTRY HERE!
@@ -1042,7 +1049,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.helmhurry_list_move: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_pearl: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_rainbow_coin: SettingsStringDataType.int16,
-    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.int16,
+    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.u16,
     SettingsStringEnum.high_req: SettingsStringDataType.bool,
     SettingsStringEnum.item_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.item_reward_previews: SettingsStringDataType.bool,

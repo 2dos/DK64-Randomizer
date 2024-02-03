@@ -240,7 +240,7 @@ void OrangeGunCode(void) {
      */
     projectile_paad* paad = CurrentActorPointer_0->paad;
     projectile_extra* extra = (projectile_extra*)CurrentActorPointer_0->data_pointer;
-    int current_actor_timer = *(int*)(0x8076A068);
+    int current_actor_timer = ActorTimer;
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->grounded &= 0xFFFE;
         CurrentActorPointer_0->rot_y_copy = (extra->initial_rotation / *(float*)(0x8075A170)) * *(float*)(0x8075A174);

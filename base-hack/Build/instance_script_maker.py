@@ -1,4 +1,5 @@
 """Make Instance Scripts."""
+
 import json
 import os
 import zlib

@@ -1,4 +1,5 @@
 """Locate Hash images for displaying on the website."""
+
 import base64
 import io
 import zlib

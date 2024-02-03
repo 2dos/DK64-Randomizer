@@ -1,4 +1,5 @@
 """Build the ROM."""
+
 import gzip
 import json
 import os
@@ -35,7 +36,7 @@ from model_shrink import shrinkModel
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
 from populateSongData import writeVanillaSongData
-from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
+from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM, writeUncompressedOverlays
 from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
@@ -61,15 +62,15 @@ getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
 
 file_dict = [
-    File(
-        name="Static ASM Code",
-        subtype=ChangeType.FixedLocation,
-        start=0x113F0,
-        compressed_size=0xB15E4,
-        source_file="StaticCode.bin",
-        compression_method=CompressionMethods.ExternalGzip,
-        patcher=patchStaticCode,
-    ),
+    # File(
+    #     name="Static ASM Code",
+    #     subtype=ChangeType.FixedLocation,
+    #     start=0x113F0,
+    #     compressed_size=0xB15E4,
+    #     source_file="StaticCode.bin",
+    #     compression_method=CompressionMethods.ExternalGzip,
+    #     patcher=patchStaticCode,
+    # ),
     File(name="Dolby Logo", pointer_table_index=TableNames.TexturesHUD, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
     File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
     File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
@@ -765,12 +766,14 @@ for x in range(5):
 
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
+    0xE8D: [(43, 32), "checkered"],  # DK Tie Hang
     0xE66: [(32, 32), "block"],  # Diddy Cap/Shirt
     0xE69: [(32, 32), "block"],  # Lanky Overalls
     0xE9A: [(32, 32), "block"],  # Lanky Fur (Front)
     0xE94: [(32, 32), "block"],  # Lanky Fur
     0xEB9: [(43, 32), "checkered"],  # Chunky Checkered Shirt
     0xE67: [(32, 32), "block"],  # Chunky Shirt Front
+    0xE68: [(32, 32), "block"],  # Tiny Hair
     3826: [(32, 32), "block"],  # Rambi
     3847: [(32, 32), "block"],  # Enguarde
     3734: [(43, 32), "checkered"],  # Lanky Patch
@@ -822,6 +825,12 @@ shrinkModel(True, "potion_tiny_om1.bin", 0, 0.08, "shrink_potion_tiny.bin", Fals
 shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
 shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
+shrinkModel(True, "dk_base.bin", 0, 1 / 0.15, "shrink_dk.bin", True)  # DK
+shrinkModel(True, "diddy_base.bin", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
+shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
+shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
+shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
+shrinkModel(True, "fake_item_actor.bin", 0, 0.15, "shrink_ice_trap.bin", False),
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -849,6 +858,12 @@ model_changes = [
     ModelChange(0xFA, "shrink_potion_any.bin", True),
     ModelChange(0xFB, "shrink_fairy.bin"),
     ModelChange(0xFC, "fake_item_actor.bin"),
+    ModelChange(0xFD, "shrink_dk.bin"),
+    ModelChange(0xFE, "shrink_diddy.bin"),
+    ModelChange(0xFF, "shrink_lanky.bin"),
+    ModelChange(0x100, "shrink_tiny.bin"),
+    ModelChange(0x101, "shrink_chunky.bin"),
+    ModelChange(0x102, "shrink_ice_trap.bin"),
     ModelChange(0xA3, "counter.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
@@ -1150,6 +1165,7 @@ with open(newROMName, "r+b") as fh:
             if not x.do_not_delete_source:
                 if os.path.exists(x.source_file):
                     os.remove(x.source_file)
+    writeUncompressedOverlays(fh)
 
     print("[5 / 7] - Writing recomputed pointer tables to ROM")
     writeModifiedPointerTablesToROM(fh)

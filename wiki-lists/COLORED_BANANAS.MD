@@ -155,7 +155,7 @@
 
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Bunch on Diddy's switch | 5 |  | 
+| Bunch on Diddy's switch | 5 | l.peanut or l.advanced_platforming | 
 | Singles on path to switch | 5 |  | 
 | Big upside down minecart | 5 |  | 
 | 2 bunches on big barrel (with ammo) | 10 |  | 
@@ -285,6 +285,7 @@
 | Trees between Llama Temple and 5DT (Lanky) | 15 |  | 
 | Around the outside of Llama Temple | 15 |  | 
 | Vase room (Chunky) | 20 | l.pineapple or l.phasewalk | 
+| On Tiny Temple Staircase | 5 |  | 
 | Chunky vase room back wall | Balloon | l.pineapple | 
 | Chunky vase room right wall | Balloon | l.pineapple | 
 | DK BP room over/under bridge | Balloon | l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) | 
@@ -730,7 +731,7 @@
 | In front of Candy's | Balloon |  | 
 | High in gold tower room | Balloon |  | 
 | Around cactus (Diddy) | Balloon |  | 
-| By Diddy BP (Tiny) | Balloon |  | 
+| By Diddy BP (Tiny) | Balloon | Events.WaterLowered in l.Events | 
 | Above battle crown pad 1 (Lanky) | Balloon | (l.punch and l.chunky) or l.phasewalk | 
 | Above battle crown pad 2 (Lanky) | Balloon | ((l.punch and l.chunky) or l.phasewalk) | 
 | Around cactus (Chunky) | Balloon |  | 

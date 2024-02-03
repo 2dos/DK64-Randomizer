@@ -1,4 +1,5 @@
 """Correct the roms file size."""
+
 from BuildLib import finalROM
 
 with open(finalROM, "r+b") as fh:

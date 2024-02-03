@@ -41,12 +41,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators">Setup</a>
+                           href="./wiki/Consoles-and-Emulators.html">Setup</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="https://github.com/2dos/DK64-Randomizer/wiki"
-                           target="_blank">Wiki</a>
+                           href="./wiki/home.html">Wiki</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
@@ -104,7 +103,7 @@
         <div class="card bg-dark" style="max-width: 1500px">
             <form id="form" action="/" method="POST">
                 <!--Create navbar-->
-                <div class="container" id="tab-data">
+                <div class="container" id="visual_indicator">
                   <img style="
                       width: 10%;
                       height: 10%;
@@ -153,6 +152,7 @@
                     }
                   </script>
                 </div>
+                <div class="container" id="tab-data" hidden></div>
                 <hr />
                 <div class="container" id="nav-gen-type-container">
                     <nav style="display: inline-block; float: none; vertical-align: top;">
@@ -257,27 +257,46 @@
                                                            id="generate_spoilerlog"
                                                            name="generate_spoilerlog"
                                                            value="True"
-                                                           checked/>
+                                                           checked
+                                                           onchange="toggleDelayedSpoilerLogInput()"/>
                                                     Generate Spoiler Log
                                                 </label>
                                             </div>
-                                            <div class="form-check form-switch item-switch" style="text-align: center">
-                                                <label data-toggle="tooltip"
+                                            <div class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                <div>
+                                                    <label data-toggle="tooltip"
                                                         title="Enables the homebrew header to be written to the ROM. This makes the ROM viable on some platforms but can break other platforms. Click the link on the icon for more information.">
-                                                    <input class="form-check-input"
-                                                        type="checkbox"
-                                                        name="homebrew_header"
-                                                        id="homebrew_header"
-                                                        value="True"/>
-                                                    Advanced ROM Header
-                                                </label>
-                                                <a href="https://github.com/2dos/DK64-Randomizer/wiki/Advanced-Homebrew-ROM-Header"
-                                                    title="Click me for more information"
-                                                target="_blank">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
-                                                        <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
-                                                    </svg>
-                                                </a>
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            name="homebrew_header"
+                                                            id="homebrew_header"
+                                                            value="True"/>
+                                                        Advanced ROM Header
+                                                    </label>
+                                                    <a href="./wiki/Advanced-Homebrew-ROM-Header.html"
+                                                        title="Click me for more information"
+                                                        target="_blank">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
+                                                            <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div id="delayed_spoilerlog_container" hidden class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                <div>
+                                                    <label data-toggle="tooltip"
+                                                           title="If set to 0, the spoiler log is not released. If set to a number higher than 0, the spoiler log will be available for download after that many hours.">
+                                                        <input type="number"
+                                                            id="delayed_spoilerlog_release"
+                                                            name="delayed_spoilerlog_release"
+                                                            value="0"
+                                                            min="0"
+                                                            step="1"
+                                                            max="168"
+                                                            style="margin-right: 5px; max-width: 8ch;"/>
+                                                        Delayed Spoiler Log Release
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -319,6 +338,7 @@
                                            type="button"
                                            value="Generate Seed"
                                            disabled = ""/>
+                                        <input id="trigger_download_event" hidden/>
                                     </div>
                                 </div>
                             </div>
@@ -514,7 +534,7 @@
             <a href="https://github.com/2dos/DK64-Randomizer" target="_blank" style="text-decoration: none">
                 <img src="./static/img/github.png" alt="GitHub" />
             </a>
-            <a href="https://github.com/2dos/DK64-Randomizer/wiki" target="_blank" style="text-decoration: none">
+            <a href="./wiki/home.html" style="text-decoration: none">
                 <img src="./static/img/wiki.png" alt="Wiki" />
             </a>
             <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: none">
@@ -526,7 +546,7 @@
                 <br />
                 Randomizer by 2dos and Ballaam | Web Generator by Killklli
                 <br />
-                In-game characters, images and logos copyright © 1999-2021 Nintendo or Rareware respectively.
+                In-game characters, images and logos copyright © 1999-2024 Nintendo or Rareware respectively.
                 <br />
                 DK64Randomizer.com does not distribute copyright material.
             </div>

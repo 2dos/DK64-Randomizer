@@ -62,6 +62,12 @@ static const unsigned char training_maps[] = {
 	MAP_TBARREL_DIVE,
 	MAP_TBARREL_ORANGE,
 };
+static short shop_maps[] = {
+	MAP_CRANKY,
+	MAP_CANDY,
+	MAP_FUNKY,
+	MAP_SNIDE,
+};
 static const map_bitfield minigame_maps_btf = {
     // Bitfield on whether a map is a minigame map
 	.test_map = 0,
@@ -522,8 +528,12 @@ int inMinigame(maps map) {
     return *(unsigned char*)((unsigned char*)(&minigame_maps_btf) + offset) & (0x80 >> check);
 }
 
+int inShop(maps map, int include_snide) {
+	return inShortList(map, &shop_maps[0], 3 + include_snide);
+}
+
 void playSFX(short sfxIndex) {
-	playSound(sfxIndex,0x7FFF,0x427C0000,0x3F800000,0,0);
+	playSound(sfxIndex, 0x7FFF, 63.0f, 1.0f, 0, 0);
 }
 
 void setPermFlag(short flagIndex) {
@@ -884,7 +894,7 @@ void giveAmmo(void) {
 }
 
 void giveOrange(void) {
-	playSound(0x147, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+	playSound(0x147, 0x7FFF, 63.0f, 1.0f, 5, 0);
 	changeCollectableCount(4, 0, 1);
 }
 
@@ -894,6 +904,15 @@ void giveMelon(void) {
 	} else {
 		applyDamage(0, 1);
 	}
+}
+
+int inShortList(int target, short* list, int count) {
+	for (int i = 0; i < count; i++) {
+		if (list[i] == target) {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 void giveCrystal(void) {
@@ -973,21 +992,6 @@ int isInstrumentUpgradeFlag(int flag) {
 		}
 	}
 	return 0;
-}
-
-int inShop(maps map, int include_snide) {
-	if (map == MAP_CRANKY) {
-		return 1;
-	}
-	if (map == MAP_CANDY) {
-		return 1;
-	}
-	if (include_snide) {
-		if (map == MAP_SNIDE) {
-			return 1;
-		}
-	}
-	return map == MAP_FUNKY;
 }
 
 int inBattleCrown(maps map) {
@@ -1108,12 +1112,7 @@ void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1) {
 }
 
 int isBounceObject(int object) {
-	for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
-		if (object == bounce_objects[i]) {
-			return 1;
-		}
-	}
-	return 0;
+	return inShortList(object, (short*)&bounce_objects[0], sizeof(bounce_objects) >> 1);
 }
 
 void* getFile(int size, int rom) {

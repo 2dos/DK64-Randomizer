@@ -1,4 +1,5 @@
 """Apply cosmetic skins to kongs."""
+
 from __future__ import annotations
 
 import gzip
@@ -16,7 +17,17 @@ from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorI
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float, PaletteFillType, SpawnerChange, applyCharacterSpawnerChanges
+from randomizer.Patching.Lib import (
+    TextureFormat,
+    float_to_hex,
+    getObjectAddress,
+    int_to_list,
+    intf_to_float,
+    PaletteFillType,
+    SpawnerChange,
+    applyCharacterSpawnerChanges,
+    compatible_background_textures,
+)
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -325,6 +336,7 @@ def apply_cosmetic_colors(settings: Settings):
     settings.seek_klaptrap_model = sseek_klap_model_index
     settings.fungi_tomato_model = fungi_tomato_model_index
     settings.caves_tomato_model = caves_tomato_model_index
+    settings.wrinkly_rgb = [255, 255, 255]
     # Compute swap bitfield
     swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0
     swap_bitfield |= 0x20 if settings.beetle_model == Model.Rabbit else 0
@@ -353,7 +365,15 @@ def apply_cosmetic_colors(settings: Settings):
         # Wrinkly Color
         ROM_COPY.seek(sav + 0x1B1)
         for channel in range(3):
-            ROM_COPY.writeMultipleBytes(random.randint(0, 255), 1)
+            value = random.randint(0, 255)
+            settings.wrinkly_rgb[channel] = value
+            ROM_COPY.writeMultipleBytes(value, 1)
+        # Menu Background
+        textures = list(compatible_background_textures.keys())
+        weights = [compatible_background_textures[x].weight for x in textures]
+        selected_texture = random.choices(textures, weights=weights, k=1)[0]
+        settings.menu_texture_index = selected_texture
+        settings.menu_texture_name = compatible_background_textures[selected_texture].name
     color_palettes = []
     color_obj = {}
     colors_dict = {}
@@ -452,8 +472,8 @@ def apply_cosmetic_colors(settings: Settings):
                 is_krusha = True
                 base_setting = kong.palettes[0].name
                 kong.palettes = [
-                    KongPalette(base_setting, 4971, PaletteFillType.block),
-                    KongPalette(base_setting, 4966, PaletteFillType.kong),
+                    KongPalette(base_setting, 4971, PaletteFillType.block),  # krusha_skin
+                    KongPalette(base_setting, 4966, PaletteFillType.kong),  # krusha_indicator
                 ]
         base_obj = {"kong": kong.kong, "zones": []}
         zone_to_colors = {}
@@ -475,18 +495,21 @@ def apply_cosmetic_colors(settings: Settings):
                 if index == 1:  # IS THE CHECKERED PATTERN
                     base_setting = f"{kong.kong}_{palette.alt_name}_colors"
                     custom_setting = f"{kong.kong}_{palette.alt_name}_custom_color"
-                if settings.override_cosmetics and (colors_dict[base_setting] != CharacterColors.vanilla or (is_krusha and palette.fill_type == PaletteFillType.kong)):
+                if (settings.override_cosmetics and colors_dict[base_setting] != CharacterColors.vanilla) or (is_krusha and palette.fill_type == PaletteFillType.kong):
                     color = None
-                    if colors_dict[base_setting] == CharacterColors.randomized:
+                    # if this palette color is randomized, and isn't krusha's kong indicator:
+                    if colors_dict[base_setting] == CharacterColors.randomized and palette.fill_type != PaletteFillType.kong:
                         if base_setting in zone_to_colors:
                             color = zone_to_colors[base_setting]
                         else:
                             color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
                             zone_to_colors[base_setting] = color
+                    # if this palette color is not randomized (but might be a custom color) and isn't krusha's kong indicator:
                     elif palette.fill_type != PaletteFillType.kong:
                         color = colors_dict[custom_setting]
                         if not color:
                             color = DEFAULT_COLOR
+                    # if this is krusha's kong indicator:
                     else:
                         color = getKongColor(settings, kong.kong_index)
                     if color is not None:
@@ -496,7 +519,12 @@ def apply_cosmetic_colors(settings: Settings):
                         color_obj[f"{kong.kong} {palette.name}"] = color
     settings.colors = color_obj
     if len(color_palettes) > 0:
-        convertColors(color_palettes)
+        # this is just to prune the duplicates that appear. someone should probably fix the root of the dupe issue tbh
+        new_color_palettes = []
+        for pal in color_palettes:
+            if pal not in new_color_palettes:
+                new_color_palettes.append(pal)
+        convertColors(new_color_palettes)
 
 
 color_bases = []
@@ -1986,7 +2014,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = "christmas"  # Or "" "halloween"
-    if settings.holiday_setting:
+    if settings.holiday_setting_offseason:
         if HOLIDAY == "christmas":
             # Set season to Christmas
             ROM().seek(settings.rom_data + 0xDB)
@@ -2289,6 +2317,7 @@ boot_phrases = (
     "Killing Speedrunning",
     "Enhancing Cfox Luck Voice Linesmizers",
     "Enforcing the law of the Jungle",
+    "Saving 20 frames",
 )
 
 

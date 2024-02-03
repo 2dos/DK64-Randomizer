@@ -1,4 +1,5 @@
 """File containing main UI button events that travel between tabs."""
+
 import asyncio
 import json
 import random
@@ -7,47 +8,12 @@ from pyodide.ffi import create_proxy
 
 import js
 from randomizer.Enums.Settings import SettingsMap
-from randomizer.Patching.ApplyLocal import patching_response
-from randomizer.Patching.Hash import get_hash_images
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
-from ui.rando_options import (
-    disable_barrel_modal,
-    disable_colors,
-    disable_enemy_modal,
-    disable_excluded_songs_modal,
-    disable_hard_mode_modal,
-    disable_helm_hurry,
-    disable_remove_barriers,
-    disable_faster_checks,
-    disable_helm_phases,
-    disable_krool_phases,
-    disable_move_shuffles,
-    disable_music,
-    enable_plandomizer,
-    handle_progressive_hint_text,
-    item_rando_list_changed,
-    max_music,
-    max_music_proportion,
-    max_randomized_blocker,
-    max_randomized_troff,
-    max_sfx,
-    max_starting_moves_count,
-    toggle_b_locker_boxes,
-    toggle_bananaport_selector,
-    toggle_counts_boxes,
-    toggle_item_rando,
-    toggle_key_settings,
-    toggle_logic_type,
-    update_boss_required,
-    updateDoorOneCountText,
-    updateDoorOneNumAccess,
-    updateDoorTwoCountText,
-    updateDoorTwoNumAccess,
-)
+from ui.rando_options import update_ui_states
 from ui.serialize_settings import serialize_settings
 
 
@@ -127,36 +93,8 @@ def import_settings_string(event):
         except Exception as e:
             print(e)
             pass
-    toggle_counts_boxes(None)
-    toggle_b_locker_boxes(None)
-    update_boss_required(None)
-    disable_colors(None)
-    disable_music(None)
-    disable_move_shuffles(None)
-    max_randomized_blocker(None)
-    handle_progressive_hint_text(None)
-    max_randomized_troff(None)
-    max_music(None)
-    max_music_proportion(None)
-    max_sfx(None)
-    disable_barrel_modal(None)
-    updateDoorOneCountText(None)
-    updateDoorTwoCountText(None)
-    item_rando_list_changed(None)
-    toggle_item_rando(None)
-    disable_enemy_modal(None)
-    disable_excluded_songs_modal(None)
-    disable_hard_mode_modal(None)
-    toggle_bananaport_selector(None)
-    disable_helm_hurry(None)
-    disable_remove_barriers(None)
-    disable_faster_checks(None)
-    toggle_logic_type(None)
-    toggle_key_settings(None)
-    disable_krool_phases(None)
-    disable_helm_phases(None)
-    max_starting_moves_count(None)
-    enable_plandomizer(None)
+    update_ui_states(None)
+    js.savesettings()
 
 
 @bind("change", "patchfileloader")
@@ -200,7 +138,9 @@ async def generate_previous_seed(event):
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
         js.apply_conversion()
         lanky_from_history = js.document.getElementById("load_patch_file").checked
-        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history)
+        from randomizer.Patching.ApplyLocal import patching_response
+
+        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history, True)
 
 
 @bind("click", "generate_lanky_seed")
@@ -217,10 +157,12 @@ async def generate_seed_from_patch(event):
             js.document.getElementById("patchfileloader").classList.add("is-invalid")
     else:
         js.apply_conversion()
+        from randomizer.Patching.ApplyLocal import patching_response
+
         await patching_response(str(js.loaded_patch), True)
 
 
-@bind("click", "generate_seed")
+@bind("click", "trigger_download_event")
 def generate_seed(event):
     """Generate a seed based off the current settings.
 
@@ -254,6 +196,8 @@ def generate_seed(event):
                 return
 
         # Start the progressbar
+        from randomizer.Patching.Hash import get_hash_images
+
         gif_fairy = get_hash_images("browser", "loading-fairy")
         gif_dead = get_hash_images("browser", "loading-dead")
         js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
@@ -265,20 +209,6 @@ def generate_seed(event):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_conversion()
         background(form_data)
-
-
-@bind("click", "download_patch_file")
-def update_seed_text(event):
-    """Set seed text based on the download_patch_file click event.
-
-    Args:
-        event (DOMEvent): Javascript dom click event.
-    """
-    # When we click the download json event just change the button text
-    if js.document.getElementById("download_patch_file").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File"
-    else:
-        js.document.getElementById("generate_seed").value = "Generate Seed"
 
 
 @bind("click", "load_patch_file")
@@ -315,13 +245,10 @@ async def get_args():
     # If someone provided seed_id in the url, lets pull the seed data from the webserver
     if "seed_id" in args_dict:
         # Wait for the page to load
-        if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
-            print("Rom file is not valid")
-            js.document.getElementById("rom").select()
-            if "is-invalid" not in list(js.document.getElementById("rom").classList):
-                js.document.getElementById("rom").classList.add("is-invalid")
-        else:
-            print("Getting the seed from the server")
-            js.apply_conversion()
-            resp = js.get_seed_from_server(args_dict["seed_id"])
-            await patching_response(str(resp), True)
+        print("Getting the seed from the server")
+        resp = js.get_seed_from_server(args_dict["seed_id"])
+        from randomizer.Patching.ApplyLocal import patching_response
+
+        await patching_response(str(resp), False)
+    js.document.getElementById("visual_indicator").setAttribute("hidden", "true")
+    js.document.getElementById("tab-data").removeAttribute("hidden")

@@ -1,4 +1,5 @@
 """Compile a list of hints based on the settings."""
+
 from __future__ import annotations
 
 import json
@@ -366,7 +367,7 @@ hint_distribution_default = {
     HintType.FullShopWithItems: 8,
     # HintType.FoolishMove: 0,  # Used to be 2, added to FoolishRegion when it was removed
     HintType.FoolishRegion: 4,
-    HintType.ForeseenPathless: 1,
+    HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
     HintType.RegionItemCount: 1,
     HintType.ItemRegion: 0,
@@ -393,10 +394,10 @@ race_hint_distribution = {
     HintType.WothLocation: 9,
     HintType.FullShopWithItems: 0,
     # HintType.FoolishMove: 0,
-    HintType.FoolishRegion: 4,
-    HintType.ForeseenPathless: 2,
+    HintType.FoolishRegion: 5,
+    HintType.ForeseenPathless: 0,
     HintType.Multipath: 14,
-    HintType.RegionItemCount: 2,
+    HintType.RegionItemCount: 3,
     HintType.ItemRegion: 0,
     HintType.Plando: 0,
 }
@@ -506,6 +507,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         HintType.RequiredWinConditionHint,
         HintType.RequiredHelmDoorHint,
         HintType.Multipath,
+        HintType.ItemRegion,
     ]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
@@ -626,13 +628,6 @@ def compileHints(spoiler: Spoiler) -> bool:
         random.shuffle(optional_hintable_locations)
         while len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(optional_hintable_locations) > 0:
             item_region_locations_to_hint.append(optional_hintable_locations.pop())
-        # Make sure we have exactly 35 hints planned
-        hint_count = 0
-        for type in hint_distribution:
-            if type in valid_types or type == HintType.Plando:
-                hint_count += hint_distribution[type]
-            else:
-                hint_distribution[type] = 0
         # If there's so many WotH things we can't hint them all, some WotH things will go unhinted. Unlucky.
         if len(item_region_locations_to_hint) > hint_distribution[HintType.ItemRegion]:
             too_many_count = len(item_region_locations_to_hint) - hint_distribution[HintType.ItemRegion]
@@ -646,6 +641,16 @@ def compileHints(spoiler: Spoiler) -> bool:
             random.shuffle(less_important_location_ids)
             for i in range(too_many_count):
                 item_region_locations_to_hint.remove(less_important_location_ids[i])
+        # If you start with a ton of moves, there may be only a handful of things to hint
+        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion]:
+            hint_distribution[HintType.ItemRegion] = len(item_region_locations_to_hint)
+        # Make sure we still have exactly 35 hints planned
+        hint_count = 0
+        for type in hint_distribution:
+            if type in valid_types or type == HintType.Plando:
+                hint_count += hint_distribution[type]
+            else:
+                hint_distribution[type] = 0
         # We'll never be over the cap here, but in some cases we may be under the cap - fill extra hints if we need them
         while hint_count < HINT_CAP:
             filler_type = random.choice(valid_types)
@@ -713,11 +718,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hint_distribution[HintType.FoolishRegion] = len(spoiler.foolish_region_names)
                     maxed_hint_types.append(HintType.FoolishRegion)
 
-                valid_types.append(HintType.ForeseenPathless)
-                # If there are more pathless move hints than pathless moves, lower this number and prevent more from being added
-                if len(spoiler.pathless_moves) < hint_distribution[HintType.ForeseenPathless]:
-                    hint_distribution[HintType.ForeseenPathless] = len(spoiler.pathless_moves)
-                    maxed_hint_types.append(HintType.ForeseenPathless)
+                # valid_types.append(HintType.ForeseenPathless)
+                # # If there are more pathless move hints than pathless moves, lower this number and prevent more from being added
+                # if len(spoiler.pathless_moves) < hint_distribution[HintType.ForeseenPathless]:
+                #     hint_distribution[HintType.ForeseenPathless] = len(spoiler.pathless_moves)
+                #     maxed_hint_types.append(HintType.ForeseenPathless)
 
                 valid_types.append(HintType.RegionItemCount)
                 # If there are more region item count hints than regions containing moves (????), lower this number and prevent more from being added
@@ -956,6 +961,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hint_location = getRandomHintLocation(levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon])
                 else:
                     hint_location = getRandomHintLocation()
+            globally_hinted_location_ids.append(kong_location_id)
             freeing_kong_name = kong_list[kong_location.kong]
             if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
                 if kong_location.level == Levels.Shops:  # Exactly Jetpac
@@ -1693,6 +1699,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.hint_type = HintType.FoolishRegion
             UpdateHint(hint_location, message)
 
+    # TEMPORARILY SHELVED - may revisit in the future with either more processing power or a more clever approach
     # Pathless hints are the evolution of foolish moves - it hints a move that is not on the path to anything else.
     # You may use a pathless move as a part of an either/or, but it will not be strictly required for anything.
     # Slams are banned from being hinted this way cause I do not want to deal with that *at all*
@@ -1975,9 +1982,12 @@ def compileHints(spoiler: Spoiler) -> bool:
     # Finally, place our joke hints
     for i in range(hint_distribution[HintType.Joke]):
         hint_location = getRandomHintLocation()
-        joke_hint_list = hint_list.copy()
-        random.shuffle(joke_hint_list)
-        message = joke_hint_list.pop().hint
+        if i > 4:
+            message = "What do you think I am, a comedian? Try again in another seed."
+        else:
+            joke_hint_list = hint_list.copy()
+            random.shuffle(joke_hint_list)
+            message = joke_hint_list.pop().hint
         # Way of the Bean joke hint - yes, this IS worth it
         if message == "[[WOTB]]":
             bean_location_id = None
@@ -2112,9 +2122,9 @@ def compileMicrohints(spoiler: Spoiler) -> None:
         if len(slam_levels) > 0:
             slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
             slam_text = " or ".join(slam_text_entries)
-            spoiler.microhints[
-                ItemList[Items.ProgressiveSlam].name
-            ] = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptillian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
+            spoiler.microhints[ItemList[Items.ProgressiveSlam].name] = (
+                f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
+            )
 
 
 def compileSpoilerHints(spoiler):

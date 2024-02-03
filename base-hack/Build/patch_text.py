@@ -808,6 +808,16 @@ location_references = [
     ItemReference("Lanky Kong", "Llama Lanky Cage"),
     ItemReference("Tiny Kong", "Aztec Tiny Cage"),
     ItemReference("Chunky Kong", "Factory Chunky Cage"),
+    # Early Keys
+    ItemReference("Key 1", "Japes Boss Defeated"),
+    ItemReference("Key 2", "Aztec Boss Defeated"),
+    ItemReference("Key 3", "Factory Boss Defeated"),
+    ItemReference("Key 4", "Galleon Boss Defeated"),
+    # Late Keys
+    ItemReference("Key 5", "Forest Boss Defeated"),
+    ItemReference("Key 6", "Caves Boss Defeated"),
+    ItemReference("Key 7", "Castle Boss Defeated"),
+    ItemReference("Key 8", "The End of Helm"),
 ]
 
 with open("src/randomizers/move_text.c", "w") as fh:
@@ -953,7 +963,7 @@ squawks_text.append(
     [
         {
             "text": [
-                "LADIES AND GENTLEMEN! IT APPEARS THAT ONE FIGHTER HAS COME UNEQUIPPED TO PROPERLY HANDLE THIS REPTILLIAN BEAST. PERHAPS THEY SHOULD HAVE LOOKED IN \x07FUNGI FOREST\x07 OR \x09CREEPY CASTLE\x09 FOR THE ELUSIVE SLAM."
+                "LADIES AND GENTLEMEN! IT APPEARS THAT ONE FIGHTER HAS COME UNEQUIPPED TO PROPERLY HANDLE THIS REPTILIAN BEAST. PERHAPS THEY SHOULD HAVE LOOKED IN \x07FUNGI FOREST\x07 OR \x09CREEPY CASTLE\x09 FOR THE ELUSIVE SLAM."
             ]
         }
     ]

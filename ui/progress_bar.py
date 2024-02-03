@@ -1,4 +1,5 @@
 """Manage the progressbar of the UI."""
+
 import asyncio
 
 import js

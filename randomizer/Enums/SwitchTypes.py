@@ -1,4 +1,5 @@
 """Switch Type enum."""
+
 from enum import IntEnum, auto
 
 

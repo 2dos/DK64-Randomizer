@@ -1,4 +1,5 @@
 """Module used to distribute items randomly."""
+
 from __future__ import annotations
 
 from random import choice, randint, shuffle, uniform
@@ -1902,7 +1903,7 @@ def GetLogicallyAccessibleKongLocations(spoiler: Spoiler, kongLocations, ownedKo
             # Must be able to bypass Guitar door - the active bananaports condition is in case your only Llama Temple access is through the quicksand cave
             and (
                 Kongs.diddy in ownedKongs
-                or IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door_opened)
+                or IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door)
                 or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all)
             )
             and (Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs)
@@ -2058,10 +2059,14 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
     if spoiler.settings.chunky_freeing_kong == Kongs.any:
         spoiler.settings.chunky_freeing_kong = choice(GetKongs())
     # Update the locations' assigned kong with the set freeing kong list
+    spoiler.LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong
     spoiler.LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
     spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
+    spoiler.LocationList[Locations.LankyKong].kong = spoiler.settings.lanky_freeing_kong
     spoiler.LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
+    spoiler.LocationList[Locations.TinyKong].kong = spoiler.settings.tiny_freeing_kong
     spoiler.LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
+    spoiler.LocationList[Locations.ChunkyKong].kong = spoiler.settings.chunky_freeing_kong
     spoiler.LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
     spoiler.settings.update_valid_locations(spoiler)
 
@@ -2177,7 +2182,7 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         # Any placed items placed before this method can't be random starting items
-        for item in placedItems:
+        for item in placedMoves:
             if item in possibleStartingMoves:
                 possibleStartingMoves.remove(item)
         shuffle(possibleStartingMoves)
@@ -2932,6 +2937,16 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.Lanky, "Lanky Kong", "Llama Lanky Cage"),
         ItemReference(Items.Tiny, "Tiny Kong", "Aztec Tiny Cage"),
         ItemReference(Items.Chunky, "Chunky Kong", "Factory Chunky Cage"),
+        # Early Keys
+        ItemReference(Items.JungleJapesKey, "Key 1", "Starting Key"),
+        ItemReference(Items.AngryAztecKey, "Key 2", "Starting Key"),
+        ItemReference(Items.FranticFactoryKey, "Key 3", "Starting Key"),
+        ItemReference(Items.GloomyGalleonKey, "Key 4", "Starting Key"),
+        # Late Keys
+        ItemReference(Items.FungiForestKey, "Key 5", "Starting Key"),
+        ItemReference(Items.CrystalCavesKey, "Key 6", "Starting Key"),
+        ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key"),
+        ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key"),
     ]
     # Item Rando
     spoiler.human_item_assignment = {}

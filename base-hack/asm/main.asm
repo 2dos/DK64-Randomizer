@@ -6,6 +6,7 @@
 NOP ; CRC Patch
 .include "asm/bootPatch.asm" //patch boot routine to DMA our code from ROM
 .include "asm/header.asm"
+.include "asm/overlay_defs.asm"
 .include "asm/boot.asm" //include modified boot code
 .include "asm/hookcode.asm" // Hook code
 .include "asm/objects.asm"

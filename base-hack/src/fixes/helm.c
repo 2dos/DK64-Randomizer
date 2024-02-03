@@ -56,6 +56,9 @@ void helmTime_exitBonus(void) {
 	 */
 	ExitFromBonus();
 	fixHelmTimerCorrection();
+	if (inTraining(CurrentMap)) {
+		CollectableBase.Oranges = StoredOrangeCount;
+	}
 }
 
 void helmTime_exitRace(void) {

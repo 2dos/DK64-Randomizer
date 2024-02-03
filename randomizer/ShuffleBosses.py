@@ -1,4 +1,5 @@
 """Randomize Boss Locations."""
+
 import random
 from array import array
 

@@ -672,7 +672,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
 					}
 				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
-					if (Rando.open_level_sections) {
+					if (Rando.removed_barriers.japes_coconut_gates) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}

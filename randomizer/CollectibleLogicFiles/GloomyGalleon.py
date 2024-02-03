@@ -35,7 +35,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
     Regions.LighthouseSurface: [
-        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # Near Diddy BP
+        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather and Events.WaterLowered in l.Events, None, 1),  # Near Diddy BP
     ],
     Regions.LighthousePlatform: [
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),

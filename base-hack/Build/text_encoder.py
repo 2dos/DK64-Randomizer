@@ -1,4 +1,5 @@
 """Encode text file to ROM."""
+
 from BuildEnums import Icons
 from BuildLib import float_to_hex
 

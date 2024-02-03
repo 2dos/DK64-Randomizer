@@ -1,4 +1,5 @@
 """Apply Boss Locations."""
+
 import cProfile
 import io
 import pstats

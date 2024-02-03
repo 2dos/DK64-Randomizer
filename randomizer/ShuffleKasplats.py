@@ -1,4 +1,5 @@
 """Module used to handle setting and randomizing kasplats."""
+
 import random
 
 import js

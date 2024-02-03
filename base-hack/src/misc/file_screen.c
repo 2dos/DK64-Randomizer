@@ -835,6 +835,11 @@ void setPrevSaveMap(void) {
 	previous_map_save = Rando.starting_map;
 }
 
+void QuitGame(void) {
+	save();
+	LoadGameOver();
+}
+
 int updateLevelIGT(void) {
 	/**
 	 * @brief Update level in-game time values

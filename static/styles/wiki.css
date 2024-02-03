@@ -1,0 +1,210 @@
+/* Revert link stylings */
+a {
+    text-decoration: underline solid 1px !important;
+}
+a:hover {
+    color: #035e30 !important;
+}
+nav a, a.list_number {
+    text-decoration: none !important;   
+}
+
+
+/* Wiki Stylings */
+.content-navigation-menu ul {
+    list-style-type: none;
+}
+.content-navigation-menu li {
+    cursor: pointer;
+}
+.content-navigation-menu li a.list_number {
+    color: white;
+}
+.content-navigation-menu li a {
+    text-decoration: none;
+}
+.content-navigation-menu li:hover a {
+    text-decoration: underline;
+}
+#markdown_navigation_sidebar a.list_number {
+    display: none;
+}
+#markdown_navigation_sidebar ul {
+    padding-left: 20px;
+}
+.content-pane {
+    background-color: rgba(23, 27, 31);
+    width: fit-content;
+    text-align: center;
+}
+.content-pane #markdown_navigation {
+    text-align: left;
+}
+blockquote {
+    border-left: 10px solid rgba(23, 27, 31);
+    padding-left: 10px;
+}
+pre {
+    background-color: rgba(23, 27, 31);
+    border: 1px solid rgba(27, 27, 31);
+    padding: 20px;
+    width: fit-content;
+    transition: 0.5s ease-in-out;
+    max-width: fill-available;
+    max-width: -webkit-fill-available;
+    padding-right: 30px;
+}
+pre code {
+    text-wrap: wrap;
+}
+pre.pulse {
+    background-color: rgba(33, 37, 41);
+    border: 1px solid white;
+}
+.pulse_display::before {
+    content: "Copied! ";
+}
+
+.code-copy-container {
+    position: relative;
+    width: fit-content;
+    max-width: fill-available;
+    max-width: -webkit-fill-available;
+}
+.code-copy {
+    position:absolute;
+    top: 0;
+    right: 0;
+}
+.code-copy:hover {
+    color: #666;
+}
+
+#markdown_content h2 {
+    font-weight: 300;
+    margin-top: 2.5rem;
+}
+#markdown_content h3, h4 {
+    margin-top: 0.3em;
+    padding-top: 0.5em;
+}
+#markdown_content h3 {
+    font-weight: bold;
+}
+#markdown_content h4 {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+.collapsable-header {
+    background-color: rgba(var(--bs-black-rgb));
+    transition: 0.2s linear;
+    cursor: pointer;
+}
+.collapsable-header.collapsed {
+    background-color: rgba(var(--bs-dark-rgb));
+}
+.collapsable-header-caret {
+    transition: transform 0.2s linear;
+}
+.collapsable-header.collapsed > .collapsable-header-caret {
+    transform: rotate(-90deg);
+}
+
+#search_suggestions {
+    background-color: white;
+    z-index: 2000;
+}
+
+#search_suggestions .search-item {
+    border-bottom: 1px solid darkslategray;
+    color: black;
+    cursor: pointer;
+    transition: 0.2s linear;
+}
+
+#search_suggestions .search-item:hover {
+    color: white;
+    background-color: rgba(var(--bs-dark-rgb));
+}
+
+.sidebar-link, .collapsable-header {
+    transition: 0.2s linear;
+}
+
+.sidebar-link:hover, .collapsable-header:hover {
+    background-color: rgba(0, 0, 0);
+}
+
+.inline-code {
+    background-color: rgba(100, 118, 129, 0.4);
+    border-radius: 6px;
+    font-size: 85%;
+    padding: 0.2em 0.4em;
+    margin: 0;
+    white-space: break-spaces;
+    color: #e6edf3;
+}
+
+#markdown_navigation_sidebar.truncate_sidebar_scroll>ul>ul {
+    display: none;
+}
+
+/* Image Buttons */
+.img-btn-container {
+    background-color: rgba(23, 27, 31);
+    border: 1px solid grey;
+    border-radius: 5px;
+    transition: 0.5s linear;
+    width: 150px;
+    text-align: center;
+}
+
+.img-btn-container:hover {
+    background-color: rgba(33, 37, 41);
+}
+
+.img-btn-container img {
+    width: 64px;
+}
+
+.img-btn-container .img-btn-text {
+    margin-top: 10px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .hide-if-thin {
+        display: none;
+    }
+    .max-if-thin {
+        width: 100%;
+    }
+}
+
+/* Suggested Articles */
+.sugg-article-container {
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+/* SCROLLBAR */
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}

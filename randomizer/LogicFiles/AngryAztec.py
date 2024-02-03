@@ -69,7 +69,7 @@ LogicRegions = {
         TransitionFront(Regions.AztecTunnelBeforeOasis, lambda l: True),
         TransitionFront(Regions.TempleStart, lambda l: ((l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)) or l.phasewalk),
-        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tunnel_door_opened) or Events.AztecGuitarPad in l.Events or l.phasewalk or l.generalclips),
+        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tunnel_door) or Events.AztecGuitarPad in l.Events or l.phasewalk or l.generalclips),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -132,7 +132,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_Outside5DT, lambda l: True),
         LocationLogic(Locations.AztecMainEnemy_NearSnoopTunnel, lambda l: True),
     ], [
-        Event(Events.FedTotem, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_5dtemple_switches_spawned) or (l.jetpack and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
+        Event(Events.FedTotem, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_5dtemple_switches) or (l.jetpack and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
         Event(Events.AztecW2bTagged, lambda l: True),
         Event(Events.AztecW3aTagged, lambda l: True),
         Event(Events.AztecW4aTagged, lambda l: True),

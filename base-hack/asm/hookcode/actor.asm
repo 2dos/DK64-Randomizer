@@ -374,3 +374,20 @@ checkBeforeApplyingQuicksand: ; $t4 contains colliding_actor->actor_type
         lui $at, 0x8080
         j 0x80668428
         nop
+
+disableHelmKeyBounce:
+    jal 0x806A6DB4
+    or $a0, $zero, $zero
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    addiu $a2, $zero, 0x6F
+    beq $a1, $a2, applyWaterFloat
+    nop
+
+    skipWaterFloat:
+        j 0x806A74D8
+        addiu $t2, $zero, 0x78
+
+    applyWaterFloat:
+        j 0x806A747C
+        nop

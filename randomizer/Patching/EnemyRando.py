@@ -1,4 +1,5 @@
 """Apply Boss Locations."""
+
 import random
 
 import js

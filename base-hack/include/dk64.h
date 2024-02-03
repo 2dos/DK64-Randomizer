@@ -4,7 +4,7 @@ extern int checkFlag(int flagIndex, flagtypes flagType);
 extern int getFlagIndex(int startFlag, int level, int kong);
 extern void* dk_malloc(int size);
 extern void dk_free(void* mallocPtr);
-extern void playSound(short soundIndex, int unk0, int unk1, int unk2, int unk3, int unk4);
+extern void playSound(short soundIndex, int unk0, float unk1, float unk2, int unk3, int unk4);
 extern void initiateTransition(maps map, int exit);
 extern void initiateTransition_0(maps map, int exit, int unk0, int unk1);
 extern void WarpToParent(void);
@@ -113,6 +113,7 @@ extern int getPadGravity(void* actor);
 extern void BananaMedalGet(void);
 extern void CrownGet(void);
 extern void updateModel(void* data);
+extern void bounceObjectCode(int convert_to_model_two);
 
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
@@ -170,6 +171,7 @@ extern void getScreenPosition(float x, float y, float z, float* x_store, float* 
 extern int* textDraw(int* dl, int style, int x, int y, char* str);
 extern void* getPtr14Texture(int texture);
 extern void renderImage_Internal(void* dl, void* texture, int unk0, int width, int height, int unk1, int unk1_copy, int unk2, int unk2_copy, float width_f, float height_f, float x_center, float y_center, int unk3);
+extern int* displayChunk(int* dl, int chunk_index, int shift);
 
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);
@@ -525,6 +527,8 @@ extern int displayListCount;
 extern char TransitionType;
 extern char DKTVKong;
 extern cutsceneType CutsceneBanks[2];
+extern queued_cutscene_function* QueuedCutsceneFunctions;
+extern int ActorTimer;
 extern int EEPROMType;
 extern unsigned char ReverseMillLeverOrder[5];
 extern unsigned char ReverseCryptLeverOrder[3];
@@ -571,6 +575,7 @@ extern enemy_drop_struct EnemyDropsTable[27];
 extern short scriptLoadedArray[0x46];
 extern short scriptsLoaded;
 extern unsigned char scriptLoadsAttempted;
+extern int MenuDarkness;
 
 extern purchase_struct CrankyMoves[5][7];
 extern purchase_struct CandyMoves[5][7];
@@ -704,6 +709,7 @@ extern char RambiArenaComboSize;
 extern char RambiArenaComboChain[16];
 
 extern char* AnimationPointer;
+extern unsigned short StoredOrangeCount;
 
 //hack data
 extern int TestVariable;

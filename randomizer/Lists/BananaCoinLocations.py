@@ -556,7 +556,7 @@ BananaCoinGroupList = {
             name="On top level in corner",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FranticFactoryLobby,
-            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))),
+            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
             locations=[
                 [1.0, 632, 133, 571],
                 [1.0, 608, 133, 562],
@@ -569,7 +569,7 @@ BananaCoinGroupList = {
             name="On top level at the end",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FranticFactoryLobby,
-            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))),
+            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
             locations=[
                 [1.0, 707, 133, 326],
                 [1.0, 677, 133, 326],
@@ -1659,6 +1659,7 @@ BananaCoinGroupList = {
             name="On the bridge",
             konglist=[Kongs.diddy],
             region=Regions.Mine,
+            logic=lambda l: l.peanut or l.advanced_platforming,
             locations=[
                 [1.0, 498.7564392089844, 146.62681579589844, 198.3944091796875],
             ],

@@ -1,4 +1,5 @@
 """Apply Boss Locations."""
+
 import js
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Patching.Patcher import LocalROM

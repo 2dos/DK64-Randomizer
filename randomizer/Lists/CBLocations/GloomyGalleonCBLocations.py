@@ -1607,6 +1607,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseSurface,
         vanilla=True,
+        logic=lambda l: Events.WaterLowered in l.Events,
         points=[[637, 1604, 4091], [638, 1606, 3967]],
     ),
     Balloon(

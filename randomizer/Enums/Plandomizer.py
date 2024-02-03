@@ -1,4 +1,5 @@
 """Plandomizer enums and associated maps."""
+
 from enum import IntEnum, auto
 
 from randomizer.Enums.Items import Items

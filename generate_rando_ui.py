@@ -1,6 +1,6 @@
 """Generate UI elements via jinja2 to display on page load."""
+
 import json
-import time
 
 import micropip
 from jinja2 import Environment, FunctionLoader
@@ -13,7 +13,9 @@ async def initialize():
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
     await micropip.install(
-        [f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl", f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl"],
+        [
+            f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl",
+        ],
         deps=False,
     )
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
@@ -51,15 +53,20 @@ async def initialize():
         resp = js.getFile(file)
         return resp
 
-    milliseconds = int(round(time.time() * 1000))
-
     def loader_func(template_name):
-        return ajax_call("templates/" + f"{template_name}?currtime={milliseconds}")
+        return ajax_call("templates/" + f"{template_name}")
 
-    for file in json.loads(ajax_call(f"static/presets/preset_files.json?currtime={milliseconds}")).get("progression"):
-        js.progression_presets.append(json.loads(ajax_call("static/presets/" + file)))
-    for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json?currtime={milliseconds}")).get("random_settings"):
-        js.random_settings_presets.append(json.loads(ajax_call("static/presets/weights/" + file)))
+    if js.location.hostname == "dev.dk64randomizer.com":
+        presets_url = "https://dev-generate.dk64rando.com/get_presets?return_blank=true"
+    elif js.location.hostname == "dk64randomizer.com":
+        presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true"
+    else:
+        presets_url = js.location.origin + "/get_presets?return_blank=true"
+
+    for file in json.loads(ajax_call(presets_url)):
+        js.progression_presets.append(file)
+    for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json")):
+        js.random_settings_presets.append(file)
 
     # Load our pointer info from the JSON database
     js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
@@ -97,6 +104,12 @@ async def initialize():
     )
     # get the "tab-data" div and replace it with the rendered template
     js.jquery("#tab-data").html(rendered)
+    await micropip.install(
+        [
+            f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl",
+        ],
+        deps=False,
+    )
 
 
 # Run the script (This will be run as async later on)

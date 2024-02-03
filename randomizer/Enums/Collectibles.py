@@ -1,4 +1,5 @@
 """Collectible enum."""
+
 from enum import IntEnum, auto
 
 

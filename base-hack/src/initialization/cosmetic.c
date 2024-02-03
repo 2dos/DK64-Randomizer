@@ -227,37 +227,6 @@ void initSkyboxRando(void) {
     }
 }
 
-void initKlaptraps(void) {
-    /**
-     * @brief Fix Klaptraps in Beaver Bother, so if no model is selected, it will default to a green klaptrap.
-     * 
-     */
-    // Change Beaver Bother Klaptrap Model
-    if (Rando.klaptrap_color_bbother == 0) {
-        Rando.klaptrap_color_bbother = 0x21; // Set to default model if no model assigned
-    }
-}
-
-void initWrinklyColoring(void) {
-    /**
-     * @brief Alter Wrinkly's color. Do not change color if misc cosmetics off or all fields are 0.
-     * 
-     */
-    if (Rando.misc_cosmetic_on) {
-        int pass = 0;
-        for (int i = 0; i < 3; i++) {
-            if (Rando.wrinkly_rgb[i] > 0) {
-                pass = 1;
-            }
-        }
-        if (pass) {
-            *(short*)(0x8064F052) = Rando.wrinkly_rgb[0];
-            *(short*)(0x8064F04A) = Rando.wrinkly_rgb[1];
-            *(short*)(0x8064F046) = Rando.wrinkly_rgb[2];
-        }
-    }
-}
-
 void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
         *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
@@ -354,11 +323,6 @@ void initColorblindChanges(void) {
         writeRGBColor(hair->regular, (short*)0x806FF0C6, (short*)0x806FF0CA);
         writeRGBColor(hair->homing, (short*)0x806FF0AA, (short*)0x806FF0AE);
     }
-    if (Rando.outlined_crosshair) {
-        *(short*)(0x806FFAFE) = 113;
-        *(short*)(0x806FF116) = 113;
-        *(short*)(0x806B78DA) = 113;
-    }
 }
 
 void initCosmetic(void) {
@@ -374,8 +338,6 @@ void initCosmetic(void) {
     initDiscoChunky();
     initKrusha();
     initSkyboxRando();
-    initKlaptraps();
-    initWrinklyColoring();
     initSeasonalChanges();
     initColorblindChanges();
     //loadWidescreen(OVERLAY_BOOT);

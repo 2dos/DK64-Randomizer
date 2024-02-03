@@ -1,4 +1,5 @@
 """Apply item rando changes."""
+
 from enum import IntEnum, auto
 
 import js
@@ -112,7 +113,7 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: 0xFD,
+    Types.FakeItem: 0x103,
 }
 
 kong_flags = (385, 6, 70, 66, 117)

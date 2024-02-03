@@ -194,7 +194,7 @@
 | Gloomy Galleon | In Enguarde Alcove | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | In Front of Mermaid Palace | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | On Rocketbarrel platform |  | 
-| Gloomy Galleon | Blueprint Alcove |  | 
+| Gloomy Galleon | Blueprint Alcove | Events.WaterLowered in l.Events | 
 | Gloomy Galleon | Behind Snide's |  | 
 | Gloomy Galleon | Shipyard: On top of Tiny Submarine | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | In the Shipwreck with Replenishables | Events.ShipyardEnguarde in l.Events | 
@@ -463,8 +463,8 @@
 | Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Frantic Factory Lobby | Factory Lobby: Near Lever |  | 
-| Frantic Factory Lobby | Factory Lobby: High Platform | ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
-| Frantic Factory Lobby | Factory Lobby: Above Portal | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
+| Frantic Factory Lobby | Factory Lobby: High Platform | ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny))) | 
+| Frantic Factory Lobby | Factory Lobby: Above Portal | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))) | 
 | Gloomy Galleon Lobby | Galleon Lobby: Right of Portal |  | 
 | Gloomy Galleon Lobby | Galleon Lobby: Left of Portal |  | 
 | Gloomy Galleon Lobby | Galleon Lobby: Behind Mini Monkey Gate | ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3) | 
@@ -486,7 +486,6 @@
 | Training Grounds | Training Grounds: Rear Cave |  | 
 | Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() or l.phasewalk | 
 | Training Grounds | Training Grounds: Under Water | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
-| Training Grounds | Training Grounds: Under Water in Corner | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
 | Training Grounds | Training Grounds: Near Pool |  | 
 | Treehouse | Back of the treehouse |  | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | 

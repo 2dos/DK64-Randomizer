@@ -1,4 +1,5 @@
 """Main web endpoint API calls for the bot."""
+
 import json
 import os
 import requests

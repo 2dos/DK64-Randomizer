@@ -1,6 +1,9 @@
 """Apply Patch data to the ROM."""
+
 import json
 import os
+from datetime import datetime as Datetime
+from datetime import UTC
 import time
 from tempfile import mktemp
 
@@ -54,6 +57,7 @@ from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
+from randomizer.Patching.ASMPatcher import patchAssembly
 
 # from randomizer.Spoiler import Spoiler
 
@@ -90,9 +94,8 @@ def patching_response(spoiler):
     spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes
-    from datetime import datetime
 
-    dt = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    dt = Datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S")
     temp_json = json.loads(spoiler.json)
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
@@ -593,6 +596,8 @@ def patching_response(spoiler):
     updateDiddyDoors(spoiler.settings)
     applyHelmDoorCosmetics(spoiler.settings)
     applyKrushaKong(spoiler.settings)
+
+    patchAssembly(ROM_COPY, spoiler)
 
     # Apply Hash
     order = 0

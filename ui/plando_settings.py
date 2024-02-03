@@ -1,4 +1,5 @@
 """Methods to handle plando settings importing and exporting."""
+
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Levels import Levels

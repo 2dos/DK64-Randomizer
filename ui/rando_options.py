@@ -1,4 +1,5 @@
 """Options for the main rando tab."""
+
 import random
 import re
 
@@ -158,7 +159,7 @@ def max_starting_moves_count(event):
     move_count = js.document.getElementById("starting_moves_count")
     moves = js.document.getElementById("move_rando")
     item_rando = js.document.getElementById("shuffle_items")
-    max_starting_moves = 40
+    max_starting_moves = 41
     if not item_rando.checked and moves.value != "off":
         max_starting_moves = 4
     if not move_count.value:
@@ -169,11 +170,14 @@ def max_starting_moves_count(event):
         move_count.value = max_starting_moves
 
 
+DISABLED_HELM_DOOR_VALUES = ("easy_random", "medium_random", "hard_random", "opened")
+
+
 @bind("change", "crown_door_item")
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
     door_one_selection = js.document.getElementById("crown_door_item")
-    disabled = (door_one_selection.value == "random") or (door_one_selection.value == "opened")
+    disabled = door_one_selection.value in DISABLED_HELM_DOOR_VALUES
     door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
         door_one_req.setAttribute("disabled", "disabled")
@@ -231,7 +235,7 @@ def updateDoorOneCountText(evt):
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
     door_two_selection = js.document.getElementById("coin_door_item")
-    disabled = (door_two_selection.value == "random") or (door_two_selection.value == "opened")
+    disabled = door_two_selection.value in DISABLED_HELM_DOOR_VALUES
     door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
         door_two_req.setAttribute("disabled", "disabled")
@@ -710,7 +714,7 @@ def disable_move_shuffles(evt):
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
-            starting_moves_count.value = 40
+            starting_moves_count.value = 41
             starting_moves_count.setAttribute("disabled", "disabled")
             start_with_slam.checked = True
             start_with_slam.setAttribute("disabled", "disabled")
@@ -720,7 +724,7 @@ def disable_move_shuffles(evt):
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
-            starting_moves_count.value = 40
+            starting_moves_count.value = 41
             starting_moves_count.setAttribute("disabled", "disabled")
             start_with_slam.checked = True
             start_with_slam.setAttribute("disabled", "disabled")
@@ -887,8 +891,8 @@ def item_rando_list_changed(evt):
     if js.document.getElementById("shuffle_items").checked:
         item_rando_disabled = False
     if shops_in_pool and not item_rando_disabled:
-        shared_shop_warning.setAttribute("hidden", "hidden")
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
+        shared_shop_warning.setAttribute("hidden", "hidden")
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
         if move_vanilla.selected is True or move_rando.selected is True:
@@ -901,8 +905,8 @@ def item_rando_list_changed(evt):
         js.document.getElementById("shockwave_status").removeAttribute("disabled")
         js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
-        shared_shop_warning.removeAttribute("hidden")
         # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
+        shared_shop_warning.removeAttribute("hidden")
         shockwave.removeAttribute("disabled")
         move_vanilla.removeAttribute("disabled")
         move_rando.removeAttribute("disabled")
@@ -1013,6 +1017,13 @@ def preset_select_changed(event):
                     js.jq(f"#{key}").removeAttr("disabled")
             except Exception as e:
                 pass
+    update_ui_states(None)
+    js.savesettings()
+
+
+@bind("custom-update-ui-event", "apply_preset")
+def update_ui_states(event):
+    """Trigger any function that would update the status of a UI element based on the current settings configuration."""
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     update_boss_required(None)
@@ -1038,7 +1049,18 @@ def preset_select_changed(event):
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
-    js.savesettings()
+    updateDoorOneNumAccess(None)
+    updateDoorOneCountText(None)
+    updateDoorTwoNumAccess(None)
+    updateDoorTwoCountText(None)
+    disable_tag_spawn(None)
+    disable_krool_phases(None)
+    disable_helm_phases(None)
+    enable_plandomizer(None)
+    disable_switchsanity_with_plandomizer(None)
+    toggle_medals_box(None)
+    toggle_extreme_prices_option(None)
+    toggle_vanilla_door_rando(None)
 
 
 @bind("click", "enable_plandomizer")
@@ -1444,32 +1466,7 @@ def shuffle_settings(evt):
     randomize_settings()
 
     # Run additional functions to ensure there are no conflicts.
-    updateDoorOneNumAccess(None)
-    updateDoorOneCountText(None)
-    updateDoorTwoNumAccess(None)
-    updateDoorTwoCountText(None)
-    toggle_b_locker_boxes(None)
-    toggle_counts_boxes(None)
-    update_boss_required(None)
-    disable_tag_spawn(None)
-    disable_krool_phases(None)
-    disable_helm_phases(None)
-    disable_move_shuffles(None)
-    disable_barrel_modal(None)
-    disable_enemy_modal(None)
-    disable_hard_mode_modal(None)
-    item_rando_list_changed(None)
-    enable_plandomizer(None)
-    disable_switchsanity_with_plandomizer(None)
-    toggle_medals_box(None)
-    toggle_extreme_prices_option(None)
-    toggle_logic_type(None)
-    toggle_bananaport_selector(None)
-    toggle_key_settings(None)
-    disable_helm_hurry(None)
-    disable_remove_barriers(None)
-    disable_faster_checks(None)
-    toggle_vanilla_door_rando(None)
+    update_ui_states(evt)
 
 
 musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.keys()]
