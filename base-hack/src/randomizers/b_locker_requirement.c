@@ -31,8 +31,21 @@ int getCountOfBlockerRequiredItem(void) {
     return getItemCountReq(Rando.b_locker_requirements[world]);
 }
 
+void displayCountOnBLockerTeeth(int count) {
+    int world = getWorld(CurrentMap, 0);
+    if (world > 7) {
+        return;
+    }
+    if (Rando.b_locker_requirements[world] == REQITEM_COLOREDBANANA) {
+        count /= 10;
+    }
+    displayCountOnTeeth(count);
+}
+
 void initBLocker(void) {
     writeFunction(0x80027570, &displayBlockerItemOnHUD);
     writeFunction(0x800279D0, &getCountOfBlockerRequiredItem);
     writeFunction(0x8002792C, &getCountOfBlockerRequiredItem);
+    writeFunction(0x800278EC, &displayCountOnBLockerTeeth);
+    writeFunction(0x800275AC, &displayCountOnBLockerTeeth);
 }
