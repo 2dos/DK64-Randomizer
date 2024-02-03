@@ -22,7 +22,7 @@ import shop_instance_script
 from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
-from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
+from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures
 from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
@@ -189,7 +189,7 @@ file_dict = [
     File(
         name="Fake GB Shine",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(0),
+        file_index=getBonusSkinOffset(ExtraTextures.FakeGBShine),
         source_file="assets/displays/gb_shine.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -197,7 +197,7 @@ file_dict = [
     File(
         name="Melon Surface",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(4),
+        file_index=getBonusSkinOffset(ExtraTextures.MelonSurface),
         source_file="assets/hash/melon_resized.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -212,11 +212,100 @@ file_dict = [
     File(
         name="Base Barrel Shell",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(5),
+        file_index=getBonusSkinOffset(ExtraTextures.BonusShell),
         source_file="assets/tagbarrel/plain_shell.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
     ),
+    File(
+        name="B Locker Item: Move",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemMove),
+        source_file="assets/displays/potion44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Blueprint",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemBlueprint),
+        source_file="assets/displays/lanky_bp44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Fairy",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemFairy),
+        source_file="assets/displays/fairy44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Bean",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemBean),
+        source_file="assets/displays/bean44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Pearl",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemPearl),
+        source_file="assets/displays/pearl44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Rainbow Coin",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemRainbowCoin),
+        source_file="assets/displays/rainbow_coin44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Ice Trap",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemIceTrap),
+        source_file="assets/displays/fake_gb_flipped.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Game Percentage",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemPercentage),
+        source_file="assets/displays/perc44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Balloon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemBalloon),
+        source_file="assets/displays/balloon_head.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Company Coins",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemCompanyCoin),
+        source_file="assets/displays/door_combocoin.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Kong",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemKong),
+        source_file="assets/displays/shared_flipped.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(name="B. Locker", pointer_table_index=TableNames.ActorGeometry, file_index=0x64, source_file="blocker_base.bin", do_not_delete_source=True),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
     File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
     File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=113, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
@@ -293,7 +382,7 @@ for item in range(3):
         File(
             name=f"Rainbow Coin ({item})",
             pointer_table_index=TableNames.TexturesGeometry,
-            file_index=getBonusSkinOffset(item + 1),
+            file_index=getBonusSkinOffset(item + ExtraTextures.RainbowCoin0),
             source_file=f"assets/hash/rainbow_{item}.png",
             do_not_extract=True,
             texture_format=TextureFormat.RGBA5551,
@@ -1059,7 +1148,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6070)
+    clampCompressedTextures(fh, 6100)
     for x in file_dict:
         if x.bps_file is not None:
             with open(x.source_file, "rb") as fg:
@@ -1439,6 +1528,16 @@ with open(newROMName, "r+b") as fh:
         "warp_rim_0",
         "warp_rim_1",
         "crosshair",
+        "balloon_head",
+        "bean44",
+        "fairy44",
+        "fake_gb_flipped",
+        "lanky_bp44",
+        "pearl44",
+        "perc44",
+        "potion44",
+        "rainbow_coin44",
+        "shared_flipped",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

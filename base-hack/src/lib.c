@@ -1186,6 +1186,7 @@ int getItemCountReq(requirement_item item) {
 			}
 			return count;
 		default:
+			return 0;
 	}
 	return 0;
 }

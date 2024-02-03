@@ -179,14 +179,6 @@ def patching_response(spoiler):
         ROM_COPY.writeMultipleBytes(count, 2)
         order += 2
 
-    # Golden Banana Requirements
-    order = 0
-    for count in spoiler.settings.EntryGBs:
-        ROM_COPY.seek(sav + 0x17E + (2 * order))
-        ROM_COPY.writeMultipleBytes(3, 1) # GBs
-        ROM_COPY.writeMultipleBytes(count, 1)
-        order += 1
-
     # Unlock All Kongs
     kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
     starting_kongs = []

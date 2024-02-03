@@ -71,7 +71,6 @@ void swapRequirements(int key_swap) {
 					CBTurnedInArray[i] = 1;
 				}
 			}
-			BLockerDefaultArray[i] = Rando.b_locker_requirements[i].count;
 			if ((key_swap) && (i < 7)) {
 				if (levelIndexMapping[CurrentMap] == LEVEL_ISLES) {
 					// In Isles
