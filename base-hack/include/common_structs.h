@@ -1735,3 +1735,8 @@ typedef struct BooleanModelSwaps {
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } BooleanModelSwaps;
+
+typedef struct ItemRequirement {
+	/* 0x000 */ unsigned char item;
+	/* 0x001 */ unsigned char count;
+} ItemRequirement;

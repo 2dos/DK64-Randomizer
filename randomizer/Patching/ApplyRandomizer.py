@@ -20,6 +20,7 @@ from randomizer.Enums.Settings import (
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    WinCondition,
     WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
@@ -181,7 +182,8 @@ def patching_response(spoiler):
     # Golden Banana Requirements
     order = 0
     for count in spoiler.settings.EntryGBs:
-        ROM_COPY.seek(sav + 0x016 + order)
+        ROM_COPY.seek(sav + 0x17E + (2 * order))
+        ROM_COPY.writeMultipleBytes(3, 1) # GBs
         ROM_COPY.writeMultipleBytes(count, 1)
         order += 1
 
@@ -206,7 +208,6 @@ def patching_response(spoiler):
         BooleanProperties(True, 0x2E),  # Fast Start Game
         BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
         BooleanProperties(spoiler.settings.fps_display, 0x96),  # FPS Display
-        BooleanProperties(spoiler.settings.crown_door_item == HelmDoorItem.opened, 0x32),  # Crown Door Open
         BooleanProperties(spoiler.settings.no_healing, 0xA6),  # Disable Healing
         BooleanProperties(spoiler.settings.no_melons, 0x128),  # No Melon Drops
         BooleanProperties(spoiler.settings.bonus_barrel_auto_complete, 0x126),  # Auto-Complete Bonus Barrels
@@ -226,7 +227,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(not spoiler.settings.enable_shop_hints, 0x14B, 0),  # Disable Shop Hints
-        BooleanProperties(spoiler.settings.coin_door_item == HelmDoorItem.opened, 0x33),  # Coin Door Open
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
     ]
@@ -254,27 +254,30 @@ def patching_response(spoiler):
     # define DOORITEM_CROWN 9 // 9 - Crowns
     # define DOORITEM_COMPANYCOIN 10 // 10 - Company Coins
     door_checks = {
-        HelmDoorItem.vanilla: 0,
-        HelmDoorItem.req_gb: 1,
-        HelmDoorItem.req_bp: 2,
-        HelmDoorItem.req_bean: 3,
-        HelmDoorItem.req_pearl: 4,
+        HelmDoorItem.req_gb: 3,
+        HelmDoorItem.req_bp: 4,
+        HelmDoorItem.req_bean: 0xA,
+        HelmDoorItem.req_pearl: 0xB,
         HelmDoorItem.req_fairy: 5,
         HelmDoorItem.req_key: 6,
-        HelmDoorItem.req_medal: 7,
-        HelmDoorItem.req_rainbowcoin: 8,
-        HelmDoorItem.req_crown: 9,
-        HelmDoorItem.req_companycoins: 10,
+        HelmDoorItem.req_medal: 9,
+        HelmDoorItem.req_rainbowcoin: 0xC,
+        HelmDoorItem.req_crown: 7,
+        HelmDoorItem.req_companycoins: 8,
     }
     if spoiler.settings.crown_door_item in door_checks.keys():
         ROM_COPY.seek(sav + 0x4C)
-        ROM_COPY.write(door_checks[spoiler.settings.crown_door_item])
-        ROM_COPY.seek(sav + 0x4D)
+        item = spoiler.settings.crown_door_item
+        if item == HelmDoorItem.vanilla:
+            item = HelmDoorItem.req_crown
+        ROM_COPY.write(door_checks.get(item, 0))
         ROM_COPY.write(spoiler.settings.crown_door_item_count)
     if spoiler.settings.coin_door_item in door_checks.keys():
         ROM_COPY.seek(sav + 0x4E)
-        ROM_COPY.write(door_checks[spoiler.settings.coin_door_item])
-        ROM_COPY.seek(sav + 0x4F)
+        item = spoiler.settings.coin_door_item
+        if item == HelmDoorItem.vanilla:
+            item = HelmDoorItem.req_companycoins
+        ROM_COPY.write(door_checks.get(item, 0))
         ROM_COPY.write(spoiler.settings.coin_door_item_count)
 
     if spoiler.settings.switchsanity:
@@ -416,9 +419,46 @@ def patching_response(spoiler):
             ROM_COPY.write(spoiler.settings.toe_order[slot])
 
     # Win Condition
-    ROM_COPY.seek(sav + 0x11D)
-    # The WinCondition enum is indexed to allow this.
-    ROM_COPY.write(int(spoiler.settings.win_condition))
+    win_con_table = {
+        WinCondition.beat_krool: {
+            "index": 0,
+        },
+        WinCondition.all_blueprints: {
+            "index": 3,
+            "item": 4,
+            "count": 40,
+        },
+        WinCondition.all_fairies: {
+            "index": 3,
+            "item": 5,
+            "count": 20,
+        },
+        WinCondition.all_keys: {
+            "index": 3,
+            "item": 6,
+            "count": 8,
+        },
+        WinCondition.all_medals: {
+            "index": 3,
+            "item": 9,
+            "count": 40,
+        },
+        WinCondition.get_key8: {
+            "index": 1,
+        },
+        WinCondition.poke_snap: {
+            "index": 2,
+        },
+    }
+    win_con = spoiler.settings.win_condition
+    win_con_data = win_con_table.get(win_con, None)
+    if win_con_data is not None:
+        ROM_COPY.seek(sav + 0x11D)
+        ROM_COPY.write(win_con_data["index"])
+        if "item" in win_con_data:
+            ROM_COPY.seek(sav + 0xC0)
+            ROM_COPY.write(win_con_data["item"])
+            ROM_COPY.write(win_con_data["count"])
 
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)

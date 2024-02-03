@@ -1123,3 +1123,76 @@ void* getFile(int size, int rom) {
 	copyFromROM(rom,loc,&size,0,0,0,0);
 	return loc;
 }
+
+typedef struct flag_counting_struct {
+	/* 0x000 */ short flag_start;
+	/* 0x002 */ unsigned char item_count;
+	/* 0x003 */ unsigned char enabled;
+	/* 0x004 */ short* flag_array;
+} flag_counting_struct;
+
+static flag_counting_struct flag_counters[] = {
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_NONE
+	{.flag_start = 0, .item_count = 5, .enabled=2, .flag_array=(short*)&kong_flags}, // REQITEM_KONG
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_MOVE
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_GOLDENBANANA
+	{.flag_start = FLAG_BP_JAPES_DK_HAS, .item_count = 40, .enabled=1, .flag_array=(short*)0}, // REQITEM_BLUEPRINT
+	{.flag_start = FLAG_FAIRY_1, .item_count = 20, .enabled=1, .flag_array=(short*)0}, // REQITEM_FAIRY
+	{.flag_start = 0, .item_count = 8, .enabled=2, .flag_array=(short*)&normal_key_flags}, // REQITEM_KEY
+	{.flag_start = FLAG_CROWN_JAPES, .item_count = 10, .enabled=1, .flag_array=(short*)0}, // REQITEM_CROWN
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COMPANYCOIN
+	{.flag_start = FLAG_MEDAL_JAPES_DK, .item_count = 40, .enabled=1, .flag_array=(short*)0}, // REQITEM_MEDAL
+	{.flag_start = FLAG_COLLECTABLE_BEAN, .item_count = 1, .enabled=1, .flag_array=(short*)0}, // REQITEM_BEAN
+	{.flag_start = FLAG_PEARL_0_COLLECTED, .item_count = 5, .enabled=1, .flag_array=(short*)0}, // REQITEM_PEARL
+	{.flag_start = FLAG_RAINBOWCOIN_0, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_RAINBOWCOIN
+	{.flag_start = FLAG_FAKEITEM, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_ICETRAP
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_GAMEPERCENTAGE
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COLOREDBANANA
+};
+
+int getItemCountReq(requirement_item item) {
+	int enabled_state = flag_counters[item].enabled;
+	int item_count = flag_counters[item].item_count;
+	int count = 0;
+	if (enabled_state == 1) {
+		return countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
+	} else if (enabled_state == 2) {
+		for (int i = 0; i < item_count; i++) {
+			if (checkFlag(flag_counters[item].flag_array[i], FLAGTYPE_PERMANENT)) {
+				count += 1;
+			}
+		}
+		return count;
+	}
+	switch(item) {
+		case REQITEM_MOVE:
+		case REQITEM_GOLDENBANANA:
+			return getTotalGBs();
+		case REQITEM_COMPANYCOIN:
+			if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, FLAGTYPE_PERMANENT)) {
+				count += 1;
+			}
+			if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
+				count += 1;
+			}
+			return count;
+		case REQITEM_GAMEPERCENTAGE:
+			return 0; // TODO: Add
+		case REQITEM_COLOREDBANANA:
+			for (int world = 0; world < 7; world++) {
+				for (int kong = 0; kong < 5; kong++) {
+					count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
+				}
+			}
+			return count;
+		default:
+	}
+	return 0;
+}
+
+int isItemRequirementSatisfied(ItemRequirement* req) {
+	if (req->item == REQITEM_NONE) {
+		return 1;
+	}
+	return getItemCountReq(req->item) >= req->count;
+}

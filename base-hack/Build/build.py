@@ -61,6 +61,8 @@ generateYellowWrinkly()
 getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
 
+ROM_DATA_OFFSET = 0x1FED020
+
 file_dict = [
     # File(
     #     name="Static ASM Code",
@@ -1195,7 +1197,7 @@ with open(newROMName, "r+b") as fh:
     #             os.remove(x["source_file"])
 
     # Wipe Space
-    fh.seek(0x1FED020)
+    fh.seek(ROM_DATA_OFFSET)
     arr = []
     for x in range(0x200):
         arr.append(0)
@@ -1204,7 +1206,7 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
-    fh.seek(0x1FED020 + 0x11C)
+    fh.seek(ROM_DATA_OFFSET + 0x11C)
     fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
@@ -1212,29 +1214,29 @@ with open(newROMName, "r+b") as fh:
                 os.remove(y)
 
     # Kong Order
-    fh.seek(0x1FED020 + 0x151)
+    fh.seek(ROM_DATA_OFFSET + 0x151)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x152)
+    fh.seek(ROM_DATA_OFFSET + 0x152)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x153)
+    fh.seek(ROM_DATA_OFFSET + 0x153)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x154)
+    fh.seek(ROM_DATA_OFFSET + 0x154)
     fh.write((2).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x155)
+    fh.seek(ROM_DATA_OFFSET + 0x155)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x156)
+    fh.seek(ROM_DATA_OFFSET + 0x156)
     fh.write((3).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x157)
+    fh.seek(ROM_DATA_OFFSET + 0x157)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x158)
+    fh.seek(ROM_DATA_OFFSET + 0x158)
     fh.write((4).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x159)
+    fh.seek(ROM_DATA_OFFSET + 0x159)
     fh.write((2).to_bytes(1, "big"))
 
     # Default Menu Settings
-    fh.seek(0x1FED020 + 0xC8)
+    fh.seek(ROM_DATA_OFFSET + 0xC8)
     fh.write((40).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0xC9)
+    fh.seek(ROM_DATA_OFFSET + 0xC9)
     fh.write((40).to_bytes(1, "big"))
 
     # Pkmn Snap Default Enemies
@@ -1281,7 +1283,7 @@ with open(newROMName, "r+b") as fh:
             offset = pi >> 3
             shift = pi & 7
             values[offset] |= 1 << shift
-    fh.seek(0x1FED020 + 0x117)
+    fh.seek(ROM_DATA_OFFSET + 0x117)
     for x in range(5):
         fh.write(values[x].to_bytes(1, "big"))
 
@@ -1304,7 +1306,7 @@ with open(newROMName, "r+b") as fh:
     for crown_item in range(8):
         fh.write((72).to_bytes(2, "big"))
     # Misc Drops
-    fh.seek(0x1FED020 + 0xDC)
+    fh.seek(ROM_DATA_OFFSET + 0xDC)
     for x in range(2):
         fh.write((45).to_bytes(2, "big"))
     # Fairies
@@ -1324,7 +1326,7 @@ with open(newROMName, "r+b") as fh:
     for x in range(426):
         fh.write((0).to_bytes(4, "big"))
     # Shop Hints
-    fh.seek(0x1FED020 + 0x14B)
+    fh.seek(ROM_DATA_OFFSET + 0x14B)
     fh.write((1).to_bytes(1, "big"))
 
     fh.seek(0x1FFD000)
@@ -1336,18 +1338,24 @@ with open(newROMName, "r+b") as fh:
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
 
+    # Item Requirements
+    # Helm Doors
+    fh.seek(ROM_DATA_OFFSET + 0x4C)
+    fh.write((7).to_bytes(1, "big")) # Crowns
+    fh.write((4).to_bytes(1, "big")) # Crown door count
+    fh.write((8).to_bytes(1, "big")) # Company Coins
+    fh.write((2).to_bytes(1, "big")) # Coin door count
+    # B Lockers
+    default_blocker_counts = [1, 5, 15, 30, 50, 65, 80, 100]
+    fh.seek(ROM_DATA_OFFSET + 0x17E)
+    for count in default_blocker_counts:
+        fh.write((3).to_bytes(1, "big")) # GBs
+        fh.write(count.to_bytes(1, "big")) # Requirement
+
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
-        fh.seek(0x1FED020 + 0x16C + piano_index)
+        fh.seek(ROM_DATA_OFFSET + 0x16C + piano_index)
         fh.write(piano_key.to_bytes(1, "big"))
-
-    dk_face_puzzle_vanilla = [0, 3, 2, 0, 1, 2, 3, 2, 1]
-    chunky_face_puzzle_vanilla = [0, 1, 3, 1, 2, 1, 3, 0, 1]
-    for face_index in range(9):
-        fh.seek(0x1FED020 + 0x17E + face_index)
-        fh.write(dk_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
-        fh.seek(0x1FED020 + 0x187 + face_index)
-        fh.write(chunky_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
 
     with open("assets/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
@@ -1364,14 +1372,14 @@ with open(newROMName, "r+b") as fh:
         {"offset": 0x143, "coins": 25},
     ]
     for coinreq in vanilla_coin_reqs:
-        fh.seek(0x1FED020 + coinreq["offset"])
+        fh.seek(ROM_DATA_OFFSET + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x48)
+    fh.seek(ROM_DATA_OFFSET + 0x48)
     for lvl in (1, 4, 3, 2):  # Arcade Order
         fh.write(lvl.to_bytes(1, "big"))
     for x in range(5):
         # Write default Helm Order
-        fh.seek(0x1FED020 + x)
+        fh.seek(ROM_DATA_OFFSET + x)
         fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/hash/{x.icon_file}"
