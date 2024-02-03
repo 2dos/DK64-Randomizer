@@ -463,7 +463,9 @@ extern void initSwitchsanityChanges(void);
 extern void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity);
 extern int standingOnM2Object(int index);
 
+extern int getItemCountReq(requirement_item item);
 extern int isItemRequirementSatisfied(ItemRequirement* req);
+extern void initBLocker(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
