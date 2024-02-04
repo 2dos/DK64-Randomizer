@@ -1,0 +1,11 @@
+{
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": "${workspaceFolder}/venv/bin/pytest",  // Adjust the path accordingly
+    "python.testing.pytestArgs": [
+        "-n",
+        "4",
+        "--ignore=base-hack",
+        "${workspaceFolder}/tests"
+    ],
+    "python.testing.unittestEnabled": false
+}
