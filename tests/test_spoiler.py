@@ -29,12 +29,13 @@ with open("static/presets/preset_files.json", "r") as file:
     preset_files = json.load(file)
     # For each preset in the list if settings_string is not None, add the preset to the list
     valid_presets = [(preset.get("name"), preset.get("settings_string")) for preset in preset_files if preset.get("settings_string")]
-    
+
 # Add a custom preset for testing
 # If we're not running on github actions, add the custom preset
 if not os.environ.get("GITHUB_ACTIONS"):
     valid_presets.append(("Custom", "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoBzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqMBMGBGJCmOKaTyKTIjUoAqgEuAhk4AA"))
-    
+
+
 @parameterized_class(('name', 'settings_string'), valid_presets)
 class TestSpoiler(unittest.TestCase):
     def setUp(self):
@@ -194,7 +195,6 @@ class TestSpoiler(unittest.TestCase):
         data["item_reward_previews"] = True
 
         return data
-
 
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""

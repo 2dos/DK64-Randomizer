@@ -247,19 +247,6 @@ def lambda_function():
             spoiler_log["Unlock Time"] = unlock_time
             generated_time = resp_data[3]
             spoiler_log["Generated Time"] = generated_time
-            # Only retain the Settings section and the Cosmetics section.
-            if environ.get("HOSTED_SERVER") is not None:
-                try:
-                    seed_table = dynamodb.Table("seed_db")
-                    seed_table.put_item(
-                        Item={
-                            "time": str(time.time()) + str(hash),
-                            "seed_id": str(resp_data[1].settings.seed_id),
-                            "spoiler_log": str(json.dumps(spoiler_log)),
-                        }
-                    )
-                except Exception:
-                    pass
             current_seed_number = update_total()
             file_name = str(current_seed_number)
             # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
@@ -521,19 +508,6 @@ def get_seed_data():
                 return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
-            # Only retain the Settings section and the Cosmetics section.
-            if environ.get("HOSTED_SERVER") is not None:
-                try:
-                    seed_table = dynamodb.Table("seed_db")
-                    seed_table.put_item(
-                        Item={
-                            "time": str(time.time()) + str(hash),
-                            "seed_id": str(resp_data[1].settings.seed_id),
-                            "spoiler_log": str(json.dumps(spoiler_log)),
-                        }
-                    )
-                except Exception:
-                    pass
             # Encrypt the time and hash with the encryption key.
             current_seed_number = update_total()
             file_name = str(current_seed_number)
