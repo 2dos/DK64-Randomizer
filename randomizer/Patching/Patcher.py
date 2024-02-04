@@ -163,6 +163,7 @@ class LocalROM:
         Args:
             file ([type], optional): [description]. Defaults to None.
         """
+        global patchedRom
         if "PYTEST_CURRENT_TEST" in os.environ:
             data_size = 32 * 1024  # 32KB = 32 * 1024 bytes
             data = bytes(range(256)) * (data_size // 256)  # Repeat values from 0 to 255 to fill 32KB
