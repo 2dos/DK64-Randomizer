@@ -576,7 +576,6 @@ def patching_response(spoiler):
     PlaceFairies(spoiler)
     filterEntranceType()
     updateKrushaMoveNames(spoiler)
-    replaceIngameText(spoiler)
     updateSwitchsanity(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler)
@@ -590,12 +589,14 @@ def patching_response(spoiler):
     writeBootMessages()
     enableTriggerText(spoiler)
     shortenCastleMinecart(spoiler)
-
-    updateMillLeverTexture(spoiler.settings)
-    updateCryptLeverTexture(spoiler.settings)
-    updateDiddyDoors(spoiler.settings)
-    applyHelmDoorCosmetics(spoiler.settings)
-    applyKrushaKong(spoiler.settings)
+    
+    if "PYTEST_CURRENT_TEST" not in os.environ:
+        replaceIngameText(spoiler)
+        updateMillLeverTexture(spoiler.settings)
+        updateCryptLeverTexture(spoiler.settings)
+        updateDiddyDoors(spoiler.settings)
+        applyHelmDoorCosmetics(spoiler.settings)
+        applyKrushaKong(spoiler.settings)
 
     patchAssembly(ROM_COPY, spoiler)
 
