@@ -46,10 +46,8 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run pytest
-        run:  pytest -n 4 -v --cov-report xml:./coverage.xml ${GITHUB_WORKSPACE}/tests
+        run:  pytest -n 4 -v --cov --cov-report xml:coverage.xml ${GITHUB_WORKSPACE}/tests
 
-      - name: Test
-        run: ls -l
       - name: Get Cover 
         uses: orgoro/coverage@v3.1
         with:
