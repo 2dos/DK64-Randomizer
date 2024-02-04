@@ -46,12 +46,14 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run pytest
-        run:  pytest -n 4 -v --cov-report xml:${GITHUB_WORKSPACE}/coverage.xml ${GITHUB_WORKSPACE}/tests
+        run:  pytest -n 4 -v --cov-report xml:./coverage.xml ${GITHUB_WORKSPACE}/tests
 
+      - name: Test
+        run: ls -l
       - name: Get Cover 
         uses: orgoro/coverage@v3.1
         with:
-            coverageFile: ${GITHUB_WORKSPACE}/coverage.xml
+            coverageFile: ./coverage.xml
             token: ${{ secrets.GITHUB_TOKEN }}
 
   analyze:
