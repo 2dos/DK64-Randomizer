@@ -29,8 +29,8 @@ jobs:
           git config --global user.name "Bump2Version"
           git config --unset-all http.https://github.com/.extraheader
           echo "Branch: $BRANCH_NAME, Commit Message: $COMMIT_MESSAGE"
-          if [[ "$BRANCH_NAME" == "master" || "$BRANCH_NAME" == "dev" ]]; then
-              if [[ "$BRANCH_NAME" == "master" && "$COMMIT_MESSAGE" == *"Major Release"* ]]; then
+          if [[ "$BRANCH_NAME" == "dev" ]]; then
+              if [[ "$COMMIT_MESSAGE" == *"Major Release"* ]]; then
                   echo "Bumping major version"
                   echo "VERSION_PART=major" >> $GITHUB_OUTPUT
               elif [[ "$COMMIT_MESSAGE" == *"Breaks older cosmetics packs"* ]]; then

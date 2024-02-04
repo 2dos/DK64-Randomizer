@@ -1,0 +1,10 @@
+{
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "-n",
+        "4",
+        "--ignore=base-hack",
+        "${workspaceFolder}/tests"
+    ],
+    "python.testing.unittestEnabled": false
+}
