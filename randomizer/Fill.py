@@ -453,11 +453,11 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
     allCBsFound = True
     for level_index in range(7):
         if sum(spoiler.LogicVariables.ColoredBananas[level_index]) != 500:
-            # missingCBs = []
-            # for region_collectible_list in spoiler.CollectibleRegions.values():
-            #     for collectible in region_collectible_list:
-            #         if collectible.enabled and not collectible.added:
-            #             missingCBs.append(collectible)
+            missingCBs = []
+            for region_collectible_list in spoiler.CollectibleRegions.values():
+                for collectible in region_collectible_list:
+                    if collectible.enabled and not collectible.added:
+                        missingCBs.append(collectible)
             allCBsFound = False
     spoiler.Reset()
     return allLocationsReached and allCBsFound
@@ -1121,6 +1121,7 @@ def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], o
                     # This will, however, prevent failed 101% checks because of purchase orders
                     spoiler.LocationList[locationId].UnplaceItem(spoiler)
                     spoiler.LocationList[locationId].inaccessible = True
+                    spoiler.LocationList[locationId].tooExpensiveInaccessible = True
                     itemsToPlace.append(item)
                     continue
             # Shared shops have to respect the shared shop limit
@@ -1189,6 +1190,7 @@ def ForwardFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
                     # This will, however, prevent failed 101% checks because of purchase orders
                     spoiler.LocationList[locationId].UnplaceItem(spoiler)
                     spoiler.LocationList[locationId].inaccessible = True
+                    spoiler.LocationList[locationId].tooExpensiveInaccessible = True
                     itemsToPlace.append(item)
                     continue
             # Shared shops must abide by the shared shop limit
@@ -1834,10 +1836,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         # First place training moves that are not placed. These should be the first moves placed outside of starting moves. Placement order is in relative importance.
         trainingMovesToPlace = [move for move in [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges] if move not in placedMoves]
-        assumedItems = [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in trainingMovesToPlace]
-        for item in placedMoves:
-            if item in assumedItems:  # This looks inefficient but is necessary to not mess up training move slams
-                assumedItems.remove(item)
+        assumedItems = [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves) if x not in trainingMovesToPlace]
         trainingMovesUnplaced = PlaceItems(spoiler, FillAlgorithm.assumed, trainingMovesToPlace, assumedItems, inOrder=True)
         if trainingMovesUnplaced > 0:
             raise Ex.ItemPlacementException("Failed to place training barrel moves.")
@@ -1856,7 +1855,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
         spoiler,
         FillAlgorithm.assumed,
         importantSharedToPlace,
-        [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in importantSharedToPlace and x not in placedMoves],
+        ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves),
     )
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
@@ -2099,10 +2098,7 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types], placedItems: List[Item
         spoiler.LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
         spoiler.LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
         spoiler.LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
-        assumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes)
-        for item in placedItems:
-            if item in assumedItems:
-                assumedItems.remove(item)
+        assumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedItems)
         spoiler.Reset()
         PlaceItems(spoiler, FillAlgorithm.assumed, kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
@@ -2233,7 +2229,7 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
     placedTypes.append(Types.Shockwave)
     spoiler.Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in placedMoves]
-    unplaced = PlaceItems(spoiler, FillAlgorithm.assumed, itemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes))
+    unplaced = PlaceItems(spoiler, FillAlgorithm.assumed, itemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedItems))
     if unplaced > 0:
         # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
         locationsAndMoves = {}
