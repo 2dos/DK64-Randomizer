@@ -305,6 +305,14 @@ file_dict = [
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
     ),
+    File(
+        name="New Dirt Image",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0x1379,
+        source_file="assets/displays/dirt_face.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
     File(name="B. Locker", pointer_table_index=TableNames.ActorGeometry, file_index=0x64, source_file="blocker_base.bin", do_not_delete_source=True),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
     File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
@@ -1536,6 +1544,7 @@ with open(newROMName, "r+b") as fh:
         "potion44",
         "rainbow_coin44",
         "shared_flipped",
+        "dirt_face",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

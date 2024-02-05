@@ -97,6 +97,9 @@ images = [
     ImageData("gun_crosshair", TextureFormat.IA8, TableNames.TexturesHUD, 0x38, 64, 64, False, False),
     ImageData("scoff_head", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC9D, 48, 42, False, True),
     ImageData("diddy_balloon", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x16C3, 32, 64, False, False),
+    ImageData("dirt_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1379, 32, 32, False, False),
+    ImageData("capital_D", TextureFormat.RGBA5551, TableNames.TexturesHUD, 0x75, 40, 51, False, False),
+    ImageData("capital_K", TextureFormat.RGBA5551, TableNames.TexturesHUD, 0x76, 40, 51, False, False),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

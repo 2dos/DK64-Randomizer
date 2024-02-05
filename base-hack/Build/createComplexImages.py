@@ -225,6 +225,24 @@ for num_type in num_types:
     num_im.paste(line, (14, line_y), line)
     num_im.save(f"{base_dir}{number}.png")
 
+# New Dirt
+dirt_im = Image.open(f"{hash_dir}dirt_face.png")
+d_im = Image.open(f"{hash_dir}capital_D.png").resize((18, 32)).rotate(-5)
+k_im = Image.open(f"{hash_dir}capital_K.png").resize((18, 32))
+letter_ims = (d_im, k_im)
+for letter in letter_ims:
+    imw, imh = letter.size
+    px = letter.load()
+    for x in range(imw):
+        for y in range(imh):
+            r, g, b, a = letter.getpixel((x, y))
+            px[x, y] = (r, g, b, 150 if a > 128 else 0)
+dirt_im.paste(d_im, (0, 0), d_im)
+dirt_im.paste(k_im, (16, 0), k_im)
+dirt_im.save(f"{disp_dir}dirt_face.png")
+
+
+
 # Tracker Image
 tracker_im = Image.new(mode="RGBA", size=(254, 128))
 instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
