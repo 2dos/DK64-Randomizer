@@ -43,6 +43,7 @@ class Location:
         self.placement_index = None
         self.inaccessible = False
         self.smallerShopsInaccessible = False
+        self.tooExpensiveInaccessible = False
         if self.type == Types.Shop:
             self.movetype = data[0]
             self.index = data[1]
@@ -122,16 +123,18 @@ class Location:
         if self.type == Types.Shop:
             # Check other locations in this shop
             for location_id in ShopLocationReference[self.level][self.vendor]:
-                if spoiler.LocationList[location_id].smallerShopsInaccessible:
+                location_obj = spoiler.LocationList[location_id]
+                # We always leave locations culled by smaller shops and locations deemed too expensive inaccessible
+                if location_obj.smallerShopsInaccessible or location_obj.tooExpensiveInaccessible:
                     continue
-                if spoiler.LocationList[location_id].kong == Kongs.any and spoiler.LocationList[location_id].inaccessible:
+                if location_obj.kong == Kongs.any and location_obj.inaccessible:
                     # If there are no other items remaining in this shop, then we can unlock the shared location
                     itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if spoiler.LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
-                        spoiler.LocationList[location_id].inaccessible = False
+                        location_obj.inaccessible = False
                 # Locations are only inaccessible due to lockouts. If any exist, they're because this location caused them to be locked out.
-                elif spoiler.LocationList[location_id].inaccessible:
-                    spoiler.LocationList[location_id].inaccessible = False
+                elif location_obj.inaccessible:
+                    location_obj.inaccessible = False
 
 
 LocationListOriginal = {
