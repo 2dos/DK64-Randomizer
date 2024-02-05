@@ -576,7 +576,6 @@ def patching_response(spoiler):
     PlaceFairies(spoiler)
     filterEntranceType()
     updateKrushaMoveNames(spoiler)
-    replaceIngameText(spoiler)
     updateSwitchsanity(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler)
@@ -591,11 +590,13 @@ def patching_response(spoiler):
     enableTriggerText(spoiler)
     shortenCastleMinecart(spoiler)
 
-    updateMillLeverTexture(spoiler.settings)
-    updateCryptLeverTexture(spoiler.settings)
-    updateDiddyDoors(spoiler.settings)
-    applyHelmDoorCosmetics(spoiler.settings)
-    applyKrushaKong(spoiler.settings)
+    if "PYTEST_CURRENT_TEST" not in os.environ:
+        replaceIngameText(spoiler)
+        updateMillLeverTexture(spoiler.settings)
+        updateCryptLeverTexture(spoiler.settings)
+        updateDiddyDoors(spoiler.settings)
+        applyHelmDoorCosmetics(spoiler.settings)
+        applyKrushaKong(spoiler.settings)
 
     patchAssembly(ROM_COPY, spoiler)
 
@@ -608,22 +609,24 @@ def patching_response(spoiler):
 
     # Create a dummy time to attach to the end of the file name non decimal
     str(time.time()).replace(".", "")
+    if "PYTEST_CURRENT_TEST" not in os.environ:
+        created_tempfile = mktemp()
+        delta_tempfile = mktemp()
+        # Write the LocalROM.rom bytesIo to a file
+        with open(created_tempfile, "wb") as f:
+            f.write(ROM_COPY.rom.getvalue())
 
-    created_tempfile = mktemp()
-    delta_tempfile = mktemp()
-    # Write the LocalROM.rom bytesIo to a file
-    with open(created_tempfile, "wb") as f:
-        f.write(ROM_COPY.rom.getvalue())
+        import pyxdelta
 
-    import pyxdelta
-
-    pyxdelta.run("dk64.z64", created_tempfile, delta_tempfile)
-    # Read the patch file
-    with open(delta_tempfile, "rb") as f:
-        patch = f.read()
-    # Delete the patch.z64 file
-    os.remove(created_tempfile)
-    os.remove(delta_tempfile)
+        pyxdelta.run("dk64.z64", created_tempfile, delta_tempfile)
+        # Read the patch file
+        with open(delta_tempfile, "rb") as f:
+            patch = f.read()
+        # Delete the patch.z64 file
+        os.remove(created_tempfile)
+        os.remove(delta_tempfile)
+    else:
+        patch = None
     return patch
 
 

@@ -6,7 +6,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: contains(github.actor, '[bot]')
     steps:
     - uses: actions/checkout@v3
 

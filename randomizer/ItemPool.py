@@ -44,6 +44,7 @@ def PlaceConstants(spoiler):
         # While we're looping here, also reset shops that became inaccessible due to fill lockouts
         if spoiler.LocationList[location].type == Types.Shop:
             spoiler.LocationList[location].inaccessible = spoiler.LocationList[location].smallerShopsInaccessible
+            spoiler.LocationList[location].tooExpensiveInaccessible = False
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
         spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, Items.HideoutHelmKey)
