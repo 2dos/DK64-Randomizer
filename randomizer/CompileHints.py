@@ -2220,7 +2220,7 @@ def compileSpoilerHints(spoiler):
             + str(spoiler.settings.points_list_pad_moves)
             + " | Barrel Moves: "
             + str(spoiler.settings.points_list_barrel_moves)
-            + " | Training Moves: "
+            + " | Training and Fairy Moves: "
             + str(spoiler.settings.points_list_training_moves)
             + " | Shared Moves: "
             + str(spoiler.settings.points_list_important_shared)
