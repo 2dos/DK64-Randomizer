@@ -1114,7 +1114,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
-        logic=lambda l: Events.Rambi in l.Events or l.phasewalk,
+        logic=lambda l: Events.Rambi in l.Events,
         locations=[[5, 1.0, 2007.12548828125, 315.0, 4295.62548828125]],
     ),
     ColoredBananaGroup(
@@ -1124,7 +1124,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
-        logic=lambda l: Events.Rambi in l.Events or l.phasewalk,
+        logic=lambda l: Events.Rambi in l.Events,
         locations=[[5, 1.0, 1372.8516845703125, 315.0, 4290.01708984375]],
     ),
     ColoredBananaGroup(
@@ -1134,7 +1134,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
-        logic=lambda l: Events.Rambi in l.Events or l.phasewalk,
+        logic=lambda l: Events.Rambi in l.Events,
         locations=[[5, 1.0, 1213.37646484375, 315.0, 3887.611083984375]],
     ),
     ColoredBananaGroup(
@@ -1144,7 +1144,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
-        logic=lambda l: Events.Rambi in l.Events or l.phasewalk,
+        logic=lambda l: Events.Rambi in l.Events,
         locations=[[5, 1.0, 2173.53125, 315.0, 3889.4189453125]],
     ),
     ColoredBananaGroup(
