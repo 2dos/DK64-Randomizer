@@ -70,10 +70,10 @@
 | Starting area (Diddy) | 5 | `` | 
 | On Funky's shop (Chunky) | 10 | `` | 
 | Under Lanky's bonus barrel in first cave (Lanky) | 5 | `l.grape or l.phasewalk or l.generalclips` | 
-| In Rambi hut (Lanky) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
-| In Rambi hut (Donkey) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
-| In Rambi hut (Diddy) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
-| In Rambi hut (Tiny) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
+| In Rambi hut (Lanky) | 5 | `Events.Rambi in l.Events` | 
+| In Rambi hut (Donkey) | 5 | `Events.Rambi in l.Events` | 
+| In Rambi hut (Diddy) | 5 | `Events.Rambi in l.Events` | 
+| In Rambi hut (Tiny) | 5 | `Events.Rambi in l.Events` | 
 | On treetops (Tag barrel side) (Diddy) | 10 | `` | 
 | Inside cage with Rambi Box (Donkey) | 5 | `l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk` | 
 | On 4 trees in Beehive area (Chunky) | 20 | `l.hunkyChunky` | 
@@ -781,7 +781,7 @@
 | Mushroom by Diddy's barn | 5 | `` | 
 | Mushroom by back tag barrel | 5 | `` | 
 | Mushroom by Minecart exit | 5 | `` | 
-| Top of Minecart exit | 10 | `(l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl)` | 
+| Top of Minecart exit | 10 | `l.istiny and l.twirl` | 
 | Top of Mill (8 custom, 7 Lanky) | 15 | `` | 
 | Outside of conveyor belt (behind night gate) | 5 | `Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip` | 
 | W1 (1 custom, 1 Lanky bunch) | 5 | `` | 
@@ -1365,7 +1365,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Shed - Around room | 15 | `` | 
-| On Gorilla Gone pad | 5 | `l.punch or l.phasewalk, locations=[[5, 1.0, 304, 12, 354]]` | 
+| On Gorilla Gone pad | 5 | `l.punch, locations=[[5, 1.0, 304, 12, 354]]` | 
 | In shed (Chunky) | Balloon | `` | 
 ## Castle Lower Cave
 | Name | Amount | Logic |
