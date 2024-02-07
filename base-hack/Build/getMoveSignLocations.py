@@ -73,7 +73,7 @@ def convertAngle(f):
     return int(((f / 360) * 4096))
 
 
-def getMoveSignData(map_index, base_stream):
+def getMoveSignData(map_index):
     """Get current move sign data."""
     sign_arr = []
     for map_data in sign_data:
@@ -95,15 +95,10 @@ def getMoveSignData(map_index, base_stream):
                     a_offset = 270
                 sign_arr.append(
                     {
-                        "base_byte_stream": base_stream,
-                        "type": 70 - 16,
-                        "x": convertCoord(sign["data"][0]),
-                        "y": convertCoord(sign["data"][1]),
-                        "z": convertCoord(sign["data"][2]),
-                        "rx": 0,
+                        "x": sign["data"][0],
+                        "y": sign["data"][1],
+                        "z": sign["data"][2],
                         "ry": convertAngle(sign["data"][3] + a_offset) % 4096,
-                        "rz": 0,
-                        "scale": int(float_to_hex(0.25), 16),
                         "id": id,
                     }
                 )
