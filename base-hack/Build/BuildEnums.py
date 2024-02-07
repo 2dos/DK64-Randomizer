@@ -796,8 +796,19 @@ class Overlay(IntEnum):
     Arcade = 9
     Jetpac = 10
 
+
+class Vendors(IntEnum):
+    """Vendors Enum."""
+
+    Cranky = 0
+    Funky = 1
+    Candy = 2
+    Snide = 3
+
+
 class ExtraTextures(IntEnum):
     """Extra Textures in Table 25 after the bonus skins."""
+
     FakeGBShine = 0
     RainbowCoin0 = 1
     RainbowCoin1 = 2

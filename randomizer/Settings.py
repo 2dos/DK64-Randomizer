@@ -246,7 +246,7 @@ class Settings:
                 BarrierItems.Bean: 1,
                 BarrierItems.Pearl: 3,
                 BarrierItems.RainbowCoin: 10,
-                #BarrierItems.IceTrap: 10,
+                # BarrierItems.IceTrap: 10,
                 BarrierItems.Percentage: 20,
                 # BarrierItems.ColoredBanana: 1000,
             }
@@ -282,7 +282,7 @@ class Settings:
                 self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
-        
+
         self.BLockerEntryCount = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
         self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
@@ -1621,9 +1621,7 @@ class Settings:
                     self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
                 # Medals cannot be on fairies
                 # The big winner: Crowns will not be locked behind a crown door requirement
-                if Types.Crown in self.shuffled_location_types and (
-                    self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown
-                ):
+                if Types.Crown in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown):
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
                 # Fairies are the one exception: these are allowed to be vanilla

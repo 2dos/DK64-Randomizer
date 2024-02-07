@@ -1438,14 +1438,14 @@ with open(newROMName, "r+b") as fh:
     # Item Requirements
     # Helm Doors
     fh.seek(ROM_DATA_OFFSET + 0x4C)
-    fh.write((7).to_bytes(1, "big")) # Crowns
-    fh.write((4).to_bytes(1, "big")) # Crown door count
-    fh.write((8).to_bytes(1, "big")) # Company Coins
-    fh.write((2).to_bytes(1, "big")) # Coin door count
+    fh.write((7).to_bytes(1, "big"))  # Crowns
+    fh.write((4).to_bytes(1, "big"))  # Crown door count
+    fh.write((8).to_bytes(1, "big"))  # Company Coins
+    fh.write((2).to_bytes(1, "big"))  # Coin door count
     # B Lockers
     fh.seek(ROM_DATA_OFFSET + 0x17E)
     for count in range(8):
-        fh.write((3).to_bytes(1, "big")) # GBs
+        fh.write((3).to_bytes(1, "big"))  # GBs
 
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):

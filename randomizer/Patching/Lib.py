@@ -828,7 +828,8 @@ def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
             if loc.item == item:
                 loc.setLocation(index, new_name)
 
-def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool=False, is_crown_door: bool=False) -> BarrierItems:
+
+def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_crown_door: bool = False) -> BarrierItems:
     """Converts helm door item enum to barrier item enum."""
     if item == HelmDoorItem.vanilla:
         if is_coin_door:

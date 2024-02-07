@@ -298,7 +298,7 @@ class Spoiler:
             if item == "Percentage":
                 item_total = "%"
             elif item == "Fairy" and amount != 1:
-                item_total = " Fairies" # LOL @ English Language
+                item_total = " Fairies"  # LOL @ English Language
             elif amount == 1:
                 item_total = f" {item}"
             gb_counts[level_list[level_index]] = f"{amount}{item_total}"

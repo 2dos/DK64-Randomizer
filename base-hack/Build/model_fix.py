@@ -332,30 +332,30 @@ with open(ROMName, "rb") as rom:
     with open("blocker_base.bin", "wb") as fh:
         compress = rom.read(model_size)
         decompress = zlib.decompress(compress, (15 + 32))
-        fh.write(decompress[:0x304C]) # Copy initial data
+        fh.write(decompress[:0x304C])  # Copy initial data
         number_array = [0x124B + x for x in range(10)]
         texture_arrays = [
             [0xDFB] + number_array,
             [0xDF8] + number_array,
-            [0XDF3] + number_array,
+            [0xDF3] + number_array,
             [
-                0x1255, # REQITEM_NONE
-                getBonusSkinOffset(ExtraTextures.BLockerItemKong), # REQITEM_KONG - TODO: Get image for this
-                getBonusSkinOffset(ExtraTextures.BLockerItemMove), # REQITEM_MOVE - TODO: Get image for this
-                0x1255, # REQITEM_GOLDENBANANA
-                getBonusSkinOffset(ExtraTextures.BLockerItemBlueprint), # REQITEM_BLUEPRINT - TODO: Get image for this, sprite image is 48x42 rather than 44x44
-                getBonusSkinOffset(ExtraTextures.BLockerItemFairy), # REQITEM_FAIRY - TODO: Get image for this, sprite image is RGBA32
-                0x16F5, # REQITEM_KEY
-                0x1705, # REQITEM_CROWN
-                getBonusSkinOffset(ExtraTextures.BLockerItemCompanyCoin), # REQITEM_COMPANYCOIN
-                0x156D, # REQITEM_MEDAL
-                getBonusSkinOffset(ExtraTextures.BLockerItemBean), # REQITEM_BEAN - TODO: Get image for this
-                getBonusSkinOffset(ExtraTextures.BLockerItemPearl), # REQITEM_PEARL - TODO: Get image for this
-                getBonusSkinOffset(ExtraTextures.BLockerItemRainbowCoin), # REQITEM_RAINBOWCOIN - TODO: Get image for this, sprite image is 48x42 rather than 44x44
-                getBonusSkinOffset(ExtraTextures.BLockerItemIceTrap), # REQITEM_ICETRAP - TODO: Get image for this
-                getBonusSkinOffset(ExtraTextures.BLockerItemPercentage), # REQITEM_GAMEPERCENTAGE - TODO: Get image for this
-                getBonusSkinOffset(ExtraTextures.BLockerItemBalloon), # REQITEM_COLOREDBANANA
-            ]
+                0x1255,  # REQITEM_NONE
+                getBonusSkinOffset(ExtraTextures.BLockerItemKong),  # REQITEM_KONG - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemMove),  # REQITEM_MOVE - TODO: Get image for this
+                0x1255,  # REQITEM_GOLDENBANANA
+                getBonusSkinOffset(ExtraTextures.BLockerItemBlueprint),  # REQITEM_BLUEPRINT - TODO: Get image for this, sprite image is 48x42 rather than 44x44
+                getBonusSkinOffset(ExtraTextures.BLockerItemFairy),  # REQITEM_FAIRY - TODO: Get image for this, sprite image is RGBA32
+                0x16F5,  # REQITEM_KEY
+                0x1705,  # REQITEM_CROWN
+                getBonusSkinOffset(ExtraTextures.BLockerItemCompanyCoin),  # REQITEM_COMPANYCOIN
+                0x156D,  # REQITEM_MEDAL
+                getBonusSkinOffset(ExtraTextures.BLockerItemBean),  # REQITEM_BEAN - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemPearl),  # REQITEM_PEARL - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemRainbowCoin),  # REQITEM_RAINBOWCOIN - TODO: Get image for this, sprite image is 48x42 rather than 44x44
+                getBonusSkinOffset(ExtraTextures.BLockerItemIceTrap),  # REQITEM_ICETRAP - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemPercentage),  # REQITEM_GAMEPERCENTAGE - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemBalloon),  # REQITEM_COLOREDBANANA
+            ],
         ]
         fh.write(len(texture_arrays).to_bytes(2, "big"))
         for arr_index, arr in enumerate(texture_arrays):

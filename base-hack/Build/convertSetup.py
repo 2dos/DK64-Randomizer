@@ -12,19 +12,24 @@ from place_vines import generateVineSeries
 BUTTON_DIST_NORMAL = 20
 CAVES_ITEM_HEIGHT = 20
 
+
 class ObjectChangeType(IntEnum):
     """Object Change Type Enum."""
+
     add = auto()
     delete = auto()
     edit = auto()
     null = auto()
 
+
 class ObjectTypes(IntEnum):
     """Object Type Enum."""
+
     actor = auto()
     modeltwo = auto()
 
-def writeValueToByteArray(data_stream: bytearray, value: int, size: int, offset: int, make_float: bool=False, condition: bool=True) -> bytearray:
+
+def writeValueToByteArray(data_stream: bytearray, value: int, size: int, offset: int, make_float: bool = False, condition: bool = True) -> bytearray:
     """Write value with defined size to byte array, returning that byte array."""
     if not condition:
         return data_stream
@@ -41,16 +46,33 @@ def writeValueToByteArray(data_stream: bytearray, value: int, size: int, offset:
         data_stream[offset + xi] = x
     return data_stream
 
+
 class ObjectChange:
     """Class to store information regarding an object change."""
 
-    def __init__(self, obj_master_type: ObjectTypes, change: ObjectChangeType, object_map: Maps, source_obj_id: int, new_id: int = 0, obj_type: int=None, x: float=None, y: float=None, z: float=None, scale: float=None, rx: float=None, ry: float=None, rz: float=None, use_stream: bool=False):
+    def __init__(
+        self,
+        obj_master_type: ObjectTypes,
+        change: ObjectChangeType,
+        object_map: Maps,
+        source_obj_id: int,
+        new_id: int = None,
+        obj_type: int = None,
+        x: float = None,
+        y: float = None,
+        z: float = None,
+        scale: float = None,
+        rx: float = None,
+        ry: float = None,
+        rz: float = None,
+        use_stream: bool = False,
+    ):
         """Initialize with given parameters."""
         # Mandatory
         self.obj_master_type = obj_master_type
         self.change = change
         self.object_map = object_map
-        self.source_obj_id = source_obj_id # Object which derives the "base byte stream" used to create or edit an object, set to None for deletions
+        self.source_obj_id = source_obj_id  # Object which derives the "base byte stream" used to create or edit an object, set to None for deletions
         # Derived
         self.use_stream = obj_master_type == ObjectTypes.modeltwo or use_stream
         # Optional
@@ -127,15 +149,18 @@ def writedatatoarr(stream, value, size, location):
         stream[location + x] = bytearray(value.to_bytes(size, "big"))[x]
     return stream
 
+
 base_stream = 0
 HELM_FACE_LOW = 104.5
 HELM_FACE_HIGH = 160
 HELM_FACE_Z = 5423.538
 MODEL_TWO_INDEXES = {}
 
+
 def getPortalIndicatorY(portal_y: float) -> float:
     """Get Y Value of the indicator which should be attributed to a portal."""
     return portal_y - 30
+
 
 def getNewID(map: Maps) -> int:
     """Get free ID for a model two object."""
@@ -145,39 +170,56 @@ def getNewID(map: Maps) -> int:
     MODEL_TWO_INDEXES[map] += 1
     return MODEL_TWO_INDEXES[map] - 1
 
+
 def getObjectModifications(target_map: Maps) -> list:
     """Get list of object modifications that need to be made."""
     MODEL_TWO_INDEXES = {}
     obj_modifications = [
         # Static modifications
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x1A, obj_type=0xCE), # Japes starting switch
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.TrainingGrounds, 0x39, obj_type=0xCE), # TGrounds Switch
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x52, x=1648.095, y=990, z=2431.953), # Japes Mountain GB
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x68, scale=0.15), # Stump GB
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x13E, scale=0.2), # Nintendo Coin
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Cranky, 0x2, scale=0.2), # Rareware Coin
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0), # Free Chunky Switch
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0x57, x=176.505, z=1089.408), # Caves 5DI W3
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0xCF, x=176.505, z=1089.408), # Caves 5DI W3 Bunch
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0xC9, y=400), # Japes chunky bunch on top of Cranky
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Isles, 0x6, new_id=0x100, obj_type=132, x=2457.471, y=1280, z=3458.604, rx=0, ry=166, rz=0, scale=1.18), # Factory Lobby Barricade
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x2C, y=715), # Factory Diddy Prod GB
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x1A, obj_type=0xCE),  # Japes starting switch
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.TrainingGrounds, 0x39, obj_type=0xCE),  # TGrounds Switch
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x52, x=1648.095, y=990, z=2431.953),  # Japes Mountain GB
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x68, scale=0.15),  # Stump GB
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x13E, scale=0.2),  # Nintendo Coin
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Cranky, 0x2, scale=0.2),  # Rareware Coin
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0),  # Free Chunky Switch
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0x57, x=176.505, z=1089.408),  # Caves 5DI W3
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0xCF, x=176.505, z=1089.408),  # Caves 5DI W3 Bunch
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0xC9, y=400),  # Japes chunky bunch on top of Cranky
+        ObjectChange(
+            ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Isles, 0x6, new_id=0x100, obj_type=132, x=2457.471, y=1280, z=3458.604, rx=0, ry=166, rz=0, scale=1.18
+        ),  # Factory Lobby Barricade
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x2C, y=715),  # Factory Diddy Prod GB
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CD, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CE, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CF, y=178.5), # Factory Spring Coins
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x100, x=575.763, y=HELM_FACE_HIGH, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35), # Helm Faces
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x101, x=494.518, y=HELM_FACE_HIGH, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35), # Helm Faces
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x102, x=606.161, y=HELM_FACE_LOW, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35), # Helm Faces
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x103, x=534.567, y=HELM_FACE_LOW, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35), # Helm Faces
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x104, x=463.642, y=HELM_FACE_LOW, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35), # Helm Faces
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 23, x=1296, y=1600, z=2028), # Galleon Chunky 2DS Balloon
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 25, y=1600), # Galleon Lanky 5DS Balloon
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 36, y=383.8333), # Galleon Mermaid Tag
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x100, x=575.763, y=HELM_FACE_HIGH, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x101, x=494.518, y=HELM_FACE_HIGH, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x102, x=606.161, y=HELM_FACE_LOW, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x103, x=534.567, y=HELM_FACE_LOW, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x104, x=463.642, y=HELM_FACE_LOW, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 23, x=1296, y=1600, z=2028),  # Galleon Chunky 2DS Balloon
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 25, y=1600),  # Galleon Lanky 5DS Balloon
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 36, y=383.8333),  # Galleon Mermaid Tag
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Caves5DIDK, 0x0, new_id=0x20, x=118.011, y=20, z=462.749, obj_type=0x29, rx=0, ry=1024, rz=0, scale=1),
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.CastleLibrary, 0x0, new_id=0x20, x=2668, y=216, z=287, obj_type=0x29, rx=0, ry=1024, rz=0, scale=1),
-        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Factory, 13, x=1237.001, y=175, z=840.569), # Factory Diddy Storage Bonus
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Caves, 0x26, obj_type=0x2AC, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170, scale=1), # Caves 5DI Portal
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Caves, 0x26, obj_type=0x2AB, x=120.997, y=getPortalIndicatorY(50.167), z=1182.974, rx=0, ry=75.146, rz=0, new_id=getNewID(Maps.Caves), scale=0.35), # Caves 5DI Portal Indicator
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Factory, 13, x=1237.001, y=175, z=840.569),  # Factory Diddy Storage Bonus
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Caves, 0x26, obj_type=0x2AC, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170, scale=1),  # Caves 5DI Portal
+        ObjectChange(
+            ObjectTypes.modeltwo,
+            ObjectChangeType.add,
+            Maps.Caves,
+            0x26,
+            obj_type=0x2AB,
+            x=120.997,
+            y=getPortalIndicatorY(50.167),
+            z=1182.974,
+            rx=0,
+            ry=75.146,
+            rz=0,
+            new_id=getNewID(Maps.Caves),
+            scale=0.35,
+        ),  # Caves 5DI Portal Indicator
     ]
 
     for switch_index in range(16):
@@ -220,14 +262,19 @@ def getObjectModifications(target_map: Maps) -> list:
     # Vine Memes
     vine_data = generateVineSeries(target_map)
     for vine_add in vine_data["add"]:
-        obj_modifications.append(ObjectChange(ObjectTypes.actor, ObjectChangeType.add, target_map, vine_add["id_base"], new_id=vine_add["id"], x=vine_add["x"], y=vine_add["y"], z=vine_add["z"], use_stream=True))
+        obj_modifications.append(
+            ObjectChange(ObjectTypes.actor, ObjectChangeType.add, target_map, vine_add["id_base"], new_id=vine_add["id"], x=vine_add["x"], y=vine_add["y"], z=vine_add["z"], use_stream=True)
+        )
     for vine_change in vine_data["change"]:
         obj_modifications.append(ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, target_map, vine_change["id"], x=vine_change["x"], y=vine_change["y"], z=vine_change["z"]))
     # Shop Signs
     shop_signs = getMoveSignData(target_map)
     for sign in shop_signs:
-        obj_modifications.append(ObjectChange(ObjectTypes.actor, ObjectChangeType.add, target_map, None, new_id=sign["id"], x=sign["x"], y=sign["y"], z=sign["z"], rx=0, ry=sign["ry"], rz=0, scale=0.25, obj_type=54))
+        obj_modifications.append(
+            ObjectChange(ObjectTypes.actor, ObjectChangeType.add, target_map, None, new_id=sign["id"], x=sign["x"], y=sign["y"], z=sign["z"], rx=0, ry=sign["ry"], rz=0, scale=0.25, obj_type=54)
+        )
     return [x for x in obj_modifications if x.object_map == target_map]
+
 
 def modify(file_name, map_index):
     """Modify the file to be updated.
@@ -316,4 +363,3 @@ def modify(file_name, map_index):
             fg.write(len(actor).to_bytes(4, "big"))
             for x in actor:
                 fg.write(bytearray(x))
-            

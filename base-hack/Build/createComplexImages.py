@@ -242,7 +242,6 @@ dirt_im.paste(k_im, (16, 0), k_im)
 dirt_im.save(f"{disp_dir}dirt_face.png")
 
 
-
 # Tracker Image
 tracker_im = Image.new(mode="RGBA", size=(254, 128))
 instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
@@ -378,7 +377,7 @@ for coin in ("nin_coin", "rw_coin"):
 
 # B Locker Misc
 arcade_dir = getDir("assets/arcade_jetpac/arcade/")
-#Image.open(f"{arcade_dir}potion_any.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
+# Image.open(f"{arcade_dir}potion_any.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
 Image.open(f"{disp_dir}potion.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
 Image.open(f"{hash_dir}rainbow_coin.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}rainbow_coin44.png")
 Image.open(f"{hash_dir}diddy_balloon.png").crop((0, 32, 32, 64)).resize((44, 44)).save(f"{disp_dir}balloon_head.png")
@@ -465,7 +464,7 @@ rain_im_2 = maskImage(rain_im_2, 0, [42, 79, 112])
 rain_im_2.save(f"{hash_dir}rainbow_2.png")  # Rainbow Side
 
 
-Image.open(f"{hash_dir}fairy.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fairy44.png") # Fairy
+Image.open(f"{hash_dir}fairy.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fairy44.png")  # Fairy
 
 # Barrel Skins
 barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")

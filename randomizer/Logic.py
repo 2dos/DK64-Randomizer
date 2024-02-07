@@ -660,12 +660,12 @@ class LogicVarHolder:
         # Calculate game percentage
         keys = sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey])
         company_coins = sum([self.nintendoCoin, self.rarewareCoin])
-        game_percentage = (0.4 * self.GoldenBananas)
-        game_percentage += (0.5 * self.BattleCrowns)
-        game_percentage += (0.2 * self.BananaFairies)
-        game_percentage += (0.2 * self.BananaMedals)
-        game_percentage += (0.25 * keys)
-        game_percentage += (0.5 * company_coins)
+        game_percentage = 0.4 * self.GoldenBananas
+        game_percentage += 0.5 * self.BattleCrowns
+        game_percentage += 0.2 * self.BananaFairies
+        game_percentage += 0.2 * self.BananaMedals
+        game_percentage += 0.25 * keys
+        game_percentage += 0.5 * company_coins
         if game_percentage == 100.4:
             game_percentage = 101
         check_counts = {
@@ -680,7 +680,7 @@ class LogicVarHolder:
             BarrierItems.Bean: self.Beans,
             BarrierItems.Pearl: self.Pearls,
             BarrierItems.ColoredBanana: CBCount,
-            BarrierItems.IceTrap: True, # TODO
+            BarrierItems.IceTrap: True,  # TODO
             BarrierItems.Kong: sum([self.donkey, self.diddy, self.lanky, self.tiny, self.chunky]),
             BarrierItems.Move: sum(moves) + self.Slam + self.AmmoBelts + self.InstUpgrades,
             BarrierItems.Percentage: int(game_percentage),

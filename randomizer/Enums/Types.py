@@ -33,8 +33,10 @@ class Types(IntEnum):
     CrateItem = auto()
     Enemies = auto()
 
+
 class BarrierItems(IntEnum):
     """Item type enum for barrier checks."""
+
     Nothing = 0
     Kong = auto()
     Move = auto()

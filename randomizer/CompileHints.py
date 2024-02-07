@@ -1058,7 +1058,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hintable_levels = [
                     level
                     for level in all_levels
-                    if (not level_order_matters or spoiler.settings.BLockerEntryCount[level] > spoiler.settings.BLockerEntryCount[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
+                    if (not level_order_matters or spoiler.settings.BLockerEntryCount[level] > spoiler.settings.BLockerEntryCount[hint_location.level])
+                    and (hint_location.level, level) not in hinted_blocker_combos
                 ]
                 # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
                 if not spoiler.settings.maximize_helm_blocker:
@@ -1582,7 +1583,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                     break
                 hint_location = getRandomHintLocation()
                 future_tns_levels = [
-                    level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.BLockerEntryCount[level] >= spoiler.settings.BLockerEntryCount[hint_location.level])
+                    level
+                    for level in all_levels
+                    if level in levels_with_tns and (not level_order_matters or spoiler.settings.BLockerEntryCount[level] >= spoiler.settings.BLockerEntryCount[hint_location.level])
                 ]
             # If we failed to find it in 15 attempts, convert remaining T&S hints to joke hints
             # This is a disgustingly rare scenario, likely involving very few and early keys required
