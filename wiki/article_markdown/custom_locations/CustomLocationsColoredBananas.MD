@@ -1448,7 +1448,7 @@
 | On chimneys of car race building | 10 | `` | 
 | On monkeyport pads on car race side (Tiny) | 10 | `` | 
 | On monkeyport pad on monument side (Tiny) | 5 | `l.monkeyport or l.phasewalk` | 
-| Inside boulder (Chunky) | 5 | `(l.punch and l.barrels) or l.phasewalk` | 
+| Inside boulder (Chunky) | 5 | `l.punch and l.barrels` | 
 | In hallway to main room | Balloon | `` | 
 | Around car race | Balloon | `` | 
 | In monument room (Tiny) | Balloon | `l.feather and (l.monkeyport or l.phasewalk)` | 

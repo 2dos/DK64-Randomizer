@@ -1513,7 +1513,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.Museum,
         vanilla=True,
-        logic=lambda l: (l.punch and l.barrels) or l.phasewalk,
+        logic=lambda l: l.punch and l.barrels,
         locations=[[5, 1.0, 773.6740112304688, 159.0, 298.97247314453125]],
     ),
     ColoredBananaGroup(
