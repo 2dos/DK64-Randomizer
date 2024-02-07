@@ -124,9 +124,9 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On mushroom near Chunky minecart exit
     ],
     Regions.MillChunkyTinyArea: [
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 1),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 2),  # Near Spider
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: Events.MillBoxBroken in l.Events or l.phasewalk, None, 1),  # Inside Box
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: Events.MillBoxBroken in l.Events, None, 1),  # Inside Box
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
@@ -134,7 +134,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
     ],
     Regions.GrinderRoom: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam or l.phasewalk, None, 1),  # In slam box
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam, None, 1),  # In slam box
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk) and l.coconut, None, 1),  # Behind gate
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
@@ -161,7 +161,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.strongKong, None, 3),  # On thorn vines
     ],
     Regions.ThornvineBarn: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.Slam or l.phasewalk) and l.isdonkey, None, 1),  # In slam box
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam and l.isdonkey, None, 1),  # In slam box
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In trough
     ],
     Regions.WormArea: [

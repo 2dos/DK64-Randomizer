@@ -2220,7 +2220,7 @@ def compileSpoilerHints(spoiler):
             + str(spoiler.settings.points_list_pad_moves)
             + " | Barrel Moves: "
             + str(spoiler.settings.points_list_barrel_moves)
-            + " | Training Moves: "
+            + " | Training and Fairy Moves: "
             + str(spoiler.settings.points_list_training_moves)
             + " | Shared Moves: "
             + str(spoiler.settings.points_list_important_shared)
@@ -2273,6 +2273,8 @@ def PointValueOfItem(settings, item_id):
         return settings.points_list_important_shared
     elif item_id == Items.Bean:
         return settings.points_list_bean
+    elif item_id in ItemPool.ShockwaveTypeItems(settings):
+        return settings.points_list_training_moves  # This will be changed to an independent option later
     return 0
 
 

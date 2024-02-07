@@ -70,10 +70,10 @@
 | Starting area (Diddy) | 5 | `` | 
 | On Funky's shop (Chunky) | 10 | `` | 
 | Under Lanky's bonus barrel in first cave (Lanky) | 5 | `l.grape or l.phasewalk or l.generalclips` | 
-| In Rambi hut (Lanky) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
-| In Rambi hut (Donkey) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
-| In Rambi hut (Diddy) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
-| In Rambi hut (Tiny) | 5 | `Events.Rambi in l.Events or l.phasewalk` | 
+| In Rambi hut (Lanky) | 5 | `Events.Rambi in l.Events` | 
+| In Rambi hut (Donkey) | 5 | `Events.Rambi in l.Events` | 
+| In Rambi hut (Diddy) | 5 | `Events.Rambi in l.Events` | 
+| In Rambi hut (Tiny) | 5 | `Events.Rambi in l.Events` | 
 | On treetops (Tag barrel side) (Diddy) | 10 | `` | 
 | Inside cage with Rambi Box (Donkey) | 5 | `l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk` | 
 | On 4 trees in Beehive area (Chunky) | 20 | `l.hunkyChunky` | 
@@ -237,7 +237,7 @@
 | Bunches on 4 corners of Chunky BB cage | 20 | `` | 
 | Bunches on top of Chunky BB cage | 10 | `` | 
 | Along the walls around Chunky BB cage | 15 | `` | 
-| Inside giant boulder | 5 | `(l.chunky and l.hunkyChunky and l.barrels) or l.phasewalk` | 
+| Inside giant boulder | 5 | `l.chunky and l.hunkyChunky and l.barrels` | 
 | Bunches on each side of Funky's | 10 | `` | 
 | Singles up the stairs between Funky and Llama temple | 10 | `` | 
 | Singles up the stairs between Llama Temple and W2 | 10 | `` | 
@@ -550,8 +550,8 @@
 | To Cranky area (3 custom, 2 Chunky) | 5 | `` | 
 | Tunnel to Chests room (5 custom, 5 Chunky) | 10 | `` | 
 | Around Chunky chest room | 10 | `` | 
-| Inside middle chest with headphones | 5 | `l.punch or l.phasewalk` | 
-| Inside left chest with Fairy | 5 | `l.punch or l.phasewalk` | 
+| Inside middle chest with headphones | 5 | `l.punch` | 
+| Inside left chest with Fairy | 5 | `l.punch` | 
 | In alcove to chest room by Chunky coins | 10 | `` | 
 | On left side of ship to chests room | 5 | `` | 
 | On each side of Cranky's Lab ship at the bottom | 10 | `` | 
@@ -781,7 +781,7 @@
 | Mushroom by Diddy's barn | 5 | `` | 
 | Mushroom by back tag barrel | 5 | `` | 
 | Mushroom by Minecart exit | 5 | `` | 
-| Top of Minecart exit | 10 | `(l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl)` | 
+| Top of Minecart exit | 10 | `l.istiny and l.twirl` | 
 | Top of Mill (8 custom, 7 Lanky) | 15 | `` | 
 | Outside of conveyor belt (behind night gate) | 5 | `Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip` | 
 | W1 (1 custom, 1 Lanky bunch) | 5 | `` | 
@@ -921,13 +921,13 @@
 | Near melon crate in thornvine area | 5 | `` | 
 | On boxes on upper level | 10 | `` | 
 | On ladder | 5 | `` | 
-| On switch (Donkey) | 5 | `(l.Slam or l.phasewalk) and l.isdonkey` | 
+| On switch (Donkey) | 5 | `l.Slam and l.isdonkey` | 
 ## Forest Mill Front
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On flour bag by Mini Monkey | 5 | `` | 
 | On conveyor belt | 5 | `` | 
-| On DK switch (Donkey) | 5 | `l.Slam or l.phasewalk` | 
+| On DK switch (Donkey) | 5 | `l.Slam` | 
 | Middle of the room | Balloon | `` | 
 | In DK's lever room (Donkey) | Balloon | `(l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk)` | 
 ## Forest Giant Mushroom
@@ -975,8 +975,8 @@
 | On boxes by Mini Monkey barrels | 10 | `` | 
 | On boxes by spider room (Tiny) | 5 | `` | 
 | By Mini Monkey entrance to front mill (Tiny) | 5 | `` | 
-| Inside punchable box (Tiny) | 5 | `Events.MillBoxBroken in l.Events or l.phasewalk` | 
-| On triangle pad (Chunky) | 5 | `Events.MillBoxBroken in l.Events or l.phasewalk` | 
+| Inside punchable box (Tiny) | 5 | `Events.MillBoxBroken in l.Events` | 
+| On triangle pad (Chunky) | 5 | `Events.MillBoxBroken in l.Events` | 
 | Middle of room | Balloon | `` | 
 ## Forest Spider
 | Name | Amount | Logic |
@@ -1097,7 +1097,7 @@
 | Chunky igloo (Chunky) | 5 | `Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim()` | 
 | On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
 | On small boulder switch (Chunky) | 5 | `` | 
-| Inside giant boulder (Chunky) | 5 | `(Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels) or l.phasewalk` | 
+| Inside giant boulder (Chunky) | 5 | `Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels` | 
 | W3 (Tiny) | 5 | `` | 
 | W3 (Tiny) | 5 | `` | 
 | On riverbed to waterfall (Lanky) | 10 | `` | 
@@ -1365,7 +1365,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Shed - Around room | 15 | `` | 
-| On Gorilla Gone pad | 5 | `l.punch or l.phasewalk, locations=[[5, 1.0, 304, 12, 354]]` | 
+| On Gorilla Gone pad | 5 | `l.punch, locations=[[5, 1.0, 304, 12, 354]])` | 
 | In shed (Chunky) | Balloon | `` | 
 ## Castle Lower Cave
 | Name | Amount | Logic |
@@ -1448,7 +1448,7 @@
 | On chimneys of car race building | 10 | `` | 
 | On monkeyport pads on car race side (Tiny) | 10 | `` | 
 | On monkeyport pad on monument side (Tiny) | 5 | `l.monkeyport or l.phasewalk` | 
-| Inside boulder (Chunky) | 5 | `(l.punch and l.barrels) or l.phasewalk` | 
+| Inside boulder (Chunky) | 5 | `l.punch and l.barrels` | 
 | In hallway to main room | Balloon | `` | 
 | Around car race | Balloon | `` | 
 | In monument room (Tiny) | Balloon | `l.feather and (l.monkeyport or l.phasewalk)` | 
