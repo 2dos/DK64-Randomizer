@@ -378,7 +378,8 @@ for coin in ("nin_coin", "rw_coin"):
 
 # B Locker Misc
 arcade_dir = getDir("assets/arcade_jetpac/arcade/")
-Image.open(f"{arcade_dir}potion_any.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
+#Image.open(f"{arcade_dir}potion_any.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
+Image.open(f"{disp_dir}potion.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
 Image.open(f"{hash_dir}rainbow_coin.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}rainbow_coin44.png")
 Image.open(f"{hash_dir}diddy_balloon.png").crop((0, 32, 32, 64)).resize((44, 44)).save(f"{disp_dir}balloon_head.png")
 
@@ -685,6 +686,9 @@ rmve = [
     "warp_top_0.png",
     "warp_top_1.png",
     "gun_crosshair.png",
+    "dirt_face.png",
+    "capital_D.png",
+    "capital_K.png",
 ]
 for kong in kongs:
     for x in range(2):

@@ -389,7 +389,7 @@ class Settings:
         self.helm_barrels = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
 
-        self.chaos_blockers = True
+        self.chaos_blockers = False
 
         # hard_shooting: bool
         self.hard_shooting = False
