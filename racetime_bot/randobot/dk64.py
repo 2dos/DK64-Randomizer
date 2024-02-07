@@ -10,16 +10,16 @@ class DK64:
     """Class for interacting with dk64randomizer.com to generate seeds and available presets."""
 
     hash_map = {
-        0: "Bongos",
-        1: "Crown",
-        2: "RaceCoin",
-        3: "Fairy",
-        4: "Guitar",
-        5: "NintendoCoin",
-        6: "Orange",
-        7: "RainbowCoin",
-        8: "RarewareCoin",
-        9: "Saxophone",
+        0: {"Bongos": 908522167522709545},
+        1: {"Crown": 1160363625723199600},
+        2: {"RaceCoin": 1160363626645962872},
+        3: {"Fairy": 1160363628369817682},
+        4: {"Guitar": 908522167338139689},
+        5: {"NintendoCoin": 1160363629422592111},
+        6: {"Orange": 1160363630638936074},
+        7: {"RainbowCoin": 1160363632337625098},
+        8: {"RarewareCoin": 1160363633314893865},
+        9: {"Saxophone": 908522167296208956},
     }
 
     def __init__(self):
@@ -38,6 +38,7 @@ class DK64:
             self.preset_endpoint = "https://generate.dk64rando.com/get_presets"
             self.data_endpoint = "https://generate.dk64rando.com/get_seed_data"
             self.status_endpoint = "https://generate.dk64rando.com/status"
+        self.discord_webhook = os.environ.get("DISCORD_WEBHOOK", None)
         self.presets = self.load_presets()
 
     def load_presets(self):
@@ -96,7 +97,7 @@ class DK64:
         ).json()
         if data.get("status") == "complete":
             return (
-                " ".join(self.hash_map.get(item, item) for item in data.get("hash")),
+                " ".join([next(iter(self.hash_map.get(index, {}).keys()), next(iter(self.hash_map.values()))) for index in data["hash"]]),
                 data.get("seed_number"),
                 self.seed_url,
             )
