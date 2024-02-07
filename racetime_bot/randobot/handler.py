@@ -238,7 +238,14 @@ class RandoHandler(RaceHandler):
                     "fields": [
                         {
                             "name": "Seed Hash",
-                            "value": " ".join(["<:{key}:{value}>".format(key=word.strip(), value=self.dk64.hash_map[0][word.strip()]) for word in seed_hash.split()]),
+                            "value": " ".join(
+                                [
+                                    "<:{key}:{value}>".format(key=word, value=self.dk64.hash_map[key][word.strip()])
+                                    for word in seed_hash.split()
+                                    for key, value in self.dk64.hash_map.items()
+                                    if word.strip() in value
+                                ]
+                            ),
                             "inline": True,
                         },
                         {"name": "Description", "value": self.data.get("info_user", "No description"), "inline": True},
