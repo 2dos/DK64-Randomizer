@@ -233,7 +233,7 @@ class RandoHandler(RaceHandler):
                 {
                     "title": "Race Opened - " + self.data.get("goal").get("name"),
                     "description": "---------------------------------------------------------",
-                    "url": "https://racetime.gg/" + str(self.data.get("url")),
+                    "url": "https://racetime.gg" + str(self.data.get("url")),
                     "color": 7602008,
                     "fields": [
                         {
