@@ -1267,7 +1267,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BoulderCave,
         vanilla=True,
-        logic=lambda l: (Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels) or l.phasewalk,
+        logic=lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels,
         locations=[[5, 1.0, 1922.93359375, 290.3333435058594, 2504.288330078125]],
     ),
     ColoredBananaGroup(

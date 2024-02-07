@@ -1510,7 +1510,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.ThornvineBarn,
         vanilla=True,
-        logic=lambda l: (l.Slam or l.phasewalk) and l.isdonkey,
+        logic=lambda l: l.Slam and l.isdonkey,
         locations=[[5, 1.0, 114.7787094116211, 17.76678466796875, 188.0786590576172]],
     ),
     ColoredBananaGroup(
@@ -1528,7 +1528,7 @@ ColoredBananaGroupList = [
         name="On DK switch (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GrinderRoom,
-        logic=lambda l: l.Slam or l.phasewalk,
+        logic=lambda l: l.Slam,
         vanilla=True,
         locations=[[5, 1.0, 48.73106002807617, 61.166255950927734, 188.2012481689453]],
     ),
@@ -1557,7 +1557,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny, Kongs.chunky],
         region=Regions.MillChunkyTinyArea,
         vanilla=True,
-        logic=lambda l: Events.MillBoxBroken in l.Events or l.phasewalk,
+        logic=lambda l: Events.MillBoxBroken in l.Events,
         locations=[[5, 1.0, 390.7475891113281, 0, 114.15646362304688]],
     ),
     ColoredBananaGroup(
@@ -1567,7 +1567,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny, Kongs.chunky],
         region=Regions.MillChunkyTinyArea,
         vanilla=True,
-        logic=lambda l: Events.MillBoxBroken in l.Events or l.phasewalk,
+        logic=lambda l: Events.MillBoxBroken in l.Events,
         locations=[[5, 1.0, 622.750732421875, 18.0, 167.2416534423828]],
     ),
     ColoredBananaGroup(
