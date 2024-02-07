@@ -2,6 +2,7 @@
 
 from asyncio import sleep
 import random
+import requests
 from racetime_bot import RaceHandler, monitor_cmd, can_moderate, can_monitor, msg_actions
 
 
@@ -198,7 +199,7 @@ class RandoHandler(RaceHandler):
 
         self.state["seed_id"] = seed_id
         self.state["status_checks"] = 0
-
+        self.state["preset"] = preset
         await self.check_seed_status()
 
     async def check_seed_status(self):
@@ -225,6 +226,45 @@ class RandoHandler(RaceHandler):
                 "seed_url": url % public_id,
             }
         )
+        # Get the racetime room url
+        embed_data = {
+            "content": None,
+            "embeds": [
+                {
+                    "title": "Race Opened - " + self.data.get("goal").get("name"),
+                    "description": "---------------------------------------------------------",
+                    "url": "https://racetime.gg/" + str(self.data.get("url")),
+                    "color": 7602008,
+                    "fields": [
+                        {
+                            "name": "Seed Hash",
+                            "value": " ".join(
+                                [
+                                    "<:{key}:{value}>".format(key=word, value=self.dk64.hash_map[key][word.strip()])
+                                    for word in seed_hash.split()
+                                    for key, value in self.dk64.hash_map.items()
+                                    if word.strip() in value
+                                ]
+                            ),
+                            "inline": True,
+                        },
+                        {"name": "Description", "value": self.data.get("info_user", "No description"), "inline": True},
+                        {"name": "‎", "value": "‎", "inline": True},
+                        {"name": "Preset Used", "value": self.state["preset"], "inline": True},
+                        {"name": "Race Opened By", "value": self.data.get("opened_by", {}).get("full_name", "Unknown User"), "inline": True},
+                        {"name": "‎", "value": "‎", "inline": True},
+                        {"name": "---------------------------------------------------------", "value": url % public_id},
+                    ],
+                    "footer": {"text": "Happy Donkin!"},
+                    "thumbnail": {"url": "https://dk64randomizer.com/base-hack/assets/DKTV/logo.png"},
+                }
+            ],
+            "username": "Racecar",
+            "avatar_url": "https://mario.wiki.gallery/images/b/b3/DK64_Racecar.png",
+            "attachments": [],
+        }
+        if self.dk64.discord_webhook:
+            requests.post(self.dk64.discord_webhook, json=embed_data)
 
     async def send_presets(self, dev):
         """Send a list of known presets to the race room."""
