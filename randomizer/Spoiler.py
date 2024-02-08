@@ -17,7 +17,6 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     GlitchesSelected,
-    HelmDoorItem,
     LogicType,
     MinigameBarrels,
     RandomPrices,
@@ -28,7 +27,7 @@ from randomizer.Enums.Settings import (
     WinCondition,
 )
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
@@ -240,8 +239,8 @@ class Spoiler:
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
-        settings["Crown Door Open"] = self.settings.crown_door_item == HelmDoorItem.opened
-        settings["Coin Door Open"] = self.settings.coin_door_item == HelmDoorItem.opened
+        settings["Crown Door Open"] = self.settings.crown_door_item == BarrierItems.Nothing
+        settings["Coin Door Open"] = self.settings.coin_door_item == BarrierItems.Nothing
         settings["Shockwave Shuffle"] = self.settings.shockwave_status.name
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
@@ -293,9 +292,17 @@ class Spoiler:
         # GB Counts
         gb_counts = {}
         level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
-        for level_index, amount in enumerate(self.settings.EntryGBs):
-            gb_counts[level_list[level_index]] = amount
-        humanspoiler["Requirements"]["B Locker GBs"] = gb_counts
+        for level_index, amount in enumerate(self.settings.BLockerEntryCount):
+            item = self.settings.BLockerEntryItems[level_index].name
+            item_total = f" {item}s"
+            if item == "Percentage":
+                item_total = "%"
+            elif item == "Fairy" and amount != 1:
+                item_total = " Fairies"  # LOL @ English Language
+            elif amount == 1:
+                item_total = f" {item}"
+            gb_counts[level_list[level_index]] = f"{amount}{item_total}"
+        humanspoiler["Requirements"]["B Locker Items"] = gb_counts
         # CB Counts
         cb_counts = {}
         for level_index, amount in enumerate(self.settings.BossBananas):
@@ -325,24 +332,24 @@ class Spoiler:
             helm_new_order.append(helm_default_order[room].name.capitalize())
         humanspoiler["End Game"]["Helm"]["Helm Rooms"] = helm_new_order
         helm_door_names = {
-            HelmDoorItem.req_bean: "Bean",
-            HelmDoorItem.req_bp: "Blueprints",
-            HelmDoorItem.req_companycoins: "Company Coins",
-            HelmDoorItem.req_crown: "Crowns",
-            HelmDoorItem.req_fairy: "Fairies",
-            HelmDoorItem.req_gb: "Golden Bananas",
-            HelmDoorItem.req_key: "Keys",
-            HelmDoorItem.req_medal: "Medals",
-            HelmDoorItem.req_pearl: "Pearls",
-            HelmDoorItem.req_rainbowcoin: "Rainbow Coins",
+            BarrierItems.Bean: "Bean",
+            BarrierItems.Blueprint: "Blueprints",
+            BarrierItems.CompanyCoin: "Company Coins",
+            BarrierItems.Crown: "Crowns",
+            BarrierItems.Fairy: "Fairies",
+            BarrierItems.GoldenBanana: "Golden Bananas",
+            BarrierItems.Key: "Keys",
+            BarrierItems.Medal: "Medals",
+            BarrierItems.Pearl: "Pearls",
+            BarrierItems.RainbowCoin: "Rainbow Coins",
         }
-        if self.settings.crown_door_item != HelmDoorItem.opened:
-            item = self.settings.crown_door_item if self.settings.crown_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_crown
+        if self.settings.crown_door_item != BarrierItems.Nothing:
+            item = self.settings.crown_door_item
             humanspoiler["End Game"]["Helm"]["Crown Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Crown Door Item Randomized"] = self.settings.crown_door_random
             humanspoiler["End Game"]["Helm"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
-        if self.settings.coin_door_item != HelmDoorItem.opened:
-            item = self.settings.coin_door_item if self.settings.coin_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_companycoins
+        if self.settings.coin_door_item != BarrierItems.Nothing:
+            item = self.settings.coin_door_item
             humanspoiler["End Game"]["Helm"]["Coin Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Coin Door Item Randomized"] = self.settings.coin_door_random
             humanspoiler["End Game"]["Helm"]["Coin Door Item Amount"] = self.settings.coin_door_item_count

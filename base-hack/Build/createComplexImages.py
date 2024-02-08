@@ -114,6 +114,7 @@ bbox = im.getbbox()
 im = im.crop(bbox)
 im = im.resize(kong_res)
 im.save(f"{disp_dir}shared.png")
+im.resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}shared_flipped.png")
 im = Image.new(mode="RGBA", size=kong_res)
 im.save(f"{disp_dir}none.png")
 im = Image.new(mode="RGBA", size=(44, 44))
@@ -147,6 +148,8 @@ im2 = Image.new(mode="RGBA", size=(32, 32))
 Image.Image.paste(im1, im2, (61, 0))
 Image.Image.paste(im1, im, (65, 1))
 im1.save(f"{disp_dir}wxys.png")
+
+Image.open(f"{hash_dir}specialchars.png").crop((2, 0, 34, 32)).resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}perc44.png")
 
 # Generate Yellow Q Mark
 for idx in range(2):
@@ -221,6 +224,23 @@ for num_type in num_types:
     num_im.paste(line, (7, line_y), line)
     num_im.paste(line, (14, line_y), line)
     num_im.save(f"{base_dir}{number}.png")
+
+# New Dirt
+dirt_im = Image.open(f"{hash_dir}dirt_face.png")
+d_im = Image.open(f"{hash_dir}capital_D.png").resize((18, 32)).rotate(-5)
+k_im = Image.open(f"{hash_dir}capital_K.png").resize((18, 32))
+letter_ims = (d_im, k_im)
+for letter in letter_ims:
+    imw, imh = letter.size
+    px = letter.load()
+    for x in range(imw):
+        for y in range(imh):
+            r, g, b, a = letter.getpixel((x, y))
+            px[x, y] = (r, g, b, 150 if a > 128 else 0)
+dirt_im.paste(d_im, (0, 0), d_im)
+dirt_im.paste(k_im, (16, 0), k_im)
+dirt_im.save(f"{disp_dir}dirt_face.png")
+
 
 # Tracker Image
 tracker_im = Image.new(mode="RGBA", size=(254, 128))
@@ -337,6 +357,7 @@ for bp in ("dk_bp", "lanky_bp"):
     bp_im = Image.open(f"{hash_dir}{bp}.png")
     bp_im = bp_im.crop((8, 2, 40, 34))
     bp_im.save(f"{disp_dir}{bp}.png")
+Image.open(f"{disp_dir}lanky_bp.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}lanky_bp44.png")
 
 # Shop indicator items (44x44)
 for item in ("crown_shop", "gb", "key", "medal"):
@@ -354,6 +375,13 @@ for coin in ("nin_coin", "rw_coin"):
     coin_im = Image.open(f"{hash_dir}{coin}.png")
     coin_im.save(f"{disp_dir}{coin}.png")
 
+# B Locker Misc
+arcade_dir = getDir("assets/arcade_jetpac/arcade/")
+# Image.open(f"{arcade_dir}potion_any.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
+Image.open(f"{disp_dir}potion.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
+Image.open(f"{hash_dir}rainbow_coin.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}rainbow_coin44.png")
+Image.open(f"{hash_dir}diddy_balloon.png").crop((0, 32, 32, 64)).resize((44, 44)).save(f"{disp_dir}balloon_head.png")
+
 # Bean
 bean_im = Image.open(f"{hash_dir}bean.png")
 bean_mask_im = Image.open(f"{disp_dir}bean_mask.png")
@@ -368,6 +396,7 @@ bean_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean.png")
 bean_small_im = Image.new(mode="RGBA", size=(32, 32))
 bean_small_im.paste(bean_im.resize((32, 16)), (0, 8), bean_im.resize((32, 16)))
 bean_small_im.save(f"{disp_dir}bean32.png")
+bean_small_im.resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean44.png")
 
 
 # Pearl
@@ -385,6 +414,7 @@ for y in range(32):
 pearl_im = pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 pearl_im.save(f"{disp_dir}pearl.png")
 pearl_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}pearl32.png")
+pearl_im.resize((44, 44)).save(f"{disp_dir}pearl44.png")
 
 # Arcade Sprites
 # blueprint
@@ -396,7 +426,6 @@ pearl_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{dis
 # rainbow
 # rw coin
 
-arcade_dir = getDir("assets/arcade_jetpac/arcade/")
 dim = (20, 20)
 Image.open(f"{disp_dir}lanky_bp.png").resize(dim).save(f"{arcade_dir}blueprint.png")  # BP
 Image.open(f"{hash_dir}crown.png").resize(dim).save(f"{arcade_dir}crown.png")  # Crown
@@ -412,6 +441,7 @@ Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.pn
 gb_im = Image.open(f"{hash_dir}gb.png")
 gb_im = hueShift(gb_im, 10)
 gb_im.save(f"{disp_dir}fake_gb.png")
+gb_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fake_gb_flipped.png")
 gb_im = Image.open(f"{disp_dir}gb.png")
 gb_im = hueShift(gb_im, 10)
 gb_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"{disp_dir}fake_gb_shop.png")
@@ -432,6 +462,9 @@ rain_im_1.save(f"{hash_dir}rainbow_1.png")  # Rainbow Coin
 rain_im_2 = Image.open(f"{hash_dir}modified_coin_side.png")
 rain_im_2 = maskImage(rain_im_2, 0, [42, 79, 112])
 rain_im_2.save(f"{hash_dir}rainbow_2.png")  # Rainbow Side
+
+
+Image.open(f"{hash_dir}fairy.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fairy44.png")  # Fairy
 
 # Barrel Skins
 barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")
@@ -625,6 +658,7 @@ rmve = [
     "boss_key.png",
     "WXYL.png",
     "specialchars.png",
+    "diddy_balloon.png",
     "red_qmark_0.png",
     "red_qmark_1.png",
     "headphones.png",
@@ -651,6 +685,9 @@ rmve = [
     "warp_top_0.png",
     "warp_top_1.png",
     "gun_crosshair.png",
+    "dirt_face.png",
+    "capital_D.png",
+    "capital_K.png",
 ]
 for kong in kongs:
     for x in range(2):

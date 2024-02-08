@@ -318,11 +318,8 @@ typedef enum kongs {
 typedef enum win_conditions {
 	/* 0x000 */ GOAL_KROOL,
 	/* 0x001 */ GOAL_KEY8,
-	/* 0x002 */ GOAL_ALLFAIRIES,
-	/* 0x003 */ GOAL_ALLBLUEPRINTS,
-	/* 0x004 */ GOAL_ALLMEDALS,
-	/* 0x005 */ GOAL_POKESNAP,
-	/* 0x006 */ GOAL_ALLKEYS,
+	/* 0x002 */ GOAL_POKESNAP,
+	/* 0x003 */ GOAL_CUSTOMITEM,
 } win_conditions;
 
 typedef enum master_types_list {
@@ -917,3 +914,22 @@ typedef enum level_indexes {
 	/* 0x00C */ LEVEL_TEST,
 	/* 0x00D */ LEVEL_SHARED,
 } level_indexes;
+
+typedef enum requirement_item {
+	/* 0x000 */ REQITEM_NONE,
+	/* 0x001 */ REQITEM_KONG,
+	/* 0x002 */ REQITEM_MOVE,
+	/* 0x003 */ REQITEM_GOLDENBANANA,
+	/* 0x004 */ REQITEM_BLUEPRINT,
+	/* 0x005 */ REQITEM_FAIRY,
+	/* 0x006 */ REQITEM_KEY,
+	/* 0x007 */ REQITEM_CROWN,
+	/* 0x008 */ REQITEM_COMPANYCOIN,
+	/* 0x009 */ REQITEM_MEDAL,
+	/* 0x00A */ REQITEM_BEAN,
+	/* 0x00B */ REQITEM_PEARL,
+	/* 0x00C */ REQITEM_RAINBOWCOIN,
+	/* 0x00D */ REQITEM_ICETRAP,
+	/* 0x00E */ REQITEM_GAMEPERCENTAGE,
+	/* 0x00F */ REQITEM_COLOREDBANANA,
+} requirement_item;

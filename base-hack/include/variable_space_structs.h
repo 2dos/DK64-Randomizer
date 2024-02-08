@@ -2,7 +2,7 @@ typedef struct varspace {
 	/* 0x000 */ char level_order_rando_on; // 0 = Level Order Rando off, 1 = On
 	/* 0x001 */ char level_order[7]; // The level order (Item 1 = Level 1. 0=Japes,1=Aztec,2=Factory,3=Galleon,4=Fungi,5=Caves,6=Castle)
 	/* 0x008 */ short troff_scoff_count[7]; // Troff n Scoff requirement for the 7 levels (Item 1 is Japes, Item 2 is Aztec etc.)
-	/* 0x016 */ unsigned char blocker_normal_count[8]; // B. Locker count for the 8 lobbies (Item 1 is Japes, Item 2 is Aztec etc.)
+	/* 0x016 */ char unk_16[8];
 	/* 0x01E */ short key_flags[7]; // key given in each level. (Item 1 is Japes etc. flags=[0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D] <- Item 1 of this array is Key 1 etc.)
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
 	/* 0x02D */ char unlock_moves; // 0 = Moves not granted at the start of a new file. 1 = On
@@ -10,8 +10,8 @@ typedef struct varspace {
 	/* 0x02F */ char camera_unlocked; // 0 = Camera not unlocked from the start of a new file. 1 = On
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
-	/* 0x032 */ char crown_door_open; // 0 = Crown Door not opened by default. 1 = Opened by default
-	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default. 2 = Only requires RW Coin. 3 = Only requires Nin Coin.
+	/* 0x032 */ char unk_32;
+	/* 0x033 */ char unk_33;
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
@@ -23,10 +23,8 @@ typedef struct varspace {
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
 	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
 	/* 0x048 */ char arcade_order[4]; // 01 = 25m, 04 = 50m, 03 = 75m, 02 = 100m
-	/* 0x04C */ char crown_door_item;
-	/* 0x04D */ unsigned char crown_door_item_count;
-	/* 0x04E */ char coin_door_item;
-	/* 0x04F */ unsigned char coin_door_item_count;
+	/* 0x04C */ ItemRequirement crown_door_requirement;
+	/* 0x04E */ ItemRequirement coin_door_requirement;
 	/* 0x050 */ unsigned char aztec_beetle_reward;
 	/* 0x051 */ unsigned char caves_beetle_reward;
 	/* 0x052 */ char disable_wrinkly_kong_requirement; // Disable Kongs being required to access a wrinkly door
@@ -60,7 +58,9 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
-	/* 0x0B3 */ char unk_B0[0xC3 - 0xB3];
+	/* 0x0B3 */ char unk_B0[0xC0 - 0xB3];
+	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"
+	/* 0x0C2 */ char unk_c2;
 	/* 0x0C3 */ char outlined_crosshair;
 	/* 0x0C4 */ ROMFlags rom_flags;
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
@@ -154,8 +154,8 @@ typedef struct varspace {
 	/* 0x179 */ char remove_high_requirements; // 0 = Off, 1 = On. Removes high requirements that lock certain areas.
 	/* 0x17A */ char fast_gbs; //0 = Off, 1 = On. Makes normally slow Golden Bananas faster.
 	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
-	/* 0x17E */ char dk_face_puzzle_init[9];
-	/* 0x187 */ char chunky_face_puzzle_init[9];
+	/* 0x17E */ unsigned char b_locker_requirements[8];
+	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 	/* 0x196 */ char misc_cosmetic_on;

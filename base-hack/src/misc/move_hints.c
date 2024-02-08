@@ -10,13 +10,6 @@
  */
 #include "../../include/common.h"
 
-static short tbarrel_flags[] = {
-	FLAG_TBARREL_BARREL,
-	FLAG_TBARREL_DIVE,
-	FLAG_TBARREL_ORANGE,
-	FLAG_TBARREL_VINE,
-};
-
 int isTBarrelFlag(int flag) {
 	/**
 	 * @brief Is a flag a training move flag

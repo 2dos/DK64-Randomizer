@@ -463,10 +463,18 @@ extern void initSwitchsanityChanges(void);
 extern void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity);
 extern int standingOnM2Object(int index);
 
+extern int getItemCountReq(requirement_item item);
+extern int isItemRequirementSatisfied(ItemRequirement* req);
+extern void initBLocker(void);
+
+extern int getGamePercentage(void);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
+extern short tbarrel_flags[4];
+extern short bfi_move_flags[2];
 extern const unsigned short slam_flags[6];
 extern const unsigned short belt_flags[4];
 extern const unsigned short instrument_flags[6];

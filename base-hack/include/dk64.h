@@ -180,6 +180,7 @@ extern void getTextPointer_0(void* actor, int text_file, int text_index);
 extern int hasTurnedInEnoughCBs(void);
 extern int getWorld(maps map, int lobby_is_isles);
 extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
+extern void displayCountOnTeeth(int count);
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
 extern int isLobby(maps map);
 extern float determineXRatioMovement(unsigned int unk);

@@ -15,8 +15,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmDoorItem, HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
@@ -1009,7 +1009,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If this is the first time we're hinting this kong, attempt to put it in an earlier level (regardless of whether or not you can read it)
         # This only matters if level order matters
         if level_order_matters and kong_index not in hinted_kongs:
-            level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_map["level"]]]
+            level_restriction = [level for level in all_levels if spoiler.settings.BLockerEntryCount[level] <= spoiler.settings.BLockerEntryCount[kong_map["level"]]]
         # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
         free_kongs = spoiler.settings.starting_kong_list.copy()
         free_kongs.append(free_kong)
@@ -1062,7 +1062,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hintable_levels = [
                     level
                     for level in all_levels
-                    if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
+                    if (not level_order_matters or spoiler.settings.BLockerEntryCount[level] > spoiler.settings.BLockerEntryCount[hint_location.level])
+                    and (hint_location.level, level) not in hinted_blocker_combos
                 ]
                 # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
                 if not spoiler.settings.maximize_helm_blocker:
@@ -1075,7 +1076,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         level_name = level_colors[hinted_level] + level_list[hinted_level] + level_colors[hinted_level]
         if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
             level_name = "\x08" + random.choice(level_cryptic[hinted_level]) + "\x08"
-        message = f"The barrier to {level_name} can be cleared by obtaining \x04{spoiler.settings.EntryGBs[hinted_level]} Golden Bananas\x04."
+        message = f"The barrier to {level_name} can be cleared by obtaining \x04{spoiler.settings.BLockerEntryCount[hinted_level]} Golden Bananas\x04."
         hint_location.hint_type = HintType.BLocker
         UpdateHint(hint_location, message)
 
@@ -1492,7 +1493,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if level_order_matters and not spoiler.settings.hard_level_progression:
             # Determine a sorted order of levels by B. Lockers - this may not be the actual "progression" but it'll do for now
             levels_in_order = all_levels.copy()
-            levels_in_order.sort(key=lambda l: spoiler.settings.EntryGBs[l])
+            levels_in_order.sort(key=lambda l: spoiler.settings.BLockerEntryCount[l])
 
             hintable_levels = []
             cheapest_levels_with_item = []
@@ -1505,7 +1506,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 else:
                     # Find all levels with B. Lockers of the same price as this one
                     cheapest_levels_candidates = [
-                        candidate for candidate in all_levels if spoiler.settings.EntryGBs[candidate] == spoiler.settings.EntryGBs[level] and candidate not in hintable_levels
+                        candidate for candidate in all_levels if spoiler.settings.BLockerEntryCount[candidate] == spoiler.settings.BLockerEntryCount[level] and candidate not in hintable_levels
                     ]
                     # If there's only one candidate then this is the level that gives logical access to the move, so we're done
                     # If it's an Isles shop we're hinting we don't need to pare down the lobby options, so we're done
@@ -1586,7 +1587,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                     break
                 hint_location = getRandomHintLocation()
                 future_tns_levels = [
-                    level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
+                    level
+                    for level in all_levels
+                    if level in levels_with_tns and (not level_order_matters or spoiler.settings.BLockerEntryCount[level] >= spoiler.settings.BLockerEntryCount[hint_location.level])
                 ]
             # If we failed to find it in 15 attempts, convert remaining T&S hints to joke hints
             # This is a disgustingly rare scenario, likely involving very few and early keys required
@@ -1873,21 +1876,21 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If any Helm doors are random, place a hint for each random door somewhere
     if hint_distribution[HintType.RequiredHelmDoorHint] > 0:
         helmdoor_vars = {
-            HelmDoorItem.req_gb: "Golden Banana",
-            HelmDoorItem.req_bp: "Blueprint",
-            HelmDoorItem.req_companycoins: "Special Coin",
-            HelmDoorItem.req_key: "Key",
-            HelmDoorItem.req_medal: "Medal",
-            HelmDoorItem.req_crown: "Crown",
-            HelmDoorItem.req_fairy: "Fairy",
-            HelmDoorItem.req_rainbowcoin: "Rainbow Coin",
-            HelmDoorItem.req_bean: "Bean",
-            HelmDoorItem.req_pearl: "Pearl",
+            BarrierItems.GoldenBanana: "Golden Banana",
+            BarrierItems.Blueprint: "Blueprint",
+            BarrierItems.CompanyCoin: "Special Coin",
+            BarrierItems.Key: "Key",
+            BarrierItems.Medal: "Medal",
+            BarrierItems.Crown: "Crown",
+            BarrierItems.Fairy: "Fairy",
+            BarrierItems.RainbowCoin: "Rainbow Coin",
+            BarrierItems.Bean: "Bean",
+            BarrierItems.Pearl: "Pearl",
         }
         if spoiler.settings.crown_door_random:
             item_name = helmdoor_vars[spoiler.settings.crown_door_item]
             if spoiler.settings.crown_door_item_count > 1:
-                if spoiler.settings.crown_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.crown_door_item == BarrierItems.Fairy:
                     item_name = "Fairies"  # English is so rude sometimes
                 else:
                     item_name = item_name + "s"
@@ -1898,7 +1901,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if spoiler.settings.coin_door_random:
             item_name = helmdoor_vars[spoiler.settings.coin_door_item]
             if spoiler.settings.coin_door_item_count > 1:
-                if spoiler.settings.coin_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.coin_door_item == BarrierItems.Fairy:
                     item_name = "Fairies"  # Plurals? Consistency? A pipe dream
                 else:
                     item_name = item_name + "s"

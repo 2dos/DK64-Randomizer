@@ -25,7 +25,7 @@ from randomizer.Enums.Models import Model
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.SongType import SongType
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
@@ -43,7 +43,7 @@ from randomizer.Lists.Location import (
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
-from randomizer.Patching.Lib import IsItemSelected, SwitchInfo, HelmDoorInfo, HelmDoorRandomInfo
+from randomizer.Patching.Lib import IsItemSelected, SwitchInfo, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
@@ -228,7 +228,36 @@ class Settings:
             self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
-        if self.randomize_blocker_required_amounts:
+        self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
+        self.BLockerEntryCount = [0] * 8
+        if self.chaos_blockers:
+            limits = {
+                # Will give customization to this eventually, just need to get a proof of concept working
+                # BarrierItems.Nothing: 0,
+                BarrierItems.Kong: 5,
+                BarrierItems.Move: 20,
+                BarrierItems.GoldenBanana: 60,
+                BarrierItems.Blueprint: 15,
+                BarrierItems.Fairy: 10,
+                BarrierItems.Key: 6,
+                BarrierItems.Crown: 4,
+                BarrierItems.CompanyCoin: 1,
+                BarrierItems.Medal: 20,
+                BarrierItems.Bean: 1,
+                BarrierItems.Pearl: 3,
+                BarrierItems.RainbowCoin: 10,
+                # BarrierItems.IceTrap: 10,
+                BarrierItems.Percentage: 20,
+                # BarrierItems.ColoredBanana: 1000,
+            }
+            for slot in range(8):
+                item = random.choice(list(limits.keys()))
+                count = random.randint(0, limits[item])
+                self.BLockerEntryItems[slot] = item
+                self.BLockerEntryCount[slot] = count
+            self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
+            return
+        elif self.randomize_blocker_required_amounts:
             if self.blocker_max > 0:
                 randomlist = random.sample(range(1, self.blocker_max), 7)
                 b_lockers = randomlist
@@ -253,7 +282,8 @@ class Settings:
                 self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
-        self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
+
+        self.BLockerEntryCount = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
         self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
     def generate_main(self):
@@ -358,6 +388,8 @@ class Settings:
         # random
         self.helm_barrels = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
+
+        self.chaos_blockers = False
 
         # hard_shooting: bool
         self.hard_shooting = False
@@ -874,6 +906,8 @@ class Settings:
             self.crown_door_item_count = min(self.crown_door_item_count, helmdoor_items[self.crown_door_item].absolute_max)
         if self.coin_door_item in helmdoor_items.keys():
             self.coin_door_item_count = min(self.coin_door_item_count, helmdoor_items[self.coin_door_item].absolute_max)
+        self.coin_door_item = DoorItemToBarrierItem(self.coin_door_item, True)
+        self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
         self.shuffled_location_types = []
         if self.shuffle_items:
@@ -1253,21 +1287,21 @@ class Settings:
             self.kasplat_location_rando = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
-        if self.win_condition == WinCondition.all_fairies or self.crown_door_item == HelmDoorItem.req_fairy or self.coin_door_item == HelmDoorItem.req_fairy:
+        if self.win_condition == WinCondition.all_fairies or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
             ItemList[Items.BananaFairy].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_rainbowcoin or self.coin_door_item == HelmDoorItem.req_rainbowcoin:
+        if self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
             ItemList[Items.RainbowCoin].playthrough = True
-        if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == HelmDoorItem.req_bp or self.coin_door_item == HelmDoorItem.req_bp:
+        if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
                     ItemList[item_index].playthrough = True
-        if self.win_condition == WinCondition.all_medals or self.crown_door_item == HelmDoorItem.req_medal or self.coin_door_item == HelmDoorItem.req_medal:
+        if self.win_condition == WinCondition.all_medals or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
             ItemList[Items.BananaMedal].playthrough = True
-        if self.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or self.coin_door_item == HelmDoorItem.req_crown:
+        if self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_bean or self.coin_door_item == HelmDoorItem.req_bean or Types.Bean in self.shuffled_location_types:
+        if self.crown_door_item == BarrierItems.Bean or self.coin_door_item == BarrierItems.Bean or Types.Bean in self.shuffled_location_types:
             ItemList[Items.Bean].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_pearl or self.coin_door_item == HelmDoorItem.req_pearl or Types.Pearl in self.shuffled_location_types:
+        if self.crown_door_item == BarrierItems.Pearl or self.coin_door_item == BarrierItems.Pearl or Types.Pearl in self.shuffled_location_types:
             ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
@@ -1582,14 +1616,12 @@ class Settings:
                 # Blueprints cannot be on fairies
                 # Company coins cannot be on fairies
                 # Keys can be on fairies, but this is staggeringly rare
-                if Types.Key in self.shuffled_location_types and (self.crown_door_item == HelmDoorItem.req_key or self.coin_door_item == HelmDoorItem.req_key):
+                if Types.Key in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Key or self.coin_door_item == BarrierItems.Key):
                     self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy1)
                     self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
                 # Medals cannot be on fairies
                 # The big winner: Crowns will not be locked behind a crown door requirement
-                if Types.Crown in self.shuffled_location_types and (
-                    self.crown_door_item == HelmDoorItem.vanilla or self.crown_door_item == HelmDoorItem.req_crown or self.coin_door_item == HelmDoorItem.req_crown
-                ):
+                if Types.Crown in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown):
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
                 # Fairies are the one exception: these are allowed to be vanilla

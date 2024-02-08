@@ -22,7 +22,7 @@ import shop_instance_script
 from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
-from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
+from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures
 from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
@@ -60,6 +60,8 @@ generateYellowWrinkly()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
+
+ROM_DATA_OFFSET = 0x1FED020
 
 file_dict = [
     # File(
@@ -187,7 +189,7 @@ file_dict = [
     File(
         name="Fake GB Shine",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(0),
+        file_index=getBonusSkinOffset(ExtraTextures.FakeGBShine),
         source_file="assets/displays/gb_shine.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -195,7 +197,7 @@ file_dict = [
     File(
         name="Melon Surface",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(4),
+        file_index=getBonusSkinOffset(ExtraTextures.MelonSurface),
         source_file="assets/hash/melon_resized.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -210,11 +212,108 @@ file_dict = [
     File(
         name="Base Barrel Shell",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(5),
+        file_index=getBonusSkinOffset(ExtraTextures.BonusShell),
         source_file="assets/tagbarrel/plain_shell.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
     ),
+    File(
+        name="B Locker Item: Move",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemMove),
+        source_file="assets/displays/potion44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Blueprint",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemBlueprint),
+        source_file="assets/displays/lanky_bp44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Fairy",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemFairy),
+        source_file="assets/displays/fairy44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Bean",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemBean),
+        source_file="assets/displays/bean44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Pearl",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemPearl),
+        source_file="assets/displays/pearl44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Rainbow Coin",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemRainbowCoin),
+        source_file="assets/displays/rainbow_coin44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Ice Trap",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemIceTrap),
+        source_file="assets/displays/fake_gb_flipped.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Game Percentage",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemPercentage),
+        source_file="assets/displays/perc44.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Balloon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemBalloon),
+        source_file="assets/displays/balloon_head.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Company Coins",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemCompanyCoin),
+        source_file="assets/displays/door_combocoin.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="B Locker Item: Kong",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BLockerItemKong),
+        source_file="assets/displays/shared_flipped.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="New Dirt Image",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0x1379,
+        source_file="assets/displays/dirt_face.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(name="B. Locker", pointer_table_index=TableNames.ActorGeometry, file_index=0x64, source_file="blocker_base.bin", do_not_delete_source=True),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
     File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
     File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=113, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
@@ -291,7 +390,7 @@ for item in range(3):
         File(
             name=f"Rainbow Coin ({item})",
             pointer_table_index=TableNames.TexturesGeometry,
-            file_index=getBonusSkinOffset(item + 1),
+            file_index=getBonusSkinOffset(item + ExtraTextures.RainbowCoin0),
             source_file=f"assets/hash/rainbow_{item}.png",
             do_not_extract=True,
             texture_format=TextureFormat.RGBA5551,
@@ -1057,7 +1156,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6070)
+    clampCompressedTextures(fh, 6100)
     for x in file_dict:
         if x.bps_file is not None:
             with open(x.source_file, "rb") as fg:
@@ -1195,7 +1294,7 @@ with open(newROMName, "r+b") as fh:
     #             os.remove(x["source_file"])
 
     # Wipe Space
-    fh.seek(0x1FED020)
+    fh.seek(ROM_DATA_OFFSET)
     arr = []
     for x in range(0x200):
         arr.append(0)
@@ -1204,7 +1303,7 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
-    fh.seek(0x1FED020 + 0x11C)
+    fh.seek(ROM_DATA_OFFSET + 0x11C)
     fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
@@ -1212,29 +1311,29 @@ with open(newROMName, "r+b") as fh:
                 os.remove(y)
 
     # Kong Order
-    fh.seek(0x1FED020 + 0x151)
+    fh.seek(ROM_DATA_OFFSET + 0x151)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x152)
+    fh.seek(ROM_DATA_OFFSET + 0x152)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x153)
+    fh.seek(ROM_DATA_OFFSET + 0x153)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x154)
+    fh.seek(ROM_DATA_OFFSET + 0x154)
     fh.write((2).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x155)
+    fh.seek(ROM_DATA_OFFSET + 0x155)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x156)
+    fh.seek(ROM_DATA_OFFSET + 0x156)
     fh.write((3).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x157)
+    fh.seek(ROM_DATA_OFFSET + 0x157)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x158)
+    fh.seek(ROM_DATA_OFFSET + 0x158)
     fh.write((4).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x159)
+    fh.seek(ROM_DATA_OFFSET + 0x159)
     fh.write((2).to_bytes(1, "big"))
 
     # Default Menu Settings
-    fh.seek(0x1FED020 + 0xC8)
+    fh.seek(ROM_DATA_OFFSET + 0xC8)
     fh.write((40).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0xC9)
+    fh.seek(ROM_DATA_OFFSET + 0xC9)
     fh.write((40).to_bytes(1, "big"))
 
     # Pkmn Snap Default Enemies
@@ -1281,7 +1380,7 @@ with open(newROMName, "r+b") as fh:
             offset = pi >> 3
             shift = pi & 7
             values[offset] |= 1 << shift
-    fh.seek(0x1FED020 + 0x117)
+    fh.seek(ROM_DATA_OFFSET + 0x117)
     for x in range(5):
         fh.write(values[x].to_bytes(1, "big"))
 
@@ -1304,7 +1403,7 @@ with open(newROMName, "r+b") as fh:
     for crown_item in range(8):
         fh.write((72).to_bytes(2, "big"))
     # Misc Drops
-    fh.seek(0x1FED020 + 0xDC)
+    fh.seek(ROM_DATA_OFFSET + 0xDC)
     for x in range(2):
         fh.write((45).to_bytes(2, "big"))
     # Fairies
@@ -1324,7 +1423,7 @@ with open(newROMName, "r+b") as fh:
     for x in range(426):
         fh.write((0).to_bytes(4, "big"))
     # Shop Hints
-    fh.seek(0x1FED020 + 0x14B)
+    fh.seek(ROM_DATA_OFFSET + 0x14B)
     fh.write((1).to_bytes(1, "big"))
 
     fh.seek(0x1FFD000)
@@ -1336,18 +1435,22 @@ with open(newROMName, "r+b") as fh:
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
 
+    # Item Requirements
+    # Helm Doors
+    fh.seek(ROM_DATA_OFFSET + 0x4C)
+    fh.write((7).to_bytes(1, "big"))  # Crowns
+    fh.write((4).to_bytes(1, "big"))  # Crown door count
+    fh.write((8).to_bytes(1, "big"))  # Company Coins
+    fh.write((2).to_bytes(1, "big"))  # Coin door count
+    # B Lockers
+    fh.seek(ROM_DATA_OFFSET + 0x17E)
+    for count in range(8):
+        fh.write((3).to_bytes(1, "big"))  # GBs
+
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
-        fh.seek(0x1FED020 + 0x16C + piano_index)
+        fh.seek(ROM_DATA_OFFSET + 0x16C + piano_index)
         fh.write(piano_key.to_bytes(1, "big"))
-
-    dk_face_puzzle_vanilla = [0, 3, 2, 0, 1, 2, 3, 2, 1]
-    chunky_face_puzzle_vanilla = [0, 1, 3, 1, 2, 1, 3, 0, 1]
-    for face_index in range(9):
-        fh.seek(0x1FED020 + 0x17E + face_index)
-        fh.write(dk_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
-        fh.seek(0x1FED020 + 0x187 + face_index)
-        fh.write(chunky_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
 
     with open("assets/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
@@ -1364,14 +1467,14 @@ with open(newROMName, "r+b") as fh:
         {"offset": 0x143, "coins": 25},
     ]
     for coinreq in vanilla_coin_reqs:
-        fh.seek(0x1FED020 + coinreq["offset"])
+        fh.seek(ROM_DATA_OFFSET + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x48)
+    fh.seek(ROM_DATA_OFFSET + 0x48)
     for lvl in (1, 4, 3, 2):  # Arcade Order
         fh.write(lvl.to_bytes(1, "big"))
     for x in range(5):
         # Write default Helm Order
-        fh.seek(0x1FED020 + x)
+        fh.seek(ROM_DATA_OFFSET + x)
         fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/hash/{x.icon_file}"
@@ -1431,6 +1534,17 @@ with open(newROMName, "r+b") as fh:
         "warp_rim_0",
         "warp_rim_1",
         "crosshair",
+        "balloon_head",
+        "bean44",
+        "fairy44",
+        "fake_gb_flipped",
+        "lanky_bp44",
+        "pearl44",
+        "perc44",
+        "potion44",
+        "rainbow_coin44",
+        "shared_flipped",
+        "dirt_face",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

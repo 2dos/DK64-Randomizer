@@ -31,13 +31,13 @@ void changeHelmLZ(void) {
 }
 
 void openCrownDoor(void) {
-	if (Rando.crown_door_open) {
+	if (Rando.crown_door_requirement.item == REQITEM_NONE) {
 		setPermFlag(FLAG_HELM_CROWNDOOR);
 	}
 }
 
 void openCoinDoor(void) {
-	if (Rando.coin_door_open) {
+	if (Rando.coin_door_requirement.item == REQITEM_NONE) {
 		setPermFlag(FLAG_HELM_COINDOOR);
 	}
 }
@@ -215,21 +215,9 @@ int checkDoorItem(int index, int count) {
 }
 
 int CrownDoorCheck(void) {
-	if (Rando.crown_door_item == DOORITEM_DEFAULT) {
-		Rando.crown_door_item = DOORITEM_CROWN;
-	}
-	if (Rando.crown_door_item_count == 0) {
-		Rando.crown_door_item_count = 4;
-	}
-	return checkDoorItem(Rando.crown_door_item, Rando.crown_door_item_count);
+	return isItemRequirementSatisfied(&Rando.crown_door_requirement);
 }
 
 int CoinDoorCheck(void) {
-	if (Rando.coin_door_item == DOORITEM_DEFAULT) {
-		Rando.coin_door_item = DOORITEM_COMPANYCOIN;
-	}
-	if (Rando.coin_door_item_count == 0) {
-		Rando.coin_door_item_count = 2;
-	}
-	return checkDoorItem(Rando.coin_door_item, Rando.coin_door_item_count);
+	return isItemRequirementSatisfied(&Rando.coin_door_requirement);
 }

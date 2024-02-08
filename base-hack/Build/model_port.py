@@ -4,7 +4,7 @@ import os
 import zlib
 
 from BuildClasses import ROMPointerFile
-from BuildEnums import TableNames
+from BuildEnums import TableNames, ExtraTextures
 from BuildLib import ROMName, intf_to_float, MODEL_DIRECTORY, getBonusSkinOffset
 
 temp_file = "temp.bin"
@@ -386,26 +386,26 @@ def loadNewModels():
     """Load new models."""
     with open(f"{MODEL_DIRECTORY}rainbow_coin.dl", "r+b") as fh:
         fh.seek(0x74)
-        fh.write(getBonusSkinOffset(1).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin0).to_bytes(4, "big"))
         fh.seek(0xEC)
-        fh.write(getBonusSkinOffset(2).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin1).to_bytes(4, "big"))
         fh.seek(0x154)
-        fh.write(getBonusSkinOffset(3).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin2).to_bytes(4, "big"))
         fh.seek(0x1FC)
-        fh.write(getBonusSkinOffset(3).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin2).to_bytes(4, "big"))
         fh.seek(0x2D4)
-        fh.write(getBonusSkinOffset(1).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin0).to_bytes(4, "big"))
         fh.seek(0x34C)
-        fh.write(getBonusSkinOffset(2).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin1).to_bytes(4, "big"))
     with open(f"{MODEL_DIRECTORY}melon.dl", "r+b") as fh:
         fh.seek(0x144)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
         fh.seek(0x164)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
         fh.seek(0x2EC)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
         fh.seek(0x30C)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
     # Coins
     portalModel_M2(f"{MODEL_DIRECTORY}coin.vtx", f"{MODEL_DIRECTORY}nin_coin.dl", f"{MODEL_DIRECTORY}coin_overlay.dl", "nintendo_coin", 0x90)
     portalModel_M2(f"{MODEL_DIRECTORY}coin.vtx", f"{MODEL_DIRECTORY}rw_coin.dl", f"{MODEL_DIRECTORY}coin_overlay.dl", "rareware_coin", 0x90)
@@ -414,7 +414,7 @@ def loadNewModels():
     portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
     # Melon
     # portalModel_M2(f"{MODEL_DIRECTORY}melon.vtx", f"{MODEL_DIRECTORY}melon.dl", 0, "melon", 0x90)
-    createSpriteModelTwo(getBonusSkinOffset(4), 0.6, "melon")
+    createSpriteModelTwo(getBonusSkinOffset(ExtraTextures.MelonSurface), 0.6, "melon")
     # Potions
     for kong in ("dk", "diddy", "lanky", "tiny", "chunky", "any"):
         portalModel_M2(f"{MODEL_DIRECTORY}potion_{kong}.vtx", f"{MODEL_DIRECTORY}potion.dl", 0, f"potion_{kong}", 0x90)  # Potions - Model 2
