@@ -72,7 +72,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
 
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events or l.phasewalk, None, 6),
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels) or l.phasewalk, None, 1),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels, None, 1),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),
     ],

@@ -116,7 +116,7 @@ ColoredBananaGroupList = [
         name="Inside middle chest with headphones",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch,
         locations=[[5, 1.0, 3668, 1675, 3808]],
     ),
     ColoredBananaGroup(
@@ -125,7 +125,7 @@ ColoredBananaGroupList = [
         name="Inside left chest with Fairy",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch,
         locations=[[5, 1.0, 3548, 1675, 3695]],
     ),
     ColoredBananaGroup(

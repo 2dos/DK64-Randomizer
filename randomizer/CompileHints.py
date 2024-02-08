@@ -804,7 +804,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 # Only hint keys that are in the Way of the Hoard
                 for key_id in woth_key_ids:
                     # Keys you are expected to find early only get one direct hint, treat all keys as early keys because there are no paths
-                    if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
+                    if False and key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
+                        # This is no longer true with multipath hints - all keys get hints based on path length
                         key_hint_dict[key_id] = 1
                     # Late or complex keys get a number of hints based on the length of the path to them
                     else:
@@ -870,7 +871,10 @@ def compileHints(spoiler: Spoiler) -> bool:
             if locked_hint_count > HINT_CAP:
                 key_to_lose_a_hint = random.choice([key for key in key_hint_dict.keys() if key_hint_dict[key] > 0])
                 key_hint_dict[key_to_lose_a_hint] -= 1
-                hint_distribution[HintType.RequiredKeyHint] -= 1
+                if HintType.Multipath in valid_types:
+                    hint_distribution[HintType.Multipath] -= 1
+                else:
+                    hint_distribution[HintType.RequiredKeyHint] -= 1
                 hint_count -= 1
                 continue
             # In all other cases, remove a random hint that is eligible to be removed
@@ -2216,7 +2220,7 @@ def compileSpoilerHints(spoiler):
             + str(spoiler.settings.points_list_pad_moves)
             + " | Barrel Moves: "
             + str(spoiler.settings.points_list_barrel_moves)
-            + " | Training Moves: "
+            + " | Training and Fairy Moves: "
             + str(spoiler.settings.points_list_training_moves)
             + " | Shared Moves: "
             + str(spoiler.settings.points_list_important_shared)
@@ -2269,6 +2273,8 @@ def PointValueOfItem(settings, item_id):
         return settings.points_list_important_shared
     elif item_id == Items.Bean:
         return settings.points_list_bean
+    elif item_id in ItemPool.ShockwaveTypeItems(settings):
+        return settings.points_list_training_moves  # This will be changed to an independent option later
     return 0
 
 
