@@ -67,7 +67,7 @@
     {
       "label": "Run Tests",
       "type": "shell",
-      "command": "${command:python.interpreterPath} -m pytest -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
+      "command": "${command:python.interpreterPath} -m pytest -n 4 -s -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
       "problemMatcher": []
     },
     {

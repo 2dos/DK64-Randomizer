@@ -743,7 +743,7 @@ ColoredBananaGroupList = [
         name="Inside giant boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: (l.chunky and l.hunkyChunky and l.barrels) or l.phasewalk,
+        logic=lambda l: l.chunky and l.hunkyChunky and l.barrels,
         locations=[[5, 1.0, 3585, 118, 2406]],
     ),
     ColoredBananaGroup(

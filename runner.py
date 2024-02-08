@@ -2,7 +2,7 @@
 
 import codecs
 import json
-import os
+from os import path, walk, environ, makedirs, listdir, remove
 import random
 import time
 import traceback
@@ -35,8 +35,8 @@ if __name__ == "__main__":
     app = Flask(__name__, static_url_path="", static_folder="")
 else:
     app = Flask(__name__)
-app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
-app.config["EXECUTOR_TYPE"] = os.environ.get("EXECUTOR_TYPE", "process")
+app.config["EXECUTOR_MAX_WORKERS"] = environ.get("EXECUTOR_MAX_WORKERS", 2)
+app.config["EXECUTOR_TYPE"] = environ.get("EXECUTOR_TYPE", "process")
 executor = Executor(app)
 CORS(app)
 current_total = 0
@@ -55,16 +55,16 @@ except Exception:
     # If we can't read the file, just set it to 0 in the file.
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
-TIMEOUT = os.environ.get("TIMEOUT", 400)
+TIMEOUT = environ.get("TIMEOUT", 400)
 patch = open("./static/patches/shrink-dk64.bps", "rb")
 original = open("dk64.z64", "rb")
-og_patched_rom = BytesIO(bps.patch(original, patch).read())
 # load all the settings strings into memory
+og_patched_rom = None
 presets = []
 with open("static/presets/preset_files.json", "r") as f:
     presets = json.load(f)
 # Check if we have a file named local_presets.json and load it
-if os.path.isfile("local_presets.json"):
+if path.isfile("local_presets.json"):
     with open("local_presets.json", "r") as f:
         local_presets = json.load(f)
         for local_preset in local_presets:
@@ -81,7 +81,7 @@ if os.path.isfile("local_presets.json"):
                 presets.append(local_preset)
 
 
-if os.environ.get("HOSTED_SERVER") is not None:
+if environ.get("HOSTED_SERVER") is not None:
     import boto3
 
     dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
@@ -101,7 +101,7 @@ def generate(default_rom, generate_settings, queue, post_body):
         queue.put(return_dict)
 
     except Exception as e:
-        if os.environ.get("HOSTED_SERVER") is not None:
+        if environ.get("HOSTED_SERVER") is not None:
             write_error(traceback.format_exc(), post_body)
         print(traceback.format_exc())
         # Return the error and the type of error.
@@ -113,6 +113,11 @@ def start_gen(gen_key, post_body):
     """Start the generation process."""
     print("starting generation")
     setting_data = post_body
+    global og_patched_rom
+    if og_patched_rom is None:
+        global original
+        global patch
+        og_patched_rom = BytesIO(bps.patch(original, patch).read())
     if not setting_data.get("seed"):
         setting_data["seed"] = random.randint(0, 100000000)
     # Convert string data to enums where possible.
@@ -178,7 +183,7 @@ def start_gen(gen_key, post_body):
             return patch, spoiler, unlock_time, time.time()
 
     except Exception as e:
-        if os.environ.get("HOSTED_SERVER") is not None:
+        if environ.get("HOSTED_SERVER") is not None:
             write_error(traceback.format_exc(), post_body)
         print(traceback.format_exc())
         error = str(type(e).__name__) + ": " + str(e)
@@ -242,23 +247,10 @@ def lambda_function():
             spoiler_log["Unlock Time"] = unlock_time
             generated_time = resp_data[3]
             spoiler_log["Generated Time"] = generated_time
-            # Only retain the Settings section and the Cosmetics section.
-            if os.environ.get("HOSTED_SERVER") is not None:
-                try:
-                    seed_table = dynamodb.Table("seed_db")
-                    seed_table.put_item(
-                        Item={
-                            "time": str(time.time()) + str(hash),
-                            "seed_id": str(resp_data[1].settings.seed_id),
-                            "spoiler_log": str(json.dumps(spoiler_log)),
-                        }
-                    )
-                except Exception:
-                    pass
             current_seed_number = update_total()
             file_name = str(current_seed_number)
             # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
-            os.makedirs("generated_seeds", exist_ok=True)
+            makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
@@ -286,7 +278,7 @@ def lambda_function():
             # Convert the zip to a string of base64 data
             zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
             # Store the patch file in generated_seeds folder.
-            os.makedirs("generated_seeds", exist_ok=True)
+            makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".lanky", "w") as f:
                 f.write(zip_conv)
             # Return it as a text file
@@ -328,11 +320,11 @@ def get_spoiler_log():
         file_name = hash
     else:
         return make_response(json.dumps({"error": "error"}), 205)
-    fullpath = os.path.normpath(os.path.join("generated_seeds/", file_name + ".json"))
+    fullpath = path.normpath(path.join("generated_seeds/", file_name + ".json"))
     if not fullpath.startswith("generated_seeds/"):
         raise Exception("not allowed")
     # Check if the file exists
-    if os.path.isfile(fullpath):
+    if path.isfile(fullpath):
         # Return the spoiler log
         with open(fullpath, "r") as f:
             current_time = time.time()
@@ -393,20 +385,20 @@ def delete_old_files():
     """Delete files that are older than 4 weeks."""
     folder_path = "generated_seeds"
     current_time = time.time()
-    os.makedirs("generated_seeds", exist_ok=True)
-    for filename in os.listdir(folder_path):
+    makedirs("generated_seeds", exist_ok=True)
+    for filename in listdir(folder_path):
         if filename.endswith(".json"):
-            file_path = os.path.join(folder_path, filename)
+            file_path = path.join(folder_path, filename)
             with open(file_path, "r") as file:
                 data = json.load(file)
                 generated_time = data.get("Generated Time", 0)
 
                 # Check if it's been 4 weeks since unlock_time
                 if current_time - generated_time >= 2419200:  # 4 weeks in seconds
-                    os.remove(file_path)
+                    remove(file_path)
                     print(f"Deleted file: {filename}")
                     # also delete the lanky file
-                    os.remove(os.path.join(folder_path, filename.replace(".json", ".lanky")))
+                    remove(path.join(folder_path, filename.replace(".json", ".lanky")))
 
 
 @app.route("/get_seed", methods=["GET"])
@@ -419,18 +411,18 @@ def get_seed():
         file_name = hash
     else:
         return make_response(json.dumps({"error": "error"}), 205)
-    fullpath = os.path.normpath(os.path.join("generated_seeds/", str(file_name) + ".json"))
+    fullpath = path.normpath(path.join("generated_seeds/", str(file_name) + ".json"))
     if not fullpath.startswith("generated_seeds/"):
         raise Exception("not allowed")
     # Check if the file exists
-    if os.path.isfile(fullpath):
+    if path.isfile(fullpath):
         # Return the spoiler log
         with open(fullpath, "r") as f:
             # Get the actual lanky file modify the fullpath to be the lanky file, so we're only changing the file ending for security.
             # Remove the last 5 characters from the fullpath and replace them with .lanky
             fullpath = fullpath[:-5] + ".lanky"
             # Check if the file exists
-            if not os.path.isfile(fullpath):
+            if not path.isfile(fullpath):
                 # Return an error
                 return make_response(json.dumps({"error": "error"}), 205)
             with open(fullpath, "r") as lanky_file:
@@ -516,19 +508,6 @@ def get_seed_data():
                 return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
-            # Only retain the Settings section and the Cosmetics section.
-            if os.environ.get("HOSTED_SERVER") is not None:
-                try:
-                    seed_table = dynamodb.Table("seed_db")
-                    seed_table.put_item(
-                        Item={
-                            "time": str(time.time()) + str(hash),
-                            "seed_id": str(resp_data[1].settings.seed_id),
-                            "spoiler_log": str(json.dumps(spoiler_log)),
-                        }
-                    )
-                except Exception:
-                    pass
             # Encrypt the time and hash with the encryption key.
             current_seed_number = update_total()
             file_name = str(current_seed_number)
@@ -537,7 +516,7 @@ def get_seed_data():
             spoiler_log["Unlock Time"] = unlock_time
             spoiler_log["Generated Time"] = generated_time
             # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
-            os.makedirs("generated_seeds", exist_ok=True)
+            makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
@@ -565,7 +544,7 @@ def get_seed_data():
             # Convert the zip to a string of base64 data
             zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
             # Store the patch file in generated_seeds folder.
-            os.makedirs("generated_seeds", exist_ok=True)
+            makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".lanky", "w") as f:
                 f.write(zip_conv)
             response = make_response(json.dumps({"status": "complete", "hash": hash, "seed_number": current_seed_number}), 200)
@@ -643,4 +622,13 @@ if __name__ == "__main__":
         """Serve the randomizer page."""
         return send_from_directory(".", "randomizer.html")
 
-    app.run(debug=True, port=8000, threaded=True)
+    extra_dirs = ["./static", "./templates"]
+    extra_files = extra_dirs[:]
+    for extra_dir in extra_dirs:
+        for dirname, dirs, files in walk(extra_dir):
+            for filename in files:
+                filename = path.join(dirname, filename)
+                if path.isfile(filename):
+                    extra_files.append(filename)
+
+    app.run(debug=True, port=8000, threaded=True, extra_files=extra_files)

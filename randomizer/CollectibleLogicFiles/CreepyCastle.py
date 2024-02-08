@@ -79,7 +79,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),
     ],
     Regions.Museum: [
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.barrels) or l.phasewalk, None, 1),  # Inside boulder (Chunky)
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch and l.barrels, None, 1),  # Inside boulder (Chunky)
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),

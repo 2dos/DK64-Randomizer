@@ -153,6 +153,7 @@ textboxes = [
     TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA", Types.Banana),
     TextboxChange(Locations.GalleonTinyPearls, 23, 0, "PLEASE TRY AND GET THEM BACK", Types.Banana, "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
     TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA", Types.Banana),
+    TextboxChange(Locations.GalleonTinyPearls, 23, 2, "ALTOGETHER.", Types.Banana, "ALTOGETHER. IF YOU FIND THEM ALL, YOU WILL RECEIVE A |"),
     TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE", Types.Banana),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", Types.Banana, "THIS |"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA", Types.Banana),
