@@ -420,6 +420,24 @@ file_dict.append(
     )
 )
 
+bloat_actors = [
+    {"name": "Beaver (Blue - Low Poly)", "file": 0x18, "size": 0x15B0},
+    {"name": "Beaver (Blue)", "file": 0x19, "size": 0x1CD0},
+    {"name": "Beaver (Gold)", "file": 0x1A, "size": 0x1CE0},
+    {"name": "Klump", "file": 0x39, "size": 0x56D0},
+]
+
+for actor in bloat_actors:
+    file_dict.append(
+        File(
+            name=actor["name"],
+            pointer_table_index=TableNames.ActorGeometry,
+            file_index=actor["file"],
+            source_file=f"actor{actor['file']}_bloat.bin",
+            target_size=actor["size"],
+        )
+    )
+
 key_textures = (0xBAB, 0xC6F)
 for tx in key_textures:
     dim = 32
@@ -890,7 +908,61 @@ for x in kong_palettes:
 for tex in range(0x273, 0x27D):
     file_dict.append(File(name=f"Head Expansion ({hex(tex)})", pointer_table_index=TableNames.TexturesGeometry, file_index=tex, source_file=f"head_{tex}.bin", target_compressed_size=32 * 64 * 2))
 
-colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64], [0xBB2, 0xBB3, 32, 16], [0xCE0, 0xCEB, 48, 42]]
+colorblind_changes = [
+    [4120, 4124, 32, 44], 
+    [5819, 5858, 32, 64], 
+    [0xBB2, 0xBB3, 32, 16], 
+    [0xCE0, 0xCEB, 48, 42],
+    [0x174F, 0x1756, 32, 16], # Shockwave particles. RGBA32 16x16 images, but change 1 dim for it to work with RGBA5551 px size
+    [0x1539, 0x1553, 64, 32], # Fireball. RGBA32 32x32
+    [0x14B6, 0x14F5, 64, 32], # Fireball. RGBA32 32x32
+    [0x1554, 0x155B, 32, 16], # Small Fireball. RGBA32 16x16
+    [0x1654, 0x1683, 64, 32], # Fire Wall. RGBA32 32x32
+    [0x1495, 0x14A0, 64, 32], # Small Explosion, RGBA32 32x32
+    [0xF12, 0xF14, 32, 44], # Barrels, 1404px
+    [0xF22, 0xF24, 32, 44], # TNT Barrels, 1404px
+    [0xF2B, 0xF2C, 32, 44], # TNT Barrels, 1404px
+    [0x104D, 0x1050, 32, 44], # Klump Jacket (104d) and hat
+    [0x1058, 0x1058, 32, 44], # Klump Jacket
+    [0x1059, 0x1059, 16, 16], # Klump Jacket
+    [0x1051, 0x1051, 16, 44], # Klump Ammo
+    [0x1052, 0x1053, 16, 23], # Klump Ammo
+]
+
+kremling_dimensions = [
+    [32, 64], # FCE
+    [64, 24], # FCF
+    [1, 1372], # fd0
+    [32, 32], # fd1
+    [24, 8], # fd2
+    [24, 8], # fd3
+    [24, 8], # fd4
+    [24, 24], # fd5
+    [32, 32], # fd6
+    [32, 64], # fd7
+    [32, 64], # fd8
+    [36, 16], # fd9
+    [20, 28], # fda
+    [32, 32], # fdb
+    [32, 32], # fdc
+    [12, 28], # fdd
+    [64, 24], # fde
+    [32, 32], # fdf
+]
+
+krobot_textures = [
+    [[32, 44], [0xFAB, 0xFAD, 0xFA9, 0xFA8, 0xFAA, 0xFAF]],
+    [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]
+]
+
+for dim_index, dims in enumerate(kremling_dimensions):
+    if dims is not None:
+        colorblind_changes.append([0xFCE + dim_index, 0xFCE + dim_index, dims[0], dims[1]])
+
+for tex_set in krobot_textures:
+    for tex in tex_set[1]:
+        colorblind_changes.append([tex, tex, tex_set[0][0], tex_set[0][1]])
+
 for change in colorblind_changes:
     for file_index in range(change[0], change[1] + 1):
         file_dict.append(
@@ -1446,6 +1518,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(ROM_DATA_OFFSET + 0x17E)
     for count in range(8):
         fh.write((3).to_bytes(1, "big"))  # GBs
+
+    fh.seek(ROM_DATA_OFFSET + 0x1E8) # Jetman Color
+    for _ in range(3):
+        fh.write((0xFF).to_bytes(1, "big"))
 
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):

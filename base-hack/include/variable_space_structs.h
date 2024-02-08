@@ -176,4 +176,6 @@ typedef struct varspace {
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 2
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
+	/* 0x1E3 */ char unk_1e3[0x1E8-0x1e3];
+	/* 0x1E8 */ unsigned char jetman_rgb[3];
 } varspace;

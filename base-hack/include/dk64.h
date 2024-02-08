@@ -122,6 +122,8 @@ extern int getActorModelIndex(void* actor);
 
 extern void regularFrameLoop(void);
 
+extern void loadJetpacSprites(void);
+
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
 extern void createCollision(int type, void* player, collision_types subtype, int map, int exit, int x, int y, int z);
