@@ -1021,10 +1021,6 @@ class Settings:
         self.helm_order = orderedRooms
         self.kong_helm_order = rooms
 
-        # Start Region
-        if self.random_starting_region:
-            self.RandomizeStartingLocation()
-
         # Initial Switch Level Placement - Will be corrected if level order rando is on during the fill process. Disable it for vanilla
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
@@ -1313,6 +1309,9 @@ class Settings:
 
     def finalize_world_settings(self, spoiler):
         """Finalize the world state after settings initialization."""
+        # Starting Region Randomization
+        if self.random_starting_region:
+            self.RandomizeStartingLocation(spoiler)
         self.shuffle_prices(spoiler)
         # Starting Move Location handling
         # Undo any damage that might leak between seeds
@@ -1640,7 +1639,7 @@ class Settings:
             kongCageLocations.append(random.choice([Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong]))
         return kongCageLocations
 
-    def RandomizeStartingLocation(self):
+    def RandomizeStartingLocation(self, spoiler):
         """Randomize the starting point of this seed."""
         region_data = [
             randomizer.LogicFiles.DKIsles.LogicRegions,
@@ -1690,7 +1689,7 @@ class Settings:
                         )
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
-            randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
+            spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 
     def ApplyPlandomizerSettings(self):
         """Apply settings specified by the plandomizer."""
