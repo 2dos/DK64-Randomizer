@@ -927,6 +927,12 @@ colorblind_changes = [
     [0x1059, 0x1059, 16, 16], # Klump Jacket
     [0x1051, 0x1051, 16, 44], # Klump Ammo
     [0x1052, 0x1053, 16, 23], # Klump Ammo
+    [0x1260, 0x1261, 32, 32], # K rool stuff - 1260 is shoe
+    [0x1148, 0x114A, 32, 32], # K rool stuff
+    [0x114D, 0x114D, 32, 32], # K rool stuff
+    [0xDA8, 0xDA8, 32, 32], # K rool stuff - Glove
+    [0x126E, 0x126f, 32, 44], # K rool stuff - Toes
+    [0x1265, 0x1265, 32, 32], # K rool stuff - Crown
 ]
 
 kremling_dimensions = [

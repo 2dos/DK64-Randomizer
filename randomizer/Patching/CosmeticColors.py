@@ -1994,7 +1994,9 @@ class EnemyColorSwap:
             new_color += replacement_channel
         return new_color
 
-        
+def convertColorIntToTuple(color: int) -> tuple:
+    """Convert color stored as 3-byte int to tuple."""
+    return ((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF)
 
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
@@ -2116,6 +2118,26 @@ def writeMiscCosmeticChanges(settings):
         for xi, x in enumerate(settings.jetman_color):
             ROM().seek(settings.rom_data + 0x1E8 + xi)
             ROM().writeMultipleBytes(x, 1)
+        # K Rool
+        skin_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor(80, min_channel_variance=80)))
+        red_cs_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
+        shorts_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
+        glove_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
+        krool_data = {
+            0x114A: skin_im,
+            0x114D: skin_im,
+            0x1149: red_cs_im,
+            0x1261: shorts_im,
+            0xDA8: glove_im,
+        }
+        for index in krool_data:
+            writeColorImageToROM(krool_data[index], 25, index, 32, 32, False, TextureFormat.RGBA5551)
+        toe_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x126E, 1, 1372, TextureFormat.RGBA5551, toe_shift)
+        hueShiftImageContainer(25, 0x126F, 1, 1372, TextureFormat.RGBA5551, toe_shift)
+        gold_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x1265, 32, 32, TextureFormat.RGBA5551, gold_shift)
+        hueShiftImageContainer(25, 0x1148, 32, 32, TextureFormat.RGBA5551, gold_shift)
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
         enemy_changes = {
