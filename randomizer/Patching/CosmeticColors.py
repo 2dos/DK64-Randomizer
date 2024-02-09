@@ -2000,6 +2000,10 @@ def convertColorIntToTuple(color: int) -> tuple:
 
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
+    if settings.override_cosmetics:
+        enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
+    else:
+        enemy_setting = settings.random_enemy_colors
     if settings.misc_cosmetics:
         # Melon HUD
         data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(4), getBonusSkinOffset(4)]}
@@ -2046,7 +2050,8 @@ def writeMiscCosmeticChanges(settings):
             for img_index in range(sprite_data[0], sprite_data[1] + 1):
                 dim = sprite_data[2]
                 hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
-        # Barrel Enemy Skins
+    if enemy_setting != RandomModels.off:
+        # Barrel Enemy Skins - Random
         klobber_shift = getRandomHueShift(0, 300)
         kaboom_shift = getRandomHueShift()
         for img_index in range(3):
@@ -2076,30 +2081,31 @@ def writeMiscCosmeticChanges(settings):
         for img_data in hatammo_images:
             hueShiftImageContainer(25, img_data["image"], 1, img_data["px"], TextureFormat.RGBA5551, klump_hatammo_shift)
         # Kremling
-        kremling_dimensions = [
-            [32, 64], # FCE
-            [64, 24], # FCF
-            [1, 1372], # fd0
-            [32, 32], # fd1
-            [24, 8], # fd2
-            [24, 8], # fd3
-            [24, 8], # fd4
-            [24, 24], # fd5
-            [32, 32], # fd6
-            [32, 64], # fd7
-            [32, 64], # fd8
-            [36, 16], # fd9
-            [20, 28], # fda
-            [32, 32], # fdb
-            [32, 32], # fdc
-            [12, 28], # fdd
-            [64, 24], # fde
-            [32, 32], # fdf
-        ]
-        kremling_shift = getRandomHueShift()
-        for dim_index, dims in enumerate(kremling_dimensions):
-            if dims is not None:
-                hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
+        if enemy_setting == RandomModels.extreme:
+            kremling_dimensions = [
+                [32, 64], # FCE
+                [64, 24], # FCF
+                [1, 1372], # fd0
+                [32, 32], # fd1
+                [24, 8], # fd2
+                [24, 8], # fd3
+                [24, 8], # fd4
+                [24, 24], # fd5
+                [32, 32], # fd6
+                [32, 64], # fd7
+                [32, 64], # fd8
+                [36, 16], # fd9
+                [20, 28], # fda
+                [32, 32], # fdb
+                [32, 32], # fdc
+                [12, 28], # fdd
+                [64, 24], # fde
+                [32, 32], # fdf
+            ]
+            kremling_shift = getRandomHueShift()
+            for dim_index, dims in enumerate(kremling_dimensions):
+                if dims is not None:
+                    hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
         # Krobot
         spinner_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0xFA9, 1, 1372, TextureFormat.RGBA5551, spinner_shift)
@@ -2119,33 +2125,36 @@ def writeMiscCosmeticChanges(settings):
             ROM().seek(settings.rom_data + 0x1E8 + xi)
             ROM().writeMultipleBytes(x, 1)
         # K Rool
-        skin_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor(80, min_channel_variance=80)))
         red_cs_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
         shorts_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
         glove_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
         krool_data = {
-            0x114A: skin_im,
-            0x114D: skin_im,
             0x1149: red_cs_im,
             0x1261: shorts_im,
             0xDA8: glove_im,
         }
+        if enemy_setting == RandomModels.extreme:
+            skin_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor(80, min_channel_variance=80)))
+            krool_data[0x114A] = skin_im
+            krool_data[0x114D] = skin_im
         for index in krool_data:
             writeColorImageToROM(krool_data[index], 25, index, 32, 32, False, TextureFormat.RGBA5551)
         toe_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0x126E, 1, 1372, TextureFormat.RGBA5551, toe_shift)
         hueShiftImageContainer(25, 0x126F, 1, 1372, TextureFormat.RGBA5551, toe_shift)
-        gold_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0x1265, 32, 32, TextureFormat.RGBA5551, gold_shift)
-        hueShiftImageContainer(25, 0x1148, 32, 32, TextureFormat.RGBA5551, gold_shift)
+        if enemy_setting == RandomModels.extreme:
+            gold_shift = getRandomHueShift()
+            hueShiftImageContainer(25, 0x1265, 32, 32, TextureFormat.RGBA5551, gold_shift)
+            hueShiftImageContainer(25, 0x1148, 32, 32, TextureFormat.RGBA5551, gold_shift)
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
         enemy_changes = {
             Model.BeaverBlue_LowPoly: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color), # Primary
             Model.BeaverBlue: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color), # Primary
             Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]), # Primary
-            Model.Klump: EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859], 0x65CCFF),
         }
+        if enemy_setting == RandomModels.extreme:
+            enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859], 0x65CCFF),
         for enemy in enemy_changes:
             file_data = bytearray(getRawFile(5, enemy, True))
             vert_start = 0x28

@@ -452,6 +452,7 @@ class Settings:
         self.color_palettes = {}
         # Random Model Swaps
         self.random_models = RandomModels.off
+        self.random_enemy_colors = RandomModels.off
         self.bother_klaptrap_model = Model.KlaptrapGreen
         self.beetle_model = Model.Beetle
         self.rabbit_model = Model.Rabbit

@@ -182,6 +182,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "enguarde_skin_custom_color",
         "klaptrap_model",
         "random_models",
+        "random_enemy_colors",
         "misc_cosmetics",
         "disco_chunky",
         "dark_mode_textboxes",
