@@ -134,6 +134,8 @@ int getItemRequiredKong(maps map, int id) {
     return 0;
 }
 
+static const short helm_temp_flags[] = {0x4B, 0x4C, 0x4E, 0x4D, 0x4F};
+
 int isObjectTangible_detailed(int id) {
     /**
      * @brief Override function for object tangibility
@@ -144,6 +146,13 @@ int isObjectTangible_detailed(int id) {
      */
     if ((CurrentMap == MAP_FUNGIMILLFRONT) && (id == 0xA)) {
         return 0;
+    }
+    if (!checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
+        if ((id >= 0x5D) && (id <= 0x61)) {
+            if (!checkFlag(helm_temp_flags[id - 0x5D], FLAGTYPE_TEMPORARY)) {
+                return 0;
+            }
+        }
     }
     return isObjectTangible(id);
 }

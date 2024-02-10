@@ -1538,16 +1538,7 @@ class Settings:
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
             if Types.Crown in self.shuffled_location_types:
-                # Banned for technical reasons
-                banned_crown_locations = (
-                    Locations.HelmDonkeyMedal,
-                    Locations.HelmDiddyMedal,
-                    Locations.HelmLankyMedal,
-                    Locations.HelmTinyMedal,
-                    Locations.HelmChunkyMedal,
-                    Locations.HelmKey,
-                )
-                self.valid_locations[Types.Crown] = [location for location in shuffledNonMoveLocations if location not in banned_crown_locations]
+                self.valid_locations[Types.Crown] = shuffledNonMoveLocations
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledNonMoveLocations
             if Types.Medal in self.shuffled_location_types:

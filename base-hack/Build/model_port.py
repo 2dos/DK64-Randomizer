@@ -344,6 +344,18 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
                 # Change seg address header from 8 to 3
                 fh.seek(dl_start_pointer + (d * 8) + 4)
                 fh.write((3).to_bytes(1, "big"))
+            elif instruction == 0xDA:
+                # Remove instruction
+                fh.seek(dl_start_pointer + (d * 8))
+                fh.write((0).to_bytes(4, "big"))
+                # # Change seg address header from 9 to 4
+                # fh.seek(dl_start_pointer + (d * 8) + 3)
+                # fh.write((3).to_bytes(1, "big"))
+                # fh.write((4).to_bytes(1, "big"))
+            elif instruction == 3:
+                # Remove instruction
+                fh.seek(dl_start_pointer + (d * 8))
+                fh.write((0).to_bytes(4, "big"))
         # Fix Verts
         if vtx_bottom_is_zero:
             y_offset = None

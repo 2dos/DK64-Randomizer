@@ -1,8 +1,16 @@
 #include "../../include/common.h"
 
+int getWorldOffset(void) {
+    int world = getWorld(CurrentMap, 0);
+    if (world > 7) {
+        return 7;
+    }
+    return world;
+}
+
 void setBLockerHead(void) {
     int item = 0;
-    int world = getWorld(CurrentMap, 0);
+    int world = getWorldOffset();
     if (world <= 7) {
         item = Rando.b_locker_requirements[world];
     }
@@ -14,7 +22,7 @@ void setBLockerHead(void) {
 
 void displayBlockerItemOnHUD(void) {
     setBLockerHead();
-    int world = getWorld(CurrentMap, 0);
+    int world = getWorldOffset();
     if (world > 7) {
         return;
     }
@@ -24,7 +32,7 @@ void displayBlockerItemOnHUD(void) {
 }
 
 int getCountOfBlockerRequiredItem(void) {
-    int world = getWorld(CurrentMap, 0);
+    int world = getWorldOffset();
     if (world > 7) {
         return 0;
     }
@@ -32,7 +40,7 @@ int getCountOfBlockerRequiredItem(void) {
 }
 
 void displayCountOnBLockerTeeth(int count) {
-    int world = getWorld(CurrentMap, 0);
+    int world = getWorldOffset();
     if (world > 7) {
         return;
     }

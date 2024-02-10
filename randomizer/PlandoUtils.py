@@ -300,9 +300,9 @@ for shop in kongSpecificShopSet:
 ItemRestrictionsPerLocation[Locations.RarewareCoin.name].update(shopRestrictedItemSet)
 
 # Crowns are not allowed on Helm Medal locations.
-helmMedalLocationList = [Locations.HelmDonkeyMedal.name, Locations.HelmDiddyMedal.name, Locations.HelmLankyMedal.name, Locations.HelmTinyMedal.name, Locations.HelmChunkyMedal.name]
-for locationName in helmMedalLocationList:
-    ItemRestrictionsPerLocation[locationName].add(PlandoItems.BattleCrown.name)
+# helmMedalLocationList = [Locations.HelmDonkeyMedal.name, Locations.HelmDiddyMedal.name, Locations.HelmLankyMedal.name, Locations.HelmTinyMedal.name, Locations.HelmChunkyMedal.name]
+# for locationName in helmMedalLocationList:
+#     ItemRestrictionsPerLocation[locationName].add(PlandoItems.BattleCrown.name)
 
 # Boss fights cannot have junk items or blueprint rewards.
 bossFightLocationList = [
