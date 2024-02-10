@@ -2080,6 +2080,23 @@ def writeMiscCosmeticChanges(settings):
             hueShiftImageContainer(25, img_data["image"], 1, img_data["px"], TextureFormat.RGBA5551, klump_jacket_shift)
         for img_data in hatammo_images:
             hueShiftImageContainer(25, img_data["image"], 1, img_data["px"], TextureFormat.RGBA5551, klump_hatammo_shift)
+        # Kosha
+        kosha_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x1232, 1, 348, TextureFormat.RGBA5551, kosha_shift)
+        hueShiftImageContainer(25, 0x1235, 1, 348, TextureFormat.RGBA5551, kosha_shift)
+        if enemy_setting == RandomModels.extreme:
+            kosha_helmet_int = getEnemySwapColor(80, min_channel_variance=80)
+            kosha_helmet_list = [(kosha_helmet_int >> 16) & 0xFF, (kosha_helmet_int >> 8) & 0xFF, kosha_helmet_int & 0xFF]
+            kosha_club_int = getEnemySwapColor(80, min_channel_variance=80)
+            kosha_club_list = [(kosha_club_int >> 16) & 0xFF, (kosha_club_int >> 8) & 0xFF, kosha_club_int & 0xFF]
+            for img in range(0x122E, 0x1230):
+                kosha_im = getFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
+                kosha_im = maskImageWithColor(kosha_im, tuple(kosha_helmet_list))
+                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
+            for img in range(0x1229, 0x122C):
+                kosha_im = getFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
+                kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
+                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
         # Kremling
         if enemy_setting == RandomModels.extreme:
             kremling_dimensions = [
@@ -2154,7 +2171,7 @@ def writeMiscCosmeticChanges(settings):
             Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]), # Primary
         }
         if enemy_setting == RandomModels.extreme:
-            enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859], 0x65CCFF),
+            enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859], 0x65CCFF)
         for enemy in enemy_changes:
             file_data = bytearray(getRawFile(5, enemy, True))
             vert_start = 0x28

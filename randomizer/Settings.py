@@ -1551,13 +1551,13 @@ class Settings:
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledNonMoveLocations
             if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = fairyBannedLocations
+                self.valid_locations[Types.Medal] = shuffledNonMoveLocations
             if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = fairyBannedLocations
+                self.valid_locations[Types.Coin] = shuffledNonMoveLocations
             if Types.Pearl in self.shuffled_location_types:
-                self.valid_locations[Types.Pearl] = fairyBannedLocations
+                self.valid_locations[Types.Pearl] = shuffledNonMoveLocations
             if Types.Bean in self.shuffled_location_types:
-                self.valid_locations[Types.Bean] = fairyBannedLocations
+                self.valid_locations[Types.Bean] = shuffledNonMoveLocations
             if Types.Fairy in self.shuffled_location_types:
                 self.valid_locations[Types.Fairy] = shuffledNonMoveLocations
             if Types.RainbowCoin in self.shuffled_location_types:

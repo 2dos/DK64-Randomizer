@@ -114,6 +114,10 @@ model_indexes = {
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
     Types.FakeItem: 0x103,
+    Types.Bean: 0x104,
+    Types.Pearl: 0x106,
+    Types.Medal: 0x108,
+    Types.Coin: [0x10A, 0x10C],
 }
 
 kong_flags = (385, 6, 70, 66, 117)
@@ -623,6 +627,11 @@ def place_randomized_items(spoiler):
                                 if item.new_flag in kong_flags:
                                     slot = kong_flags.index(item.new_flag)
                                 model = model_indexes[Types.Kong][slot]
+                            elif item.new_item == Types.Coin:
+                                slot = 1
+                                if item.new_flag == 132:
+                                    slot = 0
+                                model = model_indexes[Types.Coin][slot]
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
             if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:

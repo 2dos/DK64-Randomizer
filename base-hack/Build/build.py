@@ -933,6 +933,10 @@ colorblind_changes = [
     [0xDA8, 0xDA8, 32, 32], # K rool stuff - Glove
     [0x126E, 0x126f, 32, 44], # K rool stuff - Toes
     [0x1265, 0x1265, 32, 32], # K rool stuff - Crown
+    [0x1232, 0x1232, 1, 348], # Kosha Skin - Feet
+    [0x1235, 0x1235, 1, 348], # Kosha Skin
+    [0x122E, 0x122F, 1, 1372], # Kosha Helmet
+    [0x1229, 0x122B, 1, 1372], # Kosha Club
 ]
 
 kremling_dimensions = [
@@ -1008,6 +1012,12 @@ shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # La
 shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
 shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
 shrinkModel(True, "fake_item_actor.bin", 0, 0.15, "shrink_ice_trap.bin", False),
+shrinkModel(True, "bean_om1.bin", 0, 1 / 0.15, "shrink_bean.bin", False),
+shrinkModel(True, "pearl_om1.bin", 0, 2, "shrink_pearl_0.bin", False),
+shrinkModel(True, "pearl_om1.bin", 0, 2 / 0.15, "shrink_pearl.bin", False),
+shrinkModel(True, "medal_om1.bin", 0, 1 / 0.15, "shrink_medal.bin", False),
+shrinkModel(True, "nintendo_coin_om1.bin", 0, 1 / 0.15, "shrink_nintendo.bin", False),
+shrinkModel(True, "rareware_coin_om1.bin", 0, 1 / 0.15, "shrink_rareware.bin", False),
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -1042,6 +1052,16 @@ model_changes = [
     ModelChange(0x101, "shrink_chunky.bin"),
     ModelChange(0x102, "shrink_ice_trap.bin"),
     ModelChange(0xA3, "counter.bin"),
+    ModelChange(0x103, "bean_om1.bin"),
+    ModelChange(0x104, "shrink_bean.bin"),
+    ModelChange(0x105, "shrink_pearl_0.bin"),
+    ModelChange(0x106, "shrink_pearl.bin"),
+    ModelChange(0x107, "medal_om1.bin"),
+    ModelChange(0x108, "shrink_medal.bin"),
+    ModelChange(0x109, "nintendo_coin_om1.bin"),
+    ModelChange(0x10A, "shrink_nintendo.bin"),
+    ModelChange(0x10B, "rareware_coin_om1.bin"),
+    ModelChange(0x10C, "shrink_rareware.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)

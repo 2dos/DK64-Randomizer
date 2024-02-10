@@ -7,7 +7,7 @@ Thanks,
 */
 extern const short acceptable_items[27];
 extern const item_conversion_info item_conversions[31];
-extern const unsigned short bounce_objects[16];
+extern const unsigned short bounce_objects[21];
 extern const unsigned short actor_drops[32];
 extern const unsigned short danceless_items[6];
 extern const item_scale_info item_scales[32];

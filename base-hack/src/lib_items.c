@@ -42,7 +42,7 @@ const item_conversion_info item_conversions[] = {
 	{.actor=121, .model_two=142, .scale=1.00f},
 	{.actor=51, .model_two=143, .scale=1.00f}
 };
-const unsigned short bounce_objects[] = {45,72,86,348,349,350,351,352,353,354,355,356,357,358,363,364};
+const unsigned short bounce_objects[] = {45,345,346,72,86,365,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364};
 const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,365,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,52,47,121,51};
 const unsigned short danceless_items[] = {361,362,52,47,121,51};
 const item_scale_info item_scales[] = {

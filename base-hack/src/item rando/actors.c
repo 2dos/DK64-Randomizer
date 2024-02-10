@@ -33,51 +33,35 @@ void ninCoinCode(void) {
     /**
      * @brief Nintendo Coin Actor Code
      */
-    spriteCode(0x8D, 1.0f);
+    GoldenBananaCode();
 }
 
 void rwCoinCode(void) {
     /**
      * @brief Rareware Coin Actor Code
      */
-    spriteCode(0x8C, 1.0f);
+    GoldenBananaCode();
 }
 
 void medalCode(void) {
     /**
      * @brief Medal Actor Code
      */
-    spriteCode(0x3C, 2.0f);
+    GoldenBananaCode();
 }
 
 void beanCode(void) {
     /**
      * @brief Bean Actor Code
      */
-    void* paad = CurrentActorPointer_0->paad;
-    spriteActorGenericCode(12.0f);
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, &bean_sprite, 1.0f);
-        if (CurrentActorPointer_0->control_state == 99) {
-            CurrentActorPointer_0->control_state = 1;
-            CurrentActorPointer_0->sub_state = 2;
-        }
-    }
+    GoldenBananaCode();
 }
 
 void pearlCode(void) {
     /**
      * @brief Pearl Actor Code
      */
-    void* paad = CurrentActorPointer_0->paad;
-    spriteActorGenericCode(12.0f);
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, &pearl_sprite, 1.0f);
-        if (CurrentActorPointer_0->control_state == 99) {
-            CurrentActorPointer_0->control_state = 1;
-            CurrentActorPointer_0->sub_state = 2;
-        }
-    }
+    GoldenBananaCode();
 }
 
 void NothingCode(void) {

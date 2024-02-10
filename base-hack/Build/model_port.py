@@ -304,6 +304,83 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
         if os.path.exists(f):
             os.remove(f)
 
+def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
+    """Port Model Two object to an actor model."""
+    if input_file == "":
+        # Use Model Two Index
+        with open(ROMName, "rb") as rom:
+            model_f = ROMPointerFile(rom, TableNames.ModelTwoGeometry, model_two_index)
+            rom.seek(model_f.start)
+            data = rom.read(model_f.size)
+            if model_f.compressed:
+                data = zlib.decompress(data, (15 + 32))
+            with open(temp_file, "wb") as fh:
+                fh.write(data)
+    else:
+        # Use provided input file
+        with open(input_file, "rb") as fh:
+            with open(temp_file, "wb") as fg:
+                fg.write(fh.read())
+    vert_data = b""
+    dl_data = b""
+    # Read vert/dl data
+    with open(temp_file, "r+b") as fh:
+        fh.seek(0x40)
+        dl_start_pointer = int.from_bytes(fh.read(4), "big")
+        dl_end_pointer = int.from_bytes(fh.read(4), "big")
+        dl_size = dl_end_pointer - dl_start_pointer
+        dl_ins_count = int(dl_size / 8)
+        vert_start_pointer = int.from_bytes(fh.read(4), "big")
+        vert_end_pointer = int.from_bytes(fh.read(4), "big")
+        vert_size = vert_end_pointer - vert_start_pointer
+        vert_count = int(vert_size / 0x10)
+        # Prune DL
+        for d in range(dl_ins_count):
+            fh.seek(dl_start_pointer + (8 * d))
+            # Prune DL of bad instructions and segmented addresses
+            instruction = int.from_bytes(fh.read(1), "big")
+            if instruction == 1:
+                # Change seg address header from 8 to 3
+                fh.seek(dl_start_pointer + (d * 8) + 4)
+                fh.write((3).to_bytes(1, "big"))
+        # Fix Verts
+        if vtx_bottom_is_zero:
+            y_offset = None
+            for v in range(vert_count):
+                fh.seek(vert_start_pointer + (0x10 * v) + 2)
+                raw = int.from_bytes(fh.read(2), "big")
+                if raw > 0x7FFF:
+                    raw -= 0x10000
+                if y_offset is None or y_offset > raw:
+                    y_offset = raw
+            for v in range(vert_count):
+                fh.seek(vert_start_pointer + (0x10 * v) + 2)
+                raw = int.from_bytes(fh.read(2), "big")
+                if raw > 0x7FFF:
+                    raw -= 0x10000
+                raw -= y_offset
+                if raw < 0:
+                    raw += 0x10000
+                if raw < 0:
+                    raw = 0
+                elif raw > 0xFFFF:
+                    raw = 0xFFFF
+                fh.seek(vert_start_pointer + (0x10 * v) + 2)
+                fh.write(raw.to_bytes(2, "big"))
+        # Write data to temp files
+        fh.seek(dl_start_pointer)
+        dl_data = b"\xDA\x38\x00\x03\x04\x00\x00\x00" + fh.read(dl_size)
+        fh.seek(vert_start_pointer)
+        vert_data = fh.read(vert_size)
+    # Write
+    with open("temp.vtx", "wb") as fh:
+        fh.write(vert_data)
+    with open("temp.dl", "wb") as fh:
+        fh.write(dl_data)
+    portalModel_Actor("temp.vtx", "temp.dl", output_file, base_file_index)
+    for f in ("temp.vtx", "temp.dl", "temp.bin"):
+        if os.path.exists(f):
+            os.remove(f)
 
 def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
     """Create a model two object based on a singular image."""
@@ -427,3 +504,10 @@ def loadNewModels():
     portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
     # portalModel_M2(f"{MODEL_DIRECTORY}dk_head.vtx", f"{MODEL_DIRECTORY}dk_head.dl", 0, "kong_dk", 0x90)
     ripCollision(0x48, 0x67, "k_rool_cutscenes")
+    # Misc
+    portModelTwoToActor(0x198, "", "bean", 0x68, True, 1.0)
+    portModelTwoToActor(0x1B4, "", "pearl", 0x68, True, 1.0)
+    portModelTwoToActor(0x90, "", "medal", 0x68, True, 1.0)
+    portModelTwoToActor(0, "nintendo_coin_om2.bin", "nintendo_coin", 0x68, True, 1.0)
+    portModelTwoToActor(0, "rareware_coin_om2.bin", "rareware_coin", 0x68, True, 1.0)
+    # portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)
