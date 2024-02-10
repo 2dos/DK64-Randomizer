@@ -304,6 +304,7 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
         if os.path.exists(f):
             os.remove(f)
 
+
 def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
     """Port Model Two object to an actor model."""
     if input_file == "":
@@ -382,6 +383,7 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
         if os.path.exists(f):
             os.remove(f)
 
+
 def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
     """Create a model two object based on a singular image."""
     with open(ROMName, "rb") as rom:
@@ -459,6 +461,21 @@ def ripCollision(collision_source_model: int, output_model: int, output_file: st
             fh.write((old + increase).to_bytes(4, "big"))
 
 
+def createMelon():
+    """Creates melon model based off pearl."""
+    with open(ROMName, "rb") as rom:
+        with open("melon_3d_om2.bin", "wb") as fh:
+            pearl = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x1B4)
+            rom.seek(pearl.start)
+            pearl_data = rom.read(pearl.size)
+            if pearl.compressed:
+                pearl_data = zlib.decompress(pearl_data, (15 + 32))
+            fh.write(pearl_data)
+        with open("melon_3d_om2.bin", "r+b") as fh:
+            fh.seek(0xEC)
+            fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
+
+
 def loadNewModels():
     """Load new models."""
     with open(f"{MODEL_DIRECTORY}rainbow_coin.dl", "r+b") as fh:
@@ -510,4 +527,6 @@ def loadNewModels():
     portModelTwoToActor(0x90, "", "medal", 0x68, True, 1.0)
     portModelTwoToActor(0, "nintendo_coin_om2.bin", "nintendo_coin", 0x68, True, 1.0)
     portModelTwoToActor(0, "rareware_coin_om2.bin", "rareware_coin", 0x68, True, 1.0)
+    createMelon()
+    portModelTwoToActor(0, "melon_3d_om2.bin", "melon_3d", 0x68, True, 1.0)
     # portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)

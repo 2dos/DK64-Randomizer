@@ -204,7 +204,7 @@ file_dict = [
         target_compressed_size=0x800,
     ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
@@ -909,61 +909,58 @@ for tex in range(0x273, 0x27D):
     file_dict.append(File(name=f"Head Expansion ({hex(tex)})", pointer_table_index=TableNames.TexturesGeometry, file_index=tex, source_file=f"head_{tex}.bin", target_compressed_size=32 * 64 * 2))
 
 colorblind_changes = [
-    [4120, 4124, 32, 44], 
-    [5819, 5858, 32, 64], 
-    [0xBB2, 0xBB3, 32, 16], 
+    [4120, 4124, 32, 44],
+    [5819, 5858, 32, 64],
+    [0xBB2, 0xBB3, 32, 16],
     [0xCE0, 0xCEB, 48, 42],
-    [0x174F, 0x1756, 32, 16], # Shockwave particles. RGBA32 16x16 images, but change 1 dim for it to work with RGBA5551 px size
-    [0x1539, 0x1553, 64, 32], # Fireball. RGBA32 32x32
-    [0x14B6, 0x14F5, 64, 32], # Fireball. RGBA32 32x32
-    [0x1554, 0x155B, 32, 16], # Small Fireball. RGBA32 16x16
-    [0x1654, 0x1683, 64, 32], # Fire Wall. RGBA32 32x32
-    [0x1495, 0x14A0, 64, 32], # Small Explosion, RGBA32 32x32
-    [0xF12, 0xF14, 32, 44], # Barrels, 1404px
-    [0xF22, 0xF24, 32, 44], # TNT Barrels, 1404px
-    [0xF2B, 0xF2C, 32, 44], # TNT Barrels, 1404px
-    [0x104D, 0x1050, 32, 44], # Klump Jacket (104d) and hat
-    [0x1058, 0x1058, 32, 44], # Klump Jacket
-    [0x1059, 0x1059, 16, 16], # Klump Jacket
-    [0x1051, 0x1051, 16, 44], # Klump Ammo
-    [0x1052, 0x1053, 16, 23], # Klump Ammo
-    [0x1260, 0x1261, 32, 32], # K rool stuff - 1260 is shoe
-    [0x1148, 0x114A, 32, 32], # K rool stuff
-    [0x114D, 0x114D, 32, 32], # K rool stuff
-    [0xDA8, 0xDA8, 32, 32], # K rool stuff - Glove
-    [0x126E, 0x126f, 32, 44], # K rool stuff - Toes
-    [0x1265, 0x1265, 32, 32], # K rool stuff - Crown
-    [0x1232, 0x1232, 1, 348], # Kosha Skin - Feet
-    [0x1235, 0x1235, 1, 348], # Kosha Skin
-    [0x122E, 0x122F, 1, 1372], # Kosha Helmet
-    [0x1229, 0x122B, 1, 1372], # Kosha Club
+    [0x174F, 0x1756, 32, 16],  # Shockwave particles. RGBA32 16x16 images, but change 1 dim for it to work with RGBA5551 px size
+    [0x1539, 0x1553, 64, 32],  # Fireball. RGBA32 32x32
+    [0x14B6, 0x14F5, 64, 32],  # Fireball. RGBA32 32x32
+    [0x1554, 0x155B, 32, 16],  # Small Fireball. RGBA32 16x16
+    [0x1654, 0x1683, 64, 32],  # Fire Wall. RGBA32 32x32
+    [0x1495, 0x14A0, 64, 32],  # Small Explosion, RGBA32 32x32
+    [0xF12, 0xF14, 32, 44],  # Barrels, 1404px
+    [0xF22, 0xF24, 32, 44],  # TNT Barrels, 1404px
+    [0xF2B, 0xF2C, 32, 44],  # TNT Barrels, 1404px
+    [0x104D, 0x1050, 32, 44],  # Klump Jacket (104d) and hat
+    [0x1058, 0x1058, 32, 44],  # Klump Jacket
+    [0x1059, 0x1059, 16, 16],  # Klump Jacket
+    [0x1051, 0x1051, 16, 44],  # Klump Ammo
+    [0x1052, 0x1053, 16, 23],  # Klump Ammo
+    [0x1260, 0x1261, 32, 32],  # K rool stuff - 1260 is shoe
+    [0x1148, 0x114A, 32, 32],  # K rool stuff
+    [0x114D, 0x114D, 32, 32],  # K rool stuff
+    [0xDA8, 0xDA8, 32, 32],  # K rool stuff - Glove
+    [0x126E, 0x126F, 32, 44],  # K rool stuff - Toes
+    [0x1265, 0x1265, 32, 32],  # K rool stuff - Crown
+    [0x1232, 0x1232, 1, 348],  # Kosha Skin - Feet
+    [0x1235, 0x1235, 1, 348],  # Kosha Skin
+    [0x122E, 0x122F, 1, 1372],  # Kosha Helmet
+    [0x1229, 0x122B, 1, 1372],  # Kosha Club
 ]
 
 kremling_dimensions = [
-    [32, 64], # FCE
-    [64, 24], # FCF
-    [1, 1372], # fd0
-    [32, 32], # fd1
-    [24, 8], # fd2
-    [24, 8], # fd3
-    [24, 8], # fd4
-    [24, 24], # fd5
-    [32, 32], # fd6
-    [32, 64], # fd7
-    [32, 64], # fd8
-    [36, 16], # fd9
-    [20, 28], # fda
-    [32, 32], # fdb
-    [32, 32], # fdc
-    [12, 28], # fdd
-    [64, 24], # fde
-    [32, 32], # fdf
+    [32, 64],  # FCE
+    [64, 24],  # FCF
+    [1, 1372],  # fd0
+    [32, 32],  # fd1
+    [24, 8],  # fd2
+    [24, 8],  # fd3
+    [24, 8],  # fd4
+    [24, 24],  # fd5
+    [32, 32],  # fd6
+    [32, 64],  # fd7
+    [32, 64],  # fd8
+    [36, 16],  # fd9
+    [20, 28],  # fda
+    [32, 32],  # fdb
+    [32, 32],  # fdc
+    [12, 28],  # fdd
+    [64, 24],  # fde
+    [32, 32],  # fdf
 ]
 
-krobot_textures = [
-    [[32, 44], [0xFAB, 0xFAD, 0xFA9, 0xFA8, 0xFAA, 0xFAF]],
-    [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]
-]
+krobot_textures = [[[32, 44], [0xFAB, 0xFAD, 0xFA9, 0xFA8, 0xFAA, 0xFAF]], [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]]
 
 for dim_index, dims in enumerate(kremling_dimensions):
     if dims is not None:
@@ -1018,6 +1015,7 @@ shrinkModel(True, "pearl_om1.bin", 0, 2 / 0.15, "shrink_pearl.bin", False),
 shrinkModel(True, "medal_om1.bin", 0, 1 / 0.15, "shrink_medal.bin", False),
 shrinkModel(True, "nintendo_coin_om1.bin", 0, 1 / 0.15, "shrink_nintendo.bin", False),
 shrinkModel(True, "rareware_coin_om1.bin", 0, 1 / 0.15, "shrink_rareware.bin", False),
+shrinkModel(True, "melon_3d_om1.bin", 0, 2, "shrink_melon3d_0.bin", False),
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -1062,6 +1060,7 @@ model_changes = [
     ModelChange(0x10A, "shrink_nintendo.bin"),
     ModelChange(0x10B, "rareware_coin_om1.bin"),
     ModelChange(0x10C, "shrink_rareware.bin"),
+    ModelChange(0x10D, "shrink_melon3d_0.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
@@ -1545,7 +1544,7 @@ with open(newROMName, "r+b") as fh:
     for count in range(8):
         fh.write((3).to_bytes(1, "big"))  # GBs
 
-    fh.seek(ROM_DATA_OFFSET + 0x1E8) # Jetman Color
+    fh.seek(ROM_DATA_OFFSET + 0x1E8)  # Jetman Color
     for _ in range(3):
         fh.write((0xFF).to_bytes(1, "big"))
 

@@ -544,6 +544,7 @@ def apply_cosmetic_colors(settings: Settings):
 color_bases = []
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
 
+
 def getRawFile(table_index: int, file_index: int, compressed: bool):
     """Get raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
@@ -558,6 +559,7 @@ def getRawFile(table_index: int, file_index: int, compressed: bool):
     if compressed:
         data = zlib.decompress(data, (15 + 32))
     return data
+
 
 def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat) -> PIL.Image.Image:
     """Grab image from file."""
@@ -1883,9 +1885,11 @@ def getBonusSkinOffset(offset: int):
     """Get texture index after the barrel skins."""
     return 6026 + (2 * len(barrel_skins)) + offset
 
+
 def getRandomHueShift(min: int = -359, max: int = 359) -> int:
     """Get random hue shift."""
     return random.randint(min, max)
+
 
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
     """Get value from byte array given an offset and size."""
@@ -1895,6 +1899,7 @@ def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
         value <<= 8
         value += local_value
     return value
+
 
 def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int):
     """Load an image, shift the hue and rewrite it back to ROM."""
@@ -1920,6 +1925,7 @@ def hueShiftImageContainer(table: int, image: int, width: int, height: int, form
     ROM().seek(js.pointer_addresses[table]["entries"][image]["pointing_to"])
     ROM().writeBytes(px_data)
 
+
 def getEnemySwapColor(channel_min: int = 0, channel_max: int = 255, min_channel_variance: int = 0) -> int:
     """Gets an RGB color compatible with enemy swaps"""
     channels = []
@@ -1944,6 +1950,7 @@ def getEnemySwapColor(channel_min: int = 0, channel_max: int = 255, min_channel_
         value <<= 8
         value += channels[x]
     return value
+
 
 class EnemyColorSwap:
     """Class to store information regarding an enemy color swap."""
@@ -1978,10 +1985,10 @@ class EnemyColorSwap:
             shift = 8 * (2 - x)
             provided_channel = (color >> shift) & 0xFF
             primary_channel = (self.search_for[0] >> shift) & 0xFF
-            boost = 1 # Failsafe for div by 0
+            boost = 1  # Failsafe for div by 0
             if primary_channel != 0:
                 boost = provided_channel / primary_channel
-            total_boost += boost # Used to get an average
+            total_boost += boost  # Used to get an average
         for x in range(3):
             shift = 8 * (2 - x)
             replacement_channel = (self.replace_with >> shift) & 0xFF
@@ -1994,9 +2001,11 @@ class EnemyColorSwap:
             new_color += replacement_channel
         return new_color
 
+
 def convertColorIntToTuple(color: int) -> tuple:
     """Convert color stored as 3-byte int to tuple."""
     return ((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF)
+
 
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
@@ -2040,11 +2049,11 @@ def writeMiscCosmeticChanges(settings):
         # Fire-based sprites
         fire_shift = getRandomHueShift()
         fires = (
-            [0x1539, 0x1553, 32], # Fireball. RGBA32 32x32
-            [0x14B6, 0x14F5, 32], # Fireball. RGBA32 32x32
-            [0x1554, 0x155B, 16], # Small Fireball. RGBA32 16x16
-            [0x1654, 0x1683, 32], # Fire Wall. RGBA32 32x32
-            [0x1495, 0x14A0, 32], # Small Explosion, RGBA32 32x32
+            [0x1539, 0x1553, 32],  # Fireball. RGBA32 32x32
+            [0x14B6, 0x14F5, 32],  # Fireball. RGBA32 32x32
+            [0x1554, 0x155B, 16],  # Small Fireball. RGBA32 16x16
+            [0x1654, 0x1683, 32],  # Fire Wall. RGBA32 32x32
+            [0x1495, 0x14A0, 32],  # Small Explosion, RGBA32 32x32
         )
         for sprite_data in fires:
             for img_index in range(sprite_data[0], sprite_data[1] + 1):
@@ -2100,24 +2109,24 @@ def writeMiscCosmeticChanges(settings):
         # Kremling
         if enemy_setting == RandomModels.extreme:
             kremling_dimensions = [
-                [32, 64], # FCE
-                [64, 24], # FCF
-                [1, 1372], # fd0
-                [32, 32], # fd1
-                [24, 8], # fd2
-                [24, 8], # fd3
-                [24, 8], # fd4
-                [24, 24], # fd5
-                [32, 32], # fd6
-                [32, 64], # fd7
-                [32, 64], # fd8
-                [36, 16], # fd9
-                [20, 28], # fda
-                [32, 32], # fdb
-                [32, 32], # fdc
-                [12, 28], # fdd
-                [64, 24], # fde
-                [32, 32], # fdf
+                [32, 64],  # FCE
+                [64, 24],  # FCF
+                [1, 1372],  # fd0
+                [32, 32],  # fd1
+                [24, 8],  # fd2
+                [24, 8],  # fd3
+                [24, 8],  # fd4
+                [24, 24],  # fd5
+                [32, 32],  # fd6
+                [32, 64],  # fd7
+                [32, 64],  # fd8
+                [36, 16],  # fd9
+                [20, 28],  # fda
+                [32, 32],  # fdb
+                [32, 32],  # fdc
+                [12, 28],  # fdd
+                [64, 24],  # fde
+                [32, 32],  # fdf
             ]
             kremling_shift = getRandomHueShift()
             for dim_index, dims in enumerate(kremling_dimensions):
@@ -2126,10 +2135,7 @@ def writeMiscCosmeticChanges(settings):
         # Krobot
         spinner_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0xFA9, 1, 1372, TextureFormat.RGBA5551, spinner_shift)
-        krobot_textures = [
-            [[1, 1372], [0xFAF, 0xFAA, 0xFA8, 0xFAB, 0xFAD]],
-            [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]
-        ]
+        krobot_textures = [[[1, 1372], [0xFAF, 0xFAA, 0xFA8, 0xFAB, 0xFAD]], [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]]
         krobot_color_int = getEnemySwapColor(80, min_channel_variance=80)
         krobot_color_list = [(krobot_color_int >> 16) & 0xFF, (krobot_color_int >> 8) & 0xFF, krobot_color_int & 0xFF]
         for tex_set in krobot_textures:
@@ -2166,9 +2172,9 @@ def writeMiscCosmeticChanges(settings):
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
         enemy_changes = {
-            Model.BeaverBlue_LowPoly: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color), # Primary
-            Model.BeaverBlue: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color), # Primary
-            Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]), # Primary
+            Model.BeaverBlue_LowPoly: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
+            Model.BeaverBlue: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
+            Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]),  # Primary
         }
         if enemy_setting == RandomModels.extreme:
             enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859], 0x65CCFF)

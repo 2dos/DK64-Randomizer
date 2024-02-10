@@ -204,22 +204,6 @@ def getObjectModifications(target_map: Maps) -> list:
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Caves5DIDK, 0x0, new_id=0x20, x=118.011, y=20, z=462.749, obj_type=0x29, rx=0, ry=1024, rz=0, scale=1),
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.CastleLibrary, 0x0, new_id=0x20, x=2668, y=216, z=287, obj_type=0x29, rx=0, ry=1024, rz=0, scale=1),
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Factory, 13, x=1237.001, y=175, z=840.569),  # Factory Diddy Storage Bonus
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Caves, 0x26, obj_type=0x2AC, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170, scale=1),  # Caves 5DI Portal
-        ObjectChange(
-            ObjectTypes.modeltwo,
-            ObjectChangeType.add,
-            Maps.Caves,
-            0x26,
-            obj_type=0x2AB,
-            x=120.997,
-            y=getPortalIndicatorY(50.167),
-            z=1182.974,
-            rx=0,
-            ry=75.146,
-            rz=0,
-            new_id=getNewID(Maps.Caves),
-            scale=0.35,
-        ),  # Caves 5DI Portal Indicator
     ]
 
     for switch_index in range(16):
@@ -293,6 +277,7 @@ def modify(file_name, map_index):
         actor = []
         added_model2 = []
         added_actor = []
+        added_caves_portal = False
         changes = getObjectModifications(map_index)
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
@@ -304,6 +289,9 @@ def modify(file_name, map_index):
                 if map_index == Maps.Japes and _id == 0x11A:
                     changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), x=805.6618, y=_yf, z=2226.797, obj_type=0x2AB, scale=0.35))
                 else:
+                    if map_index == Maps.Caves and not added_caves_portal:
+                        changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170))  # Caves 5DI Portal
+                        changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, obj_type=0x2AB, x=120.997, y=getPortalIndicatorY(50.167), z=1182.974, rx=0, ry=75.146, rz=0, new_id=getNewID(Maps.Caves), scale=0.35)) # Caves 5DI Portal Indicator
                     changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), y=_yf, obj_type=0x2AB, scale=0.35))
             # Parse changes
             instance_changes = [y for y in changes if (y.source_obj_id == _id or y.source_obj_id is None) and y.obj_master_type == ObjectTypes.modeltwo]

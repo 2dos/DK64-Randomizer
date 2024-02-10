@@ -1592,7 +1592,7 @@ class Settings:
             if Types.JunkItem in self.shuffled_location_types:
                 self.valid_locations[Types.JunkItem] = [
                     x
-                    for x in fairyBannedLocations
+                    for x in shuffledNonMoveLocations
                     if spoiler.LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies)
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
                 ]

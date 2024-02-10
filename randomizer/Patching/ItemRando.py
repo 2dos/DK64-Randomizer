@@ -118,6 +118,7 @@ model_indexes = {
     Types.Pearl: 0x106,
     Types.Medal: 0x108,
     Types.Coin: [0x10A, 0x10C],
+    Types.JunkItem: 0x10E,
 }
 
 kong_flags = (385, 6, 70, 66, 117)
