@@ -33,7 +33,7 @@ with open("static/presets/preset_files.json", "r") as file:
 # Add a custom preset for testing
 # If we're not running on github actions, add the custom preset
 if not os.environ.get("GITHUB_ACTIONS"):
-    valid_presets.append(("Custom", "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoBzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqMBMGBGJCmOKaTyKTIjUoAqgEuAhk4AA"))
+    valid_presets.append(("Custom", "VjCAIgnDEGkBCgKQHRWmr5P34EgAiaKE0SMguAoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGnj2yFI9Rls9Eql1SYRbgZ+ioCwIJgKAS9HLVfZFA5iRDACbPIkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADUxckuFNidMISQRfQJyQYYSoeB4fCJHLpLF4QMxtMYOLSjAQgFpuK5YFaHLYaE4sFRkMpgJgwIxoJCmOJrDZ/TSeRSZEZDUoAqgEuRBASFBYYG0pEWCYoKkhaLjAySlw2ODpMXj5AQk5QUlRgYmQ"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)

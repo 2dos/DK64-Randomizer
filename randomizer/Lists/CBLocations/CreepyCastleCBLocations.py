@@ -1026,9 +1026,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 402, 0, 495],
         ],
     ),
-    ColoredBananaGroup(
-        group=87, map_id=Maps.CastleShed, name="On Gorilla Gone pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch or l.phasewalk, locations=[[5, 1.0, 304, 12, 354]]
-    ),
+    ColoredBananaGroup(group=87, map_id=Maps.CastleShed, name="On Gorilla Gone pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch, locations=[[5, 1.0, 304, 12, 354]]),
     ColoredBananaGroup(
         group=88,
         map_id=Maps.CastleLowerCave,
@@ -1515,7 +1513,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.Museum,
         vanilla=True,
-        logic=lambda l: (l.punch and l.barrels) or l.phasewalk,
+        logic=lambda l: l.punch and l.barrels,
         locations=[[5, 1.0, 773.6740112304688, 159.0, 298.97247314453125]],
     ),
     ColoredBananaGroup(

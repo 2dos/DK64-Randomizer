@@ -1851,6 +1851,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     for item in placedMoves:
         if item in importantSharedToPlace:
             importantSharedToPlace.remove(item)
+    placedMoves.extend(importantSharedToPlace)
     importantSharedUnplaced = PlaceItems(
         spoiler,
         FillAlgorithm.assumed,
@@ -1863,6 +1864,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     for item in placedMoves:
         if item in junkSharedToPlace:
             junkSharedToPlace.remove(item)
+    placedMoves.extend(junkSharedToPlace)
     junkSharedUnplaced = PlaceItems(spoiler, FillAlgorithm.random, junkSharedToPlace, [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
@@ -2299,7 +2301,7 @@ def FillWorld(spoiler: Spoiler) -> None:
             if retries % 3 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
                 if spoiler.settings.random_starting_region:
-                    spoiler.settings.RandomizeStartingLocation()
+                    spoiler.settings.RandomizeStartingLocation(spoiler)
                 if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:  # TODO: Reshuffling LZR doesn't work yet, but it might be nice? Not sure how necessary it is
                     ShuffleExits.ShuffleExits(spoiler)
                     spoiler.UpdateExits()

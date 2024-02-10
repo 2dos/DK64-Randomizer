@@ -88,7 +88,7 @@ PointSpreadBase = [
     ("Keys", 9),
     ("Guns", 7),
     ("Instruments", 7),
-    ("Training Moves", 5),
+    ("Training/Fairy Moves", 5),
     ("Important Shared", 5),
     ("Pad Moves", 3),
     ("Barrel Moves", 3),
@@ -96,4 +96,4 @@ PointSpreadBase = [
     ("Bean", 3),
 ]
 for item in PointSpreadBase:
-    PointSpreadSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
+    PointSpreadSelector.append({"name": item[0], "value": item[0].replace("Training/Fairy", "training").lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

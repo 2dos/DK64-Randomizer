@@ -20,7 +20,7 @@ def PlaceConstants(spoiler):
     # Settings-dependent locations
     settings = spoiler.settings
     # Determine what types of locations are being shuffled
-    typesOfItemsShuffled = []
+    typesOfItemsShuffled = [Types.PreGivenMove]  # Your starting moves are always eligible to be shuffled if needed
     if settings.kong_rando:
         typesOfItemsShuffled.append(Types.Kong)
     if settings.move_rando != MoveRando.off:
