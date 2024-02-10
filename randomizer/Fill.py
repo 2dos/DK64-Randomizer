@@ -2299,7 +2299,7 @@ def FillWorld(spoiler: Spoiler) -> None:
             if retries % 3 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
                 if spoiler.settings.random_starting_region:
-                    spoiler.settings.RandomizeStartingLocation()
+                    spoiler.settings.RandomizeStartingLocation(spoiler)
                 if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:  # TODO: Reshuffling LZR doesn't work yet, but it might be nice? Not sure how necessary it is
                     ShuffleExits.ShuffleExits(spoiler)
                     spoiler.UpdateExits()
