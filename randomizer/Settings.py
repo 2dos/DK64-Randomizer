@@ -921,7 +921,8 @@ class Settings:
                     Types.Blueprint,
                     Types.Key,
                     Types.Medal,
-                    Types.Coin,
+                    Types.NintendoCoin,
+                    Types.RarewareCoin,
                     Types.Kong,
                     Types.Bean,
                     Types.Pearl,
@@ -1543,8 +1544,10 @@ class Settings:
                 self.valid_locations[Types.Key] = shuffledNonMoveLocations
             if Types.Medal in self.shuffled_location_types:
                 self.valid_locations[Types.Medal] = shuffledNonMoveLocations
-            if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = shuffledNonMoveLocations
+            if Types.NintendoCoin in self.shuffled_location_types:
+                self.valid_locations[Types.NintendoCoin] = shuffledNonMoveLocations
+            if Types.RarewareCoin in self.shuffled_location_types:
+                self.valid_locations[Types.RarewareCoin] = shuffledNonMoveLocations
             if Types.Pearl in self.shuffled_location_types:
                 self.valid_locations[Types.Pearl] = shuffledNonMoveLocations
             if Types.Bean in self.shuffled_location_types:

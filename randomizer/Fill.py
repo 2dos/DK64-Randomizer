@@ -966,7 +966,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
 
     nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     spoiler.region_hintable_count = {}
-    if Types.Coin not in spoiler.settings.shuffled_location_types:
+    if Types.RarewareCoin not in spoiler.settings.shuffled_location_types:
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
@@ -1674,16 +1674,17 @@ def Fill(spoiler: Spoiler) -> None:
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Blueprints")
     # Then place Nintendo & Rareware Coins
-    if Types.Coin in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Coin)
-        spoiler.Reset()
-        coinsToPlace = ItemPool.CompanyCoinItems()
-        for item in preplaced_items:
-            if item in coinsToPlace:
-                coinsToPlace.remove(item)
-        coinsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, coinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
-        if coinsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
+    for coin in (Types.NintendoCoin, Types.RarewareCoin):
+        if coin in spoiler.settings.shuffled_location_types:
+            placed_types.append(coin)
+            spoiler.Reset()
+            coinsToPlace = ItemPool.NintendoCoinItems() if coin == Types.NintendoCoin else ItemPool.RarewareCoinItems()
+            for item in preplaced_items:
+                if item in coinsToPlace:
+                    coinsToPlace.remove(item)
+            coinsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, coinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
+            if coinsUnplaced > 0:
+                raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Company Coins")
     # Then place Battle Crowns

@@ -71,7 +71,7 @@ class Location:
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
             self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.Coin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies):
+        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies):
             if data is None:
                 self.map_id_list = []
             else:
@@ -311,7 +311,7 @@ LocationListOriginal = {
     Locations.FactoryDiddyChunkyRoomBarrel: Location(Levels.FranticFactory, "Factory Diddy Storage Room Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 134, Kongs.diddy)]),
     Locations.FactoryDonkeyPowerHut: Location(Levels.FranticFactory, "Factory Donkey Power Hut", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.FactoryPowerHut, 0x2, 112, Kongs.donkey)]),
     Locations.ChunkyKong: Location(Levels.FranticFactory, "Chunky Kong's Cage", Items.Chunky, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 117)], logically_relevant=True),
-    Locations.NintendoCoin: Location(Levels.FranticFactory, "DK Arcade Round 2", Items.NintendoCoin, Types.Coin, Kongs.donkey, [MapIDCombo(Maps.FranticFactory, 0x13E, 132)]),
+    Locations.NintendoCoin: Location(Levels.FranticFactory, "DK Arcade Round 2", Items.NintendoCoin, Types.NintendoCoin, Kongs.donkey, [MapIDCombo(Maps.FranticFactory, 0x13E, 132)]),
     Locations.FactoryDonkeyDKArcade: Location(Levels.FranticFactory, "Factory Donkey DK Arcade Round 1", Items.GoldenBanana, Types.ToughBanana, Kongs.donkey, [MapIDCombo(Maps.FranticFactory, 0x108, 130, Kongs.donkey), MapIDCombo(Maps.FactoryBaboonBlast, 0, 130, Kongs.donkey)]),
     Locations.FactoryLankyFreeChunky: Location(Levels.FranticFactory, "Factory Free Chunky Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.FranticFactory, 0x78, 118, Kongs.lanky)]),  # Can be assigned to other kongs
     Locations.FactoryTinybyArcade: Location(Levels.FranticFactory, "Factory Tiny Mini by Arcade", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.FranticFactory, 0x23, 123, Kongs.tiny)]),
@@ -529,7 +529,7 @@ LocationListOriginal = {
     Locations.SuperDuperSimianSlam: Location(Levels.CreepyCastle, "Castle Cranky Shared", Items.ProgressiveSlam, Types.Shop, Kongs.any, [MoveTypes.Slam, 3, VendorType.Cranky]),
     Locations.SniperSight: Location(Levels.CreepyCastle, "Castle Funky Shared", Items.SniperSight, Types.Shop, Kongs.any, [MoveTypes.Guns, 3, VendorType.Funky]),
     Locations.MusicUpgrade2: Location(Levels.CreepyCastle, "Castle Candy Shared", Items.ProgressiveInstrumentUpgrade, Types.Shop, Kongs.any, [MoveTypes.Instruments, 4, VendorType.Candy]),
-    Locations.RarewareCoin: Location(Levels.Shops, "Jetpac", Items.RarewareCoin, Types.Coin, Kongs.any, [MapIDCombo(Maps.Cranky, 0x2, 379)]),
+    Locations.RarewareCoin: Location(Levels.Shops, "Jetpac", Items.RarewareCoin, Types.RarewareCoin, Kongs.any, [MapIDCombo(Maps.Cranky, 0x2, 379)]),
     # Additional shop locations for randomized moves- Index doesn't really matter, just set to 0
     # Japes
     Locations.SharedJapesPotion: Location(Levels.JungleJapes, "Japes Cranky Shared", Items.NoItem, Types.Shop, Kongs.any, [MoveTypes.Moves, 0, VendorType.Cranky]),

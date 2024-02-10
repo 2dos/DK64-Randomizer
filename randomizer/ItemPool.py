@@ -127,8 +127,10 @@ def AllItems(settings):
         allItems.extend(GoldenBananaItems())
     if Types.ToughBanana in settings.shuffled_location_types:
         allItems.extend(ToughGoldenBananaItems())
-    if Types.Coin in settings.shuffled_location_types:
-        allItems.extend(CompanyCoinItems())
+    if Types.NintendoCoin in settings.shuffled_location_types:
+        allItems.extend(NintendoCoinItems())
+    if Types.RarewareCoin in settings.shuffled_location_types:
+        allItems.extend(RarewareCoinItems())
     if Types.Crown in settings.shuffled_location_types:
         allItems.extend(BattleCrownItems())
     if Types.Key in settings.shuffled_location_types:
@@ -178,8 +180,10 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(GoldenBananaItems())
     if Types.ToughBanana in settings.shuffled_location_types:
         allItems.extend(ToughGoldenBananaItems())
-    if Types.Coin in settings.shuffled_location_types:
-        allItems.extend(CompanyCoinItems())
+    if Types.NintendoCoin in settings.shuffled_location_types:
+        allItems.extend(NintendoCoinItems())
+    if Types.RarewareCoin in settings.shuffled_location_types:
+        allItems.extend(RarewareCoinItems())
     if Types.Crown in settings.shuffled_location_types:
         allItems.extend(BattleCrownItems())
     if Types.Key in settings.shuffled_location_types:
@@ -384,6 +388,13 @@ def HighPriorityItems(settings):
     itemPool.extend(Upgrades(settings))
     return itemPool
 
+def NintendoCoinItems():
+    """Return Nintendo Coin."""
+    return [Items.NintendoCoin]
+
+def RarewareCoinItems():
+    """Return Rareware Coin."""
+    return [Items.RarewareCoin]
 
 def CompanyCoinItems():
     """Return the Company Coin items to be placed."""
@@ -493,8 +504,10 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(Keys())
     if Types.Crown in unplacedTypes:
         itemPool.extend(BattleCrownItems())
-    if Types.Coin in unplacedTypes:
-        itemPool.extend(CompanyCoinItems())
+    if Types.NintendoCoin in unplacedTypes:
+        itemPool.extend(NintendoCoinItems())
+    if Types.RarewareCoin in unplacedTypes:
+        itemPool.extend(RarewareCoinItems())
     if Types.TrainingBarrel in unplacedTypes:
         itemPool.extend(TrainingBarrelAbilities())
     if Types.Kong in unplacedTypes:

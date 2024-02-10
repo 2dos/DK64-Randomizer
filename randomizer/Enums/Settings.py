@@ -340,7 +340,7 @@ class ItemRandoListSelected(IntEnum):
     blueprint = 5
     key = 6
     medal = 7
-    coin = 8
+    nintendocoin = 8
     kong = 9
     fairy = 10
     rainbowcoin = 11
@@ -348,6 +348,7 @@ class ItemRandoListSelected(IntEnum):
     fakeitem = 13
     junkitem = 14
     crateitem = 15
+    rarewarecoin = 16
 
 
 class KasplatRandoSetting(IntEnum):

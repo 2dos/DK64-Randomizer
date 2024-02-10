@@ -41,7 +41,7 @@ class Item:
             self.rando_flag = data[0]
         if type == Types.Hint:
             self.level = data[0]
-        if type == Types.Coin:
+        if type in (Types.NintendoCoin, Types.RarewareCoin):
             self.flag = data[0]
 
 
@@ -150,8 +150,8 @@ ItemList = {
     Items.CameraAndShockwave: Item(
         "Camera and Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera_shockwave", -2]
     ),  # -2 means do not use this rando_flag outside of full item rando
-    Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin, Kongs.any, [132]),
-    Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin, Kongs.any, [379]),
+    Items.NintendoCoin: Item("Nintendo Coin", True, Types.NintendoCoin, Kongs.any, [132]),
+    Items.RarewareCoin: Item("Rareware Coin", True, Types.RarewareCoin, Kongs.any, [379]),
     Items.JungleJapesKey: Item("Key 1", True, Types.Key, Kongs.any, [26, 1]),
     Items.AngryAztecKey: Item("Key 2", True, Types.Key, Kongs.any, [74, 2]),
     Items.FranticFactoryKey: Item("Key 3", True, Types.Key, Kongs.any, [138, 3]),

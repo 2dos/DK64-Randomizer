@@ -48,7 +48,8 @@ class CustomActors(IntEnum):
 model_two_indexes = {
     Types.Banana: 0x74,
     Types.Blueprint: [0xDE, 0xE0, 0xE1, 0xDD, 0xDF],
-    Types.Coin: [0x48, 0x28F],  # Nintendo, Rareware
+    Types.RarewareCoin: 0x28F,
+    Types.NintendoCoin: 0x48,
     Types.Key: 0x13C,
     Types.Crown: 0x18D,
     Types.Medal: 0x90,
@@ -68,7 +69,8 @@ model_two_indexes = {
 model_two_scales = {
     Types.Banana: 0.25,
     Types.Blueprint: 2,
-    Types.Coin: 0.4,
+    Types.NintendoCoin: 0.4,
+    Types.RarewareCoin: 0.4,
     Types.Key: 0.17,
     Types.Crown: 0.25,
     Types.Medal: 0.22,
@@ -90,7 +92,8 @@ actor_indexes = {
     Types.Blueprint: [78, 75, 77, 79, 76],
     Types.Key: 72,
     Types.Crown: 86,
-    Types.Coin: [CustomActors.NintendoCoin, CustomActors.RarewareCoin],
+    Types.NintendoCoin: CustomActors.NintendoCoin,
+    Types.RarewareCoin: CustomActors.RarewareCoin,
     Types.Shop: [CustomActors.PotionDK, CustomActors.PotionDiddy, CustomActors.PotionLanky, CustomActors.PotionTiny, CustomActors.PotionChunky, CustomActors.PotionAny],
     Types.TrainingBarrel: CustomActors.PotionAny,
     Types.Shockwave: CustomActors.PotionAny,
@@ -117,7 +120,8 @@ model_indexes = {
     Types.Bean: 0x104,
     Types.Pearl: 0x106,
     Types.Medal: 0x108,
-    Types.Coin: [0x10A, 0x10C],
+    Types.NintendoCoin: 0x10A,
+    Types.RarewareCoin: 0x10C,
     Types.JunkItem: 0x10E,
 }
 
@@ -162,8 +166,8 @@ textboxes = [
     TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE", Types.Banana),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", Types.Banana, "THIS |"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA", Types.Banana),
-    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN", Types.Coin),  # Rareware Coin
-    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN", Types.Coin),  # Rareware Coin
+    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN", Types.RarewareCoin),  # Rareware Coin
+    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN", Types.RarewareCoin),  # Rareware Coin
     TextboxChange(Locations.ForestLankyRabbitRace, 20, 1, "TROPHY", Types.Banana, "| TROPHY"),
     TextboxChange(Locations.ForestLankyRabbitRace, 20, 2, "TROPHY", Types.Banana, "| TROPHY"),
     TextboxChange(Locations.ForestLankyRabbitRace, 20, 3, "TROPHY", Types.Banana, "| TROPHY"),
@@ -179,8 +183,7 @@ textboxes = [
     TextboxChange(Locations.CavesChunky5DoorIgloo, 19, 34, "\x04GOLDEN BANANA\x04", Types.Banana),
 ]
 
-rareware_coin_reward = ("\x04RAREWARE COIN\x04", "\x04DOUBLOON OF THE RAREST KIND\x04")
-nintendo_coin_reward = ("\x04NINTENDO COIN\x04", "\x04ANCIENT DOUBLOON\x04")
+
 
 text_rewards = {
     Types.Banana: ("\x04GOLDEN BANANA\x04", "\x04BANANA OF PURE GOLD\x04"),
@@ -199,6 +202,8 @@ text_rewards = {
     Types.FakeItem: ("\x04GLODEN BANANE\x04", "\x04BANANA OF FOOLS GOLD\x04"),
     Types.JunkItem: ("\x04JUNK ITEM\x04", "\x04HEAP OF JUNK\x04"),
     Types.NoItem: ("\x04NOTHING\x04", "\x04DIDDLY SQUAT\x04"),
+    Types.RarewareCoin: ("\x04RAREWARE COIN\x04", "\x04DOUBLOON OF THE RAREST KIND\x04"),
+    Types.NintendoCoin: ("\x04NINTENDO COIN\x04", "\x04ANCIENT DOUBLOON\x04"),
 }
 
 level_names = {
@@ -243,9 +248,9 @@ def pushItemMicrohints(spoiler):
 
 def getTextRewardIndex(item) -> int:
     """Get reward index for text item."""
-    if item.new_item == Types.Coin:
-        if item.new_flag == 379:
-            return 5
+    if item.new_item == Types.RarewareCoin:
+        return 5
+    elif item.new_item == Types.NintendoCoin:
         return 6
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         return 8
@@ -258,8 +263,8 @@ def getTextRewardIndex(item) -> int:
             Types.Key,  # 2
             Types.Crown,  # 3
             Types.Fairy,  # 4
-            Types.Coin,  # 5
-            Types.Coin,  # 6
+            Types.RarewareCoin,  # 5
+            Types.NintendoCoin,  # 6
             Types.Medal,  # 7
             Types.Shop,  # 8
             Types.Kong,  # 9
@@ -283,10 +288,6 @@ def getActorIndex(item):
         return actor_indexes[Types.Blueprint][item.new_kong]
     elif item.new_item == Types.JunkItem:
         return actor_indexes[Types.JunkItem][subitems.index(item.new_subitem)]
-    elif item.new_item == Types.Coin:
-        if item.new_flag == 379:  # Is RW Coin
-            return actor_indexes[Types.Coin][1]
-        return actor_indexes[Types.Coin][0]
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         if (item.new_flag & 0x8000) == 0:
             slot = 5
@@ -420,14 +421,11 @@ def place_randomized_items(spoiler):
                             Types.Kong,  # Handled in special case
                             Types.Kong,  # Handled in special case
                             Types.RainbowCoin,
-                            Types.Coin,  # Flag check handled separately
+                            Types.RarewareCoin,  # Flag check handled separately
                             Types.JunkItem,
                         )
                         arcade_reward_index = 0
-                        if item.new_item == Types.Coin:
-                            if item.new_flag == 379:  # RW Coin
-                                arcade_reward_index = 21
-                        elif item.new_item == Types.Kong:
+                        if item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
                                 arcade_reward_index = kong_flags.index(item.new_flag) + 15
                         elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
@@ -456,15 +454,12 @@ def place_randomized_items(spoiler):
                             Types.Shop,  # Shockwave/Training handled separately
                             Types.Kong,
                             Types.RainbowCoin,
-                            Types.Coin,  # Flag check handled separately
+                            Types.NintendoCoin,  # Flag check handled separately
                             Types.JunkItem,
                         )
                         jetpac_reward_index = 0
                         if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
                             jetpac_reward_index = 9
-                        elif item.new_item == Types.Coin:
-                            if item.new_flag == 132:  # Nintendo Coin
-                                jetpac_reward_index = 12
                         elif item.new_item in jetpac_rewards:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)
                         ROM_COPY.seek(sav + 0x111)
@@ -557,7 +552,7 @@ def place_randomized_items(spoiler):
                             Types.Blueprint,  # BP
                             Types.Key,  # Key
                             Types.Crown,  # Crown
-                            Types.Coin,  # Special Coin
+                            Types.NintendoCoin,  # Special Coin
                             Types.Medal,  # Medal
                             Types.Shop,  # Cranky Item
                             Types.Shop,  # Funky Item
@@ -595,6 +590,8 @@ def place_randomized_items(spoiler):
                             ROM_COPY.write(medal_index)
                         elif item.new_item == Types.JunkItem:
                             ROM_COPY.write(17 + subitems.index(item.new_subitem))
+                        elif item.new_item == Types.RarewareCoin:
+                            ROM_COPY.write(slots.index(Types.NintendoCoin))
                         else:
                             ROM_COPY.write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
@@ -628,11 +625,6 @@ def place_randomized_items(spoiler):
                                 if item.new_flag in kong_flags:
                                     slot = kong_flags.index(item.new_flag)
                                 model = model_indexes[Types.Kong][slot]
-                            elif item.new_item == Types.Coin:
-                                slot = 1
-                                if item.new_flag == 132:
-                                    slot = 0
-                                model = model_indexes[Types.Coin][slot]
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
             if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
@@ -666,10 +658,6 @@ def place_randomized_items(spoiler):
                     reference = None
                     if new_item in text_rewards.keys():
                         reference = text_rewards[new_item]
-                    elif new_item == Types.Coin:
-                        reference = nintendo_coin_reward
-                        if flag == 379:
-                            reference = rareware_coin_reward
                     if reference is not None:
                         # Found reference
                         reward_text = reference[0]
@@ -709,10 +697,6 @@ def place_randomized_items(spoiler):
                                 item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
                             elif item_slot["obj"] == Types.JunkItem:
                                 item_obj_index = model_two_indexes[Types.JunkItem][subitems.index(item_slot["subitem"])]
-                            elif item_slot["obj"] == Types.Coin:
-                                item_obj_index = model_two_indexes[Types.Coin][0]
-                                if item_slot["flag"] == 379:
-                                    item_obj_index = model_two_indexes[Types.Coin][1]
                             elif item_slot["obj"] == Types.Shop:
                                 if (item_slot["flag"] & 0x8000) == 0:
                                     slot = 5
