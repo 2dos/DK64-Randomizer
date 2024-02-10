@@ -532,6 +532,9 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x36)
         ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
 
+    ROM_COPY.seek(sav + 0x1EB)
+    ROM_COPY.write(spoiler.settings.mermaid_gb_pearls)
+
     if spoiler.settings.medal_cb_req != 75:
         ROM_COPY.seek(sav + 0x112)
         ROM_COPY.write(spoiler.settings.medal_cb_req)

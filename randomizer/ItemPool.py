@@ -90,7 +90,8 @@ def AllItemsUnrestricted(settings):
     allItems.extend(Blueprints())
     allItems.extend(GoldenBananaItems())
     allItems.extend(ToughGoldenBananaItems())
-    allItems.extend(CompanyCoinItems())
+    allItems.extend(NintendoCoinItems())
+    allItems.extend(RarewareCoinItems())
     allItems.extend(BattleCrownItems())
     allItems.extend(Keys())
     allItems.extend(BananaMedalItems())
@@ -395,14 +396,6 @@ def NintendoCoinItems():
 def RarewareCoinItems():
     """Return Rareware Coin."""
     return [Items.RarewareCoin]
-
-def CompanyCoinItems():
-    """Return the Company Coin items to be placed."""
-    itemPool = []
-    itemPool.append(Items.NintendoCoin)
-    itemPool.append(Items.RarewareCoin)
-    return itemPool
-
 
 TOUGH_BANANA_COUNT = 13
 

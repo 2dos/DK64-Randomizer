@@ -144,7 +144,7 @@ LogicRegions = {
     ]),
 
     Regions.MermaidRoom: Region("Mermaid Room", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonTinyPearls, lambda l: ((l.Pearls >= 1 and l.checkFastCheck(FasterChecksSelected.galleon_mermaid_gb)) or l.Pearls >= 5) and (l.istiny or l.settings.free_trade_items)),
+        LocationLogic(Locations.GalleonTinyPearls, lambda l: (l.Pearls >= l.settings.mermaid_gb_pearls) and (l.istiny or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseUnderwater, lambda l: True, Transitions.GalleonMermaidToLighthouseArea),

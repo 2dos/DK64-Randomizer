@@ -23,6 +23,7 @@ from ui.rando_options import (
     max_music_proportion,
     max_randomized_blocker,
     max_randomized_fairies,
+    max_randomized_pearls,
     max_randomized_medal_cb_req,
     max_randomized_medals,
     max_randomized_troff,
@@ -68,6 +69,7 @@ toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
 max_randomized_fairies(None)
+max_randomized_pearls(None)
 max_starting_moves_count(None)
 max_doorone_requirement(None)
 max_doortwo_requirement(None)

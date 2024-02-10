@@ -72,7 +72,6 @@
       "factory_car_race": 1,
       "galleon_seal_race": 1,
       "galleon_mech_fish": 1,
-      "galleon_mermaid_gb": 1,
       "forest_mill_conveyor": 1,
       "forest_owl_race": 1,
       "forest_rabbit_race": 1,
@@ -226,6 +225,11 @@
       "min": 15,
       "max": 60,
       "mean": 30
+    },
+    "mermaid_gb_pearls": {
+      "min": 1,
+      "max": 3,
+      "mean": 2
     },
     "microhints_enabled": {
       "base": 0.25,
@@ -408,7 +412,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -570,6 +573,11 @@
       "min": 15,
       "max": 90,
       "mean": 40
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 3
     },
     "microhints_enabled": {
       "off": 0.3,
@@ -762,7 +770,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -933,6 +940,11 @@
       "min": 35,
       "max": 90,
       "mean": 60
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
     },
     "microhints_enabled": {
       "off": 0.3,
@@ -1155,7 +1167,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -1326,6 +1337,11 @@
       "min": 35,
       "max": 90,
       "mean": 60
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
     },
     "microhints_enabled": {
       "off": 0.3,

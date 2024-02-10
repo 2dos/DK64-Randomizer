@@ -479,7 +479,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     # Set up some thresholds for speeding this method up
     medalThreshold = settings.medal_requirement
     fairyThreshold = settings.rareware_gb_fairies
-    pearlThreshold = 1 if IsItemSelected(settings.faster_checks_enabled, settings.faster_checks_selected, FasterChecksSelected.galleon_mermaid_gb) else 5
+    pearlThreshold = settings.mermaid_gb_pearls
     while 1:
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)

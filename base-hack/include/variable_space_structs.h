@@ -178,4 +178,5 @@ typedef struct varspace {
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ char unk_1e3[0x1E8-0x1e3];
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
+	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 } varspace;

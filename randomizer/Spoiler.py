@@ -246,6 +246,7 @@ class Spoiler:
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
         settings["Fairies Required for Rareware GB"] = self.settings.rareware_gb_fairies
+        settings["Pearls Required for Mermaid GB"] = self.settings.mermaid_gb_pearls
         settings["Random Shop Prices"] = self.settings.random_prices.name
         settings["Banana Port Randomization"] = self.settings.bananaport_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name

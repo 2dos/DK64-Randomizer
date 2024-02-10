@@ -160,14 +160,13 @@ class FasterChecksSelected(IntEnum):
     factory_car_race = 5
     galleon_seal_race = 6
     galleon_mech_fish = 7
-    galleon_mermaid_gb = 8
-    forest_mill_conveyor = 9
-    forest_owl_race = 10
-    forest_rabbit_race = 11
-    caves_ice_tomato_minigame = 12
-    castle_minecart = 13
-    castle_car_race = 14
-    jetpac = 15
+    forest_mill_conveyor = 8
+    forest_owl_race = 9
+    forest_rabbit_race = 10
+    caves_ice_tomato_minigame = 11
+    castle_minecart = 12
+    castle_car_race = 13
+    jetpac = 14
 
 
 class FillAlgorithm(IntEnum):
@@ -940,6 +939,7 @@ class SettingsStringEnum(IntEnum):
     k_rool_vanilla_requirement = 166
     disable_hard_minigames = 167
     chaos_blockers = 168
+    mermaid_gb_pearls = 169
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1151,6 +1151,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
     SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
     SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
+    SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
@@ -1197,6 +1198,7 @@ addSettingIntRange(SettingsStringEnum.krool_key_count, 8)
 addSettingIntRange(SettingsStringEnum.krool_phase_count, 5)
 addSettingIntRange(SettingsStringEnum.medal_cb_req, 100)
 addSettingIntRange(SettingsStringEnum.medal_requirement, 40)
+addSettingIntRange(SettingsStringEnum.mermaid_gb_pearls, 5)
 addSettingIntRange(SettingsStringEnum.rareware_gb_fairies, 20)
 addSettingIntRange(SettingsStringEnum.starting_kongs_count, 5)
 addSettingIntRange(SettingsStringEnum.starting_moves_count, 40)

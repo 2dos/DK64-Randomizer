@@ -135,17 +135,13 @@ void mermaidCheck(void) {
     /**
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
-    int requirement = 5;
-    if (Rando.faster_checks.mermaid) {
-        requirement = 1; // Fast GBs pearl requirement
-    }
     int count = 0;
     for (int i = 0; i < 5; i++) {
         count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
     }
     if (count == 0) {
         CurrentActorPointer_0->control_state = 0x1E;
-    } else if (count < requirement) {
+    } else if (count < Rando.mermaid_requirement) {
         CurrentActorPointer_0->control_state = 0x1F;
     } else {
         CurrentActorPointer_0->control_state = 0x27;

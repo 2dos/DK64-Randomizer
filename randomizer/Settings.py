@@ -530,6 +530,7 @@ class Settings:
         self.medal_requirement = 15
         self.medal_cb_req = 75
         self.rareware_gb_fairies = 20
+        self.mermaid_gb_pearls = 5
         self.bananaport_rando = BananaportRando.off
         self.activate_all_bananaports = ActivateAllBananaports.off
         self.shop_indicator = False
