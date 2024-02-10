@@ -937,6 +937,11 @@ colorblind_changes = [
     [0x1235, 0x1235, 1, 348],  # Kosha Skin
     [0x122E, 0x122F, 1, 1372],  # Kosha Helmet
     [0x1229, 0x122B, 1, 1372],  # Kosha Club
+    [0x119D, 0x119D, 1, 1372],  # Ghost something
+    [0x119E, 0x119E, 1, 176],  # Ghost something
+    [0x119F, 0x11AB, 1, 1372],  # Ghost something
+    [0x11AC, 0x11AC, 1, 688],  # Ghost something
+    [0x11AD, 0x11AE, 1, 1372],  # Ghost something
 ]
 
 kremling_dimensions = [

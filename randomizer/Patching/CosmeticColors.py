@@ -2169,6 +2169,16 @@ def writeMiscCosmeticChanges(settings):
             gold_shift = getRandomHueShift()
             hueShiftImageContainer(25, 0x1265, 32, 32, TextureFormat.RGBA5551, gold_shift)
             hueShiftImageContainer(25, 0x1148, 32, 32, TextureFormat.RGBA5551, gold_shift)
+        # Ghost
+        ghost_shift = getRandomHueShift()
+        for img in range(0x119D, 0x11AF):
+            px_count = 1372
+            if img == 0x119E:
+                px_count = 176
+            elif img == 0x11AC:
+                px_count = 688
+            hueShiftImageContainer(25, img, 1, px_count, TextureFormat.RGBA5551, ghost_shift)
+
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
         enemy_changes = {
