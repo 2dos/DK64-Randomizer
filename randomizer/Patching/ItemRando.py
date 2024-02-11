@@ -148,6 +148,7 @@ model_indexes = {
 kong_flags = (385, 6, 70, 66, 117)
 
 subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
+shop_owner_types = (Types.Cranky, Types.Funky, Types.Snide, Types.Candy)
 
 
 class TextboxChange:
@@ -326,9 +327,11 @@ def getActorIndex(item):
 
 def place_randomized_items(spoiler):
     """Place randomized items into ROM."""
+    ROM_COPY = LocalROM()
+    sav = spoiler.settings.rom_data
+    ROM_COPY.seek(sav + 0x1EC)
+    ROM_COPY.writeMultipleBytes(0xF0, 1)
     if spoiler.settings.shuffle_items:
-        ROM_COPY = LocalROM()
-        sav = spoiler.settings.rom_data
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
         item_data = spoiler.item_assignment
@@ -352,6 +355,7 @@ def place_randomized_items(spoiler):
         bonus_table_offset = 0
         flut_items = []
         pushItemMicrohints(spoiler)
+        pregiven_shop_owners = None
         for item in item_data:
             if item.can_have_item:
                 if item.is_shop:
@@ -668,6 +672,25 @@ def place_randomized_items(spoiler):
             elif item.new_subitem == Items.ProgressiveSlam:
                 ref_index = item.new_flag - 0x3BC
             setItemReferenceName(spoiler, item.new_subitem, ref_index, spoiler.LocationList[item.location].name)
+            # Handle pre-given shops, only ran into if shop owners are in the pool
+            if item.old_item in shop_owner_types:
+                if pregiven_shop_owners is None:
+                    pregiven_shop_owners = []
+                if item.new_item in shop_owner_types:
+                    pregiven_shop_owners.append(item.new_item)
+        # Patch pre-given shops
+        if pregiven_shop_owners is not None: # Shop owners in pool
+            data = 0
+            or_data = {
+                Types.Cranky: 0x80,
+                Types.Funky: 0x40,
+                Types.Candy: 0x20,
+                Types.Snide: 0x10,
+            }
+            for x in pregiven_shop_owners:
+                data |= or_data[x]
+            ROM_COPY.seek(sav + 0x1EC)
+            ROM_COPY.writeMultipleBytes(data, 1)
         # Text stuff
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:

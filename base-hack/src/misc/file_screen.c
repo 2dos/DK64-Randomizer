@@ -745,6 +745,11 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if (Rando.galleon_water_raised) {
 						setPermFlag(FLAG_MODIFIER_GALLEONWATER);
 					}
+					for (int i = 0; i < 4; i++) {
+						if (Rando.check_shop_flags & (0x80 >> i)) {
+							setPermFlag(FLAG_ITEM_CRANKY + i);
+						}
+					}
 					handleTimeOfDay(TODCALL_INITFILE);
 				} else {
 					// Dirty File
