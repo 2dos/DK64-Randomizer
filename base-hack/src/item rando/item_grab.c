@@ -33,7 +33,11 @@
 #define MEDALITEM_JUNKAMMO 18
 #define MEDALITEM_JUNKCRYSTAL 19
 #define MEDALITEM_JUNKMELON 20
-#define MEDALITEM_NOTHING 21
+#define MEDALITEM_CRANKYITEM 21
+#define MEDALITEM_FUNKYITEM 22
+#define MEDALITEM_CANDYITEM 23
+#define MEDALITEM_SNIDEITEM 24
+#define MEDALITEM_NOTHING 25
 
 typedef struct item_info {
     /* 0x000 */ songs song;
@@ -72,6 +76,10 @@ static const item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0x48, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Ammo)
     {.song = SONG_CRYSTALCOCONUTGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Crystal)
     {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
+    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11}, // Cranky
+    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x12}, // Funky
+    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x13}, // Candy
+    {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x1F}, // Snide
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
 };
 

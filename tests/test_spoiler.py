@@ -49,7 +49,7 @@ class TestSpoiler(unittest.TestCase):
         # Randomizers
         # Major Items
         data["shuffle_items"] = False  # Must be true to trigger the list selector below
-        # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
+        # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem", "shopowners"]  # all options
         data["move_rando"] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
         # if start_with, training barrels and "camera and shockwave" are FORCED to be normal and vanilla respectively
         data["training_barrels"] = TrainingBarrels.normal  # usually "normal", could be "shuffled"

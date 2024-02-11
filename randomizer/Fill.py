@@ -1553,7 +1553,7 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         spoiler.settings.valid_locations[typ] = empty_boss_locations
     # Now we get the full list of items we could place here
     unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
-    # Fake items can be on bosses, but we need shops in the pool in order to have room to do this reliably
+    # Checkless can be on bosses, but we need shops in the pool in order to have room to do this reliably
     if Types.Shop in spoiler.settings.shuffled_location_types and Types.FakeItem in spoiler.settings.shuffled_location_types:
         unplaced_items.extend(ItemPool.FakeItems())
     for item in placed_items:
@@ -1744,6 +1744,24 @@ def Fill(spoiler: Spoiler) -> None:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Fairies")
+    # Fill in Shop Owners
+    shop_owner_items = {
+        Types.Cranky: ItemPool.CrankyItems(),
+        Types.Funky: ItemPool.FunkyItems(),
+        Types.Candy: ItemPool.CandyItems(),
+        Types.Snide: ItemPool.SnideItems(),
+    }
+    for item_type in shop_owner_items:
+        if item_type in spoiler.settings.shuffled_location_types:
+            placed_types.append(item_type)
+            spoiler.Reset()
+            shopOwnerItemsToBePlaced = shop_owner_items[item_type]
+            for item in preplaced_items:
+                if item in shopOwnerItemsToBePlaced:
+                    shopOwnerItemsToBePlaced.remove(item)
+            unplacedShopOwners = PlaceItems(spoiler, FillAlgorithm.careful_random, shopOwnerItemsToBePlaced, [])
+            if unplacedShopOwners > 0:
+                raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced shop owners.")
     # Then fill remaining locations with GBs
     preplaced_gbs_accounted_for = []  # Because GBs are placed in two parts, we may have to account for preplaced GBs in either section
     if Types.Banana in spoiler.settings.shuffled_location_types:

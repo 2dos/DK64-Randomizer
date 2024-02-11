@@ -34,6 +34,10 @@ class Types(IntEnum):
     Enemies = auto()
     NintendoCoin = auto()
     RarewareCoin = auto()
+    Cranky = auto()
+    Funky = auto()
+    Candy = auto()
+    Snide = auto()
 
 
 class BarrierItems(IntEnum):
@@ -80,6 +84,7 @@ ItemRandoSelector = [
     {"name": "Ice Traps", "value": "fakeitem", "tooltip": "If you pick up a fake item it'll hurt and freeze you."},
     {"name": "Junk Items", "value": "junkitem", "tooltip": "Pointless items will fill no-item slots."},
     {"name": "Melon Crates", "value": "crateitem", "tooltip": "Melon Crates become possible locations for items."},
+    {"name": "Shop Owners", "value": "shopowners", "tooltip": "Shop Owner Items are added into the pool."},
 ]
 
 KeySelector = [

@@ -1878,6 +1878,10 @@ barrel_skins = (
     "rainbow",
     "fakegb",
     "melon",
+    "cranky",
+    "funky",
+    "candy",
+    "snide",
 )
 
 

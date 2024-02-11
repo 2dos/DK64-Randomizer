@@ -169,6 +169,7 @@ extern void beanCode(void);
 extern void pearlCode(void);
 extern void NothingCode(void);
 extern void fairyDuplicateCode(void);
+extern void shopOwnerItemCode(void);
 extern void FakeGBCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
@@ -468,6 +469,11 @@ extern int isItemRequirementSatisfied(ItemRequirement* req);
 extern void initBLocker(void);
 
 extern int getGamePercentage(void);
+
+extern void crankyCodeHandler(void);
+extern void funkyCodeHandler(void);
+extern void candyCodeHandler(void);
+extern void snideCodeHandler(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

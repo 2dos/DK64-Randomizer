@@ -329,7 +329,7 @@ class ItemRandoListSelected(IntEnum):
     """Item categories that may be randomized.
 
     These values are tied to the ItemRandoSelector in randomizer.Enums.Types.
-    The presence of "beanpearl" requires a different enum from Types.
+    The presence of "beanpearl" and "shopowners" requires a different enum from Types.
     """
 
     shop = 1
@@ -348,7 +348,7 @@ class ItemRandoListSelected(IntEnum):
     junkitem = 14
     crateitem = 15
     rarewarecoin = 16
-
+    shopowners = 17
 
 class KasplatRandoSetting(IntEnum):
     """Determines if and how Kasplats are randomized.

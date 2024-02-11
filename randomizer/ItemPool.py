@@ -148,6 +148,14 @@ def AllItems(settings):
         allItems.extend(MelonCrateItems())
     if Types.Enemies in settings.shuffled_location_types:
         allItems.extend(EnemyItems())
+    if Types.Cranky in settings.shuffled_location_types:
+        allItems.extend(CrankyItems())
+    if Types.Funky in settings.shuffled_location_types:
+        allItems.extend(FunkyItems())
+    if Types.Candy in settings.shuffled_location_types:
+        allItems.extend(CandyItems())
+    if Types.Snide in settings.shuffled_location_types:
+        allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -201,6 +209,14 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(MelonCrateItems())
     if Types.Enemies in settings.shuffled_location_types:
         allItems.extend(EnemyItems())
+    if Types.Cranky in settings.shuffled_location_types:
+        allItems.extend(CrankyItems())
+    if Types.Funky in settings.shuffled_location_types:
+        allItems.extend(FunkyItems())
+    if Types.Candy in settings.shuffled_location_types:
+        allItems.extend(CandyItems())
+    if Types.Snide in settings.shuffled_location_types:
+        allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -466,6 +482,22 @@ def FakeItems():
     itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
     return itemPool
 
+def CrankyItems():
+    """Returns a list of Cranky shop owners to be placed."""
+    return [Items.Cranky]
+
+def FunkyItems():
+    """Returns a list of Funky shop owners to be placed."""
+    return [Items.Funky]
+
+def CandyItems():
+    """Returns a list of Candy shop owners to be placed."""
+    return [Items.Candy]
+
+def SnideItems():
+    """Returns a list of Snide shop owners to be placed."""
+    return [Items.Snide]
+
 
 def JunkItems():
     """Return a list of Junk Items to be placed."""
@@ -519,6 +551,14 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(EnemyItems())
     if Types.ToughBanana in unplacedTypes:
         itemPool.extend(ToughGoldenBananaItems())
+    if Types.Cranky in unplacedTypes:
+        itemPool.extend(CrankyItems())
+    if Types.Funky in unplacedTypes:
+        itemPool.extend(FunkyItems())
+    if Types.Candy in unplacedTypes:
+        itemPool.extend(CandyItems())
+    if Types.Snide in unplacedTypes:
+        itemPool.extend(SnideItems())
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())

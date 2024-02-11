@@ -100,7 +100,18 @@ images = [
     ImageData("dirt_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1379, 32, 32, False, False),
     ImageData("capital_D", TextureFormat.RGBA5551, TableNames.TexturesHUD, 0x75, 40, 51, False, False),
     ImageData("capital_K", TextureFormat.RGBA5551, TableNames.TexturesHUD, 0x76, 40, 51, False, False),
+    ImageData("snide_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x172E, 64, 32, False, False),
 ]
+
+shop_owners = {
+    "candy": 0x172A,
+    "cranky": 0x1387,
+    "funky": 0x172F,
+}
+
+for owner in shop_owners:
+    for x in range(4):
+        images.append(ImageData(f"{owner}_face_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, shop_owners[owner] + x, 32, 32, False, False))
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
 tex_idx = 0x273

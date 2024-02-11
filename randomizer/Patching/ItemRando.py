@@ -43,6 +43,10 @@ class CustomActors(IntEnum):
     FakeItem = auto()
     Medal = auto()
     JetpacItemOverlay = auto()
+    CrankyItem = auto()
+    FunkyItem = auto()
+    CandyItem = auto()
+    SnideItem = auto()
 
 
 model_two_indexes = {
@@ -64,6 +68,10 @@ model_two_indexes = {
     Types.RainbowCoin: 0xB7,
     Types.FakeItem: 0x25D,
     Types.JunkItem: [0x56, 0x8F, 0x8E, 0x25E, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
+    Types.Cranky: 0x25F,
+    Types.Funky: 0x260,
+    Types.Candy: 0x261,
+    Types.Snide: 0x262,
 }
 
 model_two_scales = {
@@ -84,7 +92,11 @@ model_two_scales = {
     Types.Fairy: 0.25,
     Types.RainbowCoin: 0.25,
     Types.FakeItem: 0.25,
-    Types.JunkItem: 0.5,
+    Types.JunkItem: 0.25,
+    Types.Cranky: 0.25,
+    Types.Funky: 0.25,
+    Types.Candy: 0.25,
+    Types.Snide: 0.25,
 }
 
 actor_indexes = {
@@ -106,6 +118,10 @@ actor_indexes = {
     Types.RainbowCoin: 0x8C,
     Types.FakeItem: CustomActors.FakeItem,
     Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0],  # Orange, Ammo, Crystal, Watermelon, Film
+    Types.Cranky: CustomActors.CrankyItem,
+    Types.Funky: CustomActors.FunkyItem,
+    Types.Candy: CustomActors.CandyItem,
+    Types.Snide: CustomActors.SnideItem,
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -123,6 +139,10 @@ model_indexes = {
     Types.NintendoCoin: 0x10A,
     Types.RarewareCoin: 0x10C,
     Types.JunkItem: 0x10E,
+    Types.Cranky: 0x11,
+    Types.Funky: 0x12,
+    Types.Candy: 0x13,
+    Types.Snide: 0x1F,
 }
 
 kong_flags = (385, 6, 70, 66, 117)
@@ -531,9 +551,9 @@ def place_randomized_items(spoiler):
                         # 3 = Crown
                         # 4 = Special Coin
                         # 5 = Medal
-                        # 6 = Cranky Item
-                        # 7 = Funky Item
-                        # 8 = Candy Item
+                        # 6 = Cranky Potion
+                        # 7 = Funky Potion
+                        # 8 = Candy Potion
                         # 9 = Training Barrel
                         # 10 = Shockwave
                         # 11 = Kong
@@ -546,7 +566,11 @@ def place_randomized_items(spoiler):
                         # 18 = Junk Ammo
                         # 19 = Junk Crystal
                         # 20 = Junk Melon
-                        # 21 = Nothing
+                        # 21 = Cranky Item
+                        # 22 = Funky Item
+                        # 23 = Candy Item
+                        # 24 = Snide Item
+                        # 25 = Nothing
                         slots = [
                             Types.Banana,  # GB
                             Types.Blueprint,  # BP
@@ -563,12 +587,13 @@ def place_randomized_items(spoiler):
                             Types.Bean,  # Bean
                             Types.Pearl,  # Pearl
                             Types.Fairy,  # Fairy
-                            Types.RainbowCoin,  # Rainbow Cion
+                            Types.RainbowCoin,  # Rainbow Coin
                             Types.FakeItem,  # Fake Item
                             Types.JunkItem,  # Junk Item
-                            Types.JunkItem,  # Junk Item
-                            Types.JunkItem,  # Junk Item
-                            Types.JunkItem,  # Junk Item
+                            Types.Cranky,  # Cranky Item
+                            Types.Funky,  # Funky Item
+                            Types.Candy,  # Candy Item
+                            Types.Snide, # Snide Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549

@@ -266,6 +266,9 @@ void initHack(int source) {
 				initActor(NEWACTOR_POTIONDK + i, 1, &PotionCode, ACTORMASTER_3D, 0, 1, 8, 45);
 				if (i < 5) {
 					initActor(NEWACTOR_KONGDK + i, 1, &KongDropCode, ACTORMASTER_3D, 0, 1, 8, 45);
+					if (i < 4) {
+						initActor(NEWACTOR_CRANKYITEM + i, 1, &shopOwnerItemCode, ACTORMASTER_3D, 0, 1, 8, 45);
+					}
 				}
 			}
 			initActor(NEWACTOR_BEAN, 1, &beanCode, ACTORMASTER_3D, 0, 1, 8, 45);

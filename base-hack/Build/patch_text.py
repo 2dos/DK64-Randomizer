@@ -600,6 +600,10 @@ move_names = [
     {"name": "Banana Fairy", "move_type": "item"},  # 86
     {"name": "Rainbow Coin", "move_type": "item"},  # 87
     {"name": "Ice Trap", "move_type": "item"},  # 88
+    {"name": "Cranky Kong", "move_type": "item"},  # 89
+    {"name": "Funky Kong", "move_type": "item"},  # 90
+    {"name": "Candy Kong", "move_type": "item"},  # 91
+    {"name": "Snide", "move_type": "item"},  # 92
 ]
 
 move_names_arr = []
@@ -744,6 +748,10 @@ text_enum = [
     "ITEMTEXT_FAIRY",  # 0x056
     "ITEMTEXT_RAINBOWCOIN",  # 0x057
     "ITEMTEXT_FAKEITEM",  # 0x058
+    "ITEMTEXT_CRANKYITEM",  # 0x059
+    "ITEMTEXT_FUNKYITEM",  # 0x05A
+    "ITEMTEXT_CANDYITEM",  # 0x05B
+    "ITEMTEXT_SNIDEITEM",  # 0x05C
 ]
 
 

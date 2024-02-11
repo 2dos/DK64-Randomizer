@@ -195,7 +195,8 @@
       "kong": 0.85,
       "rainbowcoin": 0.5,
       "beanpearl": 0.5,
-      "junkitem": 0.5
+      "junkitem": 0.5,
+      "shopowners": 0.2
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -541,7 +542,8 @@
       "beanpearl": 0.7,
       "fakeitem": 0.5,
       "junkitem": 0.5,
-      "crateitem": 0.5
+      "crateitem": 0.5,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -906,7 +908,8 @@
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -1303,7 +1306,8 @@
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 0.75,
     "kasplat_rando_setting": {

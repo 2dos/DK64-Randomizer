@@ -138,6 +138,11 @@ void initActorDefs(void) {
     index = addActorDef(index, NEWACTOR_KONGLANKY, 0x100, 0x80689F80, 0x80689FEC, 0, 1); // Lanky
     index = addActorDef(index, NEWACTOR_KONGTINY, 0x101, 0x80689F80, 0x80689FEC, 0, 1); // Tiny
     index = addActorDef(index, NEWACTOR_KONGCHUNKY, 0x102, 0x80689F80, 0x80689FEC, 0, 1); // Chunky
+    // Shop Owners
+    index = addActorDef(index, NEWACTOR_CRANKYITEM, 0x10F, 0x80689F80, 0x80689FEC, 0, 1); // Cranky
+    index = addActorDef(index, NEWACTOR_FUNKYITEM, 0x110, 0x80689F80, 0x80689FEC, 0, 1); // Funky
+    index = addActorDef(index, NEWACTOR_CANDYITEM, 0x111, 0x80689F80, 0x80689FEC, 0, 1); // Candy
+    index = addActorDef(index, NEWACTOR_SNIDEITEM, 0x112, 0x80689F80, 0x80689FEC, 0, 1); // Snide
     // Misc
     index = addActorDef(index, NEWACTOR_BEAN, 0x105, 0x80689F80, 0x80689FEC, 0, 1); // Bean
     index = addActorDef(index, NEWACTOR_PEARL, 0x107, 0x80689F80, 0x80689FEC, 0, 1); // Pearl

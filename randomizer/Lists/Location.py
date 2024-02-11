@@ -71,7 +71,7 @@ class Location:
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
             self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies):
+        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
             if data is None:
                 self.map_id_list = []
             else:
@@ -181,6 +181,11 @@ LocationListOriginal = {
     Locations.PreGiven_Location33: Location(Levels.DKIsles, "Pre-Given Move (33)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location34: Location(Levels.DKIsles, "Pre-Given Move (34)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location35: Location(Levels.DKIsles, "Pre-Given Move (35)", Items.NoItem, Types.PreGivenMove),
+    # Shop Owners (Dummy Locations)
+    Locations.ShopOwner_Location00: Location(Levels.DKIsles, "Pre-Given Shop (0)", Items.Cranky, Types.Cranky, Kongs.any, [MapIDCombo(0, -1, 0x56C, Kongs.any)]),
+    Locations.ShopOwner_Location01: Location(Levels.DKIsles, "Pre-Given Shop (1)", Items.Funky, Types.Funky, Kongs.any, [MapIDCombo(0, -1, 0x56D, Kongs.any)]),
+    Locations.ShopOwner_Location02: Location(Levels.DKIsles, "Pre-Given Shop (2)", Items.Candy, Types.Candy, Kongs.any, [MapIDCombo(0, -1, 0x56E, Kongs.any)]),
+    Locations.ShopOwner_Location03: Location(Levels.DKIsles, "Pre-Given Shop (3)", Items.Snide, Types.Snide, Kongs.any, [MapIDCombo(0, -1, 0x56F, Kongs.any)]),
     # DK Isles locations
     Locations.IslesDonkeyJapesRock: Location(Levels.DKIsles, "Isles Japes Lobby Entrance Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.Isles, 0x4, 381, Kongs.donkey)]),  # Can be assigned to other kongs
     Locations.IslesTinyCagedBanana: Location(Levels.DKIsles, "Isles Tiny Feather Cage", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.Isles, 0x2B, 420, Kongs.tiny)]),

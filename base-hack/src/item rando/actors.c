@@ -123,6 +123,72 @@ void fairyDuplicateCode(void) {
     playActorAnimation(CurrentActorPointer_0, 0x2B5);
 }
 
+static const short shop_owner_anims[] = {
+    622, // Cranky Idle
+    624, // Funky Idle
+    626, // Candy Idle
+    628, // Snide Idle
+};
+
+void shopOwnerItemCode(void) {
+    /**
+     * @brief Actor code for the shop owner items
+     */
+    GoldenBananaCode();
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
+        int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
+        int owner = current_type - NEWACTOR_CRANKYITEM;
+        playActorAnimation(CurrentActorPointer_0, shop_owner_anims[owner]);
+    }
+}
+
+void missingShopOwnerCode(void) {
+    initCharSpawnerActor();
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        Player->unk_fairycam_bitfield |= 0x20; // Freeze player input
+    }
+    int control_state = CurrentActorPointer_0->control_state;
+    if (control_state < 30) {
+        CurrentActorPointer_0->control_state += 1;
+    } else if (control_state == 30) {
+        ExitFromBonus();
+        CurrentActorPointer_0->control_state += 1;
+    }
+}
+
+void crankyCodeHandler(void) {
+    if (checkFlagDuplicate(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
+        crankyCode();
+        return;
+    }
+    missingShopOwnerCode();
+}
+
+void funkyCodeHandler(void) {
+    if (checkFlagDuplicate(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
+        funkyCode();
+        return;
+    }
+    missingShopOwnerCode();
+}
+
+void candyCodeHandler(void) {
+    if (checkFlagDuplicate(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
+        candyCode();
+        return;
+    }
+    missingShopOwnerCode();
+}
+
+void snideCodeHandler(void) {
+    if (checkFlagDuplicate(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
+        snideCode();
+        return;
+    }
+    missingShopOwnerCode();
+}
+
 void FakeGBCode(void) {
     /**
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor

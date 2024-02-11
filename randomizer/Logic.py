@@ -160,6 +160,7 @@ class LogicVarHolder:
         self.nintendoCoin = False
         self.rarewareCoin = False
 
+
         self.camera = self.settings.shockwave_status == ShockwaveStatus.start_with
         self.shockwave = self.settings.shockwave_status == ShockwaveStatus.start_with
 
@@ -175,6 +176,11 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
+        self.crankyAccess = False
+        self.funkyAccess = False
+        self.candyAccess = False
+        self.snideAccess = False
+        
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
         self.HelmDiddy1 = False
@@ -351,6 +357,11 @@ class LogicVarHolder:
         self.trombone = self.trombone or Items.Trombone in ownedItems and self.lanky
         self.saxophone = self.saxophone or Items.Saxophone in ownedItems and self.tiny
         self.triangle = self.triangle or Items.Triangle in ownedItems and self.chunky
+
+        self.crankyAccess = self.crankyAccess or Items.Cranky in ownedItems
+        self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
+        self.candyAccess = self.candyAccess or Items.Candy in ownedItems
+        self.snideAccess = self.snideAccess or Items.Snide in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems

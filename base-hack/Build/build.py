@@ -129,6 +129,10 @@ file_dict = [
     File(name="Potion (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True, bloat_compression=True),
     File(name="Potion (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True, bloat_compression=True),
     File(name="Potion (Any) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    File(name="Cranky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=607, source_file="cranky_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Funky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=608, source_file="funky_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Candy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=609, source_file="candy_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Snide Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=610, source_file="snide_om2.bin", do_not_delete_source=True, do_not_extract=True),
     # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
         name="Krusha Head",
@@ -1021,6 +1025,10 @@ shrinkModel(True, "medal_om1.bin", 0, 1 / 0.15, "shrink_medal.bin", False),
 shrinkModel(True, "nintendo_coin_om1.bin", 0, 1 / 0.15, "shrink_nintendo.bin", False),
 shrinkModel(True, "rareware_coin_om1.bin", 0, 1 / 0.15, "shrink_rareware.bin", False),
 shrinkModel(True, "melon_3d_om1.bin", 0, 2, "shrink_melon3d_0.bin", False),
+shrinkModel(False, "", 0x10, 1 / 0.15, "shrink_cranky.bin", True),
+shrinkModel(False, "", 0x11, 1 / 0.15, "shrink_funky.bin", True),
+shrinkModel(False, "", 0x12, 1 / 0.15, "shrink_candy.bin", True),
+shrinkModel(False, "", 0x1E, 1 / 0.15, "shrink_snide.bin", True),
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -1066,6 +1074,10 @@ model_changes = [
     ModelChange(0x10B, "rareware_coin_om1.bin"),
     ModelChange(0x10C, "shrink_rareware.bin"),
     ModelChange(0x10D, "shrink_melon3d_0.bin"),
+    ModelChange(0x10E, "shrink_cranky.bin"),
+    ModelChange(0x10F, "shrink_funky.bin"),
+    ModelChange(0x110, "shrink_candy.bin"),
+    ModelChange(0x111, "shrink_snide.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
@@ -1651,6 +1663,10 @@ with open(newROMName, "r+b") as fh:
         "rainbow_coin44",
         "shared_flipped",
         "dirt_face",
+        "candy_head",
+        "funky_head",
+        "snide_head",
+        "cranky_head",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

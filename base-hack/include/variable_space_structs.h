@@ -179,4 +179,5 @@ typedef struct varspace {
 	/* 0x1E3 */ char unk_1e3[0x1E8-0x1e3];
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
+	/* 0x1EC */ unsigned char check_shop_flags; // Shop owner shuffle is in pool, so game needs to check shop flags before granting access to a shop. 1 = Cranky, Candy, Funky. 2 = Include Snide
 } varspace;

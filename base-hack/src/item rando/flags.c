@@ -406,6 +406,10 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 spawn_overlay = 1;
                 item_type = 5;
                 item_index = flag_index;
+            } else if (isFlagInRange(flag_index, FLAG_ITEM_CRANKY, 4)) {
+                spawn_overlay = 1;
+                item_type = 5;
+                item_index = flag_index;
             } else {
                 for (int i = 0; i < 5; i++) {
                     if (flag_index == kong_flags[i]) {

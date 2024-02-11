@@ -650,6 +650,12 @@ class Locations(IntEnum):
     MelonCrate_Location11 = auto()
     MelonCrate_Location12 = auto()
 
+    # Shop Owner Locations
+    ShopOwner_Location00 = auto()
+    ShopOwner_Location01 = auto()
+    ShopOwner_Location02 = auto()
+    ShopOwner_Location03 = auto()
+
     # Enemies
     # Japes
     # Main

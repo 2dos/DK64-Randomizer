@@ -182,6 +182,10 @@ class Spoiler:
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
             Types.Enemies: "Enemy Drops",
+            Types.Cranky: "Shop Owners",
+            Types.Funky: "Shop Owners",
+            Types.Candy: "Shop Owners",
+            Types.Snide: "Shop Owners",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -390,6 +394,7 @@ class Spoiler:
             "Junk Items": {},
             "Melon Crates": {},
             "Enemy Drops": {},
+            "Shop Owners": {},
             "Empty": {},
             "Unknown": {},
         }
@@ -407,7 +412,7 @@ class Spoiler:
             else:
                 item = ItemList[location.item]
             # Empty PreGiven locations don't really exist and shouldn't show up in the spoiler log
-            if location.type == Types.PreGivenMove and location.item in (None, Items.NoItem):
+            if location.type in (Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location.item in (None, Items.NoItem):
                 continue
             # Separate Kong locations
             if location.type == Types.Kong:
@@ -437,7 +442,7 @@ class Spoiler:
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
                 level = "Special"
-                if "Isles" in location.name or location.type == Types.PreGivenMove:
+                if "Isles" in location.name or location.type in (Types.PreGivenMove, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     level = "DK Isles"
                 elif "Japes" in location.name:
                     level = "Jungle Japes"

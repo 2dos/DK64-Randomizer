@@ -100,12 +100,31 @@ for kong in kongs:
     # im = im.resize((32,32))
     im.save(f"{base_dir}{kong}_face.png")
 
+disp_dir = getDir("assets/displays/")
+
+# Shop Owner Heads
+# Snide
+im = Image.new(mode="RGBA", size=(64, 64))
+snide_head_im = Image.open(f"{hash_dir}snide_face.png")
+im.paste(snide_head_im, (0, 16), snide_head_im)
+im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}snide_head.png")
+
+# Others
+other_shop_owners = ("candy", "cranky", "funky")
+for owner in other_shop_owners:
+    im = Image.new(mode="RGBA", size=(64, 64))
+    for x in range(4):
+        chunk_im = Image.open(f"{hash_dir}{owner}_face_{x}.png")
+        posx = (x % 2) * 32
+        posy = int(x / 2) * 32
+        im.paste(chunk_im, (posx, posy), chunk_im)
+    im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}{owner}_head.png")
+
 # Generate Shared Image
 im = Image.new(mode="RGBA", size=(64, 64))
 shared_x_move = [4, 16, 30, 10, 26]
 shared_y_move = [0, 0, 0, 23, 23]
 kong_z_order = [0, 1, 2, 3, 4]
-disp_dir = getDir("assets/displays/")
 for x in range(5):
     kong_index = kong_z_order[x]
     im1 = Image.open(f"{disp_dir}{kongs[kong_index]}_face.png")
@@ -496,6 +515,10 @@ skins = {
     "rainbow": ("rainbow_coin", None, "hash"),
     "fakegb": ("fake_gb", None, "displays"),
     "melon": ("melon_slice", None, "hash"),
+    "cranky": ("cranky_head", None, "displays"),
+    "funky": ("funky_head", None, "displays"),
+    "candy": ("candy_head", None, "displays"),
+    "snide": ("snide_head", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -688,6 +711,19 @@ rmve = [
     "dirt_face.png",
     "capital_D.png",
     "capital_K.png",
+    "candy_face_0.png",
+    "candy_face_1.png",
+    "candy_face_2.png",
+    "candy_face_3.png",
+    "cranky_face_0.png",
+    "cranky_face_1.png",
+    "cranky_face_2.png",
+    "cranky_face_3.png",
+    "funky_face_0.png",
+    "funky_face_1.png",
+    "funky_face_2.png",
+    "funky_face_3.png",
+    "snide_face.png",
 ]
 for kong in kongs:
     for x in range(2):

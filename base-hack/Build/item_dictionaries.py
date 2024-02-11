@@ -112,6 +112,10 @@ class CustomActors(IntEnum):
     FakeItem = auto()
     Medal = auto()
     JetpacItemOverlay = auto()
+    CrankyItem = auto()
+    FunkyItem = auto()
+    CandyItem = auto()
+    SnideItem = auto()
 
 
 base_potion = InGameItem(scale=0.25, bounce=True)
@@ -149,9 +153,13 @@ db = [
     InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25),
     InGameItem(name="Fake Item", actor=CustomActors.FakeItem, is_custom=True, model_two=0x25D, bounce=True, scale=0.25),
     InGameItem(name="Junk Item (Orange)", actor=0x34, model_two=0x56, will_dance=False, force_dance=False, scale=1),
-    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x25E, will_dance=False, force_dance=False, scale=0.5),
+    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x25E, will_dance=False, force_dance=False, scale=0.25),
     InGameItem(name="Junk Item (Crystal)", actor=0x79, model_two=0x8E, will_dance=False, force_dance=False, scale=1),
     InGameItem(name="Junk Item (Ammo)", actor=0x33, model_two=0x8F, will_dance=False, force_dance=False, scale=1),
+    InGameItem(name="Cranky Item", actor=CustomActors.CrankyItem, is_custom=True, model_two=0x25F, base=base_kong, bounce=True),
+    InGameItem(name="Funky Item", actor=CustomActors.FunkyItem, is_custom=True, model_two=0x260, base=base_kong, bounce=True),
+    InGameItem(name="Candy Item", actor=CustomActors.CandyItem, is_custom=True, model_two=0x261, base=base_kong, bounce=True),
+    InGameItem(name="Snide Item", actor=CustomActors.SnideItem, is_custom=True, model_two=0x262, base=base_kong, bounce=True),
 ]
 
 db2 = [
@@ -225,6 +233,10 @@ db2 = [
     ItemRandoDef(0x01B4, CollectableTypes.Null, None, CustomActors.Pearl, Hitbox(8, 4, 13), True),  # Pearl
     ItemRandoDef(0x025C, CollectableTypes.Null, None, CustomActors.Fairy, Hitbox(8, 4, 13), True),  # Fairy
     ItemRandoDef(0x025D, CollectableTypes.Null, None, CustomActors.FakeItem, Hitbox(8, 4, 13), True),  # Fake Item
+    ItemRandoDef(0x025F, CollectableTypes.Null, None, CustomActors.CrankyItem, Hitbox(8, 4, 13), True),  # Cranky
+    ItemRandoDef(0x0260, CollectableTypes.Null, None, CustomActors.FunkyItem, Hitbox(8, 4, 13), True),  # Funky
+    ItemRandoDef(0x0261, CollectableTypes.Null, None, CustomActors.CandyItem, Hitbox(8, 4, 13), True),  # Candy
+    ItemRandoDef(0x0262, CollectableTypes.Null, None, CustomActors.SnideItem, Hitbox(8, 4, 13), True),  # Snide
 ]
 
 item_drops = [

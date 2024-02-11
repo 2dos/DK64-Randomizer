@@ -263,6 +263,10 @@ void earlyFrame(void) {
 	} else {
 		actor_functions[196] = &cutsceneDKCode;
 	}
+	actor_functions[184] = &snideCodeHandler;
+	actor_functions[189] = &crankyCodeHandler;
+	actor_functions[190] = &funkyCodeHandler;
+	actor_functions[191] = &candyCodeHandler;
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();

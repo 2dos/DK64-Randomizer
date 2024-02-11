@@ -20,6 +20,11 @@ LogicRegions = {
         LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+        # Starting Shop Owners
+        LocationLogic(Locations.ShopOwner_Location00, lambda l: True),
+        LocationLogic(Locations.ShopOwner_Location01, lambda l: True),
+        LocationLogic(Locations.ShopOwner_Location02, lambda l: True),
+        LocationLogic(Locations.ShopOwner_Location03, lambda l: True),
         # Starting Moves
         LocationLogic(Locations.IslesFirstMove, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.PreGiven_Location00, lambda l: True),
@@ -83,7 +88,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
-        TransitionFront(Regions.CrankyIsles, lambda l: True),
+        TransitionFront(Regions.CrankyIsles, lambda l: l.crankyAccess),
     ]),
 
     Regions.IslesMain: Region("Isles Main", "Main Isle", Levels.DKIsles, True, None, [
@@ -247,7 +252,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesBattleArena1, lambda l: not l.settings.crown_placement_rando and l.chunky and l.barrels),
     ], [], [
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
-        TransitionFront(Regions.Snide, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
     ]),
 
     Regions.FranticFactoryLobby: Region("Frantic Factory Lobby", "Japes-Forest Lobbies", Levels.DKIsles, True, None, [

@@ -254,6 +254,10 @@ typedef enum enum_bonus_skin {
     /* 0x010 */ SKIN_RAINBOW_COIN,
     /* 0x011 */ SKIN_FAKE_ITEM,
     /* 0x012 */ SKIN_JUNK_ITEM,
+    /* 0x013 */ SKIN_CRANKY,
+    /* 0x014 */ SKIN_FUNKY,
+    /* 0x015 */ SKIN_CANDY,
+    /* 0x016 */ SKIN_SNIDE,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 
@@ -285,6 +289,10 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = 140, .skin=SKIN_RAINBOW_COIN},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAKEITEM, .skin=SKIN_FAKE_ITEM},
     {.actor = 0x2F, .skin=SKIN_JUNK_ITEM},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_CRANKYITEM, .skin=SKIN_CRANKY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FUNKYITEM, .skin=SKIN_FUNKY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_CANDYITEM, .skin=SKIN_CANDY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_SNIDEITEM, .skin=SKIN_SNIDE},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -295,18 +303,6 @@ enum_bonus_skin getBarrelSkinIndex(int actor) {
     }
     return SKIN_GB;
 }
-
-// #define BONUS_CACHE_SIZE SKIN_TERMINATOR * 2
-// static void* bonus_texture_data[BONUS_CACHE_SIZE] = {};
-// static unsigned char bonus_texture_load[BONUS_CACHE_SIZE] = {};
-
-// void* loadBonusTexture(int texture_offset) {
-// 	if (bonus_texture_load[texture_offset] == 0) {
-// 		bonus_texture_data[texture_offset] = getMapData(TABLE_TEXTURES, 6026 + texture_offset, 1, 1);
-// 	}
-// 	bonus_texture_load[texture_offset] = 3;
-// 	return bonus_texture_data[texture_offset];
-// }
 
 int alterBonusVisuals(int index) {
     if (Rando.location_visuals & 1) {

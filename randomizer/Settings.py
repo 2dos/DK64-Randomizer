@@ -932,6 +932,10 @@ class Settings:
                     Types.FakeItem,
                     Types.JunkItem,
                     Types.CrateItem,
+                    Types.Cranky,
+                    Types.Funky,
+                    Types.Candy,
+                    Types.Snide,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -940,6 +944,8 @@ class Settings:
                             self.shuffled_location_types.append(type)
                         if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
+                        elif type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide) and item == ItemRandoListSelected.shopowners:
+                            self.shuffled_location_types.extend([Types.Cranky, Types.Funky, Types.Candy, Types.Snide])
             if self.enemy_drop_rando:  # Enemy location type handled separately for UI/UX reasons
                 self.shuffled_location_types.append(Types.Enemies)
             if Types.Shop in self.shuffled_location_types:
@@ -1488,9 +1494,12 @@ class Settings:
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 
         if self.shuffle_items and any(self.shuffled_location_types):
-            # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
+            # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
             shuffledLocations = [
-                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type != Types.Kong
+                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+            ]
+            shuffledLocationsShopOwner = [
+                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.NintendoCoin, Types.RarewareCoin)
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]
@@ -1539,22 +1548,16 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
-            if Types.Crown in self.shuffled_location_types:
-                self.valid_locations[Types.Crown] = shuffledNonMoveLocations
-            if Types.Key in self.shuffled_location_types:
-                self.valid_locations[Types.Key] = shuffledNonMoveLocations
-            if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = shuffledNonMoveLocations
-            if Types.NintendoCoin in self.shuffled_location_types:
-                self.valid_locations[Types.NintendoCoin] = shuffledNonMoveLocations
-            if Types.RarewareCoin in self.shuffled_location_types:
-                self.valid_locations[Types.RarewareCoin] = shuffledNonMoveLocations
-            if Types.Pearl in self.shuffled_location_types:
-                self.valid_locations[Types.Pearl] = shuffledNonMoveLocations
-            if Types.Bean in self.shuffled_location_types:
-                self.valid_locations[Types.Bean] = shuffledNonMoveLocations
-            if Types.Fairy in self.shuffled_location_types:
-                self.valid_locations[Types.Fairy] = shuffledNonMoveLocations
+            regular_items = (Types.Crown, Types.Key, Types.Medal, Types.NintendoCoin, Types.RarewareCoin, Types.Pearl, Types.Bean, Types.Fairy)
+            for item in regular_items:
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = shuffledNonMoveLocations
+            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
+            for item in shop_owner_items:
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = shuffledLocationsShopOwner
+            if Types.Snide in self.shuffled_location_types:
+                self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner if spoiler.LocationList[x].level != Levels.HideoutHelm] # Snide cannot be in Helm
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
                     x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)

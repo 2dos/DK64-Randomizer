@@ -280,6 +280,10 @@ typedef enum item_purchase_text {
 	/* 0x056 */ ITEMTEXT_FAIRY,
 	/* 0x057 */ ITEMTEXT_RAINBOWCOIN,
 	/* 0x058 */ ITEMTEXT_FAKEITEM,
+	/* 0x059 */ ITEMTEXT_CRANKYITEM,
+	/* 0x05A */ ITEMTEXT_FUNKYITEM,
+	/* 0x05B */ ITEMTEXT_CANDYITEM,
+	/* 0x05C */ ITEMTEXT_SNIDEITEM,
 } item_purchase_text;
 
 typedef enum pausescreenlist {

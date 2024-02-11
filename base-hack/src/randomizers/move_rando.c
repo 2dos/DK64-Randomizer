@@ -873,6 +873,8 @@ void getNextMoveText(void) {
 							} else if (isFlagInRange(p_flag, FLAG_FAKEITEM, 0x10)) {
 								// Fake Item
 								top_item = ITEMTEXT_FAKEITEM;
+							} else if (isFlagInRange(p_flag, FLAG_ITEM_CRANKY, 4)) {
+								top_item = ITEMTEXT_CRANKYITEM + (p_flag - FLAG_ITEM_CRANKY);
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {

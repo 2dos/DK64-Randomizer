@@ -48,7 +48,7 @@ typedef struct FasterChecks {
 	unsigned char diddy_rnd : 1; // 0x20 
 	unsigned char mech_fish : 1; // 0x10 
 	unsigned char arcade_first_round : 1; // 0x8 
-	unsigned char unused : 1; // 0x4 
+	unsigned char mermaid : 1; // 0x4 
 	unsigned char owl_race : 1; // 0x2 
 	unsigned char rabbit_race : 1; // 0x1 
 	unsigned char ice_tomato : 1; // 0x80 (OFFSET 1)
