@@ -1011,6 +1011,9 @@ class LogicVarHolder:
         can_lanky_skip = self.islanky and self.lanky_blocker_skip and level != Levels.HideoutHelm
         can_tiny_skip = self.istiny and self.lanky_blocker_skip and level == Levels.HideoutHelm and self.generalclips
         can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch and level not in (Levels.FranticFactory, Levels.HideoutHelm)
+        if level == Levels.HideoutHelm:
+            if (not self.snideAccess) and self.settings.helm_setting != HelmSetting.skip_all: # Disable Helm Entry logically if you are missing Snide
+                return False
         # To enter a level, we either need (or assume) enough GBs to get rid of B. Locker or a glitch way to bypass it
         return self.assumeInfiniteGBs or self.GoldenBananas >= self.settings.BLockerEntryCount[level] or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 

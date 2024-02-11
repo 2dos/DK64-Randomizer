@@ -249,6 +249,18 @@ level_list = [
     "DK Isles",
     "Cranky's Lab",
 ]
+vacation_levels_properties = [
+    "Glorious Hills",
+    "Arid Sands",
+    "OSHA Violation Hotspot",
+    "Murky Depths",
+    "Blissful Greens",
+    "Miners Paradise",
+    "Haunted Architecture",
+    "Timeless Corridors",
+    "Undeniable Serenity",
+    "Arcade Dwellers Paradise",
+]
 
 level_cryptic = [
     ["The level with a localized storm", "The level with a dirt mountain", "The level which has two retailers and no race"],
@@ -2102,8 +2114,8 @@ def compileMicrohints(spoiler: Spoiler) -> None:
         slam_levels = []
         helm_prog_items = getHelmProgItems(spoiler)
         microhint_categories = {
-            MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam],
-            MicrohintsEnabled.all: helm_prog_items.copy() + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam],
+            MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
+            MicrohintsEnabled.all: helm_prog_items.copy() + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
         }
         items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
         # Loop through locations looking for the items that need a microhint
@@ -2116,6 +2128,9 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                     if id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
                         if location.level not in slam_levels:
                             slam_levels.append(location.level)
+                elif location.item in (Items.Cranky, Items.Funky, Items.Snide, Items.Candy):
+                    hint_text = f"The sign reads {item.name} has gone on vacation to the {vacation_levels_properties[location.level]} of {level_color}{level_list[location.level]}{level_color}. Perhaps I would find {'her' if location.item == Items.Candy else 'him'} there."
+                    spoiler.microhints[item.name] = hint_text.upper()
                 else:
                     if location.type in item_type_names.keys():
                         hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_color}{level_list[location.level]}{level_color} for this.".upper()
@@ -2132,6 +2147,7 @@ def compileMicrohints(spoiler: Spoiler) -> None:
             spoiler.microhints[ItemList[Items.ProgressiveSlam].name] = (
                 f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
             )
+        
 
 
 def compileSpoilerHints(spoiler):

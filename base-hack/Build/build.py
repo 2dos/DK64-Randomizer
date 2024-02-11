@@ -1162,7 +1162,7 @@ text_files = (
     TextChange("Squawks", 0, ""),
     TextChange("Factory Car Race", 0, ""),
     TextChange("Seal Race", 0, ""),
-    TextChange("Misc & Microbuffer", 0x1200, "misc_squawks_text.bin"),
+    TextChange("Misc & Microbuffer", 0x2000, "misc_squawks_text.bin"),
     TextChange("Rabbit", 0, ""),
     TextChange("Owl", 0, ""),
     TextChange("Worm", 0, ""),

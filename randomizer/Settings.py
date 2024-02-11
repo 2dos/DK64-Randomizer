@@ -1552,12 +1552,10 @@ class Settings:
             for item in regular_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledNonMoveLocations
-            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
+            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky, Types.Snide)
             for item in shop_owner_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledLocationsShopOwner
-            if Types.Snide in self.shuffled_location_types:
-                self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner if spoiler.LocationList[x].level != Levels.HideoutHelm] # Snide cannot be in Helm
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
                     x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)

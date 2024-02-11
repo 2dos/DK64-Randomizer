@@ -143,17 +143,26 @@ void shopOwnerItemCode(void) {
     }
 }
 
-void missingShopOwnerCode(void) {
+#define SHOP_OWNER_WAIT_LENGTH 30
+
+void missingShopOwnerCode(int cutscene) {
     initCharSpawnerActor();
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         Player->unk_fairycam_bitfield |= 0x20; // Freeze player input
     }
     int control_state = CurrentActorPointer_0->control_state;
-    if (control_state < 30) {
+    if (control_state < SHOP_OWNER_WAIT_LENGTH) {
         CurrentActorPointer_0->control_state += 1;
-    } else if (control_state == 30) {
-        ExitFromBonus();
+    } else if (control_state == SHOP_OWNER_WAIT_LENGTH) {
+        if (cutscene != -1) {
+            playCutscene((void*)0, cutscene, 1);
+        }
         CurrentActorPointer_0->control_state += 1;
+    } else if (control_state == (SHOP_OWNER_WAIT_LENGTH + 1)) {
+        if (CutsceneActive == 0) {
+            ExitFromBonus();
+            CurrentActorPointer_0->control_state += 1;
+        }
     }
 }
 
@@ -162,7 +171,7 @@ void crankyCodeHandler(void) {
         crankyCode();
         return;
     }
-    missingShopOwnerCode();
+    missingShopOwnerCode(7);
 }
 
 void funkyCodeHandler(void) {
@@ -170,7 +179,7 @@ void funkyCodeHandler(void) {
         funkyCode();
         return;
     }
-    missingShopOwnerCode();
+    missingShopOwnerCode(7);
 }
 
 void candyCodeHandler(void) {
@@ -178,7 +187,7 @@ void candyCodeHandler(void) {
         candyCode();
         return;
     }
-    missingShopOwnerCode();
+    missingShopOwnerCode(7);
 }
 
 void snideCodeHandler(void) {
@@ -186,7 +195,7 @@ void snideCodeHandler(void) {
         snideCode();
         return;
     }
-    missingShopOwnerCode();
+    missingShopOwnerCode(13);
 }
 
 void FakeGBCode(void) {

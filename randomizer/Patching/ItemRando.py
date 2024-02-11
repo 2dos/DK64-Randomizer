@@ -256,6 +256,10 @@ def pushItemMicrohints(spoiler):
             (Items.Trombone, 30, [MicrohintsEnabled.all]),
             (Items.Guitar, 31, [MicrohintsEnabled.all]),
             (Items.ProgressiveSlam, 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            (Items.Cranky, 35, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            (Items.Funky, 36, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            (Items.Candy, 37, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            (Items.Snide, 38, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
         ]
         for item_hint, item_data in enumerate(hinted_items):
             if spoiler.settings.microhints_enabled in list(item_data[2]):
