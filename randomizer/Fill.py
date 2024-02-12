@@ -1611,6 +1611,28 @@ def Fill(spoiler: Spoiler) -> None:
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Rainbow Coins")
 
+    # Fill in Shop Owners
+    shop_owner_items = {
+        Types.Cranky: ItemPool.CrankyItems(),
+        Types.Funky: ItemPool.FunkyItems(),
+        Types.Candy: ItemPool.CandyItems(),
+        Types.Snide: ItemPool.SnideItems(),
+    }
+    for item_type in shop_owner_items:
+        if item_type in spoiler.settings.shuffled_location_types:
+            placed_types.append(item_type)
+            spoiler.Reset()
+            shopOwnerItemsToBePlaced = shop_owner_items[item_type]
+            for item in preplaced_items:
+                if item in shopOwnerItemsToBePlaced:
+                    shopOwnerItemsToBePlaced.remove(item)
+            unplacedShopOwners = PlaceItems(spoiler, FillAlgorithm.random, shopOwnerItemsToBePlaced, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
+            if unplacedShopOwners > 0:
+                raise Ex.ItemPlacementException(str(unplacedShopOwners) + " unplaced shop owners.")
+    for x in range(4):
+        if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
+            spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
+
     # Now we place all logically-relevant low-quantity items
     # Then fill Kongs and Moves - this should be a very early fill type for hopefully obvious reasons
     FillKongsAndMoves(spoiler, placed_types, preplaced_items)
@@ -1744,24 +1766,6 @@ def Fill(spoiler: Spoiler) -> None:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Fairies")
-    # Fill in Shop Owners
-    shop_owner_items = {
-        Types.Cranky: ItemPool.CrankyItems(),
-        Types.Funky: ItemPool.FunkyItems(),
-        Types.Candy: ItemPool.CandyItems(),
-        Types.Snide: ItemPool.SnideItems(),
-    }
-    for item_type in shop_owner_items:
-        if item_type in spoiler.settings.shuffled_location_types:
-            placed_types.append(item_type)
-            spoiler.Reset()
-            shopOwnerItemsToBePlaced = shop_owner_items[item_type]
-            for item in preplaced_items:
-                if item in shopOwnerItemsToBePlaced:
-                    shopOwnerItemsToBePlaced.remove(item)
-            unplacedShopOwners = PlaceItems(spoiler, FillAlgorithm.careful_random, shopOwnerItemsToBePlaced, [])
-            if unplacedShopOwners > 0:
-                raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced shop owners.")
     # Then fill remaining locations with GBs
     preplaced_gbs_accounted_for = []  # Because GBs are placed in two parts, we may have to account for preplaced GBs in either section
     if Types.Banana in spoiler.settings.shuffled_location_types:
