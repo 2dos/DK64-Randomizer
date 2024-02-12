@@ -624,7 +624,7 @@ int getKongFromBonusFlag(int flag) {
      * 
      * @return kong index
      */
-    if ((Rando.any_kong_items & 1) == 0) {
+    if ((Rando.any_kong_items.major_items) == 0) {
         for (int i = 0; i < 95; i++) {
             if (bonus_data[i].flag == flag) {
                 return bonus_data[i].kong_actor;

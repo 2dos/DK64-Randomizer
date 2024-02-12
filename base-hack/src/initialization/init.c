@@ -523,7 +523,7 @@ void initHack(int source) {
 			if (!Rando.quality_of_life.fast_boot) {
 				writeFunction(0x80713258, &skipDKTV);
 			}
-			if (Rando.any_kong_items & 1) {
+			if (Rando.any_kong_items.major_items) {
 				writeFunction(0x80632E94, &getItemRequiredKong);
 			}
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
