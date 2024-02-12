@@ -1440,11 +1440,11 @@ class Settings:
                         spoiler.LocationList[location_id].inaccessible = False
                         spoiler.LocationList[location_id].smallerShopsInaccessible = False
 
-        shop_types = (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
-        shopkeepers_in_pool = len([x for x in shop_types if x in self.shuffled_location_types]) > 0
-        if shopkeepers_in_pool:
-            for x in range(4):
-                spoiler.LocationList[Locations.ShopOwner_Location00 + x].inaccessible = True
+        # shop_types = (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+        # shopkeepers_in_pool = len([x for x in shop_types if x in self.shuffled_location_types]) > 0
+        # if shopkeepers_in_pool:
+        #     for x in range(4):
+        #         spoiler.LocationList[Locations.ShopOwner_Location00 + x].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong

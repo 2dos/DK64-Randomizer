@@ -682,7 +682,7 @@ def place_randomized_items(spoiler):
                     pregiven_shop_owners = []
                 if item.new_item in shop_owner_types:
                     pregiven_shop_owners.append(item.new_item)
-                elif item.new_item != Items.NoItem:
+                elif item.new_item != Items.NoItem and item.new_item is not None:
                     raise Exception(f"Invalid item {item.new_subitem.name} placed in shopkeeper slot. This shouldn't happen.")
         # Patch pre-given shops
         if pregiven_shop_owners is not None: # Shop owners in pool
