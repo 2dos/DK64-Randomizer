@@ -469,6 +469,7 @@ extern int isItemRequirementSatisfied(ItemRequirement* req);
 extern void initBLocker(void);
 
 extern int getGamePercentage(void);
+extern void setBurpModel(void);
 
 extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);

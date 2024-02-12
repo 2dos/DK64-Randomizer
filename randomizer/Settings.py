@@ -462,6 +462,7 @@ class Settings:
         self.seek_klaptrap_model = Model.KlaptrapGreen
         self.fungi_tomato_model = Model.Tomato
         self.caves_tomato_model = Model.IceTomato
+        self.piano_burp_model = Model.KoshKremlingRed
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"

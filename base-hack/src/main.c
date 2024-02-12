@@ -52,6 +52,7 @@ void cFuncLoop(void) {
 				setActorDamage(43, 3);
 			}
 		}
+		setBurpModel();
 		handleKRoolSaveProgress();
 		populateEnemyMapData();
 	} else {

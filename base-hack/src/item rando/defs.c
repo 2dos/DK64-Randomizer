@@ -165,6 +165,14 @@ void changeFeatherToSprite(void) {
     actor_master_types[43] = ACTORMASTER_SPRITE;
 }
 
+void setBurpModel(void) {
+    if (CurrentMap == MAP_FACTORY) {
+        actor_defs[50].model = Rando.piano_game_burper;
+    } else {
+        actor_defs[50].model = 0x32;
+    }
+}
+
 void setActorDamage(int actor, int new_damage) {
     actor_health_damage[actor].damage_applied = new_damage;
 }

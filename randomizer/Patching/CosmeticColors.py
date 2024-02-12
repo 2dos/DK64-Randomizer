@@ -229,6 +229,25 @@ bother_models = [
     Model.RarewareLogo,  # Rareware Logo
 ]
 
+piano_models = [
+    Model.Krash,
+    Model.RoboKremling,
+    Model.KoshKremling,
+    Model.KoshKremlingRed,
+    Model.Kasplat,
+    Model.Guard,
+    Model.Krossbones,
+    Model.SkeletonHead,
+    Model.Owl,
+    Model.Mermaid,
+    Model.Mushroom,
+    Model.Kosha,
+    Model.GoldenBanana_104,
+    Model.FlySwatter_83,
+    Model.Beanstalk,
+    Model.Ruler,
+]
+
 
 class KongPalette:
     """Class to store information regarding a kong palette."""
@@ -288,6 +307,7 @@ def apply_cosmetic_colors(settings: Settings):
     caves_tomato_model_index = Model.IceTomato
     racer_beetle = Model.Beetle
     racer_rabbit = Model.Rabbit
+    piano_burper = Model.KoshKremlingRed
     swap_bitfield = 0
 
     ROM_COPY = ROM()
@@ -328,6 +348,7 @@ def apply_cosmetic_colors(settings: Settings):
         sseek_klap_model_index = getRandomKlaptrapModel()
         fungi_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
         caves_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
+        piano_burper = random.choice(piano_models)
     settings.bother_klaptrap_model = bother_model_index
     settings.beetle_model = racer_beetle
     settings.rabbit_model = racer_rabbit
@@ -337,6 +358,7 @@ def apply_cosmetic_colors(settings: Settings):
     settings.seek_klaptrap_model = sseek_klap_model_index
     settings.fungi_tomato_model = fungi_tomato_model_index
     settings.caves_tomato_model = caves_tomato_model_index
+    settings.piano_burp_model = piano_burper
     settings.wrinkly_rgb = [255, 255, 255]
     # Compute swap bitfield
     swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0
@@ -356,6 +378,8 @@ def apply_cosmetic_colors(settings: Settings):
     ROM_COPY.writeMultipleBytes(settings.bother_klaptrap_model + 1, 1)
     ROM_COPY.seek(sav + 0x1E2)
     ROM_COPY.write(swap_bitfield)
+    ROM_COPY.seek(sav + 0x1ED)
+    ROM_COPY.writeMultipleBytes(settings.piano_burp_model + 1, 1)
     if settings.misc_cosmetics and settings.override_cosmetics:
         ROM_COPY.seek(sav + 0x196)
         ROM_COPY.write(1)
