@@ -237,15 +237,17 @@ piano_models = [
     Model.Kasplat,
     Model.Guard,
     Model.Krossbones,
-    Model.SkeletonHead,
-    Model.Owl,
     Model.Mermaid,
     Model.Mushroom,
-    Model.Kosha,
     Model.GoldenBanana_104,
     Model.FlySwatter_83,
-    Model.Beanstalk,
     Model.Ruler,
+]
+piano_extreme_model = [
+    Model.SkeletonHead,
+    Model.Owl,
+    Model.Kosha,
+    Model.Beanstalk,
 ]
 
 
@@ -348,7 +350,10 @@ def apply_cosmetic_colors(settings: Settings):
         sseek_klap_model_index = getRandomKlaptrapModel()
         fungi_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
         caves_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
-        piano_burper = random.choice(piano_models)
+        referenced_piano_models = piano_models.copy()
+        if model_setting == RandomModels.extreme:
+            referenced_piano_models.extend(piano_extreme_model)
+        piano_burper = random.choice(referenced_piano_models)
     settings.bother_klaptrap_model = bother_model_index
     settings.beetle_model = racer_beetle
     settings.rabbit_model = racer_rabbit

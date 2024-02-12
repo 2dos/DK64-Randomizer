@@ -1618,8 +1618,10 @@ def Fill(spoiler: Spoiler) -> None:
         Types.Candy: ItemPool.CandyItems(),
         Types.Snide: ItemPool.SnideItems(),
     }
+    shopowners_in_pool = False
     for item_type in shop_owner_items:
         if item_type in spoiler.settings.shuffled_location_types:
+            shopowners_in_pool = True
             placed_types.append(item_type)
             spoiler.Reset()
             shopOwnerItemsToBePlaced = shop_owner_items[item_type]
@@ -1629,9 +1631,10 @@ def Fill(spoiler: Spoiler) -> None:
             unplacedShopOwners = PlaceItems(spoiler, FillAlgorithm.random, shopOwnerItemsToBePlaced, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
             if unplacedShopOwners > 0:
                 raise Ex.ItemPlacementException(str(unplacedShopOwners) + " unplaced shop owners.")
-    for x in range(4):
-        if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
-            spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
+    if shopowners_in_pool:
+        for x in range(4):
+            if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
+                spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
 
     # Now we place all logically-relevant low-quantity items
     # Then fill Kongs and Moves - this should be a very early fill type for hopefully obvious reasons

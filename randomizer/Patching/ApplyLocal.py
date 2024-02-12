@@ -285,6 +285,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         {"name": "Searchlight Seek Klaptrap", "setting": settings.seek_klaptrap_model},
         {"name": "Forest Tomato", "setting": settings.fungi_tomato_model},
         {"name": "Caves Tomato", "setting": settings.caves_tomato_model},
+        {"name": "Factory Piano Burper", "setting": settings.piano_burp_model},
     ]
 
     if settings.colors != {} or settings.random_models != RandomModels.off:

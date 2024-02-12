@@ -937,3 +937,21 @@ typedef enum requirement_item {
 	/* 0x00E */ REQITEM_GAMEPERCENTAGE,
 	/* 0x00F */ REQITEM_COLOREDBANANA,
 } requirement_item;
+
+typedef enum item_ids { 
+	/* 0x000 */ ITEMID_CB,
+	/* 0x001 */ ITEMID_COINS,
+	/* 0x002 */ ITEMID_STANDARDAMMO,
+	/* 0x003 */ ITEMID_HOMINGAMMO,
+	/* 0x004 */ ITEMID_ORANGES,
+	/* 0x005 */ ITEMID_CRYSTALS,
+	/* 0x006 */ ITEMID_FILM,
+	/* 0x007 */ ITEMID_INSTRUMENTENERGY,
+	/* 0x008 */ ITEMID_GBKONG,
+	/* 0x009 */ ITEMID_GBS,
+	/* 0x00A */ ITEMID_MULTIBUNCH,
+	/* 0x00B */ ITEMID_RACECOIN,
+	/* 0x00C */ ITEMID_BPFAIRY,
+	/* 0x00D */ ITEMID_CBS_0,
+	/* 0x00E */ ITEMID_MOVECOST,
+} item_ids;

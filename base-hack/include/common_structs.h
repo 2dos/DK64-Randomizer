@@ -640,7 +640,9 @@ typedef struct hud_element {
 	/* 0x020 */ int hud_state;
 	/* 0x024 */ char unk_24[0x28-0x24];
 	/* 0x028 */ placementData* placement_pointer;
-	/* 0x02C */ char unk_2C[0x30-0x2C];
+	/* 0x02C */ char infinite_setting;
+	/* 0x02D */ char unk_2D;
+	/* 0x02E */ char unk_2E[0x30-0x2E];
 } hud_element;
 
 typedef struct hudData {
@@ -1750,4 +1752,4 @@ typedef struct FreeTradeAgreement {
 	unsigned char unk5 : 1; // 0x04
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
-} FreeTradeAgreement
+} FreeTradeAgreement;
