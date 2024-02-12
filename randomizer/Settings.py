@@ -1440,6 +1440,12 @@ class Settings:
                         spoiler.LocationList[location_id].inaccessible = False
                         spoiler.LocationList[location_id].smallerShopsInaccessible = False
 
+        shop_types = (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+        shopkeepers_in_pool = len([x for x in shop_types if x in self.shuffled_location_types]) > 0
+        if shopkeepers_in_pool:
+            for x in range(4):
+                spoiler.LocationList[Locations.ShopOwner_Location00 + x].inaccessible = True
+
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
         if IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1):
@@ -1552,10 +1558,13 @@ class Settings:
             for item in regular_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledNonMoveLocations
-            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky, Types.Snide)
+            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
             for item in shop_owner_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledLocationsShopOwner
+            if Types.Snide in self.shuffled_location_types:
+                # Snide can't be placed in/after expected Helm Access. To help out fill, we'll ban Snide from any locations in Helm
+                self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner if spoiler.LocationList[x].level != Levels.HideoutHelm]
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
                     x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)
