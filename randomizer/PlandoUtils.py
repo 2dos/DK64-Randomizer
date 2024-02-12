@@ -136,6 +136,7 @@ for locEnum, locObj in LocationList.items():
 
 # Banana fairy locations have a handful of limitations.
 bananaFairyRestrictedItems = {
+    PlandoItems.Camera.name,
     PlandoItems.NintendoCoin.name,
     PlandoItems.RarewareCoin.name,
     PlandoItems.BananaMedal.name,
