@@ -1252,6 +1252,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                 hinted_item_name = ItemList[spoiler.LocationList[loc].item].name
                 message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
+                hinted_location_text = f"\x0b{hinted_item_name}\x0b"
             else:
                 message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
             hint_location.related_location = loc
