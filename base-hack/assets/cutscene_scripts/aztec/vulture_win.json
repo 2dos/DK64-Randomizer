@@ -1,0 +1,58 @@
+{
+    "index": 28,
+    "point_data": [
+        {
+            "unk0": 255,
+            "command": 6,
+            "read": [],
+            "head": [
+                3,
+                224
+            ],
+            "duration": 45
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                4,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 29,
+                "params": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 49
+        },
+        {
+            "unk0": 0,
+            "command": 15,
+            "read": [
+                241,
+                107,
+                241,
+                107,
+                0,
+                83,
+                0,
+                83,
+                0,
+                33,
+                0,
+                33,
+                45,
+                45
+            ],
+            "head": [
+                0,
+                0
+            ],
+            "duration": 50
+        }
+    ]
+}
