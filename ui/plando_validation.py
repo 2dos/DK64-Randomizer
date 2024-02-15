@@ -6,9 +6,10 @@ import re
 
 import js
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
+from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoGroupMap, PlandoItems
 from randomizer.Enums.Settings import KasplatRandoSetting
 from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
@@ -21,6 +22,7 @@ from randomizer.Lists.Plandomizer import (
     KasplatLocationList,
     MelonCrateLocationList,
     MinigameLocationList,
+    PlannableGroupLimits,
     PlannableItemLimits,
     ShopLocationKongMap,
     ShopLocationList,
@@ -34,6 +36,7 @@ class ValidationError(IntEnum):
     """Specific validation failures associated with an element."""
 
     exceeds_item_limits = auto()
+    exceeds_group_limits = auto()
     shop_has_shared_and_solo_rewards = auto()
     smaller_shops_conflict = auto()
     invalid_hint_text = auto()
@@ -293,6 +296,84 @@ def validate_item_limits(evt):
             for loc in locations:
                 if loc is not None:
                     mark_option_valid(js.document.getElementById(loc), ValidationError.exceeds_item_limits)
+
+
+@bindList("click", startingMoveValues, prefix="none-")
+@bindList("click", startingMoveValues, prefix="start-")
+@bindList("click", startingMoveValues, prefix="random-")
+@bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
+@bind("click", "starting_moves_reset")
+@bind("click", "starting_moves_start_all")
+@bind("change", "plando_starting_kongs_selected")
+@bind("change", "select_keys")
+@bind("click", "starting_keys_list_selected")
+def validate_group_limits(evt):
+    """Raise an error if a group of items had too many of its members placed."""
+    count_dict = count_items()
+    # Add in starting moves, which also count toward the totals.
+    startingMoveSet = set()
+    for startingMove in StartingMoveOptions:
+        startingMoveElem = js.document.getElementById(f"start-{str(startingMove.value)}")
+        if startingMoveElem.checked:
+            plandoMove = ItemToPlandoItemMap[startingMove]
+            startingMoveSet.add(plandoMove)
+            if plandoMove in count_dict:
+                # Add in None, so we don't attempt to mark a nonexistent
+                # element.
+                count_dict[plandoMove].append(None)
+            else:
+                count_dict[plandoMove] = [None]
+    # Add in starting Kongs, which also count toward the totals.
+    startingKongs = js.document.getElementById("plando_starting_kongs_selected")
+    for kong in startingKongs.selectedOptions:
+        if kong.value == "":
+            continue
+        selectedKong = PlandoItems[kong.value.capitalize()]
+        if selectedKong in count_dict:
+            # Add in None, so we don't attempt to mark a nonexistent element.
+            count_dict[selectedKong].append(None)
+        else:
+            count_dict[selectedKong] = [None]
+    # Check to see if any groups exceeded their limits.
+    groupTypeNameMap = {
+        PlandoItems.RandomKong: "Kongs",
+        PlandoItems.RandomMove: "moves",
+        PlandoItems.RandomKongMove: "Kong moves",
+        PlandoItems.RandomSharedMove: "shared moves",
+        PlandoItems.RandomKey: "keys",
+        PlandoItems.RandomItem: "collectibles",
+    }
+    for plandoGroup, groupItems in PlandoGroupMap.items():
+        # For each group, add up the number of times the "random" item was
+        # placed, and all of the items in that group. If it exceeds the limit,
+        # that's an error.
+        groupLocations = count_dict[plandoGroup] if plandoGroup in count_dict else []
+        for groupItem in groupItems:
+            if groupItem in count_dict:
+                groupLocations.extend(count_dict[groupItem])
+        # If we're dealing with keys, add in the number of starting keys.
+        if plandoGroup == PlandoItems.RandomKey:
+            startingKeyCount = 0
+            if js.document.getElementById("select_keys").checked:
+                for _ in js.document.getElementById("starting_keys_list_selected").selectedOptions:
+                    startingKeyCount += 1
+            else:
+                startingKeyCount = 8 - int(js.document.getElementById("krool_key_count").value)
+            for _ in range(0, startingKeyCount):
+                groupLocations.append(None)
+        limitExceeded = len(groupLocations) > PlannableGroupLimits[plandoGroup]
+        for loc in groupLocations:
+            if loc is not None:
+                # Throw an error if we've exceeded the limit and we've placed
+                # the "random" item anywhere.
+                if limitExceeded and plandoGroup in count_dict:
+                    itemTypeName = groupTypeNameMap[plandoGroup]
+                    maybeStartingItems = f" (This includes starting {itemTypeName}.)" if None in groupLocations else ""
+                    errString = f"A total of {len(groupLocations)} {itemTypeName} have been placed, but the maximum allowed is {PlannableGroupLimits[plandoGroup]} {itemTypeName}.{maybeStartingItems}"
+                    mark_option_invalid(js.document.getElementById(loc), ValidationError.exceeds_group_limits, errString)
+                else:
+                    mark_option_valid(js.document.getElementById(loc), ValidationError.exceeds_group_limits)
 
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
@@ -896,6 +977,54 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
                 errString += " (This includes starting moves.)"
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
+            errList.append(errString)
+
+    # Check groups of items, using the same dictionary.
+    # Add in starting Kongs, which also count toward the totals.
+    startingKongCount = 0
+    for kong in plando_dict["plando_starting_kongs_selected"]:
+        if kong < 0:
+            continue
+        plandoKong = PlandoItems[Kongs(kong).name.capitalize()]
+        startingKongCount += 1
+        if plandoKong in count_dict:
+            count_dict[plandoKong] += 1
+        else:
+            count_dict[plandoKong] = 1
+    groupTypeNameMap = {
+        PlandoItems.RandomKong: "Kongs",
+        PlandoItems.RandomMove: "moves",
+        PlandoItems.RandomKongMove: "Kong moves",
+        PlandoItems.RandomSharedMove: "shared moves",
+        PlandoItems.RandomKey: "keys",
+        PlandoItems.RandomItem: "collectibles",
+    }
+    for plandoGroup, groupItems in PlandoGroupMap.items():
+        # For each group, add up the number of times the "random" item was
+        # placed, and all of the items in that group. If it exceeds the limit,
+        # that's an error.
+        groupCount = count_dict[plandoGroup] if plandoGroup in count_dict else 0
+        for groupItem in groupItems:
+            if groupItem in count_dict:
+                groupCount += count_dict[groupItem]
+        # If we're dealing with keys, add in the number of starting keys.
+        startingKeyCount = 0
+        if plandoGroup == PlandoItems.RandomKey:
+            startingKeyCount = 0
+            if js.document.getElementById("select_keys").checked:
+                for _ in js.document.getElementById("starting_keys_list_selected").selectedOptions:
+                    startingKeyCount += 1
+            else:
+                startingKeyCount = 8 - int(js.document.getElementById("krool_key_count").value)
+            groupCount += startingKeyCount
+        limitExceeded = groupCount > PlannableGroupLimits[plandoGroup]
+        # Throw an error if we've exceeded the limit and we've placed
+        # the "random" item anywhere.
+        if limitExceeded and plandoGroup in count_dict:
+            itemTypeName = groupTypeNameMap[plandoGroup]
+            errString = f"A total of {groupCount} {itemTypeName} have been placed, but the maximum allowed is {PlannableGroupLimits[plandoGroup]} {itemTypeName}."
+            if (plandoGroup == PlandoItems.RandomKong and startingKongCount > 0) or (plandoGroup == PlandoItems.RandomKey and startingKeyCount > 0):
+                errString += f" (This includes starting {itemTypeName}.)"
             errList.append(errString)
 
     # Ensure that no shop has both a shared reward and an individual reward.

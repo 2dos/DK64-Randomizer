@@ -285,6 +285,12 @@ PlannableItems.append({"name": "Blueprint (Lanky)", "value": "LankyBlueprint"})
 PlannableItems.append({"name": "Blueprint (Tiny)", "value": "TinyBlueprint"})
 PlannableItems.append({"name": "Blueprint (Chunky)", "value": "ChunkyBlueprint"})
 PlannableItems.append({"name": "Junk Item", "value": "JunkItem"})
+PlannableItems.append({"name": "Random Kong", "value": "RandomKong"})
+PlannableItems.append({"name": "Random Move", "value": "RandomMove"})
+PlannableItems.append({"name": "Random Kong Move", "value": "RandomKongMove"})
+PlannableItems.append({"name": "Random Shared Move", "value": "RandomSharedMove"})
+PlannableItems.append({"name": "Random Key", "value": "RandomKey"})
+PlannableItems.append({"name": "Random Collectible", "value": "RandomItem"})
 
 # The maximum amount of each item that the user is allowed to place.
 # If a plando item is not here, that item has no limit.
@@ -355,6 +361,17 @@ PlannableItemLimits = {
     PlandoItems.LankyBlueprint: 8,
     PlandoItems.TinyBlueprint: 8,
     PlandoItems.ChunkyBlueprint: 8,
+}
+
+# The maximum amount of items from each group that the user is allowed to
+# place. This includes the individual items as well as the "random" item.
+PlannableGroupLimits = {
+    PlandoItems.RandomKong: 5,
+    PlandoItems.RandomMove: 41,
+    PlandoItems.RandomKongMove: 25,
+    PlandoItems.RandomSharedMove: 16,
+    PlandoItems.RandomKey: 8,
+    PlandoItems.RandomItem: 293,
 }
 
 #############

@@ -79,6 +79,12 @@ plandoItemNameDict = {
     PlandoItems.TinyBlueprint: "Blueprint (Tiny)",
     PlandoItems.ChunkyBlueprint: "Blueprint (Chunky)",
     PlandoItems.JunkItem: "Junk Item",
+    PlandoItems.RandomKong: "Random Kong",
+    PlandoItems.RandomMove: "Random Move",
+    PlandoItems.RandomKongMove: "Random Kong Move",
+    PlandoItems.RandomSharedMove: "Random Shared Move",
+    PlandoItems.RandomKey: "Random Key",
+    PlandoItems.RandomItem: "Random Collectible",
 }
 
 
@@ -219,6 +225,11 @@ kongRestrictedItemSet = {
     PlandoItems.LankyBlueprint.name,
     PlandoItems.TinyBlueprint.name,
     PlandoItems.ChunkyBlueprint.name,
+    PlandoItems.RandomMove.name,
+    PlandoItems.RandomKongMove.name,
+    PlandoItems.RandomSharedMove.name,
+    PlandoItems.RandomKey.name,
+    PlandoItems.RandomItem.name,
 }
 
 kongLocationList = [Locations.DiddyKong.name, Locations.TinyKong.name, Locations.LankyKong.name, Locations.ChunkyKong.name]
@@ -263,6 +274,7 @@ kongSpecificMoveItemSet = {
     PlandoItems.Trombone.name,
     PlandoItems.Saxophone.name,
     PlandoItems.Triangle.name,
+    PlandoItems.RandomKongMove.name,
 }
 
 # Kong-specific shops have a handful of banned items.
@@ -323,6 +335,7 @@ for locEnum, locObj in LocationList.items():
 
 # This one rock can't have Kongs as a reward.
 ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(KongSet)
+ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].add(PlandoItems.RandomKong.name)
 
 # These specific locations cannot have fake items on them.
 badFakeItemLocationList = [

@@ -15,6 +15,7 @@ from ui.plando_validation import (
     lock_key_8_in_helm,
     populate_plando_options,
     reset_plando_options_no_prompt,
+    validate_group_limits,
     validate_helm_order_no_duplicates,
     validate_hint_count,
     validate_hint_text,
@@ -125,6 +126,7 @@ async def import_plando_options(jsonString):
     plando_hide_krool_options(None)
     lock_key_8_in_helm(None)
     validate_item_limits(None)
+    validate_group_limits(None)
     validate_hint_count(None)
     validate_smaller_shops_no_conflict(None)
     validate_shuffle_shops_no_conflict(None)
