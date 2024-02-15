@@ -1029,6 +1029,16 @@ shrinkModel(False, "", 0x10, 1 / 0.15, "shrink_cranky.bin", True),
 shrinkModel(False, "", 0x11, 1 / 0.15, "shrink_funky.bin", True),
 shrinkModel(False, "", 0x12, 1 / 0.15, "shrink_candy.bin", True),
 shrinkModel(False, "", 0x1E, 1 / 0.15, "shrink_snide.bin", True),
+FINAL_RACE_HOOP = "shrink_race_hoop.bin"
+shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
+
+# Change collision point
+RACE_HOOP_Y_OFFSET = 0
+with open(FINAL_RACE_HOOP, "r+b") as rh:
+    rh.seek(0x5AC)
+    rh.write(RACE_HOOP_Y_OFFSET.to_bytes(4, "big"))
+    rh.seek(0x5C4)
+    rh.write(RACE_HOOP_Y_OFFSET.to_bytes(4, "big"))
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -1078,6 +1088,7 @@ model_changes = [
     ModelChange(0x10F, "shrink_funky.bin"),
     ModelChange(0x110, "shrink_candy.bin"),
     ModelChange(0x111, "shrink_snide.bin"),
+    ModelChange(0x112, FINAL_RACE_HOOP),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)

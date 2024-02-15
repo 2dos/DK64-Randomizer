@@ -552,6 +552,15 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8069309A, Overlay.Static, 10, offset_dict)  # Grape
         writeValue(ROM_COPY, 0x80695406, Overlay.Static, 10, offset_dict)  # Feather
         writeValue(ROM_COPY, 0x80694706, Overlay.Static, 10, offset_dict)  # Pineapple
+    if isQoLEnabled(spoiler, MiscChangesSelected.vanilla_bug_fixes):
+        # Race Hoop 3D
+        writeValue(ROM_COPY, 0x806C4DB4, Overlay.Static, 0x24050113, offset_dict, 4) # Change model of race hoop
+        writeValue(ROM_COPY, 0x8074D8EC, Overlay.Static, 2, offset_dict, 1) # Change race hoop to interpret as 3D Model
+        race_hoop_addresses = [
+            0x8069B060, 0x8069B08C, 0x8069B0AC, 0x8069B0B4, 0x8069B0BC, 0x8069B0C8, 0x8069B050, 0x8069B05C
+        ]
+        for addr in race_hoop_addresses:
+            writeValue(ROM_COPY, addr, Overlay.Static, 0, offset_dict, 4)
 
     # Golden Banana Requirements
     order = 0

@@ -541,6 +541,7 @@ def loadNewModels():
     portModelTwoToActor(0, "rareware_coin_om2.bin", "rareware_coin", 0x68, True, 1.0)
     createMelon()
     portModelTwoToActor(0, "melon_3d_om2.bin", "melon_3d", 0x68, True, 1.0)
+    portModelTwoToActor(694, "", "race_hoop", 0xC0, False, 1.0)
     # Shop Owners
     portActorToModelTwo(0x10, "", "cranky", 0x90, True, 0.5)
     portActorToModelTwo(0x11, "", "funky", 0x90, True, 0.5)

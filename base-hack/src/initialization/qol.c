@@ -90,6 +90,16 @@ void initQoL_Cutscenes(void) {
     }
 }
 
+void fixRaceHoopCode(void) {
+    unkProjectileCode_3(CurrentActorPointer_0, 0);
+}
+
+void renderHoop(void) {
+    unkBonusFunction(CurrentActorPointer_0);
+    CurrentActorPointer_0->rot_x += 0x72; // Rotate Hoop
+    renderActor(CurrentActorPointer_0, 0);
+}
+
 void quickWrinklyTextboxes(void) {
     /**
      * @brief Speeds up the wrinkly textboxes by setting the textbox timer to 0x1e upon init if A is pressed
@@ -121,6 +131,10 @@ void initQoL_Fixes(void) {
         actor_functions[249] = &squawks_with_spotlight_actor_code;
         writeFunction(0x806E5C04, &fixCrownEntrySKong); // Modify Function Call
         *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
+        // Race Hoop
+        writeFunction(0x8069B13C, &renderHoop);
+        writeFunction(0x8069B0EC, &fixRaceHoopCode);
+
     }
     writeFunction(0x806A8844, &helmTime_restart); // Modify Function Call
     writeFunction(0x806A89E8, &helmTime_exitBonus); // Modify Function Call
