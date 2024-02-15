@@ -96,7 +96,7 @@ void fixRaceHoopCode(void) {
 
 void renderHoop(void) {
     unkBonusFunction(CurrentActorPointer_0);
-    CurrentActorPointer_0->rot_x += 0x72; // Rotate Hoop
+    CurrentActorPointer_0->rot_x -= 0x39; // Rotate Hoop
     renderActor(CurrentActorPointer_0, 0);
 }
 
