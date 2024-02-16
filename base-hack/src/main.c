@@ -52,6 +52,15 @@ void cFuncLoop(void) {
 				setActorDamage(43, 3);
 			}
 		}
+		if (Rando.quality_of_life.vanilla_fixes) {
+			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
+				int kong_target = CurrentMap - MAP_KROOLDK;
+				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
+					initiateTransition(MAP_ISLES, 0xC);
+					Character = Rando.starting_kong;
+				}
+			}
+		}
 		handleKRoolSaveProgress();
 		populateEnemyMapData();
 	} else {
