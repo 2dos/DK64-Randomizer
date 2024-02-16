@@ -1,7 +1,7 @@
 """Randomize puzzles."""
 
 import random
-
+import math
 import js
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
@@ -254,3 +254,57 @@ def randomize_puzzles(spoiler):
         for lvl_index, lvl in enumerate(arcade_levels):
             ROM_COPY.seek(sav + 0x48 + lvl_index)
             ROM_COPY.writeMultipleBytes(arcade_level_data[lvl], 1)
+        # Random Race Paths
+        race_data = {
+            Maps.AngryAztec: {
+                "offset": 0x21E,
+                "center_x": 3280,
+                "center_z": 3829,
+                "radius": [70, 719],
+                "y": [190, 530],
+                "count": 16,
+                "size": 10,
+                "start_angle": None,
+            },
+            Maps.FungiForest: {
+                "offset": 0xC2,
+                "center_x": 1276,
+                "center_z": 3825,
+                "radius": [246, 587],
+                "y": [231, 650],
+                "count": 32,
+                "size": 10,
+                "start_angle": 0,
+            }
+        }
+        for map_index in race_data:
+            map_spawners = js.pointer_addresses[16]["entries"][map_index]["pointing_to"]
+            map_data = race_data[map_index]
+            if map_data["start_angle"] is None:
+                initial_angle = random.randint(0, 359)
+            else:
+                initial_angle = map_data["start_angle"]
+            previous_offset = None
+            for point in range(map_data["count"]):
+                ROM_COPY.seek(map_spawners + map_data["offset"] + (point * 0xA))
+                if previous_offset is None:
+                    angle_offset = random.randint(-90, 90)
+                else:
+                    angle_magnitude = random.randint(0, 90)
+                    direction = -1
+                    if previous_offset > 0:
+                        direction = 1
+                    change_direction = random.randint(0, 3) == 0
+                    if change_direction:
+                        direction *= -1
+                    angle_offset = direction * angle_magnitude
+                previous_offset = angle_offset
+                initial_angle += angle_offset
+                radius = random.randint(map_data["radius"][0], map_data["radius"][1])
+                angle_rad = (initial_angle / 180) * math.pi
+                x = int(map_data["center_x"] + (radius * math.sin(angle_rad)))
+                y = random.randint(map_data["y"][0], map_data["y"][1])
+                z = int(map_data["center_z"] + (radius * math.cos(angle_rad)))
+                ROM_COPY.writeMultipleBytes(x, 2)
+                ROM_COPY.writeMultipleBytes(y, 2)
+                ROM_COPY.writeMultipleBytes(z, 2)
