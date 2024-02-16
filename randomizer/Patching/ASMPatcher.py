@@ -561,6 +561,7 @@ def patchAssembly(ROM_COPY, spoiler):
         ]
         for addr in race_hoop_addresses:
             writeValue(ROM_COPY, addr, Overlay.Static, 0, offset_dict, 4)
+    writeValue(ROM_COPY, 0x80748E30, Overlay.Static, 0, offset_dict, 1)
 
     # Golden Banana Requirements
     order = 0

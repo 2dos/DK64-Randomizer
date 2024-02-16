@@ -1130,6 +1130,35 @@ for x in range(2):
                 )
             )
 
+with open("empty_race.bin", "wb") as fh:
+    fh.write((0).to_bytes(2, "big"))
+
+# Race Checkpoints
+races = [0xE, 0x27, 0x52, 0xB9]
+for race in range(216):
+    if race in races:
+        data = File(
+            name=f"Checkpoints (Map {race})",
+            pointer_table_index=TableNames.RaceCheckpoints,
+            file_index=race,
+            source_file=f"checkpoints_{race}.bin",
+            do_not_compress=True,
+        )
+    else:
+        data = File(
+            name=f"Checkpoints (Map {race})",
+            pointer_table_index=TableNames.RaceCheckpoints,
+            file_index=race,
+            source_file="empty_race.bin",
+            do_not_extract=True,
+            do_not_compress=True,
+        )
+    if race == 0xB9:
+        data.setTargetSize(0x400)
+    data.do_not_recompress = True
+    file_dict.append(data)
+
+
 hash_icons = [
     HashIcon("bongos.png", 48),
     HashIcon("crown.png", 49),

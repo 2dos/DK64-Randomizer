@@ -3,9 +3,11 @@
 import random
 import math
 import js
+import gzip
+from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Lib import IsItemSelected, float_to_hex
 from randomizer.Enums.Settings import FasterChecksSelected
 
 
@@ -40,6 +42,95 @@ def shiftCastleMinecartRewardZones():
                 ROM_COPY.writeMultipleBytes(new_location[c], 2)
             ROM_COPY.seek(cont_map_lzs_address + start + 6)
             ROM_COPY.writeMultipleBytes(40, 2)
+
+class CarRaceArea(IntEnum):
+    """Car Race Area enum."""
+    null = auto()
+    ramp_up = auto()
+    ramp_down = auto()
+    tunnel_in = auto()
+    tunnel_out = auto()
+    start_finish = auto()
+    around_dartboard_boxes = auto() # Used for enemy AI pathing
+    around_arcade_stairs = auto() # Used for enemy AI pathing
+    high_turn_around = auto() # Used for enemy AI Pathing
+
+class CarRaceBound:
+    """Class to store information regarding a car race bound."""
+
+    def __init__(self, start_x: int, start_z: int, end_x: int, end_z: int, direction_is_x: bool, checkpoint_count: int, area: CarRaceArea = CarRaceArea.null):
+        """Initialize with given parameters."""
+        self.start_x = start_x
+        self.end_x = end_x
+        self.start_z = start_z
+        self.end_z = end_z
+        self.direction_is_x = direction_is_x
+        self.checkpoint_count = checkpoint_count
+        self.area = area
+        self.placement_radius = 80
+
+    def getPoints(self, y_level: int, placement_bubbles: list) -> list:
+        """Get list of points."""
+        if self.area == CarRaceArea.null:
+            arr = []
+            i = 0
+            lower_x = min(self.start_x, self.end_x)
+            upper_x = max(self.start_x, self.end_x)
+            lower_z = min(self.start_z, self.end_z)
+            upper_z = max(self.start_z, self.end_z)
+            while i < self.checkpoint_count:
+                x = random.randint(lower_x, upper_x)
+                z = random.randint(lower_z, upper_z)
+                allowed = True
+                for bubble in placement_bubbles:
+                    dx = bubble[0] - x
+                    dz = bubble[1] - z
+                    dxz2 = (dx * dx) + (dz * dz)
+                    if dxz2 < (bubble[2] * bubble[2]):
+                        allowed = False
+                        break
+                if allowed:
+                    arr.append((x, y_level, z))
+                    placement_bubbles.append([x, z, self.placement_radius])
+                    i += 1
+            return arr.copy()
+        elif self.area == CarRaceArea.ramp_up:
+            return [(2106, 1026, 1122), (1968, 1113, 1012), (1685, 1113, 735)]
+        elif self.area == CarRaceArea.ramp_down:
+            return [(1738, 1113, 731), (2128, 1026, 1119)]
+        elif self.area == CarRaceArea.tunnel_in:
+            return [(2779, 1026, 1138), (3045, 1026, 1085)]
+        elif self.area == CarRaceArea.tunnel_out:
+            return [(3045, 1026, 1085), (2779, 1026, 1138)]
+        elif self.area == CarRaceArea.start_finish:
+            return [(2733, 1026, 1308)]
+        elif self.area == CarRaceArea.around_dartboard_boxes:
+            return [(2431, 1026, 1166), (2567, 1026, 1157)]
+        elif self.area == CarRaceArea.around_arcade_stairs:
+            return [(2061, 1026, 1446), (2095, 1026, 1299)]
+        elif self.area == CarRaceArea.high_turn_around:
+            return [(1565, 1113, 625)]
+        return []
+    
+    def getAngle(self) -> int:
+        """Get angle for a checkpoint."""
+        if self.area == CarRaceArea.start_finish:
+            return 0
+        angle_offset = random.randint(-300, 300)
+        if self.direction_is_x:
+            if self.start_x > self.end_x:
+                return angle_offset + 3072
+            else:
+                return angle_offset + 1024
+        else:
+            if self.start_z > self.end_z:
+                return angle_offset + 2048
+            else:
+                new_angle = angle_offset
+                if new_angle < 0:
+                    new_angle += 4096
+                return new_angle
+
 
 
 def shortenCastleMinecart(spoiler):
@@ -308,3 +399,110 @@ def randomize_puzzles(spoiler):
                 ROM_COPY.writeMultipleBytes(x, 2)
                 ROM_COPY.writeMultipleBytes(y, 2)
                 ROM_COPY.writeMultipleBytes(z, 2)
+        # Castle Car Race
+        placement_bubbles = []
+        bounds = [
+            CarRaceBound(2789, 1419, 2517, 1609, True, 1),
+            CarRaceBound(2517, 1609, 2352, 1402, True, 1),
+            CarRaceBound(2346, 1450, 2003, 1554, True, 1),
+            CarRaceBound(0, 0, 0, 0, False, 0, CarRaceArea.around_arcade_stairs),
+            CarRaceBound(2012, 1307, 2307, 1194, False, 1),
+            CarRaceBound(0, 0, 0, 0, False, 0, CarRaceArea.ramp_up), # Ramp Up
+            CarRaceBound(1698, 778, 1625, 579, True, 1), # Forward
+            CarRaceBound(0, 0, 0, 0, False, 0, CarRaceArea.high_turn_around),
+            CarRaceBound(1625, 579, 1698, 778, True, 1), # Back
+            CarRaceBound(0, 0, 0, 0, False, 0, CarRaceArea.ramp_down), # Ramp Down
+            CarRaceBound(2189, 1187, 2380, 987, True, 1),
+            CarRaceBound(0, 0, 0, 0, False, 0, CarRaceArea.around_dartboard_boxes),
+            CarRaceBound(2560, 990, 2692, 1183, True, 1),
+            CarRaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_in), # Tunnel In
+            CarRaceBound(3070, 1162, 3205, 987, True, 1),
+            CarRaceBound(3205, 987, 3070, 1162, True, 1),
+            CarRaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_out), # Tunnel Out
+            CarRaceBound(0, 0, 0, 0, False, 1, CarRaceArea.start_finish), # Start/Finish Line
+        ]
+        enemy_car_checkpoints = []
+        y_level = 1026
+        checkpoint_bytes_order = []
+        for bound in bounds:
+            if bound.area == CarRaceArea.ramp_up:
+                y_level = 1113
+            elif bound.area == CarRaceArea.ramp_down:
+                y_level = 1026
+            new_points = bound.getPoints(y_level, placement_bubbles)
+            if bound.area in (CarRaceArea.null, CarRaceArea.start_finish):
+                for i in range(bound.checkpoint_count):
+                    local_bytes = []
+                    for j in range(3):
+                        local_bytes.extend([
+                            (new_points[i][j] & 0xFF00) >> 8, new_points[i][j] & 0xFF
+                        ])
+                    angle = bound.getAngle()
+                    angle_rad = (angle / 2048) * math.pi
+                    local_bytes.extend([(angle & 0xFF00) >> 8, angle & 0xFF])
+                    s_angle = int(float_to_hex(math.sin(angle_rad)), 16)
+                    c_angle = int(float_to_hex(math.cos(angle_rad)), 16)
+                    for strength in [s_angle, c_angle]:
+                        strength_arr = [0, 0, 0, 0]
+                        val = strength
+                        for j in range(4):
+                            strength_arr[3 - j] = val & 0xFF
+                            val >>= 8
+                        local_bytes.extend(strength_arr)
+                    local_bytes.append(2) # Goal
+                    local_bytes.append(0) # unk11 - always 0
+                    local_bytes.extend([0, 0]) # unk12 - always 0
+                    if bound.area == CarRaceArea.start_finish:
+                        local_bytes.extend([0x00, 0x00, 0x00, 0x00]) # Scale
+                    else:
+                        local_bytes.extend([0x3F, 0x80, 0x00, 0x00]) # Scale
+                    local_bytes.extend([2, 0]) # Always 512
+                    check_type = 0x27 if bound.area == CarRaceArea.null else 0x1A
+                    local_bytes.extend([0, check_type]) # Seen values of 26,39,42,43,44,47,48,49,50,53,55,65,89,90,110,124
+                    checkpoint_bytes_order.append(local_bytes)
+            enemy_car_checkpoints.extend(new_points)
+        will_reverse = random.randint(0, 3) == 0
+        if will_reverse and False:
+            temp_checkpoints = enemy_car_checkpoints[:-1]
+            temp_check_bytes = checkpoint_bytes_order[:-1]
+            sf_checkpoint = enemy_car_checkpoints[-1]
+            sf_check_bytes = checkpoint_bytes_order[-1]
+            temp_checkpoints.reverse()
+            temp_check_bytes.reverse()
+            temp_checkpoints.append(sf_checkpoint)
+            temp_check_bytes.append(sf_check_bytes)
+            enemy_car_checkpoints = temp_checkpoints.copy()
+            checkpoint_bytes_order = temp_check_bytes.copy()
+        # Write Enemy Car AI
+        # checkpoint_ai_mapping = [
+        #     17, 15, 0, 1, 29, 2, 25, 3, 24, 4, 6, 7, 8, 9, 21, 28, 18, 16, 5, 10, 11, 12, 13, 19, 14, 20, 27, 26
+        # ]
+        checkpoint_ai_mapping = [
+            0xF, 0x0, 0x01, 0x1D, 0x02, 0x19, 0x03, 0x18, 0x04, 0x06, 0x07, 0x08, 0x09, 0x15, 0x1C, 0x12, 0x10, 0x05, 0x0A, 0x0B, 0x0C, 0x0D, 0x13, 0x0E, 0x14, 0x1B, 0x1A, 0x11
+        ]
+        map_spawners = js.pointer_addresses[16]["entries"][Maps.CastleTinyRace]["pointing_to"]
+        for point in range(len(checkpoint_ai_mapping)):
+            slot = checkpoint_ai_mapping[point]
+            ROM_COPY.seek(map_spawners + 36 + (slot * 0xA))
+            point_filtered = point
+            if point_filtered >= len(enemy_car_checkpoints):
+                point_filtered = len(enemy_car_checkpoints) - 1
+            coords = enemy_car_checkpoints[point_filtered]
+            for item in coords:
+                ROM_COPY.writeMultipleBytes(item, 2)
+        # Write checkpoint file
+        checkpoint_raw_bytes = []
+        for check in checkpoint_bytes_order:
+            checkpoint_raw_bytes.extend(check)
+        start_bytes = [1, 0, len(checkpoint_bytes_order), 0, len(checkpoint_bytes_order)]
+        for x in range(len(checkpoint_bytes_order)):
+            start_bytes.extend([0, x]) # Add Checkpoint mapping
+        start_bytes.extend(checkpoint_raw_bytes)
+        if (len(start_bytes) & 0xF) != 0:
+            diff = 0x10 - (len(start_bytes) & 0xF)
+            for _ in range(diff):
+                start_bytes.append(0)
+        map_checkpoints = js.pointer_addresses[24]["entries"][Maps.CastleTinyRace]["pointing_to"]
+        ROM_COPY.seek(map_checkpoints)
+        ROM_COPY.writeBytes(bytearray(start_bytes))
+        
