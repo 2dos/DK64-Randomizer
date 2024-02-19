@@ -1503,10 +1503,15 @@ class Settings:
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
             shuffledLocations = [
-                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+                location
+                for location in spoiler.LocationList
+                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
             ]
             shuffledLocationsShopOwner = [
-                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.NintendoCoin, Types.RarewareCoin)
+                location
+                for location in spoiler.LocationList
+                if spoiler.LocationList[location].type in self.shuffled_location_types
+                and spoiler.LocationList[location].type not in (Types.Kong, Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.NintendoCoin, Types.RarewareCoin)
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]

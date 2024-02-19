@@ -2116,7 +2116,8 @@ def compileMicrohints(spoiler: Spoiler) -> None:
         helm_prog_items = getHelmProgItems(spoiler)
         microhint_categories = {
             MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
-            MicrohintsEnabled.all: helm_prog_items.copy() + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
+            MicrohintsEnabled.all: helm_prog_items.copy()
+            + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
         }
         items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
         # Loop through locations looking for the items that need a microhint
@@ -2148,7 +2149,6 @@ def compileMicrohints(spoiler: Spoiler) -> None:
             spoiler.microhints[ItemList[Items.ProgressiveSlam].name] = (
                 f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
             )
-        
 
 
 def compileSpoilerHints(spoiler):

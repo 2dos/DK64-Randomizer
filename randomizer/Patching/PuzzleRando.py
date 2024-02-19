@@ -43,8 +43,10 @@ def shiftCastleMinecartRewardZones():
             ROM_COPY.seek(cont_map_lzs_address + start + 6)
             ROM_COPY.writeMultipleBytes(40, 2)
 
+
 class CarRaceArea(IntEnum):
     """Car Race Area enum."""
+
     null = auto()
     # Castle Car Race
     castle_car_start_finish = auto()
@@ -52,9 +54,10 @@ class CarRaceArea(IntEnum):
     ramp_down = auto()
     tunnel_in = auto()
     tunnel_out = auto()
-    around_dartboard_boxes = auto() # Used for enemy AI pathing
-    around_arcade_stairs = auto() # Used for enemy AI pathing
-    high_turn_around = auto() # Used for enemy AI Pathing
+    around_dartboard_boxes = auto()  # Used for enemy AI pathing
+    around_arcade_stairs = auto()  # Used for enemy AI pathing
+    high_turn_around = auto()  # Used for enemy AI Pathing
+
 
 class RaceBound:
     """Class to store information regarding a race bound."""
@@ -112,7 +115,7 @@ class RaceBound:
         elif self.area == CarRaceArea.high_turn_around:
             return [(1565, 1113, 625)]
         return []
-    
+
     def getAngle(self) -> int:
         """Get angle for a checkpoint."""
         if self.area == CarRaceArea.castle_car_start_finish:
@@ -132,6 +135,7 @@ class RaceBound:
                     new_angle += 4096
                 return new_angle
 
+
 def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
     """Write random castle car race pathing."""
     # Castle Car Race
@@ -142,19 +146,19 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         RaceBound(2346, 1450, 2003, 1554, True, 1),
         RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.around_arcade_stairs),
         RaceBound(2073, 1307, 2307, 1194, False, 1),
-        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.ramp_up), # Ramp Up
-        RaceBound(1698, 778, 1625, 579, True, 1), # Forward
+        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.ramp_up),  # Ramp Up
+        RaceBound(1698, 778, 1625, 579, True, 1),  # Forward
         RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.high_turn_around),
-        RaceBound(1625, 579, 1698, 778, True, 1), # Back
-        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.ramp_down), # Ramp Down
+        RaceBound(1625, 579, 1698, 778, True, 1),  # Back
+        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.ramp_down),  # Ramp Down
         RaceBound(2189, 1111, 2380, 1010, True, 1),
         RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.around_dartboard_boxes),
         RaceBound(2560, 990, 2692, 1183, True, 1),
-        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_in), # Tunnel In
+        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_in),  # Tunnel In
         RaceBound(3070, 1162, 3205, 987, True, 1),
         RaceBound(3205, 987, 3070, 1162, True, 1),
-        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_out), # Tunnel Out
-        RaceBound(0, 0, 0, 0, False, 1, CarRaceArea.castle_car_start_finish), # Start/Finish Line
+        RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_out),  # Tunnel Out
+        RaceBound(0, 0, 0, 0, False, 1, CarRaceArea.castle_car_start_finish),  # Start/Finish Line
     ]
     enemy_car_checkpoints = []
     y_level = 1026
@@ -169,9 +173,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
             for i in range(bound.checkpoint_count):
                 local_bytes = []
                 for j in range(3):
-                    local_bytes.extend([
-                        (new_points[i][j] & 0xFF00) >> 8, new_points[i][j] & 0xFF
-                    ])
+                    local_bytes.extend([(new_points[i][j] & 0xFF00) >> 8, new_points[i][j] & 0xFF])
                 angle = bound.getAngle()
                 angle_rad = (angle / 2048) * math.pi
                 local_bytes.extend([(angle & 0xFF00) >> 8, angle & 0xFF])
@@ -184,16 +186,16 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
                         strength_arr[3 - j] = val & 0xFF
                         val >>= 8
                     local_bytes.extend(strength_arr)
-                local_bytes.append(2) # Goal
-                local_bytes.append(0) # unk11 - always 0
-                local_bytes.extend([0, 0]) # unk12 - always 0
+                local_bytes.append(2)  # Goal
+                local_bytes.append(0)  # unk11 - always 0
+                local_bytes.extend([0, 0])  # unk12 - always 0
                 if bound.area == CarRaceArea.castle_car_start_finish:
-                    local_bytes.extend([0x00, 0x00, 0x00, 0x00]) # Scale
+                    local_bytes.extend([0x00, 0x00, 0x00, 0x00])  # Scale
                 else:
-                    local_bytes.extend([0x3F, 0x80, 0x00, 0x00]) # Scale
-                local_bytes.extend([2, 0]) # Always 512
+                    local_bytes.extend([0x3F, 0x80, 0x00, 0x00])  # Scale
+                local_bytes.extend([2, 0])  # Always 512
                 check_type = 0x27 if bound.area == CarRaceArea.null else 0x1A
-                local_bytes.extend([0, check_type]) # Seen values of 26,39,42,43,44,47,48,49,50,53,55,65,89,90,110,124
+                local_bytes.extend([0, check_type])  # Seen values of 26,39,42,43,44,47,48,49,50,53,55,65,89,90,110,124
                 checkpoint_bytes_order.append(local_bytes)
         enemy_car_checkpoints.extend(new_points)
     will_reverse = random.randint(0, 3) == 0
@@ -209,9 +211,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         enemy_car_checkpoints = temp_checkpoints.copy()
         checkpoint_bytes_order = temp_check_bytes.copy()
     # Write Enemy Car AI
-    checkpoint_ai_mapping = [
-        0xF, 0x0, 0x01, 0x1D, 0x02, 0x19, 0x03, 0x18, 0x04, 0x06, 0x07, 0x08, 0x09, 0x15, 0x1C, 0x12, 0x10, 0x05, 0x0A, 0x0B, 0x0C, 0x0D, 0x13, 0x0E, 0x14, 0x1B, 0x1A, 0x11
-    ]
+    checkpoint_ai_mapping = [0xF, 0x0, 0x01, 0x1D, 0x02, 0x19, 0x03, 0x18, 0x04, 0x06, 0x07, 0x08, 0x09, 0x15, 0x1C, 0x12, 0x10, 0x05, 0x0A, 0x0B, 0x0C, 0x0D, 0x13, 0x0E, 0x14, 0x1B, 0x1A, 0x11]
     map_spawners = js.pointer_addresses[16]["entries"][Maps.CastleTinyRace]["pointing_to"]
     for point in range(len(checkpoint_ai_mapping)):
         slot = checkpoint_ai_mapping[point]
@@ -228,7 +228,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         checkpoint_raw_bytes.extend(check)
     start_bytes = [1, 0, len(checkpoint_bytes_order), 0, len(checkpoint_bytes_order)]
     for x in range(len(checkpoint_bytes_order)):
-        start_bytes.extend([0, x]) # Add Checkpoint mapping
+        start_bytes.extend([0, x])  # Add Checkpoint mapping
     start_bytes.extend(checkpoint_raw_bytes)
     if (len(start_bytes) & 0xF) != 0:
         diff = 0x10 - (len(start_bytes) & 0xF)
@@ -472,7 +472,7 @@ def randomize_puzzles(spoiler):
                 "count": 32,
                 "size": 10,
                 "start_angle": 0,
-            }
+            },
         }
         for map_index in race_data:
             map_spawners = js.pointer_addresses[16]["entries"][map_index]["pointing_to"]
@@ -506,4 +506,3 @@ def randomize_puzzles(spoiler):
                 ROM_COPY.writeMultipleBytes(y, 2)
                 ROM_COPY.writeMultipleBytes(z, 2)
         writeRandomCastleCarRace(ROM_COPY, spoiler)
-        

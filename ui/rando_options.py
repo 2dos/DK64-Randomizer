@@ -150,6 +150,7 @@ def max_randomized_fairies(event):
     elif int(fairy_req.value) > 20:
         fairy_req.value = 20
 
+
 @bind("focusout", "mermaid_gb_pearls")
 def max_randomized_pearls(event):
     """Validate pearl input on loss of focus."""

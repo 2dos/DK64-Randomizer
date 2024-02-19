@@ -79,7 +79,6 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Factory Car Race: 70%
 	- Galleon Seal Race: 70%
 	- Galleon Mech Fish: 70%
-	- Galleon Mermaid Gb: 70%
 	- Forest Mill Conveyor: 70%
 	- Forest Owl Race: 70%
 	- Forest Rabbit Race: 70%
@@ -139,6 +138,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Fakeitem: 50%
 	- Junkitem: 50%
 	- Crateitem: 50%
+	- Shopowners: 30%
 - Random Kasplat Locations: 
 	- Off: 15%
 	- Vanilla Locations: 55%
@@ -157,6 +157,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Glitchless: 100%
 - Maximize Helm B. Locker: 15%
 - Randomize Medal CB Requirement: Between 15 and 90, usually close to 40
+- Pearls for Mermaid GB: Between 2 and 5, usually close to 3
 - Extra Hints: 
 	- Off: 30%
 	- Base: 35%

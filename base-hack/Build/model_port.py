@@ -474,7 +474,7 @@ def ripCollision(collision_source_model: int, output_model: int, output_file: st
 
 
 def createMelon():
-    """Creates melon model based off pearl."""
+    """Create melon model based off pearl."""
     with open(ROMName, "rb") as rom:
         with open("melon_3d_om2.bin", "wb") as fh:
             pearl = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x1B4)

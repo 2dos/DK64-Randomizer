@@ -297,6 +297,7 @@ def getRandomKlaptrapModel() -> Model:
     """Get random klaptrap model."""
     return random.choice(KLAPTRAPS)
 
+
 def changePatchFace(settings: Settings):
     """Change the top of the dirt patch image."""
     if not settings.better_dirt_patch_cosmetic:
@@ -315,6 +316,7 @@ def changePatchFace(settings: Settings):
     dirt_im.paste(letd_im, (0, 0), letd_im)
     dirt_im.paste(letk_im, (16, 0), letk_im)
     writeColorImageToROM(dirt_im, 25, 0x1379, 32, 32, False, TextureFormat.RGBA5551)
+
 
 def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
@@ -1980,7 +1982,7 @@ def hueShiftImageContainer(table: int, image: int, width: int, height: int, form
 
 
 def getEnemySwapColor(channel_min: int = 0, channel_max: int = 255, min_channel_variance: int = 0) -> int:
-    """Gets an RGB color compatible with enemy swaps"""
+    """Get an RGB color compatible with enemy swaps."""
     channels = []
     for _ in range(2):
         channels.append(random.randint(channel_min, channel_max))

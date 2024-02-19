@@ -160,7 +160,6 @@ class LogicVarHolder:
         self.nintendoCoin = False
         self.rarewareCoin = False
 
-
         self.camera = self.settings.shockwave_status == ShockwaveStatus.start_with
         self.shockwave = self.settings.shockwave_status == ShockwaveStatus.start_with
 
@@ -180,7 +179,7 @@ class LogicVarHolder:
         self.funkyAccess = False
         self.candyAccess = False
         self.snideAccess = False
-        
+
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
         self.HelmDiddy1 = False
@@ -993,9 +992,9 @@ class LogicVarHolder:
                 return False
             elif order_of_level > 7 and (not self.CavesKey or not self.CastleKey):
                 return False
-            
+
         if level == Levels.HideoutHelm:
-            if (not self.snideAccess) and self.settings.helm_setting != HelmSetting.skip_all: # Disable Helm Entry logically if you are missing Snide
+            if (not self.snideAccess) and self.settings.helm_setting != HelmSetting.skip_all:  # Disable Helm Entry logically if you are missing Snide
                 return False
 
         # If we have the moves, ensure we have enough kongs as well

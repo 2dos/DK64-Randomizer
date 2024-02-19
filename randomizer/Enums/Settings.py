@@ -350,6 +350,7 @@ class ItemRandoListSelected(IntEnum):
     rarewarecoin = 16
     shopowners = 17
 
+
 class KasplatRandoSetting(IntEnum):
     """Determines if and how Kasplats are randomized.
 

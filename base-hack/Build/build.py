@@ -939,7 +939,7 @@ colorblind_changes = [
     [0x119F, 0x11AB, 1, 1372],  # Ghost something
     [0x11AC, 0x11AC, 1, 688],  # Ghost something
     [0x11AD, 0x11AE, 1, 1372],  # Ghost something
-    [0x1379, 0x1379, 32, 32], # Dirt Face
+    [0x1379, 0x1379, 32, 32],  # Dirt Face
 ]
 
 kremling_dimensions = [

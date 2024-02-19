@@ -205,7 +205,6 @@ textboxes = [
 ]
 
 
-
 text_rewards = {
     Types.Banana: ("\x04GOLDEN BANANA\x04", "\x04BANANA OF PURE GOLD\x04"),
     Types.Blueprint: ("\x04BLUEPRINT\x04", "\x04MAP O' DEATH MACHINE\x04"),
@@ -601,7 +600,7 @@ def place_randomized_items(spoiler):
                             Types.Cranky,  # Cranky Item
                             Types.Funky,  # Funky Item
                             Types.Candy,  # Candy Item
-                            Types.Snide, # Snide Item
+                            Types.Snide,  # Snide Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
@@ -685,7 +684,7 @@ def place_randomized_items(spoiler):
                 elif item.new_item != Items.NoItem and item.new_item is not None:
                     raise Exception(f"Invalid item {item.new_subitem.name} placed in shopkeeper slot. This shouldn't happen.")
         # Patch pre-given shops
-        if pregiven_shop_owners is not None: # Shop owners in pool
+        if pregiven_shop_owners is not None:  # Shop owners in pool
             data = 0
             or_data = {
                 Types.Cranky: 0x80,

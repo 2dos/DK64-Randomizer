@@ -386,9 +386,7 @@ with open(ROMName, "rb") as rom:
         decompress = zlib.decompress(compress, (15 + 32))
         fh.write(decompress[:0xD84])  # Copy initial data
         dirt_reward_array = [x + 6026 + (2 * len(barrel_skins)) for x in range(len(barrel_skins))]
-        texture_arrays = [
-            [0x1379] + dirt_reward_array
-        ]
+        texture_arrays = [[0x1379] + dirt_reward_array]
         fh.write(len(texture_arrays).to_bytes(2, "big"))
         for arr_index, arr in enumerate(texture_arrays):
             fh.write(len(arr).to_bytes(2, "big"))

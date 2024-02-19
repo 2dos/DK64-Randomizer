@@ -830,7 +830,7 @@ def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
 
 
 def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_crown_door: bool = False) -> BarrierItems:
-    """Converts helm door item enum to barrier item enum."""
+    """Convert helm door item enum to barrier item enum."""
     if item == HelmDoorItem.vanilla:
         if is_coin_door:
             return BarrierItems.CompanyCoin

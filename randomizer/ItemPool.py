@@ -405,13 +405,16 @@ def HighPriorityItems(settings):
     itemPool.extend(Upgrades(settings))
     return itemPool
 
+
 def NintendoCoinItems():
     """Return Nintendo Coin."""
     return [Items.NintendoCoin]
 
+
 def RarewareCoinItems():
     """Return Rareware Coin."""
     return [Items.RarewareCoin]
+
 
 TOUGH_BANANA_COUNT = 13
 
@@ -482,20 +485,24 @@ def FakeItems():
     itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
     return itemPool
 
+
 def CrankyItems():
-    """Returns a list of Cranky shop owners to be placed."""
+    """Return a list of Cranky shop owners to be placed."""
     return [Items.Cranky]
 
+
 def FunkyItems():
-    """Returns a list of Funky shop owners to be placed."""
+    """Return a list of Funky shop owners to be placed."""
     return [Items.Funky]
 
+
 def CandyItems():
-    """Returns a list of Candy shop owners to be placed."""
+    """Return a list of Candy shop owners to be placed."""
     return [Items.Candy]
 
+
 def SnideItems():
-    """Returns a list of Snide shop owners to be placed."""
+    """Return a list of Snide shop owners to be placed."""
     return [Items.Snide]
 
 
