@@ -508,6 +508,7 @@ class Settings:
         self.music_volume = 100
         self.true_widescreen = False
         self.troff_brighten = False
+        self.better_dirt_patch_cosmetic = False
         self.crosshair_outline = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo

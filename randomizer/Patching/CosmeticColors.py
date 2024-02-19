@@ -297,6 +297,24 @@ def getRandomKlaptrapModel() -> Model:
     """Get random klaptrap model."""
     return random.choice(KLAPTRAPS)
 
+def changePatchFace(settings: Settings):
+    """Change the top of the dirt patch image."""
+    if not settings.better_dirt_patch_cosmetic:
+        return
+    dirt_im = getFile(25, 0x1379, True, 32, 32, TextureFormat.RGBA5551)
+    letd_im = getFile(14, 0x75, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32)).rotate(-5)
+    letk_im = getFile(14, 0x76, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32))
+    letter_ims = (letd_im, letk_im)
+    for letter in letter_ims:
+        imw, imh = letter.size
+        px = letter.load()
+        for x in range(imw):
+            for y in range(imh):
+                r, g, b, a = letter.getpixel((x, y))
+                px[x, y] = (r, g, b, 150 if a > 128 else 0)
+    dirt_im.paste(letd_im, (0, 0), letd_im)
+    dirt_im.paste(letk_im, (16, 0), letk_im)
+    writeColorImageToROM(dirt_im, 25, 0x1379, 32, 32, False, TextureFormat.RGBA5551)
 
 def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
@@ -314,6 +332,8 @@ def apply_cosmetic_colors(settings: Settings):
 
     ROM_COPY = ROM()
     sav = settings.rom_data
+
+    changePatchFace(settings)
 
     ROM_COPY.seek(settings.rom_data + 0x11C)
     krusha_byte = int.from_bytes(ROM_COPY.readBytes(1), "big")
