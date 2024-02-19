@@ -147,10 +147,12 @@ int isObjectTangible_detailed(int id) {
     if ((CurrentMap == MAP_FUNGIMILLFRONT) && (id == 0xA)) {
         return 0;
     }
-    if (!checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
-        if ((id >= 0x5D) && (id <= 0x61)) {
-            if (!checkFlag(helm_temp_flags[id - 0x5D], FLAGTYPE_TEMPORARY)) {
-                return 0;
+    if (CurrentMap == MAP_HELM) {
+        if (!checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
+            if ((id >= 0x5D) && (id <= 0x61)) {
+                if (!checkFlag(helm_temp_flags[id - 0x5D], FLAGTYPE_TEMPORARY)) {
+                    return 0;
+                }
             }
         }
     }
