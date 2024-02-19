@@ -310,6 +310,7 @@ file_dict = [
         do_not_delete_source=True,
     ),
     File(name="B. Locker", pointer_table_index=TableNames.ActorGeometry, file_index=0x64, source_file="blocker_base.bin", do_not_delete_source=True),
+    File(name="Dirt Patch", pointer_table_index=TableNames.ActorGeometry, file_index=0xDF, source_file="dirt_base.bin", do_not_delete_source=True),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
     File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
     File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=113, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
@@ -995,6 +996,15 @@ for bi, b in enumerate(barrel_skins):
                 texture_format=TextureFormat.RGBA5551,
             )
         )
+    file_dict.append(
+        File(
+            name=f"Dirt Patch Skin ({b.capitalize()})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=6026 + (2 * len(barrel_skins)) + bi,
+            source_file=f"assets/displays/dirt_reward_{b}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False)  # Battle Crown
 shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False)  # Boss Key
@@ -1303,7 +1313,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6100)
+    clampCompressedTextures(fh, 6200)
     for x in file_dict:
         if x.bps_file is not None:
             with open(x.source_file, "rb") as fg:
@@ -1702,7 +1712,7 @@ with open(newROMName, "r+b") as fh:
         "cranky_head",
     ]
     for b in barrel_skins:
-        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")

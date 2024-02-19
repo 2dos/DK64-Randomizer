@@ -234,33 +234,6 @@ typedef struct barrel_skin_tie {
     /* 0x002 */ unsigned short skin;
 } barrel_skin_tie;
 
-typedef enum enum_bonus_skin {
-    /* 0x000 */ SKIN_GB,
-    /* 0x001 */ SKIN_KONG_DK,
-    /* 0x002 */ SKIN_KONG_DIDDY,
-    /* 0x003 */ SKIN_KONG_LANKY,
-    /* 0x004 */ SKIN_KONG_TINY,
-    /* 0x005 */ SKIN_KONG_CHUNKY,
-    /* 0x006 */ SKIN_BLUEPRINT,
-    /* 0x007 */ SKIN_NINTENDO_COIN,
-    /* 0x008 */ SKIN_RAREWARE_COIN,
-    /* 0x009 */ SKIN_KEY,
-    /* 0x00A */ SKIN_CROWN,
-    /* 0x00B */ SKIN_MEDAL,
-    /* 0x00C */ SKIN_POTION,
-    /* 0x00D */ SKIN_BEAN,
-    /* 0x00E */ SKIN_PEARL,
-    /* 0x00F */ SKIN_FAIRY,
-    /* 0x010 */ SKIN_RAINBOW_COIN,
-    /* 0x011 */ SKIN_FAKE_ITEM,
-    /* 0x012 */ SKIN_JUNK_ITEM,
-    /* 0x013 */ SKIN_CRANKY,
-    /* 0x014 */ SKIN_FUNKY,
-    /* 0x015 */ SKIN_CANDY,
-    /* 0x016 */ SKIN_SNIDE,
-    /* ----- */ SKIN_TERMINATOR,
-} enum_bonus_skin;
-
 static const barrel_skin_tie bonus_skins[] = {
     {.actor = 78, .skin=SKIN_BLUEPRINT},
     {.actor = 75, .skin=SKIN_BLUEPRINT},
@@ -323,6 +296,25 @@ int alterBonusVisuals(int index) {
     return getBonusFlag(index);
 }
 
+int getDirtPatchSkin(int flag, flagtypes flag_type) {
+    int gone = checkFlag(flag, flag_type);
+    if (gone) {
+        return 1;
+    }
+    if (Rando.location_visuals & 8) {
+        int index = flag - FLAG_RAINBOWCOIN_0;
+        if (index < 16) {
+            int actor = getRainbowCoinItem(flag);
+            enum_bonus_skin skin = getBarrelSkinIndex(actor);
+            blink(CurrentActorPointer_0, 0, 1);
+            applyImageToActor(CurrentActorPointer_0, 0, 0);
+            adjustColorPalette(CurrentActorPointer_0, 0, skin + 1, 0.0f);
+            unkPaletteFunc(CurrentActorPointer_0, 0, 0);
+        }
+    }
+    return gone;
+}
+
 void initItemRando(void) {
     /**
      * @brief Initialize Item Rando functionality
@@ -362,6 +354,7 @@ void initItemRando(void) {
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
     writeFunction(0x80680AE8, &alterBonusVisuals); // Get Bonus Flag Check
+    writeFunction(0x806A206C, &getDirtPatchSkin); // Get Dirt Flag Check
     writeFunction(0x80681854, &getBonusFlag); // Get Bonus Flag Check
     writeFunction(0x806C63A8, &getBonusFlag); // Get Bonus Flag Check
     writeFunction(0x806F78B8, &getKongFromBonusFlag); // Reward Table Kong Check

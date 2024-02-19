@@ -145,6 +145,7 @@ if os.path.exists(krusha_file):
 
 BARREL_BASE = 0xE3  # 0x75
 BLOCKER_BASE = 0x64
+DIRT_BASE = 0xDF
 
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
@@ -372,6 +373,37 @@ with open(ROMName, "rb") as rom:
                 fh.write((0).to_bytes(1, "big"))
     with open("blocker_base.bin", "r+b") as fh:
         fh.seek(0x256C)
+        fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big"))
+    # New Dirt Patch
+    rom.seek(actor_table + (DIRT_BASE << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    BASE_TEXTURE = 0xC
+    rom.seek(model_start)
+    with open("dirt_base.bin", "wb") as fh:
+        compress = rom.read(model_size)
+        decompress = zlib.decompress(compress, (15 + 32))
+        fh.write(decompress[:0xD84])  # Copy initial data
+        dirt_reward_array = [x + 6026 + (2 * len(barrel_skins)) for x in range(len(barrel_skins))]
+        texture_arrays = [
+            [0x1379] + dirt_reward_array
+        ]
+        fh.write(len(texture_arrays).to_bytes(2, "big"))
+        for arr_index, arr in enumerate(texture_arrays):
+            fh.write(len(arr).to_bytes(2, "big"))
+            key = 0xC + arr_index
+            fh.write(key.to_bytes(2, "big"))
+            fh.write((1).to_bytes(2, "big"))
+            for item in arr:
+                fh.write(item.to_bytes(2, "big"))
+        raw_size = fh.tell()
+        offset = raw_size & 3
+        if offset != 0:
+            for x in range(4 - offset):
+                fh.write((0).to_bytes(1, "big"))
+    with open("dirt_base.bin", "r+b") as fh:
+        fh.seek(0x5FC)
         fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big"))
 
     # Fake Item - Model Two

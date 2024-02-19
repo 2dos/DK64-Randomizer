@@ -471,6 +471,9 @@ extern void initBLocker(void);
 extern int getGamePercentage(void);
 extern void setBurpModel(void);
 
+extern enum_bonus_skin getBarrelSkinIndex(int actor);
+extern int getDirtPatchSkin(int flag, flagtypes flag_type);
+
 extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);

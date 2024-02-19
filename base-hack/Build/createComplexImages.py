@@ -538,6 +538,17 @@ for skin_type in skins:
         whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((BASE_SIZE, BASE_SIZE))
     if skin_type != "fakegb":
         whole = whole.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    # Handle dirt patches
+    dirt = Image.open(f"{hash_dir}dirt_face.png")
+    whole_dirt_resized = whole.resize((32, 32)).transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    dirt_imw, dirt_imh = whole_dirt_resized.size
+    dirt_reward_px = whole_dirt_resized.load()
+    for x in range(dirt_imw):
+        for y in range(dirt_imh):
+            r, g, b, a = whole_dirt_resized.getpixel((x, y))
+            dirt_reward_px[x, y] = (r, g, b, 150 if a > 128 else 0)
+    dirt.paste(whole_dirt_resized, (0, 0), whole_dirt_resized)
+    dirt.save(f"{disp_dir}dirt_reward_{skin_type}.png")
     # Resize image to combat stretching
     whole_0 = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
     whole = whole.resize((BASE_SIZE, int(BASE_SIZE * 0.8)))
