@@ -826,9 +826,9 @@ class Settings:
             HelmDoorItem.req_gb: HelmDoorInfo(201),
             HelmDoorItem.req_bp: HelmDoorInfo(
                 40,
-                HelmDoorRandomInfo(10, 30, 0.18),
-                HelmDoorRandomInfo(7, 25, 0.2),
-                HelmDoorRandomInfo(5, 15, 0.2),
+                HelmDoorRandomInfo(20, 30, 0.1),
+                HelmDoorRandomInfo(10, 20, 0.2),
+                HelmDoorRandomInfo(4, 10, 0.25),
             ),
             HelmDoorItem.req_companycoins: HelmDoorInfo(
                 2,
@@ -837,27 +837,27 @@ class Settings:
             HelmDoorItem.req_key: HelmDoorInfo(8),
             HelmDoorItem.req_medal: HelmDoorInfo(
                 40,
-                HelmDoorRandomInfo(10, 20, 0.18),
-                HelmDoorRandomInfo(7, 15, 0.2),
-                HelmDoorRandomInfo(5, 10, 0.2),
+                HelmDoorRandomInfo(20, 30, 0.2),
+                HelmDoorRandomInfo(10, 20, 0.21),
+                HelmDoorRandomInfo(4, 10, 0.25),
             ),
             HelmDoorItem.req_crown: HelmDoorInfo(
                 10,
-                HelmDoorRandomInfo(3, 6, 0.1),
-                HelmDoorRandomInfo(2, 4, 0.1),
-                HelmDoorRandomInfo(1, 3, 0.06),
+                HelmDoorRandomInfo(5, 7, 0.14),
+                HelmDoorRandomInfo(3, 5, 0.14),
+                HelmDoorRandomInfo(1, 3, 0.1),
             ),
             HelmDoorItem.req_fairy: HelmDoorInfo(
                 18,
-                HelmDoorRandomInfo(5, 10, 0.15),
-                HelmDoorRandomInfo(3, 7, 0.14),
-                HelmDoorRandomInfo(1, 5, 0.18),
+                HelmDoorRandomInfo(9, 14, 0.18),
+                HelmDoorRandomInfo(5, 9, 0.18),
+                HelmDoorRandomInfo(2, 5, 0.18),
             ),  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
             HelmDoorItem.req_rainbowcoin: HelmDoorInfo(
                 16,
-                HelmDoorRandomInfo(6, 10, 0.14),
-                HelmDoorRandomInfo(4, 8, 0.15),
-                HelmDoorRandomInfo(3, 5, 0.18),
+                HelmDoorRandomInfo(8, 12, 0.18),
+                HelmDoorRandomInfo(4, 8, 0.18),
+                HelmDoorRandomInfo(2, 4, 0.18),
             ),
             HelmDoorItem.req_bean: HelmDoorInfo(
                 1,
@@ -866,9 +866,9 @@ class Settings:
             ),
             HelmDoorItem.req_pearl: HelmDoorInfo(
                 5,
-                HelmDoorRandomInfo(3, 4, 0.15),
-                HelmDoorRandomInfo(2, 4, 0.2),
-                HelmDoorRandomInfo(2, 3, 0.18),
+                HelmDoorRandomInfo(2, 4, 0.1),
+                HelmDoorRandomInfo(1, 2, 0.08),
+                HelmDoorRandomInfo(1, 1, 0.04),
             ),
         }
         random_helm_door_settings = (HelmDoorItem.easy_random, HelmDoorItem.medium_random, HelmDoorItem.hard_random)
@@ -1065,10 +1065,6 @@ class Settings:
                 orderedRooms.append(1)
         self.helm_order = orderedRooms
         self.kong_helm_order = rooms
-
-        # Start Region
-        if self.random_starting_region:
-            self.RandomizeStartingLocation()
 
         # Initial Switch Level Placement - Will be corrected if level order rando is on during the fill process. Disable it for vanilla
         if self.level_randomization == LevelRandomization.vanilla:
@@ -1358,6 +1354,9 @@ class Settings:
 
     def finalize_world_settings(self, spoiler):
         """Finalize the world state after settings initialization."""
+        # Starting Region Randomization
+        if self.random_starting_region:
+            self.RandomizeStartingLocation(spoiler)
         self.shuffle_prices(spoiler)
         # Starting Move Location handling
         # Undo any damage that might leak between seeds
@@ -1680,7 +1679,7 @@ class Settings:
             kongCageLocations.append(random.choice([Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong]))
         return kongCageLocations
 
-    def RandomizeStartingLocation(self):
+    def RandomizeStartingLocation(self, spoiler):
         """Randomize the starting point of this seed."""
         region_data = [
             randomizer.LogicFiles.DKIsles.LogicRegions,
@@ -1730,7 +1729,7 @@ class Settings:
                         )
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
-            randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
+            spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 
     def ApplyPlandomizerSettings(self):
         """Apply settings specified by the plandomizer."""

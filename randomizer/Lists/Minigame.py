@@ -240,7 +240,7 @@ MinigameRequirements = {
         group="Arenas",
         map_id=Maps.EnguardeArena,
         can_repeat=True,
-        logic=lambda l: l.swim,
+        logic=lambda l: True,
     ),
     Minigames.BarrelBarrel: Minigame(
         name="Barrel Training",

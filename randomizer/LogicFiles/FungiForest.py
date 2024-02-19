@@ -27,7 +27,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearAppleDropoff, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearDKPortal, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearWellTag, lambda l: True),
-        LocationLogic(Locations.ForestMainEnemy_GreenTunnel, lambda l: l.pineapple and l.chunky),
+        LocationLogic(Locations.ForestMainEnemy_GreenTunnel, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False))),
     ], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
@@ -94,6 +94,7 @@ LogicRegions = {
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", "Giant Mushroom Exterior", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.ForestMainEnemy_NearBBlast, lambda l: True),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
@@ -104,7 +105,6 @@ LogicRegions = {
 
     Regions.ForestBaboonBlast: Region("Forest Baboon Blast", "Giant Mushroom Exterior", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.isdonkey, MinigameType.BonusBarrel),
-        LocationLogic(Locations.ForestMainEnemy_NearBBlast, lambda l: True),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True)

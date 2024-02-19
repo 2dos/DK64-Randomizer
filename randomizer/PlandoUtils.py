@@ -136,22 +136,7 @@ for locEnum, locObj in LocationList.items():
 
 # Banana fairy locations have a handful of limitations.
 bananaFairyRestrictedItems = {
-    PlandoItems.Coconut.name,
-    PlandoItems.Peanut.name,
-    PlandoItems.Grape.name,
-    PlandoItems.Feather.name,
-    PlandoItems.Pineapple.name,
-    PlandoItems.HomingAmmo.name,
-    PlandoItems.SniperSight.name,
-    PlandoItems.ProgressiveAmmoBelt.name,
-    PlandoItems.Bongos.name,
-    PlandoItems.Guitar.name,
-    PlandoItems.Trombone.name,
-    PlandoItems.Saxophone.name,
-    PlandoItems.Triangle.name,
-    PlandoItems.ProgressiveInstrumentUpgrade.name,
     PlandoItems.Camera.name,
-    PlandoItems.Shockwave.name,
     PlandoItems.NintendoCoin.name,
     PlandoItems.RarewareCoin.name,
     PlandoItems.BananaMedal.name,
