@@ -23,23 +23,32 @@ class CreditItem:
             self.duration = names_length * 2
         self.text = text
 
+
 stats = [
-    CreditItem(CreditsDirection.top, CreditsType.header, [""]), # Header
-    CreditItem(CreditsDirection.left, CreditsType.longheader, [
-        "", # Kong IGT
-        "", # DK Count
-        "", # Diddy Count
-        "", # Lanky Count
-        "", # Tiny Count
-        "", # Chunky Count
-    ]),
-    CreditItem(CreditsDirection.right, CreditsType.longheader, [
-        "", # Misc
-        "", # Tags
-        "", # Photos
-        "", # Kops
-        "", # Enemies
-    ]),
+    CreditItem(CreditsDirection.top, CreditsType.header, [""]),  # Header
+    CreditItem(
+        CreditsDirection.left,
+        CreditsType.longheader,
+        [
+            "",  # Kong IGT
+            "",  # DK Count
+            "",  # Diddy Count
+            "",  # Lanky Count
+            "",  # Tiny Count
+            "",  # Chunky Count
+        ],
+    ),
+    CreditItem(
+        CreditsDirection.right,
+        CreditsType.longheader,
+        [
+            "",  # Misc
+            "",  # Tags
+            "",  # Photos
+            "",  # Kops
+            "",  # Enemies
+        ],
+    ),
 ]
 
 main_devs = [
