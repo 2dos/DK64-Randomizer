@@ -603,6 +603,9 @@ typedef enum extra_global_data {
 
 typedef enum bonus_stat {
     /* 0x000 */ STAT_TAGCOUNT,
+	/* 0x001 */ STAT_PHOTOSTAKEN,
+	/* 0x002 */ STAT_ENEMIESKILLED,
+	/* 0x003 */ STAT_KOPCAUGHT,
     /* ----- */ STAT_TERMINATOR,
 } bonus_stat;
 

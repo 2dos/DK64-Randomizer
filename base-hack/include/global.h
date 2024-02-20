@@ -160,6 +160,7 @@ extern void initCollectableCollision(void);
 extern void initActorDefs(void);
 extern void initSmallerQuadChecks(void);
 extern void initStatistics(void);
+extern void updateKopStat(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);

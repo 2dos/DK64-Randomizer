@@ -23,6 +23,24 @@ class CreditItem:
             self.duration = names_length * 2
         self.text = text
 
+stats = [
+    CreditItem(CreditsDirection.top, CreditsType.header, [""]), # Header
+    CreditItem(CreditsDirection.left, CreditsType.longheader, [
+        "", # Kong IGT
+        "", # DK Count
+        "", # Diddy Count
+        "", # Lanky Count
+        "", # Tiny Count
+        "", # Chunky Count
+    ]),
+    CreditItem(CreditsDirection.right, CreditsType.longheader, [
+        "", # Misc
+        "", # Tags
+        "", # Photos
+        "", # Kops
+        "", # Enemies
+    ]),
+]
 
 main_devs = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Randomizer Developers"]),
@@ -74,6 +92,7 @@ links = [
 ]
 
 end_sequence_cards = []
+end_sequence_cards.extend(stats)
 end_sequence_cards.extend(main_devs)
 end_sequence_cards.extend(assistant_devs)
 
@@ -95,8 +114,9 @@ def createTextFile(directory):
     with open(f"{directory}/credits.bin", "wb") as fh:
         for card in end_sequence_cards:
             for item in card.text:
-                new_item = item.upper() + "\n"
-                fh.write(new_item.encode("ascii"))
+                if len(item) > 0:
+                    new_item = item.upper() + "\n"
+                    fh.write(new_item.encode("ascii"))
         terminator = "*\n"
         fh.write(terminator.encode("ascii"))
 

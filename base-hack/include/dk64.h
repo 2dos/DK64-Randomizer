@@ -121,6 +121,7 @@ extern void resetActorDL(void* actor);
 extern int getActorModelIndex(void* actor);
 
 extern void regularFrameLoop(void);
+extern void handleMusicTransition(void);
 
 extern void loadJetpacSprites(void);
 
