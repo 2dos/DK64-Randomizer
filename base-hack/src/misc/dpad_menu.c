@@ -88,9 +88,6 @@ int* drawDPad(int* dl) {
     }
     int DPAD_Y = DPAD_Y_HIGH;
     int dpad_x_pos = DPAD_X;
-    if (Rando.true_widescreen) {
-        dpad_x_pos = (SCREEN_WD * 4) - 255;
-    }
     if (Rando.dpad_visual_enabled == DPADVISIBLE_ALL) {
         dl = drawImage(dl, IMAGE_DPAD, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y + 70, DPAD_SCALE, DPAD_SCALE, 0xC0);
         if ((Rando.tag_anywhere) && (Character < 5)) {

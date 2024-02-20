@@ -80,9 +80,7 @@ void checkItemDB(void) {
     /**
      * @brief Check item database for variables, and change check screen totals to accommodate
      */
-    if ((!Rando.true_widescreen) || (!WS_REMOVE_TRANSITIONS)) {
-        renderScreenTransition(7);
-    }
+    renderScreenTransition(7);
     initTracker();
     initHints();
     stored_igt = getNewSaveTime();
@@ -223,9 +221,6 @@ int* pauseScreen3And4Header(int* dl) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     display_billboard_fix = 0;
     int level_x = 0x280;
-    if (Rando.true_widescreen) {
-        level_x = SCREEN_WD * 2;
-    }
     if (paad->screen == PAUSESCREEN_TOTALS) {
         return printText(dl, level_x, 0x3C, 0.65f, "TOTALS");
     } else if (paad->screen == PAUSESCREEN_CHECKS) {

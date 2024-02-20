@@ -504,9 +504,6 @@ void modifyTrackerImage(int dl_offset) {
 
 int getTrackerYOffset(void) {
 	float y_temp = DEFAULT_TRACKER_Y_OFFSET;
-	if ((Rando.true_widescreen) && (CurrentMap == MAP_MAINMENU)) {
-		y_temp = DEFAULT_TRACKER_Y_OFFSET * (SCREEN_HD_FLOAT / 240.0f);
-	}
 	return y_temp;
 }
 
@@ -520,9 +517,6 @@ int* display_file_images(int* dl, int y_offset) {
 	 * @return New Display List Address
 	 */
 	int tracker_x = 160;
-	if (Rando.true_widescreen) {
-		tracker_x = SCREEN_WD >> 1;
-	}
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + getTrackerYOffset(),1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	return dl;
@@ -537,9 +531,6 @@ int* display_text(int* dl) {
 	 * @return New Display List Address
 	 */
 	int y = FileScreenDLOffset - 320;
-	if (Rando.true_widescreen) {
-		y -= ((DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset()) * 2);
-	}
 	// Balanced IGT
 	// y += LINE_GAP;
 	int secs = IGT % 60;
@@ -549,9 +540,6 @@ int* display_text(int* dl) {
 	int minutes = hm % 60;
 	int hours = hm / 60;
 	float stat_x = 410;
-	if (Rando.true_widescreen) {
-		stat_x = SCREEN_WD + 90.0f;
-	}
 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
 	dl = drawText(dl, 1, stat_x, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	// Percentage Counter
@@ -580,10 +568,6 @@ int* displayHash(int* dl, int y_offset) {
 		int hash_index = Rando.hash[i] % 10;
 		int starting_x = 440.0f;
 		int hash_y = 920;
-		if (Rando.true_widescreen) {
-			starting_x = (SCREEN_WD << 1) - 200;
-			hash_y = (4 * SCREEN_HD) - 40;
-		}
 		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, starting_x + (100 * i), hash_y - y_offset, 3.0f, 3.0f, 0xFF);
 	}
 	int info_y = 480 - y_offset;

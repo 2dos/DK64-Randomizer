@@ -782,14 +782,8 @@ void getNextMoveText(void) {
 			mtx_item mtx1;
 			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
 			float start_y = 800.0f;
-			if (Rando.true_widescreen) {
-				start_y = (4 * SCREEN_HD_FLOAT) - 160.0f;
-			}
 			float position = start_y - (overlay_count * 100.0f); // Gap of 100.0f
 			float move_x = 640.0f;
-			if (Rando.true_widescreen) {
-				move_x = SCREEN_WD_FLOAT * 2;
-			}
 			_guTranslateF(&mtx1, move_x, position, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);

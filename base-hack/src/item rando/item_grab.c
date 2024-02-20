@@ -92,10 +92,6 @@ void banana_medal_acquisition(int flag) {
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     float reward_x = 160.f;
     float reward_y = 120.0f;
-    if (Rando.true_widescreen) {
-        reward_x = SCREEN_WD_FLOAT / 2;
-        reward_y = SCREEN_HD_FLOAT / 2;
-    }
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         if (item_type != MEDALITEM_KEY) {
             setFlag(flag, 1, FLAGTYPE_PERMANENT);

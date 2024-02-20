@@ -28,9 +28,7 @@ START:
 		JAL dmaFileTransfer
 		ADDIU a2, a2, lo(ItemRando_FLUT)
 
-		// Very Early WS Boot Stuff
-		JAL loadWidescreen
-		ADDIU a0, r0, 0
+		// Very Early Boot Stuff
 		JAL writeFunctionLoop
 		NOP
 		LUI v0, 0x8074

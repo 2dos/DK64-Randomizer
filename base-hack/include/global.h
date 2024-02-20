@@ -426,7 +426,6 @@ extern void setKrushaAmmoColor(void);
 
 extern void handleCannonGameReticle(void);
 
-extern void loadWidescreen(overlays loaded_overlay);
 extern void writeFunctionLoop(void);
 extern void cFuncLoop(void);
 extern void initFilename(void);

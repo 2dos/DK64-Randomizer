@@ -20,7 +20,6 @@ from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
-from randomizer.Patching.ASMPatcherWS import patchAssemblyCosmeticWS
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs
@@ -193,7 +192,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.writeMultipleBytes(int(settings.troff_brighten), 1)
 
             patchAssemblyCosmetic(ROM_COPY, settings)
-            patchAssemblyCosmeticWS(ROM_COPY, settings)
             music_data = randomize_music(settings)
 
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))

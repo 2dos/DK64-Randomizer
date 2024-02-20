@@ -50,11 +50,6 @@ def writeToROM(offset, value, size, name):
         rom.write(bytearray(valtolst(value, size)))
 
 
-GFX_START = 0x101A40
-SCREEN_WD = 366
-SCREEN_HD = 208
-BOOT_OFFSET = 0xFB20 - 0xEF20
-
 with open("include/variable_space_structs.h", "r") as varspace:
     varlines = varspace.readlines()
     struct_data = []
@@ -225,36 +220,6 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     print(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
                     writeToROM(bitfield_offset + offset, pre, 1, y)
         else:
-            if x == "true_widescreen" and set_variables[x] != 0:
-                writeToROMNoOffset(GFX_START + 0x00, SCREEN_WD * 2, 2, "2D Viewport Width")
-                writeToROMNoOffset(GFX_START + 0x02, SCREEN_HD * 2, 2, "2D Viewport Height")
-                writeToROMNoOffset(GFX_START + 0x08, SCREEN_WD * 2, 2, "2D Viewport X Position")
-                writeToROMNoOffset(GFX_START + 0x0A, SCREEN_HD * 2, 2, "2D Viewport Y Position")
-                writeToROMNoOffset(GFX_START + 0x9C, (SCREEN_WD << 14) | (SCREEN_HD << 2), 4, "Default Scissor for 2D")
-                data_offsets = [0xEF20, 0xF7E0]
-                internal_size = 0x50
-                internal_offsets = [0, 2]
-                for tvi, tv_offset in enumerate(data_offsets):
-                    tv_mode = "NTSC"
-                    if tvi == 1:
-                        tv_mode = "MPAL"
-                    for int_offset in internal_offsets:
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x08, SCREEN_WD, 4, f"{tv_mode} VI Width")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x20, int((SCREEN_WD * 512) / 320), 4, f"{tv_mode} VI X Scale")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x28, (SCREEN_WD * 2), 4, f"{tv_mode} VI Field 1 Framebuffer Offset")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x3C, (SCREEN_WD * 2), 4, f"{tv_mode} VI Field 2 Framebuffer Offset")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x2C, int((SCREEN_HD * 1024) / 240), 4, f"{tv_mode} VI Field 1 Y Scale")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x40, int((SCREEN_HD * 1024) / 240), 4, f"{tv_mode} VI Field 2 Y Scale")
-
-                writeToROMNoOffset(BOOT_OFFSET + 0xBC4 + 2, SCREEN_WD * 2, 2, "Row Offset of No Expansion Pak Image")
-                writeToROMNoOffset(BOOT_OFFSET + 0xBC8 + 2, SCREEN_WD * SCREEN_HD * 2, 2, "Invalidation Size for Framebuffer 1")
-
-                writeToROMNoOffset(BOOT_OFFSET + 0xE08, 0x24180000 | SCREEN_WD, 4, "Row Pitch for No Expansion Pak Screen Text")
-                writeToROMNoOffset(BOOT_OFFSET + 0xE0C, 0x03060019, 4, "Calculate Row Pixel Number for No Expansion Pak Screen Text")
-                writeToROMNoOffset(BOOT_OFFSET + 0xE10, 0x0000C012, 4, "Get Row Pixel Number for No Expansion Pak Screen Text")
-
-                writeToROMNoOffset(BOOT_OFFSET + 0x1020 + 2, (SCREEN_WD - 8) * 2, 2, "Text Framebuffer Pitch")
-
             for y in struct_data2:
                 if x == y[2]:
                     if type(set_variables[x]) is int:

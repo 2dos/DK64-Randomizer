@@ -123,10 +123,6 @@ void overlay_mod_menu(void) {
 	// *(int*)(0x80029874) = 0; // Hide GB
 	int gb_x = 208;
 	int gh_y = 0x9A;
-	if (Rando.true_widescreen) {
-		gb_x = (SCREEN_WD >> 1) + 48; 
-		gh_y -= (DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset());
-	}
 	*(short*)(0x8002986E) = gb_x; // Move GB to right
 	*(short*)(0x80029872) = gh_y; // Move GB down
 	*(short*)(0x8002985A) = 0; // Change sprite mode for GB

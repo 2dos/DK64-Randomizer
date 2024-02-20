@@ -81,7 +81,6 @@ additional_thanks = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Additional Thanks"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
     CreditItem(CreditsDirection.bottom, CreditsType.normal, ["Crankys Lab Developer", "Isotarge"]),
-    CreditItem(CreditsDirection.top, CreditsType.normal, ["Widescreen Hack Developer", "gamemasterplc"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["SpikeVegeta", "KeiperDontCare"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Beta Testers", "Dev Branch Testers"]),
 ]

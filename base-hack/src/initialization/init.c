@@ -153,8 +153,6 @@ void loadHooks(void) {
 		loadSingularHook(0x806A8760, &PauseExtraSlotClamp1);
 		loadSingularHook(0x806A8804, &PauseExtraSlotCustomCode);
 		loadSingularHook(0x806A9898, &PauseCounterCap);
-	} else if (Rando.true_widescreen) {
-		*(short*)(0x806A981A) = (SCREEN_HD_FLOAT * 2) - 72;
 	}
 	loadSingularHook(0x806F3E74, &AutowalkFix);
 	loadSingularHook(0x80610948, &DynamicCodeFixes);
@@ -222,7 +220,6 @@ void initHack(int source) {
 				*(int*)(0x80714540) = 0;
 			}
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
-			WidescreenEnabled = Rando.true_widescreen;
 			grab_lock_timer = -1;
 			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;

@@ -19,7 +19,6 @@
 .importobj "obj/src_initialization_qol.o"
 .importobj "obj/src_initialization_stack_trace.o"
 .importobj "obj/src_initialization_text.o"
-.importobj "obj/src_initialization_widescreen.o"
 .importobj "obj/src_instances_bananaport.o"
 .importobj "obj/src_instances_boss_portal.o"
 .importobj "obj/src_instances_cannon.o"

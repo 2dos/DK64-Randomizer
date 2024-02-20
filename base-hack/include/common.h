@@ -27,7 +27,6 @@
 #include "archipelago.h"
 #include "music.h"
 #include "macros.h"
-#include "widescreen.h"
 #include "pause.h"
 #include "hint_regions.h"
 #include "../src/pause/pause.h"

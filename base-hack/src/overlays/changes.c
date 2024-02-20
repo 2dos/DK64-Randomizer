@@ -66,7 +66,6 @@ void overlay_changes(void) {
 		WarpData = 0;
 	}
 	fixTBarrelsAndBFI(0);
-	loadWidescreen(loaded_overlay);
 }
 
 void parseCutsceneData(void) {

@@ -3,9 +3,6 @@
 void writeWTI(int index) {
 	ExpandPauseMenu = index;
 	int init_y = 0x198;
-	if (Rando.true_widescreen) {
-		init_y = (2 * SCREEN_HD_FLOAT) - 72;
-	}
 	InitialPauseHeight = init_y - (0x28 * index);
 }
 

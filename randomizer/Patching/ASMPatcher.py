@@ -65,7 +65,7 @@ def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_di
 
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
-    """Patch assembly instructions that pertain to cosmetic changes excluding Widescreen."""
+    """Patch assembly instructions that pertain to cosmetic changes."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
 
     if settings.troff_brighten:
