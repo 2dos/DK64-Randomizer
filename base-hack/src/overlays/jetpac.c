@@ -34,9 +34,6 @@ void initJetpac(void) {
 		*(short*)(0x80024D8E) = getHi(&jetpacRewardText);
 		*(short*)(0x80024D96) = getLo(&jetpacRewardText);
 	}
-	if (Rando.faster_checks.jetpac) {
-		*(short*)(0x80027DCA) = 2500; // Jetpac score requirement
-	}
 	// Jetpac Enemy Rando
 	int enable_jetpac_enemy_rando = 0;
 	for (int i = 0; i < 8; i++) {

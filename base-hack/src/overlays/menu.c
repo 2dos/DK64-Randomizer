@@ -128,16 +128,8 @@ void overlay_mod_menu(void) {
 	*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
 
 	// File Select
-	*(int*)(0x80028CB0) = 0xA0600000; // SB $r0, 0x0 (v0) - Always view file index 0
-	*(int*)(0x80028CC4) = 0; // Prevent file index overwrite
-	*(int*)(0x80028F88) = 0; // File 2 render
-	*(int*)(0x80028F60) = 0; // File 2 Opacity
-	*(int*)(0x80028FCC) = 0; // File 3 render
-	*(int*)(0x80028FA4) = 0; // File 3 Opacity
 	writeFunction(0x80028D04, &changeFileSelectAction); // File select change action
 	writeFunction(0x80028D10, &changeFileSelectAction_0); // File select change action
-	*(int*)(0x80028DB8) = 0x1040000A; // BEQ $v0, $r0, 0xA - Change text signal
-	*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
 	writeFunction(0x80029A70, &getGamePercentage);
 
 	*(int*)(0x80028EF8) = 0; // Joystick
@@ -148,32 +140,11 @@ void overlay_mod_menu(void) {
 
 	// Options
 	initOptionScreen();
-	// Disable Multiplayer
-	*(int*)(0x800280B0) = 0; // Disable access
-	*(int*)(0x80028A8C) = 0; // Lower Sprite Opacity
 	if (ENABLE_FILENAME) {
 		initFilename();
 	}
 
-	// Force enable cheats
-	*(short*)(0x800280DC) = 0x1000; // Force access to mystery menu
-	*(short*)(0x80028A40) = 0x1000; // Force opaqueness
-	*(short*)(0x8002EA7C) = 0x1000; // Disable Cutscene Menu
-	*(short*)(0x8002EAF8) = 0x1000; // Disable Minigames Menu
-	*(short*)(0x8002EB70) = 0x1000; // Disable Bosses Menu
-	*(int*)(0x8002EBE8) = 0; // Disable Krusha Menu
-	*(short*)(0x8002EC18) = 0x1000; // Enable Cheats Menu
-	*(int*)(0x8002E8D8) = 0x240E0004; // Force cheats menu to start on page 4
-	*(short*)(0x8002E8F4) = 0x1000; // Disable edge cases
-	*(int*)(0x8002E074) = 0xA06F0000; // overflow loop to 1
-	*(int*)(0x8002E0F0) = 0x5C400004; // underflow loop from 1
-	*(short*)(0x8002EA3A) = 0xFFFE; // Disable option 1 load
-	*(int*)(0x8002EA4C) = 0xA0600003; // Force Krusha to 0
-	*(int*)(0x8002EA64) = 0xA64B0008; // Disable option 1 write
-
 	// Snide
-	*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
-	*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 	if (Rando.item_rando) {		
 		writeFunction(0x80024CF0, &countFlagsDuplicate); // Flag change to FLUT
 		writeFunction(0x80024854, &checkFlagDuplicate); // Flag change to FLUT
@@ -199,8 +170,4 @@ void overlay_mod_menu(void) {
 			BlueprintLargeImageColors[i].blue = color.blue;
 		}
 	}
-
-	// Menu Overlay - Candy's Shop Glitch
-	*(short*)(0x80027678) = 0x1000;
-	*(short*)(0x8002769C) = 0x1000;
 }

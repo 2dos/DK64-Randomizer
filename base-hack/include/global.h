@@ -57,7 +57,6 @@ extern void overlay_changes(void);
 extern void determine_krool_order(void);
 extern void handleKRoolSaveProgress(void);
 extern void replace_zones(int init_flag);
-extern void randomize_bosses(void);
 extern void displayNumberOnTns(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);

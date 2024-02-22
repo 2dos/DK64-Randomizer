@@ -73,7 +73,6 @@
 .importobj "obj/src_pause_hints.o"
 .importobj "obj/src_pause_lib.o"
 .importobj "obj/src_pause_regions.o"
-.importobj "obj/src_randomizers_boss_rando.o"
 .importobj "obj/src_randomizers_b_locker_requirement.o"
 .importobj "obj/src_randomizers_every_lz_rando.o"
 .importobj "obj/src_randomizers_kut_out.o"

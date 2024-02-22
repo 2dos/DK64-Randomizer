@@ -6,6 +6,7 @@ from randomizer.Enums.Settings import FasterChecksSelected, RemovedBarriersSelec
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Settings import ShuffleLoadingZones
 
 HANDLED_OVERLAYS = (
     Overlay.Static,
@@ -302,6 +303,15 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8060C6C4, Overlay.Static, 0x24040000, offset_dict, 4)  # Force file 0 - Read
     writeValue(ROM_COPY, 0x8060C6D4, Overlay.Static, 0xAFA00034, offset_dict, 4)  # Force file 0 - Read
     writeValue(ROM_COPY, 0x8060D294, Overlay.Static, 0, offset_dict, 4)  # Cartridge EEPROM Wipe cancel
+    # File Select
+    writeValue(ROM_COPY, 0x80028CB0, Overlay.Menu, 0xA0600000, offset_dict, 4)  # SB $r0, 0x0 (v0) - Always view file index 0
+    writeValue(ROM_COPY, 0x80028CC4, Overlay.Menu, 0, offset_dict, 4)  # Prevent file index overwrite
+    writeValue(ROM_COPY, 0x80028F88, Overlay.Menu, 0, offset_dict, 4)  # File 2 render
+    writeValue(ROM_COPY, 0x80028F60, Overlay.Menu, 0, offset_dict, 4)  # File 2 Opacity
+    writeValue(ROM_COPY, 0x80028FCC, Overlay.Menu, 0, offset_dict, 4)  # File 3 render
+    writeValue(ROM_COPY, 0x80028FA4, Overlay.Menu, 0, offset_dict, 4)  # File 3 Opacity
+    writeValue(ROM_COPY, 0x80028DB8, Overlay.Menu, 0x1040000A, offset_dict, 4)  # BEQ $v0, $r0, 0xA - Change text signal
+    writeValue(ROM_COPY, 0x80028CA6, Overlay.Menu, 5, offset_dict)  # Change selecting orange to delete confirm screen
 
     # Move Decoupling
     # Strong Kong
@@ -412,6 +422,9 @@ def patchAssembly(ROM_COPY, spoiler):
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.factory_toy_monster_fight):
         writeValue(ROM_COPY, 0x806BBB22, Overlay.Static, 5, offset_dict)  # Chunky toy box speedup
 
+    if isFasterCheckEnabled(spoiler, FasterChecksSelected.jetpac):
+        writeValue(ROM_COPY, 0x80027DCA, Overlay.Jetpac, 2500, offset_dict)  # Jetpac score requirement
+
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.forest_owl_race):
         writeValue(ROM_COPY, 0x806C58D6, Overlay.Static, 8, offset_dict)  # Owl ring amount
         writeValue(ROM_COPY, 0x806C5B16, Overlay.Static, 8, offset_dict)  # Owl ring amount
@@ -421,6 +434,15 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.caves_ice_tomato_minigame):
         writeValue(ROM_COPY, 0x806BC582, Overlay.Static, 30, offset_dict)  # Ice Tomato Timer
+
+    if isFasterCheckEnabled(spoiler, FasterChecksSelected.factory_car_race):
+        writeValue(ROM_COPY, 0x8002D03A, Overlay.Race, 1, offset_dict)  # Factory Car Race 1 Lap
+
+    if isFasterCheckEnabled(spoiler, FasterChecksSelected.castle_car_race):
+        writeValue(ROM_COPY, 0x8002D096, Overlay.Race, 1, offset_dict)  # Castle Car Race 1 Lap
+
+    if isFasterCheckEnabled(spoiler, FasterChecksSelected.galleon_seal_race):
+        writeValue(ROM_COPY, 0x8002D0E2, Overlay.Race, 1, offset_dict)  # Seal Race 1 Lap
 
     if spoiler.settings.free_trade_setting != FreeTradeSetting.none:
         # Non-BP Items
@@ -588,6 +610,10 @@ def patchAssembly(ROM_COPY, spoiler):
         race_hoop_addresses = [0x8069B060, 0x8069B08C, 0x8069B0AC, 0x8069B0B4, 0x8069B0BC, 0x8069B0C8, 0x8069B050, 0x8069B05C]
         for addr in race_hoop_addresses:
             writeValue(ROM_COPY, addr, Overlay.Static, 0, offset_dict, 4)
+        # Fix K Rool Cutscene Bug
+        writeValue(ROM_COPY, 0x800359A6, Overlay.Boss, 3, offset_dict)
+
+    # Decompressed Overlays
     writeValue(ROM_COPY, 0x80748E30, Overlay.Static, 0, offset_dict, 1)
 
     # Golden Banana Requirements
@@ -633,6 +659,7 @@ def patchAssembly(ROM_COPY, spoiler):
                 overlay = Overlay.Static if map_id in static_overlay_races else Overlay.Race
                 writeValue(ROM_COPY, addr, overlay, spoiler.coin_requirements[map_id], offset_dict)
 
+    # TBarrel/BFI Rewards
     writeValue(ROM_COPY, 0x80681CE2, Overlay.Static, 0, offset_dict)
     writeValue(ROM_COPY, 0x80681CFA, Overlay.Static, 1, offset_dict)
     writeValue(ROM_COPY, 0x80681D06, Overlay.Static, 2, offset_dict)
@@ -644,3 +671,76 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x800295DA, Overlay.Critter, 2, offset_dict)
     writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
     writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
+
+    # K Rool Exit
+    if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
+        krool_exit_map = Maps.Isles
+        krool_exit_exit = 12
+        writeValue(ROM_COPY, 0x806A8986, Overlay.Static, krool_exit_map, offset_dict)
+        writeValue(ROM_COPY, 0x806A898E, Overlay.Static, krool_exit_exit, offset_dict)
+        writeValue(ROM_COPY, 0x80628032, Overlay.Static, krool_exit_map, offset_dict)
+        writeValue(ROM_COPY, 0x8062803A, Overlay.Static, krool_exit_exit, offset_dict)
+
+    # Boss Mapping
+    for i in range(7):
+        boss_map = spoiler.settings.boss_maps[i]
+        boss_kong = spoiler.settings.boss_kongs[i]
+        writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
+        writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict)
+        writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict)
+
+    writeValue(ROM_COPY, 0x80024266, Overlay.Bonus, 1, offset_dict)  # Set Minigame oranges as infinite
+
+    # Adjust Krazy KK Flicker Speeds (Non-ASM)
+    # Defaults: 48/30. Start: 60. Flicker Thresh: -30. Scaling: 2.7
+    writeValue(ROM_COPY, 0x800293E6, Overlay.Bonus, 130, offset_dict)  # V Easy
+    writeValue(ROM_COPY, 0x800293FA, Overlay.Bonus, 130, offset_dict)  # Easy
+    writeValue(ROM_COPY, 0x8002940E, Overlay.Bonus, 81, offset_dict)  # Medium
+    writeValue(ROM_COPY, 0x80029422, Overlay.Bonus, 81, offset_dict)  # Hard
+    writeValue(ROM_COPY, 0x800295D2, Overlay.Bonus, 162, offset_dict)  # Start
+    writeValue(ROM_COPY, 0x800297D8, Overlay.Bonus, 0x916B, offset_dict)  # LB -> LBU
+    writeValue(ROM_COPY, 0x800297CE, Overlay.Bonus, -81, offset_dict, 2, True)  # Flicker Threshold
+
+    # Change MJ phase reset differential to 40.0f units
+    writeValue(ROM_COPY, 0x80033B26, Overlay.Boss, 0x4220, offset_dict)  # Jumping Around
+    writeValue(ROM_COPY, 0x800331AA, Overlay.Boss, 0x4220, offset_dict)  # Random Square
+    writeValue(ROM_COPY, 0x800339EE, Overlay.Boss, 0x4220, offset_dict)  # Stationary
+
+    MJ_FAST_SPEED = 3
+    if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_bosses):
+        writeFloat(ROM_COPY, 0x80036C40, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # Phase 1 Jump speed
+        writeFloat(ROM_COPY, 0x80036C44, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # Phase 2
+        writeFloat(ROM_COPY, 0x80036C48, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # ...
+        writeFloat(ROM_COPY, 0x80036C4C, Overlay.Boss, MJ_FAST_SPEED, offset_dict)
+        writeFloat(ROM_COPY, 0x80036C50, Overlay.Boss, MJ_FAST_SPEED, offset_dict)
+        writeValue(ROM_COPY, 0x8003343A, Overlay.Boss, 0x224, offset_dict)  # Force fast jumps
+
+    # B. Locker Stuff
+    writeValue(ROM_COPY, 0x80027970, Overlay.Critter, 0x1000, offset_dict)  # Prevent Helm Lobby B. Locker requiring Chunky
+    writeValue(ROM_COPY, 0x800275E8, Overlay.Critter, 0x1000, offset_dict)  # Prevent checking the cheat stuff
+
+    # Menu/Shop Stuff
+    # Menu/Shop: Force enable cheats
+    writeValue(ROM_COPY, 0x800280DC, Overlay.Menu, 0x1000, offset_dict)  # Force access to mystery menu
+    writeValue(ROM_COPY, 0x80028A40, Overlay.Menu, 0x1000, offset_dict)  # Force opaqueness
+    writeValue(ROM_COPY, 0x8002EA7C, Overlay.Menu, 0x1000, offset_dict)  # Disable Cutscene Menu
+    writeValue(ROM_COPY, 0x8002EAF8, Overlay.Menu, 0x1000, offset_dict)  # Disable Minigames Menu
+    writeValue(ROM_COPY, 0x8002EB70, Overlay.Menu, 0x1000, offset_dict)  # Disable Bosses Menu
+    writeValue(ROM_COPY, 0x8002EBE8, Overlay.Menu, 0, offset_dict, 4)  # Disable Krusha Menu
+    writeValue(ROM_COPY, 0x8002EC18, Overlay.Menu, 0x1000, offset_dict)  # Enable Cheats Menu
+    writeValue(ROM_COPY, 0x8002E8D8, Overlay.Menu, 0x240E0004, offset_dict, 4)  # Force cheats menu to start on page 4
+    writeValue(ROM_COPY, 0x8002E8F4, Overlay.Menu, 0x1000, offset_dict)  # Disable edge cases
+    writeValue(ROM_COPY, 0x8002E074, Overlay.Menu, 0xA06F0000, offset_dict, 4)  # overflow loop to 1
+    writeValue(ROM_COPY, 0x8002E0F0, Overlay.Menu, 0x5C400004, offset_dict, 4)  # underflow loop from 1
+    writeValue(ROM_COPY, 0x8002EA3A, Overlay.Menu, 0xFFFE, offset_dict)  # Disable option 1 load
+    writeValue(ROM_COPY, 0x8002EA4C, Overlay.Menu, 0xA0600003, offset_dict, 4)  # Force Krusha to 0
+    writeValue(ROM_COPY, 0x8002EA64, Overlay.Menu, 0xA64B0008, offset_dict, 4)  # Disable option 1 write
+    # Menu/Shop: Snide's
+    writeValue(ROM_COPY, 0x8002402C, Overlay.Menu, 0x240E000C, offset_dict, 4)  # No extra contraption cutscenes
+    writeValue(ROM_COPY, 0x80024054, Overlay.Menu, 0x24080001, offset_dict, 4)  # 1 GB Turn in
+    # Menu/Shop: Candy's
+    writeValue(ROM_COPY, 0x80027678, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch
+    writeValue(ROM_COPY, 0x8002769C, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch
+    # Menu/Shop: Disable Multiplayer
+    writeValue(ROM_COPY, 0x800280B0, Overlay.Menu, 0, offset_dict, 4)  # Disable access
+    writeValue(ROM_COPY, 0x80028A8C, Overlay.Menu, 0, offset_dict, 4)  # Lower Sprite Opacity

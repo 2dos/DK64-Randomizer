@@ -12,10 +12,6 @@
 #include "../../include/common.h"
 
 void overlay_mod_critter(void) {
-	// Prevent Helm Lobby B. Locker requiring Chunky
-	*(short*)(0x80027970) = 0x1000;
-	// Prevent checking the cheat stuff
-	*(short*)(0x800275E8) = 0x1000;
 	initBLocker();
 	
 

@@ -292,7 +292,6 @@ void initHack(int source) {
 			initTextChanges();
 
 			replace_zones(1);
-			randomize_bosses();
 			loadHooks();
 			loadExtraHooks();
 			// Moves & Prices
