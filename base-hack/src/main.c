@@ -280,7 +280,6 @@ void earlyFrame(void) {
 	write_kutoutorder();
 	remove_blockers();
 	determine_krool_order();
-	disable_krool_health_refills();
 	CBDing();
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();

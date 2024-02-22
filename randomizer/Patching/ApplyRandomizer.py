@@ -199,7 +199,6 @@ def patching_response(spoiler):
         BooleanProperties(True, 0x2E),  # Fast Start Game
         BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
         BooleanProperties(spoiler.settings.fps_display, 0x96),  # FPS Display
-        BooleanProperties(spoiler.settings.no_healing, 0xA6),  # Disable Healing
         BooleanProperties(spoiler.settings.no_melons, 0x128),  # No Melon Drops
         BooleanProperties(spoiler.settings.bonus_barrel_auto_complete, 0x126),  # Auto-Complete Bonus Barrels
         BooleanProperties(spoiler.settings.warp_to_isles, 0x135),  # Warp to Isles
@@ -218,7 +217,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(not spoiler.settings.enable_shop_hints, 0x14B, 0),  # Disable Shop Hints
-        BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 15),  # Bonus Matches Contents
+        BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
     ]
 
@@ -523,11 +522,7 @@ def patching_response(spoiler):
         key_bitfield = key_bitfield | (1 << key)
     ROM_COPY.seek(sav + 0x127)
     ROM_COPY.write(key_bitfield)
-
-    if spoiler.settings.medal_requirement != 15:
-        ROM_COPY.seek(sav + 0x150)
-        ROM_COPY.write(spoiler.settings.medal_requirement)
-
+    
     if spoiler.settings.rareware_gb_fairies != 20:
         ROM_COPY.seek(sav + 0x36)
         ROM_COPY.write(spoiler.settings.rareware_gb_fairies)

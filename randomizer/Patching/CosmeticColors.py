@@ -2690,6 +2690,114 @@ boot_phrases = (
     "Saving 20 frames",
 )
 
+crown_heads = (
+    # Object
+    "Arena",
+    "Beaver",
+    "Bish Bash",
+    "Forest",
+    "Kamikaze",
+    "Kritter",
+    "Pinnacle",
+    "Plinth",
+    "Shockwave",
+    "Bean",
+    "Dogadon",
+    "Banana",
+    "Squawks",
+    "Lanky",
+    "Diddy",
+    "Tiny",
+    "Chunky",
+    "DK",
+    "Krusha",
+    "Kosha",
+    "Klaptrap",
+    "Zinger",
+    "Gnawty",
+    "Kasplat",
+    "Pufftup",
+    "Shuri",
+    "Krossbones",
+    "Caves",
+    "Castle",
+    "Helm",
+    "Japes",
+    "Jungle",
+    "Angry",
+    "Aztec",
+    "Frantic",
+    "Factory",
+    "Gloomy",
+    "Galleon",
+    "Crystal",
+    "Creepy",
+    "Hideout",
+)
+
+crown_tails = (
+    # Synonym for brawl/similar
+    "Ambush",
+    "Brawl",
+    "Fracas",
+    "Karnage",
+    "Kremlings",
+    "Palaver",
+    "Panic",
+    "Showdown",
+    "Slam",
+    "Melee",
+    "Tussle",
+    "Altercation",
+    "Wrangle",
+    "Clash",
+    "Free for All",
+    "Skirmish",
+    "Scrap",
+    "Fight",
+    "Rumpus",
+    "Fray",
+    "Wrestle",
+    "Brouhaha",
+    "Commotion",
+    "Uproar",
+    "Rough and Tumble",
+    "Broil",
+    "Argy Bargy",
+    "Bother",
+    "Mayhem",
+    "Bonanza",
+    "Battle",
+    "Kerfuffle",
+    "Rumble",
+    "Fisticuffs",
+    "Ruckus",
+    "Scrimmage",
+    "Strife",
+    "Dog and Duck",
+    "Joust",
+)
+
+def getCrownNames() -> list:
+    """Gets crown names from head and tail pools."""
+    # Get 10 names for heads just in case "Forest" and "Fracas" show up
+    heads = random.sample(crown_heads, 10)
+    tails = random.sample(crown_tails, 9)
+    # Remove "Forest" if both "Forest" and "Fracas" show up
+    if "Forest" in heads and "Fracas" in tails:
+        heads.remove("Forest")
+    # Only get 9 names, Forest Fracas can't be overwritten without having negative impacts
+    names = []
+    for x in range(9):
+        head = heads[x]
+        tail = tails[x]
+        if head[0] == "K" and tail[0] == "C":
+            split_tail = list(tail)
+            split_tail[0] = "K"
+            tail = "".join(split_tail)
+        names.append(f"{head} {tail}")
+    return names
+
 
 def writeBootMessages() -> None:
     """Write boot messages into ROM."""

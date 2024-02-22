@@ -278,7 +278,7 @@ enum_bonus_skin getBarrelSkinIndex(int actor) {
 }
 
 int alterBonusVisuals(int index) {
-    if (Rando.location_visuals & 1) {
+    if (Rando.location_visuals.bonus_barrels) {
         if (index < 95) {
             int actor = bonus_data[index].spawn_actor;
             enum_bonus_skin skin = getBarrelSkinIndex(actor);
@@ -301,7 +301,7 @@ int getDirtPatchSkin(int flag, flagtypes flag_type) {
     if (gone) {
         return 1;
     }
-    if (Rando.location_visuals & 8) {
+    if (Rando.location_visuals.dirt_patches) {
         int index = flag - FLAG_RAINBOWCOIN_0;
         if (index < 16) {
             int actor = getRainbowCoinItem(flag);

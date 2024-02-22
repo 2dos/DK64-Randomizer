@@ -546,7 +546,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_BATTLEARENA_PLINTHPANIC:
 			case MAP_BATTLEARENA_PINNACLEPALAVER:
 			case MAP_BATTLEARENA_SHOCKWAVESHOWDOWN:
-				if (Rando.location_visuals & 4) {
+				if (Rando.location_visuals.crowns) {
 					if (param2 == CROWN_CONTROLLER) {
 						float x = 730.0f;
 						float y = 267.0f;
@@ -582,7 +582,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_TROFFNSCOFF:
-				if (Rando.location_visuals & 2) {
+				if (Rando.location_visuals.boss_doors) {
 					if (param2 == TNS_NUMBER) {
 						float x = 600.0f;
 						float y = 300.0f;

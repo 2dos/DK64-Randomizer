@@ -5,19 +5,19 @@ typedef struct varspace {
 	/* 0x016 */ char unk_16[8];
 	/* 0x01E */ short key_flags[7]; // key given in each level. (Item 1 is Japes etc. flags=[0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D] <- Item 1 of this array is Key 1 etc.)
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
-	/* 0x02D */ char unlock_moves; // 0 = Moves not granted at the start of a new file. 1 = On
+	/* 0x02D */ char unk_2D;
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
-	/* 0x02F */ char camera_unlocked; // 0 = Camera not unlocked from the start of a new file. 1 = On
+	/* 0x02F */ char unk_2F;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char unk_32;
 	/* 0x033 */ char unk_33;
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
-	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
+	/* 0x035 */ char unk_35;
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
 	/* 0x037 */ char k_rool_toes[10];
 	/* 0x041 */ char randomize_toes;
-	/* 0x042 */ char random_drops; // Random enemy item drops
+	/* 0x042 */ char unk_42;
 	/* 0x043 */ char colorblind_mode; // 0 = Off, 1 = Prot, 2 = Deut, 3 = Trit
 	/* 0x044 */ char dark_mode_textboxes; // 0 = Light Mode, 1 = Dark Mode
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
@@ -48,10 +48,9 @@ typedef struct varspace {
 	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x088 */ LZREntrance enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
-	/* 0x097 */ char boss_kong[7]; // Array of kongs used to fight the boss, in order of vanilla level sequence. If no changes are made, supply the vanilla values
-	/* 0x09E */ unsigned char boss_map[7]; // Array of boss maps, in order of vanilla level sequence. If no changes are made, supply the vanilla values
+	/* 0x097 */ char unk_97[14];
 	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
-	/* 0x0A6 */ char no_health_refill; // 0 = Vanilla. 1 =  No health refill for Tag Barrels, "Voiding", Bonus Barrels, Fairies, K. Rool Health Refills
+	/* 0x0A6 */ char unk_A6;
 	/* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 	/* 0x0A8 */ unsigned char tbarrel_prices[4]; // Array of training barrel move prices. First is dive, then orange, then barrel, then vine
 	/* 0x0AC */ unsigned char fairy_prices[2]; // Array of fairy move prices. First is camera, second is shockwave. Shockwave/Camera combo price is calculated as the sum of the two
@@ -61,7 +60,7 @@ typedef struct varspace {
 	/* 0x0B3 */ char unk_B0[0xC0 - 0xB3];
 	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"
 	/* 0x0C2 */ char unk_c2;
-	/* 0x0C3 */ char outlined_crosshair;
+	/* 0x0C3 */ char unk_c3;
 	/* 0x0C4 */ ROMFlags rom_flags;
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
 	/* 0x0C6 */ HardModeSettings hard_mode; // Colloquially known as "Seed of Death"
@@ -81,7 +80,7 @@ typedef struct varspace {
 	/* 0x0E2 */ unsigned short helm_hurry_start;
 	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
 	/* 0x100 */ char fairy_rando_on;
-	/* 0x101 */ char location_visuals; // Bitfield for visual hints of what is inside a location. 0000 dabc. a = Crowns , b = Boss Doors , c = Bonus Barrels, d = dirt patches
+	/* 0x101 */ LocationVisuals location_visuals; // Bitfield for visual hints of what is inside a location.
 	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
 	/* 0x103 */ char random_switches;
 	/* 0x104 */ char slam_level[7]; // Level of slam required to slam a switch in a level (if random_switches is on)
@@ -136,7 +135,7 @@ typedef struct varspace {
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ char disable_boss_kong_check; // 0 = Enable Check (Vanilla), 1 = Disabled
 	/* 0x14F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
-	/* 0x150 */ char jetpac_medal_requirement; // Lowest amount of medals required to access Jetpac. 0 = Don't apply new requirement
+	/* 0x150 */ char unk_150;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
 	/* 0x152 */ char free_target_japes; // Kong you free in Japes
 	/* 0x153 */ char free_source_japes; // Kong who frees the kong in Japes
@@ -152,7 +151,7 @@ typedef struct varspace {
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
 	/* 0x173 */ char dartboard_order[6]; // Each item denotes a picture. 0 = Crystal, 1 = Melon, 2 = Banana, 3 = Orange, 4 = Ammo Crate, 5 = Medal, 6 = Coin, 7 = Film
 	/* 0x179 */ char remove_high_requirements; // 0 = Off, 1 = On. Removes high requirements that lock certain areas.
-	/* 0x17A */ char fast_gbs; //0 = Off, 1 = On. Makes normally slow Golden Bananas faster.
+	/* 0x17A */ char unk_17a;
 	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
 	/* 0x17E */ unsigned char b_locker_requirements[8];
 	/* 0x186 */ char unk_186[0x190-0x186];
@@ -163,7 +162,7 @@ typedef struct varspace {
 	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
-	/* 0x1B4 */ char true_widescreen; // Port of the widescreen hack from gamemasterplc
+	/* 0x1B4 */ char unk_1B4;
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char tttrouble_turtle_model; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
