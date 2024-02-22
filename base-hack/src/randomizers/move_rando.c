@@ -627,42 +627,15 @@ int getLocationStatus(location_list location_index) {
 void fixTBarrelsAndBFI(int init) {
 	if (init) {
 		// Individual Barrel Checks
-		*(short*)(0x80681CE2) = (short)LOCATION_DIVE;
-		*(short*)(0x80681CFA) = (short)LOCATION_ORANGE;
-		*(short*)(0x80681D06) = (short)LOCATION_BARREL;
-		*(short*)(0x80681D12) = (short)LOCATION_VINE;
 		writeFunction(0x80681D38, &getLocationStatus); // Get TBarrels Move
 		// All Barrels Complete check
-		*(short*)(0x80681C8A) = (short)LOCATION_DIVE;
 		writeFunction(0x80681C98, &getLocationStatus); // Get TBarrels Move
 	} else {
-		unsigned char tbarrel_bfi_maps[] = {
-			MAP_TRAININGGROUNDS, // TGrounds
-			MAP_TBARREL_DIVE, // Dive
-			MAP_TBARREL_ORANGE, // Orange
-			MAP_TBARREL_BARREL, // Barrel
-			MAP_TBARREL_VINE, // Vine
-			MAP_FAIRYISLAND, // BFI
-		};
-		int is_in_tbarrel_bfi = 0;
-		for (int i = 0; i < sizeof(tbarrel_bfi_maps); i++) {
-			if (tbarrel_bfi_maps[i] == CurrentMap) {
-				is_in_tbarrel_bfi = 1;
-			}
-		}
-		if (is_in_tbarrel_bfi) {
-			// TBarrels
-			*(short*)(0x800295F6) = (short)LOCATION_DIVE;
-			*(short*)(0x80029606) = (short)LOCATION_ORANGE;
-			*(short*)(0x800295FE) = (short)LOCATION_VINE;
-			*(short*)(0x800295DA) = (short)LOCATION_BARREL;
-			writeFunction(0x80029610, &setLocationStatus); // Set TBarrels Move
-			// BFI
-			*(short*)(0x80027F2A) = (short)LOCATION_BFI;
-			*(short*)(0x80027E1A) = (short)LOCATION_BFI;
-			writeFunction(0x80027F24, &setLocationStatus); // Set BFI Move
-			writeFunction(0x80027E20, &getLocationStatus); // Get BFI Move
-		}
+		// TBarrels
+		writeFunction(0x80029610, &setLocationStatus); // Set TBarrels Move
+		// BFI
+		writeFunction(0x80027F24, &setLocationStatus); // Set BFI Move
+		writeFunction(0x80027E20, &getLocationStatus); // Get BFI Move
 	}
 }
 

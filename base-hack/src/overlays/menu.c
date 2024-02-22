@@ -83,7 +83,6 @@ void overlay_mod_menu(void) {
 	// Shops
 	PatchCrankyCode(); // Change cranky code to handle an extra variable
 	*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
-	writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
 	// Apply shop hints
 	if (Rando.shop_hints) {
 		writeFunction(0x8002661C, &getMoveHint);

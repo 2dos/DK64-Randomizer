@@ -3,6 +3,7 @@
 import subprocess
 from typing import BinaryIO
 import zlib
+import math
 
 import encoders
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
@@ -629,7 +630,7 @@ class Coordinate:
 class VineSequence:
     """Class to store information regarding a vine sequence."""
 
-    def __init__(self, map_index: Maps, point_start: Coordinate, point_end: Coordinate, ids: list[int]):
+    def __init__(self, map_index: int, point_start: Coordinate, point_end: Coordinate, ids: list[int]):
         """Initialize with given parameters."""
         self.map_index = map_index
         self.point_start = point_start
@@ -652,3 +653,13 @@ class VineSequence:
         py = self.point_start.y + (((index + 1) / count) * dy)
         pz = self.point_start.z + (((index + 1) / count) * dz)
         return Coordinate(px, py, pz)
+
+
+class MoveName:
+    """Class to store the text for a move_name."""
+
+    def __init__(self, name: str, move_type: int, latin: str = None):
+        """Initialize with given parameters."""
+        self.name = name
+        self.move_type = move_type
+        self.latin = latin

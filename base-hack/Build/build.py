@@ -38,7 +38,6 @@ from model_shrink import shrinkModel
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM, writeUncompressedOverlays
 from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
-from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 from writeWarpData import generateDefaultPadPairing
 
@@ -64,15 +63,6 @@ getHelmDoorModel(6024, 6025, "coin_door.bin")
 ROM_DATA_OFFSET = 0x1FED020
 
 file_dict = [
-    # File(
-    #     name="Static ASM Code",
-    #     subtype=ChangeType.FixedLocation,
-    #     start=0x113F0,
-    #     compressed_size=0xB15E4,
-    #     source_file="StaticCode.bin",
-    #     compression_method=CompressionMethods.ExternalGzip,
-    #     patcher=patchStaticCode,
-    # ),
     File(name="Dolby Logo", pointer_table_index=TableNames.TexturesHUD, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
     File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
     File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),

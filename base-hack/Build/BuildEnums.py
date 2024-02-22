@@ -826,3 +826,17 @@ class ExtraTextures(IntEnum):
     BLockerItemBalloon = 14
     BLockerItemCompanyCoin = 15
     BLockerItemKong = 16
+
+
+class MoveTypes(IntEnum):
+    """Move Types Enum."""
+
+    special = 0
+    slam = auto()
+    weapon = auto()
+    ammo_belt = auto()
+    instrument = auto()
+    flag = auto()
+    gb = auto()
+    gun_upgrade = auto()
+    instrument_upgrade = auto()

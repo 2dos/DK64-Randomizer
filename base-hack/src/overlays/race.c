@@ -12,7 +12,6 @@
 #include "../../include/common.h"
 
 void overlay_mod_race(void) {
-	writeCoinRequirements(1);
 
 	if (Rando.faster_checks.factory_car) {
 		*(short*)(0x8002D03A) = 0x0001; // Fac Car Race 1 Lap

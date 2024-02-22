@@ -380,9 +380,10 @@ class PuzzleRandoBound:
 class PuzzleItem:
     """Class to store information regarding a puzzle requirement."""
 
-    def __init__(self, name: str, offset: int, normal_bound: PuzzleRandoBound, fast_bound: PuzzleRandoBound = None, fast_check_setting: FasterChecksSelected = None):
+    def __init__(self, name: str, tied_map: Maps, offset: int, normal_bound: PuzzleRandoBound, fast_bound: PuzzleRandoBound = None, fast_check_setting: FasterChecksSelected = None):
         """Initialize with given parameters."""
         self.name = name
+        self.tied_map = tied_map
         self.offset = offset
         self.normal_bound = normal_bound
         self.fast_bound = fast_bound
@@ -400,22 +401,25 @@ class PuzzleItem:
 def randomize_puzzles(spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     sav = spoiler.settings.rom_data
+    spoiler.coin_requirements = {}
     if spoiler.settings.puzzle_rando:
         ROM_COPY = LocalROM()
         coin_req_info = [
-            PuzzleItem("Caves Beetle Race", 0x13C, PuzzleRandoBound(10, 50)),
-            PuzzleItem("Aztec Beetle Race", 0x13D, PuzzleRandoBound(20, 50)),
-            PuzzleItem("Factory Car Race", 0x13E, PuzzleRandoBound(5, 15), PuzzleRandoBound(3, 8), FasterChecksSelected.factory_car_race),
-            PuzzleItem("Galleon Seal Race", 0x13F, PuzzleRandoBound(5, 12), PuzzleRandoBound(5, 10), FasterChecksSelected.galleon_seal_race),
-            PuzzleItem("Castle Car Race", 0x140, PuzzleRandoBound(5, 15), PuzzleRandoBound(5, 12), FasterChecksSelected.castle_car_race),
-            PuzzleItem("Japes Minecart", 0x141, PuzzleRandoBound(40, 70)),
-            PuzzleItem("Forest Minecart", 0x142, PuzzleRandoBound(25, 55)),
-            PuzzleItem("Castle Minecart", 0x143, PuzzleRandoBound(10, 45), PuzzleRandoBound(5, 30), FasterChecksSelected.castle_minecart),
+            PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 50)),
+            PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13D, PuzzleRandoBound(20, 50)),
+            PuzzleItem("Factory Car Race", Maps.FactoryTinyRace, 0x13E, PuzzleRandoBound(5, 15), PuzzleRandoBound(3, 8), FasterChecksSelected.factory_car_race),
+            PuzzleItem("Galleon Seal Race", Maps.GalleonSealRace, 0x13F, PuzzleRandoBound(5, 12), PuzzleRandoBound(5, 10), FasterChecksSelected.galleon_seal_race),
+            PuzzleItem("Castle Car Race", Maps.CastleTinyRace, 0x140, PuzzleRandoBound(5, 15), PuzzleRandoBound(5, 12), FasterChecksSelected.castle_car_race),
+            PuzzleItem("Japes Minecart", Maps.JapesMinecarts, 0x141, PuzzleRandoBound(40, 70)),
+            PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 0x142, PuzzleRandoBound(25, 55)),
+            PuzzleItem("Castle Minecart", Maps.CastleMinecarts, 0x143, PuzzleRandoBound(10, 45), PuzzleRandoBound(5, 30), FasterChecksSelected.castle_minecart),
         ]
         for coinreq in coin_req_info:
             coinreq.updateBoundSetting(spoiler)
             ROM_COPY.seek(sav + coinreq.offset)
-            ROM_COPY.writeMultipleBytes(coinreq.selected_bound.generateRequirement(), 1)
+            selected_requirement = coinreq.selected_bound.generateRequirement()
+            spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
+            ROM_COPY.writeMultipleBytes(selected_requirement, 1)
         chosen_sounds = []
         for matching_head in range(8):
             ROM_COPY.seek(sav + 0x15C + (2 * matching_head))

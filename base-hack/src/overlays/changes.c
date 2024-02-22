@@ -38,6 +38,7 @@ void overlay_changes(void) {
 		case OVERLAY_CRITTER:
 			// Known as "Water" in Ghidra repo
 			overlay_mod_critter();
+			fixTBarrelsAndBFI(0);
 			break;
 		case OVERLAY_BOSS:
 			overlay_mod_boss();
@@ -65,7 +66,6 @@ void overlay_changes(void) {
 		// Wipe warp data pointer to prevent pointing to free memory
 		WarpData = 0;
 	}
-	fixTBarrelsAndBFI(0);
 }
 
 void parseCutsceneData(void) {

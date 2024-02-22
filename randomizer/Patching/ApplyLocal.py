@@ -228,10 +228,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     if from_patch_gen is True:
         await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
-    if spoiler.get("Requirements"):
-        js.document.getElementById("tracker_text").value = generateTracker(spoiler)
-    else:
-        js.document.getElementById("tracker_text").value = ""
     js.document.getElementById("spoiler_log_block").style.display = ""
     loop.run_until_complete(GenerateSpoiler(spoiler))
     js.document.getElementById("generated_seed_id").innerHTML = seed_id

@@ -322,7 +322,6 @@ void initHack(int source) {
 			style128Mtx[0x0] = base_mtx;
 			style128Mtx[0x5] = base_mtx;
 			style128Mtx[0xF] = 100;
-			writeCoinRequirements(0);
 			writeEndSequence();
 			initSmallerQuadChecks();
 			writeFunction(0x805FEBC0, &parseCutsceneData); // modifyCutsceneHook

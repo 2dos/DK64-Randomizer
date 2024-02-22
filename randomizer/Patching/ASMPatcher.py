@@ -21,6 +21,35 @@ HANDLED_OVERLAYS = (
 )
 BANNED_OFFSETS = (0, 0xFFFFFFFF)
 
+KEY_FLAG_ADDRESSES = [
+    0x800258FA,
+    0x8002C136,
+    0x80035676,
+    0x8002A0C2,
+    0x8002B3F6,
+    0x80025C4E,
+    0x800327EE,
+]
+REGULAR_BOSS_MAPS = [
+    Maps.JapesBoss,
+    Maps.AztecBoss,
+    Maps.FactoryBoss,
+    Maps.GalleonBoss,
+    Maps.FungiBoss,
+    Maps.CavesBoss,
+    Maps.CastleBoss,
+]
+NORMAL_KEY_FLAGS = [
+    0x1A,  # Key 1
+    0x4A,  # Key 2
+    0x8A,  # Key 3
+    0xA8,  # Key 4
+    0xEC,  # Key 5
+    0x124,  # Key 6
+    0x13D,  # Key 7
+    0x17C,  # Key 8
+]
+
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
     """Populate the overlay offset database."""
@@ -568,3 +597,50 @@ def patchAssembly(ROM_COPY, spoiler):
         ROM_COPY.writeMultipleBytes(int(spoiler.settings.BLockerEntryItems[order]), 1)
         writeValue(ROM_COPY, 0x807446D0 + (2 * order), Overlay.Static, count, offset_dict)
         order += 1
+
+    # Jetpac Requirement
+    written_requirement = spoiler.settings.medal_requirement
+    if written_requirement != 15:
+        if written_requirement < 0:
+            written_requirement = 0
+        elif written_requirement > 40:
+            written_requirement = 40
+        writeValue(ROM_COPY, 0x80026513, Overlay.Menu, written_requirement, offset_dict, 1)  # Actual requirement
+        writeValue(ROM_COPY, 0x8002644B, Overlay.Menu, written_requirement, offset_dict, 1)  # Text variable
+        writeValue(ROM_COPY, 0x80027583, Overlay.Menu, written_requirement, offset_dict, 1)  # Text Variable
+
+    # Boss Key Mapping
+    for i in range(7):
+        for j in range(7):
+            if REGULAR_BOSS_MAPS[i] == spoiler.settings.boss_maps[j]:
+                writeValue(ROM_COPY, KEY_FLAG_ADDRESSES[i], Overlay.Boss, NORMAL_KEY_FLAGS[j], offset_dict)
+
+    # Race Coin Requirements
+    race_offset_data = {
+        Maps.CavesLankyRace: [0x800247C2],
+        Maps.AztecTinyRace: [0x800247DA],
+        Maps.FactoryTinyRace: [0x800285A2, 0x8002888E, 0x80028A0A],
+        Maps.GalleonSealRace: [0x8002A232, 0x8002A08E],
+        Maps.CastleTinyRace: [0x8002BAB6, 0x8002B6D6],
+        Maps.JapesMinecarts: [0x806C4912],
+        Maps.ForestMinecarts: [0x806C4956],
+        Maps.CastleMinecarts: [0x806C499A],
+    }
+    static_overlay_races = [Maps.JapesMinecarts, Maps.ForestMinecarts, Maps.CastleMinecarts]
+    for map_id in race_offset_data:
+        if map_id in spoiler.coin_requirements:
+            for addr in race_offset_data[map_id]:
+                overlay = Overlay.Static if map_id in static_overlay_races else Overlay.Race
+                writeValue(ROM_COPY, addr, overlay, spoiler.coin_requirements[map_id], offset_dict)
+
+    writeValue(ROM_COPY, 0x80681CE2, Overlay.Static, 0, offset_dict)
+    writeValue(ROM_COPY, 0x80681CFA, Overlay.Static, 1, offset_dict)
+    writeValue(ROM_COPY, 0x80681D06, Overlay.Static, 2, offset_dict)
+    writeValue(ROM_COPY, 0x80681D12, Overlay.Static, 3, offset_dict)
+    writeValue(ROM_COPY, 0x80681C8A, Overlay.Static, 0, offset_dict)
+    writeValue(ROM_COPY, 0x800295F6, Overlay.Critter, 0, offset_dict)
+    writeValue(ROM_COPY, 0x80029606, Overlay.Critter, 1, offset_dict)
+    writeValue(ROM_COPY, 0x800295FE, Overlay.Critter, 3, offset_dict)
+    writeValue(ROM_COPY, 0x800295DA, Overlay.Critter, 2, offset_dict)
+    writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
+    writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
