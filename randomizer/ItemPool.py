@@ -51,7 +51,7 @@ def PlaceConstants(spoiler):
     # If no CB rando in isles, clear these locations
     if settings.cb_rando != CBRando.on_with_isles:
         for x in range(5):
-            spoiler.LocationList(Locations.IslesDonkeyMedal + x).PlaceItem(spoiler, Items.NoItem)
+            spoiler.LocationList[Locations.IslesDonkeyMedal + x].PlaceItem(spoiler, Items.NoItem)
     # Handle key placements
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in

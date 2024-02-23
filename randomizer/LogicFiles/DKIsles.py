@@ -7,7 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import MinigameBarrels
+from randomizer.Enums.Settings import MinigameBarrels, CBRando
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -71,11 +71,11 @@ LogicRegions = {
     ]),
 
     Regions.DKIslesMedals: Region("DK Isles Medals", "Isles Medal Rewards", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDonkeyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesDiddyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesLankyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesTinyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesChunkyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.IslesDonkeyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
+        LocationLogic(Locations.IslesDiddyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
+        LocationLogic(Locations.IslesLankyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
+        LocationLogic(Locations.IslesTinyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
+        LocationLogic(Locations.IslesChunkyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
     ], [], [], restart=-1),
 
     Regions.Credits: Region("Credits", "Credits", Levels.DKIsles, False, None, [
