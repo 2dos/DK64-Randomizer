@@ -45,7 +45,10 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Shuffle Bonus Barrels: 70%
 - Shuffle Boss Kong Required: 50%
 - Shuffle Boss Location: 80%
-- Random CB Locations: 50%
+- Random CB Locations: 
+	- Off: 50%
+	- On: 35%
+	- On With Isles: 15%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 20%

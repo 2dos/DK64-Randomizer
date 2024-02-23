@@ -7,7 +7,7 @@ import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
-from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
+from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
@@ -48,6 +48,10 @@ def PlaceConstants(spoiler):
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
         spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, Items.HideoutHelmKey)
+    # If no CB rando in isles, clear these locations
+    if settings.cb_rando != CBRando.on_with_isles:
+        for x in range(5):
+            spoiler.LocationList(Locations.IslesDonkeyMedal + x).PlaceItem(spoiler, Items.NoItem)
     # Handle key placements
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
@@ -94,7 +98,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(RarewareCoinItems())
     allItems.extend(BattleCrownItems())
     allItems.extend(Keys())
-    allItems.extend(BananaMedalItems())
+    allItems.extend(BananaMedalItems(settings))
     allItems.extend(MiscItemRandoItems())
     allItems.extend(FairyItems())
     allItems.extend(RainbowCoinItems())
@@ -137,7 +141,7 @@ def AllItems(settings):
     if Types.Key in settings.shuffled_location_types:
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
-        allItems.extend(BananaMedalItems())
+        allItems.extend(BananaMedalItems(settings))
     if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
         allItems.extend(MiscItemRandoItems())
     if Types.Fairy in settings.shuffled_location_types:
@@ -198,7 +202,7 @@ def AllItemsForMovePlacement(settings):
     if Types.Key in settings.shuffled_location_types:
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
-        allItems.extend(BananaMedalItems())
+        allItems.extend(BananaMedalItems(settings))
     if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
         allItems.extend(MiscItemRandoItems())
     if Types.Fairy in settings.shuffled_location_types:
@@ -433,10 +437,13 @@ def ToughGoldenBananaItems():
     return itemPool
 
 
-def BananaMedalItems():
+def BananaMedalItems(settings):
     """Return a list of Banana Medals to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.BananaMedal, 40))
+    count = 40
+    if settings.cb_rando == CBRando.on_with_isles:
+        count = 45
+    itemPool.extend(itertools.repeat(Items.BananaMedal, count))
     return itemPool
 
 
@@ -545,7 +552,7 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     if Types.Kong in unplacedTypes:
         itemPool.extend(Kongs(settings))
     if Types.Medal in unplacedTypes:
-        itemPool.extend(BananaMedalItems())
+        itemPool.extend(BananaMedalItems(settings))
     if Types.Shockwave in unplacedTypes:
         itemPool.extend(ShockwaveTypeItems(settings))
     if Types.Bean in unplacedTypes:

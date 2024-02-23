@@ -315,7 +315,7 @@ int canPlayJetpac(void) {
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
 		return 0;
 	} else {
-		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);
+		return getMedalCount();
 	}
 }
 

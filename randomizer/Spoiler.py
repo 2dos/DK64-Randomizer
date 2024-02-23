@@ -16,6 +16,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
+    CBRando,
     GlitchesSelected,
     LogicType,
     MinigameBarrels,
@@ -600,10 +601,12 @@ class Spoiler:
             if is_empty:
                 del humanspoiler[spoiler_dict]
 
-        if self.settings.cb_rando:
+        if self.settings.cb_rando != CBRando.off:
             human_cb_type_map = {"cb": " Bananas", "balloons": " Balloons"}
             humanspoiler["Colored Banana Locations"] = {}
             cb_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle"]
+            if self.settings.cb_rando == CBRando.on_with_isles:
+                cb_levels.append("Isles")
             cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
             for lvl in cb_levels:
                 for kng in cb_kongs:

@@ -265,9 +265,9 @@ class LogicVarHolder:
                     self.Events.append(warp_data.event)
 
         # Colored banana and coin arrays
-        # Colored bananas as 7 arrays of 5 (7 levels for 5 kongs)
+        # Colored bananas as 9 arrays of 5 (8 levels for 5 kongs, Helm is level index 7, so skip this)
         self.ColoredBananas = []
-        for i in range(7):
+        for i in range(9):
             self.ColoredBananas.append([0] * 5)
 
         self.Coins = [0] * 5

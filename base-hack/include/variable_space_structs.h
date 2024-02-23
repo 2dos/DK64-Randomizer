@@ -83,7 +83,7 @@ typedef struct varspace {
 	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
 	/* 0x103 */ char random_switches;
 	/* 0x104 */ char slam_level[7]; // Level of slam required to slam a switch in a level (if random_switches is on)
-	/* 0x10B */ char unk_10B;
+	/* 0x10B */ char isles_cb_rando; // Gives 5 extra medals and handles appropriately
 	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
 	/* 0x10D */ unsigned char starting_exit;
 	/* 0x10E */ unsigned char tns_portal_rando_on;

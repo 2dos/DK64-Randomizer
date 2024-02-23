@@ -89,7 +89,12 @@ void banana_medal_acquisition(int flag) {
      * 
      * @param flag Flag index of the banana medal
      */
-    int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+    int item_type = 0;
+    if (flag >= FLAG_MEDAL_ISLES_DK) {
+        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
+    } else {
+        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+    }
     float reward_x = 160.f;
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -245,6 +250,21 @@ int getFlagIndex_Corrected(int start, int level) {
      * @return New flag index
      */
     return start + (5 * level) + getKong(0);
+}
+
+int getFlagIndex_MedalCorrected(int start, int level) {
+    /**
+     * @brief Get a corrected flag index for a medal, which will convert Rambi/Enguarde into the kong who entered the transformation crate
+     * 
+     * @param start Start flag index
+     * @param level Level Index
+     * 
+     * @return New flag index
+     */
+    if (level < 7) {
+        return getFlagIndex_Corrected(start, level);
+    }
+    return FLAG_MEDAL_ISLES_DK + getKong(0);
 }
 
 void collectKey(void) {

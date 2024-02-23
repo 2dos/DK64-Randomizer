@@ -560,7 +560,7 @@ class Settings:
         self.enemy_rando = False
         self.crown_enemy_rando = CrownEnemyRando.off
         self.enemy_speed_rando = False
-        self.cb_rando = False
+        self.cb_rando = CBRando.off
         self.coin_rando = False
         self.crown_placement_rando = False
         self.override_cosmetics = True

@@ -2781,6 +2781,7 @@ crown_tails = (
     "Scuffle",
 )
 
+
 def getCrownNames() -> list:
     """Get crown names from head and tail pools."""
     # Get 10 names for heads just in case "Forest" and "Fracas" show up
@@ -2802,6 +2803,7 @@ def getCrownNames() -> list:
     names.append("Forest Fracas!".upper())
     return names
 
+
 def writeCrownNames():
     """Write Crown Names to ROM."""
     names = getCrownNames()
@@ -2809,6 +2811,7 @@ def writeCrownNames():
     for name_index, name in enumerate(names):
         old_text[0x1E + name_index] = ({"text": [name]},)
     writeText(35, old_text, True)
+
 
 def writeBootMessages() -> None:
     """Write boot messages into ROM."""

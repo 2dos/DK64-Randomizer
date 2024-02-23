@@ -83,6 +83,9 @@ extern void handleTimeOfDay(time_of_day_calls call);
 extern int canItemPersist(void);
 extern void initKongRando(void);
 
+extern int getMedalCount(void);
+extern int isMedalFlag(int flag);
+
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
 extern void setCrusher(void);
@@ -279,6 +282,7 @@ extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
 
 extern int getFlagIndex_Corrected(int start, int level);
+extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
 extern int getCrownItem(maps map);
@@ -485,7 +489,7 @@ extern const unsigned short belt_flags[4];
 extern const unsigned short instrument_flags[6];
 extern const unsigned char kong_pellets[5];
 extern const rgb colorblind_colors[15];
-extern const check_struct item_db[292];
+extern const check_struct item_db[297];
 extern const unsigned char crown_maps[10];
 extern const unsigned char regular_boss_maps[7];
 extern char* levels[10];

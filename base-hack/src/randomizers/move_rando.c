@@ -337,7 +337,7 @@ purchase_classification getPurchaseClassification(int purchase_type, int flag) {
 			return PCLASS_SHOCKWAVE;
 		} else if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 			return PCLASS_BLUEPRINT;
-		} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+		} else if (isMedalFlag(flag)) {
 			return PCLASS_MEDAL;
 		} else if ((flag == FLAG_COLLECTABLE_NINTENDOCOIN) || (flag == FLAG_COLLECTABLE_RAREWARECOIN)) {
 			return PCLASS_COMPANYCOIN;
@@ -816,7 +816,7 @@ void getNextMoveText(void) {
 								// Blueprint
 								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
 								top_item = ITEMTEXT_BLUEPRINT_DK + kong;
-							} else if (isFlagInRange(p_flag, FLAG_MEDAL_JAPES_DK, 40)) {
+							} else if (isMedalFlag(p_flag)) {
 								// Medal
 								top_item = ITEMTEXT_MEDAL;
 							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {

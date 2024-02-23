@@ -199,6 +199,9 @@ void initCarousel_onBoot(void) {
     *(short*)(0x806AA036) = getLo(&file_items[0]);
     *(short*)(0x806AA00E) = getHi(&file_item_caps[0]);
     *(short*)(0x806AA032) = getLo(&file_item_caps[0]);
+    if (Rando.isles_cb_rando) {
+        file_item_caps[3] = 45;
+    }
     *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB3F6) = CHECK_TERMINATOR;

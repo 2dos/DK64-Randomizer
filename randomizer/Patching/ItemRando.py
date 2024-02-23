@@ -604,6 +604,8 @@ def place_randomized_items(spoiler):
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
+                        if item.old_flag >= 0x570:  # Isles Medals
+                            offset = 40 + (item.old_flag - 0x570)
                         ROM_COPY.seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6

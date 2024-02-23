@@ -9,6 +9,7 @@ from tempfile import mktemp
 
 from randomizer.Enums.Settings import (
     BananaportRando,
+    CBRando,
     CrownEnemyRando,
     DamageAmount,
     FasterChecksSelected,
@@ -209,7 +210,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
         BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
-        BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
+        BooleanProperties(spoiler.settings.cb_rando == CBRando.on_with_isles, 0x10B),  # 5 extra medal handling
         BooleanProperties(spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles, 0x11F),  # Wrinkly Rando
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
@@ -514,7 +515,7 @@ def patching_response(spoiler):
         key_bitfield = key_bitfield | (1 << key)
     ROM_COPY.seek(sav + 0x127)
     ROM_COPY.write(key_bitfield)
-    
+
     if spoiler.settings.rareware_gb_fairies != 20:
         ROM_COPY.seek(sav + 0x36)
         ROM_COPY.write(spoiler.settings.rareware_gb_fairies)

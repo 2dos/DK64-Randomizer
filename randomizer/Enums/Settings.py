@@ -49,6 +49,19 @@ class BananaportRando(IntEnum):
     crossmap_decoupled = 3
 
 
+class CBRando(IntEnum):
+    """Determines the level of CB Rando utilized.
+
+    off: CB Rando is disabled.
+    on: CB Rando is on in the main 7 levels.
+    on_with_isles: Same as "on", but expanded to include isles.
+    """
+
+    off = auto()
+    on = auto()
+    on_with_isles = auto()
+
+
 class CharacterColors(IntEnum):
     """Determines the colors for the Kongs, Rambi and Enguarde.
 
@@ -707,6 +720,7 @@ SettingsMap = {
     "activate_all_bananaports": ActivateAllBananaports,
     "bananaport_rando": BananaportRando,
     "bonus_barrels": MinigameBarrels,
+    "cb_rando": CBRando,
     "chunky_colors": CharacterColors,
     "coin_door_item": HelmDoorItem,
     "colorblind_mode": ColorblindMode,
@@ -1001,7 +1015,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.bonus_barrel_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_location_rando: SettingsStringDataType.bool,
-    SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.cb_rando: CBRando,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.random_crates: SettingsStringDataType.bool,

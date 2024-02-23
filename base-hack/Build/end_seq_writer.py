@@ -62,7 +62,7 @@ assistant_devs = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Assistant Developers"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["Aljex", "GloriousLiar", "JXJacob"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
-    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "UmedMuzl"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "Snap", "UmedMuzl"]),
 ]
 
 # BETA TESTERS

@@ -121,7 +121,7 @@ int* drawDPad(int* dl) {
             applied_requirement = Rando.medal_cb_req;
         }
         int mdl_opacity = 0x80;
-        int world = getWorld(CurrentMap, 0);
+        int world = getWorld(CurrentMap, 1);
         if (world < 7) {
             int kong_sum = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
             if (kong_sum >= applied_requirement) {

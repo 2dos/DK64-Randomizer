@@ -143,7 +143,7 @@ void checkItemDB(void) {
                     }
                     break;
                 case CHECK_MEDAL:
-                    if (j != 7) {
+                    if ((j != 7) || (Rando.isles_cb_rando)) {
                         denominator = 5;
                     }
                     break;

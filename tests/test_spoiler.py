@@ -8,7 +8,7 @@ from parameterized import parameterized_class
 
 # from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
+from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
                                        CrownEnemyRando, DamageAmount,
                                        ExtraCutsceneSkips, FillAlgorithm,
                                        FreeTradeSetting, HelmDoorItem,
@@ -57,7 +57,7 @@ class TestSpoiler(unittest.TestCase):
 
         # Shuffled Locations
         data["random_patches"] = True  # usually False
-        data["cb_rando"] = False  # likely to be False?
+        data["cb_rando"] = CBRando.off  # likely to be False?
         data["coin_rando"] = False
         data["random_fairies"] = False  # likely to be False
         data["wrinkly_location_rando"] = False  # likely to be False

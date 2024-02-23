@@ -28,7 +28,7 @@ typedef struct meloncrate_db_item {
 } meloncrate_db_item;
 
 static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
-static unsigned char medal_item_table[40] = {}; // Medal Rewards
+static unsigned char medal_item_table[45] = {}; // Medal Rewards
 static unsigned short crown_item_table[10] = {}; // Crown Rewards
 static unsigned short key_item_table[8] = {}; // Boss Rewards
 static short fairy_item_table[20] = {}; // Fairy Rewards
@@ -428,7 +428,7 @@ void initItemRando(void) {
         bp_item_table[i] = bp_write[i];
     }
     // Medal Table
-    int medal_size = 0x28;
+    int medal_size = 45;
     unsigned char* medal_write = getFile(medal_size, 0x1FF1080);
     for (int i = 0; i < medal_size; i++) {
         medal_item_table[i] = medal_write[i];

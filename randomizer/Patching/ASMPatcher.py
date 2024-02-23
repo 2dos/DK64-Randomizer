@@ -2,7 +2,7 @@
 
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
 from randomizer.Settings import Settings
-from randomizer.Enums.Settings import FasterChecksSelected, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected
+from randomizer.Enums.Settings import FasterChecksSelected, CBRando, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -396,7 +396,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806CB340, Overlay.Static, 0, offset_dict, 4)  # Voiding
         writeValue(ROM_COPY, 0x806DEFE4, Overlay.Static, 0, offset_dict, 4)  # Fairies
         writeValue(ROM_COPY, 0x806A6EA8, Overlay.Static, 0, offset_dict, 4)  # Bonus Barrels
-        writeValue(ROM_COPY, 0x800289B0, Overlay.Boss, 0, offset_dict, 4) # K Rool between-phase health refilll
+        writeValue(ROM_COPY, 0x800289B0, Overlay.Boss, 0, offset_dict, 4)  # K Rool between-phase health refilll
     else:
         writeValue(ROM_COPY, 0x806A6EA8, Overlay.Static, 0x0C1C2519, offset_dict, 4)  # Set Bonus Barrel to refill health
 
@@ -414,8 +414,12 @@ def patchAssembly(ROM_COPY, spoiler):
         # Adjust warp code to make camera be behind player, loading portal
         writeValue(ROM_COPY, 0x806C97D0, Overlay.Static, 0xA06E0007, offset_dict, 4)  # SB $t6, 0x7 ($v1)
 
-    if spoiler.settings.cb_rando:
+    if spoiler.settings.cb_rando != CBRando.off:
         writeValue(ROM_COPY, 0x8069C2FC, Overlay.Static, 0, offset_dict, 4)
+        if spoiler.settings.cb_rando == CBRando.on_with_isles:
+            writeValue(ROM_COPY, 0x806AA458, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Main Screen)
+            writeValue(ROM_COPY, 0x806AA858, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Level Kong Screen)
+            # TODO: Work on Level Totals screen - this one is a bit more complicated
 
     if spoiler.settings.perma_death:
         writeValue(ROM_COPY, 0x8064EC00, Overlay.Static, 0x24020001, offset_dict, 4)
@@ -615,7 +619,21 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x800359A6, Overlay.Boss, 3, offset_dict)
 
     # Decompressed Overlays
-    writeValue(ROM_COPY, 0x80748E30, Overlay.Static, 0, offset_dict, 1)
+    overlays_being_decompressed = [
+        0x09,  # Setup
+        0x0A,  # Instance Scripts
+        0x0C,  # Text
+        0x10,  # Character Spawners
+        0x12,  # Loading Zones
+        0x18,  # Checkpoints
+    ]
+    for ovl in overlays_being_decompressed:
+        writeValue(ROM_COPY, 0x80748E18 + ovl, Overlay.Static, 0, offset_dict, 1)
+
+    # Music Fix
+    writeValue(ROM_COPY, 0x807452B0, Overlay.Static, 0xD00, offset_dict, 4)
+    writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
+    writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
     # Golden Banana Requirements
     order = 0

@@ -1134,6 +1134,21 @@ void* getFile(int size, int rom) {
 	return loc;
 }
 
+int getMedalCount(void) {
+	int regular_medals = countFlagArray(FLAG_MEDAL_JAPES_DK, 40, FLAGTYPE_PERMANENT);
+	if (Rando.isles_cb_rando) {
+		regular_medals += countFlagArray(FLAG_MEDAL_ISLES_DK, 5, FLAGTYPE_PERMANENT);
+	}
+	return regular_medals;
+}
+
+int isMedalFlag(int flag) {
+	if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+		return 1;
+	}
+	return isFlagInRange(flag, FLAG_MEDAL_ISLES_DK, 5);
+}
+
 typedef struct flag_counting_struct {
 	/* 0x000 */ short flag_start;
 	/* 0x002 */ unsigned char item_count;
@@ -1151,7 +1166,7 @@ static flag_counting_struct flag_counters[] = {
 	{.flag_start = 0, .item_count = 8, .enabled=2, .flag_array=(short*)&normal_key_flags}, // REQITEM_KEY
 	{.flag_start = FLAG_CROWN_JAPES, .item_count = 10, .enabled=1, .flag_array=(short*)0}, // REQITEM_CROWN
 	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COMPANYCOIN
-	{.flag_start = FLAG_MEDAL_JAPES_DK, .item_count = 40, .enabled=1, .flag_array=(short*)0}, // REQITEM_MEDAL
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_MEDAL
 	{.flag_start = FLAG_COLLECTABLE_BEAN, .item_count = 1, .enabled=1, .flag_array=(short*)0}, // REQITEM_BEAN
 	{.flag_start = FLAG_PEARL_0_COLLECTED, .item_count = 5, .enabled=1, .flag_array=(short*)0}, // REQITEM_PEARL
 	{.flag_start = FLAG_RAINBOWCOIN_0, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_RAINBOWCOIN
@@ -1160,7 +1175,7 @@ static flag_counting_struct flag_counters[] = {
 	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COLOREDBANANA
 };
 
-static const float percentage_rewards[] = {
+static float percentage_rewards[] = {
 	0.4f, // GBs
 	0.5f, // Crowns
 	0.25f, // Keys
@@ -1179,10 +1194,15 @@ int getGamePercentage(void) {
 	// This is a slightly modified version of the vanilla function
 	updateFilePercentage();
 	float percentage = 0;
+	float target = 100.4f;
+	if (Rando.isles_cb_rando) {
+		percentage_rewards[4] = 0.18f;
+		target = 100.5f;
+	}
 	for (int i = 0; i < 7; i++) {
 		percentage += getPercentageOfItem(i, percentage_rewards[i]);
 	}
-	if (percentage == 100.4f) {
+	if (percentage == target) {
 		return 101;
 	}
 	return percentage;
@@ -1251,6 +1271,8 @@ int getItemCountReq(requirement_item item) {
 				count += 1;
 			}
 			return count;
+		case REQITEM_MEDAL:
+			return getMedalCount();
 		case REQITEM_GAMEPERCENTAGE:
 			return getGamePercentage();
 		case REQITEM_COLOREDBANANA:

@@ -191,6 +191,9 @@ int clampFlag(int flag) {
     if ((flag >= FLAG_ENEMY_KILLED_0) && (flag < (FLAG_ENEMY_KILLED_0 + ENEMIES_TOTAL))) {
         return 1; // Enemies
     }
+    if ((flag >= FLAG_MEDAL_ISLES_DK) && (flag < (FLAG_MEDAL_ISLES_DK + 5))) {
+        return 1; // Isles Medals
+    }
     return 0;
 }
 

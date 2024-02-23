@@ -331,7 +331,7 @@ void initNonControllableFixes(void) {
      * @brief Initialize any changes which we do not want to give the user any control over whether it's removed
      */
     writeFunction(0x806F56E0, &getFlagIndex_Corrected); // BP Acquisition - Correct for character
-    writeFunction(0x806F9374, &getFlagIndex_Corrected); // Medal Acquisition - Correct for character
+    writeFunction(0x806F9374, &getFlagIndex_MedalCorrected); // Medal Acquisition - Correct for character
     // Inverted Controls Option
     *(short*)(0x8060D01A) = getHi(&InvertedControls); // Change language store to inverted controls store
     *(short*)(0x8060D01E) = getLo(&InvertedControls); // Change language store to inverted controls store

@@ -21,6 +21,7 @@ from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
+    CBRando,
     FasterChecksSelected,
     FillAlgorithm,
     FungiTimeSetting,
@@ -450,7 +451,11 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
     unreachables = GetAccessibleLocations(spoiler, ItemPool.AllItemsUnrestricted(settings), SearchMode.GetUnreachable)
     allLocationsReached = len(unreachables) == 0
     allCBsFound = True
-    for level_index in range(7):
+    for level_index in range(9):
+        if level_index == Levels.HideoutHelm:
+            continue
+        elif level_index == Levels.DKIsles and spoiler.settings.cb_rando != CBRando.on_with_isles:
+            continue
         if sum(spoiler.LogicVariables.ColoredBananas[level_index]) != 500:
             missingCBs = []
             for region_collectible_list in spoiler.CollectibleRegions.values():
@@ -976,7 +981,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in MajorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
-        elif "Medal Rewards" in region.hint_name:
+        elif "Medal Rewards" in region.hint_name and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
             bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
             if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
@@ -1733,7 +1738,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.Medal in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Medal)
         spoiler.Reset()
-        medalsToBePlaced = ItemPool.BananaMedalItems()
+        medalsToBePlaced = ItemPool.BananaMedalItems(spoiler.settings)
         for item in preplaced_items:
             if item in medalsToBePlaced:
                 medalsToBePlaced.remove(item)
@@ -2891,7 +2896,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # CB Shuffle
-    if spoiler.settings.cb_rando:
+    if spoiler.settings.cb_rando != CBRando.off:
         ShuffleCBs(spoiler)
     # Coin Shuffle
     if spoiler.settings.coin_rando:

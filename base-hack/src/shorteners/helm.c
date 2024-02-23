@@ -187,7 +187,7 @@ int checkDoorItem(int index, int count) {
 		case DOORITEM_GB:
 			return getTotalGBs() >= count;
 		case DOORITEM_BP:
-			return countFlagsDuplicate(FLAG_BP_JAPES_DK_HAS, 40, FLAGTYPE_PERMANENT) >= count;
+			return getMedalCount() >= count;
 		case DOORITEM_BEAN:
 			return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 		case DOORITEM_PEARL:
@@ -203,7 +203,7 @@ int checkDoorItem(int index, int count) {
 				return key_count >= count;
 			}
 		case DOORITEM_MEDAL:
-			return countFlagsDuplicate(FLAG_MEDAL_JAPES_DK, 40, FLAGTYPE_PERMANENT) >= count;
+			return getMedalCount() >= count;
 		case DOORITEM_RAINBOWCOIN:
 			return countFlagsDuplicate(FLAG_RAINBOWCOIN_0, 16, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_CROWN:
