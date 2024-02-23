@@ -14,7 +14,7 @@ import js
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Settings import RandomModels
 from randomizer.Lists.Songs import ExcludedSongsSelector
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
@@ -123,6 +123,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             overwrite_object_colors(settings)
             writeMiscCosmeticChanges(settings)
             applyHolidayMode(settings)
+            if settings.misc_cosmetics:
+                writeCrownNames()
 
             ROM_COPY = ROM()
 

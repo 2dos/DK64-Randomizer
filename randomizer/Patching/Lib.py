@@ -455,9 +455,12 @@ def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: Scrip
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
+def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, List[str]]]]:
     """Pull text from ROM with a particular file index."""
-    ROM_COPY = LocalROM()
+    if cosmetic:
+        ROM_COPY = ROM()
+    else:
+        ROM_COPY = LocalROM()
     file_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
     ROM_COPY.seek(file_start + 0)
     count = int.from_bytes(ROM_COPY.readBytes(1), "big")
@@ -543,10 +546,13 @@ def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
     return formatted_text
 
 
-def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]]) -> None:
+def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]], cosmetic: bool = False) -> None:
     """Write the text to ROM."""
     text_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
-    ROM_COPY = LocalROM()
+    if cosmetic:
+        ROM_COPY = ROM()
+    else:
+        ROM_COPY = LocalROM()
     ROM_COPY.seek(text_start)
     ROM_COPY.writeBytes(bytearray([len(text)]))
     position = 0

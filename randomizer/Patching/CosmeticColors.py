@@ -28,6 +28,8 @@ from randomizer.Patching.Lib import (
     SpawnerChange,
     applyCharacterSpawnerChanges,
     compatible_background_textures,
+    grabText,
+    writeText,
 )
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
@@ -2776,10 +2778,11 @@ crown_tails = (
     "Strife",
     "Dog and Duck",
     "Joust",
+    "Scuffle",
 )
 
 def getCrownNames() -> list:
-    """Gets crown names from head and tail pools."""
+    """Get crown names from head and tail pools."""
     # Get 10 names for heads just in case "Forest" and "Fracas" show up
     heads = random.sample(crown_heads, 10)
     tails = random.sample(crown_tails, 9)
@@ -2795,9 +2798,17 @@ def getCrownNames() -> list:
             split_tail = list(tail)
             split_tail[0] = "K"
             tail = "".join(split_tail)
-        names.append(f"{head} {tail}")
+        names.append(f"{head} {tail}!".upper())
+    names.append("Forest Fracas!".upper())
     return names
 
+def writeCrownNames():
+    """Write Crown Names to ROM."""
+    names = getCrownNames()
+    old_text = grabText(35, True)
+    for name_index, name in enumerate(names):
+        old_text[0x1E + name_index] = ({"text": [name]},)
+    writeText(35, old_text, True)
 
 def writeBootMessages() -> None:
     """Write boot messages into ROM."""

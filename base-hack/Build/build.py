@@ -1211,7 +1211,7 @@ text_files = (
     TextChange("Custom", 0, "custom_text.bin"),
     TextChange("Ice Tomato", 0, ""),
     TextChange("Castle Car Race", 0, ""),
-    TextChange("Location/Level Names", 0, ""),
+    TextChange("Location/Level Names", 0x800, ""),
     TextChange("Pause Menu", 0, ""),
     TextChange("Main Menu", 0, "menu_text.bin"),
     TextChange("Race Positions", 0, ""),
