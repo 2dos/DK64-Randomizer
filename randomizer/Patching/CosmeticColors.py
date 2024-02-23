@@ -2779,6 +2779,7 @@ crown_tails = (
     "Dog and Duck",
     "Joust",
     "Scuffle",
+    "Hootenanny",
 )
 
 
