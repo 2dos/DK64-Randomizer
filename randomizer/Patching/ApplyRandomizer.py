@@ -474,8 +474,6 @@ def patching_response(spoiler):
     if spoiler.settings.mill_levers[0] > 0:
         mill_text = ""
         for x in range(5):
-            ROM_COPY.seek(sav + 0xD0 + x)
-            ROM_COPY.write(spoiler.settings.mill_levers[x])
             if spoiler.settings.mill_levers[x] > 0:
                 mill_text += str(spoiler.settings.mill_levers[x])
         # Change default wrinkly hint
@@ -487,12 +485,6 @@ def patching_response(spoiler):
                     spoiler.text_changes[41].append(data)
                 else:
                     spoiler.text_changes[41] = [data]
-
-    # Crypt Levers
-    if spoiler.settings.crypt_levers[0] > 0:
-        for xi, x in enumerate(spoiler.settings.crypt_levers):
-            ROM_COPY.seek(sav + 0xCD + xi)
-            ROM_COPY.write(x)
 
     # Diddy R&D Codes
     enable_code = False

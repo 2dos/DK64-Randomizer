@@ -688,7 +688,7 @@ def patchAssembly(ROM_COPY, spoiler):
         boss_kong = spoiler.settings.boss_kongs[i]
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict)
-        writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict)
+        writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
 
     writeValue(ROM_COPY, 0x80024266, Overlay.Bonus, 1, offset_dict)  # Set Minigame oranges as infinite
 
@@ -745,3 +745,28 @@ def patchAssembly(ROM_COPY, spoiler):
     # Menu/Shop: Disable Multiplayer
     writeValue(ROM_COPY, 0x800280B0, Overlay.Menu, 0, offset_dict, 4)  # Disable access
     writeValue(ROM_COPY, 0x80028A8C, Overlay.Menu, 0, offset_dict, 4)  # Lower Sprite Opacity
+
+    # Mill and Crypt Levers
+    # Mill Levers
+    if spoiler.settings.mill_levers[0] > 0:
+        sequence_length = 0
+        sequence_ended = False
+        sequence_pattern = [0] * 5
+        for x in range(5):
+            if not sequence_ended:
+                if spoiler.settings.mill_levers[x] == 0:
+                    sequence_ended = True
+                else:
+                    sequence_length += 1
+        writeValue(ROM_COPY, 0x8064E4CE, Overlay.Static, sequence_length, offset_dict)
+        for x in range(sequence_length):
+            sequence_pattern[x] = spoiler.settings.mill_levers[(sequence_length - 1) - x]
+        for xi, x in enumerate(sequence_pattern):
+            writeValue(ROM_COPY, 0x807482E0 + xi, Overlay.Static, x, offset_dict, 1)
+    # Crypt Levers
+    if spoiler.settings.crypt_levers[0] > 0:
+        sequence = [0] * 3
+        for x in range(3):
+            sequence[x] = spoiler.settings.crypt_levers[2 - x]
+        for xi, x in enumerate(sequence):
+            writeValue(ROM_COPY, 0x807482E8 + xi, Overlay.Static, x, offset_dict, 1)

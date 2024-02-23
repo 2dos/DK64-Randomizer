@@ -70,8 +70,7 @@ typedef struct varspace {
 	/* 0x0CA */ unsigned char default_screen_ratio; // 0 = Normal, 1 = Widescreen
 	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
 	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
-	/* 0x0CD */ unsigned char crypt_lever_order[3]; // 0 = No lever, 1-6 = code
-	/* 0x0D0 */ unsigned char mill_lever_order[5]; // 0 = no lever, 1-3 = Code
+	/* 0x0CD */ char unk_cd[8];
 	/* 0x0D5 */ moves_pregiven_bitfield moves_pregiven; // Bitfield, Size 0x6
 	/* 0x0DB */ unsigned char seasonal_changes; // 0 = None, 1 = Halloween, 2 = Christmas
 	/* 0x0DC */ unsigned short japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
@@ -84,7 +83,7 @@ typedef struct varspace {
 	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
 	/* 0x103 */ char random_switches;
 	/* 0x104 */ char slam_level[7]; // Level of slam required to slam a switch in a level (if random_switches is on)
-	/* 0x10B */ unsigned char remove_rock_bunch; // Remove rock bunch in Jungle Japes
+	/* 0x10B */ char unk_10B;
 	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
 	/* 0x10D */ unsigned char starting_exit;
 	/* 0x10E */ unsigned char tns_portal_rando_on;
@@ -93,7 +92,7 @@ typedef struct varspace {
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ unsigned char medal_cb_req; // 0 = default (75). int (1-100)
 	/* 0x113 */ FreeTradeAgreement any_kong_items;
-	/* 0x114 */ unsigned char increase_tns_boss_lighting; // Increases lighting when awaiting to enter boss to make it easier to see item reward preview
+	/* 0x114 */ char unk_114;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
@@ -113,8 +112,8 @@ typedef struct varspace {
 	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
-	/* 0x136 */ unsigned char klaptrap_color_bbother; // 0 = Green, 1 = Purple, 2 = Red
-	/* 0x137 */ char open_level_sections; // 0 = Off, 1 = On
+	/* 0x136 */ char unk_136;
+	/* 0x137 */ char unk_137;
 	/* 0x138 */ char activate_all_bananaports; // 0 = Vanilla, 1 = Most bananaports are activated from the start
 	/* 0x139 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown
 	/* 0x13A */ char fast_warp; // 0 = Vanilla, 1 = Use Multiplayer warp
@@ -127,13 +126,12 @@ typedef struct varspace {
 	/* 0x141 */ unsigned char coinreq_japescart;
 	/* 0x142 */ unsigned char coinreq_fungicart;
 	/* 0x143 */ unsigned char coinreq_castlecart;
-	/* 0x144 */ unsigned char menusky_rgb_low[3];
-	/* 0x147 */ unsigned char menusky_rgb_high[3];
-	/* 0x14A */ char patch_kutoutkongs; // 0 = Off, 1 = Forces exit kong to be boss required kong
+	/* 0x144 */ char unk_144[6];
+	/* 0x14A */ char unk_14A;
 	/* 0x14B */ char shop_hints; // 0 = Off, 1 = Hints at the beginning of shops
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
-	/* 0x14E */ char disable_boss_kong_check; // 0 = Enable Check (Vanilla), 1 = Disabled
+	/* 0x14E */ char unk_14E;
 	/* 0x14F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
 	/* 0x150 */ char unk_150;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
@@ -166,7 +164,7 @@ typedef struct varspace {
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char tttrouble_turtle_model; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
-	/* 0x1B8 */ unsigned short diddy_rnd_codes[3]; // 4 bits assigned for each part of the combination
+	/* 0x1B8 */ char unk_1b8[0x1BE - 0x1B8];
 	/* 0x1BE */ unsigned char jetpac_enemy_order[8]; // Indexes 0-7 to represent enemy difficulty
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
