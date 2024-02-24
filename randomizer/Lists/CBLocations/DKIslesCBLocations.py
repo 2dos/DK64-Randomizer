@@ -124,7 +124,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
         locations=[
-            [1, 1.0, 1102, 253, 1895],
+            [1, 1.0, 1002, 253, 1895],
             [1, 1.0, 1003, 248, 1853],
             [1, 1.0, 1007, 242, 1805],
             [1, 1.0, 1008, 233, 1741],
@@ -1700,7 +1700,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
         locations=[
-            [5, 1.0, 666, 45, 54],
+            [5, 1.0, 666, 45, 544],
             [5, 1.0, 340, 45, 543],
         ],
     ),
