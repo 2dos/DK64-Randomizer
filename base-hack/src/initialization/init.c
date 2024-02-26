@@ -271,12 +271,6 @@ void initHack(int source) {
 			initActor(NEWACTOR_JETPACITEMOVERLAY, 1, &getNextMoveText, ACTORMASTER_CONTROLLER, 0, 0, 0x10, 324);
 			// Kong Rando
 			initKongRando();
-            
-			if (Rando.short_bosses) {
-				actor_health_damage[236].init_health = 44; // Dogadon Health: 3 + (62 * (2 / 3))
-				actor_health_damage[185].init_health = 3; // Dillo Health
-				actor_health_damage[251].init_health = 3; // Spider Boss Health
-			}
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
 			initCosmetic();
@@ -315,21 +309,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
 			initSmallerQuadChecks();
-			writeFunction(0x805FEBC0, &parseCutsceneData); // modifyCutsceneHook
-			writeFunction(0x807313A4, &checkVictory_flaghook); // perm flag set hook
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
-			// New Mermaid Checking Code
-			writeFunction(0x806C3B5C, &mermaidCheck); // Mermaid Check
-			if (Rando.helm_hurry_mode) {
-				writeFunction(0x806A8A18, &QuitGame); // Save game on quit
-				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
-				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
-				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
-				writeFunction(0x807125A4, &initHelmHurry); // Change write
-				writeFunction(0x80713DE0, &finishHelmHurry); // Change write
-				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
-				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
-			}
 			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
 				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
@@ -338,14 +318,8 @@ void initHack(int source) {
 				}
 			}
 			KKOPhaseRandoOn = kko_phase_rando;
-			if (Rando.wrinkly_rando_on) {
-				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
-				writeFunction(0x8069E154, &getWrinklyLevelIndex); // Modify Function Call
-			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
-			// Deathwarp Handle
-			writeFunction(0x8071292C, &WarpHandle); // Check if in Helm, in which case, apply transition
 			// Gold Beaver Code
       		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
 			writeFunction(0x806AD750, &beaverExtraHitHandle); // Remove buff until we think of something better
@@ -353,40 +327,11 @@ void initHack(int source) {
 			actor_functions[324] = &getNextMoveText;
 			actor_functions[320] = &getNextMoveText;
 			initPauseMenu(); // Changes to enable more items
-			// Spider Projectile
-			if (Rando.hard_mode.enemies) {
-				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
-				actor_health_damage[259].init_health = 9; // Increase Guard Health
-			}
-			// Fix some silk memes
-			writeFunction(0x806ADA70, &HandleSpiderSilkSpawn);
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
 				writeFunction(0x80660994, &getOscillationDelta);
 				writeFunction(0x806609BC, &getOscillationDelta);
 			}
-			if (DAMAGE_MASKING) {
-				// Damage mask
-				// writeFunction(0x806A6EA8, &applyDamageMask);
-				writeFunction(0x806EE138, &applyDamageMask);
-				writeFunction(0x806EE330, &applyDamageMask);
-				writeFunction(0x806EE480, &applyDamageMask);
-				writeFunction(0x806EEA20, &applyDamageMask);
-				writeFunction(0x806EEEA4, &applyDamageMask);
-				writeFunction(0x806EF910, &applyDamageMask);
-				writeFunction(0x806EF9D0, &applyDamageMask);
-				writeFunction(0x806F5860, &applyDamageMask); // Watermelon
-			}
-			// Slow Turn Fix
-			writeFunction(0x806D2FC0, &fixRBSlowTurn);
-			// for (int i = 0; i < 10; i++) {
-			// 	*(int*)(0x8060D6A0 + (4 * i)) = 0;
-			// }
-			// *(short*)(0x8060D6C8) = 0x5000;
-			// LZ Save
-			writeFunction(0x80712EC4, &postKRoolSaveCheck);
-			// Opacity fixes
-			writeFunction(0x806380B0, &handleModelTwoOpacity);
 			// Reduce TA Cooldown
 			if (Rando.tag_anywhere) {
 				writeFunction(0x806F5BE8, &tagAnywhereAmmo);

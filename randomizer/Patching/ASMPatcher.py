@@ -251,6 +251,20 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeFunction(ROM_COPY, 0x805FC164, Overlay.Static, "cFuncLoop", offset_dict) # Main Function Loop
     writeFunction(ROM_COPY, 0x8060CB7C, Overlay.Static, "fixChimpyCamBug", offset_dict) # Fix bug with PJ
+    writeFunction(ROM_COPY, 0x805FEBC0, Overlay.Static, "parseCutsceneData", offset_dict) # modifyCutsceneHook
+    writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict) # perm flag set hook
+    writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict) # Mermaid Check
+    writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict) # Fix some silk memes
+
+    # Damage mask
+    damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
+    for addr in damage_addrs:
+        writeFunction(ROM_COPY, addr, Overlay.Static, "applyDamageMask", offset_dict)
+    writeFunction(ROM_COPY, 0x80031524, Overlay.Boss, "applyDamageMask", offset_dict)
+
+    writeFunction(ROM_COPY, 0x806D2FC0, Overlay.Static, "fixRBSlowTurn", offset_dict) # Slow Turn Fix
+    writeFunction(ROM_COPY, 0x80712EC4, Overlay.Static, "postKRoolSaveCheck", offset_dict) # LZ Save
+    writeFunction(ROM_COPY, 0x806380B0, Overlay.Static, "handleModelTwoOpacity", offset_dict) # Opacity Fixes
 
     # Level Index Fixes
     for map_index in (Maps.OrangeBarrel, Maps.BarrelBarrel, Maps.VineBarrel, Maps.DiveBarrel):
@@ -411,6 +425,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80631FE6, Overlay.Static, 550, offset_dict)  # Fungi
     writeValue(ROM_COPY, 0x80632036, Overlay.Static, 550, offset_dict)  # Others
 
+    # Deathwarp Handle
+    writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "WarpHandle", offset_dict) # Check if in Helm, in which case, apply transition
+
     if spoiler.settings.no_healing:
         writeValue(ROM_COPY, 0x80683A34, Overlay.Static, 0, offset_dict, 4)  # Cancel Tag Health Refill
         writeValue(ROM_COPY, 0x806CB340, Overlay.Static, 0, offset_dict, 4)  # Voiding
@@ -419,6 +436,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x800289B0, Overlay.Boss, 0, offset_dict, 4)  # K Rool between-phase health refilll
     else:
         writeValue(ROM_COPY, 0x806A6EA8, Overlay.Static, 0x0C1C2519, offset_dict, 4)  # Set Bonus Barrel to refill health
+
+    if spoiler.settings.shorten_boss:
+        writeValue(ROM_COPY, 0x8074D3A8, Overlay.Static, 3, offset_dict) # Dillo Health 4 -> 3
+        writeValue(ROM_COPY, 0x8074D474, Overlay.Static, int(3 + (62 * (2 / 3))), offset_dict) # Dogadon Health 65 -> 44
+        writeValue(ROM_COPY, 0x8074D4B0, Overlay.Static, 3, offset_dict) # Spider Boss Health 6 -> 3
 
     if spoiler.settings.bonus_barrel_auto_complete:
         writeValue(ROM_COPY, 0x806818DE, Overlay.Static, 0x4248, offset_dict)  # Make Aztec Lobby GB spawn above the trapdoor)
@@ -430,6 +452,20 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806809C8, Overlay.Static, 0x1000, offset_dict)  # Prevent Fungi TTTrouble Bonus dropping
         writeValue(ROM_COPY, 0x80681962, Overlay.Static, 1, offset_dict)  # Make bonus noclip
         writeFunction(ROM_COPY, 0x80681158, Overlay.Static, "completeBonus", offset_dict)
+
+    if spoiler.settings.helm_hurry:
+        writeFunction(ROM_COPY, 0x806A8A18, Overlay.Static, "QuitGame", offset_dict) # Save game on quit
+        writeValue(ROM_COPY, 0x80713CCC, Overlay.Static, 0, offset_dict, 4) # Prevent Helm Timer Disable
+        writeValue(ROM_COPY, 0x80713CD8, Overlay.Static, 0, offset_dict, 4) # Prevent Shutdown Song Playing
+        writeValue(ROM_COPY, 0x8071256A, Overlay.Static, 15, offset_dict) # Init Helm Timer = 15 minutes
+        writeFunction(ROM_COPY, 0x807125A4, Overlay.Static, "initHelmHurry", offset_dict) # Change write
+        writeFunction(ROM_COPY, 0x80713DE0, Overlay.Static, "finishHelmHurry", offset_dict) # Change write
+        writeValue(ROM_COPY, 0x807125CC, Overlay.Static, 0, offset_dict, 4) # Prevent Helm Timer Overwrite
+        writeValue(ROM_COPY, 0x807095BE, Overlay.Static, 0x2D4, offset_dict) # Change Zipper with K. Rool Laugh
+
+    if spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles:
+        writeValue(ROM_COPY, 0x8064F170, Overlay.Static, 0, offset_dict, 4) # Prevent edge cases for Aztec Chunky/Fungi Wheel
+        writeFunction(ROM_COPY, 0x8069E154, Overlay.Static, "getWrinklyLevelIndex", offset_dict) # Modify Function Call
 
     if spoiler.settings.tns_location_rando:
         # Adjust warp code to make camera be behind player, loading portal
@@ -481,6 +517,7 @@ def patchAssembly(ROM_COPY, spoiler):
     if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_enemies):
         writeValue(ROM_COPY, 0x806B12DA, Overlay.Static, 0x3A9, offset_dict)  # Kasplat Shockwave Chance
         writeValue(ROM_COPY, 0x806B12FE, Overlay.Static, 0x3B3, offset_dict)  # Kasplat Shockwave Chance
+        writeValue(ROM_COPY, 0x8074D4D0, Overlay.Static, 9, offset_dict)
 
     if spoiler.settings.medal_cb_req > 0:
         writeValue(ROM_COPY, 0x806F934E, Overlay.Static, spoiler.settings.medal_cb_req, offset_dict)  # Acquisition

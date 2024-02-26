@@ -17,9 +17,6 @@ void overlay_mod_boss(void) {
 		*(short*)(0x800359A8) = 14; // Microhint Cutscene
 		*(int*)(0x80028D54) = 0; // Delete flag set
 	}
-	if (DAMAGE_MASKING) {
-		writeFunction(0x80031524, &applyDamageMask);
-	}
 	
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {

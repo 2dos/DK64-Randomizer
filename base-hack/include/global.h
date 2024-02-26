@@ -39,7 +39,6 @@ extern int getEnemyFlag(int id);
 extern void setEnemyDBPopulation(int value);
 extern void populateEnemyMapData(void);
 
-extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -106,10 +105,8 @@ extern void fixGraceCheese(void);
 extern void resetMapContainer(void);
 extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);
-extern int initHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
 extern void saveHelmHurryTime(void);
-extern void finishHelmHurry(void);
 extern void writeDefaultFilename(void);
 extern void wipeFileStats(void);
 
@@ -174,7 +171,6 @@ extern void CBDing(void);
 extern int* renderDingSprite(int* dl);
 extern void initDingSprite(void);
 extern void handleSpiderTrapCode(void);
-extern void HandleSpiderSilkSpawn(void);
 extern void SpiderBossExtraCode(void);
 extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
@@ -191,8 +187,6 @@ extern void purchaseMove(shop_paad* paad);
 extern void getNextMoveText(void);
 extern void displayBFIMoveText(void);
 extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag);
-extern void fixRBSlowTurn(void);
-extern void postKRoolSaveCheck(void);
 extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
 
 extern void* getFile(int size, int rom);
@@ -231,7 +225,6 @@ extern void changeFileSelectAction_0(menu_controller_paad* paad, int cap);
 extern void handleFileSelectSprites(void* paad, void* sprite, int x, int y, float scale, int unk0, int control);
 extern void checkSkippableCutscene(void);
 extern void updateSkippableCutscenes(void);
-extern void parseCutsceneData(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
 extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
@@ -332,7 +325,6 @@ extern void initHintFlags(void);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
 extern void handleFilename(char* location, char* format, char* new_name);
-extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void initActorExpansion(void);
 extern void initTextChanges(void);
@@ -378,10 +370,7 @@ extern void populatePatchItem(int id, int map, int index, int world);
 extern void populateCrateItem(int id, int map, int index, int world);
 extern int isObjectTangible_detailed(int id);
 
-extern void QuitGame(void);
-
 extern void insertROMMessages(void);
-extern void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacity);
 extern int isTBarrelFlag(int flag);
 extern int isFairyFlag(int flag);
 extern int isFlagInRange(int test_flag, int start_flag, int count);

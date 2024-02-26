@@ -909,11 +909,7 @@ void giveOrange(void) {
 }
 
 void giveMelon(void) {
-	if (DAMAGE_MASKING) {
-		applyDamageMask(0, 1);
-	} else {
-		applyDamage(0, 1);
-	}
+	applyDamageMask(0, 1);
 }
 
 int inShortList(int target, short* list, int count) {
