@@ -323,19 +323,19 @@ ColoredBananaGroupList = [
             [1, 1.0, 1550, 17, 243],
         ],
     ),
-    ColoredBananaGroup(
-        group=23,
-        map_id=Maps.TrainingGrounds,
-        name="Treehouse roof",
-        konglist=[Kongs.lanky],
-        region=Regions.TrainingGrounds,
-        logic=lambda l: l.handstand,
-        locations=[
-            [5, 1.0, 1343, 352, 1147],
-            [5, 1.0, 1343, 352, 1204],
-            [5, 1.0, 1343, 352, 1261],
-        ],
-    ),
+    # ColoredBananaGroup(
+    #     group=23,
+    #     map_id=Maps.TrainingGrounds,
+    #     name="Treehouse roof",
+    #     konglist=[Kongs.lanky],
+    #     region=Regions.TrainingGrounds,
+    #     logic=lambda l: l.handstand,
+    #     locations=[
+    #         [5, 1.0, 1343, 352, 1147],
+    #         [5, 1.0, 1343, 352, 1204],
+    #         [5, 1.0, 1343, 352, 1261],
+    #     ],
+    # ), @Bismuth
     ColoredBananaGroup(
         group=24,
         map_id=Maps.TrainingGrounds,
@@ -1201,7 +1201,7 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(
         group=90,
-        map_id=Maps.Isles,
+        map_id=Maps.KLumsy,
         name="Inside K.Lumsy's cage",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Prison,
@@ -1226,7 +1226,7 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(
         group=91,
-        map_id=Maps.Isles,
+        map_id=Maps.KLumsy,
         name="Prison sprint cage",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Prison,
@@ -1238,7 +1238,7 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(
         group=92,
-        map_id=Maps.Isles,
+        map_id=Maps.IslesSnideRoom,
         name="On the Snide boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesSnideRoom,
@@ -1248,7 +1248,7 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(
         group=93,
-        map_id=Maps.Isles,
+        map_id=Maps.IslesSnideRoom,
         name="Above Snide's doorway",
         konglist=[Kongs.diddy],
         region=Regions.IslesSnideRoom,
@@ -1719,12 +1719,12 @@ ColoredBananaGroupList = [
         group=130,
         map_id=Maps.AngryAztecLobby,
         name="Torch above Donkey door",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.AngryAztecLobby,
         locations=[
             [5, 1.0, 499, 76, 153],
         ],
-    ),  # not sure all kongs can reach that
+    ),
     ColoredBananaGroup(
         group=131,
         map_id=Maps.AngryAztecLobby,
@@ -2346,7 +2346,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=181,
+        group=182,
         map_id=Maps.CrystalCavesLobby,
         name="Donkey door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2356,7 +2356,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=182,
+        group=183,
         map_id=Maps.CrystalCavesLobby,
         name="Diddy door",
         konglist=[Kongs.diddy],
@@ -2367,7 +2367,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=183,
+        group=184,
         map_id=Maps.CrystalCavesLobby,
         name="Guitar pad",
         konglist=[Kongs.diddy],
@@ -2378,7 +2378,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=184,
+        group=185,
         map_id=Maps.CrystalCavesLobby,
         name="Behind the lava ice wall",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2389,7 +2389,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=185,
+        group=186,
         map_id=Maps.CrystalCavesLobby,
         name="Lava room",
         konglist=[Kongs.donkey],
@@ -2403,7 +2403,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=186,
+        group=187,
         map_id=Maps.CrystalCavesLobby,
         name="In the air",
         konglist=[Kongs.diddy],
@@ -2416,7 +2416,7 @@ ColoredBananaGroupList = [
     ),
     # Castle Lobby
     ColoredBananaGroup(
-        group=187,
+        group=188,
         map_id=Maps.CreepyCastleLobby,
         name="Chunky door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2426,7 +2426,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=188,
+        group=189,
         map_id=Maps.CreepyCastleLobby,
         name="Donkey door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2436,7 +2436,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=189,
+        group=190,
         map_id=Maps.CreepyCastleLobby,
         name="Diddy door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2446,7 +2446,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=190,
+        group=191,
         map_id=Maps.CreepyCastleLobby,
         name="Diddy door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2456,7 +2456,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=191,
+        group=192,
         map_id=Maps.CreepyCastleLobby,
         name="Tiny door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2466,7 +2466,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=192,
+        group=193,
         map_id=Maps.CreepyCastleLobby,
         name="On the boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2476,7 +2476,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=193,
+        group=194,
         map_id=Maps.CreepyCastleLobby,
         name="Around the boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2490,7 +2490,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=194,
+        group=195,
         map_id=Maps.CreepyCastleLobby,
         name="Kasplat cage",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2505,7 +2505,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=195,
+        group=196,
         map_id=Maps.CreepyCastleLobby,
         name="Around the lobby",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2529,29 +2529,29 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=196,
+        group=197,
         map_id=Maps.CreepyCastleLobby,
         name="Right torch",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
         logic=lambda l: l.chunky and l.barrels,
         locations=[
-            [5, 1.0, 83, 170, 681],
+            [5, 1.0, 83, 160, 681],
         ],
     ),
     ColoredBananaGroup(
-        group=197,
+        group=198,
         map_id=Maps.CreepyCastleLobby,
         name="Left torch",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
         logic=lambda l: l.chunky and l.barrels,
         locations=[
-            [5, 1.0, 1083, 170, 685],
+            [5, 1.0, 1083, 160, 685],
         ],
     ),
     ColoredBananaGroup(
-        group=198,
+        group=199,
         map_id=Maps.CreepyCastleLobby,
         name="Stairs",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2565,7 +2565,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=199,
+        group=200,
         map_id=Maps.CreepyCastleLobby,
         name="Above the entrance hole",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2575,7 +2575,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=200,
+        group=201,
         map_id=Maps.CreepyCastleLobby,
         name="Torch way up",
         konglist=[Kongs.lanky],
@@ -2587,7 +2587,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=201,
+        group=202,
         map_id=Maps.CreepyCastleLobby,
         name="Wall windows",
         konglist=[Kongs.lanky],
@@ -2602,7 +2602,7 @@ ColoredBananaGroupList = [
     ),
     # Helm Lobby
     ColoredBananaGroup(
-        group=202,
+        group=203,
         map_id=Maps.HideoutHelmLobby,
         name="Chunky pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2612,7 +2612,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=203,
+        group=204,
         map_id=Maps.HideoutHelmLobby,
         name="W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2622,7 +2622,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=204,
+        group=205,
         map_id=Maps.HideoutHelmLobby,
         name="Under bonus barrel",
         konglist=[Kongs.chunky],
@@ -2633,18 +2633,18 @@ ColoredBananaGroupList = [
         ],
     ),  # other kongs can access this spot in switchsanity logic, but no idea how to code that
     ColoredBananaGroup(
-        group=205,
+        group=206,
         map_id=Maps.HideoutHelmLobby,
         name="Kasplat island",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HideoutHelmLobby,
         logic=lambda l: l.scope and l.coconut,
         locations=[
-            [5, 1.0, 687, 201, 639],
+            [5, 1.0, 331, 196, 633],
         ],
     ),
     ColoredBananaGroup(
-        group=206,
+        group=207,
         map_id=Maps.HideoutHelmLobby,
         name="Right side",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2658,7 +2658,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=207,
+        group=208,
         map_id=Maps.HideoutHelmLobby,
         name="Left side",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2672,7 +2672,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=208,
+        group=209,
         map_id=Maps.HideoutHelmLobby,
         name="Far W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -2684,7 +2684,7 @@ ColoredBananaGroupList = [
     ),
     # Banana Fairy Room
     ColoredBananaGroup(
-        group=209,
+        group=210,
         map_id=Maps.BananaFairyRoom,
         name="Around the fairy",
         konglist=[Kongs.tiny],
@@ -2698,7 +2698,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=210,
+        group=211,
         map_id=Maps.BananaFairyRoom,
         name="Front corner torches",
         konglist=[Kongs.tiny],
@@ -2709,7 +2709,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=211,
+        group=212,
         map_id=Maps.BananaFairyRoom,
         name="Back corner torches",
         konglist=[Kongs.tiny],
@@ -2720,7 +2720,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=212,
+        group=213,
         map_id=Maps.BananaFairyRoom,
         name="Front ramp",
         konglist=[Kongs.tiny],
@@ -2734,7 +2734,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=213,
+        group=214,
         map_id=Maps.BananaFairyRoom,
         name="Left ramp",
         konglist=[Kongs.tiny],
@@ -2748,7 +2748,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=214,
+        group=215,
         map_id=Maps.BananaFairyRoom,
         name="Right ramp",
         konglist=[Kongs.tiny],
@@ -2762,7 +2762,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=215,
+        group=216,
         map_id=Maps.BananaFairyRoom,
         name="Back ramp",
         konglist=[Kongs.tiny],
@@ -2776,7 +2776,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=216,
+        group=217,
         map_id=Maps.BananaFairyRoom,
         name="Throne",
         konglist=[Kongs.tiny],
@@ -2786,7 +2786,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=217,
+        group=218,
         map_id=Maps.BananaFairyRoom,
         name="Rareware GB room",
         konglist=[Kongs.tiny],
@@ -2945,7 +2945,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         points=[[2208, 580, 628], [2149, 600, 725]],
-    ),  # might require sniper
+    ),
     Balloon(
         id=17,
         map_id=Maps.Isles,
@@ -2983,7 +2983,7 @@ BalloonList = [
         points=[[1197, 600, 1392], [915, 600, 1282], [977, 600, 1593]],
     ),
     Balloon(
-        id=20,
+        id=21,
         map_id=Maps.Isles,
         name="Front of Fairy Isle",
         speed=4,
@@ -2992,25 +2992,25 @@ BalloonList = [
         points=[[1033, 630, 2620], [1116, 730, 2535], [1102, 630, 2392], [1187, 580, 2552]],
     ),
     Balloon(
-        id=21,
+        id=22,
         map_id=Maps.Isles,
         name="Top of Fairy Isle",
         speed=4,
         konglist=[Kongs.diddy],
         region=Regions.IslesAirspace,
         points=[[941, 1080, 2469], [700, 1046, 2556], [750, 1040, 2285]],
-    ),  # if the other kongs can snipe it from the ground, logic needs to change
+    ),
     Balloon(
-        id=22,
+        id=23,
         map_id=Maps.Isles,
         name="Behind Aztec",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMainUpper,
         points=[[3787, 1090, 1757], [3682, 1090, 1940]],
-    ),  # if you can snipe it from below, logic needs to change
+    ),
     Balloon(
-        id=23,
+        id=24,
         map_id=Maps.Isles,
         name="Near Forest",
         speed=4,
@@ -3019,17 +3019,17 @@ BalloonList = [
         points=[[2551, 1620, 1070], [2717, 1620, 974], [2692, 1620, 806], [2717, 1620, 974]],
     ),
     Balloon(
-        id=24,
+        id=25,
         map_id=Maps.Isles,
         name="Around the Krem Krown",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.KremIsleTopLevel,
         points=[[2569, 1979, 3648], [2457, 2005, 3730], [2360, 2009, 3690], [2270, 2009, 3583], [2287, 2009, 3436], [2397, 2035, 3382], [2527, 2019, 3415], [2607, 1995, 3502]],
-    ),  # might require sniper
+    ),
     Balloon(
-        id=25,
-        map_id=Maps.Isles,
+        id=26,
+        map_id=Maps.IslesSnideRoom,
         name="Around Snide",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -3037,7 +3037,7 @@ BalloonList = [
         points=[[574, 234, 468], [323, 234, 449]],
     ),
     Balloon(
-        id=26,
+        id=27,
         map_id=Maps.Isles,
         name="Upper Factory Path",
         speed=4,
@@ -3046,7 +3046,7 @@ BalloonList = [
         points=[[1973, 1060, 3450], [1992, 1111, 3715]],
     ),
     Balloon(
-        id=27,
+        id=28,
         map_id=Maps.Isles,
         name="Big pipe in Krem Isle middle back",
         speed=4,
@@ -3055,7 +3055,7 @@ BalloonList = [
         points=[[2485, 1247, 3931], [2485, 1350, 3931], [2457, 1377, 3869], [2485, 1350, 3931], [2485, 1247, 3931]],
     ),
     Balloon(
-        id=28,
+        id=29,
         map_id=Maps.Isles,
         name="In the Krem Krown",
         speed=4,
@@ -3065,7 +3065,7 @@ BalloonList = [
         points=[[2439, 2135, 3537], [2439, 2400, 3537]],
     ),
     Balloon(
-        id=29,
+        id=30,
         map_id=Maps.JungleJapesLobby,
         name="Left side",
         speed=4,
@@ -3074,7 +3074,7 @@ BalloonList = [
         points=[[612, 145, 306], [678, 145, 458], [631, 145, 666], [678, 145, 458]],
     ),
     Balloon(
-        id=30,
+        id=31,
         map_id=Maps.JungleJapesLobby,
         name="Right side",
         speed=4,
@@ -3083,7 +3083,7 @@ BalloonList = [
         points=[[337, 100, 669], [255, 120, 493], [304, 140, 293], [255, 120, 493]],
     ),
     Balloon(
-        id=31,
+        id=32,
         map_id=Maps.AngryAztecLobby,
         name="Between columns",
         speed=4,
@@ -3092,7 +3092,7 @@ BalloonList = [
         points=[[427, 170, 294], [545, 155, 243], [577, 195, 349]],
     ),
     Balloon(
-        id=32,
+        id=33,
         map_id=Maps.AngryAztecLobby,
         name="Above B.Locker",
         speed=4,
@@ -3101,7 +3101,7 @@ BalloonList = [
         points=[[598, 170, 702], [513, 200, 589], [414, 170, 696], [513, 200, 589]],
     ),
     Balloon(
-        id=33,
+        id=34,
         map_id=Maps.AngryAztecLobby,
         name="Back room",
         speed=4,
@@ -3111,7 +3111,7 @@ BalloonList = [
         points=[[1120, 100, 585], [1057, 100, 716], [939, 100, 623], [1003, 125, 501]],
     ),
     Balloon(
-        id=34,
+        id=35,
         map_id=Maps.FranticFactoryLobby,
         name="Vents",
         speed=4,
@@ -3120,7 +3120,7 @@ BalloonList = [
         points=[[265, 190, 226], [660, 185, 214], [517, 185, 180], [417, 185, 180]],
     ),
     Balloon(
-        id=35,
+        id=36,
         map_id=Maps.FranticFactoryLobby,
         name="Between pipes",
         speed=4,
@@ -3129,7 +3129,7 @@ BalloonList = [
         points=[[238, 45, 284], [238, 222, 284]],
     ),
     Balloon(
-        id=36,
+        id=37,
         map_id=Maps.FranticFactoryLobby,
         name="Upper path",
         speed=4,
@@ -3138,7 +3138,7 @@ BalloonList = [
         points=[[675, 208, 368], [651, 200, 600], [486, 166, 594], [257, 222, 598], [486, 166, 594], [651, 200, 600], [675, 208, 368]],
     ),
     Balloon(
-        id=37,
+        id=38,
         map_id=Maps.GloomyGalleonLobby,
         name="Above water",
         speed=4,
@@ -3147,7 +3147,7 @@ BalloonList = [
         points=[[400, 200, 700], [491, 300, 645], [600, 200, 650], [759, 300, 625], [887, 200, 679], [759, 300, 625], [600, 200, 650], [491, 300, 645], [400, 200, 700]],
     ),
     Balloon(
-        id=38,
+        id=39,
         map_id=Maps.GloomyGalleonLobby,
         name="Above land",
         speed=4,
@@ -3156,7 +3156,7 @@ BalloonList = [
         points=[[940, 270, 911], [668, 295, 1031], [413, 240, 933], [664, 200, 794]],
     ),
     Balloon(
-        id=39,
+        id=40,
         map_id=Maps.GloomyGalleonLobby,
         name="In the Tiny room",
         speed=4,
@@ -3166,7 +3166,7 @@ BalloonList = [
         points=[[781, 260, 297], [808, 300, 184], [952, 260, 184], [808, 300, 184]],
     ),
     Balloon(
-        id=40,
+        id=41,
         map_id=Maps.FungiForestLobby,
         name="Crazy fairy balloon",
         speed=13,
@@ -3187,7 +3187,7 @@ BalloonList = [
         ],
     ),
     Balloon(
-        id=41,
+        id=42,
         map_id=Maps.FungiForestLobby,
         name="Wrinkly wheel (back wall)",
         speed=4,
@@ -3196,7 +3196,7 @@ BalloonList = [
         points=[[290, 50, 198], [330, 80, 198], [314, 140, 198], [269, 140, 198], [247, 80, 198]],
     ),
     Balloon(
-        id=42,
+        id=43,
         map_id=Maps.CrystalCavesLobby,
         name="In the lava",
         speed=4,
@@ -3206,7 +3206,7 @@ BalloonList = [
         points=[[305, 100, 305], [305, -80, 305]],
     ),
     Balloon(
-        id=43,
+        id=44,
         map_id=Maps.CrystalCavesLobby,
         name="Around the bridge",
         speed=4,
@@ -3215,7 +3215,7 @@ BalloonList = [
         points=[[856, 318, 357], [1022, 206, 335], [879, 111, 363], [732, 200, 438]],
     ),
     Balloon(
-        id=44,
+        id=45,
         map_id=Maps.CrystalCavesLobby,
         name="Boulder room",
         speed=4,
@@ -3225,7 +3225,7 @@ BalloonList = [
         points=[[1724, 70, 657], [1519, 70, 654]],
     ),
     Balloon(
-        id=45,
+        id=46,
         map_id=Maps.CreepyCastleLobby,
         name="Acid moat",
         speed=4,
@@ -3234,7 +3234,7 @@ BalloonList = [
         points=[[679, 55, 477], [819, 55, 681], [687, 55, 880], [465, 55, 885], [352, 55, 672], [470, 55, 474]],
     ),
     Balloon(
-        id=46,
+        id=47,
         map_id=Maps.CreepyCastleLobby,
         name="Above center piece",
         speed=4,
@@ -3243,7 +3243,7 @@ BalloonList = [
         points=[[635, 280, 584], [526, 280, 585], [471, 280, 678], [525, 280, 775], [634, 280, 774], [690, 280, 680]],
     ),
     Balloon(
-        id=47,
+        id=48,
         map_id=Maps.CreepyCastleLobby,
         name="Near B.Locker",
         speed=4,
@@ -3252,7 +3252,7 @@ BalloonList = [
         points=[[483, 70, 1058], [585, 320, 1043], [676, 70, 1055], [585, 320, 1043]],
     ),
     Balloon(
-        id=48,
+        id=49,
         map_id=Maps.HideoutHelmLobby,
         name="Around Kasplat island",
         speed=4,
@@ -3261,7 +3261,7 @@ BalloonList = [
         points=[[340, 270, 545], [257, 280, 615], [326, 260, 741], [412, 275, 644]],
     ),
     Balloon(
-        id=49,
+        id=50,
         map_id=Maps.HideoutHelmLobby,
         name="Left side",
         speed=4,
@@ -3270,7 +3270,7 @@ BalloonList = [
         points=[[654, 311, 493], [605, 250, 424], [598, 275, 689]],
     ),
     Balloon(
-        id=50,
+        id=51,
         map_id=Maps.BananaFairyRoom,
         name="Rareware GB room",
         speed=4,
@@ -3279,7 +3279,7 @@ BalloonList = [
         points=[[842, 100, 1211], [664, 110, 1106], [451, 100, 1221], [645, 180, 1343]],
     ),
     Balloon(
-        id=51,
+        id=52,
         map_id=Maps.BananaFairyRoom,
         name="Around the fairy",
         speed=4,

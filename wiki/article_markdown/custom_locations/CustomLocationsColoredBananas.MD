@@ -1506,7 +1506,6 @@
 | Around rear dirt patch | 10 | `` | 
 | Exit tunnel | 10 | `` | 
 | Tree in training area | 10 | `(l.istiny and l.twirl)` | 
-| Treehouse roof | 15 | `l.handstand` | 
 | Around treehouse tree | 10 | `` | 
 | Training area | 5 | `` | 
 | Above the lake | Balloon | `` | 
@@ -1586,10 +1585,6 @@
 | Path to Factory | 15 | `` | 
 | Key 2 rising platform | 5 | `` | 
 | Underwater behind propellers | 10 | `l.swim` | 
-| Inside K.Lumsy's cage | 15 | `l.IsKLumsyFree()` | 
-| Prison sprint cage | 10 | `(l.sprint and l.lanky)` | 
-| On the Snide boulder | 5 | `` | 
-| Above Snide's doorway | 5 | `(l.spring and l.diddy)` | 
 | Under path to Factory | 10 | `` | 
 | Prison cable | 5 | `` | 
 | Back of Krem Isle | 10 | `` | 
@@ -1611,10 +1606,20 @@
 | Behind Aztec | Balloon | `` | 
 | Near Forest | Balloon | `` | 
 | Around the Krem Krown | Balloon | `` | 
-| Around Snide | Balloon | `` | 
 | Upper Factory Path | Balloon | `` | 
 | Big pipe in Krem Isle middle back | Balloon | `` | 
 | In the Krem Krown | Balloon | `l.scope` | 
+## KLumsy
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Inside K.Lumsy's cage | 15 | `l.IsKLumsyFree()` | 
+| Prison sprint cage | 10 | `(l.sprint and l.lanky)` | 
+## Isles Snide Room
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| On the Snide boulder | 5 | `` | 
+| Above Snide's doorway | 5 | `(l.spring and l.diddy)` | 
+| Around Snide | Balloon | `` | 
 ## Jungle Japes Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
