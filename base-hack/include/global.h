@@ -110,7 +110,6 @@ extern int initHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
 extern void saveHelmHurryTime(void);
 extern void finishHelmHurry(void);
-extern void fixChimpyCamBug(void);
 extern void writeDefaultFilename(void);
 extern void wipeFileStats(void);
 
@@ -259,7 +258,6 @@ extern void renderScreenTransitionCheck(int applied_transition);
 extern int updateLevelIGT(void);
 extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
 extern void RabbitRaceInfiniteCode(void);
-extern void completeBonus(actorData* actor);
 extern void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
 extern void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
 extern void spawnBossReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);

@@ -249,7 +249,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x805FEA14, Overlay.Static, 0, offset_dict, 4)  # Prevent Enguarde arena setting kong as Enguarde
     writeValue(ROM_COPY, 0x805FEA08, Overlay.Static, 0, offset_dict, 4)  # Prevent Rambi arena setting kong as Rambi
 
-    writeFunction(ROM_COPY, 0x805FC164, Overlay.Static, "cFuncLoop", offset_dict)
+    writeFunction(ROM_COPY, 0x805FC164, Overlay.Static, "cFuncLoop", offset_dict) # Main Function Loop
+    writeFunction(ROM_COPY, 0x8060CB7C, Overlay.Static, "fixChimpyCamBug", offset_dict) # Fix bug with PJ
 
     # Level Index Fixes
     for map_index in (Maps.OrangeBarrel, Maps.BarrelBarrel, Maps.VineBarrel, Maps.DiveBarrel):
@@ -428,6 +429,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80680986, Overlay.Static, 0xFFFE, offset_dict)  # Prevent Factory BBBandit Bonus dropping
         writeValue(ROM_COPY, 0x806809C8, Overlay.Static, 0x1000, offset_dict)  # Prevent Fungi TTTrouble Bonus dropping
         writeValue(ROM_COPY, 0x80681962, Overlay.Static, 1, offset_dict)  # Make bonus noclip
+        writeFunction(ROM_COPY, 0x80681158, Overlay.Static, "completeBonus", offset_dict)
 
     if spoiler.settings.tns_location_rando:
         # Adjust warp code to make camera be behind player, loading portal

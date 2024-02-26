@@ -271,15 +271,11 @@ void initHack(int source) {
 			initActor(NEWACTOR_JETPACITEMOVERLAY, 1, &getNextMoveText, ACTORMASTER_CONTROLLER, 0, 0, 0x10, 324);
 			// Kong Rando
 			initKongRando();
-			writeFunction(0x8060CB7C, &fixChimpyCamBug);
             
 			if (Rando.short_bosses) {
 				actor_health_damage[236].init_health = 44; // Dogadon Health: 3 + (62 * (2 / 3))
 				actor_health_damage[185].init_health = 3; // Dillo Health
 				actor_health_damage[251].init_health = 3; // Spider Boss Health
-			}
-			if (Rando.resolve_bonus) {
-				writeFunction(0x80681158, &completeBonus); // Modify Function Call
 			}
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
