@@ -788,3 +788,18 @@ def patchAssembly(ROM_COPY, spoiler):
             sequence[x] = spoiler.settings.crypt_levers[2 - x]
         for xi, x in enumerate(sequence):
             writeValue(ROM_COPY, 0x807482E8 + xi, Overlay.Static, x, offset_dict, 1)
+
+    if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
+        order = spoiler.settings.jetpac_enemy_order
+        functions = [
+            0x80029884,
+            0x8002992C,
+            0x80029AF8,
+            0x80029E0C,
+            0x8002A2AC,
+            0x8002A6C0,
+            0x8002A8F0,
+            0x8002A944,
+        ]
+        for slot_index, enemy_index in enumerate(order):
+            writeValue(ROM_COPY, 0x8002E8F4 + (4 * slot_index), Overlay.Jetpac, functions[enemy_index], offset_dict, 4)

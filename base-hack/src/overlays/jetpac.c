@@ -34,20 +34,4 @@ void initJetpac(void) {
 		*(short*)(0x80024D8E) = getHi(&jetpacRewardText);
 		*(short*)(0x80024D96) = getLo(&jetpacRewardText);
 	}
-	// Jetpac Enemy Rando
-	int enable_jetpac_enemy_rando = 0;
-	for (int i = 0; i < 8; i++) {
-		if (Rando.jetpac_enemy_order[i] != 0) {
-			enable_jetpac_enemy_rando = 1;
-		}
-	}
-	if (enable_jetpac_enemy_rando) {
-		void* jetpac_functions[8] = {};
-		for (int i = 0; i < 8; i++) {
-			jetpac_functions[i] = JetpacEnemyFunctions[i];
-		}
-		for (int i = 0; i < 8; i++) {
-			JetpacEnemyFunctions[i] = jetpac_functions[Rando.jetpac_enemy_order[i]];
-		}
-	}
 }

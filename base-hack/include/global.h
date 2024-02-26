@@ -478,6 +478,8 @@ extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
 extern void snideCodeHandler(void);
 
+extern void patchCollision(void);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];

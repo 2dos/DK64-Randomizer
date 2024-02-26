@@ -555,6 +555,7 @@ class Settings:
         self.kko_phase_order = [0, 0, 0]
         self.toe_order = [0] * 10
         self.mill_levers = [0] * 5
+        self.jetpac_enemy_order = list(range(8))
         self.crypt_levers = [1, 4, 3]
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         self.enemy_rando = False
@@ -767,7 +768,7 @@ class Settings:
                                 raise Ex.PlandoIncompatibleException(f"Same kong assigned for {self.switchsanity_data[switch].name} and {self.switchsanity_data[slot].name}.")
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
-        if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava):
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
             ItemPool.ImportantSharedMoves = [
                 Items.ProgressiveSlam,
@@ -1083,6 +1084,11 @@ class Settings:
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
+
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
+            jetpac_levels = list(range(8))
+            random.shuffle(jetpac_levels)
+            self.jetpac_enemy_order = jetpac_levels
 
         if self.puzzle_rando:
             # Crypt Levers

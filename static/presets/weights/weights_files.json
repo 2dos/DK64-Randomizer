@@ -819,7 +819,8 @@
       "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -1221,7 +1222,8 @@
       "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,

@@ -621,7 +621,7 @@ class LogicVarHolder:
         if kong == Kongs.any:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
-    def ItemCheck(self, item: BarrierItems, count) -> bool:
+    def ItemCheck(self, item: BarrierItems, count: int) -> bool:
         """Check if item requirement has been fulfilled."""
         CBCount = 0
         for lvl in self.ColoredBananas:

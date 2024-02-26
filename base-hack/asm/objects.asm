@@ -5,6 +5,7 @@
 .importobj "obj/src_main.o"
 .importobj "obj/src_fixes_cannon_game.o"
 .importobj "obj/src_fixes_dk_free_softlock.o"
+.importobj "obj/src_fixes_enemy_collision.o"
 .importobj "obj/src_fixes_guardCatch.o"
 .importobj "obj/src_fixes_helm.o"
 .importobj "obj/src_fixes_level_modifiers.o"

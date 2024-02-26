@@ -272,6 +272,7 @@ void initActorExpansion(void) {
     *(int*)(0x8076152C) = (int)&actor_functions[0];
     *(int*)(0x80764768) = (int)&actor_functions[0];
     // Actor Collisions
+    patchCollision(); // Patch collision before transferring
     dk_memcpy(&actor_collisions[0].collision_info, &ActorCollisionArray[0].collision_info, ACTOR_VANILLA_LIMIT*8);
     *(short*)(0x8067586A) = getHi(&actor_collisions[0].collision_info);
     *(short*)(0x80675876) = getLo(&actor_collisions[0].collision_info);

@@ -164,8 +164,7 @@ typedef struct varspace {
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char tttrouble_turtle_model; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
-	/* 0x1B8 */ char unk_1b8[0x1BE - 0x1B8];
-	/* 0x1BE */ unsigned char jetpac_enemy_order[8]; // Indexes 0-7 to represent enemy difficulty
+	/* 0x1B8 */ char unk_1b8[0x1C6 - 0x1B8];
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
 	/* 0x1DC */ unsigned char galleon_water_raised;
