@@ -8,6 +8,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Settings import ShuffleLoadingZones
+from randomizer.Enums.Types import Types
 
 HANDLED_OVERLAYS = (
     Overlay.Static,
@@ -95,7 +96,7 @@ def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_di
     ROM_COPY.writeMultipleBytes(passed_value, 4)
 
 
-def writeFunction(ROM_COPY, address: int, overlay: Overlay, function: str, offset_dict: dict):
+def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offset_dict: dict):
     """Write function JAL to ROM."""
     if isinstance(ROM_COPY, ROM):
         raise Exception("Cosmetics cannot utilize writeFunction.")
@@ -103,12 +104,28 @@ def writeFunction(ROM_COPY, address: int, overlay: Overlay, function: str, offse
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
-    function_address = js.rom_symbols.get(function.lower(), None)
+    function_address = js.rom_symbols.get(func_name.lower(), None)
     if function_address is None:
-        raise Exception(f"Couldn't find function {function}.")
+        raise Exception(f"Couldn't find function {func_name}.")
     ROM_COPY.seek(rom_start)
     value = 0x0C000000 | ((function_address & 0xFFFFFF) >> 2)
     ROM_COPY.writeMultipleBytes(value, 4)
+
+def writeHook(ROM_COPY, address: int, overlay: Overlay, hook_location: str, offset_dict):
+    """Write hook to ROM."""
+    if isinstance(ROM_COPY, ROM):
+        raise Exception("Cosmetics cannot utilize writeHook.")
+    # NOTE: This **CANNOT** be used for cosmetic changes
+    rom_start = getROMAddress(address, overlay, offset_dict)
+    if rom_start is None:
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
+    hook_address = js.rom_symbols.get(hook_location.lower(), None)
+    if hook_address is None:
+        raise Exception(f"Couldn't find hook {hook_location}.")
+    ROM_COPY.seek(rom_start)
+    value = 0x08000000 | ((hook_address & 0xFFFFFF) >> 2)
+    ROM_COPY.writeMultipleBytes(value, 4)
+    ROM_COPY.writeMultipleBytes(0, 4)
 
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
@@ -255,6 +272,30 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict) # perm flag set hook
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict) # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict) # Fix some silk memes
+
+    writeHook(ROM_COPY, 0x8063EE08, Overlay.Static, "InstanceScriptCheck", offset_dict)
+    writeHook(ROM_COPY, 0x80731168, Overlay.Static, "checkFlag_ItemRando", offset_dict)
+    writeHook(ROM_COPY, 0x807312F8, Overlay.Static, "setFlag_ItemRando", offset_dict)
+    writeHook(ROM_COPY, 0x8069840C, Overlay.Static, "VineCode", offset_dict)
+    writeHook(ROM_COPY, 0x80698420, Overlay.Static, "VineShowCode", offset_dict)
+    writeHook(ROM_COPY, 0x8063ED7C, Overlay.Static, "HandleSlamCheck", offset_dict)
+    writeHook(ROM_COPY, 0x806FF384, Overlay.Static, "ModifyCameraColor", offset_dict)
+    writeHook(ROM_COPY, 0x8061E684, Overlay.Static, "SkipCutscenePans", offset_dict)
+    writeHook(ROM_COPY, 0x80648364, Overlay.Static, "ShopImageHandler", offset_dict)
+    writeHook(ROM_COPY, 0x806EA70C, Overlay.Static, "InvertCameraControls", offset_dict)
+    writeHook(ROM_COPY, 0x8061CE38, Overlay.Static, "PlayCutsceneVelocity", offset_dict)
+    writeHook(ROM_COPY, 0x80677C14, Overlay.Static, "FixPufftossInvalidWallCollision", offset_dict)
+    writeHook(ROM_COPY, 0x8060DFF4, Overlay.Static, "SaveToFileFixes", offset_dict)
+    writeHook(ROM_COPY, 0x806F6EA0, Overlay.Static, "BarrelMovesFixes", offset_dict)
+    writeHook(ROM_COPY, 0x806E4930, Overlay.Static, "ChimpyChargeFix", offset_dict)
+    writeHook(ROM_COPY, 0x806E48AC, Overlay.Static, "OStandFix", offset_dict)
+    writeHook(ROM_COPY, 0x8067ECB8, Overlay.Static, "HunkyChunkyFix2", offset_dict)
+    writeHook(ROM_COPY, 0x805FC3FC, Overlay.Static, "EarlyFrameCode", offset_dict)
+    writeHook(ROM_COPY, 0x8071417C, Overlay.Static, "displayListCode", offset_dict)
+    writeHook(ROM_COPY, 0x806F8610, Overlay.Static, "GiveItemPointerToMulti", offset_dict)
+    writeHook(ROM_COPY, 0x806F88C8, Overlay.Static, "CoinHUDReposition", offset_dict)
+    writeHook(ROM_COPY, 0x8060005C, Overlay.Static, "getLobbyExit", offset_dict)
+    writeHook(ROM_COPY, 0x8060DEF4, Overlay.Static, "SaveHelmHurryCheck", offset_dict)
 
     # Damage mask
     damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
@@ -425,8 +466,111 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80631FE6, Overlay.Static, 550, offset_dict)  # Fungi
     writeValue(ROM_COPY, 0x80632036, Overlay.Static, 550, offset_dict)  # Others
 
+    writeFunction(ROM_COPY, 0x80732314, Overlay.Static, "CrashHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x8073231C, Overlay.Static, "CrashHandler", offset_dict)
     # Deathwarp Handle
     writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "WarpHandle", offset_dict) # Check if in Helm, in which case, apply transition
+    writeFunction(ROM_COPY, 0x806AD750, Overlay.Static, "beaverExtraHitHandle", offset_dict) # Remove buff until we think of something better
+
+    # Item Rando
+    # Item Get
+    item_get_addrs = [0x806F64C8,  0x806F6BA8,  0x806F7740,  0x806F7764,  0x806F7774,  0x806F7798,  0x806F77B0,  0x806F77C4,  0x806F7804,  0x806F781C]
+    for addr in item_get_addrs:
+        writeFunction(ROM_COPY, addr, Overlay.Static, "getItem", offset_dict) # Modify Function Call
+    writeFunction(ROM_COPY, 0x806F6350, Overlay.Static, "getObjectCollectability", offset_dict) # Modify Function Call
+    writeFunction(ROM_COPY, 0x8070E1F0, Overlay.Static, "handleDynamicItemText", offset_dict) # Handle Dynamic Text Item Name
+    writeFunction(ROM_COPY, 0x806A7AEC, Overlay.Static, "BalloonShoot", offset_dict) # Balloon Shoot Hook
+    # Rainbow Coins
+    writeFunction(ROM_COPY, 0x806A222C, Overlay.Static, "getPatchFlag", offset_dict) # Get Patch Flags
+    writeFunction(ROM_COPY, 0x806A2058, Overlay.Static, "getPatchFlag", offset_dict) # Get Patch Flags
+    writeValue(ROM_COPY, 0x80688C8E, Overlay.Static, 0x30, offset_dict) # Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
+    writeFunction(ROM_COPY, 0x80680AE8, Overlay.Static, "alterBonusVisuals", offset_dict) # Get Bonus Flag Check
+    writeFunction(ROM_COPY, 0x806A206C, Overlay.Static, "getDirtPatchSkin", offset_dict) # Get Dirt Flag Check
+    writeFunction(ROM_COPY, 0x80681854, Overlay.Static, "getBonusFlag", offset_dict) # Get Bonus Flag Check
+    writeFunction(ROM_COPY, 0x806C63A8, Overlay.Static, "getBonusFlag", offset_dict) # Get Bonus Flag Check
+    writeFunction(ROM_COPY, 0x806F78B8, Overlay.Static, "getKongFromBonusFlag", offset_dict) # Reward Table Kong Check
+    # Check Screen
+    writeFunction(ROM_COPY, 0x806A9F98, Overlay.Static, "pauseScreen3And4Header", offset_dict) # Header
+    writeFunction(ROM_COPY, 0x806AA03C, Overlay.Static, "pauseScreen3And4Counter", offset_dict) # Counter
+    writeFunction(ROM_COPY, 0x806A86BC, Overlay.Static, "changePauseScreen", offset_dict) # Change screen hook
+    writeFunction(ROM_COPY, 0x806A8D20, Overlay.Static, "changeSelectedLevel", offset_dict) # Change selected level on checks screen
+    writeFunction(ROM_COPY, 0x806A84F8, Overlay.Static, "checkItemDB", offset_dict) # Populate Item Databases
+    writeFunction(ROM_COPY, 0x806A9978, Overlay.Static, "displayHintRegion", offset_dict) # Display hint region
+    if spoiler.settings.shuffle_items:
+        writeFunction(ROM_COPY, 0x806A78A8, Overlay.Static, "checkFlagDuplicate", offset_dict) # Balloon: Kong Check
+        writeFunction(ROM_COPY, 0x806AAB3C, Overlay.Static, "checkFlagDuplicate", offset_dict) # Pause: BP Get
+        writeFunction(ROM_COPY, 0x806AAB9C, Overlay.Static, "checkFlagDuplicate", offset_dict) # Pause: BP In
+        writeFunction(ROM_COPY, 0x806AAD70, Overlay.Static, "checkFlagDuplicate", offset_dict) # Pause: Fairies
+        writeFunction(ROM_COPY, 0x806AAF70, Overlay.Static, "checkFlagDuplicate", offset_dict) # Pause: Crowns
+        writeFunction(ROM_COPY, 0x806AB064, Overlay.Static, "checkFlagDuplicate", offset_dict) # Pause: Isle Crown 1
+        writeFunction(ROM_COPY, 0x806AB0B4, Overlay.Static, "checkFlagDuplicate", offset_dict) # Pause: Isle Crown 2
+        writeFunction(ROM_COPY, 0x806ABF00, Overlay.Static, "checkFlagDuplicate", offset_dict) # File Percentage: Keys
+        writeFunction(ROM_COPY, 0x806ABF78, Overlay.Static, "checkFlagDuplicate", offset_dict) # File Percentage: Crowns
+        writeFunction(ROM_COPY, 0x806ABFA8, Overlay.Static, "checkFlagDuplicate", offset_dict) # File Percentage: NCoin
+        writeFunction(ROM_COPY, 0x806ABFBC, Overlay.Static, "checkFlagDuplicate", offset_dict) # File Percentage: RCoin
+        writeFunction(ROM_COPY, 0x806AC00C, Overlay.Static, "checkFlagDuplicate", offset_dict) # File Percentage: Kongs
+        writeFunction(ROM_COPY, 0x806BD304, Overlay.Static, "checkFlagDuplicate", offset_dict) # Key flag check: K. Lumsy
+        writeFunction(ROM_COPY, 0x80731A6C, Overlay.Static, "checkFlagDuplicate", offset_dict) # Count flag-kong array
+        writeFunction(ROM_COPY, 0x80731AE8, Overlay.Static, "checkFlagDuplicate", offset_dict) # Count flag array
+        writeFunction(ROM_COPY, 0x806B1E48, Overlay.Static, "countFlagsForKongFLUT", offset_dict) # Kasplat Check Flag
+        writeValue(ROM_COPY, 0x806F56F8, Overlay.Static, 0, offset_dict, 4) # Disable Flag Set for blueprints
+        writeFunction(ROM_COPY, 0x806F938C, Overlay.Static, "banana_medal_acquisition", offset_dict) # Medal Give
+        writeValue(ROM_COPY, 0x806F9394, Overlay.Static, 0, offset_dict, 4)
+        writeFunction(ROM_COPY, 0x806F5564, Overlay.Static, "itemGrabHook", offset_dict) # Item Get Hook - Post Flag
+        writeFunction(ROM_COPY, 0x806A6CA8, Overlay.Static, "canItemPersist", offset_dict) # Item Despawn Check
+        writeValue(ROM_COPY, 0x806A741C, Overlay.Static, 0, offset_dict, 4) # Prevent Key Twinkly Sound
+        writeFunction(ROM_COPY, 0x80688714, Overlay.Static, "setupHook", offset_dict) # Setup Load Hook
+        # Fairy Adjustments
+        writeFunction(ROM_COPY, 0x8072728C, Overlay.Static, "spawnCharSpawnerActor", offset_dict) # Spawn 1
+        writeValue(ROM_COPY, 0x80727290, Overlay.Static, 0x36050000, offset_dict, 4) # ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+        writeFunction(ROM_COPY, 0x8072777C, Overlay.Static, "spawnCharSpawnerActor", offset_dict) # Spawn 2
+        writeValue(ROM_COPY, 0x80727780, Overlay.Static, 0x36050000, offset_dict, 4) # ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+        writeFunction(ROM_COPY, 0x807277D0, Overlay.Static, "spawnCharSpawnerActor", offset_dict) # Spawn 3
+        writeValue(ROM_COPY, 0x807277D4, Overlay.Static, 0x36050000, offset_dict, 4) # ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+        writeFunction(ROM_COPY, 0x80727B88, Overlay.Static, "spawnCharSpawnerActor", offset_dict) # Spawn 4
+        writeValue(ROM_COPY, 0x80727B8C, Overlay.Static, 0x36050000, offset_dict, 4) # ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+        writeFunction(ROM_COPY, 0x80727C10, Overlay.Static, "spawnCharSpawnerActor", offset_dict) # Spawn 4
+        writeValue(ROM_COPY, 0x80727C14, Overlay.Static, 0x36050000, offset_dict, 4) # ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+        writeFunction(ROM_COPY, 0x806C5F04, Overlay.Static, "giveFairyItem", offset_dict) # Fairy Flag Set
+        # Rainbow Coins
+        writeFunction(ROM_COPY, 0x806A2268, Overlay.Static, "spawnDirtPatchReward", offset_dict) # Spawn Reward
+        # Mill GB
+        writeFunction(ROM_COPY, 0x806F633C, Overlay.Static, "isObjectTangible_detailed", offset_dict) # Change object tangibility check function
+        
+        writeValue(ROM_COPY, 0x806C5C7C, Overlay.Static, 0, offset_dict, 4) # Cancel out fairy draw distance reduction
+        writeValue(ROM_COPY, 0x806C46AA, Overlay.Static, 0x4100, offset_dict) # Bring squawks closer to the player for minecarts (X)
+        writeValue(ROM_COPY, 0x806C46E2, Overlay.Static, 0x4100, offset_dict) # Bring squawks closer to the player for minecarts (Z)
+        writeValue(ROM_COPY, 0x806C45C2, Overlay.Static, 0x0013, offset_dict) # Y Offset squawks reward
+        writeFunction(ROM_COPY, 0x80681910, Overlay.Static, "spawnBonusReward", offset_dict) # Spawn Bonus Reward
+        writeFunction(ROM_COPY, 0x806C63BC, Overlay.Static, "spawnRewardAtActor", offset_dict) # Spawn Squawks Reward
+        writeFunction(ROM_COPY, 0x806C4654, Overlay.Static, "spawnMinecartReward", offset_dict) # Spawn Squawks Reward - Minecart
+        # Initialize fixed item scales
+        writeFunction(ROM_COPY, 0x806F4918, Overlay.Static, "writeItemScale", offset_dict) # Write scale to collision info
+        writeValue(ROM_COPY, 0x806F491C, Overlay.Static, 0x87A40066, offset_dict, 4); # LH $a0, 0x66 ($sp)
+        writeValue(ROM_COPY, 0x806F4C6E, Overlay.Static, 0x20, offset_dict) # Change size
+        writeValue(ROM_COPY, 0x806F4C82, Overlay.Static, 0x20, offset_dict) # Change size
+        writeFunction(ROM_COPY, 0x806F515C, Overlay.Static, "writeItemActorScale", offset_dict) # Write actor scale to collision info
+        
+    # Collision fixes
+    QUAD_SIZE = 100
+    writeValue(ROM_COPY, 0x806F4ACA, Overlay.Static, QUAD_SIZE, offset_dict)
+    writeValue(ROM_COPY, 0x806F4BF0, Overlay.Static, 0x240A0000 | QUAD_SIZE, offset_dict, 4) # addiu $t2, $zero, QUAD_SIZE
+    writeValue(ROM_COPY, 0x806F4BF4, Overlay.Static, 0x01510019, offset_dict, 4) # multu $t2, $s1
+    writeValue(ROM_COPY, 0x806F4BF8, Overlay.Static, 0x00008812, offset_dict, 4) # mflo $s1
+    writeValue(ROM_COPY, 0x806F4BFC, Overlay.Static, 0, offset_dict, 4) # NOP
+    writeValue(ROM_COPY, 0x806F4C00, Overlay.Static, 0, offset_dict, 4) # NOP
+    writeValue(ROM_COPY, 0x806F4C16, Overlay.Static, QUAD_SIZE, offset_dict)
+    writeValue(ROM_COPY, 0x806F4C52, Overlay.Static, QUAD_SIZE, offset_dict)
+
+    writeFunction(ROM_COPY, 0x806F502C, Overlay.Static, "getCollisionSquare_New", offset_dict) # Assigning hitbox to data table
+    writeFunction(ROM_COPY, 0x806F5134, Overlay.Static, "getCollisionSquare_New", offset_dict) # Assigning hitbox to data table
+    writeFunction(ROM_COPY, 0x806F6A0C, Overlay.Static, "checkForValidCollision", offset_dict) # Detecting if object is inside current quadrant
+    writeFunction(ROM_COPY, 0x806F6A2C, Overlay.Static, "checkForValidCollision", offset_dict) # Detecting if object is inside current quadrant
+
+    # Spawn Enemy Drops function
+    enemy_drop_addrs = [0x806AD40C, 0x806AED14, 0x806AF5A4, 0x806B0218, 0x806B0704, 0x806B0C8C, 0x806B1C88, 0x806B4744, 0x806B5B90, 0x806B61E0, 0x806B744C, 0x806B9AB4]
+    for addr in enemy_drop_addrs:
+        writeFunction(ROM_COPY, addr, Overlay.Static, "spawnEnemyDrops", offset_dict)
 
     if spoiler.settings.no_healing:
         writeValue(ROM_COPY, 0x80683A34, Overlay.Static, 0, offset_dict, 4)  # Cancel Tag Health Refill
@@ -436,6 +580,18 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x800289B0, Overlay.Boss, 0, offset_dict, 4)  # K Rool between-phase health refilll
     else:
         writeValue(ROM_COPY, 0x806A6EA8, Overlay.Static, 0x0C1C2519, offset_dict, 4)  # Set Bonus Barrel to refill health
+
+    if spoiler.settings.enable_tag_anywhere:
+        # Reduce TA Cooldown
+        writeFunction(ROM_COPY, 0x806F5BE8, Overlay.Static, "tagAnywhereAmmo", offset_dict)
+        writeFunction(ROM_COPY, 0x806F5A08, Overlay.Static, "tagAnywhereBunch", offset_dict)
+        writeFunction(ROM_COPY, 0x806F6CB4, Overlay.Static, "tagAnywhereInit", offset_dict)
+        # Fix Origin Warp with TA
+        writeFunction(ROM_COPY, 0x8072F1E8, Overlay.Static, "handleGrabbingLock", offset_dict)
+        writeFunction(ROM_COPY, 0x806CAB68, Overlay.Static, "handleLedgeLock", offset_dict)
+        writeFunction(ROM_COPY, 0x8072F458, Overlay.Static, "handleActionSet", offset_dict) # Actor grabbables
+        writeFunction(ROM_COPY, 0x8072F46C, Overlay.Static, "handleActionSet", offset_dict) # Model 2 grabbables
+        writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict) # Ledge Grabbing
 
     if spoiler.settings.shorten_boss:
         writeValue(ROM_COPY, 0x8074D3A8, Overlay.Static, 3, offset_dict) # Dillo Health 4 -> 3
@@ -510,9 +666,18 @@ def patchAssembly(ROM_COPY, spoiler):
         # Non-BP Items
         writeValue(ROM_COPY, 0x807319C0, Overlay.Static, 0x00001025, offset_dict, 4)  # OR $v0, $r0, $r0 - Make all reward spots think no kong
         # writeValue(ROM_COPY, 0x80632E94, Overlay.Static, 0x00001025, offset_dict, 4)  # OR $v0, $r0, $r0 - Make flag mapping think no kong
+        writeFunction(ROM_COPY, 0x80632E94, Overlay.Static, "getItemRequiredKong", offset_dict) # Get required kong for item, used to set Stump GB as Tiny
+       
         if spoiler.settings.free_trade_setting == FreeTradeSetting.major_collectibles:
             writeValue(ROM_COPY, 0x806F56F8, Overlay.Static, 0, offset_dict, 4)  # Disable Flag Set for blueprints
             writeValue(ROM_COPY, 0x806A606C, Overlay.Static, 0, offset_dict, 4)  # Disable translucency for blueprints
+
+    if Types.Enemies in spoiler.settings.shuffled_location_types:
+        # Dropsanity
+        writeFunction(ROM_COPY, 0x80729E54, Overlay.Static, "indicateCollectionStatus", offset_dict)
+        writeValue(ROM_COPY, 0x807278CA, Overlay.Static, 0xFFF, offset_dict) # Disable enemy switching in Fungi
+        writeFunction(ROM_COPY, 0x806B26A0, Overlay.Static, "fireballEnemyDeath", offset_dict)
+        writeFunction(ROM_COPY, 0x806BB310, Overlay.Static, "rulerEnemyDeath", offset_dict)
 
     if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_enemies):
         writeValue(ROM_COPY, 0x806B12DA, Overlay.Static, 0x3A9, offset_dict)  # Kasplat Shockwave Chance
@@ -619,6 +784,8 @@ def patchAssembly(ROM_COPY, spoiler):
         # Remove DKTV - End Seq
         writeValue(ROM_COPY, 0x8071401E, Overlay.Static, 0x50, offset_dict)
         writeValue(ROM_COPY, 0x8071404E, Overlay.Static, 5, offset_dict)
+    else:
+        writeFunction(ROM_COPY, 0x80713258, Overlay.Static, "skipDKTV", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_transform_animation):
         writeValue(ROM_COPY, 0x8067EAB2, Overlay.Static, 1, offset_dict)  # OSprint
         writeValue(ROM_COPY, 0x8067EAC6, Overlay.Static, 1, offset_dict)  # HC Dogadon 2

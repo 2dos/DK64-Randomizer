@@ -171,8 +171,3 @@ void CrashHandler(crash_handler_info* info) {
         dumpReturns(info);
     }
 }
-
-void initStackTrace(void) {
-    writeFunction(0x80732314, &CrashHandler);
-    writeFunction(0x8073231C, &CrashHandler);
-}

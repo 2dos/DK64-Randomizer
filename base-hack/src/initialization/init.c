@@ -119,29 +119,6 @@ float getOscillationDelta(void) {
 }
 
 void loadHooks(void) {
-	loadSingularHook(0x8063EE08, &InstanceScriptCheck);
-	loadSingularHook(0x80731168, &checkFlag_ItemRando);
-	loadSingularHook(0x807312F8, &setFlag_ItemRando);
-	loadSingularHook(0x8069840C, &VineCode);
-	loadSingularHook(0x80698420, &VineShowCode);
-	loadSingularHook(0x8063ED7C, &HandleSlamCheck);
-	loadSingularHook(0x806FF384, &ModifyCameraColor);
-	loadSingularHook(0x8061E684, &SkipCutscenePans);
-	loadSingularHook(0x80648364, &ShopImageHandler);
-	loadSingularHook(0x806EA70C, &InvertCameraControls);
-	loadSingularHook(0x8061CE38, &PlayCutsceneVelocity);
-	loadSingularHook(0x80677C14, &FixPufftossInvalidWallCollision);
-	loadSingularHook(0x8060DFF4, &SaveToFileFixes);
-	loadSingularHook(0x806F6EA0, &BarrelMovesFixes);
-	loadSingularHook(0x806E4930, &ChimpyChargeFix);
-	loadSingularHook(0x806E48AC, &OStandFix);
-	loadSingularHook(0x8067ECB8, &HunkyChunkyFix2);
-	loadSingularHook(0x805FC3FC, &EarlyFrameCode);
-	loadSingularHook(0x8071417C, &displayListCode);
-	loadSingularHook(0x806F8610, &GiveItemPointerToMulti);
-	loadSingularHook(0x806F88C8, &CoinHUDReposition);
-	loadSingularHook(0x8060005C, &getLobbyExit);
-	loadSingularHook(0x8060DEF4, &SaveHelmHurryCheck);
 	if (Rando.warp_to_isles_enabled) {
 		loadSingularHook(0x806A995C, &PauseExtraSlotCode);
 		loadSingularHook(0x806A9818, &PauseExtraHeight);
@@ -274,7 +251,6 @@ void initHack(int source) {
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
 			initCosmetic();
-			initStackTrace();
 			initTextChanges();
 
 			replace_zones(1);
@@ -308,7 +284,6 @@ void initHack(int source) {
 			style128Mtx[0x5] = base_mtx;
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
-			initSmallerQuadChecks();
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
 			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
@@ -322,7 +297,6 @@ void initHack(int source) {
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			// Gold Beaver Code
       		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
-			writeFunction(0x806AD750, &beaverExtraHitHandle); // Remove buff until we think of something better
 			// Move Text Code
 			actor_functions[324] = &getNextMoveText;
 			actor_functions[320] = &getNextMoveText;
@@ -331,19 +305,6 @@ void initHack(int source) {
 			if (Rando.remove_oscillation_effects) {
 				writeFunction(0x80660994, &getOscillationDelta);
 				writeFunction(0x806609BC, &getOscillationDelta);
-			}
-			// Reduce TA Cooldown
-			if (Rando.tag_anywhere) {
-				writeFunction(0x806F5BE8, &tagAnywhereAmmo);
-				writeFunction(0x806F5A08, &tagAnywhereBunch);
-				writeFunction(0x806F6CB4, &tagAnywhereInit);
-			}
-			if (ENABLE_ORIGIN_WARP_FIX) {
-				writeFunction(0x8072F1E8, &handleGrabbingLock);
-				writeFunction(0x806CAB68, &handleLedgeLock);
-				writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
-				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
-				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
 			}
 			if (Rando.disabled_music.pause) {
 				*(int*)(0x805FC890) = 0; // Pause theme
@@ -427,12 +388,6 @@ void initHack(int source) {
 				// Rain
 				*(short*)(0x8068B6AE) = 0;
 			}
-			if (!Rando.quality_of_life.fast_boot) {
-				writeFunction(0x80713258, &skipDKTV);
-			}
-			if (Rando.any_kong_items.major_items) {
-				writeFunction(0x80632E94, &getItemRequiredKong);
-			}
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
 				writeFunction(0x80656538, &displayNoGeoChunk);
 				writeFunction(0x806562C0, &displayNoGeoChunk);
@@ -440,13 +395,6 @@ void initHack(int source) {
 				writeFunction(0x806565F8, &displayNoGeoChunk);
 				// *(int*)(0x80651598) = 0xA1E00002;
 			}
-			if (Rando.enemy_item_rando) {
-				writeFunction(0x80729E54, &indicateCollectionStatus);
-				*(unsigned short*)(0x807278CA) = 0xFFF; // Disable enemy switching in Fungi
-				writeFunction(0x806B26A0, &fireballEnemyDeath);
-				writeFunction(0x806BB310, &rulerEnemyDeath);
-			}
-
 			initSwitchsanityChanges();
 
 			SFXVolume = Rando.default_sfx_volume;

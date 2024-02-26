@@ -319,29 +319,11 @@ void initItemRando(void) {
     /**
      * @brief Initialize Item Rando functionality
      */
-    // Item Get
-    writeFunction(0x806F64C8, &getItem); // Modify Function Call
-    writeFunction(0x806F6BA8, &getItem); // Modify Function Call
-    writeFunction(0x806F7740, &getItem); // Modify Function Call
-    writeFunction(0x806F7764, &getItem); // Modify Function Call
-    writeFunction(0x806F7774, &getItem); // Modify Function Call
-    writeFunction(0x806F7798, &getItem); // Modify Function Call
-    writeFunction(0x806F77B0, &getItem); // Modify Function Call
-    writeFunction(0x806F77C4, &getItem); // Modify Function Call
-    writeFunction(0x806F7804, &getItem); // Modify Function Call
-    writeFunction(0x806F781C, &getItem); // Modify Function Call
-
-    writeFunction(0x806F6350, &getObjectCollectability); // Modify Function Call
-    writeFunction(0x8070E1F0, &handleDynamicItemText); // Handle Dynamic Text Item Name
+    
     if (ENABLE_FILENAME) {
         writeFunction(0x8070E1BC, &handleFilename); // Handle Filename
     }
 
-    writeFunction(0x806A7AEC, &BalloonShoot); // Balloon Shoot Hook
-    // Rainbow Coins
-    writeFunction(0x806A222C, &getPatchFlag); // Get Patch Flags
-    writeFunction(0x806A2058, &getPatchFlag); // Get Patch Flags
-    *(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
     // Item Rando
     for (int i = 0; i < 54; i++) {
         BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
@@ -353,72 +335,18 @@ void initItemRando(void) {
     bonus_data[94].flag = 215;
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
-    writeFunction(0x80680AE8, &alterBonusVisuals); // Get Bonus Flag Check
-    writeFunction(0x806A206C, &getDirtPatchSkin); // Get Dirt Flag Check
-    writeFunction(0x80681854, &getBonusFlag); // Get Bonus Flag Check
-    writeFunction(0x806C63A8, &getBonusFlag); // Get Bonus Flag Check
-    writeFunction(0x806F78B8, &getKongFromBonusFlag); // Reward Table Kong Check
+    
     // Checks Screen
     pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
     *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
     *(short*)(0x806A8646) = screen_count; // Screen increase cap
     *(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
     *(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
-    writeFunction(0x806A9F98, &pauseScreen3And4Header); // Header
-    writeFunction(0x806AA03C, &pauseScreen3And4Counter); // Counter
-    writeFunction(0x806A86BC, &changePauseScreen); // Change screen hook
-    writeFunction(0x806A8D20, &changeSelectedLevel); // Change selected level on checks screen
-    writeFunction(0x806A84F8, &checkItemDB); // Populate Item Databases
-    writeFunction(0x806A9978, &displayHintRegion); // Display hint region
     if (Rando.item_rando) {
         *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
         *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);
-        writeFunction(0x806A78A8, &checkFlagDuplicate); // Balloon: Kong Check
-        writeFunction(0x806AAB3C, &checkFlagDuplicate); // Pause: BP Get
-        writeFunction(0x806AAB9C, &checkFlagDuplicate); // Pause: BP In
-        writeFunction(0x806AAD70, &checkFlagDuplicate); // Pause: Fairies
-        writeFunction(0x806AAF70, &checkFlagDuplicate); // Pause: Crowns
-        writeFunction(0x806AB064, &checkFlagDuplicate); // Pause: Isle Crown 1
-        writeFunction(0x806AB0B4, &checkFlagDuplicate); // Pause: Isle Crown 2
-        writeFunction(0x806ABF00, &checkFlagDuplicate); // File Percentage: Keys
-        writeFunction(0x806ABF78, &checkFlagDuplicate); // File Percentage: Crowns
-        writeFunction(0x806ABFA8, &checkFlagDuplicate); // File Percentage: NCoin
-        writeFunction(0x806ABFBC, &checkFlagDuplicate); // File Percentage: RCoin
-        writeFunction(0x806AC00C, &checkFlagDuplicate); // File Percentage: Kongs
-        writeFunction(0x806BD304, &checkFlagDuplicate); // Key flag check: K. Lumsy
-        writeFunction(0x80731A6C, &checkFlagDuplicate); // Count flag-kong array
-        writeFunction(0x80731AE8, &checkFlagDuplicate); // Count flag array
-        writeFunction(0x806B1E48, &countFlagsForKongFLUT); // Kasplat Check Flag
-        *(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
-        writeFunction(0x806F938C, &banana_medal_acquisition); // Medal Give
-        *(int*)(0x806F9394) = 0;
-        writeFunction(0x806F5564, &itemGrabHook); // Item Get Hook - Post Flag
-        writeFunction(0x806A6CA8, &canItemPersist); // Item Despawn Check
-        *(int*)(0x806A741C) = 0; // Prevent Key Twinkly Sound
-        writeFunction(0x80688714, &setupHook); // Setup Load Hook
-        // Fairy Adjustments
-        writeFunction(0x8072728C, &spawnCharSpawnerActor); // Spawn 1
-        *(int*)(0x80727290) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        writeFunction(0x8072777C, &spawnCharSpawnerActor); // Spawn 2
-        *(int*)(0x80727780) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        writeFunction(0x807277D0, &spawnCharSpawnerActor); // Spawn 3
-        *(int*)(0x807277D4) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        writeFunction(0x80727B88, &spawnCharSpawnerActor); // Spawn 4
-        *(int*)(0x80727B8C) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        writeFunction(0x80727C10, &spawnCharSpawnerActor); // Spawn 4
-        *(int*)(0x80727C14) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        writeFunction(0x806C5F04, &giveFairyItem); // Fairy Flag Set
-        // Rainbow Coins
-        writeFunction(0x806A2268, &spawnDirtPatchReward); // Spawn Reward
         // Melon Crate
         *(int*)(0x80747EB0) = (int)&melonCrateItemHandler;
-        // Mill GB
-        writeFunction(0x806F633C, &isObjectTangible_detailed); // Change object tangibility check function
-        
-        *(int*)(0x806C5C7C) = 0; // Cancel out fairy draw distance reduction
-        *(short*)(0x806C46AA) = 0x4100; // Bring squawks closer to the player for minecarts (X)
-        *(short*)(0x806C46E2) = 0x4100; // Bring squawks closer to the player for minecarts (Z)
-        *(short*)(0x806C45C2) = 0x0013; // Y Offset squawks reward
     }
 
     // BP Table
@@ -479,15 +407,6 @@ void initItemRando(void) {
             }
         }
     }
-    writeFunction(0x80681910, &spawnBonusReward); // Spawn Bonus Reward
-    writeFunction(0x806C63BC, &spawnRewardAtActor); // Spawn Squawks Reward
-    writeFunction(0x806C4654, &spawnMinecartReward); // Spawn Squawks Reward - Minecart
-    // Initialize fixed item scales
-    writeFunction(0x806F4918, &writeItemScale); // Write scale to collision info
-    *(int*)(0x806F491C) = 0x87A40066; // LH $a0, 0x66 ($sp)
-    *(short*)(0x806F4C6E) = 0x20; // Change size
-    *(short*)(0x806F4C82) = 0x20; // Change size
-    writeFunction(0x806F515C, &writeItemActorScale); // Write actor scale to collision info
     // Other init
     initItemDropTable();
     initCollectableCollision();

@@ -66,23 +66,6 @@ void checkForValidCollision(int player_index, player_collision_info* player) {
     }
 }
 
-void initSmallerQuadChecks(void) {
-    *(short*)(0x806F4ACA) = QUAD_SIZE;
-
-    *(int*)(0x806F4BF0) = 0x240A0000 | QUAD_SIZE; // addiu $t2, $zero, QUAD_SIZE
-    *(int*)(0x806F4BF4) = 0x01510019; // multu $t2, $s1
-    *(int*)(0x806F4BF8) = 0x00008812; // mflo $s1
-    *(int*)(0x806F4BFC) = 0; // NOP
-    *(int*)(0x806F4C00) = 0; // NOP
-    *(short*)(0x806F4C16) = QUAD_SIZE;
-    *(short*)(0x806F4C52) = QUAD_SIZE;
-
-    writeFunction(0x806F502C, &getCollisionSquare_New); // Assigning hitbox to data table
-    writeFunction(0x806F5134, &getCollisionSquare_New); // Assigning hitbox to data table
-    writeFunction(0x806F6A0C, &checkForValidCollision); // Detecting if object is inside current quadrant
-    writeFunction(0x806F6A2C, &checkForValidCollision); // Detecting if object is inside current quadrant
-}
-
 item_collision* writeItemScale(int id) {
     /**
      * @brief Write item scale to the collision object
