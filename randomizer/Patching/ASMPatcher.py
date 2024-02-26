@@ -1,5 +1,6 @@
 """Patches assembly instructions from the overlays rather than doing changes live."""
 
+import js
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import FasterChecksSelected, CBRando, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected
@@ -76,7 +77,7 @@ def writeValue(ROM_COPY, address: int, overlay: Overlay, value: int, offset_dict
     """Write value to ROM based on overlay."""
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
-        return
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
     ROM_COPY.seek(rom_start)
     passed_value = int(value)
     if value < 0 and signed:
@@ -88,10 +89,26 @@ def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_di
     """Write floating point variable to ROM."""
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
-        return
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
     ROM_COPY.seek(rom_start)
     passed_value = int(float_to_hex(value), 16)
     ROM_COPY.writeMultipleBytes(passed_value, 4)
+
+
+def writeFunction(ROM_COPY, address: int, overlay: Overlay, function: str, offset_dict: dict):
+    """Write function JAL to ROM."""
+    if isinstance(ROM_COPY, ROM):
+        raise Exception("Cosmetics cannot utilize writeFunction.")
+    # NOTE: This **CANNOT** be used for cosmetic changes
+    rom_start = getROMAddress(address, overlay, offset_dict)
+    if rom_start is None:
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
+    function_address = js.rom_symbols.get(function.lower(), None)
+    if function_address is None:
+        raise Exception(f"Couldn't find function {function}.")
+    ROM_COPY.seek(rom_start)
+    value = 0x0C000000 | ((function_address & 0xFFFFFF) >> 2)
+    ROM_COPY.writeMultipleBytes(value, 4)
 
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
@@ -231,6 +248,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806F88A8, Overlay.Static, 0x1000, offset_dict)  # Force disable coin cheat
     writeValue(ROM_COPY, 0x805FEA14, Overlay.Static, 0, offset_dict, 4)  # Prevent Enguarde arena setting kong as Enguarde
     writeValue(ROM_COPY, 0x805FEA08, Overlay.Static, 0, offset_dict, 4)  # Prevent Rambi arena setting kong as Rambi
+
+    writeFunction(ROM_COPY, 0x805FC164, Overlay.Static, "cFuncLoop", offset_dict)
 
     # Level Index Fixes
     for map_index in (Maps.OrangeBarrel, Maps.BarrelBarrel, Maps.VineBarrel, Maps.DiveBarrel):

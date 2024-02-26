@@ -27,10 +27,6 @@ START:
 		LUI a2, hi(ItemRando_FLUT)
 		JAL dmaFileTransfer
 		ADDIU a2, a2, lo(ItemRando_FLUT)
-
-		// Very Early Boot Stuff
-		JAL writeFunctionLoop
-		NOP
     
 		//
 		LUI v0, 0x8001

@@ -71,6 +71,7 @@ echo Modify ROM CRC [32mDONE[0m (%runtime%)
 call :setstart
 %python_ver% build\dump_pointer_tables_vanilla.py >> rom/build.log
 %python_ver% build\dump_pointer_tables_modified.py >> rom/build.log
+%python_ver% build\symbol_json_builder.py >> rom/build.log
 call :setfinish runtime
 echo Dump pointer tables [32mDONE[0m (%runtime%)
 
@@ -86,7 +87,7 @@ del rom\dk64-randomizer-base-temp.z64
 del rom\dk64-randomizer-base.z64
 del rom\dk64-randomizer-base-dev.z64
 del rom\dk64-randomizer-base.wch
-del rom\dev-symbols.sym
+@REM del rom\dev-symbols.sym
 del rom\patch.bps
 
 :finish

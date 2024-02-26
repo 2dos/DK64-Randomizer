@@ -425,7 +425,6 @@ extern void setKrushaAmmoColor(void);
 
 extern void handleCannonGameReticle(void);
 
-extern void writeFunctionLoop(void);
 extern void cFuncLoop(void);
 extern void initFilename(void);
 extern void* getPointerFile(int table, int file);
