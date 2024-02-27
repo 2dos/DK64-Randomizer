@@ -126,33 +126,7 @@ void initQoL_Fixes(void) {
      * - Pausing and exiting to another map during Helm Timer will correctly apply the helm timer pause correction
      */
     if (Rando.quality_of_life.vanilla_fixes) {
-        writeFunction(0x806BE8D8, &RabbitRaceInfiniteCode); // Modify Function Call
-        writeFunction(0x8067C168, &fixDilloTNTPads); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
-        writeFunction(0x806E5C04, &fixCrownEntrySKong); // Modify Function Call
-        *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
-        // Race Hoop
-        writeFunction(0x8069B13C, &renderHoop);
-        writeFunction(0x8069B0EC, &fixRaceHoopCode);
-
-    }
-    writeFunction(0x806A8844, &helmTime_restart); // Modify Function Call
-    writeFunction(0x806A89E8, &helmTime_exitBonus); // Modify Function Call
-    writeFunction(0x806A89F8, &helmTime_exitRace); // Modify Function Call
-    writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
-    writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
-    writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
-}
-
-void initQoL_Misc(void) {
-    /**
-     * @brief Initialize any quality of life features which have a miscellaneous purpose
-     * Current Elements covered here:
-     * - Fairy pictures are sped up (This also fixes some INSANE lag on BizHawk)
-     * - Lower the Aztec Lobby Bonus barrel to be easier to reach for less skilled players using less laggy platforms
-     */
-    if (Rando.quality_of_life.fast_hints) {
-        writeFunction(0x806A5C30, &quickWrinklyTextboxes);
     }
 }
 
@@ -427,7 +401,6 @@ void initQoL(void) {
     writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
     initQoL_Cutscenes();
     initQoL_Fixes();
-    initQoL_Misc();
     initQoL_Boot();
     initSpawn();
     initQoL_HUD();

@@ -131,7 +131,6 @@ extern void newCounterCode(void);
 extern void wipeCounterImageCache(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
-extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
 
 extern void fastWarp_playMusic(void* actor);
 
@@ -150,7 +149,6 @@ extern void initTagAnywhere(void);
 extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
-extern void initStatistics(void);
 extern void updateKopStat(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
@@ -168,10 +166,7 @@ extern void CBDing(void);
 extern int* renderDingSprite(int* dl);
 extern void initDingSprite(void);
 extern void handleSpiderTrapCode(void);
-extern void SpiderBossExtraCode(void);
 extern void fastWarpShockwaveFix(void);
-extern int fixDilloTNTPads(void* actor);
-extern int canPlayJetpac(void);
 extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
 extern int getTotalCBCount(void);
@@ -179,11 +174,7 @@ extern int getTotalCBCount(void);
 extern move_block* getMoveBlock(void);
 extern void setLocationStatus(location_list location_index);
 extern int getLocationStatus(location_list location_index);
-extern void fixTBarrelsAndBFI(int init);
-extern void purchaseMove(shop_paad* paad);
 extern void getNextMoveText(void);
-extern void displayBFIMoveText(void);
-extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag);
 extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
 
 extern void* getFile(int size, int rom);
@@ -214,8 +205,6 @@ extern void checkTotalCache(void);
 extern void checkSeedVictory(void);
 extern void checkVictory_flaghook(int flag);
 extern void FileProgressInitSub(int file, int shuffle);
-extern void changeFileSelectAction(menu_controller_paad* paad, int cap, int buttons);
-extern void changeFileSelectAction_0(menu_controller_paad* paad, int cap);
 extern void handleFileSelectSprites(void* paad, void* sprite, int x, int y, float scale, int unk0, int control);
 extern void checkSkippableCutscene(void);
 extern void updateSkippableCutscenes(void);
@@ -242,11 +231,6 @@ extern void pressSkipHandler(void* actor);
 extern void clearSkipCache(void);
 extern void updateSkipCheck(void);
 extern void renderScreenTransitionCheck(int applied_transition);
-extern int updateLevelIGT(void);
-extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
-extern void RabbitRaceInfiniteCode(void);
-extern void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
-extern void spawnBossReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
 extern void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2);
 extern int checkFlagDuplicate(short flag, flagtypes type);
 extern void setFlagDuplicate(short flag, int set, flagtypes type);
@@ -323,14 +307,8 @@ extern void shineLight(actorData* actor, int kongType);
 extern void fallDamageWrapper(int action, void* actor, int player_index);
 extern void transformBarrelImmunity(void);
 extern void handleFallDamageImmunity(void);
-extern void warpOutOfArenas(void);
 extern void warpOutOfTraining(void);
-extern void ArenaTagKongCode(void);
-extern void ArenaEarlyCompletionCheck(void);
 extern int* displayNoGeoChunk(int* dl, int chunk_index, int shift);
-
-extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
-extern void fairyQueenCutsceneCheck(void);
 
 extern void initIceTrap(void);
 extern void queueIceTrap(void);
@@ -350,7 +328,6 @@ extern void insertROMMessages(void);
 extern int isTBarrelFlag(int flag);
 extern int isFairyFlag(int flag);
 extern int isFlagInRange(int test_flag, int start_flag, int count);
-extern void fixCrownEntrySKong(playerData* player, int animation);
 
 extern void wipeHintCache(void);
 extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
@@ -365,12 +342,6 @@ extern int initFile_getKongPotionBitfield(int kong);
 extern int initFile_checkTraining(int type_check, int kong_check, int value_check);
 
 extern void fixHelmTimerCorrection(void);
-extern void helmTime_restart(void);
-extern void helmTime_exitBonus(void);
-extern void helmTime_exitRace(void);
-extern void helmTime_exitLevel(void);
-extern void helmTime_exitBoss(void);
-extern void helmTime_exitKRool(void);
 
 extern int changeStat(bonus_stat statistic, int delta);
 extern int getStat(bonus_stat statistic);
@@ -419,7 +390,6 @@ extern int standingOnM2Object(int index);
 
 extern int getItemCountReq(requirement_item item);
 extern int isItemRequirementSatisfied(ItemRequirement* req);
-extern void initBLocker(void);
 
 extern int getGamePercentage(void);
 extern void setBurpModel(void);

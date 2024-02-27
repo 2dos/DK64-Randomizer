@@ -38,7 +38,6 @@ void overlay_changes(void) {
 		case OVERLAY_CRITTER:
 			// Known as "Water" in Ghidra repo
 			overlay_mod_critter();
-			fixTBarrelsAndBFI(0);
 			break;
 		case OVERLAY_BOSS:
 			overlay_mod_boss();

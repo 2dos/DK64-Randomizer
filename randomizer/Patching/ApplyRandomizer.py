@@ -217,7 +217,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled), 0x47),  # Parent Map Filter
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
-        BooleanProperties(not spoiler.settings.enable_shop_hints, 0x14B, 0),  # Disable Shop Hints
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
     ]
@@ -373,12 +372,6 @@ def patching_response(spoiler):
         for phase_slot in range(3):
             ROM_COPY.seek(sav + 0x17B + phase_slot)
             ROM_COPY.write(spoiler.settings.kko_phase_order[phase_slot])
-        # Random Toe Sequence
-        ROM_COPY.seek(sav + 0x41)
-        ROM_COPY.write(1)
-        for slot in range(10):
-            ROM_COPY.seek(sav + 0x37 + slot)
-            ROM_COPY.write(spoiler.settings.toe_order[slot])
 
     # Win Condition
     win_con_table = {

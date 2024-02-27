@@ -12,14 +12,6 @@
 #include "../../include/common.h"
 
 void overlay_mod_bonus(void) {
-	// Change crown spawn
-	if (Rando.item_rando) {
-		writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
-	}
-
-	writeFunction(0x8002D6A8, &warpOutOfArenas); // Enable the two arenas to be minigames
-	writeFunction(0x8002D31C, &ArenaTagKongCode); // Tag Rambi/Enguarde Instantly
-	writeFunction(0x8002D6DC, &ArenaEarlyCompletionCheck); // Check completion
 	if (!isGamemode(GAMEMODE_DKBONUS, 0)) {
 		*(int*)(0x8002D628) = 0x016FC022; // sub $t8, $t3, $t7 - Rambi Arena
 		*(int*)(0x8002D658) = 0x03224822; // sub $t1, $t9, $v0 - Enguarde Arena

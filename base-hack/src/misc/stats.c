@@ -232,10 +232,3 @@ char* createEndSeqCreditsFile(void) {
     dk_memcpy((void*)(raw_write_location + write_position), raw_text_data, 0x200);
     return text_data;
 }
-
-void initStatistics(void) {
-    writeFunction(0x806C8ED0, &updateTagStat);
-    writeFunction(0x805FE86C, &updateEnemyKillStat);
-    writeFunction(0x806E9C50, &updateFairyStat);
-    writeFunction(0x806C7298, &createEndSeqCreditsFile);
-}

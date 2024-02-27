@@ -452,8 +452,10 @@ def randomize_puzzles(spoiler):
             "100m": 2,
         }
         random.shuffle(arcade_levels)
+        spoiler.arcade_order = [0] * 4
         for lvl_index, lvl in enumerate(arcade_levels):
             ROM_COPY.seek(sav + 0x48 + lvl_index)
+            spoiler.arcade_order[lvl_index] = arcade_level_data[lvl]
             ROM_COPY.writeMultipleBytes(arcade_level_data[lvl], 1)
         # Random Race Paths
         race_data = {

@@ -29,7 +29,6 @@ void initJetpac(void) {
 		// Ensure code is only run once
 		*(int*)(0x8002D9F8) = (int)getPointerFile(6, Rando.jetpac_reward - 1 + ARCADE_IMAGE_COUNT);
 	}
-	writeFunction(0x80025034, &loadJetpacSprites_handler);
 	if (Rando.item_rando) {
 		*(short*)(0x80024D8E) = getHi(&jetpacRewardText);
 		*(short*)(0x80024D96) = getLo(&jetpacRewardText);

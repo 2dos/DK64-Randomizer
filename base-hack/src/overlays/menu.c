@@ -13,29 +13,6 @@
 
 static const char moves_values[] = {1,1,3,1,7,1,1,7}; // Move values for the main menu changes
 
-void crossKongInit(void) {
-	/**
-	 * @brief Cross-Kong Purchases. Change code to add a variable inside the shop_paad
-	 */
-	// Change target kong (Progressive)
-	*(int*)(0x80025EA0) = 0x90850004; // LBU 	a1, 0x4 (a0)
-	// Change target kong (Bitfield)
-	*(int*)(0x80025E80) = 0x90850004; // LBU 	a1, 0x4 (a0)
-	// Change price deducted
-	*(int*)(0x80025F70) = 0x93060005; // LBU 	a2, 0x5 (t8)
-	// Change price check
-	*(int*)(0x80026200) = 0x90CF0005; // LBU 	t7, 0x5 (a2)
-	// Change Special Moves Text
-	*(int*)(0x80027AE0) = 0x910F0004; // LBU 	t7, 0x4 (t0)
-	// Change Gun Text
-	*(int*)(0x80027BA0) = 0x91180004; // LBU 	t8, 0x4 (t0)
-	// Change Instrument Text
-	*(int*)(0x80027C14) = 0x910C0004; // LBU 	t4, 0x4 (t0)
-	// Fix post-special move text
-	*(int*)(0x80026C08) = 0x91790011; // LBU 	t9, 0x11 (t3)
-	*(int*)(0x80026C00) = 0x916D0004; // LBU 	t5, 0x4 (t3)
-}
-
 void PatchCrankyCode(void) {
 	loadSingularHook(0x800260E0, &CrankyDecouple);
 	loadSingularHook(0x800260A8, &ForceToBuyMoveInOneLevel);
@@ -82,57 +59,17 @@ int give_all_blueprints(int flag, int level, int kong_p) {
 void overlay_mod_menu(void) {
 	// Shops
 	PatchCrankyCode(); // Change cranky code to handle an extra variable
-	*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
-	// Apply shop hints
-	if (Rando.shop_hints) {
-		writeFunction(0x8002661C, &getMoveHint);
-		writeFunction(0x800265F0, &getMoveHint);
-	}
-	// Change move purchase
-	writeFunction(0x80026720, &getNextMovePurchase);
-	writeFunction(0x8002683C, &getNextMovePurchase);
-	crossKongInit();
-	// Write Modified purchase move stuff
-	writeFunction(0x80027324, &purchaseMove);
-	writeFunction(0x8002691C, &purchaseMove);
-	writeFunction(0x800270B8, &showPostMoveText);
-	writeFunction(0x80026508, &canPlayJetpac);
-	*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
-	*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
 	if (CurrentMap == MAP_CRANKY) {
 		*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
 		*(short*)(0x80026E6A) = 0xBD; // Cranky
 		*(short*)(0x80026E8E) = 5; // Coconuts
 		*(short*)(0x80026FB2) = 9999; // Change coconut gift from 6.6 coconuts to 66.6 coconuts
 	}
-
 	// Menu
-	*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
-	*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
 	for (int i = 0; i < 8; i++) {
 		// Main Menu moves given upon entering a boss/minigame
 		MainMenuMoves[i].moves = moves_values[i];
 	}
-	// Main Menu visual changes
-	writeFunction(0x80030604, &file_progress_screen_code); // New file progress code
-	writeFunction(0x80029FE0, &wipeFileMod); // Wipe File Hook
-	writeFunction(0x80028C88, &enterFileProgress); // Enter File Progress Screen Hook
-	*(int*)(0x80029818) = 0; // Hide A
-	*(int*)(0x80029840) = 0; // Hide B
-	// *(int*)(0x80029874) = 0; // Hide GB
-	int gb_x = 208;
-	int gh_y = 0x9A;
-	*(short*)(0x8002986E) = gb_x; // Move GB to right
-	*(short*)(0x80029872) = gh_y; // Move GB down
-	*(short*)(0x8002985A) = 0; // Change sprite mode for GB
-	*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
-
-	// File Select
-	writeFunction(0x80028D04, &changeFileSelectAction); // File select change action
-	writeFunction(0x80028D10, &changeFileSelectAction_0); // File select change action
-	writeFunction(0x80029A70, &getGamePercentage);
-
-	*(int*)(0x80028EF8) = 0; // Joystick
 
 	if (Rando.default_camera_mode) {
 		InvertedControls = 1;
@@ -146,10 +83,6 @@ void overlay_mod_menu(void) {
 
 	// Snide
 	if (Rando.item_rando) {		
-		writeFunction(0x80024CF0, &countFlagsDuplicate); // Flag change to FLUT
-		writeFunction(0x80024854, &checkFlagDuplicate); // Flag change to FLUT
-		writeFunction(0x80024880, &checkFlagDuplicate); // Flag change to FLUT
-		writeFunction(0x800248B0, &setFlagDuplicate); // Flag change to FLUT
 		if (Rando.quality_of_life.blueprint_compression) {
 			writeFunction(0x80024840, &give_all_blueprints); // Change initial check
 			*(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)

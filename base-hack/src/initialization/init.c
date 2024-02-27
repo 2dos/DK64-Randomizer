@@ -119,58 +119,14 @@ float getOscillationDelta(void) {
 }
 
 void loadHooks(void) {
-	if (Rando.warp_to_isles_enabled) {
-		loadSingularHook(0x806A995C, &PauseExtraSlotCode);
-		loadSingularHook(0x806A9818, &PauseExtraHeight);
-		loadSingularHook(0x806A87BC, &PauseExtraSlotClamp0);
-		loadSingularHook(0x806A8760, &PauseExtraSlotClamp1);
-		loadSingularHook(0x806A8804, &PauseExtraSlotCustomCode);
-		loadSingularHook(0x806A9898, &PauseCounterCap);
-	}
-	loadSingularHook(0x806F3E74, &AutowalkFix);
-	loadSingularHook(0x80610948, &DynamicCodeFixes);
-	if (Rando.perma_lose_kongs) {
-		loadSingularHook(0x80682F2C, &permaLossTagCheck);
-		loadSingularHook(0x80683620, &permaLossTagSet);
-		loadSingularHook(0x806840C4, &permaLossTagDisplayCheck);
-	}
-	loadSingularHook(0x80689534, &tagPreventCode);
-	if (Rando.resolve_bonus) {
-		//loadSingularHook(0x80680D10, &destroyAllBarrelsCode);
-	}
-	loadSingularHook(0x806BD328, &KeyCompressionCode);
-	loadSingularHook(0x8067B684, &CannonForceCode);
-	loadSingularHook(0x806F9F88, &HUDDisplayCode);
-	loadSingularHook(0x806E22B0, &HomingDisable);
-	loadSingularHook(0x806EB574, &HomingHUDHandle);
-	loadSingularHook(0x806324C4, &DKCollectableFix);
-	loadSingularHook(0x806AF70C, &GuardDeathHandle);
-	if (Rando.quality_of_life.textbox_hold) {
-		loadSingularHook(0x8070E83C, &TextHandler);
-	}
-	loadSingularHook(0x806AE55C, &GuardAutoclear);
-	loadSingularHook(0x80637148, &ObjectRotate);
-	if (Rando.item_rando) {
-		loadSingularHook(0x806A6708, &SpriteFix);
-	}
-	loadSingularHook(0x806A86FC, &PauseControl_Control);
-	loadSingularHook(0x806AA414, &PauseControl_Sprite);
-	if (Rando.quality_of_life.brighten_mmm_enemies) {
-		loadSingularHook(0x80631380, &brightenMMMEnemies);
-	}
 	if (Rando.krusha_slot >- 1) {
 		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
 		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
 	}
-	if (Rando.enemy_item_rando){
-		loadSingularHook(0x806680b4, checkBeforeApplyingQuicksand);
-		*(int*)(0x806680b8) = 0x8E2C0058; // LW $t4, 0x58 ($s1)
-	}
-	loadSingularHook(0x806A7474, &disableHelmKeyBounce);
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
-	loadSingularHook(0x80600674, &updateLag);
+	
 }
 
 void skipDKTV(void) {
@@ -256,13 +212,9 @@ void initHack(int source) {
 			replace_zones(1);
 			loadHooks();
 			loadExtraHooks();
-			// Moves & Prices
-			fixTBarrelsAndBFI(1);
 			// Place Move Data
 			moveTransplant();
 			priceTransplant();
-
-			initStatistics();
 			
 			actor_functions[70] = &newCounterCode;
 			

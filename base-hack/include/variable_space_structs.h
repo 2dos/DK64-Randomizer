@@ -15,8 +15,8 @@ typedef struct varspace {
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char unk_35;
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
-	/* 0x037 */ char k_rool_toes[10];
-	/* 0x041 */ char randomize_toes;
+	/* 0x037 */ char unk_37[10];
+	/* 0x041 */ char unk_41;
 	/* 0x042 */ char unk_42;
 	/* 0x043 */ char colorblind_mode; // 0 = Off, 1 = Prot, 2 = Deut, 3 = Trit
 	/* 0x044 */ char dark_mode_textboxes; // 0 = Light Mode, 1 = Dark Mode
@@ -128,7 +128,7 @@ typedef struct varspace {
 	/* 0x143 */ unsigned char coinreq_castlecart;
 	/* 0x144 */ char unk_144[6];
 	/* 0x14A */ char unk_14A;
-	/* 0x14B */ char shop_hints; // 0 = Off, 1 = Hints at the beginning of shops
+	/* 0x14B */ char unk_14B;
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ char unk_14E;

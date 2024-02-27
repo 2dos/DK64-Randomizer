@@ -624,21 +624,6 @@ int getLocationStatus(location_list location_index) {
 	return 0;
 }
 
-void fixTBarrelsAndBFI(int init) {
-	if (init) {
-		// Individual Barrel Checks
-		writeFunction(0x80681D38, &getLocationStatus); // Get TBarrels Move
-		// All Barrels Complete check
-		writeFunction(0x80681C98, &getLocationStatus); // Get TBarrels Move
-	} else {
-		// TBarrels
-		writeFunction(0x80029610, &setLocationStatus); // Set TBarrels Move
-		// BFI
-		writeFunction(0x80027F24, &setLocationStatus); // Set BFI Move
-		writeFunction(0x80027E20, &getLocationStatus); // Get BFI Move
-	}
-}
-
 typedef struct move_overlay_paad {
 	/* 0x000 */ void* upper_text;
 	/* 0x004 */ void* lower_text;
