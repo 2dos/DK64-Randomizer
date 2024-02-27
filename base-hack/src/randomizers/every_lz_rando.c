@@ -54,12 +54,6 @@ void replace_zones(int init_flag) {
 				ReplacementLobbiesArray[8] = ReplacementLobbiesArray[7];
 				ReplacementLobbyExitsArray[8] = ReplacementLobbyExitsArray[7];
 			}
-			krool_exit_map = Rando.k_rool_exit.map;
-			krool_exit_exit = Rando.k_rool_exit.exit;
-			*(short*)(0x806A8986) = krool_exit_map;
-			*(short*)(0x806A898E) = krool_exit_exit;
-			*(short*)(0x80628032) = krool_exit_map;
-			*(short*)(0x8062803A) = krool_exit_exit;
 			for (int i = 0; i < 8; i++) {
 				int target_map = RaceExitArray[i].race_map;
 				for (int j = 0; j < (int)(sizeof(race_exits) / sizeof(race_exit_mapping)); j++) {

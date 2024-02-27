@@ -1230,11 +1230,11 @@ typedef struct collected_item_struct {
 typedef struct quality_options {
 	unsigned char reduce_lag : 1;
 	unsigned char remove_cutscenes : 1; // 1
-	unsigned char fast_picture : 1;
-	unsigned char aztec_lobby_bonus : 1; // 3
+	unsigned char unused_2 : 1;
+	unsigned char unused_3 : 1; // 3
 	unsigned char dance_skip : 1;
 	unsigned char fast_boot : 1; // 5
-	unsigned char fast_transform : 1;
+	unsigned char unused_6 : 1;
 	unsigned char ammo_swap : 1; // 7
 	unsigned char cb_indicator : 1;
 	unsigned char galleon_star : 1; // 9
@@ -1245,10 +1245,10 @@ typedef struct quality_options {
 	unsigned char hud_bp_multibunch : 1;
 	unsigned char homing_balloons : 1; // 15
 	unsigned char save_krool_progress : 1;
-	unsigned char cbs_visible : 1; // 17
+	unsigned char unused_17 : 1; // 17
 	unsigned char blueprint_compression : 1;
 	unsigned char fast_hints : 1; // 19
-	unsigned char brighten_mmm_enemies : 1;
+	unsigned char unused_20 : 1;
 	unsigned char global_instrument : 1; // 21
 	unsigned char fast_pause_transitions : 1;
 	unsigned char cannon_game_speed : 1; // 23

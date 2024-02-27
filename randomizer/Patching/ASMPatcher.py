@@ -871,6 +871,8 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8071404E, Overlay.Static, 5, offset_dict)
     else:
         writeFunction(ROM_COPY, 0x80713258, Overlay.Static, "skipDKTV", offset_dict)
+    for index, kong in enumerate(spoiler.settings.kutout_kongs):
+        writeValue(ROM_COPY, 0x80035B44 + index, Overlay.Boss, kong, offset_dict, 1)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_transform_animation):
         writeValue(ROM_COPY, 0x8067EAB2, Overlay.Static, 1, offset_dict)  # OSprint
         writeValue(ROM_COPY, 0x8067EAC6, Overlay.Static, 1, offset_dict)  # HC Dogadon 2

@@ -277,7 +277,6 @@ void earlyFrame(void) {
 	actor_functions[191] = &candyCodeHandler;
 	fastWarpShockwaveFix();
 	catchWarpHandle();
-	write_kutoutorder();
 	remove_blockers();
 	determine_krool_order();
 	CBDing();

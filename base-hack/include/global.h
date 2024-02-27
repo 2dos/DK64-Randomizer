@@ -70,7 +70,6 @@ extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
 extern void PatchBonusCode(void);
 extern void FileScreenDLCode_Write(void);
-extern void write_kutoutorder(void);
 extern void remove_blockers(void);
 extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);

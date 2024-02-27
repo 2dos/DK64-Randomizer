@@ -134,11 +134,8 @@ def randomize_entrances(spoiler):
         shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesMainToCastleLobby]
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x076 */ unsigned short k_rool_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        # K rool exit is always vanilla
-        ROM_COPY.write(Maps.Isles)
-        ROM_COPY.write(12)
         # /* 0x078 */ unsigned short exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+        ROM_COPY.seek(varspaceOffset + 0x78)
         shuffledBack = spoiler.shuffled_exit_data[Transitions.JapesToIsles]
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))

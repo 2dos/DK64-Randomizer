@@ -22,7 +22,7 @@ typedef struct varspace {
 	/* 0x044 */ char dark_mode_textboxes; // 0 = Light Mode, 1 = Dark Mode
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
 	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
-	/* 0x048 */ char arcade_order[4]; // 01 = 25m, 04 = 50m, 03 = 75m, 02 = 100m
+	/* 0x048 */ char unk_48[4];
 	/* 0x04C */ ItemRequirement crown_door_requirement;
 	/* 0x04E */ ItemRequirement coin_door_requirement;
 	/* 0x050 */ unsigned char aztec_beetle_reward;
@@ -44,16 +44,16 @@ typedef struct varspace {
 	/* 0x070 */ LZREntrance japes_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x072 */ LZREntrance castle_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x074 */ LZREntrance castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x076 */ LZREntrance k_rool_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x076 */ char unk_76[2];
 	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x088 */ LZREntrance enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char unk_97[14];
 	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
 	/* 0x0A6 */ char unk_A6;
-	/* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
-	/* 0x0A8 */ unsigned char tbarrel_prices[4]; // Array of training barrel move prices. First is dive, then orange, then barrel, then vine
-	/* 0x0AC */ unsigned char fairy_prices[2]; // Array of fairy move prices. First is camera, second is shockwave. Shockwave/Camera combo price is calculated as the sum of the two
+	/* 0x0A7 */ char unk_A7;
+	/* 0x0A8 */ char unk_A8[4];
+	/* 0x0AC */ char unk_AC[2];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
@@ -99,8 +99,8 @@ typedef struct varspace {
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
 	/* 0x11E */ char tns_indicator;
-	/* 0x11F */ char wrinkly_rando_on;
-	/* 0x120 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
+	/* 0x11F */ char unk_11F;
+	/* 0x120 */ char unk_120[5];
 	/* 0x125 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
 	/* 0x127 */ unsigned char keys_preturned; // Bitfield. 0000 0001 = Key 1 turned, 0000 0010 = Key 2 turned etc. Eg. 0x7F = 0111 1111 = All keys except Key 8 turned
@@ -148,7 +148,7 @@ typedef struct varspace {
 	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
 	/* 0x173 */ char dartboard_order[6]; // Each item denotes a picture. 0 = Crystal, 1 = Melon, 2 = Banana, 3 = Orange, 4 = Ammo Crate, 5 = Medal, 6 = Coin, 7 = Film
-	/* 0x179 */ char remove_high_requirements; // 0 = Off, 1 = On. Removes high requirements that lock certain areas.
+	/* 0x179 */ char unk_179;
 	/* 0x17A */ char unk_17a;
 	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
 	/* 0x17E */ unsigned char b_locker_requirements[8];

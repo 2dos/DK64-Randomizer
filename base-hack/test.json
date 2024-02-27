@@ -164,7 +164,6 @@
       3
    ],
    "enemy_item_rando": 1,
-   "move_rando_on":1,
    "remove_blockers":127,
    "resolve_bonus":0,
    "disable_drops":0,
@@ -231,13 +230,6 @@
       255,
       255,
       255
-   ],
-   "kut_out_kong_order":[
-      1,
-      0,
-      0,
-      0,
-      0
    ],
    "helm_hurry_mode":0,
    "win_condition":5,
