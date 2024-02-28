@@ -327,7 +327,6 @@ def patching_response(spoiler):
     ROM_COPY.write(int(spoiler.settings.more_cutscene_skips))
 
     # Helm Hurry
-
     helm_hurry_bonuses = [
         spoiler.settings.helmhurry_list_starting_time,
         spoiler.settings.helmhurry_list_golden_banana,

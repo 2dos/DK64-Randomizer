@@ -37,8 +37,6 @@ static const race_exit_mapping race_exits[] = {
 };
 
 void replace_zones(int init_flag) {
-	int krool_exit_map = 0;
-	int krool_exit_exit = 0;
 	if (Rando.randomize_more_loading_zones) {
 		if (init_flag) {
 			for (int i = 0; i < 8; i++) {
