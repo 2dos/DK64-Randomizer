@@ -1147,8 +1147,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002691C, Overlay.Menu, "purchaseMove", offset_dict)
     writeFunction(ROM_COPY, 0x800270B8, Overlay.Menu, "showPostMoveText", offset_dict)
     writeFunction(ROM_COPY, 0x80026508, Overlay.Menu, "canPlayJetpac", offset_dict)
-    writeValue(ROM_COPY, 0x80026F64, Overlay.Menu, 0, offset_dict, 4)  #  Disable check for whether you have a move before giving donation at shop
-    writeValue(ROM_COPY, 0x80026F68, Overlay.Menu, 0, offset_dict, 4)  #  Disable check for whether you have a move before giving donation at shop
+    writeValue(ROM_COPY, 0x80026F64, Overlay.Menu, 0, offset_dict, 4)  # Disable check for whether you have a move before giving donation at shop
+    writeValue(ROM_COPY, 0x80026F68, Overlay.Menu, 0, offset_dict, 4)  # Disable check for whether you have a move before giving donation at shop
     # Menu/Shop: Shop Hints
     if settings.enable_shop_hints:
         writeFunction(ROM_COPY, 0x8002661C, Overlay.Menu, "getMoveHint", offset_dict)

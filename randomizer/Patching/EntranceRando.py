@@ -247,3 +247,65 @@ def enableTriggerText(spoiler):
                     # Change cutscene
                     ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
                     ROM_COPY.writeMultipleBytes(cs.new_cutscene, 2)
+
+def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
+    """Writes level order to ROM."""
+    varspaceOffset = spoiler.settings.rom_data
+    lobbies = [
+        Maps.JungleJapesLobby,
+        Maps.AngryAztecLobby,
+        Maps.FranticFactoryLobby,
+        Maps.GloomyGalleonLobby,
+        Maps.FungiForestLobby,
+        Maps.CrystalCavesLobby,
+        Maps.CreepyCastleLobby,
+        Maps.HideoutHelmLobby,
+    ]
+    lobby_exits = [2, 3, 4, 5, 6, 10, 11]
+    altered_maps = {
+        Maps.Isles: [],
+        Maps.JungleJapesLobby: [],
+        Maps.AngryAztecLobby: [],
+        Maps.FranticFactoryLobby: [],
+        Maps.GloomyGalleonLobby: [],
+        Maps.FungiForestLobby: [],
+        Maps.CrystalCavesLobby: [],
+        Maps.CreepyCastleLobby: [],
+        Maps.HideoutHelmLobby: [],
+    }
+    for index, item in enumerate(order):
+        altered_maps[Maps.Isles].append({"original_map": lobbies[index], "original_exit": 0, "new_map": lobbies[item], "new_exit": 0})
+        exit = None
+        for index2, item2 in enumerate(order):
+            if index == item2:
+                exit = lobby_exits[index2]
+        altered_maps[lobbies[index]].append({"original_map": Maps.Isles, "original_exit": lobby_exits[index], "new_map": Maps.Isles, "new_exit": exit})
+
+    for cont_map_id in altered_maps:
+        cont_map_lzs_address = js.pointer_addresses[18]["entries"][cont_map_id]["pointing_to"]
+        ROM_COPY.seek(cont_map_lzs_address)
+        lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        for lz_id in range(lz_count):
+            start = (lz_id * 0x38) + 2
+            ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+            lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if lz_type in valid_lz_types:
+                ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
+                lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
+                lz_exit = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                for zone in altered_maps[cont_map_id]:
+                    if lz_map == zone["original_map"]:
+                        if lz_exit == zone["original_exit"]:
+                            ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
+                            map_bytes = intToArr(zone["new_map"], 2)
+                            ROM_COPY.writeBytes(bytearray(map_bytes))
+                            ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
+                            exit_bytes = intToArr(zone["new_exit"], 2)
+                            ROM_COPY.writeBytes(bytearray(exit_bytes))
+    level_7_lobby = lobbies[order[6]]
+    ROM_COPY.seek(varspaceOffset + 0x5D)
+    ROM_COPY.write(2)
+    ROM_COPY.seek(varspaceOffset + 0x74)
+    ROM_COPY.write(level_7_lobby)
+    ROM_COPY.write(0)

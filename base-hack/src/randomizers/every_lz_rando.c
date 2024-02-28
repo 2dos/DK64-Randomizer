@@ -39,25 +39,27 @@ static const race_exit_mapping race_exits[] = {
 void replace_zones(int init_flag) {
 	if (Rando.randomize_more_loading_zones) {
 		if (init_flag) {
-			for (int i = 0; i < 8; i++) {
-				if (i < 7) {
-					WorldArray[i] = Rando.enter_levels[i].map;
-					WorldExitArray[i] = Rando.enter_levels[i].exit;
-					if ((WorldArray[i] != MAP_CASTLE) || (WorldExitArray[i] != 0)) {
-						WorldCutsceneArray[i] = 0;
+			if (Rando.randomize_more_loading_zones == 1) {
+				for (int i = 0; i < 8; i++) {
+					if (i < 7) {
+						WorldArray[i] = Rando.enter_levels[i].map;
+						WorldExitArray[i] = Rando.enter_levels[i].exit;
+						if ((WorldArray[i] != MAP_CASTLE) || (WorldExitArray[i] != 0)) {
+							WorldCutsceneArray[i] = 0;
+						}
 					}
+					ReplacementLobbiesArray[i] = Rando.exit_levels[i].map;
+					ReplacementLobbyExitsArray[i] = Rando.exit_levels[i].exit;
+					ReplacementLobbiesArray[8] = ReplacementLobbiesArray[7];
+					ReplacementLobbyExitsArray[8] = ReplacementLobbyExitsArray[7];
 				}
-				ReplacementLobbiesArray[i] = Rando.exit_levels[i].map;
-				ReplacementLobbyExitsArray[i] = Rando.exit_levels[i].exit;
-				ReplacementLobbiesArray[8] = ReplacementLobbiesArray[7];
-				ReplacementLobbyExitsArray[8] = ReplacementLobbyExitsArray[7];
-			}
-			for (int i = 0; i < 8; i++) {
-				int target_map = RaceExitArray[i].race_map;
-				for (int j = 0; j < (int)(sizeof(race_exits) / sizeof(race_exit_mapping)); j++) {
-					if (target_map == race_exits[j].map_index) {
-						RaceExitArray[i].container_map = race_exits[j].entrance->map;
-						RaceExitArray[i].container_exit = race_exits[j].entrance->exit;
+				for (int i = 0; i < 8; i++) {
+					int target_map = RaceExitArray[i].race_map;
+					for (int j = 0; j < (int)(sizeof(race_exits) / sizeof(race_exit_mapping)); j++) {
+						if (target_map == race_exits[j].map_index) {
+							RaceExitArray[i].container_map = race_exits[j].entrance->map;
+							RaceExitArray[i].container_exit = race_exits[j].entrance->exit;
+						}
 					}
 				}
 			}

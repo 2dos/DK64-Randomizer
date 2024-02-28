@@ -43,7 +43,7 @@ from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import enableTriggerText, filterEntranceType, randomize_entrances
+from randomizer.Patching.EntranceRando import enableTriggerText, filterEntranceType, randomize_entrances, placeLevelOrder
 from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
@@ -132,11 +132,10 @@ def patching_response(spoiler):
             Transitions.IslesCavesLobbyToMain,
             Transitions.IslesCastleLobbyToMain,
         ]
-        order = 0
+        level_order = []
         for level in vanilla_lobby_entrance_order:
-            ROM_COPY.seek(sav + 1 + order)
-            ROM_COPY.write(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
-            order += 1
+            level_order.append(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
+        placeLevelOrder(spoiler, level_order, ROM_COPY)
 
         # Key Order
         map_pointers = {

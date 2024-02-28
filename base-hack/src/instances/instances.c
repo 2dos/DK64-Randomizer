@@ -232,7 +232,7 @@ void setCrusher(void) {
 }
 
 void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
-	if (Rando.randomize_more_loading_zones) {
+	if (Rando.randomize_more_loading_zones == 1) {
 		initiateTransition_0(entrance->map, entrance->exit, 0, 0);
 	} else {
 		initiateTransition_0(vanilla_map, 0, 0, 0);
@@ -374,7 +374,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEBALLROOM:
 				if (param2 == BALLROOM_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.ballroom_to_museum.map, Rando.ballroom_to_museum.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
@@ -383,7 +383,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.museum_to_ballroom.map, Rando.museum_to_ballroom.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
