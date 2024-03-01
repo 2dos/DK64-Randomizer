@@ -192,6 +192,8 @@ def encrypt_settings_string_enum(dict_data: dict):
         "lanky_fur_custom_color",
         "rambi_skin_colors",
         "rambi_skin_custom_color",
+        "gb_colors",
+        "gb_custom_color",
         "random_colors",
         "random_music",
         "music_bgm_randomized",

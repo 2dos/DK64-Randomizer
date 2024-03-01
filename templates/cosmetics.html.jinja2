@@ -80,6 +80,27 @@
                             </option>
                         </select>
                     </div>
+                    <div class="item-color-select">
+                        <div class="color-selector">
+                            <p class="select-title">Golden Banana Skin Color</p>
+                            <div id="gb_custom">
+                                <div class="input-group mb-3 gbColorPicker" style="display:flex">
+                                    <select name="gb_colors" id="gb_colors" class="form-select" aria-label="GB Skin">
+                                        <option selected value="vanilla">Vanilla</option>
+                                        <option value="randomized">Randomized</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                    <div class="color-input-container">
+                                        <input type="color"
+                                            name="gb_custom_color"
+                                            id="gb_custom_color"
+                                            default="#000000"
+                                            class="color-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
@@ -390,6 +411,9 @@
                     }
                 })
             })
+            if (object.hasOwnProperty("gb_custom_color")) {
+                $(".gbColorPicker").attr("style", "background-color" + object["gb_custom_color"] + ";")
+            }
         }
     })
     $(function() {

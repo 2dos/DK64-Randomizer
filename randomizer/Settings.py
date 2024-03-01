@@ -491,6 +491,9 @@ class Settings:
         self.rambi_skin_custom_color = "#000000"
         self.enguarde_skin_colors = CharacterColors.vanilla
         self.enguarde_skin_custom_color = "#000000"
+        # Misc
+        self.gb_colors = CharacterColors.vanilla
+        self.gb_custom_color = "#000000"
 
         self.disco_chunky = False
         self.dark_mode_textboxes = False

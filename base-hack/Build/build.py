@@ -187,6 +187,7 @@ file_dict = [
         source_file="assets/displays/gb_shine.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
+        target_compressed_size=0x800,
     ),
     File(
         name="Melon Surface",
@@ -930,6 +931,8 @@ colorblind_changes = [
     [0x11AC, 0x11AC, 1, 688],  # Ghost something
     [0x11AD, 0x11AE, 1, 1372],  # Ghost something
     [0x1379, 0x1379, 32, 32],  # Dirt Face
+    [0xB7B, 0xB7B, 32, 32], # GB Shine
+    [0x155C, 0x1567, 44, 44], # GB Sprite
 ]
 
 kremling_dimensions = [

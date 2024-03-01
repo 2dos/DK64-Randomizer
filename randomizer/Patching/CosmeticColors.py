@@ -500,7 +500,7 @@ def apply_cosmetic_colors(settings: Settings):
             [
                 KongPalette("skin", 3847, PaletteFillType.block),
             ],
-        ),
+        )
     ]
 
     KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
@@ -515,11 +515,14 @@ def apply_cosmetic_colors(settings: Settings):
                 for zone in KONG_ZONES[kong]:
                     settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors[js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors").value])
                     settings.__setattr__(f"{kong.lower()}_{zone.lower()}_custom_color", js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color").value)
+        settings.gb_colors = CharacterColors[js.document.getElementById("gb_colors").value]
+        settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
     else:
         if settings.random_colors:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
                     settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors.randomized)
+        settings.gb_colors = CharacterColors.randomized
 
     colors_dict = {}
     for kong in KONG_ZONES:
@@ -592,6 +595,39 @@ def apply_cosmetic_colors(settings: Settings):
             if pal not in new_color_palettes:
                 new_color_palettes.append(pal)
         convertColors(new_color_palettes)
+    # GB Shine
+    if settings.override_cosmetics and settings.gb_colors != CharacterColors.vanilla:
+        channels = []
+        if settings.gb_colors == CharacterColors.randomized:
+            for x in range(3):
+                channels.append(random.randint(0, 255))
+        elif settings.gb_colors == CharacterColors.custom:
+            for x in range(3):
+                start = (2 * x) + 1
+                finish = (2 * x) + 3
+                channel = int(settings.gb_custom_color[start : finish],16)
+                channels.append(channel)
+        textures = [0xB7B] + list(range(0x155C, 0x1568))
+        for tex in textures:
+            dimension = 32 if tex == 0xB7B else 44
+            shine_img = getFile(25, tex, True, dimension, dimension, TextureFormat.RGBA5551)
+            gb_shine_img = maskImageGBSpin(shine_img, tuple(channels), tex)
+            if tex == 0xB7B:
+                min_rgb = min(channels[0], channels[1], channels[2])
+                max_rgb = max(channels[0], channels[1], channels[2])
+                is_greyscale = (max_rgb - min_rgb) < 50
+                fakegb_shine_img = None
+                delta_mag = 80
+                if is_greyscale:
+                    delta = -delta_mag
+                    if max_rgb < 128:
+                        delta = delta_mag
+                    fakegb_shine_img = maskImageWithColor(shine_img, tuple([x + delta for x in channels]))
+                else:
+                    new_color = hueShiftColor(tuple(channels), 60, 1750)
+                    fakegb_shine_img = maskImageWithColor(shine_img, new_color)
+                writeColorImageToROM(fakegb_shine_img, 25, getBonusSkinOffset(0), 32, 32, False, TextureFormat.RGBA5551)
+            writeColorImageToROM(gb_shine_img, 25, tex, dimension, dimension, False, TextureFormat.RGBA5551)
 
 
 color_bases = []
@@ -767,6 +803,84 @@ def recolorRotatingRoomTiles():
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile / 2)], face_index, (int(tile / 2) % 2))
         writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
 
+def getSpinPixels() -> dict:
+    """Get pixels that shouldn't be affected by the mask."""
+    spin_lengths = {
+        0x155C: {
+            17: (12, 2),
+            18: (11, 4),
+            19: (10, 6),
+            20: (10, 7),
+            21: (10, 7),
+            22: (10, 6),
+            23: (11, 3),
+        },
+        0x155D: {
+            14: (15, 1),
+            15: (14, 5),
+            16: (13, 7),
+            17: (12, 9),
+            18: (12, 10),
+            19: (12, 11),
+            20: (12, 11),
+            21: (13, 10),
+            22: (14, 8),
+            23: (15, 4),
+        },
+        0x155E: {
+            14: (19, 5),
+            15: (19, 7),
+            16: (18, 9),
+            17: (18, 10),
+            18: (18, 10),
+            19: (19, 10),
+            20: (20, 9),
+            21: (21, 8),
+            22: (22, 7),
+        },
+        0x155F: {
+            14: (27, 2),
+            15: (26, 5),
+            16: (26, 6),
+            17: (26, 6),
+            18: (27, 6),
+            19: (27, 6),
+            20: (28, 5),
+            21: (29, 4),
+            22: (29, 4),
+            23: (30, 3),
+        },
+        0x1560: {
+            16: (32, 1),
+            17: (32, 2),
+            18: (33, 1),
+            19: (33, 2),
+            20: (33, 1),
+            21: (33, 1),
+            22: (33, 1),
+        },
+    }
+    spin_pixels = {}
+    for tex in spin_lengths:
+        local_lst = []
+        for y in spin_lengths[tex]:
+            for x_o in range(spin_lengths[tex][y][1]):
+                local_lst.append((spin_lengths[tex][y][0] + x_o, y))
+        spin_pixels[tex] = local_lst
+    return spin_pixels
+
+def maskImageGBSpin(im_f, color: tuple, image_index: int):
+    """Mask the GB Spin Sprite."""
+    masked_im = maskImageWithColor(im_f, color)
+    spin_pixels = getSpinPixels()
+    if image_index not in spin_pixels:
+        return masked_im
+    px = im_f.load()
+    px_0 = masked_im.load()
+    for point in spin_pixels[image_index]:
+        px_0[point[0], point[1]] = px[point[0], point[1]]
+    return masked_im
+
 
 def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side):
     """Apply RGB mask to image of a Rotating Room Memory Tile."""
@@ -852,6 +966,58 @@ def hueShift(im, amount):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
+    """Apply a hue shift to a color."""
+    # RGB -> HSV Conversion
+    red_ratio = color[0] / 255
+    green_ratio = color[1] / 255
+    blue_ratio = color[2] / 255
+    color_max = max(red_ratio, green_ratio, blue_ratio)
+    color_min = min(red_ratio, green_ratio, blue_ratio)
+    color_delta = color_max - color_min
+    hue = 0
+    if color_delta != 0:
+        if color_max == red_ratio:
+            hue = 60 * (((green_ratio - blue_ratio) / color_delta) % 6)
+        elif color_max == green_ratio:
+            hue = 60 * (((blue_ratio - red_ratio) / color_delta) + 2)
+        else:
+            hue = 60 * (((red_ratio - green_ratio) / color_delta) + 4)
+    sat = 0 if color_max == 0 else color_delta / color_max
+    val = color_max
+    # Adjust Hue
+    if head_ratio is not None and sat != 0:
+        amount = head_ratio / (sat * 100)
+    hue = (hue + amount) % 360
+    # HSV -> RGB Conversion
+    c = val * sat
+    x = c * (1 - abs(((hue / 60) % 2) - 1))
+    m = val - c
+    if hue < 60:
+        red_ratio = c
+        green_ratio = x
+        blue_ratio = 0
+    elif hue < 120:
+        red_ratio = x
+        green_ratio = c
+        blue_ratio = 0
+    elif hue < 180:
+        red_ratio = 0
+        green_ratio = c
+        blue_ratio = x
+    elif hue < 240:
+        red_ratio = 0
+        green_ratio = x
+        blue_ratio = c
+    elif hue < 300:
+        red_ratio = x
+        green_ratio = 0
+        blue_ratio = c
+    else:
+        red_ratio = c
+        green_ratio = 0
+        blue_ratio = x
+    return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))
 
 def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     """Apply RGB mask to image with an Outline in a different color."""
@@ -2116,6 +2282,7 @@ def writeMiscCosmeticChanges(settings):
             for img_index in range(sprite_data[0], sprite_data[1] + 1):
                 dim = sprite_data[2]
                 hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
+        
     if enemy_setting != RandomModels.off:
         # Barrel Enemy Skins - Random
         klobber_shift = getRandomHueShift(0, 300)

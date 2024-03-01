@@ -55,6 +55,7 @@ void initQoL_Cutscenes(void) {
                 {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=0}, // Tiny Barrel Spawn
                 {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=1}, // Cannon GB Spawn
                 {.map=MAP_CASTLEGREENHOUSE, .cutscene=0}, // Greenhouse Intro
+                {.map=MAP_CASTLEDUNGEON, .cutscene=0}, // Dungeon Lanky Trombone Bonus
             };
             for (int i = 0; i < (sizeof(cs_unskip) / sizeof(skipped_cutscene)); i++) {
                 int cs_offset = 0;
