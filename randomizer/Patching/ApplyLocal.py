@@ -287,6 +287,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
     if settings.colors != {} or settings.random_models != RandomModels.off:
         humanspoiler["Cosmetics"]["Colors"] = {}
         humanspoiler["Cosmetics"]["Models"] = {}
+        humanspoiler["Cosmetics"]["Textures"] = {}
         for color_item in settings.colors:
             if color_item == "dk":
                 humanspoiler["Cosmetics"]["Colors"]["DK Color"] = settings.colors[color_item]
@@ -305,4 +306,6 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         humanspoiler["Cosmetics"]["Minor Item Themes"] = music_data.get("music_minoritem_data")
     if settings.music_events_randomized or settings.events_songs_selected:
         humanspoiler["Cosmetics"]["Event Themes"] = music_data.get("music_event_data")
+    if settings.custom_transition is not None:
+        humanspoiler["Cosmetics"]["Textures"]["Transition"] = settings.custom_transition
     return humanspoiler

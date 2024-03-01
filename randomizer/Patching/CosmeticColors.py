@@ -8,6 +8,7 @@ import zlib
 from random import randint
 from typing import TYPE_CHECKING, List, Tuple
 from enum import IntEnum, auto
+from io import BytesIO
 
 from PIL import Image, ImageDraw, ImageEnhance
 
@@ -506,6 +507,7 @@ def apply_cosmetic_colors(settings: Settings):
     KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
 
     if js.document.getElementById("override_cosmetics").checked or True:
+        writeTransition(settings)
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -1096,15 +1098,32 @@ def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: in
                 pix_data = list(pix[x, y])
             if format == TextureFormat.RGBA32:
                 bytes_array.extend(pix_data)
-            else:
+            elif format == TextureFormat.RGBA5551:
                 red = int((pix_data[0] >> 3) << 11)
                 green = int((pix_data[1] >> 3) << 6)
                 blue = int((pix_data[2] >> 3) << 1)
                 alpha = int(pix_data[3] != 0)
                 value = red | green | blue | alpha
                 bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-    data = bytearray(bytes_array)
+            elif format == TextureFormat.IA4:
+                intensity = pix_data[0] >> 5
+                alpha = 0 if pix_data[3] == 0 else 1
+                data = ((intensity << 1) | alpha) & 0xF
+                bytes_array.append(data)
     bytes_per_px = 2
+    if format == TextureFormat.IA4:
+        temp_ba = bytes_array.copy()
+        bytes_array = []
+        value_storage = 0
+        bytes_per_px = 0.5
+        for idx, val in enumerate(temp_ba):
+            polarity = idx % 2
+            if polarity == 0:
+                value_storage = val << 4
+            else:
+                value_storage |= val
+                bytes_array.append(value_storage)
+    data = bytearray(bytes_array)
     if format == TextureFormat.RGBA32:
         bytes_per_px = 4
     if len(data) > (bytes_per_px * width * height):
@@ -2988,3 +3007,21 @@ def writeBootMessages() -> None:
     for message_index, message in enumerate(placed_messages):
         ROM_COPY.seek(0x1FFD000 + (0x40 * message_index))
         ROM_COPY.writeBytes(message.upper().encode("ascii"))
+
+def writeTransition(settings: Settings) -> None:
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.transitions is None:
+        return
+    if js.cosmetic_names.transitions is None:
+        return
+    file_data = list(zip(js.cosmetics.transitions, js.cosmetic_names.transitions))
+    settings.custom_transition = None
+    if len(file_data) == 0:
+        return
+    selected_transition = random.choice(file_data)
+    print(selected_transition[1])
+    settings.custom_transition = selected_transition[1] # File Name
+    #im_f = Image.frombytes("RGBA", (64, 64), bytes(selected_transition[0]))
+    im_f = Image.open(BytesIO(bytes(selected_transition[0])))
+    writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)

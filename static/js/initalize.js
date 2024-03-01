@@ -118,11 +118,17 @@ function getFile(file) {
 
 var valid_extensions = [".bin", ".candy"];
 
-function validFilename(filename, dir) {
+function validFilename(filename, dir, valid_extension=null) {
   if (filename.includes(dir)) {
-    for (let v = 0; v < valid_extensions.length; v++) {
-      var ext = valid_extensions[v];
-      if (filename.slice(0 - ext.length) == ext) {
+    if (valid_extension == null) {
+      for (let v = 0; v < valid_extensions.length; v++) {
+        var ext = valid_extensions[v];
+        if (filename.slice(0 - ext.length) == ext) {
+          return true;
+        }
+      }
+    } else {
+      if (filename.slice(0 - valid_extension.length) == valid_extension) {
         return true;
       }
     }
@@ -289,7 +295,9 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let majoritem_promises = [];
       let minoritem_promises = [];
       let event_promises = [];
+      let transition_promises = [];
 
+      
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
           bgm_promises.push(createMusicLoadPromise(new_zip, filename));
@@ -299,6 +307,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           minoritem_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "events/")) {
           event_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/transitions/", ".png")) {
+          transition_promises.push(createMusicLoadPromise(new_zip, filename))
         }
       }
 
@@ -310,6 +320,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       sortLoadedMusic(minoritem_files);
       let event_files = await Promise.all(event_promises);
       sortLoadedMusic(event_files);
+      let transition_files = await Promise.all(transition_promises);
+
 
       // BGM
       let bgm = bgm_files.map((x) => x.file);
@@ -331,17 +343,23 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let event_names = event_files.map((x) => x.name);
       let event_ext = event_files.map((x) => x.extension);
 
+      // Transitions
+      let transitions = transition_files.map((x) => x.file);
+      let transition_names = transition_files.map((x) => x.name);
+
       cosmetics = {
         bgm: bgm,
         majoritems: majoritems,
         minoritems: minoritems,
         events: events,
+        transitions: transitions,
       };
       cosmetic_names = {
         bgm: bgm_names,
         majoritems: majoritem_names,
         minoritems: minoritem_names,
         events: event_names,
+        transitions: transition_names,
       };
       cosmetic_extensions = {
         bgm: bgm_ext,
