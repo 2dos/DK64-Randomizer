@@ -877,7 +877,7 @@ ColoredBananaGroupList = [
         name="Next to Snide",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        locations=[[5, 1.0, 2071, 690, 2565], [5, 1.0, 2260, 690, 2523]],
+        locations=[[5, 1.0, 2054, 690, 2566], [5, 1.0, 2274, 690, 2513]],
     ),
     ColoredBananaGroup(
         group=63,
