@@ -120,6 +120,8 @@ extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);
 extern int getActorModelIndex(void* actor);
 
+extern void spawnTextOverlayWrapper(int style, int x, int y, char* str, int unk0, int unk1, int unk2, int unk3);
+
 extern void regularFrameLoop(void);
 extern void handleMusicTransition(void);
 

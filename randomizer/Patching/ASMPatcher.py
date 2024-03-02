@@ -316,6 +316,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)
     writeHook(ROM_COPY, 0x80600674, Overlay.Static, "updateLag", offset_dict)
 
+    writeFunction(ROM_COPY, 0x80704568, Overlay.Static, "spawnOverlayText", offset_dict)
+
     # Damage mask
     damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
     for addr in damage_addrs:

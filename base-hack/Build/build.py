@@ -1769,6 +1769,9 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/credits/{x}.bin"
         if os.path.exists(pth):
             os.remove(pth)
+    transition_path = "assets/transition/transition-body.ia4"
+    if os.path.exists(transition_path):
+        os.remove(transition_path)
     arcade_images = [
         "blueprint",
         "crown",

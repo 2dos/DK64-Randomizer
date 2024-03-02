@@ -8,6 +8,7 @@
     ],
     "python.testing.unittestEnabled": false,
     "files.associations": {
-        "common.h": "c"
+        "common.h": "c",
+        "xtree": "c"
     }
 }

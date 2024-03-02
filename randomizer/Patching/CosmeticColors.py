@@ -3020,8 +3020,6 @@ def writeTransition(settings: Settings) -> None:
     if len(file_data) == 0:
         return
     selected_transition = random.choice(file_data)
-    print(selected_transition[1])
-    settings.custom_transition = selected_transition[1] # File Name
-    #im_f = Image.frombytes("RGBA", (64, 64), bytes(selected_transition[0]))
+    settings.custom_transition = selected_transition[1].split("/")[-1] # File Name
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)

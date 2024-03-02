@@ -32,3 +32,4 @@
 .definelabel setChunkLighting, 0x80659670
 .definelabel displayChunk, 0x80656B98
 .definelabel displayCountOnTeeth, 0x80027340
+.definelabel spawnTextOverlayWrapper, 0x8069D2AC
