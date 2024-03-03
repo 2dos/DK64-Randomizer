@@ -631,14 +631,14 @@ typedef struct placementData {
 } placementData;
 
 typedef struct hud_element {
-	/* 0x000 */ void* item_count_pointer;
+	/* 0x000 */ short* item_count_pointer;
 	/* 0x004 */ short visual_item_count;
 	/* 0x006 */ short hud_state_timer;
 	/* 0x008 */ int x;
 	/* 0x00C */ int y;
 	/* 0x010 */ float unk_10[4];
 	/* 0x020 */ int hud_state;
-	/* 0x024 */ char unk_24[0x28-0x24];
+	/* 0x024 */ int unk_24;
 	/* 0x028 */ placementData* placement_pointer;
 	/* 0x02C */ char infinite_setting;
 	/* 0x02D */ char unk_2D;

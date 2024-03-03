@@ -19,7 +19,6 @@ extern void HunkyChunkyFix2(void);
 extern void EarlyFrameCode(void);
 extern void displayListCode(void);
 extern void GiveItemPointerToMulti(void);
-extern void CoinHUDReposition(void);
 extern void getLobbyExit(void);
 extern void SaveHelmHurryCheck(void);
 extern void PauseExtraSlotCode(void);

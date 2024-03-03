@@ -160,6 +160,14 @@ void initHack(int source) {
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
+			// HUD Re-allocation fixes
+			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
+			*(short*)(0x806FABAA) = ITEMID_TERMINATOR;
+			*(short*)(0x806F9992) = ITEMID_RESERVED_FUNKY;
+			*(short*)(0x806F99AA) = ITEMID_RESERVED_CRANKY;
+			*(short*)(0x806F9986) = ITEMID_RESERVED_SCOFF;
+			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
+			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
 			initActorExpansion();
 			initPathExpansion();
 			for (int i = 0; i < 7; i++) {

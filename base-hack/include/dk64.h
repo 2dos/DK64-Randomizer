@@ -59,6 +59,7 @@ extern void textOverlayCode(void);
 extern void spawnTransferredActor(void);
 extern void resolveMovementBox(void* spawner);
 extern void wipeMemory(void* location, int size);
+extern void wipeMallocSpace(void* pointer);
 extern void setArcadeTextXY(int x, int y);
 extern void spawnArcadeText(void* write_location, void* text_pointer);
 extern void setArcadeTextColor(int red, int green, int blue, int alpha);
@@ -126,6 +127,8 @@ extern void regularFrameLoop(void);
 extern void handleMusicTransition(void);
 
 extern void loadJetpacSprites(void);
+extern void updateGBCountHUD(int player);
+extern void initHUDItem(float x, float y, float* unk0, float* unk1, float* unk2);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
@@ -198,6 +201,8 @@ extern int playSFXFromObject(int object_index, short sfx, char unk0, char unk1, 
 
 extern void unkMultiplayerWarpFunction(void* actor, int player_index);
 extern void renderScreenTransition(int transition_type);
+
+extern int inDKTV(void);
 
 extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);

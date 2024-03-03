@@ -66,6 +66,8 @@ extern void changeHelmLZ(void);
 extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
 
+extern int correctRefillCap(int index, int player);
+
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
 extern void PatchBonusCode(void);
