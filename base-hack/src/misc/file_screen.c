@@ -741,6 +741,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					determineStartKong_PermaLossMode();
 					giveCollectables();
 				}
+				updateBarrierCounts();
 				if (ENABLE_FILENAME) {
 					writeDefaultFilename();
 				}

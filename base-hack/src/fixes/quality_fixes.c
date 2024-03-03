@@ -208,31 +208,6 @@ void tagBarrelBackgroundKong(int kong_actor) {
 	Player->new_kong = kong_actor;
 }
 
-void initHUDDirection(placementData* hud_data, int item) {
-	/**
-	 * @brief Modified initialization of HUD Direction function to account for new medal changes.
-	 */
-	int x_direction = 0;
-	int y_direction = 0;
-	hud_data->unk_0C = 0;
-	switch(item) {
-		case ITEMID_CB: // CB
-		case ITEMID_CBS_0: // CB T&S
-		case ITEMID_MOVECOST: // Move Cost
-			x_direction = -1;
-			break;
-		case ITEMID_GBS: // GBs
-		case ITEMID_BPFAIRY: // Blueprint
-			y_direction = 1;
-			break;
-		default:
-			x_direction = 1;
-		break;
-	}
-	hud_data->x_direction = x_direction * 0x30;
-	hud_data->y_direction = y_direction * 0x30;
-}
-
 void updateMultibunchCount(void) {
 	/**
 	 * @brief Get the total amount of colored bananas for a level.

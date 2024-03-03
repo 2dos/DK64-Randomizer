@@ -46,6 +46,8 @@ typedef struct hud_element_definition {
     /* 0x013 */ unsigned char sprite_index[5]; // One per kong
 } hud_element_definition;
 
+static short hud_counts[(ITEMID_TERMINATOR - ITEMID_CHAOSBLOCKER_KONG)] = {};
+
 static const hud_element_definition elements[] = {
     {
         // CB (T&S)
@@ -143,6 +145,97 @@ static const hud_element_definition elements[] = {
         .cheat=0, .counter=(short*)0, .run_allocation=1,
         .sprite_index={168, 168, 168, 168, 168},
     },
+    // START OF B LOCKER ITEMS
+    {
+        // Kong - 0
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_KONG - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0xA9, 0xAA, 0xAB, 0xAC, 0xAD},
+    },
+    {
+        // Move - 1
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_MOVE - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x94, 0x94, 0x94, 0x94, 0x94}, // TODO: Get a potion sprite
+    },
+    {
+        // GB - 2
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_GB - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x3B, 0x3B, 0x3B, 0x3B, 0x3B},
+    },
+    {
+        // BP - 3
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_BLUEPRINT - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={92, 90, 74, 93, 91},
+    },
+    {
+        // Fairy - 4
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_FAIRY - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x89, 0x89, 0x89, 0x89, 0x89},
+    },
+    {
+        // Key - 5
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_KEY - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x8A, 0x8A, 0x8A, 0x8A, 0x8A},
+    },
+    {
+        // Crown - 6
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_CROWN - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={139, 139, 139, 139, 139},
+    },
+    {
+        // Comapny Coin - 7
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_COMPANYCOIN - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x8D, 0x8D, 0x8D, 0x8D, 0x8D},
+    },
+    {
+        // Medal - 8
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_MEDAL - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x3C, 0x3C, 0x3C, 0x3C, 0x3C},
+    },
+    {
+        // Bean - 9
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_BEAN - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // TODO: handle sprites for this
+    },
+    {
+        // Pearl - 10
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_PEARL - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // TODO: handle sprites for this
+    },
+    {
+        // Rainbow Coin - 11
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_RAINBOWCOIN - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0xA0, 0xA0, 0xA0, 0xA0, 0xA0},
+    },
+    {
+        // Ice Trap - 12
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_ICETRAP - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x3B, 0x3B, 0x3B, 0x3B, 0x3B}, // TODO: handle sprites for this
+    },
+    {
+        // Game Percentage - 13
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_GAMEPERCENTAGE - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // TODO: handle sprites for this
+    },
+    {
+        // Colored Banana - 14
+        .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
+        .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_COLOREDBANANA - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
+        .sprite_index={128, 126, 127, 129, 125},
+    },
     {
         // Terminator
         .x = 0, .y=0, .unk0 = 0.0f, .unk1=0.0f,
@@ -205,6 +298,35 @@ static const hud_element_definition elements[] = {
     },
 };
 
+void initHUDDirection(placementData* hud_data, int item) {
+	/**
+	 * @brief Modified initialization of HUD Direction function to account for new medal changes.
+	 */
+	int x_direction = 0;
+	int y_direction = 0;
+	hud_data->unk_0C = 0;
+	switch(item) {
+		case ITEMID_CB: // CB
+		case ITEMID_CBS_0: // CB T&S
+		case ITEMID_MOVECOST: // Move Cost
+			x_direction = -1;
+			break;
+		case ITEMID_GBS: // GBs
+		case ITEMID_BPFAIRY: // Blueprint
+			y_direction = 1;
+			break;
+		default:
+			x_direction = 1;
+		break;
+	}
+    if ((item >= ITEMID_CHAOSBLOCKER_KONG) && (item < ITEMID_TERMINATOR)) {
+        y_direction = 1;
+        x_direction = 0;
+    }
+	hud_data->x_direction = x_direction * 0x30;
+	hud_data->y_direction = y_direction * 0x30;
+}
+
 void allocateHUD(int reallocate) {
     int cheat_bitfield = 0; // TODO: Hook this up
     int world = getWorld(CurrentMap, 1);
@@ -234,6 +356,7 @@ void allocateHUD(int reallocate) {
         if (element_def->cheat) {
             if (cheat_bitfield & element_def->cheat) {
                 *(element->item_count_pointer) = correctRefillCap(i, 0);
+                written_cheat = 1;
             }
         }
         element->item_count_pointer = element_def->counter;
@@ -282,6 +405,21 @@ void* getHUDSprite_Complex(item_ids item) {
         return (void*)0;
     }
     return sprite_table[elements[item].sprite_index[kong]];
+}
+
+void updateBarrierCounts(void) {
+    for (int i = 0; i < (ITEMID_TERMINATOR - ITEMID_CHAOSBLOCKER_KONG); i++) {
+        int count = getItemCountReq(REQITEM_KONG + i);
+        hud_counts[i] = count;
+        if (HUD) {
+            HUD->item[ITEMID_CHAOSBLOCKER_KONG + i].visual_item_count = count;
+        }
+    }
+}
+
+void displayBarrierHUD(item_ids item, int persist) {
+    updateBarrierCounts();
+    displayItemOnHUD(item, persist, 0);
 }
 
 int canUseDPad(void) {

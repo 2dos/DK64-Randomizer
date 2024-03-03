@@ -248,8 +248,9 @@ def enableTriggerText(spoiler):
                     ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
                     ROM_COPY.writeMultipleBytes(cs.new_cutscene, 2)
 
+
 def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
-    """Writes level order to ROM."""
+    """Write level order to ROM."""
     varspaceOffset = spoiler.settings.rom_data
     lobbies = [
         Maps.JungleJapesLobby,

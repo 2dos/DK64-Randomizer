@@ -501,7 +501,7 @@ def apply_cosmetic_colors(settings: Settings):
             [
                 KongPalette("skin", 3847, PaletteFillType.block),
             ],
-        )
+        ),
     ]
 
     KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
@@ -607,7 +607,7 @@ def apply_cosmetic_colors(settings: Settings):
             for x in range(3):
                 start = (2 * x) + 1
                 finish = (2 * x) + 3
-                channel = int(settings.gb_custom_color[start : finish],16)
+                channel = int(settings.gb_custom_color[start:finish], 16)
                 channels.append(channel)
         textures = [0xB7B] + list(range(0x155C, 0x1568))
         for tex in textures:
@@ -805,6 +805,7 @@ def recolorRotatingRoomTiles():
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile / 2)], face_index, (int(tile / 2) % 2))
         writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
 
+
 def getSpinPixels() -> dict:
     """Get pixels that shouldn't be affected by the mask."""
     spin_lengths = {
@@ -870,6 +871,7 @@ def getSpinPixels() -> dict:
                 local_lst.append((spin_lengths[tex][y][0] + x_o, y))
         spin_pixels[tex] = local_lst
     return spin_pixels
+
 
 def maskImageGBSpin(im_f, color: tuple, image_index: int):
     """Mask the GB Spin Sprite."""
@@ -968,6 +970,7 @@ def hueShift(im, amount):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+
 def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
     """Apply a hue shift to a color."""
     # RGB -> HSV Conversion
@@ -1020,6 +1023,7 @@ def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
         green_ratio = 0
         blue_ratio = x
     return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))
+
 
 def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     """Apply RGB mask to image with an Outline in a different color."""
@@ -2301,7 +2305,7 @@ def writeMiscCosmeticChanges(settings):
             for img_index in range(sprite_data[0], sprite_data[1] + 1):
                 dim = sprite_data[2]
                 hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
-        
+
     if enemy_setting != RandomModels.off:
         # Barrel Enemy Skins - Random
         klobber_shift = getRandomHueShift(0, 300)
@@ -3008,7 +3012,9 @@ def writeBootMessages() -> None:
         ROM_COPY.seek(0x1FFD000 + (0x40 * message_index))
         ROM_COPY.writeBytes(message.upper().encode("ascii"))
 
+
 def writeTransition(settings: Settings) -> None:
+    """Write transition cosmetic to ROM."""
     if js.cosmetics is None:
         return
     if js.cosmetics.transitions is None:
@@ -3020,6 +3026,6 @@ def writeTransition(settings: Settings) -> None:
     if len(file_data) == 0:
         return
     selected_transition = random.choice(file_data)
-    settings.custom_transition = selected_transition[1].split("/")[-1] # File Name
+    settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)

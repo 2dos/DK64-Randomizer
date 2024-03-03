@@ -66,7 +66,14 @@ file_dict = [
     File(name="Dolby Logo", pointer_table_index=TableNames.TexturesHUD, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
     File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
     File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Spin Transition Image", pointer_table_index=TableNames.TexturesHUD, file_index=95, source_file="assets/transition/transition-body.png", texture_format=TextureFormat.IA4, target_compressed_size=0x800),
+    File(
+        name="Spin Transition Image",
+        pointer_table_index=TableNames.TexturesHUD,
+        file_index=95,
+        source_file="assets/transition/transition-body.png",
+        texture_format=TextureFormat.IA4,
+        target_compressed_size=0x800,
+    ),
     # File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
     File(name="Tag Barrel Shell Texture", pointer_table_index=TableNames.TexturesGeometry, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551),
@@ -931,8 +938,8 @@ colorblind_changes = [
     [0x11AC, 0x11AC, 1, 688],  # Ghost something
     [0x11AD, 0x11AE, 1, 1372],  # Ghost something
     [0x1379, 0x1379, 32, 32],  # Dirt Face
-    [0xB7B, 0xB7B, 32, 32], # GB Shine
-    [0x155C, 0x1567, 44, 44], # GB Sprite
+    [0xB7B, 0xB7B, 32, 32],  # GB Shine
+    [0x155C, 0x1567, 44, 44],  # GB Sprite
 ]
 
 kremling_dimensions = [

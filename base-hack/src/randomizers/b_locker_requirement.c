@@ -26,9 +26,12 @@ void displayBlockerItemOnHUD(void) {
     if (world > 7) {
         return;
     }
-    if (Rando.b_locker_requirements[world] == REQITEM_GOLDENBANANA) {
-        displayItemOnHUD(9, 1, 0);
+    int required_item = Rando.b_locker_requirements[world];
+    if (required_item == REQITEM_NONE) {
+        return;
     }
+    int displayed_item = (required_item - REQITEM_KONG) + ITEMID_CHAOSBLOCKER_KONG;
+    displayBarrierHUD(displayed_item, 1);
 }
 
 int getCountOfBlockerRequiredItem(void) {

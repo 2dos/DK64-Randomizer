@@ -183,6 +183,9 @@ extern void* getFile(int size, int rom);
 extern int CanDive_WithCheck(void);
 extern void playTransformationSong(songs song, float volume);
 
+extern void updateBarrierCounts(void);
+extern void displayBarrierHUD(item_ids item, int persist);
+
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void modifyCutscenePoint(int bank, int cutscene, int point, int new_item);
 extern void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3);
@@ -194,7 +197,6 @@ extern void HelmInit(int init_stage);
 extern void initKRool(int phase);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
-extern void initHUDDirection(placementData* hud_data, int item);
 extern int getObjectCollectability(int id, int unk1, int model2_type);
 extern void* getHUDSprite_HUD(int item);
 extern void updateMultibunchCount(void);
