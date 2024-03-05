@@ -300,6 +300,7 @@ bossFightLocationList = [
     Locations.CastleKey.name,
 ]
 for locationName in bossFightLocationList:
+    ItemRestrictionsPerLocation[locationName].add(PlandoItems.NoItem.name)
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.JunkItem.name)
     ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
 
