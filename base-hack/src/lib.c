@@ -1182,7 +1182,7 @@ static float percentage_rewards[] = {
 };
 
 float getPercentageOfItem(int index, float percentage_per_item) {
-	float i_f = index;
+	float i_f = FileVariables[index];
 	return i_f * percentage_per_item;
 }
 

@@ -57,7 +57,7 @@ call :runscript "Assessing Function Sizes", "build/assess_rom.py"
 if %test_on% == --test (
 	echo Applying test variables >> rom/build.log
 
-	call :runscript "Apply Test Variables", "..\base_hack_test.py"
+	@REM call :runscript "Apply Test Variables", "..\base_hack_test.py"
 	call :runscript "Modifying Kong Colors", "build\generate_kong_color_images.py"
 )
 

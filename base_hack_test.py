@@ -12,6 +12,7 @@ from randomizer.Enums.Maps import Maps
 
 APPLY_VARIABLES = True
 ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
+DEBUG_PRINT = False
 
 if not APPLY_VARIABLES:
     sys.exit()
@@ -35,6 +36,11 @@ spoiler.coin_requirements = {
     Maps.ForestMinecarts: 50,
     Maps.CastleMinecarts: 25,
 }
+
+def debugPrint(string: str):
+    """Print a string based on a debug flag."""
+    if DEBUG_PRINT:
+        print(string)
 
 
 class TestROM:
@@ -83,7 +89,7 @@ def readFromROM(offset, size):
 
 def writeToROMNoOffset(offset, value, size, name):
     """Write to ROM without offset."""
-    print("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
+    debugPrint("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
     with open(ROM_FILE, "r+b") as rom:
         rom.seek(offset)
         rom.write(bytearray(valtolst(value, size)))
@@ -91,7 +97,7 @@ def writeToROMNoOffset(offset, value, size, name):
 
 def writeToROM(offset, value, size, name):
     """Write byte data to rom."""
-    print("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
+    debugPrint("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
     with open(ROM_FILE, "r+b") as rom:
         rom.seek(0x1FED020 + offset)
         rom.write(bytearray(valtolst(value, size)))
@@ -263,8 +269,8 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                     pre = readFromROM(0x1FED020 + bitfield_offset + offset, 1)
                     pre_copy = pre
                     pre |= 0x80 >> check
-                    print("")
-                    print(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
+                    debugPrint("")
+                    debugPrint(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
                     writeToROM(bitfield_offset + offset, pre, 1, y)
         else:
             for y in struct_data2:
