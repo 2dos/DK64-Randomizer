@@ -200,6 +200,11 @@ void loadHooks(void) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
 	loadSingularHook(0x80600674, &updateLag);
+
+	// Beaver Bother fix
+	loadSingularHook(0x806AD740, &unscareBeaver);
+	loadSingularHook(0x806AD728, &scareBeaver);
+	*(short*)(0x806B674E) = 0xC; // Increase the scare duration
 }
 
 void skipDKTV(void) {
