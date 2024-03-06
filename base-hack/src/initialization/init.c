@@ -126,7 +126,9 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
-	
+	loadSingularHook(0x806AD740, &unscareBeaver);
+	loadSingularHook(0x806AD728, &scareBeaver);
+	*(short*)(0x806B674E) = 0xC; // Increase the scare duration
 }
 
 void skipDKTV(void) {
