@@ -391,3 +391,21 @@ disableHelmKeyBounce:
     applyWaterFloat:
         j 0x806A747C
         nop
+
+unscareBeaver:
+    andi $t3, $t2, 0x7FFF
+    sh $t3, 0x1a ($v0)
+    lui $a0, hi(CurrentActorPointer_0)
+    lw $a0, lo(CurrentActorPointer_0) ($a0)
+    addiu $a1, $zero, 36
+    j 0x806AD748
+    sb $a1, 0x144 ($a0)
+
+scareBeaver:
+    sb $t9, 0x154 ($t0)
+    lw $t1, 0x0 ($a3)
+    lui $a0, hi(CurrentActorPointer_0)
+    lw $a0, lo(CurrentActorPointer_0) ($a0)
+    addiu $a1, $zero, 35
+    j 0x806AD730
+    sb $a1, 0x144 ($a0)
