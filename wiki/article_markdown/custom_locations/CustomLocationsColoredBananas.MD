@@ -895,11 +895,6 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On outside islands | 10 | `` | 
-## Forest Baboon Blast
-| Name | Amount | Logic |
-| ---- | ------ | ----- |
-| Between some barrels | 10 | `` | 
-| In baboon blast course (Donkey) | 10 | `` | 
 ## Forest Winch Room
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -992,6 +987,10 @@
 | ---- | ------ | ----- |
 | On Chunky switch (Chunky) | 5 | `` | 
 | Chunky's face puzzle room (Chunky) | Balloon | `` | 
+## Forest Baboon Blast
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| In baboon blast course (Donkey) | 10 | `` | 
 
 # Crystal Caves
 ## Crystal Caves
