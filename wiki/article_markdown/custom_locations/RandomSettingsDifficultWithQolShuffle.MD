@@ -19,7 +19,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Enable Plandomizer
 - Vanilla K. Rool Requirement
 - Irondonk
-- Select Starting Keys
+- Guaranteed Starting Keys
 
 # Other Settings
 - Activate Bananaports: 

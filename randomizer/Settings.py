@@ -1071,10 +1071,12 @@ class Settings:
         ]
         key_list = KeyEvents.copy()
         required_key_count = 0
+        self.krool_keys_required = KeyEvents.copy()
         if self.keys_random:
             required_key_count = randint(0, 8)
-        elif self.select_keys:
-            self.krool_keys_required = KeyEvents.copy()
+        else:
+            required_key_count = self.krool_key_count
+        if self.select_keys:
             for key in self.starting_keys_list_selected:
                 if key == Items.JungleJapesKey:
                     self.krool_keys_required.remove(key_list[0])
@@ -1092,18 +1094,19 @@ class Settings:
                     self.krool_keys_required.remove(key_list[6])
                 if key == Items.HideoutHelmKey:
                     self.krool_keys_required.remove(key_list[7])
-        else:
-            required_key_count = self.krool_key_count
         if self.krool_access or self.win_condition == WinCondition.get_key8:
             # If key 8 is guaranteed to be needed, make sure it's added and included in the key count
             if Events.HelmKeyTurnedIn not in self.krool_keys_required:
                 self.krool_keys_required.append(Events.HelmKeyTurnedIn)
                 required_key_count -= 1
             key_list.remove(Events.HelmKeyTurnedIn)
-        if not self.select_keys:
-            random.shuffle(key_list)
-            for x in range(required_key_count):
-                self.krool_keys_required.append(key_list[x])
+        if len(self.krool_keys_required) > required_key_count:
+            while len(self.krool_keys_required) > required_key_count:
+                asdf = [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not (self.krool_access or self.win_condition == WinCondition.get_key8)]
+                key_to_remove = random.choice(
+                    [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not (self.krool_access or self.win_condition == WinCondition.get_key8)]
+                )
+                self.krool_keys_required.remove(key_to_remove)
         self.starting_key_list = []
         if Events.JapesKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.JungleJapesKey].playthrough = False
