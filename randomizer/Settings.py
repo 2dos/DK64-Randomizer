@@ -1094,16 +1094,9 @@ class Settings:
                     self.krool_keys_required.remove(key_list[6])
                 if key == Items.HideoutHelmKey:
                     self.krool_keys_required.remove(key_list[7])
-        if self.krool_access or self.win_condition == WinCondition.get_key8:
-            # If key 8 is guaranteed to be needed, make sure it's added and included in the key count
-            if Events.HelmKeyTurnedIn not in self.krool_keys_required:
-                self.krool_keys_required.append(Events.HelmKeyTurnedIn)
-                required_key_count -= 1
-            key_list.remove(Events.HelmKeyTurnedIn)
         if len(self.krool_keys_required) > required_key_count:
             while len(self.krool_keys_required) > required_key_count:
-                asdf = [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not (self.krool_access or self.win_condition == WinCondition.get_key8)]
-                key_to_remove = random.choice(
+                key_to_remove = random.choice(  # Prevent the Helm Key from being removed if it's guaranteed to be needed
                     [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not (self.krool_access or self.win_condition == WinCondition.get_key8)]
                 )
                 self.krool_keys_required.remove(key_to_remove)
