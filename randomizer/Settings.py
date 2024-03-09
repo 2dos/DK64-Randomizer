@@ -1071,11 +1071,14 @@ class Settings:
         ]
         key_list = KeyEvents.copy()
         required_key_count = 0
+        # Start by requiring every key
         self.krool_keys_required = KeyEvents.copy()
+        # Determine how many keys we need - this can be random or selected
         if self.keys_random:
             required_key_count = randint(0, 8)
         else:
             required_key_count = self.krool_key_count
+        # Remove the need for keys we intend to start with
         if self.select_keys:
             for key in self.starting_keys_list_selected:
                 if key == Items.JungleJapesKey:
@@ -1094,11 +1097,14 @@ class Settings:
                     self.krool_keys_required.remove(key_list[6])
                 if key == Items.HideoutHelmKey:
                     self.krool_keys_required.remove(key_list[7])
+        # If the list of required keys is still greater than the amount of keys we want to require, we need to remove required keys
         if len(self.krool_keys_required) > required_key_count:
             while len(self.krool_keys_required) > required_key_count:
-                key_to_remove = random.choice(  # Prevent the Helm Key from being removed if it's guaranteed to be needed
-                    [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not (self.krool_access or self.win_condition == WinCondition.get_key8)]
-                )
+                # The Helm Key is not eligible to be removed if it's guaranteed to be needed
+                removable_keys = [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not (self.krool_access or self.win_condition == WinCondition.get_key8)]
+                if len(removable_keys) == 0:  # Key 8 being required is stronger than a need for 0 Keys - this will trigger if Key 8 is your last key to require but Key 8 is always required
+                    break
+                key_to_remove = random.choice(removable_keys)  
                 self.krool_keys_required.remove(key_to_remove)
         self.starting_key_list = []
         if Events.JapesKeyTurnedIn not in self.krool_keys_required:
