@@ -85,6 +85,7 @@ void checkItemDB(void) {
     }
     initTracker();
     initHints();
+    handleViewedHints();
     stored_igt = getNewSaveTime();
     if (Rando.helm_hurry_mode) {
         if (ReadFile(DATA_HELMHURRYOFF, 0, 0, 0)) {

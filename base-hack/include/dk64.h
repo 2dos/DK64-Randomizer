@@ -270,6 +270,8 @@ extern void SaveToFile(int data, int kong, int level, int file, int value);
 extern int* printText(int* dl, short x, short y, float scale, char* str);
 extern int* printOutOfCounter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
 
+extern int* initTextStyle(int* dl, int style, int file_index);
+
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
 extern void standardCrateHandle(int player_index, int id, void* player, int obj_type);
@@ -332,6 +334,8 @@ extern int spawnModelTwo(int type, float x, float y, float z, float scale, int i
 extern void refreshItemVisibility(void);
 
 extern void updateGBCountHUD(int player);
+
+extern int getCharacterWidth(int style, char* str_char);
 
 extern void* getActorModel(void* actor, int model_index, int unk0);
 
@@ -521,7 +525,7 @@ extern parentMaps parentData[17];
 extern void* SetupFilePointer;
 extern int* focusedParentDataSetup[17];
 extern hudData* HUD;
-extern text_struct textData[6];
+extern text_struct textData[7];
 extern float LZFadeoutProgress;
 extern int* mapFloorPointer;
 extern int mapFloorBlockCount;

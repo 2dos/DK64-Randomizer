@@ -82,6 +82,7 @@
 #define GALLEON_2DSOPEN_TINY 0x2FF
 #define FLAG_COLLECTABLE_BEAN 0x300
 #define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x28D (inc.) (35 flags)
+#define FLAG_WRINKLYHINTS_READ 0x28E // 0x28E -> 0x2B1 (inc.) (35 flags)
 
 // Unused 0x290, 0x291
 #define FLAG_ITEM_BELT_0 0x292

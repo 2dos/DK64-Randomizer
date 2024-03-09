@@ -177,6 +177,7 @@ extern int* renderDingSprite(int* dl);
 extern int* renderProgressiveSprite(int* dl);
 extern int getHintGBRequirement(int level, int kong);
 extern void gbUpdateHandler(void);
+extern void handleViewedHints(void);
 extern void handleProgressiveIndicator(void);
 extern int hasEnoughCBs(void);
 extern void initDingSprite(void);
@@ -371,6 +372,8 @@ extern void fairyQueenCutsceneCheck(void);
 extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
 extern void giveFairyItem(int flag, int state, flagtypes type);
 
+extern void initMidTextColoring(void);
+
 extern void initIceTrap(void);
 extern void queueIceTrap(void);
 extern void callIceTrap(void);
@@ -499,6 +502,7 @@ extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
 extern mtx_item static_mtx[20];
 extern int hint_pointers[35];
+extern int dark_mode_colors[11];
 extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
 extern char music_types[SONG_COUNT];
 extern char filename[FILENAME_LENGTH + 1];
