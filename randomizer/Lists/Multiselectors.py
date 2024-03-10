@@ -82,6 +82,7 @@ FasterCheckItems = [
     MultiselectorItem("Castle Minecart", 9, "The Minecart ride will end once you reach the turnaround point on the track."),
     MultiselectorItem("Castle Car Race", 12, "The race will be shortened to 1 lap, instead of 2."),
     MultiselectorItem("Jetpac", 10, "Getting the rareware coin reward will only require 2500 points, instead of 5000."),
+    MultiselectorItem("Arcade", 14, "DK Arcade will only consist of 2 screens rather than 4, with 75m being an excluded screen from appearing in the first two."),
 ]
 
 

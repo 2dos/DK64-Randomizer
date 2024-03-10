@@ -564,3 +564,5 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806C5DD6, Overlay.Static, screen_y_center - screen_y_dist, offset_dict)  # Y Minimum
         writeValue(ROM_COPY, 0x806C5DDE, Overlay.Static, screen_y_center + screen_y_dist, offset_dict)  # Y Maximum
         writeValue(ROM_COPY, 0X806C5DE8, Overlay.Static, 0x240B0000 | fairy_range, offset_dict, 4) # Force max acceptable dist to 1000
+    writeValue(ROM_COPY, 0x80032096, Overlay.Arcade, 0, offset_dict) # Disable Nin 1981 flicker
+    writeValue(ROM_COPY, 0x8002672A, Overlay.Arcade, 0xFFFF, offset_dict) # Disable Donkey Kong logo title flicker

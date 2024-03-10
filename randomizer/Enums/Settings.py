@@ -168,6 +168,7 @@ class FasterChecksSelected(IntEnum):
     castle_minecart = 13
     castle_car_race = 14
     jetpac = 15
+    arcade = 16
 
 
 class FillAlgorithm(IntEnum):

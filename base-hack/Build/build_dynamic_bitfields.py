@@ -33,6 +33,7 @@ BITFIELDS = {
         "factory_car",
         "castle_car",
         "seal_race",
+        "arcade_second_round",
     ],
 }
 
