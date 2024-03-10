@@ -690,8 +690,10 @@ void tagAnywhere(void) {
                         }
                         tagKong(next_character + 2);
 						clearTagSlide(Player);
-                        if (Player->hSpeed > 140.0f) {
-                            Player->hSpeed = 140.0f; // Patch Jacob Rolling
+                        if (Rando.quality_of_life.fix_jacob_rolling) {
+                            if (Player->hSpeed > 140.0f) {
+                                Player->hSpeed = 140.0f; // Patch Jacob Rolling
+                            }
                         }
                         if (old_control_state == 0x4F) {
                             // Fix the underwater tag memes

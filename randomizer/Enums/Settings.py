@@ -509,6 +509,8 @@ class MiscChangesSelected(IntEnum):
     global_instrument = 23
     fast_pause_transitions = 24
     cannon_game_better_control = 25
+    better_fairy_camera = 26
+    fix_tag_rolling = 27
 
 
 class MoveRando(IntEnum):

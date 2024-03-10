@@ -552,3 +552,15 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8069309A, Overlay.Static, 10, offset_dict)  # Grape
         writeValue(ROM_COPY, 0x80695406, Overlay.Static, 10, offset_dict)  # Feather
         writeValue(ROM_COPY, 0x80694706, Overlay.Static, 10, offset_dict)  # Pineapple
+    if isQoLEnabled(spoiler, MiscChangesSelected.better_fairy_camera):
+        # Increased range for fairy shots
+        screen_x_center = 160
+        screen_y_center = 120
+        screen_x_dist = 24 # Usually 16
+        screen_y_dist = 24 # Usually 16
+        fairy_range = 1000
+        writeValue(ROM_COPY, 0x806C5DB6, Overlay.Static, screen_x_center - screen_x_dist, offset_dict)  # X Minimum
+        writeValue(ROM_COPY, 0x806C5DC6, Overlay.Static, screen_x_center + screen_x_dist, offset_dict)  # X Maximum
+        writeValue(ROM_COPY, 0x806C5DD6, Overlay.Static, screen_y_center - screen_y_dist, offset_dict)  # Y Minimum
+        writeValue(ROM_COPY, 0x806C5DDE, Overlay.Static, screen_y_center + screen_y_dist, offset_dict)  # Y Maximum
+        writeValue(ROM_COPY, 0X806C5DE8, Overlay.Static, 0x240B0000 | fairy_range, offset_dict, 4) # Force max acceptable dist to 1000

@@ -323,7 +323,7 @@ def patching_response(spoiler):
         old = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(sav + 0x113)
         ROM_COPY.write(old | 2)
-    writeMultiselector(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, QoLSelector, MiscChangesSelected, 3, ROM_COPY, sav + 0x0B0)
+    writeMultiselector(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, QoLSelector, MiscChangesSelected, 4, ROM_COPY, sav + 0x0B0)
     writeMultiselector(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarrierSelector, RemovedBarriersSelected, 2, ROM_COPY, sav + 0x1DE)
     writeMultiselector(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterCheckSelector, FasterChecksSelected, 2, ROM_COPY, sav + 0x1E0)
     writeMultiselector(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardSelector, HardModeSelected, 1, ROM_COPY, sav + 0x0C6)
