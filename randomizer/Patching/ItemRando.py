@@ -672,7 +672,7 @@ def place_randomized_items(spoiler):
                     spoiler.text_changes[textbox.file_index].append(data)
                 else:
                     spoiler.text_changes[textbox.file_index] = [data]
-            minor_item = "\x05FOR SOMETHING YOU MIGHT BE BETTER OFF WITHOUT\x05"
+            minor_item = "\x05FOR A FOOLISH GAME\x05"
             major_item = "\x04FOR SOMETHING YOU MIGHT NEED ON YOUR QUEST\x04"
             if 8 not in spoiler.text_changes:
                 spoiler.text_changes[8] = []
