@@ -1328,17 +1328,10 @@ def toggle_key_settings(event):
     disabled = False
     if js.document.getElementById("select_keys").checked:
         disabled = True
-    krool_access = js.document.getElementById("krool_access")
-    keys_random = js.document.getElementById("keys_random")
     selector = js.document.getElementById("starting_keys_list_modal")
     if disabled:
-        krool_access.setAttribute("disabled", "disabled")
-        krool_access.checked = False
-        keys_random.setAttribute("disabled", "disabled")
         selector.removeAttribute("disabled")
     else:
-        krool_access.removeAttribute("disabled")
-        keys_random.removeAttribute("disabled")
         selector.setAttribute("disabled", "disabled")
 
 
