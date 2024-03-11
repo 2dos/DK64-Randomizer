@@ -261,15 +261,15 @@
             </div>
             <div class="flex-container">
                 <div class="form-check form-switch item-switch center-flex">
-                    <label data-toggle="tooltip" title="Select the exact keys you start with.">
+                    <label data-toggle="tooltip" title="Select the keys you are guaranteed start with.">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="select_keys"
                                 id="select_keys"
-                                display_name="Select Starting Keys"
+                                display_name="Guaranteed Starting Keys"
                                 onchange="toggle_clicks()"
                                 value="True"/>
-                        Select Starting Keys
+                        Guaranteed Starting Keys
                     </label>
                     {{ list_selector(keys, "starting_keys_list", "STARTING KEYS SELECTOR", "This will open a popup that will let you customize what Keys you start with.&#10;This defaults to starting with no keys if none are selected.", 8) }}
                 </div>
@@ -288,7 +288,7 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                                title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
+                                title="Make it required to get Key 8 or leave it up to chance.">
                             <input class="form-check-input"
                                     type="checkbox"
                                     name="krool_access"
@@ -536,7 +536,7 @@
         } else {
             $("#helm_phase_count").slider("enable")
         }
-        if ((document.getElementById("keys_random").checked === true) || (document.getElementById("select_keys").checked === true)) {
+        if (document.getElementById("keys_random").checked === true) {
             $("#krool_key_count").slider("disable")
         } else {
             $("#krool_key_count").slider("enable")
