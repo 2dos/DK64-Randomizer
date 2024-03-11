@@ -2144,17 +2144,20 @@ def compileSpoilerHints(spoiler):
         Levels.CreepyCastle: LevelSpoiler(level_list[Levels.CreepyCastle]),
         Levels.HideoutHelm: LevelSpoiler(level_list[Levels.HideoutHelm]),
         Levels.DKIsles: LevelSpoiler(level_list[Levels.DKIsles]),
-        Levels.Shops: LevelSpoiler(level_list[Levels.Shops]),
+        # Levels.Shops: LevelSpoiler(level_list[Levels.Shops]),
     }
     # Sort the items by level they're found in
     important_items = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings) + ItemPool.AllKongMoves() + ItemPool.ShockwaveTypeItems(spoiler.settings) + ItemPool.TrainingBarrelAbilities() + [Items.Bean]
     for location_id in spoiler.LocationList.keys():
         location = spoiler.LocationList[location_id]
+        level_of_location = location.level
+        if level_of_location == Levels.Shops:  # Jetpac and BlueprintBananas - we want Jetpac in Isles now, but we probably won't want BlueprintBananas there too when those start shuffling
+            level_of_location = Levels.DKIsles
         if location.item in important_items:
-            spoiler.level_spoiler[location.level].vial_colors.append(CategorizeItem(ItemList[location.item]))
-            spoiler.level_spoiler[location.level].points += PointValueOfItem(spoiler.settings, location.item)
+            spoiler.level_spoiler[level_of_location].vial_colors.append(CategorizeItem(ItemList[location.item]))
+            spoiler.level_spoiler[level_of_location].points += PointValueOfItem(spoiler.settings, location.item)
             if location_id in spoiler.woth_locations:
-                spoiler.level_spoiler[location.level].woth_count += 1
+                spoiler.level_spoiler[level_of_location].woth_count += 1
     # Convert those spoiler hints to readable text
     spoiler.level_spoiler_human_readable = {
         level_list[Levels.DKIsles]: "",
@@ -2166,7 +2169,7 @@ def compileSpoilerHints(spoiler):
         level_list[Levels.CrystalCaves]: "",
         level_list[Levels.CreepyCastle]: "",
         level_list[Levels.HideoutHelm]: "",
-        level_list[Levels.Shops]: "",
+        # level_list[Levels.Shops]: "",
     }
     for level in spoiler.level_spoiler.keys():
         # Clear out variables if they're unused or undesired
