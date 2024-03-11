@@ -131,7 +131,7 @@ void newGuardCode(void) {
     int in_snoop = (level_state & 0x104000) == 0;
     if (CurrentActorPointer_0->control_state <= 0x35) { // Not damaged/dying
         if (Player) {
-            if ((Player->strong_kong_ostand_bitfield & 0x60) == 0) { // No GGone / OSprint
+            if ((Player->strong_kong_ostand_bitfield & 0x70) == 0) { // No GGone, OSprint, SKong
                 if (!isBadMovementState()) { // Bad Movement State
                     if (!inRabbitRace()) {
                         float dist = 40.0f;
