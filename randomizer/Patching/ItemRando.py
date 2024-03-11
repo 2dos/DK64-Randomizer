@@ -682,7 +682,6 @@ def place_randomized_items(spoiler):
                 if item.location == Locations.RarewareCoin:
                     new_item = item.new_subitem
             placed_text = major_item if new_item in major_items else minor_item
-            print(placed_text)
             spoiler.text_changes[8].append({
                 "textbox_index": 0,
                 "mode": "replace",
