@@ -736,7 +736,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
 
-    spoiler.majorItems = [] # Initialize in case something dumb happens
+    spoiler.majorItems = []  # Initialize in case something dumb happens
     # Only need to build paths for item rando
     if spoiler.settings.shuffle_items:
         majorItems = IdentifyMajorItems(spoiler)
