@@ -452,6 +452,13 @@ def randomize_puzzles(spoiler):
             "100m": 2,
         }
         random.shuffle(arcade_levels)
+        # Make sure 75m isn't in the first 2 levels if faster arcade is enabled because 75m is hard
+        if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.arcade):
+            for x in range(2):
+                if arcade_levels[x] == "75m":
+                    temp_level = arcade_levels[2]
+                    arcade_levels[2] = arcade_levels[x]
+                    arcade_levels[x] = temp_level
         spoiler.arcade_order = [0] * 4
         for lvl_index, lvl in enumerate(arcade_levels):
             spoiler.arcade_order[lvl_index] = arcade_level_data[lvl]

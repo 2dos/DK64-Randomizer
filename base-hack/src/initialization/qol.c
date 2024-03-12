@@ -128,6 +128,10 @@ void initQoL_Fixes(void) {
      */
     if (Rando.quality_of_life.vanilla_fixes) {
         actor_functions[249] = &squawks_with_spotlight_actor_code;
+        // Make Feathers not sprites
+        changeFeatherToSprite();
+        *(float*)(0x80753E38) = 350.0f;
+        actor_functions[43] = &OrangeGunCode; // Change feather behavior code
     }
 }
 

@@ -881,14 +881,16 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(group=78, map_id=Maps.ForestAnthill, name="On outside islands", konglist=[Kongs.tiny], region=Regions.Anthill, locations=[[5, 2.0, 770, 220, 418], [5, 2.0, 425, 220, 408]]),
-    ColoredBananaGroup(
-        group=79,
-        map_id=Maps.ForestBaboonBlast,
-        name="Between some barrels",
-        konglist=[Kongs.donkey],
-        region=Regions.ForestBaboonBlast,
-        locations=[[5, 1.0, 2550, 885, 2186], [5, 1.0, 2636, 762, 1200]],
-    ),
+    # Reason for disabling: Krusha's collision with one of the automatically shooting barrels is off,
+    # making one of those bunches unobtainable as Krusha.
+    # ColoredBananaGroup(
+    #     group=79,
+    #     map_id=Maps.ForestBaboonBlast,
+    #     name="Between some barrels",
+    #     konglist=[Kongs.donkey],
+    #     region=Regions.ForestBaboonBlast,
+    #     locations=[[5, 1.0, 2550, 885, 2186], [5, 1.0, 2636, 762, 1200]],
+    # ),
     ColoredBananaGroup(
         group=80,
         map_id=Maps.ForestWinchRoom,

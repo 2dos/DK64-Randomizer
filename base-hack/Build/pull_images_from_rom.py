@@ -96,6 +96,7 @@ images = [
     ImageData("warp_rim_1", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xBB3, 32, 16, False, False),
     ImageData("gun_crosshair", TextureFormat.IA8, TableNames.TexturesHUD, 0x38, 64, 64, False, False),
     ImageData("scoff_head", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC9D, 48, 42, False, True),
+    ImageData("wrinkly", TextureFormat.IA8, TableNames.TexturesGeometry, 0x1773, 64, 64, False, True),
     ImageData("diddy_balloon", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x16C3, 32, 64, False, False),
     ImageData("dirt_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1379, 32, 32, False, False),
     ImageData("snide_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x172E, 64, 32, False, False),

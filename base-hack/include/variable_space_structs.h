@@ -56,8 +56,8 @@ typedef struct varspace {
 	/* 0x0AC */ char unk_AC[2];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
-	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
-	/* 0x0B3 */ char unk_B0[0xC0 - 0xB3];
+	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
+	/* 0x0B4 */ char unk_B0[0xC0 - 0xB4];
 	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"
 	/* 0x0C2 */ char unk_c2;
 	/* 0x0C3 */ char unk_c3;

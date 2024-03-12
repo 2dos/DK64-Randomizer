@@ -126,6 +126,9 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
+	loadSingularHook(0x80600674, &updateLag);
+
+	// Beaver Bother fix
 	loadSingularHook(0x806AD740, &unscareBeaver);
 	loadSingularHook(0x806AD728, &scareBeaver);
 	*(short*)(0x806B674E) = 0xC; // Increase the scare duration
@@ -347,6 +350,7 @@ void initHack(int source) {
 				// Rain
 				*(short*)(0x8068B6AE) = 0;
 			}
+			writeFunction(0x806F93D4, &gbUpdateHandler);
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
 				writeFunction(0x80656538, &displayNoGeoChunk);
 				writeFunction(0x806562C0, &displayNoGeoChunk);

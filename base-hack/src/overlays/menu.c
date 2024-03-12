@@ -56,9 +56,15 @@ int give_all_blueprints(int flag, int level, int kong_p) {
 	return given_bp;
 }
 
+void gbUpdateHandler(void) {
+	updateGBCountHUD(0);
+	handleProgressiveIndicator();
+}
+
 void overlay_mod_menu(void) {
 	// Shops
 	PatchCrankyCode(); // Change cranky code to handle an extra variable
+	writeFunction(0x800248D4, &gbUpdateHandler);
 	if (CurrentMap == MAP_CRANKY) {
 		*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
 		*(short*)(0x80026E6A) = 0xBD; // Cranky

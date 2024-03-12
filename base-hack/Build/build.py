@@ -312,6 +312,7 @@ file_dict = [
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
     File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
     File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=113, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
+    File(name="Wrinkly Sprite", pointer_table_index=TableNames.TexturesHUD, file_index=108, source_file="assets/displays/wrinkly_sprite.png", texture_format=TextureFormat.IA8),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -1692,6 +1693,7 @@ with open(newROMName, "r+b") as fh:
         "warp_rim_0",
         "warp_rim_1",
         "crosshair",
+        "wrinkly_sprite",
         "balloon_head",
         "bean44",
         "fairy44",

@@ -44,7 +44,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random Banana Fairy Locations
 - Random Dirt Patch Locations
 - Random Starting Location
-- Select Starting Keys
+- Guaranteed Starting Keys
 - Random Troff 'n' Scoff Portal Locations
 - Vanilla Door Shuffle
 - Random Wrinkly Door Locations

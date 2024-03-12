@@ -354,6 +354,9 @@ krusha_im = krusha_im.resize((64, 64))
 krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 krusha_im.save(f"{disp_dir}krusha_head64.png")
 
+# Wrinkly
+wrinkly_im = Image.open(f"{hash_dir}wrinkly.png").resize((48, 48)).save(f"{disp_dir}wrinkly_sprite.png")
+
 # Blueprints
 for bp in ("dk_bp", "lanky_bp"):
     bp_im = Image.open(f"{hash_dir}{bp}.png")
@@ -702,6 +705,7 @@ rmve = [
     "warp_top_0.png",
     "warp_top_1.png",
     "gun_crosshair.png",
+    "wrinkly.png",
     "dirt_face.png",
     "candy_face_0.png",
     "candy_face_1.png",
