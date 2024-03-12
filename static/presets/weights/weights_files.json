@@ -994,8 +994,7 @@
       "global_instrument": 1,
       "fast_pause_transitions": 1,
       "cannon_game_better_control": 1,
-      "better_fairy_camera": 1,
-      "fix_tag_rolling": 1
+      "better_fairy_camera": 1
     },
     "move_rando": {
       "on": 0.3,
@@ -1399,8 +1398,7 @@
       "global_instrument": 1,
       "fast_pause_transitions": 0.9,
       "cannon_game_better_control": 0.5,
-      "better_fairy_camera": 0.5,
-      "fix_tag_rolling": 1
+      "better_fairy_camera": 0.5
     },
     "move_rando": {
       "on": 0.3,
