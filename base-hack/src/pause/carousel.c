@@ -72,10 +72,6 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render, int is_totals) {
     }
     // Width information
     float width = 640.0f;
-    if (Rando.true_widescreen) {
-        width = SCREEN_WD_FLOAT * 2;
-        sprite->y = SCREEN_HD_FLOAT * 2;
-    }
     float right_bound = width * 1.5f;
     float left_bound = width * 0.5f;
     float quarter_width = width / 4.0f;
@@ -203,6 +199,9 @@ void initCarousel_onBoot(void) {
     *(short*)(0x806AA036) = getLo(&file_items[0]);
     *(short*)(0x806AA00E) = getHi(&file_item_caps[0]);
     *(short*)(0x806AA032) = getLo(&file_item_caps[0]);
+    if (Rando.isles_cb_rando) {
+        file_item_caps[3] = 45;
+    }
     *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB3F6) = CHECK_TERMINATOR;

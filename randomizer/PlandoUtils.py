@@ -6,10 +6,10 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems, PlandoItemToItemMap
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.LogicClasses import Regions
 
 # Some common item sets that may be used in multiple places.
 KongSet = {
@@ -283,11 +283,6 @@ for shop in kongSpecificShopSet:
 
 # The Jetpac game has few restrictions.
 ItemRestrictionsPerLocation[Locations.RarewareCoin.name].update(shopRestrictedItemSet)
-
-# Crowns are not allowed on Helm Medal locations.
-helmMedalLocationList = [Locations.HelmDonkeyMedal.name, Locations.HelmDiddyMedal.name, Locations.HelmLankyMedal.name, Locations.HelmTinyMedal.name, Locations.HelmChunkyMedal.name]
-for locationName in helmMedalLocationList:
-    ItemRestrictionsPerLocation[locationName].add(PlandoItems.BattleCrown.name)
 
 # Boss fights cannot have junk items or blueprint rewards.
 bossFightLocationList = [
@@ -613,7 +608,7 @@ def PlandoOptionClassAnnotation(panel: str, kong: str, location: str, item: str)
 # A dictionary that maps plando options to enum classes. The key for each enum
 # must exactly match that of the associated HTML input.
 PlandoEnumMap = {
-    "plando_spawn_location": Regions,
+    "plando_starting_exit": Transitions,
     "plando_starting_kongs_selected": Kongs,
     "plando_kong_rescue_donkey": Kongs,
     "plando_kong_rescue_diddy": Kongs,

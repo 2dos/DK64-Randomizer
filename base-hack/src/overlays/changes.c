@@ -65,8 +65,6 @@ void overlay_changes(void) {
 		// Wipe warp data pointer to prevent pointing to free memory
 		WarpData = 0;
 	}
-	fixTBarrelsAndBFI(0);
-	loadWidescreen(loaded_overlay);
 }
 
 void parseCutsceneData(void) {

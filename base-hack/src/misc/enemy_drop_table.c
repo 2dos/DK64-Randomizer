@@ -153,17 +153,4 @@ void initItemDropTable(void) {
 
     *(short*)(0x806A5CD2) = getHi(&drops[0].source_object);
     *(short*)(0x806A5CD6) = getLo(&drops[0].source_object);
-    // Spawn Enemy Drops function
-    writeFunction(0x806AD40C, &spawnEnemyDrops);
-    writeFunction(0x806AED14, &spawnEnemyDrops);
-    writeFunction(0x806AF5A4, &spawnEnemyDrops);
-    writeFunction(0x806B0218, &spawnEnemyDrops);
-    writeFunction(0x806B0704, &spawnEnemyDrops);
-    writeFunction(0x806B0C8C, &spawnEnemyDrops);
-    writeFunction(0x806B1C88, &spawnEnemyDrops);
-    writeFunction(0x806B4744, &spawnEnemyDrops);
-    writeFunction(0x806B5B90, &spawnEnemyDrops);
-    writeFunction(0x806B61E0, &spawnEnemyDrops);
-    writeFunction(0x806B744C, &spawnEnemyDrops);
-    writeFunction(0x806B9AB4, &spawnEnemyDrops);
 }

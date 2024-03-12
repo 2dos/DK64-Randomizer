@@ -244,7 +244,7 @@ def ExitShuffle(spoiler):
 
 def UpdateLevelProgression(settings: Settings):
     """Update level progression."""
-    newEntryGBs = settings.EntryGBs.copy()
+    newBLockerEntryCount = settings.BLockerEntryCount.copy()
     newBossBananas = settings.BossBananas.copy()
     lobbies = [
         Regions.JungleJapesLobby,
@@ -262,9 +262,9 @@ def UpdateLevelProgression(settings: Settings):
             newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
             # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
             newIndex = lobbies.index(newDestRegion)
-        newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
+        newBLockerEntryCount[newIndex] = settings.BLockerEntryCount[levelIndex]
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
-    settings.EntryGBs = newEntryGBs
+    settings.BLockerEntryCount = newBLockerEntryCount
     settings.BossBananas = newBossBananas
 
 

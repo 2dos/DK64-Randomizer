@@ -38,7 +38,10 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Shuffle Bonus Barrels: 70%
 - Shuffle Boss Kong Required: 50%
 - Shuffle Boss Location: 80%
-- Random CB Locations: 50%
+- Random CB Locations: 
+	- Off: 70%
+	- On: 25%
+	- On With Isles: 25%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 30%
 	- Hard Random: 30%
@@ -73,7 +76,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Factory Car Race: 70%
 	- Galleon Seal Race: 70%
 	- Galleon Mech Fish: 70%
-	- Galleon Mermaid Gb: 70%
 	- Forest Mill Conveyor: 70%
 	- Forest Owl Race: 70%
 	- Forest Rabbit Race: 70%
@@ -105,6 +107,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Hard Enemies: 60%
 	- Water Is Lava: 25%
 	- Reduced Fall Damage Threshold: 50%
+	- Shuffled Jetpac Enemies: 20%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 50%
 - Helm Hurry Mode: 5%
@@ -143,6 +146,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Fakeitem: 70%
 	- Junkitem: 70%
 	- Crateitem: 70%
+	- Shopowners: 30%
 - Item Reward Previews: 75%
 - Random Kasplat Locations: 
 	- Off: 15%
@@ -164,6 +168,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Glitch: 20%
 - Maximize Helm B. Locker: 50%
 - Randomize Medal CB Requirement: Between 35 and 90, usually close to 60
+- Pearls for Mermaid GB: Between 2 and 5, usually close to 4
 - Extra Hints: 
 	- Off: 30%
 	- Base: 35%

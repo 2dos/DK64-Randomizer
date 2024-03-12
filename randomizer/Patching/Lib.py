@@ -15,9 +15,10 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Types import BarrierItems
+from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem
 
 if TYPE_CHECKING:
-    from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected
     from randomizer.Lists.MapsAndExits import Maps
 
 icon_db = {
@@ -454,9 +455,12 @@ def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: Scrip
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
+def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, List[str]]]]:
     """Pull text from ROM with a particular file index."""
-    ROM_COPY = LocalROM()
+    if cosmetic:
+        ROM_COPY = ROM()
+    else:
+        ROM_COPY = LocalROM()
     file_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
     ROM_COPY.seek(file_start + 0)
     count = int.from_bytes(ROM_COPY.readBytes(1), "big")
@@ -542,10 +546,13 @@ def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
     return formatted_text
 
 
-def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]]) -> None:
+def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]], cosmetic: bool = False) -> None:
     """Write the text to ROM."""
     text_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
-    ROM_COPY = LocalROM()
+    if cosmetic:
+        ROM_COPY = ROM()
+    else:
+        ROM_COPY = LocalROM()
     ROM_COPY.seek(text_start)
     ROM_COPY.writeBytes(bytearray([len(text)]))
     position = 0
@@ -826,3 +833,26 @@ def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
         for loc in spoiler.location_references:
             if loc.item == item:
                 loc.setLocation(index, new_name)
+
+
+def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_crown_door: bool = False) -> BarrierItems:
+    """Convert helm door item enum to barrier item enum."""
+    if item == HelmDoorItem.vanilla:
+        if is_coin_door:
+            return BarrierItems.CompanyCoin
+        elif is_crown_door:
+            return BarrierItems.Crown
+    converter = {
+        HelmDoorItem.opened: BarrierItems.Nothing,
+        HelmDoorItem.req_bean: BarrierItems.Bean,
+        HelmDoorItem.req_bp: BarrierItems.Blueprint,
+        HelmDoorItem.req_companycoins: BarrierItems.CompanyCoin,
+        HelmDoorItem.req_crown: BarrierItems.Crown,
+        HelmDoorItem.req_fairy: BarrierItems.Fairy,
+        HelmDoorItem.req_gb: BarrierItems.GoldenBanana,
+        HelmDoorItem.req_key: BarrierItems.Key,
+        HelmDoorItem.req_medal: BarrierItems.Medal,
+        HelmDoorItem.req_pearl: BarrierItems.Pearl,
+        HelmDoorItem.req_rainbowcoin: BarrierItems.RainbowCoin,
+    }
+    return converter.get(item, BarrierItems.Nothing)

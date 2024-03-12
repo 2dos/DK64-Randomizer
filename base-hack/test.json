@@ -25,7 +25,6 @@
    "fast_start_helm":1,
    "crown_door_open":1,
    "coin_door_open":1,
-   "true_widescreen":0,
    "pppanic_fairy_model":73,
    "tttrouble_turtle_model":60,
    "cutscene_skip_setting":1,
@@ -165,7 +164,6 @@
       3
    ],
    "enemy_item_rando": 1,
-   "move_rando_on":1,
    "remove_blockers":127,
    "resolve_bonus":0,
    "disable_drops":0,
@@ -206,7 +204,6 @@
    ],
    "fast_gbs":1,
    "remove_high_requirements":1,
-   "open_level_sections":1,
    "auto_keys":0,
    "starting_map":34,
    "starting_exit":0,
@@ -221,7 +218,6 @@
       48,
       0
    ],
-   "klaptrap_color_bbother":150,
    "kut_out_phases":[
       3,
       2,
@@ -235,13 +231,6 @@
       255,
       255
    ],
-   "kut_out_kong_order":[
-      1,
-      0,
-      0,
-      0,
-      0
-   ],
    "helm_hurry_mode":0,
    "win_condition":5,
    "version":2,
@@ -252,7 +241,6 @@
    "remove_oscillation_effects":1,
    "rareware_gb_fairies":1,
    "call_parent_filter":0,
-   "location_visuals":7,
    "microhints":2,
    "misc_cosmetic_on":0,
    "seasonal_changes":2,

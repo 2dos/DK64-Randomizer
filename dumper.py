@@ -15,6 +15,7 @@ import randomizer.Lists.CBLocations.FranticFactoryCBLocations
 import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
+import randomizer.Lists.CBLocations.DKIslesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.Lists.CustomLocations import CustomLocations
@@ -268,6 +269,10 @@ def dump_cb(format: str):
         Levels.CreepyCastle: {
             "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
             "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
+        },
+        Levels.DKIsles: {
+            "cb": randomizer.Lists.CBLocations.DKIslesCBLocations.ColoredBananaGroupList,
+            "balloons": randomizer.Lists.CBLocations.DKIslesCBLocations.BalloonList,
         },
     }
     dumps = {}

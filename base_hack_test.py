@@ -1,16 +1,69 @@
 """Set debugging vars to the build."""
 
-import json
 import os
 import sys
+import json
+from typing import BinaryIO
+from randomizer.Settings import Settings
+from randomizer.Spoiler import Spoiler
+from randomizer.Patching.ASMPatcher import patchAssembly, patchAssemblyCosmetic
+from randomizer.SettingStrings import decrypt_settings_string_enum
+from randomizer.Enums.Maps import Maps
 
 APPLY_VARIABLES = True
+ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
+DEBUG_PRINT = False
 
 if not APPLY_VARIABLES:
     sys.exit()
 
+settings_string = "bKEFhEMhTHStjlZQgaICSPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBCgKPSA6K01fAUgt1PX4EkAyaKE0SMgusllgoA6AEGAHUBA4A7AMIAHcCBIA8AUKAHkDBYA9AcMAFCGnj2yFI9RUM5akpTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoBzZvEkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphQRfQJyQYYSqnMxtMYOLQtK5YFaHLYaE4sFSoMBMGBGJCmOKaTyKTIjDoBSgCqAS4CGTgA"
+setting_data = decrypt_settings_string_enum(settings_string)
+settings = Settings(setting_data)
+spoiler = Spoiler(settings)
+settings.resolve_settings()
+# Couple settings needed for patching
+spoiler.dk_face_puzzle = [0] * 9
+spoiler.chunky_face_puzzle = [0] * 9
+spoiler.arcade_order = [1, 4, 3, 2]
+spoiler.coin_requirements = {
+    Maps.CavesLankyRace: 50,
+    Maps.AztecTinyRace: 50,
+    Maps.FactoryTinyRace: 10,
+    Maps.GalleonSealRace: 10,
+    Maps.CastleTinyRace: 10,
+    Maps.JapesMinecarts: 50,
+    Maps.ForestMinecarts: 50,
+    Maps.CastleMinecarts: 25,
+}
+
+def debugPrint(string: str):
+    """Print a string based on a debug flag."""
+    if DEBUG_PRINT:
+        print(string)
+
+
+class TestROM:
+    """Store information regarding a test rom."""
+
+    def __init__(self, stream: BinaryIO):
+        """Initialize with given parameters."""
+        self.stream = stream
+
+    def seek(self, offset: int):
+        """Binary IO seek."""
+        self.stream.seek(offset)
+
+    def readBytes(self, count: int) -> bytes:
+        return self.stream.read(count)
+
+    def writeMultipleBytes(self, value: int, size: int):
+        """Binary IO write."""
+        self.stream.write(value.to_bytes(size, "big"))
+
+
 set_variables = {}
-with open("test.json", "r") as fh:
+with open("./base-hack/test.json", "r") as fh:
     set_variables = json.loads(fh.read())
 
 
@@ -29,33 +82,28 @@ def valtolst(val, size):
 
 def readFromROM(offset, size):
     """Read from ROM."""
-    with open("rom/dk64-randomizer-base-dev.z64", "rb") as rom:
+    with open(ROM_FILE, "rb") as rom:
         rom.seek(offset)
         return int.from_bytes(rom.read(size), "big")
 
 
 def writeToROMNoOffset(offset, value, size, name):
     """Write to ROM without offset."""
-    print("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
-    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+    debugPrint("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
+    with open(ROM_FILE, "r+b") as rom:
         rom.seek(offset)
         rom.write(bytearray(valtolst(value, size)))
 
 
 def writeToROM(offset, value, size, name):
     """Write byte data to rom."""
-    print("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
-    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+    debugPrint("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
+    with open(ROM_FILE, "r+b") as rom:
         rom.seek(0x1FED020 + offset)
         rom.write(bytearray(valtolst(value, size)))
 
 
-GFX_START = 0x101A40
-SCREEN_WD = 366
-SCREEN_HD = 208
-BOOT_OFFSET = 0xFB20 - 0xEF20
-
-with open("include/variable_space_structs.h", "r") as varspace:
+with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
     varlines = varspace.readlines()
     struct_data = []
     for x in varlines:
@@ -221,40 +269,10 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     pre = readFromROM(0x1FED020 + bitfield_offset + offset, 1)
                     pre_copy = pre
                     pre |= 0x80 >> check
-                    print("")
-                    print(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
+                    debugPrint("")
+                    debugPrint(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
                     writeToROM(bitfield_offset + offset, pre, 1, y)
         else:
-            if x == "true_widescreen" and set_variables[x] != 0:
-                writeToROMNoOffset(GFX_START + 0x00, SCREEN_WD * 2, 2, "2D Viewport Width")
-                writeToROMNoOffset(GFX_START + 0x02, SCREEN_HD * 2, 2, "2D Viewport Height")
-                writeToROMNoOffset(GFX_START + 0x08, SCREEN_WD * 2, 2, "2D Viewport X Position")
-                writeToROMNoOffset(GFX_START + 0x0A, SCREEN_HD * 2, 2, "2D Viewport Y Position")
-                writeToROMNoOffset(GFX_START + 0x9C, (SCREEN_WD << 14) | (SCREEN_HD << 2), 4, "Default Scissor for 2D")
-                data_offsets = [0xEF20, 0xF7E0]
-                internal_size = 0x50
-                internal_offsets = [0, 2]
-                for tvi, tv_offset in enumerate(data_offsets):
-                    tv_mode = "NTSC"
-                    if tvi == 1:
-                        tv_mode = "MPAL"
-                    for int_offset in internal_offsets:
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x08, SCREEN_WD, 4, f"{tv_mode} VI Width")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x20, int((SCREEN_WD * 512) / 320), 4, f"{tv_mode} VI X Scale")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x28, (SCREEN_WD * 2), 4, f"{tv_mode} VI Field 1 Framebuffer Offset")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x3C, (SCREEN_WD * 2), 4, f"{tv_mode} VI Field 2 Framebuffer Offset")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x2C, int((SCREEN_HD * 1024) / 240), 4, f"{tv_mode} VI Field 1 Y Scale")
-                        writeToROMNoOffset(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x40, int((SCREEN_HD * 1024) / 240), 4, f"{tv_mode} VI Field 2 Y Scale")
-
-                writeToROMNoOffset(BOOT_OFFSET + 0xBC4 + 2, SCREEN_WD * 2, 2, "Row Offset of No Expansion Pak Image")
-                writeToROMNoOffset(BOOT_OFFSET + 0xBC8 + 2, SCREEN_WD * SCREEN_HD * 2, 2, "Invalidation Size for Framebuffer 1")
-
-                writeToROMNoOffset(BOOT_OFFSET + 0xE08, 0x24180000 | SCREEN_WD, 4, "Row Pitch for No Expansion Pak Screen Text")
-                writeToROMNoOffset(BOOT_OFFSET + 0xE0C, 0x03060019, 4, "Calculate Row Pixel Number for No Expansion Pak Screen Text")
-                writeToROMNoOffset(BOOT_OFFSET + 0xE10, 0x0000C012, 4, "Get Row Pixel Number for No Expansion Pak Screen Text")
-
-                writeToROMNoOffset(BOOT_OFFSET + 0x1020 + 2, (SCREEN_WD - 8) * 2, 2, "Text Framebuffer Pitch")
-
             for y in struct_data2:
                 if x == y[2]:
                     if type(set_variables[x]) is int:
@@ -264,16 +282,19 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     elif type(set_variables[x]) is list:
                         for z in range(min([int(y[3]), len(set_variables[x])])):
                             writeToROM(y[0] + (z * y[1]), set_variables[x][z], y[1], x)
-                    # print(type(set_variables[x]))
-    # print(struct_data2)
+
+with open(ROM_FILE, "r+b") as rom:
+    ROM_COPY = TestROM(rom)
+    patchAssembly(ROM_COPY, spoiler)
+    patchAssemblyCosmetic(ROM_COPY, settings)
 
 # Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
-move_csv = "move_placement.csv"
+move_csv = "./base-hack/move_placement.csv"
 permit = False  # Whether move csv overwrites data
 if os.path.exists(move_csv) and permit:
     with open(move_csv, "r") as csv:
         csv_lines = csv.readlines()
-        with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+        with open(ROM_FILE, "r+b") as rom:
             rom.seek(0x1FEF000)
             for x in csv_lines:
                 val = int(x.replace("\n", ""))

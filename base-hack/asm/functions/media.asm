@@ -10,3 +10,4 @@
 .definelabel cancelMusic, 0x80602B60
 .definelabel getTrackChannel, 0x8060245C
 .definelabel playBonusCutsceneWrapper, 0x80627948
+.definelabel handleMusicTransition, 0x80605510

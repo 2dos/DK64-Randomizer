@@ -20,6 +20,7 @@ HardItems = [
     HardModeItem("Hard Enemies", 3, "Enemies fight back a little harder."),
     HardModeItem("Water is Lava", 1, "All water surfaces are lava water instead, damaging you."),
     HardModeItem("Reduced Fall Damage Threshold", 0, "The amount of distance required to fall too far has been reduced by 70%."),
+    HardModeItem("Shuffled Jetpac Enemies", -1, "Jetpac enemies are shuffled within jetpac."),
 ]
 for item in HardItems:
     if item.name != "No Group":
