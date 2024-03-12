@@ -66,8 +66,8 @@ LogicRegions = {
         TransitionFront(Regions.Museum, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToMuseum),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleMainToLower),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleMainToUpper),
-        TransitionFront(Regions.CrankyCastle, lambda l: l.crankyAccess),
-        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
+        TransitionFront(Regions.CrankyCastle, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.CastleBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CastleMainToBBlast)
     ]),
@@ -207,7 +207,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLowerToMain),
         TransitionFront(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky) or l.phasewalk or l.ledgeclip, Transitions.CastleLowerToCrypt),
         TransitionFront(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny) or l.phasewalk, Transitions.CastleLowerToMausoleum),
-        TransitionFront(Regions.FunkyCastle, lambda l: l.funkyAccess),
+        TransitionFront(Regions.FunkyCastle, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
@@ -268,7 +268,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleUpperToMain),
         TransitionFront(Regions.CastleWaterfall, lambda l: True, Transitions.CastleUpperToWaterfall),
         TransitionFront(Regions.Dungeon, lambda l: True, Transitions.CastleUpperToDungeon),
-        TransitionFront(Regions.CandyCastle, lambda l: l.candyAccess),
+        TransitionFront(Regions.CandyCastle, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 

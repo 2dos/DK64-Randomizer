@@ -2,8 +2,8 @@
 
 import shutil
 
-from BuildEnums import Icons, MoveTypes
-from BuildClasses import hint_region_list, MoveName
+from BuildEnums import Icons
+from BuildClasses import hint_region_list
 from text_decoder import grabText
 from text_encoder import writeText
 from typing import BinaryIO
@@ -529,90 +529,88 @@ writeText(
 )
 
 move_names = [
-    MoveName("Simian Slam", MoveTypes.slam, "Buttus Bashium"),
-    MoveName("Super Simian Slam", MoveTypes.slam, "Big Buttus Bashium"),
-    MoveName("Super Duper Simian Slam", MoveTypes.slam, "Bigga Buttus Bashium"),
-    MoveName("Baboon Blast", MoveTypes.special, "Barrelum Perilous"),
-    MoveName("Strong Kong", MoveTypes.special, "Strongum Kongus"),
-    MoveName("Gorilla Grab", MoveTypes.special, "Simium Strainus"),
-    MoveName("Chimpy Charge", MoveTypes.special, "Hurtus Cranium"),
-    MoveName("Rocketbarrel Boost", MoveTypes.special, "Boostum Highus"),
-    MoveName("Simian Spring", MoveTypes.special, "Leapus Largium"),
-    MoveName("Orangstand", MoveTypes.special, "Palmus Walkum"),
-    MoveName("Baboon Balloon", MoveTypes.special, "Baboonus Balloonus"),
-    MoveName("Orangstand Sprint", MoveTypes.special, "Palmus Dashium"),
-    MoveName("Mini Monkey", MoveTypes.special, "Kongum Smallus"),
-    MoveName("Pony Tail Twirl", MoveTypes.special, "Roundum Roundus"),
-    MoveName("Monkeyport", MoveTypes.special, "Warpum Craftious"),
-    MoveName("Hunky Chunky", MoveTypes.special, "Kremlinous Crushum"),
-    MoveName("Primate Punch", MoveTypes.special, "Sandwichium Knucklus"),
-    MoveName("Gorilla Gone", MoveTypes.special, "Wheresim Gonium"),
-    MoveName("Coconut Shooter", MoveTypes.weapon),
-    MoveName("Peanut Popguns", MoveTypes.weapon),
-    MoveName("Grape Shooter", MoveTypes.weapon),
-    MoveName("Feather Bow", MoveTypes.weapon),
-    MoveName("Pineapple Launcher", MoveTypes.weapon),
-    MoveName("Bongo Blast", MoveTypes.instrument),
-    MoveName("Guitar Gazump", MoveTypes.instrument),
-    MoveName("Trombone Tremor", MoveTypes.instrument),
-    MoveName("Saxophone Slam", MoveTypes.instrument),
-    MoveName("Triangle Trample", MoveTypes.instrument),
-    MoveName("Homing Ammo", MoveTypes.gun_upgrade),
-    MoveName("Sniper Scope", MoveTypes.gun_upgrade),
-    MoveName("Ammo Belt 1", MoveTypes.ammo_belt),
-    MoveName("Ammo Belt 2", MoveTypes.ammo_belt),
-    MoveName("3rd Melon", MoveTypes.instrument),
-    MoveName("Instrument Upgrade 1", MoveTypes.instrument),
-    MoveName("Instrument Upgrade 2", MoveTypes.instrument),
-    MoveName("Diving", MoveTypes.flag),
-    MoveName("Orange Throwing", MoveTypes.flag),
-    MoveName("Barrel Throwing", MoveTypes.flag),
-    MoveName("Vine Swinging", MoveTypes.flag),
-    MoveName("Fairy Camera", MoveTypes.flag),
-    MoveName("Shockwave", MoveTypes.flag),
-    MoveName("Fairy Camera and Shockwave", MoveTypes.flag),
-    MoveName("Golden Banana", MoveTypes.gb),  # 60
-    MoveName("Banana Medal", MoveTypes.flag),  # 61
-    MoveName("Donkey Blueprint", MoveTypes.flag),  # 62
-    MoveName("Diddy Blueprint", MoveTypes.flag),  # 63
-    MoveName("Lanky Blueprint", MoveTypes.flag),  # 64
-    MoveName("Tiny Blueprint", MoveTypes.flag),  # 65
-    MoveName("Chunky Blueprint", MoveTypes.flag),  # 66
-    MoveName("Nintendo Coin", MoveTypes.flag),  # 67
-    MoveName("Rareware Coin", MoveTypes.flag),  # 68
-    MoveName("Boss Key", MoveTypes.flag),  # 69
-    MoveName("Battle Crown", MoveTypes.flag),  # 70
-    MoveName("Bean", MoveTypes.flag),  # 71
-    MoveName("Key 1", MoveTypes.flag),  # 72
-    MoveName("Key 2", MoveTypes.flag),  # 73
-    MoveName("Key 3", MoveTypes.flag),  # 74
-    MoveName("Key 4", MoveTypes.flag),  # 75
-    MoveName("Key 5", MoveTypes.flag),  # 76
-    MoveName("Key 6", MoveTypes.flag),  # 77
-    MoveName("Key 7", MoveTypes.flag),  # 78
-    MoveName("Key 8", MoveTypes.flag),  # 79
-    MoveName("Pearl", MoveTypes.flag),  # 80
-    MoveName("Donkey Kong", MoveTypes.flag),  # 81
-    MoveName("Diddy Kong", MoveTypes.flag),  # 82
-    MoveName("Lanky Kong", MoveTypes.flag),  # 83
-    MoveName("Tiny Kong", MoveTypes.flag),  # 84
-    MoveName("Chunky Kong", MoveTypes.flag),  # 85
-    MoveName("Banana Fairy", MoveTypes.flag),  # 86
-    MoveName("Rainbow Coin", MoveTypes.flag),  # 87
-    MoveName("Ice Trap", MoveTypes.flag),  # 88
-    MoveName("Cranky Kong", MoveTypes.flag),  # 89
-    MoveName("Funky Kong", MoveTypes.flag),  # 90
-    MoveName("Candy Kong", MoveTypes.flag),  # 91
-    MoveName("Snide", MoveTypes.flag),  # 92
+    {"name": "Simian Slam", "latin": "Buttus Bashium", "move_type": "slam"},
+    {"name": "Super Simian Slam", "latin": "Big Buttus Bashium", "move_type": "slam"},
+    {"name": "Super Duper Simian Slam", "latin": "Bigga Buttus Bashium", "move_type": "slam"},
+    {"name": "Baboon Blast", "latin": "Barrelum Perilous", "move_type": "special"},
+    {"name": "Strong Kong", "latin": "Strongum Kongus", "move_type": "special"},
+    {"name": "Gorilla Grab", "latin": "Simium Strainus", "move_type": "special"},
+    {"name": "Chimpy Charge", "latin": "Hurtus Cranium", "move_type": "special"},
+    {"name": "Rocketbarrel Boost", "latin": "Boostum Highus", "move_type": "special"},
+    {"name": "Simian Spring", "latin": "Leapus Largium", "move_type": "special"},
+    {"name": "Orangstand", "latin": "Palmus Walkum", "move_type": "special"},
+    {"name": "Baboon Balloon", "latin": "Baboonus Balloonus", "move_type": "special"},
+    {"name": "Orangstand Sprint", "latin": "Palmus Dashium", "move_type": "special"},
+    {"name": "Mini Monkey", "latin": "Kongum Smallus", "move_type": "special"},
+    {"name": "Pony Tail Twirl", "latin": "Roundum Roundus", "move_type": "special"},
+    {"name": "Monkeyport", "latin": "Warpum Craftious", "move_type": "special"},
+    {"name": "Hunky Chunky", "latin": "Kremlinous Crushum", "move_type": "special"},
+    {"name": "Primate Punch", "latin": "Sandwichium Knucklus", "move_type": "special"},
+    {"name": "Gorilla Gone", "latin": "Wheresim Gonium", "move_type": "special"},
+    {"name": "Coconut Shooter", "move_type": "gun"},
+    {"name": "Peanut Popguns", "move_type": "gun"},
+    {"name": "Grape Shooter", "move_type": "gun"},
+    {"name": "Feather Bow", "move_type": "gun"},
+    {"name": "Pineapple Launcher", "move_type": "gun"},
+    {"name": "Bongo Blast", "move_type": "instrument"},
+    {"name": "Guitar Gazump", "move_type": "instrument"},
+    {"name": "Trombone Tremor", "move_type": "instrument"},
+    {"name": "Saxophone Slam", "move_type": "instrument"},
+    {"name": "Triangle Trample", "move_type": "instrument"},
+    {"name": "Homing Ammo", "move_type": "gun_upg"},
+    {"name": "Sniper Scope", "move_type": "gun_upg"},
+    {"name": "Ammo Belt 1", "move_type": "ammo_belt"},
+    {"name": "Ammo Belt 2", "move_type": "ammo_belt"},
+    {"name": "3rd Melon", "move_type": "ins_upg"},
+    {"name": "Instrument Upgrade 1", "move_type": "ins_upg"},
+    {"name": "Instrument Upgrade 2", "move_type": "ins_upg"},
+    {"name": "Diving", "move_type": "tbarrel_bfi"},
+    {"name": "Orange Throwing", "move_type": "tbarrel_bfi"},
+    {"name": "Barrel Throwing", "move_type": "tbarrel_bfi"},
+    {"name": "Vine Swinging", "move_type": "tbarrel_bfi"},
+    {"name": "Fairy Camera", "move_type": "tbarrel_bfi"},
+    {"name": "Shockwave", "move_type": "tbarrel_bfi"},
+    {"name": "Fairy Camera and Shockwave", "move_type": "tbarrel_bfi"},
+    {"name": "Golden Banana", "move_type": "item"},  # 60
+    {"name": "Banana Medal", "move_type": "item"},  # 61
+    {"name": "Donkey Blueprint", "move_type": "item"},  # 62
+    {"name": "Diddy Blueprint", "move_type": "item"},  # 63
+    {"name": "Lanky Blueprint", "move_type": "item"},  # 64
+    {"name": "Tiny Blueprint", "move_type": "item"},  # 65
+    {"name": "Chunky Blueprint", "move_type": "item"},  # 66
+    {"name": "Nintendo Coin", "move_type": "item"},  # 67
+    {"name": "Rareware Coin", "move_type": "item"},  # 68
+    {"name": "Boss Key", "move_type": "item"},  # 69
+    {"name": "Battle Crown", "move_type": "item"},  # 70
+    {"name": "Bean", "move_type": "item"},  # 71
+    {"name": "Key 1", "move_type": "item"},  # 72
+    {"name": "Key 2", "move_type": "item"},  # 73
+    {"name": "Key 3", "move_type": "item"},  # 74
+    {"name": "Key 4", "move_type": "item"},  # 75
+    {"name": "Key 5", "move_type": "item"},  # 76
+    {"name": "Key 6", "move_type": "item"},  # 77
+    {"name": "Key 7", "move_type": "item"},  # 78
+    {"name": "Key 8", "move_type": "item"},  # 79
+    {"name": "Pearl", "move_type": "item"},  # 80
+    {"name": "Donkey Kong", "move_type": "item"},  # 81
+    {"name": "Diddy Kong", "move_type": "item"},  # 82
+    {"name": "Lanky Kong", "move_type": "item"},  # 83
+    {"name": "Tiny Kong", "move_type": "item"},  # 84
+    {"name": "Chunky Kong", "move_type": "item"},  # 85
+    {"name": "Banana Fairy", "move_type": "item"},  # 86
+    {"name": "Rainbow Coin", "move_type": "item"},  # 87
+    {"name": "Ice Trap", "move_type": "item"},  # 88
 ]
 
 move_names_arr = []
 for move in move_names:
     init_len = len(move_names_arr)
-    move_names_arr.append([{"text": [move.name.upper()]}])
-    if move.latin is not None:
-        move_names_arr.append([{"text": [f"({move.latin.upper()})"]}])
-
+    move_names_arr.append([{"text": [move["name"].upper()]}])
+    if "latin" in move:
+        move_names_arr.append([{"text": [f"({move['latin'].upper()})"]}])
+    if "print" in move:
+        if move["print"]:
+            print(f"{move['name']}: {init_len}")
 index_data = {
     "slam": {"indexes": [], "arr_name": "SimianSlamNames", "has_latin": True},
     "special": {"indexes": [], "arr_name": "SpecialMovesNames", "has_latin": True},
@@ -746,10 +744,6 @@ text_enum = [
     "ITEMTEXT_FAIRY",  # 0x056
     "ITEMTEXT_RAINBOWCOIN",  # 0x057
     "ITEMTEXT_FAKEITEM",  # 0x058
-    "ITEMTEXT_CRANKYITEM",  # 0x059
-    "ITEMTEXT_FUNKYITEM",  # 0x05A
-    "ITEMTEXT_CANDYITEM",  # 0x05B
-    "ITEMTEXT_SNIDEITEM",  # 0x05C
 ]
 
 
@@ -975,10 +969,6 @@ squawks_text.append(
     ]
 )
 squawks_text.append([{"text": ["A \x04GOLDEN BANANA\x04 FOR YOU IF YOU SAVE ME FROM THESE FIREBALLS. HEE HEE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT CRANKY HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HIM THERE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT FUNKY HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HIM THERE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT CANDY HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HER THERE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT SNIDE HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HIM THERE."]}])
 writeText("misc_squawks_text.bin", squawks_text)
 
 hint_region_text = []

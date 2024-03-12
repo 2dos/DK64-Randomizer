@@ -8,7 +8,7 @@ from parameterized import parameterized_class
 
 # from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
+from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
                                        CrownEnemyRando, DamageAmount,
                                        ExtraCutsceneSkips, FillAlgorithm,
                                        FreeTradeSetting, HelmDoorItem,
@@ -33,7 +33,7 @@ with open("static/presets/preset_files.json", "r") as file:
 # Add a custom preset for testing
 # If we're not running on github actions, add the custom preset
 if not os.environ.get("GITHUB_ACTIONS"):
-    valid_presets.append(("Custom", "bKEHhEMhTHSpbGufFWUIGiA9HSLGAQ3EGWsQgvXz+AbPHwwmjnd1K9lZmcU2dWxfCnA+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBCgKPSA6K01fAUgt1PX4EkAyaKE0SMgusllgoA6AEGAHUBA4A7AMIAHcCBIA8AUKAHkDBYA9AcMAFCGnj2yFI9RUM5alpTLm0W8DODo9Rbgp+iuiwCJ6KAK9a45G7Vf77IoHMWIoAzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqVBgJgwIxIUxxTSeRSZEalAFUAlwEMnAA"))
+    valid_presets.append(("Custom", "VjCAIgnDEGkBCgKQHRWmr5P34EgAiaKE0SMguAoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGnj2yFI9Rls9Eql1SYRbgZ+ioCwIJgKAS9HLVfZFA5iRDACbPIkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADUxckuFNidMISQRfQJyQYYSoeB4fCJHLpLF4QMxtMYOLSjAQgFpuK5YFaHLYaE4sFRkMpgJgwIxoJCmOJrDZ/TSeRSZEZDUoAqgEuRBASFBYYG0pEWCYoKkhaLjAySlw2ODpMXj5AQk5QUlRgYmQ"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)
@@ -49,7 +49,7 @@ class TestSpoiler(unittest.TestCase):
         # Randomizers
         # Major Items
         data["shuffle_items"] = False  # Must be true to trigger the list selector below
-        # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem", "shopowners"]  # all options
+        # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
         data["move_rando"] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
         # if start_with, training barrels and "camera and shockwave" are FORCED to be normal and vanilla respectively
         data["training_barrels"] = TrainingBarrels.normal  # usually "normal", could be "shuffled"
@@ -57,7 +57,7 @@ class TestSpoiler(unittest.TestCase):
 
         # Shuffled Locations
         data["random_patches"] = True  # usually False
-        data["cb_rando"] = CBRando.off  # likely to be False?
+        data["cb_rando"] = False  # likely to be False?
         data["coin_rando"] = False
         data["random_fairies"] = False  # likely to be False
         data["wrinkly_location_rando"] = False  # likely to be False

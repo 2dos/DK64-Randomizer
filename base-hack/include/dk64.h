@@ -59,7 +59,6 @@ extern void textOverlayCode(void);
 extern void spawnTransferredActor(void);
 extern void resolveMovementBox(void* spawner);
 extern void wipeMemory(void* location, int size);
-extern void wipeMallocSpace(void* pointer);
 extern void setArcadeTextXY(int x, int y);
 extern void spawnArcadeText(void* write_location, void* text_pointer);
 extern void setArcadeTextColor(int red, int green, int blue, int alpha);
@@ -121,14 +120,7 @@ extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);
 extern int getActorModelIndex(void* actor);
 
-extern void spawnTextOverlayWrapper(int style, int x, int y, char* str, int unk0, int unk1, int unk2, int unk3);
-
 extern void regularFrameLoop(void);
-extern void handleMusicTransition(void);
-
-extern void loadJetpacSprites(void);
-extern void updateGBCountHUD(int player);
-extern void initHUDItem(float x, float y, float* unk0, float* unk1, float* unk2);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
@@ -188,7 +180,6 @@ extern void getTextPointer_0(void* actor, int text_file, int text_index);
 extern int hasTurnedInEnoughCBs(void);
 extern int getWorld(maps map, int lobby_is_isles);
 extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
-extern void displayCountOnTeeth(int count);
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
 extern int isLobby(maps map);
 extern float determineXRatioMovement(unsigned int unk);
@@ -201,8 +192,6 @@ extern int playSFXFromObject(int object_index, short sfx, char unk0, char unk1, 
 
 extern void unkMultiplayerWarpFunction(void* actor, int player_index);
 extern void renderScreenTransition(int transition_type);
-
-extern int inDKTV(void);
 
 extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);
@@ -416,11 +405,6 @@ extern void winBonus(int unk0, int unk1);
 extern void updatePosition(void* actor, int bone, float* x, float* y, float* z);
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 extern void setChunkLighting(float red, float green, float blue, int chunk);
-
-extern void crankyCode(void);
-extern void funkyCode(void);
-extern void candyCode(void);
-extern void snideCode(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -752,6 +736,7 @@ extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern purchase_struct FirstMove_New;
 extern settingsData StoredSettings;
+extern char WidescreenEnabled;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
@@ -777,4 +762,5 @@ extern char KrushaSlot;
 extern unsigned char TextItemName;
 extern unsigned char RandomSwitches;
 extern unsigned char SwitchLevel[7];
+extern unsigned char MMMEnemiesBrightened;
 extern int ExtraSaveData[0x100];

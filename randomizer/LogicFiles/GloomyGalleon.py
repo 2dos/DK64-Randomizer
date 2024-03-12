@@ -50,7 +50,7 @@ LogicRegions = {
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)),
         TransitionFront(Regions.LighthouseSurface, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or Events.LighthouseGateOpened in l.Events or l.phasewalk or l.CanSkew(False)),
         TransitionFront(Regions.Shipyard, lambda l: (l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or Events.ShipyardGateOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)) and (not l.IsLavaWater() or l.Melons >= 2)),
-        TransitionFront(Regions.CrankyGalleon, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyGalleon, lambda l: True),
     ]),
 
     Regions.GalleonPastVines: Region("Galleon Past Vines", "Galleon Caverns", Levels.GloomyGalleon, False, None, [
@@ -121,7 +121,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseSurface, lambda l: True),
-        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
+        TransitionFront(Regions.Snide, lambda l: True),
     ]),
 
     Regions.GalleonBaboonBlast: Region("Galleon Baboon Blast", "Lighthouse Area", Levels.GloomyGalleon, False, None, [], [
@@ -144,7 +144,7 @@ LogicRegions = {
     ]),
 
     Regions.MermaidRoom: Region("Mermaid Room", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonTinyPearls, lambda l: (l.Pearls >= l.settings.mermaid_gb_pearls) and (l.istiny or l.settings.free_trade_items)),
+        LocationLogic(Locations.GalleonTinyPearls, lambda l: ((l.Pearls >= 1 and l.checkFastCheck(FasterChecksSelected.galleon_mermaid_gb)) or l.Pearls >= 5) and (l.istiny or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseUnderwater, lambda l: True, Transitions.GalleonMermaidToLighthouseArea),
@@ -177,8 +177,8 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.ShipyardGateOpened in l.Events),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: l.swim and (not l.IsLavaWater() or l.Melons >= 3)),
         TransitionFront(Regions.SealRace, lambda l: (Events.SealReleased in l.Events and Events.WaterRaised in l.Events and l.isdonkey) or l.CanPhaseswim(), Transitions.GalleonShipyardToSeal),
-        TransitionFront(Regions.CandyGalleon, lambda l: l.candyAccess),
-        TransitionFront(Regions.FunkyGalleon, lambda l: l.funkyAccess),
+        TransitionFront(Regions.CandyGalleon, lambda l: True),
+        TransitionFront(Regions.FunkyGalleon, lambda l: True),
     ]),
 
     Regions.ShipyardUnderwater: Region("Shipyard Underwater", "Shipyard Outskirts", Levels.GloomyGalleon, True, None, [], [

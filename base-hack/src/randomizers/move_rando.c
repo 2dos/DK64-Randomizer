@@ -337,7 +337,7 @@ purchase_classification getPurchaseClassification(int purchase_type, int flag) {
 			return PCLASS_SHOCKWAVE;
 		} else if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 			return PCLASS_BLUEPRINT;
-		} else if (isMedalFlag(flag)) {
+		} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
 			return PCLASS_MEDAL;
 		} else if ((flag == FLAG_COLLECTABLE_NINTENDOCOIN) || (flag == FLAG_COLLECTABLE_RAREWARECOIN)) {
 			return PCLASS_COMPANYCOIN;
@@ -624,6 +624,48 @@ int getLocationStatus(location_list location_index) {
 	return 0;
 }
 
+void fixTBarrelsAndBFI(int init) {
+	if (init) {
+		// Individual Barrel Checks
+		*(short*)(0x80681CE2) = (short)LOCATION_DIVE;
+		*(short*)(0x80681CFA) = (short)LOCATION_ORANGE;
+		*(short*)(0x80681D06) = (short)LOCATION_BARREL;
+		*(short*)(0x80681D12) = (short)LOCATION_VINE;
+		writeFunction(0x80681D38, &getLocationStatus); // Get TBarrels Move
+		// All Barrels Complete check
+		*(short*)(0x80681C8A) = (short)LOCATION_DIVE;
+		writeFunction(0x80681C98, &getLocationStatus); // Get TBarrels Move
+	} else {
+		unsigned char tbarrel_bfi_maps[] = {
+			MAP_TRAININGGROUNDS, // TGrounds
+			MAP_TBARREL_DIVE, // Dive
+			MAP_TBARREL_ORANGE, // Orange
+			MAP_TBARREL_BARREL, // Barrel
+			MAP_TBARREL_VINE, // Vine
+			MAP_FAIRYISLAND, // BFI
+		};
+		int is_in_tbarrel_bfi = 0;
+		for (int i = 0; i < sizeof(tbarrel_bfi_maps); i++) {
+			if (tbarrel_bfi_maps[i] == CurrentMap) {
+				is_in_tbarrel_bfi = 1;
+			}
+		}
+		if (is_in_tbarrel_bfi) {
+			// TBarrels
+			*(short*)(0x800295F6) = (short)LOCATION_DIVE;
+			*(short*)(0x80029606) = (short)LOCATION_ORANGE;
+			*(short*)(0x800295FE) = (short)LOCATION_VINE;
+			*(short*)(0x800295DA) = (short)LOCATION_BARREL;
+			writeFunction(0x80029610, &setLocationStatus); // Set TBarrels Move
+			// BFI
+			*(short*)(0x80027F2A) = (short)LOCATION_BFI;
+			*(short*)(0x80027E1A) = (short)LOCATION_BFI;
+			writeFunction(0x80027F24, &setLocationStatus); // Set BFI Move
+			writeFunction(0x80027E20, &getLocationStatus); // Get BFI Move
+		}
+	}
+}
+
 typedef struct move_overlay_paad {
 	/* 0x000 */ void* upper_text;
 	/* 0x004 */ void* lower_text;
@@ -740,8 +782,14 @@ void getNextMoveText(void) {
 			mtx_item mtx1;
 			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
 			float start_y = 800.0f;
+			if (Rando.true_widescreen) {
+				start_y = (4 * SCREEN_HD_FLOAT) - 160.0f;
+			}
 			float position = start_y - (overlay_count * 100.0f); // Gap of 100.0f
 			float move_x = 640.0f;
+			if (Rando.true_widescreen) {
+				move_x = SCREEN_WD_FLOAT * 2;
+			}
 			_guTranslateF(&mtx1, move_x, position, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);
@@ -801,7 +849,7 @@ void getNextMoveText(void) {
 								// Blueprint
 								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
 								top_item = ITEMTEXT_BLUEPRINT_DK + kong;
-							} else if (isMedalFlag(p_flag)) {
+							} else if (isFlagInRange(p_flag, FLAG_MEDAL_JAPES_DK, 40)) {
 								// Medal
 								top_item = ITEMTEXT_MEDAL;
 							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
@@ -825,8 +873,6 @@ void getNextMoveText(void) {
 							} else if (isFlagInRange(p_flag, FLAG_FAKEITEM, 0x10)) {
 								// Fake Item
 								top_item = ITEMTEXT_FAKEITEM;
-							} else if (isFlagInRange(p_flag, FLAG_ITEM_CRANKY, 4)) {
-								top_item = ITEMTEXT_CRANKYITEM + (p_flag - FLAG_ITEM_CRANKY);
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {

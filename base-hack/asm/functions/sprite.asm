@@ -12,4 +12,3 @@
 .definelabel spriteControlCode, 0x806AC07C
 .definelabel drawRetroSprite, 0x8070F2FC
 .definelabel displayPauseSpriteNumber, 0x806AB808
-.definelabel loadJetpacSprites, 0x80026DC8

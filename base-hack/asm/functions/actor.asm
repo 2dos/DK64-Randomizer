@@ -113,7 +113,3 @@
 .definelabel updatePosition, 0x80671C0C
 .definelabel getActorModel, 0x80612E90
 .definelabel bounceObjectCode, 0x806A6DB4
-.definelabel crankyCode, 0x800270E0
-.definelabel funkyCode, 0x80027738
-.definelabel candyCode, 0x800275FC
-.definelabel snideCode, 0x80024CB0

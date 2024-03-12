@@ -37,7 +37,7 @@ void initCollectableCollision(void) {
     /**
      * @brief Initialize all collectable collisions
      */
-    if (Rando.any_kong_items.blueprints) {
+    if (Rando.any_kong_items & 2) {
         for (int i = 0; i < COLLISION_LIMIT; i++) {
             if (object_collisions[i].collectable_type == COLLECTABLE_BP) {
                 // Blueprints
@@ -123,8 +123,8 @@ void initActorDefs(void) {
         ActorBehaviourTable[49].model = MODEL_CHAIN;
     }
     dk_memcpy(&actor_defs[0], &ActorBehaviourTable[0], 128*sizeof(actor_behaviour_def));
-    int index = addActorDef(128, NEWACTOR_NINTENDOCOIN, 0x10B, 0x80689F80, 0x80689FEC, 0, 1); // Nintendo Coin
-    index = addActorDef(index, NEWACTOR_RAREWARECOIN, 0x10D, 0x80689F80, 0x80689FEC, 0, 1); // Rareware Coin
+    int index = addActorDef(128, NEWACTOR_NINTENDOCOIN, 0, 0x80689F80, 0x8068A10C, 0, 1); // Nintendo Coin
+    index = addActorDef(index, NEWACTOR_RAREWARECOIN, 0, 0x80689F80, 0x8068A10C, 0, 1); // Rareware Coin
     // Potions
     index = addActorDef(index, NEWACTOR_POTIONDK, 0xEE, 0x80689F80, 0x80689FEC, 0, 1); // DK Potion
     index = addActorDef(index, NEWACTOR_POTIONDIDDY, 0xEF, 0x80689F80, 0x80689FEC, 0, 1); // Diddy Potion
@@ -138,17 +138,12 @@ void initActorDefs(void) {
     index = addActorDef(index, NEWACTOR_KONGLANKY, 0x100, 0x80689F80, 0x80689FEC, 0, 1); // Lanky
     index = addActorDef(index, NEWACTOR_KONGTINY, 0x101, 0x80689F80, 0x80689FEC, 0, 1); // Tiny
     index = addActorDef(index, NEWACTOR_KONGCHUNKY, 0x102, 0x80689F80, 0x80689FEC, 0, 1); // Chunky
-    // Shop Owners
-    index = addActorDef(index, NEWACTOR_CRANKYITEM, 0x10F, 0x80689F80, 0x80689FEC, 0, 1); // Cranky
-    index = addActorDef(index, NEWACTOR_FUNKYITEM, 0x110, 0x80689F80, 0x80689FEC, 0, 1); // Funky
-    index = addActorDef(index, NEWACTOR_CANDYITEM, 0x111, 0x80689F80, 0x80689FEC, 0, 1); // Candy
-    index = addActorDef(index, NEWACTOR_SNIDEITEM, 0x112, 0x80689F80, 0x80689FEC, 0, 1); // Snide
     // Misc
-    index = addActorDef(index, NEWACTOR_BEAN, 0x105, 0x80689F80, 0x80689FEC, 0, 1); // Bean
-    index = addActorDef(index, NEWACTOR_PEARL, 0x107, 0x80689F80, 0x80689FEC, 0, 1); // Pearl
+    index = addActorDef(index, NEWACTOR_BEAN, 0, 0x80689F80, 0x8068A10C, 0, 1); // Bean
+    index = addActorDef(index, NEWACTOR_PEARL, 0, 0x80689F80, 0x8068A10C, 0, 1); // Pearl
     index = addActorDef(index, NEWACTOR_FAIRY, 0xFC, 0x80689F80, 0x80689FEC, 0, 1); // Fairy
     index = addActorDef(index, NEWACTOR_NULL, 0, 0x80689F80, 0x8068A10C, 0, 1); // Nothing
-    index = addActorDef(index, NEWACTOR_MEDAL, 0x109, 0x80689F80, 0x80689FEC, 0, 1); // Medal
+    index = addActorDef(index, NEWACTOR_MEDAL, 0, 0x80689F80, 0x8068A10C, 0, 1); // Medal
     index = addActorDef(index, NEWACTOR_FAKEITEM, 0xFD, 0x80689F80, 0x80689FEC, 0, 1); // Fake Item
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
@@ -163,10 +158,6 @@ void initActorDefs(void) {
 void changeFeatherToSprite(void) {
     actor_defs[24].model = 0;
     actor_master_types[43] = ACTORMASTER_SPRITE;
-}
-
-void setBurpModel(void) {
-    actor_defs[50].model = Rando.piano_game_burper;
 }
 
 void setActorDamage(int actor, int new_damage) {
@@ -272,7 +263,6 @@ void initActorExpansion(void) {
     *(int*)(0x8076152C) = (int)&actor_functions[0];
     *(int*)(0x80764768) = (int)&actor_functions[0];
     // Actor Collisions
-    patchCollision(); // Patch collision before transferring
     dk_memcpy(&actor_collisions[0].collision_info, &ActorCollisionArray[0].collision_info, ACTOR_VANILLA_LIMIT*8);
     *(short*)(0x8067586A) = getHi(&actor_collisions[0].collision_info);
     *(short*)(0x80675876) = getLo(&actor_collisions[0].collision_info);

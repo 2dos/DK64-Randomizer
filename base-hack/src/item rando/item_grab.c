@@ -33,11 +33,7 @@
 #define MEDALITEM_JUNKAMMO 18
 #define MEDALITEM_JUNKCRYSTAL 19
 #define MEDALITEM_JUNKMELON 20
-#define MEDALITEM_CRANKYITEM 21
-#define MEDALITEM_FUNKYITEM 22
-#define MEDALITEM_CANDYITEM 23
-#define MEDALITEM_SNIDEITEM 24
-#define MEDALITEM_NOTHING 25
+#define MEDALITEM_NOTHING 21
 
 typedef struct item_info {
     /* 0x000 */ songs song;
@@ -76,10 +72,6 @@ static const item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0x48, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Ammo)
     {.song = SONG_CRYSTALCOCONUTGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Crystal)
     {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
-    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11}, // Cranky
-    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x12}, // Funky
-    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x13}, // Candy
-    {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x1F}, // Snide
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
 };
 
@@ -89,14 +81,13 @@ void banana_medal_acquisition(int flag) {
      * 
      * @param flag Flag index of the banana medal
      */
-    int item_type = 0;
-    if (flag >= FLAG_MEDAL_ISLES_DK) {
-        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
-    } else {
-        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
-    }
+    int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     float reward_x = 160.f;
     float reward_y = 120.0f;
+    if (Rando.true_widescreen) {
+        reward_x = SCREEN_WD_FLOAT / 2;
+        reward_y = SCREEN_HD_FLOAT / 2;
+    }
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         if (item_type != MEDALITEM_KEY) {
             setFlag(flag, 1, FLAGTYPE_PERMANENT);
@@ -250,21 +241,6 @@ int getFlagIndex_Corrected(int start, int level) {
      * @return New flag index
      */
     return start + (5 * level) + getKong(0);
-}
-
-int getFlagIndex_MedalCorrected(int start, int level) {
-    /**
-     * @brief Get a corrected flag index for a medal, which will convert Rambi/Enguarde into the kong who entered the transformation crate
-     * 
-     * @param start Start flag index
-     * @param level Level Index
-     * 
-     * @return New flag index
-     */
-    if (level < 7) {
-        return getFlagIndex_Corrected(start, level);
-    }
-    return FLAG_MEDAL_ISLES_DK + getKong(0);
 }
 
 void collectKey(void) {

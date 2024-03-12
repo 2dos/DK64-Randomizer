@@ -60,47 +60,6 @@
                             </option>
                         </select>
                     </div>
-                    <div class="item-select">
-                        <p class="select-title">Random Enemy Colors</p>
-                        <select name="random_enemy_colors"
-                                id="random_enemy_colors"
-                                display_name="Random Enemy Colors"
-                                class="form-select center-div"
-                                aria-label="Random Enemy Colors"
-                                data-toggle="tooltip"
-                                title="Changes the colors of various enemies in the game">
-                            <option selected id="off" value="off" title="">
-                                Off
-                            </option>
-                            <option id="random" value="random">
-                                Random
-                            </option>
-                            <option id="extreme" value="extreme">
-                                Extreme
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item-color-select">
-                        <div class="color-selector">
-                            <p class="select-title">Golden Banana Skin Color</p>
-                            <div id="gb_custom">
-                                <div class="input-group mb-3 gbColorPicker" style="display:flex">
-                                    <select name="gb_colors" id="gb_colors" class="form-select" aria-label="GB Skin">
-                                        <option selected value="vanilla">Vanilla</option>
-                                        <option value="randomized">Randomized</option>
-                                        <option value="custom">Custom</option>
-                                    </select>
-                                    <div class="color-input-container">
-                                        <input type="color"
-                                            name="gb_custom_color"
-                                            id="gb_custom_color"
-                                            default="#000000"
-                                            class="color-input">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
@@ -205,20 +164,8 @@
                                    name="troff_brighten"
                                    id="troff_brighten"
                                    display_name="Brighten Boss Door Opening"
-                                   value="True" checked/>
+                                   value="True"/>
                             Brighten Boss Door Opening
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Dirt Patches have the letters 'D' and 'K' colored yellow and red to make them more visible.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="better_dirt_patch_cosmetic"
-                                   id="better_dirt_patch_cosmetic"
-                                   display_name="Higher contrast dirt patches"
-                                   value="True" checked/>
-                            Higher contrast dirt patches
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">
@@ -331,6 +278,21 @@
                             Follow Cam
                         </label>
                     </div>
+                    <div class="flex-container" id="widescreen_row">
+                        <div class="form-check form-switch item-switch">
+                            <label data-toggle="tooltip"
+                                title="IN DEVELOPMENT: 16:9 version of DK64, based off the standalone hack by gamemasterplc. EMULATOR ONLY: Consoles don't like this.">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="true_widescreen"
+                                    id="true_widescreen"
+                                    display_name="Widescreen (Emulator Only)"
+                                    value="True"/>
+                                Widescreen (Emulator Only)
+                            </label>
+                        </div>
+                        <div class="spacer"></div>
+                    </div>
                 </div>
                 {# <div class="flex-container">
                     <div class="item-select">
@@ -411,9 +373,6 @@
                     }
                 })
             })
-            if (object.hasOwnProperty("gb_custom_color")) {
-                $(".gbColorPicker").attr("style", "background-color" + object["gb_custom_color"] + ";")
-            }
         }
     })
     $(function() {

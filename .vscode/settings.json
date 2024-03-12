@@ -6,9 +6,5 @@
         "--ignore=base-hack",
         "${workspaceFolder}/tests"
     ],
-    "python.testing.unittestEnabled": false,
-    "files.associations": {
-        "common.h": "c",
-        "xtree": "c"
-    }
+    "python.testing.unittestEnabled": false
 }

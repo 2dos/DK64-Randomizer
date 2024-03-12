@@ -19,6 +19,7 @@ char tag_locked = 0;
 void cFuncLoop(void) {
 	regularFrameLoop();
 	if (!delayed_load) {
+		// loadWidescreen(OVERLAY_BOOT);
 		delayed_load = 1;
 	}
 	DataIsCompressed[18] = 0;
@@ -30,6 +31,7 @@ void cFuncLoop(void) {
 	qualityOfLife_shorteners();
 	overlay_changes();
 	replace_zones(0);
+	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
@@ -50,7 +52,6 @@ void cFuncLoop(void) {
 				setActorDamage(43, 3);
 			}
 		}
-		setBurpModel();
 		if (Rando.quality_of_life.vanilla_fixes) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
 				int kong_target = CurrentMap - MAP_KROOLDK;
@@ -271,14 +272,12 @@ void earlyFrame(void) {
 	} else {
 		actor_functions[196] = &cutsceneDKCode;
 	}
-	actor_functions[184] = &snideCodeHandler;
-	actor_functions[189] = &crankyCodeHandler;
-	actor_functions[190] = &funkyCodeHandler;
-	actor_functions[191] = &candyCodeHandler;
 	fastWarpShockwaveFix();
 	catchWarpHandle();
+	write_kutoutorder();
 	remove_blockers();
 	determine_krool_order();
+	disable_krool_health_refills();
 	CBDing();
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
@@ -451,6 +450,8 @@ int* displayListModifiers(int* dl) {
 			if (right < LOADBAR_START) {
 				right = LOADBAR_START;
 			}
+			left *= (SCREEN_WD_FLOAT / 320);
+			right *= (SCREEN_WD_FLOAT / 320);
 			if (left > 1023.0f) {
 				left = 1023.0f;
 			}
@@ -459,6 +460,10 @@ int* displayListModifiers(int* dl) {
 			}
 			int bar_y = 475;
 			int bar_text_y = 130;
+			if (Rando.true_widescreen) {
+				bar_y = (2 * SCREEN_HD) - 5;
+				bar_text_y = (SCREEN_HD >> 1) + 10;
+			}
 			dl = drawScreenRect(dl, left, bar_y, right, bar_y + 10, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
 			int wait_x_offset = 55;
 			if (wait_progress_master > 0) {
@@ -521,6 +526,10 @@ int* displayListModifiers(int* dl) {
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 				int fps_x = 250;
 				int fps_y = 210;
+				if (Rando.true_widescreen) {
+					fps_x = SCREEN_WD - 90;
+					fps_y = SCREEN_HD - 30;
+				}
 				dl = drawPixelTextContainer(dl, fps_x, fps_y, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 			dl = drawDPad(dl);
@@ -569,6 +578,10 @@ int* displayListModifiers(int* dl) {
 					opacity /= 12;
 					float bp_x = 355.0f;
 					float bp_y_start = 480.0f;
+					if (Rando.true_widescreen) {
+						bp_x = SCREEN_WD_FLOAT + 35.0f;
+						bp_y_start = SCREEN_HD_FLOAT * 2;
+					}
 					dl = drawText(dl, 1, bp_x, bp_y_start + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
 				} else {
 					hud_timer = 0;

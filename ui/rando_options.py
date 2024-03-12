@@ -151,18 +151,6 @@ def max_randomized_fairies(event):
         fairy_req.value = 20
 
 
-@bind("focusout", "mermaid_gb_pearls")
-def max_randomized_pearls(event):
-    """Validate pearl input on loss of focus."""
-    pearl_req = js.document.getElementById("mermaid_gb_pearls")
-    if not pearl_req.value:
-        pearl_req.value = 5
-    elif 0 > int(pearl_req.value):
-        pearl_req.value = 0
-    elif int(pearl_req.value) > 5:
-        pearl_req.value = 5
-
-
 @bind("click", "shuffle_items")
 @bind("change", "move_rando")
 @bind("focusout", "starting_moves_count")

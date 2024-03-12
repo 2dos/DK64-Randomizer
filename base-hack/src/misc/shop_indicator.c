@@ -189,7 +189,7 @@ int getCounterItem(int shop_index, int kong, int level) {
 					int flag = data->purchase_value;
 					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						return COUNTER_BP;
-					} else if (isMedalFlag(flag)) {
+					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
 						return COUNTER_MEDAL;
 					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
 						return COUNTER_CROWN;
