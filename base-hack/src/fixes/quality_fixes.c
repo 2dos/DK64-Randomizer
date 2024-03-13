@@ -125,19 +125,20 @@ int shouldDing(void) {
 	return 0;
 }
 
-int* renderDingSprite(int* dl) {
-	if (ding_sprite_timer == 0) {
+int* renderIndicatorSprite(int* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec) {
+	if (*timer == 0) {
 		return dl;
 	}
-	ding_sprite_timer -= 1;
+	int timer_value = *timer - 1;
+	*timer = timer_value;
 	int offset = 0;
-	if (ding_sprite_timer > SPRITE_ALPHA_IN) {
-		offset = ding_sprite_timer - SPRITE_ALPHA_IN;
-	} else if (ding_sprite_timer < SPRITE_ALPHA_OUT) {
-		offset = SPRITE_ALPHA_OUT - ding_sprite_timer;
+	if (timer_value > SPRITE_ALPHA_IN) {
+		offset = timer_value - SPRITE_ALPHA_IN;
+	} else if (timer_value < SPRITE_ALPHA_OUT) {
+		offset = SPRITE_ALPHA_OUT - timer_value;
 	}
 	float alpha = 0xFF;
-	if (!hasEnoughCBs()) {
+	if (dim) {
 		alpha = 0x80;
 	}
 	alpha *= (SPRITE_ALPHA_OUT - offset);
@@ -149,7 +150,24 @@ int* renderDingSprite(int* dl) {
 	} else if (alpha_i < 0) {
 		return dl;
 	}
-	return drawImage(dl, 114, RGBA16, 48, 42, 900, y, 2.0f, 2.0f, alpha_i);
+	dl = initDisplayList(dl);
+	*(unsigned int*)(dl++) = 0xE200001C;
+	*(unsigned int*)(dl++) = 0x00504240;
+	gDPSetPrimColor(dl, 0, 0, 0xFF, 0xFF, 0xFF, alpha_i);
+	dl += 2;
+	*(unsigned int*)(dl++) = 0xFCFF97FF;
+	*(unsigned int*)(dl++) = 0xFF2CFE7F;
+	*(unsigned int*)(dl++) = 0xE3001201;
+	*(unsigned int*)(dl++) = 0x00000000;
+	int p2 = 0;
+	if (codec == IA8) {
+		p2 = 3;
+	}
+	return displayImage(dl++, sprite, p2, codec, width, height, 900, y, 2.0f, 2.0f, 0, 0.0f);
+}
+
+int* renderDingSprite(int* dl) {
+	return renderIndicatorSprite(dl, 114, !hasEnoughCBs(), &ding_sprite_timer, 48, 42, RGBA16);
 }
 
 void initDingSprite(void) {

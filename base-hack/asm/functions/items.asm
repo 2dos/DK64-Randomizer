@@ -18,3 +18,4 @@
 .definelabel BananaMedalGet, 0x80687C48
 .definelabel CrownGet, 0x80687CC8
 .definelabel getTotalGBs, 0x806FB418
+.definelabel updateGBCountHUD, 0x806F8278

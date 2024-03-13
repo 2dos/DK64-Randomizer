@@ -528,6 +528,7 @@ void initHack(int source) {
 			if (Rando.any_kong_items & 1) {
 				writeFunction(0x80632E94, &getItemRequiredKong);
 			}
+			writeFunction(0x806F93D4, &gbUpdateHandler);
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
 				writeFunction(0x80656538, &displayNoGeoChunk);
 				writeFunction(0x806562C0, &displayNoGeoChunk);

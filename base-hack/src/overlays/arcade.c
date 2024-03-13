@@ -52,7 +52,11 @@ void HandleArcadeVictory(void) {
 	/**
 	 * @brief Determine how to handle where to send the player after beating a stage in DK Arcade
 	 */
-	if ((ArcadeStoryMode) && ((ArcadeMap & 3) == 0)) {
+	int threshold = 4;
+	if (Rando.faster_checks.arcade_second_round) {
+		threshold = 2;
+	}
+	if ((ArcadeStoryMode) && ((ArcadeMap & 3) == (threshold & 3))) {
 		ArcadeEnableReward = 1;
 		if (ArcadeScores[4] < ArcadeCurrentScore) {
 			sendToHiScorePage();

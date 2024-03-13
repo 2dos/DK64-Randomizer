@@ -672,6 +672,17 @@ def place_randomized_items(spoiler):
                     spoiler.text_changes[textbox.file_index].append(data)
                 else:
                     spoiler.text_changes[textbox.file_index] = [data]
+            minor_item = "\x05FOR A FOOLISH GAME\x05"
+            major_item = "\x04FOR SOMETHING YOU MIGHT NEED ON YOUR QUEST\x04"
+            if 8 not in spoiler.text_changes:
+                spoiler.text_changes[8] = []
+            major_items = spoiler.majorItems
+            new_item = Items.RarewareCoin
+            for item in item_data:
+                if item.location == Locations.RarewareCoin:
+                    new_item = item.new_subitem
+            placed_text = major_item if new_item in major_items else minor_item
+            spoiler.text_changes[8].append({"textbox_index": 0, "mode": "replace", "search": "FOR MY AMAZING SURPRISE", "target": placed_text})
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])

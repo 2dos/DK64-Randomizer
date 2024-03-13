@@ -113,6 +113,46 @@ static itemloc_data itemloc_textnames[] = {
     }, // 5
 };
 
+static unsigned char progressive_ding_timer = 0;
+
+void initProgressiveTimer(void) {
+    progressive_ding_timer = 52;
+}
+
+int* renderProgressiveSprite(int* dl) {
+    return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8);
+}
+
+void playProgressiveDing(void) {
+    initProgressiveTimer();
+    playSFX(0x2EA);
+}
+
+void handleProgressiveIndicator(void) {
+    if (Rando.progressive_hint_gb_cap == 0) {
+        return;
+    }
+    int gb_count = getTotalGBs();
+    int old_progressive_level = -1;
+    int new_progressive_level = -1;
+    for (int level = 0; level < 7; level++) {
+        for (int kong = 0; kong < 5; kong++) {
+            int index = (level * 5) + kong;
+            int local_req = getHintGBRequirement(level, kong);
+            if (gb_count >= local_req) {
+                new_progressive_level = index;
+            }
+            if ((gb_count - 1) >= local_req) {
+                old_progressive_level = index;
+            }
+
+        }
+    }
+    if (old_progressive_level != new_progressive_level) {
+        playProgressiveDing();
+    }
+}
+
 void initHints(void) {
     if (!hints_initialized) {
         for (int i = 0; i < 35; i++) {

@@ -168,6 +168,7 @@ class FasterChecksSelected(IntEnum):
     castle_minecart = 13
     castle_car_race = 14
     jetpac = 15
+    arcade = 16
 
 
 class FillAlgorithm(IntEnum):
@@ -509,6 +510,7 @@ class MiscChangesSelected(IntEnum):
     global_instrument = 23
     fast_pause_transitions = 24
     cannon_game_better_control = 25
+    better_fairy_camera = 26
 
 
 class MoveRando(IntEnum):

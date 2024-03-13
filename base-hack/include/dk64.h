@@ -331,6 +331,8 @@ extern int getKong(int player_index);
 extern int spawnModelTwo(int type, float x, float y, float z, float scale, int id);
 extern void refreshItemVisibility(void);
 
+extern void updateGBCountHUD(int player);
+
 extern void* getActorModel(void* actor, int model_index, int unk0);
 
 extern int isBalloonOrPatch(int actor_type);

@@ -736,9 +736,11 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
 
+    spoiler.majorItems = []  # Initialize in case something dumb happens
     # Only need to build paths for item rando
     if spoiler.settings.shuffle_items:
         majorItems = IdentifyMajorItems(spoiler)
+        spoiler.majorItems = majorItems
         CalculateWothPaths(spoiler, WothLocations, majorItems)
         CalculateFoolish(spoiler, WothLocations, majorItems)
     # Non-item rando needs additional WotH paring due to the delayed item re-placing done when paring the playthrough

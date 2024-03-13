@@ -79,6 +79,11 @@ int give_all_blueprints(int flag, int level, int kong_p) {
 	return given_bp;
 }
 
+void gbUpdateHandler(void) {
+	updateGBCountHUD(0);
+	handleProgressiveIndicator();
+}
+
 void overlay_mod_menu(void) {
 	// Shops
 	PatchCrankyCode(); // Change cranky code to handle an extra variable
@@ -98,6 +103,7 @@ void overlay_mod_menu(void) {
 	writeFunction(0x8002691C, &purchaseMove);
 	writeFunction(0x800270B8, &showPostMoveText);
 	writeFunction(0x80026508, &canPlayJetpac);
+	writeFunction(0x800248D4, &gbUpdateHandler);
 	*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
 	*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
 	if (CurrentMap == MAP_CRANKY) {
