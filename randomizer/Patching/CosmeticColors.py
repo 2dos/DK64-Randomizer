@@ -281,7 +281,7 @@ def apply_cosmetic_colors(settings: Settings):
     bother_model_index = Model.KlaptrapGreen
     panic_fairy_model_index = Model.BananaFairy
     panic_klap_model_index = Model.KlaptrapGreen
-    turtle_model_index = Model.KlaptrapGreen
+    turtle_model_index = Model.Turtle
     sseek_klap_model_index = Model.KlaptrapGreen
     fungi_tomato_model_index = Model.Tomato
     caves_tomato_model_index = Model.IceTomato
