@@ -81,6 +81,16 @@
       }
     },
     {
+      "label": "Build Test Hack",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "Run Server",
       "type": "shell",
       "command": "${command:python.interpreterPath} ./runner.py",

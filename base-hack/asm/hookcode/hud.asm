@@ -1,32 +1,3 @@
-CoinHUDReposition:
-    addiu $t8, $zero, 0x26
-    lui $t7, hi(CurrentMap)
-    lw $t7, lo(CurrentMap) ($t7)
-    addiu $a2, $zero, 1
-    beq $t7, $a2, CoinHUDReposition_Finish
-    nop
-    addiu $a2, $zero, 5
-    beq $t7, $a2, CoinHUDReposition_Finish
-    nop
-    addiu $a2, $zero, 0x19
-    beq $t7, $a2, CoinHUDReposition_Finish
-    nop
-
-    CoinHUDReposition_Lower:
-        addiu $t8, $zero, 0x4C
-
-    CoinHUDReposition_Finish:
-        lui $t7, hi(WidescreenEnabled)
-        lbu $t7, lo(WidescreenEnabled) ($t7)
-        bnez $t7, CoinHUDReposition_Widescreen
-        nop
-        j 0x806F88D0
-        addiu $t7, $zero, 0x122
-
-    CoinHUDReposition_Widescreen:
-        j 0x806F88D0
-        addiu $t7, $zero, hud_screen_wd - 30
-
 GiveItemPointerToMulti:
     lui $t8, hi(MultiBunchCount)
     addiu $t8, $t8, lo(MultiBunchCount)

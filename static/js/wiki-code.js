@@ -104,7 +104,7 @@ async function fetchArticles() {
 
 fetchArticles();
 
-const invalid_id_characters = [" ", ",", "(", ")", ".", "\"", "'"]
+const invalid_id_characters = [" ", ",", "\"", "'"]
 let used_ids = {};
 
 class MarkdownNavItem {
@@ -116,9 +116,7 @@ class MarkdownNavItem {
         split_id.forEach((char, char_index) => {
             let new_char = char;
             if (invalid_id_characters.includes(char)) {
-                if (char_index < (split_id.length - 1)) {
-                    new_char = "-";
-                }
+                new_char = "-";
             }
             new_split_id.push(new_char);
         })
@@ -394,7 +392,12 @@ function filterHTML(element, output_html) {
     // Warp to ID if specified
     hash = window.location.hash;
     if (hash.length > 0) {
-        const hash_hook = document.querySelector(hash);
+        let hash_hook = null;
+        if (hash.substring(0, 1) == "#") {
+            hash_hook = document.getElementById(hash.substring(1))
+        } else {
+            hash_hook = document.querySelector(hash);
+        }
         if (hash_hook) {
             hash_hook.scrollIntoView();
         }

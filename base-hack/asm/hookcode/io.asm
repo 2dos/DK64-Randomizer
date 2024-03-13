@@ -118,20 +118,3 @@ setFlag_ItemRando:
     addiu $a3, $zero, 1
     j 0x80731300
     nop
-
-.definelabel nin_logo_width, 256 ; Normally 192
-.definelabel nin_logo_height, 132 ; Normally 48
-.definelabel nin_logo_x_offset, (hud_screen_wd - nin_logo_width) / 2
-.definelabel nin_logo_y_offset, (hud_screen_hd - nin_logo_height) / 2
-.definelabel nin_logo_x_offset_alloc, nin_logo_y_offset * hud_screen_wd
-.definelabel nin_write_position, (nin_logo_x_offset_alloc + nin_logo_x_offset) * 2
-
-fixTilePosition:
-    addiu $a1, $a1, (((hud_screen_wd/2)-160)*4) ;Move Tiles
-    j 0x8070F310 ;Return to Game
-    sw $a1, 0x5C($sp) ;Run Replaced Instruction
-
-fixNintendoLogoPosition:
-    lui $at, hi(nin_write_position) ;Upper Half of Nintendo Logo Write Position
-    j 0x805FB8B0 ; Return to Game
-    addiu $at, $at, lo(nin_write_position) ;Lower Half of Nintendo Logo Write Position

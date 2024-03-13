@@ -3,11 +3,15 @@
 void writeWTI(int index) {
 	ExpandPauseMenu = index;
 	int init_y = 0x198;
-	if (Rando.true_widescreen) {
-		init_y = (2 * SCREEN_HD_FLOAT) - 72;
-	}
 	InitialPauseHeight = init_y - (0x28 * index);
 }
+
+static short isles_maps[] = {
+	MAP_ISLES,
+	MAP_FAIRYISLAND,
+	MAP_KLUMSY,
+	MAP_ISLES_SNIDEROOM,
+};
 
 void handle_WTI(void) {
 	if (isLobby(CurrentMap)) {
@@ -19,7 +23,7 @@ void handle_WTI(void) {
 	} else if ((CurrentMap == MAP_HELM) && (checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT))) {
 		// Helm (Only if BoM is off)
 		writeWTI(1);
-	} else if ((CurrentMap == MAP_ISLES) || (CurrentMap == MAP_FAIRYISLAND) || (CurrentMap == MAP_KLUMSY) || (CurrentMap == MAP_ISLES_SNIDEROOM)) {
+	} else if (inShortList(CurrentMap, &isles_maps[0], sizeof(isles_maps) >> 1)) {
 		// Isles, BFI, K. Lumsy, Snide Room
 		writeWTI(1);
 	} else if ((checkFlagDuplicate(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) && ((CurrentMap == MAP_TRAININGGROUNDS) || (CurrentMap == MAP_TREEHOUSE))) {

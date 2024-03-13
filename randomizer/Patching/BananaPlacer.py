@@ -8,18 +8,49 @@ import randomizer.Lists.CBLocations.FranticFactoryCBLocations
 import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
+import randomizer.Lists.CBLocations.DKIslesCBLocations
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Settings import CBRando
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
 from randomizer.Patching.Patcher import LocalROM
 
 level_data = {
-    Levels.JungleJapes: {"cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList},
-    Levels.AngryAztec: {"cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList},
-    Levels.FranticFactory: {"cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList},
-    Levels.GloomyGalleon: {"cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList},
-    Levels.FungiForest: {"cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList},
-    Levels.CrystalCaves: {"cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList},
-    Levels.CreepyCastle: {"cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList},
+    Levels.JungleJapes: {
+        "cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList,
+    },
+    Levels.AngryAztec: {
+        "cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList,
+    },
+    Levels.FranticFactory: {
+        "cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList,
+    },
+    Levels.GloomyGalleon: {
+        "cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList,
+    },
+    Levels.FungiForest: {
+        "cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList,
+    },
+    Levels.CrystalCaves: {
+        "cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList,
+    },
+    Levels.CreepyCastle: {
+        "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
+    },
+    Levels.CreepyCastle: {
+        "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
+    },
+    Levels.DKIsles: {
+        "cb": randomizer.Lists.CBLocations.DKIslesCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.DKIslesCBLocations.BalloonList,
+    },
 }
 
 PATH_CAP = 64
@@ -27,7 +58,7 @@ PATH_CAP = 64
 
 def randomize_cbs(spoiler):
     """Place Colored Bananas into ROM."""
-    if spoiler.settings.cb_rando:
+    if spoiler.settings.cb_rando != CBRando.off:
         ROM_COPY = LocalROM()
         for cont_map_id in range(216):
             # Wipe setup and paths of CB information

@@ -340,5 +340,4 @@ void initCosmetic(void) {
     initSkyboxRando();
     initSeasonalChanges();
     initColorblindChanges();
-    //loadWidescreen(OVERLAY_BOOT);
 }

@@ -125,19 +125,20 @@ int shouldDing(void) {
 	return 0;
 }
 
-int* renderDingSprite(int* dl) {
-	if (ding_sprite_timer == 0) {
+int* renderIndicatorSprite(int* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec) {
+	if (*timer == 0) {
 		return dl;
 	}
-	ding_sprite_timer -= 1;
+	int timer_value = *timer - 1;
+	*timer = timer_value;
 	int offset = 0;
-	if (ding_sprite_timer > SPRITE_ALPHA_IN) {
-		offset = ding_sprite_timer - SPRITE_ALPHA_IN;
-	} else if (ding_sprite_timer < SPRITE_ALPHA_OUT) {
-		offset = SPRITE_ALPHA_OUT - ding_sprite_timer;
+	if (timer_value > SPRITE_ALPHA_IN) {
+		offset = timer_value - SPRITE_ALPHA_IN;
+	} else if (timer_value < SPRITE_ALPHA_OUT) {
+		offset = SPRITE_ALPHA_OUT - timer_value;
 	}
 	float alpha = 0xFF;
-	if (!hasEnoughCBs()) {
+	if (dim) {
 		alpha = 0x80;
 	}
 	alpha *= (SPRITE_ALPHA_OUT - offset);
@@ -149,7 +150,24 @@ int* renderDingSprite(int* dl) {
 	} else if (alpha_i < 0) {
 		return dl;
 	}
-	return drawImage(dl, 114, RGBA16, 48, 42, 900, y, 2.0f, 2.0f, alpha_i);
+	dl = initDisplayList(dl);
+	*(unsigned int*)(dl++) = 0xE200001C;
+	*(unsigned int*)(dl++) = 0x00504240;
+	gDPSetPrimColor(dl, 0, 0, 0xFF, 0xFF, 0xFF, alpha_i);
+	dl += 2;
+	*(unsigned int*)(dl++) = 0xFCFF97FF;
+	*(unsigned int*)(dl++) = 0xFF2CFE7F;
+	*(unsigned int*)(dl++) = 0xE3001201;
+	*(unsigned int*)(dl++) = 0x00000000;
+	int p2 = 0;
+	if (codec == IA8) {
+		p2 = 3;
+	}
+	return displayImage(dl++, sprite, p2, codec, width, height, 900, y, 2.0f, 2.0f, 0, 0.0f);
+}
+
+int* renderDingSprite(int* dl) {
+	return renderIndicatorSprite(dl, 114, !hasEnoughCBs(), &ding_sprite_timer, 48, 42, RGBA16);
 }
 
 void initDingSprite(void) {
@@ -208,52 +226,6 @@ void tagBarrelBackgroundKong(int kong_actor) {
 	Player->new_kong = kong_actor;
 }
 
-void preventMedalHUD(int item, int unk0, int unk1) {
-	/**
-	 * @brief Prevent Medal HUD from showing
-	 */
-	if (item != 0xA) {
-		displayItemOnHUD(item, unk0, unk1);
-	}
-}
-
-void initHUDDirection(placementData* hud_data, int item) {
-	/**
-	 * @brief Modified initialization of HUD Direction function to account for new medal changes.
-	 */
-	int x_direction = 0;
-	int y_direction = 0;
-	hud_data->unk_0C = 0;
-	switch(item) {
-		case 0x0: // CB
-		case 0xD: // CB T&S
-		case 0xE: // Move Cost
-			x_direction = -1;
-			break;
-		case 0x9: // GBs
-		case 0xC: // Blueprint
-			y_direction = 1;
-			break;
-		default:
-			x_direction = 1;
-		break;
-	}
-	hud_data->x_direction = x_direction * 0x30;
-	hud_data->y_direction = y_direction * 0x30;
-}
-
-void* getHUDSprite_HUD(int item) {
-	/**
-	 * @brief Override HUD Sprite for Medals to be a MultiBunch
-	 * @return Sprite Address
-	 */
-	if (item == 0xA) {
-		return sprite_table[0xA8];
-	} else {
-		return getHUDSprite(item);
-	}
-}
-
 void updateMultibunchCount(void) {
 	/**
 	 * @brief Get the total amount of colored bananas for a level.
@@ -262,7 +234,7 @@ void updateMultibunchCount(void) {
 	int count = getTotalCBCount();
 	MultiBunchCount = count;
 	if (HUD) {
-		HUD->item[0xA].visual_item_count = count;
+		HUD->item[ITEMID_MULTIBUNCH].visual_item_count = count;
 	}
 }
 
@@ -277,7 +249,7 @@ void RabbitRaceInfiniteCode(void) {
 		if (control_state == 0x1F) {
 			if (CurrentActorPointer_0->control_state_progress == 2) {
 				// Start
-				setHUDItemAsInfinite(5,0,1);
+				setHUDItemAsInfinite(ITEMID_CRYSTALS,0,1);
 			}
 		} else if ((control_state == 0x28) || (control_state == 0x1E)) {
 			if (CurrentActorPointer_0->control_state_progress == 0) {
@@ -315,7 +287,7 @@ int canPlayJetpac(void) {
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
 		return 0;
 	} else {
-		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);
+		return getMedalCount();
 	}
 }
 

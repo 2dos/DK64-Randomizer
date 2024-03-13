@@ -87,25 +87,6 @@ void pre_turn_keys(void) {
 			}
 		}
 	}
-	/*
-		NOTE: This doesn't work for some reason?
-		Need to figure this out.
-	*/
-	// if (Rando.item_rando) {
-	// 	for (int i = 0; i < 7; i++) {
-	// 		if (checkFlag(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
-	// 			if (Rando.level_order_rando_on) {
-	// 				for (int j = 0; j < 7; j++) {
-	// 					if (Rando.level_order[j] == i) {
-	// 						setFlagDuplicate(tnsportal_flags[j], 1, FLAGTYPE_PERMANENT);
-	// 					}
-	// 				}
-	// 			} else {
-	// 				setFlagDuplicate(tnsportal_flags[i], 1, FLAGTYPE_PERMANENT);
-	// 			}
-	// 		}
-	// 	}
-	// }
 }
 
 void writeKeyFlags(int index) {

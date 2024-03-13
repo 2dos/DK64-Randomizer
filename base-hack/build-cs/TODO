@@ -21,7 +21,6 @@
 [ ] - dump_pointer_tables_vanilla
 [ ] - encoders
 [ ] - end_seq_writer
-[ ] - find_compressed_file_with_data
 [ ] - generate_disco_models
 [ ] - generate_kong_color_images
 [ ] - generate_watch_file

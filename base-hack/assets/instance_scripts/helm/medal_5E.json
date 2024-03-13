@@ -6,33 +6,11 @@
     "script": [
         {
             "conditions": [
-                {"function": 1, "inverted": false, "parameters": [0, 0, 0]}
+                {"function":1,"inverted":false,"parameters":[0,0,0]}
             ],
             "executions": [
-                {"function": 20, "parameters": [1, 20, 0]},
-                {"function": 17, "parameters": [1, 65535, 0]},
-                {"function": 69, "parameters": [1, 100, 255]},
-                {"function": 1, "parameters": [1, 0, 0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
-                {"function": 54, "inverted": false, "parameters": [76, 0, 0]}
-            ],
-            "executions": [
-                {"function": 69, "parameters": [0, 0, 5]},
-                {"function": 1, "parameters": [2, 0, 0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [770, 0, 0]}
-            ],
-            "executions": [
-                {"function": 69, "parameters": [0, 0, 5]},
-                {"function": 1, "parameters": [2, 0, 0]}
+                {"function":1,"parameters":[1,0,0]},
+                {"function":38,"parameters":[2,0,0]}
             ]
         }
     ]

@@ -57,6 +57,7 @@ typedef struct FasterChecks {
 	unsigned char factory_car : 1; // 0x10 
 	unsigned char castle_car : 1; // 0x8 
 	unsigned char seal_race : 1; // 0x4 
+	unsigned char arcade_second_round : 1; // 0x2 
 } FasterChecks;
 
 typedef enum ENUM_FasterChecks {
@@ -74,4 +75,5 @@ typedef enum ENUM_FasterChecks {
 	/* 11 */ FASTERCHECKS_ENUM_FACTORYCAR,
 	/* 12 */ FASTERCHECKS_ENUM_CASTLECAR,
 	/* 13 */ FASTERCHECKS_ENUM_SEALRACE,
+	/* 14 */ FASTERCHECKS_ENUM_ARCADESECONDROUND,
 } ENUM_FasterChecks;

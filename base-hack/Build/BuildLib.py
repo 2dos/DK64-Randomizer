@@ -8,7 +8,7 @@ BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer sa
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
 finalROM = "rom/dk64-randomizer-base-dev.z64"
-music_size = 0x8000
+music_size = 24000
 heap_size = 0x34000 + music_size
 flut_size = 0
 MODEL_DIRECTORY = "assets/models/"
@@ -33,12 +33,16 @@ barrel_skins = (
     "rainbow",
     "fakegb",
     "melon",
+    "cranky",
+    "funky",
+    "candy",
+    "snide",
 )
 
 
 def getBonusSkinOffset(offset: int):
     """Get texture index after the barrel skins."""
-    return 6026 + (2 * len(barrel_skins)) + offset
+    return 6026 + (3 * len(barrel_skins)) + offset
 
 
 def intf_to_float(intf):

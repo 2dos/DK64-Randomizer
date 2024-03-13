@@ -6,22 +6,13 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
-from randomizer.Enums.Songs import Songs
-from randomizer.Enums.SongType import SongType
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions
-from randomizer.LogicFiles.CreepyCastle import LogicRegions as CreepyCastleRegions
-from randomizer.LogicFiles.CrystalCaves import LogicRegions as CrystalCavesRegions
-from randomizer.LogicFiles.DKIsles import LogicRegions as DKIslesRegions
-from randomizer.LogicFiles.FranticFactory import LogicRegions as FranticFactoryRegions
-from randomizer.LogicFiles.FungiForest import LogicRegions as FungiForestRegions
-from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GloomyGalleonRegions
-from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
+from randomizer.Lists.ShufflableExit import ShufflableExits
 
 
 def getKongString(kongEnum: Kongs) -> str:
@@ -375,42 +366,7 @@ for minigameEnum, minigameObj in MinigameRequirements.items():
 
 PlannableSpawns = []
 
-# A dictionary for sorting locations by hint_name. This is filled in
-# programmatically, because hint regions may change and we don't want to adjust
-# this dictionary every time hint regions change.
-hintNameSortDict = {
-    Levels.DKIsles: dict(),
-    Levels.JungleJapes: dict(),
-    Levels.AngryAztec: dict(),
-    Levels.FranticFactory: dict(),
-    Levels.GloomyGalleon: dict(),
-    Levels.FungiForest: dict(),
-    Levels.CrystalCaves: dict(),
-    Levels.CreepyCastle: dict(),
-}
-
-# Go through each level and add the valid spawn locations.
-allSpawnableLevels = [DKIslesRegions, JungleJapesRegions, AngryAztecRegions, FranticFactoryRegions, GloomyGalleonRegions, FungiForestRegions, CrystalCavesRegions, CreepyCastleRegions]
-for level in allSpawnableLevels:
-    # Remove locations we should not spawn into (such as the credits).
-    filteredLocations = dict(filter(lambda x: x[0] in RegionMapList, level.items()))
-
-    # Populate the sorting dictionary.
-    for regionObj in filteredLocations.values():
-        hintName = regionObj.hint_name
-        hintNameDict = hintNameSortDict[regionObj.level]
-        if hintName not in hintNameDict:
-            numRegions = len(hintNameDict)
-            hintNameDict[hintName] = numRegions + 1
-
-    # Sort by hint name, for better readability.
-    def spawnKey(loc):
-        """Do something."""
-        _, regionObj = loc
-        return hintNameSortDict[regionObj.level][regionObj.hint_name]
-
-    sortedLocations = dict(sorted(filteredLocations.items(), key=spawnKey))
-
-    for regionEnum, regionObj in sortedLocations.items():
-        regionJson = {"name": f"{getLevelString(regionObj.level)}: {regionObj.hint_name} - {regionObj.name}", "value": regionEnum.name}
-        PlannableSpawns.append(regionJson)
+for transition, exit in ShufflableExits.items():
+    if exit.back.regionId in RegionMapList:
+        transitionJson = {"name": exit.name, "value": transition.name}
+        PlannableSpawns.append(transitionJson)

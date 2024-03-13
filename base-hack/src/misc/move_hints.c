@@ -10,13 +10,6 @@
  */
 #include "../../include/common.h"
 
-static short tbarrel_flags[] = {
-	FLAG_TBARREL_BARREL,
-	FLAG_TBARREL_DIVE,
-	FLAG_TBARREL_ORANGE,
-	FLAG_TBARREL_VINE,
-};
-
 int isTBarrelFlag(int flag) {
 	/**
 	 * @brief Is a flag a training move flag
@@ -84,7 +77,7 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 				base = MRT_NOBUY_BANANA;
 			} else if (isFlagInRange(shop_data->flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 				base = MRT_NOBUY_BLUEPRINT;
-			} else if (isFlagInRange(shop_data->flag, FLAG_MEDAL_JAPES_DK, 40)) {
+			} else if (isMedalFlag(shop_data->flag)) {
 				base = MRT_NOBUY_MEDAL;
 			} else if (subtype == 0) {
 				base = MRT_NOBUY_SLAM;
@@ -139,7 +132,7 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 					int flag = shop_data->flag;
 					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						base = MRT_CANBUY_BLUEPRINT;
-					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+					} else if (isMedalFlag(flag)) {
 						base = MRT_CANBUY_MEDAL;
 					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
 						base = MRT_CANBUY_NINTENDO;

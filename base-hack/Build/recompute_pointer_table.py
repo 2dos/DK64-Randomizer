@@ -381,6 +381,17 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO, generate_json: bool):
 
     if generate_json:
         with open("../static/patches/pointer_addresses.json", "w") as fh:
+            unneeded_table_keys = ["starting_byte", "ending_byte", "total_entries", "address", "name"]
+            unneeded_file_keys = ["sha", "bit_set", "file_name", "map_index", "uncompressed_size", "new_address"]
+            for table_index, table in enumerate(dataset):
+                for k in unneeded_table_keys:
+                    del table[k]
+                for file in table["entries"]:
+                    for k in unneeded_file_keys:
+                        del file[k]
+                    if table_index != 0:
+                        del file["compressed_size"]
+                        del file["index"]
             fh.write(json.dumps(dataset))
 
 

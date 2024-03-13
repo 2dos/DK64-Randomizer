@@ -30,9 +30,9 @@ class Model(IntEnum):
     Turtle = 21
     Seal = 22
     Enguarde = 23
-    Beaver_24 = 24
-    Beaver_25 = 25
-    Beaver_26 = 26
+    BeaverBlue_LowPoly = 24
+    BeaverBlue = 25
+    BeaverGold = 26
     Zinger = 27
     Squawks_28 = 28
     Klobber = 29

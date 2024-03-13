@@ -75,3 +75,5 @@
 .definelabel adjustSFXType_Internal, 0x80737C20
 .definelabel loadChunks, 0x80650ECC
 .definelabel regularFrameLoop, 0x805FC2B0
+.definelabel wipeMallocSpace, 0x80611690
+.definelabel inDKTV, 0x807142D8

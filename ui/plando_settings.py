@@ -5,6 +5,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
+from randomizer.Enums.Transitions import Transitions
 
 import js
 import json
@@ -187,7 +188,7 @@ def validate_plando_file(file_obj: dict) -> None:
     plando_errors_element = js.document.getElementById("plando_import_errors")
     plando_errors_element.style.display = "none"
 
-    # validate_plando_option_value(file_obj, "plando_spawn_location", Locations)
+    validate_plando_option_value(file_obj, "plando_starting_exit", Transitions)
     for starting_kong in file_obj["plando_starting_kongs_selected"]:
         if starting_kong != "Randomize":
             try:

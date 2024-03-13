@@ -1,1 +1,1 @@
-#define MUSIC_SIZE 0x8000
+#define MUSIC_SIZE 0x5dc0

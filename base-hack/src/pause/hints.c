@@ -113,6 +113,46 @@ static itemloc_data itemloc_textnames[] = {
     }, // 5
 };
 
+static unsigned char progressive_ding_timer = 0;
+
+void initProgressiveTimer(void) {
+    progressive_ding_timer = 52;
+}
+
+int* renderProgressiveSprite(int* dl) {
+    return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8);
+}
+
+void playProgressiveDing(void) {
+    initProgressiveTimer();
+    playSFX(0x2EA);
+}
+
+void handleProgressiveIndicator(void) {
+    if (Rando.progressive_hint_gb_cap == 0) {
+        return;
+    }
+    int gb_count = getTotalGBs();
+    int old_progressive_level = -1;
+    int new_progressive_level = -1;
+    for (int level = 0; level < 7; level++) {
+        for (int kong = 0; kong < 5; kong++) {
+            int index = (level * 5) + kong;
+            int local_req = getHintGBRequirement(level, kong);
+            if (gb_count >= local_req) {
+                new_progressive_level = index;
+            }
+            if ((gb_count - 1) >= local_req) {
+                old_progressive_level = index;
+            }
+
+        }
+    }
+    if (old_progressive_level != new_progressive_level) {
+        playProgressiveDing();
+    }
+}
+
 void initHints(void) {
     if (!hints_initialized) {
         for (int i = 0; i < 35; i++) {
@@ -144,9 +184,6 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
     float hint_x = x;
     if (center) {
         hint_x = 640.0f;
-        if (Rando.true_widescreen) {
-            hint_x = SCREEN_WD_FLOAT * 2;
-        }
     }
     _guTranslateF(&mtx1, hint_x, position, 0.0f);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
@@ -292,9 +329,6 @@ int* displayBubble(int* dl) {
     *(unsigned int*)(dl++) = 0xFA000000;
     *(unsigned int*)(dl++) = 0xFFFFFF96;
     int bubble_x = 625;
-    if (Rando.true_widescreen) {
-        bubble_x = (2 * SCREEN_WD) - 15;
-    }
     return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
 }
 
@@ -392,9 +426,6 @@ int* drawItemLocationScreen(int* dl, int level_x) {
     // Display Hints
     dl = displayBubble(dl);
     int item_loc_x = 200;
-    if (Rando.true_widescreen) {
-        item_loc_x = SCREEN_WD - 120;
-    }
     mtx_counter = 0;
     int head = 0;
     int k = 0;

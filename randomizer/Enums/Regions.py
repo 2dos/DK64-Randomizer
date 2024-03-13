@@ -11,6 +11,7 @@ class Regions(IntEnum):
     Credits = auto()  # This holds the Banana Hoard
 
     # DK Isles Regions
+    DKIslesMedals = auto()
     Treehouse = auto()
     TrainingGrounds = auto()
     IslesMain = auto()

@@ -70,7 +70,7 @@ LogicRegions = {
         TransitionFront(Regions.TempleStart, lambda l: ((l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)) or l.phasewalk),
         TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tunnel_door) or Events.AztecGuitarPad in l.Events or l.phasewalk or l.generalclips),
-        TransitionFront(Regions.CandyAztec, lambda l: True),
+        TransitionFront(Regions.CandyAztec, lambda l: l.candyAccess),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
@@ -118,7 +118,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecOasis, lambda l: True),
         TransitionFront(Regions.AngryAztecMain, lambda l: True),
-        TransitionFront(Regions.CrankyAztec, lambda l: True),
+        TransitionFront(Regions.CrankyAztec, lambda l: l.crankyAccess),
     ]),
 
     Regions.AngryAztecMain: Region("Angry Aztec Main", "Aztec Oasis and Totem Area", Levels.AngryAztec, True, -1, [
@@ -149,8 +149,8 @@ LogicRegions = {
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
         TransitionFront(Regions.LlamaTemple, lambda l: l.canOpenLlamaTemple() or l.phasewalk or l.generalclips),  # Decision to pre-spawn switches
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.AztecMainToBBlast),
-        TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.FunkyAztec, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
+        TransitionFront(Regions.FunkyAztec, lambda l: l.funkyAccess),
         TransitionFront(Regions.AztecDonkeyQuicksandCave, lambda l: (((Events.AztecDonkeySwitch in l.Events and l.strongKong) or ((not l.settings.shuffle_shops) and l.generalclips)) and l.isdonkey) or l.phasewalk),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
