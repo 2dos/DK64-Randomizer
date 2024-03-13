@@ -114,27 +114,6 @@ void quickWrinklyTextboxes(void) {
     unkTextFunction(CurrentActorPointer_0);
 }
 
-void initQoL_Fixes(void) {
-    /**
-     * @brief Initialize any quality of life features which aim to fix unwanted DK64 vanilla bugs
-     * Current Elements covered here:
-     * - Rabbit Race will give infinite crystals during race 2
-     * - Fix the dillo TNT pads to not move when using Tiny
-     * - Fix Squawks-with-spotlight's AI to make him follow the Kong more closely in Fungi Forest's Dark Attic
-     * Definition of an "unwanted DK64 vanilla bug":
-     * - Removing the bug doesn't negatively impact speedrunners/game glitches OR
-     * - Leaving the bug in produces a crash or leaves a prominent effect in the game which is undesirable (see Dillo TNT Pads)
-     * - Pausing and exiting to another map during Helm Timer will correctly apply the helm timer pause correction
-     */
-    if (Rando.quality_of_life.vanilla_fixes) {
-        actor_functions[249] = &squawks_with_spotlight_actor_code;
-        // Make Feathers not sprites
-        changeFeatherToSprite();
-        *(float*)(0x80753E38) = 350.0f;
-        actor_functions[43] = &OrangeGunCode; // Change feather behavior code
-    }
-}
-
 static char boot_speedup_done = 0;
 void bootSpeedup(void) {
     /**
@@ -193,18 +172,6 @@ void bootSpeedup(void) {
 	}
 }
 
-void initQoL_Boot(void) {
-    /**
-     * @brief Initialize any quality of life features which speed up the boot procedure
-     * Current Elements covered here:
-     * - Removing DKTV when quitting the game or going via end sequence
-     * - Speeding up the bootup setup checks
-     */
-    // Faster Boot
-    writeFunction(0x805FEB00, &bootSpeedup); // Modify Function Call
-    *(int*)(0x805FEB08) = 0; // Cancel 2nd check
-}
-
 void initQoL_FastWarp(void) {
     /**
      * @brief Initialize any quality of life features which speed up bananaporting
@@ -239,15 +206,6 @@ void initSpawn(void) {
     }
     setPrevSaveMap();
     if (Rando.warp_to_isles_enabled) {
-        // Pause Menu Exit To Isles Slot
-        *(short*)(0x806A85EE) = 4; // Yes/No Prompt
-        *(short*)(0x806A8716) = 4; // Yes/No Prompt
-        //*(short*)(0x806A87BE) = 3;
-        *(short*)(0x806A880E) = 4; // Yes/No Prompt
-        //*(short*)(0x806A8766) = 4;
-        *(short*)(0x806A986A) = 4; // Yes/No Prompt
-        int y_cap = 0x270;
-        *(int*)(0x806A9990) = 0x2A210000 | y_cap; // SLTI $at, $s1, 0x2A8
         if (!starting_map_rando_on) {
             PauseSlot3TextPointer = (char*)&exittoisles;
         } else {
@@ -260,29 +218,9 @@ void initNonControllableFixes(void) {
     /**
      * @brief Initialize any changes which we do not want to give the user any control over whether it's removed
      */
-    writeFunction(0x806F56E0, &getFlagIndex_Corrected); // BP Acquisition - Correct for character
-    writeFunction(0x806F9374, &getFlagIndex_MedalCorrected); // Medal Acquisition - Correct for character
     // Inverted Controls Option
     *(short*)(0x8060D01A) = getHi(&InvertedControls); // Change language store to inverted controls store
     *(short*)(0x8060D01E) = getLo(&InvertedControls); // Change language store to inverted controls store
-    *(short*)(0x8060D04C) = 0x1000; // Prevent inverted controls overwrite
-    // Disable Sprint Music in Fungi Forest
-    writeFunction(0x8067F3DC, &playTransformationSong);
-    // New Helm Barrel Code
-    actor_functions[107] = &HelmBarrelCode;
-    // GetOut Timer
-    *(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer
-    // Fix Tag Barrel Background Kong memes
-    writeFunction(0x806839F0, &tagBarrelBackgroundKong);
-    // Better Collision
-    writeFunction(0x806F6618, &checkModelTwoItemCollision);
-    writeFunction(0x806F662C, &checkModelTwoItemCollision);
-    // Dive Check
-    writeFunction(0x806E9658, &CanDive_WithCheck);
-    // Prevent Japes Dillo Cutscene for the key acquisition
-    *(short*)(0x806EFCEC) = 0x1000;
-    // Make getting out of spider traps easier on controllers
-    *(int*)(0x80752ADC) = (int)&exitTrapBubbleController;
 }
 
 void QoL_DisplayInstrument(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3) {
@@ -330,36 +268,13 @@ int correctRefillCap(int index, int player) {
     return getRefillCount(index, player);
 }
 
-void initQoL_InstrumentFix(void) {
-    /**
-     * @brief Makes instrument energy a global variable used by all kongs, like ammo and oranges
-     * 
-     */
-    if (Rando.quality_of_life.global_instrument) {
-        *(int*)(0x8060DC04) = 0; // nop out
-        writeFunction(0x8060DB50, &newInstrumentRefill); // New code to set the instrument refill count
-        writeFunction(0x806AA728, &QoL_DisplayInstrument); // display number on pause menu
-        *(int*)(0x806F891C) = 0x27D502FE; // addiu $s5, $s8, 0x2FE - Infinite Instrument Energy
-        *(int*)(0x806F8934) = 0xA7C202FE; // sh $v0, 0x2FE ($fp) - Store item count pointer
-        writeFunction(0x806A7DD4, &getInstrumentRefillCount); // Correct refill instruction - Headphones
-        writeFunction(0x806F92B8, &correctRefillCap); // Correct refill instruction - changeCollectable
-
-        // Make it so all kongs can refill headphones *if* a kong has music
-        actor_functions[128] = &HeadphonesCodeContainer;
-        *(int*)(0x806A7C04) = 0x00A0C025; // or $t8, $a1, $zero
-    }
-}
-
 void initQoL(void) {
     /**
      * @brief Initialize all quality of life functionality
      */
     writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
     initQoL_Cutscenes();
-    initQoL_Fixes();
-    initQoL_Boot();
     initSpawn();
     initQoL_FastWarp();
-    initQoL_InstrumentFix();
     initNonControllableFixes();
 }

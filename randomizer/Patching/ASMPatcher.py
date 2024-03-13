@@ -128,6 +128,19 @@ def writeHook(ROM_COPY, address: int, overlay: Overlay, hook_location: str, offs
     ROM_COPY.writeMultipleBytes(value, 4)
     ROM_COPY.writeMultipleBytes(0, 4)
 
+def writeLabelValue(ROM_COPY, address: int, overlay: Overlay, label_name: str, offset_dict) -> int:
+    """Write value of label to ROM."""
+    if isinstance(ROM_COPY, ROM):
+        raise Exception("Cosmetics cannot utilize writeLabelValue.")
+    # NOTE: This **CANNOT** be used for cosmetic changes
+    rom_start = getROMAddress(address, overlay, offset_dict)
+    if rom_start is None:
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
+    label_address = js.rom_symbols.get(label_name.lower(), None)
+    if label_address is None:
+        raise Exception(f"Couldn't find hook {label_name}.")
+    ROM_COPY.seek(rom_start)
+    ROM_COPY.writeMultipleBytes(label_address, 4)
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
@@ -315,7 +328,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)
     writeHook(ROM_COPY, 0x80600674, Overlay.Static, "updateLag", offset_dict)
 
+    # Beaver Bother fix
+    writeHook(ROM_COPY, 0x806AD740, Overlay.Static, "unscareBeaver", offset_dict)
+    writeHook(ROM_COPY, 0x806AD728, Overlay.Static, "scareBeaver", offset_dict)
+    writeValue(ROM_COPY, 0x806B674E, Overlay.Static, 0xC, offset_dict) # Increase the scare duration
+
     writeFunction(ROM_COPY, 0x80704568, Overlay.Static, "spawnOverlayText", offset_dict)
+
+    writeValue(ROM_COPY, 0x807563B4, Overlay.Static, 1, offset_dict, 1) # Enable stack trace
 
     # Damage mask
     damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
@@ -627,6 +647,14 @@ def patchAssembly(ROM_COPY, spoiler):
         writeHook(ROM_COPY, 0x806A8760, Overlay.Static, "PauseExtraSlotClamp1", offset_dict)
         writeHook(ROM_COPY, 0x806A8804, Overlay.Static, "PauseExtraSlotCustomCode", offset_dict)
         writeHook(ROM_COPY, 0x806A9898, Overlay.Static, "PauseCounterCap", offset_dict)
+        # Pause Menu Exit To Isles Slot
+        writeValue(ROM_COPY, 0x806A85EE, Overlay.Static, 4, offset_dict) # Yes/No Prompt
+        writeValue(ROM_COPY, 0x806A8716, Overlay.Static, 4, offset_dict) # Yes/No Prompt
+        #writeValue(ROM_COPY, 0x806A87BE, Overlay.Static, 3, offset_dict)
+        writeValue(ROM_COPY, 0x806A880E, Overlay.Static, 4, offset_dict) # Yes/No Prompt
+        #writeValue(ROM_COPY, 0x806A8766, Overlay.Static, 4, offset_dict)
+        writeValue(ROM_COPY, 0x806A986A, Overlay.Static, 4, offset_dict) # Yes/No Prompt
+        writeValue(ROM_COPY, 0x806A9990, Overlay.Static, 0x2A210000 | 0x270, offset_dict, 4) # SLTI $at, $s1, 0x270 (y_cap = 0x270)
 
     # Pause Stuff
     FLAG_BP_JAPES_DK_HAS = 0x1D5
@@ -970,6 +998,25 @@ def patchAssembly(ROM_COPY, spoiler):
         # Race Hoop
         writeFunction(ROM_COPY, 0x8069B13C, Overlay.Static, "renderHoop", offset_dict)
         writeFunction(ROM_COPY, 0x8069B0EC, Overlay.Static, "fixRaceHoopCode", offset_dict)
+        # Squawks w/ Spotlight Behavior
+        writeValue(ROM_COPY, 0x806C6BAE, Overlay.Static, 0, offset_dict)
+        # Feathers are sprites
+        writeValue(ROM_COPY, 0x8074ED32, Overlay.Static, 0, offset_dict) # Model
+        writeValue(ROM_COPY, 0x8074D8FF, Overlay.Static, 4, offset_dict, 1) # Master Type
+        writeFloat(ROM_COPY, 0x80753E38, Overlay.Static, 350, offset_dict) # Speed
+        writeLabelValue(ROM_COPY, 0x8074C14C, Overlay.Static, "OrangeGunCode", offset_dict)
+
+    writeLabelValue(ROM_COPY, 0x8074C1B8, Overlay.Static, "newCounterCode", offset_dict) # Shop Indicator Code
+    writeLabelValue(ROM_COPY, 0x80748014, Overlay.Static, "spawnWrinklyWrapper", offset_dict) # Change function to include setFlag call
+    writeLabelValue(ROM_COPY, 0x8074C380, Overlay.Static, "snideCodeHandler", offset_dict) # 184
+    writeLabelValue(ROM_COPY, 0x8074C394, Overlay.Static, "crankyCodeHandler", offset_dict) # 189
+    writeLabelValue(ROM_COPY, 0x8074C398, Overlay.Static, "funkyCodeHandler", offset_dict) # 190
+    writeLabelValue(ROM_COPY, 0x8074C39C, Overlay.Static, "candyCodeHandler", offset_dict) # 191
+    writeValue(ROM_COPY, 0x8074C3F0, Overlay.Static, 0x806AD54C, offset_dict, 4) # Set Gold Beaver as Blue Beaver Code
+    writeLabelValue(ROM_COPY, 0x8074C5B0, Overlay.Static, "getNextMoveText", offset_dict) # 324 # Move Text Code
+    writeLabelValue(ROM_COPY, 0x8074C5A0, Overlay.Static, "getNextMoveText", offset_dict) # 320 # Move Text Code
+    writeLabelValue(ROM_COPY, 0x80748064, Overlay.Static, "change_object_scripts", offset_dict) # Object Instance Scripts
+
     writeFunction(ROM_COPY, 0x806A8844, Overlay.Static, "helmTime_restart", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806A89E8, Overlay.Static, "helmTime_exitBonus", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806A89F8, Overlay.Static, "helmTime_exitRace", offset_dict)  # Modify Function Call
@@ -980,6 +1027,39 @@ def patchAssembly(ROM_COPY, spoiler):
         writeHook(ROM_COPY, 0x8070E83C, Overlay.Static, "TextHandler", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.brighten_mad_maze_maul_enemies):
         writeHook(ROM_COPY, 0x80631380, Overlay.Static, "brightenMMMEnemies", offset_dict)
+    if isQoLEnabled(spoiler, MiscChangesSelected.global_instrument):
+        writeValue(ROM_COPY, 0x8060DC04, Overlay.Static, 0, offset_dict, 4) # nop out
+        writeFunction(ROM_COPY, 0x8060DB50, Overlay.Static, "newInstrumentRefill", offset_dict) # New code to set the instrument refill count
+        writeFunction(ROM_COPY, 0x806AA728, Overlay.Static, "QoL_DisplayInstrument", offset_dict) # display number on pause menu
+        writeValue(ROM_COPY, 0x806F891C, Overlay.Static, 0x27D502FE, offset_dict, 4) # addiu $s5, $s8, 0x2FE - Infinite Instrument Energy
+        writeValue(ROM_COPY, 0x806F8934, Overlay.Static, 0xA7C202FE, offset_dict, 4) # sh $v0, 0x2FE ($fp) - Store item count pointer
+        writeFunction(ROM_COPY, 0x806A7DD4, Overlay.Static, "getInstrumentRefillCount", offset_dict) # Correct refill instruction - Headphones
+        writeFunction(ROM_COPY, 0x806F92B8, Overlay.Static, "correctRefillCap", offset_dict) # Correct refill instruction - changeCollectable
+        writeValue(ROM_COPY, 0x806A7C04, Overlay.Static, 0x00A0C025, offset_dict, 4) # or $t8, $a1, $zero
+        writeLabelValue(ROM_COPY, 0x8074C2A0, Overlay.Static, "HeadphonesCodeContainer", offset_dict)
+
+    # Uncontrollable Fixes
+    writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict) # BP Acquisition - Correct for character
+    writeFunction(ROM_COPY, 0x806F9374, Overlay.Static, "getFlagIndex_MedalCorrected", offset_dict) # Medal Acquisition - Correct for character
+    # Inverted Controls Option
+    writeValue(ROM_COPY, 0x8060D04C, Overlay.Static, 0x1000, offset_dict) # Prevent inverted controls overwrite
+    # Disable Sprint Music in Fungi Forest
+    writeFunction(ROM_COPY, 0x8067F3DC, Overlay.Static, "playTransformationSong", offset_dict)
+    # GetOut Timer
+    writeValue(ROM_COPY, 0x806B7ECA, Overlay.Static, 125, offset_dict) # 0x8078 for center-bottom ms timer
+    # Fix Tag Barrel Background Kong memes
+    writeFunction(ROM_COPY, 0x806839F0, Overlay.Static, "tagBarrelBackgroundKong", offset_dict)
+    # Better Collision
+    writeFunction(ROM_COPY, 0x806F6618, Overlay.Static, "checkModelTwoItemCollision", offset_dict)
+    writeFunction(ROM_COPY, 0x806F662C, Overlay.Static, "checkModelTwoItemCollision", offset_dict)
+    # Dive Check
+    writeFunction(ROM_COPY, 0x806E9658, Overlay.Static, "CanDive_WithCheck", offset_dict)
+    # Prevent Japes Dillo Cutscene for the key acquisition
+    writeValue(ROM_COPY, 0x806EFCEC, Overlay.Static, 0x1000, offset_dict)
+    # New Helm Barrel Code
+    writeLabelValue(ROM_COPY, 0x8074C24C, Overlay.Static, "HelmBarrelCode", offset_dict)
+    # Make getting out of spider traps easier on controllers
+    writeLabelValue(ROM_COPY, 0x80752ADC, Overlay.Static, "exitTrapBubbleController", offset_dict)
 
     # Decompressed Overlays
     overlays_being_decompressed = [
@@ -997,6 +1077,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x807452B0, Overlay.Static, 0xD00, offset_dict, 4)
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
+
+    # Boot setup checker optimization
+    writeFunction(ROM_COPY, 0x805FEB00, Overlay.Static, "bootSpeedup", offset_dict) # Modify Function Call
+    writeValue(ROM_COPY, 0x805FEB08, Overlay.Static, 0, offset_dict, 4) # Cancel 2nd check
 
     # Golden Banana Requirements
     order = 0

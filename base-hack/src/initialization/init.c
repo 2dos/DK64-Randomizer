@@ -126,12 +126,6 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
-	loadSingularHook(0x80600674, &updateLag);
-
-	// Beaver Bother fix
-	loadSingularHook(0x806AD740, &unscareBeaver);
-	loadSingularHook(0x806AD728, &scareBeaver);
-	*(short*)(0x806B674E) = 0xC; // Increase the scare duration
 }
 
 void skipDKTV(void) {
@@ -149,7 +143,6 @@ void initHack(int source) {
 	 */
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
-			DebugInfoOn = 1;
 			if (Rando.fast_start_beginning) {
 				*(int*)(0x80714540) = 0;
 			}
@@ -226,10 +219,8 @@ void initHack(int source) {
 			moveTransplant();
 			priceTransplant();
 			
-			actor_functions[70] = &newCounterCode;
-			
 			fixMusicRando();
-			*(int*)(0x80748014) = (int)&spawnWrinklyWrapper; // Change function to include setFlag call	
+			
 			// Style 6 Mtx
 			int base_mtx = 75;
 			style6Mtx[0x0] = base_mtx;
@@ -255,13 +246,7 @@ void initHack(int source) {
 				}
 			}
 			KKOPhaseRandoOn = kko_phase_rando;
-			// Object Instance Scripts
-			*(int*)(0x80748064) = (int)&change_object_scripts;
-			// Gold Beaver Code
-      		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
-			// Move Text Code
-			actor_functions[324] = &getNextMoveText;
-			actor_functions[320] = &getNextMoveText;
+			
 			initPauseMenu(); // Changes to enable more items
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
