@@ -800,22 +800,6 @@ int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
 }
 
-void initOptionScreen(void) {
-	/**
-	 * @brief Initialize Options Screen
-	 */
-	*(char*)(0x800338FC) = 5; // 5 Options
-	*(short*)(0x8002DA86) = 1; // Cap to 1
-	*(short*)(0x8002DA46) = getHi(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA4E) = getLo(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA1E) = getHi(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA22) = getLo(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DADE) = getHi(&InvertedControls); // Save to global
-	*(short*)(0x8002DAE2) = getLo(&InvertedControls); // Save to global
-	*(short*)(0x8002DA88) = 0x1000; // Prevent Language Update
-	writeFunction(0x8002DEC4, &displayInverted); // Modify Function Call
-}
-
 static unsigned char previous_map_save = MAP_ISLES;
 
 void setPrevSaveMap(void) {

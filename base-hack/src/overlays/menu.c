@@ -11,10 +11,7 @@
 
 #include "../../include/common.h"
 
-static const char moves_values[] = {1,1,3,1,7,1,1,7}; // Move values for the main menu changes
-
 void PatchCrankyCode(void) {
-	
 	if (CurrentMap == MAP_CRANKY) {
 		int timer = 300;
 		*(short*)(0x80027B72) = timer;
@@ -25,12 +22,6 @@ void PatchCrankyCode(void) {
 		loadSingularHook(0x80027AE8, &FixInvisibleText_0);
 		loadSingularHook(0x80027B30, &FixInvisibleText_1);
 	}
-	*(short*)(0x80026072) = getHi(&CrankyMoves_New);
-	*(short*)(0x8002607A) = getLo(&CrankyMoves_New);
-	*(short*)(0x8002607E) = getHi(&CandyMoves_New);
-	*(short*)(0x80026086) = getLo(&CandyMoves_New);
-	*(short*)(0x8002608A) = getHi(&FunkyMoves_New);
-	*(short*)(0x8002608E) = getLo(&FunkyMoves_New);
 }
 
 int give_all_blueprints(int flag, int level, int kong_p) {
@@ -57,7 +48,6 @@ void gbUpdateHandler(void) {
 void overlay_mod_menu(void) {
 	// Shops
 	PatchCrankyCode(); // Change cranky code to handle an extra variable
-	writeFunction(0x800248D4, &gbUpdateHandler);
 	if (CurrentMap == MAP_CRANKY) {
 		*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
 		*(short*)(0x80026E6A) = 0xBD; // Cranky
@@ -65,17 +55,11 @@ void overlay_mod_menu(void) {
 		*(short*)(0x80026FB2) = 9999; // Change coconut gift from 6.6 coconuts to 66.6 coconuts
 	}
 	// Menu
-	for (int i = 0; i < 8; i++) {
-		// Main Menu moves given upon entering a boss/minigame
-		MainMenuMoves[i].moves = moves_values[i];
-	}
-
 	if (Rando.default_camera_mode) {
 		InvertedControls = 1;
 	}
 
 	// Options
-	initOptionScreen();
 	if (ENABLE_FILENAME) {
 		initFilename();
 	}

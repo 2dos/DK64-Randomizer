@@ -33,6 +33,20 @@ collision_data_struct actor_collisions[ACTOR_LIMIT] = {};
 
 #define KONG_NONE -2
 
+const int fixed_shockwave_collision[21] = {
+    0xFFFF0004, 0x80676540,
+    0x06030200, 0xFFFF0008,
+    0x00000000, 0x06080200,
+    0xFFFF0400, 0x00000000,
+    0x08000200, 0xFFFF0000, // Set first to 0x08000200 (Disables shockwave dmg), Set second to 0xFFFF0000 (Disables slap dmg)
+    0x8067641C, 0x06020200,
+    0xFFFF0000, 0x00000000, // Set first to 0xFFFF0000 (Disables roll dmg)
+    0x06080200, 0xFFFFFFFF,
+    0x80676C10, 0x01020200,
+    0xFFFFFFFF, 0x00000000,
+    0x01050000,
+};
+
 void initCollectableCollision(void) {
     /**
      * @brief Initialize all collectable collisions
@@ -272,7 +286,6 @@ void initActorExpansion(void) {
     *(int*)(0x8076152C) = (int)&actor_functions[0];
     *(int*)(0x80764768) = (int)&actor_functions[0];
     // Actor Collisions
-    patchCollision(); // Patch collision before transferring
     dk_memcpy(&actor_collisions[0].collision_info, &ActorCollisionArray[0].collision_info, ACTOR_VANILLA_LIMIT*8);
     *(short*)(0x8067586A) = getHi(&actor_collisions[0].collision_info);
     *(short*)(0x80675876) = getLo(&actor_collisions[0].collision_info);

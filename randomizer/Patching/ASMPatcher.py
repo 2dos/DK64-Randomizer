@@ -1312,6 +1312,21 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x80028D10, Overlay.Menu, "changeFileSelectAction_0", offset_dict)  # File select change action
     writeFunction(ROM_COPY, 0x80029A70, Overlay.Menu, "getGamePercentage", offset_dict)
     writeValue(ROM_COPY, 0x80028EF8, Overlay.Menu, 0, offset_dict, 4)  # Joystick
+    # Menu/Shop: Options
+    writeValue(ROM_COPY, 0x800338FC, Overlay.Menu, 5, offset_dict, 1) # 5 Options
+    writeValue(ROM_COPY, 0x8002DA86, Overlay.Menu, 1, offset_dict) # Cap to 1
+    writeValue(ROM_COPY, 0x8002DA46, Overlay.Menu, getHiSym("InvertedControls"), offset_dict) # Up/Down Edit
+    writeValue(ROM_COPY, 0x8002DA4E, Overlay.Menu, getLoSym("InvertedControls"), offset_dict) # Up/Down Edit
+    writeValue(ROM_COPY, 0x8002DA1E, Overlay.Menu, getHiSym("InvertedControls"), offset_dict) # Up/Down Edit
+    writeValue(ROM_COPY, 0x8002DA22, Overlay.Menu, getLoSym("InvertedControls"), offset_dict) # Up/Down Edit
+    writeValue(ROM_COPY, 0x8002DADE, Overlay.Menu, getHiSym("InvertedControls"), offset_dict) # Save to global
+    writeValue(ROM_COPY, 0x8002DAE2, Overlay.Menu, getLoSym("InvertedControls"), offset_dict) # Save to global
+    writeValue(ROM_COPY, 0x8002DA88, Overlay.Menu, 0x1000, offset_dict) # Prevent Language Update
+    writeFunction(ROM_COPY, 0x8002DEC4, Overlay.Menu, "displayInverted", offset_dict) # Modify Function Call
+    # Menu/Shop: Mystery
+    move_levels = (1,1,3,1,7,1,1,7)
+    for index, value in enumerate(move_levels):
+        writeValue(ROM_COPY, 0x80033938 + (8 * index) + 4, Overlay.Menu, value, offset_dict, 1)
     # Menu/Shop: Misc Shop Stuff
     writeHook(ROM_COPY, 0x800260E0, Overlay.Menu, "CrankyDecouple", offset_dict)
     writeHook(ROM_COPY, 0x800260A8, Overlay.Menu, "ForceToBuyMoveInOneLevel", offset_dict)
@@ -1321,6 +1336,15 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x800260F0, Overlay.Menu, "SetMoveBaseBitfield", offset_dict)
     writeHook(ROM_COPY, 0x8002611C, Overlay.Menu, "SetMoveBaseProgressive", offset_dict)
     writeHook(ROM_COPY, 0x80026924, Overlay.Menu, "AlwaysCandyInstrument", offset_dict)
+    writeValue(ROM_COPY, 0x80026072, Overlay.Menu, getHiSym("CrankyMoves_New"), offset_dict)
+    writeValue(ROM_COPY, 0x8002607A, Overlay.Menu, getLoSym("CrankyMoves_New"), offset_dict)
+    writeValue(ROM_COPY, 0x8002607E, Overlay.Menu, getHiSym("CandyMoves_New"), offset_dict)
+    writeValue(ROM_COPY, 0x80026086, Overlay.Menu, getLoSym("CandyMoves_New"), offset_dict)
+    writeValue(ROM_COPY, 0x8002608A, Overlay.Menu, getHiSym("FunkyMoves_New"), offset_dict)
+    writeValue(ROM_COPY, 0x8002608E, Overlay.Menu, getLoSym("FunkyMoves_New"), offset_dict)
+
+    # Progressive Hints
+    writeFunction(ROM_COPY, 0x800248D4, Overlay.Menu, "gbUpdateHandler", offset_dict)
 
     # Mill and Crypt Levers
     # Mill Levers
@@ -1379,6 +1403,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002F7BC, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
     writeFunction(ROM_COPY, 0x8002FA68, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
     writeValue(ROM_COPY, 0x8002FA24, Overlay.Arcade, 0x1000, offset_dict)
+
+    # Patch Enemy Collision
+    writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict) # Purple Klaptrap
+    writeLabelValue(ROM_COPY, 0x8074B4EC, Overlay.Static, "fixed_shockwave_collision", offset_dict) # Red Klaptrap
+    writeLabelValue(ROM_COPY, 0x8074BC24, Overlay.Static, "fixed_shockwave_collision", offset_dict) # Book
+    writeLabelValue(ROM_COPY, 0x8074BBF0, Overlay.Static, "fixed_shockwave_collision", offset_dict) # All Zingers & Bats
 
     # Expand Path Allocation
     writeValue(ROM_COPY, 0x80722E56, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)

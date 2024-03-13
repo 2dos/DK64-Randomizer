@@ -39,7 +39,6 @@ extern int getEnemyFlag(int id);
 extern void setEnemyDBPopulation(int value);
 extern void populateEnemyMapData(void);
 
-extern void initOptionScreen(void);
 extern int getLo(void* addr);
 extern int getHi(void* addr);
 
@@ -408,8 +407,6 @@ extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
 extern void snideCodeHandler(void);
 
-extern void patchCollision(void);
-
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
@@ -455,3 +452,4 @@ extern drop_item drops[DROP_COUNT];
 extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
+extern const int fixed_shockwave_collision[21];
