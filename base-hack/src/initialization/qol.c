@@ -177,9 +177,6 @@ void initQoL_FastWarp(void) {
      * @brief Initialize any quality of life features which speed up bananaporting
      */
     if (Rando.fast_warp) {
-        // Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
-        *(short*)(0x806EE692) = 0x54;
-        writeFunction(0x806DC2AC, &fastWarp); // Modify Function Call
         if (!Rando.disabled_music.chunk_songs) {
             writeFunction(0x806DC318, &fastWarp_playMusic); // Modify Function Call
         }

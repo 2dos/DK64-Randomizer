@@ -2,6 +2,9 @@
 
 import json
 
+LOWER_LIMIT_DISABLE = False
+UPPER_LIMIT_DISABLE = True
+
 with open("rom/dev-symbols.sym", "r") as fh:
     # SYMBOLS CANNOT BE USED FOR COSMETIC CHANGES
     data = {}
@@ -22,10 +25,10 @@ with open("rom/dev-symbols.sym", "r") as fh:
             # Disable `.byt` stuff sneaking through
             continue
         addr_int = int(line_split[0], 16)
-        if addr_int < 0x80400000:
+        if addr_int < 0x80400000 and not LOWER_LIMIT_DISABLE:
             # Disable out-of-range stuff (lower bound)
             continue
-        elif addr_int > 0x805FAE00:
+        elif addr_int > 0x805FAE00 and not UPPER_LIMIT_DISABLE:
             # Disable out-of-range stuff (upper bound)
             continue
         data[line_split[1]] = addr_int

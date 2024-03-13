@@ -14,13 +14,7 @@
 static const char moves_values[] = {1,1,3,1,7,1,1,7}; // Move values for the main menu changes
 
 void PatchCrankyCode(void) {
-	loadSingularHook(0x800260E0, &CrankyDecouple);
-	loadSingularHook(0x800260A8, &ForceToBuyMoveInOneLevel);
-	*(int*)(0x80026160) = 0;
-	loadSingularHook(0x80026140, &PriceKongStore);
-	loadSingularHook(0x80025FC0, &CharacterCollectableBaseModify);
-	loadSingularHook(0x800260F0, &SetMoveBaseBitfield);
-	loadSingularHook(0x8002611C, &SetMoveBaseProgressive);
+	
 	if (CurrentMap == MAP_CRANKY) {
 		int timer = 300;
 		*(short*)(0x80027B72) = timer;
@@ -31,7 +25,6 @@ void PatchCrankyCode(void) {
 		loadSingularHook(0x80027AE8, &FixInvisibleText_0);
 		loadSingularHook(0x80027B30, &FixInvisibleText_1);
 	}
-	loadSingularHook(0x80026924, &AlwaysCandyInstrument);
 	*(short*)(0x80026072) = getHi(&CrankyMoves_New);
 	*(short*)(0x8002607A) = getLo(&CrankyMoves_New);
 	*(short*)(0x8002607E) = getHi(&CandyMoves_New);

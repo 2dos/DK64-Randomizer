@@ -145,12 +145,4 @@ void initItemDropTable(void) {
      * @brief Initialize the item drop data at ROM Boot
      */
     buildItemDrops();
-    *(short*)(0x806A5CA6) = getHi(&drops[0].source_object);
-    *(short*)(0x806A5CB6) = getLo(&drops[0].source_object);
-
-    *(short*)(0x806A5CBA) = getHi(&drops[0].source_object);
-    *(short*)(0x806A5CBE) = getLo(&drops[0].source_object);
-
-    *(short*)(0x806A5CD2) = getHi(&drops[0].source_object);
-    *(short*)(0x806A5CD6) = getLo(&drops[0].source_object);
 }

@@ -437,7 +437,6 @@ extern unsigned char actor_master_types[ACTOR_LIMIT];
 extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
-extern drop_item drops[DROP_COUNT];
 extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
 extern mtx_item static_mtx[20];
@@ -448,3 +447,11 @@ extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+
+// Items we're extern-ing for usage with "ASMPatcher.py"
+// DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING
+extern int balloon_path_pointers[PATH_CAP];
+extern drop_item drops[DROP_COUNT];
+extern int file_sprites[17];
+extern short file_items[16];
+extern short file_item_caps[16];

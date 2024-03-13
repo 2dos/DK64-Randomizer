@@ -142,6 +142,32 @@ def writeLabelValue(ROM_COPY, address: int, overlay: Overlay, label_name: str, o
     ROM_COPY.seek(rom_start)
     ROM_COPY.writeMultipleBytes(label_address, 4)
 
+def getLo(value: int) -> int:
+    """Get the lower 16 bits for a 32-bit value that can be loaded into an addiu instruction."""
+    return value & 0xFFFF
+
+def getHi(value: int) -> int:
+    """Get the upper 16 bits for a 32-bit value that can be loaded into a lui instruction."""
+    hi = (value >> 16) & 0xFFFF
+    lo = getLo(value)
+    if lo & 0x8000:
+        return hi + 1
+    return hi
+
+def getHiSym(ref: str) -> int:
+    """Run getHi, but relative to a symbol rather than a value."""
+    label_address = js.rom_symbols.get(ref.lower(), None)
+    if label_address is None:
+        raise Exception(f"Couldn't find hook {ref}.")
+    return getHi(label_address)
+
+def getLoSym(ref: str) -> int:
+    """Run getLo, but relative to a symbol rather than a value."""
+    label_address = js.rom_symbols.get(ref.lower(), None)
+    if label_address is None:
+        raise Exception(f"Couldn't find hook {ref}.")
+    return getLo(label_address)
+
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -609,6 +635,10 @@ def patchAssembly(ROM_COPY, spoiler):
         # writeValue(ROM_COPY, 0x806AA860, Overlay.Static, 0x31EF0007, offset_dict, 4) # ANDI $t7, $t7, 7 - Show GB (Kong Specific)
         # writeValue(ROM_COPY, 0x806AADC4, Overlay.Static, 0x33390007, offset_dict, 4) # ANDI $t9, $t9, 7 - Show GB (All Kongs)
         # writeValue(ROM_COPY, 0x806AADC8, Overlay.Static, 0xAFB90058, offset_dict, 4) # SW $t9, 0x58 ($sp) - Show GB (All Kongs)
+
+    if settings.fast_warps:
+        writeValue(ROM_COPY, 0x806EE692, Overlay.Static, 0x54, offset_dict)
+        writeFunction(ROM_COPY, 0x806DC2AC, Overlay.Static, "fastWarp", offset_dict) # Modify Function Call
 
     # Collision fixes
     QUAD_SIZE = 100
@@ -1282,6 +1312,15 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x80028D10, Overlay.Menu, "changeFileSelectAction_0", offset_dict)  # File select change action
     writeFunction(ROM_COPY, 0x80029A70, Overlay.Menu, "getGamePercentage", offset_dict)
     writeValue(ROM_COPY, 0x80028EF8, Overlay.Menu, 0, offset_dict, 4)  # Joystick
+    # Menu/Shop: Misc Shop Stuff
+    writeHook(ROM_COPY, 0x800260E0, Overlay.Menu, "CrankyDecouple", offset_dict)
+    writeHook(ROM_COPY, 0x800260A8, Overlay.Menu, "ForceToBuyMoveInOneLevel", offset_dict)
+    writeValue(ROM_COPY, 0x80026160, Overlay.Menu, 0, offset_dict, 4)
+    writeHook(ROM_COPY, 0x80026140, Overlay.Menu, "PriceKongStore", offset_dict)
+    writeHook(ROM_COPY, 0x80025FC0, Overlay.Menu, "CharacterCollectableBaseModify", offset_dict)
+    writeHook(ROM_COPY, 0x800260F0, Overlay.Menu, "SetMoveBaseBitfield", offset_dict)
+    writeHook(ROM_COPY, 0x8002611C, Overlay.Menu, "SetMoveBaseProgressive", offset_dict)
+    writeHook(ROM_COPY, 0x80026924, Overlay.Menu, "AlwaysCandyInstrument", offset_dict)
 
     # Mill and Crypt Levers
     # Mill Levers
@@ -1340,3 +1379,50 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002F7BC, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
     writeFunction(ROM_COPY, 0x8002FA68, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
     writeValue(ROM_COPY, 0x8002FA24, Overlay.Arcade, 0x1000, offset_dict)
+
+    # Expand Path Allocation
+    writeValue(ROM_COPY, 0x80722E56, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80722E7A, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80722FF6, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80722FFE, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80723026, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x8072302E, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80723CF6, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80723D06, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80723FEA, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80723FEE, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x807241CE, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x807241DE, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80724312, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x8072431E, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x807245DE, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x807245E6, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+
+    # Expand Enemy Drops Table
+    writeValue(ROM_COPY, 0x806A5CA6, Overlay.Static, getHiSym("drops"), offset_dict, 2)
+    writeValue(ROM_COPY, 0x806A5CB6, Overlay.Static, getLoSym("drops"), offset_dict, 2)
+    writeValue(ROM_COPY, 0x806A5CBA, Overlay.Static, getHiSym("drops"), offset_dict, 2)
+    writeValue(ROM_COPY, 0x806A5CBE, Overlay.Static, getLoSym("drops"), offset_dict, 2)
+    writeValue(ROM_COPY, 0x806A5CD2, Overlay.Static, getHiSym("drops"), offset_dict, 2)
+    writeValue(ROM_COPY, 0x806A5CD6, Overlay.Static, getLoSym("drops"), offset_dict, 2)
+
+    # Pause Sprite Expansion / Carousel Init Functions
+    writeValue(ROM_COPY, 0x806AB35A, Overlay.Static, getHiSym("file_sprites"), offset_dict)
+    writeValue(ROM_COPY, 0x806AB35E, Overlay.Static, getLoSym("file_sprites"), offset_dict)
+    writeValue(ROM_COPY, 0x806AB2CA, Overlay.Static, getHiSym("file_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806AB2DA, Overlay.Static, getLoSym("file_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806A9FC2, Overlay.Static, getHiSym("file_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806AA036, Overlay.Static, getLoSym("file_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806AA00E, Overlay.Static, getHiSym("file_item_caps"), offset_dict)
+    writeValue(ROM_COPY, 0x806AA032, Overlay.Static, getLoSym("file_item_caps"), offset_dict)
+    writeFunction(ROM_COPY, 0x806AB3C4, Overlay.Static, "updatePauseScreenWheel", offset_dict) # Change Wheel to scroller
+    writeValue(ROM_COPY, 0x806AB3B4, Overlay.Static, 0xAFB00018, offset_dict, 4) # SW $s0, 0x18 ($sp). Change last param to index
+    writeValue(ROM_COPY, 0x806AB3A0, Overlay.Static, 0xAFA90014, offset_dict, 4) # SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
+    writeValue(ROM_COPY, 0x806AB444, Overlay.Static, 0, offset_dict, 4) # Prevent joystick sprite rendering
+    writeFunction(ROM_COPY, 0x806AB528, Overlay.Static, "handleSpriteCode", offset_dict) # Change sprite control function
+    writeValue(ROM_COPY, 0x806AB52C, Overlay.Static, 0x8FA40060, offset_dict, 4) # LW $a0, 0x60 ($sp). Change param
+    writeValue(ROM_COPY, 0x806A8DB2, Overlay.Static, 0x0029, offset_dict) # Swap left/right direction
+    writeValue(ROM_COPY, 0x806A8DBA, Overlay.Static, 0xFFD8, offset_dict) # Swap left/right direction
+    writeValue(ROM_COPY, 0x806A8DB4, Overlay.Static, 0x5420, offset_dict) # BEQL -> BNEL
+    writeValue(ROM_COPY, 0x806A8DF0, Overlay.Static, 0x1020, offset_dict) # BNE -> BEQ
+    writeFunction(ROM_COPY, 0x806A9F74, Overlay.Static, "pauseScreen3And4ItemName", offset_dict) # Item Name

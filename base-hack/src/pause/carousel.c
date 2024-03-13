@@ -10,14 +10,14 @@
  */
 #include "../../include/common.h"
 
-static short file_items[16] = {
+short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
     0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
     0, 0, 0, 0, // Crates
 };
 
-static int file_sprites[17] = {
+int file_sprites[17] = {
     0x9, // GB
     0x807210EC, // Crown
     0x807210B8, // Key
@@ -34,7 +34,7 @@ static int file_sprites[17] = {
     0, 0, 0,
     0, // Null Item, Leave Empty
 };
-static short file_item_caps[16] = {
+short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
     5, 1, 5, 16,
@@ -191,29 +191,10 @@ void initCarousel_onPause(void) {
 }
 
 void initCarousel_onBoot(void) {
-    *(short*)(0x806AB35A) = getHi(&file_sprites[0]);
-    *(short*)(0x806AB35E) = getLo(&file_sprites[0]);
-    *(short*)(0x806AB2CA) = getHi(&file_items[0]);
-    *(short*)(0x806AB2DA) = getLo(&file_items[0]);
-    *(short*)(0x806A9FC2) = getHi(&file_items[0]);
-    *(short*)(0x806AA036) = getLo(&file_items[0]);
-    *(short*)(0x806AA00E) = getHi(&file_item_caps[0]);
-    *(short*)(0x806AA032) = getLo(&file_item_caps[0]);
     if (Rando.isles_cb_rando) {
         file_item_caps[3] = 45;
     }
     *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB3F6) = CHECK_TERMINATOR;
-    writeFunction(0x806AB3C4, &updatePauseScreenWheel); // Change Wheel to scroller
-    *(int*)(0x806AB3B4) = 0xAFB00018; // SW $s0, 0x18 ($sp). Change last param to index
-    *(int*)(0x806AB3A0) = 0xAFA90014; // SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
-    *(int*)(0x806AB444) = 0; // Prevent joystick sprite rendering
-    writeFunction(0x806AB528, &handleSpriteCode); // Change sprite control function
-    *(int*)(0x806AB52C) = 0x8FA40060; // LW $a0, 0x60 ($sp). Change param
-    *(short*)(0x806A8DB2) = 0x0029; // Swap left/right direction
-    *(short*)(0x806A8DBA) = 0xFFD8; // Swap left/right direction
-    *(short*)(0x806A8DB4) = 0x5420; // BEQL -> BNEL
-    *(short*)(0x806A8DF0) = 0x1020; // BNE -> BEQ
-    writeFunction(0x806A9F74, &pauseScreen3And4ItemName); // Item Name
 }

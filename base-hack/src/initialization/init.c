@@ -382,25 +382,8 @@ void quickInit(void) {
 	}
 }
 
-#define PATH_CAP 64
-static int balloon_path_pointers[PATH_CAP];
+int balloon_path_pointers[PATH_CAP];
 
 void initPathExpansion(void) {
-	*(short*)(0x80722E56) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x80722E7A) = getLo(&balloon_path_pointers[0]);
 	*(short*)(0x80722E92) = PATH_CAP;
-	*(short*)(0x80722FF6) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x80722FFE) = getLo(&balloon_path_pointers[0]);
-	*(short*)(0x80723026) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x8072302E) = getLo(&balloon_path_pointers[0]);
-	*(short*)(0x80723CF6) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x80723D06) = getLo(&balloon_path_pointers[0]);
-	*(short*)(0x80723FEA) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x80723FEE) = getLo(&balloon_path_pointers[0]);
-	*(short*)(0x807241CE) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x807241DE) = getLo(&balloon_path_pointers[0]);
-	*(short*)(0x80724312) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x8072431E) = getLo(&balloon_path_pointers[0]);
-	*(short*)(0x807245DE) = getHi(&balloon_path_pointers[0]);
-	*(short*)(0x807245E6) = getLo(&balloon_path_pointers[0]);
 }
