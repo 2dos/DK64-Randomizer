@@ -143,9 +143,6 @@ void initHack(int source) {
 	 */
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
-			if (Rando.fast_start_beginning) {
-				*(int*)(0x80714540) = 0;
-			}
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			grab_lock_timer = -1;
 			preventTagSpawn = Rando.prevent_tag_spawn;
@@ -237,7 +234,7 @@ void initHack(int source) {
 			style128Mtx[0x5] = base_mtx;
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
-			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
+			
 			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
 				KKOPhaseOrder[i] = Rando.kut_out_phases[i];

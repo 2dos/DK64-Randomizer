@@ -342,12 +342,6 @@ void initItemRando(void) {
     *(short*)(0x806A8646) = screen_count; // Screen increase cap
     *(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
     *(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
-    if (Rando.item_rando) {
-        *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
-        *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);
-        // Melon Crate
-        *(int*)(0x80747EB0) = (int)&melonCrateItemHandler;
-    }
 
     // BP Table
     int bp_size = 0x28;

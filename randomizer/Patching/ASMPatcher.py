@@ -168,6 +168,14 @@ def getLoSym(ref: str) -> int:
         raise Exception(f"Couldn't find hook {ref}.")
     return getLo(label_address)
 
+CUSTOM_ACTORS_START = 345
+
+def getActorIndex(input: int) -> int:
+    """Get actor index from provided value."""
+    if input & 0x8000:
+        return CUSTOM_ACTORS_START + (input & 0x7FFF)
+    return input
+
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -635,6 +643,11 @@ def patchAssembly(ROM_COPY, spoiler):
         # writeValue(ROM_COPY, 0x806AA860, Overlay.Static, 0x31EF0007, offset_dict, 4) # ANDI $t7, $t7, 7 - Show GB (Kong Specific)
         # writeValue(ROM_COPY, 0x806AADC4, Overlay.Static, 0x33390007, offset_dict, 4) # ANDI $t9, $t9, 7 - Show GB (All Kongs)
         # writeValue(ROM_COPY, 0x806AADC8, Overlay.Static, 0xAFB90058, offset_dict, 4) # SW $t9, 0x58 ($sp) - Show GB (All Kongs)
+        # Actors with special spawning conditions
+        writeValue(ROM_COPY, 0x806B4E1A, Overlay.Static, getActorIndex(spoiler.japes_rock_item), offset_dict)
+        writeValue(ROM_COPY, 0x8069C266, Overlay.Static, getActorIndex(spoiler.aztec_vulture_item), offset_dict)
+        # Melon Crates
+        writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
 
     if settings.fast_warps:
         writeValue(ROM_COPY, 0x806EE692, Overlay.Static, 0x54, offset_dict)
@@ -1403,6 +1416,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002F7BC, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
     writeFunction(ROM_COPY, 0x8002FA68, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
     writeValue(ROM_COPY, 0x8002FA24, Overlay.Arcade, 0x1000, offset_dict)
+
+    writeLabelValue(ROM_COPY, 0x80748088, Overlay.Static, "CrownDoorCheck", offset_dict) # Update check on Crown Door
+
+    # Fast Start: Beginning of game
+    if settings.fast_start_beginning_of_game or True:
+        writeValue(ROM_COPY, 0x80714540, Overlay.Static, 0, offset_dict, 4)
 
     # Patch Enemy Collision
     writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict) # Purple Klaptrap

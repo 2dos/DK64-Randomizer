@@ -1560,10 +1560,6 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF1000)
     for crown_item in range(8):
         fh.write((72).to_bytes(2, "big"))
-    # Misc Drops
-    fh.seek(ROM_DATA_OFFSET + 0xDC)
-    for x in range(2):
-        fh.write((45).to_bytes(2, "big"))
     # Fairies
     fh.seek(0x1FF1040)
     for x in range(20):

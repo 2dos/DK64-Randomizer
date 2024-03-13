@@ -26,6 +26,8 @@ settings.resolve_settings()
 spoiler.dk_face_puzzle = [0] * 9
 spoiler.chunky_face_puzzle = [0] * 9
 spoiler.arcade_order = [1, 4, 3, 2]
+spoiler.japes_rock_item = 45
+spoiler.aztec_vulture_item = 45
 spoiler.coin_requirements = {
     Maps.CavesLankyRace: 50,
     Maps.AztecTinyRace: 50,

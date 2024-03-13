@@ -334,6 +334,8 @@ def place_randomized_items(spoiler):
     sav = spoiler.settings.rom_data
     ROM_COPY.seek(sav + 0x1EC)
     ROM_COPY.writeMultipleBytes(0xF0, 1)
+    spoiler.japes_rock_actor = 45
+    spoiler.aztec_vulture_actor = 45
     if spoiler.settings.shuffle_items:
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
@@ -630,10 +632,12 @@ def place_randomized_items(spoiler):
                             ROM_COPY.write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
                         # Write to Boulder Spawn Location
+                        spoiler.japes_rock_actor = actor_index
                         ROM_COPY.seek(sav + 0xDC)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.location == Locations.AztecLankyVulture:
                         # Write to Vulture Spawn Location
+                        spoiler.aztec_vulture_actor = actor_index
                         ROM_COPY.seek(sav + 0xDE)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Banana:
