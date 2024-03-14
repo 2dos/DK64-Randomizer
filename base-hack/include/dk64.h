@@ -133,7 +133,7 @@ extern void initHUDItem(float x, float y, float* unk0, float* unk1, float* unk2)
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
 extern void createCollision(int type, void* player, collision_types subtype, int map, int exit, int x, int y, int z);
-extern void setScriptRunState(void* behaviour_pointer, int destination_state, int unk0);
+extern void setScriptRunState(void* behaviour_pointer, enum_script_runstate destination_state, int unk0);
 
 extern void unkObjFunction0(int id, int unk0, int unk1);
 extern void unkObjFunction1(int id, int unk0, int unk1);

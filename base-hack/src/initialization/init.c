@@ -375,7 +375,6 @@ void quickInit(void) {
 		Gamemode = GAMEMODE_MAINMENU;
 		Mode = GAMEMODE_MAINMENU;
 		StorySkip = 1;
-		*(char*)(0x80745D20) = 7;
 	}
 }
 

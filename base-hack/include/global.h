@@ -375,7 +375,6 @@ extern void overlay_mod_race(void);
 extern int getTrackerYOffset(void);
 
 extern void hideObject(behaviour_data* behaviour_pointer);
-extern void shopGenericCode(behaviour_data* behaviour, int index, int id, vendors shop);
 extern void bananaportGenericCode(behaviour_data* behaviour, int index, int id);
 extern void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id);
 extern void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id);

@@ -42,8 +42,8 @@
 .definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F
 .definelabel CrankyMoves_New, 0x807FF400
-.definelabel CandyMoves_New, 0x807FF4F0
-.definelabel FunkyMoves_New, 0x807FF5E0
+.definelabel FunkyMoves_New, 0x807FF4F0
+.definelabel CandyMoves_New, 0x807FF5E0
 .definelabel TrainingMoves_New, 0x807FF6D0
 .definelabel BFIMove_New, 0x807FF6E8
 .definelabel FirstMove_New, 0x807FF6EE

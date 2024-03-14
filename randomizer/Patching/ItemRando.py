@@ -633,13 +633,9 @@ def place_randomized_items(spoiler):
                     elif item.location == Locations.JapesChunkyBoulder:
                         # Write to Boulder Spawn Location
                         spoiler.japes_rock_actor = actor_index
-                        ROM_COPY.seek(sav + 0xDC)
-                        ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.location == Locations.AztecLankyVulture:
                         # Write to Vulture Spawn Location
                         spoiler.aztec_vulture_actor = actor_index
-                        ROM_COPY.seek(sav + 0xDE)
-                        ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Banana:
                         # Bonus GB Table
                         ROM_COPY.seek(0x1FF1200 + (4 * bonus_table_offset))

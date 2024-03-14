@@ -340,8 +340,6 @@ void initItemRando(void) {
     pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
     *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
     *(short*)(0x806A8646) = screen_count; // Screen increase cap
-    *(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
-    *(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
 
     // BP Table
     int bp_size = 0x28;

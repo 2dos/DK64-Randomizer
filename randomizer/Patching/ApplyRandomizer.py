@@ -50,7 +50,7 @@ from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateKrushaMoveNames, updateRandomSwitches, updateSwitchsanity
-from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
+from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves, parseMoveBlock
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
@@ -560,6 +560,7 @@ def patching_response(spoiler):
     updateSwitchsanity(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler)
+    parseMoveBlock(spoiler, ROM_COPY) # Has to be after anything which messes with the move block, in this case, randomize_moves and place_randomized_items
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()

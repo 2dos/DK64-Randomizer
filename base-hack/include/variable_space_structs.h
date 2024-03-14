@@ -33,16 +33,10 @@ typedef struct varspace {
 	/* 0x058 */ char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
 	/* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On, 2 = Just Castle Cannon
 	/* 0x05E */ LZREntrance aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
-	/* 0x060 */ LZREntrance aztec_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x062 */ LZREntrance caves_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x064 */ LZREntrance seal_race_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x066 */ LZREntrance factory_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x068 */ LZREntrance castle_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x060 */ char unk_60[10]; 
 	/* 0x06A */ LZREntrance seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x06C */ LZREntrance fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06E */ LZREntrance fungi_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x070 */ LZREntrance japes_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x072 */ LZREntrance castle_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x06E */ char unk_6E[6];
 	/* 0x074 */ LZREntrance castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x076 */ char unk_76[2];
 	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
@@ -158,7 +152,7 @@ typedef struct varspace {
 	/* 0x197 */ rgb skybox_colors[8];
 	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
-	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
+	/* 0x1B1 */ char unk_1B1[3];
 	/* 0x1B4 */ char unk_1B4;
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char tttrouble_turtle_model; // 0 = Vanilla
@@ -169,7 +163,8 @@ typedef struct varspace {
 	/* 0x1DC */ unsigned char galleon_water_raised;
 	/* 0x1DD */ unsigned char krool_requirements; // K Rool bitfield 8765 4321
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
-	/* 0x1E0 */ FasterChecks faster_checks; // Size: 2
+	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
+	/* 0x1E1 */ char unk_1e1;
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ char unk_1e3[0x1E8-0x1e3];
 	/* 0x1E8 */ unsigned char jetman_rgb[3];

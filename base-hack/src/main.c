@@ -21,10 +21,7 @@ void cFuncLoop(void) {
 	if (!delayed_load) {
 		delayed_load = 1;
 	}
-	DataIsCompressed[18] = 0;
-	unlockKongs();
 	tagAnywhere();
-	initHack(0);
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();

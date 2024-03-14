@@ -5,10 +5,12 @@ from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compa
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import FasterChecksSelected, CBRando, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected
 from randomizer.Enums.Maps import Maps
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Transitions import Transitions
 
 HANDLED_OVERLAYS = (
     Overlay.Static,
@@ -70,7 +72,11 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
     if overlay not in list(offset_dict.keys()):
         return None
     overlay_start = offset_dict[overlay]
-    rdram_start = 0x805FB300 if overlay == Overlay.Static else 0x80024000
+    rdram_start = 0x80024000
+    if overlay == Overlay.Static:
+        rdram_start = 0x805FB300
+    elif overlay == Overlay.Boot:
+        rdram_start = 0x80000450
     return overlay_start + (address - rdram_start)
 
 
@@ -104,7 +110,7 @@ def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offs
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
-    function_address = js.rom_symbols.get(func_name.lower(), None)
+    function_address = js.rom_symbols["symbols"].get(func_name.lower(), None)
     if function_address is None:
         raise Exception(f"Couldn't find function {func_name}.")
     ROM_COPY.seek(rom_start)
@@ -120,7 +126,7 @@ def writeHook(ROM_COPY, address: int, overlay: Overlay, hook_location: str, offs
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
-    hook_address = js.rom_symbols.get(hook_location.lower(), None)
+    hook_address = js.rom_symbols["symbols"].get(hook_location.lower(), None)
     if hook_address is None:
         raise Exception(f"Couldn't find hook {hook_location}.")
     ROM_COPY.seek(rom_start)
@@ -136,7 +142,7 @@ def writeLabelValue(ROM_COPY, address: int, overlay: Overlay, label_name: str, o
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
-    label_address = js.rom_symbols.get(label_name.lower(), None)
+    label_address = js.rom_symbols["symbols"].get(label_name.lower(), None)
     if label_address is None:
         raise Exception(f"Couldn't find hook {label_name}.")
     ROM_COPY.seek(rom_start)
@@ -156,14 +162,14 @@ def getHi(value: int) -> int:
 
 def getHiSym(ref: str) -> int:
     """Run getHi, but relative to a symbol rather than a value."""
-    label_address = js.rom_symbols.get(ref.lower(), None)
+    label_address = js.rom_symbols["symbols"].get(ref.lower(), None)
     if label_address is None:
         raise Exception(f"Couldn't find hook {ref}.")
     return getHi(label_address)
 
 def getLoSym(ref: str) -> int:
     """Run getLo, but relative to a symbol rather than a value."""
-    label_address = js.rom_symbols.get(ref.lower(), None)
+    label_address = js.rom_symbols["symbols"].get(ref.lower(), None)
     if label_address is None:
         raise Exception(f"Couldn't find hook {ref}.")
     return getLo(label_address)
@@ -570,6 +576,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806A8D20, Overlay.Static, "changeSelectedLevel", offset_dict)  # Change selected level on checks screen
     writeFunction(ROM_COPY, 0x806A84F8, Overlay.Static, "checkItemDB", offset_dict)  # Populate Item Databases
     writeFunction(ROM_COPY, 0x806A9978, Overlay.Static, "displayHintRegion", offset_dict)  # Display hint region
+    writeValue(ROM_COPY, 0x806A94CC, Overlay.Static, 0x2C610003, offset_dict, 4) # SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
+    writeValue(ROM_COPY, 0x806A94D0, Overlay.Static, 0x10200298, offset_dict, 4) # BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
     if settings.shuffle_items:
         writeHook(ROM_COPY, 0x806A6708, Overlay.Static, "SpriteFix", offset_dict)
         writeFunction(ROM_COPY, 0x806A78A8, Overlay.Static, "checkFlagDuplicate", offset_dict)  # Balloon: Kong Check
@@ -644,8 +652,8 @@ def patchAssembly(ROM_COPY, spoiler):
         # writeValue(ROM_COPY, 0x806AADC4, Overlay.Static, 0x33390007, offset_dict, 4) # ANDI $t9, $t9, 7 - Show GB (All Kongs)
         # writeValue(ROM_COPY, 0x806AADC8, Overlay.Static, 0xAFB90058, offset_dict, 4) # SW $t9, 0x58 ($sp) - Show GB (All Kongs)
         # Actors with special spawning conditions
-        writeValue(ROM_COPY, 0x806B4E1A, Overlay.Static, getActorIndex(spoiler.japes_rock_item), offset_dict)
-        writeValue(ROM_COPY, 0x8069C266, Overlay.Static, getActorIndex(spoiler.aztec_vulture_item), offset_dict)
+        writeValue(ROM_COPY, 0x806B4E1A, Overlay.Static, getActorIndex(spoiler.aztec_vulture_actor), offset_dict)
+        writeValue(ROM_COPY, 0x8069C266, Overlay.Static, getActorIndex(spoiler.japes_rock_actor), offset_dict)
         # Melon Crates
         writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
 
@@ -809,6 +817,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.factory_toy_monster_fight):
         writeValue(ROM_COPY, 0x806BBB22, Overlay.Static, 5, offset_dict)  # Chunky toy box speedup
+        writeValue(ROM_COPY, 0x8074D454, Overlay.Static, 12, offset_dict) # Change BHDM Health (16 -> 12)
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.jetpac):
         writeValue(ROM_COPY, 0x80027DCA, Overlay.Jetpac, 2500, offset_dict)  # Jetpac score requirement
@@ -960,6 +969,8 @@ def patchAssembly(ROM_COPY, spoiler):
         # Remove DKTV - End Seq
         writeValue(ROM_COPY, 0x8071401E, Overlay.Static, 0x50, offset_dict)
         writeValue(ROM_COPY, 0x8071404E, Overlay.Static, 5, offset_dict)
+        # Set NFR song to unused coin pickup, which is replaced by the windows 95 theme
+        writeValue(ROM_COPY, 0x80745D20, Overlay.Static, 7, offset_dict, 1)
     else:
         writeFunction(ROM_COPY, 0x80713258, Overlay.Static, "skipDKTV", offset_dict)
     for index, kong in enumerate(settings.kutout_kongs):
@@ -1192,14 +1203,58 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x80027F24, Overlay.Critter, "setLocationStatus", offset_dict)  # Set BFI Move
     writeFunction(ROM_COPY, 0x80027E20, Overlay.Critter, "getLocationStatus", offset_dict)  # Get BFI Move
 
-    # K Rool Exit
+    # Misc LZR Stuff
     if settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
+        # K Rool Exit
         krool_exit_map = Maps.Isles
         krool_exit_exit = 12
         writeValue(ROM_COPY, 0x806A8986, Overlay.Static, krool_exit_map, offset_dict)
         writeValue(ROM_COPY, 0x806A898E, Overlay.Static, krool_exit_exit, offset_dict)
         writeValue(ROM_COPY, 0x80628032, Overlay.Static, krool_exit_map, offset_dict)
         writeValue(ROM_COPY, 0x8062803A, Overlay.Static, krool_exit_exit, offset_dict)
+        # Race Exits
+        exit_data = [
+            {
+                "race_map": Maps.JapesMinecarts,
+                "tied_transition": Transitions.JapesCartsToMain,
+            },
+            {
+                "race_map": Maps.AztecTinyRace,
+                "tied_transition": Transitions.AztecRaceToMain,
+            },
+            {
+                "race_map": Maps.FactoryTinyRace,
+                "tied_transition": Transitions.FactoryRaceToRandD,
+            },
+            {
+                "race_map": Maps.GalleonSealRace,
+                "tied_transition": Transitions.GalleonSealToShipyard,
+            },
+            {
+                "race_map": Maps.ForestMinecarts,
+                "tied_transition": Transitions.ForestCartsToMain,
+            },
+            {
+                "race_map": Maps.CavesLankyRace,
+                "tied_transition": Transitions.CavesRaceToMain,
+            },
+            {
+                "race_map": Maps.CastleMinecarts,
+                "tied_transition": Transitions.CastleCartsToCrypt,
+            },
+            {
+                "race_map": Maps.CastleTinyRace,
+                "tied_transition": Transitions.CastleRaceToMuseum,
+            },
+        ]
+        for race_index, race_exit in enumerate(exit_data):
+            if race_exit["tied_transition"] in spoiler.shuffled_exit_data:
+                address_head = 0x807447A0 + (6 * race_index)
+                shuffled_back = spoiler.shuffled_exit_data[race_exit["tied_transition"]]
+                writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict)
+                writeValue(ROM_COPY, address_head + 0, Overlay.Static, GetMapId(shuffled_back.regionId), offset_dict)
+                writeValue(ROM_COPY, address_head + 0, Overlay.Static, GetExitId(shuffled_back), offset_dict)
+
 
     # Boss Mapping
     for i in range(7):
@@ -1400,6 +1455,9 @@ def patchAssembly(ROM_COPY, spoiler):
             writeValue(ROM_COPY, 0x8002E8F4 + (4 * slot_index), Overlay.Jetpac, functions[enemy_index], offset_dict, 4)
     writeFunction(ROM_COPY, 0x80025034, Overlay.Jetpac, "loadJetpacSprites_handler", offset_dict)
 
+    writeValue(ROM_COPY, 0x806BA5A8, Overlay.Static, 0x1D800003, offset_dict, 4) # Fix some health oversights by making death if health <= 0 instead of == 0
+    writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict) # Change BHDM Cooldown
+
     # Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
     writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5
     writeValue(ROM_COPY, 0x80024F2A, Overlay.Arcade, 0xC71B, offset_dict)
@@ -1474,4 +1532,4 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806A8DBA, Overlay.Static, 0xFFD8, offset_dict) # Swap left/right direction
     writeValue(ROM_COPY, 0x806A8DB4, Overlay.Static, 0x5420, offset_dict) # BEQL -> BNEL
     writeValue(ROM_COPY, 0x806A8DF0, Overlay.Static, 0x1020, offset_dict) # BNE -> BEQ
-    writeFunction(ROM_COPY, 0x806A9F74, Overlay.Static, "pauseScreen3And4ItemName", offset_dict) # Item Name
+    writeFunction(ROM_COPY, 0x806A9F74, Overlay.Static, "pauseScreen3And4ItemName", offset_dict) # Item Name"

@@ -76,33 +76,16 @@ def randomize_entrances(spoiler):
         ROM_COPY.write(1)
         # /* 0x05E */ unsigned short aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
         shuffledBack = spoiler.shuffled_exit_data[Transitions.AztecMainToRace]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x060 */ unsigned short aztec_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.AztecRaceToMain]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x062 */ unsigned short caves_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CavesRaceToMain]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x064 */ unsigned short seal_race_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.GalleonSealToShipyard]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x066 */ unsigned short factory_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.FactoryRaceToRandD]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x068 */ unsigned short castle_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleRaceToMuseum]
+        ROM_COPY.seek(varspaceOffset + 0x5E)
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x06A */ unsigned short seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.GalleonLighthouseAreaToSickBay]
+        ROM_COPY.seek(varspaceOffset + 0x6A)
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x06C */ unsigned short fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+        ROM_COPY.seek(varspaceOffset + 0x6C)
         if Transitions.ForestMainToCarts in spoiler.shuffled_exit_data:
             shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestMainToCarts]
             ROM_COPY.write(GetMapId(shuffledBack.regionId))
@@ -110,27 +93,8 @@ def randomize_entrances(spoiler):
         else:
             ROM_COPY.write(Maps.ForestMinecarts)
             ROM_COPY.write(0)
-        # /* 0x06E */ unsigned short fungi_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        if Transitions.ForestCartsToMain in spoiler.shuffled_exit_data:
-            shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestCartsToMain]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
-            ROM_COPY.write(GetExitId(shuffledBack))
-        else:
-            ROM_COPY.write(Maps.FungiForest)
-            ROM_COPY.write(MapExitTable[Maps.FungiForest].index("From Minecart"))
-        # /* 0x070 */ unsigned short japes_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        if Transitions.JapesCartsToMain in spoiler.shuffled_exit_data:
-            shuffledBack = spoiler.shuffled_exit_data[Transitions.JapesCartsToMain]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
-            ROM_COPY.write(GetExitId(shuffledBack))
-        else:
-            ROM_COPY.write(Maps.JungleJapes)
-            ROM_COPY.write(MapExitTable[Maps.JungleJapes].index("From Minecart"))
-        # /* 0x072 */ unsigned short castle_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleCartsToCrypt]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x074 */ unsigned short castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+        ROM_COPY.seek(varspaceOffset + 0x74)
         shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesMainToCastleLobby]
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))

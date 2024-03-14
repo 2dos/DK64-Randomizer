@@ -706,6 +706,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					// New File
 					setFlagDuplicate(0,1,FLAGTYPE_PERMANENT); // Set null flag as it ensures no=item stuff is actually no-item
 					unlockMoves();
+					unlockKongs();
 					applyFastStart();
 					openCrownDoor();
 					giveCollectables();

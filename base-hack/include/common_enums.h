@@ -1011,3 +1011,10 @@ typedef enum enum_bonus_skin {
     /* 0x016 */ SKIN_SNIDE,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
+
+typedef enum enum_script_runstate {
+	/* 0x000 */ RUNSTATE_INIT,
+	/* 0x001 */ RUNSTATE_RUNNING,
+	/* 0x002 */ RUNSTATE_PAUSED,
+	/* 0x003 */ RUNSTATE_DISTANCERUN,
+} enum_script_runstate;

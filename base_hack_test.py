@@ -289,15 +289,3 @@ with open(ROM_FILE, "r+b") as rom:
     ROM_COPY = TestROM(rom)
     patchAssembly(ROM_COPY, spoiler)
     patchAssemblyCosmetic(ROM_COPY, settings)
-
-# Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
-move_csv = "./base-hack/move_placement.csv"
-permit = False  # Whether move csv overwrites data
-if os.path.exists(move_csv) and permit:
-    with open(move_csv, "r") as csv:
-        csv_lines = csv.readlines()
-        with open(ROM_FILE, "r+b") as rom:
-            rom.seek(0x1FEF000)
-            for x in csv_lines:
-                val = int(x.replace("\n", ""))
-                rom.write(val.to_bytes(4, "big"))

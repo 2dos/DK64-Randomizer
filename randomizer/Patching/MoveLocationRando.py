@@ -1,4 +1,5 @@
 """Randomize Move Locations."""
+from enum import IntEnum, auto
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -365,3 +366,178 @@ def place_pregiven_moves(spoiler):
             setItemReferenceName(spoiler, item, new_slot - 0xF, name_str)
         else:
             setItemReferenceName(spoiler, item, 0, name_str)
+
+class MoveDataSection(IntEnum):
+    """Move Data Section enum."""
+    cranky = auto()
+    candy = auto()
+    funky = auto()
+    training = auto()
+    bfi = auto()
+    first_move = auto()
+
+class MoveDataRequest(IntEnum):
+    """Move Data Request Enum."""
+    price = auto()
+    flag = auto()
+    move_type = auto()
+    move_level = auto()
+    move_kong = auto()
+    move_no_kong = auto()
+
+def getMoveSlot(vendor: MoveDataSection, kong: Kongs, level: int) -> int:
+    """Get move slot in the global move array."""
+    global_index = None
+    shop_offsets = {
+        MoveDataSection.cranky: 0,
+        MoveDataSection.candy: 80,
+        MoveDataSection.funky: 40,
+    }
+    if vendor in (MoveDataSection.cranky, MoveDataSection.candy, MoveDataSection.funky):
+        global_index = shop_offsets[vendor] + (int(kong) * 8) + level
+    elif vendor == MoveDataSection.training:
+        global_index = 120 + level
+    elif vendor == MoveDataSection.bfi:
+        global_index = 124
+    elif vendor == MoveDataSection.first_move:
+        global_index = 125
+    if global_index is None:
+        raise Exception(f"Invalid global index for {vendor}")
+    return global_index
+
+def readMoveData(ROM_COPY: LocalROM, move_data: int, vendor: MoveDataSection, kong: Kongs, level: int, data_request: MoveDataRequest) -> int:
+    """Acquire data from move block."""
+    slot_address = move_data + (4 * getMoveSlot(vendor, kong, level))
+    if data_request == MoveDataRequest.price:
+        ROM_COPY.seek(slot_address + 1)
+        return int.from_bytes(ROM_COPY.readBytes(1), "big")
+    elif data_request == MoveDataRequest.flag:
+        ROM_COPY.seek(slot_address + 2)
+        return int.from_bytes(ROM_COPY.readBytes(2), "big")
+    elif data_request in (MoveDataRequest.move_type, MoveDataRequest.move_level, MoveDataRequest.move_kong, MoveDataRequest.move_no_kong):
+        ROM_COPY.seek(slot_address)
+        raw_data = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        if data_request == MoveDataRequest.move_kong:
+            return raw_data & 7
+        elif data_request == MoveDataRequest.move_level:
+            return (raw_data >> 3) & 3
+        elif data_request == MoveDataRequest.move_type:
+            return (raw_data >> 5) & 7
+        elif data_request == MoveDataRequest.move_no_kong:
+            return raw_data & 0xF8
+    raise Exception(f"Invalid data request: {data_request}")
+
+def getSharedStatus(type_value: int) -> int:
+    """Get shared status of vendor."""
+    if (type_value > 2) and (type_value < 5):
+        return type_value - 1
+    elif type_value != 1:
+        return 0
+    return 1
+
+def filterMoveType(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection, kong: Kongs, level: int) -> int:
+    """Filter move type for the purpose of writing to ROM."""
+    move_type = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_type)
+    move_level = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_level)
+    if move_type == 7:
+        return -1
+    if move_type == 4: # Instrument
+        index = move_level + 1
+        if index > 1:
+            return 5 # Flag
+    elif move_type in (1, 3): # Slam, Belt
+        return 5 # Flag
+    return move_type
+
+def filterMoveIndex(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection, kong: Kongs, level: int, slam_flag: int, belt_flag: int, ins_flag: int) -> tuple:
+    """Filter move index for the purpose of writing to ROM."""
+    filtered_type = filterMoveType(ROM_COPY, move_data, section, kong, level)
+    index = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_level) + 1
+    original_item_type = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_type)
+    if original_item_type == 1: # Slam
+        return slam_flag + 1, belt_flag, ins_flag, slam_flag
+    if original_item_type == 3: # Ammo Belt
+        return slam_flag, belt_flag + 1, ins_flag, belt_flag
+    if original_item_type == 4: # Instrument
+        if index > 1:
+            return slam_flag, belt_flag, ins_flag + 1, ins_flag
+    if filtered_type in (5, 6):
+        new_index = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.flag)
+        return slam_flag, belt_flag, ins_flag, new_index
+    return slam_flag, belt_flag, ins_flag, index
+
+def parseMoveBlock(spoiler, ROM_COPY: LocalROM):
+    """Parses move block and writes a section of ROM which will be copied to RAM."""
+    slam_flag = 0x3BF # FLAG_SHOPMOVE_SLAM_0
+    belt_flag = 0x299 # FLAG_SHOPMOVE_BELT_0
+    ins_flag = 0x29B # FLAG_SHOPMOVE_INS_0
+    move_data = spoiler.settings.move_location_data
+    write_data = []
+    for _ in range(126):
+        write_data.append({
+            "move_type": 0,
+            "move_level": 0,
+            "move_kong": 0,
+            "price": 0,
+            "flag": -1
+        })
+    for i in range(8): # LEVEL_COUNT
+        stored_slam = slam_flag
+        stored_belt = belt_flag
+        stored_ins = ins_flag
+        dk_cranky_type = readMoveData(ROM_COPY, move_data, MoveDataSection.cranky, Kongs.donkey, i, MoveDataRequest.move_type)
+        dk_funky_type = readMoveData(ROM_COPY, move_data, MoveDataSection.funky, Kongs.donkey, i, MoveDataRequest.move_type)
+        dk_candy_type = readMoveData(ROM_COPY, move_data, MoveDataSection.candy, Kongs.donkey, i, MoveDataRequest.move_type)
+        cranky_shared = getSharedStatus(dk_cranky_type)
+        funky_shared = getSharedStatus(dk_funky_type)
+        candy_shared = getSharedStatus(dk_candy_type)
+        cranky_targ_data = readMoveData(ROM_COPY, move_data, MoveDataSection.cranky, Kongs.donkey, i, MoveDataRequest.move_no_kong)
+        cranky_targ_flag = readMoveData(ROM_COPY, move_data, MoveDataSection.cranky, Kongs.donkey, i, MoveDataRequest.flag)
+        funky_targ_data = readMoveData(ROM_COPY, move_data, MoveDataSection.funky, Kongs.donkey, i, MoveDataRequest.move_no_kong)
+        funky_targ_flag = readMoveData(ROM_COPY, move_data, MoveDataSection.funky, Kongs.donkey, i, MoveDataRequest.flag)
+        candy_targ_data = readMoveData(ROM_COPY, move_data, MoveDataSection.candy, Kongs.donkey, i, MoveDataRequest.move_no_kong)
+        candy_targ_flag = readMoveData(ROM_COPY, move_data, MoveDataSection.candy, Kongs.donkey, i, MoveDataRequest.flag)
+        for kong in (Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky):
+            cranky_local_data = readMoveData(ROM_COPY, move_data, MoveDataSection.cranky, kong, i, MoveDataRequest.move_no_kong)
+            cranky_local_flag = readMoveData(ROM_COPY, move_data, MoveDataSection.cranky, kong, i, MoveDataRequest.flag)
+            funky_local_data = readMoveData(ROM_COPY, move_data, MoveDataSection.funky, kong, i, MoveDataRequest.move_no_kong)
+            funky_local_flag = readMoveData(ROM_COPY, move_data, MoveDataSection.funky, kong, i, MoveDataRequest.flag)
+            candy_local_data = readMoveData(ROM_COPY, move_data, MoveDataSection.candy, kong, i, MoveDataRequest.move_no_kong)
+            candy_local_flag = readMoveData(ROM_COPY, move_data, MoveDataSection.candy, kong, i, MoveDataRequest.flag)
+            if (cranky_local_data != cranky_targ_data) or (cranky_local_flag != cranky_targ_flag):
+                cranky_shared = 0
+            if (funky_local_data != funky_targ_data) or (funky_local_flag != funky_targ_flag):
+                funky_shared = 0
+            if (candy_local_data != candy_targ_data) or (candy_local_flag != candy_targ_flag):
+                candy_shared = 0
+        for j in range(5):
+            if (cranky_shared == 1) or (funky_shared == 1) or (candy_shared == 1):
+                slam_flag = stored_slam
+            if (cranky_shared == 2) or (funky_shared == 2) or (candy_shared == 2):
+                belt_flag = stored_belt
+            if (cranky_shared == 3) or (funky_shared == 3) or (candy_shared == 3):
+                ins_flag = stored_ins
+            for vendor in (MoveDataSection.cranky, MoveDataSection.candy, MoveDataSection.funky):
+                slot = getMoveSlot(vendor, j, i)
+                write_data[slot]["move_type"] = filterMoveType(ROM_COPY, move_data, vendor, j, i)
+                write_data[slot]["move_kong"] = readMoveData(ROM_COPY, move_data, vendor, j, i, MoveDataRequest.move_kong)
+                slam_flag, belt_flag, ins_flag, write_data[slot]["move_level"] = filterMoveIndex(ROM_COPY, move_data, vendor, j, i, slam_flag, belt_flag, ins_flag)
+                write_data[slot]["price"] = readMoveData(ROM_COPY, move_data, vendor, j, i, MoveDataRequest.price)
+    for i in range(4):
+        # Training Barrels
+        slot = getMoveSlot(MoveDataSection.training, 0, i)
+        write_data[slot]["move_type"] = filterMoveType(ROM_COPY, move_data, MoveDataSection.training, 0, i)
+        write_data[slot]["move_kong"] = readMoveData(ROM_COPY, move_data, MoveDataSection.training, 0, i, MoveDataRequest.move_kong)
+        slam_flag, belt_flag, ins_flag, write_data[slot]["move_level"] = filterMoveIndex(ROM_COPY, move_data, MoveDataSection.training, 0, i, slam_flag, belt_flag, ins_flag)
+    for extra_item in (MoveDataSection.bfi, MoveDataSection.first_move):
+        slot = getMoveSlot(extra_item, 0, 0)
+        write_data[slot]["move_type"] = filterMoveType(ROM_COPY, move_data, extra_item, 0, 0)
+        write_data[slot]["move_kong"] = readMoveData(ROM_COPY, move_data, extra_item, 0, 0, MoveDataRequest.move_kong)
+        slam_flag, belt_flag, ins_flag, write_data[slot]["move_level"] = filterMoveIndex(ROM_COPY, move_data, extra_item, 0, 0, slam_flag, belt_flag, ins_flag)
+    for index, item in enumerate(write_data):
+        item_head = 0x1FEF800 + (6 * index)
+        ROM_COPY.seek(item_head)
+        ROM_COPY.writeMultipleBytes(item.get("move_type", 7), 2)
+        ROM_COPY.writeMultipleBytes(item.get("move_level", 1), 2)
+        ROM_COPY.writeMultipleBytes(item.get("move_kong", 0), 1)
+        ROM_COPY.writeMultipleBytes(item.get("price", 0), 1)
