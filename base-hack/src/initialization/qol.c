@@ -103,11 +103,6 @@ void quickWrinklyTextboxes(void) {
     unkTextFunction(CurrentActorPointer_0);
 }
 
-int betterFeather(void) {
-    unkProjectileCode_1(CurrentActorPointer_0, 0.0f, 0.0f, -110.0f, 50.0f, -1);
-    return cycleRNG();
-}
-
 void initQoL_Fixes(void) {
     /**
      * @brief Initialize any quality of life features which aim to fix unwanted DK64 vanilla bugs
@@ -125,7 +120,6 @@ void initQoL_Fixes(void) {
         writeFunction(0x8067C168, &fixDilloTNTPads); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
 
-        writeFunction(0x806952FC, &betterFeather);
         writeFunction(0x806E5C04, &fixCrownEntrySKong); // Modify Function Call
         *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
     }

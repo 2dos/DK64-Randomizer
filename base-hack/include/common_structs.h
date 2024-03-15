@@ -77,7 +77,9 @@ typedef struct bonedata {
 typedef struct actorData {
 	/* 0x000 */ void* model;
 	/* 0x004 */ renderingParamsData* render;
-	/* 0x008 */ char unk_08[0x4C-0x8];
+	/* 0x008 */ void* current_bone_array;
+	/* 0x00C */ float unk_0C;
+	/* 0x010 */ char unk_10[0x4C-0x10];
 	/* 0x04C */ void* model_file;
 	/* 0x050 */ char unk_50[0x58-0x50];
 	/* 0x058 */ int actorType;
