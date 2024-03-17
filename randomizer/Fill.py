@@ -2705,15 +2705,8 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
 
     # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
     if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.EntryGBs[7] < minimumBLockerGBs:
-        # Ensure that there are more Golden Bananas accessible than the B.Locker's cost
-        spoiler.Reset()
-        accessible = GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
-        runningGBTotal = spoiler.LogicVariables.GoldenBananas
-        maxEnterableBlocker = round(runningGBTotal * BLOCKER_MAX)
-        highroll = min(maxEnterableBlocker, settings.blocker_max)
-
         # Ensure that Helm is the most expensive B. Locker
-        settings.EntryGBs[7] = randint(minimumBLockerGBs, highroll)
+        settings.EntryGBs[7] = randint(minimumBLockerGBs, settings.blocker_max)
     # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
     if not isKeyItemRando:
         # Place boss locations based on kongs and moves found for each level

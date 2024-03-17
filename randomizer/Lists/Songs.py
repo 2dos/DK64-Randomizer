@@ -203,7 +203,7 @@ song_data = {
     # Major Items
     Songs.OhBanana: Song("Oh Banana", mem_idx=20, type=SongType.MajorItem, memory=0xABD, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Calm], song_length=3.25),
     Songs.GBGet: Song("Golden Banana/Key Get", mem_idx=18, type=SongType.MajorItem, memory=0x8C4, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=3.86),
-    Songs.MoveGet: Song("Move Get", mem_idx=114, type=SongType.MajorItem, memory=0x892, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=10.05),
+    Songs.MoveGet: Song("Move Get", mem_idx=114, type=SongType.MajorItem, memory=0x892, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=6.36),
     Songs.GunGet: Song("Gun Get", mem_idx=115, type=SongType.MajorItem, memory=0x892, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=1.53),
     Songs.BananaMedalGet: Song("Banana Medal Get", mem_idx=151, type=SongType.MajorItem, memory=0x645, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=3.85),
     Songs.BlueprintDrop: Song("Blueprint Drop", mem_idx=76, type=SongType.MajorItem, memory=0x63D, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=2.08),
