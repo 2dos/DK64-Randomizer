@@ -199,12 +199,12 @@ void checkItemDB(void) {
 }
 
 void handleCShifting(char* value, char limit) {
-    if (NewlyPressedControllerInput.Buttons.c_left) {
+    if ((NewlyPressedControllerInput.Buttons.c_left) || (NewlyPressedControllerInput.Buttons.d_left)) {
         *value -= 1;
         if (*value < 0) {
             *value = limit - 1;
         }
-    } else if (NewlyPressedControllerInput.Buttons.c_right) {
+    } else if ((NewlyPressedControllerInput.Buttons.c_right) || (NewlyPressedControllerInput.Buttons.d_right)) {
         *value += 1;
         if (*value >= limit) {
             *value = 0;
