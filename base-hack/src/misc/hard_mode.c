@@ -356,16 +356,31 @@ void setFallDamageImmunity(int value) {
 }
 
 void handleFallDamageImmunity(void) {
-    if (ObjectModel2Timer > 0) {
-        if (fall_damage_immunity > 0) {
-            fall_damage_immunity -= 1;
-        }
+    if (ObjectModel2Timer == 0) {
+        return;
     }
+    if (fall_damage_immunity == 0) {
+        return;
+    }
+    if (!Player) {
+        fall_damage_immunity -= 1;
+        return;
+    }
+    if (Player->control_state == 0x2A) {
+        // Aerial Attack
+        return;
+    }
+    fall_damage_immunity -= 1;
 }
 
 void transformBarrelImmunity(void) {
     setFallDamageImmunity(60);
     DisplayExplosionSprite();
+}
+
+void factoryShedFallImmunity(short exit) {
+    setFallDamageImmunity(30);
+    unkLoadingZoneControllerFunction(exit);
 }
 
 void fallDamageWrapper(int action, void* actor, int player_index) {

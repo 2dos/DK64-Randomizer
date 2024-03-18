@@ -1729,7 +1729,7 @@ BalloonList = [
         name="Above mountain (Diddy)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesTopOfMountain,
         vanilla=True,
         points=[[1656, 1071, 2474], [1576, 1077, 2474]],
     ),

@@ -406,6 +406,8 @@ extern void updatePosition(void* actor, int bone, float* x, float* y, float* z);
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 extern void setChunkLighting(float red, float green, float blue, int chunk);
 
+extern void unkLoadingZoneControllerFunction(short exit);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;

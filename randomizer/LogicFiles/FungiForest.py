@@ -74,6 +74,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestMainToLowerMushroom),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
+        TransitionFront(Regions.MushroomNightExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip() or l.CanSkew(True)),
         TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill, isGlitchTransition=True),
         TransitionFront(Regions.CrankyForest, lambda l: True),
@@ -140,7 +141,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomUpperExterior: Region("Mushroom Upper Exterior", "Giant Mushroom Exterior", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestBattleArena, lambda l: not l.settings.crown_placement_rando),
+        LocationLogic(Locations.ForestBattleArena, lambda l: not l.settings.crown_placement_rando and (not l.IsHardFallDamage() or (l.istiny and l.twirl) or (l.isdiddy and l.jetpack) or Events.Night in l.Events)),
         LocationLogic(Locations.ForestMainEnemy_NearFacePuzzle, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearCrown, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearHighWarp5, lambda l: True),
@@ -150,7 +151,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestUpperExteriorToUpperMushroom),
-        TransitionFront(Regions.MushroomNightExterior, lambda l: True),
+        TransitionFront(Regions.MushroomNightExterior, lambda l: (l.istiny and l.twirl) or not l.IsHardFallDamage()),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomChunkyRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToChunky),
         TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
