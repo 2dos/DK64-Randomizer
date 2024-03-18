@@ -1251,7 +1251,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if loc in TrainingBarrelLocations or loc in PreGivenLocations:
                 # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                 hinted_item_name = ItemList[spoiler.LocationList[loc].item].name
-                message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
+                message = f"\x0b{hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
                 hinted_location_text = f"\x0b{hinted_item_name}\x0b"
             else:
                 message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
@@ -1342,7 +1342,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                         # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                         hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
-                        message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to \x04{key_item.name}\x04."
+                        message = f"\x0b{hinted_item_name}\x0b is on the path to \x04{key_item.name}\x04."
                     else:
                         message = f"Something in the {hinted_location_text} is on the path to \x04{key_item.name}\x04."
                     hint_location.related_location = path_location_id
@@ -1414,7 +1414,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[hinted_item_id].name
-                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
+                    message = f"\x0b{hinted_item_name}\x0b is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
                 else:
                     message = f"Something in the {hinted_location_text} is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
                 hint_location.related_location = path_location_id
@@ -1456,7 +1456,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
-                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to \x07taking photos\x07."
+                    message = f"\x0b{hinted_item_name}\x0b is on the path to \x07taking photos\x07."
                 else:
                     message = f"Something in the {hinted_location_text} is on the path to \x07taking photos\x07."
                 hint_location.related_location = path_location_id
@@ -2484,3 +2484,45 @@ def replaceKongNameWithKrusha(spoiler):
         "The Kong that wears Camo",
         "The Kong that was K. Rool's Bodyguard",
     ]
+
+
+def getHelmOrderHint(spoiler):
+    """Compile the Snide hint for the helm order."""
+    file_index = 11
+    default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
+    helm_order = [default_order[room] for room in spoiler.settings.helm_order]
+    kong_helm_order = [kong_list[x].upper() for x in helm_order]
+    kong_order_text = ""
+    if len(kong_helm_order) == 0:
+        return
+    elif len(kong_helm_order) == 1:
+        kong_order_text = kong_helm_order[0]
+    else:
+        early_entries = kong_helm_order[:-1]
+        early_entry_text = ", ".join(early_entries)
+        kong_order_text = f"{early_entry_text} AND {kong_helm_order[-1]}"
+    text_entries = [
+        {
+            # This isn't a game text
+            "text_index": 3,
+            "search": "BLUEPRINTS ARE VITAL TO US BOTH",
+            "replace": "BLUEPRINTS HELP BUY | TIME TO SHUT DOWN THE MACHINE",
+        },
+        {
+            # This isn't a joke text
+            "text_index": 4,
+            "search": "BLUEPRINTS AND SO DO YOU",
+            "replace": "BLUEPRINTS TO BUY | TIME TO SHUT DOWN THE MACHINE",
+        },
+    ]
+    for entry in text_entries:
+        data = {
+            "textbox_index": entry["text_index"],
+            "mode": "replace",
+            "search": entry["search"],
+            "target": entry["replace"].replace("|", kong_order_text),
+        }
+        if file_index in spoiler.text_changes:
+            spoiler.text_changes[file_index].append(data)
+        else:
+            spoiler.text_changes[file_index] = [data]

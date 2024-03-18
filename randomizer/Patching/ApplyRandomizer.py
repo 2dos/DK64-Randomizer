@@ -58,6 +58,7 @@ from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMine
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
 from randomizer.Patching.ASMPatcher import patchAssembly
+from randomizer.CompileHints import getHelmOrderHint
 
 # from randomizer.Spoiler import Spoiler
 
@@ -551,6 +552,8 @@ def patching_response(spoiler):
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
 
+    if spoiler.settings.wrinkly_hints != WrinklyHints.off:
+        getHelmOrderHint(spoiler)
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)
