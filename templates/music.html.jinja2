@@ -181,7 +181,8 @@
                                     <select id="music_select_{{song["value"]}}"
                                             name="music_select_{{song["value"]}}"
                                             class="form-select {{subCategory["type"]}}-select">
-                                        <option value="" class="{{subCategory["type"]}}-default-option">-- Randomize --</option>
+                                        <option value="default_value">-- Default --</option>
+                                        <option value="">-- Randomize --</option>
                                         {% for select_song in select_songs[subCategory["type"]]|music_select_restrict(song["value"]) %}
                                             <option value="{{select_song["value"]}}"
                                                     class="original-song">
