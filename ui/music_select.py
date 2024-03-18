@@ -11,6 +11,21 @@ from ui.bindings import bind
 from ui.download import download_json_file
 
 
+def get_music_category(songLocation: str) -> str:
+    """Return the music category for this song location."""
+    locationSelect = js.document.getElementById(f"music_select_{songLocation}")
+    for category in ["BGM", "MajorItem", "MinorItem", "Event"]:
+        if locationSelect.classList.contains(f"{category}-select"):
+            return category.lower() if category == "BGM" else f"{category.lower()}s"
+    raise ValueError(f"Value {songLocation} should not be fed as input to get_music_category.")
+
+
+def is_song_category_randomized(category: str) -> bool:
+    """Return true if this song category is randomized."""
+    categoryCheckbox = js.document.getElementById(f"music_{category}_randomized")
+    return categoryCheckbox.checked
+
+
 def is_custom_music_loaded() -> bool:
     """Return true if a custom music pack has been loaded."""
     return js.cosmetic_names is not None
@@ -69,9 +84,22 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
         location_name = re.search("^music_select_(.+)$", obj.name)[1]
         location = get_value(Songs[location_name])
         if obj.value != "":
+            chosen_song = obj.value
+            # Default values are handled specially.
+            if chosen_song == "default_value":
+                # If this is for a file, we will save this as the default song
+                # only if this category of song is being randomized.
+                if for_file:
+                    category = get_music_category(location_name)
+                    if is_song_category_randomized(category):
+                        songs_map["vanilla"][location] = get_value(Songs[location_name])
+                    continue
+                else:
+                    # Assign the appropriate song and continue.
+                    chosen_song = location_name
             # If this is an in-game song, use the enum value.
             try:
-                songs_map["vanilla"][location] = get_value(Songs[obj.value])
+                songs_map["vanilla"][location] = get_value(Songs[chosen_song])
             except KeyError:
                 # If this is a custom song, find and use the full string path.
                 bgm_map = zip(js.cosmetic_truncated_names.bgm, js.cosmetic_names.bgm)
@@ -80,7 +108,7 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
                 event_map = zip(js.cosmetic_truncated_names.events, js.cosmetic_names.events)
                 music_map = itertools.chain(bgm_map, major_map, minor_map, event_map)
                 for truncated_name, path_name in music_map:
-                    if obj.value == truncated_name:
+                    if chosen_song == truncated_name:
                         final_path_name = path_name
                         if for_file:
                             final_path_name = get_serialized_custom_path_name(path_name)
@@ -258,4 +286,8 @@ def reset_music_selections_no_prompt():
     """Reset all music selection options to their default settings."""
     for songLocation in SongLocationList:
         songElement = js.document.getElementById(f"music_select_{songLocation}")
-        songElement.value = ""
+        category = get_music_category(songLocation)
+        if is_song_category_randomized(category):
+            songElement.value = ""
+        else:
+            songElement.value = "default_value"
