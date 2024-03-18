@@ -1666,6 +1666,7 @@ CustomLocations = {
             group=4,
         ),
         CustomLocation(
+            # With reduced fall damage threshold and OHKO, you have to slide off of the night door platform to avoid fall damage
             name="Giant Mushroom: Next to the cannon below the night door",
             map=Maps.ForestGiantMushroom,
             x=763.0,

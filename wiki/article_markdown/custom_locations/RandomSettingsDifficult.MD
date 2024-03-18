@@ -198,7 +198,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Fast Pause Transitions: 100%
 	- Cannon Game Better Control: 100%
 	- Better Fairy Camera: 100%
-	- Fix Tag Rolling: 100%
 - Move Randomizer: 
 	- On: 30%
 	- Cross Purchase: 70%

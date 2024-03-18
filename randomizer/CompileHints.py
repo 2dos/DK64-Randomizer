@@ -366,10 +366,10 @@ hint_distribution_default = {
     HintType.WothLocation: 8,
     HintType.FullShopWithItems: 8,
     # HintType.FoolishMove: 0,  # Used to be 2, added to FoolishRegion when it was removed
-    HintType.FoolishRegion: 4,
+    HintType.FoolishRegion: 3,
     HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
-    HintType.RegionItemCount: 1,
+    HintType.RegionItemCount: 2,
     HintType.ItemRegion: 0,
     HintType.Plando: 0,
 }
