@@ -359,6 +359,7 @@ extern void alterChunkData(void* data);
 extern void shineLight(actorData* actor, int kongType);
 extern void fallDamageWrapper(int action, void* actor, int player_index);
 extern void transformBarrelImmunity(void);
+extern void factoryShedFallImmunity(short exit);
 extern void handleFallDamageImmunity(void);
 extern void warpOutOfArenas(void);
 extern void warpOutOfTraining(void);
