@@ -2485,7 +2485,9 @@ def replaceKongNameWithKrusha(spoiler):
         "The Kong that was K. Rool's Bodyguard",
     ]
 
+
 def getHelmOrderHint(spoiler):
+    """Compile the Snide hint for the helm order."""
     file_index = 11
     default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
     helm_order = [default_order[room] for room in spoiler.settings.helm_order]
@@ -2498,7 +2500,7 @@ def getHelmOrderHint(spoiler):
     else:
         early_entries = kong_helm_order[:-1]
         early_entry_text = ", ".join(early_entries)
-        kong_order_text = f"{early_entry_text} AND {kong_helm_order[-1]}"   
+        kong_order_text = f"{early_entry_text} AND {kong_helm_order[-1]}"
     text_entries = [
         {
             # This isn't a game text
@@ -2511,14 +2513,14 @@ def getHelmOrderHint(spoiler):
             "text_index": 4,
             "search": "BLUEPRINTS AND SO DO YOU",
             "replace": "BLUEPRINTS TO BUY | TIME TO SHUT DOWN THE MACHINE",
-        }
+        },
     ]
     for entry in text_entries:
         data = {
             "textbox_index": entry["text_index"],
             "mode": "replace",
             "search": entry["search"],
-            "target": entry["replace"].replace("|",kong_order_text),
+            "target": entry["replace"].replace("|", kong_order_text),
         }
         if file_index in spoiler.text_changes:
             spoiler.text_changes[file_index].append(data)
