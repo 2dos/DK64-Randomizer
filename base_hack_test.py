@@ -39,6 +39,7 @@ spoiler.coin_requirements = {
     Maps.CastleMinecarts: 25,
 }
 
+
 def debugPrint(string: str):
     """Print a string based on a debug flag."""
     if DEBUG_PRINT:

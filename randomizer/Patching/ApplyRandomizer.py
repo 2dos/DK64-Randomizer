@@ -553,7 +553,7 @@ def patching_response(spoiler):
     updateSwitchsanity(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler)
-    parseMoveBlock(spoiler, ROM_COPY) # Has to be after anything which messes with the move block, in this case, randomize_moves and place_randomized_items
+    parseMoveBlock(spoiler, ROM_COPY)  # Has to be after anything which messes with the move block, in this case, randomize_moves and place_randomized_items
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()

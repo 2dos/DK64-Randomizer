@@ -4,7 +4,7 @@ import json
 
 LOWER_LIMIT_DISABLE = False
 UPPER_LIMIT_DISABLE = True
-PATH_PRE = "" # "../" if running this file directly
+PATH_PRE = ""  # "../" if running this file directly
 DELIMITER = "\r\n"
 NUM_CHARS = [str(x) for x in list(range(10))] + ["-"]
 
@@ -43,7 +43,7 @@ with open(f"{PATH_PRE}include/vars.h", "r") as fh:
     lines = text.split(DELIMITER)
     start = "#define"
     for x in lines:
-        if x[:len(start)] == start:
+        if x[: len(start)] == start:
             segs = x.split(" ")
             value = segs[2]
             if value[-1:] == "f":
@@ -64,7 +64,7 @@ for f in ["exported_enums", "item_data"]:
         lines = text.split(DELIMITER)
         start = "typedef enum"
         for x in lines:
-            if x[:len(start)] == start:
+            if x[: len(start)] == start:
                 enum_count = 0
                 started_enum = True
             elif len(x) > 0:

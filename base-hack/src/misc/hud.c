@@ -20,9 +20,11 @@
 #define CAN_USE_DPAD 1
 #define CAN_SHOW_DPAD 2
 
-#define DPADVISIBLE_HIDE 0
-#define DPADVISIBLE_ALL 1
-#define DPADVISIBLE_MINIMAL 2
+typedef enum dpad_visual_enum {
+    /* 0 */ DPADVISIBLE_HIDE,
+    /* 1 */ DPADVISIBLE_ALL,
+    /* 2 */ DPADVISIBLE_MINIMAL,
+} dpad_visual_enum;
 
 static short race_maps[] = {
     MAP_JAPESMINECART,

@@ -14,7 +14,7 @@ import js
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Settings import RandomModels
 from randomizer.Lists.Songs import ExcludedSongsSelector
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames, darkenDPad
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
@@ -22,7 +22,7 @@ from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
 
 # from randomizer.Spoiler import Spoiler
-from randomizer.Settings import Settings, ExcludedSongs
+from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays
 from ui.GenSpoiler import GenerateSpoiler
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
@@ -132,6 +132,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0x139)
             # The DPadDisplays enum is indexed to allow this.
             ROM_COPY.write(int(settings.dpad_display))
+
+            if settings.dpad_display == DPadDisplays.on and settings.dark_mode_textboxes:
+                darkenDPad()
 
             if settings.homebrew_header:
                 # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM

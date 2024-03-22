@@ -1,4 +1,5 @@
 """Randomize Move Locations."""
+
 from enum import IntEnum, auto
 
 from randomizer.Enums.Items import Items
@@ -367,8 +368,10 @@ def place_pregiven_moves(spoiler):
         else:
             setItemReferenceName(spoiler, item, 0, name_str)
 
+
 class MoveDataSection(IntEnum):
     """Move Data Section enum."""
+
     cranky = auto()
     candy = auto()
     funky = auto()
@@ -376,14 +379,17 @@ class MoveDataSection(IntEnum):
     bfi = auto()
     first_move = auto()
 
+
 class MoveDataRequest(IntEnum):
     """Move Data Request Enum."""
+
     price = auto()
     flag = auto()
     move_type = auto()
     move_level = auto()
     move_kong = auto()
     move_no_kong = auto()
+
 
 def getMoveSlot(vendor: MoveDataSection, kong: Kongs, level: int) -> int:
     """Get move slot in the global move array."""
@@ -404,6 +410,7 @@ def getMoveSlot(vendor: MoveDataSection, kong: Kongs, level: int) -> int:
     if global_index is None:
         raise Exception(f"Invalid global index for {vendor}")
     return global_index
+
 
 def readMoveData(ROM_COPY: LocalROM, move_data: int, vendor: MoveDataSection, kong: Kongs, level: int, data_request: MoveDataRequest) -> int:
     """Acquire data from move block."""
@@ -427,6 +434,7 @@ def readMoveData(ROM_COPY: LocalROM, move_data: int, vendor: MoveDataSection, ko
             return raw_data & 0xF8
     raise Exception(f"Invalid data request: {data_request}")
 
+
 def getSharedStatus(type_value: int) -> int:
     """Get shared status of vendor."""
     if (type_value > 2) and (type_value < 5):
@@ -435,30 +443,32 @@ def getSharedStatus(type_value: int) -> int:
         return 0
     return 1
 
+
 def filterMoveType(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection, kong: Kongs, level: int) -> int:
     """Filter move type for the purpose of writing to ROM."""
     move_type = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_type)
     move_level = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_level)
     if move_type == 7:
         return -1
-    if move_type == 4: # Instrument
+    if move_type == 4:  # Instrument
         index = move_level + 1
         if index > 1:
-            return 5 # Flag
-    elif move_type in (1, 3): # Slam, Belt
-        return 5 # Flag
+            return 5  # Flag
+    elif move_type in (1, 3):  # Slam, Belt
+        return 5  # Flag
     return move_type
+
 
 def filterMoveIndex(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection, kong: Kongs, level: int, slam_flag: int, belt_flag: int, ins_flag: int) -> tuple:
     """Filter move index for the purpose of writing to ROM."""
     filtered_type = filterMoveType(ROM_COPY, move_data, section, kong, level)
     index = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_level) + 1
     original_item_type = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_type)
-    if original_item_type == 1: # Slam
+    if original_item_type == 1:  # Slam
         return slam_flag + 1, belt_flag, ins_flag, slam_flag
-    if original_item_type == 3: # Ammo Belt
+    if original_item_type == 3:  # Ammo Belt
         return slam_flag, belt_flag + 1, ins_flag, belt_flag
-    if original_item_type == 4: # Instrument
+    if original_item_type == 4:  # Instrument
         if index > 1:
             return slam_flag, belt_flag, ins_flag + 1, ins_flag
     if filtered_type in (5, 6):
@@ -466,22 +476,17 @@ def filterMoveIndex(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection
         return slam_flag, belt_flag, ins_flag, new_index
     return slam_flag, belt_flag, ins_flag, index
 
+
 def parseMoveBlock(spoiler, ROM_COPY: LocalROM):
-    """Parses move block and writes a section of ROM which will be copied to RAM."""
-    slam_flag = 0x3BF # FLAG_SHOPMOVE_SLAM_0
-    belt_flag = 0x299 # FLAG_SHOPMOVE_BELT_0
-    ins_flag = 0x29B # FLAG_SHOPMOVE_INS_0
+    """Parse move block and writes a section of ROM which will be copied to RAM."""
+    slam_flag = 0x3BF  # FLAG_SHOPMOVE_SLAM_0
+    belt_flag = 0x299  # FLAG_SHOPMOVE_BELT_0
+    ins_flag = 0x29B  # FLAG_SHOPMOVE_INS_0
     move_data = spoiler.settings.move_location_data
     write_data = []
     for _ in range(126):
-        write_data.append({
-            "move_type": 0,
-            "move_level": 0,
-            "move_kong": 0,
-            "price": 0,
-            "flag": -1
-        })
-    for i in range(8): # LEVEL_COUNT
+        write_data.append({"move_type": 0, "move_level": 0, "move_kong": 0, "price": 0, "flag": -1})
+    for i in range(8):  # LEVEL_COUNT
         stored_slam = slam_flag
         stored_belt = belt_flag
         stored_ins = ins_flag

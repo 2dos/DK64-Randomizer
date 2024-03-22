@@ -445,7 +445,7 @@ def apply_cosmetic_colors(settings: Settings):
     swap_bitfield |= 0x80 if settings.caves_tomato_model == Model.Tomato else 0
     # Write Models
     ROM_COPY.seek(sav + 0x1B5)
-    ROM_COPY.writeMultipleBytes(settings.panic_fairy_model + 1, 1) # Still needed for end seq fairy swap
+    ROM_COPY.writeMultipleBytes(settings.panic_fairy_model + 1, 1)  # Still needed for end seq fairy swap
     ROM_COPY.seek(sav + 0x1E2)
     ROM_COPY.write(swap_bitfield)
     if settings.misc_cosmetics and settings.override_cosmetics:
@@ -2073,6 +2073,35 @@ def fixBaboonBlasts():
         ROM_COPY.writeMultipleBytes(int(float_to_hex(2472), 16), 4)
         ROM_COPY.seek(item_start + 0x8)
         ROM_COPY.writeMultipleBytes(int(float_to_hex(1980), 16), 4)
+
+
+def darkenDPad():
+    """Change the DPad cross texture for the DPad HUD."""
+    img = getFile(14, 187, True, 32, 32, TextureFormat.RGBA5551)
+    px = img.load()
+    bytes_array = []
+    for y in range(32):
+        for x in range(32):
+            pix_data = list(px[x, y])
+            print(pix_data)
+            if pix_data[0] > 245 and pix_data[1] > 245 and pix_data[2] > 245:
+                # Main white bit
+                pix_data[0] = 0
+                pix_data[1] = 0
+                pix_data[2] = 0
+            elif pix_data[0] == 0 and pix_data[1] == 0 and pix_data[2] == 0:
+                # Arrow impressions
+                pix_data[0] = 0xAB
+                pix_data[1] = 0xAB
+                pix_data[2] = 0xAB
+            value = 1 if pix_data[3] > 128 else 0
+            for v in range(3):
+                value |= (pix_data[v] >> 3) << 1 + (5 * (2 - v))
+            bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+    px_data = bytearray(bytes_array)
+    px_data = gzip.compress(px_data, compresslevel=9)
+    ROM().seek(js.pointer_addresses[14]["entries"][187]["pointing_to"])
+    ROM().writeBytes(px_data)
 
 
 def placeKrushaHead(slot):
