@@ -253,6 +253,51 @@ piano_extreme_model = [
     Model.Beanstalk,
 ]
 
+spotlight_fish_models = [
+    Model.Turtle,
+    Model.Seal,
+    Model.BeaverBlue,
+    Model.BeaverGold,
+    Model.Zinger,
+    Model.Squawks_28,
+    Model.Klobber,
+    Model.Kaboom,
+    Model.KlaptrapGreen,
+    Model.KlaptrapPurple,
+    Model.KlaptrapRed,
+    Model.Krash,
+    Model.SirDomino,
+    Model.MrDice_41,
+    Model.Ruler,
+    Model.RoboKremling,
+    Model.NintendoLogo,
+    Model.MechanicalFish,
+    Model.ToyCar,
+    Model.Kasplat,
+    Model.BananaFairy,
+    Model.Guard,
+    Model.Gimpfish,
+    Model.Shuri,
+    Model.Spider,
+    Model.Rabbit,
+    Model.KRoolCutscene,
+    Model.KRoolFight,
+    Model.SkeletonHead,
+    Model.Vulture_76,
+    Model.Vulture_77,
+    Model.Bat,
+    Model.Tomato,
+    Model.IceTomato,
+    Model.FlySwatter_83,
+    Model.SpotlightFish,
+    Model.Microphone,
+    Model.Rocketbarrel,
+    Model.StrongKongBarrel,
+    Model.OrangstandSprintBarrel,
+    Model.MiniMonkeyBarrel,
+    Model.HunkyChunkyBarrel,
+]
+
 
 class KongPalette:
     """Class to store information regarding a kong palette."""
@@ -326,13 +371,14 @@ def apply_cosmetic_colors(settings: Settings):
     bother_model_index = Model.KlaptrapGreen
     panic_fairy_model_index = Model.BananaFairy
     panic_klap_model_index = Model.KlaptrapGreen
-    turtle_model_index = Model.KlaptrapGreen
+    turtle_model_index = Model.Turtle
     sseek_klap_model_index = Model.KlaptrapGreen
     fungi_tomato_model_index = Model.Tomato
     caves_tomato_model_index = Model.IceTomato
     racer_beetle = Model.Beetle
     racer_rabbit = Model.Rabbit
     piano_burper = Model.KoshKremlingRed
+    spotlight_fish_model_index = Model.SpotlightFish
     swap_bitfield = 0
 
     ROM_COPY = ROM()
@@ -378,6 +424,7 @@ def apply_cosmetic_colors(settings: Settings):
         referenced_piano_models = piano_models.copy()
         if model_setting == RandomModels.extreme:
             referenced_piano_models.extend(piano_extreme_model)
+            spotlight_fish_model_index = random.choice(spotlight_fish_models)
         piano_burper = random.choice(referenced_piano_models)
     settings.bother_klaptrap_model = bother_model_index
     settings.beetle_model = racer_beetle
@@ -389,6 +436,7 @@ def apply_cosmetic_colors(settings: Settings):
     settings.fungi_tomato_model = fungi_tomato_model_index
     settings.caves_tomato_model = caves_tomato_model_index
     settings.piano_burp_model = piano_burper
+    settings.spotlight_fish_model = spotlight_fish_model_index
     settings.wrinkly_rgb = [255, 255, 255]
     # Compute swap bitfield
     swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0
@@ -396,20 +444,10 @@ def apply_cosmetic_colors(settings: Settings):
     swap_bitfield |= 0x40 if settings.fungi_tomato_model == Model.IceTomato else 0
     swap_bitfield |= 0x80 if settings.caves_tomato_model == Model.Tomato else 0
     # Write Models
-    ROM_COPY.seek(sav + 0x1AF)
-    ROM_COPY.writeMultipleBytes(settings.panic_klaptrap_model - Model.KlaptrapGreen, 1)
-    ROM_COPY.seek(sav + 0x1B0)
-    ROM_COPY.writeMultipleBytes(settings.seek_klaptrap_model - Model.KlaptrapGreen, 1)
-    ROM_COPY.seek(sav + 0x1B6)
-    ROM_COPY.writeMultipleBytes(settings.turtle_model + 1, 1)
     ROM_COPY.seek(sav + 0x1B5)
-    ROM_COPY.writeMultipleBytes(settings.panic_fairy_model + 1, 1)
-    ROM_COPY.seek(sav + 0x136)
-    ROM_COPY.writeMultipleBytes(settings.bother_klaptrap_model + 1, 1)
+    ROM_COPY.writeMultipleBytes(settings.panic_fairy_model + 1, 1) # Still needed for end seq fairy swap
     ROM_COPY.seek(sav + 0x1E2)
     ROM_COPY.write(swap_bitfield)
-    ROM_COPY.seek(sav + 0x1ED)
-    ROM_COPY.writeMultipleBytes(settings.piano_burp_model + 1, 1)
     if settings.misc_cosmetics and settings.override_cosmetics:
         ROM_COPY.seek(sav + 0x196)
         ROM_COPY.write(1)

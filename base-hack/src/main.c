@@ -47,7 +47,6 @@ void cFuncLoop(void) {
 				setActorDamage(43, 3);
 			}
 		}
-		setBurpModel();
 		if (Rando.quality_of_life.vanilla_fixes) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
 				int kong_target = CurrentMap - MAP_KROOLDK;

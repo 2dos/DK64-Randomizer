@@ -398,7 +398,6 @@ extern int getItemCountReq(requirement_item item);
 extern int isItemRequirementSatisfied(ItemRequirement* req);
 
 extern int getGamePercentage(void);
-extern void setBurpModel(void);
 
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
 extern void crankyCodeHandler(void);

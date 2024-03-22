@@ -150,12 +150,11 @@ typedef struct varspace {
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 	/* 0x196 */ char misc_cosmetic_on;
 	/* 0x197 */ rgb skybox_colors[8];
-	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
-	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
+	/* 0x1AF */ char unk_1AF[2];
 	/* 0x1B1 */ char unk_1B1[3];
 	/* 0x1B4 */ char unk_1B4;
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
-	/* 0x1B6 */ unsigned char tttrouble_turtle_model; // 0 = Vanilla
+	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
 	/* 0x1B8 */ char unk_1b8[0x1C6 - 0x1B8];
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
@@ -170,6 +169,6 @@ typedef struct varspace {
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 	/* 0x1EC */ unsigned char check_shop_flags; // Bitfield of pre-given shops: rfcs 0000. r = Cranky, f = Funky, c = Candy, s = Snide
-	/* 0x1ED */ unsigned char piano_game_burper;
+	/* 0x1ED */ unsigned char unk_1ED;
 	/* 0x1EE */ unsigned char global_coins;
 } varspace;

@@ -224,6 +224,14 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         writeValue(ROM_COPY, 0x8075F3F2, Overlay.Static, Model.Beetle + 1, offset_dict)
         writeValue(ROM_COPY, 0x806B23C6, Overlay.Static, 0x287, offset_dict)
 
+    # Misc Model Swaps
+    writeValue(ROM_COPY, 0x8002A55E, Overlay.Bonus, settings.panic_klaptrap_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8002C22E, Overlay.Bonus, settings.seek_klaptrap_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x80028776, Overlay.Bonus, settings.turtle_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8002A656, Overlay.Bonus, settings.panic_fairy_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8074F212, Overlay.Static, settings.piano_burp_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075F122, Overlay.Static, settings.spotlight_fish_model + 1, offset_dict)
+
     if settings.misc_cosmetics:
         writeValue(ROM_COPY, 0x8064F052, Overlay.Static, settings.wrinkly_rgb[0], offset_dict)
         writeValue(ROM_COPY, 0x8064F04A, Overlay.Static, settings.wrinkly_rgb[1], offset_dict)
