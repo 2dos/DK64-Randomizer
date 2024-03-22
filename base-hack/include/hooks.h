@@ -69,3 +69,7 @@ extern void AlwaysCandyInstrument(void);
 
 extern void unscareBeaver(void);
 extern void scareBeaver(void);
+
+extern void tns_pad_height_patch(void);
+extern void tns_pad_height_patch_0(void);
+extern void scoff_patch(void);

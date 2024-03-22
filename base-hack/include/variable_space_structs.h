@@ -1,7 +1,6 @@
 typedef struct varspace {
 	/* 0x000 */ char level_order_rando_on; // 0 = Level Order Rando off, 1 = On
-	/* 0x001 */ char unk_1[7];
-	/* 0x008 */ short troff_scoff_count[7]; // Troff n Scoff requirement for the 7 levels (Item 1 is Japes, Item 2 is Aztec etc.)
+	/* 0x001 */ char unk_1[21];
 	/* 0x016 */ char unk_16[8];
 	/* 0x01E */ short key_flags[7]; // key given in each level. (Item 1 is Japes etc. flags=[0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D] <- Item 1 of this array is Key 1 etc.)
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
@@ -10,14 +9,11 @@ typedef struct varspace {
 	/* 0x02F */ char unk_2F;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
-	/* 0x032 */ char unk_32;
-	/* 0x033 */ char unk_33;
+	/* 0x032 */ char unk_32[2];
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char unk_35;
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
-	/* 0x037 */ char unk_37[10];
-	/* 0x041 */ char unk_41;
-	/* 0x042 */ char unk_42;
+	/* 0x037 */ char unk_37[12];
 	/* 0x043 */ char colorblind_mode; // 0 = Off, 1 = Prot, 2 = Deut, 3 = Trit
 	/* 0x044 */ char dark_mode_textboxes; // 0 = Light Mode, 1 = Dark Mode
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
@@ -92,8 +88,7 @@ typedef struct varspace {
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
 	/* 0x11E */ char tns_indicator;
-	/* 0x11F */ char unk_11F;
-	/* 0x120 */ char unk_120[5];
+	/* 0x11F */ char unk_11F[6];
 	/* 0x125 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
 	/* 0x127 */ unsigned char keys_preturned; // Bitfield. 0000 0001 = Key 1 turned, 0000 0010 = Key 2 turned etc. Eg. 0x7F = 0111 1111 = All keys except Key 8 turned
@@ -105,8 +100,7 @@ typedef struct varspace {
 	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
-	/* 0x136 */ char unk_136;
-	/* 0x137 */ char unk_137;
+	/* 0x136 */ char unk_136[2];
 	/* 0x138 */ char activate_all_bananaports; // 0 = Vanilla, 1 = Most bananaports are activated from the start
 	/* 0x139 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown
 	/* 0x13A */ char fast_warp; // 0 = Vanilla, 1 = Use Multiplayer warp
@@ -119,9 +113,7 @@ typedef struct varspace {
 	/* 0x141 */ unsigned char coinreq_japescart;
 	/* 0x142 */ unsigned char coinreq_fungicart;
 	/* 0x143 */ unsigned char coinreq_castlecart;
-	/* 0x144 */ char unk_144[6];
-	/* 0x14A */ char unk_14A;
-	/* 0x14B */ char unk_14B;
+	/* 0x144 */ char unk_144[8];
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ char unk_14E;
@@ -141,8 +133,7 @@ typedef struct varspace {
 	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
 	/* 0x173 */ char dartboard_order[6]; // Each item denotes a picture. 0 = Crystal, 1 = Melon, 2 = Banana, 3 = Orange, 4 = Ammo Crate, 5 = Medal, 6 = Coin, 7 = Film
-	/* 0x179 */ char unk_179;
-	/* 0x17A */ char unk_17a;
+	/* 0x179 */ char unk_179[2];
 	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
 	/* 0x17E */ unsigned char b_locker_requirements[8];
 	/* 0x186 */ char unk_186[0x190-0x186];
@@ -150,9 +141,7 @@ typedef struct varspace {
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 	/* 0x196 */ char misc_cosmetic_on;
 	/* 0x197 */ rgb skybox_colors[8];
-	/* 0x1AF */ char unk_1AF[2];
-	/* 0x1B1 */ char unk_1B1[3];
-	/* 0x1B4 */ char unk_1B4;
+	/* 0x1AF */ char unk_1AF[6];
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;

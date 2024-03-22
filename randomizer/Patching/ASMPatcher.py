@@ -381,6 +381,13 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806AD728, Overlay.Static, "scareBeaver", offset_dict)
     writeValue(ROM_COPY, 0x806B674E, Overlay.Static, 0xC, offset_dict) # Increase the scare duration
 
+    # T&S Div-by-0 error
+    writeHook(ROM_COPY, 0x8064D8E0, Overlay.Static, "tns_pad_height_patch", offset_dict)
+    writeHook(ROM_COPY, 0x8064D9D8, Overlay.Static, "tns_pad_height_patch_0", offset_dict)
+    writeHook(ROM_COPY, 0x806BE0FC, Overlay.Static, "scoff_patch", offset_dict)
+    for index, count in enumerate(settings.BossBananas):
+        writeValue(ROM_COPY, 0x807446C0 + (2 * index), Overlay.Static, count, offset_dict)
+
     writeFunction(ROM_COPY, 0x80704568, Overlay.Static, "spawnOverlayText", offset_dict)
 
     writeValue(ROM_COPY, 0x807563B4, Overlay.Static, 1, offset_dict, 1) # Enable stack trace
