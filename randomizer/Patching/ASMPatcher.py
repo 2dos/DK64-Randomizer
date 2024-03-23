@@ -1,9 +1,10 @@
 """Patches assembly instructions from the overlays rather than doing changes live."""
 
 import js
+import random
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
 from randomizer.Settings import Settings
-from randomizer.Enums.Settings import FasterChecksSelected, CBRando, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected
+from randomizer.Enums.Settings import FasterChecksSelected, CBRando, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected, ColorblindMode
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
@@ -239,6 +240,39 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     writeValue(ROM_COPY, 0x8002A656, Overlay.Bonus, settings.panic_fairy_model + 1, offset_dict)
     writeValue(ROM_COPY, 0x8074F212, Overlay.Static, settings.piano_burp_model + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075F122, Overlay.Static, settings.spotlight_fish_model + 1, offset_dict)
+
+    # Skybox Handler
+    skybox_rgba = None
+    random_skybox = False
+    if settings.colorblind_mode != ColorblindMode.off:
+        skybox_rgba = [0x31, 0x33, 0x38]
+    elif settings.holiday_setting_offseason:
+        skybox_rgba = [0, 0, 0]
+    elif settings.misc_cosmetics:
+        random_skybox = True
+    if skybox_rgba is not None or random_skybox:
+        for x in range(8):
+            used_arr = skybox_rgba
+            if random_skybox:
+                used_arr = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
+            if used_arr is not None:
+                for zi, z in enumerate(used_arr):
+                    writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + zi, Overlay.Static, z, offset_dict, 1)
+                # Calculate secondary blend
+                backup_rgb = used_arr.copy()
+                exceeded = False
+                for y in range(3):
+                    used_arr[y] = int(used_arr[y] * 1.2)
+                    if used_arr[y] > 255:
+                        exceeded = True
+                if exceeded:
+                    for y in range(3):
+                        used_arr[y] = int(backup_rgb[y] * 0.8)
+                # Write secondary blend
+                for y in range(3):
+                    for zi, z in enumerate(used_arr):
+                        writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + ((y + 1) * 3) + zi, Overlay.Static, z, offset_dict, 1)
+        writeValue(ROM_COPY, 0x8075E1EC, Overlay.Static, 0x80708234, offset_dict, 4)
 
     if settings.misc_cosmetics:
         writeValue(ROM_COPY, 0x8064F052, Overlay.Static, settings.wrinkly_rgb[0], offset_dict)

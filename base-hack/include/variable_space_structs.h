@@ -140,8 +140,7 @@ typedef struct varspace {
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 	/* 0x196 */ char misc_cosmetic_on;
-	/* 0x197 */ rgb skybox_colors[8];
-	/* 0x1AF */ char unk_1AF[6];
+	/* 0x197 */ char unk_197[30];
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;

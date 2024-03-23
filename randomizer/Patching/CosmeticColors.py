@@ -451,16 +451,6 @@ def apply_cosmetic_colors(settings: Settings):
     if settings.misc_cosmetics and settings.override_cosmetics:
         ROM_COPY.seek(sav + 0x196)
         ROM_COPY.write(1)
-        # Skybox RGBA
-        ROM_COPY.seek(sav + 0x197)
-        for channel in range(24):
-            ROM_COPY.writeMultipleBytes(random.randint(0, 255), 1)
-        # Wrinkly Color
-        ROM_COPY.seek(sav + 0x1B1)
-        for channel in range(3):
-            value = random.randint(0, 255)
-            settings.wrinkly_rgb[channel] = value
-            ROM_COPY.writeMultipleBytes(value, 1)
         # Menu Background
         textures = list(compatible_background_textures.keys())
         weights = [compatible_background_textures[x].weight for x in textures]
