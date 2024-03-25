@@ -337,6 +337,7 @@ class HardModeSelected(IntEnum):
     water_is_lava = 4
     reduced_fall_damage_threshold = 5
     shuffled_jetpac_enemies = 6
+    lower_max_refill_amounts = 7
 
 
 # TODO: merge this with the Types enum.
