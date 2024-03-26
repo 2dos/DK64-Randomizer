@@ -229,8 +229,8 @@ class TestSpoiler(unittest.TestCase):
             values += (str(value) + ", ")
         print(types)
         print(values)
-    
+
     def printDesiredOutput(self, spoiler: Spoiler):
         """Print any desired output from the spoiler. Customize to your heart's desire."""
-        print("# of path hints: " + str(spoiler.hint_distribution[HintType.Multipath]) +  " | woth length: " + str(len(spoiler.woth_locations) - 2))
+        print("# of path hints: " + str(spoiler.hint_distribution[HintType.Multipath]) + " | woth length: " + str(len(spoiler.woth_locations) - 2))
         print()

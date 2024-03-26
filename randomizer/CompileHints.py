@@ -775,7 +775,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if HintType.RequiredKeyHint in valid_types:
                 valid_types.remove(HintType.RequiredKeyHint)
             # The number of multipath hints is a percentage of all eligible locations while still guaranteeing every goal gets at least one hint
-            hint_distribution[HintType.Multipath] = max(len(multipath_dict_hints.keys()) * .65, min_value)
+            hint_distribution[HintType.Multipath] = max(len(multipath_dict_hints.keys()) * 0.65, min_value)
             # That percentage likely turns out a decimal - that decimal becomes a % chance to get an extra hint
             rng = random.random()
             if hint_distribution[HintType.Multipath] % 1 < rng:
