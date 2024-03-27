@@ -509,6 +509,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         HintType.RequiredHelmDoorHint,
         HintType.Multipath,
         HintType.ItemRegion,
+        HintType.Plando,
     ]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
@@ -817,11 +818,11 @@ def compileHints(spoiler: Spoiler) -> bool:
             locked_hint_count = sum([hint_distribution[typ] for typ in locked_hint_types]) + sum([hint_distribution[typ] for typ in minned_hint_types])
             # If this is the case (again, INSANELY rare) then you lose a random key hint
             if locked_hint_count > HINT_CAP:
-                key_to_lose_a_hint = random.choice([key for key in key_hint_dict.keys() if key_hint_dict[key] > 0])
-                key_hint_dict[key_to_lose_a_hint] -= 1
                 if HintType.Multipath in valid_types:
                     hint_distribution[HintType.Multipath] -= 1
                 else:
+                    key_to_lose_a_hint = random.choice([key for key in key_hint_dict.keys() if key_hint_dict[key] > 0])
+                    key_hint_dict[key_to_lose_a_hint] -= 1
                     hint_distribution[HintType.RequiredKeyHint] -= 1
                 hint_count -= 1
                 continue
