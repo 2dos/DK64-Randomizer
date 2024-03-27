@@ -557,8 +557,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_distribution[HintType.ItemRegion] -= plando_hints_placed
         valid_types = [HintType.ItemRegion, HintType.Joke]
         # Build the list of valid hint types
-        # If K. Rool is live it is guaranteed a hint in this distribution
-        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool:
+        # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
+        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool and spoiler.settings.spoiler_hints == SpoilerHints.off:
             valid_types.append(HintType.KRoolOrder)
             hint_distribution[HintType.KRoolOrder] = 1
             hint_distribution[HintType.ItemRegion] -= 1
@@ -693,7 +693,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
             hint_distribution[HintType.TroffNScoff] = temp
             valid_types.append(HintType.Entrance)
-        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool:
+        # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
+        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool and spoiler.settings.spoiler_hints == SpoilerHints.off:
             valid_types.append(HintType.KRoolOrder)
             maxed_hint_types.append(HintType.KRoolOrder)
             # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
