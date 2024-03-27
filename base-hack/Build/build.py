@@ -1240,6 +1240,7 @@ text_files = (
     TextChange("Hint Regions", 0, "hint_region_text.bin"),
     TextChange("Item Locations", 0x2800, "item_locations.bin"),
     TextChange("Wrinkly Short", 0x2800, "short_wrinkly.bin"),
+    TextChange("Music Names", 0x2800, "music_names.bin"),
 )
 
 for index, text in enumerate(text_files):
@@ -1725,6 +1726,9 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/{x}"
         if os.path.exists(pth):
             os.remove(pth)
+    dpad_path = "assets/displays/dpad.rgba5551"
+    if os.path.exists(dpad_path):
+        os.remove(dpad_path)
     hash_items = [
         "dk_tie_palette",
         "homing_crate_0",

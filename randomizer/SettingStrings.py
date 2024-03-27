@@ -225,6 +225,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "crosshair_outline",
         "custom_music_proportion",
         "fill_with_custom_music",
+        "show_song_name",
         "delayed_spoilerlog_release",
     ]:
         if pop in dict_data:

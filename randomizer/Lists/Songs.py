@@ -19,6 +19,7 @@ class Song:
         self.name = name
         self.mem_idx = mem_idx
         self.output_name = name
+        self.output_name_short = name
         self.type = type
         self.memory = memory
         self.default_memory = memory
@@ -31,6 +32,7 @@ class Song:
     def Reset(self):
         """Reset song object so that output_name is reset between generations."""
         self.output_name = self.name
+        self.output_name_short = self.name
         self.memory = self.default_memory
         self.shuffled = False
 
@@ -702,3 +704,9 @@ def MusicSelectFilter(songList: list[dict], location: str) -> list[dict]:
             Equal to the string name of the Song enum.
     """
     return [song for song in songList if song_data[Songs[song["value"]]].type != SongType.BGM or song_data[Songs[song["value"]]].channel == song_data[Songs[location]].channel]
+
+def getSongIndexFromName(name: str) -> Songs:
+    for song_idx in song_data:
+        if song_data[song_idx].name == name:
+            return song_idx
+    return None

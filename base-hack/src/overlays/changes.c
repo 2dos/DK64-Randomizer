@@ -71,6 +71,7 @@ void parseCutsceneData(void) {
 	/**
 	 * @brief Handle Cutscene Data
 	 */
+	resetDisplayedMusic();
 	wipeCounterImageCache();
 	if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
 		int phase = CurrentMap - MAP_KROOLDK;

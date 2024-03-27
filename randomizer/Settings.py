@@ -518,6 +518,7 @@ class Settings:
         self.sound_type = SoundType.stereo
         self.custom_music_proportion = 100
         self.fill_with_custom_music = False
+        self.show_song_name = False
 
         #  Misc
         self.generate_spoilerlog = None

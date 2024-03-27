@@ -8,6 +8,7 @@ import math
 import random
 import zipfile
 import time
+import string
 from datetime import datetime as Datetime
 from datetime import UTC
 import js
@@ -18,8 +19,9 @@ from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolid
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords
+from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
+from randomizer.Lists.Songs import getSongIndexFromName
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays
@@ -197,7 +199,19 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.writeMultipleBytes(int(settings.troff_brighten), 1)
 
             patchAssemblyCosmetic(ROM_COPY, settings)
-            music_data = randomize_music(settings)
+            music_data, music_names = randomize_music(settings)
+            music_text = []
+            accepted_characters = [*string.ascii_uppercase] + [" ", "\n", "(", ")", "%", ",", ".", "!", ">", ":", ";", "'", "-"] + [*string.digits]
+            for name in music_names:
+                output_name = name
+                if name is None:
+                    output_name = ""
+                music_text.append([{"text": ["".join([x for x in [*output_name.upper()] if x in accepted_characters])]}])
+            if len(music_names) > 0:
+                writeText(46, music_text, True)
+            if settings.show_song_name:
+                ROM_COPY.seek(sav + 0x1ED)
+                ROM_COPY.write(1)
 
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
 

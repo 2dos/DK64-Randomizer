@@ -51,6 +51,7 @@
 .importobj "obj/src_misc_item_db.o"
 .importobj "obj/src_misc_krusha.o"
 .importobj "obj/src_misc_move_hints.o"
+.importobj "obj/src_misc_music_text.o"
 .importobj "obj/src_misc_perma_kong_loss.o"
 .importobj "obj/src_misc_remove_blockers.o"
 .importobj "obj/src_misc_shop_indicator.o"

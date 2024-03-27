@@ -501,6 +501,7 @@ int* displayListModifiers(int* dl) {
 			}
 		} else {
 			dl = drawTextPointers(dl);
+			dl = displaySongNameHandler(dl);
 			if (Rando.item_rando) {
 				dl = controlKeyText(dl);
 			}

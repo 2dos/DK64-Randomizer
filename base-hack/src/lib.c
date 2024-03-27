@@ -1067,20 +1067,27 @@ void* malloc_wipe(int size) {
 
 int filterSong(int* song_write) {
 	int song = *song_write;
-	if (Rando.disabled_music.events) {
-		if (music_types[song] == SONGTYPE_EVENT) {
-			*song_write = 0;
+	if ((Rando.disabled_music.events) || (Rando.disabled_music.shops)) {
+		if (Rando.disabled_music.events) {
+			if (music_types[song] == SONGTYPE_EVENT) {
+				*song_write = 0;
+				song = 0;
+			}
+		}
+		if (Rando.disabled_music.shops) {
+			if (
+				((song == 2) && (CurrentMap == MAP_CRANKY)) || // Cranky
+				((song == 6) && (CurrentMap == MAP_FUNKY)) || // Funky
+				((song == 31) && (CurrentMap == MAP_CANDY)) || // Candy
+				((song == 29) && (CurrentMap == MAP_SNIDE)) // Snide
+			) {
+				*song_write = 0;
+				song = 0;
+			}
 		}
 	}
-	if (Rando.disabled_music.shops) {
-		if (
-			((song == 2) && (CurrentMap == MAP_CRANKY)) || // Cranky
-			((song == 6) && (CurrentMap == MAP_FUNKY)) || // Funky
-			((song == 31) && (CurrentMap == MAP_CANDY)) || // Candy
-			((song == 29) && (CurrentMap == MAP_SNIDE)) // Snide
-		) {
-			*song_write = 0;
-		}
+	if (Rando.show_music_name) {
+		initSongDisplay(song);
 	}
 	return getTrackChannel(song);
 }

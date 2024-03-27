@@ -157,6 +157,6 @@ typedef struct varspace {
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 	/* 0x1EC */ unsigned char check_shop_flags; // Bitfield of pre-given shops: rfcs 0000. r = Cranky, f = Funky, c = Candy, s = Snide
-	/* 0x1ED */ unsigned char unk_1ED;
+	/* 0x1ED */ unsigned char show_music_name;
 	/* 0x1EE */ unsigned char global_coins;
 } varspace;

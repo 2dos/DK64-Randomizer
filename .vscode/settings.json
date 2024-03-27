@@ -9,6 +9,10 @@
     "python.testing.unittestEnabled": false,
     "files.associations": {
         "common.h": "c",
-        "xtree": "c"
+        "xtree": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "xutility": "c"
     }
 }

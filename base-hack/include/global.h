@@ -399,6 +399,10 @@ extern int isItemRequirementSatisfied(ItemRequirement* req);
 
 extern int getGamePercentage(void);
 
+extern void initSongDisplay(int song);
+extern int* displaySongNameHandler(int* dl);
+extern void resetDisplayedMusic(void);
+
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
 extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
@@ -434,7 +438,7 @@ extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
 extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
-extern mtx_item static_mtx[20];
+extern mtx_item static_mtx[22];
 extern int hint_pointers[35];
 extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
 extern char music_types[SONG_COUNT];
