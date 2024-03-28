@@ -394,6 +394,13 @@ int setHintRegion(void) {
                     // 5 = Production Room
                     // 6 = Tunnel to Hatch
                     return REGION_FACTORYPROD;
+                } else if ((chunk == 7)) {
+                    // 7 = Room with the Hatch
+                    // Chunk has 2 regions, subdivide by y position
+                    if (py < 804) {
+                        return REGION_FACTORYPROD;
+                    }
+                    return REGION_FACTORYSTART;
                 } else if ((chunk >= 22) && (chunk <= 30)) {
                     // 22 = Tunnel from Pole to R&D
                     // 23 = Main R&D
