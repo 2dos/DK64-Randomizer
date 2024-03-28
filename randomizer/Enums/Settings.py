@@ -365,6 +365,12 @@ class KasplatRandoSetting(IntEnum):
     vanilla_locations = 1
     location_shuffle = 2
 
+class MusicFilters(IntEnum):
+    """Determine how music is filtered."""
+
+    length = 1
+    location = 1
+
 
 class RandomModels(IntEnum):
     """Determines the random model level."""
@@ -739,6 +745,7 @@ SettingsMap = {
     "misc_changes_selected": MiscChangesSelected,
     "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
+    "music_filtering_selected": MusicFilters,
     "rambi_colors": CharacterColors,
     "random_models": RandomModels,
     "random_prices": RandomPrices,

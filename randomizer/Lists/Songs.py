@@ -35,7 +35,7 @@ class Song:
         self.shuffled = False
 
 
-class SongExclusionItem:
+class SongMultiselectorItem:
     """Song Exclusion multiselector information."""
 
     def __init__(self, name, shift, tooltip=""):
@@ -595,16 +595,24 @@ MinigameSongs = {
 
 ExcludedSongsSelector = []
 ExclSongsItems = [
-    SongExclusionItem("Wrinkly", 0, "Removes Wrinkly doors from playing her theme."),
-    SongExclusionItem("Transformation", 3, "The game will no longer play the transformation sound effect."),
-    SongExclusionItem("Pause Music", 4, "The pause menu music will no longer play."),
-    SongExclusionItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
+    SongMultiselectorItem("Wrinkly", 0, "Removes Wrinkly doors from playing her theme."),
+    SongMultiselectorItem("Transformation", 3, "The game will no longer play the transformation sound effect."),
+    SongMultiselectorItem("Pause Music", 4, "The pause menu music will no longer play."),
+    SongMultiselectorItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
     # SongExclusionItem("Shops", 1, "COMING SOON: Makes shops inherit the previous song."), # TODO: Fix this
     # SongExclusionItem("Events", 2, "COMING SOON: Events will no longer play a song."), # TODO: Fix this
 ]
 for item in ExclSongsItems:
     if item.name != "No Group":
         ExcludedSongsSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
+SongFilteringSelector = []
+SongFilterItems = [
+    SongMultiselectorItem("Length", 0, "Non-BGM Tracks will be filtered to be roughly the same length as the slot they replace."),
+    SongMultiselectorItem("Location", 3, "BGM tracks will be filtered so that the mood of the song fits the location it's placed in."),
+]
+for item in SongFilterItems:
+    if item.name != "No Group":
+        SongFilteringSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
 
 # This dict determines all of the dropdowns for selecting music, and how they
 # will be grouped together.
