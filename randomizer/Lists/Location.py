@@ -811,7 +811,7 @@ LocationListOriginal = {
     Locations.AztecDK5DTEnemy_EndTrap2: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Trap (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x409)]),
     Locations.AztecDK5DTEnemy_EndPath0: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Path (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x40a)]),
     Locations.AztecDK5DTEnemy_EndPath1: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: End Path (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x40b)]),
-    Locations.AztecDK5DTEnemy_StartPath: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: Start Pat (h)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x40c)]),
+    Locations.AztecDK5DTEnemy_StartPath: Location(Levels.AngryAztec, "Aztec Donkey5DTemple Enemy: Start Path", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDonkey5DTemple, -1, 0x40c)]),
     Locations.AztecDiddy5DTEnemy_EndTrap0: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: End Trap (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x40d)]),
     Locations.AztecDiddy5DTEnemy_EndTrap1: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: End Trap (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x40e)]),
     Locations.AztecDiddy5DTEnemy_EndTrap2: Location(Levels.AngryAztec, "Aztec Diddy5DTemple Enemy: End Trap (2)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecDiddy5DTemple, -1, 0x40f)]),
