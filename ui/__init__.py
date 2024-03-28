@@ -8,6 +8,7 @@ from ui.rando_options import (
     disable_colors,
     disable_enemy_modal,
     disable_excluded_songs_modal,
+    disable_music_filtering_modal,
     disable_hard_mode_modal,
     disable_helm_hurry,
     disable_remove_barriers,
@@ -61,6 +62,7 @@ max_sfx(None)
 disable_barrel_modal(None)
 disable_enemy_modal(None)
 disable_excluded_songs_modal(None)
+disable_music_filtering_modal(None)
 disable_hard_mode_modal(None)
 toggle_item_rando(None)
 disable_boss_rando(None)

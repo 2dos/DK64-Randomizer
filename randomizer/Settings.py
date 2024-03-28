@@ -545,6 +545,8 @@ class Settings:
         self.remove_barriers_selected = []
         self.songs_excluded = False
         self.excluded_songs_selected = []
+        self.music_filtering = False
+        self.music_filtering_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
         self.starting_move_list_selected = []

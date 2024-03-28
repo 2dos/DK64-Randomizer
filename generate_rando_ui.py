@@ -37,7 +37,7 @@ async def initialize():
     from randomizer.Lists.Minigame import MinigameSelector
     from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
     from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
-    from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectFilter, MusicSelectionPanel, PlannableSongs
+    from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectFilter, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
     from randomizer.Lists.Warps import VanillaBananaportSelector
     from randomizer.Lists.WrinklyHints import PointSpreadSelector
 
@@ -86,6 +86,7 @@ async def initialize():
         hard_mode=HardSelector,
         enemies=EnemySelector,
         excluded_songs=ExcludedSongsSelector,
+        song_filters=SongFilteringSelector,
         itemRando=ItemRandoSelector,
         keys=KeySelector,
         glitches=GlitchSelector,
