@@ -153,7 +153,7 @@ class UploadInfo:
                             self.mood_tags.append(TAG_CONVERSION_TABLE[tag][0])
         will_filter = False
         disable_location_tags = False
-        if self.extension == "candy":
+        if self.extension == ".candy":
             if length_filter and (song_type != SongType.BGM):
                 will_filter = True
             elif location_filter and (song_type == SongType.BGM):
