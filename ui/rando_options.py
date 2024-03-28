@@ -802,6 +802,7 @@ def disable_excluded_songs_modal(evt):
     except AttributeError:
         pass
 
+
 @bind("click", "music_filtering")
 def disable_music_filtering_modal(evt):
     """Disable Excluded Song Selector when Excluded Songs is off."""

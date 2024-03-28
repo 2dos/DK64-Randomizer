@@ -365,6 +365,7 @@ class KasplatRandoSetting(IntEnum):
     vanilla_locations = 1
     location_shuffle = 2
 
+
 class MusicFilters(IntEnum):
     """Determine how music is filtered."""
 
