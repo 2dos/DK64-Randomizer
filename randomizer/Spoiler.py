@@ -36,6 +36,7 @@ from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
+from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
@@ -267,8 +268,14 @@ class Spoiler:
         settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
-        settings["Fast GBs"] = self.settings.faster_checks_enabled
-        settings["Barriers Removed"] = self.settings.remove_barriers_enabled
+        if self.settings.faster_checks_enabled and any(self.settings.faster_checks_selected):
+            settings["Fast GBs"] = [FasterCheckSelector[barrier_enum - 1]["name"] for barrier_enum in self.settings.faster_checks_selected]
+        else:
+            settings["Fast GBs"] = self.settings.faster_checks_enabled
+        if self.settings.remove_barriers_enabled and any(self.settings.remove_barriers_selected):
+            settings["Barriers Removed"] = [RemovedBarrierSelector[barrier_enum - 1]["name"] for barrier_enum in self.settings.remove_barriers_selected]
+        else:
+            settings["Barriers Removed"] = self.settings.remove_barriers_enabled
         settings["Win Condition"] = self.settings.win_condition.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name
