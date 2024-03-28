@@ -478,7 +478,7 @@ enemies_shockwave_immune = [
     Enemies.ZingerLime,
     Enemies.ZingerRobo,
 ]
-enemy_5dc_ban = [Enemies.Kosha, Enemies.Guard, Enemies.KlaptrapPurple, Enemies.KlaptrapRed]
+enemy_5dc_ban = [Enemies.Kosha, Enemies.Guard]
 
 enemy_location_list = {
     # Japes

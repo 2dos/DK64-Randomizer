@@ -110,7 +110,7 @@ void ArenaTagKongCode(void) {
         playActorAnimation(Player, 0x317);
         Player->hSpeed = 100.0f;
         if (!isGamemode(GAMEMODE_DKBONUS, 0)) {
-            initial_score = 125;
+            initial_score = 100;
         }
     }
     if (initial_score > 0) {
