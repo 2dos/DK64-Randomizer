@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from math import ceil, floor
 import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
 from randomizer.Enums.MoveTypes import MoveTypes
@@ -429,8 +430,8 @@ item_hint_distribution = {
     HintType.Plando: 0,
 }
 
-hint_reroll_cap = 1  # How many times are you willing to reroll a hinted location?
-hint_reroll_chance = 1.0  # What % of the time do you reroll in conditions that could trigger a reroll?
+hint_reroll_cap = 2  # How many times are you willing to reroll a hinted location?
+hint_reroll_chance = 1.0  # What % of the time (from 0-1) do you reroll in conditions that could trigger a reroll?
 globally_hinted_location_ids = []
 
 
@@ -467,7 +468,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             key_location_ids[location.item] = location_id
 
     # Some locations are particularly useless to hint
-    useless_locations = {Items.HideoutHelmKey: [], Kongs.diddy: [], Kongs.lanky: [], Kongs.tiny: [], Kongs.chunky: []}
+    useless_locations = {Items.HideoutHelmKey: [], Kongs.donkey: [], Kongs.diddy: [], Kongs.lanky: [], Kongs.tiny: [], Kongs.chunky: []}
     # Your training in Gorilla Gone, Monkeyport, and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
         useless_moves = [Items.Vines]
@@ -508,6 +509,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         HintType.RequiredHelmDoorHint,
         HintType.Multipath,
         HintType.ItemRegion,
+        HintType.Plando,
     ]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
@@ -555,16 +557,21 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_distribution[HintType.ItemRegion] -= plando_hints_placed
         valid_types = [HintType.ItemRegion, HintType.Joke]
         # Build the list of valid hint types
-        # If K. Rool is live it is guaranteed a hint in this distribution
-        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool:
+        # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
+        if (
+            (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
+            and spoiler.settings.win_condition == WinCondition.beat_krool
+            and spoiler.settings.spoiler_hints == SpoilerHints.off
+        ):
             valid_types.append(HintType.KRoolOrder)
             hint_distribution[HintType.KRoolOrder] = 1
             hint_distribution[HintType.ItemRegion] -= 1
+        # Helm order hint has been moved to Snide
         # If Helm is live it is guaranteed a hint in this distribution
-        if spoiler.settings.helm_setting != HelmSetting.skip_all and (spoiler.settings.helm_phase_count < 5 or spoiler.settings.helm_random):
-            valid_types.append(HintType.HelmOrder)
-            hint_distribution[HintType.HelmOrder] = 1
-            hint_distribution[HintType.ItemRegion] -= 1
+        # if spoiler.settings.helm_setting != HelmSetting.skip_all and (spoiler.settings.helm_phase_count < 5 or spoiler.settings.helm_random):
+        #     valid_types.append(HintType.HelmOrder)
+        #     hint_distribution[HintType.HelmOrder] = 1
+        #     hint_distribution[HintType.ItemRegion] -= 1
         # Each random Helm door is also guaranteed a hint
         if spoiler.settings.crown_door_random or spoiler.settings.coin_door_random:
             valid_types.append(HintType.RequiredHelmDoorHint)
@@ -690,15 +697,21 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
             hint_distribution[HintType.TroffNScoff] = temp
             valid_types.append(HintType.Entrance)
-        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool:
+        # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
+        if (
+            (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
+            and spoiler.settings.win_condition == WinCondition.beat_krool
+            and spoiler.settings.spoiler_hints == SpoilerHints.off
+        ):
             valid_types.append(HintType.KRoolOrder)
             maxed_hint_types.append(HintType.KRoolOrder)
             # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
             if Events.HelmKeyTurnedIn not in spoiler.settings.krool_keys_required or not spoiler.settings.key_8_helm:
                 minned_hint_types.append(HintType.KRoolOrder)
-        if spoiler.settings.helm_setting != HelmSetting.skip_all and (spoiler.settings.helm_phase_count < 5 or spoiler.settings.helm_random):
-            valid_types.append(HintType.HelmOrder)
-            locked_hint_types.append(HintType.HelmOrder)
+        # Helm order hint has been moved to Snide
+        # if spoiler.settings.helm_setting != HelmSetting.skip_all and (spoiler.settings.helm_phase_count < 5 or spoiler.settings.helm_random):
+        #     valid_types.append(HintType.HelmOrder)
+        #     locked_hint_types.append(HintType.HelmOrder)
         if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.item_shuffle) and Types.Shop not in spoiler.settings.shuffled_location_types:
             valid_types.append(HintType.FullShopWithItems)
             valid_types.append(HintType.MoveLocation)
@@ -734,37 +747,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 # K. Rool seeds could use some help finding the last pesky moves
                 if spoiler.settings.win_condition == WinCondition.beat_krool:
                     valid_types.append(HintType.RequiredWinConditionHint)
-                    path_length = len(spoiler.woth_paths[Locations.BananaHoard]) - 1  # Don't include the Banana Hoard itself in the path length
-                    if Kongs.diddy in spoiler.settings.krool_order:
-                        hint_distribution[HintType.RequiredWinConditionHint] += 1
-                    if Kongs.lanky in spoiler.settings.krool_order:
-                        hint_distribution[HintType.RequiredWinConditionHint] += 1
-                    if Kongs.tiny in spoiler.settings.krool_order:
-                        hint_distribution[HintType.RequiredWinConditionHint] += 1
-                    if Kongs.chunky in spoiler.settings.krool_order:
-                        hint_distribution[HintType.RequiredWinConditionHint] += 2
-                    path_length -= len(useless_locations[Kongs.diddy]) + len(useless_locations[Kongs.lanky]) + len(useless_locations[Kongs.tiny]) + len(useless_locations[Kongs.chunky])
-                    if hint_distribution[HintType.RequiredWinConditionHint] != 0:
-                        # Guarantee you have a decent number of hints, even if you have very few, very buried moves required
-                        if path_length == 0:
-                            hint_distribution[HintType.RequiredWinConditionHint] = 0
-                        elif path_length <= 1:  # 2 (should never be 1 here)
-                            hint_distribution[HintType.RequiredWinConditionHint] = max(hint_distribution[HintType.RequiredWinConditionHint], 1)
-                        elif path_length <= 3:  # 3-4
-                            hint_distribution[HintType.RequiredWinConditionHint] = max(hint_distribution[HintType.RequiredWinConditionHint], 2)
-                        elif path_length <= 6:  # 5-7
-                            hint_distribution[HintType.RequiredWinConditionHint] = max(hint_distribution[HintType.RequiredWinConditionHint], 3)
-                        elif path_length <= 9:  # 8-10
-                            hint_distribution[HintType.RequiredWinConditionHint] = max(hint_distribution[HintType.RequiredWinConditionHint], 4)
-                        else:  # 11+
-                            hint_distribution[HintType.RequiredWinConditionHint] = max(hint_distribution[HintType.RequiredWinConditionHint], 5)
-                    # Old system pointing to specific moves
-                    # if Kongs.diddy in spoiler.settings.krool_order:
-                    #     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Rocketbarrel hint
-                    # if Kongs.tiny in spoiler.settings.krool_order:
-                    #     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Mini Monkey hint
-                    # if Kongs.chunky in spoiler.settings.krool_order:
-                    #     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Hunky Chunky hint
+                    # Count the number of non-trivial phases
+                    hint_distribution[HintType.RequiredWinConditionHint] = len([kong for kong in spoiler.settings.krool_order if len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0])
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
                 if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
@@ -775,18 +759,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     # Don't make a Camera path hint if Camera isn't woth
                     if camera_location_id in spoiler.woth_paths.keys():
                         valid_types.append(HintType.RequiredWinConditionHint)
-                        # Same rules as key path amounts
-                        path_length = len(spoiler.woth_paths[camera_location_id]) - 1  # Don't include the camera itself in the path length
-                        if path_length < 0:  # 0 (I'm not sure this is possible but I don't want to error)
-                            hint_distribution[HintType.RequiredWinConditionHint] = 0
-                        elif path_length <= 1:  # 1-2
-                            hint_distribution[HintType.RequiredWinConditionHint] = 1
-                        elif path_length <= 5:  # 3-6
-                            hint_distribution[HintType.RequiredWinConditionHint] = 2
-                        elif path_length <= 9:  # 7-10
-                            hint_distribution[HintType.RequiredWinConditionHint] = 3
-                        else:  # 11+
-                            hint_distribution[HintType.RequiredWinConditionHint] = 4
+                        hint_distribution[HintType.RequiredWinConditionHint] = 1
         if spoiler.settings.crown_door_random or spoiler.settings.coin_door_random:
             valid_types.append(HintType.RequiredHelmDoorHint)
             if spoiler.settings.crown_door_random:
@@ -801,42 +774,27 @@ def compileHints(spoiler: Spoiler) -> bool:
             # Dynamically calculate the number of key hints that need to be placed per key. Any WotH keys should have paths that we should hint.
             if spoiler.settings.shuffle_items and len(woth_key_ids) > 0:
                 valid_types.append(HintType.RequiredKeyHint)
-                # Only hint keys that are in the Way of the Hoard
-                for key_id in woth_key_ids:
-                    # Keys you are expected to find early only get one direct hint, treat all keys as early keys because there are no paths
-                    if False and key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
-                        # This is no longer true with multipath hints - all keys get hints based on path length
-                        key_hint_dict[key_id] = 1
-                    # Late or complex keys get a number of hints based on the length of the path to them
-                    else:
-                        path_length = len(spoiler.woth_paths[key_location_ids[key_id]])
-                        # If key 8 is in Helm, your training in several moves is utterly useless to hint
-                        if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
-                            path_length -= len(useless_locations[Items.HideoutHelmKey])
-                        if path_length <= 0:  # 0
-                            key_hint_dict[key_id] = 0
-                        elif path_length <= 2:  # 1-2
-                            key_hint_dict[key_id] = 1
-                        elif path_length <= 5:  # 3-5
-                            key_hint_dict[key_id] = 2
-                        elif path_length <= 9:  # 6-9
-                            key_hint_dict[key_id] = 3
-                        elif path_length <= 13:  # 10-13
-                            key_hint_dict[key_id] = 4
-                        else:  # 14+
-                            key_hint_dict[key_id] = 5
-                hint_distribution[HintType.RequiredKeyHint] = sum(key_hint_dict.values())
-            # Convert all path hints into multipath hints, utilizing the prior calculations as a rough estimate of path length/difficulty
-            estimated_path_difficulty = max(0, (hint_distribution[HintType.RequiredKeyHint] * 1) + (hint_distribution[HintType.RequiredWinConditionHint] * 0.8))
+                # Only guarantee hints for keys that are in the Way of the Hoard
+                hint_distribution[HintType.RequiredKeyHint] = len(woth_key_ids)
+            # Convert all path hints into multipath hints
+            min_value = hint_distribution[HintType.RequiredWinConditionHint] + hint_distribution[HintType.RequiredKeyHint]
             hint_distribution[HintType.RequiredWinConditionHint] = 0
             hint_distribution[HintType.RequiredKeyHint] = 0
             if HintType.RequiredWinConditionHint in valid_types:
                 valid_types.remove(HintType.RequiredWinConditionHint)
             if HintType.RequiredKeyHint in valid_types:
                 valid_types.remove(HintType.RequiredKeyHint)
-            # Multipath hints are generally more powerful than your average hint, so we need fewer of them (but not more hints than are possible!)
-            hint_distribution[HintType.Multipath] = min(len(multipath_dict_hints.keys()), round(estimated_path_difficulty))
+            # The number of multipath hints is a percentage of all eligible locations while still guaranteeing every goal gets at least one hint
+            hint_distribution[HintType.Multipath] = max(len(multipath_dict_hints.keys()) * 0.65, min_value)
+            # That percentage likely turns out a decimal - that decimal becomes a % chance to get an extra hint
+            rng = random.random()
+            if hint_distribution[HintType.Multipath] % 1 < rng:
+                hint_distribution[HintType.Multipath] = ceil(hint_distribution[HintType.Multipath])
+            else:
+                hint_distribution[HintType.Multipath] = floor(hint_distribution[HintType.Multipath])
+            # If we somehow have more multipath hints than there are locations, cap it (this should be impossible now?)
             if hint_distribution[HintType.Multipath] >= len(multipath_dict_hints.keys()):
+                hint_distribution[HintType.Multipath] = len(multipath_dict_hints.keys())
                 maxed_hint_types.append(HintType.Multipath)
             valid_types.append(HintType.Multipath)
 
@@ -869,11 +827,11 @@ def compileHints(spoiler: Spoiler) -> bool:
             locked_hint_count = sum([hint_distribution[typ] for typ in locked_hint_types]) + sum([hint_distribution[typ] for typ in minned_hint_types])
             # If this is the case (again, INSANELY rare) then you lose a random key hint
             if locked_hint_count > HINT_CAP:
-                key_to_lose_a_hint = random.choice([key for key in key_hint_dict.keys() if key_hint_dict[key] > 0])
-                key_hint_dict[key_to_lose_a_hint] -= 1
                 if HintType.Multipath in valid_types:
                     hint_distribution[HintType.Multipath] -= 1
                 else:
+                    key_to_lose_a_hint = random.choice([key for key in key_hint_dict.keys() if key_hint_dict[key] > 0])
+                    key_hint_dict[key_to_lose_a_hint] -= 1
                     hint_distribution[HintType.RequiredKeyHint] -= 1
                 hint_count -= 1
                 continue
@@ -2005,10 +1963,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 bean_region = GetRegionOfLocation(spoiler, bean_location_id)
                 hinted_location_text = bean_region.hint_name
-                be_verb = "is"
-                if hinted_location_text[-1] == "s":
-                    be_verb = "are"
-                message = f"The {hinted_location_text} {be_verb} on the Way of the Bean."
+                message = f"The Way of the Bean concludes in the {hinted_location_text}."
                 hint_location.related_location = bean_location_id
         hint_location.hint_type = HintType.Joke
         UpdateHint(hint_location, message)

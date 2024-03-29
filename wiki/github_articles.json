@@ -118,5 +118,10 @@
         "name": "Random Helm Door Changes",
         "link": "RandomHelmDoorChanges",
         "github": "Random-Helm-Door-Changes"
+    },
+    {
+        "name": "Glitch Logic",
+        "link": "GlitchLogic",
+        "github": "Glitch-Logic"
     }
 ]

@@ -366,6 +366,13 @@ class KasplatRandoSetting(IntEnum):
     location_shuffle = 2
 
 
+class MusicFilters(IntEnum):
+    """Determine how music is filtered."""
+
+    length = 1
+    location = 1
+
+
 class RandomModels(IntEnum):
     """Determines the random model level."""
 
@@ -511,6 +518,7 @@ class MiscChangesSelected(IntEnum):
     fast_pause_transitions = 24
     cannon_game_better_control = 25
     better_fairy_camera = 26
+    remove_enemy_cabin_timer = 27
 
 
 class MoveRando(IntEnum):
@@ -738,6 +746,7 @@ SettingsMap = {
     "misc_changes_selected": MiscChangesSelected,
     "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
+    "music_filtering_selected": MusicFilters,
     "rambi_colors": CharacterColors,
     "random_models": RandomModels,
     "random_prices": RandomPrices,

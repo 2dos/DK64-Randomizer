@@ -422,6 +422,9 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
         if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
             ROM_COPY.writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
+        if new_enemy_id in (Enemies.KlaptrapPurple, Enemies.KlaptrapRed) and cont_map_id == Maps.CavesDiddyLowerCabin:
+            ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
+            ROM_COPY.write(75)
         # Speed Adjustment
         if spoiler.settings.enemy_speed_rando:
             if cont_map_id not in banned_speed_maps:
