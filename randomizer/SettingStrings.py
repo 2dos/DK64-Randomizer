@@ -217,6 +217,8 @@ def encrypt_settings_string_enum(dict_data: dict):
         "sound_type",
         "songs_excluded",
         "excluded_songs_selected",
+        "music_filtering",
+        "music_filtering_selected",
         "troff_brighten",
         "crosshair_outline",
         "custom_music_proportion",

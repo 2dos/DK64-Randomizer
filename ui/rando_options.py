@@ -803,6 +803,22 @@ def disable_excluded_songs_modal(evt):
         pass
 
 
+@bind("click", "music_filtering")
+def disable_music_filtering_modal(evt):
+    """Disable Excluded Song Selector when Excluded Songs is off."""
+    disabled = True
+    selector = js.document.getElementById("music_filtering_modal")
+    if js.document.getElementById("music_filtering").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("click", "shuffle_items")
 def toggle_item_rando(evt):
     """Enable and disable settings based on Item Rando being on/off."""
@@ -1042,6 +1058,7 @@ def update_ui_states(event):
     disable_enemy_modal(None)
     disable_hard_mode_modal(None)
     disable_excluded_songs_modal(None)
+    disable_music_filtering_modal(None)
     toggle_bananaport_selector(None)
     disable_helm_hurry(None)
     disable_remove_barriers(None)
