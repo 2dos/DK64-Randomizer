@@ -74,8 +74,8 @@
                 {% endif %}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="{{ name }}_select_all">Select All</button>
-                <button type="button" class="btn btn-primary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-secondary" id="{{ name }}_select_all">Select All</button>
+                <button type="button" class="btn btn-secondary" id="{{ name }}_reset">Reset</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -180,7 +180,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-secondary" id="{{ name }}_reset">Reset</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -194,4 +194,29 @@
         {% endfor %}
     })
 </script>
+{% endmacro %}
+{% macro toggle_input(id, name, tooltip="", default_checked=False) %}
+<div class="form-check form-switch item-switch" data-toggle="tooltip"
+            title="{{ tooltip }}">
+    {% if default_checked %}
+        <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            name="{{ id }}"
+            id="{{ id }}"
+            display_name="{{ name }}"
+            value="True" checked />
+    {% else %}
+        <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            name="{{ id }}"
+            id="{{ id }}"
+            display_name="{{ name }}"
+            value="True" />
+    {% endif %}
+    <label class="form-check-label" for="{{ id }}">{{ name }}</label>
+</div>
 {% endmacro %}
