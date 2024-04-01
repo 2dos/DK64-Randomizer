@@ -764,7 +764,7 @@ namespace DK64BuildRoutine {
             CastleBallroom,
             CastleGreenhouse,
             KRoolTheme,
-            ForestWinch,
+            CastleShed,
             CastleTower,
             CastleTree,
             CastleMuseum,

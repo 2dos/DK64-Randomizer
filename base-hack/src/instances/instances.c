@@ -198,6 +198,7 @@
 
 #define JAPES_RAMBI_DOOR 0x115
 #define K_ROOL_SHIP 0x35
+#define ENEMY_CABIN_DOOR 0x0
 
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 
@@ -536,6 +537,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
+			case MAP_CAVES5DCDIDDYLOW:
+				if (Rando.quality_of_life.remove_enemy_cabin_timer) {
+					return 0;
+				}
+				return 1;
+				break;
 			case MAP_BATTLEARENA_BEAVERBRAWL:
 			case MAP_BATTLEARENA_KRITTERKARNAGE:
 			case MAP_BATTLEARENA_ARENAAMBUSH:
@@ -683,6 +690,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
+					if(param2 == JAPES_CAVE_GATE && Rando.switchsanity.japes.diddy_cave){
+						return 0;
+					}
 					return !Rando.tag_anywhere;
 				} else if (param2 == JAPES_RAMBI_DOOR) {
 					if (Player) {

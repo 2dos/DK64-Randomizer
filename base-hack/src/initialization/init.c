@@ -476,6 +476,7 @@ void initHack(int source) {
 				*(short*)(0x806D3682) = getFloatUpper(fall_threshold); // Change fall too far threshold
 				writeFunction(0x806D36B4, &fallDamageWrapper);
 				writeFunction(0x8067F540, &transformBarrelImmunity);
+				writeFunction(0x8068B178, &factoryShedFallImmunity);
 			}
 			if (Rando.hard_mode.lava_water) {
 				*(int*)(0x806677C4) = 0; // Dynamic Surfaces
@@ -528,6 +529,7 @@ void initHack(int source) {
 			if (Rando.any_kong_items & 1) {
 				writeFunction(0x80632E94, &getItemRequiredKong);
 			}
+			writeFunction(0x806F93D4, &gbUpdateHandler);
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
 				writeFunction(0x80656538, &displayNoGeoChunk);
 				writeFunction(0x806562C0, &displayNoGeoChunk);

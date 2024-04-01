@@ -545,6 +545,8 @@ class Settings:
         self.remove_barriers_selected = []
         self.songs_excluded = False
         self.excluded_songs_selected = []
+        self.music_filtering = False
+        self.music_filtering_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
         self.starting_move_list_selected = []
@@ -1071,10 +1073,16 @@ class Settings:
         ]
         key_list = KeyEvents.copy()
         required_key_count = 0
+        # Start by requiring every key
+        self.krool_keys_required = KeyEvents.copy()
+        # Determine how many keys we need - this can be random or selected
         if self.keys_random:
             required_key_count = randint(0, 8)
-        elif self.select_keys:
-            self.krool_keys_required = KeyEvents.copy()
+        else:
+            required_key_count = self.krool_key_count
+        key_8_required = self.krool_access or self.win_condition == WinCondition.get_key8
+        # Remove the need for keys we intend to start with
+        if self.select_keys:
             for key in self.starting_keys_list_selected:
                 if key == Items.JungleJapesKey:
                     self.krool_keys_required.remove(key_list[0])
@@ -1090,20 +1098,17 @@ class Settings:
                     self.krool_keys_required.remove(key_list[5])
                 if key == Items.CreepyCastleKey:
                     self.krool_keys_required.remove(key_list[6])
-                if key == Items.HideoutHelmKey:
+                if key == Items.HideoutHelmKey and not key_8_required:  # Don't allow Key 8 to be started with if it's required
                     self.krool_keys_required.remove(key_list[7])
-        else:
-            required_key_count = self.krool_key_count
-        if self.krool_access or self.win_condition == WinCondition.get_key8:
-            # If key 8 is guaranteed to be needed, make sure it's added and included in the key count
-            if Events.HelmKeyTurnedIn not in self.krool_keys_required:
-                self.krool_keys_required.append(Events.HelmKeyTurnedIn)
-                required_key_count -= 1
-            key_list.remove(Events.HelmKeyTurnedIn)
-        if not self.select_keys:
-            random.shuffle(key_list)
-            for x in range(required_key_count):
-                self.krool_keys_required.append(key_list[x])
+        # If the list of required keys is still greater than the amount of keys we want to require, we need to remove required keys
+        if len(self.krool_keys_required) > required_key_count:
+            while len(self.krool_keys_required) > required_key_count:
+                # The Helm Key is not eligible to be removed if it's guaranteed to be needed
+                removable_keys = [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not key_8_required]
+                if len(removable_keys) == 0:  # Key 8 being required is stronger than a need for 0 Keys - this will trigger if Key 8 is your last key to require but Key 8 is always required
+                    break
+                key_to_remove = random.choice(removable_keys)
+                self.krool_keys_required.remove(key_to_remove)
         self.starting_key_list = []
         if Events.JapesKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.JungleJapesKey].playthrough = False

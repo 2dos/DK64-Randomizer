@@ -35,7 +35,7 @@ class Song:
         self.shuffled = False
 
 
-class SongExclusionItem:
+class SongMultiselectorItem:
     """Song Exclusion multiselector information."""
 
     def __init__(self, name, shift, tooltip=""):
@@ -113,7 +113,6 @@ song_data = {
     Songs.ForestMushroomRooms: Song(
         "Fungi Forest (Mushroom Top Rooms)", mem_idx=98, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]
     ),
-    Songs.ForestWinch: Song("Fungi Forest (Winch)", mem_idx=139, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.ForestSpider: Song("Fungi Forest (Spider)", mem_idx=97, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Fight], mood_tags=[SongGroup.Happy, SongGroup.Gloomy]),
     Songs.ForestBlast: Song("Fungi Forest (Baboon Blast)", mem_idx=164, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.ForestRabbitRace: Song("Fungi Forest (Rabbit Race)", mem_idx=169, type=SongType.BGM, memory=0x188, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
@@ -131,6 +130,7 @@ song_data = {
     Songs.CavesDillo: Song("Crystal Caves (Army Dillo)", mem_idx=148, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Fight], mood_tags=[SongGroup.Happy, SongGroup.Gloomy]),
     # Creepy Castle BGM
     Songs.Castle: Song("Creepy Castle", mem_idx=105, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
+    Songs.CastleShed: Song("Creepy Castle (Shed)", mem_idx=139, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.CastleTree: Song("Creepy Castle (Tree)", mem_idx=141, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.CastleTunnels: Song("Creepy Castle (Tunnels)", mem_idx=121, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.CastleCrypt: Song("Creepy Castle (Crypt)", mem_idx=126, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
@@ -203,7 +203,7 @@ song_data = {
     # Major Items
     Songs.OhBanana: Song("Oh Banana", mem_idx=20, type=SongType.MajorItem, memory=0xABD, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Calm], song_length=3.25),
     Songs.GBGet: Song("Golden Banana/Key Get", mem_idx=18, type=SongType.MajorItem, memory=0x8C4, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=3.86),
-    Songs.MoveGet: Song("Move Get", mem_idx=114, type=SongType.MajorItem, memory=0x892, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=10.05),
+    Songs.MoveGet: Song("Move Get", mem_idx=114, type=SongType.MajorItem, memory=0x892, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=6.36),
     Songs.GunGet: Song("Gun Get", mem_idx=115, type=SongType.MajorItem, memory=0x892, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=1.53),
     Songs.BananaMedalGet: Song("Banana Medal Get", mem_idx=151, type=SongType.MajorItem, memory=0x645, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=3.85),
     Songs.BlueprintDrop: Song("Blueprint Drop", mem_idx=76, type=SongType.MajorItem, memory=0x63D, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=2.08),
@@ -404,7 +404,7 @@ song_idx_list = [
     song_data[Songs.CastleBallroom],
     song_data[Songs.CastleGreenhouse],
     song_data[Songs.KRoolTheme],
-    song_data[Songs.ForestWinch],
+    song_data[Songs.CastleShed],
     song_data[Songs.CastleTower],
     song_data[Songs.CastleTree],
     song_data[Songs.CastleMuseum],
@@ -507,7 +507,6 @@ FungiForestSongs = {
     Songs.ForestAnthill,
     Songs.ForestMushroom,
     Songs.ForestMushroomRooms,
-    Songs.ForestWinch,
     Songs.ForestSpider,
     Songs.ForestBlast,
     Songs.ForestRabbitRace,
@@ -527,6 +526,7 @@ CrystalCavesSongs = {
 }
 CreepyCastleSongs = {
     Songs.Castle,
+    Songs.CastleShed,
     Songs.CastleTree,
     Songs.CastleTunnels,
     Songs.CastleCrypt,
@@ -595,16 +595,24 @@ MinigameSongs = {
 
 ExcludedSongsSelector = []
 ExclSongsItems = [
-    SongExclusionItem("Wrinkly", 0, "Removes Wrinkly doors from playing her theme."),
-    SongExclusionItem("Transformation", 3, "The game will no longer play the transformation sound effect."),
-    SongExclusionItem("Pause Music", 4, "The pause menu music will no longer play."),
-    SongExclusionItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
+    SongMultiselectorItem("Wrinkly", 0, "Removes Wrinkly doors from playing her theme."),
+    SongMultiselectorItem("Transformation", 3, "The game will no longer play the transformation sound effect."),
+    SongMultiselectorItem("Pause Music", 4, "The pause menu music will no longer play."),
+    SongMultiselectorItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
     # SongExclusionItem("Shops", 1, "COMING SOON: Makes shops inherit the previous song."), # TODO: Fix this
     # SongExclusionItem("Events", 2, "COMING SOON: Events will no longer play a song."), # TODO: Fix this
 ]
 for item in ExclSongsItems:
     if item.name != "No Group":
         ExcludedSongsSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
+SongFilteringSelector = []
+SongFilterItems = [
+    SongMultiselectorItem("Length", 0, "Non-BGM Tracks will be filtered to be roughly the same length as the slot they replace."),
+    SongMultiselectorItem("Location", 3, "BGM tracks will be filtered so that the mood of the song fits the location it's placed in."),
+]
+for item in SongFilterItems:
+    if item.name != "No Group":
+        SongFilteringSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
 
 # This dict determines all of the dropdowns for selecting music, and how they
 # will be grouped together.

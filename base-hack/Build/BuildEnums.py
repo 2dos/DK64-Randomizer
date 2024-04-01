@@ -743,7 +743,7 @@ class Song(IntEnum):
     CastleBallroom = auto()
     CastleGreenhouse = auto()
     KRoolTheme = auto()
-    ForestWinch = auto()
+    CastleShed = auto()
     CastleTower = auto()
     CastleTree = auto()
     CastleMuseum = auto()

@@ -119,6 +119,7 @@ void initQoL_Fixes(void) {
         writeFunction(0x806BE8D8, &RabbitRaceInfiniteCode); // Modify Function Call
         writeFunction(0x8067C168, &fixDilloTNTPads); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
+
         writeFunction(0x806E5C04, &fixCrownEntrySKong); // Modify Function Call
         *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
     }

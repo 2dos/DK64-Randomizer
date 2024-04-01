@@ -47,6 +47,8 @@ QoLItems = [
     MultiselectorItem("Global Instrument", 21, "Instrument Energy has been changed to be made global, to align it with the behavior of Ammo, Oranges and other consumables."),
     MultiselectorItem("Fast Pause Transitions", 22, "Pause Menu transitions are greatly sped up."),
     MultiselectorItem("Cannon Game Better Control", 23, "Hold A during the Galleon Cannon Game to reduce the rotation speed of the cannon."),
+    MultiselectorItem("Better Fairy Camera", -1, "Fairy camera range has been increased, and the wall check has been removed to improve ease of taking photos."),
+    MultiselectorItem("Remove Enemy Cabin Timer", 24, "Removes the enemy 5-Door Cabin timer in Crystal Caves."),
 ]
 RemovedBarrierItems = [
     MultiselectorItem("Japes Coconut Gates", 5, "The gates that block the tunnels from Japes main to it's various tunnels will be opened."),
@@ -80,6 +82,7 @@ FasterCheckItems = [
     MultiselectorItem("Castle Minecart", 9, "The Minecart ride will end once you reach the turnaround point on the track."),
     MultiselectorItem("Castle Car Race", 12, "The race will be shortened to 1 lap, instead of 2."),
     MultiselectorItem("Jetpac", 10, "Getting the rareware coin reward will only require 2500 points, instead of 5000."),
+    MultiselectorItem("Arcade", 14, "DK Arcade will only consist of 2 screens rather than 4, with 75m being an excluded screen from appearing in the first two."),
 ]
 
 

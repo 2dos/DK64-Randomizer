@@ -107,7 +107,6 @@ settingsExclusionMap = {
     "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
     "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
-    "select_keys": {False: ["starting_keys_list_selected"], True: ["krool_key_count"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
     "hard_mode": {False: ["hard_mode_selected"]},
     "spoiler_hints": {
@@ -218,6 +217,8 @@ def encrypt_settings_string_enum(dict_data: dict):
         "sound_type",
         "songs_excluded",
         "excluded_songs_selected",
+        "music_filtering",
+        "music_filtering_selected",
         "troff_brighten",
         "crosshair_outline",
         "custom_music_proportion",

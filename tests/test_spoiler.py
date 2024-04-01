@@ -7,6 +7,7 @@ import unittest
 from parameterized import parameterized_class
 
 # from randomizer.Enums.Items import Items
+from randomizer.Enums.HintType import HintType
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
                                        CrownEnemyRando, DamageAmount,
@@ -33,7 +34,7 @@ with open("static/presets/preset_files.json", "r") as file:
 # Add a custom preset for testing
 # If we're not running on github actions, add the custom preset
 if not os.environ.get("GITHUB_ACTIONS"):
-    valid_presets.append(("Custom", "VjCAIgnDEGkBCgKQHRWmr5P34EgAiaKE0SMguAoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGnj2yFI9Rls9Eql1SYRbgZ+ioCwIJgKAS9HLVfZFA5iRDACbPIkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADUxckuFNidMISQRfQJyQYYSoeB4fCJHLpLF4QMxtMYOLSjAQgFpuK5YFaHLYaE4sFRkMpgJgwIxoJCmOJrDZ/TSeRSZEZDUoAqgEuRBASFBYYG0pEWCYoKkhaLjAySlw2ODpMXj5AQk5QUlRgYmQ"))
+    valid_presets.append(("Custom", "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLmkq0W8DODo9RaRcFP0VEWARMRQBXrXHI3ar/fZFA5ixFAObPIkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADU5coclwqdMISQRfQJyQYYSqnMxtMYOLQtK5YFaHLYaE4sFRgJgwIymOKaTyKTIjUoAqgEuAhk4AA"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)
@@ -199,6 +200,7 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined from the preset_files.json file
+        # self.settings_string = "bKEHCRorPE1ed6soQOCokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgeEQyGQlS2Nc+ER+I0eu0uXxC205Yk04IUDR6QJE0Z4q+ApBbqev2JIBk0UJooZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKRCioZyJTLmku0W8BOEWkXBT9FRFgETEUAV61xyN2q/32RQOYsRQBms2URJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LhU6YQkX0CckGGEqpzMYwcWhaVywK0OWw0JxYKjATBgRlMcU8ikyI1KAKoBLgIZOEIQEhQWG0pEVh4gIkZYJigqSFouMDJKXDY4OkxePkBCTlA"
         settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
@@ -213,6 +215,7 @@ class TestSpoiler(unittest.TestCase):
         print(spoiler)
         print(spoiler.json)
         # self.printHintDistribution(spoiler)
+        self.printDesiredOutput(spoiler)
         with open(f"test-result-{self.name}.json", "w") as outfile:
             outfile.write(spoiler.json)
         print(f"test {self.name} done")
@@ -226,3 +229,8 @@ class TestSpoiler(unittest.TestCase):
             values += (str(value) + ", ")
         print(types)
         print(values)
+
+    def printDesiredOutput(self, spoiler: Spoiler):
+        """Print any desired output from the spoiler. Customize to your heart's desire."""
+        print("# of path hints: " + str(spoiler.hint_distribution[HintType.Multipath]) + " | woth length: " + str(len(spoiler.woth_locations) - 2))
+        print()

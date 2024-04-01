@@ -59,8 +59,8 @@ typedef struct varspace {
 	/* 0x0AC */ unsigned char fairy_prices[2]; // Array of fairy move prices. First is camera, second is shockwave. Shockwave/Camera combo price is calculated as the sum of the two
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
-	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
-	/* 0x0B3 */ char unk_B0[0xC3 - 0xB3];
+	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
+	/* 0x0B4 */ char unk_B0[0xC3 - 0xB4];
 	/* 0x0C3 */ char outlined_crosshair;
 	/* 0x0C4 */ ROMFlags rom_flags;
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table

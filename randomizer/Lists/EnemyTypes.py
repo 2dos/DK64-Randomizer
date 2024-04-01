@@ -478,6 +478,7 @@ enemies_shockwave_immune = [
     Enemies.ZingerLime,
     Enemies.ZingerRobo,
 ]
+enemy_5dc_ban = [Enemies.Kosha, Enemies.Guard]
 
 enemy_location_list = {
     # Japes
@@ -811,21 +812,21 @@ enemy_location_list = {
     Locations.Caves1DCEnemy_Near: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 2, [], True),
     Locations.Caves1DCEnemy_Far: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 1, [], True),
     # DK 5DC
-    Locations.Caves5DCDKEnemy_Gauntlet0: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 1, enemies_nokill_gun, True),
-    Locations.Caves5DCDKEnemy_Gauntlet1: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 2, enemies_nokill_gun, True),
-    Locations.Caves5DCDKEnemy_Gauntlet2: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 3, enemies_nokill_gun, True),
-    Locations.Caves5DCDKEnemy_Gauntlet3: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 4, enemies_nokill_gun, True),
-    Locations.Caves5DCDKEnemy_Gauntlet4: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 5, enemies_nokill_gun, True),
-    Locations.Caves5DCDKEnemy_Gauntlet5: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 6, enemies_nokill_gun, True),
+    Locations.Caves5DCDKEnemy_Gauntlet0: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 1, enemies_nokill_gun + [Enemies.Bat], True),
+    Locations.Caves5DCDKEnemy_Gauntlet1: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 2, enemies_nokill_gun + [Enemies.Bat], True),
+    Locations.Caves5DCDKEnemy_Gauntlet2: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 3, enemies_nokill_gun + [Enemies.Bat], True),
+    Locations.Caves5DCDKEnemy_Gauntlet3: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 4, enemies_nokill_gun + [Enemies.Bat], True),
+    Locations.Caves5DCDKEnemy_Gauntlet4: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 5, enemies_nokill_gun + [Enemies.Bat], True),
+    Locations.Caves5DCDKEnemy_Gauntlet5: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 6, enemies_nokill_gun + [Enemies.Bat], True),
     # Diddy Enemies 5DC
-    Locations.Caves5DCDiddyLowEnemy_CloseRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 1, [Enemies.Kosha, Enemies.Guard], True, False),
-    Locations.Caves5DCDiddyLowEnemy_FarRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 2, [Enemies.Kosha, Enemies.Guard], True, False),
-    Locations.Caves5DCDiddyLowEnemy_CloseLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 3, [Enemies.Kosha, Enemies.Guard], True, False),
-    Locations.Caves5DCDiddyLowEnemy_FarLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 4, [Enemies.Kosha, Enemies.Guard], True, False),
-    Locations.Caves5DCDiddyLowEnemy_Center0: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 5, [Enemies.Kosha, Enemies.Guard], True, False),
-    Locations.Caves5DCDiddyLowEnemy_Center1: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 6, [Enemies.Kosha, Enemies.Guard], True, False),
-    Locations.Caves5DCDiddyLowEnemy_Center2: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 7, [Enemies.Kosha, Enemies.Guard], True, False),
-    Locations.Caves5DCDiddyLowEnemy_Center3: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 8, [Enemies.Kosha, Enemies.Guard], True, False),
+    Locations.Caves5DCDiddyLowEnemy_CloseRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 1, enemy_5dc_ban, True, False),
+    Locations.Caves5DCDiddyLowEnemy_FarRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 2, enemy_5dc_ban, True, False),
+    Locations.Caves5DCDiddyLowEnemy_CloseLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 3, enemy_5dc_ban, True, False),
+    Locations.Caves5DCDiddyLowEnemy_FarLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 4, enemy_5dc_ban, True, False),
+    Locations.Caves5DCDiddyLowEnemy_Center0: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 5, enemy_5dc_ban, True, False),
+    Locations.Caves5DCDiddyLowEnemy_Center1: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 6, enemy_5dc_ban, True, False),
+    Locations.Caves5DCDiddyLowEnemy_Center2: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 7, enemy_5dc_ban, True, False),
+    Locations.Caves5DCDiddyLowEnemy_Center3: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 8, enemy_5dc_ban, True, False),
     # Diddy Candle 5DC
     Locations.Caves5DCDiddyUpperEnemy_Enemy0: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 1, [], True),
     Locations.Caves5DCDiddyUpperEnemy_Enemy1: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 2, [], True),

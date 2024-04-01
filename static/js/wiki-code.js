@@ -104,7 +104,7 @@ async function fetchArticles() {
 
 fetchArticles();
 
-const invalid_id_characters = [" ", ",", "(", ")", ".", "\"", "'"]
+const invalid_id_characters = [" ", ",", "\"", "'"]
 let used_ids = {};
 
 class MarkdownNavItem {
@@ -116,9 +116,7 @@ class MarkdownNavItem {
         split_id.forEach((char, char_index) => {
             let new_char = char;
             if (invalid_id_characters.includes(char)) {
-                if (char_index < (split_id.length - 1)) {
-                    new_char = "-";
-                }
+                new_char = "-";
             }
             new_split_id.push(new_char);
         })
@@ -390,11 +388,38 @@ function filterHTML(element, output_html) {
         const contents = flex_items[0].innerHTML;
         flex_items[0].outerHTML = `<div style="display:flex">${contents}</div>`
     }
+    // BS Alerts
+    const alert_types = {
+        "primary": "fa-solid fa-circle-info",
+        "secondary": "fa-solid fa-circle-info",
+        "success": "fa-solid fa-circle-check",
+        "danger": "fa-solid fa-triangle-exclamation",
+        "warning": "fa-solid fa-triangle-exclamation",
+        "info": "fa-solid fa-circle-info",
+        "light": "",
+        "dark": "",
+    };
+    Object.keys(alert_types).forEach(al_type => {
+        const info_items = content_hook.getElementsByTagName(`alert${al_type}`);
+        while (info_items.length > 0) {
+            const contents = info_items[0].innerHTML;
+            info_items[0].outerHTML = `
+                <div class="alert alert-${al_type}" role="alert">
+                    <i class="${alert_types[al_type]}"></i>
+                    ${contents}
+                </div>`
+        }
+    })
 
     // Warp to ID if specified
     hash = window.location.hash;
     if (hash.length > 0) {
-        const hash_hook = document.querySelector(hash);
+        let hash_hook = null;
+        if (hash.substring(0, 1) == "#") {
+            hash_hook = document.getElementById(hash.substring(1))
+        } else {
+            hash_hook = document.querySelector(hash);
+        }
         if (hash_hook) {
             hash_hook.scrollIntoView();
         }

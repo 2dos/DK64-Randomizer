@@ -28,7 +28,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Helm Hurry Mode
 - Vanilla K. Rool Requirement
 - Irondonk
-- Select Starting Keys
+- Guaranteed Starting Keys
 
 # Other Settings
 - Activate Bananaports: 

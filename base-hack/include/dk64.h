@@ -200,7 +200,7 @@ extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
 extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
 extern void delayedObjectModel2Change(maps map, int model2_id, int state);
 extern int isObjectLoadedInMap(maps map, int model2_id, int state);
-extern void cycleRNG(void);
+extern int cycleRNG(void);
 extern void voidWarp(void);
 extern void setToeTexture(void* actor, int data);
 extern void applyFootDamage(void* actor, int unk0, int unk1, int unk2);
@@ -331,6 +331,8 @@ extern int getKong(int player_index);
 extern int spawnModelTwo(int type, float x, float y, float z, float scale, int id);
 extern void refreshItemVisibility(void);
 
+extern void updateGBCountHUD(int player);
+
 extern void* getActorModel(void* actor, int model_index, int unk0);
 
 extern int isBalloonOrPatch(int actor_type);
@@ -368,7 +370,7 @@ extern void homing_code(int bitfield, void* actor, int unk0, int unk1);
 extern int madeContact(void);
 extern int madeGroundContact(void);
 extern void unkProjectileCode_0(void* actor, int unk0);
-extern void unkProjectileCode_1(void* actor, int unk0, int unk1, int unk2, int unk3, int unk4);
+extern void unkProjectileCode_1(void* actor, float x, float y, float z, float scale, int unk4);
 extern void allocateBone(void* actor, int unk0, int unk1, int unk2, int unk3);
 extern void unkProjectileCode_2(void* actor);
 extern void unkProjectileCode_3(void* actor, int unk0);
@@ -403,6 +405,8 @@ extern void winBonus(int unk0, int unk1);
 extern void updatePosition(void* actor, int bone, float* x, float* y, float* z);
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 extern void setChunkLighting(float red, float green, float blue, int chunk);
+
+extern void unkLoadingZoneControllerFunction(short exit);
 
 //vanilla data
 extern float TransitionSpeed;

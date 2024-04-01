@@ -26,7 +26,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Enable Plandomizer
 - Vanilla K. Rool Requirement
 - Irondonk
-- Select Starting Keys
+- Guaranteed Starting Keys
 
 # Other Settings
 - Activate Bananaports: 
@@ -197,6 +197,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Global Instrument: 100%
 	- Fast Pause Transitions: 100%
 	- Cannon Game Better Control: 100%
+	- Better Fairy Camera: 100%
+	- Remove Enemy Cabin Timer: 100%
 - Move Randomizer: 
 	- On: 30%
 	- Cross Purchase: 70%

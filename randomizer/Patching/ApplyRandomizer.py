@@ -58,6 +58,7 @@ from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMine
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
 from randomizer.Patching.ASMPatcher import patchAssembly
+from randomizer.CompileHints import getHelmOrderHint
 
 # from randomizer.Spoiler import Spoiler
 
@@ -323,7 +324,7 @@ def patching_response(spoiler):
         old = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(sav + 0x113)
         ROM_COPY.write(old | 2)
-    writeMultiselector(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, QoLSelector, MiscChangesSelected, 3, ROM_COPY, sav + 0x0B0)
+    writeMultiselector(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, QoLSelector, MiscChangesSelected, 4, ROM_COPY, sav + 0x0B0)
     writeMultiselector(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarrierSelector, RemovedBarriersSelected, 2, ROM_COPY, sav + 0x1DE)
     writeMultiselector(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterCheckSelector, FasterChecksSelected, 2, ROM_COPY, sav + 0x1E0)
     writeMultiselector(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardSelector, HardModeSelected, 1, ROM_COPY, sav + 0x0C6)
@@ -551,6 +552,8 @@ def patching_response(spoiler):
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
 
+    if spoiler.settings.wrinkly_hints != WrinklyHints.off:
+        getHelmOrderHint(spoiler)
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)

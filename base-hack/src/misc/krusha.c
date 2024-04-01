@@ -241,6 +241,22 @@ void OrangeGunCode(void) {
     projectile_paad* paad = CurrentActorPointer_0->paad;
     projectile_extra* extra = (projectile_extra*)CurrentActorPointer_0->data_pointer;
     int current_actor_timer = ActorTimer;
+    int sprite = 0x80720268;
+    int pop_sprite_index = 39;
+    int pop_sfx = 0xF6;
+    float pop_scale = 2.0f;
+    int is_lime = 1;
+    if (CurrentActorPointer_0->actorType == 43) {
+        // Is Feather actor
+        if (Rando.krusha_slot != KONG_TINY) {
+            // Is not orange
+            sprite = 0x80720854;
+            pop_sprite_index = 5;
+            pop_sfx = 0x308;
+            pop_scale = 0.35f;
+            is_lime = 0;
+        }
+    }
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->grounded &= 0xFFFE;
         CurrentActorPointer_0->rot_y_copy = (extra->initial_rotation / *(float*)(0x8075A170)) * *(float*)(0x8075A174);
@@ -248,13 +264,15 @@ void OrangeGunCode(void) {
         CurrentActorPointer_0->yVelocity = extra->initial_yvelocity;
         CurrentActorPointer_0->noclip_byte = 0x3C;
         unkProjectileCode_0(CurrentActorPointer_0, 0x42700000);
-        unkProjectileCode_1(CurrentActorPointer_0, 0, 0, 0, 0x42480000, -1);
+        unkProjectileCode_1(CurrentActorPointer_0, 0.0f, 0.0f, 0.0f, 50.0f, -1);
         allocateBone(CurrentActorPointer_0, 0, 0, 0, -1);
         unkSpriteRenderFunc(-1);
         unkSpriteRenderFunc_1(1);
         unkSpriteRenderFunc_2(4);
-        setKrushaAmmoColor();
-        unkCutsceneKongFunction(0x80720268, *(int*)&extra->unkC, CurrentActorPointer_0, 1, 2);
+        if (is_lime) {
+            setKrushaAmmoColor();
+        }
+        unkCutsceneKongFunction(sprite, *(int*)&extra->unkC, CurrentActorPointer_0, 1, 2);
         paad->unk_14 = extra->unkC;
         paad->init_actor_timer = current_actor_timer;
         CurrentActorPointer_0->obj_props_bitfield |= 0x01080000;
@@ -300,9 +318,8 @@ void OrangeGunCode(void) {
         float x = CurrentActorPointer_0->xPos;
         float y = CurrentActorPointer_0->yPos;
         float z = CurrentActorPointer_0->zPos;
-        displaySpriteAtXYZ(sprite_table[39], 2.0f, x, y, z);
-        // displaySpriteAtXYZ(sprite_table[5], 0x3EE66666, x, y, z);
-        unkProjectileCode_4(CurrentActorPointer_0, 0xF6, 0xFF, 0x7F, 0x1E);
+        displaySpriteAtXYZ(sprite_table[pop_sprite_index], pop_scale, x, y, z);
+        unkProjectileCode_4(CurrentActorPointer_0, pop_sfx, 0xFF, 0x7F, 0x1E);
         deleteActorContainer(CurrentActorPointer_0);
         if (*(char*)(0x80750AD0) == 0) {
             for (int i = 0; i < 6; i++) {

@@ -10,9 +10,11 @@ from zipfile import ZipFile
 from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.SongGroups import SongGroup
+from randomizer.Enums.Settings import MusicFilters
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
+from randomizer.Patching.Lib import IsItemSelected
 
 storage_banks = {
     0: 0x8000,
@@ -47,6 +49,8 @@ def doesSongLoop(data: bytes) -> bool:
 def isValidSong(data: bytes) -> bool:
     """Check if song is a valid bin."""
     if len(data) < 0x44:
+        return False
+    if len(data) > 24000:
         return False
     byte_list = [x for xi, x in enumerate(data) if xi < 4]
     return byte_list[0] == 0 and byte_list[1] == 0 and byte_list[2] == 0 and byte_list[3] == 0x44
@@ -116,7 +120,7 @@ TAG_CONVERSION_TABLE = {
 class UploadInfo:
     """Class to store information regarding an uploaded song."""
 
-    def __init__(self, push_array: list):
+    def __init__(self, push_array: list, length_filter: bool, location_filter: bool, song_type: SongType):
         """Initialize with given variables."""
         self.raw_input = push_array[0]
         self.name = push_array[1]
@@ -147,7 +151,15 @@ class UploadInfo:
                         else:
                             # Mood Tag
                             self.mood_tags.append(TAG_CONVERSION_TABLE[tag][0])
-        if len(self.location_tags) == 0:
+        will_filter = False
+        disable_location_tags = True
+        if self.extension == ".candy":
+            if length_filter and (song_type != SongType.BGM):
+                will_filter = True
+            elif location_filter and (song_type == SongType.BGM):
+                will_filter = True
+                disable_location_tags = False
+        if len(self.location_tags) == 0 or disable_location_tags:
             self.location_tags = [
                 SongGroup.Fight,
                 SongGroup.LobbyShop,
@@ -157,7 +169,7 @@ class UploadInfo:
                 SongGroup.Spawning,
                 SongGroup.Collection,
             ]
-        self.filter = self.extension == ".candy"
+        self.filter = will_filter
         self.acceptable = isValidSong(self.song_file)
         self.used = False
 
@@ -191,7 +203,7 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
     return False
 
 
-def getAssignedCustomSongData(file_data_array: list, song_name: str) -> UploadInfo:
+def getAssignedCustomSongData(file_data_array: list, song_name: str, length_filter: bool, location_filter: bool, song_type: SongType) -> UploadInfo:
     """Request a specific custom song from the list."""
     global USED_INDEXES
 
@@ -202,13 +214,13 @@ def getAssignedCustomSongData(file_data_array: list, song_name: str) -> UploadIn
         item = file_data_array[i]
         if song_name == item[1]:
             USED_INDEXES.append(i)
-            return UploadInfo(item)
+            return UploadInfo(item, length_filter, location_filter, song_type)
     # The requested song was not found. (This should never happen due to client-side
     # validation.)
     raise ValueError(f'Requested non-existent custom song "{song_name}".')
 
 
-def requestNewSong(file_data_array: list, location_tags: list, location_length: int, song_type: SongType, check_unused: bool) -> UploadInfo:
+def requestNewSong(file_data_array: list, location_tags: list, location_length: int, song_type: SongType, check_unused: bool, location_filter: bool, length_filter: bool) -> UploadInfo:
     """Request new song from list."""
     global GLOBAL_SEARCH_INDEX, USED_INDEXES, UNPLACED_SONGS
 
@@ -246,7 +258,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
     for i in range(MAX_SEARCH_LENGTH):
         GLOBAL_SEARCH_INDEX = (start_index + i) % MAX_SEARCH_LENGTH
         referenced_index = GLOBAL_SEARCH_INDEX
-        item = UploadInfo(file_data_array[GLOBAL_SEARCH_INDEX])
+        item = UploadInfo(file_data_array[GLOBAL_SEARCH_INDEX], length_filter, location_filter, song_type)
         GLOBAL_SEARCH_INDEX = (start_index + i + 1) % MAX_SEARCH_LENGTH  # Advance 1 just in case we return from this
         if referenced_index in USED_INDEXES and check_unused:
             continue
@@ -336,6 +348,9 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     # Add assigned custom songs back as locations.
     songs_to_be_replaced.extend(custom_song_locations)
 
+    length_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.length)
+    location_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.location)
+
     # Place Songs
     ROM_COPY = ROM()
     for song_enum in songs_to_be_replaced:
@@ -343,9 +358,9 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
         selected_bank = None
         assigned_song_name = getCustomSongAssignedToLocation(settings, song_enum)
         if assigned_song_name is not None:
-            new_song = getAssignedCustomSongData(file_data, assigned_song_name)
+            new_song = getAssignedCustomSongData(file_data, assigned_song_name, length_filter, location_filter, target_type)
         else:
-            new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music)
+            new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music, location_filter, length_filter)
         selected_cap = 0xFFFFFF
         if new_song is not None:
             new_song_data = bytes(new_song.song_file)
