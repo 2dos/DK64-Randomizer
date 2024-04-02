@@ -357,9 +357,11 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
         song = song_data[song_enum]
         selected_bank = None
         assigned_song_name = getCustomSongAssignedToLocation(settings, song_enum)
+        satisfied = False
         if assigned_song_name is not None:
             new_song = getAssignedCustomSongData(file_data, assigned_song_name, length_filter, location_filter, target_type)
-        else:
+            satisfied = new_song.acceptable
+        if not satisfied:
             new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music, location_filter, length_filter)
         selected_cap = 0xFFFFFF
         if new_song is not None:
