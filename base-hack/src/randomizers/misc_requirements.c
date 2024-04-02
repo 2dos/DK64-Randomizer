@@ -13,6 +13,38 @@ void writeJetpacMedalReq(void) {
 	}
 }
 
+int* displayJetpacOption(int* dl) {
+	if (CurrentMap != MAP_CRANKY) {
+		return dl;
+	}
+	if ((TBVoidByte & 0x30) == 0) {
+		// Lights off
+		return dl;
+	}
+	if (LZFadeoutProgress > 0.0f) {
+		return dl;
+	}
+	int jetpac_requirement = 15;
+	if (Rando.jetpac_medal_requirement > 0) {
+		jetpac_requirement = Rando.jetpac_medal_requirement;
+	}
+	if (countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0) < jetpac_requirement) {
+		return dl;
+	}
+	actorData* cranky = findActorWithType(189);
+	if (!cranky) {
+		return dl;
+	}
+	shop_paad* paad = cranky->paad2;
+	if (NewlyPressedControllerInput.Buttons.c_up) {
+		paad->unk_0F = 1;
+		paad->purchase_type = -1;
+		paad->unk_0E = 0;
+		paad->unk_0A = 0;
+	}
+	return drawText(dl, 1, 500.0f, 550.f, "n JETPAC", 0xFF, 0xFF, 0xFF, 0xFF);
+}
+
 int* writeHUDAmount(char* str_location, char* format, int value, int item_index, int* dl) {
 	int found = 0;
 	int amt = -1;

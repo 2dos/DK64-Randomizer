@@ -535,6 +535,7 @@ int* displayListModifiers(int* dl) {
 			dl = drawDPad(dl);
 			dl = renderDingSprite(dl);
 			dl = renderProgressiveSprite(dl);
+			dl = displayJetpacOption(dl);
 			if (ammo_hud_timer) {
 				int ammo_x = 150;
 				int ammo_default_y = 850;

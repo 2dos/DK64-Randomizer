@@ -821,7 +821,8 @@ typedef struct shop_paad {
 	/* 0x002 */ short flag;
 	/* 0x004 */ unsigned char kong;
 	/* 0x005 */ unsigned char price;
-	/* 0x006 */ char unk_06[0xB-0x6];
+	/* 0x006 */ char unk_06[0xA-0x6];
+	/* 0x00A */ char unk_0A;
 	/* 0x00B */ char purchase_type;
 	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
