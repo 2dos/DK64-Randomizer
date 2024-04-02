@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, toggle_input %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -100,30 +100,8 @@
                        placeholder="No File Chosen"/>
             </div>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Will fill each song slot available with a custom track, even if the amount of songs in that pack doesn't exceed the amount of song slots.">
-                        <input class="form-check-input"
-                            type="checkbox"
-                            name="fill_with_custom_music"
-                            id="fill_with_custom_music"
-                            display_name="Fill game with provided songs"
-                            value="True"/>
-                        Fill game with provided songs
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Will display the song name for 3 seconds upon it playing (Only applies to BGM).">
-                        <input class="form-check-input"
-                            type="checkbox"
-                            name="show_song_name"
-                            id="show_song_name"
-                            display_name="Display song name in-game"
-                            value="True"/>
-                        Display song name in-game
-                    </label>
-                </div>
+                {{ toggle_input("fill_with_custom_music", "Fill game with provided songs", "Will fill each song slot available with a custom track, even if the amount of songs in that pack doesn't exceed the amount of song slots.") }}
+                {{ toggle_input("show_song_name", "Display song name in-game", "Will display the song name for 3 seconds upon it playing (Only applies to BGM).") }}
             </div>
             <div class="flex-container">
                 <div class="item-group">

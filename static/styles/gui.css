@@ -235,6 +235,11 @@ footer {
   outline: none;
 }
 
+.nav-tabs .nav-link .tab-full-name {
+  display: none;
+  padding-left: 0.5rem;
+}
+
 .nav-tabs .nav-link {
   background-color: rgba(0, 0, 0, 0);
   border-color: #ced4da;
@@ -248,8 +253,16 @@ footer {
   border-bottom: none;
 }
 
+.nav-tabs .nav-link.active .tab-full-name {
+  display: block;
+}
+
 #nav-gen-type button.nav-link:hover {
   background-color: #0c0c0c;
+}
+
+#nav-tab button.nav-link:hover .tab-full-name {
+  display: block;
 }
 
 #nav-gen-type button.nav-link.active {
@@ -257,9 +270,11 @@ footer {
   border-radius: 3px;
 }
 
+/*
 .nav-item {
   flex: 1 0 10%;
 }
+*/
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
@@ -529,6 +544,10 @@ i {
   font-weight: bold;
   margin-bottom: 10px;
   min-width: 100px;
+}
+
+.nav-tabs .nav-link .select-title {
+  min-width: 8px;
 }
 
 .panel {
