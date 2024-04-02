@@ -185,7 +185,7 @@ extern void HandleSpiderSilkSpawn(void);
 extern void SpiderBossExtraCode(void);
 extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
-extern int canPlayJetpac(void);
+extern int canPlayJetpac(int* text_inde);
 extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
 extern int getTotalCBCount(void);

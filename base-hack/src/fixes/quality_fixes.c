@@ -323,14 +323,22 @@ int fixDilloTNTPads(void* actor) {
 	return getPadGravity(actor);
 }
 
-int canPlayJetpac(void) {
+int canPlayJetpac(int* text_index) {
 	/**
 	 * @brief Determine whether the player can play Jetpac.
 	 * We will only enable the player to attempt Jetpac upon not having the Jetpac Reward
 	 * 
 	 * @return Amount of medals the player has. Set to 0 if you have the Jetpac Reward
 	 */
+	int offer_move = 0;
+	int t_index = *text_index;
+	if ((t_index == 2) || (t_index == 3) || (t_index == 6) || (t_index == 7)) {
+		offer_move = 1;
+	}
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
+		return 0;
+	} else if (offer_move) {
+		// Check if move is being offered
 		return 0;
 	} else {
 		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);

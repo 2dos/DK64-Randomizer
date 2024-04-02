@@ -102,6 +102,7 @@ void overlay_mod_menu(void) {
 	writeFunction(0x80027324, &purchaseMove);
 	writeFunction(0x8002691C, &purchaseMove);
 	writeFunction(0x800270B8, &showPostMoveText);
+	*(int*)(0x800264F8) = 0x27A4003C; // addiu $a0, $sp, 0x3C
 	writeFunction(0x80026508, &canPlayJetpac);
 	writeFunction(0x800248D4, &gbUpdateHandler);
 	*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
