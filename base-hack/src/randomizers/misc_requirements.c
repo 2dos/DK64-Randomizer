@@ -41,6 +41,11 @@ int* displayJetpacOption(int* dl) {
 		paad->purchase_type = -1;
 		paad->unk_0E = 0;
 		paad->unk_0A = 0;
+		paad->state = 0;
+		playCutscene((void*)0, 4, 1);
+		setAction(0x1B, cranky, 0);
+		groundContactSet();
+		cranky->obj_props_bitfield |= 0x10000000;
 	}
 	return drawText(dl, 1, 500.0f, 550.f, "n JETPAC", 0xFF, 0xFF, 0xFF, 0xFF);
 }
