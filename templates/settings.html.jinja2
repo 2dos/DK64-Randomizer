@@ -12,17 +12,12 @@
     </div>
     <div id="spoiler_log_block">
         <h2 class="title">SPOILER LOG</h2>
-        <button class="btn btn-primary"
+        <button class="btn btn-secondary"
                 type="button"
                 onClick="save_text_as_file(document.getElementById('spoiler_log_text').value, document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')">
             Save Log
         </button>
-        <button class="btn btn-primary"
-                type="button"
-                onClick="save_text_as_file(document.getElementById('tracker_text').value, document.getElementById('generated_seed_id').innerHTML + '-tracker.html')">
-            Save Tracker
-        </button>
-        <button class="btn btn-primary"
+        <button class="btn btn-secondary"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#spoiler"
@@ -30,7 +25,7 @@
                 aria-controls="spoiler">
             Show Spoiler Log
         </button>
-        <button class="btn btn-primary"
+        <button class="btn btn-secondary"
                 type="button"
                 id="download_unlocked_spoiler_button"
                 hidden>
@@ -42,7 +37,6 @@
                 <div id="spoiler_log_text"></div>
             </div>
         </div>
-        <textarea id="tracker_text" hidden readonly></textarea>
     </div>
     <div class="item-header">
         <h2 class="title">SEED ID</h2>
@@ -52,7 +46,7 @@
 <div style="background:#ff5722; padding:8px;" id="spoiler_warning_1">
     <h2 class="title">WARNING</h2>
     <b>It is STRONGLY recommended you save the spoiler log right now in case you run into any trouble. This is a dev site, and there is a chance you may encounter bugs that need to be reported to the devs on the Discord.</b>
-    <button class="btn btn-primary"
+    <button class="btn btn-secondary"
             type="button"
             onClick="save_text_as_file(document.getElementById('spoiler_log_text').value, document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')">
         <b>Save Log</b>

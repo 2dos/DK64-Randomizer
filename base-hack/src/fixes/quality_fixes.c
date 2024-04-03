@@ -226,52 +226,6 @@ void tagBarrelBackgroundKong(int kong_actor) {
 	Player->new_kong = kong_actor;
 }
 
-void preventMedalHUD(int item, int unk0, int unk1) {
-	/**
-	 * @brief Prevent Medal HUD from showing
-	 */
-	if (item != 0xA) {
-		displayItemOnHUD(item, unk0, unk1);
-	}
-}
-
-void initHUDDirection(placementData* hud_data, int item) {
-	/**
-	 * @brief Modified initialization of HUD Direction function to account for new medal changes.
-	 */
-	int x_direction = 0;
-	int y_direction = 0;
-	hud_data->unk_0C = 0;
-	switch(item) {
-		case 0x0: // CB
-		case 0xD: // CB T&S
-		case 0xE: // Move Cost
-			x_direction = -1;
-			break;
-		case 0x9: // GBs
-		case 0xC: // Blueprint
-			y_direction = 1;
-			break;
-		default:
-			x_direction = 1;
-		break;
-	}
-	hud_data->x_direction = x_direction * 0x30;
-	hud_data->y_direction = y_direction * 0x30;
-}
-
-void* getHUDSprite_HUD(int item) {
-	/**
-	 * @brief Override HUD Sprite for Medals to be a MultiBunch
-	 * @return Sprite Address
-	 */
-	if (item == 0xA) {
-		return sprite_table[0xA8];
-	} else {
-		return getHUDSprite(item);
-	}
-}
-
 void updateMultibunchCount(void) {
 	/**
 	 * @brief Get the total amount of colored bananas for a level.
@@ -280,7 +234,7 @@ void updateMultibunchCount(void) {
 	int count = getTotalCBCount();
 	MultiBunchCount = count;
 	if (HUD) {
-		HUD->item[0xA].visual_item_count = count;
+		HUD->item[ITEMID_MULTIBUNCH].visual_item_count = count;
 	}
 }
 
@@ -295,7 +249,7 @@ void RabbitRaceInfiniteCode(void) {
 		if (control_state == 0x1F) {
 			if (CurrentActorPointer_0->control_state_progress == 2) {
 				// Start
-				setHUDItemAsInfinite(5,0,1);
+				setHUDItemAsInfinite(ITEMID_CRYSTALS,0,1);
 			}
 		} else if ((control_state == 0x28) || (control_state == 0x1E)) {
 			if (CurrentActorPointer_0->control_state_progress == 0) {
@@ -333,7 +287,7 @@ int canPlayJetpac(void) {
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
 		return 0;
 	} else {
-		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);
+		return getMedalCount();
 	}
 }
 

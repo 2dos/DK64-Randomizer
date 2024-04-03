@@ -61,7 +61,7 @@
                     
                     <div class="item-select" style="margin-top: 0; max-height: 34px;">
                         <button
-                            class="btn btn-primary"
+                            class="btn btn-secondary"
                             type="button"
                             href="#"
                             id="starting_moves_modal"
@@ -108,18 +108,6 @@
                                 display_name="Random Dirt Patch Locations"
                                 value="True"/>
                         Dirt Patches
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Shuffle the locations of colored bananas within each Level.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="cb_rando"
-                                id="cb_rando"
-                                display_name="Random CB Locations"
-                                value="True"/>
-                        Colored Bananas
                     </label>
                 </div>
                 <div class="form-check form-switch item-switch">
@@ -204,7 +192,6 @@
                         Melon Crates
                     </label>
                 </div>
-                <div class="spacer"></div>
             </div>
             <div class="flex-container">
                 <div class="item-select">
@@ -224,6 +211,26 @@
                         </option>
                         <option id="location_shuffle" value="location_shuffle">
                             Location Shuffle
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Colored Bananas</p>
+                    <select name="cb_rando"
+                            id="cb_rando"
+                            display_name="Random CB Locations"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Shuffle the locations of colored bananas within each Level.&#10;-Off: Colored Bananas are in their vanilla locations.&#10;-On: Random placement of Colored Bananas within the main 7 levels.&#10;-On (Inc. Isles): Random placement of Colored Bananas in the 7 main levels and DK Isles.">
+                        <option id="off" selected value="off">
+                            Off
+                        </option>
+                        <option id="on" value="on">
+                            On
+                        </option>
+                        <option id="on_with_isles" value="on_with_isles">
+                            On (Inc. Isles)
                         </option>
                     </select>
                 </div>
@@ -538,8 +545,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="starting_moves_reset">Reset</button>
-                <button type="button" class="btn btn-primary" id="starting_moves_start_all">Start With All</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_reset">Reset</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_start_all">Start With All</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

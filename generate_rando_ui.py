@@ -70,6 +70,7 @@ async def initialize():
 
     # Load our pointer info from the JSON database
     js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
+    js.rom_symbols = json.loads(js.getFile("./static/patches/symbols.json"))
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     # Add custom Jinja2 filter functions.

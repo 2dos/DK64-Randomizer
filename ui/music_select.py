@@ -10,7 +10,6 @@ from randomizer.Lists.Songs import SongLocationList
 from ui.bindings import bind
 from ui.download import download_json_file
 
-
 def get_music_category(songLocation: str) -> str:
     """Return the music category for this song location."""
     locationSelect = js.document.getElementById(f"music_select_{songLocation}")
@@ -291,3 +290,4 @@ def reset_music_selections_no_prompt():
             songElement.value = ""
         else:
             songElement.value = "default_value"
+        songElement.value = ""

@@ -685,9 +685,7 @@ void tagAnywhere(void) {
                         }
                         // Perform the tag
                         int old_control_state = Player->control_state;
-                        if (ENABLE_ORIGIN_WARP_FIX) {
-                            grab_lock_timer = 0; // Restart countdown
-                        }
+                        grab_lock_timer = 0; // Restart countdown
                         tagKong(next_character + 2);
 						clearTagSlide(Player);
                         if (Player->hSpeed > 140.0f) {

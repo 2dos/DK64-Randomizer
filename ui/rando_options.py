@@ -151,6 +151,18 @@ def max_randomized_fairies(event):
         fairy_req.value = 20
 
 
+@bind("focusout", "mermaid_gb_pearls")
+def max_randomized_pearls(event):
+    """Validate pearl input on loss of focus."""
+    pearl_req = js.document.getElementById("mermaid_gb_pearls")
+    if not pearl_req.value:
+        pearl_req.value = 5
+    elif 0 > int(pearl_req.value):
+        pearl_req.value = 0
+    elif int(pearl_req.value) > 5:
+        pearl_req.value = 5
+
+
 @bind("click", "shuffle_items")
 @bind("change", "move_rando")
 @bind("focusout", "starting_moves_count")
@@ -1285,9 +1297,9 @@ def hide_override_cosmetics(event):
 
 @bind("change", "music_bgm_randomized")
 def rename_default_bgm_options(evt):
-    """Change between "Default" and "Randomize" for BGM music."""
-    toggleElem = js.document.getElementById(f"music_bgm_randomized")
-    selects = js.document.getElementsByClassName(f"BGM-select")
+    """Change between "Default" and "Randomizer" for BGM Music."""
+    toggleElem = js.document.getElementById("music_bgm_randomized")
+    selects = js.document.getElementsByClassName("BGM-select")
     if toggleElem.checked:
         for select in selects:
             if select.value == "default_value":
@@ -1301,7 +1313,7 @@ def rename_default_bgm_options(evt):
 
 @bind("change", "music_majoritems_randomized")
 def rename_default_majoritems_options(evt):
-    """Change between "Default" and "Randomize" for major item music."""
+    """Change between "Default" and "Randomize" for major item music selection."""
     toggleElem = js.document.getElementById(f"music_majoritems_randomized")
     selects = js.document.getElementsByClassName(f"MajorItem-select")
     if toggleElem.checked:
@@ -1317,7 +1329,7 @@ def rename_default_majoritems_options(evt):
 
 @bind("change", "music_minoritems_randomized")
 def rename_default_minoritems_options(evt):
-    """Change between "Default" and "Randomize" for minor item music."""
+    """Change between "Default" and "Randomize" for minor item music selection."""
     toggleElem = js.document.getElementById(f"music_minoritems_randomized")
     selects = js.document.getElementsByClassName(f"MinorItem-select")
     if toggleElem.checked:
@@ -1333,7 +1345,7 @@ def rename_default_minoritems_options(evt):
 
 @bind("change", "music_events_randomized")
 def rename_default_events_options(evt):
-    """Change between "Default" and "Randomize" for event music."""
+    """Change between "Default" and "Randomize" for event music selection."""
     toggleElem = js.document.getElementById(f"music_events_randomized")
     selects = js.document.getElementsByClassName(f"Event-select")
     if toggleElem.checked:

@@ -1,9 +1,8 @@
 START_HOOK:
-.definelabel hud_screen_wd, 366
-.definelabel hud_screen_hd, 208
 .include "asm/hookcode/actor.asm"
 .include "asm/hookcode/bonus.asm"
 .include "asm/hookcode/boss.asm"
+.include "asm/hookcode/cb_req.asm"
 .include "asm/hookcode/hud.asm"
 .include "asm/hookcode/io.asm"
 .include "asm/hookcode/irondonk.asm"

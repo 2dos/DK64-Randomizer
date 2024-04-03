@@ -181,6 +181,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "enguarde_skin_custom_color",
         "klaptrap_model",
         "random_models",
+        "random_enemy_colors",
         "misc_cosmetics",
         "disco_chunky",
         "dark_mode_textboxes",
@@ -190,6 +191,8 @@ def encrypt_settings_string_enum(dict_data: dict):
         "lanky_fur_custom_color",
         "rambi_skin_colors",
         "rambi_skin_custom_color",
+        "gb_colors",
+        "gb_custom_color",
         "random_colors",
         "random_music",
         "music_bgm_randomized",
@@ -220,9 +223,11 @@ def encrypt_settings_string_enum(dict_data: dict):
         "music_filtering",
         "music_filtering_selected",
         "troff_brighten",
+        "better_dirt_patch_cosmetic",
         "crosshair_outline",
         "custom_music_proportion",
         "fill_with_custom_music",
+        "show_song_name",
         "delayed_spoilerlog_release",
     ]:
         if pop in dict_data:

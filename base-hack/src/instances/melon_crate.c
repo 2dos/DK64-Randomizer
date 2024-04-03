@@ -19,7 +19,7 @@ void MelonCrateGenericCode(behaviour_data* behaviour, int index, int id) {
 		behaviour->unk_67 = 4;
 		unkObjFunction1(index, 1, 255);
 		unkObjFunction2(index, 1, -1);
-		setScriptRunState(behaviour, 3, 500);
+		setScriptRunState(behaviour, RUNSTATE_DISTANCERUN, 500);
 		unkObjFunction9(index, 1, 1);
 		behaviour->next_state = 1;
 	} else if (behaviour->current_state == 1) {

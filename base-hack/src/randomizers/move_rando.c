@@ -1,144 +1,12 @@
 #include "../../include/common.h"
 
-static unsigned short slam_flag = FLAG_SHOPMOVE_SLAM_0;
-static unsigned short belt_flag = FLAG_SHOPMOVE_BELT_0;
-static unsigned short ins_flag = FLAG_SHOPMOVE_INS_0;
-
-int getMoveType(int value) {
-	int ret = (value >> 5) & 7;
-	if (ret == 7) {
-		return -1;
-	} else {
-		if (ret == PURCHASE_INSTRUMENT) {
-			int index = ((value >> 3) & 3) + 1;
-			if (index > 1) {
-				return PURCHASE_FLAG;
-			}
-		} else if ((ret == PURCHASE_SLAM) || (ret == PURCHASE_AMMOBELT)) {
-			return PURCHASE_FLAG;
-		}
-		return ret;
-	}
-}
-
-int getMoveIndex(move_rom_item* item) {
-	int item_type = getMoveType(item->move_master_data);
-	int index = ((item->move_master_data >> 3) & 3) + 1;
-	int original_item_type = ((item->move_master_data) >> 5) & 7;
-	if (original_item_type == PURCHASE_SLAM) {
-		slam_flag += 1;
-		return slam_flag - 1;
-	} else if (original_item_type == PURCHASE_AMMOBELT) {
-		belt_flag += 1;
-		return belt_flag - 1;
-	} else if (original_item_type == PURCHASE_INSTRUMENT) {
-		if (index > 1) {
-			ins_flag += 1;
-			return ins_flag - 1;
-		}
-	}
-	if ((item_type == PURCHASE_FLAG) || (item_type == PURCHASE_GB)) {
-		return item->flag;
-	}
-	return index;
-}
-
-int getMoveKong(int value) {
-	return value & 7; 
-}
-
 move_block* getMoveBlock(void) {
 	return getFile(0x200, 0x1FEF000);
 }
 
 void moveTransplant(void) {
-	slam_flag = FLAG_SHOPMOVE_SLAM_0;
-	belt_flag = FLAG_SHOPMOVE_BELT_0;
-	ins_flag = FLAG_SHOPMOVE_INS_0;
-	move_block* move_data = getMoveBlock();
-	if (move_data) {
-		for (int i = 0; i < LEVEL_COUNT; i++) {
-			int stored_slam = slam_flag;
-			int stored_belt = belt_flag;
-			int stored_ins = ins_flag;
-			int cranky_type = (move_data->cranky_moves[0][i].move_master_data >> 5) & 7;
-			int funky_type = (move_data->funky_moves[0][i].move_master_data >> 5) & 7;
-			int candy_type = (move_data->candy_moves[0][i].move_master_data >> 5) & 7;
-			int cranky_shared = 1;
-			int funky_shared = 1;
-			int candy_shared = 1;
-			if ((cranky_type > 2) && (cranky_type < 5)) {
-				cranky_shared = cranky_type - 1;
-			} else if (cranky_type != 1) {
-				cranky_shared = 0;
-			}
-			if ((funky_type > 2) && (funky_type < 5)) {
-				funky_shared = funky_type - 1;
-			} else if (funky_type != 1) {
-				funky_shared = 0;
-			}
-			if ((candy_type > 2) && (candy_type < 5)) {
-				candy_shared = candy_type - 1;
-			} else if (candy_type != 1) {
-				candy_shared = 0;
-			}
-			int cranky_targ_data = move_data->cranky_moves[0][i].move_master_data & 0xF8;
-			int cranky_targ_flag = move_data->cranky_moves[0][i].flag;
-			int funky_targ_data = move_data->funky_moves[0][i].move_master_data & 0xF8;
-			int funky_targ_flag = move_data->funky_moves[0][i].flag;
-			int candy_targ_data = move_data->candy_moves[0][i].move_master_data & 0xF8;
-			int candy_targ_flag = move_data->candy_moves[0][i].flag;
-			for (int j = 1; j < 5; j++) {
-				if (((move_data->cranky_moves[j][i].move_master_data & 0xF8) != cranky_targ_data) || (move_data->cranky_moves[j][i].flag != cranky_targ_flag)) {
-					cranky_shared = 0;
-				}
-				if (((move_data->funky_moves[j][i].move_master_data & 0xF8) != funky_targ_data) || (move_data->funky_moves[j][i].flag != funky_targ_flag)) {
-					funky_shared = 0;
-				}
-				if (((move_data->candy_moves[j][i].move_master_data & 0xF8) != candy_targ_data) || (move_data->candy_moves[j][i].flag != candy_targ_flag)) {
-					candy_shared = 0;
-				}
-			}
-			for (int j = 0; j < 5; j++) {
-				if ((cranky_shared == 1) || (funky_shared == 1) || (candy_shared == 1)) {
-					slam_flag = stored_slam;
-				}
-				if ((cranky_shared == 2) || (funky_shared == 2) || (candy_shared == 2)) {
-					belt_flag = stored_belt;
-				}
-				if ((cranky_shared == 3) || (funky_shared == 3) || (candy_shared == 3)) {
-					ins_flag = stored_ins;
-				}
-				CrankyMoves_New[j][i].purchase_type = getMoveType(move_data->cranky_moves[j][i].move_master_data);
-				CrankyMoves_New[j][i].move_kong = getMoveKong(move_data->cranky_moves[j][i].move_master_data);
-				CrankyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->cranky_moves[j][i]);
-				CrankyMoves_New[j][i].price = move_data->cranky_moves[j][i].price;
-				CrankyMoves_New[j][i].price = move_data->cranky_moves[j][i].price;
-
-				CandyMoves_New[j][i].purchase_type = getMoveType(move_data->candy_moves[j][i].move_master_data);
-				CandyMoves_New[j][i].move_kong = getMoveKong(move_data->candy_moves[j][i].move_master_data);
-				CandyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->candy_moves[j][i]);
-				CandyMoves_New[j][i].price = move_data->candy_moves[j][i].price;
-
-				FunkyMoves_New[j][i].purchase_type = getMoveType(move_data->funky_moves[j][i].move_master_data);
-				FunkyMoves_New[j][i].move_kong = getMoveKong(move_data->funky_moves[j][i].move_master_data);
-				FunkyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->funky_moves[j][i]);
-				FunkyMoves_New[j][i].price = move_data->funky_moves[j][i].price;
-			}
-		}
-		for (int i = 0; i < 4; i++) {
-			TrainingMoves_New[i].purchase_type = getMoveType(move_data->training_moves[i].move_master_data);
-			TrainingMoves_New[i].move_kong = getMoveKong(move_data->training_moves[i].move_master_data);
-			TrainingMoves_New[i].purchase_value = getMoveIndex((move_rom_item *)&move_data->training_moves[i]);
-		}
-		BFIMove_New.purchase_type = getMoveType(move_data->bfi_move.move_master_data);
-		BFIMove_New.move_kong = getMoveKong(move_data->bfi_move.move_master_data);
-		BFIMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->bfi_move);
-		FirstMove_New.purchase_type = getMoveType(move_data->first_move.move_master_data);
-		FirstMove_New.move_kong = getMoveKong(move_data->first_move.move_master_data);
-		FirstMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->first_move);
-	}
-	complex_free(move_data);
+	int size = 126 * sizeof(purchase_struct);
+	copyFromROM(0x1FEF800,&CrankyMoves_New[0][0].purchase_type,&size,0,0,0,0);
 }
 
 void progressiveChange(int flag) {
@@ -337,7 +205,7 @@ purchase_classification getPurchaseClassification(int purchase_type, int flag) {
 			return PCLASS_SHOCKWAVE;
 		} else if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 			return PCLASS_BLUEPRINT;
-		} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+		} else if (isMedalFlag(flag)) {
 			return PCLASS_MEDAL;
 		} else if ((flag == FLAG_COLLECTABLE_NINTENDOCOIN) || (flag == FLAG_COLLECTABLE_RAREWARECOIN)) {
 			return PCLASS_COMPANYCOIN;
@@ -624,48 +492,6 @@ int getLocationStatus(location_list location_index) {
 	return 0;
 }
 
-void fixTBarrelsAndBFI(int init) {
-	if (init) {
-		// Individual Barrel Checks
-		*(short*)(0x80681CE2) = (short)LOCATION_DIVE;
-		*(short*)(0x80681CFA) = (short)LOCATION_ORANGE;
-		*(short*)(0x80681D06) = (short)LOCATION_BARREL;
-		*(short*)(0x80681D12) = (short)LOCATION_VINE;
-		writeFunction(0x80681D38, &getLocationStatus); // Get TBarrels Move
-		// All Barrels Complete check
-		*(short*)(0x80681C8A) = (short)LOCATION_DIVE;
-		writeFunction(0x80681C98, &getLocationStatus); // Get TBarrels Move
-	} else {
-		unsigned char tbarrel_bfi_maps[] = {
-			MAP_TRAININGGROUNDS, // TGrounds
-			MAP_TBARREL_DIVE, // Dive
-			MAP_TBARREL_ORANGE, // Orange
-			MAP_TBARREL_BARREL, // Barrel
-			MAP_TBARREL_VINE, // Vine
-			MAP_FAIRYISLAND, // BFI
-		};
-		int is_in_tbarrel_bfi = 0;
-		for (int i = 0; i < sizeof(tbarrel_bfi_maps); i++) {
-			if (tbarrel_bfi_maps[i] == CurrentMap) {
-				is_in_tbarrel_bfi = 1;
-			}
-		}
-		if (is_in_tbarrel_bfi) {
-			// TBarrels
-			*(short*)(0x800295F6) = (short)LOCATION_DIVE;
-			*(short*)(0x80029606) = (short)LOCATION_ORANGE;
-			*(short*)(0x800295FE) = (short)LOCATION_VINE;
-			*(short*)(0x800295DA) = (short)LOCATION_BARREL;
-			writeFunction(0x80029610, &setLocationStatus); // Set TBarrels Move
-			// BFI
-			*(short*)(0x80027F2A) = (short)LOCATION_BFI;
-			*(short*)(0x80027E1A) = (short)LOCATION_BFI;
-			writeFunction(0x80027F24, &setLocationStatus); // Set BFI Move
-			writeFunction(0x80027E20, &getLocationStatus); // Get BFI Move
-		}
-	}
-}
-
 typedef struct move_overlay_paad {
 	/* 0x000 */ void* upper_text;
 	/* 0x004 */ void* lower_text;
@@ -782,14 +608,8 @@ void getNextMoveText(void) {
 			mtx_item mtx1;
 			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
 			float start_y = 800.0f;
-			if (Rando.true_widescreen) {
-				start_y = (4 * SCREEN_HD_FLOAT) - 160.0f;
-			}
 			float position = start_y - (overlay_count * 100.0f); // Gap of 100.0f
 			float move_x = 640.0f;
-			if (Rando.true_widescreen) {
-				move_x = SCREEN_WD_FLOAT * 2;
-			}
 			_guTranslateF(&mtx1, move_x, position, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);
@@ -849,7 +669,7 @@ void getNextMoveText(void) {
 								// Blueprint
 								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
 								top_item = ITEMTEXT_BLUEPRINT_DK + kong;
-							} else if (isFlagInRange(p_flag, FLAG_MEDAL_JAPES_DK, 40)) {
+							} else if (isMedalFlag(p_flag)) {
 								// Medal
 								top_item = ITEMTEXT_MEDAL;
 							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
@@ -873,6 +693,8 @@ void getNextMoveText(void) {
 							} else if (isFlagInRange(p_flag, FLAG_FAKEITEM, 0x10)) {
 								// Fake Item
 								top_item = ITEMTEXT_FAKEITEM;
+							} else if (isFlagInRange(p_flag, FLAG_ITEM_CRANKY, 4)) {
+								top_item = ITEMTEXT_CRANKYITEM + (p_flag - FLAG_ITEM_CRANKY);
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {

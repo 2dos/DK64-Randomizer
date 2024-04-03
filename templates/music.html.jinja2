@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, toggle_input %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -99,7 +99,7 @@
                  style="margin: 0 auto">
                 <div class="input-group-text choose-file"
                      style="background-color: #6c757d">
-                    <input class="btn btn-primary file-button"
+                    <input class="btn btn-secondary file-button"
                            type="button"
                            value="Choose File"
                            onClick="music_filebox()"
@@ -113,19 +113,8 @@
                        placeholder="No File Chosen"/>
             </div>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Will fill each song slot available with a custom track, even if the amount of songs in that pack doesn't exceed the amount of song slots.">
-                        <input class="form-check-input"
-                            type="checkbox"
-                            name="fill_with_custom_music"
-                            id="fill_with_custom_music"
-                            display_name="Fill game with provided songs"
-                            value="True"/>
-                        Fill game with provided songs
-                    </label>
-                </div>
-                <div class="spacer"></div>
+                {{ toggle_input("fill_with_custom_music", "Fill game with provided songs", "Will fill each song slot available with a custom track, even if the amount of songs in that pack doesn't exceed the amount of song slots.") }}
+                {{ toggle_input("show_song_name", "Display song name in-game", "Will display the song name for 3 seconds upon it playing (Only applies to BGM).") }}
             </div>
             <div class="flex-container">
                 <div class="item-group">
@@ -153,16 +142,16 @@
     <h2 class="title">Select Songs</h2>
     <div class="flex-container flex-center import-export-container">
         <input id="import_music_selections"
-               class="btn btn-primary settings-button"
+               class="btn btn-secondary settings-button"
                type="button"
                onClick="music_selection_filebox()"
                value="Import Selections from File"/>
         <input id="export_music_selections"
-               class="btn btn-primary settings-button"
+               class="btn btn-secondary settings-button"
                type="button"
                value="Export Selections to File"/>
         <input id="reset_music_selections"
-               class="btn btn-primary settings-button"
+               class="btn btn-secondary settings-button"
                type="button"
                value="Reset Selections"/>
     </div>
@@ -195,7 +184,7 @@
                                             name="music_select_{{song["value"]}}"
                                             class="form-select {{subCategory["type"]}}-select">
                                         <option value="default_value">-- Default --</option>
-                                        <option value="">-- Randomize --</option>
+                                        <option value="" selected>-- Randomize --</option>
                                         {% for select_song in select_songs[subCategory["type"]]|music_select_restrict(song["value"]) %}
                                             <option value="{{select_song["value"]}}"
                                                     class="original-song">

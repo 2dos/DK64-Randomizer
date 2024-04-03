@@ -383,6 +383,7 @@ void factoryShedFallImmunity(short exit) {
     unkLoadingZoneControllerFunction(exit);
 }
 
+
 void fallDamageWrapper(int action, void* actor, int player_index) {
     if (ObjectModel2Timer < 100) {
         return;

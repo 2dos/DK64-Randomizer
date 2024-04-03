@@ -25,7 +25,7 @@ from randomizer.Enums.Models import Model
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.SongType import SongType
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
@@ -43,7 +43,7 @@ from randomizer.Lists.Location import (
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
-from randomizer.Patching.Lib import IsItemSelected, SwitchInfo, HelmDoorInfo, HelmDoorRandomInfo
+from randomizer.Patching.Lib import IsItemSelected, SwitchInfo, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
@@ -228,7 +228,36 @@ class Settings:
             self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
-        if self.randomize_blocker_required_amounts:
+        self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
+        self.BLockerEntryCount = [0] * 8
+        if self.chaos_blockers:
+            limits = {
+                # Will give customization to this eventually, just need to get a proof of concept working
+                # BarrierItems.Nothing: 0,
+                BarrierItems.Kong: 5,
+                BarrierItems.Move: 20,
+                BarrierItems.GoldenBanana: 60,
+                BarrierItems.Blueprint: 15,
+                BarrierItems.Fairy: 10,
+                BarrierItems.Key: 6,
+                BarrierItems.Crown: 4,
+                BarrierItems.CompanyCoin: 1,
+                BarrierItems.Medal: 20,
+                BarrierItems.Bean: 1,
+                BarrierItems.Pearl: 3,
+                BarrierItems.RainbowCoin: 10,
+                # BarrierItems.IceTrap: 10,
+                BarrierItems.Percentage: 20,
+                # BarrierItems.ColoredBanana: 1000,
+            }
+            for slot in range(8):
+                item = random.choice(list(limits.keys()))
+                count = random.randint(0, limits[item])
+                self.BLockerEntryItems[slot] = item
+                self.BLockerEntryCount[slot] = count
+            self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
+            return
+        elif self.randomize_blocker_required_amounts:
             if self.blocker_max > 0:
                 randomlist = random.sample(range(1, self.blocker_max), 7)
                 b_lockers = randomlist
@@ -253,7 +282,8 @@ class Settings:
                 self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
-        self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
+
+        self.BLockerEntryCount = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
         self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
     def generate_main(self):
@@ -359,6 +389,8 @@ class Settings:
         self.helm_barrels = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
 
+        self.chaos_blockers = False
+
         # hard_shooting: bool
         self.hard_shooting = False
 
@@ -420,6 +452,7 @@ class Settings:
         self.color_palettes = {}
         # Random Model Swaps
         self.random_models = RandomModels.off
+        self.random_enemy_colors = RandomModels.off
         self.bother_klaptrap_model = Model.KlaptrapGreen
         self.beetle_model = Model.Beetle
         self.rabbit_model = Model.Rabbit
@@ -429,6 +462,8 @@ class Settings:
         self.seek_klaptrap_model = Model.KlaptrapGreen
         self.fungi_tomato_model = Model.Tomato
         self.caves_tomato_model = Model.IceTomato
+        self.piano_burp_model = Model.KoshKremlingRed
+        self.spotlight_fish_model = Model.SpotlightFish
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"
@@ -457,6 +492,9 @@ class Settings:
         self.rambi_skin_custom_color = "#000000"
         self.enguarde_skin_colors = CharacterColors.vanilla
         self.enguarde_skin_custom_color = "#000000"
+        # Misc
+        self.gb_colors = CharacterColors.vanilla
+        self.gb_custom_color = "#000000"
 
         self.disco_chunky = False
         self.dark_mode_textboxes = False
@@ -474,11 +512,13 @@ class Settings:
         self.music_volume = 100
         self.true_widescreen = False
         self.troff_brighten = False
+        self.better_dirt_patch_cosmetic = False
         self.crosshair_outline = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
         self.custom_music_proportion = 100
         self.fill_with_custom_music = False
+        self.show_song_name = False
 
         #  Misc
         self.generate_spoilerlog = None
@@ -497,6 +537,7 @@ class Settings:
         self.medal_requirement = 15
         self.medal_cb_req = 75
         self.rareware_gb_fairies = 20
+        self.mermaid_gb_pearls = 5
         self.bananaport_rando = BananaportRando.off
         self.activate_all_bananaports = ActivateAllBananaports.off
         self.shop_indicator = False
@@ -519,12 +560,13 @@ class Settings:
         self.kko_phase_order = [0, 0, 0]
         self.toe_order = [0] * 10
         self.mill_levers = [0] * 5
+        self.jetpac_enemy_order = list(range(8))
         self.crypt_levers = [1, 4, 3]
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         self.enemy_rando = False
         self.crown_enemy_rando = CrownEnemyRando.off
         self.enemy_speed_rando = False
-        self.cb_rando = False
+        self.cb_rando = CBRando.off
         self.coin_rando = False
         self.crown_placement_rando = False
         self.override_cosmetics = True
@@ -733,7 +775,7 @@ class Settings:
                                 raise Ex.PlandoIncompatibleException(f"Same kong assigned for {self.switchsanity_data[switch].name} and {self.switchsanity_data[slot].name}.")
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
-        if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava):
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
             ItemPool.ImportantSharedMoves = [
                 Items.ProgressiveSlam,
@@ -876,6 +918,8 @@ class Settings:
             self.crown_door_item_count = min(self.crown_door_item_count, helmdoor_items[self.crown_door_item].absolute_max)
         if self.coin_door_item in helmdoor_items.keys():
             self.coin_door_item_count = min(self.coin_door_item_count, helmdoor_items[self.coin_door_item].absolute_max)
+        self.coin_door_item = DoorItemToBarrierItem(self.coin_door_item, True)
+        self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
         self.shuffled_location_types = []
         if self.shuffle_items:
@@ -888,7 +932,8 @@ class Settings:
                     Types.Blueprint,
                     Types.Key,
                     Types.Medal,
-                    Types.Coin,
+                    Types.NintendoCoin,
+                    Types.RarewareCoin,
                     Types.Kong,
                     Types.Bean,
                     Types.Pearl,
@@ -897,6 +942,10 @@ class Settings:
                     Types.FakeItem,
                     Types.JunkItem,
                     Types.CrateItem,
+                    Types.Cranky,
+                    Types.Funky,
+                    Types.Candy,
+                    Types.Snide,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -905,6 +954,8 @@ class Settings:
                             self.shuffled_location_types.append(type)
                         if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
+                        elif type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide) and item == ItemRandoListSelected.shopowners:
+                            self.shuffled_location_types.extend([Types.Cranky, Types.Funky, Types.Candy, Types.Snide])
             if self.enemy_drop_rando:  # Enemy location type handled separately for UI/UX reasons
                 self.shuffled_location_types.append(Types.Enemies)
             if Types.Shop in self.shuffled_location_types:
@@ -1040,6 +1091,11 @@ class Settings:
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
+
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
+            jetpac_levels = list(range(8))
+            random.shuffle(jetpac_levels)
+            self.jetpac_enemy_order = jetpac_levels
 
         if self.puzzle_rando:
             # Crypt Levers
@@ -1254,21 +1310,21 @@ class Settings:
             self.kasplat_location_rando = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
-        if self.win_condition == WinCondition.all_fairies or self.crown_door_item == HelmDoorItem.req_fairy or self.coin_door_item == HelmDoorItem.req_fairy:
+        if self.win_condition == WinCondition.all_fairies or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
             ItemList[Items.BananaFairy].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_rainbowcoin or self.coin_door_item == HelmDoorItem.req_rainbowcoin:
+        if self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
             ItemList[Items.RainbowCoin].playthrough = True
-        if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == HelmDoorItem.req_bp or self.coin_door_item == HelmDoorItem.req_bp:
+        if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
                     ItemList[item_index].playthrough = True
-        if self.win_condition == WinCondition.all_medals or self.crown_door_item == HelmDoorItem.req_medal or self.coin_door_item == HelmDoorItem.req_medal:
+        if self.win_condition == WinCondition.all_medals or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
             ItemList[Items.BananaMedal].playthrough = True
-        if self.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or self.coin_door_item == HelmDoorItem.req_crown:
+        if self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_bean or self.coin_door_item == HelmDoorItem.req_bean or Types.Bean in self.shuffled_location_types:
+        if self.crown_door_item == BarrierItems.Bean or self.coin_door_item == BarrierItems.Bean or Types.Bean in self.shuffled_location_types:
             ItemList[Items.Bean].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_pearl or self.coin_door_item == HelmDoorItem.req_pearl or Types.Pearl in self.shuffled_location_types:
+        if self.crown_door_item == BarrierItems.Pearl or self.coin_door_item == BarrierItems.Pearl or Types.Pearl in self.shuffled_location_types:
             ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
@@ -1401,6 +1457,12 @@ class Settings:
                         spoiler.LocationList[location_id].inaccessible = False
                         spoiler.LocationList[location_id].smallerShopsInaccessible = False
 
+        # shop_types = (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+        # shopkeepers_in_pool = len([x for x in shop_types if x in self.shuffled_location_types]) > 0
+        # if shopkeepers_in_pool:
+        #     for x in range(4):
+        #         spoiler.LocationList[Locations.ShopOwner_Location00 + x].inaccessible = True
+
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
         if IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1):
@@ -1455,9 +1517,17 @@ class Settings:
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 
         if self.shuffle_items and any(self.shuffled_location_types):
-            # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
+            # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
             shuffledLocations = [
-                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type != Types.Kong
+                location
+                for location in spoiler.LocationList
+                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+            ]
+            shuffledLocationsShopOwner = [
+                location
+                for location in spoiler.LocationList
+                if spoiler.LocationList[location].type in self.shuffled_location_types
+                and spoiler.LocationList[location].type not in (Types.Kong, Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.NintendoCoin, Types.RarewareCoin)
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]
@@ -1506,29 +1576,17 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
-            if Types.Crown in self.shuffled_location_types:
-                # Banned for technical reasons
-                banned_crown_locations = (
-                    Locations.HelmDonkeyMedal,
-                    Locations.HelmDiddyMedal,
-                    Locations.HelmLankyMedal,
-                    Locations.HelmTinyMedal,
-                    Locations.HelmChunkyMedal,
-                    Locations.HelmKey,
-                )
-                self.valid_locations[Types.Crown] = [location for location in shuffledNonMoveLocations if location not in banned_crown_locations]
-            if Types.Key in self.shuffled_location_types:
-                self.valid_locations[Types.Key] = shuffledNonMoveLocations
-            if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = fairyBannedLocations
-            if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = fairyBannedLocations
-            if Types.Pearl in self.shuffled_location_types:
-                self.valid_locations[Types.Pearl] = fairyBannedLocations
-            if Types.Bean in self.shuffled_location_types:
-                self.valid_locations[Types.Bean] = fairyBannedLocations
-            if Types.Fairy in self.shuffled_location_types:
-                self.valid_locations[Types.Fairy] = shuffledNonMoveLocations
+            regular_items = (Types.Crown, Types.Key, Types.Medal, Types.NintendoCoin, Types.RarewareCoin, Types.Pearl, Types.Bean, Types.Fairy)
+            for item in regular_items:
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = shuffledNonMoveLocations
+            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
+            for item in shop_owner_items:
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = shuffledLocationsShopOwner
+            if Types.Snide in self.shuffled_location_types:
+                # Snide can't be placed in/after expected Helm Access. To help out fill, we'll ban Snide from any locations in Helm
+                self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner if spoiler.LocationList[x].level != Levels.HideoutHelm]
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
                     x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)
@@ -1561,7 +1619,7 @@ class Settings:
             if Types.JunkItem in self.shuffled_location_types:
                 self.valid_locations[Types.JunkItem] = [
                     x
-                    for x in fairyBannedLocations
+                    for x in shuffledNonMoveLocations
                     if spoiler.LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies)
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
                 ]
@@ -1586,14 +1644,12 @@ class Settings:
                 # Blueprints cannot be on fairies
                 # Company coins cannot be on fairies
                 # Keys can be on fairies, but this is staggeringly rare
-                if Types.Key in self.shuffled_location_types and (self.crown_door_item == HelmDoorItem.req_key or self.coin_door_item == HelmDoorItem.req_key):
+                if Types.Key in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Key or self.coin_door_item == BarrierItems.Key):
                     self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy1)
                     self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
                 # Medals cannot be on fairies
                 # The big winner: Crowns will not be locked behind a crown door requirement
-                if Types.Crown in self.shuffled_location_types and (
-                    self.crown_door_item == HelmDoorItem.vanilla or self.crown_door_item == HelmDoorItem.req_crown or self.coin_door_item == HelmDoorItem.req_crown
-                ):
+                if Types.Crown in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown):
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
                 # Fairies are the one exception: these are allowed to be vanilla

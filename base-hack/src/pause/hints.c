@@ -184,9 +184,6 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
     float hint_x = x;
     if (center) {
         hint_x = 640.0f;
-        if (Rando.true_widescreen) {
-            hint_x = SCREEN_WD_FLOAT * 2;
-        }
     }
     _guTranslateF(&mtx1, hint_x, position, 0.0f);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
@@ -332,9 +329,6 @@ int* displayBubble(int* dl) {
     *(unsigned int*)(dl++) = 0xFA000000;
     *(unsigned int*)(dl++) = 0xFFFFFF96;
     int bubble_x = 625;
-    if (Rando.true_widescreen) {
-        bubble_x = (2 * SCREEN_WD) - 15;
-    }
     return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
 }
 
@@ -432,9 +426,6 @@ int* drawItemLocationScreen(int* dl, int level_x) {
     // Display Hints
     dl = displayBubble(dl);
     int item_loc_x = 200;
-    if (Rando.true_widescreen) {
-        item_loc_x = SCREEN_WD - 120;
-    }
     mtx_counter = 0;
     int head = 0;
     int k = 0;
