@@ -73,8 +73,8 @@ LogicRegions = {
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesTopOfMountain, lambda l: (l.peanut and l.isdiddy) or l.CanMoonkick()),
         TransitionFront(Regions.JapesLankyCave, lambda l: ((l.hasMoveSwitchsanity(Switches.JapesPainting, False) or l.CanSkew(True) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick())) or (l.CanMoonkick() and (l.phasewalk or l.CanSkew(True) or l.CanSkew(False))) or ((l.phasewalk or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave),
-        TransitionFront(Regions.FunkyJapes, lambda l: l.funkyAccess),
-        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
+        TransitionFront(Regions.FunkyJapes, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.BeyondRambiGate, lambda l: l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.phasewalk or l.generalclips),
         TransitionFront(Regions.JapesTnSAlcove, lambda l: l.vines or (l.advanced_platforming and not l.IsHardFallDamage())),  # Falling from the top is now advanced platforming but you can't have hard fall damage on for it
     ]),
@@ -174,7 +174,7 @@ LogicRegions = {
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)),
-        TransitionFront(Regions.CrankyJapes, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyJapes, lambda l: True),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.CanMoonkick()),
     ]),
 

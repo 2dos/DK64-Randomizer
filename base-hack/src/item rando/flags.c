@@ -191,9 +191,6 @@ int clampFlag(int flag) {
     if ((flag >= FLAG_ENEMY_KILLED_0) && (flag < (FLAG_ENEMY_KILLED_0 + ENEMIES_TOTAL))) {
         return 1; // Enemies
     }
-    if ((flag >= FLAG_MEDAL_ISLES_DK) && (flag < (FLAG_MEDAL_ISLES_DK + 5))) {
-        return 1; // Isles Medals
-    }
     return 0;
 }
 
@@ -406,10 +403,6 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                         CollectableBase.Crystals = 10*150;
                     }
                 }
-                spawn_overlay = 1;
-                item_type = 5;
-                item_index = flag_index;
-            } else if (isFlagInRange(flag_index, FLAG_ITEM_CRANKY, 4)) {
                 spawn_overlay = 1;
                 item_type = 5;
                 item_index = flag_index;
@@ -627,7 +620,7 @@ int getKongFromBonusFlag(int flag) {
      * 
      * @return kong index
      */
-    if ((Rando.any_kong_items.major_items) == 0) {
+    if ((Rando.any_kong_items & 1) == 0) {
         for (int i = 0; i < 95; i++) {
             if (bonus_data[i].flag == flag) {
                 return bonus_data[i].kong_actor;

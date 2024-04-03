@@ -282,4 +282,5 @@ void initCosmetic(void) {
     initKrusha();
     initSeasonalChanges();
     initColorblindChanges();
+    //loadWidescreen(OVERLAY_BOOT);
 }

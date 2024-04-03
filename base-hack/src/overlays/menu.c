@@ -54,6 +54,7 @@ void overlay_mod_menu(void) {
 		*(short*)(0x80026E8E) = 5; // Coconuts
 		*(short*)(0x80026FB2) = 9999; // Change coconut gift from 6.6 coconuts to 66.6 coconuts
 	}
+
 	// Menu
 	if (Rando.default_camera_mode) {
 		InvertedControls = 1;
@@ -64,8 +65,30 @@ void overlay_mod_menu(void) {
 		initFilename();
 	}
 
+	// Force enable cheats
+	*(short*)(0x800280DC) = 0x1000; // Force access to mystery menu
+	*(short*)(0x80028A40) = 0x1000; // Force opaqueness
+	*(short*)(0x8002EA7C) = 0x1000; // Disable Cutscene Menu
+	*(short*)(0x8002EAF8) = 0x1000; // Disable Minigames Menu
+	*(short*)(0x8002EB70) = 0x1000; // Disable Bosses Menu
+	*(int*)(0x8002EBE8) = 0; // Disable Krusha Menu
+	*(short*)(0x8002EC18) = 0x1000; // Enable Cheats Menu
+	*(int*)(0x8002E8D8) = 0x240E0004; // Force cheats menu to start on page 4
+	*(short*)(0x8002E8F4) = 0x1000; // Disable edge cases
+	*(int*)(0x8002E074) = 0xA06F0000; // overflow loop to 1
+	*(int*)(0x8002E0F0) = 0x5C400004; // underflow loop from 1
+	*(short*)(0x8002EA3A) = 0xFFFE; // Disable option 1 load
+	*(int*)(0x8002EA4C) = 0xA0600003; // Force Krusha to 0
+	*(int*)(0x8002EA64) = 0xA64B0008; // Disable option 1 write
+
 	// Snide
+	*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
+	*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 	if (Rando.item_rando) {		
+		writeFunction(0x80024CF0, &countFlagsDuplicate); // Flag change to FLUT
+		writeFunction(0x80024854, &checkFlagDuplicate); // Flag change to FLUT
+		writeFunction(0x80024880, &checkFlagDuplicate); // Flag change to FLUT
+		writeFunction(0x800248B0, &setFlagDuplicate); // Flag change to FLUT
 		if (Rando.quality_of_life.blueprint_compression) {
 			writeFunction(0x80024840, &give_all_blueprints); // Change initial check
 			*(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)
@@ -86,4 +109,8 @@ void overlay_mod_menu(void) {
 			BlueprintLargeImageColors[i].blue = color.blue;
 		}
 	}
+
+	// Menu Overlay - Candy's Shop Glitch
+	*(short*)(0x80027678) = 0x1000;
+	*(short*)(0x8002769C) = 0x1000;
 }

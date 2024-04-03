@@ -5,6 +5,7 @@
 
 #define ENABLE_FILENAME 0
 #define ENABLE_ORIGIN_WARP_FIX 1
+#define DAMAGE_MASKING 1
 #define ENABLE_SAVE_LOCK_REMOVAL 0 // Crashes on Wii U
 
 #define FILENAME_LENGTH 8
@@ -26,6 +27,7 @@
 #include "archipelago.h"
 #include "music.h"
 #include "macros.h"
+#include "widescreen.h"
 #include "pause.h"
 #include "hint_regions.h"
 #include "../src/pause/pause.h"

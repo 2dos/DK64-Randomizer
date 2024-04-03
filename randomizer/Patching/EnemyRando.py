@@ -390,9 +390,6 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
             # Prevent them respawning
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x14)
             ROM_COPY.writeMultipleBytes(0, 1)
-        elif new_enemy_id == Enemies.Kaboom:
-            ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xA)
-            ROM_COPY.writeMultipleBytes(140, 2)
 
         if (cont_map_id in crown_maps or cont_map_id in minigame_maps_total) and EnemyMetaData[new_enemy_id].air:
             height = 300
@@ -425,6 +422,9 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
         if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
             ROM_COPY.writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
+        if new_enemy_id in (Enemies.KlaptrapPurple, Enemies.KlaptrapRed) and cont_map_id == Maps.CavesDiddyLowerCabin:
+            ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
+            ROM_COPY.write(75)
         # Speed Adjustment
         if spoiler.settings.enemy_speed_rando:
             if cont_map_id not in banned_speed_maps:

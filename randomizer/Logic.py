@@ -36,6 +36,7 @@ from randomizer.Enums.Settings import (
     FasterChecksSelected,
     GlitchesSelected,
     HardModeSelected,
+    HelmDoorItem,
     LogicType,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -45,7 +46,7 @@ from randomizer.Enums.Settings import (
     HelmSetting,
 )
 from randomizer.Enums.Time import Time
-from randomizer.Enums.Types import Types, BarrierItems
+from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
@@ -175,11 +176,6 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
-        self.crankyAccess = False
-        self.funkyAccess = False
-        self.candyAccess = False
-        self.snideAccess = False
-
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
         self.HelmDiddy1 = False
@@ -265,9 +261,9 @@ class LogicVarHolder:
                     self.Events.append(warp_data.event)
 
         # Colored banana and coin arrays
-        # Colored bananas as 9 arrays of 5 (8 levels for 5 kongs, Helm is level index 7, so skip this)
+        # Colored bananas as 7 arrays of 5 (7 levels for 5 kongs)
         self.ColoredBananas = []
-        for i in range(9):
+        for i in range(7):
             self.ColoredBananas.append([0] * 5)
 
         self.Coins = [0] * 5
@@ -356,11 +352,6 @@ class LogicVarHolder:
         self.trombone = self.trombone or Items.Trombone in ownedItems and self.lanky
         self.saxophone = self.saxophone or Items.Saxophone in ownedItems and self.tiny
         self.triangle = self.triangle or Items.Triangle in ownedItems and self.chunky
-
-        self.crankyAccess = self.crankyAccess or Items.Cranky in ownedItems
-        self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
-        self.candyAccess = self.candyAccess or Items.Candy in ownedItems
-        self.snideAccess = self.snideAccess or Items.Snide in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
@@ -621,95 +612,39 @@ class LogicVarHolder:
         if kong == Kongs.any:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
-    def ItemCheck(self, item: BarrierItems, count: int) -> bool:
-        """Check if item requirement has been fulfilled."""
-        CBCount = 0
-        for lvl in self.ColoredBananas:
-            CBCount += sum(lvl)
-        moves = [
-            # Training Moves
-            self.vines,
-            self.swim,
-            self.oranges,
-            self.barrels,
-            # Special Moves
-            self.blast,
-            self.strongKong,
-            self.grab,
-            self.charge,
-            self.jetpack,
-            self.spring,
-            self.handstand,
-            self.balloon,
-            self.sprint,
-            self.mini,
-            self.twirl,
-            self.monkeyport,
-            self.hunkyChunky,
-            self.punch,
-            self.gorillaGone,
-            # Guns
-            self.coconut,
-            self.peanut,
-            self.grape,
-            self.feather,
-            self.pineapple,
-            # Instruments
-            self.bongos,
-            self.guitar,
-            self.trombone,
-            self.saxophone,
-            self.triangle,
-            # BFI
-            self.camera,
-            self.shockwave,
-            # Misc
-            self.scope,
-            self.homing,
-        ]
-        # Calculate game percentage
-        keys = sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey])
-        company_coins = sum([self.nintendoCoin, self.rarewareCoin])
-        game_percentage = 0.4 * self.GoldenBananas
-        game_percentage += 0.5 * self.BattleCrowns
-        game_percentage += 0.2 * self.BananaFairies
-        game_percentage += 0.2 * self.BananaMedals
-        game_percentage += 0.25 * keys
-        game_percentage += 0.5 * company_coins
-        if game_percentage == 100.4:
-            game_percentage = 101
-        check_counts = {
-            BarrierItems.GoldenBanana: self.GoldenBananas,
-            BarrierItems.Blueprint: len(self.Blueprints),
-            BarrierItems.CompanyCoin: company_coins,
-            BarrierItems.Key: keys,
-            BarrierItems.Medal: self.BananaMedals,
-            BarrierItems.Crown: self.BattleCrowns,
-            BarrierItems.Fairy: self.BananaFairies,
-            BarrierItems.RainbowCoin: self.RainbowCoins,
-            BarrierItems.Bean: self.Beans,
-            BarrierItems.Pearl: self.Pearls,
-            BarrierItems.ColoredBanana: CBCount,
-            BarrierItems.IceTrap: True,  # TODO
-            BarrierItems.Kong: sum([self.donkey, self.diddy, self.lanky, self.tiny, self.chunky]),
-            BarrierItems.Move: sum(moves) + self.Slam + self.AmmoBelts + self.InstUpgrades,
-            BarrierItems.Percentage: int(game_percentage),
+    def DoorItemCheck(self, item, count):
+        """Check if item requirement has been fulfilled with regards to a Helm door item."""
+        helmdoor_vars = {
+            HelmDoorItem.req_gb: self.GoldenBananas,
+            HelmDoorItem.req_bp: len(self.Blueprints),
+            HelmDoorItem.req_companycoins: sum([self.nintendoCoin, self.rarewareCoin]),
+            HelmDoorItem.req_key: sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey]),
+            HelmDoorItem.req_medal: self.BananaMedals,
+            HelmDoorItem.req_crown: self.BattleCrowns,
+            HelmDoorItem.req_fairy: self.BananaFairies,
+            HelmDoorItem.req_rainbowcoin: self.RainbowCoins,
+            HelmDoorItem.req_bean: self.Beans,
+            HelmDoorItem.req_pearl: self.Pearls,
         }
-        if item in check_counts.keys():
-            return check_counts[item] >= count
+        if item in helmdoor_vars.keys():
+            return helmdoor_vars[item] >= count
         return True
 
     def CrownDoorOpened(self):
         """Check if Crown Door is opened."""
-        if self.settings.crown_door_item == BarrierItems.Nothing:
+        if self.settings.crown_door_item == HelmDoorItem.opened:
             return True
-        return self.ItemCheck(self.settings.crown_door_item, self.settings.crown_door_item_count)
+        elif self.settings.crown_door_item == HelmDoorItem.vanilla:
+            return self.DoorItemCheck(HelmDoorItem.req_crown, self.settings.crown_door_item_count)
+        return self.DoorItemCheck(self.settings.crown_door_item, self.settings.crown_door_item_count)
 
     def CoinDoorOpened(self):
         """Check if Coin Door is opened."""
-        if self.settings.coin_door_item == BarrierItems.Nothing:
+        if self.settings.coin_door_item == HelmDoorItem.opened:
             return True
-        return self.ItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
+        elif self.settings.coin_door_item == HelmDoorItem.vanilla:
+            return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.coin_door_item_count)
+        return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
@@ -993,10 +928,6 @@ class LogicVarHolder:
             elif order_of_level > 7 and (not self.CavesKey or not self.CastleKey):
                 return False
 
-        if level == Levels.HideoutHelm:
-            if (not self.snideAccess) and self.settings.helm_setting != HelmSetting.skip_all:  # Disable Helm Entry logically if you are missing Snide
-                return False
-
         # If we have the moves, ensure we have enough kongs as well
         return self.HasEnoughKongs(level, forPreviousLevel=True)
 
@@ -1015,7 +946,7 @@ class LogicVarHolder:
         can_tiny_skip = self.istiny and self.lanky_blocker_skip and level == Levels.HideoutHelm and self.generalclips
         can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch and level not in (Levels.FranticFactory, Levels.HideoutHelm)
         # To enter a level, we either need (or assume) enough GBs to get rid of B. Locker or a glitch way to bypass it
-        return self.assumeInfiniteGBs or self.GoldenBananas >= self.settings.BLockerEntryCount[level] or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
+        return self.assumeInfiniteGBs or self.GoldenBananas >= self.settings.EntryGBs[level] or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""

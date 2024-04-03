@@ -33,35 +33,51 @@ void ninCoinCode(void) {
     /**
      * @brief Nintendo Coin Actor Code
      */
-    GoldenBananaCode();
+    spriteCode(0x8D, 1.0f);
 }
 
 void rwCoinCode(void) {
     /**
      * @brief Rareware Coin Actor Code
      */
-    GoldenBananaCode();
+    spriteCode(0x8C, 1.0f);
 }
 
 void medalCode(void) {
     /**
      * @brief Medal Actor Code
      */
-    GoldenBananaCode();
+    spriteCode(0x3C, 2.0f);
 }
 
 void beanCode(void) {
     /**
      * @brief Bean Actor Code
      */
-    GoldenBananaCode();
+    void* paad = CurrentActorPointer_0->paad;
+    spriteActorGenericCode(12.0f);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        assignGIFToActor(paad, &bean_sprite, 1.0f);
+        if (CurrentActorPointer_0->control_state == 99) {
+            CurrentActorPointer_0->control_state = 1;
+            CurrentActorPointer_0->sub_state = 2;
+        }
+    }
 }
 
 void pearlCode(void) {
     /**
      * @brief Pearl Actor Code
      */
-    GoldenBananaCode();
+    void* paad = CurrentActorPointer_0->paad;
+    spriteActorGenericCode(12.0f);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        assignGIFToActor(paad, &pearl_sprite, 1.0f);
+        if (CurrentActorPointer_0->control_state == 99) {
+            CurrentActorPointer_0->control_state = 1;
+            CurrentActorPointer_0->sub_state = 2;
+        }
+    }
 }
 
 void NothingCode(void) {
@@ -123,81 +139,6 @@ void fairyDuplicateCode(void) {
     playActorAnimation(CurrentActorPointer_0, 0x2B5);
 }
 
-static const short shop_owner_anims[] = {
-    622, // Cranky Idle
-    624, // Funky Idle
-    626, // Candy Idle
-    628, // Snide Idle
-};
-
-void shopOwnerItemCode(void) {
-    /**
-     * @brief Actor code for the shop owner items
-     */
-    GoldenBananaCode();
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
-        int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
-        int owner = current_type - NEWACTOR_CRANKYITEM;
-        playActorAnimation(CurrentActorPointer_0, shop_owner_anims[owner]);
-    }
-}
-
-#define SHOP_OWNER_WAIT_LENGTH 30
-
-void missingShopOwnerCode(int cutscene) {
-    initCharSpawnerActor();
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        Player->unk_fairycam_bitfield |= 0x20; // Freeze player input
-    }
-    int control_state = CurrentActorPointer_0->control_state;
-    if (control_state < SHOP_OWNER_WAIT_LENGTH) {
-        CurrentActorPointer_0->control_state += 1;
-    } else if (control_state == SHOP_OWNER_WAIT_LENGTH) {
-        if (cutscene != -1) {
-            playCutscene((void*)0, cutscene, 1);
-        }
-        CurrentActorPointer_0->control_state += 1;
-    } else if (control_state == (SHOP_OWNER_WAIT_LENGTH + 1)) {
-        if (CutsceneActive == 0) {
-            ExitFromBonus();
-            CurrentActorPointer_0->control_state += 1;
-        }
-    }
-}
-
-void crankyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
-        crankyCode();
-        return;
-    }
-    missingShopOwnerCode(7);
-}
-
-void funkyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
-        funkyCode();
-        return;
-    }
-    missingShopOwnerCode(7);
-}
-
-void candyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
-        candyCode();
-        return;
-    }
-    missingShopOwnerCode(7);
-}
-
-void snideCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
-        snideCode();
-        return;
-    }
-    missingShopOwnerCode(13);
-}
-
 void FakeGBCode(void) {
     /**
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
@@ -210,13 +151,17 @@ void mermaidCheck(void) {
     /**
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
+    int requirement = 5;
+    if (Rando.faster_checks.mermaid) {
+        requirement = 1; // Fast GBs pearl requirement
+    }
     int count = 0;
     for (int i = 0; i < 5; i++) {
         count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
     }
     if (count == 0) {
         CurrentActorPointer_0->control_state = 0x1E;
-    } else if (count < Rando.mermaid_requirement) {
+    } else if (count < requirement) {
         CurrentActorPointer_0->control_state = 0x1F;
     } else {
         CurrentActorPointer_0->control_state = 0x27;

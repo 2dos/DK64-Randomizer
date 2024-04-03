@@ -154,7 +154,7 @@ def ShuffleItems(spoiler):
                         location_selection.new_flag = new_item.rando_flag
                     locations_not_needing_flags.append(location_selection)
                 # Company Coins keep their original flag
-                elif new_item.type in (Types.NintendoCoin, Types.RarewareCoin):
+                elif new_item.type == Types.Coin:
                     location_selection.new_flag = new_item.flag
                     locations_not_needing_flags.append(location_selection)
                 elif new_item.type == Types.JunkItem:

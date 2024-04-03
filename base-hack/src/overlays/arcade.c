@@ -115,6 +115,25 @@ void initArcade(void) {
 	/**
 	 * @brief Initialize DK Arcade Changes
 	 */
+	// Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
+	*(int*)(0x80024F10) = 0x240E0005; // ADDIU $t6, $r0, 0x5
+	*(short*)(0x80024F2A) = 0xC71B;
+	*(int*)(0x80024F2C) = 0xA0CEC71B; // SB $t6, 0xC71B ($a2)
+	writeFunction(0x80024D5C, &arcadeExit);
+	writeFunction(0x800257B4, &arcadeExit);
+	writeFunction(0x8002B6D4, &arcadeExit);
+	writeFunction(0x8002FA58, &arcadeExit);
+	// Fix arcade level setting logic
+	writeFunction(0x80024F34, &determineArcadeLevel); // Change log
+	*(int*)(0x80024F70) = 0; // Prevent level set
+	*(int*)(0x80024F50) = 0; // Prevent level set
+	// Arcade Level Order Rando
+	for (int i = 0; i < 4; i++) {
+		ArcadeBackgrounds[i] = Rando.arcade_order[i];
+	}
+	writeFunction(0x8002F7BC, &HandleArcadeVictory);
+	writeFunction(0x8002FA68, &HandleArcadeVictory);
+	*(short*)(0x8002FA24) = 0x1000;
 	// Load Arcade Sprite
 	if ((*(unsigned short*)(0x8002E8B6) == 0x8004) && (*(unsigned short*)(0x8002E8BA) == 0xAE58) && (Rando.arcade_reward > 0)) {
 		// Change Arcade Reward Sprite

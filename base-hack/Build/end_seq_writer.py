@@ -24,33 +24,6 @@ class CreditItem:
         self.text = text
 
 
-stats = [
-    CreditItem(CreditsDirection.top, CreditsType.header, [""]),  # Header
-    CreditItem(
-        CreditsDirection.left,
-        CreditsType.longheader,
-        [
-            "",  # Kong IGT
-            "",  # DK Count
-            "",  # Diddy Count
-            "",  # Lanky Count
-            "",  # Tiny Count
-            "",  # Chunky Count
-        ],
-    ),
-    CreditItem(
-        CreditsDirection.right,
-        CreditsType.longheader,
-        [
-            "",  # Misc
-            "",  # Tags
-            "",  # Photos
-            "",  # Kops
-            "",  # Enemies
-        ],
-    ),
-]
-
 main_devs = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Randomizer Developers"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["2dos", "AlmostSeagull", "Ballaam"]),
@@ -62,7 +35,7 @@ assistant_devs = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Assistant Developers"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["Aljex", "GloriousLiar", "JXJacob"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
-    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "Snap", "UmedMuzl"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "UmedMuzl"]),
 ]
 
 # BETA TESTERS
@@ -90,6 +63,7 @@ additional_thanks = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Additional Thanks"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
     CreditItem(CreditsDirection.bottom, CreditsType.normal, ["Crankys Lab Developer", "Isotarge"]),
+    CreditItem(CreditsDirection.top, CreditsType.normal, ["Widescreen Hack Developer", "gamemasterplc"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["SpikeVegeta", "KeiperDontCare"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Beta Testers", "Dev Branch Testers"]),
 ]
@@ -100,7 +74,6 @@ links = [
 ]
 
 end_sequence_cards = []
-end_sequence_cards.extend(stats)
 end_sequence_cards.extend(main_devs)
 end_sequence_cards.extend(assistant_devs)
 
@@ -122,9 +95,8 @@ def createTextFile(directory):
     with open(f"{directory}/credits.bin", "wb") as fh:
         for card in end_sequence_cards:
             for item in card.text:
-                if len(item) > 0:
-                    new_item = item.upper() + "\n"
-                    fh.write(new_item.encode("ascii"))
+                new_item = item.upper() + "\n"
+                fh.write(new_item.encode("ascii"))
         terminator = "*\n"
         fh.write(terminator.encode("ascii"))
 

@@ -30,6 +30,18 @@ void determine_krool_order(void) {
 	}
 }
 
+void disable_krool_health_refills(void) {
+	if (ObjectModel2Timer < 5) {
+		if (Rando.no_health_refill) {
+			if (CurrentMap >= MAP_KROOLDK) {
+				if (CurrentMap <= MAP_KROOLCHUNKY) {
+					*(int*)(0x800289B0) = 0; // Between Phases
+				}
+			}
+		}
+	}
+}
+
 void initKRool(int phase) {
 	int is_last = 0;
 	int next_phase = -1;

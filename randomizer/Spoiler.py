@@ -16,8 +16,8 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
-    CBRando,
     GlitchesSelected,
+    HelmDoorItem,
     LogicType,
     MinigameBarrels,
     RandomPrices,
@@ -28,7 +28,7 @@ from randomizer.Enums.Settings import (
     WinCondition,
 )
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types, BarrierItems
+from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
@@ -36,6 +36,7 @@ from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
+from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
@@ -174,8 +175,7 @@ class Spoiler:
             Types.Key: "Keys",
             Types.Crown: "Crowns",
             Types.Medal: "Medals",
-            Types.NintendoCoin: "Company Coins",
-            Types.RarewareCoin: "Company Coins",
+            Types.Coin: "Coins",
             Types.Bean: "Miscellaneous Items",
             Types.Pearl: "Miscellaneous Items",
             Types.RainbowCoin: "Rainbow Coins",
@@ -183,10 +183,6 @@ class Spoiler:
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
             Types.Enemies: "Enemy Drops",
-            Types.Cranky: "Shop Owners",
-            Types.Funky: "Shop Owners",
-            Types.Candy: "Shop Owners",
-            Types.Snide: "Shop Owners",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -245,13 +241,12 @@ class Spoiler:
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
-        settings["Crown Door Open"] = self.settings.crown_door_item == BarrierItems.Nothing
-        settings["Coin Door Open"] = self.settings.coin_door_item == BarrierItems.Nothing
+        settings["Crown Door Open"] = self.settings.crown_door_item == HelmDoorItem.opened
+        settings["Coin Door Open"] = self.settings.coin_door_item == HelmDoorItem.opened
         settings["Shockwave Shuffle"] = self.settings.shockwave_status.name
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
         settings["Fairies Required for Rareware GB"] = self.settings.rareware_gb_fairies
-        settings["Pearls Required for Mermaid GB"] = self.settings.mermaid_gb_pearls
         settings["Random Shop Prices"] = self.settings.random_prices.name
         settings["Banana Port Randomization"] = self.settings.bananaport_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
@@ -273,8 +268,14 @@ class Spoiler:
         settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
-        settings["Fast GBs"] = self.settings.faster_checks_enabled
-        settings["Barriers Removed"] = self.settings.remove_barriers_enabled
+        if self.settings.faster_checks_enabled and any(self.settings.faster_checks_selected):
+            settings["Fast GBs"] = [FasterCheckSelector[barrier_enum - 1]["name"] for barrier_enum in self.settings.faster_checks_selected]
+        else:
+            settings["Fast GBs"] = self.settings.faster_checks_enabled
+        if self.settings.remove_barriers_enabled and any(self.settings.remove_barriers_selected):
+            settings["Barriers Removed"] = [RemovedBarrierSelector[barrier_enum - 1]["name"] for barrier_enum in self.settings.remove_barriers_selected]
+        else:
+            settings["Barriers Removed"] = self.settings.remove_barriers_enabled
         settings["Win Condition"] = self.settings.win_condition.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name
@@ -299,17 +300,9 @@ class Spoiler:
         # GB Counts
         gb_counts = {}
         level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
-        for level_index, amount in enumerate(self.settings.BLockerEntryCount):
-            item = self.settings.BLockerEntryItems[level_index].name
-            item_total = f" {item}s"
-            if item == "Percentage":
-                item_total = "%"
-            elif item == "Fairy" and amount != 1:
-                item_total = " Fairies"  # LOL @ English Language
-            elif amount == 1:
-                item_total = f" {item}"
-            gb_counts[level_list[level_index]] = f"{amount}{item_total}"
-        humanspoiler["Requirements"]["B Locker Items"] = gb_counts
+        for level_index, amount in enumerate(self.settings.EntryGBs):
+            gb_counts[level_list[level_index]] = amount
+        humanspoiler["Requirements"]["B Locker GBs"] = gb_counts
         # CB Counts
         cb_counts = {}
         for level_index, amount in enumerate(self.settings.BossBananas):
@@ -339,24 +332,24 @@ class Spoiler:
             helm_new_order.append(helm_default_order[room].name.capitalize())
         humanspoiler["End Game"]["Helm"]["Helm Rooms"] = helm_new_order
         helm_door_names = {
-            BarrierItems.Bean: "Bean",
-            BarrierItems.Blueprint: "Blueprints",
-            BarrierItems.CompanyCoin: "Company Coins",
-            BarrierItems.Crown: "Crowns",
-            BarrierItems.Fairy: "Fairies",
-            BarrierItems.GoldenBanana: "Golden Bananas",
-            BarrierItems.Key: "Keys",
-            BarrierItems.Medal: "Medals",
-            BarrierItems.Pearl: "Pearls",
-            BarrierItems.RainbowCoin: "Rainbow Coins",
+            HelmDoorItem.req_bean: "Bean",
+            HelmDoorItem.req_bp: "Blueprints",
+            HelmDoorItem.req_companycoins: "Company Coins",
+            HelmDoorItem.req_crown: "Crowns",
+            HelmDoorItem.req_fairy: "Fairies",
+            HelmDoorItem.req_gb: "Golden Bananas",
+            HelmDoorItem.req_key: "Keys",
+            HelmDoorItem.req_medal: "Medals",
+            HelmDoorItem.req_pearl: "Pearls",
+            HelmDoorItem.req_rainbowcoin: "Rainbow Coins",
         }
-        if self.settings.crown_door_item != BarrierItems.Nothing:
-            item = self.settings.crown_door_item
+        if self.settings.crown_door_item != HelmDoorItem.opened:
+            item = self.settings.crown_door_item if self.settings.crown_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_crown
             humanspoiler["End Game"]["Helm"]["Crown Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Crown Door Item Randomized"] = self.settings.crown_door_random
             humanspoiler["End Game"]["Helm"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
-        if self.settings.coin_door_item != BarrierItems.Nothing:
-            item = self.settings.coin_door_item
+        if self.settings.coin_door_item != HelmDoorItem.opened:
+            item = self.settings.coin_door_item if self.settings.coin_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_companycoins
             humanspoiler["End Game"]["Helm"]["Coin Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Coin Door Item Randomized"] = self.settings.coin_door_random
             humanspoiler["End Game"]["Helm"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
@@ -387,7 +380,7 @@ class Spoiler:
             "Fairies": {},
             "Keys": {},
             "Crowns": {},
-            "Company Coins": {},
+            "Coins": {},
             "Medals": {},
             "Miscellaneous Items": {},
             "Rainbow Coins": {},
@@ -395,7 +388,6 @@ class Spoiler:
             "Junk Items": {},
             "Melon Crates": {},
             "Enemy Drops": {},
-            "Shop Owners": {},
             "Empty": {},
             "Unknown": {},
         }
@@ -413,7 +405,7 @@ class Spoiler:
             else:
                 item = ItemList[location.item]
             # Empty PreGiven locations don't really exist and shouldn't show up in the spoiler log
-            if location.type in (Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location.item in (None, Items.NoItem):
+            if location.type == Types.PreGivenMove and location.item in (None, Items.NoItem):
                 continue
             # Separate Kong locations
             if location.type == Types.Kong:
@@ -443,7 +435,7 @@ class Spoiler:
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
                 level = "Special"
-                if "Isles" in location.name or location.type in (Types.PreGivenMove, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+                if "Isles" in location.name or location.type == Types.PreGivenMove:
                     level = "DK Isles"
                 elif "Japes" in location.name:
                     level = "Jungle Japes"
@@ -601,12 +593,10 @@ class Spoiler:
             if is_empty:
                 del humanspoiler[spoiler_dict]
 
-        if self.settings.cb_rando != CBRando.off:
+        if self.settings.cb_rando:
             human_cb_type_map = {"cb": " Bananas", "balloons": " Balloons"}
             humanspoiler["Colored Banana Locations"] = {}
             cb_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle"]
-            if self.settings.cb_rando == CBRando.on_with_isles:
-                cb_levels.append("Isles")
             cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
             for lvl in cb_levels:
                 for kng in cb_kongs:

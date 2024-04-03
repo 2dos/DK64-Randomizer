@@ -28,7 +28,7 @@ typedef struct meloncrate_db_item {
 } meloncrate_db_item;
 
 static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
-static unsigned char medal_item_table[45] = {}; // Medal Rewards
+static unsigned char medal_item_table[40] = {}; // Medal Rewards
 static unsigned short crown_item_table[10] = {}; // Crown Rewards
 static unsigned short key_item_table[8] = {}; // Boss Rewards
 static short fairy_item_table[20] = {}; // Fairy Rewards
@@ -234,6 +234,29 @@ typedef struct barrel_skin_tie {
     /* 0x002 */ unsigned short skin;
 } barrel_skin_tie;
 
+typedef enum enum_bonus_skin {
+    /* 0x000 */ SKIN_GB,
+    /* 0x001 */ SKIN_KONG_DK,
+    /* 0x002 */ SKIN_KONG_DIDDY,
+    /* 0x003 */ SKIN_KONG_LANKY,
+    /* 0x004 */ SKIN_KONG_TINY,
+    /* 0x005 */ SKIN_KONG_CHUNKY,
+    /* 0x006 */ SKIN_BLUEPRINT,
+    /* 0x007 */ SKIN_NINTENDO_COIN,
+    /* 0x008 */ SKIN_RAREWARE_COIN,
+    /* 0x009 */ SKIN_KEY,
+    /* 0x00A */ SKIN_CROWN,
+    /* 0x00B */ SKIN_MEDAL,
+    /* 0x00C */ SKIN_POTION,
+    /* 0x00D */ SKIN_BEAN,
+    /* 0x00E */ SKIN_PEARL,
+    /* 0x00F */ SKIN_FAIRY,
+    /* 0x010 */ SKIN_RAINBOW_COIN,
+    /* 0x011 */ SKIN_FAKE_ITEM,
+    /* 0x012 */ SKIN_JUNK_ITEM,
+    /* ----- */ SKIN_TERMINATOR,
+} enum_bonus_skin;
+
 static const barrel_skin_tie bonus_skins[] = {
     {.actor = 78, .skin=SKIN_BLUEPRINT},
     {.actor = 75, .skin=SKIN_BLUEPRINT},
@@ -262,10 +285,6 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = 140, .skin=SKIN_RAINBOW_COIN},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAKEITEM, .skin=SKIN_FAKE_ITEM},
     {.actor = 0x2F, .skin=SKIN_JUNK_ITEM},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_CRANKYITEM, .skin=SKIN_CRANKY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FUNKYITEM, .skin=SKIN_FUNKY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_CANDYITEM, .skin=SKIN_CANDY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_SNIDEITEM, .skin=SKIN_SNIDE},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -277,8 +296,20 @@ enum_bonus_skin getBarrelSkinIndex(int actor) {
     return SKIN_GB;
 }
 
+// #define BONUS_CACHE_SIZE SKIN_TERMINATOR * 2
+// static void* bonus_texture_data[BONUS_CACHE_SIZE] = {};
+// static unsigned char bonus_texture_load[BONUS_CACHE_SIZE] = {};
+
+// void* loadBonusTexture(int texture_offset) {
+// 	if (bonus_texture_load[texture_offset] == 0) {
+// 		bonus_texture_data[texture_offset] = getMapData(TABLE_TEXTURES, 6026 + texture_offset, 1, 1);
+// 	}
+// 	bonus_texture_load[texture_offset] = 3;
+// 	return bonus_texture_data[texture_offset];
+// }
+
 int alterBonusVisuals(int index) {
-    if (Rando.location_visuals.bonus_barrels) {
+    if (Rando.location_visuals & 1) {
         if (index < 95) {
             int actor = bonus_data[index].spawn_actor;
             enum_bonus_skin skin = getBarrelSkinIndex(actor);
@@ -296,34 +327,33 @@ int alterBonusVisuals(int index) {
     return getBonusFlag(index);
 }
 
-int getDirtPatchSkin(int flag, flagtypes flag_type) {
-    int gone = checkFlag(flag, flag_type);
-    if (gone) {
-        return 1;
-    }
-    if (Rando.location_visuals.dirt_patches) {
-        int index = flag - FLAG_RAINBOWCOIN_0;
-        if (index < 16) {
-            int actor = getRainbowCoinItem(flag);
-            enum_bonus_skin skin = getBarrelSkinIndex(actor);
-            blink(CurrentActorPointer_0, 0, 1);
-            applyImageToActor(CurrentActorPointer_0, 0, 0);
-            adjustColorPalette(CurrentActorPointer_0, 0, skin + 1, 0.0f);
-            unkPaletteFunc(CurrentActorPointer_0, 0, 0);
-        }
-    }
-    return gone;
-}
-
 void initItemRando(void) {
     /**
      * @brief Initialize Item Rando functionality
      */
-    
+    // Item Get
+    writeFunction(0x806F64C8, &getItem); // Modify Function Call
+    writeFunction(0x806F6BA8, &getItem); // Modify Function Call
+    writeFunction(0x806F7740, &getItem); // Modify Function Call
+    writeFunction(0x806F7764, &getItem); // Modify Function Call
+    writeFunction(0x806F7774, &getItem); // Modify Function Call
+    writeFunction(0x806F7798, &getItem); // Modify Function Call
+    writeFunction(0x806F77B0, &getItem); // Modify Function Call
+    writeFunction(0x806F77C4, &getItem); // Modify Function Call
+    writeFunction(0x806F7804, &getItem); // Modify Function Call
+    writeFunction(0x806F781C, &getItem); // Modify Function Call
+
+    writeFunction(0x806F6350, &getObjectCollectability); // Modify Function Call
+    writeFunction(0x8070E1F0, &handleDynamicItemText); // Handle Dynamic Text Item Name
     if (ENABLE_FILENAME) {
         writeFunction(0x8070E1BC, &handleFilename); // Handle Filename
     }
 
+    writeFunction(0x806A7AEC, &BalloonShoot); // Balloon Shoot Hook
+    // Rainbow Coins
+    writeFunction(0x806A222C, &getPatchFlag); // Get Patch Flags
+    writeFunction(0x806A2058, &getPatchFlag); // Get Patch Flags
+    *(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
     // Item Rando
     for (int i = 0; i < 54; i++) {
         BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
@@ -335,7 +365,10 @@ void initItemRando(void) {
     bonus_data[94].flag = 215;
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
-    
+    writeFunction(0x80680AE8, &alterBonusVisuals); // Get Bonus Flag Check
+    writeFunction(0x80681854, &getBonusFlag); // Get Bonus Flag Check
+    writeFunction(0x806C63A8, &getBonusFlag); // Get Bonus Flag Check
+    writeFunction(0x806F78B8, &getKongFromBonusFlag); // Reward Table Kong Check
     // Checks Screen
     pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
     *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
@@ -348,7 +381,7 @@ void initItemRando(void) {
         bp_item_table[i] = bp_write[i];
     }
     // Medal Table
-    int medal_size = 45;
+    int medal_size = 0x28;
     unsigned char* medal_write = getFile(medal_size, 0x1FF1080);
     for (int i = 0; i < medal_size; i++) {
         medal_item_table[i] = medal_write[i];
@@ -399,6 +432,15 @@ void initItemRando(void) {
             }
         }
     }
+    writeFunction(0x80681910, &spawnBonusReward); // Spawn Bonus Reward
+    writeFunction(0x806C63BC, &spawnRewardAtActor); // Spawn Squawks Reward
+    writeFunction(0x806C4654, &spawnMinecartReward); // Spawn Squawks Reward - Minecart
+    // Initialize fixed item scales
+    writeFunction(0x806F4918, &writeItemScale); // Write scale to collision info
+    *(int*)(0x806F491C) = 0x87A40066; // LH $a0, 0x66 ($sp)
+    *(short*)(0x806F4C6E) = 0x20; // Change size
+    *(short*)(0x806F4C82) = 0x20; // Change size
+    writeFunction(0x806F515C, &writeItemActorScale); // Write actor scale to collision info
     // Other init
     initItemDropTable();
     initCollectableCollision();

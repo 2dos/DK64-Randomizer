@@ -32,39 +32,16 @@ class Types(IntEnum):
     PreGivenMove = auto()
     CrateItem = auto()
     Enemies = auto()
-    NintendoCoin = auto()
-    RarewareCoin = auto()
-    Cranky = auto()
-    Funky = auto()
-    Candy = auto()
-    Snide = auto()
-
-
-class BarrierItems(IntEnum):
-    """Item type enum for barrier checks."""
-
-    Nothing = 0
-    Kong = auto()
-    Move = auto()
-    GoldenBanana = auto()
-    Blueprint = auto()
-    Fairy = auto()
-    Key = auto()
-    Crown = auto()
-    CompanyCoin = auto()
-    Medal = auto()
-    Bean = auto()
-    Pearl = auto()
-    RainbowCoin = auto()
-    IceTrap = auto()
-    Percentage = auto()
-    ColoredBanana = auto()
 
 
 # If you make change to this selector, make sure to change the corresponding
 # ItemRandoListSelected enum in randomizer.Enums.Settings.
 ItemRandoSelector = [
-    {"name": "Shops", "value": "shop", "tooltip": "Cranky, Funky, and Candy Moves are in the Pool and become possible locations for items.&#10;By selecting this, Cross-Kong purchases is forced on."},
+    {
+        "name": "Shops & Moves",
+        "value": "shop",
+        "tooltip": "Cranky, Funky, and Candy Moves are in the Pool and become possible locations for items.&#10;By selecting this, Cross-Kong purchases is forced on.",
+    },
     {"name": "Golden Bananas", "value": "banana", "tooltip": ""},
     {
         "name": "Tough Golden Bananas",
@@ -75,8 +52,7 @@ ItemRandoSelector = [
     {"name": "Blueprints", "value": "blueprint", "tooltip": "Blueprints are in the Pool and Kasplats become possible locations for items."},
     {"name": "Keys", "value": "key", "tooltip": "Keys are in the Pool and Bosses become possible locations for items."},
     {"name": "Banana Medals", "value": "medal", "tooltip": "Medals are in the Pool and Collecting the required amount of Colored Bananas&#10;for a Banana Medal can reward items."},
-    {"name": "Nintendo Coin", "value": "nintendocoin", "tooltip": "Nintendo Coin are in the Pool and DK Arcade becomes a possible location for items."},
-    {"name": "Rareware Coin", "value": "rarewarecoin", "tooltip": "Rareware Coin are in the Pool and Jetpac become a possible location for items."},
+    {"name": "Nintendo/Rareware Coins", "value": "coin", "tooltip": "Company Coins are in the Pool and DK Arcade/Jetpac become possible locations for items."},
     {"name": "Kongs", "value": "kong", "tooltip": "Kongs are in the Pool but are not replaced with an item currently."},
     {"name": "Fairies", "value": "fairy", "tooltip": "Fairies are in the Pool and Items in their place can be captured with a camera."},
     {"name": "Rainbow Coins", "value": "rainbowcoin", "tooltip": "Rainbow Coins are in the Pool and Dirt Patches become possible locations for items."},
@@ -84,7 +60,6 @@ ItemRandoSelector = [
     {"name": "Ice Traps", "value": "fakeitem", "tooltip": "If you pick up a fake item it'll hurt and freeze you."},
     {"name": "Junk Items", "value": "junkitem", "tooltip": "Pointless items will fill no-item slots."},
     {"name": "Melon Crates", "value": "crateitem", "tooltip": "Melon Crates become possible locations for items."},
-    {"name": "Shop Owners", "value": "shopowners", "tooltip": "Shop Owner Items are added into the pool."},
 ]
 
 KeySelector = [

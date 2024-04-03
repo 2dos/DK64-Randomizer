@@ -19,6 +19,7 @@ extern void HunkyChunkyFix2(void);
 extern void EarlyFrameCode(void);
 extern void displayListCode(void);
 extern void GiveItemPointerToMulti(void);
+extern void CoinHUDReposition(void);
 extern void getLobbyExit(void);
 extern void SaveHelmHurryCheck(void);
 extern void PauseExtraSlotCode(void);
@@ -66,6 +67,8 @@ extern void FixInvisibleText_0(void);
 extern void FixInvisibleText_1(void);
 extern void CrankyCoconutDonation(void);
 extern void AlwaysCandyInstrument(void);
+extern void fixTilePosition(void);
+extern void fixNintendoLogoPosition(void);
 
 extern void unscareBeaver(void);
 extern void scareBeaver(void);

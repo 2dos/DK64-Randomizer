@@ -394,6 +394,13 @@ int setHintRegion(void) {
                     // 5 = Production Room
                     // 6 = Tunnel to Hatch
                     return REGION_FACTORYPROD;
+                } else if ((chunk == 7)) {
+                    // 7 = Room with the Hatch
+                    // Chunk has 2 regions, subdivide by y position
+                    if (py < 804) {
+                        return REGION_FACTORYPROD;
+                    }
+                    return REGION_FACTORYSTART;
                 } else if ((chunk >= 22) && (chunk <= 30)) {
                     // 22 = Tunnel from Pole to R&D
                     // 23 = Main R&D
@@ -490,6 +497,10 @@ int* displayHintRegion(int* dl, int x, int y, float scale, char* text) {
     }
     int x_hint = 0x280;
     int y_bottom = 240;
+    if (Rando.true_widescreen) {
+        x_hint = SCREEN_WD << 1;
+        y_bottom = SCREEN_HD;
+    }
     *(unsigned int*)(dl++) = 0xFA000000;
     *(unsigned int*)(dl++) = 0xFFFFFFFF;
     return printText(dl, x_hint, (y_bottom << 2) - 100, 0.45f, (char*)&hint_region_text);

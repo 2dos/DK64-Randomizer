@@ -280,10 +280,6 @@ typedef enum item_purchase_text {
 	/* 0x056 */ ITEMTEXT_FAIRY,
 	/* 0x057 */ ITEMTEXT_RAINBOWCOIN,
 	/* 0x058 */ ITEMTEXT_FAKEITEM,
-	/* 0x059 */ ITEMTEXT_CRANKYITEM,
-	/* 0x05A */ ITEMTEXT_FUNKYITEM,
-	/* 0x05B */ ITEMTEXT_CANDYITEM,
-	/* 0x05C */ ITEMTEXT_SNIDEITEM,
 } item_purchase_text;
 
 typedef enum pausescreenlist {
@@ -322,8 +318,11 @@ typedef enum kongs {
 typedef enum win_conditions {
 	/* 0x000 */ GOAL_KROOL,
 	/* 0x001 */ GOAL_KEY8,
-	/* 0x002 */ GOAL_POKESNAP,
-	/* 0x003 */ GOAL_CUSTOMITEM,
+	/* 0x002 */ GOAL_ALLFAIRIES,
+	/* 0x003 */ GOAL_ALLBLUEPRINTS,
+	/* 0x004 */ GOAL_ALLMEDALS,
+	/* 0x005 */ GOAL_POKESNAP,
+	/* 0x006 */ GOAL_ALLKEYS,
 } win_conditions;
 
 typedef enum master_types_list {
@@ -603,9 +602,6 @@ typedef enum extra_global_data {
 
 typedef enum bonus_stat {
     /* 0x000 */ STAT_TAGCOUNT,
-	/* 0x001 */ STAT_PHOTOSTAKEN,
-	/* 0x002 */ STAT_ENEMIESKILLED,
-	/* 0x003 */ STAT_KOPCAUGHT,
     /* ----- */ STAT_TERMINATOR,
 } bonus_stat;
 

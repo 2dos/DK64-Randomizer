@@ -113,11 +113,6 @@ class Items(IntEnum):
     CrateMelon = auto()  # Separate from junk melon due to separate settings
     EnemyItem = auto()  # Separate item
 
-    Cranky = auto()
-    Funky = auto()
-    Candy = auto()
-    Snide = auto()
-
     BananaHoard = auto()
 
     JapesDonkeyHint = auto()

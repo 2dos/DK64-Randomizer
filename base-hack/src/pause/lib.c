@@ -80,7 +80,9 @@ void checkItemDB(void) {
     /**
      * @brief Check item database for variables, and change check screen totals to accommodate
      */
-    renderScreenTransition(7);
+    if ((!Rando.true_widescreen) || (!WS_REMOVE_TRANSITIONS)) {
+        renderScreenTransition(7);
+    }
     initTracker();
     initHints();
     stored_igt = getNewSaveTime();
@@ -143,7 +145,7 @@ void checkItemDB(void) {
                     }
                     break;
                 case CHECK_MEDAL:
-                    if ((j != 7) || (Rando.isles_cb_rando)) {
+                    if (j != 7) {
                         denominator = 5;
                     }
                     break;
@@ -197,12 +199,12 @@ void checkItemDB(void) {
 }
 
 void handleCShifting(char* value, char limit) {
-    if (NewlyPressedControllerInput.Buttons.c_left) {
+    if ((NewlyPressedControllerInput.Buttons.c_left) || (NewlyPressedControllerInput.Buttons.d_left)) {
         *value -= 1;
         if (*value < 0) {
             *value = limit - 1;
         }
-    } else if (NewlyPressedControllerInput.Buttons.c_right) {
+    } else if ((NewlyPressedControllerInput.Buttons.c_right) || (NewlyPressedControllerInput.Buttons.d_right)) {
         *value += 1;
         if (*value >= limit) {
             *value = 0;
@@ -221,6 +223,9 @@ int* pauseScreen3And4Header(int* dl) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     display_billboard_fix = 0;
     int level_x = 0x280;
+    if (Rando.true_widescreen) {
+        level_x = SCREEN_WD * 2;
+    }
     if (paad->screen == PAUSESCREEN_TOTALS) {
         return printText(dl, level_x, 0x3C, 0.65f, "TOTALS");
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
@@ -351,6 +356,34 @@ void initPauseMenu(void) {
      * @brief Initialize the pause menu changes for Rando
      */
     
+    writeFunction(0x806A84C8, &updateFileVariables); // Update file variables to transfer old locations to current
     initCarousel_onBoot();
+    if (Rando.item_rando) {
+        writeFunction(0x806A9D50, &handleOutOfCounters); // Print out of counter, depending on item rando state
+        writeFunction(0x806A9EFC, &handleOutOfCounters); // Print out of counter, depending on item rando state
+        *(int*)(0x806A9C80) = 0; // Show counter on Helm Menu - Kong specific screeen
+        *(int*)(0x806A9E54) = 0; // Show counter on Helm Menu - All Kongs screen
+        // *(int*)(0x806AA860) = 0x31EF0007; // ANDI $t7, $t7, 7 - Show GB (Kong Specific)
+        // *(int*)(0x806AADC4) = 0x33390007; // ANDI $t9, $t9, 7 - Show GB (All Kongs)
+        // *(int*)(0x806AADC8) = 0xAFB90058; // SW $t9, 0x58 ($sp) - Show GB (All Kongs)
+    }
+    if (Rando.quality_of_life.fast_pause_transitions) {
+        *(float*)(0x8075AC00) = 1.3f; // Pause Menu Progression Rate
+        *(int*)(0x806A901C) = 0; // NOP - Remove thud
+    }
+    // Prevent GBs being required to view extra screens
+    *(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
+    *(int*)(0x806AB468) = 0; // Show R/Z Icon
+    *(int*)(0x806AB318) = 0x24060001; // ADDIU $a2, $r0, 1
+    *(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
+    *(short*)(0x8075056C) = 201; // Change GB Item cap to 201
+    // In-Level IGT
+    writeFunction(0x8060DF28, &updateLevelIGT); // Modify Function Call
+    writeFunction(0x806ABB0C, &printLevelIGT); // Modify Function Call
+    *(short*)(0x806ABB32) = 106; // Adjust kong name height
+    // Disable Item Checks
+    *(int*)(0x806AB2E8) = 0;
+    *(int*)(0x806AB360) = 0;
+    *(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
     initHintFlags();
 }

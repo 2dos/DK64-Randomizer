@@ -13,13 +13,6 @@
 
 static char jetpacRewardText[] = "REWARD COLLECTED";
 
-void loadJetpacSprites_handler(void) {
-	loadJetpacSprites();
-	*(unsigned char*)(0x8002F060) = Rando.jetman_rgb[0];
-	*(unsigned char*)(0x8002F061) = Rando.jetman_rgb[1];
-	*(unsigned char*)(0x8002F062) = Rando.jetman_rgb[2];
-}
-
 void initJetpac(void) {
 	/**
 	 * @brief Initialize Jetpac Changes.
@@ -32,5 +25,24 @@ void initJetpac(void) {
 	if (Rando.item_rando) {
 		*(short*)(0x80024D8E) = getHi(&jetpacRewardText);
 		*(short*)(0x80024D96) = getLo(&jetpacRewardText);
+	}
+	if (Rando.faster_checks.jetpac) {
+		*(short*)(0x80027DCA) = 2500; // Jetpac score requirement
+	}
+	// Jetpac Enemy Rando
+	int enable_jetpac_enemy_rando = 0;
+	for (int i = 0; i < 8; i++) {
+		if (Rando.jetpac_enemy_order[i] != 0) {
+			enable_jetpac_enemy_rando = 1;
+		}
+	}
+	if (enable_jetpac_enemy_rando) {
+		void* jetpac_functions[8] = {};
+		for (int i = 0; i < 8; i++) {
+			jetpac_functions[i] = JetpacEnemyFunctions[i];
+		}
+		for (int i = 0; i < 8; i++) {
+			JetpacEnemyFunctions[i] = jetpac_functions[Rando.jetpac_enemy_order[i]];
+		}
 	}
 }

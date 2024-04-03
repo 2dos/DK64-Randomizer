@@ -8,16 +8,14 @@ import zlib
 from random import randint
 from typing import TYPE_CHECKING, List, Tuple
 from enum import IntEnum, auto
-from io import BytesIO
 
 from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, RandomModels
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Types import BarrierItems
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Lib import (
     TextureFormat,
@@ -29,8 +27,6 @@ from randomizer.Patching.Lib import (
     SpawnerChange,
     applyCharacterSpawnerChanges,
     compatible_background_textures,
-    grabText,
-    writeText,
 )
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
@@ -42,7 +38,7 @@ if TYPE_CHECKING:
 class HelmDoorSetting:
     """Class to store information regarding helm doors."""
 
-    def __init__(self, item_setting: BarrierItems, count: int, item_image: int, number_image: int) -> None:
+    def __init__(self, item_setting: HelmDoorItem, count: int, item_image: int, number_image: int) -> None:
         """Initialize with given parameters."""
         self.item_setting = item_setting
         self.count = count
@@ -54,7 +50,7 @@ class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
     def __init__(
-        self, setting: BarrierItems, image_indexes: List[int], flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551
+        self, setting: HelmDoorItem, image_indexes: List[int], flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551
     ) -> None:
         """Initialize with given parameters."""
         self.setting = setting
@@ -77,7 +73,7 @@ turtle_models = [
     Model.Candy,  # Candy
     Model.Seal,  # Seal
     Model.Enguarde,  # Enguarde
-    Model.BeaverBlue_LowPoly,  # Beaver
+    Model.Beaver_24,  # Beaver
     Model.Squawks_28,  # Squawks
     Model.KlaptrapGreen,  # Klaptrap Green
     Model.KlaptrapPurple,  # Klaptrap Purple
@@ -142,7 +138,7 @@ panic_models = [
     Model.Candy,  # Candy
     Model.Seal,  # Seal
     Model.Enguarde,  # Enguarde
-    Model.BeaverBlue_LowPoly,  # Beaver
+    Model.Beaver_24,  # Beaver
     Model.Squawks_28,  # Squawks
     Model.KlaptrapGreen,  # Klaptrap Green
     Model.KlaptrapPurple,  # Klaptrap Purple
@@ -207,7 +203,7 @@ panic_models = [
 ]
 
 bother_models = [
-    Model.BeaverBlue_LowPoly,  # Beaver
+    Model.Beaver_24,  # Beaver
     Model.Klobber,  # Klobber
     Model.Kaboom,  # Kaboom
     Model.KlaptrapGreen,  # Green Klap
@@ -346,31 +342,12 @@ def getRandomKlaptrapModel() -> Model:
     return random.choice(KLAPTRAPS)
 
 
-def changePatchFace(settings: Settings):
-    """Change the top of the dirt patch image."""
-    if not settings.better_dirt_patch_cosmetic:
-        return
-    dirt_im = getFile(25, 0x1379, True, 32, 32, TextureFormat.RGBA5551)
-    letd_im = getFile(14, 0x75, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32)).rotate(-5)
-    letk_im = getFile(14, 0x76, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32))
-    letter_ims = (letd_im, letk_im)
-    for letter in letter_ims:
-        imw, imh = letter.size
-        px = letter.load()
-        for x in range(imw):
-            for y in range(imh):
-                r, g, b, a = letter.getpixel((x, y))
-                px[x, y] = (r, g, b, 150 if a > 128 else 0)
-    dirt_im.paste(letd_im, (0, 0), letd_im)
-    dirt_im.paste(letk_im, (16, 0), letk_im)
-    writeColorImageToROM(dirt_im, 25, 0x1379, 32, 32, False, TextureFormat.RGBA5551)
-
-
 def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
     bother_model_index = Model.KlaptrapGreen
     panic_fairy_model_index = Model.BananaFairy
     panic_klap_model_index = Model.KlaptrapGreen
+    turtle_model_index = Model.Turtle
     turtle_model_index = Model.Turtle
     sseek_klap_model_index = Model.KlaptrapGreen
     fungi_tomato_model_index = Model.Tomato
@@ -383,8 +360,6 @@ def apply_cosmetic_colors(settings: Settings):
 
     ROM_COPY = ROM()
     sav = settings.rom_data
-
-    changePatchFace(settings)
 
     ROM_COPY.seek(settings.rom_data + 0x11C)
     krusha_byte = int.from_bytes(ROM_COPY.readBytes(1), "big")
@@ -457,19 +432,6 @@ def apply_cosmetic_colors(settings: Settings):
         selected_texture = random.choices(textures, weights=weights, k=1)[0]
         settings.menu_texture_index = selected_texture
         settings.menu_texture_name = compatible_background_textures[selected_texture].name
-        # Jetman
-        jetman_color = [0xFF] * 3
-        sufficiently_bright = False
-        brightness_threshold = 80
-        for channel in range(3):
-            jetman_color[channel] = random.randint(0, 0xFF)
-            if jetman_color[channel] >= brightness_threshold:
-                sufficiently_bright = True
-        if not sufficiently_bright:
-            channel = random.randint(0, 2)
-            value = random.randint(brightness_threshold, 0xFF)
-            jetman_color[channel] = value
-        settings.jetman_color = jetman_color.copy()
     color_palettes = []
     color_obj = {}
     colors_dict = {}
@@ -535,7 +497,6 @@ def apply_cosmetic_colors(settings: Settings):
     KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
 
     if js.document.getElementById("override_cosmetics").checked or True:
-        writeTransition(settings)
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -545,14 +506,11 @@ def apply_cosmetic_colors(settings: Settings):
                 for zone in KONG_ZONES[kong]:
                     settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors[js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors").value])
                     settings.__setattr__(f"{kong.lower()}_{zone.lower()}_custom_color", js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color").value)
-        settings.gb_colors = CharacterColors[js.document.getElementById("gb_colors").value]
-        settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
     else:
         if settings.random_colors:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
                     settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors.randomized)
-        settings.gb_colors = CharacterColors.randomized
 
     colors_dict = {}
     for kong in KONG_ZONES:
@@ -625,59 +583,10 @@ def apply_cosmetic_colors(settings: Settings):
             if pal not in new_color_palettes:
                 new_color_palettes.append(pal)
         convertColors(new_color_palettes)
-    # GB Shine
-    if settings.override_cosmetics and settings.gb_colors != CharacterColors.vanilla:
-        channels = []
-        if settings.gb_colors == CharacterColors.randomized:
-            for x in range(3):
-                channels.append(random.randint(0, 255))
-        elif settings.gb_colors == CharacterColors.custom:
-            for x in range(3):
-                start = (2 * x) + 1
-                finish = (2 * x) + 3
-                channel = int(settings.gb_custom_color[start:finish], 16)
-                channels.append(channel)
-        textures = [0xB7B] + list(range(0x155C, 0x1568))
-        for tex in textures:
-            dimension = 32 if tex == 0xB7B else 44
-            shine_img = getFile(25, tex, True, dimension, dimension, TextureFormat.RGBA5551)
-            gb_shine_img = maskImageGBSpin(shine_img, tuple(channels), tex)
-            if tex == 0xB7B:
-                min_rgb = min(channels[0], channels[1], channels[2])
-                max_rgb = max(channels[0], channels[1], channels[2])
-                is_greyscale = (max_rgb - min_rgb) < 50
-                fakegb_shine_img = None
-                delta_mag = 80
-                if is_greyscale:
-                    delta = -delta_mag
-                    if max_rgb < 128:
-                        delta = delta_mag
-                    fakegb_shine_img = maskImageWithColor(shine_img, tuple([x + delta for x in channels]))
-                else:
-                    new_color = hueShiftColor(tuple(channels), 60, 1750)
-                    fakegb_shine_img = maskImageWithColor(shine_img, new_color)
-                writeColorImageToROM(fakegb_shine_img, 25, getBonusSkinOffset(0), 32, 32, False, TextureFormat.RGBA5551)
-            writeColorImageToROM(gb_shine_img, 25, tex, dimension, dimension, False, TextureFormat.RGBA5551)
 
 
 color_bases = []
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
-
-
-def getRawFile(table_index: int, file_index: int, compressed: bool):
-    """Get raw file from ROM."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
-    try:
-        LocalROM().seek(file_start)
-        data = LocalROM().readBytes(file_size)
-    except Exception:
-        ROM().seek(file_start)
-        data = ROM().readBytes(file_size)
-    if compressed:
-        data = zlib.decompress(data, (15 + 32))
-    return data
 
 
 def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat) -> PIL.Image.Image:
@@ -834,86 +743,6 @@ def recolorRotatingRoomTiles():
         writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
 
 
-def getSpinPixels() -> dict:
-    """Get pixels that shouldn't be affected by the mask."""
-    spin_lengths = {
-        0x155C: {
-            17: (12, 2),
-            18: (11, 4),
-            19: (10, 6),
-            20: (10, 7),
-            21: (10, 7),
-            22: (10, 6),
-            23: (11, 3),
-        },
-        0x155D: {
-            14: (15, 1),
-            15: (14, 5),
-            16: (13, 7),
-            17: (12, 9),
-            18: (12, 10),
-            19: (12, 11),
-            20: (12, 11),
-            21: (13, 10),
-            22: (14, 8),
-            23: (15, 4),
-        },
-        0x155E: {
-            14: (19, 5),
-            15: (19, 7),
-            16: (18, 9),
-            17: (18, 10),
-            18: (18, 10),
-            19: (19, 10),
-            20: (20, 9),
-            21: (21, 8),
-            22: (22, 7),
-        },
-        0x155F: {
-            14: (27, 2),
-            15: (26, 5),
-            16: (26, 6),
-            17: (26, 6),
-            18: (27, 6),
-            19: (27, 6),
-            20: (28, 5),
-            21: (29, 4),
-            22: (29, 4),
-            23: (30, 3),
-        },
-        0x1560: {
-            16: (32, 1),
-            17: (32, 2),
-            18: (33, 1),
-            19: (33, 2),
-            20: (33, 1),
-            21: (33, 1),
-            22: (33, 1),
-        },
-    }
-    spin_pixels = {}
-    for tex in spin_lengths:
-        local_lst = []
-        for y in spin_lengths[tex]:
-            for x_o in range(spin_lengths[tex][y][1]):
-                local_lst.append((spin_lengths[tex][y][0] + x_o, y))
-        spin_pixels[tex] = local_lst
-    return spin_pixels
-
-
-def maskImageGBSpin(im_f, color: tuple, image_index: int):
-    """Mask the GB Spin Sprite."""
-    masked_im = maskImageWithColor(im_f, color)
-    spin_pixels = getSpinPixels()
-    if image_index not in spin_pixels:
-        return masked_im
-    px = im_f.load()
-    px_0 = masked_im.load()
-    for point in spin_pixels[image_index]:
-        px_0[point[0], point[1]] = px[point[0], point[1]]
-    return masked_im
-
-
 def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side):
     """Apply RGB mask to image of a Rotating Room Memory Tile."""
     w, h = im_f.size
@@ -999,60 +828,6 @@ def hueShift(im, amount):
     return im
 
 
-def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
-    """Apply a hue shift to a color."""
-    # RGB -> HSV Conversion
-    red_ratio = color[0] / 255
-    green_ratio = color[1] / 255
-    blue_ratio = color[2] / 255
-    color_max = max(red_ratio, green_ratio, blue_ratio)
-    color_min = min(red_ratio, green_ratio, blue_ratio)
-    color_delta = color_max - color_min
-    hue = 0
-    if color_delta != 0:
-        if color_max == red_ratio:
-            hue = 60 * (((green_ratio - blue_ratio) / color_delta) % 6)
-        elif color_max == green_ratio:
-            hue = 60 * (((blue_ratio - red_ratio) / color_delta) + 2)
-        else:
-            hue = 60 * (((red_ratio - green_ratio) / color_delta) + 4)
-    sat = 0 if color_max == 0 else color_delta / color_max
-    val = color_max
-    # Adjust Hue
-    if head_ratio is not None and sat != 0:
-        amount = head_ratio / (sat * 100)
-    hue = (hue + amount) % 360
-    # HSV -> RGB Conversion
-    c = val * sat
-    x = c * (1 - abs(((hue / 60) % 2) - 1))
-    m = val - c
-    if hue < 60:
-        red_ratio = c
-        green_ratio = x
-        blue_ratio = 0
-    elif hue < 120:
-        red_ratio = x
-        green_ratio = c
-        blue_ratio = 0
-    elif hue < 180:
-        red_ratio = 0
-        green_ratio = c
-        blue_ratio = x
-    elif hue < 240:
-        red_ratio = 0
-        green_ratio = x
-        blue_ratio = c
-    elif hue < 300:
-        red_ratio = x
-        green_ratio = 0
-        blue_ratio = c
-    else:
-        red_ratio = c
-        green_ratio = 0
-        blue_ratio = x
-    return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))
-
-
 def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     """Apply RGB mask to image with an Outline in a different color."""
     w, h = im_f.size
@@ -1130,32 +905,15 @@ def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: in
                 pix_data = list(pix[x, y])
             if format == TextureFormat.RGBA32:
                 bytes_array.extend(pix_data)
-            elif format == TextureFormat.RGBA5551:
+            else:
                 red = int((pix_data[0] >> 3) << 11)
                 green = int((pix_data[1] >> 3) << 6)
                 blue = int((pix_data[2] >> 3) << 1)
                 alpha = int(pix_data[3] != 0)
                 value = red | green | blue | alpha
                 bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-            elif format == TextureFormat.IA4:
-                intensity = pix_data[0] >> 5
-                alpha = 0 if pix_data[3] == 0 else 1
-                data = ((intensity << 1) | alpha) & 0xF
-                bytes_array.append(data)
-    bytes_per_px = 2
-    if format == TextureFormat.IA4:
-        temp_ba = bytes_array.copy()
-        bytes_array = []
-        value_storage = 0
-        bytes_per_px = 0.5
-        for idx, val in enumerate(temp_ba):
-            polarity = idx % 2
-            if polarity == 0:
-                value_storage = val << 4
-            else:
-                value_storage |= val
-                bytes_array.append(value_storage)
     data = bytearray(bytes_array)
+    bytes_per_px = 2
     if format == TextureFormat.RGBA32:
         bytes_per_px = 4
     if len(data) > (bytes_per_px * width * height):
@@ -2177,149 +1935,20 @@ barrel_skins = (
     "rainbow",
     "fakegb",
     "melon",
-    "cranky",
-    "funky",
-    "candy",
-    "snide",
 )
 
 
 def getBonusSkinOffset(offset: int):
     """Get texture index after the barrel skins."""
-    return 6026 + (3 * len(barrel_skins)) + offset
-
-
-def getRandomHueShift(min: int = -359, max: int = 359) -> int:
-    """Get random hue shift."""
-    return random.randint(min, max)
-
-
-def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
-    """Get value from byte array given an offset and size."""
-    value = 0
-    for x in range(size):
-        local_value = ba[offset + x]
-        value <<= 8
-        value += local_value
-    return value
-
-
-def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int):
-    """Load an image, shift the hue and rewrite it back to ROM."""
-    loaded_im = getFile(table, image, table != 7, width, height, format)
-    loaded_im = hueShift(loaded_im, shift)
-    loaded_px = loaded_im.load()
-    bytes_array = []
-    for y in range(height):
-        for x in range(width):
-            pix_data = list(loaded_px[x, y])
-            if format == TextureFormat.RGBA32:
-                bytes_array.extend(pix_data)
-            elif format == TextureFormat.RGBA5551:
-                red = int((pix_data[0] >> 3) << 11)
-                green = int((pix_data[1] >> 3) << 6)
-                blue = int((pix_data[2] >> 3) << 1)
-                alpha = int(pix_data[3] != 0)
-                value = red | green | blue | alpha
-                bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-    px_data = bytearray(bytes_array)
-    if table != 7:
-        px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[table]["entries"][image]["pointing_to"])
-    ROM().writeBytes(px_data)
-
-
-def getEnemySwapColor(channel_min: int = 0, channel_max: int = 255, min_channel_variance: int = 0) -> int:
-    """Get an RGB color compatible with enemy swaps."""
-    channels = []
-    for _ in range(2):
-        channels.append(random.randint(channel_min, channel_max))
-    min_channel = min(channels[0], channels[1])
-    max_channel = max(channels[0], channels[1])
-    bounds = []
-    if (min_channel - channel_min) >= min_channel_variance:
-        bounds.append([channel_min, min_channel])
-    if (channel_max - max_channel) >= min_channel_variance:
-        bounds.append([max_channel, channel_max])
-    if (len(bounds) == 0) or ((max_channel - min_channel) >= min_channel_variance):
-        # Default to random number pick
-        channels.append(random.randint(channel_min, channel_max))
-    else:
-        selected_bound = random.choice(bounds)
-        channels.append(random.randint(selected_bound[0], selected_bound[1]))
-    random.shuffle(channels)
-    value = 0
-    for x in range(3):
-        value <<= 8
-        value += channels[x]
-    return value
-
-
-class EnemyColorSwap:
-    """Class to store information regarding an enemy color swap."""
-
-    def __init__(self, search_for: list, forced_color: int = None):
-        """Initialize with given parameters."""
-        self.search_for = search_for.copy()
-        total_channels = [0] * 3
-        for color in self.search_for:
-            for channel in range(3):
-                shift = 8 * (2 - channel)
-                value = (color >> shift) & 0xFF
-                total_channels[channel] += value
-        average_channels = [int(x / len(self.search_for)) for x in total_channels]
-        self.average_color = 0
-        for x in average_channels:
-            self.average_color <<= 8
-            self.average_color += x
-        self.replace_with = forced_color
-        if forced_color is None:
-            self.replace_with = getEnemySwapColor(80, min_channel_variance=80)
-
-    def getOutputColor(self, color: int):
-        """Get output color based on randomization."""
-        if color not in self.search_for:
-            return color
-        if color == self.search_for[0]:
-            return self.replace_with
-        new_color = 0
-        total_boost = 0
-        for x in range(3):
-            shift = 8 * (2 - x)
-            provided_channel = (color >> shift) & 0xFF
-            primary_channel = (self.search_for[0] >> shift) & 0xFF
-            boost = 1  # Failsafe for div by 0
-            if primary_channel != 0:
-                boost = provided_channel / primary_channel
-            total_boost += boost  # Used to get an average
-        for x in range(3):
-            shift = 8 * (2 - x)
-            replacement_channel = (self.replace_with >> shift) & 0xFF
-            replacement_channel = int(replacement_channel * (total_boost / 3))
-            if replacement_channel > 255:
-                replacement_channel = 255
-            elif replacement_channel < 0:
-                replacement_channel = 0
-            new_color <<= 8
-            new_color += replacement_channel
-        return new_color
-
-
-def convertColorIntToTuple(color: int) -> tuple:
-    """Convert color stored as 3-byte int to tuple."""
-    return ((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF)
+    return 6026 + (2 * len(barrel_skins)) + offset
 
 
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
-    if settings.override_cosmetics:
-        enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
-    else:
-        enemy_setting = settings.random_enemy_colors
     if settings.misc_cosmetics:
         # Melon HUD
         data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(4), getBonusSkinOffset(4)]}
-        shift = getRandomHueShift()
+        shift = random.randint(-359, 359)
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
@@ -2345,171 +1974,6 @@ def writeMiscCosmeticChanges(settings):
                     px_data = gzip.compress(px_data, compresslevel=9)
                 ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
                 ROM().writeBytes(px_data)
-        # Shockwave Particles
-        shockwave_shift = getRandomHueShift()
-        for img_index in range(0x174F, 0x1757):
-            hueShiftImageContainer(25, img_index, 16, 16, TextureFormat.RGBA32, shockwave_shift)
-        # Fire-based sprites
-        fire_shift = getRandomHueShift()
-        fires = (
-            [0x1539, 0x1553, 32],  # Fireball. RGBA32 32x32
-            [0x14B6, 0x14F5, 32],  # Fireball. RGBA32 32x32
-            [0x1554, 0x155B, 16],  # Small Fireball. RGBA32 16x16
-            [0x1654, 0x1683, 32],  # Fire Wall. RGBA32 32x32
-            [0x1495, 0x14A0, 32],  # Small Explosion, RGBA32 32x32
-        )
-        for sprite_data in fires:
-            for img_index in range(sprite_data[0], sprite_data[1] + 1):
-                dim = sprite_data[2]
-                hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
-
-    if enemy_setting != RandomModels.off:
-        # Barrel Enemy Skins - Random
-        klobber_shift = getRandomHueShift(0, 300)
-        kaboom_shift = getRandomHueShift()
-        for img_index in range(3):
-            px_count = 1404 if img_index < 2 else 1372
-            hueShiftImageContainer(25, 0xF12 + img_index, 1, px_count, TextureFormat.RGBA5551, klobber_shift)
-            hueShiftImageContainer(25, 0xF22 + img_index, 1, px_count, TextureFormat.RGBA5551, kaboom_shift)
-            if img_index < 2:
-                hueShiftImageContainer(25, 0xF2B + img_index, 1, px_count, TextureFormat.RGBA5551, kaboom_shift)
-        # Klump
-        klump_jacket_shift = getRandomHueShift()
-        klump_hatammo_shift = getRandomHueShift()
-        jacket_images = [
-            {"image": 0x104D, "px": 1372},
-            {"image": 0x1058, "px": 1372},
-            {"image": 0x1059, "px": 176},
-        ]
-        hatammo_images = [
-            {"image": 0x104E, "px": 1372},
-            {"image": 0x104F, "px": 1372},
-            {"image": 0x1050, "px": 1372},
-            {"image": 0x1051, "px": 700},
-            {"image": 0x1052, "px": 348},
-            {"image": 0x1053, "px": 348},
-        ]
-        for img_data in jacket_images:
-            hueShiftImageContainer(25, img_data["image"], 1, img_data["px"], TextureFormat.RGBA5551, klump_jacket_shift)
-        for img_data in hatammo_images:
-            hueShiftImageContainer(25, img_data["image"], 1, img_data["px"], TextureFormat.RGBA5551, klump_hatammo_shift)
-        # Kosha
-        kosha_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0x1232, 1, 348, TextureFormat.RGBA5551, kosha_shift)
-        hueShiftImageContainer(25, 0x1235, 1, 348, TextureFormat.RGBA5551, kosha_shift)
-        if enemy_setting == RandomModels.extreme:
-            kosha_helmet_int = getEnemySwapColor(80, min_channel_variance=80)
-            kosha_helmet_list = [(kosha_helmet_int >> 16) & 0xFF, (kosha_helmet_int >> 8) & 0xFF, kosha_helmet_int & 0xFF]
-            kosha_club_int = getEnemySwapColor(80, min_channel_variance=80)
-            kosha_club_list = [(kosha_club_int >> 16) & 0xFF, (kosha_club_int >> 8) & 0xFF, kosha_club_int & 0xFF]
-            for img in range(0x122E, 0x1230):
-                kosha_im = getFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
-                kosha_im = maskImageWithColor(kosha_im, tuple(kosha_helmet_list))
-                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
-            for img in range(0x1229, 0x122C):
-                kosha_im = getFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
-                kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
-                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
-        # Kremling
-        if enemy_setting == RandomModels.extreme:
-            kremling_dimensions = [
-                [32, 64],  # FCE
-                [64, 24],  # FCF
-                [1, 1372],  # fd0
-                [32, 32],  # fd1
-                [24, 8],  # fd2
-                [24, 8],  # fd3
-                [24, 8],  # fd4
-                [24, 24],  # fd5
-                [32, 32],  # fd6
-                [32, 64],  # fd7
-                [32, 64],  # fd8
-                [36, 16],  # fd9
-                [20, 28],  # fda
-                [32, 32],  # fdb
-                [32, 32],  # fdc
-                [12, 28],  # fdd
-                [64, 24],  # fde
-                [32, 32],  # fdf
-            ]
-            kremling_shift = getRandomHueShift()
-            for dim_index, dims in enumerate(kremling_dimensions):
-                if dims is not None:
-                    hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
-        # Krobot
-        spinner_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0xFA9, 1, 1372, TextureFormat.RGBA5551, spinner_shift)
-        krobot_textures = [[[1, 1372], [0xFAF, 0xFAA, 0xFA8, 0xFAB, 0xFAD]], [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]]
-        krobot_color_int = getEnemySwapColor(80, min_channel_variance=80)
-        krobot_color_list = [(krobot_color_int >> 16) & 0xFF, (krobot_color_int >> 8) & 0xFF, krobot_color_int & 0xFF]
-        for tex_set in krobot_textures:
-            for tex in tex_set[1]:
-                krobot_im = getFile(25, tex, True, tex_set[0][0], tex_set[0][1], TextureFormat.RGBA5551)
-                krobot_im = maskImageWithColor(krobot_im, tuple(krobot_color_list))
-                writeColorImageToROM(krobot_im, 25, tex, tex_set[0][0], tex_set[0][1], False, TextureFormat.RGBA5551)
-        # Jetman
-        for xi, x in enumerate(settings.jetman_color):
-            ROM().seek(settings.rom_data + 0x1E8 + xi)
-            ROM().writeMultipleBytes(x, 1)
-        # K Rool
-        red_cs_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
-        shorts_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
-        glove_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
-        krool_data = {
-            0x1149: red_cs_im,
-            0x1261: shorts_im,
-            0xDA8: glove_im,
-        }
-        if enemy_setting == RandomModels.extreme:
-            skin_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor(80, min_channel_variance=80)))
-            krool_data[0x114A] = skin_im
-            krool_data[0x114D] = skin_im
-        for index in krool_data:
-            writeColorImageToROM(krool_data[index], 25, index, 32, 32, False, TextureFormat.RGBA5551)
-        toe_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0x126E, 1, 1372, TextureFormat.RGBA5551, toe_shift)
-        hueShiftImageContainer(25, 0x126F, 1, 1372, TextureFormat.RGBA5551, toe_shift)
-        if enemy_setting == RandomModels.extreme:
-            gold_shift = getRandomHueShift()
-            hueShiftImageContainer(25, 0x1265, 32, 32, TextureFormat.RGBA5551, gold_shift)
-            hueShiftImageContainer(25, 0x1148, 32, 32, TextureFormat.RGBA5551, gold_shift)
-        # Ghost
-        ghost_shift = getRandomHueShift()
-        for img in range(0x119D, 0x11AF):
-            px_count = 1372
-            if img == 0x119E:
-                px_count = 176
-            elif img == 0x11AC:
-                px_count = 688
-            hueShiftImageContainer(25, img, 1, px_count, TextureFormat.RGBA5551, ghost_shift)
-
-        # Enemy Vertex Swaps
-        blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
-        enemy_changes = {
-            Model.BeaverBlue_LowPoly: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
-            Model.BeaverBlue: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
-            Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]),  # Primary
-        }
-        if enemy_setting == RandomModels.extreme:
-            enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859], 0x65CCFF)
-        for enemy in enemy_changes:
-            file_data = bytearray(getRawFile(5, enemy, True))
-            vert_start = 0x28
-            file_head = getValueFromByteArray(file_data, 0, 4)
-            disp_list_end = (getValueFromByteArray(file_data, 4, 4) - file_head) + 0x28
-            vert_end = (getValueFromByteArray(file_data, disp_list_end, 4) - file_head) + 0x28
-            vert_count = int((vert_end - vert_start) / 0x10)
-            for vert in range(vert_count):
-                local_start = 0x28 + (0x10 * vert)
-                test_rgb = getValueFromByteArray(file_data, local_start + 0xC, 3)
-                new_rgb = enemy_changes[enemy].getOutputColor(test_rgb)
-                for x in range(3):
-                    shift = 8 * (2 - x)
-                    channel = (new_rgb >> shift) & 0xFF
-                    file_data[local_start + 0xC + x] = channel
-            file_data = gzip.compress(file_data, compresslevel=9)
-            ROM().seek(js.pointer_addresses[5]["entries"][enemy]["pointing_to"])
-            ROM().writeBytes(file_data)
 
 
 def getNumberImage(number: int) -> PIL.Image.Image:
@@ -2573,22 +2037,26 @@ def numberToImage(number: int, dim: Tuple[int, int]) -> PIL.Image.Image:
 def applyHelmDoorCosmetics(settings: Settings) -> None:
     """Apply Helm Door Cosmetic Changes."""
     crown_door_required_item = settings.crown_door_item
+    if crown_door_required_item == HelmDoorItem.vanilla and settings.crown_door_item_count != 4:
+        crown_door_required_item = HelmDoorItem.req_crown
     coin_door_required_item = settings.coin_door_item
+    if coin_door_required_item == HelmDoorItem.vanilla and settings.coin_door_item_count != 2:
+        coin_door_required_item = HelmDoorItem.req_companycoins
     Doors = [
         HelmDoorSetting(crown_door_required_item, settings.crown_door_item_count, 6022, 6023),
         HelmDoorSetting(coin_door_required_item, settings.coin_door_item_count, 6024, 6025),
     ]
     Images = [
-        HelmDoorImages(BarrierItems.GoldenBanana, [0x155C]),
-        HelmDoorImages(BarrierItems.Blueprint, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
-        HelmDoorImages(BarrierItems.Bean, [0], True, 6, (20, 20)),
-        HelmDoorImages(BarrierItems.Pearl, [0xD5F], False, 25, (32, 32)),
-        HelmDoorImages(BarrierItems.Fairy, [0x16ED], False, 25, (32, 32), TextureFormat.RGBA32),
-        HelmDoorImages(BarrierItems.Key, [5877]),
-        HelmDoorImages(BarrierItems.Medal, [0x156C]),
-        HelmDoorImages(BarrierItems.RainbowCoin, [5963], False, 25, (48, 42)),
-        HelmDoorImages(BarrierItems.Crown, [5893]),
-        HelmDoorImages(BarrierItems.CompanyCoin, [5905, 5912]),
+        HelmDoorImages(HelmDoorItem.req_gb, [0x155C]),
+        HelmDoorImages(HelmDoorItem.req_bp, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
+        HelmDoorImages(HelmDoorItem.req_bean, [0], True, 6, (20, 20)),
+        HelmDoorImages(HelmDoorItem.req_pearl, [0xD5F], False, 25, (32, 32)),
+        HelmDoorImages(HelmDoorItem.req_fairy, [0x16ED], False, 25, (32, 32), TextureFormat.RGBA32),
+        HelmDoorImages(HelmDoorItem.req_key, [5877]),
+        HelmDoorImages(HelmDoorItem.req_medal, [0x156C]),
+        HelmDoorImages(HelmDoorItem.req_rainbowcoin, [5963], False, 25, (48, 42)),
+        HelmDoorImages(HelmDoorItem.req_crown, [5893]),
+        HelmDoorImages(HelmDoorItem.req_companycoins, [5905, 5912]),
     ]
     for door in Doors:
         for image_data in Images:
@@ -2616,7 +2084,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                     new_width = image_data.dimensions[0] * (44 / image_data.dimensions[1])
                     base_overlay = base_overlay.resize((int(new_width), 44))
                     base.paste(base_overlay, (int(22 - (new_width / 2)), 0), base_overlay)
-                if door.item_setting == BarrierItems.Pearl:
+                if door.item_setting == HelmDoorItem.req_pearl:
                     pearl_mask_im = Image.new("RGBA", (44, 44), (0, 0, 0, 255))
                     draw = ImageDraw.Draw(pearl_mask_im)
                     draw.ellipse((0, 0, 43, 43), fill=(0, 0, 0, 0), outline=(0, 0, 0, 0))
@@ -2939,127 +2407,6 @@ boot_phrases = (
     "Saving 20 frames",
 )
 
-crown_heads = (
-    # Object
-    "Arena",
-    "Beaver",
-    "Bish Bash",
-    "Forest",
-    "Kamikaze",
-    "Kritter",
-    "Pinnacle",
-    "Plinth",
-    "Shockwave",
-    "Bean",
-    "Dogadon",
-    "Banana",
-    "Squawks",
-    "Lanky",
-    "Diddy",
-    "Tiny",
-    "Chunky",
-    "DK",
-    "Krusha",
-    "Kosha",
-    "Klaptrap",
-    "Zinger",
-    "Gnawty",
-    "Kasplat",
-    "Pufftup",
-    "Shuri",
-    "Krossbones",
-    "Caves",
-    "Castle",
-    "Helm",
-    "Japes",
-    "Jungle",
-    "Angry",
-    "Aztec",
-    "Frantic",
-    "Factory",
-    "Gloomy",
-    "Galleon",
-    "Crystal",
-    "Creepy",
-    "Hideout",
-)
-
-crown_tails = (
-    # Synonym for brawl/similar
-    "Ambush",
-    "Brawl",
-    "Fracas",
-    "Karnage",
-    "Kremlings",
-    "Palaver",
-    "Panic",
-    "Showdown",
-    "Slam",
-    "Melee",
-    "Tussle",
-    "Altercation",
-    "Wrangle",
-    "Clash",
-    "Free for All",
-    "Skirmish",
-    "Scrap",
-    "Fight",
-    "Rumpus",
-    "Fray",
-    "Wrestle",
-    "Brouhaha",
-    "Commotion",
-    "Uproar",
-    "Rough and Tumble",
-    "Broil",
-    "Argy Bargy",
-    "Bother",
-    "Mayhem",
-    "Bonanza",
-    "Battle",
-    "Kerfuffle",
-    "Rumble",
-    "Fisticuffs",
-    "Ruckus",
-    "Scrimmage",
-    "Strife",
-    "Dog and Duck",
-    "Joust",
-    "Scuffle",
-    "Hootenanny",
-)
-
-
-def getCrownNames() -> list:
-    """Get crown names from head and tail pools."""
-    # Get 10 names for heads just in case "Forest" and "Fracas" show up
-    heads = random.sample(crown_heads, 10)
-    tails = random.sample(crown_tails, 9)
-    # Remove "Forest" if both "Forest" and "Fracas" show up
-    if "Forest" in heads and "Fracas" in tails:
-        heads.remove("Forest")
-    # Only get 9 names, Forest Fracas can't be overwritten without having negative impacts
-    names = []
-    for x in range(9):
-        head = heads[x]
-        tail = tails[x]
-        if head[0] == "K" and tail[0] == "C":
-            split_tail = list(tail)
-            split_tail[0] = "K"
-            tail = "".join(split_tail)
-        names.append(f"{head} {tail}!".upper())
-    names.append("Forest Fracas!".upper())
-    return names
-
-
-def writeCrownNames():
-    """Write Crown Names to ROM."""
-    names = getCrownNames()
-    old_text = grabText(35, True)
-    for name_index, name in enumerate(names):
-        old_text[0x1E + name_index] = ({"text": [name]},)
-    writeText(35, old_text, True)
-
 
 def writeBootMessages() -> None:
     """Write boot messages into ROM."""
@@ -3068,21 +2415,3 @@ def writeBootMessages() -> None:
     for message_index, message in enumerate(placed_messages):
         ROM_COPY.seek(0x1FFD000 + (0x40 * message_index))
         ROM_COPY.writeBytes(message.upper().encode("ascii"))
-
-
-def writeTransition(settings: Settings) -> None:
-    """Write transition cosmetic to ROM."""
-    if js.cosmetics is None:
-        return
-    if js.cosmetics.transitions is None:
-        return
-    if js.cosmetic_names.transitions is None:
-        return
-    file_data = list(zip(js.cosmetics.transitions, js.cosmetic_names.transitions))
-    settings.custom_transition = None
-    if len(file_data) == 0:
-        return
-    selected_transition = random.choice(file_data)
-    settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
-    im_f = Image.open(BytesIO(bytes(selected_transition[0])))
-    writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)

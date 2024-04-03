@@ -7,7 +7,7 @@ import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
-from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
+from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
@@ -48,10 +48,6 @@ def PlaceConstants(spoiler):
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
         spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, Items.HideoutHelmKey)
-    # If no CB rando in isles, clear these locations
-    if settings.cb_rando != CBRando.on_with_isles:
-        for x in range(5):
-            spoiler.LocationList[Locations.IslesDonkeyMedal + x].PlaceItem(spoiler, Items.NoItem)
     # Handle key placements
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
@@ -94,11 +90,10 @@ def AllItemsUnrestricted(settings):
     allItems.extend(Blueprints())
     allItems.extend(GoldenBananaItems())
     allItems.extend(ToughGoldenBananaItems())
-    allItems.extend(NintendoCoinItems())
-    allItems.extend(RarewareCoinItems())
+    allItems.extend(CompanyCoinItems())
     allItems.extend(BattleCrownItems())
     allItems.extend(Keys())
-    allItems.extend(BananaMedalItems(settings))
+    allItems.extend(BananaMedalItems())
     allItems.extend(MiscItemRandoItems())
     allItems.extend(FairyItems())
     allItems.extend(RainbowCoinItems())
@@ -132,16 +127,14 @@ def AllItems(settings):
         allItems.extend(GoldenBananaItems())
     if Types.ToughBanana in settings.shuffled_location_types:
         allItems.extend(ToughGoldenBananaItems())
-    if Types.NintendoCoin in settings.shuffled_location_types:
-        allItems.extend(NintendoCoinItems())
-    if Types.RarewareCoin in settings.shuffled_location_types:
-        allItems.extend(RarewareCoinItems())
+    if Types.Coin in settings.shuffled_location_types:
+        allItems.extend(CompanyCoinItems())
     if Types.Crown in settings.shuffled_location_types:
         allItems.extend(BattleCrownItems())
     if Types.Key in settings.shuffled_location_types:
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
-        allItems.extend(BananaMedalItems(settings))
+        allItems.extend(BananaMedalItems())
     if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
         allItems.extend(MiscItemRandoItems())
     if Types.Fairy in settings.shuffled_location_types:
@@ -152,14 +145,6 @@ def AllItems(settings):
         allItems.extend(MelonCrateItems())
     if Types.Enemies in settings.shuffled_location_types:
         allItems.extend(EnemyItems())
-    if Types.Cranky in settings.shuffled_location_types:
-        allItems.extend(CrankyItems())
-    if Types.Funky in settings.shuffled_location_types:
-        allItems.extend(FunkyItems())
-    if Types.Candy in settings.shuffled_location_types:
-        allItems.extend(CandyItems())
-    if Types.Snide in settings.shuffled_location_types:
-        allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -193,16 +178,14 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(GoldenBananaItems())
     if Types.ToughBanana in settings.shuffled_location_types:
         allItems.extend(ToughGoldenBananaItems())
-    if Types.NintendoCoin in settings.shuffled_location_types:
-        allItems.extend(NintendoCoinItems())
-    if Types.RarewareCoin in settings.shuffled_location_types:
-        allItems.extend(RarewareCoinItems())
+    if Types.Coin in settings.shuffled_location_types:
+        allItems.extend(CompanyCoinItems())
     if Types.Crown in settings.shuffled_location_types:
         allItems.extend(BattleCrownItems())
     if Types.Key in settings.shuffled_location_types:
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
-        allItems.extend(BananaMedalItems(settings))
+        allItems.extend(BananaMedalItems())
     if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
         allItems.extend(MiscItemRandoItems())
     if Types.Fairy in settings.shuffled_location_types:
@@ -213,14 +196,6 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(MelonCrateItems())
     if Types.Enemies in settings.shuffled_location_types:
         allItems.extend(EnemyItems())
-    if Types.Cranky in settings.shuffled_location_types:
-        allItems.extend(CrankyItems())
-    if Types.Funky in settings.shuffled_location_types:
-        allItems.extend(FunkyItems())
-    if Types.Candy in settings.shuffled_location_types:
-        allItems.extend(CandyItems())
-    if Types.Snide in settings.shuffled_location_types:
-        allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -410,14 +385,12 @@ def HighPriorityItems(settings):
     return itemPool
 
 
-def NintendoCoinItems():
-    """Return Nintendo Coin."""
-    return [Items.NintendoCoin]
-
-
-def RarewareCoinItems():
-    """Return Rareware Coin."""
-    return [Items.RarewareCoin]
+def CompanyCoinItems():
+    """Return the Company Coin items to be placed."""
+    itemPool = []
+    itemPool.append(Items.NintendoCoin)
+    itemPool.append(Items.RarewareCoin)
+    return itemPool
 
 
 TOUGH_BANANA_COUNT = 13
@@ -437,13 +410,10 @@ def ToughGoldenBananaItems():
     return itemPool
 
 
-def BananaMedalItems(settings):
+def BananaMedalItems():
     """Return a list of Banana Medals to be placed."""
     itemPool = []
-    count = 40
-    if settings.cb_rando == CBRando.on_with_isles:
-        count = 45
-    itemPool.extend(itertools.repeat(Items.BananaMedal, count))
+    itemPool.extend(itertools.repeat(Items.BananaMedal, 40))
     return itemPool
 
 
@@ -493,26 +463,6 @@ def FakeItems():
     return itemPool
 
 
-def CrankyItems():
-    """Return a list of Cranky shop owners to be placed."""
-    return [Items.Cranky]
-
-
-def FunkyItems():
-    """Return a list of Funky shop owners to be placed."""
-    return [Items.Funky]
-
-
-def CandyItems():
-    """Return a list of Candy shop owners to be placed."""
-    return [Items.Candy]
-
-
-def SnideItems():
-    """Return a list of Snide shop owners to be placed."""
-    return [Items.Snide]
-
-
 def JunkItems():
     """Return a list of Junk Items to be placed."""
     itemPool = []
@@ -543,16 +493,14 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(Keys())
     if Types.Crown in unplacedTypes:
         itemPool.extend(BattleCrownItems())
-    if Types.NintendoCoin in unplacedTypes:
-        itemPool.extend(NintendoCoinItems())
-    if Types.RarewareCoin in unplacedTypes:
-        itemPool.extend(RarewareCoinItems())
+    if Types.Coin in unplacedTypes:
+        itemPool.extend(CompanyCoinItems())
     if Types.TrainingBarrel in unplacedTypes:
         itemPool.extend(TrainingBarrelAbilities())
     if Types.Kong in unplacedTypes:
         itemPool.extend(Kongs(settings))
     if Types.Medal in unplacedTypes:
-        itemPool.extend(BananaMedalItems(settings))
+        itemPool.extend(BananaMedalItems())
     if Types.Shockwave in unplacedTypes:
         itemPool.extend(ShockwaveTypeItems(settings))
     if Types.Bean in unplacedTypes:
@@ -565,14 +513,6 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(EnemyItems())
     if Types.ToughBanana in unplacedTypes:
         itemPool.extend(ToughGoldenBananaItems())
-    if Types.Cranky in unplacedTypes:
-        itemPool.extend(CrankyItems())
-    if Types.Funky in unplacedTypes:
-        itemPool.extend(FunkyItems())
-    if Types.Candy in unplacedTypes:
-        itemPool.extend(CandyItems())
-    if Types.Snide in unplacedTypes:
-        itemPool.extend(SnideItems())
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())

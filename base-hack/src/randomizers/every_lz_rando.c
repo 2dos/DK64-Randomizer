@@ -21,6 +21,11 @@
 */
 
 void replace_zones(int init_flag) {
+	int race_flag = 0;
+	int race_container_map = 0;
+	int race_container_exit = 0;
+	int krool_exit_map = 0;
+	int krool_exit_exit = 0;
 	if (Rando.randomize_more_loading_zones) {
 		if (init_flag) {
 			if (Rando.randomize_more_loading_zones == 1) {

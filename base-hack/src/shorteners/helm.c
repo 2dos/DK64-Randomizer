@@ -31,13 +31,13 @@ void changeHelmLZ(void) {
 }
 
 void openCrownDoor(void) {
-	if (Rando.crown_door_requirement.item == REQITEM_NONE) {
+	if (Rando.crown_door_open) {
 		setPermFlag(FLAG_HELM_CROWNDOOR);
 	}
 }
 
 void openCoinDoor(void) {
-	if (Rando.coin_door_requirement.item == REQITEM_NONE) {
+	if (Rando.coin_door_open) {
 		setPermFlag(FLAG_HELM_COINDOOR);
 	}
 }
@@ -187,7 +187,7 @@ int checkDoorItem(int index, int count) {
 		case DOORITEM_GB:
 			return getTotalGBs() >= count;
 		case DOORITEM_BP:
-			return getMedalCount() >= count;
+			return countFlagsDuplicate(FLAG_BP_JAPES_DK_HAS, 40, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_BEAN:
 			return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 		case DOORITEM_PEARL:
@@ -203,7 +203,7 @@ int checkDoorItem(int index, int count) {
 				return key_count >= count;
 			}
 		case DOORITEM_MEDAL:
-			return getMedalCount() >= count;
+			return countFlagsDuplicate(FLAG_MEDAL_JAPES_DK, 40, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_RAINBOWCOIN:
 			return countFlagsDuplicate(FLAG_RAINBOWCOIN_0, 16, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_CROWN:
@@ -215,9 +215,21 @@ int checkDoorItem(int index, int count) {
 }
 
 int CrownDoorCheck(void) {
-	return isItemRequirementSatisfied(&Rando.crown_door_requirement);
+	if (Rando.crown_door_item == DOORITEM_DEFAULT) {
+		Rando.crown_door_item = DOORITEM_CROWN;
+	}
+	if (Rando.crown_door_item_count == 0) {
+		Rando.crown_door_item_count = 4;
+	}
+	return checkDoorItem(Rando.crown_door_item, Rando.crown_door_item_count);
 }
 
 int CoinDoorCheck(void) {
-	return isItemRequirementSatisfied(&Rando.coin_door_requirement);
+	if (Rando.coin_door_item == DOORITEM_DEFAULT) {
+		Rando.coin_door_item = DOORITEM_COMPANYCOIN;
+	}
+	if (Rando.coin_door_item_count == 0) {
+		Rando.coin_door_item_count = 2;
+	}
+	return checkDoorItem(Rando.coin_door_item, Rando.coin_door_item_count);
 }
