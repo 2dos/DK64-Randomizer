@@ -923,11 +923,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8074D4D0, Overlay.Static, 9, offset_dict)
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.lower_max_refill_amounts):
-        writeValue(ROM_COPY, 0x806F8F68, Overlay.Static, 0x24090000, offset_dict, 4) # Standard Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
-        writeValue(ROM_COPY, 0x806F8FE4, Overlay.Static, 0x24190000, offset_dict, 4) # Homing Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
-        writeValue(ROM_COPY, 0X806F9056, Overlay.Static, 5, offset_dict) # Oranges: change from `(5 * ammo_belt) + 20` to `(5 * ammo_belt) + 5`
-        writeValue(ROM_COPY, 0X806F90B6, Overlay.Static, 10 * 150, offset_dict) # Crystals: change from `20 + fairy_count` to `10 + fairy_count`
-        writeValue(ROM_COPY, 0X806F9186, Overlay.Static, 3, offset_dict) # Film: change from `10 + fairy_count` to `3 + fairy_count`
+        writeValue(ROM_COPY, 0x806F8F68, Overlay.Static, 0x24090000, offset_dict, 4)  # Standard Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
+        writeValue(ROM_COPY, 0x806F8FE4, Overlay.Static, 0x24190000, offset_dict, 4)  # Homing Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
+        writeValue(ROM_COPY, 0x806F9056, Overlay.Static, 5, offset_dict)  # Oranges: change from `(5 * ammo_belt) + 20` to `(5 * ammo_belt) + 5`
+        writeValue(ROM_COPY, 0x806F90B6, Overlay.Static, 10 * 150, offset_dict)  # Crystals: change from `20 + fairy_count` to `10 + fairy_count`
+        writeValue(ROM_COPY, 0x806F9186, Overlay.Static, 3, offset_dict)  # Film: change from `10 + fairy_count` to `3 + fairy_count`
 
     if settings.medal_cb_req > 0:
         writeValue(ROM_COPY, 0x806F934E, Overlay.Static, settings.medal_cb_req, offset_dict)  # Acquisition

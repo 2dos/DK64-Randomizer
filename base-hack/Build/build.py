@@ -22,7 +22,7 @@ import shop_instance_script
 from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
-from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures
+from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
 from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
@@ -808,7 +808,7 @@ for x in range(221):
             )
         )
 for x in range(221):
-    if x == 0x1A:
+    if x == Maps.Factory:
         file_dict.append(
             File(
                 name=f"Character Spawners for map {x}",
@@ -830,6 +830,7 @@ for x in range(221):
                 target_size=0x1400,
                 do_not_recompress=True,
             )
+        )
 file_dict.append(
     File(
         name="Dark Cloud",

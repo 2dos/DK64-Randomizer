@@ -58,6 +58,7 @@ class TestROM:
         self.stream.seek(offset)
 
     def readBytes(self, count: int) -> bytes:
+        """Binary IO read."""
         return self.stream.read(count)
 
     def writeMultipleBytes(self, value: int, size: int):

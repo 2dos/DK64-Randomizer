@@ -713,7 +713,9 @@ def MusicSelectFilter(songList: list[dict], location: str) -> list[dict]:
     """
     return [song for song in songList if song_data[Songs[song["value"]]].type != SongType.BGM or song_data[Songs[song["value"]]].channel == song_data[Songs[location]].channel]
 
+
 def getSongIndexFromName(name: str) -> Songs:
+    """Obtain the song index from the name of the vanilla song."""
     for song_idx in song_data:
         if song_data[song_idx].name == name:
             return song_idx

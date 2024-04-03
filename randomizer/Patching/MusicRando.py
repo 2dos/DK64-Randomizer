@@ -117,10 +117,12 @@ TAG_CONVERSION_TABLE = {
     "Exteriors": [SongGroup.Exteriors, True],
 }
 
+
 def filterSongString(val: str) -> str:
     """Filter newline characters from the string."""
     split_string = "".join([x for xi, x in enumerate([*val]) if x != "\n" and xi < 30])
-    return unicodedata.normalize('NFKD', split_string)
+    return unicodedata.normalize("NFKD", split_string)
+
 
 class UploadInfo:
     """Class to store information regarding an uploaded song."""
