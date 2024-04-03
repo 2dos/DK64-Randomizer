@@ -55,6 +55,7 @@ void initQoL_Cutscenes(void) {
                 {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=0}, // Tiny Barrel Spawn
                 {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=1}, // Cannon GB Spawn
                 {.map=MAP_CASTLEGREENHOUSE, .cutscene=0}, // Greenhouse Intro
+                {.map=MAP_CASTLEDUNGEON, .cutscene=0}, // Dungeon Lanky Trombone Bonus
             };
             for (int i = 0; i < (sizeof(cs_unskip) / sizeof(skipped_cutscene)); i++) {
                 int cs_offset = 0;
@@ -88,6 +89,16 @@ void initQoL_Cutscenes(void) {
         *(int*)(0x806C3E10) = 0;
         *(int*)(0x806C3E20) = 0;
     }
+}
+
+void fixRaceHoopCode(void) {
+    unkProjectileCode_3(CurrentActorPointer_0, 0);
+}
+
+void renderHoop(void) {
+    unkBonusFunction(CurrentActorPointer_0);
+    CurrentActorPointer_0->rot_x -= 0x39; // Rotate Hoop
+    renderActor(CurrentActorPointer_0, 0);
 }
 
 void quickWrinklyTextboxes(void) {
@@ -200,61 +211,6 @@ void initSpawn(void) {
     }
 }
 
-void initQoL_HUD(void) {
-    /**
-     * @brief Initialize the HUD
-     * 
-     */
-    // Realign HUD
-    /*
-        Item: CB | Coords: 0x1E, 0x26 | X: 0x806F84EE | Y: 0x806F84FE
-        Item: Coins | Coords: 0x122, 0x26 | X: 0x806F88CA | Y: 0x806F88CE
-        Item: Ammo | Coords: 0x122, 0x48 | X: 0x806F86C6 | Y: 0x806F86CA
-        Item: Homing Ammo | Coords: 0x122, 0x48 | X: 0x806F873A | Y: 0x806F873E
-        Item: Oranges | Coords: 0x122, 0x6A | X: 0x806F87A6 | Y: 0x806F87AA
-        Item: Crystals | Coords: 0x122, 0x8C | X: 0x806F868E | Y: 0x806F8692
-        Item: Film | Coords: 0x122, 0xD0 | X: 0x806F8812 | Y: 0x806F8816
-        Item: Instrument | Coords: 0x122, 0xAE | X: 0x806F893A | Y: 0x806F893E
-        Item: GB Character | Coords: 0x1E, 0x48 | X: 0x806F857E | Y: 0x806F858E
-        Item: GB | Coords: 0x7A, 0xD0 | X: 0x806F8642 | Y: 0x806F8646
-        Item: Medal (Multi CB) | Coords: 0x52, 0xD0 | X: 0x806F8606 | Y: 0x806F860A
-        Item: Race Coin | Coords: 0x122, 0x26 | X: 0x806F8852 | Y: 0x806F8856
-        Item: Blueprint | Coords: 0xC2, 0xD0 | X: 0x806F85CA | Y: 0x806F85CE
-        Item: CB T&S | Coords: 0x122, 0x26 | X: 0x806F8536 | Y: 0x806F853A
-        Item: Unk | Coords: 0x1E, 0x26 | X: 0x806F897A | Y: 0x806F897E
-    */
-    int y_spacing = 22;
-    int y_bottom = 0xD0;
-    if (Rando.true_widescreen) {
-        y_bottom = SCREEN_HD - 32;
-    }
-    *(short*)(0x806F893E) = y_bottom - (1 * y_spacing); // Instrument
-    *(short*)(0x806F8692) = y_bottom - (2 * y_spacing); // Crystals
-    *(short*)(0x806F87AA) = y_bottom - (3 * y_spacing); // Oranges
-    *(short*)(0x806F86CA) = y_bottom - (4 * y_spacing); // Ammo
-    *(short*)(0x806F873E) = y_bottom - (4 * y_spacing); // Homing Ammo
-    // Multibunch HUD
-    if (Rando.quality_of_life.hud_bp_multibunch) {
-        *(short*)(0x806F860A) = y_bottom - (5 * y_spacing); // Multi CB
-        writeFunction(0x806F97D8, &getHUDSprite_HUD); // Change Sprite
-        writeFunction(0x806F6BF0, &preventMedalHUD); // Prevent Model Two Medals showing HUD
-        int multibunch_hud_x = 0x122;
-        if (Rando.true_widescreen) {
-            multibunch_hud_x = SCREEN_WD - 30;
-        }
-        *(short*)(0x806F8606) = multibunch_hud_x; // Position X
-        *(int*)(0x806F862C) = 0x4600F306; // MOV.S $f12, $f30
-        *(int*)(0x806F8634) = 0x4600A386; // MOV.S $f14, $f20
-        writeFunction(0x806F98E4, &initHUDDirection); // HUD Direction
-        writeFunction(0x806F9A00, &initHUDDirection); // HUD Direction
-        writeFunction(0x806F9A78, &initHUDDirection); // HUD Direction
-        writeFunction(0x806F9BC0, &initHUDDirection); // HUD Direction
-        writeFunction(0x806F9D14, &initHUDDirection); // HUD Direction
-        *(int*)(0x806FA62C) = 0; // NOP: Enable Number Rendering
-        *(int*)(0x806FA56C) = 0; // NOP: Prevent opacity check
-    }
-}
-
 void initNonControllableFixes(void) {
     /**
      * @brief Initialize any changes which we do not want to give the user any control over whether it's removed
@@ -316,7 +272,6 @@ void initQoL(void) {
     writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
     initQoL_Cutscenes();
     initSpawn();
-    initQoL_HUD();
     initQoL_FastWarp();
     initNonControllableFixes();
 }

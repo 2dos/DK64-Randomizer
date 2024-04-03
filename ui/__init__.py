@@ -8,7 +8,6 @@ from ui.rando_options import (
     disable_colors,
     disable_enemy_modal,
     disable_excluded_songs_modal,
-    disable_music_filtering_modal,
     disable_hard_mode_modal,
     disable_helm_hurry,
     disable_remove_barriers,
@@ -24,6 +23,7 @@ from ui.rando_options import (
     max_music_proportion,
     max_randomized_blocker,
     max_randomized_fairies,
+    max_randomized_pearls,
     max_randomized_medal_cb_req,
     max_randomized_medals,
     max_randomized_troff,
@@ -62,7 +62,6 @@ max_sfx(None)
 disable_barrel_modal(None)
 disable_enemy_modal(None)
 disable_excluded_songs_modal(None)
-disable_music_filtering_modal(None)
 disable_hard_mode_modal(None)
 toggle_item_rando(None)
 disable_boss_rando(None)
@@ -70,6 +69,7 @@ toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
 max_randomized_fairies(None)
+max_randomized_pearls(None)
 max_starting_moves_count(None)
 max_doorone_requirement(None)
 max_doortwo_requirement(None)

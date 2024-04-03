@@ -60,6 +60,47 @@
                             </option>
                         </select>
                     </div>
+                    <div class="item-select">
+                        <p class="select-title">Random Enemy Colors</p>
+                        <select name="random_enemy_colors"
+                                id="random_enemy_colors"
+                                display_name="Random Enemy Colors"
+                                class="form-select center-div"
+                                aria-label="Random Enemy Colors"
+                                data-toggle="tooltip"
+                                title="Changes the colors of various enemies in the game">
+                            <option selected id="off" value="off" title="">
+                                Off
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="extreme" value="extreme">
+                                Extreme
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-color-select">
+                        <div class="color-selector">
+                            <p class="select-title">Golden Banana Skin Color</p>
+                            <div id="gb_custom">
+                                <div class="input-group mb-3 gbColorPicker" style="display:flex">
+                                    <select name="gb_colors" id="gb_colors" class="form-select" aria-label="GB Skin">
+                                        <option selected value="vanilla">Vanilla</option>
+                                        <option value="randomized">Randomized</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                    <div class="color-input-container">
+                                        <input type="color"
+                                            name="gb_custom_color"
+                                            id="gb_custom_color"
+                                            default="#000000"
+                                            class="color-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex-container">
                     {{ toggle_input("misc_cosmetics", "Random Miscellaneous Cosmetics", "Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors") }}
@@ -260,6 +301,9 @@
                     }
                 })
             })
+            if (object.hasOwnProperty("gb_custom_color")) {
+                $(".gbColorPicker").attr("style", "background-color" + object["gb_custom_color"] + ";")
+            }
         }
     })
     $(function() {

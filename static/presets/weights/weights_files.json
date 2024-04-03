@@ -21,7 +21,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.3,
+    "cb_rando": {
+      "off": 0.7,
+      "on": 0.25,
+      "on_with_isles": 0.05
+    },
     "coin_door_item": {
       "vanilla": 0.2,
       "opened": 0.6,
@@ -72,7 +76,6 @@
       "factory_car_race": 1,
       "galleon_seal_race": 1,
       "galleon_mech_fish": 1,
-      "galleon_mermaid_gb": 1,
       "forest_mill_conveyor": 1,
       "forest_owl_race": 1,
       "forest_rabbit_race": 1,
@@ -196,7 +199,8 @@
       "kong": 0.85,
       "rainbowcoin": 0.5,
       "beanpearl": 0.5,
-      "junkitem": 0.5
+      "junkitem": 0.5,
+      "shopowners": 0.2
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -226,6 +230,11 @@
       "min": 15,
       "max": 60,
       "mean": 30
+    },
+    "mermaid_gb_pearls": {
+      "min": 1,
+      "max": 3,
+      "mean": 2
     },
     "microhints_enabled": {
       "base": 0.25,
@@ -353,7 +362,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cb_rando": {
+      "off": 0.5,
+      "on": 0.35,
+      "on_with_isles": 0.15
+    },
     "coin_door_item": {
       "vanilla": 0.2,
       "opened": 0.2,
@@ -408,7 +421,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -538,7 +550,8 @@
       "beanpearl": 0.7,
       "fakeitem": 0.5,
       "junkitem": 0.5,
-      "crateitem": 0.5
+      "crateitem": 0.5,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -570,6 +583,11 @@
       "min": 15,
       "max": 90,
       "mean": 40
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 3
     },
     "microhints_enabled": {
       "off": 0.3,
@@ -707,7 +725,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cb_rando": {
+      "off": 0.5,
+      "on": 0.25,
+      "on_with_isles": 0.25
+    },
     "coin_door_item": {
       "vanilla": 0.3,
       "hard_random": 0.3,
@@ -762,7 +784,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -798,7 +819,8 @@
       "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -899,7 +921,8 @@
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -933,6 +956,11 @@
       "min": 35,
       "max": 90,
       "mean": 60
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
     },
     "microhints_enabled": {
       "off": 0.3,
@@ -1101,7 +1129,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cb_rando": {
+      "off": 0.7,
+      "on": 0.25,
+      "on_with_isles": 0.25
+    },
     "coin_door_item": {
       "vanilla": 0.3,
       "hard_random": 0.3,
@@ -1156,7 +1188,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -1192,7 +1223,8 @@
       "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -1293,7 +1325,8 @@
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 0.75,
     "kasplat_rando_setting": {
@@ -1327,6 +1360,11 @@
       "min": 35,
       "max": 90,
       "mean": 60
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
     },
     "microhints_enabled": {
       "off": 0.3,

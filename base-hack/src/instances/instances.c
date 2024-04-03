@@ -198,7 +198,6 @@
 
 #define JAPES_RAMBI_DOOR 0x115
 #define K_ROOL_SHIP 0x35
-#define ENEMY_CABIN_DOOR 0x0
 
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 
@@ -233,7 +232,7 @@ void setCrusher(void) {
 }
 
 void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
-	if (Rando.randomize_more_loading_zones) {
+	if (Rando.randomize_more_loading_zones == 1) {
 		initiateTransition_0(entrance->map, entrance->exit, 0, 0);
 	} else {
 		initiateTransition_0(vanilla_map, 0, 0, 0);
@@ -375,7 +374,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEBALLROOM:
 				if (param2 == BALLROOM_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.ballroom_to_museum.map, Rando.ballroom_to_museum.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
@@ -384,7 +383,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.museum_to_ballroom.map, Rando.museum_to_ballroom.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
@@ -537,12 +536,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MAP_CAVES5DCDIDDYLOW:
-				if (Rando.quality_of_life.remove_enemy_cabin_timer) {
-					return 0;
-				}
-				return 1;
-				break;
 			case MAP_BATTLEARENA_BEAVERBRAWL:
 			case MAP_BATTLEARENA_KRITTERKARNAGE:
 			case MAP_BATTLEARENA_ARENAAMBUSH:
@@ -553,7 +546,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_BATTLEARENA_PLINTHPANIC:
 			case MAP_BATTLEARENA_PINNACLEPALAVER:
 			case MAP_BATTLEARENA_SHOCKWAVESHOWDOWN:
-				if (Rando.location_visuals & 4) {
+				if (Rando.location_visuals.crowns) {
 					if (param2 == CROWN_CONTROLLER) {
 						float x = 730.0f;
 						float y = 267.0f;
@@ -589,7 +582,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_TROFFNSCOFF:
-				if (Rando.location_visuals & 2) {
+				if (Rando.location_visuals.boss_doors) {
 					if (param2 == TNS_NUMBER) {
 						float x = 600.0f;
 						float y = 300.0f;
@@ -690,9 +683,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
-					if(param2 == JAPES_CAVE_GATE && Rando.switchsanity.japes.diddy_cave){
-						return 0;
-					}
 					return !Rando.tag_anywhere;
 				} else if (param2 == JAPES_RAMBI_DOOR) {
 					if (Player) {
@@ -996,22 +986,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			// case TREASURE_CHEST:
-			// 	if (param2 == CHEST_PEARL_0) {
-			// 		if (Rando.faster_checks.mermaid) {
-			// 			int pearls_collected = 0;
-			// 			for (int i = 0; i < 5; i++) {
-			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
-			// 			}
-			// 			if (pearls_collected >= 1) {
-			// 				for (int i = 0; i < 5; i++) {
-			// 					setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, FLAGTYPE_PERMANENT);
-			// 				}
-			// 				behaviour_pointer->next_state = 2;
-			// 			}
-			// 		}
-			// 	}
-			// 	break;
 			case MAP_CAVES5DIDK:
 				if (param2 == ICE_MAZE) {
 					if (behaviour_pointer->switch_pressed == index) {
@@ -1156,7 +1130,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || Rando.coin_door_open == 1;
+								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {
 								// Disable coin door text
 								return 1;

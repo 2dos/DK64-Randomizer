@@ -371,13 +371,14 @@ checkpoint_struct = [
     {"name": "y_pos", "type": "short"},
     {"name": "z_pos", "type": "short"},
     {"name": "angle", "type": "short"},
-    {"name": "unk8", "type": float},  # Range -1.0 to 1.0
-    {"name": "unkC", "type": float},  # Range -1.0 to 1.0
-    {"name": "visibility", "type": "byte"},  # 0 is goal, seal race is 1 (buoy?), invisible is 2
+    {"name": "unk8", "type": float},  # sin(angle)
+    {"name": "unkC", "type": float},  # cos(angle)
+    {"name": "visibility", "type": "byte"},  # 0 is goal, seal race is 1 (buoy?), 2 = Car Race Goal
     {"name": "unk11", "type": "byte"},  # Always 0
     {"name": "unk12", "type": "ushort"},  # Always 0
-    {"name": "unk14", "type": float},  # Seen values of 0.5-1.0 +/- epsilon
-    {"name": "unk18", "type": "ushort"},  # Always 512
+    {"name": "unk14", "type": float},  # Scale
+    {"name": "unk18", "type": "byte"},  # Flag Rendering Mode - Always 2
+    {"name": "unk19", "type": "byte"},  # Always 0
     {"name": "unk1A", "type": "ushort"},  # Seen values of 26,39,42,43,44,47,48,49,50,53,55,65,89,90,110,124
 ]
 

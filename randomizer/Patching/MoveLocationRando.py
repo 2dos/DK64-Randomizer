@@ -11,7 +11,6 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Lib import setItemReferenceName
 from randomizer.CompileHints import getHelmProgItems
 
-# /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
 # /* 0x0AF */ unsigned char diddy_crankymoves[7]; // See "dk_crankymoves"
 # /* 0x0B6 */ unsigned char lanky_crankymoves[7]; // See "dk_crankymoves"
@@ -244,8 +243,6 @@ def randomize_moves(spoiler):
                         applied_kong = Kongs.any
                     kong_lists[shop][kong][level] = applied_kong
         ROM_COPY = LocalROM()
-        ROM_COPY.seek(varspaceOffset + moveRandoOffset)
-        ROM_COPY.write(0x1)
         ROM_COPY.seek(movespaceOffset)
         writeMoveDataToROM(dk_crankymoves, hint_enabled, spoiler, 0, kong_lists[0][0])
         writeMoveDataToROM(diddy_crankymoves, hint_enabled, spoiler, 1, kong_lists[0][1])

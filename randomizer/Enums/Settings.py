@@ -49,6 +49,19 @@ class BananaportRando(IntEnum):
     crossmap_decoupled = 3
 
 
+class CBRando(IntEnum):
+    """Determines the level of CB Rando utilized.
+
+    off: CB Rando is disabled.
+    on: CB Rando is on in the main 7 levels.
+    on_with_isles: Same as "on", but expanded to include isles.
+    """
+
+    off = auto()
+    on = auto()
+    on_with_isles = auto()
+
+
 class CharacterColors(IntEnum):
     """Determines the colors for the Kongs, Rambi and Enguarde.
 
@@ -160,15 +173,14 @@ class FasterChecksSelected(IntEnum):
     factory_car_race = 5
     galleon_seal_race = 6
     galleon_mech_fish = 7
-    galleon_mermaid_gb = 8
-    forest_mill_conveyor = 9
-    forest_owl_race = 10
-    forest_rabbit_race = 11
-    caves_ice_tomato_minigame = 12
-    castle_minecart = 13
-    castle_car_race = 14
-    jetpac = 15
-    arcade = 16
+    forest_mill_conveyor = 8
+    forest_owl_race = 9
+    forest_rabbit_race = 10
+    caves_ice_tomato_minigame = 11
+    castle_minecart = 12
+    castle_car_race = 13
+    jetpac = 14
+    arcade = 15
 
 
 class FillAlgorithm(IntEnum):
@@ -333,7 +345,7 @@ class ItemRandoListSelected(IntEnum):
     """Item categories that may be randomized.
 
     These values are tied to the ItemRandoSelector in randomizer.Enums.Types.
-    The presence of "beanpearl" requires a different enum from Types.
+    The presence of "beanpearl" and "shopowners" requires a different enum from Types.
     """
 
     shop = 1
@@ -343,7 +355,7 @@ class ItemRandoListSelected(IntEnum):
     blueprint = 5
     key = 6
     medal = 7
-    coin = 8
+    nintendocoin = 8
     kong = 9
     fairy = 10
     rainbowcoin = 11
@@ -351,6 +363,8 @@ class ItemRandoListSelected(IntEnum):
     fakeitem = 13
     junkitem = 14
     crateitem = 15
+    rarewarecoin = 16
+    shopowners = 17
 
 
 class KasplatRandoSetting(IntEnum):
@@ -366,13 +380,6 @@ class KasplatRandoSetting(IntEnum):
     off = 0
     vanilla_locations = 1
     location_shuffle = 2
-
-
-class MusicFilters(IntEnum):
-    """Determine how music is filtered."""
-
-    length = 1
-    location = 1
 
 
 class RandomModels(IntEnum):
@@ -717,6 +724,7 @@ SettingsMap = {
     "activate_all_bananaports": ActivateAllBananaports,
     "bananaport_rando": BananaportRando,
     "bonus_barrels": MinigameBarrels,
+    "cb_rando": CBRando,
     "chunky_colors": CharacterColors,
     "coin_door_item": HelmDoorItem,
     "colorblind_mode": ColorblindMode,
@@ -732,6 +740,7 @@ SettingsMap = {
     "free_trade_setting": FreeTradeSetting,
     "fungi_time": FungiTimeSetting,
     "galleon_water": GalleonWaterSetting,
+    "gb_colors": CharacterColors,
     "glitches_selected": GlitchesSelected,
     "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
@@ -747,7 +756,6 @@ SettingsMap = {
     "misc_changes_selected": MiscChangesSelected,
     "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
-    "music_filtering_selected": MusicFilters,
     "rambi_colors": CharacterColors,
     "random_models": RandomModels,
     "random_prices": RandomPrices,
@@ -950,6 +958,8 @@ class SettingsStringEnum(IntEnum):
     faster_checks_selected = 165
     k_rool_vanilla_requirement = 166
     disable_hard_minigames = 167
+    chaos_blockers = 168
+    mermaid_gb_pearls = 169
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1010,7 +1020,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.bonus_barrel_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_location_rando: SettingsStringDataType.bool,
-    SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.cb_rando: CBRando,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.random_crates: SettingsStringDataType.bool,
@@ -1160,6 +1170,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.faster_checks_selected: SettingsStringDataType.list,
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
     SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
+    SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
+    SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
@@ -1206,6 +1218,7 @@ addSettingIntRange(SettingsStringEnum.krool_key_count, 8)
 addSettingIntRange(SettingsStringEnum.krool_phase_count, 5)
 addSettingIntRange(SettingsStringEnum.medal_cb_req, 100)
 addSettingIntRange(SettingsStringEnum.medal_requirement, 40)
+addSettingIntRange(SettingsStringEnum.mermaid_gb_pearls, 5)
 addSettingIntRange(SettingsStringEnum.rareware_gb_fairies, 20)
 addSettingIntRange(SettingsStringEnum.starting_kongs_count, 5)
 addSettingIntRange(SettingsStringEnum.starting_moves_count, 40)
