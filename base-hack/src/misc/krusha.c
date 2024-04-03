@@ -264,7 +264,7 @@ void OrangeGunCode(void) {
         CurrentActorPointer_0->yVelocity = extra->initial_yvelocity;
         CurrentActorPointer_0->noclip_byte = 0x3C;
         unkProjectileCode_0(CurrentActorPointer_0, 0x42700000);
-        unkProjectileCode_1(CurrentActorPointer_0, 0, 0, 0, 0x42480000, -1);
+        unkProjectileCode_1(CurrentActorPointer_0, 0.0f, 0.0f, 0.0f, 50.0f, -1);
         allocateBone(CurrentActorPointer_0, 0, 0, 0, -1);
         unkSpriteRenderFunc(-1);
         unkSpriteRenderFunc_1(1);

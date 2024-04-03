@@ -1,4 +1,4 @@
-{% macro list_selector(list, name, title, tooltip, size, includeDisclaimer=False) %}
+{% macro list_selector(list, name, title, tooltip, size, includeDisclaimer=False, overrideDisclaimer="") %}
     <!-- Icon triggers modal -->
     <input class="customize"
            type="button"
@@ -52,6 +52,11 @@
                         </div>
                     </div>
                 </div>
+                {% if overrideDisclaimer != "" %}
+                    <div class="fst-italic">
+                        <div>{{ overrideDisclaimer }}</div>
+                    </div>
+                {% endif %}
                 {% if includeDisclaimer %}
                     <div class="fst-italic">
                         <div>If nothing is selected, all options are treated as selected.</div>

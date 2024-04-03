@@ -48,6 +48,7 @@ QoLItems = [
     MultiselectorItem("Fast Pause Transitions", 22, "Pause Menu transitions are greatly sped up."),
     MultiselectorItem("Cannon Game Better Control", 23, "Hold A during the Galleon Cannon Game to reduce the rotation speed of the cannon."),
     MultiselectorItem("Better Fairy Camera", -1, "Fairy camera range has been increased, and the wall check has been removed to improve ease of taking photos."),
+    MultiselectorItem("Remove Enemy Cabin Timer", 24, "Removes the enemy 5-Door Cabin timer in Crystal Caves."),
 ]
 RemovedBarrierItems = [
     MultiselectorItem("Japes Coconut Gates", 5, "The gates that block the tunnels from Japes main to it's various tunnels will be opened."),
