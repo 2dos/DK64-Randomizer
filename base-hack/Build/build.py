@@ -1290,6 +1290,7 @@ with open(ROMName, "rb") as fh:
     readOverlayOriginalData(fh)
 
     print("[2 / 7] - Extracting files from ROM")
+    fixFactoryDiddyPincodeEnemies(fh)
     for x in file_dict:
         # N64Tex conversions do not need to be extracted to disk from ROM
         x.generateOutputFile()
