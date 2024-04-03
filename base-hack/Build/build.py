@@ -40,6 +40,7 @@ from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, rep
 from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
 from vanilla_move_data import writeVanillaMoveData
 from writeWarpData import generateDefaultPadPairing
+from enemy_fixes import fixFactoryDiddyPincodeEnemies
 
 if os.path.exists(newROMName):
     os.remove(newROMName)
