@@ -807,16 +807,28 @@ for x in range(221):
             )
         )
 for x in range(221):
-    file_dict.append(
-        File(
-            name=f"Character Spawners for map {x}",
-            pointer_table_index=TableNames.Spawners,
-            file_index=x,
-            source_file=f"charspawners{x}.bin",
-            target_size=0x1400,
-            do_not_recompress=True,
+    if x == 0x1A:
+        file_dict.append(
+            File(
+                name=f"Character Spawners for map {x}",
+                pointer_table_index=TableNames.Spawners,
+                file_index=x,
+                source_file="factory_spawners.bin",
+                target_size=0x1400,
+                do_not_recompress=True,
+                do_not_delete_source=True,
+            )
         )
-    )
+    else:
+        file_dict.append(
+            File(
+                name=f"Character Spawners for map {x}",
+                pointer_table_index=TableNames.Spawners,
+                file_index=x,
+                source_file=f"charspawners{x}.bin",
+                target_size=0x1400,
+                do_not_recompress=True,
+            )
 file_dict.append(
     File(
         name="Dark Cloud",
