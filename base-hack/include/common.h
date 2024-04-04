@@ -11,7 +11,7 @@
 #define SONG_COUNT 176
 #define ENEMIES_TOTAL 426
 #define ENEMY_REWARD_CACHE_SIZE 16
-#include "ultra64.h"
+#include "../include2/ultra64.h"
 #include "common_enums.h"
 #include "common_structs.h"
 #include "dynamic_structs.h"

@@ -170,16 +170,16 @@ extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, i
 extern void displayShopIcon(behaviour_data* behaviour_data, int id, int image_index, int unk0);
 extern void hideShop(behaviour_data* behaviour_data, int id, int unk0, int unk1);
 
-extern int* initDisplayList(int* dl);
-extern int* initDisplayList_0(int* dl);
+extern Gfx* initDisplayList(Gfx* dl);
+extern Gfx* initDisplayList_0(Gfx* dl);
 extern int getTextStyleHeight(int style);
-extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, char unk0);
-extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
+extern Gfx* displayText(Gfx* dl, int style, int x, int y, void* text_pointer, char unk0);
+extern Gfx* displayImage(Gfx* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
 extern void getScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk8, float scale, char player_index);
-extern int* textDraw(int* dl, int style, int x, int y, char* str);
+extern Gfx* textDraw(Gfx* dl, int style, int x, int y, char* str);
 extern void* getPtr14Texture(int texture);
-extern void renderImage_Internal(void* dl, void* texture, int unk0, int width, int height, int unk1, int unk1_copy, int unk2, int unk2_copy, float width_f, float height_f, float x_center, float y_center, int unk3);
-extern int* displayChunk(int* dl, int chunk_index, int shift);
+extern void renderImage_Internal(Gfx* dl, void* texture, int unk0, int width, int height, int unk1, int unk1_copy, int unk2, int unk2_copy, float width_f, float height_f, float x_center, float y_center, int unk3);
+extern Gfx* displayChunk(Gfx* dl, int chunk_index, int shift);
 
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);
@@ -278,8 +278,8 @@ extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
 extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
 extern int ReadFile(int data, int kong, int level, int file);
 extern void SaveToFile(int data, int kong, int level, int file, int value);
-extern int* printText(int* dl, short x, short y, float scale, char* str);
-extern int* printOutOfCounter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
+extern Gfx* printText(Gfx* dl, short x, short y, float scale, char* str);
+extern Gfx* printOutOfCounter(int x, int y, int top, int bottom, Gfx* dl, int unk0, int scale);
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);

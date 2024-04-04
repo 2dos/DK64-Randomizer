@@ -37,7 +37,7 @@ typedef struct text_params {
     - Text Bubble Color: 806a3cb2
 */
 
-int* displayModifiedText(int* dl, int style, int x, int y, char* text, text_params* params) {
+Gfx* displayModifiedText(int* dl, int style, int x, int y, char* text, text_params* params) {
     /**
      * @brief Display function for rendering a textbox with modified text colors
      */
@@ -49,7 +49,7 @@ int* displayModifiedText(int* dl, int style, int x, int y, char* text, text_para
             *(unsigned int*)(dl_old) = emph_text_colors[i] | (*(int*)(dl_old) & 0xFF);
         }
     }
-    return displayText(dl, style, x, y, text, 0);
+    return displayText((Gfx*)dl, style, x, y, text, 0);
 }
 
 void initTextChanges(void) {

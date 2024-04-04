@@ -486,7 +486,7 @@ void getHintRegionText(void) {
     }
 }
 
-int* displayHintRegion(int* dl, int x, int y, float scale, char* text) {
+Gfx* displayHintRegion(Gfx* dl, int x, int y, float scale, char* text) {
     dl = printText(dl, x, y, scale, text);
     int y_req = 0x198;
     if (Rando.warp_to_isles_enabled) {
@@ -497,7 +497,6 @@ int* displayHintRegion(int* dl, int x, int y, float scale, char* text) {
     }
     int x_hint = 0x280;
     int y_bottom = 240;
-    *(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFFFF;
+    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
     return printText(dl, x_hint, (y_bottom << 2) - 100, 0.45f, (char*)&hint_region_text);
 }

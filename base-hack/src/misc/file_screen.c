@@ -507,7 +507,7 @@ int getTrackerYOffset(void) {
 	return y_temp;
 }
 
-int* display_file_images(int* dl, int y_offset) {
+Gfx* display_file_images(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display images on the file screen
 	 * 
@@ -522,7 +522,7 @@ int* display_file_images(int* dl, int y_offset) {
 	return dl;
 }
 
-int* display_text(int* dl) {
+Gfx* display_text(Gfx* dl) {
 	/**
 	 * @brief Display Text on the file screen
 	 * 
@@ -555,7 +555,7 @@ int* display_text(int* dl) {
 static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
 #define INFO_Y_DIFF 50
 
-int* displayHash(int* dl, int y_offset) {
+Gfx* displayHash(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display seed hash on the file screen
 	 * 
@@ -782,7 +782,7 @@ static char* inverted_controls_str[] = {
 	"NON-INVERTED"
 };
 
-int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
+Gfx* displayInverted(Gfx* dl, int style, int x, int y, char* str, int unk0) {
 	/**
 	 * @brief Display the inverted controls text on the options screen
 	 * 

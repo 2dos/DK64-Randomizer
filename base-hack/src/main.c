@@ -402,7 +402,7 @@ static unsigned char ammo_hud_timer = 0;
 #define LOADBAR_DIVISOR 35
 
 #define INFO_STYLE 6
-int* drawInfoText(int* dl, int x_offset, int y, char* str, int error) {
+Gfx* drawInfoText(Gfx* dl, int x_offset, int y, char* str, int error) {
 	int x = 93 + x_offset;
 	if (x_offset == -1) {
 		x = getCenter(INFO_STYLE,str);
@@ -414,7 +414,7 @@ int* drawInfoText(int* dl, int x_offset, int y, char* str, int error) {
 	return drawTextContainer(dl, INFO_STYLE, x, y, str, 0xFF, non_red, non_red, 255, 0);
 }
 
-int* displayListModifiers(int* dl) {
+Gfx* displayListModifiers(Gfx* dl) {
 	if (CurrentMap != MAP_NINTENDOLOGO) {
 		if (CurrentMap == MAP_NFRTITLESCREEN) {
 			wait_progress_timer += 1;

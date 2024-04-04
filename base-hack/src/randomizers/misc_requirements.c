@@ -1,6 +1,6 @@
 #include "../../include/common.h"
 
-int* writeHUDAmount(char* str_location, char* format, int value, int item_index, int* dl) {
+Gfx* writeHUDAmount(char* str_location, char* format, int value, int item_index, Gfx* dl) {
 	int found = 0;
 	int amt = -1;
 	if (item_index == 0xB) {
@@ -38,8 +38,7 @@ int* writeHUDAmount(char* str_location, char* format, int value, int item_index,
 	}
 	if (found) {
 		dk_strFormat(str_location,"%dl%d",value,amt);
-		*(unsigned int*)(dl++) = 0xDA380003;
-		*(unsigned int*)(dl++) = (int)&style6Mtx[0];
+		gSPMatrix(dl++, (int)&style6Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 	} else {
 		dk_strFormat(str_location,"%d",value);
 	}

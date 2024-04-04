@@ -13,7 +13,7 @@
 static char igt_text[20] = "IGT: 0000:00:00";
 static int stored_igt = 0;
 
-int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
+Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     /**
      * @brief Print Level In-Game time to screen
      */
@@ -210,7 +210,7 @@ void handleCShifting(char* value, char limit) {
     }
 }
 
-int* pauseScreen3And4Header(int* dl) {
+Gfx* pauseScreen3And4Header(Gfx* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
      * 
@@ -245,7 +245,7 @@ int* pauseScreen3And4Header(int* dl) {
 
 static char teststr[5] = "";
 
-int* drawTextPointers(int* dl) {
+Gfx* drawTextPointers(Gfx* dl) {
     if ((TBVoidByte & 2) && (display_billboard_fix)) {
         dk_strFormat((char *)teststr, "%d", hints_initialized);
         dl = drawPixelTextContainer(dl, 0, 0, teststr, 0, 0, 0, 0xFF, 1);
@@ -253,7 +253,7 @@ int* drawTextPointers(int* dl) {
     return dl;
 }
 
-int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
+Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text) {
     /**
      * @brief Changes the item name depending on the screen you're on
      */
@@ -267,7 +267,7 @@ int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
     return dl;
 }
 
-int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk0, int scale) {
     /**
      * @brief Changes the counter on-screen depending on what screen you're on
      */
@@ -334,7 +334,7 @@ void updateFileVariables(void) {
     initCarousel_onPause();
 }
 
-int* handleOutOfCounters(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+Gfx* handleOutOfCounters(int x, int y, int top, int bottom, Gfx* dl, int unk0, int scale) {
     /**
      * @brief Handle the "out of" counters to be corrected
      */

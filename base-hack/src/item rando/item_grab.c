@@ -321,7 +321,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
     return getCollectableOffset(collectable_type, obj_type, is_homing);
 }
 
-int* controlKeyText(int* dl) {
+Gfx* controlKeyText(Gfx* dl) {
     /**
      * @brief Handle the key text to be displayed upon picking up a boss key
      * 
@@ -337,10 +337,8 @@ int* controlKeyText(int* dl) {
             key_opacity = 25 * (100 - key_timer);
         }
         dl = initDisplayList(dl);
-        *(unsigned int*)(dl++) = 0xFCFF97FF;
-	    *(unsigned int*)(dl++) = 0xFF2CFE7F;
-        *(unsigned int*)(dl++) = 0xFA000000;
-        *(unsigned int*)(dl++) = 0xFFFFFF00 | key_opacity;
+        gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, key_opacity);
         dk_strFormat(key_text, "KEY %d", key_index + 1);
         dl = displayText(dl,1,640,750,key_text,0x80);
         key_timer -= 1;

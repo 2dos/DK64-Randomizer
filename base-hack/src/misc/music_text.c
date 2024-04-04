@@ -49,7 +49,7 @@ void initSongDisplay(int song) {
     }
 }
 
-int* displaySongNameHandler(int* dl) {
+Gfx* displaySongNameHandler(Gfx* dl) {
     if ((!Rando.show_music_name) || (display_timer == 0)) {
         return dl;
     }
@@ -72,21 +72,14 @@ int* displaySongNameHandler(int* dl) {
         _guMtxCatF(&mtx0, &mtx1, &mtx0);
         _guMtxF2L(&mtx0, &static_mtx[20 + i]);
 
-        *(unsigned int*)(dl++) = 0xDE000000;
-        *(unsigned int*)(dl++) = 0x01000118;
-        *(unsigned int*)(dl++) = 0xDA380002;
-        *(unsigned int*)(dl++) = 0x02000180;
-        *(unsigned int*)(dl++) = 0xE7000000;
-        *(unsigned int*)(dl++) = 0x00000000;
-        *(unsigned int*)(dl++) = 0xFCFF97FF;
-        *(unsigned int*)(dl++) = 0xFF2CFE7F;
-        *(unsigned int*)(dl++) = 0xFA000000;
-        *(unsigned int*)(dl++) = 0xFFFFFFFF;
-        *(unsigned int*)(dl++) = 0xDA380002;
-        *(unsigned int*)(dl++) = (int)&static_mtx[20 + i];
-        dl = displayText((int*)dl,6,0,0,displayed_text_music + (displayed_text_offset * i),0);
-        *(unsigned int*)(dl++) = 0xD8380002;
-        *(unsigned int*)(dl++) = 0x00000040;
+        gSPDisplayList(dl++, 0x01000118);
+        gSPMatrix(dl++, 0x02000180, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gDPPipeSync(dl++);
+        gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+        gSPMatrix(dl++, (int)&static_mtx[20 + i], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        dl = displayText(dl,6,0,0,displayed_text_music + (displayed_text_offset * i),0);
+        gSPPopMatrix(dl++, G_MTX_MODELVIEW);
     }
     return dl;
 }

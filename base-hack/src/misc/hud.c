@@ -461,7 +461,7 @@ int canUseDPad(void) {
     return CAN_USE_DPAD | CAN_SHOW_DPAD;
 }
 
-int* drawDPad(int* dl) {
+Gfx* drawDPad(Gfx* dl) {
     /**
      * @brief Draws the DPad menu
      * 

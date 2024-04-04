@@ -18,7 +18,7 @@ static const char* char_list[] = {
 
 static char temporary_filename[FILENAME_LENGTH + 1] = "";
 
-int* filename_displaylist(actorData* actor, int* dl) {
+Gfx* filename_displaylist(actorData* actor, Gfx* dl) {
 	menu_controller_paad* paad = actor->paad;
 	float x = 0.0f;
 	float y = 0.0f;

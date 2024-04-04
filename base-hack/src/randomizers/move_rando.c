@@ -503,31 +503,22 @@ typedef struct move_overlay_paad {
 	/* 0x094 */ actorData* shop_owner;
 } move_overlay_paad;
 
-unsigned int* displayMoveText(unsigned int* dl, actorData* actor) {
+Gfx* displayMoveText(Gfx* dl, actorData* actor) {
 	move_overlay_paad* paad = actor->paad;
-	*(unsigned int*)(dl++) = 0xDE000000;
-	*(unsigned int*)(dl++) = 0x01000118;
-	*(unsigned int*)(dl++) = 0xDA380002;
-	*(unsigned int*)(dl++) = 0x02000180;
-	*(unsigned int*)(dl++) = 0xE7000000;
-	*(unsigned int*)(dl++) = 0x00000000;
-	*(unsigned int*)(dl++) = 0xFCFF97FF;
-	*(unsigned int*)(dl++) = 0xFF2CFE7F;
-	*(unsigned int*)(dl++) = 0xFA000000;
-	*(unsigned int*)(dl++) = 0xFFFFFF00 | paad->opacity;
+	gSPDisplayList(dl++, 0x01000118);
+	gSPMatrix(dl++, 0x02000180, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+	gDPPipeSync(dl++);
+	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, paad->opacity);
 	if (paad->upper_text) {
-		*(unsigned int*)(dl++) = 0xDA380002;
-		*(unsigned int*)(dl++) = (int)&paad->unk_10;
-		dl = (unsigned int*)displayText((int*)dl,1,0,0,paad->upper_text,0x80);
-		*(unsigned int*)(dl++) = 0xD8380002;
-		*(unsigned int*)(dl++) = 0x00000040;
+		gSPMatrix(dl++, (int)&paad->unk_10, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+		dl = displayText(dl,1,0,0,paad->upper_text,0x80);
+		gSPPopMatrix(dl++, G_MTX_MODELVIEW);
 	}
 	if (paad->lower_text) {
-		*(unsigned int*)(dl++) = 0xDA380002;
-		*(unsigned int*)(dl++) = (int)&paad->unk_50;
-		dl = (unsigned int*)displayText((int*)dl,6,0,0,paad->lower_text,0x80);
-		*(unsigned int*)(dl++) = 0xD8380002;
-		*(unsigned int*)(dl++) = 0x00000040;
+		gSPMatrix(dl++, (int)&paad->unk_50, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+		dl = displayText(dl,6,0,0,paad->lower_text,0x80);
+		gSPPopMatrix(dl++, G_MTX_MODELVIEW);
 	}
 	return dl;
 }

@@ -119,7 +119,7 @@ void initProgressiveTimer(void) {
     progressive_ding_timer = 52;
 }
 
-int* renderProgressiveSprite(int* dl) {
+Gfx* renderProgressiveSprite(Gfx* dl) {
     return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8);
 }
 
@@ -176,7 +176,7 @@ void wipeHintCache(void) {
     hints_initialized = 0;
 }
 
-int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
+Gfx* drawHintText(Gfx* dl, char* str, int x, int y, int opacity, int center) {
     mtx_item mtx0;
     mtx_item mtx1;
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
@@ -190,31 +190,23 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
     _guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
     _guMtxF2L(&mtx0, &static_mtx[(int)mtx_counter]);
-
-    *(unsigned int*)(dl++) = 0xDE000000;
-	*(unsigned int*)(dl++) = 0x01000118;
-	*(unsigned int*)(dl++) = 0xDA380002;
-	*(unsigned int*)(dl++) = 0x02000180;
-	*(unsigned int*)(dl++) = 0xE7000000;
-	*(unsigned int*)(dl++) = 0x00000000;
-	*(unsigned int*)(dl++) = 0xFCFF97FF;
-	*(unsigned int*)(dl++) = 0xFF2CFE7F;
-	*(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFF00 | opacity;
-    *(unsigned int*)(dl++) = 0xDA380002;
-    *(unsigned int*)(dl++) = (int)&static_mtx[(int)mtx_counter];
+    gSPDisplayList(dl++, 0x01000118);
+    gSPMatrix(dl++, 0x02000180, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gDPPipeSync(dl++);
+    gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
+    gSPMatrix(dl++, (int)&static_mtx[(int)mtx_counter], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     int data = 0x80;
     if (!center) {
         data = 0;
     }
-    dl = displayText((int*)dl,6,0,0,str,data);
+    dl = displayText(dl,6,0,0,str,data);
     mtx_counter += 1;
-    *(unsigned int*)(dl++) = 0xD8380002;
-    *(unsigned int*)(dl++) = 0x00000040;
+    gSPPopMatrix(dl++, G_MTX_MODELVIEW);
     return dl;
 }
 
-int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
+Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
     int curr_y = y;
     int string_length = cstring_strlen(str);
     int trigger_ellipsis = 0;
@@ -325,9 +317,8 @@ int showHint(int level, int kong) {
     return checkFlag(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
 }
 
-int* displayBubble(int* dl) {
-    *(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFF96;
+Gfx* displayBubble(Gfx* dl) {
+    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0x96);
     int bubble_x = 625;
     return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
 }
@@ -380,7 +371,7 @@ void initHintFlags(void) {
     }
 }
 
-int* drawHintScreen(int* dl, int level_x) {
+Gfx* drawHintScreen(Gfx* dl, int level_x) {
     display_billboard_fix = 1;
     dl = printText(dl, level_x, 0x3C, 0.65f, "HINTS");
     // Handle Controls
@@ -415,7 +406,7 @@ int* drawHintScreen(int* dl, int level_x) {
     return dl;
 }
 
-int* drawItemLocationScreen(int* dl, int level_x) {
+Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
     display_billboard_fix = 1;
     dl = printText(dl, level_x, 0x3C, 0.65f, "ITEM LOCATIONS");
     // Handle Controls

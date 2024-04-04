@@ -13,6 +13,9 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "xutility": "c"
+        "xutility": "c",
+        "common_enums.h": "c",
+        "dynamic_structs.h": "c",
+        "common_structs.h": "c"
     }
 }
