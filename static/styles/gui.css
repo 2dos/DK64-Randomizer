@@ -15,12 +15,12 @@ button:disabled {
 }
 
 a:link:not(.no-decoration) {
-  color: #e3e3e3;
+  color: var(--bs-body-color);
   text-decoration: none;
 }
 
 a:visited {
-  color: #e3e3e3;
+  color: var(--bs-body-color);
 }
 
 a:hover {
@@ -73,16 +73,16 @@ input[type="number"]::-webkit-inner-spin-button{background-color:#252525;color:#
 }
 
 #seed {
-  background-color: #252525;
-  color: #e3e3e3;
-  border-color: #ced4da;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  border-color: var(--bs-body-color);
   height: 35px;
 }
 
 #settings_string {
-  background-color: #252525;
-  color: #e3e3e3;
-  border-color: #ced4da;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  border-color: var(--bs-body-color);
   height: 35px;
   min-width: 300px;
 }
@@ -213,7 +213,7 @@ body {
 }
 
 footer {
-  background-color: #1f1e1e;
+  background-color: var(--bs-body-bg);
   flex: 0 0 50px;
   margin-top: auto;
 }
@@ -241,19 +241,23 @@ footer {
 
 .nav-tabs .nav-link {
   background-color: rgba(0, 0, 0, 0);
-  border-color: #ced4da;
-  color: #e3e3e3;
+  border-color: var(--bs-body-color);
+  color: var(--bs-body-color);
 }
 
+
 .nav-tabs .nav-link.active {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), #212529);
-  border-color: #ced4da;
-  color: #e3e3e3;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), var(--bs-body-bg));
+  border-color: var(--bs-body-color);
+  color: var(--bs-body-color);
   border-bottom: none;
 }
 
+html[data-bs-theme="light"] .nav-tabs .nav-link.active {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), var(--bs-body-bg));
+}
 .nav-tabs .nav-link:not(.active) {
-  border-bottom: 1px solid #ced4da;
+  border-bottom: 1px solid var(--bs-body-color);
 }
 
 #nav-tab .nav-link {
@@ -308,10 +312,6 @@ footer {
 
 .nav-pills > .nav-item:not(.active):hover {
   color: #048243;
-}
-
-div {
-  color: #e3e3e3;
 }
 
 .checkboxes label {
@@ -571,6 +571,15 @@ i {
 
 .nav-tabs .nav-link .select-title {
   min-width: 8px;
+}
+
+#light-switch {
+  color: var(--bs-white);
+  transition: all 0.5s;
+}
+
+#light-switch:hover {
+  color: var(--bs-gray);
 }
 
 .panel {
@@ -844,6 +853,10 @@ html {
   padding-bottom: 1rem;
   background-color: rgba(0, 0, 0, 0.7);
 }
+html[data-bs-theme="light"] .navbar-custom {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
 .navbar-custom .navbar-brand {
   text-transform: uppercase;
   font-size: 1rem;
@@ -928,4 +941,9 @@ header.masthead .bg-circle-4 {
 .settings-errors {
   background: darkred; 
   padding: 15px;
+}
+
+.footer-info {
+  color: var(--bs-body-color);
+  font-size: small;
 }
