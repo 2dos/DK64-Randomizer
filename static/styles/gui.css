@@ -236,8 +236,7 @@ footer {
 }
 
 .nav-tabs .nav-link .tab-full-name {
-  display: none;
-  padding-left: 0.5rem;
+  padding-left: 0;
 }
 
 .nav-tabs .nav-link {
@@ -253,8 +252,32 @@ footer {
   border-bottom: none;
 }
 
+.nav-tabs .nav-link:not(.active) {
+  border-bottom: 1px solid #ced4da;
+}
+
+#nav-tab .nav-link {
+  transition: all 0.3s;
+}
+
+#nav-tab .nav-link .tab-full-name {
+  transition: all 0.3s;
+}
+
+#nav-tab .nav-link:not(.active) .tab-full-name {
+  white-space: nowrap;
+  overflow-x: hidden;
+  max-width: 0px;
+}
+
+#nav-tab .nav-link:not(.active):hover .tab-full-name {
+  max-width: 900px; /* Large amount of width to account for all tab lengths. 100% doesn't properly work */
+  padding-left: 0.5rem;
+}
+
 .nav-tabs .nav-link.active .tab-full-name {
   display: block;
+  padding-left: 0.5rem;
 }
 
 #nav-gen-type button.nav-link:hover {
