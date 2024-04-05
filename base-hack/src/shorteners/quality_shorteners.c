@@ -133,18 +133,23 @@ void fastWarp_playMusic(void* actor) {
 }
 
 void fastWarpShockwaveFix(void) {
-    if (Rando.fast_warp) {
-        if (Player) {
-            if (Player->control_state == 0x54) { // Multiplayer Warp
-                if (Player->shockwave_timer != -1) { // Charging Shockwave
-                    if (Player->shockwave_timer < 5) {
-                        Player->shockwave_timer += 1;
-                        if (Player->shockwave_timer < 2) {
-                            Player->shockwave_timer += 1; // Prevent ever being a frame where you can shockwave
-                        }
-                    }
-                }
-            }
-        }
+    if (!Rando.fast_warp) {
+        return;
+    }
+    if (!Player) {
+        return;
+    }
+    if (Player->control_state != 0x54) { // Not Multiplayer Warp
+        return;
+    }
+    if (Player->shockwave_timer == -1) { // Not Charging Shockwave
+        return;
+    }
+    if (Player->shockwave_timer >= 5) {
+        return;
+    }
+    Player->shockwave_timer += 1;
+    if (Player->shockwave_timer < 2) {
+        Player->shockwave_timer += 1; // Prevent ever being a frame where you can shockwave
     }
 }

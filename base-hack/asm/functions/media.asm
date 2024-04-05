@@ -11,3 +11,4 @@
 .definelabel getTrackChannel, 0x8060245C
 .definelabel playBonusCutsceneWrapper, 0x80627948
 .definelabel handleMusicTransition, 0x80605510
+.definelabel playSFXAtXYZ, 0x806086CC

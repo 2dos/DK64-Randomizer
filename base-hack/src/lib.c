@@ -1297,3 +1297,16 @@ int isItemRequirementSatisfied(ItemRequirement* req) {
 	}
 	return getItemCountReq(req->item) >= req->count;
 }
+
+purchase_struct* getShopData(vendors vendor, int kong, int level) {
+	if (vendor == SHOP_CRANKY) {
+		return &CrankyMoves_New[kong][level];
+	}
+	if (vendor == SHOP_FUNKY) {
+		return &FunkyMoves_New[kong][level];
+	}
+	if (vendor == SHOP_CANDY) {
+		return &CandyMoves_New[kong][level];
+	}
+	return 0;
+}

@@ -343,7 +343,6 @@ void initHack(int source) {
 			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
 			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
 			initActorExpansion();
-			initPathExpansion();
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
@@ -510,6 +509,9 @@ void initHack(int source) {
 				// Rain
 				*(short*)(0x8068B6AE) = 0;
 			}
+			if (Rando.balloon_sound) {
+				writeFunction(0x806A77D8, &playBalloonWhoosh);
+			}
 			writeFunction(0x806F93D4, &gbUpdateHandler);
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
 				writeFunction(0x80656538, &displayNoGeoChunk);
@@ -557,7 +559,3 @@ void quickInit(void) {
 }
 
 int balloon_path_pointers[PATH_CAP];
-
-void initPathExpansion(void) {
-	*(short*)(0x80722E92) = PATH_CAP;
-}

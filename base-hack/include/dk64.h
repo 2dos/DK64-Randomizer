@@ -198,6 +198,7 @@ extern int canHitSwitch(void);
 extern void setSomeTimer(int model2_type);
 extern int indexOfNextObj(int id);
 extern int playSFXFromObject(int object_index, short sfx, char unk0, char unk1, char unk2, char unk3, float unk4);
+extern int playSFXAtXYZ(float x, float y, float z, int sfx, int unk0, int unk1, int unk2, int unk3, float unk4);
 
 extern void unkMultiplayerWarpFunction(void* actor, int player_index);
 extern void renderScreenTransition(int transition_type);
@@ -252,7 +253,7 @@ extern void getObjectPosition(int index, int unk0, int unk1, void* x, void* y, v
 
 extern void setActorModel(void* actor, int index);
 extern void spawn3DActor(spawnerPacket* packet);
-extern int getChunk(float x, float y, int z, int unk0);
+extern int getChunk(float x, float y, float z, int unk0);
 
 extern int crystalsUnlocked(int kong);
 extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
@@ -342,6 +343,7 @@ extern int getKong(int player_index);
 extern int spawnModelTwo(int type, float x, float y, float z, float scale, int id);
 extern void refreshItemVisibility(void);
 
+extern void getPathPosition(int path_index, float* x, float* y, float* z);
 extern void updateGBCountHUD(int player);
 
 extern void* getActorModel(void* actor, int model_index, int unk0);
@@ -729,6 +731,7 @@ extern char RambiArenaComboChain[16];
 
 extern char* AnimationPointer;
 extern unsigned short StoredOrangeCount;
+extern path_data_struct* PathData[32];
 
 //hack data
 extern int TestVariable;

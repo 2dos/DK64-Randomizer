@@ -234,6 +234,52 @@ void updateMultibunchCount(void) {
 	}
 }
 
+typedef struct balloon_paad {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ char speed;
+	/* 0x002 */ char local_path_index;
+	/* 0x003 */ char unk3;
+	/* 0x004 */ short unk4;
+	/* 0x006 */ short flag;
+} balloon_paad;
+
+#define COMPLEX_BALLOON_WHOOSH 1
+
+void playBalloonWhoosh(int path_index, float* x, float* y, float* z) {
+	// Calculate when to play SFX
+	getPathPosition(path_index, x, y, z);
+	if (CurrentActorPointer_0->chunk == -1) {
+		CurrentActorPointer_0->chunk = getChunk(CurrentActorPointer_0->xPos, CurrentActorPointer_0->yPos, CurrentActorPointer_0->zPos, 0);
+	}
+	if (CurrentActorPointer_0->chunk != Player->chunk) {
+		return;
+	}
+	if (COMPLEX_BALLOON_WHOOSH) {
+		path_data_struct* local_path = PathData[path_index];
+		if (local_path->segment_index != 0) {
+			return;
+		}
+		int next_segment = local_path->segment_index + 1;
+		if (next_segment >= local_path->segment_count) {
+			next_segment = 0;
+		}
+		float current_position = local_path->segment_position;
+		float current_speed = local_path->segments[local_path->segment_index].speed;
+		float speed_delta = local_path->segments[next_segment].speed - current_speed;
+		float multiplier = (current_speed + (speed_delta * current_position)) / 300.0f;
+		float position_delta = local_path->path_global_speed * multiplier;
+		if ((current_position < 0.5f) || ((current_position - position_delta) >= 0.5f)) {
+			return;
+		}
+	} else {
+		if (ActorTimer & 0x3F) {
+			return;
+		}
+		// Play SFX once every 64f (~2.13s)
+	}
+	playSFXAtXYZ(CurrentActorPointer_0->xPos, CurrentActorPointer_0->yPos, CurrentActorPointer_0->zPos, 526, 0xFF, 0x7F, 0x1E, 0x4B, 0.3f);
+}
+
 void RabbitRaceInfiniteCode(void) {
 	/**
 	 * @brief Change Rabbit Race so that upon starting the race, you get infinite Crystal Coconuts

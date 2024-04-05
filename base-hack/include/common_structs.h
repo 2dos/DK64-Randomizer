@@ -114,7 +114,8 @@ typedef struct actorData {
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ short draw_distance;
-	/* 0x12C */ char unk_12C[0x132-0x12C];
+	/* 0x12C */ short chunk;
+	/* 0x12E */ char unk_12E[0x132-0x12E];
 	/* 0x132 */ short subdata;
 	/* 0x134 */ short health;
 	/* 0x136 */ char unk_136[0x138-0x136];
@@ -1767,3 +1768,30 @@ typedef struct LocationVisuals {
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } LocationVisuals;
+
+typedef struct path_segment_struct {
+	/* 0x000 */ short unk0;
+	/* 0x002 */ short x;
+	/* 0x004 */ short y;
+	/* 0x006 */ short z;
+	/* 0x008 */ char speed;
+	/* 0x009 */ char unk1;
+} path_segment_struct;
+
+typedef struct path_data_struct {
+	/* 0x000 */ void* tied_actor;
+	/* 0x004 */ path_segment_struct* segments;
+	/* 0x008 */ short segment_count;
+	/* 0x00A */ char unk_0A[2];
+	/* 0x00C */ float segment_position;
+	/* 0x010 */ int segment_index;
+	/* 0x014 */ char unk14;
+	/* 0x015 */ char unk15;
+	/* 0x016 */ char unk16;
+	/* 0x017 */ char unk17;
+	/* 0x018 */ int unk18;
+	/* 0x01C */ int path_cycle_count;
+	/* 0x020 */ char path_global_speed;
+	/* 0x021 */ char unk21;
+	/* 0x022 */ char unk_22[0x30-0x22];
+} path_data_struct;

@@ -180,6 +180,13 @@ def getLoSym(ref: str) -> int:
         raise Exception(f"Couldn't find hook {ref}.")
     return getLo(label_address)
 
+def getVar(ref: str) -> int:
+    """Get variable value."""
+    label_value = js.rom_symbols["vars"].get(ref.lower(), None)
+    if label_value is None:
+        raise Exception(f"Couldn't find variable {ref}.")
+    return label_value
+
 
 CUSTOM_ACTORS_START = 345
 
@@ -1567,6 +1574,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8072431E, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
     writeValue(ROM_COPY, 0x807245DE, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
     writeValue(ROM_COPY, 0x807245E6, Overlay.Static, getLoSym("balloon_path_pointers"), offset_dict)
+    writeValue(ROM_COPY, 0x80722E92, Overlay.Static, getVar("path_cap"), offset_dict)
 
     # Expand Enemy Drops Table
     writeValue(ROM_COPY, 0x806A5CA6, Overlay.Static, getHiSym("drops"), offset_dict, 2)

@@ -118,3 +118,4 @@
 .definelabel funkyCode, 0x80027738
 .definelabel candyCode, 0x800275FC
 .definelabel snideCode, 0x80024CB0
+.definelabel getPathPosition, 0x807238D4

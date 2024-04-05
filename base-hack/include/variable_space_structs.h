@@ -153,7 +153,8 @@ typedef struct varspace {
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char unk_1e1;
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
-	/* 0x1E3 */ char unk_1e3[0x1E8-0x1e3];
+	/* 0x1E3 */ char unk_1e3[0x1E7-0x1e3];
+	/* 0x1E7 */ char balloon_sound;
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 	/* 0x1EC */ unsigned char check_shop_flags; // Bitfield of pre-given shops: rfcs 0000. r = Cranky, f = Funky, c = Candy, s = Snide

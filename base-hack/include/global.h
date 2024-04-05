@@ -70,7 +70,6 @@ extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
 extern void PatchBonusCode(void);
 extern void FileScreenDLCode_Write(void);
-extern void remove_blockers(void);
 extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
@@ -339,7 +338,6 @@ extern int isFlagInRange(int test_flag, int start_flag, int count);
 
 extern void wipeHintCache(void);
 extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
-extern void initPathExpansion(void);
 
 extern int initFile_hasGun(int kong);
 extern int initFile_hasInstrument(int kong);
@@ -409,6 +407,9 @@ extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
 extern void snideCodeHandler(void);
+
+extern purchase_struct* getShopData(vendors vendor, int kong, int level);
+extern void playBalloonWhoosh(int path_index, float* x, float* y, float* z);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

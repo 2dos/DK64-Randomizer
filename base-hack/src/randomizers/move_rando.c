@@ -99,14 +99,7 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	int shop_owner = CurrentActorPointer_0->actorType;
 	int p_index = 0;
 	if (has_entered_level) {
-		purchase_struct* selected = 0;
-		if (shop_owner == 0xBD) { // Cranky
-			selected = &CrankyMoves_New[(int)Character][world];
-		} else if (shop_owner == 0xBE) { // Funky
-			selected = &FunkyMoves_New[(int)Character][world];
-		} else if (shop_owner == 0xBF) { // Candy
-			selected = &CandyMoves_New[(int)Character][world];
-		}
+		purchase_struct* selected = getShopData(shop_owner - 0xBD, Character, world);
 		if (selected) {
 			int p_type = selected->purchase_type;
 			int p_kong = selected->move_kong;

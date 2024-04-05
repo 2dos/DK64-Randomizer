@@ -31,6 +31,18 @@ typedef struct skipped_cutscene {
     /* 0x001 */ unsigned char cutscene;
 } skipped_cutscene;
 
+static skipped_cutscene cs_unskip[] = {
+    {.map=MAP_FACTORY, .cutscene=2}, // Diddy Prod Spawn
+    {.map=MAP_FACTORY, .cutscene=3}, // Tiny Prod Peek
+    {.map=MAP_FACTORY, .cutscene=4}, // Lanky Prod Peek
+    {.map=MAP_FACTORY, .cutscene=5}, // Chunky Prod Spawn
+    {.map=MAP_AZTEC, .cutscene=14}, // Free Llama
+    {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=0}, // Tiny Barrel Spawn
+    {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=1}, // Cannon GB Spawn
+    {.map=MAP_CASTLEGREENHOUSE, .cutscene=0}, // Greenhouse Intro
+    {.map=MAP_CASTLEDUNGEON, .cutscene=0}, // Dungeon Lanky Trombone Bonus
+};
+
 void initQoL_Cutscenes(void) {
     /**
      * @brief Initialize any quality of life features which aim to reduce the amount of cutscenes inside DK64
@@ -46,17 +58,6 @@ void initQoL_Cutscenes(void) {
         }
     } else {
         if (Rando.item_rando) {
-            skipped_cutscene cs_unskip[] = {
-                {.map=MAP_FACTORY, .cutscene=2}, // Diddy Prod Spawn
-                {.map=MAP_FACTORY, .cutscene=3}, // Tiny Prod Peek
-                {.map=MAP_FACTORY, .cutscene=4}, // Lanky Prod Peek
-                {.map=MAP_FACTORY, .cutscene=5}, // Chunky Prod Spawn
-                {.map=MAP_AZTEC, .cutscene=14}, // Free Llama
-                {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=0}, // Tiny Barrel Spawn
-                {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=1}, // Cannon GB Spawn
-                {.map=MAP_CASTLEGREENHOUSE, .cutscene=0}, // Greenhouse Intro
-                {.map=MAP_CASTLEDUNGEON, .cutscene=0}, // Dungeon Lanky Trombone Bonus
-            };
             for (int i = 0; i < (sizeof(cs_unskip) / sizeof(skipped_cutscene)); i++) {
                 int cs_offset = 0;
                 int cs_val = cs_unskip[i].cutscene;
@@ -78,7 +79,7 @@ void initQoL_Cutscenes(void) {
         // K. Lumsy
         *(short*)(0x80750680) = MAP_ISLES;
         *(short*)(0x80750682) = 0x1;
-        *(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
+        writeFunction(0x806BDC24, &initiateTransition); // Change takeoff warp func
         *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
         *(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
         // Fast Vulture

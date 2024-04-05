@@ -53,7 +53,6 @@
 .importobj "obj/src_misc_move_hints.o"
 .importobj "obj/src_misc_music_text.o"
 .importobj "obj/src_misc_perma_kong_loss.o"
-.importobj "obj/src_misc_remove_blockers.o"
 .importobj "obj/src_misc_shop_indicator.o"
 .importobj "obj/src_misc_short_tiny.o"
 .importobj "obj/src_misc_stats.o"
