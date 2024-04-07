@@ -430,6 +430,7 @@ bloat_actors = [
     {"name": "Beaver (Gold)", "file": 0x1A, "size": 0x1CE0},
     {"name": "Klump", "file": 0x39, "size": 0x56D0},
     {"name": "Candy", "file": 0x12, "size": 0x64A0},
+    {"name": "Kasplat", "file": 0x36, "size": 0x42F4},
 ]
 
 for actor in bloat_actors:
