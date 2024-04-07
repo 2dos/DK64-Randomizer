@@ -429,6 +429,7 @@ bloat_actors = [
     {"name": "Beaver (Blue)", "file": 0x19, "size": 0x1CD0},
     {"name": "Beaver (Gold)", "file": 0x1A, "size": 0x1CE0},
     {"name": "Klump", "file": 0x39, "size": 0x56D0},
+    {"name": "Candy", "file": 0x12, "size": 0x64A0},
 ]
 
 for actor in bloat_actors:
@@ -962,6 +963,10 @@ colorblind_changes = [
     [0x1379, 0x1379, 32, 32],  # Dirt Face
     [0xB7B, 0xB7B, 32, 32],  # GB Shine
     [0x155C, 0x1567, 44, 44],  # GB Sprite
+    [0xECF, 0xECF, 1, 1372],  # Funky Camo
+    [0xED6, 0xED6, 1, 1372],  # Funky Camo
+    [0xEDF, 0xEDF, 1, 1372],  # Funky Camo
+    [0xEF7, 0xEF8, 32, 32], # Snake Skin
 ]
 
 kremling_dimensions = [
@@ -985,11 +990,29 @@ kremling_dimensions = [
     [32, 32],  # fdf
 ]
 
+rabbit_dimensions = [
+    [1, 1372], # 111A
+    [1, 1372], # 111B
+    [1, 700], # 111C
+    [1, 700], # 111D
+    [1, 1372], # 111E
+    [1, 1372], # 111F
+    [1, 1372], # 1120
+    [1, 1404], # 1121
+    [1, 348], # 1122
+    [32, 64], # 1123
+    [1, 688], # 1124
+    [64, 32], # 1125
+]
+
 krobot_textures = [[[32, 44], [0xFAB, 0xFAD, 0xFA9, 0xFA8, 0xFAA, 0xFAF]], [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]]
 
 for dim_index, dims in enumerate(kremling_dimensions):
     if dims is not None:
         colorblind_changes.append([0xFCE + dim_index, 0xFCE + dim_index, dims[0], dims[1]])
+for dim_index, dims in enumerate(rabbit_dimensions):
+    if dims is not None:
+        colorblind_changes.append([0x111A + dim_index, 0x111A + dim_index, dims[0], dims[1]])
 
 for tex_set in krobot_textures:
     for tex in tex_set[1]:

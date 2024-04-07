@@ -448,6 +448,7 @@ def apply_cosmetic_colors(settings: Settings):
     ROM_COPY.writeMultipleBytes(settings.panic_fairy_model + 1, 1)  # Still needed for end seq fairy swap
     ROM_COPY.seek(sav + 0x1E2)
     ROM_COPY.write(swap_bitfield)
+    settings.jetman_color = [0xFF, 0xFF, 0xFF]
     if settings.misc_cosmetics and settings.override_cosmetics:
         ROM_COPY.seek(sav + 0x196)
         ROM_COPY.write(1)
@@ -2410,8 +2411,8 @@ def writeMiscCosmeticChanges(settings):
                 kosha_im = getFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
                 kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
                 writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
-        # Kremling
         if enemy_setting == RandomModels.extreme:
+            # Kremling
             kremling_dimensions = [
                 [32, 64],  # FCE
                 [64, 24],  # FCF
@@ -2436,6 +2437,29 @@ def writeMiscCosmeticChanges(settings):
             for dim_index, dims in enumerate(kremling_dimensions):
                 if dims is not None:
                     hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
+            # Rabbit
+            rabbit_dimensions = [
+                [1, 1372], # 111A
+                [1, 1372], # 111B
+                [1, 700], # 111C
+                [1, 700], # 111D
+                [1, 1372], # 111E
+                [1, 1372], # 111F
+                [1, 1372], # 1120
+                [1, 1404], # 1121
+                [1, 348], # 1122
+                [32, 64], # 1123
+                [1, 688], # 1124
+                [64, 32], # 1125
+            ]
+            rabbit_shift = getRandomHueShift()
+            for dim_index, dims in enumerate(rabbit_dimensions):
+                if dims is not None:
+                    hueShiftImageContainer(25, 0x111A + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, rabbit_shift)
+            # Snake
+            snake_shift = getRandomHueShift()
+            for x in range(2):
+                hueShiftImageContainer(25, 0xEF7 + x, 32, 32, TextureFormat.RGBA5551, snake_shift)
         # Krobot
         spinner_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0xFA9, 1, 1372, TextureFormat.RGBA5551, spinner_shift)
@@ -2482,6 +2506,11 @@ def writeMiscCosmeticChanges(settings):
             elif img == 0x11AC:
                 px_count = 688
             hueShiftImageContainer(25, img, 1, px_count, TextureFormat.RGBA5551, ghost_shift)
+        # Funky
+        funky_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0xECF, 1, 1372, TextureFormat.RGBA5551, funky_shift)
+        hueShiftImageContainer(25, 0xED6, 1, 1372, TextureFormat.RGBA5551, funky_shift)
+        hueShiftImageContainer(25, 0xEDF, 1, 1372, TextureFormat.RGBA5551, funky_shift)
 
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
@@ -2489,9 +2518,10 @@ def writeMiscCosmeticChanges(settings):
             Model.BeaverBlue_LowPoly: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
             Model.BeaverBlue: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
             Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]),  # Primary
+            Model.Candy: EnemyColorSwap([0xFF96EB, 0x572C58, 0xB86CAA, 0xEB4C91, 0x8B2154, 0xD13B80, 0xFF77C1, 0xFF599E, 0x7F1E4C, 0x61173A, 0x902858, 0xA42E64, 0x791C49, 0x67183E, 0x9E255C, 0xC12E74, 0x572C58, 0xFF96EB, 0xB86CAA])
         }
         if enemy_setting == RandomModels.extreme:
-            enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859], 0x65CCFF)
+            enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859])
         for enemy in enemy_changes:
             file_data = bytearray(getRawFile(5, enemy, True))
             vert_start = 0x28

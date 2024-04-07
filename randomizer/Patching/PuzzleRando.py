@@ -474,16 +474,16 @@ def randomize_puzzles(spoiler):
                 "size": 10,
                 "start_angle": None,
             },
-            Maps.FungiForest: {
-                "offset": 0xC2,
-                "center_x": 1276,
-                "center_z": 3825,
-                "radius": [246, 587],
-                "y": [231, 650],
-                "count": 32,
-                "size": 10,
-                "start_angle": 0,
-            },
+            # Maps.FungiForest: {
+            #     "offset": 0xC2,
+            #     "center_x": 1276,
+            #     "center_z": 3825,
+            #     "radius": [246, 587],
+            #     "y": [231, 650],
+            #     "count": 32,
+            #     "size": 10,
+            #     "start_angle": 0,
+            # },
         }
         for map_index in race_data:
             map_spawners = js.pointer_addresses[16]["entries"][map_index]["pointing_to"]
