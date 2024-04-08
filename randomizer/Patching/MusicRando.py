@@ -152,13 +152,13 @@ class UploadInfo:
                             # Mood Tag
                             self.mood_tags.append(TAG_CONVERSION_TABLE[tag][0])
         will_filter = False
-        disable_location_tags = False
+        disable_location_tags = True
         if self.extension == ".candy":
             if length_filter and (song_type != SongType.BGM):
                 will_filter = True
             elif location_filter and (song_type == SongType.BGM):
                 will_filter = True
-                disable_location_tags = True
+                disable_location_tags = False
         if len(self.location_tags) == 0 or disable_location_tags:
             self.location_tags = [
                 SongGroup.Fight,
@@ -357,9 +357,11 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
         song = song_data[song_enum]
         selected_bank = None
         assigned_song_name = getCustomSongAssignedToLocation(settings, song_enum)
+        satisfied = False
         if assigned_song_name is not None:
             new_song = getAssignedCustomSongData(file_data, assigned_song_name, length_filter, location_filter, target_type)
-        else:
+            satisfied = new_song.acceptable
+        if not satisfied:
             new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music, location_filter, length_filter)
         selected_cap = 0xFFFFFF
         if new_song is not None:
