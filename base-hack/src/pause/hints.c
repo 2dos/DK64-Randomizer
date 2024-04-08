@@ -128,7 +128,7 @@ void playProgressiveDing(void) {
     playSFX(0x2EA);
 }
 
-void handleProgressiveIndicator(void) {
+void handleProgressiveIndicator(int delta) {
     if (Rando.progressive_hint_gb_cap == 0) {
         return;
     }
@@ -142,7 +142,7 @@ void handleProgressiveIndicator(void) {
             if (gb_count >= local_req) {
                 new_progressive_level = index;
             }
-            if ((gb_count - 1) >= local_req) {
+            if ((gb_count - delta) >= local_req) {
                 old_progressive_level = index;
             }
 
