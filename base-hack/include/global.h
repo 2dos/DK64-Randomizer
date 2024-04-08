@@ -166,7 +166,7 @@ extern Gfx* renderDingSprite(Gfx* dl);
 extern Gfx* renderProgressiveSprite(Gfx* dl);
 extern int getHintGBRequirement(int level, int kong);
 extern void gbUpdateHandler(void);
-extern void handleProgressiveIndicator(void);
+extern void handleProgressiveIndicator(int delta);
 extern int hasEnoughCBs(void);
 extern void initDingSprite(void);
 extern void handleSpiderTrapCode(void);

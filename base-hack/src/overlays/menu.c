@@ -42,7 +42,17 @@ int give_all_blueprints(int flag, int level, int kong_p) {
 
 void gbUpdateHandler(void) {
 	updateGBCountHUD(0);
-	handleProgressiveIndicator();
+	handleProgressiveIndicator(1);
+}
+
+typedef struct snide_paad {
+	/* 0x000 */ char unk00[0x1A];
+	/* 0x01A */ unsigned char unturned_count;
+} snide_paad;
+
+void gbUpdateHandler_snide(snide_paad* paad) {
+	updateGBCountHUD(0);
+	handleProgressiveIndicator(paad->unturned_count);
 }
 
 void overlay_mod_menu(void) {
