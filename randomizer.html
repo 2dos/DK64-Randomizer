@@ -528,6 +528,69 @@
                 }, 60000);
                 // trigger it once on page load
                 query_stats();
+
+                function updateFilteredSpoilerTabs() {
+                    const nav_items = document.getElementById("spoiler-nav-group").getElementsByClassName("nav-item");
+                    for (let n = 0; n < nav_items.length; n++) {
+                        let is_active = nav_items[n].getElementsByClassName("active").length > 0;
+                        if (is_active) {
+                            nav_items[n].removeAttribute("hidden");
+                        } else {
+                            const tied_id = nav_items[n].getElementsByClassName("nav-link")[0].getAttribute("data-bs-target").substring(1);
+                            const groups = document.getElementById(tied_id).getElementsByClassName("spoiler-group");
+                            let show = false;
+                            for (let g = 0; g < groups.length; g++) {
+                                if (!groups[g].hasAttribute("hidden")) {
+                                    show = true;
+                                }
+                            }
+                            if (show) {
+                                nav_items[n].removeAttribute("hidden");
+                            } else {
+                                nav_items[n].setAttribute("hidden", "");
+                            }
+                        }
+                    }
+                }
+                
+                function filterSpoilerSearch(el) {
+                    const search_term = el.value.toLowerCase();
+                    const spoiler_group = document.getElementById("spoiler").getElementsByClassName("spoiler-group");
+                    for (let s = 0; s < spoiler_group.length; s++) {
+                        const table_elements = spoiler_group[s].getElementsByTagName("tr");
+                        // Reset hidden
+                        for (let t = 0; t < table_elements.length; t++) {
+                            table_elements[t].removeAttribute("hidden");
+                        }
+                        // Calculate what to show
+                        let show = true;
+                        if (search_term.length > 0) {
+                            show = false;
+                            for (let t = 0; t < table_elements.length; t++) {
+                                let local_show = false;
+                                const cell_elements = table_elements[t].getElementsByTagName("td");
+                                for (let c = 0; c < cell_elements.length; c++) {
+                                    const cell_text = cell_elements[c].innerText.toLowerCase();
+                                    if (cell_text.includes(search_term)) {
+                                        show = true;
+                                        local_show = true;
+                                    }
+                                }
+                                if (local_show) {
+                                    table_elements[t].removeAttribute("hidden");
+                                } else {
+                                    table_elements[t].setAttribute("hidden", "");
+                                }
+                            }
+                        }
+                        if (show) {
+                            spoiler_group[s].removeAttribute("hidden");
+                        } else {
+                            spoiler_group[s].setAttribute("hidden", "");
+                        }
+                    }
+                    updateFilteredSpoilerTabs();
+                }
             </script>
 
             <!-- Middle Section: Existing Data -->
@@ -560,7 +623,6 @@
                 <p id="most_recent_seed_date"><strong>Most Recent Seed Date:</strong> None</p>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.11.2/src/toastify.js"></script>
         <script type="text/javascript" src="./static/js/webworker_main.js" defer></script>
         <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>

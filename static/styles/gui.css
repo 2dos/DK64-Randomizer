@@ -947,3 +947,15 @@ header.masthead .bg-circle-4 {
   color: var(--bs-body-color);
   font-size: small;
 }
+
+#spoilerFilterSearch {
+  background-color: rgba(0, 0, 0, 0.2);
+  outline: none;
+  border: none !important;
+  border-bottom: 2px solid var(--bs-info-text-emphasis) !important;
+}
+
+#spoileritem-master h4 {
+  text-align: left;
+  margin: 10px;
+}

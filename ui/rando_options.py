@@ -1502,7 +1502,6 @@ def shuffle_settings(evt):
 musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.keys()]
 
 
-@bind("click", "settings_table_collapse_toggle")
 @bindList("click", musicToggles, suffix="_collapse_toggle")
 def toggle_collapsible_container(evt):
     """Show or hide a collapsible container."""

@@ -1872,7 +1872,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if spoiler.settings.coin_door_random:
             item_name = helmdoor_vars[spoiler.settings.coin_door_item]
             if spoiler.settings.coin_door_item_count > 1:
-                if spoiler.settings.coin_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.coin_door_item == BarrierItems.Fairy:
                     item_name = "Fairies"  # Plurals? Consistency? A pipe dream
                 else:
                     item_name = item_name + "s"

@@ -228,22 +228,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         # insert a text div into the js.document.getElementById("hashdiv") and set the innerHTML to the No ROM loaded message add the div
         js.document.getElementById("hashdiv").innerHTML = "Shared Link, No Hash Images Loaded."
 
-    loaded_settings = spoiler["Settings"]
-    tables = {}
-    t = 0
-    for i in range(0, 3):
-        js.document.getElementById(f"settings_table_{i}").innerHTML = ""
-        tables[i] = js.document.getElementById(f"settings_table_{i}")
-    for setting, value in loaded_settings.items():
-        hidden_settings = ["Seed", "algorithm", "Unlock Time"]
-        if setting not in hidden_settings:
-            if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
-                t += 1
-            row = tables[t].insertRow(-1)
-            name = row.insertCell(0)
-            description = row.insertCell(1)
-            name.innerHTML = setting
-            description.innerHTML = FormatSpoiler(value)
     if from_patch_gen is True:
         await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""

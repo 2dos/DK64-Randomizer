@@ -234,10 +234,8 @@ BananaCoinGroupList = {
                 (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko and not l.IsHardFallDamage())))
                 or ((l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack)
                 or (
-                    (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events)(
-                        l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko and not l.IsHardFallDamage()))
-                    )
-                    or (l.istiny and l.twirl)
+                    (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events)
+                    and ((l.isdonkey and l.settings.krusha_kong != Kongs.donkey and l.settings.damage_amount != DamageAmount.ohko and not l.IsHardFallDamage()) or (l.istiny and l.twirl))
                 )
             )
             or l.CanMoonkick(),
