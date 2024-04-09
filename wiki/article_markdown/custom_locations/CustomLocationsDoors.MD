@@ -261,16 +261,16 @@
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Left | Wrinkly | `` | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Far Right | Wrinkly | `` | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Right | Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: On Rotating Room | Boss, Dk_Portal, Wrinkly | `(l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk` | 
-| Crystal Caves | Crystal Caves: Near Snide's | Boss, Dk_Portal, Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: Giant Boulder Room | Boss, Dk_Portal, Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: On Sprint Cabin | Boss, Dk_Portal, Wrinkly | `(l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk` | 
-| Crystal Caves | Crystal Caves: Near 5DI | Boss, Dk_Portal, Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: Outside Lanky's Cabin | Boss, Dk_Portal, Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: Outside Chunky's Cabin | Boss, Dk_Portal, Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: Outside Diddy's Lower Cabin | Boss, Dk_Portal, Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: Outside Diddy's Upper Cabin | Boss, Dk_Portal, Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: Under the Waterfall (Cabin Area) | Boss, Dk_Portal, Wrinkly | `l.swim` | 
+| Crystal Caves | Crystal Caves: On Rotating Room | Both | `(l.isdiddy and l.jetpack)` | 
+| Crystal Caves | Crystal Caves: Near Snide's | Both | `` | 
+| Crystal Caves | Crystal Caves: Giant Boulder Room | Both | `` | 
+| Crystal Caves | Crystal Caves: On Sprint Cabin | Both | `(l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk` | 
+| Crystal Caves | Crystal Caves: Near 5DI | Both | `` | 
+| Crystal Caves | Crystal Caves: Outside Lanky's Cabin | Both | `` | 
+| Crystal Caves | Crystal Caves: Outside Chunky's Cabin | Both | `` | 
+| Crystal Caves | Crystal Caves: Outside Diddy's Lower Cabin | Both | `` | 
+| Crystal Caves | Crystal Caves: Outside Diddy's Upper Cabin | Both | `` | 
+| Crystal Caves | Crystal Caves: Under the Waterfall (Cabin Area) | Both | `l.swim` | 
 | Crystal Caves | Crystal Caves: Across from the 5Door Cabin | Wrinkly | `` | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - DK's right | Boss | `` | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Diddy's right | Boss | `` | 
