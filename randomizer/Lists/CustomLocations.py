@@ -1104,9 +1104,9 @@ CustomLocations = {
         CustomLocation(name="Near Chest Cannon (1)", map=Maps.GloomyGalleon, x=3072, y=1790, z=3501, max_size=48, logic_region=Regions.GloomyGalleonStart, group=3),
         CustomLocation(map=Maps.GloomyGalleon, name="Near Chest Cannon (2)", x=3072, y=1790, z=3360, rot_y=2048, max_size=72, logic_region=Regions.GloomyGalleonStart, group=3),
         CustomLocation(map=Maps.GloomyGalleon, name="Near Chest GB Tunnel", x=3048, y=1670, z=3832, max_size=64, logic_region=Regions.GloomyGalleonStart, group=3),
-        CustomLocation(map=Maps.GloomyGalleon, name="Behind Punch GB Chest (1)", x=3506, y=1670, z=3802, max_size=88, logic_region=Regions.GloomyGalleonStart, group=3),
+        CustomLocation(map=Maps.GloomyGalleon, name="In Punch GB Chest Room", x=3506, y=1670, z=3802, max_size=88, logic_region=Regions.GloomyGalleonStart, group=3),
         CustomLocation(
-            name="Behind Punch GB Chest (2)",
+            name="Behind Punch GB Chest",
             map=Maps.GloomyGalleon,
             x=3564.0,
             y=1670.0,
@@ -1310,7 +1310,7 @@ CustomLocations = {
             z=487,
             max_size=40,
             logic_region=Regions.TreasureRoom,
-            logic=lambda l: ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or l.advanced_platforming) or l.CanMoonkick(),
+            logic=lambda l: ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick(),
             group=5,
         ),
         CustomLocation(
