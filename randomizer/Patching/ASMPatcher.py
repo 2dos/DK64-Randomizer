@@ -55,6 +55,7 @@ NORMAL_KEY_FLAGS = [
     0x13D,  # Key 7
     0x17C,  # Key 8
 ]
+ENABLE_FILENAME = False
 
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
@@ -616,6 +617,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "WarpHandle", offset_dict)  # Check if in Helm, in which case, apply transition
     writeFunction(ROM_COPY, 0x806AD750, Overlay.Static, "beaverExtraHitHandle", offset_dict)  # Remove buff until we think of something better
 
+    if ENABLE_FILENAME:
+        writeFunction(ROM_COPY, 0x8070E1BC, Overlay.Static, "handleFilename", offset_dict) # Handle Filename
+        writeFunction(ROM_COPY, 0x800306EC, Overlay.Menu, "filename_displaylist", offset_dict)
+        writeFunction(ROM_COPY, 0x80030704, Overlay.Menu, "filename_code", offset_dict)
+        writeFunction(ROM_COPY, 0x80030714, Overlay.Menu, "filename_init", offset_dict)
+
     # Item Rando
     # Item Get
     item_get_addrs = [0x806F64C8, 0x806F6BA8, 0x806F7740, 0x806F7764, 0x806F7774, 0x806F7798, 0x806F77B0, 0x806F77C4, 0x806F7804, 0x806F781C]
@@ -1162,6 +1169,20 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x806F92B8, Overlay.Static, "correctRefillCap", offset_dict)  # Correct refill instruction - changeCollectable
         writeValue(ROM_COPY, 0x806A7C04, Overlay.Static, 0x00A0C025, offset_dict, 4)  # or $t8, $a1, $zero
         writeLabelValue(ROM_COPY, 0x8074C2A0, Overlay.Static, "HeadphonesCodeContainer", offset_dict)
+    if isQoLEnabled(spoiler, MiscChangesSelected.remove_extraneous_cutscenes):
+        # K. Lumsy
+        writeValue(ROM_COPY, 0x80750680, Overlay.Static, 0x22, offset_dict)
+        writeValue(ROM_COPY, 0x80750682, Overlay.Static, 0x1, offset_dict)
+        writeFunction(ROM_COPY, 0x806BDC24, Overlay.Static, "initiateTransition", offset_dict) # Change takeoff warp func
+        writeValue(ROM_COPY, 0x806BDC8C, Overlay.Static, 0x1000, offset_dict) # Apply no cutscene to all keys
+        writeValue(ROM_COPY, 0x806BDC3C, Overlay.Static, 0x1000, offset_dict) # Apply shorter timer to all keys
+        # Fast Vulture
+        writeFunction(ROM_COPY, 0x806C50BC, Overlay.Static, "clearVultureCutscene", offset_dict) # Modify Function Call
+        # Speedy T&S Turn-Ins
+        writeValue(ROM_COPY, 0x806BE3E0, Overlay.Static, 0, offset_dict, 4) # NOP
+        # Remove final mermaid text
+        writeValue(ROM_COPY, 0x806C3E10, Overlay.Static, 0, offset_dict, 4)
+        writeValue(ROM_COPY, 0x806C3E20, Overlay.Static, 0, offset_dict, 4)
 
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character
@@ -1185,7 +1206,11 @@ def patchAssembly(ROM_COPY, spoiler):
     writeLabelValue(ROM_COPY, 0x8074C24C, Overlay.Static, "HelmBarrelCode", offset_dict)
     # Make getting out of spider traps easier on controllers
     writeLabelValue(ROM_COPY, 0x80752ADC, Overlay.Static, "exitTrapBubbleController", offset_dict)
+    # Inverted Controls Option
+    writeValue(ROM_COPY, 0x8060D01A, Overlay.Static, getHiSym("InvertedControls"), offset_dict) # Change language store to inverted controls store
+    writeValue(ROM_COPY, 0x8060D01E, Overlay.Static, getLoSym("InvertedControls"), offset_dict) # Change language store to inverted controls store
 
+    writeFunction(ROM_COPY, 0x80602AB0, Overlay.Static, "filterSong", offset_dict)
     # Decompressed Overlays
     overlays_being_decompressed = [
         0x09,  # Setup
@@ -1484,6 +1509,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Progressive Hints
     writeFunction(ROM_COPY, 0x800248D4, Overlay.Menu, "gbUpdateHandler_snide", offset_dict)
     writeValue(ROM_COPY, 0x800248D8, Overlay.Menu, 0x02802025, offset_dict, 4) # or $a0, $s4, $zero
+    writeFunction(ROM_COPY, 0x806F93D4, Overlay.Static, "gbUpdateHandler", offset_dict)
 
     # Mill and Crypt Levers
     # Mill Levers

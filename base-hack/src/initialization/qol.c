@@ -75,21 +75,6 @@ void initQoL_Cutscenes(void) {
             writeFunction(0x8061DD80, &pressSkipHandler); // Handler for press start to skip
         }
     }
-    if (Rando.quality_of_life.remove_cutscenes) {
-        // K. Lumsy
-        *(short*)(0x80750680) = MAP_ISLES;
-        *(short*)(0x80750682) = 0x1;
-        writeFunction(0x806BDC24, &initiateTransition); // Change takeoff warp func
-        *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
-        *(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
-        // Fast Vulture
-        writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
-        // Speedy T&S Turn-Ins
-        *(int*)(0x806BE3E0) = 0; // NOP
-        // Remove final mermaid text
-        *(int*)(0x806C3E10) = 0;
-        *(int*)(0x806C3E20) = 0;
-    }
 }
 
 void fixRaceHoopCode(void) {
@@ -212,15 +197,6 @@ void initSpawn(void) {
     }
 }
 
-void initNonControllableFixes(void) {
-    /**
-     * @brief Initialize any changes which we do not want to give the user any control over whether it's removed
-     */
-    // Inverted Controls Option
-    *(short*)(0x8060D01A) = getHi(&InvertedControls); // Change language store to inverted controls store
-    *(short*)(0x8060D01E) = getLo(&InvertedControls); // Change language store to inverted controls store
-}
-
 void QoL_DisplayInstrument(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3) {
     displayPauseSpriteNumber(handler, x, y, unk0, unk1, CollectableBase.InstrumentEnergy, unk2, unk3);
 }
@@ -274,5 +250,4 @@ void initQoL(void) {
     initQoL_Cutscenes();
     initSpawn();
     initQoL_FastWarp();
-    initNonControllableFixes();
 }

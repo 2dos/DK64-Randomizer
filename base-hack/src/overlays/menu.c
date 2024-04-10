@@ -69,11 +69,6 @@ void overlay_mod_menu(void) {
 		InvertedControls = 1;
 	}
 
-	// Options
-	if (ENABLE_FILENAME) {
-		initFilename();
-	}
-
 	// Snide
 	if (Rando.item_rando) {		
 		if (Rando.quality_of_life.blueprint_compression) {

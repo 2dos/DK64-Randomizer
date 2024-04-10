@@ -440,7 +440,6 @@ void initHack(int source) {
 				*(int*)(0x8067F7C0) = 0; // Transform Theme
 			}
 			*(int*)(0x80602AAC) = 0x27A40018; // addiu $a0, $sp, 0x18
-			writeFunction(0x80602AB0, &filterSong);
 			if (Rando.disabled_music.chunk_songs) {
 				// *(int*)(0x806025BC) = 0; // Disable `playLevelMusic` - Map Load
 				*(int*)(0x8061DF74) = 0; // Disable `playLevelMusic`
@@ -512,7 +511,6 @@ void initHack(int source) {
 			if (Rando.balloon_sound) {
 				writeFunction(0x806A77D8, &playBalloonWhoosh);
 			}
-			writeFunction(0x806F93D4, &gbUpdateHandler);
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
 				writeFunction(0x80656538, &displayNoGeoChunk);
 				writeFunction(0x806562C0, &displayNoGeoChunk);

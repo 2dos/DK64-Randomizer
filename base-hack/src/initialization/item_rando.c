@@ -84,9 +84,8 @@ int getKeyItem(int old_flag) {
      * 
      * @return Actor Index of the reward
      */
-	int flag_list[] = {26,74,138,168,236,292,317,380};
 	for (int i = 0; i < 8; i++) {
-		if (old_flag == flag_list[i]) {
+		if (old_flag == normal_key_flags[i]) {
 			return getActorIndex(key_item_table[i]);
 		}
 	}
@@ -320,10 +319,6 @@ void initItemRando(void) {
      * @brief Initialize Item Rando functionality
      */
     
-    if (ENABLE_FILENAME) {
-        writeFunction(0x8070E1BC, &handleFilename); // Handle Filename
-    }
-
     // Item Rando
     for (int i = 0; i < 54; i++) {
         BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
