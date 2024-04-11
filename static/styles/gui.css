@@ -19,10 +19,6 @@ a:link:not(.no-decoration) {
   text-decoration: none;
 }
 
-a:visited {
-  color: var(--bs-body-color);
-}
-
 a:hover {
   color: #035e30;
 }
@@ -269,9 +265,7 @@ html[data-bs-theme="light"] .nav-tabs .nav-link.active {
 }
 
 #nav-tab .nav-link:not(.active) .tab-full-name {
-  white-space: nowrap;
-  overflow-x: hidden;
-  max-width: 0px;
+  padding-left: 0.5rem;
 }
 
 #nav-tab .nav-link:not(.active):hover .tab-full-name {
@@ -295,6 +289,15 @@ html[data-bs-theme="light"] .nav-tabs .nav-link.active {
 #nav-gen-type button.nav-link.active {
   border-bottom: 4px solid midnightblue;
   border-radius: 3px;
+}
+
+@media (max-width: 1400px) {
+  #nav-tab .nav-link:not(.active) .tab-full-name {
+    white-space: nowrap;
+    overflow-x: hidden;
+    max-width: 0px;
+    padding-left: 0;
+  }
 }
 
 /*
@@ -958,4 +961,23 @@ header.masthead .bg-circle-4 {
 #spoileritem-master h4 {
   text-align: left;
   margin: 10px;
+  margin-bottom: 5px;
+}
+
+.spoiler-subsection-head {
+  border-top: 1px solid var(--bs-body-color);
+  border-bottom: 1px solid var(--bs-body-color);
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.spoiler-subsection-head:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.spoiler-subsection-head .spoiler-subsection-expand::after {
+  content: "[Collapse]";
+}
+.spoiler-subsection-head.collapsed .spoiler-subsection-expand::after {
+  content: "[Expand]";
 }

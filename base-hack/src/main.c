@@ -11,16 +11,12 @@ static char has_loaded = 0;
 static char new_picture = 0;
 int hint_pointers[35] = {};
 char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
-static char delayed_load = 0;
 char grab_lock_timer = -1;
 char tag_locked = 0;
 
 
 void cFuncLoop(void) {
 	regularFrameLoop();
-	if (!delayed_load) {
-		delayed_load = 1;
-	}
 	tagAnywhere();
 	level_order_rando_funcs();
 	qualityOfLife_fixes();

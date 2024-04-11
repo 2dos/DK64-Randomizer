@@ -25,9 +25,9 @@
                             {% if spoiler[item] != {} and item not in ignored_attrs %}
                                 <li class="nav-item">
                                     {% if loop.index == "0" %}
-                                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#spoilerContent{{ loop.index }}" href="#" onclick="updateFilteredSpoilerTabs()">{{ item }}</a>
+                                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#spoilerContent{{ loop.index }}" href="#" onclick="updateFilteredSpoilerTabs()" id="spoilerTab{{ loop.index }}">{{ item }}</a>
                                     {% else %}
-                                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#spoilerContent{{ loop.index }}" href="#" onclick="updateFilteredSpoilerTabs()">{{ item }}</a>
+                                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#spoilerContent{{ loop.index }}" href="#" onclick="updateFilteredSpoilerTabs()" id="spoilerTab{{ loop.index }}">{{ item }}</a>
                                     {% endif %}
                                 </li>
                             {% endif %}
@@ -45,7 +45,7 @@
                 </div>
             </div>
             {# Content #}
-            <div class="tab-content">
+            <div class="tab-content pb-2">
                 {% for item in spoiler %}
                     {% if spoiler[item] != {} and item not in ignored_attrs %}
                         {% set tab_cls = "" %}
@@ -55,73 +55,46 @@
                         <div class="tab-pane fade{{ tab_cls }}" id="spoilerContent{{ loop.index }}">
                             <div class="container mt-4">
                                 {% if spoiler[item] is mapping %}
+                                    {% if item == "Way of the Hoard" %}
+                                        <div class="p-2 text-start border">
+                                            {{ spoiler[item] | length }} Items are on the Way of the Hoard
+                                        </div>
+                                    {% endif %}
                                     {% if item == "Playthrough" %}
                                         {% for sphere_index in spoiler[item] %}
                                             <div class="spoiler-group">
-                                                <h4 class="mt-5">
-                                                    Sphere {{ sphere_index }}
-                                                </h4>
-                                                <div class="small fw-light text-start ps-2 pb-2">
-                                                    {% if spoiler[item][sphere_index]["Available GBs"] != 1 %}
-                                                        {{ spoiler[item][sphere_index]["Available GBs"] }} GBs available
-                                                    {% else %}
-                                                        {{ spoiler[item][sphere_index]["Available GBs"] }} GB available
-                                                    {% endif %}
-                                                </div>
-                                                <table class="table table-hover table-striped table-dark ignore-width" style="min-width:100%; text-align: left">
-                                                    <tbody>
-                                                        {% for item2 in spoiler[item][sphere_index] %}
-                                                            {% if item2 != "Available GBs" %}
-                                                                <tr>
-                                                                    <td>{{ item2 }}</td>
-                                                                    {% if spoiler[item][sphere_index][item2] is iterable and (spoiler[item][sphere_index][item2] is not string and spoiler[item][sphere_index][item2] is not mapping) %}
-                                                                        <td>{{ spoiler[item][sphere_index][item2]|join(", ") }}</td>
-                                                                    {% else %}
-                                                                        <td>{{ spoiler[item][sphere_index][item2] }}</td>
-                                                                    {% endif %}
-                                                                </tr>
+                                                <div class="spoiler-subsection-head d-flex collapsed"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#spoilerContent{{ loop.index }}_{{ sphere_index }}"
+                                                    aria-expanded="false"
+                                                    aria-controls="spoilerContent{{ loop.index }}_{{ sphere_index }}">
+                                                    <div class="flex-fill">
+                                                        <h4>
+                                                            Sphere {{ sphere_index }}
+                                                        </h4>
+                                                        <div class="small fw-light text-start ps-2 pb-2">
+                                                            {% if spoiler[item][sphere_index]["Available GBs"] != 1 %}
+                                                                {{ spoiler[item][sphere_index]["Available GBs"] }} GBs available
+                                                            {% else %}
+                                                                {{ spoiler[item][sphere_index]["Available GBs"] }} GB available
                                                             {% endif %}
-                                                        {% endfor %}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        {% endfor %}
-                                    {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","T&S Portal Locations","Enemy Placement","Paths", "WotH Paths", "Other Paths","End Game", "Hints", "Misc Custom Locations") %}
-                                        {# Attributes with sub-dicts #}
-                                        {% for sub_group in spoiler[item] %}
-                                            {% if spoiler[item][sub_group] != {} %}
-                                                <div class="spoiler-group">
-                                                    <h4 class="mt-5">{{ sub_group }}</h4>
-                                                    <table class="table table-hover table-striped table-dark ignore-width" style="min-width:100%; text-align: left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-end small fw-light p-2 pe-4 position-relative">
+                                                        <div class="position-absolute top-50 start-0 translate-middle spoiler-subsection-expand"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="collapse mb-5" id="spoilerContent{{ loop.index }}_{{ sphere_index }}">
+                                                    <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                                                         <tbody>
-                                                            {% for item2 in spoiler[item][sub_group] %}
-                                                                {% if item != "Hints" or sub_group != "Wrinkly Hints" or item2 != "First Time Talk" %}
+                                                            {% for item2 in spoiler[item][sphere_index] %}
+                                                                {% if item2 != "Available GBs" %}
                                                                     <tr>
-                                                                        {% if item in ("Items", "Items (Sorted by Item)") %}
-                                                                            {% if item2 == "Diddy Kong" %}
-                                                                                <td>Japes Kong</td>
-                                                                            {% elif item2 == "Lanky Kong" %}
-                                                                                <td>Llama Temple Kong</td>
-                                                                            {% elif item2 == "Tiny Kong" %}
-                                                                                <td>Tiny Temple Kong</td>
-                                                                            {% elif item2 == "Chunky Kong" %}
-                                                                                <td>Factory Kong</td>
-                                                                            {% else %}
-                                                                                <td>{{ item2 }}</td>
-                                                                            {% endif %}
+                                                                        <td>{{ item2 }}</td>
+                                                                        {% if spoiler[item][sphere_index][item2] is iterable and (spoiler[item][sphere_index][item2] is not string and spoiler[item][sphere_index][item2] is not mapping) %}
+                                                                            <td>{{ spoiler[item][sphere_index][item2]|join(", ") }}</td>
                                                                         {% else %}
-                                                                            <td>{{ item2 }}</td>
-                                                                        {% endif %}
-                                                                        {% if spoiler[item][sub_group][item2] is iterable and (spoiler[item][sub_group][item2] is not string and spoiler[item][sub_group][item2] is not mapping) %}
-                                                                            <td>{{ spoiler[item][sub_group][item2]|join("<br>") }}</td>
-                                                                        {% else %}
-                                                                            <td>
-                                                                                {{ spoiler[item][sub_group][item2] }}
-                                                                                {% if item == "Cosmetics" and sub_group == "Colors" and "color" in item2.lower() %}
-                                                                                    <span class="color-demo-box"
-                                                                                        style="background-color:{{ spoiler[item][sub_group][item2] }}">&nbsp;</span>
-                                                                                {% endif %}
-                                                                            </td>
+                                                                            <td>{{ spoiler[item][sphere_index][item2] }}</td>
                                                                         {% endif %}
                                                                     </tr>
                                                                 {% endif %}
@@ -129,11 +102,78 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","T&S Portal Locations","Enemy Placement","Paths", "WotH Paths", "Other Paths","End Game", "Hints", "Misc Custom Locations") %}
+                                        {# Attributes with sub-dicts #}
+                                        {% set local_loop = loop.index %}
+                                        {% for sub_group in spoiler[item] %}
+                                            {% if spoiler[item][sub_group] != {} %}
+                                                <div class="spoiler-group">
+                                                    <div class="spoiler-subsection-head d-flex collapsed"
+                                                    id="spoilerDropdown{{ local_loop }}_{{ sub_group | filterId }}"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#spoilerContent{{ local_loop }}_{{ sub_group | filterId }}"
+                                                    aria-expanded="false"
+                                                    aria-controls="spoilerContent{{ local_loop }}_{{ sub_group | filterId }}">
+                                                        <div class="flex-fill">
+                                                            <h4>{{ sub_group }}</h4>
+                                                            <div class="small fw-light text-start ps-2 pb-2">
+                                                                {% if spoiler[item][sub_group] | length == 1 %}
+                                                                    1 Item
+                                                                {% else %}
+                                                                    {{ spoiler[item][sub_group] | length }} Items
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-end small fw-light p-2 pe-4 position-relative">
+                                                            <div class="position-absolute top-50 start-0 translate-middle spoiler-subsection-expand"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="collapse mb-5" id="spoilerContent{{ local_loop }}_{{ sub_group | filterId }}">
+                                                        <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
+                                                            <tbody>
+                                                                {% for item2 in spoiler[item][sub_group] %}
+                                                                    {% if item != "Hints" or sub_group != "Wrinkly Hints" or item2 != "First Time Talk" %}
+                                                                        <tr>
+                                                                            {% if item in ("Items", "Items (Sorted by Item)") %}
+                                                                                {% if item2 == "Diddy Kong" %}
+                                                                                    <td>Japes Kong</td>
+                                                                                {% elif item2 == "Lanky Kong" %}
+                                                                                    <td>Llama Temple Kong</td>
+                                                                                {% elif item2 == "Tiny Kong" %}
+                                                                                    <td>Tiny Temple Kong</td>
+                                                                                {% elif item2 == "Chunky Kong" %}
+                                                                                    <td>Factory Kong</td>
+                                                                                {% else %}
+                                                                                    <td>{{ item2 }}</td>
+                                                                                {% endif %}
+                                                                            {% else %}
+                                                                                <td>{{ item2 }}</td>
+                                                                            {% endif %}
+                                                                            {% if spoiler[item][sub_group][item2] is iterable and (spoiler[item][sub_group][item2] is not string and spoiler[item][sub_group][item2] is not mapping) %}
+                                                                                <td>{{ spoiler[item][sub_group][item2]|join("<br>") }}</td>
+                                                                            {% else %}
+                                                                                <td>
+                                                                                    {{ spoiler[item][sub_group][item2] }}
+                                                                                    {% if item == "Cosmetics" and sub_group == "Colors" and "color" in item2.lower() %}
+                                                                                        <span class="color-demo-box"
+                                                                                            style="background-color:{{ spoiler[item][sub_group][item2] }}">&nbsp;</span>
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                            {% endif %}
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}
                                         <div class="spoiler-group">
-                                            <table class="table table-hover table-striped table-dark ignore-width" style="min-width:100%; text-align: left">
+                                            <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                                                 <tbody>
                                                     {% for item2 in spoiler[item] %}
                                                         <tr>
@@ -150,6 +190,20 @@
                                                             {% else %}
                                                                 <td>{{ spoiler[item][item2] }}</td>
                                                             {% endif %}
+                                                            {% if item == "Way of the Hoard" %}
+                                                                <td>
+                                                                    <a class="no-decoration"
+                                                                        onclick="
+                                                                            document.getElementById('spoilerTab{{ spoiler | wothpathindex }}').click();
+                                                                            if (document.getElementById('spoilerDropdown{{ spoiler | wothpathindex }}_{{ spoiler[item][item2] | filterId }}').getAttribute('aria-expanded') == 'false') {
+                                                                                document.getElementById('spoilerDropdown{{ spoiler | wothpathindex }}_{{ spoiler[item][item2] | filterId }}').click()
+                                                                            }
+                                                                        " 
+                                                                        href="#spoilerDropdown{{ spoiler | wothpathindex }}_{{ spoiler[item][item2] | filterId }}">
+                                                                        Go to path
+                                                                    </a>
+                                                                </td>
+                                                            {% endif %}
                                                         </tr>
                                                     {% endfor %}
                                                 </tbody>
@@ -162,7 +216,7 @@
                                     </div>
                                 {% elif spoiler[item] is iterable and (spoiler[item] is not string and spoiler[item] is not mapping) %}
                                     <div class="spoiler-group">
-                                        <table class="table table-hover table-striped table-dark ignore-width" style="min-width:100%; text-align: left">
+                                        <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                                             <tbody>
                                                 {% for item2 in spoiler[item] %}
                                                     <tr>
@@ -206,7 +260,7 @@
                         {{ spoiler["Settings"]["Settings String"] }}
                     </div>
                 </div>
-                <table class="table table-hover table-striped table-dark ignore-width" style="min-width:100%; text-align: left">
+                <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                     <thead>
                         <tr>
                             <th>Property</th>
