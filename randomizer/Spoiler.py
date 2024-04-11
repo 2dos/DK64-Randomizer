@@ -335,10 +335,10 @@ class Spoiler:
             "K. Rool": {},
         }
         humanspoiler["End Game"]["K. Rool"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
-        krool_order = []
-        for phase in self.settings.krool_order:
-            krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
-        humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
+        # krool_order = []
+        # for phase in self.settings.krool_order:
+        #     krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
+        humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = self.settings.krool_order
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []
@@ -493,7 +493,7 @@ class Spoiler:
                 "CastleBoss": "King Kut Out",
             }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names[Maps(self.settings.boss_maps[i]).name]
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names.get(Maps(self.settings.boss_maps[i]).name, Maps(self.settings.boss_maps[i]).name)
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}

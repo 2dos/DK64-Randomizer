@@ -1795,3 +1795,18 @@ typedef struct path_data_struct {
 	/* 0x021 */ char unk21;
 	/* 0x022 */ char unk_22[0x30-0x22];
 } path_data_struct;
+
+typedef struct pen_a_data {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ unsigned char unk6;
+	/* 0x007 */ unsigned char unk7;
+	/* 0x008 */ unsigned char speed_cap;
+	/* 0x009 */ unsigned char unk9;
+} pen_a_data;
+
+typedef struct fence_collective_struct {
+	/* 0x000 */ char unk_00[0x14];
+	/* 0x014 */ pen_a_data* pen_A;
+} fence_collective_struct;

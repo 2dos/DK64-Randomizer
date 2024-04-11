@@ -270,7 +270,6 @@ void earlyFrame(void) {
 	}
 	fastWarpShockwaveFix();
 	catchWarpHandle();
-	determine_krool_order();
 	CBDing();
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();

@@ -978,7 +978,10 @@ class Settings:
         self.krool_tiny = False
         self.krool_chunky = False
 
-        phases = kongs.copy()
+        ENABLE_KROOL = True # TODO: Add to pool
+        phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
+        if ENABLE_KROOL:
+            phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])
         if self.krool_phase_order_rando:
             random.shuffle(phases)
         if self.krool_random:
@@ -1004,22 +1007,19 @@ class Settings:
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
         orderedPhases = []
-        for kong in phases:
-            if kong == Kongs.donkey:
+        for map_id in phases:
+            if map_id == Maps.KroolDonkeyPhase:
                 self.krool_donkey = True
-                orderedPhases.append(Kongs.donkey)
-            if kong == Kongs.diddy:
+            elif map_id == Maps.KroolDiddyPhase:
                 self.krool_diddy = True
-                orderedPhases.append(Kongs.diddy)
-            if kong == Kongs.lanky:
+            elif map_id == Maps.KroolLankyPhase:
                 self.krool_lanky = True
-                orderedPhases.append(Kongs.lanky)
-            if kong == Kongs.tiny:
+            elif map_id == Maps.KroolTinyPhase:
                 self.krool_tiny = True
-                orderedPhases.append(Kongs.tiny)
-            if kong == Kongs.chunky:
+            elif map_id == Maps.KroolChunkyPhase:
                 self.krool_chunky = True
-                orderedPhases.append(Kongs.chunky)
+            orderedPhases.append(map_id)
+
         self.krool_order = orderedPhases
 
         # Helm Order

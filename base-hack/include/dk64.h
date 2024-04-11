@@ -254,6 +254,7 @@ extern void getObjectPosition(int index, int unk0, int unk1, void* x, void* y, v
 extern void setActorModel(void* actor, int index);
 extern void spawn3DActor(spawnerPacket* packet);
 extern int getChunk(float x, float y, float z, int unk0);
+extern void spawnKey(short flag, int x, int y, int z, short unk0, short unk1);
 
 extern int crystalsUnlocked(int kong);
 extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
@@ -732,6 +733,7 @@ extern char RambiArenaComboChain[16];
 extern char* AnimationPointer;
 extern unsigned short StoredOrangeCount;
 extern path_data_struct* PathData[32];
+extern fence_collective_struct* FenceInformation;
 
 //hack data
 extern int TestVariable;

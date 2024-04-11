@@ -12,11 +12,14 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
-
+KRoolMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
+ENABLE_KROOL = True # TODO: Will be a setting
 
 def ShuffleBosses(boss_location_rando: bool):
     """Shuffle boss locations."""
     boss_maps = BossMapList.copy()
+    if ENABLE_KROOL:
+        boss_maps.extend(KRoolMaps.copy())
     if boss_location_rando:
         random.shuffle(boss_maps)
     return boss_maps
@@ -37,6 +40,11 @@ def ShuffleBossKongs(settings):
         Maps.FungiBoss: Kongs.chunky,
         Maps.CavesBoss: Kongs.donkey,
         Maps.CastleBoss: Kongs.lanky,
+        Maps.KroolDonkeyPhase: Kongs.donkey,
+        Maps.KroolDiddyPhase: Kongs.diddy,
+        Maps.KroolLankyPhase: Kongs.lanky,
+        Maps.KroolTinyPhase: Kongs.tiny,
+        Maps.KroolChunkyPhase: Kongs.chunky,
     }
 
     boss_kongs = []
@@ -71,6 +79,11 @@ def SelectRandomKongForBoss(boss_map: Maps, hard_bosses: bool):
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.CastleBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+    elif boss_map in (Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase):
+        # Not possible right now to make any other kong beat another's phase, however, if we were to do so:
+        # DK Phase - Make all kongs enter cannon barrels
+        # Other phases - ????????
+        possibleKongs = [Kongs.donkey + (boss_map - Maps.KroolDonkeyPhase)]
     return random.choice(possibleKongs)
 
 
@@ -80,7 +93,10 @@ def ShuffleKutoutKongs(boss_maps: array, boss_kongs: array, boss_kong_rando: boo
     kutout_kongs = []
     if boss_kong_rando:
         kutoutLocation = boss_maps.index(Maps.CastleBoss)
-        starting_kong = boss_kongs[kutoutLocation]
+        if kutoutLocation < 0 or kutoutLocation >= len(boss_kongs):
+            starting_kong = random.choice(vanillaKutoutKongs)
+        else:
+            starting_kong = boss_kongs[kutoutLocation]
         kongPool = vanillaKutoutKongs.copy()
         kongPool.remove(starting_kong)
         random.shuffle(kongPool)
@@ -224,6 +240,8 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         settings.boss_maps = newBossMaps
     else:
         settings.boss_maps = BossMapList.copy()
+        if ENABLE_KROOL:
+            settings.boss_maps.extend(KRoolMaps.copy())
     if settings.kong_rando or settings.boss_kong_rando:
         # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
         if not settings.boss_location_rando:

@@ -52,7 +52,6 @@ extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
 extern void overlay_changes(void);
-extern void determine_krool_order(void);
 extern void handleKRoolSaveProgress(void);
 extern void replace_zones(int init_flag);
 extern void displayNumberOnTns(void);
@@ -197,7 +196,6 @@ extern void modifyCutscenePointTime(int bank, int cutscene, int point, int new_t
 extern void modifyCutscenePointCount(int bank, int cutscene, int point_count);
 extern void createCutscene(int bank, int cutscene, int point_count);
 extern void HelmInit(int init_stage);
-extern void initKRool(int phase);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
 extern int getObjectCollectability(int id, int unk1, int model2_type);

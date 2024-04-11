@@ -1359,6 +1359,23 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
 
+    boss_complete_functions = [
+        0x8002590C, # Dillo 1
+        0x80025C90, # Dillo 2
+        0x8002A108, # Puff
+        0x8002B424, # Dog 2
+        0x8002C154, # Dog 1
+        0x800327FC, # KKO
+        0x80035670, # MJ
+        0x8002DBD0, # K Rool - DK
+        0x8002E718, # K Rool - Diddy
+        0x8002F050, # K Rool - Lanky
+        0x8002FAF4, # K Rool - Tiny
+        0x800319B8, # K Rool - Chunky
+    ]
+    for addr in boss_complete_functions:
+        writeFunction(ROM_COPY, addr, Overlay.Boss, "completeBoss", offset_dict)
+
     writeValue(ROM_COPY, 0x80024266, Overlay.Bonus, 1, offset_dict)  # Set Minigame oranges as infinite
 
     # Adjust Krazy KK Flicker Speeds (Non-ASM)
