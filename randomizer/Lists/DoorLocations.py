@@ -1977,7 +1977,10 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk,
+            logic=lambda l: (l.isdiddy and l.jetpack)
+            or l.CanMoonkick()
+            or ((l.isdiddy or l.istiny or (l.islanky and l.settings.krusha_kong != Kongs.lanky)) and l.advanced_platforming)
+            or l.phasewalk,
             placed="tns",
         ),  # T&S Portal on Rotating Room | Lanky can backflip onto the building from the window sill
         DoorData(

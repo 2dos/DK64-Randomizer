@@ -164,8 +164,8 @@
 | Gloomy Galleon | Near Chest Cannon (1) |  | `` | 
 | Gloomy Galleon | Near Chest Cannon (2) |  | `` | 
 | Gloomy Galleon | Near Chest GB Tunnel |  | `` | 
-| Gloomy Galleon | Behind Punch GB Chest (1) |  | `` | 
-| Gloomy Galleon | Behind Punch GB Chest (2) |  | `` | 
+| Gloomy Galleon | In Punch GB Chest Room |  | `` | 
+| Gloomy Galleon | Behind Punch GB Chest |  | `` | 
 | Gloomy Galleon | Behind the ship you shoot onto with the cannon |  | `` | 
 | Galleon2DShip | Galleon Lanky 2DS Inside Chest | CrownPad, DirtPatch | `` | 
 | Gloomy Galleon | Left of Cranky |  | `` | 
@@ -184,7 +184,7 @@
 | Gloomy Galleon | In the Shipwreck with Replenishables | CrownPad, DirtPatch | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | Behind Musical Cactus | CrownPad, DirtPatch | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | On Top of Mechfish Grate | DirtPatch, CrownPad | `Events.ShipyardEnguarde in l.Events` | 
-| Gloomy Galleon | On Gold Tower |  | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or l.advanced_platforming) or l.CanMoonkick()` | 
+| Gloomy Galleon | On Gold Tower |  | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick()` | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | CrownPad, DirtPatch | `Events.ShipyardTreasureRoomOpened in l.Events` | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | `` | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  | `` | 
