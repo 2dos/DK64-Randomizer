@@ -94,6 +94,7 @@ async def GenerateSpoiler(spoiler):
         if hint_attr in formatted_spoiler:
             formatted_spoiler["Misc Custom Locations"][location_mapping[hint_attr]] = formatted_spoiler[hint_attr]
             formatted_spoiler.pop(hint_attr)
+    # Item Pool Cleanup
     if "Item Pool" in formatted_spoiler:
         deleted_keys = []
         for key in formatted_spoiler["Items (Sorted by Item)"]:
@@ -102,6 +103,24 @@ async def GenerateSpoiler(spoiler):
                     deleted_keys.append(key)
         for key in deleted_keys:
             del formatted_spoiler["Items (Sorted by Item)"][key]
+    # End Game Cleanup
+    if "Requirements" not in formatted_spoiler:
+        formatted_spoiler["Requirements"] = {}
+    if "Bosses" not in formatted_spoiler:
+        formatted_spoiler["Bosses"] = {}
+    if "End Game" in formatted_spoiler:
+        if "K. Rool" in formatted_spoiler["End Game"]:
+            if "K Rool Phases" in formatted_spoiler["End Game"]["K. Rool"]:
+                formatted_spoiler["Bosses"]["The Final Battle"] = formatted_spoiler["End Game"]["K. Rool"]["K Rool Phases"].copy()
+                del formatted_spoiler["End Game"]["K. Rool"]["K Rool Phases"]
+            if "Keys Required for K Rool" in formatted_spoiler["End Game"]["K. Rool"]:
+                formatted_spoiler["Requirements"]["Keys Required for K. Rool"] = formatted_spoiler["End Game"]["K. Rool"]["Keys Required for K Rool"]
+                del formatted_spoiler["End Game"]["K. Rool"]["Keys Required for K Rool"]
+        if "Helm" in formatted_spoiler["End Game"]:
+            if "Helm Rooms" in formatted_spoiler["End Game"]["Helm"]:
+                formatted_spoiler["Requirements"]["Helm Rooms"] = formatted_spoiler["End Game"]["Helm"]["Helm Rooms"]
+                del formatted_spoiler["End Game"]["Helm"]["Helm Rooms"]
+    del formatted_spoiler["End Game"]
 
     # modified_spoiler.update(formatted_spoiler)
     # print(modified_spoiler)

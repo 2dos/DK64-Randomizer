@@ -1007,6 +1007,7 @@ class Settings:
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
         orderedPhases = []
+        # TODO: Fix logic (lol)
         for map_id in phases:
             if map_id == Maps.KroolDonkeyPhase:
                 self.krool_donkey = True
@@ -1201,7 +1202,7 @@ class Settings:
         self.logical_fairy_requirement = min(math.floor(self.rareware_gb_fairies * 1.2), 20)
 
         # Boss Rando
-        self.boss_maps = ShuffleBosses(self.boss_location_rando)
+        self.boss_maps = ShuffleBosses(self.boss_location_rando, self)
         self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
         self.kko_phase_order = ShuffleKKOPhaseOrder(self)

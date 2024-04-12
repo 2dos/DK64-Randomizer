@@ -296,7 +296,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
         if (obj_type == 0x13C) {
             collectKey();
         } else {
-            if (inBossMap(CurrentMap, 1, 0, 0)) {
+            if (inBossMap(CurrentMap, 1, 1, 0)) {
                 for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
                     if (obj_type == acceptable_items[j]) {
                         setAction(0x41, 0, 0);
@@ -439,7 +439,7 @@ int canDanceSkip(void) {
     if ((Player->yPos - Player->floor) >= 100.0f) {
         return 1;
     }
-    if (Player->control_state == 99) {
+    if ((Player->control_state == 99) && (CurrentMap != MAP_KROOLDIDDY)) {
         return 1;
     }
     if ((Player->grounded_bitfield & 4) && ((Player->water_floor - Player->floor) > 20.0f)) {
@@ -447,7 +447,7 @@ int canDanceSkip(void) {
     }
     if (Rando.quality_of_life.dance_skip) {
         int is_banned_map = inBattleCrown(CurrentMap);
-        if (inBossMap(CurrentMap, 1, 0, 0)) {
+        if (inBossMap(CurrentMap, 1, 1, 0)) {
             is_banned_map = 1;
         }
         for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
@@ -608,7 +608,7 @@ void getItem(int object_type) {
             keyGrabHook(SONG_GBGET, 1.0f);
             if (!canDanceSkip()) {
                 int action = 0x29; // GB Get
-                if (inBossMap(CurrentMap, 1, 0, 0)) {
+                if (inBossMap(CurrentMap, 1, 1, 0)) {
                     action = 0x41; // Key Get
                 }
                 setAction(action, 0, 0);

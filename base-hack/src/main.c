@@ -188,7 +188,9 @@ void cFuncLoop(void) {
 }
 
 void earlyFrame(void) {
-	if (ObjectModel2Timer == 2) {
+	if (ObjectModel2Timer < 2) {
+		swap_ending_cutscene_model();
+	} else if (ObjectModel2Timer == 2) {
 		setFlag(FLAG_KROOL_INTRO_DK,1,FLAGTYPE_TEMPORARY); // DK Phase Intro
 		setFlag(FLAG_KROOL_INTRO_TINY,1,FLAGTYPE_TEMPORARY); // Tiny Phase Intro
 		if (CurrentMap == MAP_ISLES) {

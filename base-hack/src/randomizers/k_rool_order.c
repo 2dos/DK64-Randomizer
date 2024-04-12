@@ -29,7 +29,41 @@ static const boss_spawn_info boss_spawn_data[] = {
 /*
 	TODO: Swap K Rool model in "K Rool gets booted" to whatever the boss in the last phase is
 	- Might be difficult with KKO
+	- Maybe for non KR win cons, have the model be based on the level you acquired the win con item from
 */
+
+typedef struct boss_map_to_model {
+	/* 0x000 */ short map;
+	/* 0x002 */ short model;
+} boss_map_to_model;
+
+static const boss_map_to_model model_data[] = {
+	{.map = MAP_JAPESDILLO, .model=0x38}, // Dillo - With Shell
+	{.map = MAP_AZTECDOGADON, .model=0x3C}, // Dogadon
+	{.map = MAP_FACTORYJACK, .model=0x25}, // Mad Jack
+	{.map = MAP_GALLEONPUFFTOSS, .model=0x3B}, // Puff
+	{.map = MAP_FUNGIDOGADON, .model=0x3C}, // Dogadon
+	{.map = MAP_CAVESDILLO, .model=0x63}, // Dillo - No Shell
+	{.map = MAP_CASTLEKUTOUT, .model=0xDC}, // KKO - Head
+};
+
+void swap_ending_cutscene_model(void) {
+	int model = 0x68;
+	if (CurrentMap == MAP_ISLES) {
+		int phase_map = 0xFF;
+		for (int i = 0; i < 5; i++) {
+			if (Rando.k_rool_order[i] != 0xFF) {
+				phase_map = Rando.k_rool_order[i];
+			}
+		}
+		for (int i = 0; i < 7; i++) {
+			if (phase_map == model_data[i].map) {
+				model = model_data[i].model;
+			}
+		}
+	}
+	*(short*)(0x80755764) = model;
+}
 
 void completeBoss(void) {
 	// Spawn Key
@@ -72,12 +106,12 @@ void completeBoss(void) {
 
 static unsigned char valid_lz_types[] = {9, 12, 13, 16};
 void handleKRoolSaveProgress(void) {
-	return;
 	if (Rando.quality_of_life.save_krool_progress) {
 		// Save Progress
-		int krool_phase_diff = CurrentMap - MAP_KROOLDK;
-		if ((krool_phase_diff >= 0) && (krool_phase_diff < 5)) {
-			setFlag(FLAG_KROOL_ENTERED + krool_phase_diff, 1, FLAGTYPE_PERMANENT);
+		for (int i = 0; i < 5; i++) {
+			if (Rando.k_rool_order[i] == CurrentMap) {
+				setFlag(FLAG_KROOL_ENTERED + i, 1, FLAGTYPE_PERMANENT);
+			}
 		}
 		if (CurrentMap == MAP_ISLES) {
 			// Wipe Progress
@@ -93,9 +127,9 @@ void handleKRoolSaveProgress(void) {
 			// Load Progress
 			int latest_map = -1;
 			for (int i = 1; i < 5; i++) {
-				if (Rando.k_rool_order[i] != -1) {
-					if (checkFlag(FLAG_KROOL_ENTERED + Rando.k_rool_order[i], 0)) {
-						latest_map = MAP_KROOLDK + Rando.k_rool_order[i];
+				if (checkFlag(FLAG_KROOL_ENTERED + i, FLAGTYPE_PERMANENT)) {
+					if (Rando.k_rool_order[i] != 0xFF) {
+						latest_map = Rando.k_rool_order[i];
 					}
 				}
 			}

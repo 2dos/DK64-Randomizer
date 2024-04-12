@@ -15,11 +15,12 @@ BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBos
 KRoolMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
 ENABLE_KROOL = True # TODO: Will be a setting
 
-def ShuffleBosses(boss_location_rando: bool):
+def ShuffleBosses(boss_location_rando: bool, settings):
     """Shuffle boss locations."""
     boss_maps = BossMapList.copy()
     if ENABLE_KROOL:
         boss_maps.extend(KRoolMaps.copy())
+    boss_maps = [x for x in boss_maps if x not in settings.krool_order]
     if boss_location_rando:
         random.shuffle(boss_maps)
     return boss_maps
@@ -92,11 +93,14 @@ def ShuffleKutoutKongs(boss_maps: array, boss_kongs: array, boss_kong_rando: boo
     vanillaKutoutKongs = [Kongs.lanky, Kongs.tiny, Kongs.chunky, Kongs.donkey, Kongs.diddy]
     kutout_kongs = []
     if boss_kong_rando:
-        kutoutLocation = boss_maps.index(Maps.CastleBoss)
-        if kutoutLocation < 0 or kutoutLocation >= len(boss_kongs):
-            starting_kong = random.choice(vanillaKutoutKongs)
+        if Maps.CastleBoss in boss_maps:
+            kutoutLocation = boss_maps.index(Maps.CastleBoss)
+            if kutoutLocation < 0 or kutoutLocation >= len(boss_kongs):
+                starting_kong = random.choice(vanillaKutoutKongs)
+            else:
+                starting_kong = boss_kongs[kutoutLocation]
         else:
-            starting_kong = boss_kongs[kutoutLocation]
+            starting_kong = random.choice(vanillaKutoutKongs)
         kongPool = vanillaKutoutKongs.copy()
         kongPool.remove(starting_kong)
         random.shuffle(kongPool)
@@ -242,6 +246,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         settings.boss_maps = BossMapList.copy()
         if ENABLE_KROOL:
             settings.boss_maps.extend(KRoolMaps.copy())
+        settings.boss_maps = [x for x in settings.boss_maps if x not in settings.krool_order]
     if settings.kong_rando or settings.boss_kong_rando:
         # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
         if not settings.boss_location_rando:

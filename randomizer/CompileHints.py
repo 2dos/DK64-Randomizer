@@ -359,6 +359,20 @@ moves_data = [
 
 kong_placement_levels = [{"name": "Jungle Japes", "level": 0}, {"name": "Llama Temple", "level": 1}, {"name": "Tiny Temple", "level": 1}, {"name": "Frantic Factory", "level": 2}]
 
+boss_names = {
+    Maps.JapesBoss: "Army Dillo 1",
+    Maps.AztecBoss: "Dogadon 1",
+    Maps.FactoryBoss: "Mad Jack",
+    Maps.GalleonBoss: "Pufftoss",
+    Maps.FungiBoss: "Dogadon 2",
+    Maps.CavesBoss: "Army Dillo 2",
+    Maps.CastleBoss: "King Kut Out",
+    Maps.KroolDonkeyPhase: "DK Phase",
+    Maps.KroolDiddyPhase: "Diddy Phase",
+    Maps.KroolLankyPhase: "Lanky Phase",
+    Maps.KroolTinyPhase: "Tiny Phase",
+    Maps.KroolChunkyPhase: "Chunky Phase",
+}
 
 # Hint distribution that will be adjusted based on settings
 # These values are "if this is an option, then you must have at least X of this hint"
@@ -492,24 +506,24 @@ def compileHints(spoiler: Spoiler) -> bool:
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
     # Your training in moves which you know are always needed beat K. Rool are pointless to hint
-    if Kongs.diddy in spoiler.settings.krool_order and Kongs.diddy in spoiler.krool_paths.keys():
-        useless_locations[Kongs.diddy] = [
+    if Maps.KroolDiddyPhase in spoiler.settings.krool_order and Maps.KroolDiddyPhase in spoiler.krool_paths.keys():
+        useless_locations[Maps.KroolDiddyPhase] = [
             loc
-            for loc in spoiler.krool_paths[Kongs.diddy]
+            for loc in spoiler.krool_paths[Maps.KroolDiddyPhase]
             if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
         ]
-    if Kongs.lanky in spoiler.settings.krool_order and Kongs.lanky in spoiler.krool_paths.keys():
-        useless_locations[Kongs.lanky] = [
-            loc for loc in spoiler.krool_paths[Kongs.lanky] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Barrels, Items.Trombone]
+    if Maps.KroolLankyPhase in spoiler.settings.krool_order and Maps.KroolLankyPhase in spoiler.krool_paths.keys():
+        useless_locations[Maps.KroolLankyPhase] = [
+            loc for loc in spoiler.krool_paths[Maps.KroolLankyPhase] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Barrels, Items.Trombone]
         ]
-    if Kongs.tiny in spoiler.settings.krool_order and Kongs.tiny in spoiler.krool_paths.keys():
-        useless_locations[Kongs.tiny] = [
-            loc for loc in spoiler.krool_paths[Kongs.tiny] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Feather, Items.MiniMonkey]
+    if Maps.KroolTinyPhase in spoiler.settings.krool_order and Maps.KroolTinyPhase in spoiler.krool_paths.keys():
+        useless_locations[Maps.KroolTinyPhase] = [
+            loc for loc in spoiler.krool_paths[Maps.KroolTinyPhase] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Feather, Items.MiniMonkey]
         ]
-    if Kongs.chunky in spoiler.settings.krool_order and Kongs.chunky in spoiler.krool_paths.keys():
-        useless_locations[Kongs.chunky] = [
+    if Maps.KroolChunkyPhase in spoiler.settings.krool_order and Maps.KroolChunkyPhase in spoiler.krool_paths.keys():
+        useless_locations[Maps.KroolChunkyPhase] = [
             loc
-            for loc in spoiler.krool_paths[Kongs.chunky]
+            for loc in spoiler.krool_paths[Maps.KroolChunkyPhase]
             if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
         ]
 
@@ -1937,9 +1951,9 @@ def compileHints(spoiler: Spoiler) -> bool:
     # No need to do anything fancy here - there's often already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):
         hint_location = getRandomHintLocation()
-        kong_krool_order = [kong_list[kong] for kong in spoiler.settings.krool_order]
+        kong_krool_order = [boss_names[map_id] for map_id in spoiler.settings.krool_order]
         kong_krool_text = ", then ".join(kong_krool_order)
-        associated_hint = f"\x08King K. Rool\x08 will face off in the ring against {kong_krool_text}."
+        associated_hint = f"\x08The final battle\x08 will be against {kong_krool_text}."
         hint_location.hint_type = HintType.KRoolOrder
         UpdateHint(hint_location, associated_hint)
 
@@ -2168,7 +2182,7 @@ def compileSpoilerHints(spoiler):
     spoiler.level_spoiler_human_readable["Starting Info"] = "Starting Kongs: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.starting_kongs])
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Starting Keys: " + ", ".join(starting_info.starting_keys)
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Helm Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.helm_order])
-    spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.krool_order])
+    spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([boss_names[map_id] for map_id in starting_info.krool_order])
     if spoiler.settings.spoiler_include_level_order:
         spoiler.level_spoiler_human_readable["Starting Info"] += " | Level Order: " + ", ".join([level_list[level] for level in starting_info.level_order])
     if spoiler.settings.spoiler_hints == SpoilerHints.points:
@@ -2338,9 +2352,9 @@ def GenerateMultipathDict(
                     relevant_goal_locations.append(woth_loc)
         # Determine which K. Rool phases this is on the path to (if relevant)
         if spoiler.settings.win_condition == WinCondition.beat_krool:
-            for kong in spoiler.krool_paths.keys():
-                if location in spoiler.krool_paths[kong]:
-                    path_to_krool_phases.append(kong_list[kong])
+            for map_id in spoiler.krool_paths.keys():
+                if location in spoiler.krool_paths[map_id]:
+                    path_to_krool_phases.append(boss_names[map_id])
         # Determine if this location is on the path to taking photos for certain win conditions
         if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None

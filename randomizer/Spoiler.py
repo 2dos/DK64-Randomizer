@@ -48,6 +48,20 @@ if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
     from randomizer.LogicClasses import Sphere
 
+boss_map_names = {
+    Maps.JapesBoss: "Army Dillo 1",
+    Maps.AztecBoss: "Dogadon 1",
+    Maps.FactoryBoss: "Mad Jack",
+    Maps.GalleonBoss: "Pufftoss",
+    Maps.FungiBoss: "Dogadon 2",
+    Maps.CavesBoss: "Army Dillo 2",
+    Maps.CastleBoss: "King Kut Out",
+    Maps.KroolDonkeyPhase: "DK Phase",
+    Maps.KroolDiddyPhase: "Diddy Phase",
+    Maps.KroolLankyPhase: "Lanky Phase",
+    Maps.KroolTinyPhase: "Tiny Phase",
+    Maps.KroolChunkyPhase: "Chunky Phase",
+}
 
 class Spoiler:
     """Class which contains all spoiler data passed into and out of randomizer."""
@@ -335,10 +349,10 @@ class Spoiler:
             "K. Rool": {},
         }
         humanspoiler["End Game"]["K. Rool"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
-        # krool_order = []
-        # for phase in self.settings.krool_order:
-        #     krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
-        humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = self.settings.krool_order
+        krool_order = []
+        for phase in self.settings.krool_order:
+            krool_order.append(boss_map_names[phase])
+        humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []
@@ -483,17 +497,8 @@ class Spoiler:
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
-            boss_names = {
-                "JapesBoss": "Army Dillo 1",
-                "AztecBoss": "Dogadon 1",
-                "FactoryBoss": "Mad Jack",
-                "GalleonBoss": "Pufftoss",
-                "FungiBoss": "Dogadon 2",
-                "CavesBoss": "Army Dillo 2",
-                "CastleBoss": "King Kut Out",
-            }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names.get(Maps(self.settings.boss_maps[i]).name, Maps(self.settings.boss_maps[i]).name)
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_map_names.get(self.settings.boss_maps[i], Maps(self.settings.boss_maps[i]).name)
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}

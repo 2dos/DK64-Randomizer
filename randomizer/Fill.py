@@ -903,16 +903,16 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
         if spoiler.settings.win_condition == WinCondition.beat_krool:
-            if Kongs.donkey in spoiler.settings.krool_order and Events.KRoolDonkey not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.donkey].append(locationId)
-            if Kongs.diddy in spoiler.settings.krool_order and Events.KRoolDiddy not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.diddy].append(locationId)
-            if Kongs.lanky in spoiler.settings.krool_order and Events.KRoolLanky not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.lanky].append(locationId)
-            if Kongs.tiny in spoiler.settings.krool_order and Events.KRoolTiny not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.tiny].append(locationId)
-            if Kongs.chunky in spoiler.settings.krool_order and Events.KRoolChunky not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.chunky].append(locationId)
+            if Maps.KroolDonkeyPhase in spoiler.settings.krool_order and Events.KRoolDonkey not in spoiler.LogicVariables.Events:
+                spoiler.krool_paths[Maps.KroolDonkeyPhase].append(locationId)
+            if Maps.KroolDiddyPhase in spoiler.settings.krool_order and Events.KRoolDiddy not in spoiler.LogicVariables.Events:
+                spoiler.krool_paths[Maps.KroolDiddyPhase].append(locationId)
+            if Maps.KroolLankyPhase in spoiler.settings.krool_order and Events.KRoolLanky not in spoiler.LogicVariables.Events:
+                spoiler.krool_paths[Maps.KroolLankyPhase].append(locationId)
+            if Maps.KroolTinyPhase in spoiler.settings.krool_order and Events.KRoolTiny not in spoiler.LogicVariables.Events:
+                spoiler.krool_paths[Maps.KroolTinyPhase].append(locationId)
+            if Maps.KroolChunkyPhase in spoiler.settings.krool_order and Events.KRoolChunky not in spoiler.LogicVariables.Events:
+                spoiler.krool_paths[Maps.KroolChunkyPhase].append(locationId)
         # Put the item back for future calculations
         location.PlaceItem(spoiler, item_id)
     # After everything is calculated, get rid of paths for false WotH locations

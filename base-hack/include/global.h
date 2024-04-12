@@ -187,6 +187,7 @@ extern void playTransformationSong(songs song, float volume);
 
 extern void updateBarrierCounts(void);
 extern void displayBarrierHUD(item_ids item, int persist);
+extern void swap_ending_cutscene_model(void);
 
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void modifyCutscenePoint(int bank, int cutscene, int point, int new_item);
