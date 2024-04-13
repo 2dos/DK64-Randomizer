@@ -151,7 +151,7 @@ typedef struct varspace {
 	/* 0x1DD */ unsigned char krool_requirements; // K Rool bitfield 8765 4321
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
-	/* 0x1E1 */ char unk_1e1;
+	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ char unk_1e3[0x1E7-0x1e3];
 	/* 0x1E7 */ char balloon_sound;

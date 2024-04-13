@@ -52,7 +52,7 @@ void replace_zones(int init_flag) {
 			}
 		}
 	}
-	if ((more_lz_byte == 0) || (more_lz_byte == 2))
+	if ((more_lz_byte == 0) || (more_lz_byte == 2)) {
 		if (init_flag) {
 			for (int i = 0; i < 9; i++) {
 				ReplacementLobbiesArray[i] = LobbiesArray[i];
