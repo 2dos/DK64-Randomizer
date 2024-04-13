@@ -645,7 +645,7 @@
 | W3 (Tiny) | 5 | `` | 
 | W3 (Tiny) | 5 | `` | 
 | In front of Tiny's treasure chest (Tiny) | 5 | `` | 
-| In cannon game room over planks (Tiny) | 15 | `(Events.WaterRaised in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky)))` | 
+| In cannon game room over planks (Tiny) | 15 | `(Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and l.settings.krusha_kong != Kongs.lanky) or l.ischunky)))` | 
 | On seafloor around lighthouse (Chunky) | 10 | `` | 
 | W2 (Chunky) | 5 | `Events.WaterRaised in l.Events` | 
 | W2 (Chunky) | 5 | `` | 
@@ -667,7 +667,7 @@
 | Around lighthouse (Donkey) | Balloon | `` | 
 | In chests room (Donkey) | Balloon | `` | 
 | In gold tower room (Diddy) | Balloon | `` | 
-| By cannon in cannon game room (Chunky) | Balloon | `(Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky)))` | 
+| By cannon in cannon game room (Chunky) | Balloon | `(Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and l.settings.krusha_kong != Kongs.lanky) or l.ischunky)))` | 
 | Above 2DS (Chunky) | Balloon | `` | 
 | Above 5DS (Lanky) | Balloon | `` | 
 | In front of Snide (Tiny) | Balloon | `Events.WaterRaised in l.Events` | 
