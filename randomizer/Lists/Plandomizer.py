@@ -1,5 +1,7 @@
 """Various lists to support the plandomizer."""
 
+import re
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -10,7 +12,10 @@ from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
+from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes
+from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.Item import ItemList
+from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
@@ -40,7 +45,7 @@ def getKongString(kongEnum: Kongs) -> str:
         return "All Kongs"
 
 
-def getLevelString(levelEnum: Levels) -> str:
+def GetLevelString(levelEnum: Levels) -> str:
     """Get the string name of a level from the enum."""
     if levelEnum == Levels.DKIsles:
         return "D.K. Isles"
@@ -80,11 +85,11 @@ MinigameLocationList = []
 HintLocationList = []
 
 # Additional lists we need in order to disable certain locations.
-CrownLocationList = []
-DirtPatchLocationList = []
-FairyLocationList = []
-KasplatLocationList = []
-MelonCrateLocationList = []
+CrownPlandoLocationList = []
+DirtPatchPlandoLocationList = []
+FairyPlandoLocationList = []
+KasplatPlandoLocationList = []
+MelonCratePlandoLocationList = []
 
 
 def createShopLocationKongMapObj() -> dict:
@@ -161,6 +166,36 @@ PlandomizerPanels = {
             "HideoutHelm": {"name": "Hideout Helm", "locations": []},
         },
     },
+    "Locations": {
+        "name": "Custom Locations",
+        "categories": {
+            "Fairy": {
+                "name": "Banana Fairies",
+                "singular": "fairy",
+                "locations": [],
+            },
+            "CrownPad": {
+                "name": "Battle Crown Arenas",
+                "singular": "arena",
+                "locations": [],
+            },
+            "DirtPatch": {
+                "name": "Dirt Patches",
+                "singular": "patch",
+                "locations": [],
+            },
+            "Kasplat": {
+                "name": "Kasplats",
+                "singular": "kasplat",
+                "locations": [],
+            },
+            "MelonCrate": {
+                "name": "Melon Crates",
+                "singular": "crate",
+                "locations": [],
+            },
+        },
+    },
     "Hints": {
         "name": "Hints",
         "levels": {
@@ -218,15 +253,15 @@ for locationEnum, locationObj in LocationList.items():
         # We need to keep track of locations for dirt patches, fairies, arenas,
         # melon crates, and Kasplats.
         if locationObj.type == Types.Crown:
-            CrownLocationList.append(locationEnum.name)
+            CrownPlandoLocationList.append(locationEnum.name)
         elif locationObj.type == Types.RainbowCoin:
-            DirtPatchLocationList.append(locationEnum.name)
+            DirtPatchPlandoLocationList.append(locationEnum.name)
         elif locationObj.type == Types.Fairy:
-            FairyLocationList.append(locationEnum.name)
+            FairyPlandoLocationList.append(locationEnum.name)
         elif locationObj.type == Types.Blueprint:
-            KasplatLocationList.append(locationEnum.name)
+            KasplatPlandoLocationList.append(locationEnum.name)
         elif locationObj.type == Types.CrateItem:
-            MelonCrateLocationList.append(locationEnum.name)
+            MelonCratePlandoLocationList.append(locationEnum.name)
 
         # If this is a minigame location, add it to the Minigames list.
         if isMinigameLocation(locationEnum):
@@ -412,5 +447,367 @@ for level in allSpawnableLevels:
     sortedLocations = dict(sorted(filteredLocations.items(), key=spawnKey))
 
     for regionEnum, regionObj in sortedLocations.items():
-        regionJson = {"name": f"{getLevelString(regionObj.level)}: {regionObj.hint_name} - {regionObj.name}", "value": regionEnum.name}
+        regionJson = {"name": f"{GetLevelString(regionObj.level)}: {regionObj.hint_name} - {regionObj.name}", "value": regionEnum.name}
         PlannableSpawns.append(regionJson)
+
+####################
+# CUSTOM LOCATIONS #
+####################
+
+PlannableCustomLocations = {}
+
+CrownLocationEnumList = [
+    Locations.JapesBattleArena.name,
+    Locations.AztecBattleArena.name,
+    Locations.FactoryBattleArena.name,
+    Locations.GalleonBattleArena.name,
+    Locations.ForestBattleArena.name,
+    Locations.CavesBattleArena.name,
+    Locations.CastleBattleArena.name,
+    Locations.IslesBattleArena1.name,
+    Locations.IslesBattleArena2.name,
+    Locations.HelmBattleArena.name,
+]
+KasplatLocationEnumList = [
+    Locations.JapesDonkeyKasplatRando.name,
+    Locations.JapesDiddyKasplatRando.name,
+    Locations.JapesLankyKasplatRando.name,
+    Locations.JapesTinyKasplatRando.name,
+    Locations.JapesChunkyKasplatRando.name,
+    Locations.AztecDonkeyKasplatRando.name,
+    Locations.AztecDiddyKasplatRando.name,
+    Locations.AztecLankyKasplatRando.name,
+    Locations.AztecTinyKasplatRando.name,
+    Locations.AztecChunkyKasplatRando.name,
+    Locations.FactoryDonkeyKasplatRando.name,
+    Locations.FactoryDiddyKasplatRando.name,
+    Locations.FactoryLankyKasplatRando.name,
+    Locations.FactoryTinyKasplatRando.name,
+    Locations.FactoryChunkyKasplatRando.name,
+    Locations.GalleonDonkeyKasplatRando.name,
+    Locations.GalleonDiddyKasplatRando.name,
+    Locations.GalleonLankyKasplatRando.name,
+    Locations.GalleonTinyKasplatRando.name,
+    Locations.GalleonChunkyKasplatRando.name,
+    Locations.ForestDonkeyKasplatRando.name,
+    Locations.ForestDiddyKasplatRando.name,
+    Locations.ForestLankyKasplatRando.name,
+    Locations.ForestTinyKasplatRando.name,
+    Locations.ForestChunkyKasplatRando.name,
+    Locations.CavesDonkeyKasplatRando.name,
+    Locations.CavesDiddyKasplatRando.name,
+    Locations.CavesLankyKasplatRando.name,
+    Locations.CavesTinyKasplatRando.name,
+    Locations.CavesChunkyKasplatRando.name,
+    Locations.CastleDonkeyKasplatRando.name,
+    Locations.CastleDiddyKasplatRando.name,
+    Locations.CastleLankyKasplatRando.name,
+    Locations.CastleTinyKasplatRando.name,
+    Locations.CastleChunkyKasplatRando.name,
+    Locations.IslesDonkeyKasplatRando.name,
+    Locations.IslesDiddyKasplatRando.name,
+    Locations.IslesLankyKasplatRando.name,
+    Locations.IslesTinyKasplatRando.name,
+    Locations.IslesChunkyKasplatRando.name,
+]
+
+
+def getCrownVanillaLocation(location: Locations) -> str:
+    """Extract the vanilla location for the provided crown location enum."""
+    locationString = LocationList[location].name
+    return re.search(r"^[^(\)]+?\((.+)\)$", locationString)[1]
+
+
+# This groups crown locations together by level.
+CrownVanillaLocationMap = {
+    Levels.JungleJapes: {
+        Locations.JapesBattleArena: getCrownVanillaLocation(Locations.JapesBattleArena),
+    },
+    Levels.AngryAztec: {
+        Locations.AztecBattleArena: getCrownVanillaLocation(Locations.AztecBattleArena),
+    },
+    Levels.FranticFactory: {
+        # This one location has to be manually adjusted.
+        Locations.FactoryBattleArena: f"{getCrownVanillaLocation(Locations.FactoryBattleArena)} (1)",
+    },
+    Levels.GloomyGalleon: {
+        Locations.GalleonBattleArena: getCrownVanillaLocation(Locations.GalleonBattleArena),
+    },
+    Levels.FungiForest: {
+        Locations.ForestBattleArena: getCrownVanillaLocation(Locations.ForestBattleArena),
+    },
+    Levels.CrystalCaves: {
+        Locations.CavesBattleArena: getCrownVanillaLocation(Locations.CavesBattleArena),
+    },
+    Levels.CreepyCastle: {
+        Locations.CastleBattleArena: getCrownVanillaLocation(Locations.CastleBattleArena),
+    },
+    Levels.DKIsles: {
+        Locations.IslesBattleArena1: getCrownVanillaLocation(Locations.IslesBattleArena1),
+        Locations.IslesBattleArena2: getCrownVanillaLocation(Locations.IslesBattleArena2),
+    },
+    Levels.HideoutHelm: {
+        Locations.HelmBattleArena: getCrownVanillaLocation(Locations.HelmBattleArena),
+    },
+}
+
+# This map associates Kasplat physical locations (where they appear on the map)
+# with the locations associated with their rewards, and groups them by level.
+KasplatLocationToRewardMap = {
+    Levels.JungleJapes: {
+        Locations.JapesDonkeyKasplatRando: Locations.JapesKasplatLeftTunnelNear,
+        Locations.JapesDiddyKasplatRando: Locations.JapesKasplatNearPaintingRoom,
+        Locations.JapesLankyKasplatRando: Locations.JapesKasplatNearLab,
+        Locations.JapesTinyKasplatRando: Locations.JapesKasplatLeftTunnelFar,
+        Locations.JapesChunkyKasplatRando: Locations.JapesKasplatUnderground,
+    },
+    Levels.AngryAztec: {
+        Locations.AztecDonkeyKasplatRando: Locations.AztecKasplatSandyBridge,
+        Locations.AztecDiddyKasplatRando: Locations.AztecKasplatOnTinyTemple,
+        Locations.AztecLankyKasplatRando: Locations.AztecKasplatLlamaTemple,
+        Locations.AztecTinyKasplatRando: Locations.AztecKasplatNearLab,
+        Locations.AztecChunkyKasplatRando: Locations.AztecKasplatChunky5DT,
+    },
+    Levels.FranticFactory: {
+        Locations.FactoryDonkeyKasplatRando: Locations.FactoryKasplatProductionTop,
+        Locations.FactoryDiddyKasplatRando: Locations.FactoryKasplatProductionBottom,
+        Locations.FactoryLankyKasplatRando: Locations.FactoryKasplatRandD,
+        Locations.FactoryTinyKasplatRando: Locations.FactoryKasplatStorage,
+        Locations.FactoryChunkyKasplatRando: Locations.FactoryKasplatBlocks,
+    },
+    Levels.GloomyGalleon: {
+        Locations.GalleonDonkeyKasplatRando: Locations.GalleonKasplatGoldTower,
+        Locations.GalleonDiddyKasplatRando: Locations.GalleonKasplatLighthouseArea,
+        Locations.GalleonLankyKasplatRando: Locations.GalleonKasplatCannons,
+        Locations.GalleonTinyKasplatRando: Locations.GalleonKasplatNearLab,
+        Locations.GalleonChunkyKasplatRando: Locations.GalleonKasplatNearSub,
+    },
+    Levels.FungiForest: {
+        Locations.ForestDonkeyKasplatRando: Locations.ForestKasplatNearBarn,
+        Locations.ForestDiddyKasplatRando: Locations.ForestKasplatInsideMushroom,
+        Locations.ForestLankyKasplatRando: Locations.ForestKasplatOwlTree,
+        Locations.ForestTinyKasplatRando: Locations.ForestKasplatLowerMushroomExterior,
+        Locations.ForestChunkyKasplatRando: Locations.ForestKasplatUpperMushroomExterior,
+    },
+    Levels.CrystalCaves: {
+        Locations.CavesDonkeyKasplatRando: Locations.CavesKasplatNearLab,
+        Locations.CavesDiddyKasplatRando: Locations.CavesKasplatNearFunky,
+        Locations.CavesLankyKasplatRando: Locations.CavesKasplatPillar,
+        Locations.CavesTinyKasplatRando: Locations.CavesKasplatNearCandy,
+        Locations.CavesChunkyKasplatRando: Locations.CavesKasplatOn5DI,
+    },
+    Levels.CreepyCastle: {
+        Locations.CastleDonkeyKasplatRando: Locations.CastleKasplatTree,
+        Locations.CastleDiddyKasplatRando: Locations.CastleKasplatCrypt,
+        Locations.CastleLankyKasplatRando: Locations.CastleKasplatHalfway,
+        Locations.CastleTinyKasplatRando: Locations.CastleKasplatLowerLedge,
+        Locations.CastleChunkyKasplatRando: Locations.CastleKasplatNearCandy,
+    },
+    Levels.DKIsles: {
+        Locations.IslesDonkeyKasplatRando: Locations.IslesKasplatHelmLobby,
+        Locations.IslesDiddyKasplatRando: Locations.IslesKasplatCastleLobby,
+        Locations.IslesLankyKasplatRando: Locations.IslesKasplatCavesLobby,
+        Locations.IslesTinyKasplatRando: Locations.IslesKasplatFactoryLobby,
+        Locations.IslesChunkyKasplatRando: Locations.IslesKasplatGalleonLobby,
+    },
+}
+
+
+def GetKasplatRewardLocation(kasplatLocation: Locations) -> Locations:
+    """Return the reward location associated with a Kasplat rando location."""
+    for _, levelLocations in KasplatLocationToRewardMap.items():
+        if kasplatLocation in levelLocations:
+            return levelLocations[kasplatLocation]
+    raise ValueError(f"{kasplatLocation} does not represent a Kasplat rando location.")
+
+
+# These will be filled in later.
+DirtPatchVanillaLocationMap = {}
+FairyVanillaLocationMap = {}
+MelonCrateVanillaLocationMap = {}
+
+plannableCrates = []
+plannableCrownPads = {
+    Levels.JungleJapes.name: [],
+    Levels.AngryAztec.name: [],
+    Levels.FranticFactory.name: [],
+    Levels.GloomyGalleon.name: [],
+    Levels.FungiForest.name: [],
+    Levels.CrystalCaves.name: [],
+    Levels.CreepyCastle.name: [],
+    Levels.HideoutHelm.name: [],
+    Levels.DKIsles.name: [],
+}
+plannableDirt = []
+
+
+def getKongFromLocationEnum(location: Locations) -> Kongs:
+    """Parse the name of a location and return the associated Kong."""
+    for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
+        if kong.name.capitalize() in location.name:
+            return kong
+    raise ValueError(f"Location {location.name} does not have an associated Kong.")
+
+
+# Populate battle arena locations in the PlandomizerPanels object.
+for level, locations in CrownVanillaLocationMap.items():
+    for crownLocation, vanillaLocation in locations.items():
+        fullName = crownLocation.name.replace("Battle", " Battle ").replace("1", " 1").replace("2", " 2")
+        PlandomizerPanels["Locations"]["categories"]["CrownPad"]["locations"].append(
+            {
+                "name": fullName,
+                "level": level.name,
+                "vanilla_value": vanillaLocation,
+                "location_id": f"plando_{crownLocation.name}_location",
+                "reward_id": f"plando_{crownLocation.name}_location_reward",
+            }
+        )
+# Populate Kasplat locations in the PlandomizerPanels object.
+for level, locations in KasplatLocationToRewardMap.items():
+    for kasplatLocation, rewardLocation in locations.items():
+        fullName = kasplatLocation.name.replace("Rando", "")
+        for kong in ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]:
+            if kong in fullName:
+                fullName = fullName.replace(kong, f" {kong} ")
+        PlandomizerPanels["Locations"]["categories"]["Kasplat"]["locations"].append(
+            {
+                "name": fullName,
+                "level": level.name,
+                "kong": getKongFromLocationEnum(kasplatLocation).name,
+                "vanilla_value": LocationList[rewardLocation].name,
+                "location_id": f"plando_{kasplatLocation.name}_location",
+                "reward_id": f"plando_{kasplatLocation.name}_location_reward",
+            }
+        )
+# Populate dirt patch locations in the PlandomizerPanels object.
+for i in range(0, 16):
+    PlandomizerPanels["Locations"]["categories"]["DirtPatch"]["locations"].append(
+        {
+            "name": f"Dirt Patch {i+1}",
+            "vanilla_value": "",
+            "location_id": f"plando_patch_{i}_location",
+            "reward_id": f"plando_patch_{i}_location_reward",
+        }
+    )
+# Populate fairy locations in the PlandomizerPanels object.
+for i in range(0, 20):
+    PlandomizerPanels["Locations"]["categories"]["Fairy"]["locations"].append(
+        {
+            "name": f"Fairy {i+1}",
+            "vanilla_value": "",
+            "location_id": f"plando_fairy_{i}_location",
+            "reward_id": f"plando_fairy_{i}_location_reward",
+        }
+    )
+# Populate melon crate locations in the PlandomizerPanels object.
+for i in range(0, 13):
+    PlandomizerPanels["Locations"]["categories"]["MelonCrate"]["locations"].append(
+        {
+            "name": f"Melon Crate {i+1}",
+            "vanilla_value": "",
+            "location_id": f"plando_crate_{i}_location",
+            "reward_id": f"plando_crate_{i}_location_reward",
+        }
+    )
+
+currentVanillaCrateIndex = 0
+currentVanillaDirtIndex = 0
+
+for level, locations in CustomLocations.items():
+    for customLocation in locations:
+        jsonValue = f"{level.name};{customLocation.name}"
+        if LocationTypes.CrownPad not in customLocation.banned_types:
+            plannableCrownPads[level.name].append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": customLocation.name})
+        if LocationTypes.DirtPatch not in customLocation.banned_types:
+            if customLocation.vanilla_patch:
+                PlandomizerPanels["Locations"]["categories"]["DirtPatch"]["locations"][currentVanillaDirtIndex]["vanilla_value"] = jsonValue
+                DirtPatchVanillaLocationMap[f"patch_{currentVanillaDirtIndex}"] = jsonValue
+                currentVanillaDirtIndex += 1
+            plannableDirt.append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": jsonValue})
+        if LocationTypes.MelonCrate not in customLocation.banned_types:
+            if customLocation.vanilla_crate:
+                PlandomizerPanels["Locations"]["categories"]["MelonCrate"]["locations"][currentVanillaCrateIndex]["vanilla_value"] = jsonValue
+                MelonCrateVanillaLocationMap[f"crate_{currentVanillaCrateIndex}"] = jsonValue
+                currentVanillaCrateIndex += 1
+            plannableCrates.append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": jsonValue})
+PlannableCustomLocations[LocationTypes.CrownPad.name] = plannableCrownPads
+PlannableCustomLocations[LocationTypes.DirtPatch.name] = plannableDirt
+PlannableCustomLocations[LocationTypes.MelonCrate.name] = plannableCrates
+
+plannableFairies = []
+currentVanillaFairyIndex = 0
+for level, locations in fairy_locations.items():
+    for customLocation in locations:
+        jsonValue = f"{level.name};{customLocation.name}"
+        if customLocation.is_vanilla:
+            PlandomizerPanels["Locations"]["categories"]["Fairy"]["locations"][currentVanillaFairyIndex]["vanilla_value"] = jsonValue
+            FairyVanillaLocationMap[f"fairy_{currentVanillaFairyIndex}"] = jsonValue
+            currentVanillaFairyIndex += 1
+        plannableFairies.append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": jsonValue})
+PlannableCustomLocations[Types.Fairy.name] = plannableFairies
+
+plannableKasplats = {
+    Levels.JungleJapes.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+    Levels.AngryAztec.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+    Levels.FranticFactory.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+    Levels.GloomyGalleon.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+    Levels.FungiForest.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+    Levels.CrystalCaves.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+    Levels.CreepyCastle.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+    Levels.DKIsles.name: {
+        Kongs.donkey.name: [],
+        Kongs.diddy.name: [],
+        Kongs.lanky.name: [],
+        Kongs.tiny.name: [],
+        Kongs.chunky.name: [],
+    },
+}
+currentVanillaKasplatIndex = 0
+for level, locations in KasplatLocationList.items():
+    for customLocation in locations:
+        for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
+            if kong in customLocation.kong_lst:
+                plannableKasplats[level.name][kong.name].append({"name": customLocation.name, "value": customLocation.name})
+PlannableCustomLocations["Kasplat"] = plannableKasplats

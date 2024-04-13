@@ -696,6 +696,12 @@ def plando_propagate_options(evt):
     plando_hide_krool_options(evt)
     plando_hide_helm_options(evt)
     plando_disable_camera_shockwave(evt)
+    plando_toggle_custom_locations_tab(evt)
+    plando_toggle_custom_arena_locations(evt)
+    plando_toggle_custom_patch_locations(evt)
+    plando_toggle_custom_fairy_locations(evt)
+    plando_toggle_custom_kasplat_locations(evt)
+    plando_toggle_custom_crate_locations(evt)
 
 
 @bind("change", "move_rando")
@@ -1512,3 +1518,72 @@ def toggle_plando_hint_color_table(evt):
     """Show or hide the table that shows possible hint colors."""
     hintColorTable = js.document.getElementById("plando_hint_color_table")
     hintColorTable.classList.toggle("hidden")
+
+
+@bind("click", "plando_place_arenas")
+@bind("click", "plando_place_patches")
+@bind("click", "plando_place_fairies")
+@bind("click", "plando_place_kasplats")
+@bind("click", "plando_place_crates")
+def plando_toggle_custom_locations_tab(evt):
+    """Show/hide the Custom Locations tab."""
+    tabElem = js.document.getElementById("nav-plando-Locations-tab")
+    arenasEnabled = js.document.getElementById("plando_place_arenas").checked
+    patchesEnabled = js.document.getElementById("plando_place_patches").checked
+    fairiesEnabled = js.document.getElementById("plando_place_fairies").checked
+    kasplatsEnabled = js.document.getElementById("plando_place_kasplats").checked
+    cratesEnabled = js.document.getElementById("plando_place_crates").checked
+    if arenasEnabled or patchesEnabled or fairiesEnabled or kasplatsEnabled or cratesEnabled:
+        tabElem.style = ""
+    else:
+        tabElem.style.display = "none"
+
+
+@bind("click", "plando_place_arenas")
+def plando_toggle_custom_arena_locations(evt):
+    """Show/hide custom arena locations in the plandomizer."""
+    arenaElem = js.document.getElementById("plando_custom_location_panel_arena")
+    if js.document.getElementById("plando_place_arenas").checked:
+        arenaElem.style = ""
+    else:
+        arenaElem.style.display = "none"
+
+
+@bind("click", "plando_place_patches")
+def plando_toggle_custom_patch_locations(evt):
+    """Show/hide custom patch locations in the plandomizer."""
+    patchElem = js.document.getElementById("plando_custom_location_panel_patch")
+    if js.document.getElementById("plando_place_patches").checked:
+        patchElem.style = ""
+    else:
+        patchElem.style.display = "none"
+
+
+@bind("click", "plando_place_fairies")
+def plando_toggle_custom_fairy_locations(evt):
+    """Show/hide custom fairy locations in the plandomizer."""
+    fairyElem = js.document.getElementById("plando_custom_location_panel_fairy")
+    if js.document.getElementById("plando_place_fairies").checked:
+        fairyElem.style = ""
+    else:
+        fairyElem.style.display = "none"
+
+
+@bind("click", "plando_place_kasplats")
+def plando_toggle_custom_kasplat_locations(evt):
+    """Show/hide custom Kasplat locations in the plandomizer."""
+    kasplatElem = js.document.getElementById("plando_custom_location_panel_kasplat")
+    if js.document.getElementById("plando_place_kasplats").checked:
+        kasplatElem.style = ""
+    else:
+        kasplatElem.style.display = "none"
+
+
+@bind("click", "plando_place_crates")
+def plando_toggle_custom_crate_locations(evt):
+    """Show/hide custom crate locations in the plandomizer."""
+    crateElem = js.document.getElementById("plando_custom_location_panel_crate")
+    if js.document.getElementById("plando_place_crates").checked:
+        crateElem.style = ""
+    else:
+        crateElem.style.display = "none"
