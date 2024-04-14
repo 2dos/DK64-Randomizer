@@ -310,6 +310,27 @@ def validate_custom_enum_location(enum_location: str, location_str: str, cust_se
         raise_plando_validation_error(errString)
 
 
+def validate_fairy_position(fairy: dict, index: int) -> None:
+    """Ensure fairies are assigned to the correct level."""
+    fairyLevelIndexMap = {
+        Levels.JungleJapes: 2,
+        Levels.AngryAztec: 4,
+        Levels.FranticFactory: 6,
+        Levels.GloomyGalleon: 8,
+        Levels.FungiForest: 10,
+        Levels.CrystalCaves: 12,
+        Levels.CreepyCastle: 14,
+        Levels.DKIsles: 18,
+        Levels.HideoutHelm: 20,
+    }
+    for level, i in fairyLevelIndexMap.items():
+        if index < i:
+            if fairy["level"] != level.name:
+                errString = f'The plandomizer file is invalid: fairy {index+1} needs to be assigned to {level.name}, but is assigned to {fairy["level"]}.'
+                raise_plando_validation_error(errString)
+            return
+
+
 def validate_plando_file(file_obj: dict) -> None:
     """Validate the contents of a given plando file."""
     # Hide the div for import errors.
@@ -351,8 +372,9 @@ def validate_plando_file(file_obj: dict) -> None:
         validate_custom_location(patch, customLocationSet, "dirt patch")
     for crate in file_obj["plando_melon_crates"]:
         validate_custom_location(crate, customLocationSet, "melon crate")
-    for fairy in file_obj["plando_fairies"]:
+    for i, fairy in enumerate(file_obj["plando_fairies"]):
         validate_custom_location(fairy, customFairyLocationSet, "fairy")
+        validate_fairy_position(fairy, i)
     for arena, location in file_obj["plando_battle_arenas"].items():
         try:
             level = LocationList[Locations[arena]].level.name
