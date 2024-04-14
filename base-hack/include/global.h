@@ -347,6 +347,7 @@ extern int initFile_getKongPotionBitfield(int kong);
 extern int initFile_checkTraining(int type_check, int kong_check, int value_check);
 
 extern void fixHelmTimerCorrection(void);
+extern void exitBoss(void);
 
 extern int changeStat(bonus_stat statistic, int delta);
 extern int getStat(bonus_stat statistic);

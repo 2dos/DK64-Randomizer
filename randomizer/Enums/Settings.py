@@ -48,6 +48,21 @@ class BananaportRando(IntEnum):
     crossmap_coupled = 2
     crossmap_decoupled = 3
 
+class BigHeadMode(IntEnum):
+    """Determines which big head mode setting is used.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: Normal head size.
+    big: Very big heads.
+    small: Very small heads.
+    """
+
+    off = 0
+    big = 1
+    small = 2
+
 
 class CBRando(IntEnum):
     """Determines the level of CB Rando utilized.
@@ -731,6 +746,7 @@ class SpoilerHints(IntEnum):
 SettingsMap = {
     "activate_all_bananaports": ActivateAllBananaports,
     "bananaport_rando": BananaportRando,
+    "big_head_mode": BigHeadMode,
     "bonus_barrels": MinigameBarrels,
     "cb_rando": CBRando,
     "chunky_colors": CharacterColors,

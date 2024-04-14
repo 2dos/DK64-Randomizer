@@ -47,7 +47,7 @@ void cFuncLoop(void) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
 				int kong_target = CurrentMap - MAP_KROOLDK;
 				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
-					initiateTransition(MAP_ISLES, 0xC);
+					exitBoss();
 					Character = Rando.starting_kong;
 				}
 			}

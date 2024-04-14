@@ -151,6 +151,11 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0x43)
             # The ColorblindMode enum is indexed to allow this.
             ROM_COPY.write(int(settings.colorblind_mode))
+            
+            # Big head mode
+            ROM_COPY.seek(sav + 0x1E1)
+            # The BigHeadMode enum is indexed to allow this.
+            ROM_COPY.write(int(settings.big_head_mode))
 
             # Remaining Menu Settings
             ROM_COPY.seek(sav + 0xC7)

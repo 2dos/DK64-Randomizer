@@ -598,6 +598,7 @@ class Settings:
         self.select_keys = False
         self.helm_hurry = False
         self.colorblind_mode = ColorblindMode.off
+        self.big_head_mode = BigHeadMode.off
         self.win_condition = WinCondition.beat_krool
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
