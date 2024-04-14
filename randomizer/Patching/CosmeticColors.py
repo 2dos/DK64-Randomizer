@@ -2350,19 +2350,20 @@ def writeMiscCosmeticChanges(settings):
         shockwave_shift = getRandomHueShift()
         for img_index in range(0x174F, 0x1757):
             hueShiftImageContainer(25, img_index, 16, 16, TextureFormat.RGBA32, shockwave_shift)
-        # Fire-based sprites
-        fire_shift = getRandomHueShift()
-        fires = (
-            [0x1539, 0x1553, 32],  # Fireball. RGBA32 32x32
-            [0x14B6, 0x14F5, 32],  # Fireball. RGBA32 32x32
-            [0x1554, 0x155B, 16],  # Small Fireball. RGBA32 16x16
-            [0x1654, 0x1683, 32],  # Fire Wall. RGBA32 32x32
-            [0x1495, 0x14A0, 32],  # Small Explosion, RGBA32 32x32
-        )
-        for sprite_data in fires:
-            for img_index in range(sprite_data[0], sprite_data[1] + 1):
-                dim = sprite_data[2]
-                hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
+        if settings.colorblind_mode == ColorblindMode.off:
+            # Fire-based sprites
+            fire_shift = getRandomHueShift()
+            fires = (
+                [0x1539, 0x1553, 32],  # Fireball. RGBA32 32x32
+                [0x14B6, 0x14F5, 32],  # Fireball. RGBA32 32x32
+                [0x1554, 0x155B, 16],  # Small Fireball. RGBA32 16x16
+                [0x1654, 0x1683, 32],  # Fire Wall. RGBA32 32x32
+                [0x1495, 0x14A0, 32],  # Small Explosion, RGBA32 32x32
+            )
+            for sprite_data in fires:
+                for img_index in range(sprite_data[0], sprite_data[1] + 1):
+                    dim = sprite_data[2]
+                    hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
 
     if enemy_setting != RandomModels.off:
         # Barrel Enemy Skins - Random

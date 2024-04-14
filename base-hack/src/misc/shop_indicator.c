@@ -139,6 +139,13 @@ typedef enum counter_items {
 	/* 0x012 */ COUNTER_FAIRY,
 	/* 0x013 */ COUNTER_RAINBOWCOIN,
 	/* 0x014 */ COUNTER_FAKEITEM,
+	/* 0x015 */ COUNTER_DILLO1,
+	/* 0x016 */ COUNTER_DOG1,
+	/* 0x017 */ COUNTER_MJ,
+	/* 0x018 */ COUNTER_PUFFTOSS,
+	/* 0x019 */ COUNTER_DOG2,
+	/* 0x01A */ COUNTER_DILLO2,
+	/* 0x01B */ COUNTER_KKO,
 } counter_items;
 
 int getCounterItem(vendors shop_index, int kong, int level) {
@@ -398,6 +405,27 @@ float getShopScale(int index) {
 	return 1.0f;
 }
 
+typedef struct krool_head {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char texture_offset;
+} krool_head;
+
+static const krool_head helm_heads[] = {
+	{.map = MAP_JAPESDILLO, .texture_offset=COUNTER_DILLO1},
+	{.map = MAP_AZTECDOGADON, .texture_offset=COUNTER_DOG1},
+	{.map = MAP_FACTORYJACK, .texture_offset=COUNTER_MJ},
+	{.map = MAP_GALLEONPUFFTOSS, .texture_offset=COUNTER_PUFFTOSS},
+	{.map = MAP_FUNGIDOGADON, .texture_offset=COUNTER_DOG2},
+	{.map = MAP_CAVESDILLO, .texture_offset=COUNTER_DILLO2},
+	{.map = MAP_CASTLEKUTOUT, .texture_offset=COUNTER_KKO},
+	{.map = MAP_KROOLDK, .texture_offset=COUNTER_DK_FACE},
+	{.map = MAP_KROOLDIDDY, .texture_offset=COUNTER_DIDDY_FACE},
+	{.map = MAP_KROOLLANKY, .texture_offset=COUNTER_LANKY_FACE},
+	{.map = MAP_KROOLTINY, .texture_offset=COUNTER_TINY_FACE},
+	{.map = MAP_KROOLCHUNKY, .texture_offset=COUNTER_CHUNKY_FACE},
+	{.map = 0xFF, .texture_offset=COUNTER_NO_ITEM},
+};
+
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -465,9 +493,15 @@ void newCounterCode(void) {
 				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
 			}
 			int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
-			int face = Rando.k_rool_order[id - 0x100];
+			int face_map = Rando.k_rool_order[id - 0x100];
+			int face_img = COUNTER_NO_ITEM;
+			for (int i = 0; i < sizeof(helm_heads)/sizeof(krool_head); i++) {
+				if (helm_heads[i].map == face_map) {
+					face_img = helm_heads[i].texture_offset;
+				}
+			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face+1, 1);
+			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face_img, 1);
 		}
 	} else {
 		if (CurrentMap != MAP_HELM) {

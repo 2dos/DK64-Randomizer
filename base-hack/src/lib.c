@@ -668,7 +668,7 @@ const actor_bitfield big_head_actors = {
 	.boombox = 0,
 	.tag_barrel_136 = 0,
 	.tag_barrel_137 = 0,
-	.b_locker = 1,
+	.b_locker = 0,
 	.rainbow_coin_patch = 0,
 	// 140
 	.rainbow_coin = 0,
@@ -834,7 +834,7 @@ const actor_bitfield big_head_actors = {
 	.giant_clam = 0,
 	.unknown_287 = 0,
 	.tomato = 0,
-	.kritter_in_a_sheet = 1,
+	.kritter_in_a_sheet = 0,
 	// 290
 	.puftup_290 = 0,
 	.kosha = 1,
@@ -1692,4 +1692,14 @@ purchase_struct* getShopData(vendors vendor, int kong, int level) {
 		return &CandyMoves_New[kong][level];
 	}
 	return 0;
+}
+
+void exitBoss(void) {
+	for (int i = 0; i < 5; i++) {
+		if (Rando.k_rool_order[i] == CurrentMap) {
+			initiateTransition(MAP_ISLES, 0xC);
+			return;
+		}
+	}
+	initiateTransition(MAP_TROFFNSCOFF, 2);
 }

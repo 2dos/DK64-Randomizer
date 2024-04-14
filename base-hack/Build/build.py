@@ -556,6 +556,13 @@ shop_face_array = [
     "fairy",
     "rainbow_coin",
     "fake_gb_shop",
+    "head32_dillo1",
+    "head32_dog1",
+    "head32_mj",
+    "head32_pufftoss",
+    "head32_dog2",
+    "head32_dillo2",
+    "head32_kko",
 ]
 for x, shop in enumerate(shop_face_array):
     data = File(
@@ -1752,6 +1759,13 @@ with open(newROMName, "r+b") as fh:
         "funky_head",
         "snide_head",
         "cranky_head",
+        "head32_dillo1",
+        "head32_dog1",
+        "head32_mj",
+        "head32_pufftoss",
+        "head32_dog2",
+        "head32_dillo2",
+        "head32_kko",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
