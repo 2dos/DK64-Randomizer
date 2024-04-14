@@ -34,7 +34,7 @@ with open("static/presets/preset_files.json", "r") as file:
 # Add a custom preset for testing
 # If we're not running on github actions, add the custom preset
 if not os.environ.get("GITHUB_ACTIONS"):
-    valid_presets.append(("Custom", "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLmkq0W8DODo9RaRcFP0VEWARMRQBXrXHI3ar/fZFA5ixFAObPIkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADU5coclwqdMISQRfQJyQYYSqnMxtMYOLQtK5YFaHLYaE4sFRgJgwIymOKaTyKTIjUoAqgEuAhk4AA"))
+    valid_presets.append(("Custom", "bKEFCSKzzecrKEDRAejpFjAIbiDLWIQXr5/ANnj4YTRzu6leyszOKbOrYvhTgfVA8IhkQlS2Nc+EZU8Ro9dpcviFOWJtOCFAB2j0gOitNXwFILdT1+BJAMmihlEjILrJZYKAugBBgJ1AQOBuwDCAR3AgSCvAFCgZ5AwWDvQHDAhQhpk9shSPUTzORKRcklWi3gZwdHqLcFP0VEWARMRQBXrXHI3ar/fZFA5ixFASazZvPYkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADU5coclwqdMISQRfQJyQYYSofMxtMZaFpXLArQ5bDQnFgqMBMGBGJCmOKKTIjUoAqgEuAhk4AA"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)
@@ -200,13 +200,13 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined from the preset_files.json file
-        # self.settings_string = "bKEHCRorPE1ed6soQOCokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgeEQyGQlS2Nc+ER+I0eu0uXxC205Yk04IUDR6QJE0Z4q+ApBbqev2JIBk0UJooZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKRCioZyJTLmku0W8BOEWkXBT9FRFgETEUAV61xyN2q/32RQOYsRQBms2URJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LhU6YQkX0CckGGEqpzMYwcWhaVywK0OWw0JxYKjATBgRlMcU8ikyI1KAKoBLgIZOEIQEhQWG0pEVh4gIkZYJigqSFouMDJKXDY4OkxePkBCTlA"
+        self.settings_string = "bKEGiRqzxNXnerKEDRAejpFjAIbiDLWIQXr5/ANnj4YTRzu6leyszOKbOrYvhTgfVA8IhkMhKlsa58Ij8Ro9dpcviFOWJtOCFA0ekCRNGeKvgKQW6nr8CSAZNFDKKGQXWSywUBdACDATqAgcDdgGEAjuBAkFeAKFAzyBgsHegOGBChDTx7ZCkQoqGciUy5JLNFvAjg6RaRcFP0VEWARMRQBXrXHI3ar/fZFA5ixFAGazZlUYkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADU5coclwqdMISQRfQJyQYYSqnMxtMYOLQtK5YFaHLYaE4sFRgJgwIymOKeRSZEalAFUAlwEMnCEICQoLDaUiKw8QESMsExQVJC0XGBklLhscHSYvHyAhJyg"
         settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
         # Plando testing - fill the data with a json string
         # settings_dict["enable_plandomizer"] = True
-        # settings_dict["plandomizer_data"] = '{"plando_starting_kongs_selected": [-1], "plando_kong_rescue_diddy": -1, "plando_kong_rescue_lanky": -1, "plando_kong_rescue_tiny": -1, "plando_kong_rescue_chunky": -1, "plando_level_order_0": -1, "plando_level_order_1": -1, "plando_level_order_2": -1, "plando_level_order_3": -1, "plando_level_order_4": -1, "plando_level_order_5": -1, "plando_level_order_6": -1, "plando_krool_order_0": -1, "plando_krool_order_1": -1, "plando_krool_order_2": -1, "plando_krool_order_3": -1, "plando_krool_order_4": -1, "plando_helm_order_0": -1, "plando_helm_order_1": -1, "plando_helm_order_2": -1, "plando_helm_order_3": -1, "plando_helm_order_4": -1, "locations": {}, "prices": {}, "plando_bonus_barrels": {"57": 33, "64": 34, "69": 31, "71": 32}, "hints": {}}'
+        # settings_dict["plandomizer_data"] = '{"plando_starting_kongs_selected": [0], "plando_kong_rescue_diddy": -1, "plando_kong_rescue_lanky": -1, "plando_kong_rescue_tiny": -1, "plando_kong_rescue_chunky": -1, "plando_level_order_0": 4, "plando_level_order_1": 2, "plando_level_order_2": 5, "plando_level_order_3": 3, "plando_level_order_4": 6, "plando_level_order_5": 1, "plando_level_order_6": 0, "plando_krool_order_0": -1, "plando_krool_order_1": -1, "plando_krool_order_2": -1, "plando_krool_order_3": -1, "plando_krool_order_4": -1, "plando_helm_order_0": -1, "plando_helm_order_1": -1, "plando_helm_order_2": -1, "plando_helm_order_3": -1, "plando_helm_order_4": -1, "locations": {"42": 26, "537": 50, "594": 47, "72": 25, "67": 49, "83": 16, "88": 23, "125": 30, "164": 29, "159": 21, "166": 9, "194": 24, "210": 39, "211": 28, "212": 32, "213": 8, "214": 39, "245": 4, "224": 19, "243": 12, "244": 45, "222": 35, "231": 18, "255": 31, "251": 27, "261": 6, "252": 48, "312": 3, "296": 5, "299": 22, "286": 17, "310": 10, "287": 7, "539": 34, "331": 10, "332": 39, "326": 38, "327": 37, "328": 36, "329": 14, "330": 11, "369": 15, "443": 2, "447": 20}, "prices": {}, "plando_bonus_barrels": {"231": 13, "296": 59, "299": 70, "310": 39}, "hints": {}}'
 
         settings = Settings(settings_dict)
         # settings.extreme_debugging = True  # Greatly slows seed gen, use with caution
@@ -215,7 +215,7 @@ class TestSpoiler(unittest.TestCase):
         print(spoiler)
         print(spoiler.json)
         # self.printHintDistribution(spoiler)
-        self.printDesiredOutput(spoiler)
+        # self.printDesiredOutput(spoiler)
         with open(f"test-result-{self.name}.json", "w") as outfile:
             outfile.write(spoiler.json)
         print(f"test {self.name} done")

@@ -949,6 +949,7 @@ class SettingsStringEnum(IntEnum):
     faster_checks_selected = 165
     k_rool_vanilla_requirement = 166
     disable_hard_minigames = 167
+    serious_hints = 168
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1159,6 +1160,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.faster_checks_selected: SettingsStringDataType.list,
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
     SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
+    SettingsStringEnum.serious_hints: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
