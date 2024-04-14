@@ -486,7 +486,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
     # Files
     balloon_patch_count = 150
-    static_expansion = 0x100
+    static_expansion = 0x180
     if settings.enemy_drop_rando:
         static_expansion += 426  # Total Enemies
     if False:  # TODO: Check Archipelago
