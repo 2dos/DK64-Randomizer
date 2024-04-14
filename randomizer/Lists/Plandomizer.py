@@ -690,15 +690,30 @@ for i in range(0, 16):
         }
     )
 # Populate fairy locations in the PlandomizerPanels object.
-for i in range(0, 20):
-    PlandomizerPanels["Locations"]["categories"]["Fairy"]["locations"].append(
-        {
-            "name": f"Fairy {i+1}",
-            "vanilla_value": "",
-            "location_id": f"plando_fairy_{i}_location",
-            "reward_id": f"plando_fairy_{i}_location_reward",
-        }
-    )
+fairyLevelCounts = {
+    Levels.JungleJapes: 2,
+    Levels.AngryAztec: 2,
+    Levels.FranticFactory: 2,
+    Levels.GloomyGalleon: 2,
+    Levels.FungiForest: 2,
+    Levels.CrystalCaves: 2,
+    Levels.CreepyCastle: 2,
+    Levels.DKIsles: 4,
+    Levels.HideoutHelm: 2,
+}
+overallFairyCount = 0
+for level, fairyLimit in fairyLevelCounts.items():
+    for i in range(0, fairyLimit):
+        PlandomizerPanels["Locations"]["categories"]["Fairy"]["locations"].append(
+            {
+                "name": f"{GetLevelString(level)} Fairy {i+1}",
+                "level": level.name,
+                "vanilla_value": "",
+                "location_id": f"plando_fairy_{overallFairyCount}_location",
+                "reward_id": f"plando_fairy_{overallFairyCount}_location_reward",
+            }
+        )
+        overallFairyCount += 1
 # Populate melon crate locations in the PlandomizerPanels object.
 for i in range(0, 13):
     PlandomizerPanels["Locations"]["categories"]["MelonCrate"]["locations"].append(
@@ -734,7 +749,17 @@ PlannableCustomLocations[LocationTypes.CrownPad.name] = plannableCrownPads
 PlannableCustomLocations[LocationTypes.DirtPatch.name] = plannableDirt
 PlannableCustomLocations[LocationTypes.MelonCrate.name] = plannableCrates
 
-plannableFairies = []
+plannableFairies = {
+    Levels.JungleJapes.name: [],
+    Levels.AngryAztec.name: [],
+    Levels.FranticFactory.name: [],
+    Levels.GloomyGalleon.name: [],
+    Levels.FungiForest.name: [],
+    Levels.CrystalCaves.name: [],
+    Levels.CreepyCastle.name: [],
+    Levels.DKIsles.name: [],
+    Levels.HideoutHelm.name: [],
+}
 currentVanillaFairyIndex = 0
 for level, locations in fairy_locations.items():
     for customLocation in locations:
@@ -743,7 +768,7 @@ for level, locations in fairy_locations.items():
             PlandomizerPanels["Locations"]["categories"]["Fairy"]["locations"][currentVanillaFairyIndex]["vanilla_value"] = jsonValue
             FairyVanillaLocationMap[f"fairy_{currentVanillaFairyIndex}"] = jsonValue
             currentVanillaFairyIndex += 1
-        plannableFairies.append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": jsonValue})
+        plannableFairies[level.name].append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": jsonValue})
 PlannableCustomLocations[Types.Fairy.name] = plannableFairies
 
 plannableKasplats = {

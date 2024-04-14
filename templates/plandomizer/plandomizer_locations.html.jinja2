@@ -1,4 +1,9 @@
 {# Variables and classes not defined here are in plandomizer.html.jinja2 #}
+<style>
+    .reward-label {
+        margin-top: 4px;
+    }
+</style>
 <div class="tab-pane plando-pane fade"
      id="nav-plando-{{panelName}}"
      role="tabpanel"
@@ -12,7 +17,7 @@
                 {% for location in categoryObj["locations"] %}
                     <div class="location-picker">
                         <label for="{{location["location_id"]}}" class="location-label">
-                            {{location["name"]}}
+                            {{location["name"]}} Location
                         </label>
                         <div id="{{location["location_id"]}}_wrapper"
                             data-toggle="tooltip"
@@ -21,7 +26,7 @@
                                     name="{{location["location_id"]}}"
                                     class="form-select plando-item-select">
                                 <option value="">-- Randomize --</option>
-                                {% if categoryName == "CrownPad" %}
+                                {% if categoryName == "CrownPad" or categoryName == "Fairy" %}
                                     {% for selectLocation in plando_custom_locations[categoryName][location["level"]] %}
                                         <option value="{{selectLocation["value"]}}"
                                             {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
@@ -45,6 +50,9 @@
                                 {% endif %}
                             </select>
                         </div>
+                        <label for="{{location["reward_id"]}}" class="location-label reward-label">
+                            Reward
+                        </label>
                         <div id="{{location["reward_id"]}}_wrapper"
                             data-toggle="tooltip"
                             title>
