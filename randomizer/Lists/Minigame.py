@@ -145,7 +145,7 @@ MinigameRequirements = {
         group="Speedy Swing Sortie",
         map_id=Maps.SpeedySwingSortieNormal,
         difficulty_lvl=1,
-        logic=lambda l: l.vines and (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey),
+        logic=lambda l: (l.vines and (l.twirl and l.istiny)) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey),
         kong_list=[Kongs.tiny],
     ),
     Minigames.SpeedySwingSortieHard: Minigame(

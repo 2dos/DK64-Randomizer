@@ -672,7 +672,9 @@ def compileHints(spoiler: Spoiler) -> bool:
     else:
         # In level order (or vanilla) progression, there are hints that we want to be in the player's path
         # Determine what hint types are valid for these settings
-        valid_types = [HintType.Joke]
+        valid_types = []
+        if not spoiler.settings.serious_hints:
+            valid_types.append(HintType.Joke)
         if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
             valid_types.append(HintType.BLocker)
         if (
@@ -785,7 +787,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if HintType.RequiredKeyHint in valid_types:
                 valid_types.remove(HintType.RequiredKeyHint)
             # The number of multipath hints is a percentage of all eligible locations while still guaranteeing every goal gets at least one hint
-            hint_distribution[HintType.Multipath] = max(len(multipath_dict_hints.keys()) * 0.65, min_value)
+            hint_distribution[HintType.Multipath] = max(len(multipath_dict_hints.keys()) * 0.59, min_value)
             # That percentage likely turns out a decimal - that decimal becomes a % chance to get an extra hint
             rng = random.random()
             if hint_distribution[HintType.Multipath] % 1 < rng:
@@ -797,6 +799,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_distribution[HintType.Multipath] = len(multipath_dict_hints.keys())
                 maxed_hint_types.append(HintType.Multipath)
             valid_types.append(HintType.Multipath)
+        # If somehow you threaded the needle with no valid hint types, you'll get joke hints whether you like it or not
+        if len(valid_types) == 0:
+            valid_types = [HintType.Joke]
 
         # Make sure we have exactly 35 hints placed
         hint_count = 0
