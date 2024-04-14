@@ -2385,7 +2385,7 @@ def GenerateMultipathDict(
                 key_text = "\x04Key "
             hint_text_components.append(key_text + join_words(path_to_keys) + "\x04")
         if len(path_to_krool_phases) > 0:
-            hint_text_components.append("\x0dThe final battle against\x0d " + join_words(path_to_krool_phases))
+            hint_text_components.append("\x0dThe battle against\x0d " + join_words(path_to_krool_phases))
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
         if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0:
