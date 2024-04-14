@@ -801,7 +801,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             valid_types.append(HintType.Multipath)
         # If somehow you threaded the needle with no valid hint types, you'll get joke hints whether you like it or not
         if len(valid_types) == 0:
-            valid_types = []
+            valid_types = [HintType.Joke]
 
         # Make sure we have exactly 35 hints placed
         hint_count = 0
