@@ -986,9 +986,9 @@ class Settings:
         self.krool_pufftoss = False
         self.krool_kutout = False
 
-        ENABLE_KROOL = True # TODO: Add to pool
+        self.krool_in_boss_pool = self.hard_level_progression # TODO: Make this a setting and get this working for SLO
         phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
-        if ENABLE_KROOL:
+        if self.krool_in_boss_pool:
             phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])
         if self.krool_phase_order_rando:
             random.shuffle(phases)

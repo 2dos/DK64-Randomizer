@@ -13,14 +13,18 @@ from randomizer.Patching.Lib import IsItemSelected
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
 KRoolMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
-ENABLE_KROOL = True # TODO: Will be a setting
+
+def getBosses(settings) -> list:
+    """Get list of bosses."""
+    boss_maps = BossMapList.copy()
+    if settings.krool_in_boss_pool:
+        boss_maps.extend(KRoolMaps.copy())
+    return [x for x in boss_maps if x not in settings.krool_order]
+
 
 def ShuffleBosses(boss_location_rando: bool, settings):
     """Shuffle boss locations."""
-    boss_maps = BossMapList.copy()
-    if ENABLE_KROOL:
-        boss_maps.extend(KRoolMaps.copy())
-    boss_maps = [x for x in boss_maps if x not in settings.krool_order]
+    boss_maps = getBosses(settings)
     if boss_location_rando:
         random.shuffle(boss_maps)
     return boss_maps
@@ -243,10 +247,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
     if settings.kong_rando or settings.boss_location_rando:
         settings.boss_maps = newBossMaps
     else:
-        settings.boss_maps = BossMapList.copy()
-        if ENABLE_KROOL:
-            settings.boss_maps.extend(KRoolMaps.copy())
-        settings.boss_maps = [x for x in settings.boss_maps if x not in settings.krool_order]
+        settings.boss_maps = getBosses(settings)
     if settings.kong_rando or settings.boss_kong_rando:
         # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
         if not settings.boss_location_rando:
