@@ -11,6 +11,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -680,21 +681,13 @@ class Spoiler:
                 extra = " " + str(pearlCount)
             humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
         # Paths for K. Rool phases - also do not show up on the site, just for debugging
-        for kong, path in self.krool_paths.items():
+        for map_id, path in self.krool_paths.items():
             path_dict = {}
             for path_loc_id in path:
                 path_location = self.LocationList[path_loc_id]
                 path_item = ItemList[path_location.item]
                 path_dict[path_location.name] = path_item.name
-            phase_name = "K. Rool Donkey Phase"
-            if kong == Kongs.diddy:
-                phase_name = "K. Rool Diddy Phase"
-            elif kong == Kongs.lanky:
-                phase_name = "K. Rool Lanky Phase"
-            elif kong == Kongs.tiny:
-                phase_name = "K. Rool Tiny Phase"
-            elif kong == Kongs.chunky:
-                phase_name = "K. Rool Chunky Phase"
+            phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
         humanspoiler["Other Paths"] = {}
         for loc, path in self.other_paths.items():

@@ -505,27 +505,27 @@ def compileHints(spoiler: Spoiler) -> bool:
             loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
-    # Your training in moves which you know are always needed beat K. Rool are pointless to hint
-    if Maps.KroolDiddyPhase in spoiler.settings.krool_order and Maps.KroolDiddyPhase in spoiler.krool_paths.keys():
-        useless_locations[Maps.KroolDiddyPhase] = [
-            loc
-            for loc in spoiler.krool_paths[Maps.KroolDiddyPhase]
-            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
-        ]
-    if Maps.KroolLankyPhase in spoiler.settings.krool_order and Maps.KroolLankyPhase in spoiler.krool_paths.keys():
-        useless_locations[Maps.KroolLankyPhase] = [
-            loc for loc in spoiler.krool_paths[Maps.KroolLankyPhase] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Barrels, Items.Trombone]
-        ]
-    if Maps.KroolTinyPhase in spoiler.settings.krool_order and Maps.KroolTinyPhase in spoiler.krool_paths.keys():
-        useless_locations[Maps.KroolTinyPhase] = [
-            loc for loc in spoiler.krool_paths[Maps.KroolTinyPhase] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Feather, Items.MiniMonkey]
-        ]
-    if Maps.KroolChunkyPhase in spoiler.settings.krool_order and Maps.KroolChunkyPhase in spoiler.krool_paths.keys():
-        useless_locations[Maps.KroolChunkyPhase] = [
-            loc
-            for loc in spoiler.krool_paths[Maps.KroolChunkyPhase]
-            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
-        ]
+    # Your training in moves which you know are always needed beat the final battle are pointless to hint
+    required_moves = {
+        Maps.JapesBoss: [Items.Barrels],
+        Maps.AztecBoss: [Items.Barrels],
+        Maps.FactoryBoss: [Items.PonyTailTwirl],
+        Maps.GalleonBoss: [],
+        Maps.FungiBoss: [Items.Barrels, Items.HunkyChunky],
+        Maps.CavesBoss: [Items.Barrels],
+        Maps.CastleBoss: [],
+        Maps.KroolDiddyPhase: [Items.Peanut, Items.RocketbarrelBoost],
+        Maps.KroolLankyPhase: [Items.Barrels, Items.Trombone],
+        Maps.KroolTinyPhase: [Items.Feather, Items.MiniMonkey],
+        Maps.KroolChunkyPhase: [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone],
+    }
+    for map_id in required_moves:
+        if map_id in spoiler.settings.krool_order and map_id in spoiler.krool_paths.keys():
+            useless_locations[map_id] = [
+                loc
+                for loc in spoiler.krool_paths[map_id]
+                if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in required_moves[map_id]
+            ]
 
     multipath_dict_hints, multipath_dict_goals = GenerateMultipathDict(spoiler, useless_locations)
 
@@ -1362,7 +1362,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 # After this point, the path_location_id is locked in and cannot be changed!
 
                 # Determine what phases this item could be for
-                phases_needing_this_item = [kong for kong in spoiler.krool_paths.keys() if path_location_id in spoiler.krool_paths[kong]]  # All phases this item is on the path to
+                phases_needing_this_item = [map_id for map_id in spoiler.krool_paths.keys() if path_location_id in spoiler.krool_paths[map_id]]  # All phases this item is on the path to
                 useless_kongs = [
                     kong for kong in phases_needing_this_item if path_location_id in useless_locations[kong]
                 ]  # All kongs that it would be useless to hint for (e.g. Training in Peanut is path to Diddy K. Rool)
@@ -2385,7 +2385,7 @@ def GenerateMultipathDict(
                 key_text = "\x04Key "
             hint_text_components.append(key_text + join_words(path_to_keys) + "\x04")
         if len(path_to_krool_phases) > 0:
-            hint_text_components.append("\x0dK. Rool vs.\x0d " + join_words(path_to_krool_phases))
+            hint_text_components.append("\x0dThe final battle against\x0d " + join_words(path_to_krool_phases))
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
         if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0:

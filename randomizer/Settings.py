@@ -978,6 +978,13 @@ class Settings:
         self.krool_lanky = False
         self.krool_tiny = False
         self.krool_chunky = False
+        self.krool_dillo1 = False
+        self.krool_dillo2 = False
+        self.krool_dog1 = False
+        self.krool_dog2 = False
+        self.krool_madjack = False
+        self.krool_pufftoss = False
+        self.krool_kutout = False
 
         ENABLE_KROOL = True # TODO: Add to pool
         phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
@@ -1020,6 +1027,20 @@ class Settings:
                 self.krool_tiny = True
             elif map_id == Maps.KroolChunkyPhase:
                 self.krool_chunky = True
+            elif map_id == Maps.JapesBoss:
+                self.krool_dillo1 = True
+            elif map_id == Maps.AztecBoss:
+                self.krool_dog1 = True
+            elif map_id == Maps.FactoryBoss:
+                self.krool_madjack = True
+            elif map_id == Maps.GalleonBoss:
+                self.krool_pufftoss = True
+            elif map_id == Maps.FungiBoss:
+                self.krool_dog2 = True
+            elif map_id == Maps.CavesBoss:
+                self.krool_dillo2 = True
+            elif map_id == Maps.CastleBoss:
+                self.krool_kutout = True
             orderedPhases.append(map_id)
 
         self.krool_order = orderedPhases

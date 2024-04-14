@@ -431,6 +431,13 @@ LogicRegions = {
         Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky and l.barrels)),
         Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
         Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
-        Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events)
+        Event(Events.KRoolDillo1, lambda l: not l.settings.krool_dillo1 or l.barrels),
+        Event(Events.KRoolDog1, lambda l: not l.settings.krool_dog1 or l.barrels),
+        Event(Events.KRoolJack, lambda l: not l.settings.krool_madjack or (l.Slam and l.twirl and l.tiny)),
+        Event(Events.KRoolPufftoss, lambda l: not l.settings.krool_pufftoss or True),
+        Event(Events.KRoolDog2, lambda l: not l.settings.krool_dog2 or (l.barrels and l.hunkyChunky and l.chunky)),
+        Event(Events.KRoolDillo2, lambda l: not l.settings.krool_dillo2 or l.barrels),
+        Event(Events.KRoolKKO, lambda l: not l.settings.krool_kutout or True),
+        Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events and Events.KRoolDillo1 in l.Events and Events.KRoolDillo2 in l.Events and Events.KRoolDog1 in l.Events and Events.KRoolDog2 in l.Events and Events.KRoolJack in l.Events and Events.KRoolPufftoss in l.Events and Events.KRoolKKO in l.Events)
     ], []),
 }

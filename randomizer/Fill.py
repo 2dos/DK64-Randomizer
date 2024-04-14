@@ -903,16 +903,23 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
         if spoiler.settings.win_condition == WinCondition.beat_krool:
-            if Maps.KroolDonkeyPhase in spoiler.settings.krool_order and Events.KRoolDonkey not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Maps.KroolDonkeyPhase].append(locationId)
-            if Maps.KroolDiddyPhase in spoiler.settings.krool_order and Events.KRoolDiddy not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Maps.KroolDiddyPhase].append(locationId)
-            if Maps.KroolLankyPhase in spoiler.settings.krool_order and Events.KRoolLanky not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Maps.KroolLankyPhase].append(locationId)
-            if Maps.KroolTinyPhase in spoiler.settings.krool_order and Events.KRoolTiny not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Maps.KroolTinyPhase].append(locationId)
-            if Maps.KroolChunkyPhase in spoiler.settings.krool_order and Events.KRoolChunky not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Maps.KroolChunkyPhase].append(locationId)
+            final_boss_associated_event = {
+                Maps.JapesBoss: Events.KRoolDillo1,
+                Maps.AztecBoss: Events.KRoolDog1,
+                Maps.FactoryBoss: Events.KRoolJack,
+                Maps.GalleonBoss: Events.KRoolPufftoss,
+                Maps.FungiBoss: Events.KRoolDog2,
+                Maps.CavesBoss: Events.KRoolDillo2,
+                Maps.CastleBoss: Events.KRoolKKO,
+                Maps.KroolDonkeyPhase: Events.KRoolDonkey,
+                Maps.KroolDiddyPhase: Events.KRoolDiddy,
+                Maps.KroolLankyPhase: Events.KRoolLanky,
+                Maps.KroolTinyPhase: Events.KRoolTiny,
+                Maps.KroolChunkyPhase: Events.KRoolChunky,
+            }
+            for map_id in final_boss_associated_event:
+                if map_id in spoiler.settings.krool_order and final_boss_associated_event[map_id] not in spoiler.LogicVariables.Events:
+                    spoiler.krool_paths[map_id].append(locationId)
         # Put the item back for future calculations
         location.PlaceItem(spoiler, item_id)
     # After everything is calculated, get rid of paths for false WotH locations
