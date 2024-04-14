@@ -90,14 +90,21 @@ void completeBoss(void) {
 	for (int i = 0; i < 5; i++) {
 		if (Rando.k_rool_order[i] == CurrentMap) {
 			if ((i == 4) || (Rando.k_rool_order[i + 1] == 0xFF)) {
+				// Ending phase
 				if (CurrentMap != MAP_KROOLCHUNKY) {
-					// Ending phase
 					initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
 				} else {
 					playCutscene(CurrentActorPointer_0, 0x1A, 1);
 				}
 			} else {
-				initiateTransition(Rando.k_rool_order[i + 1], 0);
+				maps next_map = Rando.k_rool_order[i + 1];
+				initiateTransition(next_map, 0);
+				// Some minor logic to prevent unbeatable bosses with no K Rool progress save
+				if (next_map == MAP_FUNGIDOGADON) {
+					Character = KONG_CHUNKY;
+				} else if (next_map == MAP_FACTORYJACK) {
+					Character = KONG_TINY;
+				}
 			}
 			return;
 		}
