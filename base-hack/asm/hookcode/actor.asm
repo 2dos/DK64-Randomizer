@@ -479,3 +479,50 @@ AlterHeadSize_0:
         sll $s1, $s1, 1
         j 0x806198DC
         addu $t9, $s5, $s1
+
+makeKongTranslucent:
+    addiu $at, $zero, 0x2
+    bne $t1, $at, makeKongTranslucent_clearTranslucency ; not hunky
+    nop
+    lui $v1, hi(CurrentMap)
+    lw $v1, lo(CurrentMap) ($v1)
+    addiu $at, $zero, 0xCF
+    bne $v1, $at, makeKongTranslucent_clearTranslucency ; not in chunky phase
+    nop
+    lui $v1, hi(CutsceneActive)
+    lbu $v1, lo(CutsceneActive) ($v1)
+    addiu $at, $zero, 0x1
+    beq $v1, $at, makeKongTranslucent_clearTranslucency ; In Cutscene
+    nop
+    lui $v1, hi(CurrentActorPointer_0)
+    lw $v1, lo(CurrentActorPointer_0) ($v1)
+    ; Enable Translucency
+    lw $t2, 0x60 ($v1)
+    lui $at, 0xFFFF
+    ori $at, $at, 0x7FFF
+    and $t2, $t2, $at
+    sw $t2, 0x60 ($v1)
+    ; Reduce Translucency
+    lh $t2, 0x128 ($v1)
+    addiu $t2, $t2, -4
+    slti $at, $t2, 100
+    beq $at, $zero, makeKongTranslucent_setTranslucency
+    nop
+    addiu $t2, $zero, 100
+
+    makeKongTranslucent_setTranslucency:
+        b makeKongTranslucent_finish
+        sh $t2, 0x128 ($v1)
+
+    makeKongTranslucent_clearTranslucency:
+        lui $v1, hi(CurrentActorPointer_0)
+        lw $v1, lo(CurrentActorPointer_0) ($v1)
+        ; Disable Translucency
+        lw $t2, 0x60 ($v1)
+        ori $t2, $t2, 0x8000
+        sw $t2, 0x60 ($v1)
+
+    makeKongTranslucent_finish:
+        addiu $at, $zero, 0x1
+        j 0x806CB780
+        lui $v1, 0x8080
