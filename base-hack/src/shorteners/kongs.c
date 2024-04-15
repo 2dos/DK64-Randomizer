@@ -1,15 +1,5 @@
 #include "../../include/common.h"
 
-void unlockKongs(void) {
-	if (Rando.unlock_kongs) {
-		for (int i = 0; i < 5; i++) {
-			if (Rando.unlock_kongs & (1 << i)) {
-				setPermFlag(kong_flags[i]);
-			}
-		}
-	}
-}
-
 void initKongRando(void) {
 	changeCharSpawnerFlag(MAP_AZTECLLAMATEMPLE, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 	changeCharSpawnerFlag(MAP_JAPES, 1, getKongFlag(Rando.free_target_japes));

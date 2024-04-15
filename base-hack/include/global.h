@@ -43,7 +43,6 @@ extern int getLo(void* addr);
 extern int getHi(void* addr);
 
 extern void level_order_rando_funcs(void);
-extern void unlockKongs(void);
 extern void unlockMoves(void);
 extern void tagAnywhere(void);
 extern void applyFastStart(void);
@@ -137,7 +136,6 @@ extern void handleFootProgress(actorData* actor);
 extern void cancelCutscene(int enable_movement);
 extern void clearVultureCutscene(void);
 extern void fastWarp(void* actor, int player_index);
-extern void activateBananaports(void);
 
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);

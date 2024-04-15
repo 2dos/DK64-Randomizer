@@ -676,6 +676,18 @@ void wipeFileStats(void) {
 	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
 }
 
+void setAllDefaultFlags(void) {
+	short* data = getFile(0x800, 0x1FFD800);
+	for (int i = 0; i < 0x400; i++) {
+		short flag = data[i];
+		if (flag == -1) {
+			return;
+		} else {
+			setPermFlag(flag);
+		}
+	}
+}
+
 void file_progress_screen_code(actorData* actor, int buttons) {
 	/**
 	 * @brief Handle inputs on the file progress screen
@@ -704,19 +716,11 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 				fileStart(0);
 				if (file_empty) {
 					// New File
-					setFlagDuplicate(0,1,FLAGTYPE_PERMANENT); // Set null flag as it ensures no=item stuff is actually no-item
+					setAllDefaultFlags();
 					unlockMoves();
-					unlockKongs();
 					applyFastStart();
 					openCrownDoor();
 					giveCollectables();
-					activateBananaports();
-					if(Rando.faster_checks.rabbit_race) {
-						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
-					}
-					if (Rando.quality_of_life.caves_kosha_dead) {
-						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
-					}
 					if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
 						setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
 					}
@@ -727,9 +731,6 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
 					SaveToGlobal();
-					if (Rando.galleon_water_raised) {
-						setPermFlag(FLAG_MODIFIER_GALLEONWATER);
-					}
 					for (int i = 0; i < 4; i++) {
 						if (Rando.check_shop_flags & (0x80 >> i)) {
 							setPermFlag(FLAG_ITEM_CRANKY + i);

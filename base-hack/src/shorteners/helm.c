@@ -67,8 +67,6 @@ void HelmInit(int init_stage) {
 				setFlag(minigame_1_flags[i],1,FLAGTYPE_TEMPORARY);
 			}
 		}
-		// Tag entrance W1
-		setPermFlag(FLAG_WARP_HELM_W1_NEAR);
 	} else if (init_stage == 1) {
 		// Modify Cutscenes
 		int has_ended = 0;
