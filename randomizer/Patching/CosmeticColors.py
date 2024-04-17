@@ -2021,6 +2021,12 @@ def applyKongModelSwaps(settings: Settings) -> None:
                     file_bytes = ROM_COPY.readBytes(source_size)
                     ROM_COPY.seek(dest_start)
                     ROM_COPY.writeBytes(file_bytes)
+                    # Write uncompressed size
+                    unc_table = js.pointer_addresses[26]["entries"][5]["pointing_to"]
+                    ROM_COPY.seek(unc_table + (source_data[model_subindex] * 4))
+                    unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                    ROM_COPY.seek(unc_table + (dest_data[model_subindex] * 4))
+                    ROM_COPY.writeMultipleBytes(unc_size, 4)
             changeModelTextures(settings, index)
             if value == KongModels.krusha:
                 placeKrushaHead(index)

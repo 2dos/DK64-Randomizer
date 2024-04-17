@@ -1153,7 +1153,7 @@ model_changes = [
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
-KONG_MODEL_EXP_SIZE = 0x10000
+KONG_MODEL_EXP_SIZE = 0x5000
 
 for x in model_changes:
     data = File(
