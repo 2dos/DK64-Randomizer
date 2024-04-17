@@ -1145,6 +1145,8 @@ model_changes = [
     ModelChange(0x110, "shrink_candy.bin"),
     ModelChange(0x111, "shrink_snide.bin"),
     ModelChange(0x112, FINAL_RACE_HOOP),
+    ModelChange(0x113, "k_rool_fight.bin"),
+    ModelChange(0x114, "k_rool_cutscene.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)

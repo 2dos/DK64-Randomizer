@@ -14,6 +14,11 @@ void adjustAnimationTables(void) {
     /**
      * @brief Adjust animation tables so that other kongs get Krusha's animations
      */
+    /*
+        TODO:
+        Kamerson — Today at 12:13 PM
+        but it still bugs me that Krusha's tag barrel non-selected anim is his losing anim and not his character select anim
+    */
     int slot = Rando.krusha_slot;
     if ((slot >= 0) && (slot <= 4)) {
         if (slot == 2) {

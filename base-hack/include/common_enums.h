@@ -1018,3 +1018,16 @@ typedef enum enum_script_runstate {
 	/* 0x002 */ RUNSTATE_PAUSED,
 	/* 0x003 */ RUNSTATE_DISTANCERUN,
 } enum_script_runstate;
+
+typedef enum custom_kong_models {
+	/* 0x000 */ KONGMODEL_DEFAULT,
+	/* 0x001 */ KONGMODEL_DK,
+	/* 0x002 */ KONGMODEL_DIDDY,
+	/* 0x003 */ KONGMODEL_LANKY,
+	/* 0x004 */ KONGMODEL_TINY,
+	/* 0x005 */ KONGMODEL_CHUNKY,
+	/* 0x006 */ KONGMODEL_DISCOCHUNKY,
+	/* 0x007 */ KONGMODEL_KRUSHA,
+	/* 0x008 */ KONGMODEL_KROOL_FIGHT,
+	/* 0x009 */ KONGMODEL_KROOL_CUTSCENE,
+} custom_kong_models;
