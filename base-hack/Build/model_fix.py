@@ -122,7 +122,7 @@ modifications = [
     },
 ]
 
-krusha_kong = -1
+kong_models = [0, 0, 0, 0, 0]
 DK_SCALE = 0.75
 GENERIC_SCALE = 0.49
 krusha_scaling = [
@@ -138,10 +138,33 @@ krusha_scaling = [
     # Chunky
     [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
 ]
-krusha_file = "krusha_setting.txt"
-if os.path.exists(krusha_file):
-    with open(krusha_file, "r") as fh:
-        krusha_kong = int(fh.read())
+
+kong_pairing = [
+    (3, None), # DK
+    (0, 1), # Diddy
+    (5, 6), # Lanky
+    (8, 9), # Tiny
+    (11, 12), # Chunky
+]
+
+model_pairing = {
+    1: (3, 3), # DK
+    2: (0, 1), # Diddy
+    3: (5, 6), # Lanky
+    4: (8, 9), # Tiny
+    5: (11, 12), # Chunky
+    6: (13, 0xEC), # Disco
+    7: (0xDA, 0xDA), # Krusha
+    8: (0x113, 0x113), # K Rool Fight
+    9: (0x114, 0x114), # K Rool Cutscene
+}
+
+
+# krusha_file = "krusha_setting.txt"
+# if os.path.exists(krusha_file):
+#     with open(krusha_file, "r") as fh:
+#         kong_models = [int(x) for x in fh.read().split(" ")]
+krusha_kong = -1
 
 BARREL_BASE = 0xE3  # 0x75
 BLOCKER_BASE = 0x64

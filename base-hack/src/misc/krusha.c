@@ -19,74 +19,75 @@ void adjustAnimationTables(void) {
         Kamerson — Today at 12:13 PM
         but it still bugs me that Krusha's tag barrel non-selected anim is his losing anim and not his character select anim
     */
-    int slot = Rando.krusha_slot;
-    if ((slot >= 0) && (slot <= 4)) {
-        if (slot == 2) {
-            if (CurrentMap == MAP_KROOLLANKY) {
-                *(short*)(0x8075D7CE) = 0x3320; // Allow arm stretching
-            } else {
-                *(short*)(0x8075D7CE) = 0x36B4; // Prevent arm stretching (DK64 is a giant meme)
+    for (int slot = 0; slot < 5; slot++) {
+        if (isKrushaAdjacentModel(slot)) {
+            if (slot == 2) {
+                if (CurrentMap == MAP_KROOLLANKY) {
+                    *(short*)(0x8075D7CE) = 0x3320; // Allow arm stretching
+                } else {
+                    *(short*)(0x8075D7CE) = 0x36B4; // Prevent arm stretching (DK64 is a giant meme)
+                }
             }
-        }
-        for (int i = 0; i < 0x8D; i++) {
-            if (i < 0x31) {
-                AnimationTable3[(7 * i) + slot] = AnimationTable3[(7 * i) + 5];
-            }
-            int excl_extra = 0;
-            if ((i >= 0x63) && (i <= 0x65)) {
-                // Instrument
-                excl_extra = 1;
-            } else if ((i >= 0x50) && (i <= 0x52)) {
-                if (((CurrentMap == MAP_KROOLLANKY) && (slot == 2)) || ((CurrentMap == MAP_FUNGIDOGADON) && (slot == 4))) {
-                    // Punch - During Lanky Phase and Dogadon 2
+            for (int i = 0; i < 0x8D; i++) {
+                if (i < 0x31) {
+                    AnimationTable3[(7 * i) + slot] = AnimationTable3[(7 * i) + 5];
+                }
+                int excl_extra = 0;
+                if ((i >= 0x63) && (i <= 0x65)) {
+                    // Instrument
                     excl_extra = 1;
+                } else if ((i >= 0x50) && (i <= 0x52)) {
+                    if (((CurrentMap == MAP_KROOLLANKY) && (slot == 2)) || ((CurrentMap == MAP_FUNGIDOGADON) && (slot == 4))) {
+                        // Punch - During Lanky Phase and Dogadon 2
+                        excl_extra = 1;
+                    }
+                } else if ((i >= 0x30) && (i <= 0x32)) {
+                    excl_extra = 1;
+                } else if ((i >= 0x48) && (i <= 0x4E)) {
+                    // excl_extra = 1;
                 }
-            } else if ((i >= 0x30) && (i <= 0x32)) {
-                excl_extra = 1;
-            } else if ((i >= 0x48) && (i <= 0x4E)) {
-                // excl_extra = 1;
-            }
-            if (i < 0x6E) {
-                if (!excl_extra) {
-                    AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
-                }
-            }
-            /*
-                Fixes a collision glitch with actors underwater if set to 2.
-                However, this causes the animation to be pretty bugged out.
-                if (slot == 2) {
-                    for (int i = 0; i < 3; i++) {
-                        int anim_targ = 0x30 + i;
-                        AnimationTable2[(7 * anim_targ) + slot] = AnimationTable2[(7 * *(int*)(0x807FF700)) + 5];
+                if (i < 0x6E) {
+                    if (!excl_extra) {
+                        AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
                     }
                 }
-            */
-            int excl_base = 0;
-            int dances[] = {0x43A, 0x434};
-            if (i == 0x5A) {
-                // Instrument
-                excl_base = 1;
-            } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == MAP_KROOLLANKY) && (slot == 2)) {
-                // Punch - During Lanky Phase
-                excl_base = 1;
-            } else if ((i >= 0x5C) && (i <= 0x5D)) {
-                // Dances
                 /*
-                    Animation 0x5B is also a good dance (Animation 0x43A), but replacing it will mean that you aren't transitioned out in crowns
+                    Fixes a collision glitch with actors underwater if set to 2.
+                    However, this causes the animation to be pretty bugged out.
+                    if (slot == 2) {
+                        for (int i = 0; i < 3; i++) {
+                            int anim_targ = 0x30 + i;
+                            AnimationTable2[(7 * anim_targ) + slot] = AnimationTable2[(7 * *(int*)(0x807FF700)) + 5];
+                        }
+                    }
                 */
-                AnimationTable1[(7 * i) + slot] = dances[i - 0x5C];
-                excl_base = 1;
-            } else if ((i >= 0x8A) && (i <= 0x8C)) {
-                // Tag Animation
-                int dance = dances[1];
-                if (i == 0x8B) {
-                    dance = dances[0];
+                int excl_base = 0;
+                int dances[] = {0x43A, 0x434};
+                if (i == 0x5A) {
+                    // Instrument
+                    excl_base = 1;
+                } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == MAP_KROOLLANKY) && (slot == 2)) {
+                    // Punch - During Lanky Phase
+                    excl_base = 1;
+                } else if ((i >= 0x5C) && (i <= 0x5D)) {
+                    // Dances
+                    /*
+                        Animation 0x5B is also a good dance (Animation 0x43A), but replacing it will mean that you aren't transitioned out in crowns
+                    */
+                    AnimationTable1[(7 * i) + slot] = dances[i - 0x5C];
+                    excl_base = 1;
+                } else if ((i >= 0x8A) && (i <= 0x8C)) {
+                    // Tag Animation
+                    int dance = dances[1];
+                    if (i == 0x8B) {
+                        dance = dances[0];
+                    }
+                    AnimationTable1[(7 * i) + slot] = dance;
+                    excl_base = 1;
                 }
-                AnimationTable1[(7 * i) + slot] = dance;
-                excl_base = 1;
-            }
-            if (!excl_base) {
-                AnimationTable1[(7 * i) + slot] = AnimationTable1[(7 * i) + 5];
+                if (!excl_base) {
+                    AnimationTable1[(7 * i) + slot] = AnimationTable1[(7 * i) + 5];
+                }
             }
         }
     }
@@ -113,9 +114,9 @@ void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_ind
      * @param player_index Player Index
      */
     int permit = 0;
-    if ((MovesBase[4].special_moves & 2) && (Rando.krusha_slot == 4)) {
+    if ((MovesBase[4].special_moves & 2) && (isKrushaAdjacentModel(KONG_CHUNKY))) {
         permit = 1;
-    } else if ((MovesBase[2].special_moves & 1) && (Rando.krusha_slot == 2)) {
+    } else if ((MovesBase[2].special_moves & 1) && (isKrushaAdjacentModel(KONG_LANKY))) {
         permit = 1;
     }
     if (permit) {
@@ -253,7 +254,7 @@ void OrangeGunCode(void) {
     int is_lime = 1;
     if (CurrentActorPointer_0->actorType == 43) {
         // Is Feather actor
-        if (Rando.krusha_slot != KONG_TINY) {
+        if (Rando.kong_models[KONG_TINY] != KONGMODEL_KRUSHA) {
             // Is not orange
             sprite = 0x80720854;
             pop_sprite_index = 5;

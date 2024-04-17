@@ -124,12 +124,6 @@ void overlay_mod_bonus(void) {
 
 	// Krazy Kong Klamour - Adjsut flicker speeds
 	PatchBonusCode();
-	if (Rando.disco_chunky) {
-		KrazyKKModels[4] = 0xE; // Change to disco chunky model
-	}
-	if (Rando.krusha_slot != -1) {
-		KrazyKKModels[(int)Rando.krusha_slot] = 0xDB; // Change to krusha model
-	}
 
 	if (Rando.music_rando_on) {
 		// Lower Crowd SFX Volume

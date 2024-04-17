@@ -300,9 +300,12 @@ float getOscillationDelta(void) {
 }
 
 void loadHooks(void) {
-	if (Rando.krusha_slot >- 1) {
-		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
-		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+	for (int i = 0; i < 5; i++) {
+		if (Rando.kong_models[i] == KONGMODEL_KRUSHA) {
+			loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
+			loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+			break;
+		}
 	}
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);

@@ -11,6 +11,7 @@ import zlib
 import create_helm_geo
 import generate_disco_models
 import generate_watch_file
+import merge_models
 import model_fix
 from pull_guns_and_instruments import pullHandModels
 from model_port import loadNewModels
@@ -1151,6 +1152,8 @@ model_changes = [
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
+KONG_MODEL_EXP_SIZE = 0x10000
+
 for x in model_changes:
     data = File(
         name=f"Model {x.model_index}",
@@ -1164,7 +1167,19 @@ for x in model_changes:
     if x.model_index == 0xDA:
         data.target_compressed_size = 0x4740
         data.target_uncompressed_size = 0x4740
+    if x.model_index in (0, 1, 3, 5, 6, 8, 9):
+        data.target_compressed_size = KONG_MODEL_EXP_SIZE
+        data.target_uncompressed_size = KONG_MODEL_EXP_SIZE
     file_dict.append(data)
+
+for x in (0xB, 0xC):
+    file_dict.append(File(
+        name=f"Model {x}",
+        pointer_table_index=TableNames.ActorGeometry,
+        file_index=x,
+        source_file=f"model_exp_{x}.bin",
+        target_size=KONG_MODEL_EXP_SIZE,
+    ))
 
 portal_image_order = [["SE", "NE", "SW", "NW"], ["NW", "SW", "NE", "SE"]]
 for x in range(2):

@@ -640,7 +640,7 @@ void tagAnywhere(void) {
                             Player->hand_state = 1;
                             Player->was_gun_out = 0;
                             // Without this, tags to and from Diddy mess up
-                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
+                            if (Rando.kong_models[next_character] == KONGMODEL_KRUSHA) {
                                 Player->hand_state = 2;
                             } else if (next_character == 1) {
                                 Player->hand_state = 0;
@@ -649,7 +649,7 @@ void tagAnywhere(void) {
                             Player->hand_state = 2;
                             Player->was_gun_out = 1;
                             // Without this, tags to and from Diddy mess up
-                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
+                            if (Rando.kong_models[next_character] == KONGMODEL_KRUSHA) {
                                 Player->hand_state = 1;
                             } else if (next_character == 1) {
                                 Player->hand_state = 3;

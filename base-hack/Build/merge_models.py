@@ -4,7 +4,7 @@ import zlib
 
 def mergeModel(source_file: int, attribute_stealing: int, output_file: str, steal_bones: bool, steal_collision: bool, scale_forearms: float = None, t_to_a_pose: bool = False, left_arm_bones: list = [], right_arm_bones: list = []):
     """Merge two models."""
-    with open("../rom/dk64.z64", "rb") as rom:
+    with open("rom/dk64.z64", "rb") as rom:
         rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
         actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
 
@@ -25,7 +25,7 @@ def mergeModel(source_file: int, attribute_stealing: int, output_file: str, stea
         bone_size_increase = 0
         bone_start = 0
         bone_end = 0
-        with open(f"../{output_file}", "wb") as fh:
+        with open(output_file, "wb") as fh:
             with open("merge_source.bin", "rb") as fg:
                 with open("merge_attribute.bin", "rb") as fk:
                     # Get Data From Source
@@ -71,7 +71,7 @@ def mergeModel(source_file: int, attribute_stealing: int, output_file: str, stea
                     bone_end = fh.tell()
                     fh.write(collision_data)
                     fh.write(color_data)
-        with open(f"../{output_file}", "r+b") as fh:
+        with open(output_file, "r+b") as fh:
             if scale_forearms is not None:
                 bone_data_count = int((bone_end - bone_start) / 0x10)
                 for x in range(bone_data_count):

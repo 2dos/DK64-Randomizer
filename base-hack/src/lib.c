@@ -1703,3 +1703,17 @@ void exitBoss(void) {
 	}
 	initiateTransition(MAP_TROFFNSCOFF, 2);
 }
+
+int isKrushaAdjacentModel(int kong) {
+	custom_kong_models slot_value = Rando.kong_models[kong];
+	if (slot_value == KONGMODEL_KRUSHA) {
+		return 1;
+	}
+	if (slot_value == KONGMODEL_KROOL_CUTSCENE) {
+		return 1;
+	}
+	if (slot_value == KONGMODEL_KROOL_FIGHT) {
+		return 1;
+	}
+	return 0;
+}
