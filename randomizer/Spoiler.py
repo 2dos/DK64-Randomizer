@@ -64,6 +64,7 @@ boss_map_names = {
     Maps.KroolChunkyPhase: "Chunky Phase",
 }
 
+
 class Spoiler:
     """Class which contains all spoiler data passed into and out of randomizer."""
 
@@ -276,7 +277,12 @@ class Spoiler:
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
-        settings["Krusha Slot"] = self.settings.krusha_ui.name
+        # settings["Krusha Slot"] = self.settings.krusha_ui.name
+        settings["DK Model"] = self.settings.kong_model_dk.name
+        settings["Diddy Model"] = self.settings.kong_model_diddy.name
+        settings["Lanky Model"] = self.settings.kong_model_lanky.name
+        settings["Tiny Model"] = self.settings.kong_model_tiny.name
+        settings["Chunky Model"] = self.settings.kong_model_chunky.name
 
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm

@@ -48,6 +48,7 @@ class BananaportRando(IntEnum):
     crossmap_coupled = 2
     crossmap_decoupled = 3
 
+
 class BigHeadMode(IntEnum):
     """Determines which big head mode setting is used.
 
@@ -415,6 +416,16 @@ class KrushaUi(IntEnum):
     tiny = 4
     chunky = 5
     random = 6
+
+
+class KongModels(IntEnum):
+    """Models for each kong."""
+
+    default = 0
+    disco_chunky = 1
+    krusha = 2
+    krool_fight = 3
+    krool_cutscene = 4
 
 
 class LevelRandomization(IntEnum):
@@ -800,6 +811,11 @@ SettingsMap = {
     "starting_kong": Kongs,
     "remove_barriers_selected": RemovedBarriersSelected,
     "faster_checks_selected": FasterChecksSelected,
+    "kong_model_dk": KongModels,
+    "kong_model_diddy": KongModels,
+    "kong_model_lanky": KongModels,
+    "kong_model_tiny": KongModels,
+    "kong_model_chunky": KongModels,
 }
 
 
@@ -985,6 +1001,11 @@ class SettingsStringEnum(IntEnum):
     disable_hard_minigames = 167
     chaos_blockers = 168
     mermaid_gb_pearls = 169
+    kong_model_dk = 170
+    kong_model_diddy = 171
+    kong_model_lanky = 172
+    kong_model_tiny = 173
+    kong_model_chunky = 174
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -995,6 +1016,7 @@ DeprecatedSettings = {
     SettingsStringEnum.choose_starting_moves,
     SettingsStringEnum.open_levels,
     SettingsStringEnum.high_req,
+    SettingsStringEnum.krusha_ui,
 }
 
 
@@ -1103,6 +1125,11 @@ SettingsStringTypeMap = {
     SettingsStringEnum.kasplat_rando_setting: KasplatRandoSetting,
     SettingsStringEnum.key_8_helm: SettingsStringDataType.bool,
     SettingsStringEnum.keys_random: SettingsStringDataType.bool,
+    SettingsStringEnum.kong_model_dk: KongModels,
+    SettingsStringEnum.kong_model_diddy: KongModels,
+    SettingsStringEnum.kong_model_lanky: KongModels,
+    SettingsStringEnum.kong_model_tiny: KongModels,
+    SettingsStringEnum.kong_model_chunky: KongModels,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,

@@ -17,7 +17,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
+from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints, KongModels
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -464,8 +464,7 @@ globally_hinted_location_ids = []
 
 def compileHints(spoiler: Spoiler) -> bool:
     """Create a hint distribution, generate buff hints, and place them in locations."""
-    if spoiler.settings.krusha_kong is not None:
-        replaceKongNameWithKrusha(spoiler)
+    replaceKongNameWithKrusha(spoiler)
     ClearHintMessages()
     hint_distribution = hint_distribution_default.copy()
     plando_hints_placed = 0
@@ -522,9 +521,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     for map_id in required_moves:
         if map_id in spoiler.settings.krool_order and map_id in spoiler.krool_paths.keys():
             useless_locations[map_id] = [
-                loc
-                for loc in spoiler.krool_paths[map_id]
-                if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in required_moves[map_id]
+                loc for loc in spoiler.krool_paths[map_id] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in required_moves[map_id]
             ]
 
     multipath_dict_hints, multipath_dict_goals = GenerateMultipathDict(spoiler, useless_locations)
@@ -1130,8 +1127,17 @@ def compileHints(spoiler: Spoiler) -> bool:
             message = f"Looking for {item_color}{item_name}{item_color}?"
             # If this hint tries to offer help finding Krusha, make sure to get his name right
             if item.type == Types.Kong and spoiler.settings.wrinkly_hints != WrinklyHints.item_hinting_advanced:
-                if ItemPool.GetKongForItem(location.item) == spoiler.settings.krusha_kong:
-                    message = message.replace(item.name, "Krusha")
+                settings_values = [
+                    spoiler.settings.kong_model_dk,
+                    spoiler.settings.kong_model_diddy,
+                    spoiler.settings.kong_model_lanky,
+                    spoiler.settings.kong_model_tiny,
+                    spoiler.settings.kong_model_chunky,
+                ]
+                for index, val in enumerate(settings_values):
+                    if val == KongModels.krusha:
+                        if ItemPool.GetKongForItem(location.item) == index:
+                            message = message.replace(item.name, "Krusha")
             # Two options for hinting the location, do a coin flip
             coin_flip = random.choice([1, 2])
             if coin_flip == 1:
@@ -2110,8 +2116,17 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                         hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
                     else:
                         hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
-                    if spoiler.settings.krusha_kong == location.kong:
-                        hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
+                    settings_values = [
+                        spoiler.settings.kong_model_dk,
+                        spoiler.settings.kong_model_diddy,
+                        spoiler.settings.kong_model_lanky,
+                        spoiler.settings.kong_model_tiny,
+                        spoiler.settings.kong_model_chunky,
+                    ]
+                    for index, val in enumerate(settings_values):
+                        if val == KongModels.krusha:
+                            if index == location.kong:
+                                hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
                     spoiler.microhints[item.name] = hint_text
         if len(slam_levels) > 0:
             slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
@@ -2460,19 +2475,27 @@ def ApplyPlandoHints(spoiler):
 
 def replaceKongNameWithKrusha(spoiler):
     """Replace Krusha's kong name."""
-    krusha = spoiler.settings.krusha_kong
-    kong_list[krusha] = f"{kong_colors[krusha]}Krusha{kong_colors[krusha]}"
-    colorless_kong_list[krusha] = "Krusha"
-    kong_cryptic[krusha] = [
-        "The kong that has... scales ?",
-        "The kong that is normally only available in multiplayer",
-        "The kong that is not a monkey",
-        "The Kong that is not in the DK Rap",
-        "The Kong that Rivals Chunky in Strength",
-        "The Kong that replaces another Kong",
-        "The Kong that wears Camo",
-        "The Kong that was K. Rool's Bodyguard",
+    settings_values = [
+        spoiler.settings.kong_model_dk,
+        spoiler.settings.kong_model_diddy,
+        spoiler.settings.kong_model_lanky,
+        spoiler.settings.kong_model_tiny,
+        spoiler.settings.kong_model_chunky,
     ]
+    for kong_index, kong in enumerate(settings_values):
+        if kong == KongModels.krusha:
+            kong_list[kong_index] = f"{kong_colors[kong_index]}Krusha{kong_colors[kong_index]}"
+            colorless_kong_list[kong_index] = "Krusha"
+            kong_cryptic[kong_index] = [
+                "The kong that has... scales ?",
+                "The kong that is normally only available in multiplayer",
+                "The kong that is not a monkey",
+                "The Kong that is not in the DK Rap",
+                "The Kong that Rivals Chunky in Strength",
+                "The Kong that replaces another Kong",
+                "The Kong that wears Camo",
+                "The Kong that was K. Rool's Bodyguard",
+            ]
 
 
 def getHelmOrderHint(spoiler):

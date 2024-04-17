@@ -151,7 +151,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0x43)
             # The ColorblindMode enum is indexed to allow this.
             ROM_COPY.write(int(settings.colorblind_mode))
-            
+
             # Big head mode
             ROM_COPY.seek(sav + 0x1E1)
             # The BigHeadMode enum is indexed to allow this.
@@ -173,7 +173,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.write(music_volume)
 
             boolean_props = [
-                BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
+                # BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
                 BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
                 BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
                 BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam

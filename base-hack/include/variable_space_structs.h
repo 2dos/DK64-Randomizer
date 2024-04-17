@@ -145,7 +145,7 @@ typedef struct varspace {
 	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
 	/* 0x1B8 */ unsigned char kong_models[5];
-	/* 0x1bd */ char unk_1bd[0x1C6 - 0x1bd];
+	/* 0x1BD */ char unk_1bd[0x1C6 - 0x1BD];
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
 	/* 0x1DC */ unsigned char galleon_water_raised;

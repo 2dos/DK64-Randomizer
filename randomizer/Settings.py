@@ -502,6 +502,11 @@ class Settings:
         self.menu_texture_name = "Default"
         self.wrinkly_rgb = [255, 255, 255]
         self.krusha_ui = KrushaUi.no_slot
+        self.kong_model_dk = KongModels.default
+        self.kong_model_diddy = KongModels.default
+        self.kong_model_lanky = KongModels.default
+        self.kong_model_tiny = KongModels.default
+        self.kong_model_chunky = KongModels.default
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
@@ -802,21 +807,21 @@ class Settings:
             self.shockwave_status = ShockwaveStatus.start_with
 
         # Krusha Kong
-        if self.krusha_ui == KrushaUi.random:
-            slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-            self.krusha_kong = random.choice(slots)
-        else:
-            self.krusha_kong = None
-            krusha_conversion = {
-                KrushaUi.no_slot: None,
-                KrushaUi.dk: Kongs.donkey,
-                KrushaUi.diddy: Kongs.diddy,
-                KrushaUi.lanky: Kongs.lanky,
-                KrushaUi.tiny: Kongs.tiny,
-                KrushaUi.chunky: Kongs.chunky,
-            }
-            if self.krusha_ui in krusha_conversion:
-                self.krusha_kong = krusha_conversion[self.krusha_ui]
+        # if self.krusha_ui == KrushaUi.random:
+        #     slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+        #     self.krusha_kong = random.choice(slots)
+        # else:
+        #     self.krusha_kong = None
+        #     krusha_conversion = {
+        #         KrushaUi.no_slot: None,
+        #         KrushaUi.dk: Kongs.donkey,
+        #         KrushaUi.diddy: Kongs.diddy,
+        #         KrushaUi.lanky: Kongs.lanky,
+        #         KrushaUi.tiny: Kongs.tiny,
+        #         KrushaUi.chunky: Kongs.chunky,
+        #     }
+        #     if self.krusha_ui in krusha_conversion:
+        #         self.krusha_kong = krusha_conversion[self.krusha_ui]
 
         # Fungi Time of Day
         if self.fungi_time == FungiTimeSetting.random:
@@ -986,7 +991,7 @@ class Settings:
         self.krool_pufftoss = False
         self.krool_kutout = False
 
-        self.krool_in_boss_pool = self.hard_level_progression # TODO: Make this a setting and get this working for SLO
+        self.krool_in_boss_pool = self.hard_level_progression  # TODO: Make this a setting and get this working for SLO
         phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
         if self.krool_in_boss_pool:
             phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])

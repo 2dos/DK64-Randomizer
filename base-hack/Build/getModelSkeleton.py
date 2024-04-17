@@ -12,7 +12,7 @@ def getSkeleton(model_index: int, model_file: str = None):
         with open("../rom/dk64.z64", "rb") as rom:
             rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
             actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-            
+
             rom.seek(actor_table + (model_index << 2))
             model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
             model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -69,7 +69,7 @@ def getSkeleton(model_index: int, model_file: str = None):
         # Draw points and numbers
         disable_overlap = True
         for i, (x, y) in enumerate(points, 0):
-            draw.ellipse([x-2, y-2, x+2, y+2], fill="black")  # Draw point
+            draw.ellipse([x - 2, y - 2, x + 2, y + 2], fill="black")  # Draw point
             text_x = x + 5
             text_y = y - 5
             while True:
@@ -94,6 +94,7 @@ def getSkeleton(model_index: int, model_file: str = None):
         if model_file is not None:
             file_name = f"skeleton_{model_file.replace('.bin','').replace('../','')}.png"
         image.save(file_name)
+
 
 getSkeleton(0x48)
 getSkeleton(0x67)

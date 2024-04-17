@@ -975,7 +975,7 @@ colorblind_changes = [
     [0xECF, 0xECF, 1, 1372],  # Funky Camo
     [0xED6, 0xED6, 1, 1372],  # Funky Camo
     [0xEDF, 0xEDF, 1, 1372],  # Funky Camo
-    [0xEF7, 0xEF8, 32, 32], # Snake Skin
+    [0xEF7, 0xEF8, 32, 32],  # Snake Skin
 ]
 
 kremling_dimensions = [
@@ -1000,18 +1000,18 @@ kremling_dimensions = [
 ]
 
 rabbit_dimensions = [
-    [1, 1372], # 111A
-    [1, 1372], # 111B
-    [1, 700], # 111C
-    [1, 700], # 111D
-    [1, 1372], # 111E
-    [1, 1372], # 111F
-    [1, 1372], # 1120
-    [1, 1404], # 1121
-    [1, 348], # 1122
-    [32, 64], # 1123
-    [1, 688], # 1124
-    [64, 32], # 1125
+    [1, 1372],  # 111A
+    [1, 1372],  # 111B
+    [1, 700],  # 111C
+    [1, 700],  # 111D
+    [1, 1372],  # 111E
+    [1, 1372],  # 111F
+    [1, 1372],  # 1120
+    [1, 1404],  # 1121
+    [1, 348],  # 1122
+    [32, 64],  # 1123
+    [1, 688],  # 1124
+    [64, 32],  # 1125
 ]
 
 krobot_textures = [[[32, 44], [0xFAB, 0xFAD, 0xFA9, 0xFA8, 0xFAA, 0xFAF]], [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]]
@@ -1148,6 +1148,7 @@ model_changes = [
     ModelChange(0x112, FINAL_RACE_HOOP),
     ModelChange(0x113, "k_rool_fight.bin"),
     ModelChange(0x114, "k_rool_cutscene.bin"),
+    ModelChange(0x115, FINAL_RACE_HOOP), # Used to set an endpoint
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
@@ -1173,13 +1174,15 @@ for x in model_changes:
     file_dict.append(data)
 
 for x in (0xB, 0xC):
-    file_dict.append(File(
-        name=f"Model {x}",
-        pointer_table_index=TableNames.ActorGeometry,
-        file_index=x,
-        source_file=f"model_exp_{x}.bin",
-        target_size=KONG_MODEL_EXP_SIZE,
-    ))
+    file_dict.append(
+        File(
+            name=f"Model {x}",
+            pointer_table_index=TableNames.ActorGeometry,
+            file_index=x,
+            source_file=f"model_exp_{x}.bin",
+            target_size=KONG_MODEL_EXP_SIZE,
+        )
+    )
 
 portal_image_order = [["SE", "NE", "SW", "NW"], ["NW", "SW", "NE", "SE"]]
 for x in range(2):

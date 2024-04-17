@@ -155,9 +155,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Lock Key 8 in Helm: 50%
 - Key 8 Required: 70%
 - Shuffle K. Rool Phases: 80%
-- Krusha Slot: 
-	- No Slot: 50%
-	- Random: 50%
 - Entrance Randomizer: 
 	- Vanilla: 20%
 	- Level Order: 40%

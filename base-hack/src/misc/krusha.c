@@ -167,13 +167,13 @@ void updateCutsceneModels(actorData* actor, int size) {
      * @param size Player scale
      */
     short* model = actor->paad3;
-    if (*model == 0xDB) {
-        TiedCharacterSpawner->unk_46 |= 0x1000;
-        CurrentActorPointer_0->obj_props_bitfield |= 0x1400;
-        CurrentActorPointer_0->unk_CC = 1;
-        unkCutsceneKongFunction_0(2, 1);
-        clearGun(actor);
-    }
+    // if (*model == 0xDB) {
+    //     TiedCharacterSpawner->unk_46 |= 0x1000;
+    //     CurrentActorPointer_0->obj_props_bitfield |= 0x1400;
+    //     CurrentActorPointer_0->unk_CC = 1;
+    //     unkCutsceneKongFunction_0(2, 1);
+    //     clearGun(actor);
+    // }
     updateModelScales(actor, size);
 }
 

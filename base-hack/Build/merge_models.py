@@ -2,16 +2,24 @@ from BuildLib import main_pointer_table_offset, intf_to_float, float_to_hex
 from BuildEnums import TableNames
 import zlib
 
-def mergeModel(source_file: int, attribute_stealing: int, output_file: str, steal_bones: bool, steal_collision: bool, scale_forearms: float = None, t_to_a_pose: bool = False, left_arm_bones: list = [], right_arm_bones: list = []):
+
+def mergeModel(
+    source_file: int,
+    attribute_stealing: int,
+    output_file: str,
+    steal_bones: bool,
+    steal_collision: bool,
+    scale_forearms: float = None,
+    t_to_a_pose: bool = False,
+    left_arm_bones: list = [],
+    right_arm_bones: list = [],
+):
     """Merge two models."""
     with open("rom/dk64.z64", "rb") as rom:
         rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
         actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
 
-        model_names = {
-            "merge_source": source_file,
-            "merge_attribute": attribute_stealing
-        }
+        model_names = {"merge_source": source_file, "merge_attribute": attribute_stealing}
         for fn in model_names:
             rom.seek(actor_table + (model_names[fn] << 2))
             model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -95,7 +103,7 @@ def mergeModel(source_file: int, attribute_stealing: int, output_file: str, stea
             fh.write(original_pointer.to_bytes(4, "big"))
             fh.seek(0x10)
             original_pointer = int.from_bytes(fh.read(4), "big")
-            original_pointer += (col_size_increase + bone_size_increase)
+            original_pointer += col_size_increase + bone_size_increase
             fh.seek(0x10)
             fh.write(original_pointer.to_bytes(4, "big"))
             if t_to_a_pose:
@@ -231,6 +239,17 @@ def mergeModel(source_file: int, attribute_stealing: int, output_file: str, stea
                 # print(sorted(list(set(untouched_verts))))
                 # print("Touched")
                 # print(sorted(list(set(touched_verts))))
-                    
-mergeModel(0x48, 0xDA, "k_rool_cutscene.bin", False, True, 1.377, True, [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33], [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]) # CS Version
-mergeModel(0x67, 0xDA, "k_rool_fight.bin", False, True, 1.377, True, [5, 6, 7, 8, 9, 10, 11], [2, 3, 4]) # Fight Version
+
+
+mergeModel(
+    0x48, 0xDA, "k_rool_cutscene.bin", False, True, 1.377, True, [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33], [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+)  # CS Version
+mergeModel(0x67, 0xDA, "k_rool_fight.bin", False, True, 1.377, True, [5, 6, 7, 8, 9, 10, 11], [2, 3, 4])  # Fight Version
+
+with open("k_rool_fight.bin", "r+b") as fh:
+    fh.seek(0x5818)
+    fh.write((0).to_bytes(8, "big"))
+    fh.seek(0x5A4C)
+    fh.write((7).to_bytes(1, "big"))
+    fh.seek(0x61C4)
+    fh.write((8).to_bytes(1, "big"))

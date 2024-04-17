@@ -214,10 +214,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.5,
       "level_order": 0.5
@@ -566,10 +562,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.65,
@@ -937,10 +929,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -1342,10 +1330,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,

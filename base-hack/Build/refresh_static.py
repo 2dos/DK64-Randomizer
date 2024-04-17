@@ -1,9 +1,11 @@
 """Set static back to the state from a branch from github."""
+
 import requests
 
 BRANCH = "dev"
 USER = "2dos"
 REPO = "DK64-Randomizer"
+
 
 def downloadStatic(file: str):
     """Download static file from github."""

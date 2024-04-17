@@ -228,7 +228,7 @@ LogicRegions = {
 
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", "Japes Caves and Mines", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.vines and (l.isdiddy or l.istiny)) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk),
+        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.vines and (l.isdiddy or l.istiny)) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk),
         LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk)),
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),

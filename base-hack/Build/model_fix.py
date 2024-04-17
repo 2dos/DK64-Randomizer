@@ -140,30 +140,25 @@ krusha_scaling = [
 ]
 
 kong_pairing = [
-    (3, None), # DK
-    (0, 1), # Diddy
-    (5, 6), # Lanky
-    (8, 9), # Tiny
-    (11, 12), # Chunky
+    (3, None),  # DK
+    (0, 1),  # Diddy
+    (5, 6),  # Lanky
+    (8, 9),  # Tiny
+    (11, 12),  # Chunky
 ]
 
 model_pairing = {
-    1: (3, 3), # DK
-    2: (0, 1), # Diddy
-    3: (5, 6), # Lanky
-    4: (8, 9), # Tiny
-    5: (11, 12), # Chunky
-    6: (13, 0xEC), # Disco
-    7: (0xDA, 0xDA), # Krusha
-    8: (0x113, 0x113), # K Rool Fight
-    9: (0x114, 0x114), # K Rool Cutscene
+    1: (3, 3),  # DK
+    2: (0, 1),  # Diddy
+    3: (5, 6),  # Lanky
+    4: (8, 9),  # Tiny
+    5: (11, 12),  # Chunky
+    6: (13, 0xEC),  # Disco
+    7: (0xDA, 0xDA),  # Krusha
+    8: (0x113, 0x113),  # K Rool Fight
+    9: (0x114, 0x114),  # K Rool Cutscene
 }
 
-
-# krusha_file = "krusha_setting.txt"
-# if os.path.exists(krusha_file):
-#     with open(krusha_file, "r") as fh:
-#         kong_models = [int(x) for x in fh.read().split(" ")]
 krusha_kong = -1
 
 BARREL_BASE = 0xE3  # 0x75
@@ -187,40 +182,6 @@ with open(ROMName, "rb") as rom:
             decompress = zlib.decompress(compress, (15 + 32))
             fh.write(decompress)
         with open(model["model_file"], "r+b") as fh:
-            if idx == 0xDA:
-                if krusha_kong != -1:
-                    print(f"Scaling Krusha Down for kong {krusha_kong}")
-                    # Write Krusha
-                    base = 0x450C
-                    fh.seek(base)
-                    count_0 = int.from_bytes(fh.read(4), "big")
-                    changes = krusha_scaling[krusha_kong][:3]
-                    changes_0 = [
-                        krusha_scaling[krusha_kong][3],
-                        krusha_scaling[krusha_kong][4],
-                        krusha_scaling[krusha_kong][3],
-                    ]
-                    for i in range(count_0):
-                        i_start = base + 4 + (i * 0x14)
-                        for coord_index, change in enumerate(changes):
-                            fh.seek(i_start + (4 * coord_index) + 4)
-                            val_i = int.from_bytes(fh.read(4), "big")
-                            val_f = change(intf_to_float(val_i))
-                            fh.seek(i_start + (4 * coord_index) + 4)
-                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
-                    section_2_start = base + 4 + (count_0 * 0x14)
-                    fh.seek(section_2_start)
-                    count_1 = int.from_bytes(fh.read(4), "big")
-                    for i in range(count_1):
-                        i_start = section_2_start + 4 + (i * 0x10)
-                        for coord_index, change in enumerate(changes_0):
-                            fh.seek(i_start + (4 * coord_index))
-                            val_i = int.from_bytes(fh.read(4), "big")
-                            val_f = change(intf_to_float(val_i))
-                            fh.seek(i_start + (4 * coord_index))
-                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
-                else:
-                    print("Ignoring Krusha Scale Down")
             fh.seek(0)
             sub_idx = 0
             for wipe in model["wipe"]:

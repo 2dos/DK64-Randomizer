@@ -22,7 +22,7 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     Regions.CrystalCavesMain: Region("Crystal Caves Main", "Main Caves Area", Levels.CrystalCaves, True, None, [
-        LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: ((l.jetpack and l.isdiddy) or ((not l.settings.shuffle_shops) and l.advanced_platforming and ((l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl)) and l.settings.free_trade_items)), MinigameType.BonusBarrel),
+        LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: ((l.jetpack and l.isdiddy) or ((not l.settings.shuffle_shops) and l.advanced_platforming and ((l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))) or (l.istiny and l.twirl)) and l.settings.free_trade_items)), MinigameType.BonusBarrel),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim()) and l.gorillaGone and l.ischunky),
         LocationLogic(Locations.CavesKasplatNearLab, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CavesMainEnemy_Start, lambda l: True),

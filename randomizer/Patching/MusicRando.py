@@ -150,7 +150,9 @@ class UploadInfo:
                     enable_json_data = False
             if enable_json_data:
                 self.name = f"{data_json['game']} \"{data_json['song']}\" converted by {data_json['converter']}"
-                self.name_short = f"{filterSongString(data_json.get('game_short', data_json.get('game', 'Unknown')))}\n{filterSongString(data_json.get('song_short', data_json.get('song', 'Unknown')))}"
+                self.name_short = (
+                    f"{filterSongString(data_json.get('game_short', data_json.get('game', 'Unknown')))}\n{filterSongString(data_json.get('song_short', data_json.get('song', 'Unknown')))}"
+                )
                 self.song_length = data_json["length"]
                 for tag in data_json["tags"]:
                     if tag in list(TAG_CONVERSION_TABLE.keys()):
