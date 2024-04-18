@@ -1030,4 +1030,6 @@ typedef enum custom_kong_models {
 	/* 0x007 */ KONGMODEL_KRUSHA,
 	/* 0x008 */ KONGMODEL_KROOL_FIGHT,
 	/* 0x009 */ KONGMODEL_KROOL_CUTSCENE,
+	/* 0x00A */ KONGMODEL_CRANKY,
+	/* 0x00B */ KONGMODEL_CANDY,
 } custom_kong_models;

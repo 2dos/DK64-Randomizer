@@ -254,7 +254,9 @@ typedef struct playerData {
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
 	/* 0x20C */ char was_gun_out;
-	/* 0x20D */ char unk_20D[0x23C - 0x20D];
+	/* 0x20D */ char unk_20D[0x210 - 0x20D];
+	/* 0x210 */ unsigned char gun_bone;
+	/* 0x211 */ char unk_211[0x23C - 0x211];
 	/* 0x23C */ short unk_rocketbarrel_value1;
 	/* 0x23E */ short unk_rocketbarrel_value2;
 	/* 0x240 */ char unk_240[0x248 - 0x240];

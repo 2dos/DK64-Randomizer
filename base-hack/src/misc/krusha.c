@@ -10,6 +10,34 @@
  */
 #include "../../include/common.h"
 
+void adjustGunBone(playerData* player) {
+    for (int i = 0; i < 5; i++) {
+        custom_kong_models model = Rando.kong_models[i];
+        switch (model) {
+            case KONGMODEL_CRANKY:
+            case KONGMODEL_KROOL_CUTSCENE:
+                player->gun_bone = 5;
+                break;
+            case KONGMODEL_CANDY:
+                player->gun_bone = 2;
+                break;
+            case KONGMODEL_KROOL_FIGHT:
+                player->gun_bone = 6;
+                break;
+            case KONGMODEL_DEFAULT:
+                if (i == KONG_DIDDY) {
+                    player->gun_bone = 1 - player->gun_bone;
+                    break;
+                }
+            case KONGMODEL_DISCOCHUNKY:
+            case KONGMODEL_KRUSHA:
+            default:
+                player->gun_bone = 1;
+                break;
+        }
+    }
+}
+
 void adjustAnimationTables(void) {
     /**
      * @brief Adjust animation tables so that other kongs get Krusha's animations

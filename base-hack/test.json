@@ -203,11 +203,11 @@
    "disco_chunky":1,
    "krusha_slot":255,
    "kong_models":[
-      7,
-      7,
-      7,
-      7,
-      7
+      0,
+      0,
+      0,
+      0,
+      0
    ],
    "starting_kong":0,
    "rom_flags":{

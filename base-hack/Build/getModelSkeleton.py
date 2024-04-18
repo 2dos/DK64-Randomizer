@@ -48,7 +48,10 @@ def getSkeleton(model_index: int, model_file: str = None):
                 coords = bone_offsets[base_bone].copy()
             fh.seek(bone_start + (b * 0x10) + 4)
             for c in range(3):
-                coords[c] += intf_to_float(int.from_bytes(fh.read(4), "big"))
+                value = intf_to_float(int.from_bytes(fh.read(4), "big"))
+                if base_bone == 8:
+                    print(model_index, value)
+                coords[c] += value
             bone_offsets[local_bone] = coords.copy()
             bone_bases[master_bone] = coords.copy()
             bone_master[local_bone] = master_bone
@@ -96,7 +99,10 @@ def getSkeleton(model_index: int, model_file: str = None):
         image.save(file_name)
 
 
+getSkeleton(3)
+getSkeleton(0x10)
 getSkeleton(0x48)
 getSkeleton(0x67)
 getSkeleton(0xDA)
-getSkeleton(0, "../merge_final.bin")
+getSkeleton(8)
+getSkeleton(0x12)

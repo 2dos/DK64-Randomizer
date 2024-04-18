@@ -426,6 +426,8 @@ class KongModels(IntEnum):
     krusha = 2
     krool_fight = 3
     krool_cutscene = 4
+    cranky = 5
+    candy = 6
 
 
 class LevelRandomization(IntEnum):

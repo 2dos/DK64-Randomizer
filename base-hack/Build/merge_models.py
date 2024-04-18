@@ -245,19 +245,10 @@ mergeModel(
     0x48, 0xDA, "k_rool_cutscene.bin", False, True, 1.377, True, [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33], [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 )  # CS Version
 mergeModel(0x67, 0xDA, "k_rool_fight.bin", False, True, 1.377, True, [5, 6, 7, 8, 9, 10, 11], [2, 3, 4])  # Fight Version
+mergeModel(0x10, 3, "cranky_model.bin", False, True, None, True, [16, 17, 18, 19, 20, 21, 22, 23], [8, 9, 10, 11, 12, 13, 14, 15])
+mergeModel(0x12, 8, "candy_model.bin", False, True, None, True, [22, 23, 24, 25, 26, 27, 28], [15, 16, 17, 18, 19, 20, 21])
 
 with open("k_rool_fight.bin", "r+b") as fh:
-    # # Remove DL Call
-    # fh.seek(0x5818)
-    # fh.write((0).to_bytes(8, "big"))
-    # Remove whatever this is
-    # fh.seek(0x5A40)
-    # fh.write((0).to_bytes(8, "big"))
-    # # Change Seg Addrs
-    # fh.seek(0x5A4C)
-    # fh.write((7).to_bytes(1, "big"))
-    # fh.seek(0x61C4)
-    # fh.write((8).to_bytes(1, "big"))
     # Remove DL Call
     fh.seek(0x61C0)
     fh.write((0).to_bytes(8, "big"))

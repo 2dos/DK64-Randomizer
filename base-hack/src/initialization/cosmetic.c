@@ -16,6 +16,10 @@ static short pellets[] = {48, 36, 42, 43, 38};
 #define ORANGE_GUN_VARIANCE 5
 #define ENABLE_ORANGE_GUN 1
 
+static const char* krool_name = "K. ROOL";
+static const char* cranky_name = "CRANKY";
+static const char* candy_name = "CANDY";
+
 void initKrusha(int slot) {
     /**
      * @brief Initialize the Krusha Cosmetic/Gameplay feature
@@ -26,8 +30,13 @@ void initKrusha(int slot) {
     writeFunction(0x80677E94, &adjustAnimationTables); // Give Krusha animations to slot
     writeFunction(0x806C32B8, &updateCutsceneModels); // Fix cutscene models
     RollingSpeeds[slot] = 175; // Increase Krusha slide speed to 175
-    KongTagNames[slot] = 6; // Change kong name in Tag Barrel
-    KongTextNames[slot] = KongTextNames[5];
+    if (Rando.kong_models[slot] == KONGMODEL_KRUSHA) {
+        KongTextNames[slot] = KongTextNames[5];
+        KongTagNames[slot] = 6; // Change kong name in Tag Barrel
+    } else {
+        KongTextNames[slot] = krool_name;
+        KongTagNames[slot] = 7; // Change kong name in Tag Barrel
+    }
     LedgeHangY[slot] = LedgeHangY[5];
     LedgeHangY_0[slot] = LedgeHangY_0[5];
     *(short*)(0x8074AB5A) = 0x0040; // Enables Krusha's spin attack to knock kasplats down
@@ -145,6 +154,20 @@ void initKrusha(int slot) {
     }
 }
 
+void* updateKongTB(int malloc_size) {
+    unsigned short* paad = CurrentActorPointer_0->paad;
+    if (*paad == 2) {
+        if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
+            CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF;
+        }
+    } else if (*paad == 5) {
+        if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
+            CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF;
+        }
+    }
+    return dk_malloc(malloc_size);
+} 
+
 void initModelChanges(void) {
     for (int i = 0; i < 5; i++) {
         custom_kong_models model = Rando.kong_models[i];
@@ -156,6 +179,14 @@ void initModelChanges(void) {
             case KONGMODEL_KROOL_CUTSCENE:
             case KONGMODEL_KROOL_FIGHT:
                 initKrusha(i);
+                break;
+            case KONGMODEL_CRANKY:
+                KongTagNames[i] = 8;
+                KongTextNames[i] = cranky_name;
+                break;
+            case KONGMODEL_CANDY:
+                KongTagNames[i] = 9;
+                KongTextNames[i] = candy_name;
                 break;
             case KONGMODEL_DISCOCHUNKY:
                 if (i == 4) {

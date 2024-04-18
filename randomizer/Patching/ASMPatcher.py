@@ -534,6 +534,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict)  # perm flag set hook
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict)  # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict)  # Fix some silk memes
+    
+    writeFunction(ROM_COPY, 0x806C871C, Overlay.Static, "adjustGunBone", offset_dict)
+    writeFunction(ROM_COPY, 0x806E2A34, Overlay.Static, "adjustGunBone", offset_dict)
+    writeFunction(ROM_COPY, 0x80683194, Overlay.Static, "updateKongTB", offset_dict)
 
     writeHook(ROM_COPY, 0x8063EE08, Overlay.Static, "InstanceScriptCheck", offset_dict)
     writeHook(ROM_COPY, 0x80731168, Overlay.Static, "checkFlag_ItemRando", offset_dict)

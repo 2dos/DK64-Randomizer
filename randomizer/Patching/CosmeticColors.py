@@ -303,6 +303,8 @@ model_mapping = {
     KongModels.krusha: 7,
     KongModels.krool_cutscene: 9,
     KongModels.krool_fight: 8,
+    KongModels.cranky: 10,
+    KongModels.candy: 11,
 }
 krusha_texture_replacement = {
     # Textures Krusha can use when he replaces various kongs (Main color, belt color)
@@ -1988,6 +1990,8 @@ model_index_mapping = {
     KongModels.disco_chunky: (0xD, 0xEC),
     KongModels.krool_fight: (0x113, 0x113),
     KongModels.krool_cutscene: (0x114, 0x114),
+    KongModels.cranky: (0x115, 0x115),
+    KongModels.candy: (0x116, 0x116),
 }
 
 def applyKongModelSwaps(settings: Settings) -> None:
@@ -2028,9 +2032,10 @@ def applyKongModelSwaps(settings: Settings) -> None:
                     ROM_COPY.seek(unc_table + (dest_data[model_subindex] * 4))
                     ROM_COPY.writeMultipleBytes(unc_size, 4)
             changeModelTextures(settings, index)
+            if value in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight):
+                fixModelSmallKongCollision(index)
             if value == KongModels.krusha:
                 placeKrushaHead(index)
-                changeKrushaModel(index)
                 if index == Kongs.donkey:
                     fixBaboonBlasts()
                 # Orange Switches
@@ -2073,7 +2078,7 @@ def readListAsInt(arr: list, start: int, size: int) -> int:
     return val
 
 
-def changeKrushaModel(kong_index: int):
+def fixModelSmallKongCollision(kong_index: int):
     """Modify Krusha Model to be smaller to enable him to fit through smaller gaps."""
     for x in range(2):
         file = kong_index_mapping[kong_index][x]
@@ -2092,7 +2097,9 @@ def changeKrushaModel(kong_index: int):
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
-        base = 0x450C
+        head = readListAsInt(num_data, 0, 4)
+        ptr = readListAsInt(num_data, 0xC, 4)
+        base = (ptr - head) + 0x28 + 8
         count_0 = readListAsInt(num_data, base, 4)
         changes = krusha_scaling[kong_index][:3]
         changes_0 = [
