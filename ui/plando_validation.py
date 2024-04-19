@@ -937,11 +937,7 @@ def reset_plando_options_no_prompt() -> None:
         remove_all_errors_from_option(hint_element)
 
     # These maps are string:string.
-    locations = [
-        (DirtPatchVanillaLocationMap, "random_patches"),
-        (FairyVanillaLocationMap, "random_fairies"),
-        (MelonCrateVanillaLocationMap, "random_crates")
-    ]
+    locations = [(DirtPatchVanillaLocationMap, "random_patches"), (FairyVanillaLocationMap, "random_fairies"), (MelonCrateVanillaLocationMap, "random_crates")]
     for locationMap, randomCheckbox in locations:
         for location, vanilla in locationMap.items():
             randomLocs = js.document.getElementById(randomCheckbox).checked
@@ -1383,13 +1379,13 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
     locDict = {}
     if plando_dict["plando_place_patches"]:
         for patch in plando_dict["plando_dirt_patches"]:
-            if patch['location'] == PlandoItems.Randomize:
+            if patch["location"] == PlandoItems.Randomize:
                 continue
             fullLocation = f"{GetLevelString(patch['level'])}: {patch['location']}"
             count_location(fullLocation, locDict)
     if plando_dict["plando_place_crates"]:
         for crate in plando_dict["plando_melon_crates"]:
-            if crate['location'] == PlandoItems.Randomize:
+            if crate["location"] == PlandoItems.Randomize:
                 continue
             fullLocation = f"{GetLevelString(crate['level'])}: {crate['location']}"
             count_location(fullLocation, locDict)
@@ -1417,7 +1413,7 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
     locDict = {}
     if plando_dict["plando_place_fairies"]:
         for fairy in plando_dict["plando_fairies"]:
-            if fairy['location'] == PlandoItems.Randomize:
+            if fairy["location"] == PlandoItems.Randomize:
                 continue
             fullLocation = f"{GetLevelString(fairy['level'])}: {fairy['location']}"
             count_location(fullLocation, locDict)
