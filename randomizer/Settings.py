@@ -151,7 +151,12 @@ class Settings:
             for key in ["plando_dirt_patches", "plando_melon_crates", "plando_battle_arenas"]:
                 if self.plandomizer_dict[key] != -1:
                     for customloc in self.plandomizer_dict[key]:
-                        self.plandomizer_dict["reserved_custom_locations"][customloc["level"]].append(customloc["name"])
+                        selected_location = ""
+                        if key == "plando_battle_arenas":
+                            selected_location = self.plandomizer_dict[key][customloc]
+                        else:
+                            selected_location = customloc["location"]
+                        self.plandomizer_dict["reserved_custom_locations"][customloc["level"]].append(selected_location)
         if self.music_selections is not None:
             self.ApplyMusicSelections()
 
