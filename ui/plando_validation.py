@@ -624,14 +624,14 @@ def validate_custom_locations_no_duplicates(evt):
             level = GetLevelString(LocationList[Locations[crownLocation]].level)
             locElem = f"plando_{crownLocation}_location"
             custLocation = js.document.getElementById(locElem).value
-            fullLocation = f"{level}: {custLocation}"
+            fullLocation = "" if custLocation == "" else f"{level}: {custLocation}"
             count_location(fullLocation, locElem, locDict)
     if fairy_locations_assigned():
-        for locElem in [f"plando_fairy_{i}_location" for i in range(0, 13)]:
+        for locElem in [f"plando_fairy_{i}_location" for i in range(0, 20)]:
             custLocation = js.document.getElementById(locElem).value
             # We'll append "fairy" to the start to avoid conflict with
             # non-fairy locations.
-            fullLocation = f"fairy{custLocation}"
+            fullLocation = "" if custLocation == "" else f"fairy{custLocation}"
             count_location(fullLocation, locElem, locDict)
     if kasplat_locations_assigned():
         for kasplatLocation in KasplatLocationEnumList:
@@ -937,11 +937,17 @@ def reset_plando_options_no_prompt() -> None:
         remove_all_errors_from_option(hint_element)
 
     # These maps are string:string.
-    locations = [DirtPatchVanillaLocationMap, FairyVanillaLocationMap, MelonCrateVanillaLocationMap]
-    for locationMap in locations:
+    locations = [
+        (DirtPatchVanillaLocationMap, "random_patches"),
+        (FairyVanillaLocationMap, "random_fairies"),
+        (MelonCrateVanillaLocationMap, "random_crates")
+    ]
+    for locationMap, randomCheckbox in locations:
         for location, vanilla in locationMap.items():
+            randomLocs = js.document.getElementById(randomCheckbox).checked
+            vanillaValue = "" if randomLocs else vanilla
             locElem = js.document.getElementById(f"plando_{location}_location")
-            locElem.value = vanilla
+            locElem.value = vanillaValue
             remove_all_errors_from_option(locElem)
             rewardElem = js.document.getElementById(f"plando_{location}_location_reward")
             rewardElem.value = ""
@@ -949,16 +955,20 @@ def reset_plando_options_no_prompt() -> None:
     # Arenas and Kasplats are both handled in a unique way.
     for locationMap in CrownVanillaLocationMap.values():
         for location, vanillaLocation in locationMap.items():
+            randomCrowns = js.document.getElementById("crown_placement_rando").checked
+            vanillaValue = "" if randomCrowns else vanillaLocation
             locElem = js.document.getElementById(f"plando_{location.name}_location")
-            locElem.value = vanillaLocation
+            locElem.value = vanillaValue
             remove_all_errors_from_option(locElem)
             rewardElem = js.document.getElementById(f"plando_{location.name}_location_reward")
             rewardElem.value = ""
             remove_all_errors_from_option(rewardElem)
     for locationMap in KasplatLocationToRewardMap.values():
         for location, rewardLocation in locationMap.items():
+            kasplatShuffle = js.document.getElementById("kasplat_rando_setting")
             locElem = js.document.getElementById(f"plando_{location.name}_location")
-            locElem.value = LocationList[rewardLocation].name
+            vanillaValue = "" if kasplatShuffle.value == "location_shuffle" else LocationList[rewardLocation].name
+            locElem.value = vanillaValue
             remove_all_errors_from_option(locElem)
             rewardElem = js.document.getElementById(f"plando_{location.name}_location_reward")
             rewardElem.value = ""
@@ -1373,14 +1383,20 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
     locDict = {}
     if plando_dict["plando_place_patches"]:
         for patch in plando_dict["plando_dirt_patches"]:
+            if patch['location'] == PlandoItems.Randomize:
+                continue
             fullLocation = f"{GetLevelString(patch['level'])}: {patch['location']}"
             count_location(fullLocation, locDict)
     if plando_dict["plando_place_crates"]:
         for crate in plando_dict["plando_melon_crates"]:
+            if crate['location'] == PlandoItems.Randomize:
+                continue
             fullLocation = f"{GetLevelString(crate['level'])}: {crate['location']}"
             count_location(fullLocation, locDict)
     if plando_dict["plando_place_arenas"]:
         for arena, arenaLocation in plando_dict["plando_battle_arenas"].items():
+            if arenaLocation == PlandoItems.Randomize:
+                continue
             level = GetLevelString(LocationList[Locations(int(arena))].level)
             fullLocation = f"{level}: {arenaLocation}"
             count_location(fullLocation, locDict)
@@ -1401,6 +1417,8 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
     locDict = {}
     if plando_dict["plando_place_fairies"]:
         for fairy in plando_dict["plando_fairies"]:
+            if fairy['location'] == PlandoItems.Randomize:
+                continue
             fullLocation = f"{GetLevelString(fairy['level'])}: {fairy['location']}"
             count_location(fullLocation, locDict)
     for location, locationCount in locDict.items():

@@ -9,6 +9,8 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Lists.Item import StartingMoveOptions
+from randomizer.Lists.Location import LocationListOriginal as LocationList
+from randomizer.Lists.Plandomizer import CrownVanillaLocationMap, DirtPatchVanillaLocationMap, FairyVanillaLocationMap, KasplatLocationToRewardMap, MelonCrateVanillaLocationMap
 from randomizer.Lists.Songs import MusicSelectionPanel
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
@@ -702,6 +704,11 @@ def plando_propagate_options(evt):
     plando_toggle_custom_fairy_locations(evt)
     plando_toggle_custom_kasplat_locations(evt)
     plando_toggle_custom_crate_locations(evt)
+    plando_change_arena_default_locations(evt)
+    plando_change_crate_default_locations(evt)
+    plando_change_fairy_default_locations(evt)
+    plando_change_kasplat_default_locations(evt)
+    plando_change_patch_default_locations(evt)
 
 
 @bind("change", "move_rando")
@@ -1587,3 +1594,76 @@ def plando_toggle_custom_crate_locations(evt):
         crateElem.style = ""
     else:
         crateElem.style.display = "none"
+
+
+@bind("click", "crown_placement_rando")
+def plando_change_arena_default_locations(evt):
+    """Change the default arena location between random and vanilla."""
+    randomCrowns = js.document.getElementById("crown_placement_rando").checked
+    for _, locations in CrownVanillaLocationMap.items():
+        for arena, vanillaLocation in locations.items():
+            arenaElem = js.document.getElementById(f"plando_{arena.name}_location")
+            if randomCrowns:
+                if arenaElem.value == vanillaLocation:
+                    arenaElem.value = ""
+            else:
+                if arenaElem.value == "":
+                    arenaElem.value = vanillaLocation
+
+
+@bind("click", "random_crates")
+def plando_change_crate_default_locations(evt):
+    """Change the default melon crate location between random and vanilla."""
+    randomCrates = js.document.getElementById("random_crates").checked
+    for crate, vanillaLocation in MelonCrateVanillaLocationMap.items():
+        crateElem = js.document.getElementById(f"plando_{crate}_location")
+        if randomCrates:
+            if crateElem.value == vanillaLocation:
+                crateElem.value = ""
+        else:
+            if crateElem.value == "":
+                crateElem.value = vanillaLocation
+
+
+@bind("click", "random_fairies")
+def plando_change_fairy_default_locations(evt):
+    """Change the default fairy location between random and vanilla."""
+    randomFairies = js.document.getElementById("random_fairies").checked
+    for fairy, vanillaLocation in FairyVanillaLocationMap.items():
+        fairyElem = js.document.getElementById(f"plando_{fairy}_location")
+        if randomFairies:
+            if fairyElem.value == vanillaLocation:
+                fairyElem.value = ""
+        else:
+            if fairyElem.value == "":
+                fairyElem.value = vanillaLocation
+
+
+@bind("change", "kasplat_rando_setting")
+def plando_change_kasplat_default_locations(evt):
+    """Change the default Kasplat location between random and vanilla."""
+    kasplatShuffle = js.document.getElementById("kasplat_rando_setting").value
+    for _, locations in KasplatLocationToRewardMap.items():
+        for kasplat, vanillaLocation in locations.items():
+            kasplatElem = js.document.getElementById(f"plando_{kasplat.name}_location")
+            vanillaValue = LocationList[vanillaLocation].name
+            if kasplatShuffle == "location_shuffle":
+                if kasplatElem.value == vanillaValue:
+                    kasplatElem.value = ""
+            else:
+                if kasplatElem.value == "":
+                    kasplatElem.value = vanillaValue
+
+
+@bind("click", "random_patches")
+def plando_change_patch_default_locations(evt):
+    """Change the default dirt patch location between random and vanilla."""
+    randomPatches = js.document.getElementById("random_patches").checked
+    for patch, vanillaLocation in DirtPatchVanillaLocationMap.items():
+        patchElem = js.document.getElementById(f"plando_{patch}_location")
+        if randomPatches:
+            if patchElem.value == vanillaLocation:
+                patchElem.value = ""
+        else:
+            if patchElem.value == "":
+                patchElem.value = vanillaLocation
