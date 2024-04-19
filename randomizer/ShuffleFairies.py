@@ -117,7 +117,7 @@ def ShuffleFairyLocations(spoiler):
             usable_fairy_indexes = list(range(len(fairy_locations[level])))
             # Prevent double occurrences
             if len(plando_dict[level]) > 0:
-                bad_location_names = [x["location"] for x in plando_dict[level]]
+                bad_location_names = [plando_dict[level]]
                 usable_fairy_indexes = [x for x in usable_fairy_indexes if fairy_locations[level][x].name not in bad_location_names]
 
             selection = random.sample(usable_fairy_indexes, pick_size)
