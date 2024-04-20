@@ -1101,16 +1101,6 @@ function get_seed_from_server(hash) {
 
 function load_data() {
   try {
-    // make sure all sliders are initialized
-    for (element of document.getElementsByTagName("input")) {
-      if (element.hasAttribute("data-slider-value")) {
-        // check if the slider has already been initialized
-        if (!element.hasAttribute("data-slider-initialized")) {
-          element.setAttribute("data-slider-initialized", "true");
-          $("#" + element.name).slider();
-        }
-      }
-    }
     var settingsdb = settingsdatabase.result;
     transaction = settingsdb.transaction("saved_settings", "readonly");
     objectStore = transaction.objectStore("saved_settings");
@@ -1139,14 +1129,14 @@ function load_data() {
               }
               try {
                 element.value = json[key];
-                if (element.hasAttribute("data-slider-value")) {
-                  $("#" + key).slider("setValue", json[key]);
-                }
                 if (element.className.includes("selected")) {
                   for (var i = 0; i < element.options.length; i++) {
                     element.options[i].selected =
                       json[key].indexOf(element.options[i].value) >= 0;
                   }
+                }
+                if (element.className.includes("pretty-slider")) {
+                  element.dispatchEvent(new Event('change'));
                 }
               } catch {}
             }

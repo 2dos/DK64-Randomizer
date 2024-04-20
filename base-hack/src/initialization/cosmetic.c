@@ -25,8 +25,6 @@ void initKrusha(int slot) {
      * @brief Initialize the Krusha Cosmetic/Gameplay feature
      * 
      */
-    // KongModelData[slot].model = 0xDB; // General Model
-    // TagModelData[slot].model = 0xDB; // Tag Barrel Model
     writeFunction(0x80677E94, &adjustAnimationTables); // Give Krusha animations to slot
     writeFunction(0x806C32B8, &updateCutsceneModels); // Fix cutscene models
     RollingSpeeds[slot] = 175; // Increase Krusha slide speed to 175
@@ -46,8 +44,6 @@ void initKrusha(int slot) {
         // Gun Stuff
         int focused_pellet = pellets[slot];
         actor_functions[focused_pellet] = &OrangeGunCode;
-        *(short*)(0x806E241A) = focused_pellet;
-        *(int*)(0x8075D154 + (slot << 2)) = 0x806E2408;
         setActorDamage(focused_pellet, 3);
         *(int*)(0x8071AAC4) = 0;
         *(int*)(0x8075DBB4 + (slot << 2)) = 0x806FAE0C;
@@ -56,8 +52,6 @@ void initKrusha(int slot) {
     switch (slot) {
         case 0:
             // DK
-            // *(short*)(0x8075ED4A) = 0xDB; // Cutscene DK Model
-            // *(short*)(0x8075573E) = 0xDB; // Generic Cutscene Model
             *(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
             *(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
             *(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
@@ -69,9 +63,6 @@ void initKrusha(int slot) {
             break;
         case 1:
             // Diddy
-            // *(short*)(0x806F11E6) = 0xDB; // Instrument
-            // *(short*)(0x8075ED62) = 0xDB; // Cutscene Diddy Model
-            // *(short*)(0x80755736) = 0xDB; // Generic Cutscene Model
             *(int*)(0x806F0A6C) = 0x0C1A29D9; // Replace hand state call
             *(int*)(0x806F0A78) = 0; // Replace hand state call
             *(int*)(0x806E4938) = 0; // Always run adapt code
@@ -103,9 +94,6 @@ void initKrusha(int slot) {
                 Issues:
                     Lanky Phase arm extension has a poly tri not correctly aligned
             */
-            // *(short*)(0x806F1202) = 0xDB; // Instrument
-            // *(short*)(0x8075ED7A) = 0xDB; // Cutscene Lanky Model
-            // *(short*)(0x8075573A) = 0xDB; // Generic Cutscene Model
             *(short*)(0x806F0ABE) = 0; // Remove gun from hands in Tag Barrel
             writeFunction(0x806E48BC, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (OStand)
             *(int*)(0x806E48B4) = 0; // Always run `adaptKrushaZBAnimation`
@@ -121,9 +109,6 @@ void initKrusha(int slot) {
             break;
         case 3:
             // Tiny
-            // *(short*)(0x806F121E) = 0xDB; // Instrument
-            // *(short*)(0x8075ED92) = 0xDB; // Cutscene Tiny Model
-            // *(short*)(0x8075573C) = 0xDB; // Generic Cutscene Model
             *(short*)(0x806F0ADE) = 0; // Remove gun from hands in Tag Barrel
             *(int*)(0x806E47F8) = 0; // Prevent slide bounce
             *(short*)(0x806CF784) = 0x5000; // Prevent blink special cases
@@ -139,11 +124,7 @@ void initKrusha(int slot) {
             break;
         case 4:
             // Chunky
-            // *(short*)(0x806F123A) = 0xDB; // Instrument
             *(int*)(0x806CF37C) = 0; // Fix object holding
-            // *(short*)(0x8075EDAA) = 0xDB; // Cutscene Chunky Model
-            // *(short*)(0x8075571E) = 0xDB; // Generic Cutscene Model
-            // *(short*)(0x80755738) = 0xDB; // Generic Cutscene Model
             *(int*)(0x806F1274) = 0; // Prevent model change for GGone
             *(int*)(0x806CBB84) = 0; // Enable opacity filter GGone
             writeFunction(0x806E4900, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (PPunch)
@@ -167,6 +148,153 @@ void* updateKongTB(int malloc_size) {
     }
     return dk_malloc(malloc_size);
 } 
+
+void updateActorHandStates(actorData* actor, int type) {
+    custom_kong_models model = KONGMODEL_DEFAULT;
+    if ((type >= 2) && (type <= 6)) {
+        model = Rando.kong_models[type - 2];
+    }
+    if ((type >= 196) && (type <= 200)) {
+        model = Rando.kong_models[type - 196];
+    }
+    int resolved = 0;
+    if (model != KONGMODEL_DEFAULT) {
+        switch (model) {
+            case KONGMODEL_KRUSHA:
+                addToHandState(actor, 1);
+            case KONGMODEL_CRANKY:
+                removeFromHandState(actor, 0);
+                resolved = 1;
+                break;
+            case KONGMODEL_KROOL_CUTSCENE:
+            case KONGMODEL_KROOL_FIGHT:
+                addToHandState(actor, 0);
+                removeFromHandState(actor, 1);
+                resolved = 1;
+                break;
+            default:
+                break;
+        }
+    }
+    if (resolved) {
+        return;
+    }
+    handleCutsceneKong(actor, type);
+}
+
+static const char tied_model_actors[] = {
+    -1, 3, 3, 3, // 0-3
+    2, 2, 4, 4, // 4-7
+    4, 5, 5, 5, // 8-11
+    6, 6, 6, 6, // 12-15
+    6, // 16
+};
+
+void clearGunHandler(actorData* actor) {
+    int model_index = getActorModelIndex(actor);
+    if (model_index <= 16) {
+        int tied_actor = tied_model_actors[model_index];
+        if (tied_actor > 0) {
+            updateActorHandStates(actor, tied_actor);
+        }   
+    }
+    int interaction = actor->interaction_bitfield;
+    if (interaction & 1) {
+        // Is Player
+        playerData* player = (playerData*)actor;
+        if (player->was_gun_out) {
+            playGunSFX(player);
+            player->was_gun_out = 0;
+        }
+    }
+}
+
+void updateActorHandStates_gun(actorData* actor, int type) {
+    custom_kong_models model = KONGMODEL_DEFAULT;
+    if ((type >= 2) && (type <= 6)) {
+        model = Rando.kong_models[type - 2];
+    }
+    if ((type >= 196) && (type <= 200)) {
+        model = Rando.kong_models[type - 196];
+    }
+    int resolved = 0;
+    if (model != KONGMODEL_DEFAULT) {
+        switch (model) {
+            case KONGMODEL_KRUSHA:
+                removeFromHandState(actor, 1);
+            case KONGMODEL_CRANKY:
+                addToHandState(actor, 0);
+                resolved = 1;
+                break;
+            case KONGMODEL_KROOL_CUTSCENE:
+            case KONGMODEL_KROOL_FIGHT:
+                removeFromHandState(actor, 0);
+                addToHandState(actor, 1);
+                resolved = 1;
+                break;
+            default:
+                break;
+        }
+    }
+    if (resolved) {
+        return;
+    }
+    switch (type) {
+        case 2:
+        case 196:
+        case 4:
+        case 198:
+        case 5:
+        case 199:
+        case 6:
+        case 200:
+            removeFromHandState(actor, 0);
+            addToHandState(actor, 1);
+            break;
+        case 3:
+        case 197:
+            addToHandState(actor, 0);
+            addToHandState(actor, 1);
+            break;
+    }
+}
+
+void pullOutGunHandler(actorData* actor) {
+    int model_index = getActorModelIndex(actor);
+    if (model_index <= 16) {
+        int tied_actor = tied_model_actors[model_index];
+        if (tied_actor > 0) {
+            updateActorHandStates_gun(actor, tied_actor);
+        }   
+    }
+    int interaction = actor->interaction_bitfield;
+    if (interaction & 1) {
+        // Is Player
+        playerData* player = (playerData*)actor;
+        if (!player->was_gun_out) {
+            switch (Character) {
+                case 0:
+                    unkProjectileCode_4(actor, 0x186, 0xFF, 100, 0x19);
+                    unkProjectileCode_4(actor, 0x17C, 0xFF, 100, 0x19);
+                    break;
+                case 1:
+                    unkProjectileCode_4(actor, 0x17C, 200, 0xBE, 5);
+                    break;
+                case 2:
+                    unkProjectileCode_4(actor, 0x186, 0xFF, 0x7F, 0x19);
+                    unkProjectileCode_4(actor, 0x17C, 0xFF, 0xA0, 5);
+                    break;
+                case 3:
+                    unkProjectileCode_4(actor, 0x185, 0xFF, 0x7F, 0x19);
+                    break;
+                case 4:
+                    unkProjectileCode_4(actor, 0x18E, 0xFF, 0x7F, 0x19);
+                    break;
+            }
+            player->was_gun_out = 1;
+        }
+    }
+}
 
 void initModelChanges(void) {
     for (int i = 0; i < 5; i++) {

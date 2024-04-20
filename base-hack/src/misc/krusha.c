@@ -26,7 +26,11 @@ void adjustGunBone(playerData* player) {
                 break;
             case KONGMODEL_DEFAULT:
                 if (i == KONG_DIDDY) {
-                    player->gun_bone = 1 - player->gun_bone;
+                    if (!player->gun_bone) {
+                        player->gun_bone = 1;
+                    } else {
+                        player->gun_bone = 0;
+                    }
                     break;
                 }
             case KONGMODEL_DISCOCHUNKY:
@@ -35,6 +39,52 @@ void adjustGunBone(playerData* player) {
                 player->gun_bone = 1;
                 break;
         }
+    }
+}
+
+static const unsigned char kong_vanilla_models[] = {3, 0, 5, 8, 0xB};
+static const unsigned char model_swap_base_index[] = {
+    0x00, // /* 0x000 */ KONGMODEL_DEFAULT,
+	0x03, // /* 0x001 */ KONGMODEL_DK,
+	0x00, // /* 0x002 */ KONGMODEL_DIDDY,
+	0x05, // /* 0x003 */ KONGMODEL_LANKY,
+	0x08, // /* 0x004 */ KONGMODEL_TINY,
+	0x0B, // /* 0x005 */ KONGMODEL_CHUNKY,
+	0x0D, // /* 0x006 */ KONGMODEL_DISCOCHUNKY,
+	0xDA, // /* 0x007 */ KONGMODEL_KRUSHA,
+	0x48, // /* 0x008 */ KONGMODEL_KROOL_FIGHT,
+	0x67, // /* 0x009 */ KONGMODEL_KROOL_CUTSCENE,
+	0x10, // /* 0x00A */ KONGMODEL_CRANKY,
+	0x12, // /* 0x00B */ KONGMODEL_CANDY,
+};
+
+int getCutsceneModelTableIndex(int vanilla_index) {
+    if (vanilla_index < 0x88) {
+        return vanilla_index;
+    }
+    int slot = vanilla_index - 0xDB;
+    if (slot < 0) {
+        return -1;
+    } else if (slot >= 8) {
+        return -1;
+    }
+    return slot;
+}
+
+static short model_no_shift[] = {KONGMODEL_DEFAULT, KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
+
+void fixCutsceneModels(void) {
+    for (int i = 0; i < 5; i++) {
+        custom_kong_models model = Rando.kong_models[i];
+        if (inShortList(model, &model_no_shift[0], sizeof(model_no_shift) >> 1)) {
+            continue;
+        }
+        int dest_index = getCutsceneModelTableIndex(kong_vanilla_models[i]);
+        int src_index = getCutsceneModelTableIndex(model_swap_base_index[model]);
+        if ((dest_index == -1) || (src_index == -1)) {
+            continue;
+        }
+        CutsceneModelJumpTable[dest_index] = CutsceneModelJumpTable[src_index];
     }
 }
 

@@ -437,12 +437,14 @@ void initHack(int source) {
 			KKOPhaseRandoOn = kko_phase_rando;
 			
 			initPauseMenu(); // Changes to enable more items
+			// Model Stuff
 			if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
-				*(int*)(0x8075C41C) = 0;
+				KongModelData[KONG_DK].props_or = 0;
 			}
 			if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
-				*(int*)(0x8075C44C) = 0;
+				KongModelData[KONG_TINY].props_or = 0;
 			}
+			fixCutsceneModels();
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
 				writeFunction(0x80660994, &getOscillationDelta);
