@@ -9,7 +9,7 @@ from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.Lists.Plandomizer import GetKasplatRewardLocation
+from randomizer.Lists.Plandomizer import KasplatLocationEnumList
 
 import js
 import json
@@ -117,7 +117,10 @@ async def import_plando_options(jsonString):
         # Process item locations.
         if option == "locations":
             for location, item in value.items():
-                js.document.getElementById(f"plando_{location}_item").value = item
+                # These items represent custom Kasplat locations and are
+                # handled later.
+                if location not in KasplatLocationEnumList:
+                    js.document.getElementById(f"plando_{location}_item").value = item
         # Process shop costs.
         elif option == "prices":
             for location, price in value.items():
@@ -133,32 +136,33 @@ async def import_plando_options(jsonString):
             js.document.getElementById(option).checked = value
         elif option == "plando_battle_arenas":
             for enumLocation, customLocation in value.items():
-                js.document.getElementById(f"plando_{enumLocation}_location").value = customLocation
+                locValue = "" if customLocation == "Randomize" else customLocation
+                js.document.getElementById(f"plando_{enumLocation}_location").value = locValue
                 if enumLocation in fileContents["locations"]:
                     reward = fileContents["locations"][enumLocation]
                     js.document.getElementById(f"plando_{enumLocation}_location_reward").value = reward
         elif option == "plando_dirt_patches":
             for i, dirtPatch in enumerate(value):
-                locationValue = f'{dirtPatch["level"]};{dirtPatch["location"]}'
+                locationValue = "" if dirtPatch["location"] == "Randomize" else f'{dirtPatch["level"]};{dirtPatch["location"]}'
                 js.document.getElementById(f"plando_patch_{i}_location").value = locationValue
                 reward = "" if dirtPatch["reward"] == "Randomize" else dirtPatch["reward"]
                 js.document.getElementById(f"plando_patch_{i}_location_reward").value = reward
         elif option == "plando_fairies":
             for i, fairy in enumerate(value):
-                locationValue = f'{fairy["level"]};{fairy["location"]}'
+                locationValue = "" if fairy["location"] == "Randomize" else f'{fairy["level"]};{fairy["location"]}'
                 js.document.getElementById(f"plando_fairy_{i}_location").value = locationValue
                 reward = "" if fairy["reward"] == "Randomize" else fairy["reward"]
                 js.document.getElementById(f"plando_fairy_{i}_location_reward").value = reward
         elif option == "plando_kasplats":
             for enumLocation, customLocation in value.items():
-                js.document.getElementById(f"plando_{enumLocation}_location").value = customLocation
-                rewardLocation = GetKasplatRewardLocation(Locations[enumLocation]).name
-                if rewardLocation in fileContents["locations"]:
-                    reward = fileContents["locations"][rewardLocation]
+                locValue = "" if customLocation == "Randomize" else customLocation
+                js.document.getElementById(f"plando_{enumLocation}_location").value = locValue
+                if enumLocation in fileContents["locations"]:
+                    reward = fileContents["locations"][enumLocation]
                     js.document.getElementById(f"plando_{enumLocation}_location_reward").value = reward
         elif option == "plando_melon_crates":
             for i, crate in enumerate(value):
-                locationValue = f'{crate["level"]};{crate["location"]}'
+                locationValue = "" if crate["location"] == "Randomize" else f'{crate["level"]};{crate["location"]}'
                 js.document.getElementById(f"plando_crate_{i}_location").value = locationValue
                 reward = "" if crate["reward"] == "Randomize" else crate["reward"]
                 js.document.getElementById(f"plando_crate_{i}_location_reward").value = reward
@@ -277,7 +281,7 @@ def validate_custom_location(cust_location: dict, cust_set: set, loc_type: str) 
             errString = f'The plandomizer file is invalid: a custom {loc_type} location is missing data field "{field}".'
             raise_plando_validation_error(errString)
     location = f'{cust_location["level"]}: {cust_location["location"]}'
-    if location not in cust_set:
+    if location != "Randomize: Randomize" and location not in cust_set:
         errString = f'The plandomizer file is invalid: "{location}" is not a valid {loc_type} location.'
         raise_plando_validation_error(errString)
     reward = cust_location["reward"]
@@ -323,6 +327,8 @@ def validate_fairy_position(fairy: dict, index: int) -> None:
         Levels.DKIsles: 18,
         Levels.HideoutHelm: 20,
     }
+    if fairy["level"] == "Randomize":
+        return
     for level, i in fairyLevelIndexMap.items():
         if index < i:
             if fairy["level"] != level.name:
@@ -376,6 +382,8 @@ def validate_plando_file(file_obj: dict) -> None:
         validate_custom_location(fairy, customFairyLocationSet, "fairy")
         validate_fairy_position(fairy, i)
     for arena, location in file_obj["plando_battle_arenas"].items():
+        if location == "Randomize":
+            continue
         try:
             level = LocationList[Locations[arena]].level.name
         except KeyError:
@@ -384,6 +392,8 @@ def validate_plando_file(file_obj: dict) -> None:
         fullLocation = f"{level}: {location}"
         validate_custom_enum_location(arena, fullLocation, customLocationSet, "battle arena")
     for kasplat, location in file_obj["plando_kasplats"].items():
+        if location == "Randomize":
+            continue
         validate_custom_enum_location(kasplat, location, customKasplatLocationSet, "Kasplat")
     # Inspect all hints.
     for hint_location in file_obj["hints"].keys():

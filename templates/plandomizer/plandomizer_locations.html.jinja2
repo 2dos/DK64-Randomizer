@@ -27,21 +27,21 @@
                                     class="form-select plando-item-select">
                                 <option value="">-- Randomize --</option>
                                 {% if categoryName == "CrownPad" or categoryName == "Fairy" %}
-                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]] %}
+                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]]|plando_custom_loc_restrict(location["location_id"]) %}
                                         <option value="{{selectLocation["value"]}}"
                                             {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
                                             {{selectLocation["name"]}}
                                         </option>
                                     {% endfor %}
                                 {% elif categoryName == "Kasplat" %}
-                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]][location["kong"]] %}
+                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]][location["kong"]]|plando_custom_loc_restrict(location["location_id"]) %}
                                         <option value="{{selectLocation["value"]}}"
                                             {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
                                             {{selectLocation["name"]}}
                                         </option>
                                     {% endfor %}
                                 {% else %}
-                                    {% for selectLocation in plando_custom_locations[categoryName] %}
+                                    {% for selectLocation in plando_custom_locations[categoryName]|plando_custom_loc_restrict(location["location_id"]) %}
                                         <option value="{{selectLocation["value"]}}"
                                             {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
                                             {{selectLocation["name"]}}

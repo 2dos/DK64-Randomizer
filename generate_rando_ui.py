@@ -42,7 +42,7 @@ async def initialize():
     from randomizer.Lists.WrinklyHints import PointSpreadSelector
 
     # Module of lists and utils used for plandomizer
-    from randomizer.PlandoUtils import PlandoCustomLocationItemFilter, PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
+    from randomizer.PlandoUtils import PlandoCustomLocationFilter, PlandoCustomLocationItemFilter, PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
 
     js.listeners = []
     js.progression_presets = []
@@ -74,6 +74,7 @@ async def initialize():
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     # Add custom Jinja2 filter functions.
     templateEnv.filters["music_select_restrict"] = MusicSelectFilter
+    templateEnv.filters["plando_custom_loc_restrict"] = PlandoCustomLocationFilter
     templateEnv.filters["plando_custom_loc_item_restrict"] = PlandoCustomLocationItemFilter
     templateEnv.filters["plando_item_restrict"] = PlandoItemFilter
     templateEnv.filters["plando_minigame_restrict"] = PlandoMinigameFilter

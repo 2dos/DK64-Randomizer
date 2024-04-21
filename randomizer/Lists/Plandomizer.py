@@ -512,7 +512,7 @@ KasplatLocationEnumList = [
 ]
 
 
-def getCrownVanillaLocation(location: Locations) -> str:
+def GetCrownVanillaLocation(location: Locations) -> str:
     """Extract the vanilla location for the provided crown location enum."""
     locationString = LocationList[location].name
     return re.search(r"^[^(\)]+?\((.+)\)$", locationString)[1]
@@ -521,33 +521,33 @@ def getCrownVanillaLocation(location: Locations) -> str:
 # This groups crown locations together by level.
 CrownVanillaLocationMap = {
     Levels.JungleJapes: {
-        Locations.JapesBattleArena: getCrownVanillaLocation(Locations.JapesBattleArena),
+        Locations.JapesBattleArena: GetCrownVanillaLocation(Locations.JapesBattleArena),
     },
     Levels.AngryAztec: {
-        Locations.AztecBattleArena: getCrownVanillaLocation(Locations.AztecBattleArena),
+        Locations.AztecBattleArena: GetCrownVanillaLocation(Locations.AztecBattleArena),
     },
     Levels.FranticFactory: {
         # This one location has to be manually adjusted.
-        Locations.FactoryBattleArena: f"{getCrownVanillaLocation(Locations.FactoryBattleArena)} (1)",
+        Locations.FactoryBattleArena: f"{GetCrownVanillaLocation(Locations.FactoryBattleArena)} (1)",
     },
     Levels.GloomyGalleon: {
-        Locations.GalleonBattleArena: getCrownVanillaLocation(Locations.GalleonBattleArena),
+        Locations.GalleonBattleArena: GetCrownVanillaLocation(Locations.GalleonBattleArena),
     },
     Levels.FungiForest: {
-        Locations.ForestBattleArena: getCrownVanillaLocation(Locations.ForestBattleArena),
+        Locations.ForestBattleArena: GetCrownVanillaLocation(Locations.ForestBattleArena),
     },
     Levels.CrystalCaves: {
-        Locations.CavesBattleArena: getCrownVanillaLocation(Locations.CavesBattleArena),
+        Locations.CavesBattleArena: GetCrownVanillaLocation(Locations.CavesBattleArena),
     },
     Levels.CreepyCastle: {
-        Locations.CastleBattleArena: getCrownVanillaLocation(Locations.CastleBattleArena),
+        Locations.CastleBattleArena: GetCrownVanillaLocation(Locations.CastleBattleArena),
     },
     Levels.DKIsles: {
-        Locations.IslesBattleArena1: getCrownVanillaLocation(Locations.IslesBattleArena1),
-        Locations.IslesBattleArena2: getCrownVanillaLocation(Locations.IslesBattleArena2),
+        Locations.IslesBattleArena1: GetCrownVanillaLocation(Locations.IslesBattleArena1),
+        Locations.IslesBattleArena2: GetCrownVanillaLocation(Locations.IslesBattleArena2),
     },
     Levels.HideoutHelm: {
-        Locations.HelmBattleArena: getCrownVanillaLocation(Locations.HelmBattleArena),
+        Locations.HelmBattleArena: GetCrownVanillaLocation(Locations.HelmBattleArena),
     },
 }
 
@@ -611,14 +611,6 @@ KasplatLocationToRewardMap = {
         Locations.IslesChunkyKasplatRando: Locations.IslesKasplatGalleonLobby,
     },
 }
-
-
-def GetKasplatRewardLocation(kasplatLocation: Locations) -> Locations:
-    """Return the reward location associated with a Kasplat rando location."""
-    for _, levelLocations in KasplatLocationToRewardMap.items():
-        if kasplatLocation in levelLocations:
-            return levelLocations[kasplatLocation]
-    raise ValueError(f"{kasplatLocation} does not represent a Kasplat rando location.")
 
 
 # These will be filled in later.

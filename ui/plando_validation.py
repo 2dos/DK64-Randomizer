@@ -21,7 +21,6 @@ from randomizer.Lists.Plandomizer import (
     DirtPatchVanillaLocationMap,
     FairyPlandoLocationList,
     FairyVanillaLocationMap,
-    GetKasplatRewardLocation,
     GetLevelString,
     HintLocationList,
     ItemLocationList,
@@ -621,10 +620,10 @@ def validate_custom_locations_no_duplicates(evt):
             count_location(custLocation, locElem, locDict)
     if arena_locations_assigned():
         for crownLocation in CrownLocationEnumList:
-            level = GetLevelString(LocationList[Locations[crownLocation]].level)
+            level = LocationList[Locations[crownLocation]].level.name
             locElem = f"plando_{crownLocation}_location"
             custLocation = js.document.getElementById(locElem).value
-            fullLocation = "" if custLocation == "" else f"{level}: {custLocation}"
+            fullLocation = "" if custLocation == "" else f"{level};{custLocation}"
             count_location(fullLocation, locElem, locDict)
     if fairy_locations_assigned():
         for locElem in [f"plando_fairy_{i}_location" for i in range(0, 20)]:
@@ -1132,8 +1131,8 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
         location_name = re.search("^plando_(.+)_location$", custom_location.name)[1]
         # Handle dirt patches.
         if patch_locations_assigned() and "patch_" in location_name:
-            level = PlandoItems.Randomize
-            location = PlandoItems.Randomize
+            level = get_plando_value(PlandoItems.Randomize)
+            location = get_plando_value(PlandoItems.Randomize)
             if custom_location.value != "":
                 level_str, location = custom_location.value.split(";")
                 level = get_plando_value(Levels[level_str])
@@ -1142,8 +1141,8 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             dirt_patches_list.append({"level": level, "location": location, "reward": reward})
         # Handle fairies.
         elif fairy_locations_assigned() and "fairy_" in location_name:
-            level = PlandoItems.Randomize
-            location = PlandoItems.Randomize
+            level = get_plando_value(PlandoItems.Randomize)
+            location = get_plando_value(PlandoItems.Randomize)
             if custom_location.value != "":
                 level_str, location = custom_location.value.split(";")
                 level = get_plando_value(Levels[level_str])
@@ -1152,8 +1151,8 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             fairies_list.append({"level": level, "location": location, "reward": reward})
         # Handle melon crates.
         elif crate_locations_assigned() and "crate_" in location_name:
-            level = PlandoItems.Randomize
-            location = PlandoItems.Randomize
+            level = get_plando_value(PlandoItems.Randomize)
+            location = get_plando_value(PlandoItems.Randomize)
             if custom_location.value != "":
                 level_str, location = custom_location.value.split(";")
                 level = get_plando_value(Levels[level_str])
@@ -1175,7 +1174,7 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             # The reward is not bundled with the location in this case.
             reward_elem = js.document.getElementById(f"{custom_location.name}_reward")
             if reward_elem.value != "":
-                reward_location = get_plando_value(GetKasplatRewardLocation(Locations[location_name]))
+                reward_location = get_plando_value(Locations[location_name])
                 plando_form_data["locations"][reward_location] = get_plando_value(PlandoItems[reward_elem.value])
     plando_form_data["plando_battle_arenas"] = battle_arenas_map
     plando_form_data["plando_dirt_patches"] = dirt_patches_list
