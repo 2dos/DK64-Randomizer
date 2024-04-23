@@ -296,7 +296,7 @@
 | Crystal Caves | Under Small Boulder | DirtPatch, MelonCrate | `` | 
 | Crystal Caves | Near Primate Punch wall near entrance |  | `` | 
 | Crystal Caves | Near Gorilla Gone Room |  | `` | 
-| Crystal Caves | In Gorilla Gone Room |  | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Crystal Caves | In Gorilla Gone Room |  | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Crystal Caves | Near Kasplat Spire |  | `` | 
 | Crystal Caves | Near Funky's |  | `` | 
 | Crystal Caves | Near Funky under Diddy's barrel |  | `` | 

@@ -8,7 +8,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import DamageAmount
+from randomizer.Enums.Settings import DamageAmount, RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
@@ -5950,7 +5950,7 @@ BananaCoinGroupList = {
             name="Behind the first ice wall",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
             locations=[
                 [1.0, 2403, 70, 230],
                 [1.0, 2402, 70, 194],
@@ -6521,7 +6521,7 @@ BananaCoinGroupList = {
             name="Gorilla Gone Cavern",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
             locations=[
                 [1.0, 2679.595703125, 13.5, 557.9171752929688],
                 [1.0, 2464.411376953125, 13.5, 560.7271118164062],

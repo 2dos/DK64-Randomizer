@@ -9,7 +9,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting
+from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
@@ -1875,7 +1875,7 @@ CustomLocations = {
             z=469,
             max_size=64,
             logic_region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
             group=4,
         ),
         CustomLocation(map=Maps.CrystalCaves, name="Near Kasplat Spire", x=2700, y=152, z=772, max_size=64, logic_region=Regions.CrystalCavesMain, group=4),

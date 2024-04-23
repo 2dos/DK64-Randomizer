@@ -5,6 +5,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 
 
@@ -1178,7 +1179,7 @@ KasplatLocationList = {
             zmin=391,
             zmax=543,
             region=Regions.CrystalCavesMain,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         ),
         KasplatLocation(
             name="Caves Kasplat: Starting Area",

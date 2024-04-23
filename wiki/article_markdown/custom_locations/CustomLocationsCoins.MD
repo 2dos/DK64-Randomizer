@@ -641,7 +641,7 @@
 | ---- | ------ | ----- |
 | Near the DK Portal | 4 | `` | 
 | Crystal near level entry | 3 | `` | 
-| Behind the first ice wall | 2 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Behind the first ice wall | 2 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Around the lower thick pillar near Ice Castle | 5 | `` | 
 | Around Ice Castle Tag | 6 | `` | 
 | Ice Castle Battlements (1) | 4 | `l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny` | 
@@ -670,7 +670,7 @@
 | Near the Sprint Cabin Headphones | 5 | `` | 
 | On stalactite in the Giant Kosha area | 2 | `` | 
 | Back of Bonus Cave | 5 | `Events.CavesW3bTagged in l.Events` | 
-| Gorilla Gone Cavern | 3 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Gorilla Gone Cavern | 3 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Giant Boulder Cavern | 3 | `` | 
 | Giant Kosha Room | 3 | `` | 
 | In Snide's Cavern | 3 | `` | 

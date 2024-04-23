@@ -494,7 +494,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             key_location_ids[location.item] = location_id
 
     # Some locations are particularly useless to hint
-    useless_locations = {Items.HideoutHelmKey: [], Kongs.donkey: [], Kongs.diddy: [], Kongs.lanky: [], Kongs.tiny: [], Kongs.chunky: []}
+    useless_locations = {Items.HideoutHelmKey: [], Maps.KroolDonkeyPhase: [], Maps.KroolDiddyPhase: [], Maps.KroolLankyPhase: [], Maps.KroolTinyPhase: [], Maps.KroolChunkyPhase: []}
     # Your training in Gorilla Gone, Monkeyport, and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
         useless_moves = [Items.Vines]

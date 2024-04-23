@@ -529,6 +529,7 @@ class Settings:
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = True
         self.helm_setting = None
+        self.helm_room_bonus_count = HelmBonuses.two
         self.quality_of_life = None
         self.wrinkly_available = False
         self.shorten_boss = False

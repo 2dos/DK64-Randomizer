@@ -1994,6 +1994,7 @@ model_index_mapping = {
     KongModels.candy: (0x116, 0x116),
 }
 
+
 def applyKongModelSwaps(settings: Settings) -> None:
     """Apply Krusha Kong setting."""
     ROM_COPY = LocalROM()
@@ -2131,7 +2132,9 @@ def fixModelSmallKongCollision(kong_index: int):
         LocalROM().seek(krusha_model_start)
         LocalROM().writeBytes(data)
 
+
 def changeModelTextures(settings: Settings, kong_index: int):
+    """Change the textures associated with a model."""
     settings_values = [
         settings.kong_model_dk,
         settings.kong_model_diddy,
@@ -2163,16 +2166,17 @@ def changeModelTextures(settings: Settings, kong_index: int):
             num_data.append(d)
         # Retexture for colors
         for tex_idx in model_texture_sections[model]["skin"]:
-            for di, d in enumerate(int_to_list(krusha_texture_replacement[kong_index][0], 2)): # Main
+            for di, d in enumerate(int_to_list(krusha_texture_replacement[kong_index][0], 2)):  # Main
                 num_data[tex_idx + di] = d
         for tex_idx in model_texture_sections[model]["kong"]:
-            for di, d in enumerate(int_to_list(krusha_texture_replacement[kong_index][1], 2)): # Belt
+            for di, d in enumerate(int_to_list(krusha_texture_replacement[kong_index][1], 2)):  # Belt
                 num_data[tex_idx + di] = d
         data = bytearray(num_data)  # convert num_data back to binary string
         if indicator == 0x1F8B:
             data = gzip.compress(data, compresslevel=9)
         LocalROM().seek(krusha_model_start)
         LocalROM().writeBytes(data)
+
 
 def fixBaboonBlasts():
     """Fix various baboon blasts to work for Krusha."""

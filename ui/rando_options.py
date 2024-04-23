@@ -954,6 +954,7 @@ def should_reset_select_on_preset(selectElement):
         return False
     return True
 
+
 @bind("click", "apply_preset")
 def preset_select_changed(event):
     """Trigger a change of the form via the JSON templates."""
@@ -1084,6 +1085,7 @@ def update_ui_states(event):
         event = js.document.createEvent("HTMLEvents")
         event.initEvent("change", True, False)
         sliders[s].dispatchEvent(event)
+
 
 @bind("click", "enable_plandomizer")
 def enable_plandomizer(evt):

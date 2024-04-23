@@ -998,8 +998,8 @@
 | ---- | ------ | ----- |
 | Around DK portal | 10 | `` | 
 | Around room by ice wall to Gorilla Gone GB | 5 | `` | 
-| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
-| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Left side of first warps up the path | 10 | `` | 
 | On crystals on each side of W4 Mini Monkey room | 10 | `` | 
 | On Mini Monkey barrel ledge | 10 | `` | 
@@ -1094,7 +1094,7 @@
 | Above Tiny and Chunky igloos (Diddy) | 10 | `l.jetpack` | 
 | Around Diddy blueprint (Diddy) | 5 | `` | 
 | Chunky igloo (Chunky) | 5 | `Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim()` | 
-| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | On small boulder switch (Chunky) | 5 | `` | 
 | Inside giant boulder (Chunky) | 5 | `Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels` | 
 | W3 (Tiny) | 5 | `` | 
@@ -1134,7 +1134,7 @@
 | In front of Snide (Chunky) | Balloon | `` | 
 | Around Tiny blueprint (Tiny) | Balloon | `` | 
 | Waterfall (Lanky) | Balloon | `` | 
-| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Above 5DC (Diddy) | Balloon | `` | 
 | In bonus barrel cave (Chunky) | Balloon | `` | 
 | In Diddy BP room (Tiny) | Balloon | `` | 

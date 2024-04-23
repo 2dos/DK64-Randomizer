@@ -340,6 +340,22 @@ class HelmSetting(IntEnum):
     skip_all = 2
 
 
+class HelmBonuses(IntEnum):
+    """Determines how many barrels are necessary to beat in order to defeat a helm room.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    zero: Room is completed upon playing the instrument pad.
+    one: Room is completed upon beating the left-most barrel in each room.
+    two: Both barrels are required to complete the room.
+    """
+
+    zero = 0
+    one = 1
+    two = 2
+
+
 class HardModeSelected(IntEnum):
     """Various hard mode changes that can be applied.
 
@@ -625,6 +641,7 @@ class RemovedBarriersSelected(IntEnum):
     forest_green_tunnel = 12
     forest_yellow_tunnel = 13
     caves_igloo_pads = 14
+    caves_ice_walls = 15
 
 
 class ShockwaveStatus(IntEnum):
@@ -781,6 +798,7 @@ SettingsMap = {
     "glitches_selected": GlitchesSelected,
     "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
+    "helm_room_bonus_count": HelmBonuses,
     "helm_setting": HelmSetting,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
@@ -1008,6 +1026,7 @@ class SettingsStringEnum(IntEnum):
     kong_model_lanky = 172
     kong_model_tiny = 173
     kong_model_chunky = 174
+    helm_room_bonus_count = 175
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1105,6 +1124,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.helm_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.helm_phase_order_rando: SettingsStringDataType.bool,
     SettingsStringEnum.helm_random: SettingsStringDataType.bool,
+    SettingsStringEnum.helm_room_bonus_count: HelmBonuses,
     SettingsStringEnum.helm_setting: HelmSetting,
     SettingsStringEnum.helmhurry_list_banana_medal: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_battle_crown: SettingsStringDataType.int16,

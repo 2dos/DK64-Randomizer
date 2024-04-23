@@ -289,7 +289,8 @@
       "galleon_seasick_ship": 1,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 1
+      "caves_igloo_pads": 1,
+      "caves_ice_walls": 1
     },
     "select_keys": 0,
     "shockwave_status": {
@@ -642,7 +643,8 @@
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "shockwave_status": {
@@ -1040,7 +1042,8 @@
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "shockwave_status": {
@@ -1442,7 +1445,8 @@
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "shockwave_status": {

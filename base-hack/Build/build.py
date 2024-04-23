@@ -1150,7 +1150,7 @@ model_changes = [
     ModelChange(0x114, "k_rool_cutscene.bin"),
     ModelChange(0x115, "cranky_model.bin"),
     ModelChange(0x116, "candy_model.bin"),
-    ModelChange(0x117, FINAL_RACE_HOOP), # Used to set an endpoint
+    ModelChange(0x117, FINAL_RACE_HOOP),  # Used to set an endpoint
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)

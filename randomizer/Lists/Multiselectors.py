@@ -65,6 +65,7 @@ RemovedBarrierItems = [
     MultiselectorItem("Forest Green Tunnel", 10, "The green tunnel at the start of Forest will have it's gates opened."),
     MultiselectorItem("Forest Yellow Tunnel", 11, "The yellow tunnel to the owl tree area will have it's gate opened."),
     MultiselectorItem("Caves Igloo Pads", 3, "The pads to gain access to the five igloo rooms in Caves will be spawned."),
+    MultiselectorItem("Caves Ice Walls", -1, "The various ice walls in Caves will be removed."),
 ]
 FasterCheckItems = [
     MultiselectorItem("Factory Toy Monster Fight", -1, "The toy monster fight in Factory will remove the initial enemy killing phase."),

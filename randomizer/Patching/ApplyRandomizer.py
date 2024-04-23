@@ -527,6 +527,10 @@ def patching_response(spoiler):
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
 
+    # Helm Required Minigames - Always set to 2 for now
+    ROM_COPY.seek(sav + 0x2D)
+    ROM_COPY.write(int(spoiler.settings.helm_room_bonus_count))
+
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         getHelmOrderHint(spoiler)
     randomize_entrances(spoiler)

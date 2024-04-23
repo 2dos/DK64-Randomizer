@@ -200,7 +200,7 @@
     })
 </script>
 {% endmacro %}
-{% macro toggle_input(id, name, tooltip="", default_checked=False) %}
+{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="") %}
 <div class="form-check form-switch item-switch" data-toggle="tooltip"
             title="{{ tooltip }}">
     {% if default_checked %}
@@ -222,7 +222,13 @@
             display_name="{{ name }}"
             value="True" />
     {% endif %}
-    <label class="form-check-label" for="{{ id }}">{{ name }}</label>
+    <label class="form-check-label" for="{{ id }}">
+        {% if altered_name == "" %}
+            {{ name }}
+        {% else %}
+            {{ altered_name }}
+        {% endif %}
+    </label>
 </div>
 {% endmacro %}
 

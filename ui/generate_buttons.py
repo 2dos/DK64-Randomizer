@@ -76,7 +76,7 @@ def import_settings_string(event):
             else:
                 selector = js.document.getElementById(key)
                 # If the selector is a select box, set the selectedIndex to the value of the option
-                if selector.tagName == "SELECT":
+                if selector.tagName == "SELECT" and key != "random-weights":
                     for option in selector.options:
                         if option.value == SettingsMap[key](settings[key]).name:
                             # Set the value of the select box to the value of the option

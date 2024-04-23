@@ -11,7 +11,7 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
                                        CrownEnemyRando, DamageAmount,
                                        ExtraCutsceneSkips, FillAlgorithm,
-                                       FreeTradeSetting, HelmDoorItem,
+                                       FreeTradeSetting, HelmDoorItem, HelmBonuses,
                                        HelmSetting, KasplatRandoSetting,
                                        KrushaUi, LevelRandomization, LogicType,
                                        MicrohintsEnabled, MoveRando,
@@ -186,6 +186,7 @@ class TestSpoiler(unittest.TestCase):
 
         data["wrinkly_hints"] = WrinklyHints.standard
         data["helm_setting"] = HelmSetting.skip_start
+        data["helm_room_bonus_count"] = HelmBonuses.two
         data["microhints_enabled"] = MicrohintsEnabled.base  # off/base/all
         data["more_cutscene_skips"] = ExtraCutsceneSkips.auto
 

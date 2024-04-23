@@ -292,6 +292,7 @@ class Spoiler:
         settings["Starting Moves Count"] = self.settings.starting_moves_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
+        settings["Helm Room Bonus Count"] = int(self.settings.helm_room_bonus_count)
         settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available

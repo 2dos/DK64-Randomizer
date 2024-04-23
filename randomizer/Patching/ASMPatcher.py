@@ -534,7 +534,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict)  # perm flag set hook
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict)  # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict)  # Fix some silk memes
-    
+
     # Kong Model Swap handlers
     writeFunction(ROM_COPY, 0x806C871C, Overlay.Static, "adjustGunBone", offset_dict)
     writeFunction(ROM_COPY, 0x806E2A34, Overlay.Static, "adjustGunBone", offset_dict)
@@ -1885,6 +1885,7 @@ def patchAssembly(ROM_COPY, spoiler):
         RemovedBarriersSelected.galleon_seasick_ship: [0x9C],
         RemovedBarriersSelected.caves_igloo_pads: [0x128],
         RemovedBarriersSelected.galleon_shipyard_area_gate: [0xA1],
+        RemovedBarriersSelected.caves_ice_walls: [266, 267, 265],  # Entrance, Snide, Giant Boulder
     }
     for barrier in barrier_flags:
         if IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, barrier):

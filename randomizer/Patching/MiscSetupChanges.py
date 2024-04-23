@@ -641,4 +641,3 @@ def updateKrushaMoveNames(spoiler):
                     if reference.item_name == replacement["old"]:
                         reference.item_name = replacement["new"]
                         chosen_replacements.remove(replacement)
-        

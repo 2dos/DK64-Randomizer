@@ -420,7 +420,7 @@ extern int getSpawnerIndexOfResolvedBonus(void* unk0, int unk1, int* map_storage
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
 extern void winBonus(int unk0, int unk1);
-extern void updatePosition(void* actor, int bone, float* x, float* y, float* z);
+extern void getBonePosition(void* actor, int bone, float* x, float* y, float* z);
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 extern void setChunkLighting(float red, float green, float blue, int chunk);
 extern void unkLoadingZoneControllerFunction(short exit);
