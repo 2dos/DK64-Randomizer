@@ -1891,6 +1891,8 @@ def patchAssembly(ROM_COPY, spoiler):
         if IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, barrier):
             file_init_flags.extend(barrier_flags[barrier])
 
+    writeFunction(ROM_COPY, 0x80682A98, Overlay.Static, "resetCannonGameState", offset_dict)
+
     # Patch Enemy Collision
     writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Purple Klaptrap
     writeLabelValue(ROM_COPY, 0x8074B4EC, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Red Klaptrap

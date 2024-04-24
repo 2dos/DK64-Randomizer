@@ -11,6 +11,11 @@
 
 #include "../../include/common.h"
 
+typedef struct cannon_game_paad {
+    /* 0x000 */ char unk_00[8];
+    /* 0x008 */ short h_angle;
+} cannon_game_paad;
+
 void handleCannonGameReticle(void) {
     if (CurrentMap == MAP_GALLEON) {
         float size = 1.0f;
@@ -26,4 +31,13 @@ void handleCannonGameReticle(void) {
         *(float*)(0x8074E7F8) = size;
         *(float*)(0x8074E800) = y_value;
     }
+}
+
+void resetCannonGameState(actorData* actor) {
+    if (actor->control_state == 0) {
+        cannon_game_paad* paad = actor->paad;
+        paad->h_angle = 0;
+        *(float*)(0x8074E804) = 0;
+    }
+    renderActor(actor, 0);
 }
