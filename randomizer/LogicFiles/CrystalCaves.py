@@ -21,6 +21,12 @@ LogicRegions = {
         LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.CrystalCavesEntryHandler: Region("Crystal Caves Entry Handler", "This should not be hinted", Levels.CreepyCastle, False, None, [], [], [
+        TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.CrystalCavesMain: Region("Crystal Caves Main", "Main Caves Area", Levels.CrystalCaves, True, None, [
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: ((l.jetpack and l.isdiddy) or ((not l.settings.shuffle_shops) and l.advanced_platforming and ((l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))) or (l.istiny and l.twirl)) and l.settings.free_trade_items)), MinigameType.BonusBarrel),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)) and l.gorillaGone and l.ischunky),
@@ -37,7 +43,6 @@ LogicRegions = {
         Event(Events.CavesW2aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
-        TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
         TransitionFront(Regions.CavesBlueprintCave, lambda l: (l.mini and l.twirl and l.tiny) or l.phasewalk or l.CanSkew(True)),
         TransitionFront(Regions.CavesBonusCave, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True)),
         TransitionFront(Regions.CavesBlueprintPillar, lambda l: (l.jetpack and l.diddy) or (l.advanced_platforming and ((l.balloon and l.lanky) or ((not l.settings.shuffle_shops) and l.twirl and l.tiny)))),

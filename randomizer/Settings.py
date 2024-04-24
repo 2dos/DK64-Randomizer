@@ -524,6 +524,7 @@ class Settings:
         self.custom_music_proportion = 100
         self.fill_with_custom_music = False
         self.show_song_name = False
+        self.custom_transition = None
 
         #  Misc
         self.generate_spoilerlog = None
@@ -582,6 +583,7 @@ class Settings:
         self.hard_troff_n_scoff = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.dk_portal_location_rando = False
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []

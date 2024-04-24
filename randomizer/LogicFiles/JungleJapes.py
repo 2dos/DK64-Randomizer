@@ -22,6 +22,12 @@ LogicRegions = {
         LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.JungleJapesEntryHandler: Region("Jungle Japes Entry Handler", "This should not be hinted", Levels.JungleJapes, False, None, [], [], [
+        TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
+        TransitionFront(Regions.JungleJapesStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.JungleJapesStart: Region("Jungle Japes Start", "Japes Lowlands", Levels.JungleJapes, True, None, [
         LocationLogic(Locations.JapesDonkeyCagedBanana, lambda l: ((Events.JapesDonkeySwitch in l.Events or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False)) and l.donkey) or ((l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False)) and l.settings.free_trade_items)),
         LocationLogic(Locations.JapesChunkyBoulder, lambda l: l.chunky and l.barrels),
@@ -38,7 +44,6 @@ LogicRegions = {
         Event(Events.JapesW3bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
-        TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.hasMoveSwitchsanity(Switches.JapesDiddyCave, False) or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),

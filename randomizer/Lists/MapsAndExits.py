@@ -39,6 +39,7 @@ RegionMapList = {
     Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
     Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,
     # Japes
+    Regions.JungleJapesEntryHandler: Maps.JungleJapes,
     Regions.JungleJapesStart: Maps.JungleJapes,
     Regions.JungleJapesMain: Maps.JungleJapes,
     Regions.JapesBeyondCoconutGate1: Maps.JungleJapes,
@@ -53,6 +54,7 @@ RegionMapList = {
     Regions.JapesCatacomb: Maps.JapesUnderGround,
     Regions.JapesBaboonBlast: Maps.JapesBaboonBlast,
     # Aztec
+    Regions.AngryAztecEntryHandler: Maps.AngryAztec,
     Regions.AngryAztecStart: Maps.AngryAztec,
     Regions.BetweenVinesByPortal: Maps.AngryAztec,
     Regions.AngryAztecOasis: Maps.AngryAztec,
@@ -69,6 +71,7 @@ RegionMapList = {
     Regions.LlamaTempleBack: Maps.AztecLlamaTemple,
     Regions.AztecBaboonBlast: Maps.AztecBaboonBlast,
     # Factory
+    Regions.FranticFactoryEntryHandler: Maps.FranticFactory,
     Regions.FranticFactoryStart: Maps.FranticFactory,
     Regions.Testing: Maps.FranticFactory,
     Regions.RandD: Maps.FranticFactory,
@@ -82,6 +85,7 @@ RegionMapList = {
     Regions.UpperCore: Maps.FranticFactory,
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     # Galleon
+    Regions.GloomyGalleonEntryHandler: Maps.GloomyGalleon,
     Regions.GloomyGalleonStart: Maps.GloomyGalleon,
     Regions.GalleonPastVines: Maps.GloomyGalleon,
     Regions.GalleonBeyondPineappleGate: Maps.GloomyGalleon,
@@ -108,6 +112,7 @@ RegionMapList = {
     Regions.TriangleShip: Maps.Galleon5DShipDiddyLankyChunky,
     Regions.GalleonBaboonBlast: Maps.GalleonBaboonBlast,
     # Fungi
+    Regions.FungiForestEntryHandler: Maps.FungiForest,
     Regions.FungiForestStart: Maps.FungiForest,
     Regions.ForestMinecarts: Maps.ForestMinecarts,
     Regions.GiantMushroomArea: Maps.FungiForest,
@@ -134,6 +139,7 @@ RegionMapList = {
     Regions.WormArea: Maps.FungiForest,
     Regions.ForestBaboonBlast: Maps.ForestBaboonBlast,
     # Caves
+    Regions.CrystalCavesEntryHandler: Maps.CrystalCaves,
     Regions.CrystalCavesMain: Maps.CrystalCaves,
     Regions.BoulderCave: Maps.CrystalCaves,
     Regions.CavesLankyRace: Maps.CavesLankyRace,
@@ -155,6 +161,7 @@ RegionMapList = {
     Regions.ChunkyCabin: Maps.CavesChunkyCabin,
     Regions.CavesBaboonBlast: Maps.CavesBaboonBlast,
     # Castle
+    Regions.CreepyCastleEntryHandler: Maps.CreepyCastle,
     Regions.CreepyCastleMain: Maps.CreepyCastle,
     Regions.CastleWaterfall: Maps.CreepyCastle,
     Regions.CastleTree: Maps.CastleTree,

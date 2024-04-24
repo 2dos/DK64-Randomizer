@@ -1775,8 +1775,17 @@ def compileHints(spoiler: Spoiler) -> bool:
     # We must hint each of Japes, Aztec, and Factory at least once
     # The rest of the hints are tied to a variety of important locations
     if hint_distribution[HintType.Entrance] > 0:
-        criticalJapesRegions = [Regions.JungleJapesStart, Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
+        criticalJapesRegions = [
+            Regions.JungleJapesEntryHandler,
+            Regions.JungleJapesStart,
+            Regions.JungleJapesMain,
+            Regions.JapesBeyondFeatherGate,
+            Regions.TinyHive,
+            Regions.JapesLankyCave,
+            Regions.Mine,
+        ]
         criticalAztecRegions = [
+            Regions.AngryAztecEntryHandler,
             Regions.AngryAztecStart,
             Regions.AngryAztecOasis,
             Regions.AngryAztecMain,
@@ -1786,17 +1795,34 @@ def compileHints(spoiler: Spoiler) -> bool:
             Regions.TinyTemple,
             Regions.ChunkyTemple,
         ]
-        criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.LowerCore, Regions.InsideCore]
+        criticalFactoryRegions = [
+            Regions.FranticFactoryEntryHandler,
+            Regions.FranticFactoryStart,
+            Regions.ChunkyRoomPlatform,
+            Regions.PowerHut,
+            Regions.BeyondHatch,
+            Regions.LowerCore,
+            Regions.InsideCore,
+        ]
         usefulRegions = [
             criticalJapesRegions,
             criticalAztecRegions,
             criticalFactoryRegions,
             [Regions.BananaFairyRoom],
             [Regions.TrainingGrounds],
-            [Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.ShipyardUnderwater, Regions.Shipyard],
-            [Regions.FungiForestStart, Regions.GiantMushroomArea, Regions.MushroomLowerExterior, Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MillArea, Regions.ThornvineArea],
-            [Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
-            [Regions.CreepyCastleMain, Regions.CastleWaterfall],
+            [Regions.GloomyGalleonEntryHandler, Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.ShipyardUnderwater, Regions.Shipyard],
+            [
+                Regions.FungiForestEntryHandler,
+                Regions.FungiForestStart,
+                Regions.GiantMushroomArea,
+                Regions.MushroomLowerExterior,
+                Regions.MushroomNightExterior,
+                Regions.MushroomUpperExterior,
+                Regions.MillArea,
+                Regions.ThornvineArea,
+            ],
+            [Regions.CrystalCavesEntryHandler, Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
+            [Regions.CreepyCastleEntryHandler, Regions.CreepyCastleMain, Regions.CastleWaterfall],
             [Regions.LowerCave],
             [Regions.UpperCave],
         ]

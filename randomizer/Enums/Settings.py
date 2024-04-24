@@ -1027,6 +1027,7 @@ class SettingsStringEnum(IntEnum):
     kong_model_tiny = 173
     kong_model_chunky = 174
     helm_room_bonus_count = 175
+    dk_portal_location_rando = 176
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1099,6 +1100,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
+    SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,

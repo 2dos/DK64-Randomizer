@@ -22,6 +22,12 @@ LogicRegions = {
         LocationLogic(Locations.GalleonChunkyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.GloomyGalleonEntryHandler: Region("Gloomy Galleon Entry Handler", "This should not be hinted", Levels.GloomyGalleon, False, None, [], [], [
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
+        TransitionFront(Regions.GloomyGalleonStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", "Galleon Caverns", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
         LocationLogic(Locations.GalleonBattleArena, lambda l: (not l.settings.crown_placement_rando and ((l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)))),
@@ -45,7 +51,6 @@ LogicRegions = {
         Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
         TransitionFront(Regions.GalleonPastVines, lambda l: l.vines or l.CanMoonkick()),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)),
         TransitionFront(Regions.LighthouseSurface, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or Events.LighthouseGateOpened in l.Events or l.phasewalk or l.CanSkew(False)),

@@ -23,6 +23,12 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.FungiForestEntryHandler: Region("Fungi Forest Entry Handler", "This should not be hinted", Levels.FungiForest, False, None, [], [], [
+        TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
+        TransitionFront(Regions.FungiForestStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestMainEnemy_NearAppleDropoff, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearDKPortal, lambda l: True),
@@ -39,7 +45,6 @@ LogicRegions = {
         Event(Events.ForestW4aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
-        TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
         TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True),

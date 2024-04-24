@@ -214,7 +214,7 @@ LogicRegions = {
         Event(Events.JapesLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesJapesLobbyToMain),
-        TransitionFront(Regions.JungleJapesStart, lambda l: l.IsLevelEnterable(Levels.JungleJapes), Transitions.IslesToJapes),
+        TransitionFront(Regions.JungleJapesEntryHandler, lambda l: l.IsLevelEnterable(Levels.JungleJapes), Transitions.IslesToJapes),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -229,7 +229,7 @@ LogicRegions = {
         Event(Events.AztecLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True, Transitions.IslesAztecLobbyToMain),
-        TransitionFront(Regions.AngryAztecStart, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
+        TransitionFront(Regions.AngryAztecEntryHandler, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -292,7 +292,7 @@ LogicRegions = {
         Event(Events.FactoryLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesFactoryLobbyToMain),
-        TransitionFront(Regions.FranticFactoryStart, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
+        TransitionFront(Regions.FranticFactoryEntryHandler, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -314,7 +314,7 @@ LogicRegions = {
         Event(Events.GalleonLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: l.swim),
-        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
+        TransitionFront(Regions.GloomyGalleonEntryHandler, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -372,7 +372,7 @@ LogicRegions = {
         Event(Events.ForestLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.CabinIsle, lambda l: True, Transitions.IslesForestLobbyToMain),
-        TransitionFront(Regions.FungiForestStart, lambda l: l.IsLevelEnterable(Levels.FungiForest), Transitions.IslesToForest),
+        TransitionFront(Regions.FungiForestEntryHandler, lambda l: l.IsLevelEnterable(Levels.FungiForest), Transitions.IslesToForest),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -389,7 +389,7 @@ LogicRegions = {
         Event(Events.CavesLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesEar, lambda l: True, Transitions.IslesCavesLobbyToMain),
-        TransitionFront(Regions.CrystalCavesMain, lambda l: l.IsLevelEnterable(Levels.CrystalCaves), Transitions.IslesToCaves),
+        TransitionFront(Regions.CrystalCavesEntryHandler, lambda l: l.IsLevelEnterable(Levels.CrystalCaves), Transitions.IslesToCaves),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -409,7 +409,7 @@ LogicRegions = {
         Event(Events.CastleLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),
+        TransitionFront(Regions.CreepyCastleEntryHandler, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 

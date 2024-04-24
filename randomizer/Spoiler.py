@@ -559,6 +559,8 @@ class Spoiler:
             humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
+        if self.settings.dk_portal_location_rando:
+            humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
         if self.settings.switchsanity:
