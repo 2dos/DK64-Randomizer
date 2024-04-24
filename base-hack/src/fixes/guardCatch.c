@@ -146,7 +146,13 @@ void newGuardCode(void) {
                             }
                         }
                         if (radius > 0.0f) {
+                            int old_control_state = CurrentActorPointer_0->control_state;
                             handleGuardDetection(dist, radius);
+                            if (old_control_state != 0) {
+                                if (CurrentActorPointer_0->control_state == 0) {
+                                    updateKopStat();
+                                }
+                            }
                         }
                     }
                 }

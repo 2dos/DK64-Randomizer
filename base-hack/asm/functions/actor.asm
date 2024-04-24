@@ -114,3 +114,8 @@
 .definelabel getActorModel, 0x80612E90
 .definelabel bounceObjectCode, 0x806A6DB4
 .definelabel unkLoadingZoneControllerFunction, 0x806C92C4
+.definelabel crankyCode, 0x800270E0
+.definelabel funkyCode, 0x80027738
+.definelabel candyCode, 0x800275FC
+.definelabel snideCode, 0x80024CB0
+.definelabel getPathPosition, 0x807238D4

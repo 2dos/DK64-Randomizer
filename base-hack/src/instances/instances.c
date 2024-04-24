@@ -233,7 +233,7 @@ void setCrusher(void) {
 }
 
 void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
-	if (Rando.randomize_more_loading_zones) {
+	if (Rando.randomize_more_loading_zones == 1) {
 		initiateTransition_0(entrance->map, entrance->exit, 0, 0);
 	} else {
 		initiateTransition_0(vanilla_map, 0, 0, 0);
@@ -375,7 +375,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEBALLROOM:
 				if (param2 == BALLROOM_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.ballroom_to_museum.map, Rando.ballroom_to_museum.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
@@ -384,7 +384,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.museum_to_ballroom.map, Rando.museum_to_ballroom.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
@@ -553,7 +553,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_BATTLEARENA_PLINTHPANIC:
 			case MAP_BATTLEARENA_PINNACLEPALAVER:
 			case MAP_BATTLEARENA_SHOCKWAVESHOWDOWN:
-				if (Rando.location_visuals & 4) {
+				if (Rando.location_visuals.crowns) {
 					if (param2 == CROWN_CONTROLLER) {
 						float x = 730.0f;
 						float y = 267.0f;
@@ -589,7 +589,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_TROFFNSCOFF:
-				if (Rando.location_visuals & 2) {
+				if (Rando.location_visuals.boss_doors) {
 					if (param2 == TNS_NUMBER) {
 						float x = 600.0f;
 						float y = 300.0f;
@@ -808,7 +808,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if (Rando.faster_checks.diddy_rnd) {
 							disableDiddyRDDoors();
 						} else {
-							setScriptRunState(behaviour_pointer, 2, 0);
+							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
 						}
 					}
 				} else if (param2 == FACTORY_DARTBOARD) {
@@ -996,22 +996,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			// case TREASURE_CHEST:
-			// 	if (param2 == CHEST_PEARL_0) {
-			// 		if (Rando.faster_checks.mermaid) {
-			// 			int pearls_collected = 0;
-			// 			for (int i = 0; i < 5; i++) {
-			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
-			// 			}
-			// 			if (pearls_collected >= 1) {
-			// 				for (int i = 0; i < 5; i++) {
-			// 					setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, FLAGTYPE_PERMANENT);
-			// 				}
-			// 				behaviour_pointer->next_state = 2;
-			// 			}
-			// 		}
-			// 	}
-			// 	break;
 			case MAP_CAVES5DIDK:
 				if (param2 == ICE_MAZE) {
 					if (behaviour_pointer->switch_pressed == index) {
@@ -1071,7 +1055,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									//vanilla initiation code
 									unkObjFunction0(id_needed,1,1);
 									unkObjFunction1(id_needed,1,3);
-									setScriptRunState(gateBehaviour, 2, 0);
+									setScriptRunState(gateBehaviour, RUNSTATE_PAUSED, 0);
 								}
 							}
 						}
@@ -1089,7 +1073,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								if(grapeIndex != -1 && grapeSwitchBehaviour->pause_state == 0){
 									setObjectScriptState(17, 4, 0);
 									//vanilla initiation code
-									setScriptRunState(grapeSwitchBehaviour, 2, 0);
+									setScriptRunState(grapeSwitchBehaviour, RUNSTATE_PAUSED, 0);
 									unkObjFunction0(grape_switch_id_needed,1,1);
 									unkObjFunction1(grape_switch_id_needed,1,10);
 								}
@@ -1122,7 +1106,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								// If behaviour exists (always should do, but always good to check), activate the Goo Hand
 								setObjectScriptState(slot, 10, 0);
 								if(slot != -1){
-									setScriptRunState(behaviour, 0, 0);
+									setScriptRunState(behaviour, RUNSTATE_INIT, 0);
 								}
 							}
 						}
@@ -1156,7 +1140,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || Rando.coin_door_open == 1;
+								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {
 								// Disable coin door text
 								return 1;
@@ -1341,13 +1325,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		}
 		return 1;
 	} else if (index == -9) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_CRANKY);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CRANKY);
 	} else if (index == -10) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_FUNKY);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_FUNKY);
 	} else if (index == -11) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_CANDY);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CANDY);
 	} else if (index == -12) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_SNIDE);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_SNIDE);
 	} else if (index == -13) {
 		MelonCrateGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -14) {
@@ -1390,7 +1374,7 @@ void disableDiddyRDDoors(void) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
 		behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
 		if (behaviour) {
-			setScriptRunState(behaviour,2,0);
+			setScriptRunState(behaviour, RUNSTATE_PAUSED, 0);
 		}
 	}
 }

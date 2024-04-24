@@ -3,6 +3,7 @@
 import subprocess
 from typing import BinaryIO
 import zlib
+import math
 
 import encoders
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
@@ -614,3 +615,51 @@ hint_region_list = [
     HintRegion("Hideout Helm", "OtherHelm"),
     HintRegion("Troff n Scoff", "OtherTnS"),
 ]
+
+
+class Coordinate:
+    """Class to store information regarding a coordinate."""
+
+    def __init__(self, x: float, y: float, z: float):
+        """Initialize with given parameters."""
+        self.x = x
+        self.y = y
+        self.z = z
+
+
+class VineSequence:
+    """Class to store information regarding a vine sequence."""
+
+    def __init__(self, map_index: int, point_start: Coordinate, point_end: Coordinate, ids: list[int]):
+        """Initialize with given parameters."""
+        self.map_index = map_index
+        self.point_start = point_start
+        self.point_end = point_end
+        self.ids = ids.copy()
+
+    def getSequenceDistance(self) -> float:
+        """Get the distance between point_start and point_end."""
+        dx = self.point_end.x - self.point_start.x
+        dy = self.point_end.y - self.point_start.y
+        dz = self.point_end.z - self.point_start.z
+        return math.sqrt((dx * dx) + (dy * dy) + (dz * dz))
+
+    def getSequencePoint(self, index: int, count: int) -> Coordinate:
+        """Get a coordinate from the sequence based on the index and total amount of vines that are to be placed."""
+        dx = self.point_end.x - self.point_start.x
+        dy = self.point_end.y - self.point_start.y
+        dz = self.point_end.z - self.point_start.z
+        px = self.point_start.x + (((index + 1) / count) * dx)
+        py = self.point_start.y + (((index + 1) / count) * dy)
+        pz = self.point_start.z + (((index + 1) / count) * dz)
+        return Coordinate(px, py, pz)
+
+
+class MoveName:
+    """Class to store the text for a move_name."""
+
+    def __init__(self, name: str, move_type: int, latin: str = None):
+        """Initialize with given parameters."""
+        self.name = name
+        self.move_type = move_type
+        self.latin = latin

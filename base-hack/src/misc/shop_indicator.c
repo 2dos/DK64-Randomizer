@@ -84,39 +84,14 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 #define SHOPINDEX_FUNKY 1
 #define SHOPINDEX_CANDY 2
 
-int isSharedMove(int shop_index, int level) {
-	if (shop_index == SHOPINDEX_CRANKY) {
-		purchase_struct* targ = (purchase_struct*)&CrankyMoves_New[0][level];
-		for (int i = 1; i < 5; i++) {
-			purchase_struct* src = (purchase_struct*)&CrankyMoves_New[i][level];
-			if (targ->move_kong != src->move_kong) {
-				return 0;
-			}
-			if (targ->purchase_type != src->purchase_type) {
-				return 0;
-			}
-			if (targ->purchase_value != src->purchase_value) {
-				return 0;
-			}
-		}
-	} else if (shop_index == SHOPINDEX_FUNKY) {
-		purchase_struct* targ = (purchase_struct*)&FunkyMoves_New[0][level];
-		for (int i = 1; i < 5; i++) {
-			purchase_struct* src = (purchase_struct*)&FunkyMoves_New[i][level];
-			if (targ->move_kong != src->move_kong) {
-				return 0;
-			}
-			if (targ->purchase_type != src->purchase_type) {
-				return 0;
-			}
-			if (targ->purchase_value != src->purchase_value) {
-				return 0;
-			}
-		}
-	} else if (shop_index == SHOPINDEX_CANDY) {
-		purchase_struct* targ = (purchase_struct*)&CandyMoves_New[0][level];
-		for (int i = 1; i < 5; i++) {
-			purchase_struct* src = (purchase_struct*)&CandyMoves_New[i][level];
+int isSharedMove(vendors shop_index, int level) {
+	purchase_struct* targ = getShopData(shop_index, 0, level);
+	if (!targ) {
+		return 1;
+	}
+	for (int i = 1; i < 5; i++) {
+		purchase_struct* src = getShopData(shop_index, i, level);
+		if (src) {
 			if (targ->move_kong != src->move_kong) {
 				return 0;
 			}
@@ -166,15 +141,8 @@ typedef enum counter_items {
 	/* 0x014 */ COUNTER_FAKEITEM,
 } counter_items;
 
-int getCounterItem(int shop_index, int kong, int level) {
-	purchase_struct* data = 0;
-	if (shop_index == SHOPINDEX_CRANKY) {
-		data = (purchase_struct*)&CrankyMoves_New[kong][level];
-	} else if (shop_index == SHOPINDEX_FUNKY) {
-		data = (purchase_struct*)&FunkyMoves_New[kong][level];
-	} else if (shop_index == SHOPINDEX_CANDY) {
-		data = (purchase_struct*)&CandyMoves_New[kong][level];
-	}
+int getCounterItem(vendors shop_index, int kong, int level) {
+	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
 		switch(data->purchase_type) {
 			case PURCHASE_MOVES:
@@ -189,7 +157,7 @@ int getCounterItem(int shop_index, int kong, int level) {
 					int flag = data->purchase_value;
 					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						return COUNTER_BP;
-					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+					} else if (isMedalFlag(flag)) {
 						return COUNTER_MEDAL;
 					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
 						return COUNTER_CROWN;
@@ -239,19 +207,16 @@ int getCounterItem(int shop_index, int kong, int level) {
 	return COUNTER_NO_ITEM;
 }
 
-void getMoveCountInShop(counter_paad* paad, int shop_index) {
+void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 	int level = getWorld(CurrentMap,0);
 	int possess = 0;
 	int count = 0;
 	int slot = 0;
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
-			if (shop_index == SHOPINDEX_CRANKY) {
-				possess = doesKongPossessMove(CrankyMoves_New[i][level].purchase_type, CrankyMoves_New[i][level].purchase_value, CrankyMoves_New[i][level].move_kong);
-			} else if (shop_index == SHOPINDEX_FUNKY) {
-				possess = doesKongPossessMove(FunkyMoves_New[i][level].purchase_type, FunkyMoves_New[i][level].purchase_value, FunkyMoves_New[i][level].move_kong);
-			} else if (shop_index == SHOPINDEX_CANDY) {
-				possess = doesKongPossessMove(CandyMoves_New[i][level].purchase_type, CandyMoves_New[i][level].purchase_value, CandyMoves_New[i][level].move_kong);
+			purchase_struct* data = getShopData(shop_index, i, level);
+			if (data) {
+				possess = doesKongPossessMove(data->purchase_type, data->purchase_value, data->move_kong);
 			}
 			if ((possess == 1) && (isSharedMove(shop_index, level))) {
 				possess = 7;

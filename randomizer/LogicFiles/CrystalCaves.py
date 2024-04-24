@@ -47,8 +47,8 @@ LogicRegions = {
         TransitionFront(Regions.FrozenCastle, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and l.islanky) or l.CanSkew(True), Transitions.CavesMainToCastle),
         TransitionFront(Regions.IglooArea, lambda l: True),
         TransitionFront(Regions.CabinArea, lambda l: True),
-        TransitionFront(Regions.FunkyCaves, lambda l: True),
-        TransitionFront(Regions.CrankyCaves, lambda l: True),
+        TransitionFront(Regions.FunkyCaves, lambda l: l.funkyAccess),
+        TransitionFront(Regions.CrankyCaves, lambda l: l.crankyAccess),
         TransitionFront(Regions.CavesSnideArea, lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim())),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
@@ -56,7 +56,7 @@ LogicRegions = {
 
     Regions.CavesSnideArea: Region("Caves Snide Area", "Main Caves Area", Levels.CrystalCaves, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
-        TransitionFront(Regions.Snide, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
@@ -209,7 +209,7 @@ LogicRegions = {
         TransitionFront(Regions.LankyCabin, lambda l: (l.trombone and l.balloon and l.islanky) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToLanky),
         TransitionFront(Regions.TinyCabin, lambda l: (l.saxophone and l.istiny) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToTiny),
         TransitionFront(Regions.ChunkyCabin, lambda l: (l.triangle and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToChunky),
-        TransitionFront(Regions.CandyCaves, lambda l: True),
+        TransitionFront(Regions.CandyCaves, lambda l: l.candyAccess),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.jetpack and l.isdiddy) or (l.balloon or l.islanky) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk)),
     ]),
 

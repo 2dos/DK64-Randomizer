@@ -390,6 +390,10 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
             # Prevent them respawning
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x14)
             ROM_COPY.writeMultipleBytes(0, 1)
+        elif new_enemy_id == Enemies.Kaboom:
+            # Fix their time to uh-oh timer
+            ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xA)
+            ROM_COPY.writeMultipleBytes(140, 2)
 
         if (cont_map_id in crown_maps or cont_map_id in minigame_maps_total) and EnemyMetaData[new_enemy_id].air:
             height = 300

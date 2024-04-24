@@ -70,6 +70,7 @@ async def initialize():
 
     # Load our pointer info from the JSON database
     js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
+    js.rom_symbols = json.loads(js.getFile("./static/patches/symbols.json"))
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     # Add custom Jinja2 filter functions.
@@ -79,6 +80,7 @@ async def initialize():
     templateEnv.filters["plando_item_restrict"] = PlandoItemFilter
     templateEnv.filters["plando_minigame_restrict"] = PlandoMinigameFilter
     templateEnv.filters["plando_shop_sort"] = PlandoShopSortFilter
+    navtemplate = templateEnv.get_template("nav-tabs.html.jinja2")
     template = templateEnv.get_template("base.html.jinja2")
     # Add custom Jinja2 functions.
     template.globals.update({"plando_option_class_annotation": PlandoOptionClassAnnotation})
@@ -106,8 +108,10 @@ async def initialize():
         remove_barriers=RemovedBarrierSelector,
         faster_checks=FasterCheckSelector,
     )
+    nav_rendered = await navtemplate.render()
     # get the "tab-data" div and replace it with the rendered template
     js.jquery("#tab-data").html(rendered)
+    js.jquery("#nav-tab-list").html(nav_rendered)
     await micropip.install(
         [
             f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl",

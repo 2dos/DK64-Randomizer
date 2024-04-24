@@ -170,63 +170,6 @@ void initKrusha(void) {
     }
 }
 
-void initSkyboxRando(void) {
-    /**
-     * @brief Initialize the skybox cosmetic randomization
-     * 
-     */
-    if (Rando.colorblind_mode != COLORBLIND_OFF) {
-        for (int i = 0; i < 8; i++) {
-            Rando.skybox_colors[i].red = 0x31;
-            Rando.skybox_colors[i].green = 0x33;
-            Rando.skybox_colors[i].blue = 0x38;
-        }
-    } else if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
-        for (int i = 0; i < 8; i++) {
-            Rando.skybox_colors[i].red = 0;
-            Rando.skybox_colors[i].green = 0;
-            Rando.skybox_colors[i].blue = 0;
-        }
-    }
-    if ((Rando.misc_cosmetic_on) || (Rando.colorblind_mode != COLORBLIND_OFF) || (Rando.seasonal_changes == SEASON_HALLOWEEN)) {
-        for (int i = 0; i < 8; i++) {
-            SkyboxBlends[i].top.red = Rando.skybox_colors[i].red;
-            SkyboxBlends[i].top.green = Rando.skybox_colors[i].green;
-            SkyboxBlends[i].top.blue = Rando.skybox_colors[i].blue;
-            float rgb[3] = {0,0,0};
-            float rgb_backup[3] = {0,0,0};
-            rgb[0] = Rando.skybox_colors[i].red;
-            rgb[1] = Rando.skybox_colors[i].green;
-            rgb[2] = Rando.skybox_colors[i].blue;
-            for (int j = 0; j < 3; j++) {
-                rgb_backup[j] = rgb[j];
-                rgb[j] *= 1.2f;
-            }
-            int exceeded = 0;
-            for (int j = 0; j < 3; j++) {
-                if (rgb[j] > 255.0f) {
-                    exceeded = 1;
-                }
-            }
-            if (exceeded) {
-                for (int j = 0; j < 3; j++) {
-                    rgb[j] = rgb_backup[j] * 0.8f;
-                }
-            }
-            SkyboxBlends[i].bottom.red = rgb[0];
-            SkyboxBlends[i].bottom.green = rgb[1];
-            SkyboxBlends[i].bottom.blue = rgb[2];
-            for (int j = 0; j < 2; j++) {
-                SkyboxBlends[i].unk[j].red = rgb[0];
-                SkyboxBlends[i].unk[j].green = rgb[1];
-                SkyboxBlends[i].unk[j].blue = rgb[2];
-            }
-        }
-        // Change pufftoss skybox entry
-        *(int*)(0x8075E1EC) = 0x80708234; // Pufftoss changed to null skybox, should prevent seizure-inducing effects
-    }
-}
-
 void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
         *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
@@ -337,8 +280,6 @@ void initCosmetic(void) {
     }
     initDiscoChunky();
     initKrusha();
-    initSkyboxRando();
     initSeasonalChanges();
     initColorblindChanges();
-    //loadWidescreen(OVERLAY_BOOT);
 }

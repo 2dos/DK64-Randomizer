@@ -15,6 +15,7 @@ import randomizer.Lists.CBLocations.FranticFactoryCBLocations
 import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
+import randomizer.Lists.CBLocations.DKIslesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.Lists.CustomLocations import CustomLocations
@@ -269,6 +270,10 @@ def dump_cb(format: str):
             "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
             "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
         },
+        Levels.DKIsles: {
+            "cb": randomizer.Lists.CBLocations.DKIslesCBLocations.ColoredBananaGroupList,
+            "balloons": randomizer.Lists.CBLocations.DKIslesCBLocations.BalloonList,
+        },
     }
     dumps = {}
     for level in level_data:
@@ -444,7 +449,7 @@ def checkIfMatchingList(list1: list, list2: list) -> bool:
 def getDisplayName(internal_name: str):
     """Get the displayed name on the site for an internal name."""
     directory = "./templates"
-    templates = [x for x in os.listdir(directory) if ".html.jinja2" in x and x not in ["spoiler.html.jinja2", "settings.html.jinja2"]]
+    templates = [x for x in os.listdir(directory) if ".html.jinja2" in x and x not in ["spoiler.html.jinja2", "spoiler_new.html.jinja2", "settings.html.jinja2"]]
     old_text = " ".join([x.capitalize() for x in internal_name.split("_")])
     for template in templates:
         with open(f"{directory}/{template}", "r") as jinja:

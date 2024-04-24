@@ -10,4 +10,4 @@
  */
 #include "../include/common.h"
 
-mtx_item static_mtx[20];
+mtx_item static_mtx[22];

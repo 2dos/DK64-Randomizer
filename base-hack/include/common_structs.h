@@ -114,7 +114,8 @@ typedef struct actorData {
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ short draw_distance;
-	/* 0x12C */ char unk_12C[0x132-0x12C];
+	/* 0x12C */ short chunk;
+	/* 0x12E */ char unk_12E[0x132-0x12E];
 	/* 0x132 */ short subdata;
 	/* 0x134 */ short health;
 	/* 0x136 */ char unk_136[0x138-0x136];
@@ -633,16 +634,18 @@ typedef struct placementData {
 } placementData;
 
 typedef struct hud_element {
-	/* 0x000 */ void* item_count_pointer;
+	/* 0x000 */ short* item_count_pointer;
 	/* 0x004 */ short visual_item_count;
 	/* 0x006 */ short hud_state_timer;
 	/* 0x008 */ int x;
 	/* 0x00C */ int y;
 	/* 0x010 */ float unk_10[4];
 	/* 0x020 */ int hud_state;
-	/* 0x024 */ char unk_24[0x28-0x24];
+	/* 0x024 */ int unk_24;
 	/* 0x028 */ placementData* placement_pointer;
-	/* 0x02C */ char unk_2C[0x30-0x2C];
+	/* 0x02C */ char infinite_setting;
+	/* 0x02D */ char unk_2D;
+	/* 0x02E */ char unk_2E[0x30-0x2E];
 } hud_element;
 
 typedef struct hudData {
@@ -1230,11 +1233,11 @@ typedef struct collected_item_struct {
 typedef struct quality_options {
 	unsigned char reduce_lag : 1;
 	unsigned char remove_cutscenes : 1; // 1
-	unsigned char fast_picture : 1;
-	unsigned char aztec_lobby_bonus : 1; // 3
+	unsigned char unused_2 : 1;
+	unsigned char unused_3 : 1; // 3
 	unsigned char dance_skip : 1;
 	unsigned char fast_boot : 1; // 5
-	unsigned char fast_transform : 1;
+	unsigned char unused_6 : 1;
 	unsigned char ammo_swap : 1; // 7
 	unsigned char cb_indicator : 1;
 	unsigned char galleon_star : 1; // 9
@@ -1245,10 +1248,10 @@ typedef struct quality_options {
 	unsigned char hud_bp_multibunch : 1;
 	unsigned char homing_balloons : 1; // 15
 	unsigned char save_krool_progress : 1;
-	unsigned char cbs_visible : 1; // 17
+	unsigned char unused_17 : 1; // 17
 	unsigned char blueprint_compression : 1;
 	unsigned char fast_hints : 1; // 19
-	unsigned char brighten_mmm_enemies : 1;
+	unsigned char unused_20 : 1;
 	unsigned char global_instrument : 1; // 21
 	unsigned char fast_pause_transitions : 1;
 	unsigned char cannon_game_speed : 1; // 23
@@ -1738,3 +1741,57 @@ typedef struct BooleanModelSwaps {
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } BooleanModelSwaps;
+
+typedef struct ItemRequirement {
+	/* 0x000 */ unsigned char item;
+	/* 0x001 */ unsigned char count;
+} ItemRequirement;
+
+typedef struct FreeTradeAgreement {
+	unsigned char major_items : 1; // 0x80
+	unsigned char blueprints : 1; // 0x40
+	unsigned char coins_cbs : 1; // 0x20
+	unsigned char balloons : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} FreeTradeAgreement;
+
+typedef struct LocationVisuals {
+	unsigned char crowns : 1; // 0x80
+	unsigned char boss_doors : 1; // 0x40
+	unsigned char bonus_barrels : 1; // 0x20
+	unsigned char dirt_patches : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} LocationVisuals;
+
+typedef struct path_segment_struct {
+	/* 0x000 */ short unk0;
+	/* 0x002 */ short x;
+	/* 0x004 */ short y;
+	/* 0x006 */ short z;
+	/* 0x008 */ char speed;
+	/* 0x009 */ char unk1;
+} path_segment_struct;
+
+typedef struct path_data_struct {
+	/* 0x000 */ void* tied_actor;
+	/* 0x004 */ path_segment_struct* segments;
+	/* 0x008 */ short segment_count;
+	/* 0x00A */ char unk_0A[2];
+	/* 0x00C */ float segment_position;
+	/* 0x010 */ int segment_index;
+	/* 0x014 */ char unk14;
+	/* 0x015 */ char unk15;
+	/* 0x016 */ char unk16;
+	/* 0x017 */ char unk17;
+	/* 0x018 */ int unk18;
+	/* 0x01C */ int path_cycle_count;
+	/* 0x020 */ char path_global_speed;
+	/* 0x021 */ char unk21;
+	/* 0x022 */ char unk_22[0x30-0x22];
+} path_data_struct;

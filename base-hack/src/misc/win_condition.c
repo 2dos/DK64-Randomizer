@@ -72,30 +72,6 @@ void checkSeedVictory(void) {
                     beatGame();
                 }
                 break;
-            case GOAL_ALLFAIRIES:
-                for (int i = 0; i < 20; i++) {
-                    if (!checkFlagDuplicate(FLAG_FAIRY_1 + i, FLAGTYPE_PERMANENT)) {
-                        return;
-                    }
-                }
-                beatGame();
-                break;
-            case GOAL_ALLBLUEPRINTS:
-                for (int i = 0; i < 40; i++) {
-                    if (!checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + i, FLAGTYPE_PERMANENT)) {
-                        return;
-                    }
-                }
-                beatGame();
-                break;
-            case GOAL_ALLMEDALS:
-                for (int i = 0; i < 40; i++) {
-                    if (!checkFlagDuplicate(FLAG_MEDAL_JAPES_DK + i, FLAGTYPE_PERMANENT)) {
-                        return;
-                    }
-                }
-                beatGame();
-                break;
             case GOAL_POKESNAP:
                 for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
                     int offset = i >> 3;
@@ -108,11 +84,9 @@ void checkSeedVictory(void) {
                 }
                 beatGame();
                 break;
-            case GOAL_ALLKEYS:
-                for (int i = 0; i < 8; i++) {
-                    if (!checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
-                        return;
-                    }
+            case GOAL_CUSTOMITEM:
+                if (!isItemRequirementSatisfied(&Rando.win_condition_extra)) {
+                    return;
                 }
                 beatGame();
             break;
