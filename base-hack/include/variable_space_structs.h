@@ -4,7 +4,7 @@ typedef struct varspace {
 	/* 0x016 */ char unk_16[8];
 	/* 0x01E */ short key_flags[7]; // key given in each level. (Item 1 is Japes etc. flags=[0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D] <- Item 1 of this array is Key 1 etc.)
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
-	/* 0x02D */ char unk_2D;
+	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
 	/* 0x02F */ char unk_2F;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
@@ -144,7 +144,8 @@ typedef struct varspace {
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
-	/* 0x1B8 */ char unk_1b8[0x1C6 - 0x1B8];
+	/* 0x1B8 */ unsigned char kong_models[5];
+	/* 0x1BD */ char unk_1bd[0x1C6 - 0x1BD];
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
 	/* 0x1DC */ unsigned char galleon_water_raised;

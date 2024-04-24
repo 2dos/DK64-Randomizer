@@ -864,7 +864,7 @@ const actor_bitfield big_head_actors = {
 	.idle_particle = 0,
 	.rareware_logo = 0,
 	.unknown_315 = 0,
-	.kong_tag_barrel = 0,
+	.kong_tag_barrel = 1,
 	.locked_kong_tag_barrel = 0,
 	.unknown_318 = 0,
 	.propeller_boat = 0,
@@ -1702,4 +1702,18 @@ void exitBoss(void) {
 		}
 	}
 	initiateTransition(MAP_TROFFNSCOFF, 2);
+}
+
+int isKrushaAdjacentModel(int kong) {
+	custom_kong_models slot_value = Rando.kong_models[kong];
+	if (slot_value == KONGMODEL_KRUSHA) {
+		return 1;
+	}
+	if (slot_value == KONGMODEL_KROOL_CUTSCENE) {
+		return 1;
+	}
+	if (slot_value == KONGMODEL_KROOL_FIGHT) {
+		return 1;
+	}
+	return 0;
 }

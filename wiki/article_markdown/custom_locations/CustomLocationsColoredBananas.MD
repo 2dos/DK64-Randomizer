@@ -64,7 +64,7 @@
 | Above Melon Crate behind mountain | 5 | `` | 
 | Above melon crate behind boulder | 5 | `` | 
 | Inside Free Diddy cage | 5 | `l.CanFreeDiddy()` | 
-| Between starting vines (Donkey) | 5 | `l.vines or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)` | 
+| Between starting vines (Donkey) | 5 | `l.vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))` | 
 | On top of slippery slope in BP cave (Lanky) | 5 | `l.handstand` | 
 | W3 bunches (Donkey) | 10 | `` | 
 | Starting area (Diddy) | 5 | `` | 
@@ -998,8 +998,8 @@
 | ---- | ------ | ----- |
 | Around DK portal | 10 | `` | 
 | Around room by ice wall to Gorilla Gone GB | 5 | `` | 
-| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
-| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Left side of first warps up the path | 10 | `` | 
 | On crystals on each side of W4 Mini Monkey room | 10 | `` | 
 | On Mini Monkey barrel ledge | 10 | `` | 
@@ -1094,7 +1094,7 @@
 | Above Tiny and Chunky igloos (Diddy) | 10 | `l.jetpack` | 
 | Around Diddy blueprint (Diddy) | 5 | `` | 
 | Chunky igloo (Chunky) | 5 | `Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim()` | 
-| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | On small boulder switch (Chunky) | 5 | `` | 
 | Inside giant boulder (Chunky) | 5 | `Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels` | 
 | W3 (Tiny) | 5 | `` | 
@@ -1134,7 +1134,7 @@
 | In front of Snide (Chunky) | Balloon | `` | 
 | Around Tiny blueprint (Tiny) | Balloon | `` | 
 | Waterfall (Lanky) | Balloon | `` | 
-| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Above 5DC (Diddy) | Balloon | `` | 
 | In bonus barrel cave (Chunky) | Balloon | `` | 
 | In Diddy BP room (Tiny) | Balloon | `` | 
@@ -1406,9 +1406,9 @@
 | On torches on Tiny's path | 10 | `` | 
 | Path to Lanky's side | 20 | `` | 
 | On trombone pad | 5 | `l.grape and l.sprint, locations=[[5, 1.0, 2100, 94, 560]]` | 
-| In green goo gap (Tiny) | 5 | `l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny)` | 
+| In green goo gap (Tiny) | 5 | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In and out of green goo pit | Balloon | `` | 
-| Above green goo room | Balloon | `l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny)` | 
+| Above green goo room | Balloon | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In Lanky's green goo room (Lanky) | Balloon | `l.sprint or l.generalclips or l.phasewalk` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |
@@ -1573,7 +1573,7 @@
 | Around Fairy Isle | 10 | `` | 
 | Under K.Lumsy's prison | 5 | `l.swim` | 
 | Around Castle cannon | 10 | `(l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events)` | 
-| On top of K.Lumsy's prison | 5 | `( (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko))) or ((l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack) or ( (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and (l.isdonkey and l.settings.krusha_kong != Kongs.donkey and (l.settings.damage_amount != DamageAmount.ohko)) or (l.istiny and l.twirl) ) )` | 
+| On top of K.Lumsy's prison | 5 | `( (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko))) or ((l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack) or ( (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)) and (l.settings.damage_amount != DamageAmount.ohko)) or (l.istiny and l.twirl) ) )` | 
 | On top of side pipes | 15 | `` | 
 | Lower Monkeyport pad | 5 | `` | 
 | Upper Monkeyport pad | 5 | `` | 

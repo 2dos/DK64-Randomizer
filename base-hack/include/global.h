@@ -129,6 +129,10 @@ extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
 
 extern void fastWarp_playMusic(void* actor);
+extern void fixCutsceneModels(void);
+extern void updateActorHandStates(actorData* actor, int type);
+extern void updateActorHandStates_gun(actorData* actor, int type);
+extern void clearGunHandler(actorData* actor);
 
 extern void guardCatch(void);
 extern void catchWarpHandle(void);
@@ -136,6 +140,9 @@ extern void handleFootProgress(actorData* actor);
 extern void cancelCutscene(int enable_movement);
 extern void clearVultureCutscene(void);
 extern void fastWarp(void* actor, int player_index);
+
+extern int isKrushaAdjacentModel(int kong);
+extern void adjustGunBone(playerData* player);
 
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);

@@ -20,6 +20,12 @@ LogicRegions = {
         LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.CreepyCastleEntryHandler: Region("Creepy Castle Entry Handler", "This should not be hinted", Levels.CreepyCastle, False, None, [], [], [
+        TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.CreepyCastleMain: Region("Creepy Castle Main", "Castle Surroundings", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatHalfway, lambda l: not l.settings.kasplat_rando),
@@ -52,7 +58,6 @@ LogicRegions = {
         Event(Events.CastleW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
-        TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
         TransitionFront(Regions.CastleWaterfall, lambda l: True),
         TransitionFront(Regions.CastleTree, lambda l: (Events.CastleTreeOpened in l.Events) or l.phasewalk or l.CanPhaseswim(), Transitions.CastleMainToTree),
         TransitionFront(Regions.Library, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey), Transitions.CastleMainToLibraryStart),

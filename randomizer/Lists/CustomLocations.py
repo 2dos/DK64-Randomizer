@@ -9,7 +9,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting
+from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
@@ -718,7 +718,7 @@ CustomLocations = {
             z=2385,
             max_size=64,
             logic_region=Regions.LlamaTemple,
-            logic=lambda l: Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)),
+            logic=lambda l: Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)),
             group=4,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
         ),
@@ -1662,7 +1662,7 @@ CustomLocations = {
             rot_y=1137,
             max_size=64,
             logic_region=Regions.MushroomUpper,
-            logic=lambda l: ((l.istiny and l.twirl) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey)),
+            logic=lambda l: ((l.istiny and l.twirl) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=4,
         ),
         CustomLocation(
@@ -1741,7 +1741,7 @@ CustomLocations = {
             z=1522,
             max_size=24,
             logic_region=Regions.IglooArea,
-            logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny),
+            logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and (not l.isKrushaAdjacent(Kongs.tiny))),
             group=3,
             banned_types=[LocationTypes.MelonCrate],
         ),
@@ -1778,7 +1778,7 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.IglooArea,
             group=3,
-            logic=lambda l: (l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.Slam,
+            logic=lambda l: (l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
         ),
         CustomLocation(map=Maps.CrystalCaves, name="In Hidden Bonus Room", x=453, y=180, z=2571, max_size=64, logic_region=Regions.CavesBonusCave, group=2),
@@ -1875,7 +1875,7 @@ CustomLocations = {
             z=469,
             max_size=64,
             logic_region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
             group=4,
         ),
         CustomLocation(map=Maps.CrystalCaves, name="Near Kasplat Spire", x=2700, y=152, z=772, max_size=64, logic_region=Regions.CrystalCavesMain, group=4),
@@ -2399,7 +2399,7 @@ CustomLocations = {
             max_size=64,
             vanilla_patch=True,
             logic_region=Regions.CreepyCastleLobby,
-            logic=lambda l: ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)),
+            logic=lambda l: ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny)))),
             group=14,
         ),
         CustomLocation(
@@ -2745,7 +2745,7 @@ CustomLocations = {
             rot_y=3026,
             max_size=64,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)),
+            logic=lambda l: ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=1,
         ),
         CustomLocation(
@@ -2756,7 +2756,7 @@ CustomLocations = {
             z=734,
             max_size=72,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey),
+            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))),
             group=1,
         ),
         CustomLocation(map=Maps.TrainingGrounds, name="Training Grounds: Rear Cave", x=1196, y=36.4, z=2119, max_size=56, logic_region=Regions.TrainingGrounds, group=1),
@@ -2779,7 +2779,7 @@ CustomLocations = {
             z=1159,
             max_size=64,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope,
+            logic=lambda l: l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope,
             group=3,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
         ),
@@ -2791,7 +2791,7 @@ CustomLocations = {
         #     z=1324,
         #     max_size=64,
         #     logic_region=Regions.TrainingGrounds,
-        #     logic=lambda l: l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope,
+        #     logic=lambda l: l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope,
         #     group=2,
         #     banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
         # ),

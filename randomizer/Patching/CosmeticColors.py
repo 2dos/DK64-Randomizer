@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
@@ -297,6 +297,37 @@ spotlight_fish_models = [
     Model.MiniMonkeyBarrel,
     Model.HunkyChunkyBarrel,
 ]
+model_mapping = {
+    KongModels.default: 0,
+    KongModels.disco_chunky: 6,
+    KongModels.krusha: 7,
+    KongModels.krool_cutscene: 9,
+    KongModels.krool_fight: 8,
+    KongModels.cranky: 10,
+    KongModels.candy: 11,
+}
+krusha_texture_replacement = {
+    # Textures Krusha can use when he replaces various kongs (Main color, belt color)
+    Kongs.donkey: (3724, 0x177D),
+    Kongs.diddy: (4971, 4966),
+    Kongs.lanky: (3689, 0xE9A),
+    Kongs.tiny: (6014, 0xE68),
+    Kongs.chunky: (3687, 3778),
+}
+model_texture_sections = {
+    KongModels.krusha: {
+        "skin": [0x4738, 0x2E96, 0x3A5E],
+        "kong": [0x3126, 0x354E, 0x37FE, 0x41E6],
+    },
+    KongModels.krool_fight: {
+        "skin": [0x61D6, 0x63FE, 0x6786, 0x7DD6, 0x7E8E, 0x7F3E, 0x7FEE, 0x5626, 0x56E6, 0x5A86, 0x5BAE, 0x5D46, 0x5E2E, 0x5FAE, 0x69BE, 0x735E, 0x7C5E, 0x7E4E, 0x7EF6, 0x7FA6, 0x8056],
+        "kong": [0x607E, 0x7446, 0x7D46, 0x80FE],
+    },
+    # KongModels.krool_cutscene: {
+    #     "skin": [0x4A6E, 0x4CBE, 0x52AE, 0x55BE, 0x567E, 0x57E6, 0x5946, 0x5AA6, 0x5E06, 0x5EC6, 0x6020, 0x618E, 0x62F6, 0x6946, 0x6A6E, 0x6C5E, 0x6D86, 0x6F76, 0x702E, 0x70DE, 0x718E, 0x72FE, 0x4FBE, 0x51FE, 0x5C26, 0x6476, 0x6826, 0x6B26, 0x6E3E, 0x6FE6, 0x7096, 0x7146, 0x71F6, 0x733E, 0x743E],
+    #     "kong": [],
+    # }
+}
 
 
 class KongPalette:
@@ -386,11 +417,16 @@ def apply_cosmetic_colors(settings: Settings):
 
     changePatchFace(settings)
 
-    ROM_COPY.seek(settings.rom_data + 0x11C)
-    krusha_byte = int.from_bytes(ROM_COPY.readBytes(1), "big")
-    if krusha_byte == 255:
-        krusha_byte = None
-    settings.krusha_kong = krusha_byte
+    model_inverse_mapping = {}
+    for model in model_mapping:
+        val = model_mapping[model]
+        model_inverse_mapping[val] = model
+    ROM_COPY.seek(settings.rom_data + 0x1B8)
+    settings.kong_model_dk = model_inverse_mapping[int.from_bytes(ROM_COPY.readBytes(1), "big")]
+    settings.kong_model_diddy = model_inverse_mapping[int.from_bytes(ROM_COPY.readBytes(1), "big")]
+    settings.kong_model_lanky = model_inverse_mapping[int.from_bytes(ROM_COPY.readBytes(1), "big")]
+    settings.kong_model_tiny = model_inverse_mapping[int.from_bytes(ROM_COPY.readBytes(1), "big")]
+    settings.kong_model_chunky = model_inverse_mapping[int.from_bytes(ROM_COPY.readBytes(1), "big")]
     if settings.override_cosmetics:
         model_setting = RandomModels[js.document.getElementById("random_models").value]
     else:
@@ -562,19 +598,24 @@ def apply_cosmetic_colors(settings: Settings):
             colors_dict[f"{kong.lower()}_{zone.lower()}_custom_color"] = settings.__getattribute__(f"{kong.lower()}_{zone.lower()}_custom_color")
     for kong in kong_settings:
         if kong.kong_index == 4:
-            if settings.disco_chunky:
+            if settings.kong_model_chunky == KongModels.disco_chunky:
                 kong.palettes = [
                     KongPalette("main", 3777, PaletteFillType.sparkle),
                     KongPalette("other", 3778, PaletteFillType.sparkle),
                 ]
-        is_krusha = False
-        if settings.krusha_kong is not None:
-            if settings.krusha_kong == kong.kong_index:
-                is_krusha = True
+        settings_values = [
+            settings.kong_model_dk,
+            settings.kong_model_diddy,
+            settings.kong_model_lanky,
+            settings.kong_model_tiny,
+            settings.kong_model_chunky,
+        ]
+        if kong.kong_index >= 0 and kong.kong_index < len(settings_values):
+            if settings_values[kong.kong_index] in model_texture_sections:
                 base_setting = kong.palettes[0].name
                 kong.palettes = [
-                    KongPalette(base_setting, 4971, PaletteFillType.block),  # krusha_skin
-                    KongPalette(base_setting, 4966, PaletteFillType.kong),  # krusha_indicator
+                    KongPalette(base_setting, krusha_texture_replacement[kong.kong_index][0], PaletteFillType.block),  # krusha_skin
+                    KongPalette(base_setting, krusha_texture_replacement[kong.kong_index][1], PaletteFillType.kong),  # krusha_indicator
                 ]
         base_obj = {"kong": kong.kong, "zones": []}
         zone_to_colors = {}
@@ -596,7 +637,7 @@ def apply_cosmetic_colors(settings: Settings):
                 if index == 1:  # IS THE CHECKERED PATTERN
                     base_setting = f"{kong.kong}_{palette.alt_name}_colors"
                     custom_setting = f"{kong.kong}_{palette.alt_name}_custom_color"
-                if (settings.override_cosmetics and colors_dict[base_setting] != CharacterColors.vanilla) or (is_krusha and palette.fill_type == PaletteFillType.kong):
+                if (settings.override_cosmetics and colors_dict[base_setting] != CharacterColors.vanilla) or (palette.fill_type == PaletteFillType.kong):
                     color = None
                     # if this palette color is randomized, and isn't krusha's kong indicator:
                     if colors_dict[base_setting] == CharacterColors.randomized and palette.fill_type != PaletteFillType.kong:
@@ -1935,33 +1976,82 @@ def overwrite_object_colors(settings):
 
 
 ORANGE_SCALING = 0.7
+kong_index_mapping = {
+    # Regular model, instrument model
+    Kongs.donkey: (3, None),
+    Kongs.diddy: (0, 1),
+    Kongs.lanky: (5, 6),
+    Kongs.tiny: (8, 9),
+    Kongs.chunky: (11, 12),
+}
+model_index_mapping = {
+    # Regular model, instrument model
+    KongModels.krusha: (0xDA, 0xDA),
+    KongModels.disco_chunky: (0xD, 0xEC),
+    KongModels.krool_fight: (0x113, 0x113),
+    KongModels.krool_cutscene: (0x114, 0x114),
+    KongModels.cranky: (0x115, 0x115),
+    KongModels.candy: (0x116, 0x116),
+}
 
 
-def applyKrushaKong(settings: Settings) -> None:
+def applyKongModelSwaps(settings: Settings) -> None:
     """Apply Krusha Kong setting."""
     ROM_COPY = LocalROM()
-    ROM_COPY.seek(settings.rom_data + 0x11C)
-    if settings.krusha_kong is None:
-        ROM_COPY.write(255)
-    elif settings.krusha_kong < 5:
-        ROM_COPY.write(settings.krusha_kong)
-        placeKrushaHead(settings.krusha_kong)
-        changeKrushaModel(settings.krusha_kong)
-        if settings.krusha_kong == Kongs.donkey:
-            fixBaboonBlasts()
-        # Orange Switches
-        switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
-        base_im = getFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
-        orange_im = getFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
-        if settings.colorblind_mode == ColorblindMode.off:
-            orange_im = maskImageWithColor(orange_im, (0, 150, 0))
+    settings_values = [
+        settings.kong_model_dk,
+        settings.kong_model_diddy,
+        settings.kong_model_lanky,
+        settings.kong_model_tiny,
+        settings.kong_model_chunky,
+    ]
+    for index, value in enumerate(settings_values):
+        ROM_COPY.seek(settings.rom_data + 0x1B8 + index)
+        if value not in model_mapping:
+            ROM_COPY.write(0)
         else:
-            orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
-        dim_length = int(32 * ORANGE_SCALING)
-        dim_offset = int((32 - dim_length) / 2)
-        orange_im = orange_im.resize((dim_length, dim_length))
-        base_im.paste(orange_im, (dim_offset, dim_offset), orange_im)
-        writeColorImageToROM(base_im, 25, switch_faces[settings.krusha_kong], 32, 32, False, TextureFormat.RGBA5551)
+            ROM_COPY.write(model_mapping[value])
+            if value == KongModels.default:
+                continue
+            dest_data = kong_index_mapping[index]
+            source_data = model_index_mapping[value]
+            for model_subindex in range(2):
+                if dest_data[model_subindex] is not None:
+                    dest_start = js.pointer_addresses[5]["entries"][dest_data[model_subindex]]["pointing_to"]
+                    source_start = js.pointer_addresses[5]["entries"][source_data[model_subindex]]["pointing_to"]
+                    source_end = js.pointer_addresses[5]["entries"][source_data[model_subindex] + 1]["pointing_to"]
+                    source_size = source_end - source_start
+                    print(index, hex(dest_data[model_subindex]), hex(source_data[model_subindex]), hex(dest_start), hex(source_start), hex(source_end - source_start))
+                    ROM_COPY.seek(source_start)
+                    file_bytes = ROM_COPY.readBytes(source_size)
+                    ROM_COPY.seek(dest_start)
+                    ROM_COPY.writeBytes(file_bytes)
+                    # Write uncompressed size
+                    unc_table = js.pointer_addresses[26]["entries"][5]["pointing_to"]
+                    ROM_COPY.seek(unc_table + (source_data[model_subindex] * 4))
+                    unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                    ROM_COPY.seek(unc_table + (dest_data[model_subindex] * 4))
+                    ROM_COPY.writeMultipleBytes(unc_size, 4)
+            changeModelTextures(settings, index)
+            if value in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight):
+                fixModelSmallKongCollision(index)
+            if value == KongModels.krusha:
+                placeKrushaHead(index)
+                if index == Kongs.donkey:
+                    fixBaboonBlasts()
+                # Orange Switches
+                switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
+                base_im = getFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
+                orange_im = getFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
+                if settings.colorblind_mode == ColorblindMode.off:
+                    orange_im = maskImageWithColor(orange_im, (0, 150, 0))
+                else:
+                    orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
+                dim_length = int(32 * ORANGE_SCALING)
+                dim_offset = int((32 - dim_length) / 2)
+                orange_im = orange_im.resize((dim_length, dim_length))
+                base_im.paste(orange_im, (dim_offset, dim_offset), orange_im)
+                writeColorImageToROM(base_im, 25, switch_faces[index], 32, 32, False, TextureFormat.RGBA5551)
 
 
 DK_SCALE = 0.75
@@ -1989,52 +2079,103 @@ def readListAsInt(arr: list, start: int, size: int) -> int:
     return val
 
 
-def changeKrushaModel(krusha_kong: int):
+def fixModelSmallKongCollision(kong_index: int):
     """Modify Krusha Model to be smaller to enable him to fit through smaller gaps."""
-    krusha_model_start = js.pointer_addresses[5]["entries"][0xDA]["pointing_to"]
-    krusha_model_finish = js.pointer_addresses[5]["entries"][0xDB]["pointing_to"]
-    krusha_model_size = krusha_model_finish - krusha_model_start
-    ROM_COPY = LocalROM()
-    ROM_COPY.seek(krusha_model_start)
-    indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-    ROM_COPY.seek(krusha_model_start)
-    data = ROM_COPY.readBytes(krusha_model_size)
-    if indicator == 0x1F8B:
-        data = zlib.decompress(data, (15 + 32))
-    num_data = []  # data, but represented as nums rather than b strings
-    for d in data:
-        num_data.append(d)
-    base = 0x450C
-    count_0 = readListAsInt(num_data, base, 4)
-    changes = krusha_scaling[krusha_kong][:3]
-    changes_0 = [
-        krusha_scaling[krusha_kong][3],
-        krusha_scaling[krusha_kong][4],
-        krusha_scaling[krusha_kong][3],
+    for x in range(2):
+        file = kong_index_mapping[kong_index][x]
+        if file is None:
+            continue
+        krusha_model_start = js.pointer_addresses[5]["entries"][file]["pointing_to"]
+        krusha_model_finish = js.pointer_addresses[5]["entries"][file + 1]["pointing_to"]
+        krusha_model_size = krusha_model_finish - krusha_model_start
+        ROM_COPY = LocalROM()
+        ROM_COPY.seek(krusha_model_start)
+        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        ROM_COPY.seek(krusha_model_start)
+        data = ROM_COPY.readBytes(krusha_model_size)
+        if indicator == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        num_data = []  # data, but represented as nums rather than b strings
+        for d in data:
+            num_data.append(d)
+        head = readListAsInt(num_data, 0, 4)
+        ptr = readListAsInt(num_data, 0xC, 4)
+        base = (ptr - head) + 0x28 + 8
+        count_0 = readListAsInt(num_data, base, 4)
+        changes = krusha_scaling[kong_index][:3]
+        changes_0 = [
+            krusha_scaling[kong_index][3],
+            krusha_scaling[kong_index][4],
+            krusha_scaling[kong_index][3],
+        ]
+        for i in range(count_0):
+            i_start = base + 4 + (i * 0x14)
+            for coord_index, change in enumerate(changes):
+                val_i = readListAsInt(num_data, i_start + (4 * coord_index) + 4, 4)
+                val_f = change(intf_to_float(val_i))
+                val_i = int(float_to_hex(val_f), 16)
+                for di, d in enumerate(int_to_list(val_i, 4)):
+                    num_data[i_start + (4 * coord_index) + 4 + di] = d
+        section_2_start = base + 4 + (count_0 * 0x14)
+        count_1 = readListAsInt(num_data, section_2_start, 4)
+        for i in range(count_1):
+            i_start = section_2_start + 4 + (i * 0x10)
+            for coord_index, change in enumerate(changes_0):
+                val_i = readListAsInt(num_data, i_start + (4 * coord_index), 4)
+                val_f = change(intf_to_float(val_i))
+                val_i = int(float_to_hex(val_f), 16)
+                for di, d in enumerate(int_to_list(val_i, 4)):
+                    num_data[i_start + (4 * coord_index) + di] = d
+        data = bytearray(num_data)  # convert num_data back to binary string
+        if indicator == 0x1F8B:
+            data = gzip.compress(data, compresslevel=9)
+        LocalROM().seek(krusha_model_start)
+        LocalROM().writeBytes(data)
+
+
+def changeModelTextures(settings: Settings, kong_index: int):
+    """Change the textures associated with a model."""
+    settings_values = [
+        settings.kong_model_dk,
+        settings.kong_model_diddy,
+        settings.kong_model_lanky,
+        settings.kong_model_tiny,
+        settings.kong_model_chunky,
     ]
-    for i in range(count_0):
-        i_start = base + 4 + (i * 0x14)
-        for coord_index, change in enumerate(changes):
-            val_i = readListAsInt(num_data, i_start + (4 * coord_index) + 4, 4)
-            val_f = change(intf_to_float(val_i))
-            val_i = int(float_to_hex(val_f), 16)
-            for di, d in enumerate(int_to_list(val_i, 4)):
-                num_data[i_start + (4 * coord_index) + 4 + di] = d
-    section_2_start = base + 4 + (count_0 * 0x14)
-    count_1 = readListAsInt(num_data, section_2_start, 4)
-    for i in range(count_1):
-        i_start = section_2_start + 4 + (i * 0x10)
-        for coord_index, change in enumerate(changes_0):
-            val_i = readListAsInt(num_data, i_start + (4 * coord_index), 4)
-            val_f = change(intf_to_float(val_i))
-            val_i = int(float_to_hex(val_f), 16)
-            for di, d in enumerate(int_to_list(val_i, 4)):
-                num_data[i_start + (4 * coord_index) + di] = d
-    data = bytearray(num_data)  # convert num_data back to binary string
-    if indicator == 0x1F8B:
-        data = gzip.compress(data, compresslevel=9)
-    LocalROM().seek(krusha_model_start)
-    LocalROM().writeBytes(data)
+    if kong_index < 0 or kong_index >= len(settings_values):
+        return
+    model = settings_values[kong_index]
+    if model not in model_texture_sections:
+        return
+    for x in range(2):
+        file = kong_index_mapping[kong_index][x]
+        if file is None:
+            continue
+        krusha_model_start = js.pointer_addresses[5]["entries"][file]["pointing_to"]
+        krusha_model_finish = js.pointer_addresses[5]["entries"][file + 1]["pointing_to"]
+        krusha_model_size = krusha_model_finish - krusha_model_start
+        ROM_COPY = LocalROM()
+        ROM_COPY.seek(krusha_model_start)
+        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        ROM_COPY.seek(krusha_model_start)
+        data = ROM_COPY.readBytes(krusha_model_size)
+        if indicator == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        num_data = []  # data, but represented as nums rather than b strings
+        for d in data:
+            num_data.append(d)
+        # Retexture for colors
+        for tex_idx in model_texture_sections[model]["skin"]:
+            for di, d in enumerate(int_to_list(krusha_texture_replacement[kong_index][0], 2)):  # Main
+                num_data[tex_idx + di] = d
+        for tex_idx in model_texture_sections[model]["kong"]:
+            for di, d in enumerate(int_to_list(krusha_texture_replacement[kong_index][1], 2)):  # Belt
+                num_data[tex_idx + di] = d
+        data = bytearray(num_data)  # convert num_data back to binary string
+        if indicator == 0x1F8B:
+            data = gzip.compress(data, compresslevel=9)
+        LocalROM().seek(krusha_model_start)
+        LocalROM().writeBytes(data)
 
 
 def fixBaboonBlasts():
@@ -2440,18 +2581,18 @@ def writeMiscCosmeticChanges(settings):
                     hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
             # Rabbit
             rabbit_dimensions = [
-                [1, 1372], # 111A
-                [1, 1372], # 111B
-                [1, 700], # 111C
-                [1, 700], # 111D
-                [1, 1372], # 111E
-                [1, 1372], # 111F
-                [1, 1372], # 1120
-                [1, 1404], # 1121
-                [1, 348], # 1122
-                [32, 64], # 1123
-                [1, 688], # 1124
-                [64, 32], # 1125
+                [1, 1372],  # 111A
+                [1, 1372],  # 111B
+                [1, 700],  # 111C
+                [1, 700],  # 111D
+                [1, 1372],  # 111E
+                [1, 1372],  # 111F
+                [1, 1372],  # 1120
+                [1, 1404],  # 1121
+                [1, 348],  # 1122
+                [32, 64],  # 1123
+                [1, 688],  # 1124
+                [64, 32],  # 1125
             ]
             rabbit_shift = getRandomHueShift()
             for dim_index, dims in enumerate(rabbit_dimensions):
@@ -2519,7 +2660,29 @@ def writeMiscCosmeticChanges(settings):
             Model.BeaverBlue_LowPoly: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
             Model.BeaverBlue: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
             Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]),  # Primary
-            Model.Candy: EnemyColorSwap([0xFF96EB, 0x572C58, 0xB86CAA, 0xEB4C91, 0x8B2154, 0xD13B80, 0xFF77C1, 0xFF599E, 0x7F1E4C, 0x61173A, 0x902858, 0xA42E64, 0x791C49, 0x67183E, 0x9E255C, 0xC12E74, 0x572C58, 0xFF96EB, 0xB86CAA]),
+            Model.Candy: EnemyColorSwap(
+                [
+                    0xFF96EB,
+                    0x572C58,
+                    0xB86CAA,
+                    0xEB4C91,
+                    0x8B2154,
+                    0xD13B80,
+                    0xFF77C1,
+                    0xFF599E,
+                    0x7F1E4C,
+                    0x61173A,
+                    0x902858,
+                    0xA42E64,
+                    0x791C49,
+                    0x67183E,
+                    0x9E255C,
+                    0xC12E74,
+                    0x572C58,
+                    0xFF96EB,
+                    0xB86CAA,
+                ]
+            ),
             Model.Kasplat: EnemyColorSwap([0x8FD8FF, 0x182A4F, 0x0B162C, 0x7A98D3, 0x3F6CC4, 0x8FD8FF, 0x284581]),
         }
         if enemy_setting == RandomModels.extreme:
@@ -2743,7 +2906,7 @@ def applyHolidayMode(settings):
                 ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
                 ROM().writeBytes(px_data)
             # Change DK's Tie and Tiny's Hair
-            if settings.dk_tie_colors != CharacterColors.custom:
+            if settings.dk_tie_colors != CharacterColors.custom and settings.kong_model_dk == KongModels.default:
                 tie_hang = [0xFF] * 0xAB8
                 tie_hang_data = gzip.compress(bytearray(tie_hang), compresslevel=9)
                 ROM().seek(js.pointer_addresses[25]["entries"][0xE8D]["pointing_to"])
@@ -2752,7 +2915,7 @@ def applyHolidayMode(settings):
                 tie_loop_data = gzip.compress(bytearray(tie_loop), compresslevel=9)
                 ROM().seek(js.pointer_addresses[25]["entries"][0x177D]["pointing_to"])
                 ROM().writeBytes(tie_loop_data)
-            if settings.tiny_hair_colors != CharacterColors.custom:
+            if settings.tiny_hair_colors != CharacterColors.custom and settings.kong_model_tiny == KongModels.default:
                 tiny_hair = []
                 for x in range(32 * 32):
                     tiny_hair.extend([0xF8, 0x01])

@@ -6,13 +6,14 @@ from array import array
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import HardModeSelected
+from randomizer.Enums.Settings import HardModeSelected, KongModels
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
 KRoolMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
+
 
 def getBosses(settings) -> list:
     """Get list of bosses."""
@@ -141,11 +142,11 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         donkeyFactoryBossOptions = []
         chunkyFactoryBossOptions = []
         if HardBossesEnabled(settings):
-            if settings.krusha_kong != Kongs.tiny:
+            if settings.kong_model_tiny == KongModels.default:
                 tinyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-            if settings.krusha_kong != Kongs.donkey:
+            if settings.kong_model_dk == KongModels.default:
                 donkeyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-            if settings.krusha_kong != Kongs.chunky:
+            if settings.kong_model_chunky in (KongModels.default, KongModels.disco_chunky):
                 chunkyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
         factoryBossOptions = list(set(tinyFactoryBossOptions + donkeyFactoryBossOptions + chunkyFactoryBossOptions))
         # This sequence of placing Dogadon 2 and Mad Jack will only fail if both Hunky Chunky and Twirl are placed in level 7

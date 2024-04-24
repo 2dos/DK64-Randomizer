@@ -83,7 +83,8 @@ typedef struct actorData {
 	/* 0x04C */ void* model_file;
 	/* 0x050 */ char unk_50[0x58-0x50];
 	/* 0x058 */ int actorType;
-	/* 0x05C */ char unk_5C[0x60-0x5C];
+	/* 0x05C */ unsigned short interaction_bitfield;
+	/* 0x05E */ char unk_5E[0x60-0x5E];
 	/* 0x060 */ int obj_props_bitfield;
 	/* 0x064 */ int unk_64;
 	/* 0x068 */ char unk_68[0x6A-0x68];
@@ -254,7 +255,9 @@ typedef struct playerData {
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
 	/* 0x20C */ char was_gun_out;
-	/* 0x20D */ char unk_20D[0x23C - 0x20D];
+	/* 0x20D */ char unk_20D[0x210 - 0x20D];
+	/* 0x210 */ unsigned char gun_bone;
+	/* 0x211 */ char unk_211[0x23C - 0x211];
 	/* 0x23C */ short unk_rocketbarrel_value1;
 	/* 0x23E */ short unk_rocketbarrel_value2;
 	/* 0x240 */ char unk_240[0x248 - 0x240];
@@ -268,7 +271,8 @@ typedef struct playerData {
 	/* 0x2BC */ floatPos grabPos;
 	/* 0x2C8 */ char unk_2C8[0x323 - 0x2C8];
 	/* 0x323 */ char unk_rocketbarrel_value3;
-	/* 0x324 */ char unk_324[0x328 - 0x324];
+	/* 0x324 */ unsigned char player_index;
+	/* 0x325 */ char unk_324[0x328 - 0x325];
 	/* 0x328 */ actorData* krool_timer_pointer;
 	/* 0x32C */ actorData* held_actor;
 	/* 0x330 */ char unk_330[0x340 - 0x330];
@@ -1269,7 +1273,7 @@ typedef struct kong_model_struct {
 	/* 0x000 */ int actor;
 	/* 0x004 */ int kong_index;
 	/* 0x008 */ int model;
-	/* 0x00C */ int unk0;
+	/* 0x00C */ int props_or;
 } kong_model_struct;
 
 typedef struct bonus_vanilla_info {

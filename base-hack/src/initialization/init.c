@@ -300,9 +300,12 @@ float getOscillationDelta(void) {
 }
 
 void loadHooks(void) {
-	if (Rando.krusha_slot >- 1) {
-		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
-		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+	for (int i = 0; i < 5; i++) {
+		if (Rando.kong_models[i] == KONGMODEL_KRUSHA) {
+			loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
+			loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+			break;
+		}
 	}
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
@@ -434,6 +437,14 @@ void initHack(int source) {
 			KKOPhaseRandoOn = kko_phase_rando;
 			
 			initPauseMenu(); // Changes to enable more items
+			// Model Stuff
+			if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
+				KongModelData[KONG_DK].props_or = 0;
+			}
+			if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
+				KongModelData[KONG_TINY].props_or = 0;
+			}
+			fixCutsceneModels();
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
 				writeFunction(0x80660994, &getOscillationDelta);

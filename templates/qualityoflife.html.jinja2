@@ -29,6 +29,7 @@
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="shorten_boss"
+                                id="shorten_boss"
                                 display_name="Shorten Boss Fights"
                                 value="True"/>
                         Shorten Boss Fights
@@ -130,6 +131,26 @@
                         </option>
                         <option value="skip_all">
                             Skip All
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Helm Room Bonus Count</p>
+                    <select name="helm_room_bonus_count"
+                            id="helm_room_bonus_count"
+                            display_name="Helm Room Bonus Count"
+                            class="form-select center-div"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines how many bonus barrels are required to beat a helm room. If set to zero, playing the instrument pad will complete a helm room.">
+                        <option selected value="two">
+                            Two
+                        </option>
+                        <option value="one">
+                            One
+                        </option>
+                        <option value="zero">
+                            Zero
                         </option>
                     </select>
                 </div>

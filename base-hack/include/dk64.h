@@ -102,6 +102,9 @@ extern void initCharSpawnerActor(void);
 extern void cutsceneKongGenericCode(void);
 extern void DisplayTextFlagCheck(short text_file, char text_index, short flag);
 extern void handleCutsceneKong(void* actor, int index);
+extern void addToHandState(void* actor, int index);
+extern void removeFromHandState(void* actor, int index);
+extern int playGunSFX(void* actor);
 extern void playTagActorAnimation(void* actor, void* paad, int index);
 extern void alterCutsceneKongProperties(void);
 extern void unkCutsceneKongFunction(int unk0, int unk1, void* actor, int unk2, int unk3);
@@ -389,6 +392,7 @@ extern void allocateBone(void* actor, int unk0, int unk1, int unk2, int unk3);
 extern void unkProjectileCode_2(void* actor);
 extern void unkProjectileCode_3(void* actor, int unk0);
 extern void unkProjectileCode_4(void* actor, int sfx, int unk0, int unk1, int unk2);
+extern int unkGunFunction(int unk0);
 
 extern void wipeGlobalFlags(void);
 extern void setIntroStoryPlaying(int value);
@@ -416,7 +420,7 @@ extern int getSpawnerIndexOfResolvedBonus(void* unk0, int unk1, int* map_storage
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
 extern void winBonus(int unk0, int unk1);
-extern void updatePosition(void* actor, int bone, float* x, float* y, float* z);
+extern void getBonePosition(void* actor, int bone, float* x, float* y, float* z);
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 extern void setChunkLighting(float red, float green, float blue, int chunk);
 extern void unkLoadingZoneControllerFunction(short exit);
@@ -611,6 +615,8 @@ extern race_exit_struct RaceExitArray[8];
 
 extern short BossMapArray[8];
 extern char BossKongArray[16];
+
+extern void* CutsceneModelJumpTable[136];
 
 extern char KongUnlockedMenuArray[5];
 extern char FilePercentage; // Unsigned is technically correct, but -124% is more fun
