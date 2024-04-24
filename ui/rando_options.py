@@ -704,11 +704,11 @@ def plando_propagate_options(evt):
     plando_toggle_custom_fairy_locations(evt)
     plando_toggle_custom_kasplat_locations(evt)
     plando_toggle_custom_crate_locations(evt)
-    plando_change_arena_default_locations(evt)
-    plando_change_crate_default_locations(evt)
-    plando_change_fairy_default_locations(evt)
-    plando_change_kasplat_default_locations(evt)
-    plando_change_patch_default_locations(evt)
+    plando_disable_arena_custom_locations(evt)
+    plando_disable_crate_custom_locations(evt)
+    plando_disable_fairy_custom_locations(evt)
+    plando_disable_kasplat_custom_locations(evt)
+    plando_disable_patch_custom_locations(evt)
 
 
 @bind("change", "move_rando")
@@ -941,6 +941,11 @@ def item_rando_list_changed(evt):
         move_rando.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
+    plando_disable_arena_custom_locations(None)
+    plando_disable_crate_custom_locations(None)
+    plando_disable_fairy_custom_locations(None)
+    plando_disable_kasplat_custom_locations(None)
+    plando_disable_patch_custom_locations(None)
 
 
 def should_reset_select_on_preset(selectElement):
@@ -1597,73 +1602,100 @@ def plando_toggle_custom_crate_locations(evt):
 
 
 @bind("click", "crown_placement_rando")
-def plando_change_arena_default_locations(evt):
-    """Change the default arena location between random and vanilla."""
+def plando_disable_arena_custom_locations(evt):
+    """Enable or disable custom locations for battle arenas."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    crownsShuffled = False
+    for option in itemRandoPool:
+        if option.value == "crown":
+            crownsShuffled = option.selected
     randomCrowns = js.document.getElementById("crown_placement_rando").checked
-    for _, locations in CrownVanillaLocationMap.items():
-        for arena, vanillaLocation in locations.items():
-            arenaElem = js.document.getElementById(f"plando_{arena.name}_location")
-            if randomCrowns:
-                if arenaElem.value == vanillaLocation:
-                    arenaElem.value = ""
-            else:
-                if arenaElem.value == "":
-                    arenaElem.value = vanillaLocation
+    customCrownsElem = js.document.getElementById("plando_place_arenas")
+    tooltip = "Allows the user to specify locations for each battle arena."
+    if crownsShuffled and randomCrowns:
+        customCrownsElem.removeAttribute("disabled")
+    else:
+        customCrownsElem.setAttribute("disabled", "disabled")
+        customCrownsElem.checked = False
+        tooltip = "To use this feature, battle crowns must be in the item pool, and their locations must be shuffled."
+    customCrownsElem.parentElement.setAttribute("data-bs-original-title", tooltip)
 
 
 @bind("click", "random_crates")
-def plando_change_crate_default_locations(evt):
-    """Change the default melon crate location between random and vanilla."""
+def plando_disable_crate_custom_locations(evt):
+    """Enable or disable custom locations for melon crates."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    cratesShuffled = False
+    for option in itemRandoPool:
+        if option.value == "crateitem":
+            cratesShuffled = option.selected
     randomCrates = js.document.getElementById("random_crates").checked
-    for crate, vanillaLocation in MelonCrateVanillaLocationMap.items():
-        crateElem = js.document.getElementById(f"plando_{crate}_location")
-        if randomCrates:
-            if crateElem.value == vanillaLocation:
-                crateElem.value = ""
-        else:
-            if crateElem.value == "":
-                crateElem.value = vanillaLocation
+    customCratesElem = js.document.getElementById("plando_place_crates")
+    tooltip = "Allows the user to specify locations for each melon crate."
+    if cratesShuffled and randomCrates:
+        customCratesElem.removeAttribute("disabled")
+    else:
+        customCratesElem.setAttribute("disabled", "disabled")
+        customCratesElem.checked = False
+        tooltip = "To use this feature, melon crates must be in the item pool, and their locations must be shuffled."
+    customCratesElem.parentElement.setAttribute("data-bs-original-title", tooltip)
 
 
 @bind("click", "random_fairies")
-def plando_change_fairy_default_locations(evt):
-    """Change the default fairy location between random and vanilla."""
+def plando_disable_fairy_custom_locations(evt):
+    """Enable or disable custom locations for banana fairies."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    fairiesShuffled = False
+    for option in itemRandoPool:
+        if option.value == "fairy":
+            fairiesShuffled = option.selected
     randomFairies = js.document.getElementById("random_fairies").checked
-    for fairy, vanillaLocation in FairyVanillaLocationMap.items():
-        fairyElem = js.document.getElementById(f"plando_{fairy}_location")
-        if randomFairies:
-            if fairyElem.value == vanillaLocation:
-                fairyElem.value = ""
-        else:
-            if fairyElem.value == "":
-                fairyElem.value = vanillaLocation
+    customFairiesElem = js.document.getElementById("plando_place_fairies")
+    tooltip = "Allows the user to specify locations for each banana fairy."
+    if fairiesShuffled and randomFairies:
+        customFairiesElem.removeAttribute("disabled")
+    else:
+        customFairiesElem.setAttribute("disabled", "disabled")
+        customFairiesElem.checked = False
+        tooltip = "To use this feature, fairies must be in the item pool, and their locations must be shuffled."
+    customFairiesElem.parentElement.setAttribute("data-bs-original-title", tooltip)
 
 
 @bind("change", "kasplat_rando_setting")
-def plando_change_kasplat_default_locations(evt):
-    """Change the default Kasplat location between random and vanilla."""
+def plando_disable_kasplat_custom_locations(evt):
+    """Enable or disable custom locations for Kasplats."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    kasplatsShuffled = False
+    for option in itemRandoPool:
+        if option.value == "blueprint":
+            kasplatsShuffled = option.selected
     kasplatShuffle = js.document.getElementById("kasplat_rando_setting").value
-    for _, locations in KasplatLocationToRewardMap.items():
-        for kasplat, vanillaLocation in locations.items():
-            kasplatElem = js.document.getElementById(f"plando_{kasplat.name}_location")
-            vanillaValue = LocationList[vanillaLocation].name
-            if kasplatShuffle == "location_shuffle":
-                if kasplatElem.value == vanillaValue:
-                    kasplatElem.value = ""
-            else:
-                if kasplatElem.value == "":
-                    kasplatElem.value = vanillaValue
+    customKasplatsElem = js.document.getElementById("plando_place_kasplats")
+    tooltip = "Allows the user to specify locations for each Kasplat."
+    if kasplatsShuffled and kasplatShuffle == "location_shuffle":
+        customKasplatsElem.removeAttribute("disabled")
+    else:
+        customKasplatsElem.setAttribute("disabled", "disabled")
+        customKasplatsElem.checked = False
+        tooltip = "To use this feature, blueprints must be in the item pool, and Kasplat locations must be shuffled."
+    customKasplatsElem.parentElement.setAttribute("data-bs-original-title", tooltip)
 
 
 @bind("click", "random_patches")
-def plando_change_patch_default_locations(evt):
-    """Change the default dirt patch location between random and vanilla."""
+def plando_disable_patch_custom_locations(evt):
+    """Enable or disable custom locations for dirt patches."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    patchesShuffled = False
+    for option in itemRandoPool:
+        if option.value == "rainbowcoin":
+            patchesShuffled = option.selected
     randomPatches = js.document.getElementById("random_patches").checked
-    for patch, vanillaLocation in DirtPatchVanillaLocationMap.items():
-        patchElem = js.document.getElementById(f"plando_{patch}_location")
-        if randomPatches:
-            if patchElem.value == vanillaLocation:
-                patchElem.value = ""
-        else:
-            if patchElem.value == "":
-                patchElem.value = vanillaLocation
+    customPatchesElem = js.document.getElementById("plando_place_patches")
+    tooltip = "Allows the user to specify locations for each dirt patch."
+    if patchesShuffled and randomPatches:
+        customPatchesElem.removeAttribute("disabled")
+    else:
+        customPatchesElem.setAttribute("disabled", "disabled")
+        customPatchesElem.checked = False
+        tooltip = "To use this feature, rainbow coins must be in the item pool, and dirt patch locations must be shuffled."
+    customPatchesElem.parentElement.setAttribute("data-bs-original-title", tooltip)
