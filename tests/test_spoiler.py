@@ -200,8 +200,8 @@ class TestSpoiler(unittest.TestCase):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined from the preset_files.json file
         # self.settings_string = "bKEHCRorPE1ed6soQOCokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgeEQyGQlS2Nc+ER+I0eu0uXxC205Yk04IUDR6QJE0Z4q+ApBbqev2JIBk0UJooZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKRCioZyJTLmku0W8BOEWkXBT9FRFgETEUAV61xyN2q/32RQOYsRQBms2URJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LhU6YQkX0CckGGEqpzMYwcWhaVywK0OWw0JxYKjATBgRlMcU8ikyI1KAKoBLgIZOEIQEhQWG0pEVh4gIkZYJigqSFouMDJKXDY4OkxePkBCTlA"
-        settings_dict = decrypt_settings_string_enum("hbZQgsSNFZ5vOVlCAMNfjGVokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgaEQyISpbGufAfiNHrtLl8QpwxNpwQoBa0ekB0Vpq+ApBbqevwJIBU0UJokZBdZYKAOgBBgB1AQOAOwDCAB3AgSAPAFCgB5AwWAPQHDABQhp49shSPUVDOVKZc0mEi4WfoqIsAiYigCvWuORu1X++yKBzFiKAM2eRJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LnQkgkCckGpzMbTGDhaVywK0OWw0JxYKjIYCYMCMaCKpjimk8ikyI1KAN4AqgEuShASFBYYG0pEVh4iRlgmKEhaLjAySlw2ODpMXj5AQk5QUlRgYmQ")
-        #settings_dict = decrypt_settings_string_enum(self.settings_string)
+        #settings_dict = decrypt_settings_string_enum("hbZQgsSNFZ5vOVlCAMNfjGVokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgaEQyISpbGufAfiNHrtLl8QpwxNpwQoBa0ekB0Vpq+ApBbqevwJIBU0UJokZBdZYKAOgBBgB1AQOAOwDCAB3AgSAPAFCgB5AwWAPQHDABQhp49shSPUVDOVKZc0mEi4WfoqIsAiYigCvWuORu1X++yKBzFiKAM2eRJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LnQkgkCckGpzMbTGDhaVywK0OWw0JxYKjIYCYMCMaCKpjimk8ikyI1KAN4AqgEuShASFBYYG0pEVh4iRlgmKEhaLjAySlw2ODpMXj5AQk5QUlRgYmQ")
+        settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
         # Plando testing - fill the data with a json string
