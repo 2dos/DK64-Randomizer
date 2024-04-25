@@ -38,7 +38,7 @@ from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
-from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKrushaKong, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors
+from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKongModelSwaps, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
@@ -527,6 +527,10 @@ def patching_response(spoiler):
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
 
+    # Helm Required Minigames - Always set to 2 for now
+    ROM_COPY.seek(sav + 0x2D)
+    ROM_COPY.write(int(spoiler.settings.helm_room_bonus_count))
+
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         getHelmOrderHint(spoiler)
     randomize_entrances(spoiler)
@@ -574,7 +578,7 @@ def patching_response(spoiler):
         updateCryptLeverTexture(spoiler.settings)
         updateDiddyDoors(spoiler.settings)
         applyHelmDoorCosmetics(spoiler.settings)
-        applyKrushaKong(spoiler.settings)
+        applyKongModelSwaps(spoiler.settings)
 
     patchAssembly(ROM_COPY, spoiler)
 

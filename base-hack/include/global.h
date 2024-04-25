@@ -43,7 +43,6 @@ extern int getLo(void* addr);
 extern int getHi(void* addr);
 
 extern void level_order_rando_funcs(void);
-extern void unlockKongs(void);
 extern void unlockMoves(void);
 extern void tagAnywhere(void);
 extern void applyFastStart(void);
@@ -52,7 +51,6 @@ extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
 extern void overlay_changes(void);
-extern void determine_krool_order(void);
 extern void handleKRoolSaveProgress(void);
 extern void replace_zones(int init_flag);
 extern void displayNumberOnTns(void);
@@ -131,6 +129,10 @@ extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
 
 extern void fastWarp_playMusic(void* actor);
+extern void fixCutsceneModels(void);
+extern void updateActorHandStates(actorData* actor, int type);
+extern void updateActorHandStates_gun(actorData* actor, int type);
+extern void clearGunHandler(actorData* actor);
 
 extern void guardCatch(void);
 extern void catchWarpHandle(void);
@@ -138,7 +140,9 @@ extern void handleFootProgress(actorData* actor);
 extern void cancelCutscene(int enable_movement);
 extern void clearVultureCutscene(void);
 extern void fastWarp(void* actor, int player_index);
-extern void activateBananaports(void);
+
+extern int isKrushaAdjacentModel(int kong);
+extern void adjustGunBone(playerData* player);
 
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
@@ -188,6 +192,7 @@ extern void playTransformationSong(songs song, float volume);
 
 extern void updateBarrierCounts(void);
 extern void displayBarrierHUD(item_ids item, int persist);
+extern void swap_ending_cutscene_model(void);
 
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void modifyCutscenePoint(int bank, int cutscene, int point, int new_item);
@@ -197,7 +202,6 @@ extern void modifyCutscenePointTime(int bank, int cutscene, int point, int new_t
 extern void modifyCutscenePointCount(int bank, int cutscene, int point_count);
 extern void createCutscene(int bank, int cutscene, int point_count);
 extern void HelmInit(int init_stage);
-extern void initKRool(int phase);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
 extern int getObjectCollectability(int id, int unk1, int model2_type);
@@ -348,6 +352,7 @@ extern int initFile_getKongPotionBitfield(int kong);
 extern int initFile_checkTraining(int type_check, int kong_check, int value_check);
 
 extern void fixHelmTimerCorrection(void);
+extern void exitBoss(void);
 
 extern int changeStat(bonus_stat statistic, int delta);
 extern int getStat(bonus_stat statistic);
@@ -447,6 +452,8 @@ extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+extern unsigned char BigHeadMode;
+extern const actor_bitfield big_head_actors;
 
 // Items we're extern-ing for usage with "ASMPatcher.py"
 // DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING

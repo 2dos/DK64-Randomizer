@@ -948,6 +948,9 @@ writeText("menu_text.bin", menu_text)
 
 kongname_text = grabText(2)
 kongname_text.append([{"text": ["KRUSHA"]}])
+kongname_text.append([{"text": ["K. ROOL"]}])
+kongname_text.append([{"text": ["CRANKY"]}])
+kongname_text.append([{"text": ["CANDY"]}])
 writeText("kongname_text.bin", kongname_text)
 
 fairy_text = grabText(40)

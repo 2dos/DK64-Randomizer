@@ -96,7 +96,7 @@ void KongDropCode(void) {
         int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
         int kong = current_type - NEWACTOR_KONGDK;
         if (kong >= 0) {
-            handleCutsceneKong(CurrentActorPointer_0, kong + 2);
+            updateActorHandStates(CurrentActorPointer_0, kong + 2);
             playActorAnimation(CurrentActorPointer_0, AnimationTable1[(0x8B * 7) + kong]);
         }
     }

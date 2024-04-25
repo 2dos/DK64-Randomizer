@@ -142,7 +142,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
     placement_bubbles = []
     bounds = [
         RaceBound(2641, 1419, 2517, 1581, True, 1),
-        RaceBound(2517, 1581, 2352, 1402, True, 1),
+        # RaceBound(2517, 1581, 2352, 1402, True, 1),
         RaceBound(2346, 1450, 2003, 1554, True, 1),
         RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.around_arcade_stairs),
         RaceBound(2073, 1307, 2307, 1194, False, 1),

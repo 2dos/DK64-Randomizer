@@ -1132,6 +1132,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				{
 					int slot = -1;
 					int next_slot = -1;
+					int barrel_index = -1;
 					int previous_slot = -1;
 					int current_slot = -1;
 					int helm_pad_kong = -1;
@@ -1149,25 +1150,30 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case HELM_PAD_BONGO:
 							slot = 0;
 							helm_pad_kong = 0;
+							barrel_index = 0;
 						case HELM_PAD_TRIANGLE:
 							if (slot == -1) {
 								slot = 1;
 								helm_pad_kong = 4;
+								barrel_index = 3;
 							}
 						case HELM_PAD_SAX:
 							if (slot == -1) {
 								slot = 2;
 								helm_pad_kong = 3;
+								barrel_index = 2;
 							}
 						case HELM_PAD_TROMBONE:
 							if (slot == -1) {
 								slot = 3;
 								helm_pad_kong = 2;
+								barrel_index = 4;
 							}
 						case HELM_PAD_GUITAR:
 							if (slot == -1) {
 								slot = 4;
 								helm_pad_kong = 1;
+								barrel_index = 1;
 							}
 							if (slot > -1) {
 								if (index < 2) {
@@ -1209,6 +1215,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									if (MovesBase[helm_pad_kong].instrument_bitfield & 1) {
 										behaviour_pointer->next_state = 0;
 										// behaviour_pointer->current_state = 0;
+									}
+								} else if (index == 4) {
+									if (Rando.required_helm_minigames == 0) {
+										setFlag(HelmMinigameFlags[2 * barrel_index], 1, FLAGTYPE_TEMPORARY);
+										setFlag(HelmMinigameFlags[(2 * barrel_index) + 1], 1, FLAGTYPE_TEMPORARY);
+									} else {
+										PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
 									}
 								}
 							}

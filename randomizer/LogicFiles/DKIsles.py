@@ -214,7 +214,7 @@ LogicRegions = {
         Event(Events.JapesLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesJapesLobbyToMain),
-        TransitionFront(Regions.JungleJapesStart, lambda l: l.IsLevelEnterable(Levels.JungleJapes), Transitions.IslesToJapes),
+        TransitionFront(Regions.JungleJapesEntryHandler, lambda l: l.IsLevelEnterable(Levels.JungleJapes), Transitions.IslesToJapes),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -229,7 +229,7 @@ LogicRegions = {
         Event(Events.AztecLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True, Transitions.IslesAztecLobbyToMain),
-        TransitionFront(Regions.AngryAztecStart, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
+        TransitionFront(Regions.AngryAztecEntryHandler, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -292,7 +292,7 @@ LogicRegions = {
         Event(Events.FactoryLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesFactoryLobbyToMain),
-        TransitionFront(Regions.FranticFactoryStart, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
+        TransitionFront(Regions.FranticFactoryEntryHandler, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -314,7 +314,7 @@ LogicRegions = {
         Event(Events.GalleonLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: l.swim),
-        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
+        TransitionFront(Regions.GloomyGalleonEntryHandler, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -323,7 +323,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.twirl and l.istiny and l.advanced_platforming),
-        TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.advanced_platforming and (l.isdiddy or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl) or l.ischunky)),
+        TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.advanced_platforming and (l.isdiddy or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))) or (l.istiny and l.twirl) or l.ischunky)),
         TransitionFront(Regions.IslesAirspace, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
@@ -334,7 +334,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.advanced_platforming),
-        TransitionFront(Regions.CabinIsle, lambda l: l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl) or l.ischunky))),
+        TransitionFront(Regions.CabinIsle, lambda l: l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))) or (l.istiny and l.twirl) or l.ischunky))),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.advanced_platforming and l.istiny and l.twirl),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
@@ -372,7 +372,7 @@ LogicRegions = {
         Event(Events.ForestLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.CabinIsle, lambda l: True, Transitions.IslesForestLobbyToMain),
-        TransitionFront(Regions.FungiForestStart, lambda l: l.IsLevelEnterable(Levels.FungiForest), Transitions.IslesToForest),
+        TransitionFront(Regions.FungiForestEntryHandler, lambda l: l.IsLevelEnterable(Levels.FungiForest), Transitions.IslesToForest),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -389,19 +389,19 @@ LogicRegions = {
         Event(Events.CavesLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesEar, lambda l: True, Transitions.IslesCavesLobbyToMain),
-        TransitionFront(Regions.CrystalCavesMain, lambda l: l.IsLevelEnterable(Levels.CrystalCaves), Transitions.IslesToCaves),
+        TransitionFront(Regions.CrystalCavesEntryHandler, lambda l: l.IsLevelEnterable(Levels.CrystalCaves), Transitions.IslesToCaves),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", "Caves-Helm Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or ((l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)) and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or ((l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny)))) and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesKasplatCastleLobby, lambda l: not l.settings.kasplat_rando and ((l.coconut and l.donkey) or l.phasewalk)),
         LocationLogic(Locations.CastleDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.RainbowCoin_Location15, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)),
+        LocationLogic(Locations.RainbowCoin_Location15, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny)))),
         LocationLogic(Locations.CastleLobbyEnemy_Left, lambda l: True),
         LocationLogic(Locations.CastleLobbyEnemy_FarRight, lambda l: True),
         LocationLogic(Locations.CastleLobbyEnemy_NearRight, lambda l: True),
@@ -409,7 +409,7 @@ LogicRegions = {
         Event(Events.CastleLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),
+        TransitionFront(Regions.CreepyCastleEntryHandler, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -431,6 +431,13 @@ LogicRegions = {
         Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky and l.barrels)),
         Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
         Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
-        Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events)
+        Event(Events.KRoolDillo1, lambda l: not l.settings.krool_dillo1 or l.barrels),
+        Event(Events.KRoolDog1, lambda l: not l.settings.krool_dog1 or l.barrels),
+        Event(Events.KRoolJack, lambda l: not l.settings.krool_madjack or (l.Slam and l.twirl and l.tiny)),
+        Event(Events.KRoolPufftoss, lambda l: not l.settings.krool_pufftoss or True),
+        Event(Events.KRoolDog2, lambda l: not l.settings.krool_dog2 or (l.barrels and l.hunkyChunky and l.chunky)),
+        Event(Events.KRoolDillo2, lambda l: not l.settings.krool_dillo2 or l.barrels),
+        Event(Events.KRoolKKO, lambda l: not l.settings.krool_kutout or True),
+        Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events and Events.KRoolDillo1 in l.Events and Events.KRoolDillo2 in l.Events and Events.KRoolDog1 in l.Events and Events.KRoolDog2 in l.Events and Events.KRoolJack in l.Events and Events.KRoolPufftoss in l.Events and Events.KRoolKKO in l.Events)
     ], []),
 }

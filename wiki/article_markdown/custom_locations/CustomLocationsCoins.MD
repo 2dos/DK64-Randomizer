@@ -25,7 +25,7 @@
 | At the bottom of Aztec steps | 5 | `` | 
 | In little alcove in DK's ear in front of Aztec lobby | 3 | `` | 
 | On top of Aztec lobby | 4 | `` | 
-| On top of K. Lumsy's prison | 4 | `( (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko and not l.IsHardFallDamage()))) or ((l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack) or ( (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko and not l.IsHardFallDamage()))) or (l.istiny and l.twirl) ) )` | 
+| On top of K. Lumsy's prison | 4 | `( (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko and not l.IsHardFallDamage()))) or ((l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack) or ( (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and ((l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)) and l.settings.damage_amount != DamageAmount.ohko and not l.IsHardFallDamage()) or (l.istiny and l.twirl)) ) )` | 
 | On top of Fungi lobby | 3 | `` | 
 | Hanging off the edge behind Fungi lobby | 3 | `` | 
 | Around palm tree on lone fairy island | 5 | `` | 
@@ -641,7 +641,7 @@
 | ---- | ------ | ----- |
 | Near the DK Portal | 4 | `` | 
 | Crystal near level entry | 3 | `` | 
-| Behind the first ice wall | 2 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Behind the first ice wall | 2 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Around the lower thick pillar near Ice Castle | 5 | `` | 
 | Around Ice Castle Tag | 6 | `` | 
 | Ice Castle Battlements (1) | 4 | `l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny` | 
@@ -670,7 +670,7 @@
 | Near the Sprint Cabin Headphones | 5 | `` | 
 | On stalactite in the Giant Kosha area | 2 | `` | 
 | Back of Bonus Cave | 5 | `Events.CavesW3bTagged in l.Events` | 
-| Gorilla Gone Cavern | 3 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Gorilla Gone Cavern | 3 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Giant Boulder Cavern | 3 | `` | 
 | Giant Kosha Room | 3 | `` | 
 | In Snide's Cavern | 3 | `` | 
@@ -832,7 +832,7 @@
 | ---- | ------ | ----- |
 | On Goo Hands | 6 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.istiny and l.twirl` | 
 | Between Mausoleum Vines | 6 | `((l.grape and l.sprint) or l.generalclips or l.phasewalk) and l.islanky and l.trombone and l.vines` | 
-| Around Tiny Slam Pad | 2 | `(l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny) or l.phasewalk) and l.istiny` | 
+| Around Tiny Slam Pad | 2 | `(l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))) or l.phasewalk) and l.istiny` | 
 | Around Lanky Reward | 3 | `((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.vines) or l.advanced_platforming) and l.islanky` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |

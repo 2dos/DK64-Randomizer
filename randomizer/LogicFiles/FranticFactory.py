@@ -22,6 +22,12 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.FranticFactoryEntryHandler: Region("Frantic Factory Entry Handler", "This should not be hinted", Levels.FranticFactory, False, None, [], [], [
+        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.FranticFactoryStart: Region("Frantic Factory Start", "Frantic Factory Start", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryMainEnemy_LobbyLeft, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_LobbyRight, lambda l: True),
@@ -34,7 +40,6 @@ LogicRegions = {
         Event(Events.FactoryW3aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
-        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
         TransitionFront(Regions.Testing, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate) or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
         TransitionFront(Regions.BeyondHatch, lambda l: Events.HatchOpened in l.Events or l.phasewalk),
     ]),

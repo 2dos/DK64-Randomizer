@@ -24,7 +24,6 @@ void qualityOfLife_fixes(void) {
 	}
 	if (Rando.quality_of_life.vanilla_fixes) {
 		// Set some flags in-game
-		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		fixkey8();
 		if (ENABLE_SAVE_LOCK_REMOVAL) {
 			*(short*)(0x8060D60A) = 0; // Enable poll input during saving

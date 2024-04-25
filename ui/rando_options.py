@@ -1019,21 +1019,16 @@ def preset_select_changed(event):
                                 if option.value == item.name:
                                     option.selected = True
                 else:
-                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                        js.jq(f"#{key}").slider("setValue", settings[key])
-                        js.jq(f"#{key}").slider("enable")
-                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    selector = js.document.getElementById(key)
+                    # If the selector is a select box, set the selectedIndex to the value of the option
+                    if selector.tagName == "SELECT":
+                        for option in selector.options:
+                            if option.value == SettingsMap[key](settings[key]).name:
+                                # Set the value of the select box to the value of the option
+                                option.selected = True
+                                break
                     else:
-                        selector = js.document.getElementById(key)
-                        # If the selector is a select box, set the selectedIndex to the value of the option
-                        if selector.tagName == "SELECT":
-                            for option in selector.options:
-                                if option.value == SettingsMap[key](settings[key]).name:
-                                    # Set the value of the select box to the value of the option
-                                    option.selected = True
-                                    break
-                        else:
-                            js.jq(f"#{key}").val(settings[key])
+                        js.jq(f"#{key}").val(settings[key])
                     js.jq(f"#{key}").removeAttr("disabled")
             except Exception as e:
                 print(e)
@@ -1054,12 +1049,7 @@ def preset_select_changed(event):
                     for i in range(0, selector.options.length):
                         selector.item(i).selected = selector.item(i).value in presets[key]
                 else:
-                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                        js.jq(f"#{key}").slider("setValue", presets[key])
-                        js.jq(f"#{key}").slider("enable")
-                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
-                    else:
-                        js.jq(f"#{key}").val(presets[key])
+                    js.jq(f"#{key}").val(presets[key])
                     js.jq(f"#{key}").removeAttr("disabled")
             except Exception as e:
                 pass
@@ -1108,6 +1098,11 @@ def update_ui_states(event):
     toggle_medals_box(None)
     toggle_extreme_prices_option(None)
     toggle_vanilla_door_rando(None)
+    sliders = js.document.getElementsByClassName("pretty-slider")
+    for s in range(len(sliders)):
+        event = js.document.createEvent("HTMLEvents")
+        event.initEvent("change", True, False)
+        sliders[s].dispatchEvent(event)
 
 
 @bind("click", "enable_plandomizer")

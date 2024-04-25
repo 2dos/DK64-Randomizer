@@ -36,7 +36,7 @@ void cFuncLoop(void) {
 		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
 			TextItemName = Rando.caves_beetle_reward;
 		}
-		if (Rando.krusha_slot == 3) {
+		if (isKrushaAdjacentModel(3)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
 				setActorDamage(43, 1);
 			} else {
@@ -47,7 +47,7 @@ void cFuncLoop(void) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
 				int kong_target = CurrentMap - MAP_KROOLDK;
 				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
-					initiateTransition(MAP_ISLES, 0xC);
+					exitBoss();
 					Character = Rando.starting_kong;
 				}
 			}
@@ -188,7 +188,9 @@ void cFuncLoop(void) {
 }
 
 void earlyFrame(void) {
-	if (ObjectModel2Timer == 2) {
+	if (ObjectModel2Timer < 2) {
+		swap_ending_cutscene_model();
+	} else if (ObjectModel2Timer == 2) {
 		setFlag(FLAG_KROOL_INTRO_DK,1,FLAGTYPE_TEMPORARY); // DK Phase Intro
 		setFlag(FLAG_KROOL_INTRO_TINY,1,FLAGTYPE_TEMPORARY); // Tiny Phase Intro
 		if (CurrentMap == MAP_ISLES) {
@@ -270,7 +272,6 @@ void earlyFrame(void) {
 	}
 	fastWarpShockwaveFix();
 	catchWarpHandle();
-	determine_krool_order();
 	CBDing();
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();

@@ -11,6 +11,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -47,6 +48,21 @@ from randomizer.ShuffleKasplats import constants, shufflable
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
     from randomizer.LogicClasses import Sphere
+
+boss_map_names = {
+    Maps.JapesBoss: "Army Dillo 1",
+    Maps.AztecBoss: "Dogadon 1",
+    Maps.FactoryBoss: "Mad Jack",
+    Maps.GalleonBoss: "Pufftoss",
+    Maps.FungiBoss: "Dogadon 2",
+    Maps.CavesBoss: "Army Dillo 2",
+    Maps.CastleBoss: "King Kut Out",
+    Maps.KroolDonkeyPhase: "DK Phase",
+    Maps.KroolDiddyPhase: "Diddy Phase",
+    Maps.KroolLankyPhase: "Lanky Phase",
+    Maps.KroolTinyPhase: "Tiny Phase",
+    Maps.KroolChunkyPhase: "Chunky Phase",
+}
 
 
 class Spoiler:
@@ -261,7 +277,12 @@ class Spoiler:
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
-        settings["Krusha Slot"] = self.settings.krusha_ui.name
+        # settings["Krusha Slot"] = self.settings.krusha_ui.name
+        settings["DK Model"] = self.settings.kong_model_dk.name
+        settings["Diddy Model"] = self.settings.kong_model_diddy.name
+        settings["Lanky Model"] = self.settings.kong_model_lanky.name
+        settings["Tiny Model"] = self.settings.kong_model_tiny.name
+        settings["Chunky Model"] = self.settings.kong_model_chunky.name
 
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
@@ -271,6 +292,7 @@ class Spoiler:
         settings["Starting Moves Count"] = self.settings.starting_moves_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
+        settings["Helm Room Bonus Count"] = int(self.settings.helm_room_bonus_count)
         settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
@@ -337,7 +359,7 @@ class Spoiler:
         humanspoiler["End Game"]["K. Rool"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         krool_order = []
         for phase in self.settings.krool_order:
-            krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
+            krool_order.append(boss_map_names[phase])
         humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
@@ -483,17 +505,8 @@ class Spoiler:
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
-            boss_names = {
-                "JapesBoss": "Army Dillo 1",
-                "AztecBoss": "Dogadon 1",
-                "FactoryBoss": "Mad Jack",
-                "GalleonBoss": "Pufftoss",
-                "FungiBoss": "Dogadon 2",
-                "CavesBoss": "Army Dillo 2",
-                "CastleBoss": "King Kut Out",
-            }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names[Maps(self.settings.boss_maps[i]).name]
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_map_names.get(self.settings.boss_maps[i], Maps(self.settings.boss_maps[i]).name)
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}
@@ -546,6 +559,8 @@ class Spoiler:
             humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
+        if self.settings.dk_portal_location_rando:
+            humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
         if self.settings.switchsanity:
@@ -675,21 +690,13 @@ class Spoiler:
                 extra = " " + str(pearlCount)
             humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
         # Paths for K. Rool phases - also do not show up on the site, just for debugging
-        for kong, path in self.krool_paths.items():
+        for map_id, path in self.krool_paths.items():
             path_dict = {}
             for path_loc_id in path:
                 path_location = self.LocationList[path_loc_id]
                 path_item = ItemList[path_location.item]
                 path_dict[path_location.name] = path_item.name
-            phase_name = "K. Rool Donkey Phase"
-            if kong == Kongs.diddy:
-                phase_name = "K. Rool Diddy Phase"
-            elif kong == Kongs.lanky:
-                phase_name = "K. Rool Lanky Phase"
-            elif kong == Kongs.tiny:
-                phase_name = "K. Rool Tiny Phase"
-            elif kong == Kongs.chunky:
-                phase_name = "K. Rool Chunky Phase"
+            phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
         humanspoiler["Other Paths"] = {}
         for loc, path in self.other_paths.items():

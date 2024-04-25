@@ -49,6 +49,22 @@ class BananaportRando(IntEnum):
     crossmap_decoupled = 3
 
 
+class BigHeadMode(IntEnum):
+    """Determines which big head mode setting is used.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: Normal head size.
+    big: Very big heads.
+    small: Very small heads.
+    """
+
+    off = 0
+    big = 1
+    small = 2
+
+
 class CBRando(IntEnum):
     """Determines the level of CB Rando utilized.
 
@@ -324,6 +340,22 @@ class HelmSetting(IntEnum):
     skip_all = 2
 
 
+class HelmBonuses(IntEnum):
+    """Determines how many barrels are necessary to beat in order to defeat a helm room.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    zero: Room is completed upon playing the instrument pad.
+    one: Room is completed upon beating the left-most barrel in each room.
+    two: Both barrels are required to complete the room.
+    """
+
+    zero = 0
+    one = 1
+    two = 2
+
+
 class HardModeSelected(IntEnum):
     """Various hard mode changes that can be applied.
 
@@ -400,6 +432,18 @@ class KrushaUi(IntEnum):
     tiny = 4
     chunky = 5
     random = 6
+
+
+class KongModels(IntEnum):
+    """Models for each kong."""
+
+    default = 0
+    disco_chunky = 1
+    krusha = 2
+    krool_fight = 3
+    krool_cutscene = 4
+    cranky = 5
+    candy = 6
 
 
 class LevelRandomization(IntEnum):
@@ -597,6 +641,7 @@ class RemovedBarriersSelected(IntEnum):
     forest_green_tunnel = 12
     forest_yellow_tunnel = 13
     caves_igloo_pads = 14
+    caves_ice_walls = 15
 
 
 class ShockwaveStatus(IntEnum):
@@ -731,6 +776,7 @@ class SpoilerHints(IntEnum):
 SettingsMap = {
     "activate_all_bananaports": ActivateAllBananaports,
     "bananaport_rando": BananaportRando,
+    "big_head_mode": BigHeadMode,
     "bonus_barrels": MinigameBarrels,
     "cb_rando": CBRando,
     "chunky_colors": CharacterColors,
@@ -752,6 +798,7 @@ SettingsMap = {
     "glitches_selected": GlitchesSelected,
     "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
+    "helm_room_bonus_count": HelmBonuses,
     "helm_setting": HelmSetting,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
@@ -784,6 +831,11 @@ SettingsMap = {
     "starting_kong": Kongs,
     "remove_barriers_selected": RemovedBarriersSelected,
     "faster_checks_selected": FasterChecksSelected,
+    "kong_model_dk": KongModels,
+    "kong_model_diddy": KongModels,
+    "kong_model_lanky": KongModels,
+    "kong_model_tiny": KongModels,
+    "kong_model_chunky": KongModels,
 }
 
 
@@ -969,6 +1021,13 @@ class SettingsStringEnum(IntEnum):
     disable_hard_minigames = 167
     chaos_blockers = 168
     mermaid_gb_pearls = 169
+    kong_model_dk = 170
+    kong_model_diddy = 171
+    kong_model_lanky = 172
+    kong_model_tiny = 173
+    kong_model_chunky = 174
+    helm_room_bonus_count = 175
+    dk_portal_location_rando = 176
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -979,6 +1038,7 @@ DeprecatedSettings = {
     SettingsStringEnum.choose_starting_moves,
     SettingsStringEnum.open_levels,
     SettingsStringEnum.high_req,
+    SettingsStringEnum.krusha_ui,
 }
 
 
@@ -1040,6 +1100,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
+    SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
@@ -1065,6 +1126,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.helm_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.helm_phase_order_rando: SettingsStringDataType.bool,
     SettingsStringEnum.helm_random: SettingsStringDataType.bool,
+    SettingsStringEnum.helm_room_bonus_count: HelmBonuses,
     SettingsStringEnum.helm_setting: HelmSetting,
     SettingsStringEnum.helmhurry_list_banana_medal: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_battle_crown: SettingsStringDataType.int16,
@@ -1087,6 +1149,11 @@ SettingsStringTypeMap = {
     SettingsStringEnum.kasplat_rando_setting: KasplatRandoSetting,
     SettingsStringEnum.key_8_helm: SettingsStringDataType.bool,
     SettingsStringEnum.keys_random: SettingsStringDataType.bool,
+    SettingsStringEnum.kong_model_dk: KongModels,
+    SettingsStringEnum.kong_model_diddy: KongModels,
+    SettingsStringEnum.kong_model_lanky: KongModels,
+    SettingsStringEnum.kong_model_tiny: KongModels,
+    SettingsStringEnum.kong_model_chunky: KongModels,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,

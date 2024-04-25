@@ -11,6 +11,7 @@ import zlib
 import create_helm_geo
 import generate_disco_models
 import generate_watch_file
+import merge_models
 import model_fix
 from pull_guns_and_instruments import pullHandModels
 from model_port import loadNewModels
@@ -556,6 +557,13 @@ shop_face_array = [
     "fairy",
     "rainbow_coin",
     "fake_gb_shop",
+    "head32_dillo1",
+    "head32_dog1",
+    "head32_mj",
+    "head32_pufftoss",
+    "head32_dog2",
+    "head32_dillo2",
+    "head32_kko",
 ]
 for x, shop in enumerate(shop_face_array):
     data = File(
@@ -967,7 +975,7 @@ colorblind_changes = [
     [0xECF, 0xECF, 1, 1372],  # Funky Camo
     [0xED6, 0xED6, 1, 1372],  # Funky Camo
     [0xEDF, 0xEDF, 1, 1372],  # Funky Camo
-    [0xEF7, 0xEF8, 32, 32], # Snake Skin
+    [0xEF7, 0xEF8, 32, 32],  # Snake Skin
 ]
 
 kremling_dimensions = [
@@ -992,18 +1000,18 @@ kremling_dimensions = [
 ]
 
 rabbit_dimensions = [
-    [1, 1372], # 111A
-    [1, 1372], # 111B
-    [1, 700], # 111C
-    [1, 700], # 111D
-    [1, 1372], # 111E
-    [1, 1372], # 111F
-    [1, 1372], # 1120
-    [1, 1404], # 1121
-    [1, 348], # 1122
-    [32, 64], # 1123
-    [1, 688], # 1124
-    [64, 32], # 1125
+    [1, 1372],  # 111A
+    [1, 1372],  # 111B
+    [1, 700],  # 111C
+    [1, 700],  # 111D
+    [1, 1372],  # 111E
+    [1, 1372],  # 111F
+    [1, 1372],  # 1120
+    [1, 1404],  # 1121
+    [1, 348],  # 1122
+    [32, 64],  # 1123
+    [1, 688],  # 1124
+    [64, 32],  # 1125
 ]
 
 krobot_textures = [[[32, 44], [0xFAB, 0xFAD, 0xFA9, 0xFA8, 0xFAA, 0xFAF]], [[32, 32], [0xFAC, 0xFB1, 0xFAE, 0xFB0]]]
@@ -1138,9 +1146,16 @@ model_changes = [
     ModelChange(0x110, "shrink_candy.bin"),
     ModelChange(0x111, "shrink_snide.bin"),
     ModelChange(0x112, FINAL_RACE_HOOP),
+    ModelChange(0x113, "k_rool_fight.bin"),
+    ModelChange(0x114, "k_rool_cutscene.bin"),
+    ModelChange(0x115, "cranky_model.bin"),
+    ModelChange(0x116, "candy_model.bin"),
+    ModelChange(0x117, FINAL_RACE_HOOP),  # Used to set an endpoint
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
+
+KONG_MODEL_EXP_SIZE = 0x5000
 
 for x in model_changes:
     data = File(
@@ -1155,7 +1170,21 @@ for x in model_changes:
     if x.model_index == 0xDA:
         data.target_compressed_size = 0x4740
         data.target_uncompressed_size = 0x4740
+    if x.model_index in (0, 1, 3, 5, 6, 8, 9):
+        data.target_compressed_size = KONG_MODEL_EXP_SIZE
+        data.target_uncompressed_size = KONG_MODEL_EXP_SIZE
     file_dict.append(data)
+
+for x in (0xB, 0xC):
+    file_dict.append(
+        File(
+            name=f"Model {x}",
+            pointer_table_index=TableNames.ActorGeometry,
+            file_index=x,
+            source_file=f"model_exp_{x}.bin",
+            target_size=KONG_MODEL_EXP_SIZE,
+        )
+    )
 
 portal_image_order = [["SE", "NE", "SW", "NW"], ["NW", "SW", "NE", "SE"]]
 for x in range(2):
@@ -1752,6 +1781,13 @@ with open(newROMName, "r+b") as fh:
         "funky_head",
         "snide_head",
         "cranky_head",
+        "head32_dillo1",
+        "head32_dog1",
+        "head32_mj",
+        "head32_pufftoss",
+        "head32_dog2",
+        "head32_dillo2",
+        "head32_kko",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

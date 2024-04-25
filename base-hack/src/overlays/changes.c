@@ -73,10 +73,6 @@ void parseCutsceneData(void) {
 	 */
 	resetDisplayedMusic();
 	wipeCounterImageCache();
-	if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
-		int phase = CurrentMap - MAP_KROOLDK;
-		initKRool(phase);
-	}
 	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}

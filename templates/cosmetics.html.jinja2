@@ -80,6 +80,26 @@
                             </option>
                         </select>
                     </div>
+                    <div class="item-select">
+                        <p class="select-title">Head Size</p>
+                        <select name="big_head_mode"
+                                id="big_head_mode"
+                                display_name="Head Size"
+                                class="form-select center-div"
+                                aria-label="Head Size"
+                                data-toggle="tooltip"
+                                title="Changes the size of the various character's head to be bigger or smaller than usual">
+                            <option selected id="off" value="off" title="">
+                                Regular
+                            </option>
+                            <option id="big" value="big">
+                                Big Head Mode
+                            </option>
+                            <option id="small" value="small">
+                                Small Head Mode
+                            </option>
+                        </select>
+                    </div>
                     <div class="item-color-select">
                         <div class="color-selector">
                             <p class="select-title">Golden Banana Skin Color</p>
@@ -104,7 +124,6 @@
                 </div>
                 <div class="flex-container">
                     {{ toggle_input("misc_cosmetics", "Random Miscellaneous Cosmetics", "Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors") }}
-                    {{ toggle_input("disco_chunky", "Disco Chunky", "Chunky will be replaced with his 'disco' variant that appears at the start of the DK Rap.") }}
                     {{ toggle_input("dark_mode_textboxes", "Dark Mode UI", "Text bubbles will be darkened, with the font brightened. The DPad Graphic will be darkened.") }}
                     <div class="spacer"></div>
                     <div class="form-check form-switch item-switch holiday" hidden data-toggle="tooltip"
@@ -116,7 +135,7 @@
                             name="holiday_setting_offseason"
                             id="holiday_setting_offseason"
                             display_name="Holiday Mode"
-                            value="True" checked />
+                            value="True" />
                         <label class="form-check-label" for="holiday_setting_offseason">Holiday Mode</label>
                     </div>
                     <div class="spacer holiday" hidden></div>

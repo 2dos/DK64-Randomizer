@@ -43,6 +43,7 @@ from randomizer.Enums.Settings import (
     TrainingBarrels,
     WinCondition,
     HelmSetting,
+    KongModels,
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types, BarrierItems
@@ -508,7 +509,7 @@ class LogicVarHolder:
 
     def CanMoonkick(self):
         """Determine whether the player can perform a moonkick."""
-        return self.moonkicks and self.isdonkey and self.settings.krusha_kong != Kongs.donkey
+        return self.moonkicks and self.isdonkey and self.settings.kong_model_dk == KongModels.default
 
     def CanOStandTBSNoclip(self):
         """Determine whether the player can perform Orangstand TBS Noclip."""
@@ -520,7 +521,7 @@ class LogicVarHolder:
 
     def CanGetOnCannonGamePlatform(self):
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
-        return Events.WaterRaised in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.krusha_kong != Kongs.lanky)))
+        return Events.WaterRaised in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.kong_model_lanky == KongModels.default)))
 
     def CanSkew(self, swim, kong_req=Kongs.any):
         """Determine whether the player can skew."""
@@ -920,13 +921,24 @@ class LogicVarHolder:
         else:
             return True
 
+    def isKrushaAdjacent(self, kong: Kongs):
+        """Check if player is a krusha-adjacent model."""
+        settings_values = [
+            self.settings.kong_model_dk,
+            self.settings.kong_model_diddy,
+            self.settings.kong_model_lanky,
+            self.settings.kong_model_tiny,
+            self.settings.kong_model_chunky,
+        ]
+        return settings_values[kong] in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight)
+
     def IsBossBeatable(self, level):
         """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
         requiredKong = self.settings.boss_kongs[level]
         bossFight = self.settings.boss_maps[level]
         # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesEnabled() and self.settings.krusha_kong != Kongs.tiny):
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesEnabled() and self.settings.kong_model_tiny == KongModels.default):
             hasRequiredMoves = self.twirl and self.Slam
         elif bossFight == Maps.FactoryBoss:
             hasRequiredMoves = self.Slam
@@ -936,6 +948,14 @@ class LogicVarHolder:
             hasRequiredMoves = self.barrels
         elif bossFight == Maps.CastleBoss and self.IsLavaWater():
             hasRequiredMoves = self.Melons >= 3
+        elif bossFight == Maps.KroolDiddyPhase:
+            hasRequiredMoves = self.jetpack and self.peanut
+        elif bossFight == Maps.KroolLankyPhase:
+            hasRequiredMoves = self.barrels and self.trombone
+        elif bossFight == Maps.KroolTinyPhase:
+            hasRequiredMoves = self.mini and self.feather
+        elif bossFight == Maps.KroolChunkyPhase:
+            hasRequiredMoves = self.punch and self.superSlam and self.hunkyChunky and self.gorillaGone
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
         if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough

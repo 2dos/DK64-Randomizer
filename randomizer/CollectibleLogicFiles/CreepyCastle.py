@@ -105,10 +105,10 @@ LogicRegions = {
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk), None, 1),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny), None, 1),  # In Green Goo Gap
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))), None, 1),  # In Green Goo Gap
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk and ((l.trombone and l.vines) or l.advanced_platforming), None, 3),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny) or l.phasewalk, None, 2),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))) or l.phasewalk, None, 2),
     ],
     Regions.UpperCave: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 30),

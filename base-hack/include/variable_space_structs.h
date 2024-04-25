@@ -4,7 +4,7 @@ typedef struct varspace {
 	/* 0x016 */ char unk_16[8];
 	/* 0x01E */ short key_flags[7]; // key given in each level. (Item 1 is Japes etc. flags=[0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D] <- Item 1 of this array is Key 1 etc.)
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
-	/* 0x02D */ char unk_2D;
+	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
 	/* 0x02F */ char unk_2F;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
@@ -26,7 +26,7 @@ typedef struct varspace {
 	/* 0x052 */ char disable_wrinkly_kong_requirement; // Disable Kongs being required to access a wrinkly door
 	/* 0x053 */ unsigned char ammo_belt_prices[2]; // Array of ammo belt prices: [1,2]. 1 item for each level of ammo belt
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost
-	/* 0x058 */ char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
+	/* 0x058 */ unsigned char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
 	/* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On, 2 = Just Castle Cannon
 	/* 0x05E */ LZREntrance aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
 	/* 0x060 */ char unk_60[10]; 
@@ -144,14 +144,15 @@ typedef struct varspace {
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
-	/* 0x1B8 */ char unk_1b8[0x1C6 - 0x1B8];
+	/* 0x1B8 */ unsigned char kong_models[5];
+	/* 0x1BD */ char unk_1bd[0x1C6 - 0x1BD];
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
 	/* 0x1DC */ unsigned char galleon_water_raised;
 	/* 0x1DD */ unsigned char krool_requirements; // K Rool bitfield 8765 4321
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
-	/* 0x1E1 */ char unk_1e1;
+	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ char unk_1e3[0x1E7-0x1e3];
 	/* 0x1E7 */ char balloon_sound;

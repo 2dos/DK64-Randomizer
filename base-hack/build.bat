@@ -18,10 +18,8 @@ IF NOT DEFINED python_ver (set python_ver="python3")
 IF DEFINED test_on (echo "Building patch file" >> rom/build.log)  ELSE (set test_on="")
 echo.
 if %test_on% == --test (
-	call :runscript "Fixing Krusha's size", "build\write_krusha_variables.py"
 	echo 0 > Build/BuildingBPS.txt
 ) else (
-	echo -1 > krusha_setting.txt
 	echo 1 > Build/BuildingBPS.txt
 )
 call :runscript "Define Heap", "build\heap.py"
@@ -91,7 +89,6 @@ del rom\dk64-randomizer-base.wch
 del rom\patch.bps
 
 :finish
-del krusha_setting.txt
 del Build\BuildingBPS.txt
 call :runscript "Removing unneccessary files", "build\cleanup.py"
 

@@ -672,6 +672,12 @@ for x in range(2):
 crosshair_im = Image.open(f"{hash_dir}gun_crosshair.png")
 stroke(crosshair_im, (0, 0, 0)).save(f"{disp_dir}crosshair.png")
 
+# Boss Heads
+bosses = ["dillo1", "dillo2", "dog1", "dog2", "kko", "mj", "pufftoss"]
+for boss in bosses:
+    boss_im = Image.open(f"{disp_dir}head_{boss}.png").resize((32, 32))
+    boss_im.save(f"{disp_dir}head32_{boss}.png")
+
 rmve = [
     "01234.png",
     "56789.png",

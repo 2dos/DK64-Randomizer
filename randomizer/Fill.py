@@ -903,16 +903,23 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
         if spoiler.settings.win_condition == WinCondition.beat_krool:
-            if Kongs.donkey in spoiler.settings.krool_order and Events.KRoolDonkey not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.donkey].append(locationId)
-            if Kongs.diddy in spoiler.settings.krool_order and Events.KRoolDiddy not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.diddy].append(locationId)
-            if Kongs.lanky in spoiler.settings.krool_order and Events.KRoolLanky not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.lanky].append(locationId)
-            if Kongs.tiny in spoiler.settings.krool_order and Events.KRoolTiny not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.tiny].append(locationId)
-            if Kongs.chunky in spoiler.settings.krool_order and Events.KRoolChunky not in spoiler.LogicVariables.Events:
-                spoiler.krool_paths[Kongs.chunky].append(locationId)
+            final_boss_associated_event = {
+                Maps.JapesBoss: Events.KRoolDillo1,
+                Maps.AztecBoss: Events.KRoolDog1,
+                Maps.FactoryBoss: Events.KRoolJack,
+                Maps.GalleonBoss: Events.KRoolPufftoss,
+                Maps.FungiBoss: Events.KRoolDog2,
+                Maps.CavesBoss: Events.KRoolDillo2,
+                Maps.CastleBoss: Events.KRoolKKO,
+                Maps.KroolDonkeyPhase: Events.KRoolDonkey,
+                Maps.KroolDiddyPhase: Events.KRoolDiddy,
+                Maps.KroolLankyPhase: Events.KRoolLanky,
+                Maps.KroolTinyPhase: Events.KRoolTiny,
+                Maps.KroolChunkyPhase: Events.KRoolChunky,
+            }
+            for map_id in final_boss_associated_event:
+                if map_id in spoiler.settings.krool_order and final_boss_associated_event[map_id] not in spoiler.LogicVariables.Events:
+                    spoiler.krool_paths[map_id].append(locationId)
         # Put the item back for future calculations
         location.PlaceItem(spoiler, item_id)
     # After everything is calculated, get rid of paths for false WotH locations
@@ -2859,8 +2866,9 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.vanilla_door_rando:
         ShuffleVanillaDoors(spoiler)
-    elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles:
-        ShuffleDoors(spoiler)
+        ShuffleDoors(spoiler, True)
+    elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando:
+        ShuffleDoors(spoiler, False)
     if spoiler.settings.enable_progressive_hints:
         SetProgressiveHintDoorLogic(spoiler)
     # Handle Crown Placement

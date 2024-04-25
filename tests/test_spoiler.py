@@ -11,7 +11,7 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
                                        CrownEnemyRando, DamageAmount,
                                        ExtraCutsceneSkips, FillAlgorithm,
-                                       FreeTradeSetting, HelmDoorItem,
+                                       FreeTradeSetting, HelmDoorItem, HelmBonuses,
                                        HelmSetting, KasplatRandoSetting,
                                        KrushaUi, LevelRandomization, LogicType,
                                        MicrohintsEnabled, MoveRando,
@@ -104,7 +104,7 @@ class TestSpoiler(unittest.TestCase):
         data["win_condition"] = WinCondition.beat_krool  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
         data["free_trade_setting"] = FreeTradeSetting.none  # none | not_blueprints | major_collectibles
         data["activate_all_bananaports"] = ActivateAllBananaports.isles  # usually isles, could be all or off
-        data["krusha_ui"] = KrushaUi.dk
+        # data["krusha_ui"] = KrushaUi.dk # Deprecated
 
         # Difficulty
         data["no_healing"] = False
@@ -186,6 +186,7 @@ class TestSpoiler(unittest.TestCase):
 
         data["wrinkly_hints"] = WrinklyHints.standard
         data["helm_setting"] = HelmSetting.skip_start
+        data["helm_room_bonus_count"] = HelmBonuses.two
         data["microhints_enabled"] = MicrohintsEnabled.base  # off/base/all
         data["more_cutscene_skips"] = ExtraCutsceneSkips.auto
 

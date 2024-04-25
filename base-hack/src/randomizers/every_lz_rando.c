@@ -21,9 +21,10 @@
 */
 
 void replace_zones(int init_flag) {
-	if (Rando.randomize_more_loading_zones) {
+	int more_lz_byte = Rando.randomize_more_loading_zones;
+	if (more_lz_byte) {
 		if (init_flag) {
-			if (Rando.randomize_more_loading_zones == 1) {
+			if (more_lz_byte == 1) {
 				for (int i = 0; i < 8; i++) {
 					if (i < 7) {
 						WorldArray[i] = Rando.enter_levels[i].map;
@@ -50,7 +51,8 @@ void replace_zones(int init_flag) {
 				}
 			}
 		}
-	} else {
+	}
+	if ((more_lz_byte == 0) || (more_lz_byte == 2)) {
 		if (init_flag) {
 			for (int i = 0; i < 9; i++) {
 				ReplacementLobbiesArray[i] = LobbiesArray[i];

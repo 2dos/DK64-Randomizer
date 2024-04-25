@@ -4,7 +4,18 @@ import js
 import random
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
 from randomizer.Settings import Settings
-from randomizer.Enums.Settings import FasterChecksSelected, CBRando, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected, ColorblindMode
+from randomizer.Enums.Settings import (
+    FasterChecksSelected,
+    CBRando,
+    RemovedBarriersSelected,
+    GalleonWaterSetting,
+    ActivateAllBananaports,
+    FreeTradeSetting,
+    HardModeSelected,
+    FungiTimeSetting,
+    MiscChangesSelected,
+    ColorblindMode,
+)
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
@@ -56,6 +67,131 @@ NORMAL_KEY_FLAGS = [
     0x17C,  # Key 8
 ]
 ENABLE_FILENAME = False
+
+WARPS_JAPES = [
+    0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
+    0x21,  # FLAG_WARP_JAPES_W1_FAR,
+    0x22,  # FLAG_WARP_JAPES_W2_HIGH,
+    0x23,  # FLAG_WARP_JAPES_W2_LOW,
+    0x24,  # FLAG_WARP_JAPES_W3_RIGHT,
+    0x25,  # FLAG_WARP_JAPES_W3_LEFT,
+    0x28,  # FLAG_WARP_JAPES_W4_CLOSE,
+    0x29,  # FLAG_WARP_JAPES_W4_CRANKY,
+    0x26,  # FLAG_WARP_JAPES_W5_SHELLHIVE,
+    0x27,  # FLAG_WARP_JAPES_W5_TOP,
+]
+
+WARPS_AZTEC = [
+    0x4F,  # FLAG_WARP_AZTEC_W1_PORTAL,
+    0x50,  # FLAG_WARP_AZTEC_W1_CANDY,
+    0x51,  # FLAG_WARP_AZTEC_W2_TEMPLE,
+    0x52,  # FLAG_WARP_AZTEC_W2_TOTEM,
+    0x53,  # FLAG_WARP_AZTEC_W3_CRANKY,
+    0x54,  # FLAG_WARP_AZTEC_W3_TOTEM,
+    0x55,  # FLAG_WARP_AZTEC_W4_TOTEM,
+    0x56,  # FLAG_WARP_AZTEC_W4_FUNKY,
+    0x57,  # FLAG_WARP_AZTEC_W5_TOTEM,
+    0x2F5,  # AZTEC_SNOOPW5, # Custom Flag
+    0x58,  # FLAG_WARP_LLAMA_W1_HIGH,
+    0x59,  # FLAG_WARP_LLAMA_W1_LOW,
+    0x5A,  # FLAG_WARP_LLAMA_W2_FAR,
+    0x5B,  # FLAG_WARP_LLAMA_W2_LOW,
+]
+
+WARPS_FACTORY = [
+    0x8D,  # FLAG_WARP_FACTORY_W1_FOYER,
+    0x8E,  # FLAG_WARP_FACTORY_W1_STORAGE,
+    0x8F,  # FLAG_WARP_FACTORY_W2_FOYER,
+    0x90,  # FLAG_WARP_FACTORY_W2_RND,
+    0x91,  # FLAG_WARP_FACTORY_W3_FOYER,
+    0x92,  # FLAG_WARP_FACTORY_W3_SNIDE,
+    0x93,  # FLAG_WARP_FACTORY_W4_TOP,
+    0x94,  # FLAG_WARP_FACTORY_W4_BOTTOM,
+    0x95,  # FLAG_WARP_FACTORY_W5_FUNKY,
+    0x96,  # FLAG_WARP_FACTORY_W5_ARCADE,
+]
+
+WARPS_GALLEON = [
+    0xB1,  # FLAG_WARP_GALLEON_W1_LIGHTHOUSE,
+    0xB2,  # FLAG_WARP_GALLEON_W1_CRANKY,
+    0xAB,  # FLAG_WARP_GALLEON_W2_2DS,
+    0xAC,  # FLAG_WARP_GALLEON_W2_CRANKY,
+    0xAD,  # FLAG_WARP_GALLEON_W3_SNIDE,
+    0xAE,  # FLAG_WARP_GALLEON_W3_CRANKY,
+    0xAF,  # FLAG_WARP_GALLEON_W4_SEAL,
+    0x2F6,  # GALLEON_TOWERW4, # Activating the gold tower warp despawns Diddy's GB
+    0xA9,  # FLAG_WARP_GALLEON_W5_5DS,
+    0xAA,  # FLAG_WARP_GALLEON_W5_LIGHTHOUSE,
+]
+
+WARPS_FUNGI = [
+    0xED,  # FLAG_WARP_FUNGI_W1_MILL,
+    0xEE,  # FLAG_WARP_FUNGI_W1_CLOCK,
+    0xEF,  # FLAG_WARP_FUNGI_W2_CLOCK,
+    0xF0,  # FLAG_WARP_FUNGI_W2_FUNKY,
+    0xF1,  # FLAG_WARP_FUNGI_W3_CLOCK,
+    0xF2,  # FLAG_WARP_FUNGI_W3_MUSH,
+    0xF3,  # FLAG_WARP_FUNGI_W4_CLOCK,
+    0xF4,  # FLAG_WARP_FUNGI_W4_OWL,
+    0xF5,  # FLAG_WARP_FUNGI_W5_LOW,
+    0xF6,  # FLAG_WARP_FUNGI_W5_HIGH,
+]
+
+WARPS_CAVES = [
+    0x11B,  # FLAG_WARP_CAVES_W1_5DI,
+    0x11C,  # FLAG_WARP_CAVES_W1_PORTAL,
+    0x11D,  # FLAG_WARP_CAVES_W2_PORTAL,
+    0x11E,  # FLAG_WARP_CAVES_W2_FAR,
+    0x123,  # FLAG_WARP_CAVES_W3_5DI,
+    0x2F7,  # CAVES_HIDDENW3,
+    0x11F,  # FLAG_WARP_CAVES_W4_FAR,
+    0x120,  # FLAG_WARP_CAVES_W4_5DI,
+    0x121,  # FLAG_WARP_CAVES_W5_5DC,
+    0x122,  # FLAG_WARP_CAVES_W5_PILLAR,
+]
+
+WARPS_CASTLE = [
+    0x147,  # FLAG_WARP_CASTLE_W1_HUB,
+    0x148,  # FLAG_WARP_CASTLE_W1_FAR,
+    0x149,  # FLAG_WARP_CASTLE_W2_HUB,
+    0x14A,  # FLAG_WARP_CASTLE_W2_HIGH,
+    0x14B,  # FLAG_WARP_CASTLE_W3_HUB,
+    0x14C,  # FLAG_WARP_CASTLE_W3_HIGH,
+    0x14D,  # FLAG_WARP_CASTLE_W4_HUB,
+    0x14E,  # FLAG_WARP_CASTLE_W4_HIGH,
+    0x14F,  # FLAG_WARP_CASTLE_W5_HUB,
+    0x150,  # FLAG_WARP_CASTLE_W5_HIGH,
+    0x151,  # FLAG_WARP_CRYPT_W1_CLOSE,
+    0x152,  # FLAG_WARP_CRYPT_W1_FAR,
+    0x153,  # FLAG_WARP_CRYPT_W2_CLOSE,
+    0x154,  # FLAG_WARP_CRYPT_W2_FAR,
+    0x155,  # FLAG_WARP_CRYPT_W3_CLOSE,
+    0x156,  # FLAG_WARP_CRYPT_W3_FAR,
+]
+
+WARPS_ISLES = [
+    0x1B1,  # FLAG_WARP_ISLES_W1_RING,
+    0x1B2,  # FLAG_WARP_ISLES_W1_FAR,
+    0x1B3,  # FLAG_WARP_ISLES_W2_RING,
+    0x1B4,  # FLAG_WARP_ISLES_W2_FAR,
+    0x1B5,  # FLAG_WARP_ISLES_W3_RING,
+    0x1B6,  # FLAG_WARP_ISLES_W3_FAR,
+    0x1B7,  # FLAG_WARP_ISLES_W4_RING,
+    0x1B8,  # FLAG_WARP_ISLES_W4_HIGH,
+    0x1BA,  # FLAG_WARP_ISLES_W5_RING,
+    0x1B9,  # FLAG_WARP_ISLES_W5_FAR,
+]
+
+WARPS_TOTAL = [
+    WARPS_JAPES,
+    WARPS_AZTEC,
+    WARPS_FACTORY,
+    WARPS_GALLEON,
+    WARPS_FUNGI,
+    WARPS_CAVES,
+    WARPS_CASTLE,
+    WARPS_ISLES,
+]
 
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
@@ -180,6 +316,7 @@ def getLoSym(ref: str) -> int:
     if label_address is None:
         raise Exception(f"Couldn't find hook {ref}.")
     return getLo(label_address)
+
 
 def getVar(ref: str) -> int:
     """Get variable value."""
@@ -364,6 +501,17 @@ def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
     settings = spoiler.settings
+    file_init_flags = [
+        0x167,  # FLAG_TNS_0,
+        0x188,  # FLAG_TNS_1,
+        0x311,  # FLAG_TNS_2,
+        0x175,  # FLAG_BUY_INSTRUMENT,
+        0x176,  # FLAG_BUY_GUNS,
+        0x45,  # FLAG_ICEMELT,
+        0x6D,  # FLAG_HATCH,
+        0x00,  # FLAG_FIRSTJAPESGATE,
+        0x17E,  # FLAG_FTT_BLOCKER,
+    ]
 
     writeValue(ROM_COPY, 0x8060E04C, Overlay.Static, 0, offset_dict, 4)  # Prevent moves overwrite
     writeValue(ROM_COPY, 0x8060DDAA, Overlay.Static, 0, offset_dict)  # Writes readfile data to moves
@@ -386,6 +534,46 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict)  # perm flag set hook
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict)  # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict)  # Fix some silk memes
+
+    # Kong Model Swap handlers
+    writeFunction(ROM_COPY, 0x806C871C, Overlay.Static, "adjustGunBone", offset_dict)
+    writeFunction(ROM_COPY, 0x806E2A34, Overlay.Static, "adjustGunBone", offset_dict)
+    writeFunction(ROM_COPY, 0x80683194, Overlay.Static, "updateKongTB", offset_dict)
+    writeFunction(ROM_COPY, 0x80031DE4, Overlay.Boss, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x80031F68, Overlay.Boss, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x80682FC4, Overlay.Static, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x806839FC, Overlay.Static, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x806BFC5C, Overlay.Static, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x806C1A50, Overlay.Static, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x806C1B8C, Overlay.Static, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x806C1D4C, Overlay.Static, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x806C88CC, Overlay.Static, "updateActorHandStates", offset_dict)
+    writeFunction(ROM_COPY, 0x80029F78, Overlay.Bonus, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x8002CBD4, Overlay.Menu, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x80026904, Overlay.Multiplayer, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x8062806C, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x8068F128, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806BFB64, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806C10D8, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806C2FA0, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806E2A1C, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806EAC54, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806EC060, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806ED12C, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806EDE60, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806F114C, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806F11D4, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806F11F0, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806F120C, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806F1228, Overlay.Static, "clearGunHandler", offset_dict)
+    writeLabelValue(ROM_COPY, 0x80746D8C, Overlay.Static, "clearGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806BFB40, Overlay.Static, "pullOutGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806C8C54, Overlay.Static, "pullOutGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806EAC44, Overlay.Static, "pullOutGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806EB850, Overlay.Static, "pullOutGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806EDE24, Overlay.Static, "pullOutGunHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x806F77EC, Overlay.Static, "pullOutGunHandler", offset_dict)
+    writeLabelValue(ROM_COPY, 0x80746D90, Overlay.Static, "pullOutGunHandler", offset_dict)
 
     writeHook(ROM_COPY, 0x8063EE08, Overlay.Static, "InstanceScriptCheck", offset_dict)
     writeHook(ROM_COPY, 0x80731168, Overlay.Static, "checkFlag_ItemRando", offset_dict)
@@ -438,6 +626,9 @@ def patchAssembly(ROM_COPY, spoiler):
     for index, count in enumerate(settings.BossBananas):
         writeValue(ROM_COPY, 0x807446C0 + (2 * index), Overlay.Static, count, offset_dict)
 
+    # Make chunky translucent during the HC section of Chunky Phase
+    writeHook(ROM_COPY, 0x806CB778, Overlay.Static, "makeKongTranslucent", offset_dict)
+
     writeFunction(ROM_COPY, 0x80704568, Overlay.Static, "spawnOverlayText", offset_dict)
 
     writeValue(ROM_COPY, 0x807563B4, Overlay.Static, 1, offset_dict, 1)  # Enable stack trace
@@ -486,7 +677,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
     # Files
     balloon_patch_count = 150
-    static_expansion = 0x100
+    static_expansion = 0x180
     if settings.enemy_drop_rando:
         static_expansion += 426  # Total Enemies
     if False:  # TODO: Check Archipelago
@@ -618,7 +809,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806AD750, Overlay.Static, "beaverExtraHitHandle", offset_dict)  # Remove buff until we think of something better
 
     if ENABLE_FILENAME:
-        writeFunction(ROM_COPY, 0x8070E1BC, Overlay.Static, "handleFilename", offset_dict) # Handle Filename
+        writeFunction(ROM_COPY, 0x8070E1BC, Overlay.Static, "handleFilename", offset_dict)  # Handle Filename
         writeFunction(ROM_COPY, 0x800306EC, Overlay.Menu, "filename_displaylist", offset_dict)
         writeFunction(ROM_COPY, 0x80030704, Overlay.Menu, "filename_code", offset_dict)
         writeFunction(ROM_COPY, 0x80030714, Overlay.Menu, "filename_init", offset_dict)
@@ -899,6 +1090,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.forest_rabbit_race):
         writeValue(ROM_COPY, 0x806BEDFC, Overlay.Static, 0, offset_dict, 4)  # Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
+        file_init_flags.append(0xF8)  # Rabbit Race Round 1
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.caves_ice_tomato_minigame):
         writeValue(ROM_COPY, 0x806BC582, Overlay.Static, 30, offset_dict)  # Ice Tomato Timer
@@ -911,6 +1103,25 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.galleon_seal_race):
         writeValue(ROM_COPY, 0x8002D0E2, Overlay.Race, 1, offset_dict)  # Seal Race 1 Lap
+
+    if settings.galleon_water_internal == GalleonWaterSetting.raised:
+        file_init_flags.append(0xA0)  # Galleon Water Raised
+
+    kong_flags = [0x181, 0x006, 0x046, 0x042, 0x075]
+    if settings.starting_kongs_count == 5:
+        file_init_flags.extend(kong_flags.copy())
+    else:
+        for x in spoiler.settings.starting_kong_list:
+            file_init_flags.append(kong_flags[x])
+
+    if settings.activate_all_bananaports == ActivateAllBananaports.isles:
+        file_init_flags.extend(WARPS_ISLES.copy())
+    elif settings.activate_all_bananaports == ActivateAllBananaports.all:
+        for lvl in WARPS_TOTAL:
+            file_init_flags.extend(lvl.copy())
+
+    if isQoLEnabled(spoiler, MiscChangesSelected.calm_caves):
+        file_init_flags.append(0x12C)  # Giant Kosha Dead
 
     if settings.free_trade_setting != FreeTradeSetting.none:
         # Non-BP Items
@@ -1137,6 +1348,8 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8074D8FF, Overlay.Static, 4, offset_dict, 1)  # Master Type
         writeFloat(ROM_COPY, 0x80753E38, Overlay.Static, 350, offset_dict)  # Speed
         writeLabelValue(ROM_COPY, 0x8074C14C, Overlay.Static, "OrangeGunCode", offset_dict)
+        # Flags
+        file_init_flags.append(0x309)  # Cranky FTT
 
     writeLabelValue(ROM_COPY, 0x8074C1B8, Overlay.Static, "newCounterCode", offset_dict)  # Shop Indicator Code
     writeLabelValue(ROM_COPY, 0x80748014, Overlay.Static, "spawnWrinklyWrapper", offset_dict)  # Change function to include setFlag call
@@ -1173,16 +1386,68 @@ def patchAssembly(ROM_COPY, spoiler):
         # K. Lumsy
         writeValue(ROM_COPY, 0x80750680, Overlay.Static, 0x22, offset_dict)
         writeValue(ROM_COPY, 0x80750682, Overlay.Static, 0x1, offset_dict)
-        writeFunction(ROM_COPY, 0x806BDC24, Overlay.Static, "initiateTransition", offset_dict) # Change takeoff warp func
-        writeValue(ROM_COPY, 0x806BDC8C, Overlay.Static, 0x1000, offset_dict) # Apply no cutscene to all keys
-        writeValue(ROM_COPY, 0x806BDC3C, Overlay.Static, 0x1000, offset_dict) # Apply shorter timer to all keys
+        writeFunction(ROM_COPY, 0x806BDC24, Overlay.Static, "initiateTransition", offset_dict)  # Change takeoff warp func
+        writeValue(ROM_COPY, 0x806BDC8C, Overlay.Static, 0x1000, offset_dict)  # Apply no cutscene to all keys
+        writeValue(ROM_COPY, 0x806BDC3C, Overlay.Static, 0x1000, offset_dict)  # Apply shorter timer to all keys
         # Fast Vulture
-        writeFunction(ROM_COPY, 0x806C50BC, Overlay.Static, "clearVultureCutscene", offset_dict) # Modify Function Call
+        writeFunction(ROM_COPY, 0x806C50BC, Overlay.Static, "clearVultureCutscene", offset_dict)  # Modify Function Call
         # Speedy T&S Turn-Ins
-        writeValue(ROM_COPY, 0x806BE3E0, Overlay.Static, 0, offset_dict, 4) # NOP
+        writeValue(ROM_COPY, 0x806BE3E0, Overlay.Static, 0, offset_dict, 4)  # NOP
         # Remove final mermaid text
         writeValue(ROM_COPY, 0x806C3E10, Overlay.Static, 0, offset_dict, 4)
         writeValue(ROM_COPY, 0x806C3E20, Overlay.Static, 0, offset_dict, 4)
+        # Cutscene FTT Flags
+        file_init_flags.extend(
+            [
+                0x163,  # FLAG_FTT_BANANAPORT,
+                0x166,  # FLAG_FTT_CROWNPAD,
+                0x168,  # FLAG_FTT_MINIMONKEY,
+                0x169,  # FLAG_FTT_HUNKYCHUNKY,
+                0x16A,  # FLAG_FTT_ORANGSPRINT,
+                0x16B,  # FLAG_FTT_STRONGKONG,
+                0x16C,  # FLAG_FTT_RAINBOWCOIN,
+                0x16D,  # FLAG_FTT_RAMBI,
+                0x16E,  # FLAG_FTT_ENGUARDE,
+                0x16F,  # FLAG_FTT_DIDDY,
+                0x170,  # FLAG_FTT_LANKY,
+                0x171,  # FLAG_FTT_TINY,
+                0x172,  # FLAG_FTT_CHUNKY,
+                0x174,  # FLAG_FTT_SNIDE,
+                0x178,  # FLAG_FTT_WRINKLY,
+                0x307,  # FLAG_FTT_FUNKY,
+                0x308,  # FLAG_FTT_SNIDE0,
+                0x309,  # FLAG_FTT_CRANKY,
+                0x30A,  # FLAG_FTT_CANDY,
+                0x30B,  # FLAG_FTT_JAPES,
+                0x313,  # FLAG_FTT_AZTEC,
+                0x30C,  # FLAG_FTT_FACTORY,
+                0x30D,  # FLAG_FTT_GALLEON,
+                0x30E,  # FLAG_FTT_FUNGI,
+                0x30F,  # FLAG_FTT_CAVES,
+                0x310,  # FLAG_FTT_CASTLE,
+                0x312,  # FLAG_FTT_HELM,
+                0x11A,  # FLAG_INTRO_CAVES,
+                0xC2,  # FLAG_INTRO_GALLEON,
+                0x100,  # FLAG_FTT_TIMESWITCH,
+                0x101,  # FLAG_INTRO_FUNGI,
+                0x12F,  # FLAG_FTT_DK5DI,
+                0x15D,  # FLAG_INTRO_CASTLE,
+                0x2A,  # FLAG_CUTSCENE_DIDDYHELPME,
+                0x1B,  # FLAG_INTRO_JAPES,
+                0x5F,  # FLAG_INTRO_AZTEC,
+                0x5D,  # FLAG_CUTSCENE_LANKYHELPME,
+                0x5E,  # FLAG_CUTSCENE_TINYHELPME,
+                0x8C,  # FLAG_INTRO_FACTORY,
+                0xC3,  # FLAG_CUTSCENE_WATERRAISED,
+                0xC4,  # FLAG_CUTSCENE_WATERLOWERED,
+                0xFF,  # FLAG_CUTSCENE_CLOCK,
+                0x115,  # FLAG_CUTSCENE_ROTATING,
+                0x12B,  # FLAG_CUTSCENE_KOSHA,
+                0x17A,  # FLAG_WATERFALL,
+                0x5C,  # FLAG_CUTSCENE_LLAMA,
+                0x305,  # FLAG_WARP_HELM_W1_NEAR
+            ]
+        )
 
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character
@@ -1207,8 +1472,8 @@ def patchAssembly(ROM_COPY, spoiler):
     # Make getting out of spider traps easier on controllers
     writeLabelValue(ROM_COPY, 0x80752ADC, Overlay.Static, "exitTrapBubbleController", offset_dict)
     # Inverted Controls Option
-    writeValue(ROM_COPY, 0x8060D01A, Overlay.Static, getHiSym("InvertedControls"), offset_dict) # Change language store to inverted controls store
-    writeValue(ROM_COPY, 0x8060D01E, Overlay.Static, getLoSym("InvertedControls"), offset_dict) # Change language store to inverted controls store
+    writeValue(ROM_COPY, 0x8060D01A, Overlay.Static, getHiSym("InvertedControls"), offset_dict)  # Change language store to inverted controls store
+    writeValue(ROM_COPY, 0x8060D01E, Overlay.Static, getLoSym("InvertedControls"), offset_dict)  # Change language store to inverted controls store
 
     writeFunction(ROM_COPY, 0x80602AB0, Overlay.Static, "filterSong", offset_dict)
     # Decompressed Overlays
@@ -1356,8 +1621,30 @@ def patchAssembly(ROM_COPY, spoiler):
         boss_map = settings.boss_maps[i]
         boss_kong = settings.boss_kongs[i]
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
-        writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict)
+        writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
+    for map_id in settings.krool_order:
+        writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
+        if map_id not in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]:
+            writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, 3, offset_dict, 4)
+    writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)
+
+    boss_complete_functions = [
+        0x8002590C,  # Dillo 1
+        0x80025C90,  # Dillo 2
+        0x8002A108,  # Puff
+        0x8002B424,  # Dog 2
+        0x8002C154,  # Dog 1
+        0x800327FC,  # KKO
+        0x80035670,  # MJ
+        0x8002DBD0,  # K Rool - DK
+        0x8002E718,  # K Rool - Diddy
+        0x8002F050,  # K Rool - Lanky
+        0x8002FAF4,  # K Rool - Tiny
+        0x800319B8,  # K Rool - Chunky
+    ]
+    for addr in boss_complete_functions:
+        writeFunction(ROM_COPY, addr, Overlay.Boss, "completeBoss", offset_dict)
 
     writeValue(ROM_COPY, 0x80024266, Overlay.Bonus, 1, offset_dict)  # Set Minigame oranges as infinite
 
@@ -1508,7 +1795,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Progressive Hints
     writeFunction(ROM_COPY, 0x800248D4, Overlay.Menu, "gbUpdateHandler_snide", offset_dict)
-    writeValue(ROM_COPY, 0x800248D8, Overlay.Menu, 0x02802025, offset_dict, 4) # or $a0, $s4, $zero
+    writeValue(ROM_COPY, 0x800248D8, Overlay.Menu, 0x02802025, offset_dict, 4)  # or $a0, $s4, $zero
     writeFunction(ROM_COPY, 0x806F93D4, Overlay.Static, "gbUpdateHandler", offset_dict)
 
     # Mill and Crypt Levers
@@ -1577,6 +1864,34 @@ def patchAssembly(ROM_COPY, spoiler):
     # Fast Start: Beginning of game
     if settings.fast_start_beginning_of_game or True:
         writeValue(ROM_COPY, 0x80714540, Overlay.Static, 0, offset_dict, 4)
+        file_init_flags.extend(
+            [
+                0x1BB,  # Japes Open
+                0x186,  # Escape Cutscene
+                0x17F,  # Training Barrels Spawned
+                0x180,  # First Slam Given
+            ]
+        )
+
+    barrier_flags = {
+        RemovedBarriersSelected.japes_shellhive_gate: [0x7],
+        RemovedBarriersSelected.aztec_tunnel_door: [0x4E],
+        RemovedBarriersSelected.factory_testing_gate: [0x6E],
+        RemovedBarriersSelected.galleon_lighthouse_gate: [0x9B],
+        RemovedBarriersSelected.forest_green_tunnel: [0xCF, 0xD0],  # Feather, Pineapple
+        RemovedBarriersSelected.forest_yellow_tunnel: [0xD2],
+        RemovedBarriersSelected.aztec_5dtemple_switches: [0x37],
+        RemovedBarriersSelected.factory_production_room: [0x6F],
+        RemovedBarriersSelected.galleon_seasick_ship: [0x9C],
+        RemovedBarriersSelected.caves_igloo_pads: [0x128],
+        RemovedBarriersSelected.galleon_shipyard_area_gate: [0xA1],
+        RemovedBarriersSelected.caves_ice_walls: [266, 267, 265],  # Entrance, Snide, Giant Boulder
+    }
+    for barrier in barrier_flags:
+        if IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, barrier):
+            file_init_flags.extend(barrier_flags[barrier])
+
+    writeFunction(ROM_COPY, 0x80682A98, Overlay.Static, "resetCannonGameState", offset_dict)
 
     # Patch Enemy Collision
     writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Purple Klaptrap
@@ -1631,3 +1946,17 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806A8DB4, Overlay.Static, 0x5420, offset_dict)  # BEQL -> BNEL
     writeValue(ROM_COPY, 0x806A8DF0, Overlay.Static, 0x1020, offset_dict)  # BNE -> BEQ
     writeFunction(ROM_COPY, 0x806A9F74, Overlay.Static, "pauseScreen3And4ItemName", offset_dict)  # Item Name"
+
+    # Write File init flags - Always keep at the end
+    file_init_flags = list(set(file_init_flags))  # Make sure it only contains unique values
+    if len(file_init_flags) > 0x3FF:
+        raise Exception("Too many file init flags. Please report this to the devs with a setting string.")
+    ROM_COPY.seek(0x1FFD800)
+    for flag in file_init_flags:
+        ROM_COPY.writeMultipleBytes(flag, 2)
+    ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+
+    # Settings to check usage
+    # faster_checks.rabbit_race
+    # quality_of_life.caves_kosha_dead
+    # galleon_water_raised

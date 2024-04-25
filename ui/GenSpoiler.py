@@ -18,9 +18,11 @@ def loader_func(template_name):
     """Load template file."""
     return ajax_call("templates/" + f"{template_name}")
 
+
 def timectime(ts: int):
     """Convert Unix time into human-readable time."""
-    return datetime.fromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
+    return datetime.fromtimestamp(ts).strftime("%d-%m-%Y %H:%M:%S")
+
 
 def hasListUnion(lst1: list, lst2: list):
     """Return whether there is an item that is present in both lists."""
@@ -29,9 +31,11 @@ def hasListUnion(lst1: list, lst2: list):
             return True
     return False
 
+
 def filterId(id_string: str):
     """Filter an id to remove illegal characters."""
-    return id_string.lower().replace(' ','_').replace('(','').replace(')','').replace('&', '')
+    return id_string.lower().replace(" ", "_").replace("(", "").replace(")", "").replace("&", "")
+
 
 def getWotHPathIndex(spoiler_dict: dict):
     """Get the index of the WotH Path item in the spoiler dict, for usage in the id system."""
@@ -41,6 +45,7 @@ def getWotHPathIndex(spoiler_dict: dict):
             return order
         order += 1
     return None
+
 
 TIED_POOL_ITEMS = {
     "Kongs": ["Kong"],
@@ -61,12 +66,13 @@ TIED_POOL_ITEMS = {
     "Ice Traps": ["FakeItem"],
 }
 
+
 async def GenerateSpoiler(spoiler):
     """Pass spoiler to jinja2 file and modify DOM with rendered jinja2 file."""
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
-    templateEnv.filters['timeconvert'] = timectime
-    templateEnv.filters['filterId'] = filterId
-    templateEnv.filters['wothpathindex'] = getWotHPathIndex
+    templateEnv.filters["timeconvert"] = timectime
+    templateEnv.filters["filterId"] = filterId
+    templateEnv.filters["wothpathindex"] = getWotHPathIndex
     template = templateEnv.get_template("spoiler_new.html.jinja2")
     trimmed_spoiler = ""
     for x in json.dumps(spoiler).split("\n"):
@@ -88,12 +94,14 @@ async def GenerateSpoiler(spoiler):
         "Shuffled Banana Fairies": "Banana Fairies",
         "Shuffled Dirt Patches": "Dirt Patches",
         "Shuffled Melon Crates": "Melon Crates",
-        "Battle Arena Locations": "Battle Arenas"
+        "Battle Arena Locations": "Battle Arenas",
+        "DK Portal Locations": "DK Portals",
     }
     for hint_attr in location_mapping:
         if hint_attr in formatted_spoiler:
             formatted_spoiler["Misc Custom Locations"][location_mapping[hint_attr]] = formatted_spoiler[hint_attr]
             formatted_spoiler.pop(hint_attr)
+    # Item Pool Cleanup
     if "Item Pool" in formatted_spoiler:
         deleted_keys = []
         for key in formatted_spoiler["Items (Sorted by Item)"]:
@@ -102,6 +110,24 @@ async def GenerateSpoiler(spoiler):
                     deleted_keys.append(key)
         for key in deleted_keys:
             del formatted_spoiler["Items (Sorted by Item)"][key]
+    # End Game Cleanup
+    if "Requirements" not in formatted_spoiler:
+        formatted_spoiler["Requirements"] = {}
+    if "Bosses" not in formatted_spoiler:
+        formatted_spoiler["Bosses"] = {}
+    if "End Game" in formatted_spoiler:
+        if "K. Rool" in formatted_spoiler["End Game"]:
+            if "K Rool Phases" in formatted_spoiler["End Game"]["K. Rool"]:
+                formatted_spoiler["Bosses"]["The Final Battle"] = formatted_spoiler["End Game"]["K. Rool"]["K Rool Phases"].copy()
+                del formatted_spoiler["End Game"]["K. Rool"]["K Rool Phases"]
+            if "Keys Required for K Rool" in formatted_spoiler["End Game"]["K. Rool"]:
+                formatted_spoiler["Requirements"]["Keys Required for K. Rool"] = formatted_spoiler["End Game"]["K. Rool"]["Keys Required for K Rool"]
+                del formatted_spoiler["End Game"]["K. Rool"]["Keys Required for K Rool"]
+        if "Helm" in formatted_spoiler["End Game"]:
+            if "Helm Rooms" in formatted_spoiler["End Game"]["Helm"]:
+                formatted_spoiler["Requirements"]["Helm Rooms"] = formatted_spoiler["End Game"]["Helm"]["Helm Rooms"]
+                del formatted_spoiler["End Game"]["Helm"]["Helm Rooms"]
+    del formatted_spoiler["End Game"]
 
     # modified_spoiler.update(formatted_spoiler)
     # print(modified_spoiler)

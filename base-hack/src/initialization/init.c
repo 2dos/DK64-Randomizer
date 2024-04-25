@@ -14,6 +14,8 @@
 
 static char music_storage[MUSIC_SIZE];
 
+unsigned char BigHeadMode = 0;
+
 char music_types[SONG_COUNT] = {
 	-1,
 	SONGTYPE_BGM,
@@ -298,12 +300,19 @@ float getOscillationDelta(void) {
 }
 
 void loadHooks(void) {
-	if (Rando.krusha_slot >- 1) {
-		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
-		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+	for (int i = 0; i < 5; i++) {
+		if (Rando.kong_models[i] == KONGMODEL_KRUSHA) {
+			loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
+			loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+			break;
+		}
 	}
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
+	}
+	if (Rando.big_head_mode) {
+		loadSingularHook(0x8061A4C8, &AlterHeadSize);
+		loadSingularHook(0x806198D4, &AlterHeadSize_0);
 	}
 }
 
@@ -334,6 +343,11 @@ void initHack(int source) {
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
+			if (Rando.big_head_mode == 1) {
+				BigHeadMode = 0xFF;
+			} else if (Rando.big_head_mode == 2) {
+				BigHeadMode = 0x2F;
+			}
 			// HUD Re-allocation fixes
 			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
 			*(short*)(0x806FABAA) = ITEMID_TERMINATOR;
@@ -423,6 +437,14 @@ void initHack(int source) {
 			KKOPhaseRandoOn = kko_phase_rando;
 			
 			initPauseMenu(); // Changes to enable more items
+			// Model Stuff
+			if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
+				KongModelData[KONG_DK].props_or = 0;
+			}
+			if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
+				KongModelData[KONG_TINY].props_or = 0;
+			}
+			fixCutsceneModels();
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
 				writeFunction(0x80660994, &getOscillationDelta);

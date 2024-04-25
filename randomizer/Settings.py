@@ -518,6 +518,11 @@ class Settings:
         self.menu_texture_name = "Default"
         self.wrinkly_rgb = [255, 255, 255]
         self.krusha_ui = KrushaUi.no_slot
+        self.kong_model_dk = KongModels.default
+        self.kong_model_diddy = KongModels.default
+        self.kong_model_lanky = KongModels.default
+        self.kong_model_tiny = KongModels.default
+        self.kong_model_chunky = KongModels.default
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
@@ -535,11 +540,13 @@ class Settings:
         self.custom_music_proportion = 100
         self.fill_with_custom_music = False
         self.show_song_name = False
+        self.custom_transition = None
 
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = True
         self.helm_setting = None
+        self.helm_room_bonus_count = HelmBonuses.two
         self.quality_of_life = None
         self.wrinkly_available = False
         self.shorten_boss = False
@@ -592,6 +599,7 @@ class Settings:
         self.hard_troff_n_scoff = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.dk_portal_location_rando = False
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
@@ -614,6 +622,7 @@ class Settings:
         self.select_keys = False
         self.helm_hurry = False
         self.colorblind_mode = ColorblindMode.off
+        self.big_head_mode = BigHeadMode.off
         self.win_condition = WinCondition.beat_krool
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
@@ -817,21 +826,21 @@ class Settings:
             self.shockwave_status = ShockwaveStatus.start_with
 
         # Krusha Kong
-        if self.krusha_ui == KrushaUi.random:
-            slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-            self.krusha_kong = random.choice(slots)
-        else:
-            self.krusha_kong = None
-            krusha_conversion = {
-                KrushaUi.no_slot: None,
-                KrushaUi.dk: Kongs.donkey,
-                KrushaUi.diddy: Kongs.diddy,
-                KrushaUi.lanky: Kongs.lanky,
-                KrushaUi.tiny: Kongs.tiny,
-                KrushaUi.chunky: Kongs.chunky,
-            }
-            if self.krusha_ui in krusha_conversion:
-                self.krusha_kong = krusha_conversion[self.krusha_ui]
+        # if self.krusha_ui == KrushaUi.random:
+        #     slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+        #     self.krusha_kong = random.choice(slots)
+        # else:
+        #     self.krusha_kong = None
+        #     krusha_conversion = {
+        #         KrushaUi.no_slot: None,
+        #         KrushaUi.dk: Kongs.donkey,
+        #         KrushaUi.diddy: Kongs.diddy,
+        #         KrushaUi.lanky: Kongs.lanky,
+        #         KrushaUi.tiny: Kongs.tiny,
+        #         KrushaUi.chunky: Kongs.chunky,
+        #     }
+        #     if self.krusha_ui in krusha_conversion:
+        #         self.krusha_kong = krusha_conversion[self.krusha_ui]
 
         # Fungi Time of Day
         if self.fungi_time == FungiTimeSetting.random:
@@ -993,8 +1002,18 @@ class Settings:
         self.krool_lanky = False
         self.krool_tiny = False
         self.krool_chunky = False
+        self.krool_dillo1 = False
+        self.krool_dillo2 = False
+        self.krool_dog1 = False
+        self.krool_dog2 = False
+        self.krool_madjack = False
+        self.krool_pufftoss = False
+        self.krool_kutout = False
 
-        phases = kongs.copy()
+        self.krool_in_boss_pool = self.hard_level_progression  # TODO: Make this a setting and get this working for SLO
+        phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
+        if self.krool_in_boss_pool:
+            phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])
         if self.krool_phase_order_rando:
             random.shuffle(phases)
         if self.krool_random:
@@ -1020,22 +1039,34 @@ class Settings:
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
         orderedPhases = []
-        for kong in phases:
-            if kong == Kongs.donkey:
+        # TODO: Fix logic (lol)
+        for map_id in phases:
+            if map_id == Maps.KroolDonkeyPhase:
                 self.krool_donkey = True
-                orderedPhases.append(Kongs.donkey)
-            if kong == Kongs.diddy:
+            elif map_id == Maps.KroolDiddyPhase:
                 self.krool_diddy = True
-                orderedPhases.append(Kongs.diddy)
-            if kong == Kongs.lanky:
+            elif map_id == Maps.KroolLankyPhase:
                 self.krool_lanky = True
-                orderedPhases.append(Kongs.lanky)
-            if kong == Kongs.tiny:
+            elif map_id == Maps.KroolTinyPhase:
                 self.krool_tiny = True
-                orderedPhases.append(Kongs.tiny)
-            if kong == Kongs.chunky:
+            elif map_id == Maps.KroolChunkyPhase:
                 self.krool_chunky = True
-                orderedPhases.append(Kongs.chunky)
+            elif map_id == Maps.JapesBoss:
+                self.krool_dillo1 = True
+            elif map_id == Maps.AztecBoss:
+                self.krool_dog1 = True
+            elif map_id == Maps.FactoryBoss:
+                self.krool_madjack = True
+            elif map_id == Maps.GalleonBoss:
+                self.krool_pufftoss = True
+            elif map_id == Maps.FungiBoss:
+                self.krool_dog2 = True
+            elif map_id == Maps.CavesBoss:
+                self.krool_dillo2 = True
+            elif map_id == Maps.CastleBoss:
+                self.krool_kutout = True
+            orderedPhases.append(map_id)
+
         self.krool_order = orderedPhases
 
         # Helm Order
@@ -1217,7 +1248,7 @@ class Settings:
         self.logical_fairy_requirement = min(math.floor(self.rareware_gb_fairies * 1.2), 20)
 
         # Boss Rando
-        self.boss_maps = ShuffleBosses(self.boss_location_rando)
+        self.boss_maps = ShuffleBosses(self.boss_location_rando, self)
         self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
         self.kko_phase_order = ShuffleKKOPhaseOrder(self)
