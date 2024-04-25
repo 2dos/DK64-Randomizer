@@ -132,7 +132,6 @@ class Settings:
             # Remove these as plando features get implemented
             self.plandomizer_dict["plando_wrinkly_doors"] = -1
             self.plandomizer_dict["plando_tns_portals"] = -1
-            self.plandomizer_dict["plando_starting_exit"] = -1
             self.plandomizer_dict["plando_switchsanity"] = -1
             self.plandomizer_dict["plando_shop_location_rando"] = -1
             # ---------------------------------------------------
