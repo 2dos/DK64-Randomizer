@@ -130,11 +130,6 @@ class Settings:
             self.ApplyPlandomizerSettings()
 
             # Remove these as plando features get implemented
-            self.plandomizer_dict["plando_dirt_patches"] = -1
-            self.plandomizer_dict["plando_melon_crates"] = -1
-            self.plandomizer_dict["plando_battle_arenas"] = -1
-            self.plandomizer_dict["plando_fairies"] = -1
-            self.plandomizer_dict["plando_kasplats"] = -1
             self.plandomizer_dict["plando_wrinkly_doors"] = -1
             self.plandomizer_dict["plando_tns_portals"] = -1
             self.plandomizer_dict["plando_starting_exit"] = -1
@@ -153,10 +148,31 @@ class Settings:
                 Levels.CreepyCastle: [],
                 Levels.HideoutHelm: [],
             }
+            crown_to_level = {
+                Locations.JapesBattleArena: Levels.JungleJapes,
+                Locations.AztecBattleArena: Levels.AngryAztec,
+                Locations.FactoryBattleArena: Levels.FranticFactory,
+                Locations.GalleonBattleArena: Levels.GloomyGalleon,
+                Locations.ForestBattleArena: Levels.FungiForest,
+                Locations.CavesBattleArena: Levels.CrystalCaves,
+                Locations.CastleBattleArena: Levels.CreepyCastle,
+                Locations.IslesBattleArena2: Levels.DKIsles,
+                Locations.IslesBattleArena1: Levels.DKIsles,
+                Locations.HelmBattleArena: Levels.HideoutHelm,
+            }
             for key in ["plando_dirt_patches", "plando_melon_crates", "plando_battle_arenas"]:
                 if self.plandomizer_dict[key] != -1:
                     for customloc in self.plandomizer_dict[key]:
-                        self.plandomizer_dict["reserved_custom_locations"][customloc["level"]].append(customloc["name"])
+                        selected_location = ""
+                        level = -1
+                        if key == "plando_battle_arenas":
+                            selected_location = self.plandomizer_dict[key][customloc]
+                            level = crown_to_level[int(customloc)]
+                        else:
+                            selected_location = customloc["location"]
+                            level = customloc["level"]
+                        if level != -1:
+                            self.plandomizer_dict["reserved_custom_locations"][level].append(selected_location)
         if self.music_selections is not None:
             self.ApplyMusicSelections()
 
