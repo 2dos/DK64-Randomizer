@@ -95,6 +95,7 @@ async def GenerateSpoiler(spoiler):
         "Shuffled Dirt Patches": "Dirt Patches",
         "Shuffled Melon Crates": "Melon Crates",
         "Battle Arena Locations": "Battle Arenas",
+        "DK Portal Locations": "DK Portals",
     }
     for hint_attr in location_mapping:
         if hint_attr in formatted_spoiler:
