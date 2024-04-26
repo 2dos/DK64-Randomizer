@@ -153,6 +153,7 @@
 .definelabel CutsceneBarState, 0x8076A0B3
 
 .definelabel PathData, 0x807FDBF8
+.definelabel MapProperties, 0x807FBB64
 
 .definelabel TriggerArray, 0x807FDCB4
 .definelabel TriggerSize, 0x807FDCB0

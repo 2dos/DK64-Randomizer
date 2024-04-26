@@ -89,7 +89,8 @@ typedef struct actorData {
 	/* 0x064 */ int unk_64;
 	/* 0x068 */ char unk_68[0x6A-0x68];
 	/* 0x06A */ short grounded;
-	/* 0x06C */ char unk_6C[0x7C-0x6C];
+	/* 0x06C */ short unk_6C;
+	/* 0x06E */ char unk_6E[0x7C-0x6E];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
@@ -2196,3 +2197,58 @@ typedef struct actor_bitfield {
 	unsigned char try_again_dialog : 1;
 	unsigned char pause_menu_343 : 1;
 } actor_bitfield;
+
+typedef struct map_properties_bitfield {
+	// 807FBB64
+	unsigned char disable_first_person : 1; // 8000 0000
+	unsigned char menu_overlay : 1; // 4000 0000
+	unsigned char unk02 : 1; // 2000 0000
+	unsigned char in_training : 1; // 1000 0000 // Assume vines, amongst a couple other things
+	unsigned char keep_camera_behind_player : 1; // 0800 0000
+	unsigned char multiplayer : 1; // 0400 0000
+	unsigned char unk06 : 1; // 0200 0000 // 80634ba0
+	unsigned char unk07 : 1; // 0100 0000 // 806568f8 disable something rendering
+	
+	unsigned char disable_shockwave : 1; // 0080 0000
+	unsigned char unk09 : 1; // 0040 0000 // Maze minigames
+	unsigned char unk10 : 1; // 0020 0000 // Only in factory bblast
+	unsigned char is_crown : 1; // 0010 0000 // Used in bonus overlay calc
+	unsigned char minecart_overlay : 1; // 0008 0000
+	unsigned char disable_fall_too_far : 1; // 0004 0000
+	unsigned char disable_ledge_grabbing : 1; // 0002 0000 // Vanilla disables it in crowns
+	unsigned char pickups_respawn : 1; // 0001 0000 // Oranges/Ammo etc
+	
+	unsigned char unk16 : 1; // 0000 8000 // Enguarde leaving water something
+	unsigned char is_bonus : 1; // 0000 4000 // Used in bonus overlay calc
+	unsigned char race_overlay : 1; // 0000 2000
+	unsigned char water_overlay : 1; // 0000 1000
+	unsigned char disable_damage : 1; // 0000 0800
+	unsigned char void_to_parent : 1; // 0000 0400 // Void to parent when deathwarping - only set with crowns
+	unsigned char disable_guns_and_oranges : 1; // 0000 0200
+	unsigned char force_larger_draw_distance : 1; // 0000 0100
+	
+	unsigned char overhead_camera : 1; // 0000 0080 // Mazes
+	unsigned char far_camera : 1; // 0000 0040 // 8061d25c
+	unsigned char force_inline_underwater_camera : 1; // 0000 0020 // force camera to be in line with the player's vertical angle when underwater
+	unsigned char unk27 : 1; // 0000 0010 // 80622200 Something camera related
+	unsigned char unk28 : 1; // 0000 0008 // floor state something? 8061bc0c
+	unsigned char unk29 : 1; // 0000 0004 // Enabled during rabbit race. Checked 80621198
+	unsigned char disable_fairy_camera : 1; // 0000 0002
+	unsigned char boss_overlay : 1; // 0000 0001
+
+	// 807FBB68
+	unsigned char unk32 : 8;
+	unsigned char unk40 : 8;
+	unsigned char unk48 : 7;
+	// Start of used stuff
+	unsigned char unk55 : 1; // 0000 0100 // Something chunk related
+	
+	unsigned char unk56 : 1; // 0000 0080 // camera something?
+	unsigned char orangstand_slips : 1; // 0000 0040 // Makes orangstand slip
+	unsigned char unk58 : 1; // 0000 0020 // camera something?
+	unsigned char is_mini_room : 1; // 0000 0010 // Doubles sprite size, doubles scale of spawned actors?
+	unsigned char unk60 : 1; // 0000 0008 // Disable water ripple with something?
+	unsigned char unk61 : 1; // 0000 0004 // Something renderlight
+	unsigned char is_krool : 1; // 0000 0002
+	unsigned char disable_instrument : 1; // 0000 0001
+} map_properties_bitfield;

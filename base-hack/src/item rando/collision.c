@@ -255,7 +255,7 @@ void checkModelTwoItemCollision(item_collision* obj_collision, int player_index,
                                 getItem(obj_collision->obj_type);
                                 deleteModelTwo(obj_collision->id, 1);
                             }
-                            if (-1 >= (*(int*)(0x807FBB64) << 15)) {
+                            if (MapProperties.pickups_respawn != 0) {
                                 if (obj_collision->obj_type != 0x1D2) {
                                     spawnModelTwoWithDelay(obj_collision->obj_type, obj_collision->x, obj_collision->y, obj_collision->z, 600);
                                 }

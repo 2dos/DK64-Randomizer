@@ -55,11 +55,10 @@ void spawnEnemyDrops(actorData* actor) {
      * @brief Handle the spawning of enemy drops. Based on a vanilla function with the same name.
      * There's a few minor modifications to handle kasplat item duplication prevention amongst a couple other things.
      */
-    int level_data = *(int*)(0x807FBB64);
     if (player_count > 1) {
         return;
     }
-    if (level_data & 0x4000) {
+    if (MapProperties.is_bonus) {
         return;
     }
     int entry_index = -1;

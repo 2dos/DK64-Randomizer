@@ -559,6 +559,8 @@ extern int EEPROMType;
 extern unsigned char ReverseMillLeverOrder[5];
 extern unsigned char ReverseCryptLeverOrder[3];
 
+extern map_properties_bitfield MapProperties;
+
 extern short MapVoid_MinX;
 extern short MapVoid_MinZ;
 extern short MapVoid_MaxX;
