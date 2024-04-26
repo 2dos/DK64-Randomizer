@@ -226,7 +226,11 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             name = row.insertCell(0)
             description = row.insertCell(1)
             name.innerHTML = setting
-            description.innerHTML = FormatSpoiler(value)
+            if setting == "Settings String":
+                # Don't format the settings string
+                description.innerHTML = value
+            else:
+                description.innerHTML = FormatSpoiler(value)
     if from_patch_gen is True:
         await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
