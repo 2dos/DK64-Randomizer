@@ -378,7 +378,6 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO, generate_json: bool):
             "entries": entries,
         }
         dataset.insert(x.index, section_data)
-    print(hex(dataset[5]["entries"][5]["pointing_to"]))
 
     if generate_json:
         with open("../static/patches/pointer_addresses.json", "w") as fh:

@@ -1842,10 +1842,13 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806BA5A8, Overlay.Static, 0x1D800003, offset_dict, 4)  # Fix some health oversights by making death if health <= 0 instead of == 0
     writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict)  # Change BHDM Cooldown
 
-    # Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
-    writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5
+    # Increase Arcade Lives
+    writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5 - Set Arcade Lives
     writeValue(ROM_COPY, 0x80024F2A, Overlay.Arcade, 0xC71B, offset_dict)
     writeValue(ROM_COPY, 0x80024F2C, Overlay.Arcade, 0xA0CEC71B, offset_dict, 4)  # SB $t6, 0xC71B ($a2)
+    writeValue(ROM_COPY, 0x80024688, Overlay.Arcade, 0x1000, offset_dict) # Disable lives bonus for reaching 10k points
+    writeValue(ROM_COPY, 0x8002B7A4, Overlay.Arcade, 0, offset_dict, 4) # Disable death removing lives
+    # Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
     writeFunction(ROM_COPY, 0x80024D5C, Overlay.Arcade, "arcadeExit", offset_dict)
     writeFunction(ROM_COPY, 0x800257B4, Overlay.Arcade, "arcadeExit", offset_dict)
     writeFunction(ROM_COPY, 0x8002B6D4, Overlay.Arcade, "arcadeExit", offset_dict)
@@ -1902,6 +1905,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8074482C + (12 * map_id), Overlay.Static, 0x01120402, offset_dict, 4)
     # Disable pickup respawn in spider boss (temporary)
     writeValue(ROM_COPY, 0x8074482C + (12 * Maps.ForestSpider), Overlay.Static, 0x00000141, offset_dict, 4)
+
+    # Remove troll flame in 75m
+    writeValue(ROM_COPY, 0x80028FE4, Overlay.Arcade, 0xAC800018, offset_dict, 4) # sw $zero, 0x18 ($ao). Sets obj type to 0
 
     # Patch Enemy Collision
     writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Purple Klaptrap
