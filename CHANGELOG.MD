@@ -101,6 +101,9 @@ This is the changelog for the initial push of 4.0 into Dev:
 - Added Snap to the end sequence
 - The option for native widescreen has been removed (Too much strain on the game)
 
+### Plandomizer
+- Added ability to plando custom locations for objects
+
 ### Technical Changes
 - Lots of internal code cleanup
 - Converted all display list modifications to using f3dex2 macros
