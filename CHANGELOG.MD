@@ -1,6 +1,3 @@
-
-  
-
 # Version 4.0 First Dev Push notes
 This is the changelog for the initial push of 4.0 into Dev:
 - Below is a list of features that are being pushed to the dev site
