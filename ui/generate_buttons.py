@@ -36,6 +36,7 @@ def import_settings_string(event):
     Args:
         event (event): Javascript Event object.
     """
+    js.settings_string.value = js.settings_string.value.strip()
     settings_string = js.settings_string.value
     settings = decrypt_settings_string_enum(settings_string)
     # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
