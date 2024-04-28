@@ -101,9 +101,12 @@ This is the changelog for the initial push of 4.0 into Dev:
 ### Plandomizer
 - Added ability to plando custom locations for objects
 
+### Site Changes
+- The spoiler log display on the website has been completely reformatted
+- The site has been ported to boostrap 5.3.3 (from 5.1). This will mostly result in changes that you don't recognize. The major change as a result of this is that the sliders on the progression tab have been changed as our old sliders only supported bootstrap 3 and 4, and just so happened to work on 5.1.
+
 ### Technical Changes
 - Lots of internal code cleanup
 - Converted all display list modifications to using f3dex2 macros
 - pointer_addresses.json has been vastly shrunk to be quicker on site loading
 - Boss doors which have 0 CBs as the unlock condition will now employ a less hacky way of doing this without crashing the game. This fixes a few bugs which occurred as a result of this.
-- The site has been ported to boostrap 5.3.3 (from 5.1). This will mostly result in changes that you don't recognize. The major change as a result of this is that the sliders on the progression tab have been changed as our old sliders only supported bootstrap 3 and 4, and just so happened to work on 5.1.
