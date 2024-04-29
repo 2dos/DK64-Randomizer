@@ -335,6 +335,7 @@ class Settings:
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
+        self.balanced_krool_phases = False  # Affects the Chunky phase slam switch and all(!) blast barrels - this is likely to be split up later
         # helm_phase_count: int, [1-5]
         self.helm_phase_count = 3
         self.helm_random = False
