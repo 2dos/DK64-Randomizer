@@ -69,3 +69,11 @@ int randomInstrumentGenericCode(behaviour_data* behaviour_pointer, int index, in
 	}
 	return Player->characterID == referenced_kong + 2;
 }
+
+int hasChunkyPhaseSlam(void) {
+	int chunky_phase_slam_req = 2;
+	if (Rando.balanced_krool_reqs) {
+		chunky_phase_slam_req = 1;
+	}
+	return MovesBase[KONG_CHUNKY].simian_slam >= chunky_phase_slam_req;
+}

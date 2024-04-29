@@ -70,5 +70,8 @@ extern void AlwaysCandyInstrument(void);
 extern void fixTilePosition(void);
 extern void fixNintendoLogoPosition(void);
 
+extern void makeCannonsRequireBlast(void);
+extern void fixCannonBlastNoclip(void);
+
 extern void unscareBeaver(void);
 extern void scareBeaver(void);
