@@ -19,3 +19,4 @@
 .definelabel CrownGet, 0x80687CC8
 .definelabel getTotalGBs, 0x806FB418
 .definelabel updateGBCountHUD, 0x806F8278
+.definelabel initHUDItem, 0x806F8004

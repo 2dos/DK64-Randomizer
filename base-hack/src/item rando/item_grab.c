@@ -33,7 +33,11 @@
 #define MEDALITEM_JUNKAMMO 18
 #define MEDALITEM_JUNKCRYSTAL 19
 #define MEDALITEM_JUNKMELON 20
-#define MEDALITEM_NOTHING 21
+#define MEDALITEM_CRANKYITEM 21
+#define MEDALITEM_FUNKYITEM 22
+#define MEDALITEM_CANDYITEM 23
+#define MEDALITEM_SNIDEITEM 24
+#define MEDALITEM_NOTHING 25
 
 typedef struct item_info {
     /* 0x000 */ songs song;
@@ -72,6 +76,10 @@ static const item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0x48, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Ammo)
     {.song = SONG_CRYSTALCOCONUTGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Crystal)
     {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
+    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11}, // Cranky
+    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x12}, // Funky
+    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x13}, // Candy
+    {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x1F}, // Snide
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
 };
 
@@ -81,13 +89,14 @@ void banana_medal_acquisition(int flag) {
      * 
      * @param flag Flag index of the banana medal
      */
-    int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+    int item_type = 0;
+    if (flag >= FLAG_MEDAL_ISLES_DK) {
+        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
+    } else {
+        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+    }
     float reward_x = 160.f;
     float reward_y = 120.0f;
-    if (Rando.true_widescreen) {
-        reward_x = SCREEN_WD_FLOAT / 2;
-        reward_y = SCREEN_HD_FLOAT / 2;
-    }
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         if (item_type != MEDALITEM_KEY) {
             setFlag(flag, 1, FLAGTYPE_PERMANENT);
@@ -243,6 +252,21 @@ int getFlagIndex_Corrected(int start, int level) {
     return start + (5 * level) + getKong(0);
 }
 
+int getFlagIndex_MedalCorrected(int start, int level) {
+    /**
+     * @brief Get a corrected flag index for a medal, which will convert Rambi/Enguarde into the kong who entered the transformation crate
+     * 
+     * @param start Start flag index
+     * @param level Level Index
+     * 
+     * @return New flag index
+     */
+    if (level < 7) {
+        return getFlagIndex_Corrected(start, level);
+    }
+    return FLAG_MEDAL_ISLES_DK + getKong(0);
+}
+
 void collectKey(void) {
     /**
      * @brief Collect a key, display the text and turn in keys
@@ -272,7 +296,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
         if (obj_type == 0x13C) {
             collectKey();
         } else {
-            if (inBossMap(CurrentMap, 1, 0, 0)) {
+            if (inBossMap(CurrentMap, 1, 1, 0)) {
                 for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
                     if (obj_type == acceptable_items[j]) {
                         setAction(0x41, 0, 0);
@@ -297,7 +321,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
     return getCollectableOffset(collectable_type, obj_type, is_homing);
 }
 
-int* controlKeyText(int* dl) {
+Gfx* controlKeyText(Gfx* dl) {
     /**
      * @brief Handle the key text to be displayed upon picking up a boss key
      * 
@@ -313,10 +337,8 @@ int* controlKeyText(int* dl) {
             key_opacity = 25 * (100 - key_timer);
         }
         dl = initDisplayList(dl);
-        *(unsigned int*)(dl++) = 0xFCFF97FF;
-	    *(unsigned int*)(dl++) = 0xFF2CFE7F;
-        *(unsigned int*)(dl++) = 0xFA000000;
-        *(unsigned int*)(dl++) = 0xFFFFFF00 | key_opacity;
+        gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, key_opacity);
         dk_strFormat(key_text, "KEY %d", key_index + 1);
         dl = displayText(dl,1,640,750,key_text,0x80);
         key_timer -= 1;
@@ -417,7 +439,7 @@ int canDanceSkip(void) {
     if ((Player->yPos - Player->floor) >= 100.0f) {
         return 1;
     }
-    if (Player->control_state == 99) {
+    if ((Player->control_state == 99) && (CurrentMap != MAP_KROOLDIDDY)) {
         return 1;
     }
     if ((Player->grounded_bitfield & 4) && ((Player->water_floor - Player->floor) > 20.0f)) {
@@ -425,7 +447,7 @@ int canDanceSkip(void) {
     }
     if (Rando.quality_of_life.dance_skip) {
         int is_banned_map = inBattleCrown(CurrentMap);
-        if (inBossMap(CurrentMap, 1, 0, 0)) {
+        if (inBossMap(CurrentMap, 1, 1, 0)) {
             is_banned_map = 1;
         }
         for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
@@ -586,7 +608,7 @@ void getItem(int object_type) {
             keyGrabHook(SONG_GBGET, 1.0f);
             if (!canDanceSkip()) {
                 int action = 0x29; // GB Get
-                if (inBossMap(CurrentMap, 1, 0, 0)) {
+                if (inBossMap(CurrentMap, 1, 1, 0)) {
                     action = 0x41; // Key Get
                 }
                 setAction(action, 0, 0);

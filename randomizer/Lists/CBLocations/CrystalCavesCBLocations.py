@@ -5,6 +5,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 WATER_HEIGHT = 20
@@ -43,7 +44,7 @@ ColoredBananaGroupList = [
         name="Gorilla Gone Tunnel (2 custom, 3 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         locations=[
             [1, 1.0, 2494, 13, 188],
             [1, 1.0, 2570, 13, 244],
@@ -58,7 +59,7 @@ ColoredBananaGroupList = [
         name="Around Gorilla Gone room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         locations=[
             [1, 1.0, 2502, 13, 390],
             [1, 1.0, 2465, 13, 445],
@@ -1248,7 +1249,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         locations=[[5, 1.0, 2581.2197265625, 33.5, 586.1724243164062]],
     ),
     ColoredBananaGroup(
@@ -1826,7 +1827,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         points=[[2698, 83, 501], [2519, 81, 572]],
     ),
     Balloon(

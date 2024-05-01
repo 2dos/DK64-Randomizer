@@ -79,8 +79,8 @@
                 {% endif %}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="{{ name }}_select_all">Select All</button>
-                <button type="button" class="btn btn-primary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-secondary" id="{{ name }}_select_all">Select All</button>
+                <button type="button" class="btn btn-secondary" id="{{ name }}_reset">Reset</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -185,7 +185,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-secondary" id="{{ name }}_reset">Reset</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -199,4 +199,64 @@
         {% endfor %}
     })
 </script>
+{% endmacro %}
+{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="") %}
+<div class="form-check form-switch item-switch" data-toggle="tooltip"
+            title="{{ tooltip }}">
+    {% if default_checked %}
+        <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            name="{{ id }}"
+            id="{{ id }}"
+            display_name="{{ name }}"
+            value="True" checked />
+    {% else %}
+        <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            name="{{ id }}"
+            id="{{ id }}"
+            display_name="{{ name }}"
+            value="True" />
+    {% endif %}
+    <label class="form-check-label" for="{{ id }}">
+        {% if altered_name == "" %}
+            {{ name }}
+        {% else %}
+            {{ altered_name }}
+        {% endif %}
+    </label>
+</div>
+{% endmacro %}
+
+{% macro slider_input(id, name, min_value, max_value) %}
+    <input type="range"
+        name="{{ id }}"
+        id="{{ id }}"
+        display_name="{{ name }}"
+        min="{{ min_value }}"
+        max="{{ max_value }}"
+        style="width: 80%"
+        class="pretty-slider"
+        list="{{ id }}_tickmarks">
+    <datalist id="{{ id }}_tickmarks" style="width: 80%; margin-top: -10px" class="d-flex justify-content-between mx-auto px-1">
+        {% for val in range(min_value, max_value + 1) %}
+            <option value="{{ val }}" label="{{ val }}"></option>
+        {% endfor %}
+    </datalist>
+    <script>
+        ["change", "input", "load"].forEach(evt => {
+            document.getElementById("{{ id }}").addEventListener(evt, (e) => {
+                const targ_value = e.target.value;
+                const targ_min = e.target.getAttribute("min");
+                const targ_max = e.target.getAttribute("max");
+                const targ_delta = targ_max - targ_min;
+                const value_delta = targ_value - targ_min;
+                e.target.style.setProperty("--p", `${parseInt(100 * (value_delta / targ_delta))}%`)
+            })
+        })
+    </script>
 {% endmacro %}

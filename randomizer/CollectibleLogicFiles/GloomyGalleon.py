@@ -28,8 +28,8 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Near Warp 3
     ],
     Regions.GalleonBeyondPineappleGate: [
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: (Events.WaterRaised in l.Events), None, 3),
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple and (Events.WaterRaised in l.Events or (l.advanced_platforming and l.ischunky)), None, 1),
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))), None, 3),
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple and (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))), None, 1),
 
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),

@@ -92,7 +92,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 				behaviour->next_state = 50;
 			}
 			if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) || checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
-				setScriptRunState(behaviour,3,300);
+				setScriptRunState(behaviour, RUNSTATE_DISTANCERUN, 300);
 				behaviour->next_state = 1;
 			}
 
@@ -107,7 +107,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 			if (float_index > -1) {
 				distance = 600;
 			}
-			setScriptRunState(behaviour,3,distance);
+			setScriptRunState(behaviour, RUNSTATE_DISTANCERUN, distance);
 			behaviour->next_state = 1;
 		}
 	} else if (behaviour->current_state == 1) {
@@ -146,7 +146,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 										ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,tied_index);
 										behaviour_data* tied_behaviour = (behaviour_data*)tied_object->behaviour_pointer;
 										if (tied_behaviour) {
-											setScriptRunState(tied_behaviour,1,0);
+											setScriptRunState(tied_behaviour, RUNSTATE_RUNNING, 0);
 										}
 									}
 								} else {
@@ -169,7 +169,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 		if (float_index > -1) {
 			ModelTwoData* float_object = getObjectArrayAddr(m2location,0x90,float_index);
 			if (float_object->behaviour_pointer) {
-				setScriptRunState(float_object->behaviour_pointer,1,0);
+				setScriptRunState(float_object->behaviour_pointer, RUNSTATE_RUNNING, 0);
 			}
 		}
 		createCollision(0,Player,COLLISION_BANANAPORT,0,0,*(int*)(0x807F621C),*(int*)(0x807F6220),*(int*)(0x807F6224));

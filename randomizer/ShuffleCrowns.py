@@ -49,7 +49,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
             pick_count = 2
         crowns = random.sample(index_lst, pick_count)
         # Give plandomizer an opportunity to have the final say
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"] != -1:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"] != {}:
             for i in range(pick_count):
                 location_to_string = str(crown_locations[global_crown_idx + i].value)
                 if spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string] != -1:

@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 
 
@@ -754,7 +755,7 @@ fairy_locations = {
             region=Regions.CrystalCavesMain,
             fence=Fence(2461, 402, 2684, 542),
             spawn_y=76,
-            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim()),
+            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         ),
         FairyData(
             name="Ice Castle Roof",

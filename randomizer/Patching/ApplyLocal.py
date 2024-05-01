@@ -8,22 +8,23 @@ import math
 import random
 import zipfile
 import time
+import string
 from datetime import datetime as Datetime
 from datetime import UTC
 import js
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Settings import RandomModels
 from randomizer.Lists.Songs import ExcludedSongsSelector
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames, darkenDPad
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords
+from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
-from randomizer.Patching.ASMPatcherWS import patchAssemblyCosmeticWS
+from randomizer.Lists.Songs import getSongIndexFromName
 
 # from randomizer.Spoiler import Spoiler
-from randomizer.Settings import Settings, ExcludedSongs
+from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays
 from ui.GenSpoiler import GenerateSpoiler
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
@@ -124,6 +125,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             overwrite_object_colors(settings)
             writeMiscCosmeticChanges(settings)
             applyHolidayMode(settings)
+            if settings.misc_cosmetics:
+                writeCrownNames()
 
             ROM_COPY = ROM()
 
@@ -131,6 +134,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0x139)
             # The DPadDisplays enum is indexed to allow this.
             ROM_COPY.write(int(settings.dpad_display))
+
+            if settings.dpad_display == DPadDisplays.on and settings.dark_mode_textboxes:
+                darkenDPad()
 
             if settings.homebrew_header:
                 # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
@@ -145,6 +151,11 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0x43)
             # The ColorblindMode enum is indexed to allow this.
             ROM_COPY.write(int(settings.colorblind_mode))
+
+            # Big head mode
+            ROM_COPY.seek(sav + 0x1E1)
+            # The BigHeadMode enum is indexed to allow this.
+            ROM_COPY.write(int(settings.big_head_mode))
 
             # Remaining Menu Settings
             ROM_COPY.seek(sav + 0xC7)
@@ -162,7 +173,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.write(music_volume)
 
             boolean_props = [
-                BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
                 BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
                 BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
                 BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
@@ -193,8 +203,19 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.writeMultipleBytes(int(settings.troff_brighten), 1)
 
             patchAssemblyCosmetic(ROM_COPY, settings)
-            patchAssemblyCosmeticWS(ROM_COPY, settings)
-            music_data = randomize_music(settings)
+            music_data, music_names = randomize_music(settings)
+            music_text = []
+            accepted_characters = [*string.ascii_uppercase] + [" ", "\n", "(", ")", "%", ",", ".", "!", ">", ":", ";", "'", "-"] + [*string.digits]
+            for name in music_names:
+                output_name = name
+                if name is None:
+                    output_name = ""
+                music_text.append([{"text": ["".join([x for x in [*output_name.upper()] if x in accepted_characters])]}])
+            if len(music_names) > 0:
+                writeText(46, music_text, True)
+            if settings.show_song_name:
+                ROM_COPY.seek(sav + 0x1ED)
+                ROM_COPY.write(1)
 
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
 
@@ -211,33 +232,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         # insert a text div into the js.document.getElementById("hashdiv") and set the innerHTML to the No ROM loaded message add the div
         js.document.getElementById("hashdiv").innerHTML = "Shared Link, No Hash Images Loaded."
 
-    loaded_settings = spoiler["Settings"]
-    tables = {}
-    t = 0
-    for i in range(0, 3):
-        js.document.getElementById(f"settings_table_{i}").innerHTML = ""
-        tables[i] = js.document.getElementById(f"settings_table_{i}")
-    for setting, value in loaded_settings.items():
-        hidden_settings = ["Seed", "algorithm", "Unlock Time"]
-        if setting not in hidden_settings:
-            if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
-                t += 1
-            row = tables[t].insertRow(-1)
-            name = row.insertCell(0)
-            description = row.insertCell(1)
-            name.innerHTML = setting
-            if setting == "Settings String":
-                # Don't format the settings string
-                description.innerHTML = value
-            else:
-                description.innerHTML = FormatSpoiler(value)
     if from_patch_gen is True:
         await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
-    if spoiler.get("Requirements"):
-        js.document.getElementById("tracker_text").value = generateTracker(spoiler)
-    else:
-        js.document.getElementById("tracker_text").value = ""
     js.document.getElementById("spoiler_log_block").style.display = ""
     loop.run_until_complete(GenerateSpoiler(spoiler))
     js.document.getElementById("generated_seed_id").innerHTML = seed_id
@@ -289,6 +286,8 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         {"name": "Searchlight Seek Klaptrap", "setting": settings.seek_klaptrap_model},
         {"name": "Forest Tomato", "setting": settings.fungi_tomato_model},
         {"name": "Caves Tomato", "setting": settings.caves_tomato_model},
+        {"name": "Factory Piano Burper", "setting": settings.piano_burp_model},
+        {"name": "Spotlight Fish", "setting": settings.spotlight_fish_model},
     ]
 
     if settings.colors != {} or settings.random_models != RandomModels.off:
@@ -312,4 +311,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         humanspoiler["Cosmetics"]["Minor Item Themes"] = music_data.get("music_minoritem_data")
     if settings.music_events_randomized or settings.events_songs_selected:
         humanspoiler["Cosmetics"]["Event Themes"] = music_data.get("music_event_data")
+    if settings.custom_transition is not None:
+        humanspoiler["Cosmetics"]["Textures"] = {}
+        humanspoiler["Cosmetics"]["Textures"]["Transition"] = settings.custom_transition
     return humanspoiler

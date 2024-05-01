@@ -637,23 +637,25 @@ void tagAnywhere(void) {
 					if (next_character != Character) {
                         // Fix hand state
 						if (((MovesBase[next_character].weapon_bitfield & 1) == 0) || (Player->was_gun_out == 0)) {
-                            Player->hand_state = 1;
+                            // Player->hand_state = 1;
                             Player->was_gun_out = 0;
                             // Without this, tags to and from Diddy mess up
-                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
-                                Player->hand_state = 2;
-                            } else if (next_character == 1) {
-                                Player->hand_state = 0;
-                            }
+                            updateActorHandStates((actorData*)Player, next_character + 2);
+                            // if (Rando.kong_models[next_character] == KONGMODEL_KRUSHA) {
+                            //     Player->hand_state = 2;
+                            // } else if (next_character == 1) {
+                            //     Player->hand_state = 0;
+                            // }
                         } else {
-                            Player->hand_state = 2;
+                            // Player->hand_state = 2;
                             Player->was_gun_out = 1;
+                            updateActorHandStates_gun((actorData*)Player, next_character + 2);
                             // Without this, tags to and from Diddy mess up
-                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
-                                Player->hand_state = 1;
-                            } else if (next_character == 1) {
-                                Player->hand_state = 3;
-                            }
+                            // if (Rando.kong_models[next_character] == KONGMODEL_KRUSHA) {
+                            //     Player->hand_state = 1;
+                            // } else if (next_character == 1) {
+                            //     Player->hand_state = 3;
+                            // }
                         }
                         // Fix HUD memes
                         if (CurrentMap == MAP_TROFFNSCOFF) {
@@ -685,9 +687,7 @@ void tagAnywhere(void) {
                         }
                         // Perform the tag
                         int old_control_state = Player->control_state;
-                        if (ENABLE_ORIGIN_WARP_FIX) {
-                            grab_lock_timer = 0; // Restart countdown
-                        }
+                        grab_lock_timer = 0; // Restart countdown
                         tagKong(next_character + 2);
 						clearTagSlide(Player);
                         if (Player->hSpeed > 140.0f) {

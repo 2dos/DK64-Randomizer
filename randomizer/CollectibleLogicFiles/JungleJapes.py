@@ -11,7 +11,7 @@ from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.JungleJapesStart: [
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.vines or (l.advanced_platforming and l.settings.krusha_kong != Kongs.donkey), None, 5),  # Starting area
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.vines or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.donkey))), None, 5),  # Starting area
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # W3
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Above underground
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Starting area

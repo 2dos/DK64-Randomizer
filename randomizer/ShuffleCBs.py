@@ -10,6 +10,7 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+import randomizer.CollectibleLogicFiles.DKIsles
 import randomizer.Fill as Fill
 import randomizer.Lists.CBLocations.AngryAztecCBLocations
 import randomizer.Lists.CBLocations.CreepyCastleCBLocations
@@ -18,16 +19,14 @@ import randomizer.Lists.CBLocations.FranticFactoryCBLocations
 import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
+import randomizer.Lists.CBLocations.DKIslesCBLocations
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Settings import CBRando
 from randomizer.LogicClasses import Collectible
 
 from .Enums.Collectibles import Collectibles
-
-max_balloons = 105
-max_singles = 780  # 793 Singles in Vanilla, under-representing this to help with the calculation formula
-max_bunches = 790 - max_balloons * 2 - round(max_singles / 5)  # 334 bunches in vanilla, biasing this for now to help with calculation formula
 
 level_data = {
     Levels.JungleJapes: {
@@ -58,12 +57,29 @@ level_data = {
         "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
     },
+    Levels.DKIsles: {
+        "cb": randomizer.Lists.CBLocations.DKIslesCBLocations.ColoredBananaGroupList,
+        "balloons": randomizer.Lists.CBLocations.DKIslesCBLocations.BalloonList,
+    },
 }
 
 
 def ShuffleCBs(spoiler):
     """Shuffle CBs selected from location files."""
     retries = 0
+    levels_to_populate = 7
+    MAX_BALLOONS = 105
+    MAX_SINGLES = 780  # 793 Singles in Vanilla, under-representing this to help with the calculation formula
+    MAX_BUNCHES = 790 - MAX_BALLOONS * 2 - round(MAX_SINGLES / 5)  # 334 bunches in vanilla, biasing this for now to help with calculation formula
+    PLACEMENT_LIMIT = 1127
+    add_isles_cbs = spoiler.settings.cb_rando == CBRando.on_with_isles
+    if add_isles_cbs:
+        levels_to_populate = 8
+        INCREASE_FACTOR = 8 / 7
+        MAX_SINGLES = int(MAX_SINGLES * INCREASE_FACTOR)
+        MAX_BUNCHES = int(MAX_BUNCHES * INCREASE_FACTOR)
+        PLACEMENT_LIMIT = 1400
+
     while True:
         try:
             total_balloons = 0
@@ -76,20 +92,22 @@ def ShuffleCBs(spoiler):
                     collectible for collectible in spoiler.CollectibleRegions[region_id] if collectible.type not in [Collectibles.balloon, Collectibles.bunch, Collectibles.banana]
                 ]
             for level_index, level in enumerate(level_data):
+                if (not add_isles_cbs) and level == Levels.DKIsles:
+                    continue
                 level_placement = []
-                global_divisor = 6 - level_index
+                global_divisor = (levels_to_populate - 1) - level_index
                 kong_specific_left = {Kongs.donkey: 100, Kongs.diddy: 100, Kongs.lanky: 100, Kongs.tiny: 100, Kongs.chunky: 100}
                 # Balloons
                 # Pick random amount of balloons assigned to level
-                balloons_left = max_balloons - total_balloons
+                balloons_left = MAX_BALLOONS - total_balloons
                 balloon_lower = max(
-                    int(balloons_left / (7 - level_index)) - 3, 0
+                    int(balloons_left / (levels_to_populate - level_index)) - 3, 0
                 )  # Select lower bound for randomization as max between 0, and balloons left distributed amongst the remaining levels minus 3
                 if global_divisor == 0:
                     # Last Level
                     balloon_upper = balloons_left
                 else:
-                    balloon_upper = min(int(balloons_left / (7 - level_index)) + 3, int(balloons_left / global_divisor))
+                    balloon_upper = min(int(balloons_left / (levels_to_populate - level_index)) + 3, int(balloons_left / global_divisor))
                 balloon_lst = level_data[level]["balloons"].copy()
                 selected_balloon_count = min(random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)), len(balloon_lst))
                 # selected_balloon_count = 22 # Test all balloon locations
@@ -107,18 +125,22 @@ def ShuffleCBs(spoiler):
                             kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
                             level_placement.append({"id": balloon.id, "name": balloon.name, "kong": selected_kong, "level": level, "type": "balloons", "map": balloon.map})
                             placed_balloons += 1
+                            if balloon.region not in spoiler.CollectibleRegions:
+                                spoiler.CollectibleRegions[balloon.region] = []
                             spoiler.CollectibleRegions[balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1, name=balloon.name))
                 # Model Two CBs
-                bunches_left = max_bunches - total_bunches
-                singles_left = max_singles - total_singles
-                bunches_lower = max(int(bunches_left / (7 - level_index)) - 5, 0)
-                singles_lower = max(int(singles_left / (7 - level_index)) - 10, 0)
+                bunches_left = MAX_BUNCHES - total_bunches
+                singles_left = MAX_SINGLES - total_singles
+                bunches_lower = max(int(bunches_left / (levels_to_populate - level_index)) - 5, 0)
+                singles_lower = max(int(singles_left / (levels_to_populate - level_index)) - 10, 0)
                 if global_divisor == 0:
                     bunches_upper = bunches_left
-                    singles_upper = min(singles_left, int((5 * (1127 - total_bunches - total_singles) - sum(kong_specific_left)) / 4))  # Places a hard cap of 1127 total singles+bunches
+                    singles_upper = min(
+                        singles_left, int((5 * (PLACEMENT_LIMIT - total_bunches - total_singles) - sum(kong_specific_left)) / 4)
+                    )  # Places a hard cap of PLACEMENT_LIMIT total singles+bunches
                 else:
-                    bunches_upper = min(int(bunches_left / (7 - level_index)) + 15, int(bunches_left / global_divisor))
-                    singles_upper = min(int(singles_left / (7 - level_index)) + 10, int(singles_left / global_divisor))
+                    bunches_upper = min(int(bunches_left / (levels_to_populate - level_index)) + 15, int(bunches_left / global_divisor))
+                    singles_upper = min(int(singles_left / (levels_to_populate - level_index)) + 10, int(singles_left / global_divisor))
                 groupIds = list(range(1, len(level_data[level]["cb"]) + 1))
                 random.shuffle(groupIds)
                 selected_bunch_count = random.randint(min(bunches_lower, bunches_upper), max(bunches_lower, bunches_upper))
@@ -155,6 +177,8 @@ def ShuffleCBs(spoiler):
                             for loc in group.locations:
                                 bunches_in_lesser_group += int(loc[0] == 5)
                                 singles_in_lesser_group += int(loc[0] == 1)
+                            if group.region not in spoiler.CollectibleRegions:
+                                spoiler.CollectibleRegions[group.region] = []
                             if bunches_in_lesser_group > 0:
                                 spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group, name=group.name))
                             if singles_in_lesser_group > 0:
@@ -178,8 +202,8 @@ def ShuffleCBs(spoiler):
                     elif kong_specific_left[x] < 0:
                         print(f"WARNING: {-kong_specific_left[x]} too many bananas assigned for {x.name} in {level.name}")
                         raise Ex.CBFillFailureException
-            if total_bunches + total_singles > 1127:
-                print(f"WARNING: {total_bunches + total_singles} banana objects placed, exceeding cap of 1127")
+            if total_bunches + total_singles > PLACEMENT_LIMIT:
+                print(f"WARNING: {total_bunches + total_singles} banana objects placed, exceeding cap of {PLACEMENT_LIMIT}")
                 raise Ex.CBFillFailureException
             spoiler.Reset()
             if not Fill.VerifyWorld(spoiler):

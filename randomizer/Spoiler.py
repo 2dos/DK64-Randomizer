@@ -11,13 +11,14 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
+    CBRando,
     GlitchesSelected,
-    HelmDoorItem,
     LogicType,
     MinigameBarrels,
     RandomPrices,
@@ -28,7 +29,7 @@ from randomizer.Enums.Settings import (
     WinCondition,
 )
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
@@ -47,6 +48,21 @@ from randomizer.ShuffleKasplats import constants, shufflable
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
     from randomizer.LogicClasses import Sphere
+
+boss_map_names = {
+    Maps.JapesBoss: "Army Dillo 1",
+    Maps.AztecBoss: "Dogadon 1",
+    Maps.FactoryBoss: "Mad Jack",
+    Maps.GalleonBoss: "Pufftoss",
+    Maps.FungiBoss: "Dogadon 2",
+    Maps.CavesBoss: "Army Dillo 2",
+    Maps.CastleBoss: "King Kut Out",
+    Maps.KroolDonkeyPhase: "DK Phase",
+    Maps.KroolDiddyPhase: "Diddy Phase",
+    Maps.KroolLankyPhase: "Lanky Phase",
+    Maps.KroolTinyPhase: "Tiny Phase",
+    Maps.KroolChunkyPhase: "Chunky Phase",
+}
 
 
 class Spoiler:
@@ -175,7 +191,8 @@ class Spoiler:
             Types.Key: "Keys",
             Types.Crown: "Crowns",
             Types.Medal: "Medals",
-            Types.Coin: "Coins",
+            Types.NintendoCoin: "Company Coins",
+            Types.RarewareCoin: "Company Coins",
             Types.Bean: "Miscellaneous Items",
             Types.Pearl: "Miscellaneous Items",
             Types.RainbowCoin: "Rainbow Coins",
@@ -183,6 +200,10 @@ class Spoiler:
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
             Types.Enemies: "Enemy Drops",
+            Types.Cranky: "Shop Owners",
+            Types.Funky: "Shop Owners",
+            Types.Candy: "Shop Owners",
+            Types.Snide: "Shop Owners",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -241,12 +262,13 @@ class Spoiler:
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
-        settings["Crown Door Open"] = self.settings.crown_door_item == HelmDoorItem.opened
-        settings["Coin Door Open"] = self.settings.coin_door_item == HelmDoorItem.opened
+        settings["Crown Door Open"] = self.settings.crown_door_item == BarrierItems.Nothing
+        settings["Coin Door Open"] = self.settings.coin_door_item == BarrierItems.Nothing
         settings["Shockwave Shuffle"] = self.settings.shockwave_status.name
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
         settings["Fairies Required for Rareware GB"] = self.settings.rareware_gb_fairies
+        settings["Pearls Required for Mermaid GB"] = self.settings.mermaid_gb_pearls
         settings["Random Shop Prices"] = self.settings.random_prices.name
         settings["Banana Port Randomization"] = self.settings.bananaport_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
@@ -255,7 +277,12 @@ class Spoiler:
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
-        settings["Krusha Slot"] = self.settings.krusha_ui.name
+        # settings["Krusha Slot"] = self.settings.krusha_ui.name
+        settings["DK Model"] = self.settings.kong_model_dk.name
+        settings["Diddy Model"] = self.settings.kong_model_diddy.name
+        settings["Lanky Model"] = self.settings.kong_model_lanky.name
+        settings["Tiny Model"] = self.settings.kong_model_tiny.name
+        settings["Chunky Model"] = self.settings.kong_model_chunky.name
 
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
@@ -265,6 +292,7 @@ class Spoiler:
         settings["Starting Moves Count"] = self.settings.starting_moves_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
+        settings["Helm Room Bonus Count"] = int(self.settings.helm_room_bonus_count)
         settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
@@ -300,9 +328,17 @@ class Spoiler:
         # GB Counts
         gb_counts = {}
         level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
-        for level_index, amount in enumerate(self.settings.EntryGBs):
-            gb_counts[level_list[level_index]] = amount
-        humanspoiler["Requirements"]["B Locker GBs"] = gb_counts
+        for level_index, amount in enumerate(self.settings.BLockerEntryCount):
+            item = self.settings.BLockerEntryItems[level_index].name
+            item_total = f" {item}s"
+            if item == "Percentage":
+                item_total = "%"
+            elif item == "Fairy" and amount != 1:
+                item_total = " Fairies"  # LOL @ English Language
+            elif amount == 1:
+                item_total = f" {item}"
+            gb_counts[level_list[level_index]] = f"{amount}{item_total}"
+        humanspoiler["Requirements"]["B Locker Items"] = gb_counts
         # CB Counts
         cb_counts = {}
         for level_index, amount in enumerate(self.settings.BossBananas):
@@ -323,7 +359,7 @@ class Spoiler:
         humanspoiler["End Game"]["K. Rool"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         krool_order = []
         for phase in self.settings.krool_order:
-            krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
+            krool_order.append(boss_map_names[phase])
         humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
@@ -332,24 +368,24 @@ class Spoiler:
             helm_new_order.append(helm_default_order[room].name.capitalize())
         humanspoiler["End Game"]["Helm"]["Helm Rooms"] = helm_new_order
         helm_door_names = {
-            HelmDoorItem.req_bean: "Bean",
-            HelmDoorItem.req_bp: "Blueprints",
-            HelmDoorItem.req_companycoins: "Company Coins",
-            HelmDoorItem.req_crown: "Crowns",
-            HelmDoorItem.req_fairy: "Fairies",
-            HelmDoorItem.req_gb: "Golden Bananas",
-            HelmDoorItem.req_key: "Keys",
-            HelmDoorItem.req_medal: "Medals",
-            HelmDoorItem.req_pearl: "Pearls",
-            HelmDoorItem.req_rainbowcoin: "Rainbow Coins",
+            BarrierItems.Bean: "Bean",
+            BarrierItems.Blueprint: "Blueprints",
+            BarrierItems.CompanyCoin: "Company Coins",
+            BarrierItems.Crown: "Crowns",
+            BarrierItems.Fairy: "Fairies",
+            BarrierItems.GoldenBanana: "Golden Bananas",
+            BarrierItems.Key: "Keys",
+            BarrierItems.Medal: "Medals",
+            BarrierItems.Pearl: "Pearls",
+            BarrierItems.RainbowCoin: "Rainbow Coins",
         }
-        if self.settings.crown_door_item != HelmDoorItem.opened:
-            item = self.settings.crown_door_item if self.settings.crown_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_crown
+        if self.settings.crown_door_item != BarrierItems.Nothing:
+            item = self.settings.crown_door_item
             humanspoiler["End Game"]["Helm"]["Crown Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Crown Door Item Randomized"] = self.settings.crown_door_random
             humanspoiler["End Game"]["Helm"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
-        if self.settings.coin_door_item != HelmDoorItem.opened:
-            item = self.settings.coin_door_item if self.settings.coin_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_companycoins
+        if self.settings.coin_door_item != BarrierItems.Nothing:
+            item = self.settings.coin_door_item
             humanspoiler["End Game"]["Helm"]["Coin Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Coin Door Item Randomized"] = self.settings.coin_door_random
             humanspoiler["End Game"]["Helm"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
@@ -380,7 +416,7 @@ class Spoiler:
             "Fairies": {},
             "Keys": {},
             "Crowns": {},
-            "Coins": {},
+            "Company Coins": {},
             "Medals": {},
             "Miscellaneous Items": {},
             "Rainbow Coins": {},
@@ -388,6 +424,7 @@ class Spoiler:
             "Junk Items": {},
             "Melon Crates": {},
             "Enemy Drops": {},
+            "Shop Owners": {},
             "Empty": {},
             "Unknown": {},
         }
@@ -405,7 +442,7 @@ class Spoiler:
             else:
                 item = ItemList[location.item]
             # Empty PreGiven locations don't really exist and shouldn't show up in the spoiler log
-            if location.type == Types.PreGivenMove and location.item in (None, Items.NoItem):
+            if location.type in (Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location.item in (None, Items.NoItem):
                 continue
             # Separate Kong locations
             if location.type == Types.Kong:
@@ -435,7 +472,7 @@ class Spoiler:
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
                 level = "Special"
-                if "Isles" in location.name or location.type == Types.PreGivenMove:
+                if "Isles" in location.name or location.type in (Types.PreGivenMove, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     level = "DK Isles"
                 elif "Japes" in location.name:
                     level = "Jungle Japes"
@@ -468,17 +505,8 @@ class Spoiler:
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
-            boss_names = {
-                "JapesBoss": "Army Dillo 1",
-                "AztecBoss": "Dogadon 1",
-                "FactoryBoss": "Mad Jack",
-                "GalleonBoss": "Pufftoss",
-                "FungiBoss": "Dogadon 2",
-                "CavesBoss": "Army Dillo 2",
-                "CastleBoss": "King Kut Out",
-            }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names[Maps(self.settings.boss_maps[i]).name]
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_map_names.get(self.settings.boss_maps[i], Maps(self.settings.boss_maps[i]).name)
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}
@@ -531,6 +559,8 @@ class Spoiler:
             humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
+        if self.settings.dk_portal_location_rando:
+            humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
         if self.settings.switchsanity:
@@ -593,10 +623,12 @@ class Spoiler:
             if is_empty:
                 del humanspoiler[spoiler_dict]
 
-        if self.settings.cb_rando:
+        if self.settings.cb_rando != CBRando.off:
             human_cb_type_map = {"cb": " Bananas", "balloons": " Balloons"}
             humanspoiler["Colored Banana Locations"] = {}
             cb_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle"]
+            if self.settings.cb_rando == CBRando.on_with_isles:
+                cb_levels.append("Isles")
             cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
             for lvl in cb_levels:
                 for kng in cb_kongs:
@@ -658,21 +690,13 @@ class Spoiler:
                 extra = " " + str(pearlCount)
             humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
         # Paths for K. Rool phases - also do not show up on the site, just for debugging
-        for kong, path in self.krool_paths.items():
+        for map_id, path in self.krool_paths.items():
             path_dict = {}
             for path_loc_id in path:
                 path_location = self.LocationList[path_loc_id]
                 path_item = ItemList[path_location.item]
                 path_dict[path_location.name] = path_item.name
-            phase_name = "K. Rool Donkey Phase"
-            if kong == Kongs.diddy:
-                phase_name = "K. Rool Diddy Phase"
-            elif kong == Kongs.lanky:
-                phase_name = "K. Rool Lanky Phase"
-            elif kong == Kongs.tiny:
-                phase_name = "K. Rool Tiny Phase"
-            elif kong == Kongs.chunky:
-                phase_name = "K. Rool Chunky Phase"
+            phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
         humanspoiler["Other Paths"] = {}
         for loc, path in self.other_paths.items():
