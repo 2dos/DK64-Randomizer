@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 import js
 import random
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Enemies import Enemies
@@ -242,20 +240,6 @@ compatible_background_textures = {
     0x7CD: MenuTexture("Night Sign", True),
     0x3DE: MenuTexture("Color", True, 7, 50, True),
 }
-
-
-class SwitchInfo:
-    """Store information regarding a switch."""
-
-    def __init__(self, name: str, kong: Kongs, switch_type: SwitchType, rom_offset: int, map_id: int, ids: list, tied_settings: list = []):
-        """Initialize with given parameters."""
-        self.name = name
-        self.kong = kong
-        self.switch_type = switch_type
-        self.rom_offset = rom_offset
-        self.map_id = map_id
-        self.ids = ids
-        self.tied_settings = tied_settings
 
 
 class HelmDoorRandomInfo:
