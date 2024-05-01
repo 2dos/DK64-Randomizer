@@ -540,7 +540,9 @@ def randomize_music(settings: Settings):
                         song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
-                if settings.music_bgm_randomized:
+                # If we're keeping vanilla songs in vanilla locations, do not
+                # shuffle this list.
+                if settings.music_bgm_randomized and not settings.music_vanilla_locations:
                     random.shuffle(shuffled_music)
                 # Remove assigned locations.
                 open_locations = [x for x in song_list[channel_index] if x not in assigned_locations[channel_index]]
@@ -627,7 +629,9 @@ def randomize_music(settings: Settings):
                         group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
             # Shuffle the group list
             shuffled_music = group_items.copy()
-            if type_data.setting:
+            # If we're keeping vanilla songs in vanilla locations, do not
+            # shuffle this list.
+            if type_data.setting and not settings.music_vanilla_locations:
                 random.shuffle(shuffled_music)
             # Remove assigned locations.
             open_locations = [x for x in group_items if x not in assigned_item_locations]

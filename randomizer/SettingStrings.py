@@ -199,6 +199,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "music_events_randomized",
         "music_majoritems_randomized",
         "music_minoritems_randomized",
+        "music_vanilla_locations",
         "tiny_hair_colors",
         "tiny_clothes_colors",
         "tiny_hair_custom_color",
