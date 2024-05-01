@@ -293,6 +293,7 @@
       "caves_ice_walls": 1
     },
     "select_keys": 0,
+    "serious_hints": 0.7,
     "shockwave_status": {
       "vanilla": 0.3,
       "shuffled": 0.2,
@@ -647,6 +648,7 @@
       "caves_ice_walls": 0.7
     },
     "select_keys": 0,
+    "serious_hints": 0.3,
     "shockwave_status": {
       "vanilla": 0.2,
       "shuffled": 0.2,
@@ -1046,6 +1048,7 @@
       "caves_ice_walls": 0.7
     },
     "select_keys": 0,
+    "serious_hints": 0,
     "shockwave_status": {
       "vanilla": 0.2,
       "shuffled": 0.3,
@@ -1449,6 +1452,7 @@
       "caves_ice_walls": 0.7
     },
     "select_keys": 0,
+    "serious_hints": 0,
     "shockwave_status": {
       "vanilla": 0.2,
       "shuffled": 0.3,

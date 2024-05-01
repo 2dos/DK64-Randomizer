@@ -67,6 +67,9 @@ extern void FixInvisibleText_1(void);
 extern void CrankyCoconutDonation(void);
 extern void AlwaysCandyInstrument(void);
 
+extern void makeCannonsRequireBlast(void);
+extern void fixCannonBlastNoclip(void);
+
 extern void unscareBeaver(void);
 extern void scareBeaver(void);
 

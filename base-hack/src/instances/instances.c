@@ -200,6 +200,8 @@
 #define K_ROOL_SHIP 0x35
 #define ENEMY_CABIN_DOOR 0x0
 
+#define K_ROOL_CHUNKY_PHASE_SLAM 0xA
+
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
@@ -380,6 +382,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
 					}
+				}
+				break;
+			case MAP_KROOLCHUNKY:
+				if (param2 == K_ROOL_CHUNKY_PHASE_SLAM) {
+					return hasChunkyPhaseSlam();
 				}
 				break;
 			case MAP_CASTLEMUSEUM:

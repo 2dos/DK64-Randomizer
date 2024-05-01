@@ -20,6 +20,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Vanilla K. Rool Requirement
 - Irondonk
 - Guaranteed Starting Keys
+- No Joke Hints
 
 # Other Settings
 - Activate Bananaports: 

@@ -210,6 +210,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
+        BooleanProperties(spoiler.settings.balanced_krool_phases, 0x1E3),  # Balanced K Rool Phases
     ]
 
     for prop in boolean_props:

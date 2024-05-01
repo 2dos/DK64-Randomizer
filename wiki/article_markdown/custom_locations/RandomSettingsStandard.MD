@@ -199,6 +199,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Forest Yellow Tunnel: 75%
 	- Caves Igloo Pads: 80%
 	- Caves Ice Walls: 70%
+- No Joke Hints: 30%
 - Banana Fairy Island Move Status: 
 	- Vanilla: 20%
 	- Shuffled: 20%

@@ -1028,6 +1028,8 @@ class SettingsStringEnum(IntEnum):
     kong_model_chunky = 174
     helm_room_bonus_count = 175
     dk_portal_location_rando = 176
+    serious_hints = 177
+    balanced_krool_phases = 178
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1246,6 +1248,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.faster_checks_selected: SettingsStringDataType.list,
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
     SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
+    SettingsStringEnum.serious_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.balanced_krool_phases: SettingsStringDataType.bool,
     SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
 }

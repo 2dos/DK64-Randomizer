@@ -154,7 +154,8 @@ typedef struct varspace {
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
-	/* 0x1E3 */ char unk_1e3[0x1E7-0x1e3];
+	/* 0x1E3 */ unsigned char balanced_krool_reqs; // Changes K Rool to require blast for DK Phase and just slam 1 for Chunky Phase
+	/* 0x1E4 */ char unk_1e4[0x1E7-0x1e4];
 	/* 0x1E7 */ char balloon_sound;
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward

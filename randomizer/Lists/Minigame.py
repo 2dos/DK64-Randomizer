@@ -180,7 +180,13 @@ MinigameRequirements = {
     # Helm barrels
     Minigames.DonkeyRambi: Minigame(name="Hideout Helm: DK Rambi", group="Helm Minigames", map_id=Maps.HelmBarrelDKRambi, can_repeat=True, logic=lambda l: True),
     Minigames.DonkeyTarget: Minigame(
-        name="Hideout Helm: DK Targets", group="Helm Minigames", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, difficulty_lvl=3, logic=lambda l: l.isdonkey, kong_list=[Kongs.donkey]
+        name="Hideout Helm: DK Targets",
+        group="Helm Minigames",
+        map_id=Maps.HelmBarrelDKTarget,
+        can_repeat=True,
+        difficulty_lvl=3,
+        logic=lambda l: l.isdonkey and (not l.settings.balanced_krool_phases or l.blast),
+        kong_list=[Kongs.donkey],
     ),
     Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),
     Minigames.DiddyRocketbarrel: Minigame(
