@@ -325,6 +325,7 @@ class Spoiler:
         for phase in self.settings.krool_order:
             krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
         humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
+        humanspoiler["End Game"]["K. Rool"]["K Rool Balanced Phases"] = self.settings.balanced_krool_phases
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []
