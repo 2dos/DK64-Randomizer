@@ -65,6 +65,77 @@ destroyAllBarrelsCode:
     j 0x80680D18
     nop
 
+makeCannonsRequireBlast:
+    ; check control state
+    lui $at, hi(CurrentActorPointer_0)
+    lw $at, lo(CurrentActorPointer_0) ($at)
+    lbu $t0, 0x154 ($at)
+    addiu $v0, $zero, 1
+    sb $v0, 0x144 ($at)
+    addiu $at, $zero, 20
+    beq $t0, $at, has_blast_vanilla_jump
+    addiu $at, $zero, 1
+    beq $t0, $at, has_blast_vanilla_jump
+    nop
+    ; Check blast
+    lui $v0, 0x8080
+    lbu $v0, 0xC950 ($v0)
+    andi $v0, $v0, 1
+    bnez $v0, has_blast ; Does have blast
+    nop
+    ; Enable Translucency
+    lui $at, hi(CurrentActorPointer_0)
+    lw $at, lo(CurrentActorPointer_0) ($at)
+    lw $t0, 0x60 ($at)
+    lui $v0, 0xFFFF
+    ori $v0, $v0, 0x7FFF
+    and $t0, $t0, $v0
+    sw $t0, 0x60 ($at)
+    lh $t0, 0x128 ($at)
+    slti $t0, $t0, 100
+    bnez $t0, blast_set_noclip
+    nop
+    addiu $t0, $zero, 100 ; translucency
+    sh $t0, 0x128 ($at)
+
+    blast_set_noclip:
+        addiu $t0, $zero, 1 ; noclip
+        sb $t0, 0x144 ($at)
+        ; Go back to vanilla code
+        addiu $at, $zero, 4
+        addiu $v0, $zero, 1
+        j 0x8067FE84
+        addiu $t0, $zero, 1
+
+    has_blast:
+        ; Disable Translucency
+        lui $v0, hi(CurrentActorPointer_0)
+        lw $v0, lo(CurrentActorPointer_0) ($v0)
+        lw $at, 0x60 ($v0)
+        ori $at, $at, 0x8000
+        sw $at, 0x60 ($v0)
+        addiu $t0, $zero, 2 ; noclip
+        sb $t0, 0x144 ($v0)
+        ; Go back to vanilla code
+    
+    has_blast_vanilla_jump:
+        addiu $at, $zero, 4
+        j 0x8067FE2C
+        addiu $v0, $zero, 1
+
+fixCannonBlastNoclip:
+    lui $t7, 0x8080
+    lbu $t7, 0xC950 ($t7)
+    andi $t7, $t7, 1
+    bnez $t7, fixCannonBlastNoclip_hasBlast ; Does have blast
+    nop
+    addiu $a3, $zero, 1
+
+    fixCannonBlastNoclip_hasBlast:
+        sb $a3, 0x144 ($s0)
+        j 0x806806BC
+        lw $t7, 0x0 ($s2)
+
 destroyAllBarrelsCodeNew:
     lui $a3, hi(CurrentActorPointer_0)
     lw $a3, lo(CurrentActorPointer_0) ($a3)

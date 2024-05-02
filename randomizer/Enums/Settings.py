@@ -950,6 +950,7 @@ class SettingsStringEnum(IntEnum):
     k_rool_vanilla_requirement = 166
     disable_hard_minigames = 167
     serious_hints = 168
+    balanced_krool_phases = 169
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1161,6 +1162,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
     SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
     SettingsStringEnum.serious_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.balanced_krool_phases: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

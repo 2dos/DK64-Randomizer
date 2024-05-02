@@ -199,6 +199,10 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
+	if (Rando.balanced_krool_reqs) {
+		loadSingularHook(0x8067FE28, &makeCannonsRequireBlast);
+		loadSingularHook(0x806806B4, &fixCannonBlastNoclip);
+	}
 	loadSingularHook(0x80600674, &updateLag);
 
 	// Beaver Bother fix
