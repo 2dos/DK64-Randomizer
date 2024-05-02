@@ -139,13 +139,13 @@ LogicRegions = {
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.CanMoonkick()),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.phasewalk, Transitions.IslesMainToAztecLobby),
-        TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and (l.isdonkey or l.ischunky or (l.istiny and l.twirl) or ((l.isdiddy or l.islanky) and l.advanced_platforming and l.settings.krusha_kong != l.kong) or l.CanMoonkick())),
+        TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming) and l.settings.krusha_kong != l.kong) or l.CanMoonkick())),
     ]),
 
     Regions.IslesEar: Region("Isles Ear", "Main Isle", Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.IslesMainToCavesLobby),
         TransitionFront(Regions.IslesMain, lambda l: True),
-        TransitionFront(Regions.IslesMainUpper, lambda l: l.isdonkey or l.ischunky or (l.istiny and l.twirl) or ((l.isdiddy or l.islanky) and l.advanced_platforming and l.settings.krusha_kong != l.kong)),
+        TransitionFront(Regions.IslesMainUpper, lambda l: (l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming) and l.settings.krusha_kong != l.kong)),
     ]),
 
     Regions.Prison: Region("Prison", "Krem Isle", Levels.DKIsles, False, None, [
@@ -387,11 +387,11 @@ LogicRegions = {
     ]),
 
     Regions.KRool: Region("K. Rool", "K. Rool Arena", Levels.DKIsles, True, None, [], [
-        Event(Events.KRoolDonkey, lambda l: not l.settings.krool_donkey or l.donkey),
+        Event(Events.KRoolDonkey, lambda l: not l.settings.krool_donkey or ((l.blast or not l.settings.balanced_krool_phases) and l.donkey)),
         Event(Events.KRoolDiddy, lambda l: not l.settings.krool_diddy or (l.jetpack and l.peanut and l.diddy)),
         Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky and l.barrels)),
         Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
-        Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
+        Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or ((l.settings.balanced_krool_phases or l.superSlam) and l.Slam and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
         Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events)
     ], []),
 }

@@ -799,6 +799,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_distribution[HintType.Multipath] = len(multipath_dict_hints.keys())
                 maxed_hint_types.append(HintType.Multipath)
             valid_types.append(HintType.Multipath)
+            # Multipath hints are designed to passively hint your K. Rool order - you don't need it hinted directly in full
+            if HintType.KRoolOrder in valid_types:
+                valid_types.remove(HintType.KRoolOrder)
         # If somehow you threaded the needle with no valid hint types, you'll get joke hints whether you like it or not
         if len(valid_types) == 0:
             valid_types = [HintType.Joke]
@@ -1180,6 +1183,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                         # Otherwise pick a random location on this path - this guarantees the camera has at least one hint in its direction
                         location_to_hint = random.choice(location_options)
                         hinted_path_locations.append(location_to_hint)
+        # If we attempt to hint more locations than the distribution allows for, we'll error
+        # This should only happen if we're plandoing a ton of hints
+        if len(hinted_path_locations) > hint_distribution[HintType.Multipath]:
+            # We have to randomly choose from what we want to hint - if this culls some endpoints out of being hinted, so be it
+            hinted_path_locations = random.sample(hinted_path_locations, hint_distribution[HintType.Multipath])
         # pick randomly from remaining locations in the keys to the multipath dict
         while len(hinted_path_locations) < hint_distribution[HintType.Multipath]:
             location_to_hint = random.choice([loc for loc in multipath_dict_hints.keys() if loc not in hinted_path_locations])
@@ -1633,7 +1641,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 )
                 if region.level == Levels.Shops and region.hint_name != "Jetpac Game":  # Jetpac isn't a "real" shop, it's in the Shops level for convenience
                     shops_in_region += 1
-            if "Medal Rewards" in foolish_name:  # "Medal Rewards" regions are cb foolish hints, which are just generally more valuable to hint foolish
+            # "Medal Rewards" regions are cb foolish hints, which are just generally more valuable to hint foolish (so long as medals are relevant)
+            if "Medal Rewards" in foolish_name and Types.Medal in spoiler.settings.shuffled_location_types:
                 foolish_location_score += 3
             elif shops_in_region > 0:  # Shops are generally overvalued (4/6 locations per shop) with this method due to having mutually exclusive locations
                 foolish_location_score -= 1 * shops_in_region  # With smaller shops, this reduces the location count to 3 locations per shop

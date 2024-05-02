@@ -230,7 +230,7 @@ class Settings:
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
         if self.randomize_blocker_required_amounts:
             if self.blocker_max > 0:
-                randomlist = random.sample(range(1, self.blocker_max), 7)
+                randomlist = random.choices(range(1, self.blocker_max), k=7)
                 b_lockers = randomlist
                 if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
                     b_lockers.append(random.randint(1, self.blocker_max))
@@ -335,6 +335,7 @@ class Settings:
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
+        self.balanced_krool_phases = False  # Affects the Chunky phase slam switch and all(!) blast barrels - this is likely to be split up later
         # helm_phase_count: int, [1-5]
         self.helm_phase_count = 3
         self.helm_random = False
@@ -1436,11 +1437,11 @@ class Settings:
                     allKongMoveLocations.update(TrainingBarrelLocations.copy())
                 if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with) and Types.Shockwave not in self.shuffled_location_types:
                     allKongMoveLocations.remove(Locations.CameraAndShockwave)
-                self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations
-                self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations
-                self.valid_locations[Types.Shop][Kongs.lanky] = allKongMoveLocations
-                self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations
-                self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations
+                self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations.copy()
+                self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations.copy()
+                self.valid_locations[Types.Shop][Kongs.lanky] = allKongMoveLocations.copy()
+                self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations.copy()
+                self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations.copy()
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations.copy()
             if self.shockwave_status not in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with) and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
@@ -1475,17 +1476,17 @@ class Settings:
                 # Shockwave and Training Barrels can only be shuffled if shops are shuffled and their valid locations are non-Kong-specific shops
                 if Types.Shockwave in self.shuffled_location_types:
                     locations_excluding_kong_shops.append(Locations.CameraAndShockwave)
-                    self.valid_locations[Types.Shockwave] = locations_excluding_kong_shops
+                    self.valid_locations[Types.Shockwave] = locations_excluding_kong_shops.copy()
                 if Types.TrainingBarrel in self.shuffled_location_types:
-                    self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops
-                self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops
+                    self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops.copy()
+                self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops.copy()
                 # Kong-specific moves can go in any non-shared shop location
                 locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
-                self.valid_locations[Types.Shop][Kongs.donkey] = locations_excluding_shared_shops
-                self.valid_locations[Types.Shop][Kongs.diddy] = locations_excluding_shared_shops
-                self.valid_locations[Types.Shop][Kongs.lanky] = locations_excluding_shared_shops
-                self.valid_locations[Types.Shop][Kongs.tiny] = locations_excluding_shared_shops
-                self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops
+                self.valid_locations[Types.Shop][Kongs.donkey] = locations_excluding_shared_shops.copy()
+                self.valid_locations[Types.Shop][Kongs.diddy] = locations_excluding_shared_shops.copy()
+                self.valid_locations[Types.Shop][Kongs.lanky] = locations_excluding_shared_shops.copy()
+                self.valid_locations[Types.Shop][Kongs.tiny] = locations_excluding_shared_shops.copy()
+                self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops.copy()
             if Types.Blueprint in self.shuffled_location_types:
                 # Blueprints are banned from Key, Crown, Fairy and Rainbow Coin Locations
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy, Types.RainbowCoin)]
@@ -1519,17 +1520,17 @@ class Settings:
                 )
                 self.valid_locations[Types.Crown] = [location for location in shuffledNonMoveLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
-                self.valid_locations[Types.Key] = shuffledNonMoveLocations
+                self.valid_locations[Types.Key] = shuffledNonMoveLocations.copy()
             if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = fairyBannedLocations
+                self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
             if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = fairyBannedLocations
+                self.valid_locations[Types.Coin] = fairyBannedLocations.copy()
             if Types.Pearl in self.shuffled_location_types:
-                self.valid_locations[Types.Pearl] = fairyBannedLocations
+                self.valid_locations[Types.Pearl] = fairyBannedLocations.copy()
             if Types.Bean in self.shuffled_location_types:
-                self.valid_locations[Types.Bean] = fairyBannedLocations
+                self.valid_locations[Types.Bean] = fairyBannedLocations.copy()
             if Types.Fairy in self.shuffled_location_types:
-                self.valid_locations[Types.Fairy] = shuffledNonMoveLocations
+                self.valid_locations[Types.Fairy] = shuffledNonMoveLocations.copy()
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
                     x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)

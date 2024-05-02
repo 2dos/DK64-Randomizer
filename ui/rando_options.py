@@ -63,8 +63,8 @@ def max_randomized_blocker(event):
     blocker_text = js.document.getElementById("blocker_text")
     if not blocker_text.value:
         blocker_text.value = 50
-    elif 0 <= int(blocker_text.value) < 8:
-        blocker_text.value = 8
+    elif int(blocker_text.value) < 0:
+        blocker_text.value = 0
     elif int(blocker_text.value) > 200:
         blocker_text.value = 200
 

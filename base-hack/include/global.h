@@ -44,6 +44,8 @@ extern void initOptionScreen(void);
 extern int getLo(void* addr);
 extern int getHi(void* addr);
 
+extern int hasChunkyPhaseSlam(void);
+
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);

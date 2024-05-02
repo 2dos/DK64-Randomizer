@@ -13,7 +13,7 @@
 
 void overlay_mod_boss(void) {
 	// Add chunky phase microhint
-	if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
+	if ((Rando.microhints != MICROHINTS_NONE) && (!hasChunkyPhaseSlam())) {
 		*(short*)(0x800359A8) = 14; // Microhint Cutscene
 		*(int*)(0x80028D54) = 0; // Delete flag set
 	}
