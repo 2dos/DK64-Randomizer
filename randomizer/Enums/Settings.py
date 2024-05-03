@@ -675,6 +675,20 @@ class ShuffleLoadingZones(IntEnum):
     levels = auto()
     all = auto()
 
+class SlamRequirement(IntEnum):
+    """Determines the slam requirement for a switch, currently only chunky phase.
+
+    green: Green Slam (Simian Slam).
+    blue: Blue Slam (Super Simian Slam).
+    red: Red Slam (Super Duper Simian Slam).
+    random: Random slam color from the above.
+    """
+
+    green = auto()
+    blue = auto()
+    red = auto()
+    random = auto()
+
 
 class SoundType(IntEnum):
     """Determines the default sound mode.
@@ -836,6 +850,7 @@ SettingsMap = {
     "kong_model_lanky": KongModels,
     "kong_model_tiny": KongModels,
     "kong_model_chunky": KongModels,
+    "chunky_phase_slam_req": SlamRequirement,
 }
 
 
@@ -1029,7 +1044,8 @@ class SettingsStringEnum(IntEnum):
     helm_room_bonus_count = 175
     dk_portal_location_rando = 176
     serious_hints = 177
-    balanced_krool_phases = 178
+    cannons_require_blast = 178
+    chunky_phase_slam_req = 179
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1249,9 +1265,10 @@ SettingsStringTypeMap = {
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
     SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
     SettingsStringEnum.serious_hints: SettingsStringDataType.bool,
-    SettingsStringEnum.balanced_krool_phases: SettingsStringDataType.bool,
+    SettingsStringEnum.cannons_require_blast: SettingsStringDataType.bool,
     SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
+    SettingsStringEnum.chunky_phase_slam_req: SlamRequirement,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

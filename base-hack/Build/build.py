@@ -1618,6 +1618,10 @@ with open(newROMName, "r+b") as fh:
     for x in range(5):
         fh.write(values[x].to_bytes(1, "big"))
 
+    # Chunky Phase Slam
+    fh.seek(ROM_DATA_OFFSET + 0x1E3)
+    fh.write((2).to_bytes(1, "big"))
+
     # Item Rando defaults
     # Blueprints
     fh.seek(0x1FF0E00)

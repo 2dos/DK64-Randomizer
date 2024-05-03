@@ -8,7 +8,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels
+from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
@@ -152,7 +152,7 @@ def randomize_setup(spoiler):
         spoiler.settings.randomize_pickups,
         spoiler.settings.random_patches,
         spoiler.settings.puzzle_rando,
-        spoiler.settings.balanced_krool_phases,
+        spoiler.settings.chunky_phase_slam_req_internal != SlamRequirement.blue,
         IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.extra_hard_bosses),  # Pufftoss Stars Raised
         IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_bosses),  # Pufftoss Stars Shuffled
         lighthouse_on,
@@ -319,9 +319,14 @@ def randomize_setup(spoiler):
                 if item_type == 0x235 and cont_map_id == Maps.GalleonBoss and higher_pufftoss_stars:
                     ROM_COPY.seek(item_start + 4)
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(345), 16), 4)
-                if spoiler.settings.balanced_krool_phases and cont_map_id == Maps.KroolChunkyPhase and item_type == 0x16A:
+                if spoiler.settings.chunky_phase_slam_req_internal and cont_map_id == Maps.KroolChunkyPhase and item_type == 0x16A:
+                    slam_pads = {
+                        SlamRequirement.green: 0x92,
+                        SlamRequirement.blue: 0x16A,
+                        SlamRequirement.red: 0x165,
+                    }
                     ROM_COPY.seek(item_start + 0x28)
-                    ROM_COPY.writeMultipleBytes(0x92, 2)
+                    ROM_COPY.writeMultipleBytes(slam_pads[spoiler.settings.chunky_phase_slam_req_internal], 2)
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:

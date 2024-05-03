@@ -44,6 +44,7 @@ from randomizer.Enums.Settings import (
     WinCondition,
     HelmSetting,
     KongModels,
+    SlamRequirement,
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types, BarrierItems
@@ -1079,6 +1080,15 @@ class LogicVarHolder:
         is_correct_kong = self.istiny or self.settings.free_trade_items
         required_level_order = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
         return have_enough_fairies and is_correct_kong and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
+
+    def CanSlamChunkyPhaseSwitch(self):
+        """Check if the player can slam the switch in Chunky Phase."""
+        stg = self.settings.chunky_phase_slam_req_internal
+        if stg == SlamRequirement.blue:
+            return self.superSlam
+        elif stg == SlamRequirement.red:
+            return self.superDuperSlam
+        return self.Slam
 
     def BanItems(self, items):
         """Prevent an item from being picked up by the logic."""

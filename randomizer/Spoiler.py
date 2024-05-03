@@ -307,6 +307,7 @@ class Spoiler:
         settings["Win Condition"] = self.settings.win_condition.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name
+        settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings

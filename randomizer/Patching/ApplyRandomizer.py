@@ -20,6 +20,7 @@ from randomizer.Enums.Settings import (
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    SlamRequirement,
     WinCondition,
     WrinklyHints,
 )
@@ -210,7 +211,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
-        BooleanProperties(spoiler.settings.balanced_krool_phases, 0x1E3),  # Balanced K Rool Phases
     ]
 
     for prop in boolean_props:
@@ -253,6 +253,14 @@ def patching_response(spoiler):
                     ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
             else:
                 ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
+
+    slam_req_values = {
+        SlamRequirement.green: 1,
+        SlamRequirement.blue: 2,
+        SlamRequirement.red: 3,
+    }
+    ROM_COPY.seek(sav + 0x1E3)
+    ROM_COPY.write(slam_req_values[spoiler.settings.chunky_phase_slam_req_internal])
 
     # Camera unlocked
     given_moves = []

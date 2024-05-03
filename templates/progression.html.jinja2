@@ -218,16 +218,41 @@
             </div>
             <div class="flex-container">
                 <div class="form-check form-switch item-switch center-flex">
-                    <label data-toggle="tooltip" title="K. Rool phase requirements are more balanced.&#10;- Chunky's Phase no longer requires Super Simian Slam.&#10;- All blast barrels, including Donkey's Phase, now require Baboon Blast.">
+                    <label data-toggle="tooltip" title="All Cannon Barrels require Baboon Blast to use. This includes DK Phase of K Rool.">
                         <input class="form-check-input"
                                 type="checkbox"
-                                name="balanced_krool_phases"
-                                id="balanced_krool_phases"
-                                display_name="Balanced Phases"
+                                name="cannons_require_blast"
+                                id="cannons_require_blast"
+                                display_name="DK Phase requires Baboon Blast"
                                 onchange="toggle_clicks()"
                                 value="True"/>
-                        Balanced Phases
+                        DK Phase requires blast
                     </label>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Chunky Phase Slam Requirement</p>
+                    <select name="chunky_phase_slam_req"
+                            id="chunky_phase_slam_req"
+                            display_name="Chunky Phase Slam Requirement"
+                            class="form-select center-div"
+                            aria-label="Chunky Phase Slam Requirement"
+                            data-toggle="tooltip"
+                            title="Set the level of slam required for Chunky Phase.">
+                        <option id="green" value="green">
+                            Base Slam
+                        </option>
+                        <option selected id="blue" value="blue">
+                            Super Slam
+                        </option>
+                        <option id="red" value="red">
+                            Super Duper Slam
+                        </option>
+                        <option id="random" value="random">
+                            Random Slam
+                        </option>
+                    </select>
                 </div>
             </div>
             <hr>

@@ -814,6 +814,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x80030704, Overlay.Menu, "filename_code", offset_dict)
         writeFunction(ROM_COPY, 0x80030714, Overlay.Menu, "filename_init", offset_dict)
 
+    if settings.cannons_require_blast:
+        # Make Cannon Barrels require BBlast
+        writeHook(ROM_COPY, 0x8067FE28, Overlay.Static, "makeCannonsRequireBlast", offset_dict)
+        writeHook(ROM_COPY, 0x806806B4, Overlay.Static, "fixCannonBlastNoclip", offset_dict)
+
     # Item Rando
     # Item Get
     item_get_addrs = [0x806F64C8, 0x806F6BA8, 0x806F7740, 0x806F7764, 0x806F7774, 0x806F7798, 0x806F77B0, 0x806F77C4, 0x806F7804, 0x806F781C]

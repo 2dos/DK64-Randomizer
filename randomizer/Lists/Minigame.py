@@ -185,7 +185,7 @@ MinigameRequirements = {
         map_id=Maps.HelmBarrelDKTarget,
         can_repeat=True,
         difficulty_lvl=3,
-        logic=lambda l: l.isdonkey and (not l.settings.balanced_krool_phases or l.blast),
+        logic=lambda l: l.isdonkey and (not l.settings.cannons_require_blast or l.blast),
         kong_list=[Kongs.donkey],
     ),
     Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),

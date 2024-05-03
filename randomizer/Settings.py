@@ -382,7 +382,7 @@ class Settings:
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
-        self.balanced_krool_phases = False  # Affects the Chunky phase slam switch and all(!) blast barrels - this is likely to be split up later
+        self.cannons_require_blast = False  # Affects the Chunky phase slam switch and all(!) blast barrels - this is likely to be split up later
         # helm_phase_count: int, [1-5]
         self.helm_phase_count = 3
         self.helm_random = False
@@ -646,6 +646,8 @@ class Settings:
         self.fungi_time_internal = FungiTimeSetting.day
         self.galleon_water = GalleonWaterSetting.lowered
         self.galleon_water_internal = GalleonWaterSetting.lowered
+        self.chunky_phase_slam_req = SlamRequirement.blue
+        self.chunky_phase_slam_req_internal = SlamRequirement.blue
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
         self.helmhurry_list_golden_banana = 20
@@ -834,6 +836,12 @@ class Settings:
             self.galleon_water_internal = random.choice([GalleonWaterSetting.lowered, GalleonWaterSetting.raised])
         else:
             self.galleon_water_internal = self.galleon_water
+
+        # Chunky Phase Slam Requirement
+        if self.chunky_phase_slam_req == SlamRequirement.random:
+            self.chunky_phase_slam_req_internal = random.choice([SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red])
+        else:
+            self.chunky_phase_slam_req_internal = self.chunky_phase_slam_req
 
         # Helm Doors
         helmdoor_items = {
