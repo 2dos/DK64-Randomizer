@@ -517,7 +517,7 @@ void getItem(int object_type) {
             applyDamage(0, 1);
         case 0x57:
             // Melon Slice
-            playSong(SONG_MELONSLICEDROP, pickup_volume);
+            playSong(SONG_MELONSLICEGET, pickup_volume);
             forceDance();
             break;
         case 0x59:
