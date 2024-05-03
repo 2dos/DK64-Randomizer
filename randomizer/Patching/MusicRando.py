@@ -539,12 +539,13 @@ def randomize_music(settings: Settings):
                     else:
                         song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
             for channel_index in range(12):
-                shuffled_music = song_list[channel_index].copy()
-                if settings.music_bgm_randomized:
-                    random.shuffle(shuffled_music)
                 # Remove assigned locations.
                 open_locations = [x for x in song_list[channel_index] if x not in assigned_locations[channel_index]]
-                if settings.music_bgm_randomized:
+                # If we're keeping vanilla songs in vanilla locations, do not
+                # shuffle this list.
+                if settings.music_bgm_randomized and not settings.music_vanilla_locations:
+                    shuffled_music = song_list[channel_index].copy()
+                    random.shuffle(shuffled_music)
                     # Move assigned songs to the back of the list, and shorten
                     # to match open_locations.
                     pre_assigned_songs = [x for x in shuffled_music if x in assigned_songs[channel_index]]
@@ -625,13 +626,14 @@ def randomize_music(settings: Settings):
                         shuffled_group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
                     else:
                         group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
-            # Shuffle the group list
-            shuffled_music = group_items.copy()
-            if type_data.setting:
-                random.shuffle(shuffled_music)
             # Remove assigned locations.
             open_locations = [x for x in group_items if x not in assigned_item_locations]
-            if type_data.setting:
+            # If we're keeping vanilla songs in vanilla locations, do not
+            # shuffle this list.
+            if type_data.setting and not settings.music_vanilla_locations:
+                # Shuffle the group list
+                shuffled_music = group_items.copy()
+                random.shuffle(shuffled_music)
                 # Move assigned songs to the back of the list, and shorten
                 # to match open_locations.
                 pre_assigned_songs = [x for x in shuffled_music if x in assigned_items]

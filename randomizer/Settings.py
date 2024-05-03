@@ -452,6 +452,7 @@ class Settings:
         self.music_minoritems_randomized = False
         self.music_events_randomized = False
         self.random_music = False
+        self.music_vanilla_locations = False
         self.music_selection_dict = {
             "vanilla": {},
             "custom": {},
