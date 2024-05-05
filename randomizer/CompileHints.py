@@ -790,7 +790,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_distribution[HintType.Multipath] = max(len(multipath_dict_hints.keys()) * 0.59, min_value)
             # That percentage likely turns out a decimal - that decimal becomes a % chance to get an extra hint
             rng = random.random()
-            if hint_distribution[HintType.Multipath] % 1 < rng:
+            if hint_distribution[HintType.Multipath] % 1 > rng:
                 hint_distribution[HintType.Multipath] = ceil(hint_distribution[HintType.Multipath])
             else:
                 hint_distribution[HintType.Multipath] = floor(hint_distribution[HintType.Multipath])
