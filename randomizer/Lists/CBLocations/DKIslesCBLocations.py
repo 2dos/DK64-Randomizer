@@ -311,16 +311,7 @@ ColoredBananaGroupList = [
         region=Regions.TrainingGrounds,
         logic=lambda l: (l.istiny and l.twirl),
         locations=[
-            [1, 1.0, 1347, 17, 779],
-            [1, 1.0, 1336, 17, 675],
-            [1, 1.0, 1325, 17, 571],
-            [1, 1.0, 1315, 17, 468],
-            [1, 1.0, 1304, 17, 364],
-            [1, 1.0, 1333, 17, 296],
-            [1, 1.0, 1379, 17, 240],
-            [1, 1.0, 1436, 17, 200],
-            [1, 1.0, 1491, 17, 206],
-            [1, 1.0, 1550, 17, 243],
+            [5, 1.0, 810, 244, 710],
         ],
     ),
     # ColoredBananaGroup(
@@ -2448,7 +2439,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=191,
         map_id=Maps.CreepyCastleLobby,
-        name="Diddy door",
+        name="Lanky door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
         locations=[
