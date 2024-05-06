@@ -311,7 +311,7 @@ ColoredBananaGroupList = [
         region=Regions.TrainingGrounds,
         logic=lambda l: (l.istiny and l.twirl),
         locations=[
-            [5, 1.0, 810, 244, 710]
+            [5, 1.0, 810, 244, 710],
         ],
     ),
     # ColoredBananaGroup(
