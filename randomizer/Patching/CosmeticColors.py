@@ -2248,6 +2248,7 @@ def updateCryptLeverTexture(settings: Settings) -> None:
 
 
 def lightenPauseBubble(settings: Settings):
+    """Change the brightness of the text bubble used for the pause menu for light mode."""
     if settings.dark_mode_textboxes:
         return
     img = getFile(14, 107, True, 48, 32, TextureFormat.RGBA5551)
