@@ -2439,7 +2439,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=191,
         map_id=Maps.CreepyCastleLobby,
-        name="Diddy door",
+        name="Lanky door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
         locations=[
