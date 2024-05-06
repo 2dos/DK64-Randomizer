@@ -177,4 +177,5 @@ typedef struct varspace {
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 2
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ unsigned char balanced_krool_reqs; // Changes K Rool to require blast for DK Phase and just slam 1 for Chunky Phase
+	/* 0x1E4 */ unsigned char pause_hints_colored;
 } varspace;

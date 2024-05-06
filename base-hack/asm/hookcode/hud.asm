@@ -278,3 +278,11 @@ RecolorMenuBackground:
     lw $t7, lo(MenuDarkness) ($t7)
     j 0x807070a8
     sw $t7, 0x4 ($a1)
+
+ApplyTextRecolorHints:
+    lw $a3, 0xD8 ($sp)
+    addiu $a3, $a3, -1
+    jal applyHintRecoloring
+    sw $t3, 0x58 ($sp)
+    j 0x806FC998
+    nop

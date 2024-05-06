@@ -1738,3 +1738,32 @@ typedef struct BooleanModelSwaps {
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } BooleanModelSwaps;
+
+typedef struct text_char_info {
+	/* 0x000 */ short x_start;
+	/* 0x002 */ unsigned char width;
+	/* 0x003 */ unsigned char pad3;
+} text_char_info;
+
+typedef struct tuple_s {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+} tuple_s;
+
+typedef struct rgba {
+	/* 0x000 */ unsigned char red;
+	/* 0x001 */ unsigned char green;
+	/* 0x002 */ unsigned char blue;
+	/* 0x003 */ unsigned char alpha;
+} rgba;
+
+typedef struct vtx {
+	/* 0x000 */ tuple_s position;
+	/* 0x006 */ tuple_s u;
+	/* 0x00C */ unsigned int color;
+} vtx;
+
+typedef struct letter_data {
+	/* 0x000 */ vtx vtx_info[4];
+} letter_data;

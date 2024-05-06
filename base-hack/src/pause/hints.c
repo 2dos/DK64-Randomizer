@@ -176,7 +176,7 @@ void wipeHintCache(void) {
     hints_initialized = 0;
 }
 
-int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
+int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center, int enable_recolor) {
     mtx_item mtx0;
     mtx_item mtx1;
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
@@ -200,17 +200,25 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
 	*(unsigned int*)(dl++) = 0x02000180;
 	*(unsigned int*)(dl++) = 0xE7000000;
 	*(unsigned int*)(dl++) = 0x00000000;
-	*(unsigned int*)(dl++) = 0xFCFF97FF;
-	*(unsigned int*)(dl++) = 0xFF2CFE7F;
+	*(unsigned int*)(dl++) = 0xFC119623;
+	*(unsigned int*)(dl++) = 0xFF2FFFFF;
 	*(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFF00 | opacity;
+    *(unsigned int*)(dl++) = base_text_color | (opacity & 0xFF);
     *(unsigned int*)(dl++) = 0xDA380002;
     *(unsigned int*)(dl++) = (int)&static_mtx[(int)mtx_counter];
     int data = 0x80;
     if (!center) {
         data = 0;
     }
+    if (Rando.pause_hints_colored == 0) {
+        enable_recolor = 0;
+    }
+    if (enable_recolor) {
+        setCharacterRecoloring(1, str);
+        data |= 0x12;
+    }
     dl = displayText((int*)dl,6,0,0,str,data);
+    setCharacterRecoloring(0, (char*)0);
     mtx_counter += 1;
     *(unsigned int*)(dl++) = 0xD8380002;
     *(unsigned int*)(dl++) = 0x00000040;
@@ -238,26 +246,36 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
     int header = 0;
     int last_safe = 0;
     int line_count = 0;
+    int color_index = 0;
     while (1) {
         char referenced_character = *(char*)(string_copy_ref + header);
         int is_control = 0;
         if (referenced_character == 0) {
             // Terminator
-            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1);
+            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
         } else if ((referenced_character > 0) && (referenced_character <= 0x10)) {
             // Control byte character
+            if ((referenced_character >= 4) && (referenced_character <= 0xD)) {
+                int temp_color = referenced_character - 3;
+                if (temp_color == color_index) {
+                    color_index = 0;
+                } else {
+                    color_index = temp_color;
+                }
+            }
             is_control = 1;
             int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
             int size = end - (string_copy_ref + header + 1);
             dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
         }
+        setCharacterColor(header, color_index);
         if (!is_control) {
             if (header > 50) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
-                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1);
+                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
                 line_count += 1;
                 if (line_count == 3) {
                     return dl;
@@ -329,13 +347,23 @@ int showHint(int level, int kong) {
 }
 
 int* displayBubble(int* dl) {
+    int opacity = 0xFF;
+    int y = 480;
+    float x_scale = 26.0f;
+    float y_scale = 21.5f;
+    if (Rando.dark_mode_textboxes) {
+        opacity = 0x96;
+        y = 465;
+        x_scale = 24.0f;
+        y_scale = 20.0f;
+    }
     *(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFF96;
+    *(unsigned int*)(dl++) = 0xFFFFFF00 | opacity;
     int bubble_x = 625;
     if (Rando.true_widescreen) {
         bubble_x = (2 * SCREEN_WD) - 15;
     }
-    return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
+    return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, y, x_scale, y_scale, 0, 0.0f);
 }
 
 int getTiedShopmoveFlag(int flag) {
@@ -452,7 +480,7 @@ int* drawItemLocationScreen(int* dl, int level_x) {
         if (size == -1) {
             break;
         }
-        dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0xFF, 0);
+        dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0xFF, 0, 0);
         for (int j = 0; j < size; j++) {
             y += 40;
             char* str = itemloc_pointers[head + 1 + j];
@@ -466,7 +494,7 @@ int* drawItemLocationScreen(int* dl, int level_x) {
                 }
             }
             
-            dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0);
+            dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0, 0);
         }
         head += 1 + size;
         y += 60;
