@@ -107,14 +107,20 @@ def ShuffleFairyLocations(spoiler):
             Levels.DKIsles: [],
             Levels.HideoutHelm: [],
         }
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"] != -1:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"] != []:
             fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_fairies"])
 
         for level in fairy_locations:
             pick_size = 2
             if level == Levels.DKIsles:
                 pick_size = 4
-            selection = random.sample(list(range(len(fairy_locations[level]))), pick_size)
+            usable_fairy_indexes = list(range(len(fairy_locations[level])))
+            # Prevent double occurrences
+            if len(plando_dict[level]) > 0:
+                bad_location_names = [plando_dict[level]]
+                usable_fairy_indexes = [x for x in usable_fairy_indexes if fairy_locations[level][x].name not in bad_location_names]
+
+            selection = random.sample(usable_fairy_indexes, pick_size)
             # Give plandomizer an opportunity to have the final say
             for plando_fairy_selection in range(len(plando_dict[level])):
                 if plando_dict[level][plando_fairy_selection] != -1:
@@ -124,12 +130,7 @@ def ShuffleFairyLocations(spoiler):
                         raise Exceptions.PlandoIncompatibleException(f'Fairy "{selection_name}" not found in {level}.')
                     else:
                         selection_index = selection_index_list[0]
-                    # Fix double occurrences
-                    if selection_index not in selection:
                         selection[plando_fairy_selection] = selection_index
-                    else:
-                        double_index = selection.index(selection_index)
-                        selection[plando_fairy_selection], selection[double_index] = selection[double_index], selection[plando_fairy_selection]  # swap list items
             human_selection = [fairy_locations[level][x].name for x in selection]
             spoiler.fairy_locations[level] = selection.copy()
             spoiler.fairy_locations_human[level.name] = human_selection
@@ -175,4 +176,5 @@ def ClearFairyLogic(spoiler):
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for fairy in plando_input:
-        plando_dict[fairy["level"]].append(fairy["location"])
+        if fairy["level"] != -1:
+            plando_dict[fairy["level"]].append(fairy["location"])

@@ -18,10 +18,8 @@ IF NOT DEFINED python_ver (set python_ver="python3")
 IF DEFINED test_on (echo "Building patch file" >> rom/build.log)  ELSE (set test_on="")
 echo.
 if %test_on% == --test (
-	call :runscript "Fixing Krusha's size", "build\write_krusha_variables.py"
 	echo 0 > Build/BuildingBPS.txt
 ) else (
-	echo -1 > krusha_setting.txt
 	echo 1 > Build/BuildingBPS.txt
 )
 call :runscript "Define Heap", "build\heap.py"
@@ -57,7 +55,7 @@ call :runscript "Assessing Function Sizes", "build/assess_rom.py"
 if %test_on% == --test (
 	echo Applying test variables >> rom/build.log
 
-	call :runscript "Apply Test Variables", "test_variables_apply.py"
+	@REM call :runscript "Apply Test Variables", "..\base_hack_test.py"
 	call :runscript "Modifying Kong Colors", "build\generate_kong_color_images.py"
 )
 
@@ -71,6 +69,7 @@ echo Modify ROM CRC [32mDONE[0m (%runtime%)
 call :setstart
 %python_ver% build\dump_pointer_tables_vanilla.py >> rom/build.log
 %python_ver% build\dump_pointer_tables_modified.py >> rom/build.log
+%python_ver% build\symbol_json_builder.py >> rom/build.log
 call :setfinish runtime
 echo Dump pointer tables [32mDONE[0m (%runtime%)
 
@@ -86,11 +85,10 @@ del rom\dk64-randomizer-base-temp.z64
 del rom\dk64-randomizer-base.z64
 del rom\dk64-randomizer-base-dev.z64
 del rom\dk64-randomizer-base.wch
-del rom\dev-symbols.sym
+@REM del rom\dev-symbols.sym
 del rom\patch.bps
 
 :finish
-del krusha_setting.txt
 del Build\BuildingBPS.txt
 call :runscript "Removing unneccessary files", "build\cleanup.py"
 

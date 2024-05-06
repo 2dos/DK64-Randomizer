@@ -291,3 +291,4 @@ def reset_music_selections_no_prompt():
             songElement.value = ""
         else:
             songElement.value = "default_value"
+        songElement.value = ""

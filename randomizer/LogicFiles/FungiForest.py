@@ -23,6 +23,12 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.FungiForestEntryHandler: Region("Fungi Forest Entry Handler", "This should not be hinted", Levels.FungiForest, False, None, [], [], [
+        TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
+        TransitionFront(Regions.FungiForestStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestMainEnemy_NearAppleDropoff, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearDKPortal, lambda l: True),
@@ -39,7 +45,6 @@ LogicRegions = {
         Event(Events.ForestW4aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
-        TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
         TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True),
@@ -77,7 +82,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomNightExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip() or l.CanSkew(True)),
         TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill, isGlitchTransition=True),
-        TransitionFront(Regions.CrankyForest, lambda l: True),
+        TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
     ]),
 
     Regions.MushroomLower: Region("Mushroom Lower", "Giant Mushroom Insides", Levels.FungiForest, True, -1, [
@@ -240,7 +245,7 @@ LogicRegions = {
         TransitionFront(Regions.WinchRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdiddy) or (l.CanMoonkick()), Transitions.ForestMainToWinch, time=Time.Night),
         TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
-        TransitionFront(Regions.Snide, lambda l: True, time=Time.Day),
+        TransitionFront(Regions.Snide, lambda l: l.snideAccess, time=Time.Day),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
         TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),
     ]),
@@ -336,7 +341,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),
-        TransitionFront(Regions.FunkyForest, lambda l: True),
+        TransitionFront(Regions.FunkyForest, lambda l: l.funkyAccess),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Night),
     ]),
 

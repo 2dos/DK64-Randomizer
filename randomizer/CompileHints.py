@@ -15,9 +15,10 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmDoorItem, HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints, KongModels
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
@@ -250,6 +251,18 @@ level_list = [
     "DK Isles",
     "Cranky's Lab",
 ]
+vacation_levels_properties = [
+    "Glorious Hills",
+    "Arid Sands",
+    "OSHA Violation Hotspot",
+    "Murky Depths",
+    "Blissful Greens",
+    "Miners Paradise",
+    "Haunted Architecture",
+    "Timeless Corridors",
+    "Undeniable Serenity",
+    "Arcade Dwellers Paradise",
+]
 
 level_cryptic = [
     ["The level with a localized storm", "The level with a dirt mountain", "The level which has two retailers and no race"],
@@ -346,6 +359,20 @@ moves_data = [
 
 kong_placement_levels = [{"name": "Jungle Japes", "level": 0}, {"name": "Llama Temple", "level": 1}, {"name": "Tiny Temple", "level": 1}, {"name": "Frantic Factory", "level": 2}]
 
+boss_names = {
+    Maps.JapesBoss: "Army Dillo 1",
+    Maps.AztecBoss: "Dogadon 1",
+    Maps.FactoryBoss: "Mad Jack",
+    Maps.GalleonBoss: "Pufftoss",
+    Maps.FungiBoss: "Dogadon 2",
+    Maps.CavesBoss: "Army Dillo 2",
+    Maps.CastleBoss: "King Kut Out",
+    Maps.KroolDonkeyPhase: "DK Phase",
+    Maps.KroolDiddyPhase: "Diddy Phase",
+    Maps.KroolLankyPhase: "Lanky Phase",
+    Maps.KroolTinyPhase: "Tiny Phase",
+    Maps.KroolChunkyPhase: "Chunky Phase",
+}
 
 # Hint distribution that will be adjusted based on settings
 # These values are "if this is an option, then you must have at least X of this hint"
@@ -437,8 +464,7 @@ globally_hinted_location_ids = []
 
 def compileHints(spoiler: Spoiler) -> bool:
     """Create a hint distribution, generate buff hints, and place them in locations."""
-    if spoiler.settings.krusha_kong is not None:
-        replaceKongNameWithKrusha(spoiler)
+    replaceKongNameWithKrusha(spoiler)
     ClearHintMessages()
     hint_distribution = hint_distribution_default.copy()
     plando_hints_placed = 0
@@ -468,7 +494,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             key_location_ids[location.item] = location_id
 
     # Some locations are particularly useless to hint
-    useless_locations = {Items.HideoutHelmKey: [], Kongs.donkey: [], Kongs.diddy: [], Kongs.lanky: [], Kongs.tiny: [], Kongs.chunky: []}
+    useless_locations = {Items.HideoutHelmKey: [], Maps.KroolDonkeyPhase: [], Maps.KroolDiddyPhase: [], Maps.KroolLankyPhase: [], Maps.KroolTinyPhase: [], Maps.KroolChunkyPhase: []}
     # Your training in Gorilla Gone, Monkeyport, and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
         useless_moves = [Items.Vines]
@@ -478,27 +504,25 @@ def compileHints(spoiler: Spoiler) -> bool:
             loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
-    # Your training in moves which you know are always needed beat K. Rool are pointless to hint
-    if Kongs.diddy in spoiler.settings.krool_order and Kongs.diddy in spoiler.krool_paths.keys():
-        useless_locations[Kongs.diddy] = [
-            loc
-            for loc in spoiler.krool_paths[Kongs.diddy]
-            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
-        ]
-    if Kongs.lanky in spoiler.settings.krool_order and Kongs.lanky in spoiler.krool_paths.keys():
-        useless_locations[Kongs.lanky] = [
-            loc for loc in spoiler.krool_paths[Kongs.lanky] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Barrels, Items.Trombone]
-        ]
-    if Kongs.tiny in spoiler.settings.krool_order and Kongs.tiny in spoiler.krool_paths.keys():
-        useless_locations[Kongs.tiny] = [
-            loc for loc in spoiler.krool_paths[Kongs.tiny] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Feather, Items.MiniMonkey]
-        ]
-    if Kongs.chunky in spoiler.settings.krool_order and Kongs.chunky in spoiler.krool_paths.keys():
-        useless_locations[Kongs.chunky] = [
-            loc
-            for loc in spoiler.krool_paths[Kongs.chunky]
-            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
-        ]
+    # Your training in moves which you know are always needed beat the final battle are pointless to hint
+    required_moves = {
+        Maps.JapesBoss: [Items.Barrels],
+        Maps.AztecBoss: [Items.Barrels],
+        Maps.FactoryBoss: [Items.PonyTailTwirl],
+        Maps.GalleonBoss: [],
+        Maps.FungiBoss: [Items.Barrels, Items.HunkyChunky],
+        Maps.CavesBoss: [Items.Barrels],
+        Maps.CastleBoss: [],
+        Maps.KroolDiddyPhase: [Items.Peanut, Items.RocketbarrelBoost],
+        Maps.KroolLankyPhase: [Items.Barrels, Items.Trombone],
+        Maps.KroolTinyPhase: [Items.Feather, Items.MiniMonkey],
+        Maps.KroolChunkyPhase: [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone],
+    }
+    for map_id in required_moves:
+        if map_id in spoiler.settings.krool_order and map_id in spoiler.krool_paths.keys():
+            useless_locations[map_id] = [
+                loc for loc in spoiler.krool_paths[map_id] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in required_moves[map_id]
+            ]
 
     multipath_dict_hints, multipath_dict_goals = GenerateMultipathDict(spoiler, useless_locations)
 
@@ -975,7 +999,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If this is the first time we're hinting this kong, attempt to put it in an earlier level (regardless of whether or not you can read it)
         # This only matters if level order matters
         if level_order_matters and kong_index not in hinted_kongs:
-            level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_map["level"]]]
+            level_restriction = [level for level in all_levels if spoiler.settings.BLockerEntryCount[level] <= spoiler.settings.BLockerEntryCount[kong_map["level"]]]
         # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
         free_kongs = spoiler.settings.starting_kong_list.copy()
         free_kongs.append(free_kong)
@@ -1028,7 +1052,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hintable_levels = [
                     level
                     for level in all_levels
-                    if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
+                    if (not level_order_matters or spoiler.settings.BLockerEntryCount[level] > spoiler.settings.BLockerEntryCount[hint_location.level])
+                    and (hint_location.level, level) not in hinted_blocker_combos
                 ]
                 # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
                 if not spoiler.settings.maximize_helm_blocker:
@@ -1041,7 +1066,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         level_name = level_colors[hinted_level] + level_list[hinted_level] + level_colors[hinted_level]
         if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
             level_name = "\x08" + random.choice(level_cryptic[hinted_level]) + "\x08"
-        message = f"The barrier to {level_name} can be cleared by obtaining \x04{spoiler.settings.EntryGBs[hinted_level]} Golden Bananas\x04."
+        message = f"The barrier to {level_name} can be cleared by obtaining \x04{spoiler.settings.BLockerEntryCount[hinted_level]} Golden Bananas\x04."
         hint_location.hint_type = HintType.BLocker
         UpdateHint(hint_location, message)
 
@@ -1110,8 +1135,17 @@ def compileHints(spoiler: Spoiler) -> bool:
             message = f"Looking for {item_color}{item_name}{item_color}?"
             # If this hint tries to offer help finding Krusha, make sure to get his name right
             if item.type == Types.Kong and spoiler.settings.wrinkly_hints != WrinklyHints.item_hinting_advanced:
-                if ItemPool.GetKongForItem(location.item) == spoiler.settings.krusha_kong:
-                    message = message.replace(item.name, "Krusha")
+                settings_values = [
+                    spoiler.settings.kong_model_dk,
+                    spoiler.settings.kong_model_diddy,
+                    spoiler.settings.kong_model_lanky,
+                    spoiler.settings.kong_model_tiny,
+                    spoiler.settings.kong_model_chunky,
+                ]
+                for index, val in enumerate(settings_values):
+                    if val == KongModels.krusha:
+                        if ItemPool.GetKongForItem(location.item) == index:
+                            message = message.replace(item.name, "Krusha")
             # Two options for hinting the location, do a coin flip
             coin_flip = random.choice([1, 2])
             if coin_flip == 1:
@@ -1347,7 +1381,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 # After this point, the path_location_id is locked in and cannot be changed!
 
                 # Determine what phases this item could be for
-                phases_needing_this_item = [kong for kong in spoiler.krool_paths.keys() if path_location_id in spoiler.krool_paths[kong]]  # All phases this item is on the path to
+                phases_needing_this_item = [map_id for map_id in spoiler.krool_paths.keys() if path_location_id in spoiler.krool_paths[map_id]]  # All phases this item is on the path to
                 useless_kongs = [
                     kong for kong in phases_needing_this_item if path_location_id in useless_locations[kong]
                 ]  # All kongs that it would be useless to hint for (e.g. Training in Peanut is path to Diddy K. Rool)
@@ -1464,7 +1498,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if level_order_matters and not spoiler.settings.hard_level_progression:
             # Determine a sorted order of levels by B. Lockers - this may not be the actual "progression" but it'll do for now
             levels_in_order = all_levels.copy()
-            levels_in_order.sort(key=lambda l: spoiler.settings.EntryGBs[l])
+            levels_in_order.sort(key=lambda l: spoiler.settings.BLockerEntryCount[l])
 
             hintable_levels = []
             cheapest_levels_with_item = []
@@ -1477,7 +1511,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 else:
                     # Find all levels with B. Lockers of the same price as this one
                     cheapest_levels_candidates = [
-                        candidate for candidate in all_levels if spoiler.settings.EntryGBs[candidate] == spoiler.settings.EntryGBs[level] and candidate not in hintable_levels
+                        candidate for candidate in all_levels if spoiler.settings.BLockerEntryCount[candidate] == spoiler.settings.BLockerEntryCount[level] and candidate not in hintable_levels
                     ]
                     # If there's only one candidate then this is the level that gives logical access to the move, so we're done
                     # If it's an Isles shop we're hinting we don't need to pare down the lobby options, so we're done
@@ -1558,7 +1592,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                     break
                 hint_location = getRandomHintLocation()
                 future_tns_levels = [
-                    level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
+                    level
+                    for level in all_levels
+                    if level in levels_with_tns and (not level_order_matters or spoiler.settings.BLockerEntryCount[level] >= spoiler.settings.BLockerEntryCount[hint_location.level])
                 ]
             # If we failed to find it in 15 attempts, convert remaining T&S hints to joke hints
             # This is a disgustingly rare scenario, likely involving very few and early keys required
@@ -1753,8 +1789,17 @@ def compileHints(spoiler: Spoiler) -> bool:
     # We must hint each of Japes, Aztec, and Factory at least once
     # The rest of the hints are tied to a variety of important locations
     if hint_distribution[HintType.Entrance] > 0:
-        criticalJapesRegions = [Regions.JungleJapesStart, Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
+        criticalJapesRegions = [
+            Regions.JungleJapesEntryHandler,
+            Regions.JungleJapesStart,
+            Regions.JungleJapesMain,
+            Regions.JapesBeyondFeatherGate,
+            Regions.TinyHive,
+            Regions.JapesLankyCave,
+            Regions.Mine,
+        ]
         criticalAztecRegions = [
+            Regions.AngryAztecEntryHandler,
             Regions.AngryAztecStart,
             Regions.AngryAztecOasis,
             Regions.AngryAztecMain,
@@ -1764,17 +1809,34 @@ def compileHints(spoiler: Spoiler) -> bool:
             Regions.TinyTemple,
             Regions.ChunkyTemple,
         ]
-        criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.LowerCore, Regions.InsideCore]
+        criticalFactoryRegions = [
+            Regions.FranticFactoryEntryHandler,
+            Regions.FranticFactoryStart,
+            Regions.ChunkyRoomPlatform,
+            Regions.PowerHut,
+            Regions.BeyondHatch,
+            Regions.LowerCore,
+            Regions.InsideCore,
+        ]
         usefulRegions = [
             criticalJapesRegions,
             criticalAztecRegions,
             criticalFactoryRegions,
             [Regions.BananaFairyRoom],
             [Regions.TrainingGrounds],
-            [Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.ShipyardUnderwater, Regions.Shipyard],
-            [Regions.FungiForestStart, Regions.GiantMushroomArea, Regions.MushroomLowerExterior, Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MillArea, Regions.ThornvineArea],
-            [Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
-            [Regions.CreepyCastleMain, Regions.CastleWaterfall],
+            [Regions.GloomyGalleonEntryHandler, Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.ShipyardUnderwater, Regions.Shipyard],
+            [
+                Regions.FungiForestEntryHandler,
+                Regions.FungiForestStart,
+                Regions.GiantMushroomArea,
+                Regions.MushroomLowerExterior,
+                Regions.MushroomNightExterior,
+                Regions.MushroomUpperExterior,
+                Regions.MillArea,
+                Regions.ThornvineArea,
+            ],
+            [Regions.CrystalCavesEntryHandler, Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
+            [Regions.CreepyCastleEntryHandler, Regions.CreepyCastleMain, Regions.CastleWaterfall],
             [Regions.LowerCave],
             [Regions.UpperCave],
         ]
@@ -1846,21 +1908,21 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If any Helm doors are random, place a hint for each random door somewhere
     if hint_distribution[HintType.RequiredHelmDoorHint] > 0:
         helmdoor_vars = {
-            HelmDoorItem.req_gb: "Golden Banana",
-            HelmDoorItem.req_bp: "Blueprint",
-            HelmDoorItem.req_companycoins: "Special Coin",
-            HelmDoorItem.req_key: "Key",
-            HelmDoorItem.req_medal: "Medal",
-            HelmDoorItem.req_crown: "Crown",
-            HelmDoorItem.req_fairy: "Fairy",
-            HelmDoorItem.req_rainbowcoin: "Rainbow Coin",
-            HelmDoorItem.req_bean: "Bean",
-            HelmDoorItem.req_pearl: "Pearl",
+            BarrierItems.GoldenBanana: "Golden Banana",
+            BarrierItems.Blueprint: "Blueprint",
+            BarrierItems.CompanyCoin: "Special Coin",
+            BarrierItems.Key: "Key",
+            BarrierItems.Medal: "Medal",
+            BarrierItems.Crown: "Crown",
+            BarrierItems.Fairy: "Fairy",
+            BarrierItems.RainbowCoin: "Rainbow Coin",
+            BarrierItems.Bean: "Bean",
+            BarrierItems.Pearl: "Pearl",
         }
         if spoiler.settings.crown_door_random:
             item_name = helmdoor_vars[spoiler.settings.crown_door_item]
             if spoiler.settings.crown_door_item_count > 1:
-                if spoiler.settings.crown_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.crown_door_item == BarrierItems.Fairy:
                     item_name = "Fairies"  # English is so rude sometimes
                 else:
                     item_name = item_name + "s"
@@ -1871,7 +1933,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if spoiler.settings.coin_door_random:
             item_name = helmdoor_vars[spoiler.settings.coin_door_item]
             if spoiler.settings.coin_door_item_count > 1:
-                if spoiler.settings.coin_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.coin_door_item == BarrierItems.Fairy:
                     item_name = "Fairies"  # Plurals? Consistency? A pipe dream
                 else:
                     item_name = item_name + "s"
@@ -1935,9 +1997,9 @@ def compileHints(spoiler: Spoiler) -> bool:
     # No need to do anything fancy here - there's often already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):
         hint_location = getRandomHintLocation()
-        kong_krool_order = [kong_list[kong] for kong in spoiler.settings.krool_order]
+        kong_krool_order = [boss_names[map_id] for map_id in spoiler.settings.krool_order]
         kong_krool_text = ", then ".join(kong_krool_order)
-        associated_hint = f"\x08King K. Rool\x08 will face off in the ring against {kong_krool_text}."
+        associated_hint = f"\x08The final battle\x08 will be against {kong_krool_text}."
         hint_location.hint_type = HintType.KRoolOrder
         UpdateHint(hint_location, associated_hint)
 
@@ -2069,8 +2131,9 @@ def compileMicrohints(spoiler: Spoiler) -> None:
         slam_levels = []
         helm_prog_items = getHelmProgItems(spoiler)
         microhint_categories = {
-            MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam],
-            MicrohintsEnabled.all: helm_prog_items.copy() + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam],
+            MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
+            MicrohintsEnabled.all: helm_prog_items.copy()
+            + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
         }
         items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
         # Loop through locations looking for the items that need a microhint
@@ -2083,6 +2146,9 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                     if id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
                         if location.level not in slam_levels:
                             slam_levels.append(location.level)
+                elif location.item in (Items.Cranky, Items.Funky, Items.Snide, Items.Candy):
+                    hint_text = f"The sign reads {item.name} has gone on vacation to the {vacation_levels_properties[location.level]} of {level_color}{level_list[location.level]}{level_color}. Perhaps I would find {'her' if location.item == Items.Candy else 'him'} there."
+                    spoiler.microhints[item.name] = hint_text.upper()
                 else:
                     if location.type in item_type_names.keys():
                         hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_color}{level_list[location.level]}{level_color} for this.".upper()
@@ -2090,8 +2156,17 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                         hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
                     else:
                         hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
-                    if spoiler.settings.krusha_kong == location.kong:
-                        hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
+                    settings_values = [
+                        spoiler.settings.kong_model_dk,
+                        spoiler.settings.kong_model_diddy,
+                        spoiler.settings.kong_model_lanky,
+                        spoiler.settings.kong_model_tiny,
+                        spoiler.settings.kong_model_chunky,
+                    ]
+                    for index, val in enumerate(settings_values):
+                        if val == KongModels.krusha:
+                            if index == location.kong:
+                                hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
                     spoiler.microhints[item.name] = hint_text
         if len(slam_levels) > 0:
             slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
@@ -2162,7 +2237,7 @@ def compileSpoilerHints(spoiler):
     spoiler.level_spoiler_human_readable["Starting Info"] = "Starting Kongs: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.starting_kongs])
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Starting Keys: " + ", ".join(starting_info.starting_keys)
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Helm Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.helm_order])
-    spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.krool_order])
+    spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([boss_names[map_id] for map_id in starting_info.krool_order])
     if spoiler.settings.spoiler_include_level_order:
         spoiler.level_spoiler_human_readable["Starting Info"] += " | Level Order: " + ", ".join([level_list[level] for level in starting_info.level_order])
     if spoiler.settings.spoiler_hints == SpoilerHints.points:
@@ -2332,9 +2407,9 @@ def GenerateMultipathDict(
                     relevant_goal_locations.append(woth_loc)
         # Determine which K. Rool phases this is on the path to (if relevant)
         if spoiler.settings.win_condition == WinCondition.beat_krool:
-            for kong in spoiler.krool_paths.keys():
-                if location in spoiler.krool_paths[kong]:
-                    path_to_krool_phases.append(kong_list[kong])
+            for map_id in spoiler.krool_paths.keys():
+                if location in spoiler.krool_paths[map_id]:
+                    path_to_krool_phases.append(boss_names[map_id])
         # Determine if this location is on the path to taking photos for certain win conditions
         if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
@@ -2365,7 +2440,7 @@ def GenerateMultipathDict(
                 key_text = "\x04Key "
             hint_text_components.append(key_text + join_words(path_to_keys) + "\x04")
         if len(path_to_krool_phases) > 0:
-            hint_text_components.append("\x0dK. Rool vs.\x0d " + join_words(path_to_krool_phases))
+            hint_text_components.append("\x0dThe battle against\x0d " + join_words(path_to_krool_phases))
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
         if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0:
@@ -2440,19 +2515,27 @@ def ApplyPlandoHints(spoiler):
 
 def replaceKongNameWithKrusha(spoiler):
     """Replace Krusha's kong name."""
-    krusha = spoiler.settings.krusha_kong
-    kong_list[krusha] = f"{kong_colors[krusha]}Krusha{kong_colors[krusha]}"
-    colorless_kong_list[krusha] = "Krusha"
-    kong_cryptic[krusha] = [
-        "The kong that has... scales ?",
-        "The kong that is normally only available in multiplayer",
-        "The kong that is not a monkey",
-        "The Kong that is not in the DK Rap",
-        "The Kong that Rivals Chunky in Strength",
-        "The Kong that replaces another Kong",
-        "The Kong that wears Camo",
-        "The Kong that was K. Rool's Bodyguard",
+    settings_values = [
+        spoiler.settings.kong_model_dk,
+        spoiler.settings.kong_model_diddy,
+        spoiler.settings.kong_model_lanky,
+        spoiler.settings.kong_model_tiny,
+        spoiler.settings.kong_model_chunky,
     ]
+    for kong_index, kong in enumerate(settings_values):
+        if kong == KongModels.krusha:
+            kong_list[kong_index] = f"{kong_colors[kong_index]}Krusha{kong_colors[kong_index]}"
+            colorless_kong_list[kong_index] = "Krusha"
+            kong_cryptic[kong_index] = [
+                "The kong that has... scales ?",
+                "The kong that is normally only available in multiplayer",
+                "The kong that is not a monkey",
+                "The Kong that is not in the DK Rap",
+                "The Kong that Rivals Chunky in Strength",
+                "The Kong that replaces another Kong",
+                "The Kong that wears Camo",
+                "The Kong that was K. Rool's Bodyguard",
+            ]
 
 
 def getHelmOrderHint(spoiler):
