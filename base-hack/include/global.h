@@ -117,12 +117,14 @@ extern Gfx* drawText(Gfx* dl, int style, float x, float y, char* str, int red, i
 extern Gfx* drawDPad(Gfx* dl);
 extern Gfx* drawImageWithFilter(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
+
 extern Gfx* display_file_images(Gfx* dl, int y_offset);
 extern Gfx* drawTextPointers(Gfx* dl);
 extern Gfx* displayCenteredText(Gfx* dl, int y, char* str, int offset);
 extern void applyHintRecoloring(letter_data* data, int index, int bitfield, char* char_address);
 extern void setCharacterRecoloring(int output, char* stored_str);
 extern void setCharacterColor(int index, int value);
+extern void wipeTextColorData(void);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -458,6 +460,9 @@ extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+
+extern unsigned int base_text_color;
+extern unsigned int emph_text_colors[10];
 extern unsigned char BigHeadMode;
 extern const actor_bitfield big_head_actors;
 

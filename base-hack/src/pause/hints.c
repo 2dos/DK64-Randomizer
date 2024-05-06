@@ -193,21 +193,22 @@ Gfx* drawHintText(Gfx* dl, char* str, int x, int y, int opacity, int center, int
     gSPDisplayList(dl++, 0x01000118);
     gSPMatrix(dl++, 0x02000180, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPPipeSync(dl++);
-    gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
+    gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetPrimColor(dl++, 0, 0, (base_text_color >> 24) & 0xFF, (base_text_color >> 16) & 0xFF, (base_text_color >> 8) & 0xFF, opacity);
     gSPMatrix(dl++, (int)&static_mtx[(int)mtx_counter], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     int data = 0x80;
     if (!center) {
         data = 0;
+    }
+    if (Rando.pause_hints_colored == 0) {
+        enable_recolor = 0;
     }
     if (enable_recolor) {
         setCharacterRecoloring(1, str);
         data |= 0x12;
     }
     dl = displayText(dl,6,0,0,str,data);
-    if (enable_recolor) {
-        setCharacterRecoloring(0, (char*)0);
-    }
+    setCharacterRecoloring(0, (char*)0);
     mtx_counter += 1;
     gSPPopMatrix(dl++, G_MTX_MODELVIEW);
     return dl;
@@ -335,9 +336,19 @@ int showHint(int level, int kong) {
 }
 
 Gfx* displayBubble(Gfx* dl) {
-    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0x96);
+    int opacity = 0xFF;
     int bubble_x = 625;
-    return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
+    int y = 480;
+    float x_scale = 26.0f;
+    float y_scale = 21.5f;
+    if (Rando.dark_mode_textboxes) {
+        opacity = 0x96;
+        y = 465;
+        x_scale = 24.0f;
+        y_scale = 20.0f;
+    }
+    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
+    return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, y, x_scale, y_scale, 0, 0.0f);
 }
 
 int getTiedShopmoveFlag(int flag) {

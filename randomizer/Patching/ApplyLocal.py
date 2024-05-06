@@ -15,7 +15,7 @@ import js
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Settings import RandomModels
 from randomizer.Lists.Songs import ExcludedSongsSelector
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames, darkenDPad
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames, darkenDPad, lightenPauseBubble
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
@@ -125,6 +125,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             overwrite_object_colors(settings)
             writeMiscCosmeticChanges(settings)
             applyHolidayMode(settings)
+            lightenPauseBubble(settings)
             if settings.misc_cosmetics:
                 writeCrownNames()
 
@@ -175,6 +176,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             boolean_props = [
                 BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
                 BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
+                BooleanProperties(settings.pause_hint_coloring, 0x1E4),  # Pause Hint Coloring
                 BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
                 BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
             ]
