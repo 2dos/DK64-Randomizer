@@ -2246,6 +2246,7 @@ def updateCryptLeverTexture(settings: Settings) -> None:
         writeColorImageToROM(texture_0, 25, 0x99A, 32, 64, False, TextureFormat.RGBA5551)
         writeColorImageToROM(texture_1, 25, 0x999, 32, 64, False, TextureFormat.RGBA5551)
 
+
 def lightenPauseBubble(settings: Settings):
     if settings.dark_mode_textboxes:
         return
