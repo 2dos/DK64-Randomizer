@@ -75,3 +75,4 @@ extern void fixCannonBlastNoclip(void);
 
 extern void unscareBeaver(void);
 extern void scareBeaver(void);
+extern void ApplyTextRecolorHints(void);

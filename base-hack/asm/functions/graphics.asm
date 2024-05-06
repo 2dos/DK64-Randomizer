@@ -31,3 +31,4 @@
 .definelabel spawnFireballExplosion, 0x8067DF44
 .definelabel setChunkLighting, 0x80659670
 .definelabel displayChunk, 0x80656B98
+.definelabel recolorVertBlockText, 0x80704298

@@ -130,6 +130,10 @@ extern void correctKongFaces(void);
 extern int* display_file_images(int* dl, int y_offset);
 extern int* drawTextPointers(int* dl);
 extern int* displayCenteredText(int* dl, int y, char* str, int offset);
+extern void applyHintRecoloring(letter_data* data, int index, int bitfield, char* char_address);
+extern void setCharacterRecoloring(int output, char* stored_str);
+extern void setCharacterColor(int index, int value);
+extern void wipeTextColorData(void);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -508,3 +512,6 @@ extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+
+extern unsigned int base_text_color;
+extern unsigned int emph_text_colors[10];

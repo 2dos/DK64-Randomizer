@@ -184,6 +184,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "misc_cosmetics",
         "disco_chunky",
         "dark_mode_textboxes",
+        "pause_hint_coloring",
         "lanky_clothes_colors",
         "lanky_fur_colors",
         "lanky_clothes_custom_color",
