@@ -44,8 +44,8 @@ static char* unk_string = "???";
 static short hint_clear_flags[35] = {};
 static char hint_level = 0;
 static char item_subgroup = 0;
-static char level_hint_text[0x18] = "";
-static char item_loc_text[0x18] = "";
+static char level_hint_text[0x40] = "";
+static char item_loc_text[0x40] = "";
 
 static char* unknown_hints[] = {
     "??? - 000 GOLDEN BANANAS",

@@ -2253,6 +2253,10 @@ def lightenPauseBubble(settings: Settings):
         return
     img = getFile(14, 107, True, 48, 32, TextureFormat.RGBA5551)
     px = img.load()
+    canary_px = list(px[24, 16])
+    if canary_px[0] > 128 and canary_px[1] > 128 and canary_px[2] > 128:
+        # Already brightened, cancel
+        return
     bytes_array = []
     for y in range(32):
         for x in range(48):
