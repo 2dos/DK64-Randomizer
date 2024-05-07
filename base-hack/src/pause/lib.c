@@ -80,7 +80,7 @@ void checkItemDB(void) {
     /**
      * @brief Check item database for variables, and change check screen totals to accommodate
      */
-    renderScreenTransition(7);
+    //renderScreenTransition(7);
     initTracker();
     initHints();
     stored_igt = getNewSaveTime();

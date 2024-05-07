@@ -388,3 +388,36 @@ void fixChimpyCamBug(void) {
 	}
 	SaveToGlobal();
 }
+
+// Segment framebuffer
+// Should help with framebuffer crashes
+
+// #define FB_SEGMENTATION 16
+// #define FB_HEIGHT_PER_SEG (240 / 16)
+// #define FB_WIDTH 320
+
+// typedef struct framebuffer_info {
+// 	/* 0x000 */ short* segment[FB_SEGMENTATION];
+// } framebuffer_info;
+
+// void* framebufferMalloc(void) {
+// 	framebuffer_info* data = dk_malloc(sizeof(framebuffer_info));
+// 	for (int i = 0; i = FB_SEGMENTATION; i++) {
+// 		data->segment[i] = dk_malloc(FB_WIDTH * FB_HEIGHT_PER_SEG * 2);
+// 	}
+// 	return data;
+// }
+
+// void storeFramebufferNew(framebuffer_info* dest, short* src) {
+// 	int global_px = 0;
+// 	for (int i = 0; i < FB_SEGMENTATION; i++) {
+// 		int local_px = 0;
+// 		for (int y = 0; y < FB_HEIGHT_PER_SEG; y++) {
+// 			for (int x = 0; x < FB_WIDTH; x++) {
+// 				dest->segment[i][local_px] = src[global_px] | 1;
+// 				local_px++;
+// 				global_px++;
+// 			}
+// 		}
+// 	}
+// }

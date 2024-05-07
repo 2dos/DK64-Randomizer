@@ -44,8 +44,8 @@ static char* unk_string = "???";
 static short hint_clear_flags[35] = {};
 static char hint_level = 0;
 static char item_subgroup = 0;
-static char level_hint_text[0x18] = "";
-static char item_loc_text[0x18] = "";
+static char level_hint_text[0x40] = "";
+static char item_loc_text[0x40] = "";
 
 static char* unknown_hints[] = {
     "??? - 000 GOLDEN BANANAS",
@@ -440,8 +440,8 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
     // Handle Controls
     handleCShifting(&item_subgroup, ITEMLOC_TERMINATOR);
     // Display subgroup
-    dk_strFormat((char*)item_loc_text, "w %s e", itemloc_textnames[(int)item_subgroup].header);
-    dl = printText(dl, level_x, 120, 0.5f, item_loc_text);
+    dk_strFormat(&item_loc_text[0], "w %s e", itemloc_textnames[(int)item_subgroup].header);
+    dl = printText(dl, level_x, 120, 0.5f, &item_loc_text[0]);
     // Display Hints
     dl = displayBubble(dl);
     int item_loc_x = 200;
