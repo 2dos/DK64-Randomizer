@@ -11,8 +11,8 @@
 
 #include "../../include/common.h"
 
-static unsigned int base_text_color = 0x00000000;
-static unsigned int emph_text_colors[] = {
+unsigned int base_text_color = 0x00000000;
+unsigned int emph_text_colors[] = {
     0xA3620000,
     0xB0000000,
     0x2828FF00,

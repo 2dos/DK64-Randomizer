@@ -408,6 +408,8 @@ extern void setChunkLighting(float red, float green, float blue, int chunk);
 
 extern void unkLoadingZoneControllerFunction(short exit);
 
+extern void recolorVertBlockText(void* vert_block, int unk0, int bitfield);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;

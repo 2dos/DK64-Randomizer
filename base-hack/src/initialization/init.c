@@ -203,6 +203,7 @@ void loadHooks(void) {
 		loadSingularHook(0x8067FE28, &makeCannonsRequireBlast);
 		loadSingularHook(0x806806B4, &fixCannonBlastNoclip);
 	}
+	loadSingularHook(0x806FC990, &ApplyTextRecolorHints);
 	loadSingularHook(0x80600674, &updateLag);
 
 	// Beaver Bother fix
