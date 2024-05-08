@@ -796,6 +796,9 @@ PlannableCustomLocations["Kasplat"] = plannableKasplats
 # SWITCHES #
 ############
 
+# A map of switch locations to vanilla values.
+SwitchVanillaMap = {}
+
 # Each SwitchType gets its own list, as well as two switch locations that are
 # exceptional cases.
 PlannableSwitches = {
@@ -817,6 +820,7 @@ for switchEnum, switchInfo in SwitchData.items():
     }
     if switchEnum == Switches.IslesHelmLobbyGone:
         jsonValue["vanilla_value"] = f"{switchInfo.kong.name};{switchInfo.switch_type.name}"
+    SwitchVanillaMap[switchEnum.name] = jsonValue["vanilla_value"]
     PlandomizerPanels["Switches"]["locations"].append(jsonValue)
 
 for switchType in [SwitchType.GunSwitch, SwitchType.InstrumentPad, SwitchType.MiscActivator, SwitchType.PadMove, SwitchType.SlamSwitch]:

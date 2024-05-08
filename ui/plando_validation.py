@@ -36,6 +36,7 @@ from randomizer.Lists.Plandomizer import (
     PlannableItemLimits,
     ShopLocationKongMap,
     ShopLocationList,
+    SwitchVanillaMap,
 )
 from randomizer.Lists.Switches import SwitchData
 from randomizer.LogicFiles.Shops import LogicRegions
@@ -74,6 +75,7 @@ class ValidationError(IntEnum):
     only_available_as_custom_location = auto()
     random_custom_location = auto()
     duplicate_custom_location = auto()
+    switchsanity_not_enabled = auto()
 
 
 # This dictionary stores all elements that have either been disabled or marked
@@ -819,6 +821,25 @@ def validate_custom_crate_locations(evt):
             mark_option_enabled(locElem, ValidationError.only_available_as_custom_location)
 
 
+@bind("change", "switchsanity")
+def enable_switch_plando(evt):
+    """Enable or disable placing switches based on the Switchsanity setting."""
+    switchsanity = js.document.getElementById("switchsanity").value
+    for switchEnum in SwitchData.keys():
+        switchElem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
+        if switchsanity == "all":
+            mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
+        elif switchEnum in [Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport]:
+            if switchsanity == "helm_access":
+                mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
+            else:
+                errString = 'To set this switch, Switchsanity must be set to "All" or "Helm Access Only".'
+                mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
+        else:
+            errString = 'To set this Switch, Switchsanity must be set to "All".'
+            mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
+
+
 @bind("click", "key_8_helm")
 def lock_key_8_in_helm(evt):
     """If key 8 is locked in Helm, force that location to hold key 8."""
@@ -865,6 +886,7 @@ def perform_setting_conflict_validation(evt):
     plando_toggle_custom_kasplat_locations(evt)
     plando_toggle_custom_patch_locations(evt)
     plando_toggle_custom_locations_tab(evt)
+    enable_switch_plando(evt)
     # This is a fallback for errors with Bootstrap sliders.
     validate_starting_kong_count(evt)
 
@@ -941,10 +963,7 @@ def reset_plando_options_no_prompt() -> None:
 
     for switchEnum, switchInfo in SwitchData.items():
         elem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
-        vanillaValue = switchInfo.kong.name
-        if switchEnum == Switches.IslesHelmLobbyGone:
-            vanillaValue += f";{switchInfo.switch_type.name}"
-        elem.value = vanillaValue
+        elem.value = SwitchVanillaMap[switchEnum.name]
 
     # These maps are string:string.
     locations = [(DirtPatchVanillaLocationMap, "random_patches"), (FairyVanillaLocationMap, "random_fairies"), (MelonCrateVanillaLocationMap, "random_crates")]
@@ -1137,21 +1156,25 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     plando_form_data["plando_bonus_barrels"] = minigames_map
 
     switches_map = {}
-    for switch in switch_objects:
-        # Extract the switch location name.
-        location_name = re.search("^plando_(.+)_switch$", switch.name)[1]
-        location = get_plando_value(Switches[location_name])
-        if switch.value != "":
-            if ";" in switch.value:
-                kong, switch_type = switch.value.split(";")
-                switches_map[location] = {
-                    "kong": get_plando_value(Kongs[kong]),
-                    "switch_type": get_plando_value(SwitchType[switch_type]),
-                }
-            else:
-                switches_map[location] = {
-                    "kong": get_plando_value(Kongs[switch.value])
-                }
+    switchsanity = js.document.getElementById("switchsanity").value
+    if switchsanity != "off":
+        for switch in switch_objects:
+            # Extract the switch location name.
+            location_name = re.search("^plando_(.+)_switch$", switch.name)[1]
+            if switchsanity == "helm_access" and location_name not in [Switches.IslesHelmLobbyGone.name, Switches.IslesMonkeyport.name]:
+                continue
+            location = get_plando_value(Switches[location_name])
+            if switch.value != "":
+                if ";" in switch.value:
+                    kong, switch_type = switch.value.split(";")
+                    switches_map[location] = {
+                        "kong": get_plando_value(Kongs[kong]),
+                        "switch_type": get_plando_value(SwitchType[switch_type]),
+                    }
+                else:
+                    switches_map[location] = {
+                        "kong": get_plando_value(Kongs[switch.value])
+                    }
     plando_form_data["plando_switchsanity"] = switches_map
 
     battle_arenas_map = {}
