@@ -1094,7 +1094,6 @@ def update_ui_states(event):
     disable_krool_phases(None)
     disable_helm_phases(None)
     enable_plandomizer(None)
-    disable_switchsanity_with_plandomizer(None)
     toggle_medals_box(None)
     toggle_extreme_prices_option(None)
     toggle_vanilla_door_rando(None)
@@ -1117,23 +1116,6 @@ def enable_plandomizer(evt):
             plando_tab.style.display = "none"
         else:
             plando_tab.style = ""
-    except AttributeError:
-        pass
-
-
-@bind("click", "enable_plandomizer")
-def disable_switchsanity_with_plandomizer(evt):
-    """Disable Switchsanity if the Plandomizer is being used."""
-    disabled = False
-    switchsanity = js.document.getElementsByName("switchsanity")[0]
-    if js.document.getElementById("enable_plandomizer").checked:
-        disabled = True
-    try:
-        if disabled:
-            switchsanity.checked = False
-            switchsanity.setAttribute("disabled", "disabled")
-        else:
-            switchsanity.removeAttribute("disabled")
     except AttributeError:
         pass
 
