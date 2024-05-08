@@ -134,7 +134,6 @@ class Settings:
             # Remove these as plando features get implemented
             self.plandomizer_dict["plando_wrinkly_doors"] = -1
             self.plandomizer_dict["plando_tns_portals"] = -1
-            self.plandomizer_dict["plando_switchsanity"] = -1
             self.plandomizer_dict["plando_shop_location_rando"] = -1
             # ---------------------------------------------------
             # Prevent custom locations selected for plandomizer from being used by a different randomizer
@@ -775,12 +774,6 @@ class Settings:
                         self.switchsanity_data[int(key)].kong = planned_data["kong"]
                     if "switch_type" in planned_data.keys():
                         self.switchsanity_data[int(key)].switch_type = planned_data["switch_type"]
-                # Doublecheck validity
-                for slot in self.switchsanity_data:
-                    if len(self.switchsanity_data[slot].tied_settings) > 0:
-                        for switch in self.switchsanity_data[slot].tied_settings:
-                            if self.switchsanity_data[switch].kong == self.switchsanity_data[slot].kong:
-                                raise Ex.PlandoIncompatibleException(f"Same kong assigned for {self.switchsanity_data[switch].name} and {self.switchsanity_data[slot].name}.")
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava):
