@@ -159,7 +159,7 @@ void newGuardCode(void) {
         }
     }
     if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) { // If being damaged
-        if (in_snoop) { // If not in SSnoop
+        if (!in_snoop) { // If not in SSnoop
             // Hit by ammo/oranges
             if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
                 // Death procedure
@@ -176,7 +176,7 @@ void newGuardCode(void) {
             }
         }
     }
-    if (in_snoop) { // If not in SSnoop
+    if (!in_snoop) { // If not in SSnoop
         guard_paad* paad = CurrentActorPointer_0->paad;
         if (CurrentActorPointer_0->grounded & 4) {
             // Touching Water

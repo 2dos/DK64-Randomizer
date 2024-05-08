@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "base-hack", "base-hack", "{10C83C82-FC83-444A-BB6F-C9ADE610A21D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "build-cs", "base-hack\build-cs\build-cs.csproj", "{5A4726FD-7F73-4B43-BAC0-A028EFEEC484}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A4726FD-7F73-4B43-BAC0-A028EFEEC484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4726FD-7F73-4B43-BAC0-A028EFEEC484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4726FD-7F73-4B43-BAC0-A028EFEEC484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4726FD-7F73-4B43-BAC0-A028EFEEC484}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A4726FD-7F73-4B43-BAC0-A028EFEEC484} = {10C83C82-FC83-444A-BB6F-C9ADE610A21D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {05FDC93D-5F52-41B4-AB18-106D618504D0}
+	EndGlobalSection
+EndGlobal
