@@ -2505,6 +2505,12 @@ def writeMiscCosmeticChanges(settings):
                 for img_index in range(sprite_data[0], sprite_data[1] + 1):
                     dim = sprite_data[2]
                     hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
+            # Number Game Numbers
+            for x in range(16):
+                number_hue_shift = getRandomHueShift()
+                for sub_img in range(2):
+                    img_index = 0x1FE + (2 * x) + sub_img
+                    hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA5551, number_hue_shift)
 
     if enemy_setting != RandomModels.off:
         # Barrel Enemy Skins - Random
