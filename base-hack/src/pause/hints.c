@@ -44,8 +44,8 @@ static char* unk_string = "???";
 static short hint_clear_flags[35] = {};
 static char hint_level = 0;
 static char item_subgroup = 0;
-static char level_hint_text[0x18] = "";
-static char item_loc_text[0x18] = "";
+static char level_hint_text[0x40] = "";
+static char item_loc_text[0x40] = "";
 
 static char* unknown_hints[] = {
     "??? - 000 GOLDEN BANANAS",
@@ -176,7 +176,7 @@ void wipeHintCache(void) {
     hints_initialized = 0;
 }
 
-Gfx* drawHintText(Gfx* dl, char* str, int x, int y, int opacity, int center) {
+Gfx* drawHintText(Gfx* dl, char* str, int x, int y, int opacity, int center, int enable_recolor) {
     mtx_item mtx0;
     mtx_item mtx1;
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
@@ -193,14 +193,22 @@ Gfx* drawHintText(Gfx* dl, char* str, int x, int y, int opacity, int center) {
     gSPDisplayList(dl++, 0x01000118);
     gSPMatrix(dl++, 0x02000180, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPPipeSync(dl++);
-    gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
+    gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetPrimColor(dl++, 0, 0, (base_text_color >> 24) & 0xFF, (base_text_color >> 16) & 0xFF, (base_text_color >> 8) & 0xFF, opacity);
     gSPMatrix(dl++, (int)&static_mtx[(int)mtx_counter], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     int data = 0x80;
     if (!center) {
         data = 0;
     }
+    if (Rando.pause_hints_colored == 0) {
+        enable_recolor = 0;
+    }
+    if (enable_recolor) {
+        setCharacterRecoloring(1, str);
+        data |= 0x12;
+    }
     dl = displayText(dl,6,0,0,str,data);
+    setCharacterRecoloring(0, (char*)0);
     mtx_counter += 1;
     gSPPopMatrix(dl++, G_MTX_MODELVIEW);
     return dl;
@@ -227,26 +235,36 @@ Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
     int header = 0;
     int last_safe = 0;
     int line_count = 0;
+    int color_index = 0;
     while (1) {
         char referenced_character = *(char*)(string_copy_ref + header);
         int is_control = 0;
         if (referenced_character == 0) {
             // Terminator
-            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1);
+            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
         } else if ((referenced_character > 0) && (referenced_character <= 0x10)) {
             // Control byte character
+            if ((referenced_character >= 4) && (referenced_character <= 0xD)) {
+                int temp_color = referenced_character - 3;
+                if (temp_color == color_index) {
+                    color_index = 0;
+                } else {
+                    color_index = temp_color;
+                }
+            }
             is_control = 1;
             int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
             int size = end - (string_copy_ref + header + 1);
             dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
         }
+        setCharacterColor(header, color_index);
         if (!is_control) {
             if (header > 50) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
-                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1);
+                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
                 line_count += 1;
                 if (line_count == 3) {
                     return dl;
@@ -318,9 +336,19 @@ int showHint(int level, int kong) {
 }
 
 Gfx* displayBubble(Gfx* dl) {
-    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0x96);
+    int opacity = 0xFF;
     int bubble_x = 625;
-    return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
+    int y = 480;
+    float x_scale = 26.0f;
+    float y_scale = 21.5f;
+    if (Rando.dark_mode_textboxes) {
+        opacity = 0x96;
+        y = 465;
+        x_scale = 24.0f;
+        y_scale = 20.0f;
+    }
+    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
+    return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, y, x_scale, y_scale, 0, 0.0f);
 }
 
 int getTiedShopmoveFlag(int flag) {
@@ -412,8 +440,8 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
     // Handle Controls
     handleCShifting(&item_subgroup, ITEMLOC_TERMINATOR);
     // Display subgroup
-    dk_strFormat((char*)item_loc_text, "w %s e", itemloc_textnames[(int)item_subgroup].header);
-    dl = printText(dl, level_x, 120, 0.5f, item_loc_text);
+    dk_strFormat(&item_loc_text[0], "w %s e", itemloc_textnames[(int)item_subgroup].header);
+    dl = printText(dl, level_x, 120, 0.5f, &item_loc_text[0]);
     // Display Hints
     dl = displayBubble(dl);
     int item_loc_x = 200;
@@ -434,7 +462,7 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
         if (size == -1) {
             break;
         }
-        dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0xFF, 0);
+        dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0xFF, 0, 0);
         for (int j = 0; j < size; j++) {
             y += 40;
             char* str = itemloc_pointers[head + 1 + j];
@@ -448,7 +476,7 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
                 }
             }
             
-            dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0);
+            dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0, 0);
         }
         head += 1 + size;
         y += 60;

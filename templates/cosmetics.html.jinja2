@@ -125,7 +125,7 @@
                 <div class="flex-container">
                     {{ toggle_input("misc_cosmetics", "Random Miscellaneous Cosmetics", "Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors") }}
                     {{ toggle_input("dark_mode_textboxes", "Dark Mode UI", "Text bubbles will be darkened, with the font brightened. The DPad Graphic will be darkened.") }}
-                    <div class="spacer"></div>
+                    {{ toggle_input("pause_hint_coloring", "Color Hints in Pause Menu", "Various important segments in hints on the pause menu will be colored to assist with parsing.", True) }}
                     <div class="form-check form-switch item-switch holiday" hidden data-toggle="tooltip"
                         title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
                         <input

@@ -552,18 +552,13 @@ AlterHeadSize_0:
         addu $t9, $s5, $s1
 
 makeKongTranslucent:
-    lui $v1, hi(CurrentActorPointer_0)
-    lw $v1, lo(CurrentActorPointer_0) ($v1)
-    lbu $v1, 0x154 ($v1)
-    addiu $at, $zero, 118 ; Crown Entry
-    beq $v1, $at, makeKongTranslucent_finish
-    addiu $at, $zero, 0x2
-    bne $t1, $at, makeKongTranslucent_clearTranslucency ; not hunky
-    nop
     lui $v1, hi(CurrentMap)
     lw $v1, lo(CurrentMap) ($v1)
     addiu $at, $zero, 0xCF
-    bne $v1, $at, makeKongTranslucent_clearTranslucency ; not in chunky phase
+    bne $v1, $at, makeKongTranslucent_finish ; not in chunky phase
+    nop
+    addiu $at, $zero, 0x2
+    bne $t1, $at, makeKongTranslucent_clearTranslucency ; not hunky
     nop
     lui $v1, hi(CutsceneActive)
     lbu $v1, lo(CutsceneActive) ($v1)

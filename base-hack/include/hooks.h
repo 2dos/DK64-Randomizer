@@ -79,3 +79,4 @@ extern void scoff_patch(void);
 
 extern void AlterHeadSize(void);
 extern void AlterHeadSize_0(void);
+extern void ApplyTextRecolorHints(void);

@@ -613,6 +613,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806AA414, Overlay.Static, "PauseControl_Sprite", offset_dict)
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)
     writeHook(ROM_COPY, 0x80600674, Overlay.Static, "updateLag", offset_dict)
+    writeHook(ROM_COPY, 0x806FC990, Overlay.Static, "ApplyTextRecolorHints", offset_dict)
+
+    # Change pause menu background design
+    writeValue(ROM_COPY, 0x806A84F4, Overlay.Static, 0, offset_dict, 4) # Enable framebuffer clear on pause menu
+    writeValue(ROM_COPY, 0x806A90E8, Overlay.Static, 0, offset_dict, 4) # Disable Screen Shake
+    writeValue(ROM_COPY, 0x806AC056, Overlay.Static, 120, offset_dict) # Changes darkness opacity
 
     # Beaver Bother fix
     writeHook(ROM_COPY, 0x806AD740, Overlay.Static, "unscareBeaver", offset_dict)

@@ -33,3 +33,7 @@
 .definelabel displayChunk, 0x80656B98
 .definelabel displayCountOnTeeth, 0x80027340
 .definelabel spawnTextOverlayWrapper, 0x8069D2AC
+.definelabel getLetterCount, 0x806FBEAC
+.definelabel getCharacterWidth, 0x806FB914
+.definelabel styleSpecificDLStuff, 0x806FBEF0
+.definelabel recolorVertBlockText, 0x80704298

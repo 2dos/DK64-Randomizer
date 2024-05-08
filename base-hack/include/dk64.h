@@ -430,6 +430,11 @@ extern void funkyCode(void);
 extern void candyCode(void);
 extern void snideCode(void);
 
+extern int getLetterCount(char* str);
+extern int getCharacterWidth(int style, char* byte_char);
+extern Gfx* styleSpecificDLStuff(Gfx* dl, int style, int file);
+extern void recolorVertBlockText(void* vert_block, int unk0, int bitfield);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -545,7 +550,9 @@ extern parentMaps parentData[17];
 extern void* SetupFilePointer;
 extern int* focusedParentDataSetup[17];
 extern hudData* HUD;
-extern text_struct textData[6];
+extern text_struct textData[7];
+extern text_char_info* textCharData[7];
+extern char* textUnkData[7];
 extern float LZFadeoutProgress;
 extern int* mapFloorPointer;
 extern int mapFloorBlockCount;

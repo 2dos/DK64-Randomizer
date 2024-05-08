@@ -131,6 +131,8 @@
 .definelabel HUD, 0x80754280
 .definelabel HelmMinigameFlags, 0x8074E7E0
 .definelabel textData, 0x80754A34
+.definelabel textCharData, 0x80754A18
+.definelabel textUnkData, 0x807549FC
 .definelabel LZFadeoutProgress, 0x807FD888
 .definelabel mapFloorPointer, 0x807F9514
 .definelabel mapFloorBlockCount, 0x807F9518
