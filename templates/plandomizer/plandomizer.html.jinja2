@@ -111,6 +111,8 @@
         {% for panelName, panel in plando_panels.items() %}
             {% if panelName == "Shops" %}
                 {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
+            {% elif panelName == "Switches" %}
+                {% include 'plandomizer/plandomizer_switches.html.jinja2' %}
             {% elif panelName == "Locations" %}
                 {% include 'plandomizer/plandomizer_locations.html.jinja2' %}
             {% elif panelName == "Minigames" %}

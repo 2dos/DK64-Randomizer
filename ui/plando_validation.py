@@ -6,11 +6,14 @@ import re
 
 import js
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import KasplatRandoSetting
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.Plandomizer import (
@@ -34,6 +37,7 @@ from randomizer.Lists.Plandomizer import (
     ShopLocationKongMap,
     ShopLocationList,
 )
+from randomizer.Lists.Switches import SwitchData
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -935,6 +939,13 @@ def reset_plando_options_no_prompt() -> None:
         hint_element.value = ""
         remove_all_errors_from_option(hint_element)
 
+    for switchEnum, switchInfo in SwitchData.items():
+        elem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
+        vanillaValue = switchInfo.kong.name
+        if switchEnum == Switches.IslesHelmLobbyGone:
+            vanillaValue += f";{switchInfo.switch_type.name}"
+        elem.value = vanillaValue
+
     # These maps are string:string.
     locations = [(DirtPatchVanillaLocationMap, "random_patches"), (FairyVanillaLocationMap, "random_fairies"), (MelonCrateVanillaLocationMap, "random_crates")]
     for locationMap, randomCheckbox in locations:
@@ -995,6 +1006,7 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     plando_form_data = {}
     item_objects = []
     shop_cost_objects = []
+    switch_objects = []
     minigame_objects = []
     hint_objects = []
     custom_location_objects = []
@@ -1043,6 +1055,9 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             continue
         elif obj.name.endswith("_item"):
             item_objects.append(obj)
+            continue
+        elif obj.name.endswith("_switch"):
+            switch_objects.append(obj)
             continue
         elif obj.name.endswith("_minigame"):
             minigame_objects.append(obj)
@@ -1120,6 +1135,24 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
         if minigame.value != "":
             minigames_map[location] = get_plando_value(Minigames[minigame.value])
     plando_form_data["plando_bonus_barrels"] = minigames_map
+
+    switches_map = {}
+    for switch in switch_objects:
+        # Extract the switch location name.
+        location_name = re.search("^plando_(.+)_switch$", switch.name)[1]
+        location = get_plando_value(Switches[location_name])
+        if switch.value != "":
+            if ";" in switch.value:
+                kong, switch_type = switch.value.split(";")
+                switches_map[location] = {
+                    "kong": get_plando_value(Kongs[kong]),
+                    "switch_type": get_plando_value(SwitchType[switch_type]),
+                }
+            else:
+                switches_map[location] = {
+                    "kong": get_plando_value(Kongs[switch.value])
+                }
+    plando_form_data["plando_switchsanity"] = switches_map
 
     battle_arenas_map = {}
     dirt_patches_list = []
