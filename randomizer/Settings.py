@@ -161,18 +161,17 @@ class Settings:
                 Locations.HelmBattleArena: Levels.HideoutHelm,
             }
             for key in ["plando_dirt_patches", "plando_melon_crates", "plando_battle_arenas"]:
-                if self.plandomizer_dict[key] != -1:
-                    for customloc in self.plandomizer_dict[key]:
-                        selected_location = ""
-                        level = -1
-                        if key == "plando_battle_arenas":
-                            selected_location = self.plandomizer_dict[key][customloc]
-                            level = crown_to_level[int(customloc)]
-                        else:
-                            selected_location = customloc["location"]
-                            level = customloc["level"]
-                        if level != -1:
-                            self.plandomizer_dict["reserved_custom_locations"][level].append(selected_location)
+                for customloc in self.plandomizer_dict[key]:
+                    selected_location = ""
+                    level = -1
+                    if key == "plando_battle_arenas":
+                        selected_location = self.plandomizer_dict[key][customloc]
+                        level = crown_to_level[int(customloc)]
+                    else:
+                        selected_location = customloc["location"]
+                        level = customloc["level"]
+                    if level != -1:
+                        self.plandomizer_dict["reserved_custom_locations"][level].append(selected_location)
         if self.music_selections is not None:
             self.ApplyMusicSelections()
 
@@ -751,7 +750,7 @@ class Settings:
                     self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
                 else:
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
-                    if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
+                    if self.enable_plandomizer:
                         for switch in self.switchsanity_data[slot].tied_settings:
                             if str(switch.value) in self.plandomizer_dict["plando_switchsanity"].keys():
                                 bad_kongs.append(self.plandomizer_dict["plando_switchsanity"][str(switch.value)]["kong"])
@@ -765,7 +764,7 @@ class Settings:
                         else:
                             self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
 
-            if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
+            if self.enable_plandomizer:
                 for key in self.plandomizer_dict["plando_switchsanity"].keys():
                     if self.switchsanity == SwitchsanityLevel.helm_access:
                         if int(key) not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):

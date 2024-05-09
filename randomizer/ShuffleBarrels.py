@@ -48,7 +48,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
             helm_minigame_available = True
 
     # Apply plandomized minigame placement
-    if settings.enable_plandomizer and settings.plandomizer_dict["plando_bonus_barrels"] != -1:
+    if settings.enable_plandomizer and settings.plandomizer_dict["plando_bonus_barrels"] != {}:
         PreplacePlandoMinigames(settings, barrelLocations, helm_minigame_available)
     # Apply randomized minigame placement
     while len(barrelLocations) > 0:
