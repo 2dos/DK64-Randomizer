@@ -5,6 +5,8 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
@@ -128,6 +130,13 @@ async def import_plando_options(jsonString):
                 shopElem = js.document.getElementById(f"plando_{location}_shop_cost")
                 shopCostList.append(shopElem)
                 shopElem.value = price
+        # Process switches.
+        elif option == "plando_switchsanity":
+            for location, switchInfo in value.items():
+                switchValue = switchInfo["kong"]
+                if "switch_type" in switchInfo:
+                    switchValue += f';{switchInfo["switch_type"]}'
+                js.document.getElementById(f"plando_{location}_switch").value = switchValue
         # Process minigame selections.
         elif option == "plando_bonus_barrels":
             for location, minigame in value.items():
@@ -268,6 +277,15 @@ def validate_plando_location(location_name: str) -> None:
         raise_plando_validation_error(errString)
 
 
+def validate_plando_switch_location(location_name: str) -> None:
+    """Validate that a given plando switch location is valid."""
+    try:
+        _ = Switches[location_name]
+    except KeyError:
+        errString = f'The plandomizer file is invalid: "{location_name}" is not a valid switch location.'
+        raise_plando_validation_error(errString)
+
+
 def validate_custom_location(cust_location: dict, cust_set: set, loc_type: str) -> None:
     """Validate that a given custom location is valid.
 
@@ -363,6 +381,18 @@ def validate_plando_file(file_obj: dict) -> None:
     for location in file_obj["locations"].keys():
         validate_plando_location(location)
         validate_plando_option_value(file_obj["locations"], location, PlandoItems, "location")
+    # Inspect all switches.
+    for switchLoc, switchInfo in file_obj["plando_switchsanity"].items():
+        validate_plando_switch_location(switchLoc)
+        if "kong" not in switchInfo:
+            errString = f'The plandomizer file is invalid: switch "{switchLoc}" does not have the necessary field "kong".'
+            raise_plando_validation_error(errString)
+        validate_plando_option_value(switchInfo, "kong", Kongs)
+        if switchLoc == "IslesHelmLobbyGone" and "switch_type" not in switchInfo:
+            errString = f'The plandomizer file is invalid: switch "{switchLoc}" does not have the necessary field "switch_type".'
+            raise_plando_validation_error(errString)
+        if "switch_type" in switchInfo:
+            validate_plando_option_value(switchInfo, "switch_type", SwitchType)
     # Inspect all minigames.
     for minigame in file_obj["plando_bonus_barrels"].keys():
         validate_plando_location(minigame)

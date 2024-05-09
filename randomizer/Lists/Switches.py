@@ -43,3 +43,45 @@ SwitchData = {
     Switches.FungiGreenFeather: SwitchInfo("Forest Green Tunnel Switches (1)", Kongs.tiny, SwitchType.GunSwitch, 0x1D9, Maps.FungiForest, [0x18, 0x19]),
     Switches.FungiGreenPineapple: SwitchInfo("Forest Green Tunnel Switches (2)", Kongs.chunky, SwitchType.GunSwitch, 0x1DA, Maps.FungiForest, [0x1A, 0x1B], [Switches.FungiGreenFeather]),
 }
+
+SwitchNameDict = {
+    Kongs.donkey: {
+        SwitchType.GunSwitch: "Coconut Shooter (Donkey)",
+        SwitchType.InstrumentPad: "Bongo Blast (Donkey)",
+        SwitchType.MiscActivator: "Gorilla Grab (Donkey)",
+        SwitchType.PadMove: "Barrel Blast (Donkey)",
+        SwitchType.SlamSwitch: "Donkey",
+    },
+    Kongs.diddy: {
+        SwitchType.GunSwitch: "Peanut Popgun (Diddy)",
+        SwitchType.InstrumentPad: "Guitar Gazump (Diddy)",
+        SwitchType.MiscActivator: "Chimpy Charge (Diddy)",
+        SwitchType.PadMove: "Simian Spring (Diddy)",
+        SwitchType.SlamSwitch: "Diddy",
+    },
+    Kongs.lanky: {
+        SwitchType.GunSwitch: "Grape Shooter (Lanky)",
+        SwitchType.InstrumentPad: "Trombone Tremor (Lanky)",
+        SwitchType.PadMove: "Baboon Balloon (Lanky)",
+        SwitchType.SlamSwitch: "Lanky",
+    },
+    Kongs.tiny: {
+        SwitchType.GunSwitch: "Feather Bow (Tiny)",
+        SwitchType.InstrumentPad: "Saxophone Slam (Tiny)",
+        SwitchType.PadMove: "Monkeyport (Tiny)",
+        SwitchType.SlamSwitch: "Tiny",
+    },
+    Kongs.chunky: {
+        SwitchType.GunSwitch: "Pineapple Launcher (Chunky)",
+        SwitchType.InstrumentPad: "Triangle Trample (Chunky)",
+        SwitchType.PadMove: "Gorilla Gone (Chunky)",
+        SwitchType.SlamSwitch: "Chunky",
+    },
+}
+
+
+def GetSwitchName(switchType: SwitchType, kong: Kongs) -> str:
+    """Derive a readable name for a Kong/switch type combination."""
+    if kong in SwitchNameDict and switchType in SwitchNameDict[kong]:
+        return SwitchNameDict[kong][switchType]
+    return None

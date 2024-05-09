@@ -8,6 +8,8 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes
@@ -18,6 +20,7 @@ from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.Switches import GetSwitchName, SwitchData
 
 
 def getKongString(kongEnum: Kongs) -> str:
@@ -138,6 +141,10 @@ PlandomizerPanels = {
             "CrystalCaves": {"name": "Crystal Caves", "locations": []},
             "CreepyCastle": {"name": "Creepy Castle", "locations": []},
         },
+    },
+    "Switches": {
+        "name": "Switches",
+        "locations": [],
     },
     # "Blueprints": {
     #    "name": "Blueprints",
@@ -784,3 +791,63 @@ for level, locations in KasplatLocationList.items():
             if kong in customLocation.kong_lst:
                 plannableKasplats[level.name][kong.name].append({"name": customLocation.name, "value": customLocation.name})
 PlannableCustomLocations["Kasplat"] = plannableKasplats
+
+############
+# SWITCHES #
+############
+
+# A map of switch locations to vanilla values.
+SwitchVanillaMap = {}
+
+# Each SwitchType gets its own list, as well as two switch locations that are
+# exceptional cases.
+PlannableSwitches = {
+    SwitchType.GunSwitch.name: [],
+    SwitchType.InstrumentPad.name: [],
+    SwitchType.MiscActivator.name: [],
+    SwitchType.PadMove.name: [],
+    SwitchType.SlamSwitch.name: [],
+    Switches.IslesHelmLobbyGone.name: [],
+    Switches.IslesMonkeyport.name: [],
+}
+
+for switchEnum, switchInfo in SwitchData.items():
+    jsonValue = {
+        "name": switchInfo.name,
+        "switch_loc": switchEnum.name,
+        "switch_type": switchInfo.switch_type.name,
+        "vanilla_value": switchInfo.kong.name,
+    }
+    if switchEnum == Switches.IslesHelmLobbyGone:
+        jsonValue["vanilla_value"] = f"{switchInfo.kong.name};{switchInfo.switch_type.name}"
+    SwitchVanillaMap[switchEnum.name] = jsonValue["vanilla_value"]
+    PlandomizerPanels["Switches"]["locations"].append(jsonValue)
+
+for switchType in [SwitchType.GunSwitch, SwitchType.InstrumentPad, SwitchType.MiscActivator, SwitchType.PadMove, SwitchType.SlamSwitch]:
+    for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
+        switchName = GetSwitchName(switchType, kong)
+        PlannableSwitches[switchType.name].append({
+            "name": switchName,
+            "value": kong.name,
+        })
+        # Handle the two exceptions.
+        if switchType == SwitchType.PadMove and kong not in [Kongs.diddy, Kongs.chunky]:
+            PlannableSwitches[Switches.IslesMonkeyport.name].append({
+                "name": switchName,
+                "value": kong.name,
+            })
+        if switchType == SwitchType.PadMove and kong == Kongs.chunky:
+            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append({
+                "name": switchName,
+                "value": f"{kong.name};{switchType.name}",
+            })
+        if switchType == SwitchType.MiscActivator and kong in [Kongs.donkey, Kongs.diddy]:
+            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append({
+                "name": switchName,
+                "value": f"{kong.name};{switchType.name}",
+            })
+        if switchType == SwitchType.InstrumentPad:
+            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append({
+                "name": switchName,
+                "value": f"{kong.name};{switchType.name}",
+            })
