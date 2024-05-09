@@ -6,6 +6,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems, PlandoItemToItemMap
 from randomizer.Enums.Transitions import Transitions
@@ -675,11 +676,11 @@ PlandoEnumMap = {
     "plando_level_order_4": Levels,
     "plando_level_order_5": Levels,
     "plando_level_order_6": Levels,
-    "plando_krool_order_0": Kongs,
-    "plando_krool_order_1": Kongs,
-    "plando_krool_order_2": Kongs,
-    "plando_krool_order_3": Kongs,
-    "plando_krool_order_4": Kongs,
+    "plando_krool_order_0": Maps,
+    "plando_krool_order_1": Maps,
+    "plando_krool_order_2": Maps,
+    "plando_krool_order_3": Maps,
+    "plando_krool_order_4": Maps,
     "plando_helm_order_0": Kongs,
     "plando_helm_order_1": Kongs,
     "plando_helm_order_2": Kongs,

@@ -910,16 +910,19 @@ kong_options = [
     "plando_kong_rescue_lanky",
     "plando_kong_rescue_tiny",
     "plando_kong_rescue_chunky",
-    "plando_krool_order_0",
-    "plando_krool_order_1",
-    "plando_krool_order_2",
-    "plando_krool_order_3",
-    "plando_krool_order_4",
     "plando_helm_order_0",
     "plando_helm_order_1",
     "plando_helm_order_2",
     "plando_helm_order_3",
     "plando_helm_order_4",
+]
+# Plando options where the value is of type Maps.
+map_options = [
+    "plando_krool_order_0",
+    "plando_krool_order_1",
+    "plando_krool_order_2",
+    "plando_krool_order_3",
+    "plando_krool_order_4",
 ]
 
 
@@ -931,7 +934,7 @@ def reset_plando_options_no_prompt() -> None:
     # js.document.getElementById("plando_101").value = False
 
     js.document.getElementById("plando_starting_exit").value = ""
-    for option in level_options + kong_options:
+    for option in level_options + kong_options + map_options:
         option_element = js.document.getElementById(option)
         option_element.value = ""
         remove_all_errors_from_option(option_element)
@@ -961,7 +964,7 @@ def reset_plando_options_no_prompt() -> None:
         hint_element.value = ""
         remove_all_errors_from_option(hint_element)
 
-    for switchEnum, switchInfo in SwitchData.items():
+    for switchEnum, _ in SwitchData.items():
         elem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
         elem.value = SwitchVanillaMap[switchEnum.name]
 
