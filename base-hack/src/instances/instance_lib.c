@@ -26,7 +26,7 @@ void hideObject(behaviour_data* behaviour_pointer) {
 	setObjectOpacity(behaviour_pointer, 0);
 	behaviour_pointer->unk_70 = 0;
 	behaviour_pointer->unk_71 = 0;
-	setScriptRunState(behaviour_pointer,2,0);
+	setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
 }
 
 void getModelTwoItemFromActor(int actor, short* item, float* scale) {

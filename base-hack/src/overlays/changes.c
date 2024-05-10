@@ -65,19 +65,14 @@ void overlay_changes(void) {
 		// Wipe warp data pointer to prevent pointing to free memory
 		WarpData = 0;
 	}
-	fixTBarrelsAndBFI(0);
-	loadWidescreen(loaded_overlay);
 }
 
 void parseCutsceneData(void) {
 	/**
 	 * @brief Handle Cutscene Data
 	 */
+	resetDisplayedMusic();
 	wipeCounterImageCache();
-	if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
-		int phase = CurrentMap - MAP_KROOLDK;
-		initKRool(phase);
-	}
 	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}

@@ -6,17 +6,26 @@ from array import array
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import HardModeSelected
+from randomizer.Enums.Settings import HardModeSelected, KongModels
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
+KRoolMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
 
 
-def ShuffleBosses(boss_location_rando: bool):
-    """Shuffle boss locations."""
+def getBosses(settings) -> list:
+    """Get list of bosses."""
     boss_maps = BossMapList.copy()
+    if settings.krool_in_boss_pool:
+        boss_maps.extend(KRoolMaps.copy())
+    return [x for x in boss_maps if x not in settings.krool_order]
+
+
+def ShuffleBosses(boss_location_rando: bool, settings):
+    """Shuffle boss locations."""
+    boss_maps = getBosses(settings)
     if boss_location_rando:
         random.shuffle(boss_maps)
     return boss_maps
@@ -37,6 +46,11 @@ def ShuffleBossKongs(settings):
         Maps.FungiBoss: Kongs.chunky,
         Maps.CavesBoss: Kongs.donkey,
         Maps.CastleBoss: Kongs.lanky,
+        Maps.KroolDonkeyPhase: Kongs.donkey,
+        Maps.KroolDiddyPhase: Kongs.diddy,
+        Maps.KroolLankyPhase: Kongs.lanky,
+        Maps.KroolTinyPhase: Kongs.tiny,
+        Maps.KroolChunkyPhase: Kongs.chunky,
     }
 
     boss_kongs = []
@@ -71,6 +85,11 @@ def SelectRandomKongForBoss(boss_map: Maps, hard_bosses: bool):
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.CastleBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+    elif boss_map in (Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase):
+        # Not possible right now to make any other kong beat another's phase, however, if we were to do so:
+        # DK Phase - Make all kongs enter cannon barrels
+        # Other phases - ????????
+        possibleKongs = [Kongs.donkey + (boss_map - Maps.KroolDonkeyPhase)]
     return random.choice(possibleKongs)
 
 
@@ -79,8 +98,14 @@ def ShuffleKutoutKongs(boss_maps: array, boss_kongs: array, boss_kong_rando: boo
     vanillaKutoutKongs = [Kongs.lanky, Kongs.tiny, Kongs.chunky, Kongs.donkey, Kongs.diddy]
     kutout_kongs = []
     if boss_kong_rando:
-        kutoutLocation = boss_maps.index(Maps.CastleBoss)
-        starting_kong = boss_kongs[kutoutLocation]
+        if Maps.CastleBoss in boss_maps:
+            kutoutLocation = boss_maps.index(Maps.CastleBoss)
+            if kutoutLocation < 0 or kutoutLocation >= len(boss_kongs):
+                starting_kong = random.choice(vanillaKutoutKongs)
+            else:
+                starting_kong = boss_kongs[kutoutLocation]
+        else:
+            starting_kong = random.choice(vanillaKutoutKongs)
         kongPool = vanillaKutoutKongs.copy()
         kongPool.remove(starting_kong)
         random.shuffle(kongPool)
@@ -117,11 +142,11 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         donkeyFactoryBossOptions = []
         chunkyFactoryBossOptions = []
         if HardBossesEnabled(settings):
-            if settings.krusha_kong != Kongs.tiny:
+            if settings.kong_model_tiny == KongModels.default:
                 tinyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-            if settings.krusha_kong != Kongs.donkey:
+            if settings.kong_model_dk == KongModels.default:
                 donkeyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-            if settings.krusha_kong != Kongs.chunky:
+            if settings.kong_model_chunky in (KongModels.default, KongModels.disco_chunky):
                 chunkyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
         factoryBossOptions = list(set(tinyFactoryBossOptions + donkeyFactoryBossOptions + chunkyFactoryBossOptions))
         # This sequence of placing Dogadon 2 and Mad Jack will only fail if both Hunky Chunky and Twirl are placed in level 7
@@ -223,7 +248,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
     if settings.kong_rando or settings.boss_location_rando:
         settings.boss_maps = newBossMaps
     else:
-        settings.boss_maps = BossMapList.copy()
+        settings.boss_maps = getBosses(settings)
     if settings.kong_rando or settings.boss_kong_rando:
         # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
         if not settings.boss_location_rando:

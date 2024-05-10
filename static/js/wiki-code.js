@@ -388,6 +388,7 @@ function filterHTML(element, output_html) {
         const contents = flex_items[0].innerHTML;
         flex_items[0].outerHTML = `<div style="display:flex">${contents}</div>`
     }
+
     // BS Alerts
     const alert_types = {
         "primary": "fa-solid fa-circle-info",

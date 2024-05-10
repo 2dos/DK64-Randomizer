@@ -20,9 +20,6 @@ def randomize_krool(spoiler):
 
     firstPhase = spoiler.settings.krool_order[0]
     if firstPhase != 0:  # If not starting with DK
-        KroolPhaseMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
-        # Get new first phase map to write
-        firstPhaseMap = KroolPhaseMaps[firstPhase]
 
         # Find Isles->DK Phase loading zone in Pointer table 18 and write new destination map
         cont_map_lzs_address = js.pointer_addresses[18]["entries"][Maps.Isles]["pointing_to"]
@@ -34,7 +31,7 @@ def randomize_krool(spoiler):
             lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
             if lz_map == Maps.KroolDonkeyPhase:
                 ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
-                map_bytes = intToArr(firstPhaseMap, 2)
+                map_bytes = intToArr(firstPhase, 2)
                 ROM_COPY.writeBytes(bytearray(map_bytes))
 
 

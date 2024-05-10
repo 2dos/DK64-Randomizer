@@ -40,7 +40,7 @@ void cutsceneDKCode(void) {
 			CurrentActorPointer_0->render->scale_z *= 0.8f;
 		}
 		unkCutsceneKongFunction_0(2,1);
-		handleCutsceneKong(CurrentActorPointer_0,CurrentActorPointer_0->actorType);
+		updateActorHandStates(CurrentActorPointer_0,CurrentActorPointer_0->actorType);
 	}
 	int obj_props = CurrentActorPointer_0->obj_props_bitfield;
 	if ((obj_props << 3) < 0) {

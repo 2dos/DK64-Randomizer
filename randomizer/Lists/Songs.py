@@ -19,6 +19,7 @@ class Song:
         self.name = name
         self.mem_idx = mem_idx
         self.output_name = name
+        self.output_name_short = name
         self.type = type
         self.memory = memory
         self.default_memory = memory
@@ -31,6 +32,7 @@ class Song:
     def Reset(self):
         """Reset song object so that output_name is reset between generations."""
         self.output_name = self.name
+        self.output_name_short = self.name
         self.memory = self.default_memory
         self.shuffled = False
 
@@ -130,7 +132,7 @@ song_data = {
     Songs.CavesDillo: Song("Crystal Caves (Army Dillo)", mem_idx=148, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Fight], mood_tags=[SongGroup.Happy, SongGroup.Gloomy]),
     # Creepy Castle BGM
     Songs.Castle: Song("Creepy Castle", mem_idx=105, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
-    Songs.CastleShed: Song("Creepy Castle (Shed)", mem_idx=139, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
+    Songs.CastleShed: Song("Fungi Forest (Winch)", mem_idx=139, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.CastleTree: Song("Creepy Castle (Tree)", mem_idx=141, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.CastleTunnels: Song("Creepy Castle (Tunnels)", mem_idx=121, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.CastleCrypt: Song("Creepy Castle (Crypt)", mem_idx=126, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
@@ -599,8 +601,8 @@ ExclSongsItems = [
     SongMultiselectorItem("Transformation", 3, "The game will no longer play the transformation sound effect."),
     SongMultiselectorItem("Pause Music", 4, "The pause menu music will no longer play."),
     SongMultiselectorItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
-    # SongExclusionItem("Shops", 1, "COMING SOON: Makes shops inherit the previous song."), # TODO: Fix this
-    # SongExclusionItem("Events", 2, "COMING SOON: Events will no longer play a song."), # TODO: Fix this
+    # SongMultiselectorItem("Shops", 1, "COMING SOON: Makes shops inherit the previous song."), # TODO: Fix this
+    # SongMultiselectorItem("Events", 2, "COMING SOON: Events will no longer play a song."), # TODO: Fix this
 ]
 for item in ExclSongsItems:
     if item.name != "No Group":
@@ -710,3 +712,11 @@ def MusicSelectFilter(songList: list[dict], location: str) -> list[dict]:
             Equal to the string name of the Song enum.
     """
     return [song for song in songList if song_data[Songs[song["value"]]].type != SongType.BGM or song_data[Songs[song["value"]]].channel == song_data[Songs[location]].channel]
+
+
+def getSongIndexFromName(name: str) -> Songs:
+    """Obtain the song index from the name of the vanilla song."""
+    for song_idx in song_data:
+        if song_data[song_idx].name == name:
+            return song_idx
+    return None

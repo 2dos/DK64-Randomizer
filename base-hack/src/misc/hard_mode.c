@@ -340,12 +340,11 @@ int isSkyWorld(maps map) {
     return 0;
 }
 
-int* displayNoGeoChunk(int* dl, int chunk_index, int shift) {
+Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift) {
     if (!isSkyWorld(CurrentMap)) {
         return displayChunk(dl, chunk_index, shift);
     }
-    *(int*)(dl++) = 0xE7000000;
-    *(int*)(dl++) = 0;
+    gDPPipeSync(dl++);
     return dl;
 }
 
@@ -382,6 +381,7 @@ void factoryShedFallImmunity(short exit) {
     setFallDamageImmunity(30);
     unkLoadingZoneControllerFunction(exit);
 }
+
 
 void fallDamageWrapper(int action, void* actor, int player_index) {
     if (ObjectModel2Timer < 100) {

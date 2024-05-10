@@ -71,9 +71,5 @@ int randomInstrumentGenericCode(behaviour_data* behaviour_pointer, int index, in
 }
 
 int hasChunkyPhaseSlam(void) {
-	int chunky_phase_slam_req = 2;
-	if (Rando.balanced_krool_reqs) {
-		chunky_phase_slam_req = 1;
-	}
-	return MovesBase[KONG_CHUNKY].simian_slam >= chunky_phase_slam_req;
+	return MovesBase[KONG_CHUNKY].simian_slam >= Rando.chunky_phase_krool_slam_req;
 }

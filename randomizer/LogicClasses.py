@@ -10,6 +10,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.EnemyTypes import enemy_location_list
+from randomizer.Enums.Types import BarrierItems
 
 if TYPE_CHECKING:
     from randomizer.Enums.Collectibles import Collectibles
@@ -137,19 +138,19 @@ class Region:
         if self.level == Levels.DKIsles:
             return Regions.IslesMain
         elif self.level == Levels.JungleJapes:
-            return Regions.JungleJapesStart
+            return Regions.JungleJapesEntryHandler
         elif self.level == Levels.AngryAztec:
-            return Regions.AngryAztecStart
+            return Regions.AngryAztecEntryHandler
         elif self.level == Levels.FranticFactory:
-            return Regions.FranticFactoryStart
+            return Regions.FranticFactoryEntryHandler
         elif self.level == Levels.GloomyGalleon:
-            return Regions.GloomyGalleonStart
+            return Regions.GloomyGalleonEntryHandler
         elif self.level == Levels.FungiForest:
-            return Regions.FungiForestStart
+            return Regions.FungiForestEntryHandler
         elif self.level == Levels.CrystalCaves:
-            return Regions.CrystalCavesMain
+            return Regions.CrystalCavesEntryHandler
         elif self.level == Levels.CreepyCastle:
-            return Regions.CreepyCastleMain
+            return Regions.CreepyCastleEntryHandler
         elif self.level == Levels.HideoutHelm:
             return Regions.HideoutHelmEntry
         return Regions.GameStart

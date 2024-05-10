@@ -9,6 +9,8 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Lists.Item import StartingMoveOptions
+from randomizer.Lists.Location import LocationListOriginal as LocationList
+from randomizer.Lists.Plandomizer import CrownVanillaLocationMap, DirtPatchVanillaLocationMap, FairyVanillaLocationMap, KasplatLocationToRewardMap, MelonCrateVanillaLocationMap
 from randomizer.Lists.Songs import MusicSelectionPanel
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
@@ -149,6 +151,18 @@ def max_randomized_fairies(event):
         fairy_req.value = 1
     elif int(fairy_req.value) > 20:
         fairy_req.value = 20
+
+
+@bind("focusout", "mermaid_gb_pearls")
+def max_randomized_pearls(event):
+    """Validate pearl input on loss of focus."""
+    pearl_req = js.document.getElementById("mermaid_gb_pearls")
+    if not pearl_req.value:
+        pearl_req.value = 5
+    elif 0 > int(pearl_req.value):
+        pearl_req.value = 0
+    elif int(pearl_req.value) > 5:
+        pearl_req.value = 5
 
 
 @bind("click", "shuffle_items")
@@ -696,6 +710,17 @@ def plando_propagate_options(evt):
     plando_hide_krool_options(evt)
     plando_hide_helm_options(evt)
     plando_disable_camera_shockwave(evt)
+    plando_toggle_custom_locations_tab(evt)
+    plando_toggle_custom_arena_locations(evt)
+    plando_toggle_custom_patch_locations(evt)
+    plando_toggle_custom_fairy_locations(evt)
+    plando_toggle_custom_kasplat_locations(evt)
+    plando_toggle_custom_crate_locations(evt)
+    plando_disable_arena_custom_locations(evt)
+    plando_disable_crate_custom_locations(evt)
+    plando_disable_fairy_custom_locations(evt)
+    plando_disable_kasplat_custom_locations(evt)
+    plando_disable_patch_custom_locations(evt)
 
 
 @bind("change", "move_rando")
@@ -928,6 +953,11 @@ def item_rando_list_changed(evt):
         move_rando.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
+    plando_disable_arena_custom_locations(None)
+    plando_disable_crate_custom_locations(None)
+    plando_disable_fairy_custom_locations(None)
+    plando_disable_kasplat_custom_locations(None)
+    plando_disable_patch_custom_locations(None)
 
 
 def should_reset_select_on_preset(selectElement):
@@ -989,21 +1019,16 @@ def preset_select_changed(event):
                                 if option.value == item.name:
                                     option.selected = True
                 else:
-                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                        js.jq(f"#{key}").slider("setValue", settings[key])
-                        js.jq(f"#{key}").slider("enable")
-                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    selector = js.document.getElementById(key)
+                    # If the selector is a select box, set the selectedIndex to the value of the option
+                    if selector.tagName == "SELECT":
+                        for option in selector.options:
+                            if option.value == SettingsMap[key](settings[key]).name:
+                                # Set the value of the select box to the value of the option
+                                option.selected = True
+                                break
                     else:
-                        selector = js.document.getElementById(key)
-                        # If the selector is a select box, set the selectedIndex to the value of the option
-                        if selector.tagName == "SELECT":
-                            for option in selector.options:
-                                if option.value == SettingsMap[key](settings[key]).name:
-                                    # Set the value of the select box to the value of the option
-                                    option.selected = True
-                                    break
-                        else:
-                            js.jq(f"#{key}").val(settings[key])
+                        js.jq(f"#{key}").val(settings[key])
                     js.jq(f"#{key}").removeAttr("disabled")
             except Exception as e:
                 print(e)
@@ -1024,12 +1049,7 @@ def preset_select_changed(event):
                     for i in range(0, selector.options.length):
                         selector.item(i).selected = selector.item(i).value in presets[key]
                 else:
-                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                        js.jq(f"#{key}").slider("setValue", presets[key])
-                        js.jq(f"#{key}").slider("enable")
-                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
-                    else:
-                        js.jq(f"#{key}").val(presets[key])
+                    js.jq(f"#{key}").val(presets[key])
                     js.jq(f"#{key}").removeAttr("disabled")
             except Exception as e:
                 pass
@@ -1074,10 +1094,14 @@ def update_ui_states(event):
     disable_krool_phases(None)
     disable_helm_phases(None)
     enable_plandomizer(None)
-    disable_switchsanity_with_plandomizer(None)
     toggle_medals_box(None)
     toggle_extreme_prices_option(None)
     toggle_vanilla_door_rando(None)
+    sliders = js.document.getElementsByClassName("pretty-slider")
+    for s in range(len(sliders)):
+        event = js.document.createEvent("HTMLEvents")
+        event.initEvent("change", True, False)
+        sliders[s].dispatchEvent(event)
 
 
 @bind("click", "enable_plandomizer")
@@ -1092,23 +1116,6 @@ def enable_plandomizer(evt):
             plando_tab.style.display = "none"
         else:
             plando_tab.style = ""
-    except AttributeError:
-        pass
-
-
-@bind("click", "enable_plandomizer")
-def disable_switchsanity_with_plandomizer(evt):
-    """Disable Switchsanity if the Plandomizer is being used."""
-    disabled = False
-    switchsanity = js.document.getElementsByName("switchsanity")[0]
-    if js.document.getElementById("enable_plandomizer").checked:
-        disabled = True
-    try:
-        if disabled:
-            switchsanity.checked = False
-            switchsanity.setAttribute("disabled", "disabled")
-        else:
-            switchsanity.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -1285,9 +1292,9 @@ def hide_override_cosmetics(event):
 
 @bind("change", "music_bgm_randomized")
 def rename_default_bgm_options(evt):
-    """Change between "Default" and "Randomize" for BGM music."""
-    toggleElem = js.document.getElementById(f"music_bgm_randomized")
-    selects = js.document.getElementsByClassName(f"BGM-select")
+    """Change between "Default" and "Randomizer" for BGM Music."""
+    toggleElem = js.document.getElementById("music_bgm_randomized")
+    selects = js.document.getElementsByClassName("BGM-select")
     if toggleElem.checked:
         for select in selects:
             if select.value == "default_value":
@@ -1301,7 +1308,7 @@ def rename_default_bgm_options(evt):
 
 @bind("change", "music_majoritems_randomized")
 def rename_default_majoritems_options(evt):
-    """Change between "Default" and "Randomize" for major item music."""
+    """Change between "Default" and "Randomize" for major item music selection."""
     toggleElem = js.document.getElementById(f"music_majoritems_randomized")
     selects = js.document.getElementsByClassName(f"MajorItem-select")
     if toggleElem.checked:
@@ -1317,7 +1324,7 @@ def rename_default_majoritems_options(evt):
 
 @bind("change", "music_minoritems_randomized")
 def rename_default_minoritems_options(evt):
-    """Change between "Default" and "Randomize" for minor item music."""
+    """Change between "Default" and "Randomize" for minor item music selection."""
     toggleElem = js.document.getElementById(f"music_minoritems_randomized")
     selects = js.document.getElementsByClassName(f"MinorItem-select")
     if toggleElem.checked:
@@ -1333,7 +1340,7 @@ def rename_default_minoritems_options(evt):
 
 @bind("change", "music_events_randomized")
 def rename_default_events_options(evt):
-    """Change between "Default" and "Randomize" for event music."""
+    """Change between "Default" and "Randomize" for event music selection."""
     toggleElem = js.document.getElementById(f"music_events_randomized")
     selects = js.document.getElementsByClassName(f"Event-select")
     if toggleElem.checked:
@@ -1490,7 +1497,6 @@ def shuffle_settings(evt):
 musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.keys()]
 
 
-@bind("click", "settings_table_collapse_toggle")
 @bindList("click", musicToggles, suffix="_collapse_toggle")
 def toggle_collapsible_container(evt):
     """Show or hide a collapsible container."""
@@ -1512,3 +1518,172 @@ def toggle_plando_hint_color_table(evt):
     """Show or hide the table that shows possible hint colors."""
     hintColorTable = js.document.getElementById("plando_hint_color_table")
     hintColorTable.classList.toggle("hidden")
+
+
+@bind("click", "plando_place_arenas")
+@bind("click", "plando_place_patches")
+@bind("click", "plando_place_fairies")
+@bind("click", "plando_place_kasplats")
+@bind("click", "plando_place_crates")
+def plando_toggle_custom_locations_tab(evt):
+    """Show/hide the Custom Locations tab."""
+    tabElem = js.document.getElementById("nav-plando-Locations-tab")
+    arenasEnabled = js.document.getElementById("plando_place_arenas").checked
+    patchesEnabled = js.document.getElementById("plando_place_patches").checked
+    fairiesEnabled = js.document.getElementById("plando_place_fairies").checked
+    kasplatsEnabled = js.document.getElementById("plando_place_kasplats").checked
+    cratesEnabled = js.document.getElementById("plando_place_crates").checked
+    if arenasEnabled or patchesEnabled or fairiesEnabled or kasplatsEnabled or cratesEnabled:
+        tabElem.style = ""
+    else:
+        tabElem.style.display = "none"
+
+
+@bind("click", "plando_place_arenas")
+def plando_toggle_custom_arena_locations(evt):
+    """Show/hide custom arena locations in the plandomizer."""
+    arenaElem = js.document.getElementById("plando_custom_location_panel_arena")
+    if js.document.getElementById("plando_place_arenas").checked:
+        arenaElem.style = ""
+    else:
+        arenaElem.style.display = "none"
+
+
+@bind("click", "plando_place_patches")
+def plando_toggle_custom_patch_locations(evt):
+    """Show/hide custom patch locations in the plandomizer."""
+    patchElem = js.document.getElementById("plando_custom_location_panel_patch")
+    if js.document.getElementById("plando_place_patches").checked:
+        patchElem.style = ""
+    else:
+        patchElem.style.display = "none"
+
+
+@bind("click", "plando_place_fairies")
+def plando_toggle_custom_fairy_locations(evt):
+    """Show/hide custom fairy locations in the plandomizer."""
+    fairyElem = js.document.getElementById("plando_custom_location_panel_fairy")
+    if js.document.getElementById("plando_place_fairies").checked:
+        fairyElem.style = ""
+    else:
+        fairyElem.style.display = "none"
+
+
+@bind("click", "plando_place_kasplats")
+def plando_toggle_custom_kasplat_locations(evt):
+    """Show/hide custom Kasplat locations in the plandomizer."""
+    kasplatElem = js.document.getElementById("plando_custom_location_panel_kasplat")
+    if js.document.getElementById("plando_place_kasplats").checked:
+        kasplatElem.style = ""
+    else:
+        kasplatElem.style.display = "none"
+
+
+@bind("click", "plando_place_crates")
+def plando_toggle_custom_crate_locations(evt):
+    """Show/hide custom crate locations in the plandomizer."""
+    crateElem = js.document.getElementById("plando_custom_location_panel_crate")
+    if js.document.getElementById("plando_place_crates").checked:
+        crateElem.style = ""
+    else:
+        crateElem.style.display = "none"
+
+
+@bind("click", "crown_placement_rando")
+def plando_disable_arena_custom_locations(evt):
+    """Enable or disable custom locations for battle arenas."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    crownsShuffled = False
+    for option in itemRandoPool:
+        if option.value == "crown":
+            crownsShuffled = option.selected
+    randomCrowns = js.document.getElementById("crown_placement_rando").checked
+    customCrownsElem = js.document.getElementById("plando_place_arenas")
+    tooltip = "Allows the user to specify locations for each battle arena."
+    if crownsShuffled and randomCrowns:
+        customCrownsElem.removeAttribute("disabled")
+    else:
+        customCrownsElem.setAttribute("disabled", "disabled")
+        customCrownsElem.checked = False
+        tooltip = "To use this feature, battle crowns must be in the item pool, and their locations must be shuffled."
+    customCrownsElem.parentElement.setAttribute("data-bs-original-title", tooltip)
+
+
+@bind("click", "random_crates")
+def plando_disable_crate_custom_locations(evt):
+    """Enable or disable custom locations for melon crates."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    cratesShuffled = False
+    for option in itemRandoPool:
+        if option.value == "crateitem":
+            cratesShuffled = option.selected
+    randomCrates = js.document.getElementById("random_crates").checked
+    customCratesElem = js.document.getElementById("plando_place_crates")
+    tooltip = "Allows the user to specify locations for each melon crate."
+    if cratesShuffled and randomCrates:
+        customCratesElem.removeAttribute("disabled")
+    else:
+        customCratesElem.setAttribute("disabled", "disabled")
+        customCratesElem.checked = False
+        tooltip = "To use this feature, melon crates must be in the item pool, and their locations must be shuffled."
+    customCratesElem.parentElement.setAttribute("data-bs-original-title", tooltip)
+
+
+@bind("click", "random_fairies")
+def plando_disable_fairy_custom_locations(evt):
+    """Enable or disable custom locations for banana fairies."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    fairiesShuffled = False
+    for option in itemRandoPool:
+        if option.value == "fairy":
+            fairiesShuffled = option.selected
+    randomFairies = js.document.getElementById("random_fairies").checked
+    customFairiesElem = js.document.getElementById("plando_place_fairies")
+    tooltip = "Allows the user to specify locations for each banana fairy."
+    if fairiesShuffled and randomFairies:
+        customFairiesElem.removeAttribute("disabled")
+    else:
+        customFairiesElem.setAttribute("disabled", "disabled")
+        customFairiesElem.checked = False
+        tooltip = "To use this feature, fairies must be in the item pool, and their locations must be shuffled."
+    customFairiesElem.parentElement.setAttribute("data-bs-original-title", tooltip)
+
+
+@bind("change", "kasplat_rando_setting")
+def plando_disable_kasplat_custom_locations(evt):
+    """Enable or disable custom locations for Kasplats."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    kasplatsShuffled = False
+    for option in itemRandoPool:
+        if option.value == "blueprint":
+            kasplatsShuffled = option.selected
+    kasplatShuffle = js.document.getElementById("kasplat_rando_setting").value
+    customKasplatsElem = js.document.getElementById("plando_place_kasplats")
+    tooltip = "Allows the user to specify locations for each Kasplat."
+    if kasplatsShuffled and kasplatShuffle == "location_shuffle":
+        customKasplatsElem.removeAttribute("disabled")
+    else:
+        customKasplatsElem.setAttribute("disabled", "disabled")
+        customKasplatsElem.checked = False
+        tooltip = "To use this feature, blueprints must be in the item pool, and Kasplat locations must be shuffled."
+    customKasplatsElem.parentElement.setAttribute("data-bs-original-title", tooltip)
+
+
+@bind("click", "random_patches")
+def plando_disable_patch_custom_locations(evt):
+    """Enable or disable custom locations for dirt patches."""
+    itemRandoPool = document.getElementById("item_rando_list_selected").options
+    patchesShuffled = False
+    for option in itemRandoPool:
+        if option.value == "rainbowcoin":
+            patchesShuffled = option.selected
+    randomPatches = js.document.getElementById("random_patches").checked
+    customPatchesElem = js.document.getElementById("plando_place_patches")
+    tooltip = "Allows the user to specify locations for each dirt patch."
+    if patchesShuffled and randomPatches:
+        customPatchesElem.removeAttribute("disabled")
+    else:
+        customPatchesElem.setAttribute("disabled", "disabled")
+        customPatchesElem.checked = False
+        tooltip = "To use this feature, rainbow coins must be in the item pool, and dirt patch locations must be shuffled."
+    customPatchesElem.parentElement.setAttribute("data-bs-original-title", tooltip)

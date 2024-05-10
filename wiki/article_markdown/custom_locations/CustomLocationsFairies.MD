@@ -112,7 +112,7 @@
 | Caves Diddy Upper Cabin | Diddy Candles Cabin | `l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy` | 
 | Caves Tiny Igloo | Tiny Igloo | `l.Slam and l.istiny and l.camera` | 
 | Crystal Caves | Level Start | `l.camera` | 
-| Crystal Caves | Gorilla Gone Room | `l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim())` | 
+| Crystal Caves | Gorilla Gone Room | `l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))` | 
 | Crystal Caves | Ice Castle Roof | `l.camera` | 
 | Crystal Caves | Near Small Boulder | `l.camera` | 
 | Crystal Caves | Bananaport Pillar | `l.camera` | 

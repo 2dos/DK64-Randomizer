@@ -119,7 +119,7 @@ void initProgressiveTimer(void) {
     progressive_ding_timer = 52;
 }
 
-int* renderProgressiveSprite(int* dl) {
+Gfx* renderProgressiveSprite(Gfx* dl) {
     return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8);
 }
 
@@ -176,7 +176,7 @@ void wipeHintCache(void) {
     hints_initialized = 0;
 }
 
-int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center, int enable_recolor) {
+Gfx* drawHintText(Gfx* dl, char* str, int x, int y, int opacity, int center, int enable_recolor) {
     mtx_item mtx0;
     mtx_item mtx1;
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
@@ -184,28 +184,18 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center, int
     float hint_x = x;
     if (center) {
         hint_x = 640.0f;
-        if (Rando.true_widescreen) {
-            hint_x = SCREEN_WD_FLOAT * 2;
-        }
     }
     _guTranslateF(&mtx1, hint_x, position, 0.0f);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
     _guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
     _guMtxF2L(&mtx0, &static_mtx[(int)mtx_counter]);
-
-    *(unsigned int*)(dl++) = 0xDE000000;
-	*(unsigned int*)(dl++) = 0x01000118;
-	*(unsigned int*)(dl++) = 0xDA380002;
-	*(unsigned int*)(dl++) = 0x02000180;
-	*(unsigned int*)(dl++) = 0xE7000000;
-	*(unsigned int*)(dl++) = 0x00000000;
-	*(unsigned int*)(dl++) = 0xFC119623;
-	*(unsigned int*)(dl++) = 0xFF2FFFFF;
-	*(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = base_text_color | (opacity & 0xFF);
-    *(unsigned int*)(dl++) = 0xDA380002;
-    *(unsigned int*)(dl++) = (int)&static_mtx[(int)mtx_counter];
+    gSPDisplayList(dl++, 0x01000118);
+    gSPMatrix(dl++, 0x02000180, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gDPPipeSync(dl++);
+    gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetPrimColor(dl++, 0, 0, (base_text_color >> 24) & 0xFF, (base_text_color >> 16) & 0xFF, (base_text_color >> 8) & 0xFF, opacity);
+    gSPMatrix(dl++, (int)&static_mtx[(int)mtx_counter], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     int data = 0x80;
     if (!center) {
         data = 0;
@@ -217,15 +207,14 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center, int
         setCharacterRecoloring(1, str);
         data |= 0x12;
     }
-    dl = displayText((int*)dl,6,0,0,str,data);
+    dl = displayText(dl,6,0,0,str,data);
     setCharacterRecoloring(0, (char*)0);
     mtx_counter += 1;
-    *(unsigned int*)(dl++) = 0xD8380002;
-    *(unsigned int*)(dl++) = 0x00000040;
+    gSPPopMatrix(dl++, G_MTX_MODELVIEW);
     return dl;
 }
 
-int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
+Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
     int curr_y = y;
     int string_length = cstring_strlen(str);
     int trigger_ellipsis = 0;
@@ -346,8 +335,9 @@ int showHint(int level, int kong) {
     return checkFlag(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
 }
 
-int* displayBubble(int* dl) {
+Gfx* displayBubble(Gfx* dl) {
     int opacity = 0xFF;
+    int bubble_x = 625;
     int y = 480;
     float x_scale = 26.0f;
     float y_scale = 21.5f;
@@ -357,12 +347,7 @@ int* displayBubble(int* dl) {
         x_scale = 24.0f;
         y_scale = 20.0f;
     }
-    *(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFF00 | opacity;
-    int bubble_x = 625;
-    if (Rando.true_widescreen) {
-        bubble_x = (2 * SCREEN_WD) - 15;
-    }
+    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
     return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, y, x_scale, y_scale, 0, 0.0f);
 }
 
@@ -414,7 +399,7 @@ void initHintFlags(void) {
     }
 }
 
-int* drawHintScreen(int* dl, int level_x) {
+Gfx* drawHintScreen(Gfx* dl, int level_x) {
     display_billboard_fix = 1;
     dl = printText(dl, level_x, 0x3C, 0.65f, "HINTS");
     // Handle Controls
@@ -449,20 +434,17 @@ int* drawHintScreen(int* dl, int level_x) {
     return dl;
 }
 
-int* drawItemLocationScreen(int* dl, int level_x) {
+Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
     display_billboard_fix = 1;
     dl = printText(dl, level_x, 0x3C, 0.65f, "ITEM LOCATIONS");
     // Handle Controls
     handleCShifting(&item_subgroup, ITEMLOC_TERMINATOR);
     // Display subgroup
-    dk_strFormat((char*)item_loc_text, "w %s e", itemloc_textnames[(int)item_subgroup].header);
-    dl = printText(dl, level_x, 120, 0.5f, item_loc_text);
+    dk_strFormat(&item_loc_text[0], "w %s e", itemloc_textnames[(int)item_subgroup].header);
+    dl = printText(dl, level_x, 120, 0.5f, &item_loc_text[0]);
     // Display Hints
     dl = displayBubble(dl);
     int item_loc_x = 200;
-    if (Rando.true_widescreen) {
-        item_loc_x = SCREEN_WD - 120;
-    }
     mtx_counter = 0;
     int head = 0;
     int k = 0;

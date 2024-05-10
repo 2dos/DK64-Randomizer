@@ -190,38 +190,6 @@
                             </select>
                         </div>
                         <div class="item-select">
-                            <p class="select-title">Krusha Slot</p>
-                            <select name="krusha_ui"
-                                    id="krusha_ui"
-                                    display_name="Krusha Slot"
-                                    class="form-select"
-                                    aria-label="Krusha">
-                                <option selected value="no_slot">
-                                    No Slot
-                                </option>
-                                <option value="dk">
-                                    DK
-                                </option>
-                                <option value="diddy">
-                                    Diddy
-                                </option>
-                                <option value="lanky">
-                                    Lanky
-                                </option>
-                                <option value="tiny">
-                                    Tiny
-                                </option>
-                                <option value="chunky">
-                                    Chunky
-                                </option>
-                                <option value="random"
-                                        data-toggle="tooltip"
-                                        title="Selects a random kong (If Disco Chunky is on, Chunky will not be selected).">
-                                    Random
-                                </option>
-                            </select>
-                        </div>
-                        <div class="item-select">
                             <p class="select-title">Fungi Time</p>
                             <select name="fungi_time"
                                     id="fungi_time"
@@ -233,7 +201,7 @@
                                 <option selected id="day" value="day">Daytime Start</option>
                                 <option id="night" value="night">Nighttime Start</option>
                                 <option id="random" value="random">Random Start</option>
-                                <option id="dusk" value="dusk" title="All time-specific gates are removed.">Dusk</option>
+                                <option id="dusk" value="dusk" title="All time-specific gates are closed.">Dusk</option>
                                 <option id="progressive" value="progressive" title="Time of day progressively changes.">Progressive</option>
                             </select>
                         </div>
@@ -251,6 +219,46 @@
                                 <option id="random" value="random">Random</option>
                             </select>
                         </div>
+                    </div>
+                    <h2 class="title">KONG MODELS</h2>
+                    <div class="flex-container">
+                        {% set kong_lst = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"] %}
+                        {% for kong in kong_lst %}
+                            <div class="item-select">   
+                                <p class="select-title">{{ kong }}</p>
+                                <select name="kong_model_{{ kong.lower() }}"
+                                        id="kong_model_{{ kong.lower() }}"
+                                        display_name="Kong Model - {{ kong }}"
+                                        class="form-select"
+                                        aria-label="{{ kong }}">
+                                    <option selected value="default">
+                                        Default
+                                    </option>
+                                    {% if kong == "Chunky" %}
+                                        <option value="disco_chunky">
+                                            Disco Chunky
+                                        </option>
+                                    {% elif kong == "DK" %}
+                                        <option value="cranky">
+                                            Cranky
+                                        </option>
+                                    {% elif kong == "Tiny" %}
+                                        <option value="candy">
+                                            Candy
+                                        </option>
+                                    {% endif %}
+                                    <option value="krusha">
+                                        Krusha
+                                    </option>
+                                    <option value="krool_fight">
+                                        K. Rool (Fight Gear)
+                                    </option>
+                                    <option value="krool_cutscene">
+                                        K. Rool (Cutscene Gear)
+                                    </option>
+                                </select>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col border panel">
@@ -299,7 +307,7 @@
                                value="True"/>
                         Hard Mode
                     </label>
-                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 5) }}
+                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 6) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"

@@ -31,13 +31,13 @@ void changeHelmLZ(void) {
 }
 
 void openCrownDoor(void) {
-	if (Rando.crown_door_open) {
+	if (Rando.crown_door_requirement.item == REQITEM_NONE) {
 		setPermFlag(FLAG_HELM_CROWNDOOR);
 	}
 }
 
 void openCoinDoor(void) {
-	if (Rando.coin_door_open) {
+	if (Rando.coin_door_requirement.item == REQITEM_NONE) {
 		setPermFlag(FLAG_HELM_COINDOOR);
 	}
 }
@@ -67,8 +67,6 @@ void HelmInit(int init_stage) {
 				setFlag(minigame_1_flags[i],1,FLAGTYPE_TEMPORARY);
 			}
 		}
-		// Tag entrance W1
-		setPermFlag(FLAG_WARP_HELM_W1_NEAR);
 	} else if (init_stage == 1) {
 		// Modify Cutscenes
 		int has_ended = 0;
@@ -139,31 +137,34 @@ void HelmInit(int init_stage) {
 
 void HelmBarrelCode(void) {
 	bonus_paad* paad = CurrentActorPointer_0->paad;
-	int deleted = 0;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
 		int barrel_index = -1;
 		if (CurrentActorPointer_0->data_pointer) {
 			barrel_index = CurrentActorPointer_0->data_pointer->data[2];
 		}
-		if (checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
+		if (checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT) || (Rando.required_helm_minigames == 0)) {
 			deleteActorContainer(CurrentActorPointer_0);
-			deleted = 1;
+			return;
 		} else if (barrel_index > -1) {
 			if (checkFlag(HelmMinigameFlags[barrel_index], FLAGTYPE_TEMPORARY)) {
 				deleteActorContainer(CurrentActorPointer_0);
-				deleted = 1;
+				return;
+			} else if ((barrel_index & 1) && (Rando.required_helm_minigames == 1)) {
+				// Delete every 2nd barrel
+				setFlag(HelmMinigameFlags[barrel_index], 1, FLAGTYPE_TEMPORARY);
+				deleteActorContainer(CurrentActorPointer_0);
+				return;
 			}
 		}
 	}
-	if (!deleted) {
-		BonusBarrelCode();
-		if (CurrentActorPointer_0->control_state == 0xC) {
-			if (paad->destroy_timer < 3) {
-				setFlag(HelmMinigameFlags[(int)paad->barrel_index],1,FLAGTYPE_TEMPORARY);
-				DisplayExplosionSprite();
-				deleteActorContainer(CurrentActorPointer_0);
-			}
+	// Non-init code
+	BonusBarrelCode();
+	if (CurrentActorPointer_0->control_state == 0xC) {
+		if (paad->destroy_timer < 3) {
+			setFlag(HelmMinigameFlags[(int)paad->barrel_index],1,FLAGTYPE_TEMPORARY);
+			DisplayExplosionSprite();
+			deleteActorContainer(CurrentActorPointer_0);
 		}
 	}
 }
@@ -187,7 +188,7 @@ int checkDoorItem(int index, int count) {
 		case DOORITEM_GB:
 			return getTotalGBs() >= count;
 		case DOORITEM_BP:
-			return countFlagsDuplicate(FLAG_BP_JAPES_DK_HAS, 40, FLAGTYPE_PERMANENT) >= count;
+			return getMedalCount() >= count;
 		case DOORITEM_BEAN:
 			return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 		case DOORITEM_PEARL:
@@ -203,7 +204,7 @@ int checkDoorItem(int index, int count) {
 				return key_count >= count;
 			}
 		case DOORITEM_MEDAL:
-			return countFlagsDuplicate(FLAG_MEDAL_JAPES_DK, 40, FLAGTYPE_PERMANENT) >= count;
+			return getMedalCount() >= count;
 		case DOORITEM_RAINBOWCOIN:
 			return countFlagsDuplicate(FLAG_RAINBOWCOIN_0, 16, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_CROWN:
@@ -215,21 +216,9 @@ int checkDoorItem(int index, int count) {
 }
 
 int CrownDoorCheck(void) {
-	if (Rando.crown_door_item == DOORITEM_DEFAULT) {
-		Rando.crown_door_item = DOORITEM_CROWN;
-	}
-	if (Rando.crown_door_item_count == 0) {
-		Rando.crown_door_item_count = 4;
-	}
-	return checkDoorItem(Rando.crown_door_item, Rando.crown_door_item_count);
+	return isItemRequirementSatisfied(&Rando.crown_door_requirement);
 }
 
 int CoinDoorCheck(void) {
-	if (Rando.coin_door_item == DOORITEM_DEFAULT) {
-		Rando.coin_door_item = DOORITEM_COMPANYCOIN;
-	}
-	if (Rando.coin_door_item_count == 0) {
-		Rando.coin_door_item_count = 2;
-	}
-	return checkDoorItem(Rando.coin_door_item, Rando.coin_door_item_count);
+	return isItemRequirementSatisfied(&Rando.coin_door_requirement);
 }

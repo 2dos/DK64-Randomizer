@@ -33,7 +33,7 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 	 * @param id Crown Pad ID
 	 */
 	if (behaviour->current_state == 0) {
-		setScriptRunState(behaviour, 3, 900);
+		setScriptRunState(behaviour, RUNSTATE_DISTANCERUN, 900);
 		behaviour->next_state = 1;
 	}
 	int world = getWorld(CurrentMap, 1);
@@ -52,7 +52,7 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 		behaviour->unk_60 = 1;
 		behaviour->unk_62 = 0;
 		behaviour->unk_66 = 255;
-		setScriptRunState(behaviour, 2, 0);
+		setScriptRunState(behaviour, RUNSTATE_PAUSED, 0);
 	}
 	if (Player) {
 		if ((Player->obj_props_bitfield & 0x2000) == 0) {

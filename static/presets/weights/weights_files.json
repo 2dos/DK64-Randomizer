@@ -21,7 +21,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.3,
+    "cb_rando": {
+      "off": 0.7,
+      "on": 0.25,
+      "on_with_isles": 0.05
+    },
     "coin_door_item": {
       "vanilla": 0.2,
       "opened": 0.6,
@@ -72,7 +76,6 @@
       "factory_car_race": 1,
       "galleon_seal_race": 1,
       "galleon_mech_fish": 1,
-      "galleon_mermaid_gb": 1,
       "forest_mill_conveyor": 1,
       "forest_owl_race": 1,
       "forest_rabbit_race": 1,
@@ -192,11 +195,13 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "rainbowcoin": 0.5,
       "beanpearl": 0.5,
-      "junkitem": 0.5
+      "junkitem": 0.5,
+      "shopowners": 0.2
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -210,10 +215,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.5,
       "level_order": 0.5
@@ -226,6 +227,11 @@
       "min": 15,
       "max": 60,
       "mean": 30
+    },
+    "mermaid_gb_pearls": {
+      "min": 1,
+      "max": 3,
+      "mean": 2
     },
     "microhints_enabled": {
       "base": 0.25,
@@ -283,7 +289,8 @@
       "galleon_seasick_ship": 1,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 1
+      "caves_igloo_pads": 1,
+      "caves_ice_walls": 1
     },
     "select_keys": 0,
     "serious_hints": 0.7,
@@ -354,7 +361,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cb_rando": {
+      "off": 0.5,
+      "on": 0.35,
+      "on_with_isles": 0.15
+    },
     "coin_door_item": {
       "vanilla": 0.2,
       "opened": 0.2,
@@ -409,7 +420,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -532,14 +542,16 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "fairy": 0.7,
       "rainbowcoin": 0.7,
       "beanpearl": 0.7,
       "fakeitem": 0.5,
       "junkitem": 0.5,
-      "crateitem": 0.5
+      "crateitem": 0.5,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -554,10 +566,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.65,
@@ -571,6 +579,11 @@
       "min": 15,
       "max": 90,
       "mean": 40
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 3
     },
     "microhints_enabled": {
       "off": 0.3,
@@ -631,7 +644,8 @@
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0.3,
@@ -709,7 +723,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cb_rando": {
+      "off": 0.5,
+      "on": 0.25,
+      "on_with_isles": 0.25
+    },
     "coin_door_item": {
       "vanilla": 0.3,
       "hard_random": 0.3,
@@ -764,7 +782,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -800,7 +817,8 @@
       "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -894,14 +912,16 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "fairy": 0.7,
       "rainbowcoin": 0.7,
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -916,10 +936,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -935,6 +951,11 @@
       "min": 35,
       "max": 90,
       "mean": 60
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
     },
     "microhints_enabled": {
       "off": 0.3,
@@ -1023,7 +1044,8 @@
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0,
@@ -1105,7 +1127,11 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cb_rando": {
+      "off": 0.7,
+      "on": 0.25,
+      "on_with_isles": 0.25
+    },
     "coin_door_item": {
       "vanilla": 0.3,
       "hard_random": 0.3,
@@ -1160,7 +1186,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -1196,7 +1221,8 @@
       "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -1290,14 +1316,16 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "fairy": 0.7,
       "rainbowcoin": 0.7,
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 0.75,
     "kasplat_rando_setting": {
@@ -1312,10 +1340,6 @@
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -1331,6 +1355,11 @@
       "min": 35,
       "max": 90,
       "mean": 60
+    },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
     },
     "microhints_enabled": {
       "off": 0.3,
@@ -1419,7 +1448,8 @@
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0,

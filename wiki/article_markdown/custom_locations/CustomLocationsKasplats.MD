@@ -131,7 +131,7 @@
 | Crystal Caves | Caves Kasplat: With the Giant Kosha | `` | 
 | Caves Diddy Igloo | Caves Kasplat: In Diddy Igloo | `` | 
 | Caves Donkey Cabin | Caves Kasplat: DK Shooting Cabin | `` | 
-| Crystal Caves | Caves Kasplat: Gorilla Gone Cave | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Crystal Caves | Caves Kasplat: Gorilla Gone Cave | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Crystal Caves | Caves Kasplat: Starting Area | `` | 
 
 # Creepy Castle

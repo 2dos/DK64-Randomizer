@@ -15,6 +15,7 @@ import randomizer.Lists.CBLocations.FranticFactoryCBLocations
 import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
+import randomizer.Lists.CBLocations.DKIslesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.Lists.CustomLocations import CustomLocations
@@ -224,7 +225,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         elif dumper == Dumpers.Kasplats:
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('additional_logic', '')}` | \n")
                         elif dumper == Dumpers.Doors:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | `{y.get('logic', '')}` | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([z.name.title() for z in y['door_type']])} | `{y.get('logic', '')}` | \n")
                     for group in groupings:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             # fh.write("<details>\n")
@@ -268,6 +269,10 @@ def dump_cb(format: str):
         Levels.CreepyCastle: {
             "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
             "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
+        },
+        Levels.DKIsles: {
+            "cb": randomizer.Lists.CBLocations.DKIslesCBLocations.ColoredBananaGroupList,
+            "balloons": randomizer.Lists.CBLocations.DKIslesCBLocations.BalloonList,
         },
     }
     dumps = {}
@@ -444,7 +449,7 @@ def checkIfMatchingList(list1: list, list2: list) -> bool:
 def getDisplayName(internal_name: str):
     """Get the displayed name on the site for an internal name."""
     directory = "./templates"
-    templates = [x for x in os.listdir(directory) if ".html.jinja2" in x and x not in ["spoiler.html.jinja2", "settings.html.jinja2"]]
+    templates = [x for x in os.listdir(directory) if ".html.jinja2" in x and x not in ["spoiler.html.jinja2", "spoiler_new.html.jinja2", "settings.html.jinja2"]]
     old_text = " ".join([x.capitalize() for x in internal_name.split("_")])
     for template in templates:
         with open(f"{directory}/{template}", "r") as jinja:

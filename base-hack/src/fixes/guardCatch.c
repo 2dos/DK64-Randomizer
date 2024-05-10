@@ -118,7 +118,7 @@ void catchWarpHandle(void) {
 
 int inRabbitRace(void) {
     if (CurrentMap == MAP_FUNGI) {
-        return *(int*)(0x807FBB64) & 4; // In Rabbit Race
+        return MapProperties.unk29 != 0; // In Rabbit Race
     }
     return 0;
 }
@@ -127,8 +127,7 @@ void newGuardCode(void) {
     /**
      * @brief Guard Actor Code
      */
-    unsigned int level_state = *(unsigned int*)(0x807FBB64);
-    int in_snoop = (level_state & 0x104000) == 0;
+    int in_snoop = MapProperties.is_bonus != 0;
     if (CurrentActorPointer_0->control_state <= 0x35) { // Not damaged/dying
         if (Player) {
             if ((Player->strong_kong_ostand_bitfield & 0x70) == 0) { // No GGone, OSprint, SKong
@@ -136,7 +135,7 @@ void newGuardCode(void) {
                     if (!inRabbitRace()) {
                         float dist = 40.0f;
                         float radius = 70.0f;
-                        if (in_snoop) { // Not in snoop
+                        if (!in_snoop) { // Not in snoop
                             if (CurrentActorPointer_0->control_state == 0x11) { // Is Idle
                                 radius = 40.0f;
                                 if (getAnimationTimer(CurrentActorPointer_0) > 60.0f) { // Smacking light
@@ -146,7 +145,13 @@ void newGuardCode(void) {
                             }
                         }
                         if (radius > 0.0f) {
+                            int old_control_state = CurrentActorPointer_0->control_state;
                             handleGuardDetection(dist, radius);
+                            if (old_control_state != 0) {
+                                if (CurrentActorPointer_0->control_state == 0) {
+                                    updateKopStat();
+                                }
+                            }
                         }
                     }
                 }
@@ -154,7 +159,7 @@ void newGuardCode(void) {
         }
     }
     if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) { // If being damaged
-        if (in_snoop) { // If not in SSnoop
+        if (!in_snoop) { // If not in SSnoop
             // Hit by ammo/oranges
             if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
                 // Death procedure
@@ -171,7 +176,7 @@ void newGuardCode(void) {
             }
         }
     }
-    if (in_snoop) { // If not in SSnoop
+    if (!in_snoop) { // If not in SSnoop
         guard_paad* paad = CurrentActorPointer_0->paad;
         if (CurrentActorPointer_0->grounded & 4) {
             // Touching Water

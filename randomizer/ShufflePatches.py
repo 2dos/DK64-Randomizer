@@ -57,7 +57,8 @@ def removePatches(spoiler):
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for patch in plando_input:
-        plando_dict[patch["level"]].append(patch["location"])
+        if patch["level"] != -1:
+            plando_dict[patch["level"]].append(patch["location"])
 
 
 def getPlandoDirtDistribution(plando_dict: dict):
@@ -121,7 +122,7 @@ def ShufflePatches(spoiler, human_spoiler):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
-    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
         fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_dirt_patches"])
 
     for key in total_dirt_patch_list.keys():
@@ -132,7 +133,7 @@ def ShufflePatches(spoiler, human_spoiler):
                     total_dirt_patch_list[key].append(SingleDirtPatchLocation)
 
     # Make sure plandomized Dirt Patches are handled first
-    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
         distribution = getPlandoDirtDistribution(plando_dict)
         count = 0
         for level in plando_dict.keys():
@@ -162,7 +163,7 @@ def ShufflePatches(spoiler, human_spoiler):
         addPatch(spoiler, patch["patch"], patch["enum"], patch["name"], patch["level"])
         patch["patch"] = None
     # Resolve location-item combinations for plando
-    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
         for item_placement in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
             for patch_index, patch in enumerate(sorted_patches):
                 if item_placement["location"] == patch["name"] and item_placement["level"] == patch["level"] and item_placement["reward"] != -1:
@@ -178,7 +179,7 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         selected_patch_name = selected_patch.name
         # Give plandomizer an opportunity to get the final say
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
             if len(plando_input[level]) > 1:
                 allow_same_group_dirt = True
             if len(plando_input[level]) > iterations:

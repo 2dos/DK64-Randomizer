@@ -1,15 +1,20 @@
 """Includes utility functions for plandomizer support."""
 
+import re
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems, PlandoItemToItemMap
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
+from randomizer.Lists.CustomLocations import LocationTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.LogicClasses import Regions
+from randomizer.Lists.Plandomizer import GetCrownVanillaLocation
 
 # Some common item sets that may be used in multiple places.
 KongSet = {
@@ -284,11 +289,6 @@ for shop in kongSpecificShopSet:
 # The Jetpac game has few restrictions.
 ItemRestrictionsPerLocation[Locations.RarewareCoin.name].update(shopRestrictedItemSet)
 
-# Crowns are not allowed on Helm Medal locations.
-helmMedalLocationList = [Locations.HelmDonkeyMedal.name, Locations.HelmDiddyMedal.name, Locations.HelmLankyMedal.name, Locations.HelmTinyMedal.name, Locations.HelmChunkyMedal.name]
-for locationName in helmMedalLocationList:
-    ItemRestrictionsPerLocation[locationName].add(PlandoItems.BattleCrown.name)
-
 # Boss fights cannot have junk items or blueprint rewards.
 bossFightLocationList = [
     Locations.JapesKey.name,
@@ -400,6 +400,54 @@ def PlandoItemFilter(itemList: list[dict], location: str) -> list[dict]:
     """
     # Filter out every item that appears in the restricted set for this location.
     return [item for item in itemList if item["value"] not in ItemRestrictionsPerLocation[location["value"]]]
+
+
+# A dictionary of custom locations, mapped to a set of new locations that are
+# invalid assignments. This will be used to filter the dropdowns used in the
+# plandomizer.
+LocationRestrictionsPerCustomLocation = {
+    Locations.IslesBattleArena1.name: {GetCrownVanillaLocation(Locations.IslesBattleArena2)},
+    Locations.IslesBattleArena2.name: {GetCrownVanillaLocation(Locations.IslesBattleArena1)},
+}
+
+
+def PlandoCustomLocationFilter(locationList: list[dict], locationId: str) -> list[dict]:
+    """Return a filtered list of plando locations that are permitted for the given custom location.
+
+    Args:
+        locationList (dict[]) - The list of possible custom locations. Each
+            location contains "name" and "value" string fields.
+        locationId (str) - The ID of the HTML element representing this custom
+            location.
+    """
+    locationName = re.search("^plando_(.+)_location$", locationId)[1]
+    if locationName not in LocationRestrictionsPerCustomLocation:
+        return locationList
+    return [loc for loc in locationList if loc["value"] not in LocationRestrictionsPerCustomLocation[locationName]]
+
+
+# A dictionary of custom location types, mapped to a set of which items may
+# not appear in that location type. This will be used to filter the dropdowns
+# used in the plandomizer.
+ItemRestrictionsPerLocationType = {
+    LocationTypes.CrownPad.name: {PlandoItems.JunkItem.name}.union(blueprintItemSet),
+    LocationTypes.DirtPatch.name: blueprintItemSet,
+    Types.Fairy.name: bananaFairyRestrictedItems,
+    "Kasplat": set(),
+    LocationTypes.MelonCrate.name: {PlandoItems.JunkItem.name},
+}
+
+
+def PlandoCustomLocationItemFilter(itemList: list[dict], locType: str) -> list[dict]:
+    """Return a filtered list of plando items that are permitted for the given location type.
+
+    Args:
+        itemList (dict[]): The list of possible plando items. Each item
+            contains "name" and "value" string fields.
+        locType (str): The type of location where we are trying to place items.
+    """
+    # Filter out every item that appears in the restricted set for this location type.
+    return [item for item in itemList if item["value"] not in ItemRestrictionsPerLocationType[locType]]
 
 
 # A dictionary indicating which mini-games are unavailable to certain Kongs.
@@ -613,7 +661,7 @@ def PlandoOptionClassAnnotation(panel: str, kong: str, location: str, item: str)
 # A dictionary that maps plando options to enum classes. The key for each enum
 # must exactly match that of the associated HTML input.
 PlandoEnumMap = {
-    "plando_spawn_location": Regions,
+    "plando_starting_exit": Transitions,
     "plando_starting_kongs_selected": Kongs,
     "plando_kong_rescue_donkey": Kongs,
     "plando_kong_rescue_diddy": Kongs,
@@ -628,11 +676,11 @@ PlandoEnumMap = {
     "plando_level_order_4": Levels,
     "plando_level_order_5": Levels,
     "plando_level_order_6": Levels,
-    "plando_krool_order_0": Kongs,
-    "plando_krool_order_1": Kongs,
-    "plando_krool_order_2": Kongs,
-    "plando_krool_order_3": Kongs,
-    "plando_krool_order_4": Kongs,
+    "plando_krool_order_0": Maps,
+    "plando_krool_order_1": Maps,
+    "plando_krool_order_2": Maps,
+    "plando_krool_order_3": Maps,
+    "plando_krool_order_4": Maps,
     "plando_helm_order_0": Kongs,
     "plando_helm_order_1": Kongs,
     "plando_helm_order_2": Kongs,
