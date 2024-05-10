@@ -128,6 +128,9 @@ def ShuffleDoors(spoiler, block_wrinklytns: bool):
             if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_tns_portals"] != -1:
                 level_to_string = str(level.value)
                 if level_to_string in spoiler.settings.plandomizer_dict["plando_tns_portals"].keys():
+                    number_of_portals_in_level = min(3, len(spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]))
+                    # Sanitize input, now that we don't need the -1's anymore
+                    spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string] = [x for x in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string] if x != -1]
                     plando_portal_indexes = [x for x in available_portals if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]
                     if len(plando_portal_indexes) != len([x for x in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]):
                         raise Exceptions.PlandoIncompatibleException(f"Not every selected portal is available in level {level}")
