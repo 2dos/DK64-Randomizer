@@ -1879,6 +1879,8 @@ def GeneratePlaythrough(spoiler: Spoiler) -> None:
     # Generate and display the playthrough
     spoiler.Reset()
     PlaythroughLocations = GetAccessibleLocations(spoiler, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
+    if not spoiler.LogicVariables.bananaHoard and spoiler.settings.logic_type != LogicType.nologic:
+        raise Ex.FillException("Woah, you hit an EXTREMELY rare error! Please post your settings string to the discord. It's probably a freak accident so you're safe to try again.")
     ParePlaythrough(spoiler, PlaythroughLocations)
     # Generate and display woth
     WothLocations = PareWoth(spoiler, PlaythroughLocations)

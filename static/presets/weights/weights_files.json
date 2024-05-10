@@ -286,6 +286,7 @@
       "caves_igloo_pads": 1
     },
     "select_keys": 0,
+    "serious_hints": 0.7,
     "shockwave_status": {
       "vanilla": 0.3,
       "shuffled": 0.2,
@@ -633,6 +634,7 @@
       "caves_igloo_pads": 0.8
     },
     "select_keys": 0,
+    "serious_hints": 0.3,
     "shockwave_status": {
       "vanilla": 0.2,
       "shuffled": 0.2,
@@ -1024,6 +1026,7 @@
       "caves_igloo_pads": 0.8
     },
     "select_keys": 0,
+    "serious_hints": 0,
     "shockwave_status": {
       "vanilla": 0.2,
       "shuffled": 0.3,
@@ -1419,6 +1422,7 @@
       "caves_igloo_pads": 0.8
     },
     "select_keys": 0,
+    "serious_hints": 0,
     "shockwave_status": {
       "vanilla": 0.2,
       "shuffled": 0.3,

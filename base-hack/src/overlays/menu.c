@@ -81,7 +81,17 @@ int give_all_blueprints(int flag, int level, int kong_p) {
 
 void gbUpdateHandler(void) {
 	updateGBCountHUD(0);
-	handleProgressiveIndicator();
+	handleProgressiveIndicator(1);
+}
+
+typedef struct snide_paad {
+	/* 0x000 */ char unk00[0x1A];
+	/* 0x01A */ unsigned char unturned_count;
+} snide_paad;
+
+void gbUpdateHandler_snide(snide_paad* paad) {
+	updateGBCountHUD(0);
+	handleProgressiveIndicator(paad->unturned_count);
 }
 
 void overlay_mod_menu(void) {
@@ -103,7 +113,9 @@ void overlay_mod_menu(void) {
 	writeFunction(0x8002691C, &purchaseMove);
 	writeFunction(0x800270B8, &showPostMoveText);
 	writeFunction(0x80026508, &canPlayJetpac);
-	writeFunction(0x800248D4, &gbUpdateHandler);
+	writeFunction(0x800248D4, &gbUpdateHandler_snide);
+	*(int*)(0x800248D8) = 0x02802025; // or $a0, $s4, $zero
+	
 	*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
 	*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
 	if (CurrentMap == MAP_CRANKY) {

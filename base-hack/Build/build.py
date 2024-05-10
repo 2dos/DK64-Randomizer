@@ -719,6 +719,7 @@ file_dict.append(
         file_index=107,
         source_file=f"assets/displays/text_bubble_dark.png",
         texture_format=TextureFormat.RGBA5551,
+        target_compressed_size=0xC00,
     )
 )
 for x in range(10):

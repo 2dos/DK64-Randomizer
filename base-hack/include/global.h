@@ -44,6 +44,8 @@ extern void initOptionScreen(void);
 extern int getLo(void* addr);
 extern int getHi(void* addr);
 
+extern int hasChunkyPhaseSlam(void);
+
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);
@@ -128,6 +130,10 @@ extern void correctKongFaces(void);
 extern int* display_file_images(int* dl, int y_offset);
 extern int* drawTextPointers(int* dl);
 extern int* displayCenteredText(int* dl, int y, char* str, int offset);
+extern void applyHintRecoloring(letter_data* data, int index, int bitfield, char* char_address);
+extern void setCharacterRecoloring(int output, char* stored_str);
+extern void setCharacterColor(int index, int value);
+extern void wipeTextColorData(void);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -177,7 +183,7 @@ extern int* renderDingSprite(int* dl);
 extern int* renderProgressiveSprite(int* dl);
 extern int getHintGBRequirement(int level, int kong);
 extern void gbUpdateHandler(void);
-extern void handleProgressiveIndicator(void);
+extern void handleProgressiveIndicator(int delta);
 extern int hasEnoughCBs(void);
 extern void initDingSprite(void);
 extern void handleSpiderTrapCode(void);
@@ -506,3 +512,6 @@ extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+
+extern unsigned int base_text_color;
+extern unsigned int emph_text_colors[10];

@@ -185,19 +185,19 @@
                     <div class="flex-container flex-center">
                         {% for song in subCategory["songs"] %}
                             <div class="location-picker">
-                                <label for="music_select_{{song["value"]}}" class="location-label">
+                                <label for="music_select_{{song['value']}}" class="location-label">
                                     {{song["name"]}}
                                 </label>
-                                <div id="music_select_{{song["value"]}}_wrapper"
+                                <div id="music_select_{{song['value']}}_wrapper"
                                     data-toggle="tooltip"
                                     title>
-                                    <select id="music_select_{{song["value"]}}"
-                                            name="music_select_{{song["value"]}}"
-                                            class="form-select {{subCategory["type"]}}-select">
+                                    <select id="music_select_{{song['value']}}"
+                                            name="music_select_{{song['value']}}"
+                                            class="form-select {{subCategory['type']}}-select">
                                         <option value="default_value">-- Default --</option>
-                                        <option value="">-- Randomize --</option>
-                                        {% for select_song in select_songs[subCategory["type"]]|music_select_restrict(song["value"]) %}
-                                            <option value="{{select_song["value"]}}"
+                                        <option value="" selected>-- Randomize --</option>
+                                        {% for select_song in select_songs[subCategory["type"]]|music_select_restrict(song['value']) %}
+                                            <option value="{{select_song['value']}}"
                                                     class="original-song">
                                                 {{select_song["name"]}}
                                             </option>

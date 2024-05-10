@@ -230,6 +230,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.coin_door_item == HelmDoorItem.opened, 0x33),  # Coin Door Open
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
+        BooleanProperties(spoiler.settings.balanced_krool_phases, 0x1E3),  # Balanced K Rool Phases
     ]
 
     for prop in boolean_props:

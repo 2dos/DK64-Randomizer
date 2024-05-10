@@ -2247,6 +2247,31 @@ def updateCryptLeverTexture(settings: Settings) -> None:
         writeColorImageToROM(texture_1, 25, 0x999, 32, 64, False, TextureFormat.RGBA5551)
 
 
+def lightenPauseBubble(settings: Settings):
+    """Change the brightness of the text bubble used for the pause menu for light mode."""
+    if settings.dark_mode_textboxes:
+        return
+    img = getFile(14, 107, True, 48, 32, TextureFormat.RGBA5551)
+    px = img.load()
+    canary_px = list(px[24, 16])
+    if canary_px[0] > 128 and canary_px[1] > 128 and canary_px[2] > 128:
+        # Already brightened, cancel
+        return
+    bytes_array = []
+    for y in range(32):
+        for x in range(48):
+            pix_data = list(px[x, y])
+            value = 1 if pix_data[3] > 128 else 0
+            for v in range(3):
+                pix_data[v] = 0xFF - pix_data[v]
+                value |= (pix_data[v] >> 3) << 1 + (5 * (2 - v))
+            bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+    px_data = bytearray(bytes_array)
+    px_data = gzip.compress(px_data, compresslevel=9)
+    ROM().seek(js.pointer_addresses[14]["entries"][107]["pointing_to"])
+    ROM().writeBytes(px_data)
+
+
 boot_phrases = (
     "Removing Lanky Kong",
     "Telling 2dos to play DK64",

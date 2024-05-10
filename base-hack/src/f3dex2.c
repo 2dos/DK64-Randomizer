@@ -154,3 +154,40 @@ int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red,
 	dl = drawText(dl,style,x,y,str,red,green,blue,opacity);
 	return dl;
 }
+
+static char* character_recoloring_str = 0;
+static char use_character_recoloring = 0;
+static char char_color_data[0x40];
+
+void setCharacterRecoloring(int output, char* stored_str) {
+	use_character_recoloring = output;
+	character_recoloring_str = stored_str;
+	
+	TestVariable = (int)&char_color_data[0];
+}
+
+void wipeTextColorData(void) {
+	for (int i = 0; i < 0x40; i++) {
+		char_color_data[i] = 0;
+	}
+}
+
+void setCharacterColor(int index, int value) {
+	char_color_data[index] = value;
+}
+
+void applyHintRecoloring(letter_data* data, int index, int bitfield, char* char_address) {
+	if ((!use_character_recoloring) || (!character_recoloring_str)) {
+		recolorVertBlockText(data, index, bitfield);
+		return;
+	}
+	int offset = char_address - character_recoloring_str;
+	int color_value = base_text_color | 0xFF;
+	int color_index = char_color_data[offset];
+	if (color_index != 0) {
+		color_value = emph_text_colors[color_index - 1] | 0xFF;
+	}
+	for (int i = 0; i < 4; i++) {
+		data->vtx_info[i].color = color_value;
+	}
+}
