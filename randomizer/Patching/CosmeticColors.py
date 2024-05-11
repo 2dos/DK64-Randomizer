@@ -31,6 +31,9 @@ from randomizer.Patching.Lib import (
     compatible_background_textures,
     grabText,
     writeText,
+    TableNames,
+    getRawFile,
+    writeRawFile,
 )
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
@@ -704,22 +707,6 @@ def apply_cosmetic_colors(settings: Settings):
 
 color_bases = []
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
-
-
-def getRawFile(table_index: int, file_index: int, compressed: bool):
-    """Get raw file from ROM."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
-    try:
-        LocalROM().seek(file_start)
-        data = LocalROM().readBytes(file_size)
-    except Exception:
-        ROM().seek(file_start)
-        data = ROM().readBytes(file_size)
-    if compressed:
-        data = zlib.decompress(data, (15 + 32))
-    return data
 
 
 def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat) -> PIL.Image.Image:
@@ -1512,9 +1499,10 @@ def recolorWrinklyDoors():
         ROM().writeBytes(data)
 
 
-def recolorSlamSwitches():
+def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM):
     """Recolor the Simian Slam switches for colorblind mode."""
     file = [0x94, 0x93, 0x95, 0x96, 0xB8, 0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 0x167, 0x166, 0x168, 0x169, 0x165]
+    written_galleon_ship = False
     for switch in range(15):
         slam_switch_start = js.pointer_addresses[4]["entries"][file[switch]]["pointing_to"]
         slam_switch_finish = js.pointer_addresses[4]["entries"][file[switch] + 1]["pointing_to"]
@@ -1555,6 +1543,15 @@ def recolorSlamSwitches():
             data = gzip.compress(data, compresslevel=9)
         ROM().seek(slam_switch_start)
         ROM().writeBytes(data)
+        if not written_galleon_ship:
+            galleon_switch_color = new_color1.copy()
+            if galleon_switch_value is not None:
+                if galleon_switch_value != 1:
+                    galleon_switch_color = new_color3.copy()
+                    if galleon_switch_value == 2:
+                        galleon_switch_color = new_color2.copy()
+            recolorKRoolShipSwitch(galleon_switch_color, ROM_COPY)
+            written_galleon_ship = True
 
 
 def recolorBlueprintModelTwo():
@@ -1861,10 +1858,17 @@ def recolorMushrooms():
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
 
 
-def overwrite_object_colors(settings):
+def overwrite_object_colors(settings, ROM_COPY: ROM):
     """Overwrite object colors."""
     global color_bases
     mode = settings.colorblind_mode
+    sav = settings.rom_data
+    galleon_switch_value = None
+    ROM_COPY.seek(sav + 0x103)
+    switch_rando_on = int.from_bytes(ROM_COPY.readBytes(1), "big") != 0
+    if switch_rando_on:
+        ROM_COPY.seek(sav + 0x104 + 3)
+        galleon_switch_value = int.from_bytes(ROM_COPY.readBytes(1), "big")
     if mode != ColorblindMode.off:
         if mode == ColorblindMode.prot:
             color_bases = ["#000000", "#0072FF", "#766D5A", "#FFFFFF", "#FDE400"]
@@ -1884,7 +1888,7 @@ def overwrite_object_colors(settings):
             blueprint_lanky.append(getFile(25, 5519 + (file), True, 48, 42, TextureFormat.RGBA5551))
         writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, TextureFormat.RGBA5551)
         recolorWrinklyDoors()
-        recolorSlamSwitches()
+        recolorSlamSwitches(galleon_switch_value, ROM_COPY)
         recolorRotatingRoomTiles()
         recolorBlueprintModelTwo()
         recolorKlaptraps()
@@ -1965,6 +1969,14 @@ def overwrite_object_colors(settings):
                     balloon_im = maskImage(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, TextureFormat.RGBA5551)
+    else:
+        # Recolor slam switch if colorblind mode is off
+        if galleon_switch_value is not None:
+            if galleon_switch_value != 1:
+                new_color = [0xFF, 0x00, 0x00]
+                if galleon_switch_value == 2:
+                    new_color = [0x26, 0xA3, 0xE9]
+                recolorKRoolShipSwitch(new_color, ROM_COPY)
     if settings.head_balloons:
         for kong in range(5):
             for offset in range(8):
@@ -2769,6 +2781,44 @@ def numberToImage(number: int, dim: Tuple[int, int]) -> PIL.Image.Image:
     base = base.resize(new_dim)
     output.paste(base, (x_offset, y_offset), base)
     return output
+
+def recolorKRoolShipSwitch(color: tuple, ROM_COPY: ROM):
+    """Recolors the simian slam switch that is part of K. Rool's ship in galleon."""
+    addresses = (
+        0x4C34,
+        0x4C44,
+        0x4C54,
+        0x4C64,
+        0x4C74,
+        0x4C84,
+    )
+    print(color)
+    data = bytearray(getRawFile(TableNames.ModelTwoGeometry, 305, True))
+    for addr in addresses:
+        for x in range(3):
+            data[addr + x] = color[x]
+    new_tex = [
+        0xE7, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0xE2, 0x00, 0x00, 0x1C, 0x0C, 0x19, 0x20, 0x38,
+        0xE3, 0x00, 0x0A, 0x01, 0x00, 0x10, 0x00, 0x00,
+        0xE3, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0xE7, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0xFC, 0x12, 0x7E, 0x03, 0xFF, 0xFF, 0xF9, 0xF8,
+        0xFD, 0x90, 0x00, 0x00, 0x00, 0x00, 0x0B, 0xAF,
+        0xF5, 0x90, 0x00, 0x00, 0x07, 0x08, 0x02, 0x00,
+        0xE6, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0xF3, 0x00, 0x00, 0x00, 0x07, 0x7F, 0xF1, 0x00,
+        0xE7, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0xF5, 0x88, 0x10, 0x00, 0x00, 0x08, 0x02, 0x00,
+        0xF2, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xC0, 0xFC,
+    ]
+    for x in range(8):
+        data[0x1AD8 + x] = 0
+    for xi, x in enumerate(new_tex):
+        data[0x1AE8 + xi] = x
+    for x in range(40):
+        data[0x1B58 + x] = 0
+    writeRawFile(TableNames.ModelTwoGeometry, 305, True, data, ROM_COPY)
 
 
 def applyHelmDoorCosmetics(settings: Settings) -> None:

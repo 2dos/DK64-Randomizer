@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
 import random
+import zlib
+import gzip
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
@@ -840,3 +842,31 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
         HelmDoorItem.req_rainbowcoin: BarrierItems.RainbowCoin,
     }
     return converter.get(item, BarrierItems.Nothing)
+
+def getRawFile(table_index: int, file_index: int, compressed: bool):
+    """Get raw file from ROM."""
+    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+    file_size = file_end - file_start
+    try:
+        LocalROM().seek(file_start)
+        data = LocalROM().readBytes(file_size)
+    except Exception:
+        ROM().seek(file_start)
+        data = ROM().readBytes(file_size)
+    if compressed:
+        data = zlib.decompress(data, (15 + 32))
+    return data
+
+def writeRawFile(table_index: int, file_index: int, compressed: bool, data: bytearray, ROM_COPY):
+    """Write raw file from ROM."""
+    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+    file_size = file_end - file_start
+    write_data = bytes(data)
+    if compressed:
+        write_data = gzip.compress(bytes(data), compresslevel=9)
+    if len(write_data) > file_size:
+        raise Exception(f"Cannot write file {file_index} in table {table_index} to ROM as it's too big.")
+    ROM_COPY.seek(file_start)
+    ROM_COPY.writeBytes(write_data)

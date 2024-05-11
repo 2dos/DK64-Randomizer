@@ -17,7 +17,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints, KongModels
+from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints, KongModels, SlamRequirement
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -505,6 +505,12 @@ def compileHints(spoiler: Spoiler) -> bool:
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
     # Your training in moves which you know are always needed beat the final battle are pointless to hint
+    dk_phase_requirement = []
+    chunky_phase_requirement = [Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
+    if spoiler.settings.cannons_require_blast:
+        dk_phase_requirement = [Items.BaboonBlast]
+    if spoiler.settings.chunky_phase_slam_req_internal != SlamRequirement.green:
+        chunky_phase_requirement.append(Items.ProgressiveSlam)
     required_moves = {
         Maps.JapesBoss: [Items.Barrels],
         Maps.AztecBoss: [Items.Barrels],
@@ -513,10 +519,11 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.FungiBoss: [Items.Barrels, Items.HunkyChunky],
         Maps.CavesBoss: [Items.Barrels],
         Maps.CastleBoss: [],
+        Maps.KroolDonkeyPhase: dk_phase_requirement,
         Maps.KroolDiddyPhase: [Items.Peanut, Items.RocketbarrelBoost],
         Maps.KroolLankyPhase: [Items.Barrels, Items.Trombone],
         Maps.KroolTinyPhase: [Items.Feather, Items.MiniMonkey],
-        Maps.KroolChunkyPhase: [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone],
+        Maps.KroolChunkyPhase: chunky_phase_requirement,
     }
     for map_id in required_moves:
         if map_id in spoiler.settings.krool_order and map_id in spoiler.krool_paths.keys():

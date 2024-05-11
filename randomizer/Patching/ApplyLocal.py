@@ -122,14 +122,13 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         apply_cosmetic_colors(settings)
 
         if settings.override_cosmetics:
-            overwrite_object_colors(settings)
+            ROM_COPY = ROM()
+            overwrite_object_colors(settings, ROM_COPY)
             writeMiscCosmeticChanges(settings)
             applyHolidayMode(settings)
             lightenPauseBubble(settings)
             if settings.misc_cosmetics:
                 writeCrownNames()
-
-            ROM_COPY = ROM()
 
             # D-Pad Display
             ROM_COPY.seek(sav + 0x139)
