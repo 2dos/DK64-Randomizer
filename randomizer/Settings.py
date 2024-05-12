@@ -132,8 +132,6 @@ class Settings:
             self.ApplyPlandomizerSettings()
 
             # Remove these as plando features get implemented
-            self.plandomizer_dict["plando_wrinkly_doors"] = -1
-            self.plandomizer_dict["plando_tns_portals"] = -1
             self.plandomizer_dict["plando_shop_location_rando"] = -1
             # ---------------------------------------------------
             # Prevent custom locations selected for plandomizer from being used by a different randomizer

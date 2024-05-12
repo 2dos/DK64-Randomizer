@@ -37,6 +37,10 @@ from randomizer.Lists.Plandomizer import (
     ShopLocationKongMap,
     ShopLocationList,
     SwitchVanillaMap,
+    TnsPortalLocationList,
+    TnsVanillaMap,
+    WrinklyDoorEnumList,
+    WrinklyVanillaMap,
 )
 from randomizer.Lists.Switches import SwitchData
 from randomizer.LogicFiles.Shops import LogicRegions
@@ -49,6 +53,8 @@ from ui.rando_options import (
     plando_toggle_custom_kasplat_locations,
     plando_toggle_custom_locations_tab,
     plando_toggle_custom_patch_locations,
+    plando_toggle_custom_tns_locations,
+    plando_toggle_custom_wrinkly_locations,
 )
 
 
@@ -75,6 +81,7 @@ class ValidationError(IntEnum):
     only_available_as_custom_location = auto()
     random_custom_location = auto()
     duplicate_custom_location = auto()
+    duplicate_custom_door = auto()
     switchsanity_not_enabled = auto()
 
 
@@ -240,6 +247,16 @@ def kasplat_locations_assigned() -> bool:
 def crate_locations_assigned() -> bool:
     """Return true if crates are having their locations assigned."""
     return js.document.getElementById("plando_place_crates").checked
+
+
+def wrinkly_locations_assigned() -> bool:
+    """Return true if Wrinkly doors are having their locations assigned."""
+    return js.document.getElementById("plando_place_wrinkly").checked
+
+
+def tns_locations_assigned() -> bool:
+    """Return true if TnS portals are having their locations assigned."""
+    return js.document.getElementById("plando_place_tns").checked
 
 
 ########################
@@ -659,6 +676,44 @@ def validate_custom_locations_no_duplicates(evt):
                 mark_option_invalid(selectElem, ValidationError.duplicate_custom_location, errString)
 
 
+@bind("change", "plando_place_wrinkly")
+@bind("change", "plando_place_tns")
+@bindList("change", [x.name for x in WrinklyDoorEnumList], prefix="plando_", suffix="_wrinkly_door")
+@bindList("change", TnsPortalLocationList, prefix="plando_", suffix="_tns_portal")
+def validate_custom_doors_no_duplicate_locations(evt):
+    """Prevent any door location from being used twice."""
+    locDict = {}
+
+    def count_location(location: str, elem_name: str):
+        """Add the given element to our location-counting dictionary."""
+        if location in locDict:
+            locDict[location].append(elem_name)
+        else:
+            locDict[location] = [elem_name]
+
+    if wrinkly_locations_assigned():
+        for wrinklyDoor in WrinklyDoorEnumList:
+            locElem = f"plando_{wrinklyDoor.name}_wrinkly_door"
+            custDoor = js.document.getElementById(locElem).value
+            count_location(custDoor, locElem)
+    if tns_locations_assigned():
+        for tnsPortal in TnsPortalLocationList:
+            locElem = f"plando_{tnsPortal}_tns_portal"
+            custDoor = js.document.getElementById(locElem).value
+            count_location(custDoor, locElem)
+    # Invalidate any selects that re-use the same door.
+    for location, selects in locDict.items():
+        if location == "" or location == "none" or len(selects) == 1:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                mark_option_valid(selectElem, ValidationError.duplicate_custom_door)
+        else:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                errString = "Custom door locations cannot be used more than once."
+                mark_option_invalid(selectElem, ValidationError.duplicate_custom_door, errString)
+
+
 @bindList("change", CrownLocationEnumList, prefix="plando_", suffix="_location")
 @bindList("change", KasplatLocationEnumList, prefix="plando_", suffix="_location")
 @bindList("change", [f"patch_{i}" for i in range(0, 16)], prefix="plando_", suffix="_location")
@@ -879,12 +934,15 @@ def perform_setting_conflict_validation(evt):
     validate_custom_kasplat_locations(evt)
     validate_custom_patch_locations(evt)
     validate_custom_locations_no_duplicates(evt)
+    validate_custom_doors_no_duplicate_locations(evt)
     full_validate_no_reward_with_random_location()
     plando_toggle_custom_arena_locations(evt)
     plando_toggle_custom_crate_locations(evt)
     plando_toggle_custom_fairy_locations(evt)
     plando_toggle_custom_kasplat_locations(evt)
     plando_toggle_custom_patch_locations(evt)
+    plando_toggle_custom_tns_locations(evt)
+    plando_toggle_custom_wrinkly_locations(evt)
     plando_toggle_custom_locations_tab(evt)
     enable_switch_plando(evt)
     # This is a fallback for errors with Bootstrap sliders.
@@ -969,13 +1027,11 @@ def reset_plando_options_no_prompt() -> None:
         elem.value = SwitchVanillaMap[switchEnum.name]
 
     # These maps are string:string.
-    locations = [(DirtPatchVanillaLocationMap, "random_patches"), (FairyVanillaLocationMap, "random_fairies"), (MelonCrateVanillaLocationMap, "random_crates")]
-    for locationMap, randomCheckbox in locations:
+    locations = [DirtPatchVanillaLocationMap, FairyVanillaLocationMap, MelonCrateVanillaLocationMap]
+    for locationMap in locations:
         for location, vanilla in locationMap.items():
-            randomLocs = js.document.getElementById(randomCheckbox).checked
-            vanillaValue = "" if randomLocs else vanilla
             locElem = js.document.getElementById(f"plando_{location}_location")
-            locElem.value = vanillaValue
+            locElem.value = vanilla
             remove_all_errors_from_option(locElem)
             rewardElem = js.document.getElementById(f"plando_{location}_location_reward")
             rewardElem.value = ""
@@ -983,25 +1039,31 @@ def reset_plando_options_no_prompt() -> None:
     # Arenas and Kasplats are both handled in a unique way.
     for locationMap in CrownVanillaLocationMap.values():
         for location, vanillaLocation in locationMap.items():
-            randomCrowns = js.document.getElementById("crown_placement_rando").checked
-            vanillaValue = "" if randomCrowns else vanillaLocation
             locElem = js.document.getElementById(f"plando_{location.name}_location")
-            locElem.value = vanillaValue
+            locElem.value = vanillaLocation
             remove_all_errors_from_option(locElem)
             rewardElem = js.document.getElementById(f"plando_{location.name}_location_reward")
             rewardElem.value = ""
             remove_all_errors_from_option(rewardElem)
     for locationMap in KasplatLocationToRewardMap.values():
         for location, rewardLocation in locationMap.items():
-            kasplatShuffle = js.document.getElementById("kasplat_rando_setting")
             locElem = js.document.getElementById(f"plando_{location.name}_location")
-            vanillaValue = "" if kasplatShuffle.value == "location_shuffle" else LocationList[rewardLocation].name
+            vanillaValue = LocationList[rewardLocation].name
             locElem.value = vanillaValue
             remove_all_errors_from_option(locElem)
             rewardElem = js.document.getElementById(f"plando_{location.name}_location_reward")
             rewardElem.value = ""
             remove_all_errors_from_option(rewardElem)
-    for locType in ["fairies", "arenas", "patches", "kasplats", "crates"]:
+    for location, vanillaLocation in WrinklyVanillaMap.items():
+        locElem = js.document.getElementById(f"plando_{location}_wrinkly_door")
+        locElem.value = vanillaLocation
+        remove_all_errors_from_option(locElem)
+    for level, vanillaList in TnsVanillaMap.items():
+        for i, vanillaLocation in enumerate(vanillaList):
+            locElem = js.document.getElementById(f"plando_{level}_{i}_tns_portal")
+            locElem.value = vanillaLocation
+            remove_all_errors_from_option(locElem)
+    for locType in ["fairies", "arenas", "patches", "kasplats", "crates", "wrinkly", "tns"]:
         js.document.getElementById(f"plando_place_{locType}").checked = False
 
     # Perform some additional checks that may disable dropdowns.
@@ -1032,6 +1094,8 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     minigame_objects = []
     hint_objects = []
     custom_location_objects = []
+    wrinkly_door_objects = []
+    tns_portal_objects = []
 
     def is_number(s) -> bool:
         """Check if a string is a number or not."""
@@ -1092,6 +1156,12 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             continue
         elif obj.name.endswith("_location"):
             custom_location_objects.append(obj)
+            continue
+        elif obj.name.endswith("_wrinkly_door"):
+            wrinkly_door_objects.append(obj)
+            continue
+        elif obj.name.endswith("_tns_portal"):
+            tns_portal_objects.append(obj)
             continue
 
         # Process any input that hasn't been sorted.
@@ -1175,9 +1245,7 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
                         "switch_type": get_plando_value(SwitchType[switch_type]),
                     }
                 else:
-                    switches_map[location] = {
-                        "kong": get_plando_value(Kongs[switch.value])
-                    }
+                    switches_map[location] = {"kong": get_plando_value(Kongs[switch.value])}
     plando_form_data["plando_switchsanity"] = switches_map
 
     battle_arenas_map = {}
@@ -1240,6 +1308,43 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     plando_form_data["plando_fairies"] = fairies_list
     plando_form_data["plando_kasplats"] = kasplats_map
     plando_form_data["plando_melon_crates"] = melon_crates_list
+
+    wrinkly_doors_map = {}
+    if wrinkly_locations_assigned():
+        for door in wrinkly_door_objects:
+            # Extract the custom location.
+            location_name = re.search("^plando_(.+)_wrinkly_door$", door.name)[1]
+            door_location = get_plando_value(Locations[location_name])
+            location_value = get_plando_value(PlandoItems.Randomize)
+            if door.value != "":
+                location_value = door.value
+            wrinkly_doors_map[door_location] = location_value
+    plando_form_data["plando_wrinkly_doors"] = wrinkly_doors_map
+
+    tns_portal_map = {}
+    if tns_locations_assigned():
+        # We need to prepare the TnS portal map.
+        tns_portal_map = {
+            get_plando_value(Levels.JungleJapes): ["" for _ in range(0, 5)],
+            get_plando_value(Levels.AngryAztec): ["" for _ in range(0, 5)],
+            get_plando_value(Levels.FranticFactory): ["" for _ in range(0, 5)],
+            get_plando_value(Levels.GloomyGalleon): ["" for _ in range(0, 5)],
+            get_plando_value(Levels.FungiForest): ["" for _ in range(0, 5)],
+            get_plando_value(Levels.CrystalCaves): ["" for _ in range(0, 5)],
+            get_plando_value(Levels.CreepyCastle): ["" for _ in range(0, 5)],
+        }
+        for portal in tns_portal_objects:
+            # Extract the level and door number.
+            re_obj = re.search("^plando_(.+)_(\d)_tns_portal$", portal.name)
+            level = get_plando_value(Levels[re_obj[1]])
+            portal_num = int(re_obj[2])
+            location = get_plando_value(PlandoItems.Randomize)
+            if portal.value == "none":
+                location = ""
+            elif portal.value != "":
+                location = portal.value
+            tns_portal_map[level][portal_num] = location
+    plando_form_data["plando_tns_portals"] = tns_portal_map
 
     hints_map = {}
     for hint in hint_objects:
@@ -1478,6 +1583,24 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
     for location, locationCount in locDict.items():
         if locationCount > 1:
             errString = f'Custom fairy location "{location}" cannot be used more than once, but has been used {locationCount} times.'
+            errList.append(errString)
+
+    # Wrinkly doors and TnS portals use the same pool of locations, mostly.
+    locDict = {}
+    if plando_dict["plando_place_wrinkly"]:
+        for doorLocation in plando_dict["plando_wrinkly_doors"].values():
+            if doorLocation == PlandoItems.Randomize:
+                continue
+            count_location(doorLocation, locDict)
+    if plando_dict["plando_place_tns"]:
+        for doorList in plando_dict["plando_tns_portals"].values():
+            for doorLocation in doorList:
+                if doorLocation == PlandoItems.Randomize or doorLocation == "":
+                    continue
+                count_location(doorLocation, locDict)
+    for location, locationCount in locDict.items():
+        if locationCount > 1:
+            errString = f'Custom door location "{location}" cannot be used more than once, but has been used {locationCount} times.'
             errList.append(errString)
 
     print(errList)

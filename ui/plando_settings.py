@@ -8,6 +8,7 @@ from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.CustomLocations import CustomLocations
+from randomizer.Lists.DoorLocations import DoorType, door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
@@ -26,6 +27,7 @@ from ui.plando_validation import (
     reset_plando_options_no_prompt,
     validate_custom_arena_locations,
     validate_custom_crate_locations,
+    validate_custom_doors_no_duplicate_locations,
     validate_custom_fairy_locations,
     validate_custom_kasplat_locations,
     validate_custom_locations_no_duplicates,
@@ -59,6 +61,8 @@ from ui.rando_options import (
     plando_toggle_custom_kasplat_locations,
     plando_toggle_custom_locations_tab,
     plando_toggle_custom_patch_locations,
+    plando_toggle_custom_tns_locations,
+    plando_toggle_custom_wrinkly_locations,
 )
 
 
@@ -77,6 +81,16 @@ customKasplatLocationSet = set()
 for _, locations in KasplatLocationList.items():
     for location in locations:
         customKasplatLocationSet.add(location.name)
+customWrinklyDoorLocationSet = {}
+customTnsPortalLocationSet = {}
+for level, locations in door_locations.items():
+    customWrinklyDoorLocationSet[level] = set()
+    customTnsPortalLocationSet[level] = set()
+    for location in locations:
+        if DoorType.wrinkly in location.door_type:
+            customWrinklyDoorLocationSet[level].add(location.name)
+        if DoorType.boss in location.door_type:
+            customTnsPortalLocationSet[level].add(location.name)
 
 
 @bind("click", "export_plando_string")
@@ -142,7 +156,7 @@ async def import_plando_options(jsonString):
             for location, minigame in value.items():
                 js.document.getElementById(f"plando_{location}_minigame").value = minigame
         # Process custom locations.
-        elif option in ["plando_place_arenas", "plando_place_crates", "plando_place_fairies", "plando_place_kasplats", "plando_place_patches"]:
+        elif option in ["plando_place_arenas", "plando_place_crates", "plando_place_fairies", "plando_place_kasplats", "plando_place_patches", "plando_place_tns", "plando_place_wrinkly"]:
             js.document.getElementById(option).checked = value
         elif option == "plando_battle_arenas":
             for enumLocation, customLocation in value.items():
@@ -176,6 +190,21 @@ async def import_plando_options(jsonString):
                 js.document.getElementById(f"plando_crate_{i}_location").value = locationValue
                 reward = "" if crate["reward"] == "Randomize" else crate["reward"]
                 js.document.getElementById(f"plando_crate_{i}_location_reward").value = reward
+        elif option == "plando_tns_portals":
+            for level, doorList in value.items():
+                for i, door in enumerate(doorList):
+                    locationValue = door
+                    if door == "Randomize":
+                        locationValue = ""
+                    elif door == "":
+                        locationValue = "none"
+                    elemName = f"plando_{level}_{i}_tns_portal"
+                    js.document.getElementById(elemName).value = locationValue
+        elif option == "plando_wrinkly_doors":
+            for enumLocation, doorLocation in value.items():
+                locationValue = "" if doorLocation == "Randomize" else doorLocation
+                elemName = f"plando_{enumLocation}_wrinkly_door"
+                js.document.getElementById(elemName).value = locationValue
         # Process hints.
         elif option == "hints":
             for location, hint in value.items():
@@ -211,6 +240,8 @@ async def import_plando_options(jsonString):
     plando_toggle_custom_fairy_locations(None)
     plando_toggle_custom_kasplat_locations(None)
     plando_toggle_custom_patch_locations(None)
+    plando_toggle_custom_tns_locations(None)
+    plando_toggle_custom_wrinkly_locations(None)
     plando_toggle_custom_locations_tab(None)
     lock_key_8_in_helm(None)
     validate_custom_arena_locations(None)
@@ -218,6 +249,7 @@ async def import_plando_options(jsonString):
     validate_custom_fairy_locations(None)
     validate_custom_kasplat_locations(None)
     validate_custom_patch_locations(None)
+    validate_custom_doors_no_duplicate_locations(None)
     validate_custom_locations_no_duplicates(None)
     validate_hint_count(None)
     validate_smaller_shops_no_conflict(None)
@@ -265,6 +297,15 @@ def validate_plando_option_value(file_obj: dict, option: str, enum_type: type, f
         _ = enum_type[file_obj[option]]
     except KeyError:
         errString = f'The plandomizer file is invalid: {field_type} "{option}" has invalid value "{file_obj[option]}".'
+        raise_plando_validation_error(errString)
+
+
+def validate_plando_enum(item_name: str, enum_type: type, field_type: str = "option") -> None:
+    """Validate that a given string represents an enum value."""
+    try:
+        _ = enum_type[item_name]
+    except KeyError:
+        errString = f'The plandomizer file is invalid: "{item_name}" is not a valid {field_type}.'
         raise_plando_validation_error(errString)
 
 
@@ -356,6 +397,24 @@ def validate_fairy_position(fairy: dict, index: int) -> None:
             return
 
 
+def validate_door_location(door_name: str, level: Levels, door_dict: dict, field_name: str, none_allowed=True) -> None:
+    """Validate a door location for a given level.
+
+    Args:
+        door_name (str) - The name of the door we are validating.
+        level (Levels) - The level in which this door is being placed.
+        door_dict (dict) - A dictionary of all possible doors that should be
+            able to appear in each level.
+        field_type (str) - The type of field that has an invalid option. Only
+            for error reporting purposes. E.g. "location", "minigame", "hint".
+    """
+    if (door_name == "" and none_allowed) or door_name == "Randomize":
+        return
+    if door_name not in door_dict[level]:
+        errString = f'The plandomizer file is invalid: door "{door_name}" is not a valid {field_name} for level {level.name}.'
+        raise_plando_validation_error(errString)
+
+
 def validate_plando_file(file_obj: dict) -> None:
     """Validate the contents of a given plando file."""
     # Hide the div for import errors.
@@ -426,6 +485,21 @@ def validate_plando_file(file_obj: dict) -> None:
         if location == "Randomize":
             continue
         validate_custom_enum_location(kasplat, location, customKasplatLocationSet, "Kasplat")
+    for wrinklyDoor, location in file_obj["plando_wrinkly_doors"].items():
+        validate_plando_enum(wrinklyDoor, Locations, "Wrinkly door location")
+        level = LocationList[Locations[wrinklyDoor]].level
+        validate_door_location(location, level, customWrinklyDoorLocationSet, "Wrinkly door", False)
+    for levelName, doorList in file_obj["plando_tns_portals"].items():
+        validate_plando_enum(levelName, Levels, "level")
+        level = Levels[levelName]
+        if len(doorList) != 5:
+            errString = f"The plandomizer file is invalid: the list of TnS portals for level {levelName} should contain 5 values, but contains {len(doorList)}."
+            raise_plando_validation_error(errString)
+        for i, door in enumerate(doorList):
+            validate_door_location(door, level, customTnsPortalLocationSet, "Troff 'n' Scoff portal")
+            if door == "" and i < 3:
+                errString = f"The plandomizer file is invalid: door {i+1} of level {levelName} must be assigned or randomized."
+                raise_plando_validation_error(errString)
     # Inspect all hints.
     for hint_location in file_obj["hints"].keys():
         validate_plando_location(hint_location)
