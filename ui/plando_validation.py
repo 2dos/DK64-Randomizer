@@ -1339,11 +1339,12 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             level = get_plando_value(Levels[re_obj[1]])
             portal_num = int(re_obj[2])
             location = get_plando_value(PlandoItems.Randomize)
-            if portal.value == "none":
-                location = ""
-            elif portal.value != "":
+            if portal.value != "":
                 location = portal.value
             tns_portal_map[level][portal_num] = location
+        # Whittle down the lists to remove "none" portals.
+        for level, doorList in tns_portal_map.items():
+            tns_portal_map[level] = [x for x in doorList if x != "none"]
     plando_form_data["plando_tns_portals"] = tns_portal_map
 
     hints_map = {}
