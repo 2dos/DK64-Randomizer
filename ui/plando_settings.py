@@ -496,7 +496,7 @@ def validate_plando_file(file_obj: dict) -> None:
     for levelName, doorList in file_obj["plando_tns_portals"].items():
         validate_plando_enum(levelName, Levels, "level")
         level = Levels[levelName]
-        if len(doorList) < 3 or len(doorList) > 6:
+        if len(doorList) < 3 or len(doorList) > 5:
             errString = f"The plandomizer file is invalid: the list of TnS portals for level {levelName} should contain between 3 and 5 doors, but contains {len(doorList)}."
             raise_plando_validation_error(errString)
         for i, door in enumerate(doorList):
