@@ -200,6 +200,10 @@ async def import_plando_options(jsonString):
                         locationValue = "none"
                     elemName = f"plando_{level}_{i}_tns_portal"
                     js.document.getElementById(elemName).value = locationValue
+                # Set any remaining doors to "none".
+                for i in range(len(doorList), 5):
+                    elemName = f"plando_{level}_{i}_tns_portal"
+                    js.document.getElementById(elemName).value = "none"
         elif option == "plando_wrinkly_doors":
             for enumLocation, doorLocation in value.items():
                 locationValue = "" if doorLocation == "Randomize" else doorLocation
@@ -492,14 +496,11 @@ def validate_plando_file(file_obj: dict) -> None:
     for levelName, doorList in file_obj["plando_tns_portals"].items():
         validate_plando_enum(levelName, Levels, "level")
         level = Levels[levelName]
-        if len(doorList) != 5:
-            errString = f"The plandomizer file is invalid: the list of TnS portals for level {levelName} should contain 5 values, but contains {len(doorList)}."
+        if len(doorList) < 3 or len(doorList) > 5:
+            errString = f"The plandomizer file is invalid: the list of TnS portals for level {levelName} should contain between 3 and 5 doors, but contains {len(doorList)}."
             raise_plando_validation_error(errString)
         for i, door in enumerate(doorList):
             validate_door_location(door, level, customTnsPortalLocationSet, "Troff 'n' Scoff portal")
-            if door == "" and i < 3:
-                errString = f"The plandomizer file is invalid: door {i+1} of level {levelName} must be assigned or randomized."
-                raise_plando_validation_error(errString)
     # Inspect all hints.
     for hint_location in file_obj["hints"].keys():
         validate_plando_location(hint_location)
