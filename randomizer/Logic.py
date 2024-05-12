@@ -933,6 +933,15 @@ class LogicVarHolder:
         ]
         return settings_values[kong] in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight)
 
+    def CanSlamChunkyPhaseSwitch(self):
+        """Check if the player can slam the switch in Chunky Phase."""
+        stg = self.settings.chunky_phase_slam_req_internal
+        if stg == SlamRequirement.blue:
+            return self.superSlam
+        elif stg == SlamRequirement.red:
+            return self.superDuperSlam
+        return self.Slam
+
     def IsBossBeatable(self, level):
         """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
         requiredKong = self.settings.boss_kongs[level]
@@ -949,6 +958,8 @@ class LogicVarHolder:
             hasRequiredMoves = self.barrels
         elif bossFight == Maps.CastleBoss and self.IsLavaWater():
             hasRequiredMoves = self.Melons >= 3
+        elif bossFight == Maps.KroolDonkeyPhase:
+            hasRequiredMoves = self.blast or (not self.settings.cannons_require_blast)
         elif bossFight == Maps.KroolDiddyPhase:
             hasRequiredMoves = self.jetpack and self.peanut
         elif bossFight == Maps.KroolLankyPhase:
@@ -956,7 +967,7 @@ class LogicVarHolder:
         elif bossFight == Maps.KroolTinyPhase:
             hasRequiredMoves = self.mini and self.feather
         elif bossFight == Maps.KroolChunkyPhase:
-            hasRequiredMoves = self.punch and self.superSlam and self.hunkyChunky and self.gorillaGone
+            hasRequiredMoves = self.punch and self.CanSlamChunkyPhaseSwitch() and self.hunkyChunky and self.gorillaGone
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
         if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
@@ -1080,15 +1091,6 @@ class LogicVarHolder:
         is_correct_kong = self.istiny or self.settings.free_trade_items
         required_level_order = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
         return have_enough_fairies and is_correct_kong and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
-
-    def CanSlamChunkyPhaseSwitch(self):
-        """Check if the player can slam the switch in Chunky Phase."""
-        stg = self.settings.chunky_phase_slam_req_internal
-        if stg == SlamRequirement.blue:
-            return self.superSlam
-        elif stg == SlamRequirement.red:
-            return self.superDuperSlam
-        return self.Slam
 
     def BanItems(self, items):
         """Prevent an item from being picked up by the logic."""
