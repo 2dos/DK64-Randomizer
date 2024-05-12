@@ -10,7 +10,6 @@ from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.Lists.Plandomizer import CrownVanillaLocationMap, DirtPatchVanillaLocationMap, FairyVanillaLocationMap, KasplatLocationToRewardMap, MelonCrateVanillaLocationMap
 from randomizer.Lists.Songs import MusicSelectionPanel
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
@@ -716,11 +715,15 @@ def plando_propagate_options(evt):
     plando_toggle_custom_fairy_locations(evt)
     plando_toggle_custom_kasplat_locations(evt)
     plando_toggle_custom_crate_locations(evt)
+    plando_toggle_custom_wrinkly_locations(evt)
+    plando_toggle_custom_tns_locations(evt)
     plando_disable_arena_custom_locations(evt)
     plando_disable_crate_custom_locations(evt)
     plando_disable_fairy_custom_locations(evt)
     plando_disable_kasplat_custom_locations(evt)
     plando_disable_patch_custom_locations(evt)
+    plando_disable_wrinkly_custom_locations(evt)
+    plando_disable_tns_custom_locations(evt)
 
 
 @bind("change", "move_rando")
@@ -958,6 +961,8 @@ def item_rando_list_changed(evt):
     plando_disable_fairy_custom_locations(None)
     plando_disable_kasplat_custom_locations(None)
     plando_disable_patch_custom_locations(None)
+    plando_disable_wrinkly_custom_locations(None)
+    plando_disable_tns_custom_locations(None)
 
 
 def should_reset_select_on_preset(selectElement):
@@ -1525,6 +1530,8 @@ def toggle_plando_hint_color_table(evt):
 @bind("click", "plando_place_fairies")
 @bind("click", "plando_place_kasplats")
 @bind("click", "plando_place_crates")
+@bind("click", "plando_place_wrinkly")
+@bind("click", "plando_place_tns")
 def plando_toggle_custom_locations_tab(evt):
     """Show/hide the Custom Locations tab."""
     tabElem = js.document.getElementById("nav-plando-Locations-tab")
@@ -1533,7 +1540,9 @@ def plando_toggle_custom_locations_tab(evt):
     fairiesEnabled = js.document.getElementById("plando_place_fairies").checked
     kasplatsEnabled = js.document.getElementById("plando_place_kasplats").checked
     cratesEnabled = js.document.getElementById("plando_place_crates").checked
-    if arenasEnabled or patchesEnabled or fairiesEnabled or kasplatsEnabled or cratesEnabled:
+    wrinklyEnabled = js.document.getElementById("plando_place_wrinkly").checked
+    tnsEnabled = js.document.getElementById("plando_place_tns").checked
+    if arenasEnabled or patchesEnabled or fairiesEnabled or kasplatsEnabled or cratesEnabled or wrinklyEnabled or tnsEnabled:
         tabElem.style = ""
     else:
         tabElem.style.display = "none"
@@ -1587,6 +1596,26 @@ def plando_toggle_custom_crate_locations(evt):
         crateElem.style = ""
     else:
         crateElem.style.display = "none"
+
+
+@bind("click", "plando_place_wrinkly")
+def plando_toggle_custom_wrinkly_locations(evt):
+    """Show/hide custom Wrinkly door locations in the plandomizer."""
+    wrinklyElem = js.document.getElementById("plando_custom_location_panel_wrinkly_door")
+    if js.document.getElementById("plando_place_wrinkly").checked:
+        wrinklyElem.style = ""
+    else:
+        wrinklyElem.style.display = "none"
+
+
+@bind("click", "plando_place_tns")
+def plando_toggle_custom_tns_locations(evt):
+    """Show/hide custom TnS portal locations in the plandomizer."""
+    tnsElem = js.document.getElementById("plando_custom_location_panel_tns_portal")
+    if js.document.getElementById("plando_place_tns").checked:
+        tnsElem.style = ""
+    else:
+        tnsElem.style.display = "none"
 
 
 @bind("click", "crown_placement_rando")
@@ -1687,3 +1716,35 @@ def plando_disable_patch_custom_locations(evt):
         customPatchesElem.checked = False
         tooltip = "To use this feature, rainbow coins must be in the item pool, and dirt patch locations must be shuffled."
     customPatchesElem.parentElement.setAttribute("data-bs-original-title", tooltip)
+
+
+@bind("click", "enable_progressive_hints")
+@bind("click", "wrinkly_location_rando")
+def plando_disable_wrinkly_custom_locations(evt):
+    """Enable or disable custom locations for Wrinkly doors."""
+    randomDoors = js.document.getElementById("wrinkly_location_rando").checked
+    progressiveHints = js.document.getElementById("enable_progressive_hints").checked
+    customWrinklyElem = js.document.getElementById("plando_place_wrinkly")
+    tooltip = "Allows the user to specify locations for each Wrinkly door."
+    if randomDoors and not progressiveHints:
+        customWrinklyElem.removeAttribute("disabled")
+    else:
+        customWrinklyElem.setAttribute("disabled", "disabled")
+        customWrinklyElem.checked = False
+        tooltip = "To use this feature, Wrinkly door locations must be shuffled, and progressive hints must be turned off."
+    customWrinklyElem.parentElement.setAttribute("data-bs-original-title", tooltip)
+
+
+@bind("click", "tns_location_rando")
+def plando_disable_tns_custom_locations(evt):
+    """Enable or disable custom locations for Wrinkly doors."""
+    randomPortals = js.document.getElementById("tns_location_rando").checked
+    customTnsElem = js.document.getElementById("plando_place_tns")
+    tooltip = "Allows the user to specify locations for each Troff 'n' Scoff portal."
+    if randomPortals:
+        customTnsElem.removeAttribute("disabled")
+    else:
+        customTnsElem.setAttribute("disabled", "disabled")
+        customTnsElem.checked = False
+        tooltip = "To use this feature, Troff 'n' Scoff portal locations must be shuffled."
+    customTnsElem.parentElement.setAttribute("data-bs-original-title", tooltip)

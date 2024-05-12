@@ -13,6 +13,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes
+from randomizer.Lists.DoorLocations import DoorData, DoorType, door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.KasplatLocations import KasplatLocationList
@@ -108,8 +109,25 @@ ShopLocationKongMap = {
 ##########
 
 
-def createPlannableLocationObj() -> dict:
-    """Initialize the plannable location object."""
+def createPlannableLevelObj(*, include_isles=False, include_helm=False) -> dict:
+    """Initialize the plannable level-based location object."""
+    levelDict = {}
+    if include_isles:
+        levelDict[Levels.DKIsles.name] = {"name": "D.K. Isles", "locations": []}
+    levelDict[Levels.JungleJapes.name] = {"name": "Jungle Japes", "locations": []}
+    levelDict[Levels.AngryAztec.name] = {"name": "Angry Aztec", "locations": []}
+    levelDict[Levels.FranticFactory.name] = {"name": "Frantic Factory", "locations": []}
+    levelDict[Levels.GloomyGalleon.name] = {"name": "Gloomy Galleon", "locations": []}
+    levelDict[Levels.FungiForest.name] = {"name": "Fungi Forest", "locations": []}
+    levelDict[Levels.CrystalCaves.name] = {"name": "Crystal Caves", "locations": []}
+    levelDict[Levels.CreepyCastle.name] = {"name": "Creepy Castle", "locations": []}
+    if include_helm:
+        levelDict[Levels.HideoutHelm.name] = {"name": "Hideout Helm", "locations": []}
+    return levelDict
+
+
+def createPlannableKongObj() -> dict:
+    """Initialize the plannable Kong-based location object."""
     return {"All Kongs": [], "Donkey": [], "Diddy": [], "Lanky": [], "Tiny": [], "Chunky": [], "Enemies": []}
 
 
@@ -119,28 +137,19 @@ def isMinigameLocation(locationEnum: Locations) -> bool:
 
 
 PlandomizerPanels = {
-    "DKIsles": {"name": "D.K. Isles", "locations": createPlannableLocationObj()},
-    "JungleJapes": {"name": "Jungle Japes", "locations": createPlannableLocationObj()},
-    "AngryAztec": {"name": "Angry Aztec", "locations": createPlannableLocationObj()},
-    "FranticFactory": {"name": "Frantic Factory", "locations": createPlannableLocationObj()},
-    "GloomyGalleon": {"name": "Gloomy Galleon", "locations": createPlannableLocationObj()},
-    "FungiForest": {"name": "Fungi Forest", "locations": createPlannableLocationObj()},
-    "CrystalCaves": {"name": "Crystal Caves", "locations": createPlannableLocationObj()},
-    "CreepyCastle": {"name": "Creepy Castle", "locations": createPlannableLocationObj()},
+    "DKIsles": {"name": "D.K. Isles", "locations": createPlannableKongObj()},
+    "JungleJapes": {"name": "Jungle Japes", "locations": createPlannableKongObj()},
+    "AngryAztec": {"name": "Angry Aztec", "locations": createPlannableKongObj()},
+    "FranticFactory": {"name": "Frantic Factory", "locations": createPlannableKongObj()},
+    "GloomyGalleon": {"name": "Gloomy Galleon", "locations": createPlannableKongObj()},
+    "FungiForest": {"name": "Fungi Forest", "locations": createPlannableKongObj()},
+    "CrystalCaves": {"name": "Crystal Caves", "locations": createPlannableKongObj()},
+    "CreepyCastle": {"name": "Creepy Castle", "locations": createPlannableKongObj()},
     "HideoutHelm": {"name": "Hideout Helm", "locations": {"All Kongs": [], "Medals": [], "Enemies": []}},
     # Shops, minigames and hints are grouped by level, not by Kong.
     "Shops": {
         "name": "Shops",
-        "levels": {
-            "DKIsles": {"name": "D.K. Isles", "locations": []},
-            "JungleJapes": {"name": "Jungle Japes", "locations": []},
-            "AngryAztec": {"name": "Angry Aztec", "locations": []},
-            "FranticFactory": {"name": "Frantic Factory", "locations": []},
-            "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
-            "FungiForest": {"name": "Fungi Forest", "locations": []},
-            "CrystalCaves": {"name": "Crystal Caves", "locations": []},
-            "CreepyCastle": {"name": "Creepy Castle", "locations": []},
-        },
+        "levels": createPlannableLevelObj(include_isles=True),
     },
     "Switches": {
         "name": "Switches",
@@ -148,21 +157,11 @@ PlandomizerPanels = {
     },
     # "Blueprints": {
     #    "name": "Blueprints",
-    #    "locations": createPlannableLocationObj()
+    #    "locations": createPlannableKongObj()
     # },
     "Minigames": {
         "name": "Minigames",
-        "levels": {
-            "DKIsles": {"name": "D.K. Isles", "locations": []},
-            "JungleJapes": {"name": "Jungle Japes", "locations": []},
-            "AngryAztec": {"name": "Angry Aztec", "locations": []},
-            "FranticFactory": {"name": "Frantic Factory", "locations": []},
-            "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
-            "FungiForest": {"name": "Fungi Forest", "locations": []},
-            "CrystalCaves": {"name": "Crystal Caves", "locations": []},
-            "CreepyCastle": {"name": "Creepy Castle", "locations": []},
-            "HideoutHelm": {"name": "Hideout Helm", "locations": []},
-        },
+        "levels": createPlannableLevelObj(include_isles=True, include_helm=True),
     },
     "Locations": {
         "name": "Custom Locations",
@@ -192,19 +191,21 @@ PlandomizerPanels = {
                 "singular": "crate",
                 "locations": [],
             },
+            "WrinklyDoor": {
+                "name": "Wrinkly Doors",
+                "singular": "wrinkly_door",
+                "locations": [],
+            },
+            "TnsPortal": {
+                "name": "Troff 'n' Scoff Portals",
+                "singular": "tns_portal",
+                "locations": [],
+            },
         },
     },
     "Hints": {
         "name": "Hints",
-        "levels": {
-            "JungleJapes": {"name": "Jungle Japes", "locations": []},
-            "AngryAztec": {"name": "Angry Aztec", "locations": []},
-            "FranticFactory": {"name": "Frantic Factory", "locations": []},
-            "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
-            "FungiForest": {"name": "Fungi Forest", "locations": []},
-            "CrystalCaves": {"name": "Crystal Caves", "locations": []},
-            "CreepyCastle": {"name": "Creepy Castle", "locations": []},
-        },
+        "levels": createPlannableLevelObj(),
     },
 }
 for locationEnum, locationObj in LocationList.items():
@@ -792,6 +793,144 @@ for level, locations in KasplatLocationList.items():
                 plannableKasplats[level.name][kong.name].append({"name": customLocation.name, "value": customLocation.name})
 PlannableCustomLocations["Kasplat"] = plannableKasplats
 
+#########
+# DOORS #
+#########
+
+WrinklyDoorEnumList = [
+    Locations.JapesDonkeyDoor,
+    Locations.JapesDiddyDoor,
+    Locations.JapesLankyDoor,
+    Locations.JapesTinyDoor,
+    Locations.JapesChunkyDoor,
+    Locations.AztecDonkeyDoor,
+    Locations.AztecDiddyDoor,
+    Locations.AztecLankyDoor,
+    Locations.AztecTinyDoor,
+    Locations.AztecChunkyDoor,
+    Locations.FactoryDonkeyDoor,
+    Locations.FactoryDiddyDoor,
+    Locations.FactoryLankyDoor,
+    Locations.FactoryTinyDoor,
+    Locations.FactoryChunkyDoor,
+    Locations.GalleonDonkeyDoor,
+    Locations.GalleonDiddyDoor,
+    Locations.GalleonLankyDoor,
+    Locations.GalleonTinyDoor,
+    Locations.GalleonChunkyDoor,
+    Locations.ForestDonkeyDoor,
+    Locations.ForestDiddyDoor,
+    Locations.ForestLankyDoor,
+    Locations.ForestTinyDoor,
+    Locations.ForestChunkyDoor,
+    Locations.CavesDonkeyDoor,
+    Locations.CavesDiddyDoor,
+    Locations.CavesLankyDoor,
+    Locations.CavesTinyDoor,
+    Locations.CavesChunkyDoor,
+    Locations.CastleDonkeyDoor,
+    Locations.CastleDiddyDoor,
+    Locations.CastleLankyDoor,
+    Locations.CastleTinyDoor,
+    Locations.CastleChunkyDoor,
+]
+
+# This list holds all of the location IDs for TnS portal elements. It exists
+# mainly for convenience when binding.
+TnsPortalLocationList = []
+for level in [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]:
+    for i in range(0, 5):
+        TnsPortalLocationList.append(f"{level.name}_{i}")
+
+# A map of Wrinkly door locations to vanilla values.
+WrinklyVanillaMap = {}
+
+for wrinklyDoor in WrinklyDoorEnumList:
+    doorLocation = LocationList[wrinklyDoor]
+    jsonValue = {
+        "name": doorLocation.name,
+        "level": doorLocation.level.name,
+        "kong": doorLocation.kong.name,
+        "location_id": f"plando_{wrinklyDoor.name}_wrinkly_door",
+    }
+    for door in door_locations[doorLocation.level]:
+        if door.placed == DoorType.wrinkly and door.default_kong == doorLocation.kong:
+            WrinklyVanillaMap[wrinklyDoor.name] = door.name
+            jsonValue["vanilla_value"] = door.name
+            break
+    PlandomizerPanels["Locations"]["categories"]["WrinklyDoor"]["locations"].append(jsonValue)
+
+# A map of TNS portal locations to vanilla values.
+TnsVanillaMap = {
+    Levels.JungleJapes.name: [],
+    Levels.AngryAztec.name: [],
+    Levels.FranticFactory.name: [],
+    Levels.GloomyGalleon.name: [],
+    Levels.FungiForest.name: [],
+    Levels.CrystalCaves.name: [],
+    Levels.CreepyCastle.name: [],
+}
+
+# Derive the list of vanilla locations.
+for level, doorList in door_locations.items():
+    for door in doorList:
+        if door.placed == DoorType.boss:
+            # There is one vanilla TnS portal that cannot be used in TnS portal
+            # rando for DK64 reasons.
+            if DoorType.boss not in door.door_type:
+                TnsVanillaMap[level.name].append("")
+            else:
+                TnsVanillaMap[level.name].append(door.name)
+    # If there are fewer than five vanilla locations, fill out the rest of the
+    # list with "none".
+    while len(TnsVanillaMap[level.name]) < 5:
+        TnsVanillaMap[level.name].append("none")
+
+# Now create the list of door locations for the user to set.
+for level, vanillaDoors in TnsVanillaMap.items():
+    for index, vanillaDoor in enumerate(vanillaDoors):
+        jsonValue = {
+            "name": f"{GetLevelString(Levels[level])} TnS Portal {index+1}",
+            "level": level,
+            "location_id": f"plando_{level}_{index}_tns_portal",
+            "vanilla_value": vanillaDoor,
+            "none_possible": index >= 3,
+        }
+        PlandomizerPanels["Locations"]["categories"]["TnsPortal"]["locations"].append(jsonValue)
+
+# An object that will hold all possible Wrinkly door locations for each
+# level/Kong combination.
+WrinklyDoorLocationOptions = {}
+for level in [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]:
+    WrinklyDoorLocationOptions[level.name] = {}
+    for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
+        WrinklyDoorLocationOptions[level.name][kong.name] = []
+
+# An object that will hold all possible TnS door locations for each
+# level/Kong combination.
+TnsDoorLocationOptions = {
+    Levels.JungleJapes.name: [],
+    Levels.AngryAztec.name: [],
+    Levels.FranticFactory.name: [],
+    Levels.GloomyGalleon.name: [],
+    Levels.FungiForest.name: [],
+    Levels.CrystalCaves.name: [],
+    Levels.CreepyCastle.name: [],
+}
+
+for level, doorList in door_locations.items():
+    for door in doorList:
+        # Right now, users cannot place other doors on the vanilla portal.
+        if door.placed == DoorType.dk_portal:
+            continue
+        if DoorType.wrinkly in door.door_type:
+            for kong in door.kongs:
+                WrinklyDoorLocationOptions[level.name][kong.name].append(door.name)
+        if DoorType.boss in door.door_type:
+            TnsDoorLocationOptions[level.name].append(door.name)
+PlannableCustomLocations["WrinklyDoor"] = WrinklyDoorLocationOptions
+PlannableCustomLocations["TnsPortal"] = TnsDoorLocationOptions
+
 ############
 # SWITCHES #
 ############
@@ -826,28 +965,38 @@ for switchEnum, switchInfo in SwitchData.items():
 for switchType in [SwitchType.GunSwitch, SwitchType.InstrumentPad, SwitchType.MiscActivator, SwitchType.PadMove, SwitchType.SlamSwitch]:
     for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
         switchName = GetSwitchName(switchType, kong)
-        PlannableSwitches[switchType.name].append({
-            "name": switchName,
-            "value": kong.name,
-        })
-        # Handle the two exceptions.
-        if switchType == SwitchType.PadMove and kong not in [Kongs.diddy, Kongs.chunky]:
-            PlannableSwitches[Switches.IslesMonkeyport.name].append({
+        PlannableSwitches[switchType.name].append(
+            {
                 "name": switchName,
                 "value": kong.name,
-            })
+            }
+        )
+        # Handle the two exceptions.
+        if switchType == SwitchType.PadMove and kong not in [Kongs.diddy, Kongs.chunky]:
+            PlannableSwitches[Switches.IslesMonkeyport.name].append(
+                {
+                    "name": switchName,
+                    "value": kong.name,
+                }
+            )
         if switchType == SwitchType.PadMove and kong == Kongs.chunky:
-            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append({
-                "name": switchName,
-                "value": f"{kong.name};{switchType.name}",
-            })
+            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append(
+                {
+                    "name": switchName,
+                    "value": f"{kong.name};{switchType.name}",
+                }
+            )
         if switchType == SwitchType.MiscActivator and kong in [Kongs.donkey, Kongs.diddy]:
-            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append({
-                "name": switchName,
-                "value": f"{kong.name};{switchType.name}",
-            })
+            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append(
+                {
+                    "name": switchName,
+                    "value": f"{kong.name};{switchType.name}",
+                }
+            )
         if switchType == SwitchType.InstrumentPad:
-            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append({
-                "name": switchName,
-                "value": f"{kong.name};{switchType.name}",
-            })
+            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append(
+                {
+                    "name": switchName,
+                    "value": f"{kong.name};{switchType.name}",
+                }
+            )
