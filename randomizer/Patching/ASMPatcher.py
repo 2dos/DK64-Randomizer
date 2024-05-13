@@ -2,7 +2,11 @@
 
 import js
 import random
+import math
+import io
+import randomizer.ItemPool as ItemPool
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
+from randomizer.Patching.LibImage import getImageFile, TextureFormat
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     FasterChecksSelected,
@@ -23,6 +27,8 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Items import Items
+from PIL import Image
 
 HANDLED_OVERLAYS = (
     Overlay.Static,
@@ -348,6 +354,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         writeValue(ROM_COPY, 0x80661B64, Overlay.Static, 0, offset_dict, 4)  # Remove Ripple Timer 1
         writeValue(ROM_COPY, 0x8068BDF4, Overlay.Static, 0, offset_dict, 4)  # Disable rocking in Seasick Ship
         writeValue(ROM_COPY, 0x8068BDFC, Overlay.Static, 0x1000, offset_dict)  # Disable rocking in Mech Fish
+        writeValue(ROM_COPY, 0x805FCCEE, Overlay.Static, 0, offset_dict) # Disable seasick camera effect
 
     if settings.caves_tomato_model == Model.Tomato:
         writeValue(ROM_COPY, 0x8075F602, Overlay.Static, Model.Tomato + 1, offset_dict)
@@ -496,6 +503,136 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     # Reallocate Balloons + Patches
     writeValue(ROM_COPY, 0x80688BCE, Overlay.Static, 0x320 + static_expansion, offset_dict)  # Reallocated to just before model 2 block
 
+class MinigameImageLoader:
+    """Class to store information regarding the image loader for an 8-bit minigame reward."""
+
+    def __init__(self, file_name: str = None, table_index: int = 0, file_index: int = 0, width: int = 0, height: int = 0, tex_format: TextureFormat = TextureFormat.RGBA5551):
+        """Initialize with given parameters."""
+        self.pull_from_repo = file_name is not None
+        if self.pull_from_repo:
+            self.file_name = file_name
+        else:
+            self.table_index = table_index
+            self.file_index = file_index
+            self.width = width
+            self.height = height
+            self.tex_format = tex_format
+
+    def getImageBytes(self, sub_dir: str, targ_width: int, targ_height: int, output_format: TextureFormat, flip: bool = True) -> bytes:
+        """Convert associated image to bytes that can be written to ROM."""
+        output_image = None
+        if self.pull_from_repo:
+            output_image = Image.open(io.BytesIO(js.getFile(f"./base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
+        else:
+            new_im = getImageFile(self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
+            if self.width != self.height:
+                dim = max(self.width, self.height)
+                dx = int((dim - self.width) / 2)
+                dy = int((dim - self.height) / 2)
+                temp_im = Image.new(mode="RGBA", size=(dim, dim))
+                temp_im.paste(new_im, (dx, dy), new_im)
+                new_im = temp_im
+            output_image = new_im.resize((targ_width, targ_height))
+            if flip:
+                output_image = output_image.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+        if output_image is None:
+            return None
+        px = output_image.load()
+        by_data = []
+        for y in range(targ_height):
+            for x in range(targ_width):
+                px_data = px[x, y]
+                if output_format == TextureFormat.RGBA5551:
+                    # Arcade
+                    val = 1 if px_data[3] > 128 else 0
+                    for c in range(3):
+                        local_channel = (px_data[c] >> 3) & 0x1F
+                        shift = 1 + (5 * (2 - c))
+                        val |= (local_channel << shift)
+                    v0 = (val >> 8) & 0xFF
+                    v1 = val & 0xFF
+                    by_data.extend([v0, v1])
+                elif output_format == TextureFormat.I8:
+                    # Jetpac
+                    total = 0
+                    for c in range(3):
+                        total += px_data[c]
+                    intensity = int(total / 3)
+                    by_data.append(intensity & 0xFF)
+        return bytes(bytearray(by_data))
+
+class Minigame8BitImage:
+    """Class to store information regarding the image processing for an 8-bit minigame reward."""
+
+    def __init__(self, permissable_items: list[Items], arcade_image: MinigameImageLoader, jetpac_image: MinigameImageLoader):
+        """Initialize with given parameters."""
+        self.permissable_items = permissable_items.copy()
+        self.arcade_image = arcade_image
+        self.jetpac_image = jetpac_image
+        
+
+def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin):
+    """Alter the image that is displayed in DK Arcade/Jetpac for their respective rewards."""
+    colorless_potions = ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
+    # Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
+    # Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.png")  # Watermelon Slice
+    db = [
+        Minigame8BitImage([Items.Donkey], MinigameImageLoader("dk"), MinigameImageLoader("kong")),
+        Minigame8BitImage([Items.Diddy], MinigameImageLoader("diddy"), MinigameImageLoader("kong")),
+        Minigame8BitImage([Items.Lanky], MinigameImageLoader("lanky"), MinigameImageLoader("kong")),
+        Minigame8BitImage([Items.Tiny], MinigameImageLoader("tiny"), MinigameImageLoader("kong")),
+        Minigame8BitImage([Items.Chunky], MinigameImageLoader("chunky"), MinigameImageLoader("kong")),
+        Minigame8BitImage([Items.Bean], MinigameImageLoader("bean"), MinigameImageLoader("bean")),
+        Minigame8BitImage([Items.Pearl], MinigameImageLoader("pearl"), MinigameImageLoader("pearl")),
+        Minigame8BitImage(ItemPool.DonkeyMoves, MinigameImageLoader("potion_dk"), MinigameImageLoader("potion")),
+        Minigame8BitImage(ItemPool.DiddyMoves, MinigameImageLoader("potion_diddy"), MinigameImageLoader("potion")),
+        Minigame8BitImage(ItemPool.LankyMoves, MinigameImageLoader("potion_lanky"), MinigameImageLoader("potion")),
+        Minigame8BitImage(ItemPool.TinyMoves, MinigameImageLoader("potion_tiny"), MinigameImageLoader("potion")),
+        Minigame8BitImage(ItemPool.ChunkyMoves, MinigameImageLoader("potion_chunky"), MinigameImageLoader("potion")),
+        Minigame8BitImage(colorless_potions, MinigameImageLoader("potion_any"), MinigameImageLoader("potion")),
+        Minigame8BitImage([Items.BattleCrown], MinigameImageLoader(None, 25, 5893, 44, 44), MinigameImageLoader("crown")),
+        Minigame8BitImage([Items.BananaFairy], MinigameImageLoader(None, 25, 0x16ED, 32, 32, TextureFormat.RGBA32), MinigameImageLoader("fairy")),
+        Minigame8BitImage([Items.GoldenBanana], MinigameImageLoader(None, 25, 5468, 44, 44), MinigameImageLoader("gb")),
+        Minigame8BitImage(ItemPool.Blueprints(), MinigameImageLoader(None, 25, 0x1593, 48, 42), MinigameImageLoader("blueprint")),
+        Minigame8BitImage(ItemPool.Keys(), MinigameImageLoader(None, 25, 5877, 44, 44), MinigameImageLoader("key")),
+        Minigame8BitImage([Items.BananaMedal], MinigameImageLoader(None, 25, 0x156C, 44, 44), MinigameImageLoader("medal")),
+        Minigame8BitImage([Items.JunkMelon], MinigameImageLoader(None, 7, 0x142, 48, 42), MinigameImageLoader("melon")),
+        Minigame8BitImage([Items.NintendoCoin], None, MinigameImageLoader("nintendo")),
+        Minigame8BitImage([Items.RarewareCoin], MinigameImageLoader(None, 25, 5905, 44, 44), None),
+        Minigame8BitImage([Items.RainbowCoin], MinigameImageLoader(None, 25, 5963, 48, 44), MinigameImageLoader("rainbow")),
+    ]
+    arcade_image_data = None
+    jetpac_image_data = None
+    for item in db:
+        if arcade_item in item.permissable_items:
+            arcade_image_data = item.arcade_image
+        if jetpac_item in item.permissable_items:
+            jetpac_image_data = item.jetpac_image
+    im_data = {
+        "arcade": arcade_image_data,
+        "jetpac": jetpac_image_data,
+    }
+    for minigame in im_data:
+        if im_data[minigame] is None:
+            continue
+        dim = 20
+        ovl = Overlay.Arcade
+        addr = 0x8003AE58
+        bytes_per_px = 2
+        output_format = TextureFormat.RGBA5551
+        if minigame == "jetpac":
+            dim = 16
+            ovl = Overlay.Jetpac
+            addr = 0x8002D868
+            bytes_per_px = 1
+            output_format = TextureFormat.I8
+        write = im_data[minigame].getImageBytes(minigame, dim, dim, output_format)
+        output_addr = getROMAddress(addr, ovl, offset_dict)
+        if len(write) > math.ceil(dim * dim * bytes_per_px):
+            raise Exception(f"Cannot write 8-bit minigame image to ROM. Too big. Minigame: {minigame}, Arcade Item: {arcade_item}, Jetpac Item: {jetpac_item}, Size: {len(write)}, cap: {math.ceil(dim * dim * bytes_per_px)}")
+        ROM_COPY.seek(output_addr)
+        ROM_COPY.writeBytes(write)
+
 
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
@@ -512,6 +649,8 @@ def patchAssembly(ROM_COPY, spoiler):
         0x00,  # FLAG_FIRSTJAPESGATE,
         0x17E,  # FLAG_FTT_BLOCKER,
     ]
+
+    alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
 
     writeValue(ROM_COPY, 0x8060E04C, Overlay.Static, 0, offset_dict, 4)  # Prevent moves overwrite
     writeValue(ROM_COPY, 0x8060DDAA, Overlay.Static, 0, offset_dict)  # Writes readfile data to moves

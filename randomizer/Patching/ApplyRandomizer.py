@@ -557,6 +557,8 @@ def patching_response(spoiler):
     randomize_cbs(spoiler)
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
+    spoiler.arcade_item_reward = Items.NintendoCoin
+    spoiler.jetpac_item_reward = Items.RarewareCoin
     place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
     place_pregiven_moves(spoiler)
     remove_existing_indicators(spoiler)

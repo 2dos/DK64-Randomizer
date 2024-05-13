@@ -9,6 +9,7 @@ from randomizer.Spoiler import Spoiler
 from randomizer.Patching.ASMPatcher import patchAssembly, patchAssemblyCosmetic
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Items import Items
 
 APPLY_VARIABLES = True
 ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
@@ -28,6 +29,8 @@ spoiler.chunky_face_puzzle = [0] * 9
 spoiler.arcade_order = [1, 4, 3, 2]
 spoiler.japes_rock_actor = 45
 spoiler.aztec_vulture_actor = 45
+spoiler.arcade_item_reward = Items.NintendoCoin
+spoiler.jetpac_item_reward = Items.RarewareCoin
 spoiler.coin_requirements = {
     Maps.CavesLankyRace: 50,
     Maps.AztecTinyRace: 50,

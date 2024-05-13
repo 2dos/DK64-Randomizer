@@ -24,11 +24,6 @@ void initJetpac(void) {
 	/**
 	 * @brief Initialize Jetpac Changes.
 	 */
-	if ((*(int*)(0x8002D9F8) == 0x8002D868) && (Rando.jetpac_reward > 0)) {
-		// Change Jetpac Reward Sprite
-		// Ensure code is only run once
-		*(int*)(0x8002D9F8) = (int)getPointerFile(6, Rando.jetpac_reward - 1 + ARCADE_IMAGE_COUNT);
-	}
 	if (Rando.item_rando) {
 		*(short*)(0x80024D8E) = getHi(&jetpacRewardText);
 		*(short*)(0x80024D96) = getLo(&jetpacRewardText);

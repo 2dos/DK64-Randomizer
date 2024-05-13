@@ -373,12 +373,10 @@ extern void setKrushaAmmoColor(void);
 extern void handleCannonGameReticle(void);
 
 extern void cFuncLoop(void);
-extern void* getPointerFile(int table, int file);
 extern void overlay_mod_menu(void);
 extern void overlay_mod_critter(void);
 extern void overlay_mod_boss(void);
 extern void overlay_mod_bonus(void);
-extern void initArcade(void);
 extern void initJetpac(void);
 extern void overlay_mod_race(void);
 

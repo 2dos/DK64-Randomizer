@@ -5,7 +5,8 @@ import math
 
 import js
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import PaletteFillType, TextureFormat
+from randomizer.Patching.Lib import PaletteFillType
+from randomizer.Patching.LibImage import TextureFormat
 
 
 def convertRGBAToBytearray(rgba_lst):
@@ -162,9 +163,9 @@ def convertColors(color_palettes):
             elif zone["fill_type"] == PaletteFillType.patch:
                 if zone["image"] == 3725 or zone["image"] == 3734:
                     # DK's tie or lanky's butt patch, respectively
-                    from randomizer.Patching.CosmeticColors import getFile
+                    from randomizer.Patching.CosmeticColors import getImageFile
 
-                    patch_img = getFile(25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
+                    patch_img = getImageFile(25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
 
                     safe = True
                     for y in range(64):

@@ -428,6 +428,7 @@ def place_randomized_items(spoiler):
                                 }
                             )
                     if item.location == Locations.NintendoCoin:
+                        spoiler.arcade_item_reward = item.new_subitem
                         arcade_rewards = (
                             Types.NoItem,  # Or Nintendo Coin
                             Types.Bean,
@@ -470,6 +471,7 @@ def place_randomized_items(spoiler):
                         ROM_COPY.seek(sav + 0x110)
                         ROM_COPY.write(arcade_reward_index)
                     elif item.location == Locations.RarewareCoin:
+                        spoiler.jetpac_item_reward = item.new_subitem
                         jetpac_rewards = (
                             Types.NoItem,  # Or RW Coin
                             Types.Bean,

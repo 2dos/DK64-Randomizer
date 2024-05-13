@@ -11,20 +11,6 @@
 
 #include "../../include/common.h"
 
-void* getPointerFile(int table, int file) {
-	/**
-	 * @brief Get a pointer table file without using getMapData for instances where getMapData will crash the game.
-	 */
-	int ptr_offset = 0x101C50;
-	int* ptr_table = getFile(32*4, ptr_offset);
-	int table_addr = ptr_table[table] + ptr_offset;
-	int* table_loc = getFile(8, table_addr + (file * 4));
-	int file_start = table_loc[0] + ptr_offset;
-	int file_end = table_loc[1] + ptr_offset;
-	int file_size = file_end - file_start;
-	return getFile(file_size, file_start);
-}
-
 void overlay_changes(void) {
 	/**
 	 * @brief All changes upon loading an overlay
@@ -46,7 +32,6 @@ void overlay_changes(void) {
 			overlay_mod_bonus();
 			break;
 		case OVERLAY_ARCADE:
-			initArcade();
 			break;
 		case OVERLAY_JETPAC:
 			initJetpac();

@@ -736,19 +736,6 @@ def camelCaseToWords(string: str):
 
     return " ".join(["".join(word) for word in words])
 
-
-class TextureFormat(IntEnum):
-    """Texture Format Enum."""
-
-    Null = auto()
-    RGBA5551 = auto()
-    RGBA32 = auto()
-    I8 = auto()
-    I4 = auto()
-    IA8 = auto()
-    IA4 = auto()
-
-
 class TableNames(IntEnum):
     """Pointer Table Enum."""
 
