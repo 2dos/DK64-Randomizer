@@ -15,9 +15,15 @@
 #define LIGHT_BRIGHTNESS 0xFF
 
 /*
-    Misc hard mode stuff in case it comes up:
-    Disable map geo rendering (donk in the sky):
-    - 0x80651598 > 0xA1E00002
+    DARK WORLD:
+    - Piano Game too hard
+    - Japes BBlast not darkened
+    - Treasure chests
+    - Bblast courses can be a big rough
+    - brighten rabbit race (WAY TOO DARK)
+
+    MEMORY CHALLENGE
+    - Mermaid is not working properly?
 */
 
 static const map_bitfield is_dark_world_mc = {
@@ -270,17 +276,35 @@ challenge_type getMemoryChallengeType(maps map) {
     return CHALLENGE_SKY;
 }
 
+static short blast_maps[] = {
+    MAP_JAPESBBLAST,
+    MAP_AZTECBBLAST,
+    MAP_FACTORYBBLAST,
+    MAP_GALLEONBBLAST,
+    MAP_FUNGIBBLAST,
+    MAP_CAVESBBLAST,
+    MAP_CASTLEBBLAST,
+};
+
 int isDarkWorld(maps map, int chunk) {
     if (Rando.hard_mode.memory_challenge) {
         return getMemoryChallengeType(map) == CHALLENGE_DARK_WORLD;
-    }
-    if ((map == MAP_MAINMENU) || (map == MAP_ISLES)) {
-        return 0;
     }
     if (map == MAP_JAPES) {
         if (chunk == 3) { // Japes Main
             return 0;
         }
+    }
+    if (map == MAP_FACTORY) {
+        if (chunk == 5) { // Production
+            return 0;
+        }
+        if (chunk == 16) { // Testing
+            return 0;
+        }
+    }
+    if (inShortList(CurrentMap, &blast_maps[0], sizeof(blast_maps) >> 1)) {
+        return 0;
     }
     return 1;
 }
@@ -295,9 +319,11 @@ void alterChunkLighting(int chunk) {
     }
 	if (chunk_count > 0) {
 		for (int i = 0; i < chunk_count; i++) {
-			ChunkLighting_Red[i] = DARK_WORLD_BRIGHTNESS;
-			ChunkLighting_Green[i] = DARK_WORLD_BRIGHTNESS;
-			ChunkLighting_Blue[i] = DARK_WORLD_BRIGHTNESS;
+            if (isDarkWorld(CurrentMap, i)) {
+                ChunkLighting_Red[i] = DARK_WORLD_BRIGHTNESS;
+                ChunkLighting_Green[i] = DARK_WORLD_BRIGHTNESS;
+                ChunkLighting_Blue[i] = DARK_WORLD_BRIGHTNESS;
+            }
 		}
 	}
 }

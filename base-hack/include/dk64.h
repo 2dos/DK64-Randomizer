@@ -749,6 +749,7 @@ extern char* AnimationPointer;
 extern unsigned short StoredOrangeCount;
 extern path_data_struct* PathData[32];
 extern fence_collective_struct* FenceInformation;
+extern rgba KongRGBA[5];
 
 //hack data
 extern int TestVariable;

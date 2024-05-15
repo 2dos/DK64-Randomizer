@@ -486,13 +486,6 @@ void initHack(int source) {
 				writeFunction(0x8068B178, &factoryShedFallImmunity);
 			}
 			if (Rando.hard_mode.lava_water) {
-				*(int*)(0x806677C4) = 0; // Dynamic Surfaces
-				// Static Surfaces
-				*(short*)(0x80667ED2) = 0x81;
-				*(short*)(0x80667EDA) = 0x81;
-				*(short*)(0x80667EEE) = 0x81;
-				*(short*)(0x80667EFA) = 0x81;
-				writeFunction(0x8062F3F0, &replaceWaterTexture); // Static water textures
 				// Dynamic Textures
 				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[7].texture_loader;
 				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer;
@@ -505,40 +498,8 @@ void initHack(int source) {
 				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[6].texture_loader;
 				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
 			}
-			if ((Rando.hard_mode.dark_world) || (Rando.hard_mode.memory_challenge)) {
-				writeFunction(0x8062F230, &alterChunkLighting);
-				writeFunction(0x8065121C, &alterChunkLighting);
-				writeFunction(0x8062F2CC, &alterChunkData);
-				writeFunction(0x806C9DF8, &shineLight);
-				writeFunction(0x806C9E28, &shineLight);
-				writeFunction(0x806C9E58, &shineLight);
-				writeFunction(0x806C9E88, &shineLight);
-				writeFunction(0x806C9EB8, &shineLight);
-				writeFunction(0x806C9EE8, &shineLight);
-				writeFunction(0x806C9F2C, &shineLight);
-				writeFunction(0x806C9F5C, &shineLight);
-				// Fungi Time of Day
-				*(float*)(0x80748280) = 0.0f;
-				*(float*)(0x80748284) = 0.0f;
-				*(float*)(0x80748288) = 0.0f;
-				*(float*)(0x8074828C) = 0.0f;
-				*(float*)(0x80748290) = 0.0f;
-				*(float*)(0x80748294) = 0.0f;
-				// Troff n Scoff
-				*(float*)(0x8075B8B4) = 0.0f;
-				*(float*)(0x8075B8B8) = 0.0f;
-				// Rain
-				*(short*)(0x8068B6AE) = 0;
-			}
 			if (Rando.balloon_sound) {
 				writeFunction(0x806A77D8, &playBalloonWhoosh);
-			}
-			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
-				writeFunction(0x80656538, &displayNoGeoChunk);
-				writeFunction(0x806562C0, &displayNoGeoChunk);
-				writeFunction(0x80656380, &displayNoGeoChunk);
-				writeFunction(0x806565F8, &displayNoGeoChunk);
-				// *(int*)(0x80651598) = 0xA1E00002;
 			}
 			initSwitchsanityChanges();
 

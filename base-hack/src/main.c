@@ -415,6 +415,33 @@ Gfx* drawInfoText(Gfx* dl, int x_offset, int y, char* str, int error) {
 	return drawTextContainer(dl, INFO_STYLE, x, y, str, 0xFF, non_red, non_red, 255, 0);
 }
 
+typedef struct eeprom_warning_struct {
+	/* 0x000 */ char* text;
+	/* 0x004 */ short x_offset;
+	/* 0x006 */ char error;
+	/* 0x007 */ char margin_bottom;
+} eeprom_warning_struct;
+
+#define STANDARD_MARGIN_BOTTOM 14
+static const eeprom_warning_struct warning_text[] = {
+	{.text="WARNING", .x_offset=-10, .error=1, .margin_bottom=20},
+	{.text="DUE TO YOUR EMULATOR SETUP", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="YOUR GAME MAY EXPERIENCE", .x_offset=-80, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="ABNORMALITIES LIKE NOT SAVING", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="AND SPORADIC CRASHES THAT", .x_offset=-86, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="WE             SUPPORT.", .x_offset=-56, .error=0, .margin_bottom=0},
+	{.text="CANNOT", .x_offset=-31, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="PLEASE CONSULT THE WIKI", .x_offset=-72, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="OR THE DISCORD", .x_offset=-40, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="DISCORD.DK64RANDOMIZER.COM", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="FOR HELP", .x_offset=-8, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+};
+
+typedef struct menu_paad {
+	/* 0x000 */ char unk_00[0x12];
+	/* 0x012 */ unsigned char screen;
+} menu_paad;
+
 Gfx* displayListModifiers(Gfx* dl) {
 	if (CurrentMap != MAP_NINTENDOLOGO) {
 		if (CurrentMap == MAP_NFRTITLESCREEN) {
@@ -426,12 +453,10 @@ Gfx* displayListModifiers(Gfx* dl) {
 					wait_progress_master = 0;
 				}
 			}
-			int address = 0x8075054C + (4 * wait_progress_master);
-			float left_f = (((LOADBAR_FINISH - LOADBAR_START) + LOADBAR_MAXWIDTH) / LOADBAR_DIVISOR) * wait_progress_timer;
-			left_f += LOADBAR_START;
-			left_f -= LOADBAR_MAXWIDTH;
-			float left = left_f;
-			float right = left + LOADBAR_MAXWIDTH;
+			rgba* address = &KongRGBA[wait_progress_master];
+			int left_f = (((LOADBAR_FINISH - LOADBAR_START) + LOADBAR_MAXWIDTH) / LOADBAR_DIVISOR) * wait_progress_timer;
+			int left = left_f + LOADBAR_START - LOADBAR_MAXWIDTH;
+			int right = left + LOADBAR_MAXWIDTH;
 			if (left < LOADBAR_START) {
 				left = LOADBAR_START;
 			}
@@ -444,15 +469,9 @@ Gfx* displayListModifiers(Gfx* dl) {
 			if (right < LOADBAR_START) {
 				right = LOADBAR_START;
 			}
-			if (left > 1023.0f) {
-				left = 1023.0f;
-			}
-			if (right > 1023.0f) {
-				right = 1023.0f;
-			}
 			int bar_y = 475;
 			int bar_text_y = 130;
-			dl = drawScreenRect(dl, left, bar_y, right, bar_y + 10, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
+			dl = drawScreenRect(dl, left, bar_y, right, bar_y + 10, address->red, address->green, address->blue, address->alpha);
 			int wait_x_offset = 55;
 			if (wait_progress_master > 0) {
 				wait_x_offset = 160 - (wait_text_lengths[wait_progress_master - 1] << 2);
@@ -461,44 +480,20 @@ Gfx* displayListModifiers(Gfx* dl) {
 			dl = drawPixelTextContainer(dl, 110, bar_text_y + 20, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAP_MAINMENU) {
 			if (EEPROMType != 2) {
-				int i = 0;
-				while (i < LoadedActorCount) {
-					if (LoadedActorArray[i].actor) {
-						if (LoadedActorArray[i].actor->actorType == 0x146) {
-							int screen = *(char*)((int)(LoadedActorArray[i].actor) + 0x18A);
-							if (screen < 2) {
-								// EEPROM Warning
-								dl = drawScreenRect(dl, 250, 200, 1000, 700, 3, 3, 3, 1);
-								dl = drawPixelTextContainer(dl, 128, 60, "WARNING", 0xFF, 0, 0, 0xFF, 1);
-								int y_info = 150;
-								int spacing = 14;
-								dl = drawInfoText(dl, -88, y_info, "DUE TO YOUR EMULATOR SETUP", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -80, y_info, "YOUR GAME MAY EXPERIENCE", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -96, y_info, "ABNORMALITIES LIKE NOT SAVING", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -86, y_info, "AND SPORADIC CRASHES THAT", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -56, y_info, "WE             SUPPORT.", 0);
-								dl = drawInfoText(dl, -31, y_info, "CANNOT", 1);
-								y_info += spacing;
-								dl = drawInfoText(dl, -72, y_info, "PLEASE CONSULT THE WIKI", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -40, y_info, "OR THE DISCORD", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -88, y_info, "DISCORD.DK64RANDOMIZER.COM", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -8, y_info, "FOR HELP", 0);
-								y_info += spacing;
-							}
-							break;
+				actorData* actor = findActorWithType(0x146);
+				if (actor) {
+					menu_paad* paad = (menu_paad*)actor->paad;
+					if (paad->screen < 2) {
+						// EEPROM Warning
+						dl = drawScreenRect(dl, 250, 200, 1000, 700, 3, 3, 3, 1);
+						int y_info = 130;
+						for (int k = 0; k < sizeof(warning_text)/sizeof(eeprom_warning_struct); k++) {
+							eeprom_warning_struct* local_warning = &warning_text[k];
+							dl = drawInfoText(dl, local_warning->x_offset, y_info, local_warning->text, local_warning->error);
+							y_info += local_warning->margin_bottom;
 						}
 					}
-					i++;
 				}
-				
-
 			}
 		} else {
 			dl = drawTextPointers(dl);
@@ -538,7 +533,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 			if (HUD) {
 				int hud_st = HUD->item[0xC].hud_state;
 				if (hud_st) {
-					if (hud_st == 1) {
+					if ((hud_st == 1) || (hud_st == 2)) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
@@ -551,7 +546,9 @@ Gfx* displayListModifiers(Gfx* dl) {
 								bp_denominator += 1;
 							}
 						}
-						hud_timer += 1;
+						if (hud_st == 1) {
+							hud_timer += 1;
+						}
 					} else if (hud_st == 3) {
 						hud_timer -= 1;
 						if (hud_timer < 0) {

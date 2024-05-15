@@ -818,7 +818,9 @@
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
       "reduced_fall_damage_threshold": 0.5,
-      "shuffled_jetpac_enemies": 0.2
+      "shuffled_jetpac_enemies": 0.2,
+      "lower_max_refill_amounts": 0.5,
+      "strict_helm_timer": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -1222,7 +1224,9 @@
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
       "reduced_fall_damage_threshold": 0.5,
-      "shuffled_jetpac_enemies": 0.2
+      "shuffled_jetpac_enemies": 0.2,
+      "lower_max_refill_amounts": 0.5,
+      "strict_helm_timer": 0.2
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,

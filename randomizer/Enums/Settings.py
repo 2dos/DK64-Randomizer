@@ -370,6 +370,9 @@ class HardModeSelected(IntEnum):
     reduced_fall_damage_threshold = 5
     shuffled_jetpac_enemies = 6
     lower_max_refill_amounts = 7
+    strict_helm_timer = 8
+    donk_in_the_dark_world = 9
+    donk_in_the_sky = 10
 
 
 # TODO: merge this with the Types enum.

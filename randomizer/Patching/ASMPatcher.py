@@ -1185,6 +1185,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x80713DE0, Overlay.Static, "finishHelmHurry", offset_dict)  # Change write
         writeValue(ROM_COPY, 0x807125CC, Overlay.Static, 0, offset_dict, 4)  # Prevent Helm Timer Overwrite
         writeValue(ROM_COPY, 0x807095BE, Overlay.Static, 0x2D4, offset_dict)  # Change Zipper with K. Rool Laugh
+    elif IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
+        # We cannot have both helm hurry and strict helm timer. Make helm hurry the most dominant setting
+        writeValue(ROM_COPY, 0x8071256A, Overlay.Static, 0, offset_dict) # Set start time of helm to 0 seconds
 
     if settings.wrinkly_location_rando or settings.remove_wrinkly_puzzles:
         writeValue(ROM_COPY, 0x8064F170, Overlay.Static, 0, offset_dict, 4)  # Prevent edge cases for Aztec Chunky/Fungi Wheel
@@ -1303,6 +1306,57 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806F9056, Overlay.Static, 5, offset_dict)  # Oranges: change from `(5 * ammo_belt) + 20` to `(5 * ammo_belt) + 5`
         writeValue(ROM_COPY, 0x806F90B6, Overlay.Static, 10 * 150, offset_dict)  # Crystals: change from `20 + fairy_count` to `10 + fairy_count`
         writeValue(ROM_COPY, 0x806F9186, Overlay.Static, 3, offset_dict)  # Film: change from `10 + fairy_count` to `3 + fairy_count`
+
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
+        writeValue(ROM_COPY, 0x806677C4, Overlay.Static, 0, offset_dict, 4) # Dynamic Surfaces
+        # Static Surfaces
+        writeValue(ROM_COPY, 0x80667ED2, Overlay.Static, 0x81, offset_dict)
+        writeValue(ROM_COPY, 0x80667EDA, Overlay.Static, 0x81, offset_dict)
+        writeValue(ROM_COPY, 0x80667EEE, Overlay.Static, 0x81, offset_dict)
+        writeValue(ROM_COPY, 0x80667EFA, Overlay.Static, 0x81, offset_dict)
+        writeFunction(ROM_COPY, 0x8062F3F0, Overlay.Static, "replaceWaterTexture", offset_dict) # Static water textures
+
+    is_dark_world = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
+    is_sky = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
+    is_memory_challenge = is_dark_world and is_sky
+    is_dark_world = is_dark_world and not is_memory_challenge
+    is_sky = is_sky and not is_memory_challenge
+    if is_dark_world or is_memory_challenge:
+        writeFunction(ROM_COPY, 0x8062F230, Overlay.Static, "alterChunkLighting", offset_dict)
+        writeFunction(ROM_COPY, 0x8065121C, Overlay.Static, "alterChunkLighting", offset_dict)
+        writeFunction(ROM_COPY, 0x8062F2CC, Overlay.Static, "alterChunkData", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9DF8, Overlay.Static, "shineLight", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9E28, Overlay.Static, "shineLight", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9E58, Overlay.Static, "shineLight", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9E88, Overlay.Static, "shineLight", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9EB8, Overlay.Static, "shineLight", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9EE8, Overlay.Static, "shineLight", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9F2C, Overlay.Static, "shineLight", offset_dict)
+        writeFunction(ROM_COPY, 0x806C9F5C, Overlay.Static, "shineLight", offset_dict)
+        # Fungi Time of Day
+        writeFloat(ROM_COPY, 0x80748280, Overlay.Static, 0, offset_dict)
+        writeFloat(ROM_COPY, 0x80748284, Overlay.Static, 0, offset_dict)
+        writeFloat(ROM_COPY, 0x80748288, Overlay.Static, 0, offset_dict)
+        writeFloat(ROM_COPY, 0x8074828C, Overlay.Static, 0, offset_dict)
+        writeFloat(ROM_COPY, 0x80748290, Overlay.Static, 0, offset_dict)
+        writeFloat(ROM_COPY, 0x80748294, Overlay.Static, 0, offset_dict)
+        # Troff n Scoff
+        writeFloat(ROM_COPY, 0x8075B8B4, Overlay.Static, 0, offset_dict)
+        writeFloat(ROM_COPY, 0x8075B8B8, Overlay.Static, 0, offset_dict)
+        # Rain
+        writeValue(ROM_COPY, 0x8068B6AE, Overlay.Static, 0, offset_dict)
+        # Isles
+        writeValue(ROM_COPY, 0x8068B518, Overlay.Static, 0, offset_dict, 4)
+        # Disable some lights
+        writeValue(ROM_COPY, 0x8065F1A0, Overlay.Static, 0xA1600000, offset_dict, 4)
+        if is_dark_world:
+            # Main Menu
+            writeValue(ROM_COPY, 0x800304E4, Overlay.Menu, 0, offset_dict, 4)
+    if is_sky or is_memory_challenge:
+        writeFunction(ROM_COPY, 0x80656538, Overlay.Static, "displayNoGeoChunk", offset_dict)
+        writeFunction(ROM_COPY, 0x806562C0, Overlay.Static, "displayNoGeoChunk", offset_dict)
+        writeFunction(ROM_COPY, 0x80656380, Overlay.Static, "displayNoGeoChunk", offset_dict)
+        writeFunction(ROM_COPY, 0x806565F8, Overlay.Static, "displayNoGeoChunk", offset_dict)
 
     if settings.medal_cb_req > 0:
         writeValue(ROM_COPY, 0x806F934E, Overlay.Static, settings.medal_cb_req, offset_dict)  # Acquisition

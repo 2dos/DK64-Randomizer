@@ -292,6 +292,15 @@ def patching_response(spoiler):
     writeMultiselector(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterCheckSelector, FasterChecksSelected, 2, ROM_COPY, sav + 0x1E0)
     writeMultiselector(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardSelector, HardModeSelected, 1, ROM_COPY, sav + 0x0C6)
 
+    is_dw = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
+    is_sky = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
+    if is_dw and is_sky:
+        # Memory challenge
+        ROM_COPY.seek(sav + 0x0C6)
+        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        ROM_COPY.seek(sav + 0x0C6)
+        ROM_COPY.write(old | 0x2)
+
     keys = 0xFF
     if spoiler.settings.k_rool_vanilla_requirement:
         keys = 0x84  # 8765 4321 bitfield, only enable the keys 3 and 8 bits, meaning 0b1000 0100, which is 0x84
