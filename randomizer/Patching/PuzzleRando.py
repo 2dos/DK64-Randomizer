@@ -464,16 +464,16 @@ def randomize_puzzles(spoiler):
             spoiler.arcade_order[lvl_index] = arcade_level_data[lvl]
         # Random Race Paths
         race_data = {
-            Maps.AngryAztec: {
-                "offset": 0x21E,
-                "center_x": 3280,
-                "center_z": 3829,
-                "radius": [70, 719],
-                "y": [190, 530],
-                "count": 16,
-                "size": 10,
-                "start_angle": None,
-            },
+            # Maps.AngryAztec: {
+            #     "offset": 0x21E,
+            #     "center_x": 3280,
+            #     "center_z": 3829,
+            #     "radius": [70, 719],
+            #     "y": [190, 530],
+            #     "count": 16,
+            #     "size": 10,
+            #     "start_angle": None,
+            # },
             # Maps.FungiForest: {
             #     "offset": 0xC2,
             #     "center_x": 1276,
