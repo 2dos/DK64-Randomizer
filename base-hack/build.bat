@@ -1,11 +1,13 @@
 @echo off
 set test_on=%1
 set python_ver=%2
+set use_compiled=1
 cls
 setlocal EnableDelayedExpansion
 for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"
 echo Started: %date% %time% > rom/build.log
 echo Started: %date% %time%
+
 IF EXIST "rom/dk64.z64" (
     echo 'ROM Exists.' >> rom/build.log
 ) ELSE (
@@ -31,6 +33,9 @@ call :runscript "Building Item Database", "build\item_dictionaries.py"
 call :runscript "Adjusting Pause Menu Variables", "build\adjust_pause_rotation.py"
 call :runscript "Building Hint Regions", "build\build_hint_regions.py"
 call :runscript "Building Dynamic Bitfields", "build\build_dynamic_bitfields.py"
+if %use_compiled% == 1 (
+	call :runscript "Compile Cranky's Lab", "build\pyinstaller_handler.py"
+)
 call :runscript "Compile C Code", "build\compile.py"
 
 <nul set /p=Running ARMIPS (Jumplist)!CR!
@@ -39,7 +44,15 @@ build\armips.exe asm/jump_list.asm
 call :setfinish runtime
 echo Running ARMIPS (Jumplist) [32mDONE[0m (%runtime%)
 
-call :runscript "Running Cranky's Lab", "build\build.py"
+if %use_compiled% == 0 (
+	call :runscript "Running Cranky's Lab", "build\build.py"
+) else (
+	<nul set /p=Running Cranky's Lab!CR!
+	call :setstart
+	build\dist\build.exe >> rom/build.log
+	call :setfinish runtime
+	echo Running Cranky's Lab [32mDONE[0m (%runtime%)
+)
 
 <nul set /p=Building Symbols File!CR!
 call :setstart
