@@ -328,7 +328,7 @@ def getActorIndex(item):
     return actor_indexes[item.new_item]
 
 
-def place_randomized_items(spoiler):
+def place_randomized_items(spoiler, original_flut: list):
     """Place randomized items into ROM."""
     ROM_COPY = LocalROM()
     sav = spoiler.settings.rom_data
@@ -358,7 +358,7 @@ def place_randomized_items(spoiler):
         ]
         map_items = {}
         bonus_table_offset = 0
-        flut_items = []
+        flut_items = original_flut.copy()
         pushItemMicrohints(spoiler)
         pregiven_shop_owners = None
         for item in item_data:

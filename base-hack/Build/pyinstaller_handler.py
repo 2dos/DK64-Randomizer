@@ -3,7 +3,7 @@ import hashlib
 import os
 from pathlib import Path
 
-def md5_update_from_dir(directory, hash):
+def md5_update_from_dir(directory: str, hash):
     assert Path(directory).is_dir()
     for path in sorted(Path(directory).iterdir(), key=lambda p: str(p).lower()):
         hash.update(path.name.encode())
@@ -14,7 +14,7 @@ def md5_update_from_dir(directory, hash):
     return hash
 
 
-def md5_dir(directory):
+def md5_dir(directory: str) -> str:
     return md5_update_from_dir(directory, hashlib.md5()).hexdigest()
 
 def compilePython():

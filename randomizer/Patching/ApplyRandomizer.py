@@ -111,6 +111,7 @@ def patching_response(spoiler):
     sav = spoiler.settings.rom_data
 
     # Shuffle Levels
+    flut_items = []
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         ROM_COPY.seek(sav + 0)
         ROM_COPY.write(1)
@@ -139,38 +140,22 @@ def patching_response(spoiler):
             level_order.append(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
         placeLevelOrder(spoiler, level_order, ROM_COPY)
 
-        # Key Order
-        map_pointers = {
-            Transitions.IslesMainToJapesLobby: Transitions.IslesJapesLobbyToMain,
-            Transitions.IslesMainToAztecLobby: Transitions.IslesAztecLobbyToMain,
-            Transitions.IslesMainToFactoryLobby: Transitions.IslesFactoryLobbyToMain,
-            Transitions.IslesMainToGalleonLobby: Transitions.IslesGalleonLobbyToMain,
-            Transitions.IslesMainToForestLobby: Transitions.IslesForestLobbyToMain,
-            Transitions.IslesMainToCavesLobby: Transitions.IslesCavesLobbyToMain,
-            Transitions.IslesMainToCastleLobby: Transitions.IslesCastleLobbyToMain,
-        }
-        key_mapping = {
-            # key given in each level. (Item 1 is Japes etc. flags=[0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D] <- Item 1 of this array is Key 1 etc.)
-            Transitions.IslesJapesLobbyToMain: 0x1A,
-            Transitions.IslesAztecLobbyToMain: 0x4A,
-            Transitions.IslesFactoryLobbyToMain: 0x8A,
-            Transitions.IslesGalleonLobbyToMain: 0xA8,
-            Transitions.IslesForestLobbyToMain: 0xEC,
-            Transitions.IslesCavesLobbyToMain: 0x124,
-            Transitions.IslesCastleLobbyToMain: 0x13D,
-        }
-        order = 0
+        vanilla_key_order = [0x1A, 0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D]
         if Types.Key not in spoiler.settings.shuffled_location_types:
-            for key, value in map_pointers.items():
-                new_world = spoiler.shuffled_exit_data.get(key).reverse
-                ROM_COPY.seek(sav + 0x01E + order)
-                ROM_COPY.writeMultipleBytes(key_mapping[int(new_world)], 2)
-                order += 2
-        else:
-            for key in key_mapping:
-                ROM_COPY.seek(sav + 0x1E + order)
-                ROM_COPY.writeMultipleBytes(key_mapping[key], 2)
-                order += 2
+            # Append to FLUT
+            for index, vanilla_key in enumerate(vanilla_key_order):
+                level_index_in_slot = level_order[index]
+                flut_items.append([
+                    vanilla_key_order[level_index_in_slot],
+                    vanilla_key,
+                ])
+            # Re-write FLUT
+            written_flut = flut_items.copy() # Making a FLUT copy so that the flut sent to item rando isn't getting a double terminator
+            written_flut.append([0xFFFF, 0xFFFF])
+            ROM_COPY.seek(0x1FF2000)
+            for flut in sorted(written_flut, key=lambda x: x[0]):
+                for flag in flut:
+                    ROM_COPY.writeMultipleBytes(flag, 2)
 
     # Unlock All Kongs
     kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
@@ -568,7 +553,7 @@ def patching_response(spoiler):
     ApplyShopRandomizer(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
-    place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
+    place_randomized_items(spoiler, flut_items.copy())  # Has to be after kong rando cosmetic and moves
     place_pregiven_moves(spoiler)
     remove_existing_indicators(spoiler)
     place_door_locations(spoiler)

@@ -17,11 +17,11 @@ void apply_key(int index, int remove_troff, int set_key) {
 	if (index < 7) {
 		if (Rando.level_order_rando_on) {
 			if (set_key) {
-				setFlagDuplicate(Rando.key_flags[index],1,FLAGTYPE_PERMANENT);
+				setFlagDuplicate(normal_key_flags[index],1,FLAGTYPE_PERMANENT);
 			}
 			if (remove_troff) {
 				for (int j = 0; j < 7; j++) {
-					if (normal_key_flags[j] == Rando.key_flags[index]) {
+					if (normal_key_flags[j] == normal_key_flags[index]) {
 						setPermFlag(tnsportal_flags[j]);
 					}
 				}
@@ -96,19 +96,8 @@ void writeKeyFlags(int index) {
 void auto_turn_keys(void) {
 	if (Rando.auto_keys) {
 		for (int i = 0; i < 8; i++) {
-			if (Rando.level_order_rando_on) {
-				if (i < 7) {
-					if (checkFlagDuplicate(Rando.key_flags[i], FLAGTYPE_PERMANENT)) {
-						writeKeyFlags(i);
-					}
-				}
-				if (checkFlagDuplicate(normal_key_flags[7], FLAGTYPE_PERMANENT)) {
-					writeKeyFlags(7);
-				}
-			} else {
-				if (checkFlagDuplicate(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
-					writeKeyFlags(i);
-				}
+			if (checkFlagDuplicate(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
+				writeKeyFlags(i);
 			}
 		}
 	}

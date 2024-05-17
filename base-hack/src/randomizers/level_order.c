@@ -3,12 +3,7 @@
 void swapRequirements() {
 	if (TransitionSpeed < 0) {
 		for (int i = 0; i < 7; i++) {
-			if (levelIndexMapping[CurrentMap] == LEVEL_ISLES) {
-				// In Isles
-				CheckmarkKeyArray[i] = Rando.key_flags[i];
-			} else {
-				CheckmarkKeyArray[i] = normal_key_flags[i];
-			}
+			CheckmarkKeyArray[i] = normal_key_flags[i];
 		}
 	}
 }

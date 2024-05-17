@@ -1193,11 +1193,7 @@ int getWrinklyLevelIndex(void) {
 }
 
 int getKeyFlag(int index) {
-    if ((Rando.level_order_rando_on) && (index < 7)) {
-        return Rando.key_flags[index];
-    } else {
-        return normal_key_flags[index];
-    }
+	return normal_key_flags[index];
 }
 
 int getKongFlag(int kong_index) {
@@ -1434,11 +1430,6 @@ int isGamemode(gamemodes target_mode, int force_both) {
 }
 
 int has_key(int index) {
-	if (Rando.level_order_rando_on) {
-		if (index < 7) {
-			return checkFlagDuplicate(Rando.key_flags[index], FLAGTYPE_PERMANENT);
-		}
-	}
 	return checkFlagDuplicate(normal_key_flags[index], FLAGTYPE_PERMANENT);
 }
 
