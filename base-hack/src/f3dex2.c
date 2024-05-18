@@ -158,6 +158,7 @@ int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red,
 static char* character_recoloring_str = 0;
 static char use_character_recoloring = 0;
 static char char_color_data[0x40];
+static unsigned char char_opacity_data[0x40];
 
 void setCharacterRecoloring(int output, char* stored_str) {
 	use_character_recoloring = output;
@@ -169,11 +170,13 @@ void setCharacterRecoloring(int output, char* stored_str) {
 void wipeTextColorData(void) {
 	for (int i = 0; i < 0x40; i++) {
 		char_color_data[i] = 0;
+		char_opacity_data[i] = 0xFF;
 	}
 }
 
-void setCharacterColor(int index, int value) {
+void setCharacterColor(int index, int value, int opacity) {
 	char_color_data[index] = value;
+	char_opacity_data[index] = opacity;
 }
 
 void applyHintRecoloring(letter_data* data, int index, int bitfield, char* char_address) {
@@ -182,12 +185,13 @@ void applyHintRecoloring(letter_data* data, int index, int bitfield, char* char_
 		return;
 	}
 	int offset = char_address - character_recoloring_str;
-	int color_value = base_text_color | 0xFF;
+	int color_value = base_text_color;
 	int color_index = char_color_data[offset];
+	int opacity = char_opacity_data[offset];
 	if (color_index != 0) {
-		color_value = emph_text_colors[color_index - 1] | 0xFF;
+		color_value = emph_text_colors[color_index - 1];
 	}
 	for (int i = 0; i < 4; i++) {
-		data->vtx_info[i].color = color_value;
+		data->vtx_info[i].color = color_value | opacity;
 	}
 }

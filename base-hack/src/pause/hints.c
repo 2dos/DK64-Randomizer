@@ -271,7 +271,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
             int size = end - (string_copy_ref + header + 1);
             dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
         }
-        setCharacterColor(header, color_index);
+        setCharacterColor(header, color_index, opacity);
         if (!is_control) {
             if (header > 50) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
