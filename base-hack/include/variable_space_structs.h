@@ -38,10 +38,7 @@ typedef struct varspace {
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char unk_97[14];
 	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
-	/* 0x0A6 */ char unk_A6;
-	/* 0x0A7 */ char unk_A7;
-	/* 0x0A8 */ char unk_A8[4];
-	/* 0x0AC */ char unk_AC[2];
+	/* 0x0A6 */ char unk_A6[0xAE - 0xA6];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
