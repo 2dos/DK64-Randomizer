@@ -23,7 +23,11 @@ HardItems = [
     HardModeItem("Shuffled Jetpac Enemies", -1, "Jetpac enemies are shuffled within jetpac."),
     HardModeItem("Lower Max Refill Amounts", -1, "Refills will have lower caps."),
     HardModeItem("Strict Helm Timer", -1, "Helm Timer starts a base time of 0 minutes instead of 10."),
-    HardModeItem("Donk in the Dark World", -1, "All maps are pitch black, with only a light to help you path your way to the end of the game. Mixing this with 'Donk in the Sky' will convert the challenge into 'Memory Challenge' instead."),
+    HardModeItem(
+        "Donk in the Dark World",
+        -1,
+        "All maps are pitch black, with only a light to help you path your way to the end of the game. Mixing this with 'Donk in the Sky' will convert the challenge into 'Memory Challenge' instead.",
+    ),
     HardModeItem("Donk in the Sky", -1, "Collision Geometry is disabled. Mixing this with 'Donk in the Dark World' will convert the challenge into 'Memory Challenge' instead."),
 ]
 for item in HardItems:

@@ -1,9 +1,11 @@
 """Image modification library functions."""
+
 import js
 import zlib
 from enum import IntEnum, auto
 from PIL import Image
 from randomizer.Patching.Patcher import ROM, LocalROM
+
 
 class TextureFormat(IntEnum):
     """Texture Format Enum."""
@@ -15,6 +17,7 @@ class TextureFormat(IntEnum):
     I4 = auto()
     IA8 = auto()
     IA4 = auto()
+
 
 def getImageFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat):
     """Grab image from file."""

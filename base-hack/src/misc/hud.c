@@ -158,7 +158,7 @@ static const hud_element_definition elements[] = {
         // Move - 1
         .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
         .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_MOVE - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
-        .sprite_index={0x94, 0x94, 0x94, 0x94, 0x94}, // TODO: Get a potion sprite
+        .sprite_index={0x94, 0x94, 0x94, 0x94, 0x94}, // TODO(theballaam96): Get a potion sprite
     },
     {
         // GB - 2

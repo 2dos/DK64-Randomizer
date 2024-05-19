@@ -678,6 +678,7 @@ class ShuffleLoadingZones(IntEnum):
     levels = auto()
     all = auto()
 
+
 class SlamRequirement(IntEnum):
     """Determines the slam requirement for a switch, currently only chunky phase.
 

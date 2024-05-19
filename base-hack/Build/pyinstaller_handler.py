@@ -1,9 +1,13 @@
+"""Handler for compiling the build routine for the base hack."""
+
 import PyInstaller.__main__
 import hashlib
 import os
 from pathlib import Path
 
+
 def md5_update_from_dir(directory: str, hash):
+    """Get the md5 hash of a directory of python files."""
     assert Path(directory).is_dir()
     for path in sorted(Path(directory).iterdir(), key=lambda p: str(p).lower()):
         hash.update(path.name.encode())
@@ -15,9 +19,12 @@ def md5_update_from_dir(directory: str, hash):
 
 
 def md5_dir(directory: str) -> str:
+    """Get the md5 hash of the provided directory."""
     return md5_update_from_dir(directory, hashlib.md5()).hexdigest()
 
+
 def compilePython():
+    """Compile Python code."""
     print("Compiling Cranky's Lab")
     dir_hash = None
     dir_hash_file = "./Build/dir_hash.txt"
@@ -48,5 +55,6 @@ def compilePython():
 
     PyInstaller.__main__.run(segs)
     print("- Recompilation: Done")
+
 
 compilePython()

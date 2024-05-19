@@ -1,3 +1,5 @@
+"""Library of functions used to merge two models together."""
+
 from BuildLib import main_pointer_table_offset, intf_to_float, float_to_hex
 from BuildEnums import TableNames
 import zlib

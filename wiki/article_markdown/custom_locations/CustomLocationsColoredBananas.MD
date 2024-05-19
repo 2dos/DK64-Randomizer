@@ -1504,7 +1504,7 @@
 | Rear tunnel | 5 | `` | 
 | Around rear dirt patch | 10 | `` | 
 | Exit tunnel | 10 | `` | 
-| Tree in training area | 10 | `(l.istiny and l.twirl)` | 
+| Tree in training area | 5 | `(l.istiny and l.twirl)` | 
 | Around treehouse tree | 10 | `` | 
 | Training area | 5 | `` | 
 | Above the lake | Balloon | `` | 
@@ -1747,7 +1747,7 @@
 | Chunky door | 5 | `` | 
 | Donkey door | 5 | `` | 
 | Diddy door | 5 | `` | 
-| Diddy door | 5 | `` | 
+| Lanky door | 5 | `` | 
 | Tiny door | 5 | `` | 
 | On the boulder | 5 | `` | 
 | Around the boulder | 5 | `` | 

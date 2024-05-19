@@ -11,7 +11,7 @@ current_packages = []
 
 print("Installed Packages:")
 for pkg in installed_packages_list:
-    print("-",pkg)
+    print("-", pkg)
     pkg_data = pkg.split("==")
     current_packages.append({"name": pkg_data[0], "version": pkg_data[1]})
 

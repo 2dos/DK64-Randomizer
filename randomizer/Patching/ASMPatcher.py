@@ -354,7 +354,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         writeValue(ROM_COPY, 0x80661B64, Overlay.Static, 0, offset_dict, 4)  # Remove Ripple Timer 1
         writeValue(ROM_COPY, 0x8068BDF4, Overlay.Static, 0, offset_dict, 4)  # Disable rocking in Seasick Ship
         writeValue(ROM_COPY, 0x8068BDFC, Overlay.Static, 0x1000, offset_dict)  # Disable rocking in Mech Fish
-        writeValue(ROM_COPY, 0x805FCCEE, Overlay.Static, 0, offset_dict) # Disable seasick camera effect
+        writeValue(ROM_COPY, 0x805FCCEE, Overlay.Static, 0, offset_dict)  # Disable seasick camera effect
 
     if settings.caves_tomato_model == Model.Tomato:
         writeValue(ROM_COPY, 0x8075F602, Overlay.Static, Model.Tomato + 1, offset_dict)
@@ -503,6 +503,7 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     # Reallocate Balloons + Patches
     writeValue(ROM_COPY, 0x80688BCE, Overlay.Static, 0x320 + static_expansion, offset_dict)  # Reallocated to just before model 2 block
 
+
 class MinigameImageLoader:
     """Class to store information regarding the image loader for an 8-bit minigame reward."""
 
@@ -548,7 +549,7 @@ class MinigameImageLoader:
                     for c in range(3):
                         local_channel = (px_data[c] >> 3) & 0x1F
                         shift = 1 + (5 * (2 - c))
-                        val |= (local_channel << shift)
+                        val |= local_channel << shift
                     v0 = (val >> 8) & 0xFF
                     v1 = val & 0xFF
                     by_data.extend([v0, v1])
@@ -561,6 +562,7 @@ class MinigameImageLoader:
                     by_data.append(intensity & 0xFF)
         return bytes(bytearray(by_data))
 
+
 class Minigame8BitImage:
     """Class to store information regarding the image processing for an 8-bit minigame reward."""
 
@@ -569,7 +571,7 @@ class Minigame8BitImage:
         self.permissable_items = permissable_items.copy()
         self.arcade_image = arcade_image
         self.jetpac_image = jetpac_image
-        
+
 
 def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin):
     """Alter the image that is displayed in DK Arcade/Jetpac for their respective rewards."""
@@ -629,7 +631,9 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         write = im_data[minigame].getImageBytes(minigame, dim, dim, output_format)
         output_addr = getROMAddress(addr, ovl, offset_dict)
         if len(write) > math.ceil(dim * dim * bytes_per_px):
-            raise Exception(f"Cannot write 8-bit minigame image to ROM. Too big. Minigame: {minigame}, Arcade Item: {arcade_item}, Jetpac Item: {jetpac_item}, Size: {len(write)}, cap: {math.ceil(dim * dim * bytes_per_px)}")
+            raise Exception(
+                f"Cannot write 8-bit minigame image to ROM. Too big. Minigame: {minigame}, Arcade Item: {arcade_item}, Jetpac Item: {jetpac_item}, Size: {len(write)}, cap: {math.ceil(dim * dim * bytes_per_px)}"
+            )
         ROM_COPY.seek(output_addr)
         ROM_COPY.writeBytes(write)
 
@@ -755,9 +759,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806FC990, Overlay.Static, "ApplyTextRecolorHints", offset_dict)
 
     # Change pause menu background design
-    writeValue(ROM_COPY, 0x806A84F4, Overlay.Static, 0, offset_dict, 4) # Enable framebuffer clear on pause menu
-    writeValue(ROM_COPY, 0x806A90E8, Overlay.Static, 0, offset_dict, 4) # Disable Screen Shake
-    writeValue(ROM_COPY, 0x806AC056, Overlay.Static, 120, offset_dict) # Changes darkness opacity
+    writeValue(ROM_COPY, 0x806A84F4, Overlay.Static, 0, offset_dict, 4)  # Enable framebuffer clear on pause menu
+    writeValue(ROM_COPY, 0x806A90E8, Overlay.Static, 0, offset_dict, 4)  # Disable Screen Shake
+    writeValue(ROM_COPY, 0x806AC056, Overlay.Static, 120, offset_dict)  # Changes darkness opacity
 
     # Beaver Bother fix
     writeHook(ROM_COPY, 0x806AD740, Overlay.Static, "unscareBeaver", offset_dict)
@@ -1187,7 +1191,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x807095BE, Overlay.Static, 0x2D4, offset_dict)  # Change Zipper with K. Rool Laugh
     elif IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
         # We cannot have both helm hurry and strict helm timer. Make helm hurry the most dominant setting
-        writeValue(ROM_COPY, 0x8071256A, Overlay.Static, 0, offset_dict) # Set start time of helm to 0 seconds
+        writeValue(ROM_COPY, 0x8071256A, Overlay.Static, 0, offset_dict)  # Set start time of helm to 0 seconds
 
     if settings.wrinkly_location_rando or settings.remove_wrinkly_puzzles:
         writeValue(ROM_COPY, 0x8064F170, Overlay.Static, 0, offset_dict, 4)  # Prevent edge cases for Aztec Chunky/Fungi Wheel
@@ -1308,13 +1312,13 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806F9186, Overlay.Static, 3, offset_dict)  # Film: change from `10 + fairy_count` to `3 + fairy_count`
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
-        writeValue(ROM_COPY, 0x806677C4, Overlay.Static, 0, offset_dict, 4) # Dynamic Surfaces
+        writeValue(ROM_COPY, 0x806677C4, Overlay.Static, 0, offset_dict, 4)  # Dynamic Surfaces
         # Static Surfaces
         writeValue(ROM_COPY, 0x80667ED2, Overlay.Static, 0x81, offset_dict)
         writeValue(ROM_COPY, 0x80667EDA, Overlay.Static, 0x81, offset_dict)
         writeValue(ROM_COPY, 0x80667EEE, Overlay.Static, 0x81, offset_dict)
         writeValue(ROM_COPY, 0x80667EFA, Overlay.Static, 0x81, offset_dict)
-        writeFunction(ROM_COPY, 0x8062F3F0, Overlay.Static, "replaceWaterTexture", offset_dict) # Static water textures
+        writeFunction(ROM_COPY, 0x8062F3F0, Overlay.Static, "replaceWaterTexture", offset_dict)  # Static water textures
 
     is_dark_world = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
     is_sky = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
@@ -2050,8 +2054,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5 - Set Arcade Lives
     writeValue(ROM_COPY, 0x80024F2A, Overlay.Arcade, 0xC71B, offset_dict)
     writeValue(ROM_COPY, 0x80024F2C, Overlay.Arcade, 0xA0CEC71B, offset_dict, 4)  # SB $t6, 0xC71B ($a2)
-    writeValue(ROM_COPY, 0x80024688, Overlay.Arcade, 0x1000, offset_dict) # Disable lives bonus for reaching 10k points
-    writeValue(ROM_COPY, 0x8002B7A4, Overlay.Arcade, 0, offset_dict, 4) # Disable death removing lives
+    writeValue(ROM_COPY, 0x80024688, Overlay.Arcade, 0x1000, offset_dict)  # Disable lives bonus for reaching 10k points
+    writeValue(ROM_COPY, 0x8002B7A4, Overlay.Arcade, 0, offset_dict, 4)  # Disable death removing lives
     # Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
     writeFunction(ROM_COPY, 0x80024D5C, Overlay.Arcade, "arcadeExit", offset_dict)
     writeFunction(ROM_COPY, 0x800257B4, Overlay.Arcade, "arcadeExit", offset_dict)
@@ -2111,7 +2115,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8074482C + (12 * Maps.ForestSpider), Overlay.Static, 0x00000141, offset_dict, 4)
 
     # Remove troll flame in 75m
-    writeValue(ROM_COPY, 0x80028FE4, Overlay.Arcade, 0xAC800018, offset_dict, 4) # sw $zero, 0x18 ($ao). Sets obj type to 0
+    writeValue(ROM_COPY, 0x80028FE4, Overlay.Arcade, 0xAC800018, offset_dict, 4)  # sw $zero, 0x18 ($ao). Sets obj type to 0
 
     # Patch Enemy Collision
     writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Purple Klaptrap

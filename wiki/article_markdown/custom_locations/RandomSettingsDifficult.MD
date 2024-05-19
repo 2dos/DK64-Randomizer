@@ -113,6 +113,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Water Is Lava: 25%
 	- Reduced Fall Damage Threshold: 50%
 	- Shuffled Jetpac Enemies: 20%
+	- Lower Max Refill Amounts: 50%
+	- Strict Helm Timer: 20%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 50%
 - Helm Hurry Mode: 5%

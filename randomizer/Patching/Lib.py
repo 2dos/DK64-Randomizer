@@ -736,6 +736,7 @@ def camelCaseToWords(string: str):
 
     return " ".join(["".join(word) for word in words])
 
+
 class TableNames(IntEnum):
     """Pointer Table Enum."""
 
@@ -830,6 +831,7 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
     }
     return converter.get(item, BarrierItems.Nothing)
 
+
 def getRawFile(table_index: int, file_index: int, compressed: bool):
     """Get raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
@@ -844,6 +846,7 @@ def getRawFile(table_index: int, file_index: int, compressed: bool):
     if compressed:
         data = zlib.decompress(data, (15 + 32))
     return data
+
 
 def writeRawFile(table_index: int, file_index: int, compressed: bool, data: bytearray, ROM_COPY):
     """Write raw file from ROM."""

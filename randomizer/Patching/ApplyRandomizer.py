@@ -145,12 +145,14 @@ def patching_response(spoiler):
             # Append to FLUT
             for index, vanilla_key in enumerate(vanilla_key_order):
                 level_index_in_slot = level_order[index]
-                flut_items.append([
-                    vanilla_key_order[level_index_in_slot],
-                    vanilla_key,
-                ])
+                flut_items.append(
+                    [
+                        vanilla_key_order[level_index_in_slot],
+                        vanilla_key,
+                    ]
+                )
             # Re-write FLUT
-            written_flut = flut_items.copy() # Making a FLUT copy so that the flut sent to item rando isn't getting a double terminator
+            written_flut = flut_items.copy()  # Making a FLUT copy so that the flut sent to item rando isn't getting a double terminator
             written_flut.append([0xFFFF, 0xFFFF])
             ROM_COPY.seek(0x1FF2000)
             for flut in sorted(written_flut, key=lambda x: x[0]):
