@@ -967,10 +967,9 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         regionCountHintableItems.append(Items.Shockwave)
         regionCountHintableItems.append(Items.Camera)
 
-    nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
+    # These regions never have anything useful or are otherwise accounted for in the hints and shouldn't be hinted
+    nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits", "Jetpac Game"}
     spoiler.region_hintable_count = {}
-    if Types.Coin not in spoiler.settings.shuffled_location_types:
-        nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in spoiler.RegionList.items():
