@@ -276,14 +276,14 @@ class GlitchesSelected(IntEnum):
     general_clips = 4
     ledge_clips = 5
     moonkicks = 6
-    moontail = 7
-    phase_swimming = 8
-    phase_walking = 9
-    skew = 10
-    spawn_snags = 11
-    swim_through_shores = 12
-    tag_barrel_storage = 13
-    troff_n_scoff_skips = 14
+    phase_swimming = 7
+    phase_walking = 8
+    skew = 9
+    spawn_snags = 10
+    swim_through_shores = 11
+    tag_barrel_storage = 12
+    troff_n_scoff_skips = 13
+    moontail = 14
 
 
 class HelmDoorItem(IntEnum):
