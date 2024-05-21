@@ -530,10 +530,10 @@ class LogicVarHolder:
         if swim:
             return self.skew and self.swim and self.HasGun(kong_req) and self.CanPhaseswim()
         return self.skew and self.oranges and self.settings.damage_amount != DamageAmount.ohko
-    
+
     def CanMoontail(self):
-        """Determines whether the player can perform a Moontail"""
-        return self.moontail and self.isdiddy and self.settings.kong_model_diddy == KongModels.default # Krusha doesnt have the jump height that Diddy has
+        """Determine whether the player can perform a Moontail."""
+        return self.moontail and self.isdiddy and self.settings.kong_model_diddy == KongModels.default  # Krusha doesnt have the jump height that Diddy has
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""

@@ -246,7 +246,13 @@ ColoredBananaGroupList = [
         locations=[[5, 1.0, 2495, 1152, 1296]],
     ),
     ColoredBananaGroup(
-        group=23, map_id=Maps.FranticFactory, name="Block tower (R block near top)", konglist=[Kongs.diddy], region=Regions.Testing, logic=lambda l: l.spring or l.CanMoontail(), locations=[[5, 1.0, 2416, 1432, 1338]]
+        group=23,
+        map_id=Maps.FranticFactory,
+        name="Block tower (R block near top)",
+        konglist=[Kongs.diddy],
+        region=Regions.Testing,
+        logic=lambda l: l.spring or l.CanMoontail(),
+        locations=[[5, 1.0, 2416, 1432, 1338]],
     ),
     ColoredBananaGroup(
         group=24,

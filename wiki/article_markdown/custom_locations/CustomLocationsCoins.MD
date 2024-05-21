@@ -360,8 +360,8 @@
 | Behind some elevator blocks (1) | 3 | `` | 
 | On a box in Testing Room | 2 | `` | 
 | On some boxes near Funky's | 3 | `` | 
-| On block tower (1) | 3 | `l.spring and l.isdiddy` | 
-| On block tower (2) | 3 | `l.spring and l.isdiddy` | 
+| On block tower (1) | 3 | `((l.spring or l.CanMoontail()) and l.isdiddy)` | 
+| On block tower (2) | 3 | `((l.spring or l.CanMoontail()) and l.isdiddy)` | 
 | Near dartboard entry | 5 | `` | 
 | In Dartboard Mini Tunnel | 2 | `(l.istiny and l.mini) or l.phasewalk` | 
 | In Dartboard Room | 4 | `(l.istiny and l.mini) or l.phasewalk` | 
@@ -375,7 +375,7 @@
 | In Chunky R&D Room | 4 | `(l.punch and l.triangle and l.ischunky) or l.CanAccessRNDRoom()` | 
 | In Car Race Lobby | 6 | `` | 
 | On Power Shed Platform | 5 | `` | 
-| On spring small ledge | 3 | `(l.spring and l.isdiddy) or l.phasewalk` | 
+| On spring small ledge | 3 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.phasewalk` | 
 | Around Snide's HQ W3 | 3 | `` | 
 | On steps near Block Tower | 3 | `` | 
 | Outside R&D Window | 3 | `` | 
@@ -739,7 +739,7 @@
 ## Caves Diddy Upper Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| In front of the pictures in Diddy Upper Cabin | 3 | `l.jetpack and (l.guitar or l.oranges) and l.isdiddy and l.spring` | 
+| In front of the pictures in Diddy Upper Cabin | 3 | `l.jetpack and (l.guitar or l.oranges) and l.isdiddy and (l.spring or l.CanMoontail())` | 
 ## Caves Donkey Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |

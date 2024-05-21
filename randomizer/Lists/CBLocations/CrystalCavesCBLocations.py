@@ -1777,7 +1777,7 @@ BalloonList = [
         region=Regions.DiddyUpperCabin,
         logic=lambda l: (l.jetpack and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) or l.scope),
         points=[[420, 460, 151], [197, 460, 157]],
-    ), # Double Check
+    ),  # Double Check
     Balloon(id=30, map_id=Maps.CavesDonkeyCabin, name="Around room", speed=10, konglist=[Kongs.donkey], region=Regions.DonkeyCabin, points=[[180, 100, 180], [446, 100, 275], [247, 100, 407]]),
     Balloon(
         id=31,
