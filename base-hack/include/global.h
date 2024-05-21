@@ -132,7 +132,7 @@ extern int* drawTextPointers(int* dl);
 extern int* displayCenteredText(int* dl, int y, char* str, int offset);
 extern void applyHintRecoloring(letter_data* data, int index, int bitfield, char* char_address);
 extern void setCharacterRecoloring(int output, char* stored_str);
-extern void setCharacterColor(int index, int value);
+extern void setCharacterColor(int index, int value, int opacity);
 extern void wipeTextColorData(void);
 
 extern int getLo(void* addr);

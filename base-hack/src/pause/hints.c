@@ -225,6 +225,8 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center, int
     return dl;
 }
 
+#define SPLIT_STRING_LINE_LIMIT 50
+
 int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
     int curr_y = y;
     int string_length = cstring_strlen(str);
@@ -247,6 +249,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
     int last_safe = 0;
     int line_count = 0;
     int color_index = 0;
+    int force_split = 0;
     while (1) {
         char referenced_character = *(char*)(string_copy_ref + header);
         int is_control = 0;
@@ -256,6 +259,18 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
+            int seg_addition = 1;
+            while (1) {
+                char ref_seg_character = *(char*)(string_copy_ref + header + seg_addition);
+                if ((ref_seg_character == 0) || (ref_seg_character == 0x20)) {
+                    break;
+                } else {
+                    seg_addition++;
+                }
+            }
+            if ((header + seg_addition) > SPLIT_STRING_LINE_LIMIT) {
+                force_split = 1;
+            }
         } else if ((referenced_character > 0) && (referenced_character <= 0x10)) {
             // Control byte character
             if ((referenced_character >= 4) && (referenced_character <= 0xD)) {
@@ -271,9 +286,9 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
             int size = end - (string_copy_ref + header + 1);
             dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
         }
-        setCharacterColor(header, color_index);
+        setCharacterColor(header, color_index, opacity);
         if (!is_control) {
-            if (header > 50) {
+            if ((header > SPLIT_STRING_LINE_LIMIT) || (force_split)) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
                 dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
                 line_count += 1;
@@ -284,6 +299,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
                 string_copy_ref += (last_safe + 1);
                 header = 0;
                 last_safe = 0;
+                force_split = 0;
             } else {
                 header += 1;
             }
