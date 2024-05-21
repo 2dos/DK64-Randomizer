@@ -1506,7 +1506,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.DiddyUpperCabin,
         vanilla=True,
-        logic=lambda l: l.jetpack and (l.guitar or l.oranges) and l.isdiddy and l.spring,
+        logic=lambda l: l.jetpack and (l.guitar or l.oranges) and l.isdiddy and (l.spring or l.CanMoontail()),
         locations=[
             [5, 1.0, 302.3088684082031, 288.8333435058594, 519.8643188476562],
             [5, 1.0, 130.18800354003906, 288.8333435058594, 228.1186065673828],
@@ -1775,9 +1775,9 @@ BalloonList = [
         speed=7,
         konglist=[Kongs.diddy],
         region=Regions.DiddyUpperCabin,
-        logic=lambda l: (l.jetpack and (l.guitar or l.oranges) and l.spring) or l.scope,
+        logic=lambda l: (l.jetpack and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) or l.scope),
         points=[[420, 460, 151], [197, 460, 157]],
-    ),
+    ), # Double Check
     Balloon(id=30, map_id=Maps.CavesDonkeyCabin, name="Around room", speed=10, konglist=[Kongs.donkey], region=Regions.DonkeyCabin, points=[[180, 100, 180], [446, 100, 275], [247, 100, 407]]),
     Balloon(
         id=31,

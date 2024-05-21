@@ -241,7 +241,7 @@ LogicRegions = {
         TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.punch and l.ischunky) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToChunkyMill, time=Time.Day),
         TransitionFront(Regions.MillChunkyTinyArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToTinyMill),
         TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder, time=Time.Day),
-        TransitionFront(Regions.MillRafters, lambda l: l.spring and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
+        TransitionFront(Regions.MillRafters, lambda l: (l.spring or l.CanMoontail()) and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
         TransitionFront(Regions.WinchRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdiddy) or (l.CanMoonkick()), Transitions.ForestMainToWinch, time=Time.Night),
         TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),

@@ -3392,7 +3392,7 @@ BananaCoinGroupList = {
             name="On block tower (1)",
             konglist=[Kongs.diddy],
             region=Regions.Testing,
-            logic=lambda l: l.spring and l.isdiddy,
+            logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy),
             locations=[
                 [1.0, 2372, 1266, 1381],
                 [1.0, 2427, 1286, 1379],
@@ -3405,7 +3405,7 @@ BananaCoinGroupList = {
             name="On block tower (2)",
             konglist=[Kongs.diddy],
             region=Regions.Testing,
-            logic=lambda l: l.spring and l.isdiddy,
+            logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy),
             locations=[
                 [1.0, 2414, 1426, 1343],
                 [1.0, 2386, 1326, 1258],
@@ -3628,7 +3628,7 @@ BananaCoinGroupList = {
             name="On spring small ledge",
             konglist=[Kongs.diddy],
             region=Regions.BeyondHatch,
-            logic=lambda l: (l.spring and l.isdiddy) or l.phasewalk,
+            logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or l.phasewalk,
             locations=[
                 [1.0, 1065.8306884765625, FACTORY_LEDGE_COINS_HEIGHT, 482.5064697265625],
                 [1.0, 1099.849853515625, FACTORY_LEDGE_COINS_HEIGHT, 482.2723693847656],
@@ -6457,7 +6457,7 @@ BananaCoinGroupList = {
             name="In front of the pictures in Diddy Upper Cabin",
             konglist=[Kongs.diddy],
             region=Regions.DiddyUpperCabin,
-            logic=lambda l: l.jetpack and (l.guitar or l.oranges) and l.isdiddy and l.spring,
+            logic=lambda l: l.jetpack and (l.guitar or l.oranges) and l.isdiddy and (l.spring or l.CanMoontail()),
             locations=[
                 [1.0, 58, 303, 326],
                 [1.0, 265, 309, 604],

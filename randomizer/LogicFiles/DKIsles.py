@@ -154,7 +154,7 @@ LogicRegions = {
         Event(Events.IslesW2bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True),
-        TransitionFront(Regions.AztecLobbyRoof, lambda l: l.CanMoonkick()),
+        TransitionFront(Regions.AztecLobbyRoof, lambda l: l.CanMoonkick() or l.CanMoontail()),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.phasewalk, Transitions.IslesMainToAztecLobby),
         TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming) and l.settings.krusha_kong != l.kong) or l.CanMoonkick())),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),

@@ -243,8 +243,8 @@ LogicRegions = {
     ]),
 
     Regions.DiddyUpperCabin: Region("Diddy Upper Cabin", "Cabins Area", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesDiddy5DoorCabinUpper, lambda l: (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy),
-        LocationLogic(Locations.CavesBananaFairyCabin, lambda l: l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.CavesDiddy5DoorCabinUpper, lambda l: (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.CavesBananaFairyCabin, lambda l: l.camera and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) and l.jetpack and l.isdiddy),
         # LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy0, lambda l: True),
         # LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy1, lambda l: True),
     ], [], [

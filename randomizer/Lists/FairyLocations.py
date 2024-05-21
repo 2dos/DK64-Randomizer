@@ -383,7 +383,7 @@ fairy_locations = {
             region=Regions.Testing,
             fence=Fence(2311, 1184, 2565, 1439),
             spawn_y=1439,
-            logic=lambda l: l.camera and (l.spring and l.isdiddy),
+            logic=lambda l: l.camera and ((l.spring or l.CanMoontail()) and l.isdiddy),
         ),
         FairyData(
             name="Near Dartboard Boxes",
@@ -730,7 +730,7 @@ fairy_locations = {
             region=Regions.DiddyUpperCabin,
             is_vanilla=True,
             spawn_xyz=[140, 100, 505],
-            logic=lambda l: l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy,
+            logic=lambda l: l.camera and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) and l.jetpack and l.isdiddy,
             natural_index=1,
         ),
         FairyData(
