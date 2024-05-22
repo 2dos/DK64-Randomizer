@@ -242,11 +242,17 @@ ColoredBananaGroupList = [
         name="Block tower (lower block towards R&D and tunnel to numbers game)",
         konglist=[Kongs.diddy, Kongs.lanky],
         region=Regions.Testing,
-        logic=lambda l: (l.spring and l.isdiddy) or (l.balloon and l.islanky),
+        logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or (l.balloon and l.islanky),
         locations=[[5, 1.0, 2495, 1152, 1296]],
     ),
     ColoredBananaGroup(
-        group=23, map_id=Maps.FranticFactory, name="Block tower (R block near top)", konglist=[Kongs.diddy], region=Regions.Testing, logic=lambda l: l.spring, locations=[[5, 1.0, 2416, 1432, 1338]]
+        group=23,
+        map_id=Maps.FranticFactory,
+        name="Block tower (R block near top)",
+        konglist=[Kongs.diddy],
+        region=Regions.Testing,
+        logic=lambda l: l.spring or l.CanMoontail(),
+        locations=[[5, 1.0, 2416, 1432, 1338]],
     ),
     ColoredBananaGroup(
         group=24,
@@ -254,7 +260,7 @@ ColoredBananaGroupList = [
         name="Block tower (middle D block on the right path up)",
         konglist=[Kongs.diddy],
         region=Regions.Testing,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         locations=[[5, 1.0, 2375, 1272, 1378]],
     ),
     ColoredBananaGroup(
@@ -485,7 +491,7 @@ ColoredBananaGroupList = [
         name="On Simian Spring ledge with coins",
         konglist=[Kongs.diddy],
         region=Regions.BeyondHatch,
-        logic=lambda l: (l.spring and l.isdiddy) or l.phasewalk,
+        logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or l.phasewalk,
         locations=[[5, 1.0, 1072, 182, 478], [5, 1.0, 1092, 182, 478]],
     ),
     ColoredBananaGroup(
@@ -962,7 +968,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Testing,
         vanilla=True,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         locations=[
             [5, 1.0, 2334.96826171875, 1120.81298828125, 1253.9190673828125],
             [5, 1.0, 2460.02587890625, 1474.8333740234375, 1258.8880615234375],
@@ -976,7 +982,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Testing,
         vanilla=True,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         locations=[[5, 1.0, 2340.177490234375, 1192.8333740234375, 1337.7464599609375], [5, 1.0, 2501.7470703125, 1392.8333740234375, 1342.0328369140625]],
     ),
     ColoredBananaGroup(
@@ -1425,7 +1431,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.diddy],
         region=Regions.Testing,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         points=[[2418, 1620, 1224], [2494, 1610, 1300], [2418, 1625, 1376], [2342, 1615, 1300]],
     ),
     Balloon(

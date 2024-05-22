@@ -98,6 +98,7 @@ class LogicVarHolder:
         self.swim_through_shores = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.swim_through_shores)
         self.boulder_clip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.boulder_clips) and False  # Temporarily disabled
         self.skew = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.skew)
+        self.moontail = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.moontail)
         # Reset
         self.Reset()
 
@@ -529,6 +530,10 @@ class LogicVarHolder:
         if swim:
             return self.skew and self.swim and self.HasGun(kong_req) and self.CanPhaseswim()
         return self.skew and self.oranges and self.settings.damage_amount != DamageAmount.ohko
+
+    def CanMoontail(self):
+        """Determine whether the player can perform a Moontail."""
+        return self.moontail and self.isdiddy and self.settings.kong_model_diddy == KongModels.default  # Krusha doesnt have the jump height that Diddy has
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""

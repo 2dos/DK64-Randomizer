@@ -24,6 +24,7 @@ GlitchLogicItems = [
     GlitchLogicItem("General Clips", "Any trick that doesn't fall into a general category. Includes object clips, bush push, terminal 2 clip and Crypt jump clip."),
     GlitchLogicItem("Ledge Clips", "A trick that allows the player to fall through gaps between walls and floors."),
     GlitchLogicItem("Moonkicks", "A trick that allows Donkey to ascend by interrupting his aerial attack with a kick."),
+    GlitchLogicItem("Moontail", "A trick that allows the player to gain extra height with Diddy"),
     GlitchLogicItem("Phase Swimming", "Formerly known as STVW, a trick to go through a significant amount of walls in the game whilst underwater."),
     GlitchLogicItem("Phase Walking", "A triple-frame perfect technique to go through a significant amount of walls in the game. This option also includes Phase Falling"),
     GlitchLogicItem("Skew", "A trick that enables you to rotate the kong's collision and model, enabling the player to go through most walls in the game."),

@@ -283,6 +283,7 @@ class GlitchesSelected(IntEnum):
     swim_through_shores = 11
     tag_barrel_storage = 12
     troff_n_scoff_skips = 13
+    moontail = 14
 
 
 class HelmDoorItem(IntEnum):

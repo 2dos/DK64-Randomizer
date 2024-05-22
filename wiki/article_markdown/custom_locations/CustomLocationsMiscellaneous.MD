@@ -132,7 +132,7 @@
 | Frantic Factory | Right Corridor |  | `` | 
 | Frantic Factory | Number Game |  | `` | 
 | Frantic Factory | Under Block Tower Stairs |  | `` | 
-| Frantic Factory | On Diddy's Block Tower | CrownPad | `(l.spring or l.CanMoonkick())` | 
+| Frantic Factory | On Diddy's Block Tower | CrownPad | `(l.spring or l.CanMoonkick() or l.CanMoontail())` | 
 | Frantic Factory | Block Tower Lower Bonus |  | `` | 
 | Frantic Factory | Funky Room (1) |  | `` | 
 | Frantic Factory | Funky Room (2) |  | `` | 

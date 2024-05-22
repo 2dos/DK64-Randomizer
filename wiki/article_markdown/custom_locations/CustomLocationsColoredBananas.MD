@@ -385,9 +385,9 @@
 | All around Block tower room | 20 | `` | 
 | Around numbers game | 10 | `` | 
 | Tunnel to numbers game (5 custom, 5 Donkey) | 10 | `` | 
-| Block tower (lower block towards R&D and tunnel to numbers game) | 5 | `(l.spring and l.isdiddy) or (l.balloon and l.islanky)` | 
-| Block tower (R block near top) | 5 | `l.spring, locations=[[5, 1.0, 2416, 1432, 1338]]` | 
-| Block tower (middle D block on the right path up) | 5 | `l.spring` | 
+| Block tower (lower block towards R&D and tunnel to numbers game) | 5 | `((l.spring or l.CanMoontail()) and l.isdiddy) or (l.balloon and l.islanky)` | 
+| Block tower (R block near top) | 5 | `l.spring or l.CanMoontail()` | 
+| Block tower (middle D block on the right path up) | 5 | `l.spring or l.CanMoontail()` | 
 | Pole to R&D - lower room | 10 | `` | 
 | R&D Pole | 5 | `` | 
 | R&D pole - upper room | 10 | `` | 
@@ -409,7 +409,7 @@
 | Side walls of Lanky R&D room | 10 | `l.CanAccessRNDRoom() or l.trombone` | 
 | In fall from the hatch to power shed | 5 | `` | 
 | In Dark room on box | 5 | `l.punch or l.phasewalk` | 
-| On Simian Spring ledge with coins | 10 | `(l.spring and l.isdiddy) or l.phasewalk` | 
+| On Simian Spring ledge with coins | 10 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.phasewalk` | 
 | On box in stack of boxes to Candy/Cranky - left | 5 | `` | 
 | On box in stack of boxes to Candy/Cranky - right | 5 | `` | 
 | From BBlast pad to Tiny BP pole | 5 | `` | 
@@ -450,8 +450,8 @@
 | Production room spinning arms, outside ring (Chunky) | 10 | `` | 
 | Dark room above moving platforms (Chunky) | 15 | `l.punch` | 
 | Tunnel from entrance to hatch (Donkey) | 5 | `` | 
-| Block tower (set of 3 bunches) (Diddy) | 15 | `l.spring` | 
-| Block tower (set of 2 bunches) (Diddy) | 10 | `l.spring` | 
+| Block tower (set of 3 bunches) (Diddy) | 15 | `l.spring or l.CanMoontail()` | 
+| Block tower (set of 2 bunches) (Diddy) | 10 | `l.spring or l.CanMoontail()` | 
 | W5 (Diddy) | 5 | `` | 
 | W5 (Diddy) | 5 | `` | 
 | Prod room rotating cylinders (Diddy) | 15 | `` | 
@@ -486,7 +486,7 @@
 | Pole to block tower upper room | Balloon | `` | 
 | Tunnel between Snide's and block tower | Balloon | `` | 
 | Block tower room above arcade window | Balloon | `` | 
-| Block tower room above block tower | Balloon | `l.spring` | 
+| Block tower room above block tower | Balloon | `l.spring or l.CanMoontail()` | 
 | Around bottom of block tower | Balloon | `` | 
 | Block tower room in front of numbers game window | Balloon | `` | 
 | Tunnel to numbers game | Balloon | `` | 
@@ -844,7 +844,7 @@
 | Around tree (Diddy) | 10 | `` | 
 | Under starting area rocketbarrel (Diddy) | 10 | `` | 
 | Under giant mushroom rocketbarrel (Diddy) | 10 | `` | 
-| By entrance of rafters attic (Diddy) | 5 | `l.spring` | 
+| By entrance of rafters attic (Diddy) | 5 | `l.spring or l.CanMoontail()` | 
 | On hollow tree (Diddy) | 5 | `l.jetpack` | 
 | W4 (Diddy) | 5 | `` | 
 | W4 (Diddy) | 5 | `` | 
@@ -1202,8 +1202,8 @@
 | ---- | ------ | ----- |
 | Books on shelf near entrance in Diddy's upper cabin | 5 | `` | 
 | Books on shelf on back wall in Diddy's upper cabin | 5 | `` | 
-| On candles (Diddy) | 15 | `l.jetpack and (l.guitar or l.oranges) and l.isdiddy and l.spring` | 
-| Above entrance high up in the room | Balloon | `(l.jetpack and (l.guitar or l.oranges) and l.spring) or l.scope` | 
+| On candles (Diddy) | 15 | `l.jetpack and (l.guitar or l.oranges) and l.isdiddy and (l.spring or l.CanMoontail())` | 
+| Above entrance high up in the room | Balloon | `(l.jetpack and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) or l.scope)` | 
 ## Caves Donkey Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |

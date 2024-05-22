@@ -31,6 +31,7 @@ This is the changelog for the initial push of 4.0 into Dev:
 	- Two: Vanilla behavior
 	- One: The right-most barrel in each room will be completed
 	- None: Playing the instrument pad will play the room shutdown cutscene
+- Added Moontail glitched logic
 
 ### Quality of life changes
 - Dirt patches have been added to item previews

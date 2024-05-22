@@ -1245,7 +1245,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.MillArea,
         vanilla=True,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         locations=[[5, 1.0, 3436.232666015625, 472.3333435058594, 4503.90625]],
     ),
     ColoredBananaGroup(

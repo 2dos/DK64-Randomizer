@@ -871,7 +871,7 @@ CustomLocations = {
             rot_y=2013,
             max_size=32,
             logic_region=Regions.Testing,
-            logic=lambda l: (l.spring or l.CanMoonkick()),
+            logic=lambda l: (l.spring or l.CanMoonkick() or l.CanMoontail()),
             group=2,
             banned_types=[LocationTypes.CrownPad],
         ),
