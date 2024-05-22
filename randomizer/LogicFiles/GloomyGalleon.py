@@ -25,7 +25,7 @@ LogicRegions = {
     # This region serves to set up the entry for the level based on the DK Portal Location
     Regions.GloomyGalleonEntryHandler: Region("Gloomy Galleon Entry Handler", "This should not be hinted", Levels.GloomyGalleon, False, None, [], [], [
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
-        TransitionFront(Regions.GloomyGalleonStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+        TransitionFront(Regions.GloomyGalleonStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
 
     Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", "Galleon Caverns", Levels.GloomyGalleon, True, None, [

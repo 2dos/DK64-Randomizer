@@ -24,7 +24,7 @@ LogicRegions = {
     # This region serves to set up the entry for the level based on the DK Portal Location
     Regions.CrystalCavesEntryHandler: Region("Crystal Caves Entry Handler", "This should not be hinted", Levels.CreepyCastle, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
-        TransitionFront(Regions.CrystalCavesMain, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
 
     Regions.CrystalCavesMain: Region("Crystal Caves Main", "Main Caves Area", Levels.CrystalCaves, True, None, [

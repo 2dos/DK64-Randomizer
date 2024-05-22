@@ -25,7 +25,7 @@ LogicRegions = {
     # This region serves to set up the entry for the level based on the DK Portal Location
     Regions.AngryAztecEntryHandler: Region("Angry Aztec Entry Handler", "This should not be hinted", Levels.AngryAztec, False, None, [], [], [
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
-        TransitionFront(Regions.AngryAztecStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+        TransitionFront(Regions.AngryAztecStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
 
     Regions.AngryAztecStart: Region("Angry Aztec Start", "Various Aztec Tunnels", Levels.AngryAztec, False, None, [], [

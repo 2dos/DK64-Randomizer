@@ -26,7 +26,7 @@ LogicRegions = {
     # This region serves to set up the entry for the level based on the DK Portal Location
     Regions.FungiForestEntryHandler: Region("Fungi Forest Entry Handler", "This should not be hinted", Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
-        TransitionFront(Regions.FungiForestStart, lambda l: True), # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+        TransitionFront(Regions.FungiForestStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
 
     Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [
