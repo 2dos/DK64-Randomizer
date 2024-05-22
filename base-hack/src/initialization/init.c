@@ -205,33 +205,13 @@ void fixMusicRando(void) {
 	 * Without this, the game will crash from incorrect properties to what the song is expecting.
 	 */
 	if (Rando.music_rando_on) {
-		// Type bitfields
-		int size = SONG_COUNT << 1;
-		musicInfo* write_space = getFile(size, 0x1FFF000);
 		// Type indexes
-		size = SONG_COUNT;
+		int size = SONG_COUNT;
 		char* write_space_0 = getFile(size, 0x1FEE200);
 		for (int i = 0; i < SONG_COUNT; i++) {
-			// Handle Bitfield
-			int subchannel = (write_space->data[i] & 6) >> 1;
-			int channel = (write_space->data[i] & 0x78) >> 3;
-			songData[i] &= 0xFF81;
-			songData[i] |= (subchannel & 3) << 1;
-			songData[i] |= (channel & 0xF) << 3;
-
 			// Handle Type Index
 			if (write_space_0[i] > -1) {
 				song_types type = write_space_0[i];
-				int volume = 0;
-				if (type == SONGTYPE_BGM) {
-					volume = 23000;
-				} else if (type == SONGTYPE_MAJORITEM) {
-					volume = 27000;
-				} else {
-					// Event or Minor Item
-					volume = 25000;
-				}
-				songVolumes[i] = volume;
 				music_types[i] = type;
 			}
 		}
@@ -239,7 +219,6 @@ void fixMusicRando(void) {
 		*(float*)(0x807565D8) = 1.0f; // Funky and Candy volumes
 		*(int*)(0x80604B50) = 0; // Disable galleon outside track isolation
 		*(int*)(0x80604A54) = 0; // Disable galleon outside track isolation
-		complex_free(write_space);
 		complex_free(write_space_0);
 	}
 	/*

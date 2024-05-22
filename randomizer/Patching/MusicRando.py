@@ -15,7 +15,8 @@ from randomizer.Enums.Settings import MusicFilters
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Lib import IsItemSelected, Overlay
+from randomizer.Patching.ASMPatcher import writeValue, populateOverlayOffsets, getROMAddress
 
 storage_banks = {
     0: 0x8000,
@@ -213,6 +214,35 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
         return True
     return False
 
+def writeSongMemory(ROM_COPY: ROM, index: int, value: int):
+    """Write song memory to ROM."""
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    ram_address = 0x80745658 + (index * 2)
+    rom_address = getROMAddress(ram_address, Overlay.Static, offset_dict)
+    ROM_COPY.seek(rom_address)
+    original_value = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    original_value &= 0xFF81
+    write_slot = (value & 6) >> 1
+    channel = (value & 0x78) >> 3
+    original_value = original_value | ((write_slot & 3) << 1) | ((channel & 0xF) << 3)
+    writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
+
+def writeSongVolume(ROM_COPY: ROM, index: int, song_type: SongType):
+    """Write song volume to ROM."""
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    volumes = {
+        SongType.BGM: 23000,
+        SongType.Event: 25000,
+        SongType.MajorItem: 27000,
+        SongType.MinorItem: 25000,
+    }
+    ROM_COPY.seek(TYPE_ARRAY + index)
+    if song_type in TYPE_VALUES:
+        ROM_COPY.write(TYPE_VALUES.index(song_type))
+    else:
+        ROM_COPY.write(255)
+    if song_type in volumes:
+        writeValue(ROM_COPY, 0x807454F0 + (index * 2), Overlay.Static, volumes.get(song_type, 23000), offset_dict)
 
 def getAssignedCustomSongData(file_data_array: list, song_name: str, length_filter: bool, location_filter: bool, song_type: SongType) -> UploadInfo:
     """Request a specific custom song from the list."""
@@ -482,11 +512,7 @@ def randomize_music(settings: Settings):
 
     for song in song_data.values():
         song.Reset()
-        ROM_COPY.seek(TYPE_ARRAY + song.mem_idx)
-        if song.type in TYPE_VALUES:
-            ROM_COPY.write(TYPE_VALUES.index(song.type))
-        else:
-            ROM_COPY.write(255)
+        writeSongVolume(ROM_COPY, song.mem_idx, song.type)
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm_randomized or categoriesHaveAssignedSongs(settings, [SongType.BGM]):
         # If the user selected standard rando
@@ -584,8 +610,7 @@ def randomize_music(settings: Settings):
                 ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
                 ROM_COPY.writeBytes(new_bytes)
                 # Update data
-                ROM_COPY.seek(0x1FFF000 + (song["index"] * 2))
-                ROM_COPY.writeMultipleBytes(rap_song_data.memory, 2)
+                writeSongMemory(ROM_COPY, song["index"], rap_song_data.memory)
 
     for type_data in NON_BGM_DATA:
         if type_data.setting or categoriesHaveAssignedSongs(settings, [type_data.song_type]):  # If the user wants to randomize the group
@@ -697,8 +722,7 @@ def shuffle_music(settings, music_data, music_names, pool_to_shuffle, shuffled_l
         # Update the uncompressed data table to have our new size.
         ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         ROM_COPY.writeBytes(song_size)
-        ROM_COPY.seek(0x1FFF000 + 2 * originalIndex)
-        ROM_COPY.writeMultipleBytes(song_memory, 2)
+        writeSongMemory(ROM_COPY, originalIndex, song_memory)
         music_names[originalIndex] = song_short_name
         if song_idx_list[originalIndex].type == SongType.BGM:
             music_data["music_bgm_data"][song_idx_list[originalIndex].name] = song_name
