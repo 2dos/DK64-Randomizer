@@ -1,5 +1,34 @@
 """A quick script to simulate how hints render, making it easier to debug hint render issues."""
 
+# INFRASTRUCTURE
+
+# - The code written by me in `drawSplitString()` takes a string, goes through each character
+# and if the character is a color control character, then it filters it out and sets all subsequent
+# characters to the value of that color until it reaches another control character of the same value,
+# like a toggle switch.
+# - It splits the string into lines of at most 50 characters, determining the end of a line that would
+# exceed 50 characters as the last space of the line before 50 characters.
+
+# CHALLENGE RULES
+
+# - The color control characters must be filtered out with the code sent to `simulatedPrint`,
+# with the color of each character in the line being set with `setCharacterColor`. The index passed
+# into `setCharacterColor` is the index of the character in the string which does **NOT** have the
+# color control characters
+
+# - Don't use text manipulation functions like `.split()`, `.join()`, `.trim()`. The intention is that
+# the most optimal function will be able to be converted into C that will interface with those games,
+# and the game does not have those functions in place to use. The method chosen in my original function
+# is to copy everything after the control character to 1 space earlier. However, if you think there's
+# something different which would be more efficient and be possible in C, go for it.
+
+# - Don't alter `wipeColors`, `setCharacterColor` or `simulatedPrint`. These should be treated as
+# library functions which we're using to interface with the game
+
+# - Write your new function into `drawSplitString_test`. I've included a bunch of safety features at the
+# start of the function that you should avoid modifying, as they protect against hints that are too long
+# and memory buffer overflow
+
 
 # Coloring
 class bcolors:
@@ -158,7 +187,6 @@ def drawSplitString_test(input: str):
         str_len = ELLIPSIS_CUTOFF
         trigger_ellipsis = True
     string_copy_ref = 0
-    input_copy = input.encode()
     string_copy = bytearray([0] * STRING_MAX_SIZE)  # Wipe memory
     b = bytearray()
     b.extend(map(ord, input))
@@ -170,40 +198,7 @@ def drawSplitString_test(input: str):
     string_copy[126] = 0
     string_copy[127] = 0
     # Loop defs
-    line_starts = [0] * 3
-    line_length = 0
-    line_length_global = 0
-    safe_haven = 0
-    line_index = 0
-    color_index = 0
-    for xi in range(str_len):
-        char_val = input_copy[xi]
-        if char_val <= 0x10:
-            if char_val >= 0x4:
-                color_index = (char_val - 3) ^ color_index
-                line_length_global += 1
-            continue
-        elif char_val == 0x20:
-            safe_haven = xi
-            line_length += 1
-            line_length_global += 1
-            continue
-        setCharacterColor(line_length_global, color_index)
-        if line_length > SPLIT_STRING_LINE_LIMIT:
-            line_index += 1
-            if line_index < 3:
-                line_starts[line_index] = safe_haven + 1
-            string_copy[safe_haven] = 0
-            start_of_str = line_starts[line_index - 1]
-            line_length = 0
-            line_length_global = 0
-            simulatedPrint(string_copy[start_of_str:])
-            if line_index == 3:
-                return
-            continue
-        line_length += 1
-        line_length_global += 1
-    simulatedPrint(string_copy)
+    # Put your code here to handle string_copy (don't handle "input")
 
 
 test_string = "SOMETHING IN THE \x0AIGLOO AREA\x0A IS ON THE PATH TO \x04KEY 4\x04."

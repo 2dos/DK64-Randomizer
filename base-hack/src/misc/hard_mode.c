@@ -320,9 +320,15 @@ void alterChunkLighting(int chunk) {
 	if (chunk_count > 0) {
 		for (int i = 0; i < chunk_count; i++) {
             if (isDarkWorld(CurrentMap, i)) {
-                ChunkLighting_Red[i] = DARK_WORLD_BRIGHTNESS;
-                ChunkLighting_Green[i] = DARK_WORLD_BRIGHTNESS;
-                ChunkLighting_Blue[i] = DARK_WORLD_BRIGHTNESS;
+                float brightness = DARK_WORLD_BRIGHTNESS;
+                if (CurrentMap == MAP_FUNGI) {
+                    if ((i >= 13) && (i <= 17)) {
+                        brightness = 0.1f;
+                    }
+                }
+                ChunkLighting_Red[i] = brightness;
+                ChunkLighting_Green[i] = brightness;
+                ChunkLighting_Blue[i] = brightness;
             }
 		}
 	}
