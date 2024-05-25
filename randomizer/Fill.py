@@ -776,6 +776,10 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
     """Identify the Major Items in this seed based on the item placement and the settings."""
     # Use the settings to determine non-progression Major Items
     majorItems = ItemPool.AllKongMoves()
+    majorItems.extend(ItemPool.CrankyItems())
+    majorItems.extend(ItemPool.FunkyItems())
+    majorItems.extend(ItemPool.CandyItems())
+    majorItems.extend(ItemPool.SnideItems())
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
