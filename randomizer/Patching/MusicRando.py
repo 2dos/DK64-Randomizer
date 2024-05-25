@@ -214,6 +214,7 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
         return True
     return False
 
+
 def writeSongMemory(ROM_COPY: ROM, index: int, value: int):
     """Write song memory to ROM."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -226,6 +227,7 @@ def writeSongMemory(ROM_COPY: ROM, index: int, value: int):
     channel = (value & 0x78) >> 3
     original_value = original_value | ((write_slot & 3) << 1) | ((channel & 0xF) << 3)
     writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
+
 
 def writeSongVolume(ROM_COPY: ROM, index: int, song_type: SongType):
     """Write song volume to ROM."""
@@ -243,6 +245,7 @@ def writeSongVolume(ROM_COPY: ROM, index: int, song_type: SongType):
         ROM_COPY.write(255)
     if song_type in volumes:
         writeValue(ROM_COPY, 0x807454F0 + (index * 2), Overlay.Static, volumes.get(song_type, 23000), offset_dict)
+
 
 def getAssignedCustomSongData(file_data_array: list, song_name: str, length_filter: bool, location_filter: bool, song_type: SongType) -> UploadInfo:
     """Request a specific custom song from the list."""

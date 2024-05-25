@@ -1484,11 +1484,14 @@ class Settings:
                         spoiler.LocationList[location_id].inaccessible = False
                         spoiler.LocationList[location_id].smallerShopsInaccessible = False
 
-        # shop_types = (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
-        # shopkeepers_in_pool = len([x for x in shop_types if x in self.shuffled_location_types]) > 0
-        # if shopkeepers_in_pool:
-        #     for x in range(4):
-        #         spoiler.LocationList[Locations.ShopOwner_Location00 + x].inaccessible = True
+        if Types.Cranky in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location00].inaccessible = True
+        if Types.Funky in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location01].inaccessible = True
+        if Types.Candy in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location02].inaccessible = True
+        if Types.Snide in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location03].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -1552,9 +1555,8 @@ class Settings:
             ]
             shuffledLocationsShopOwner = [
                 location
-                for location in spoiler.LocationList
-                if spoiler.LocationList[location].type in self.shuffled_location_types
-                and spoiler.LocationList[location].type not in (Types.Kong, Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.NintendoCoin, Types.RarewareCoin)
+                for location in shuffledLocations  # Placing a shop owner in a shop owner location is boring and we don't want to do it ever
+                if spoiler.LocationList[location].type not in (Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.NintendoCoin, Types.RarewareCoin)
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]
@@ -1799,6 +1801,36 @@ class Settings:
                     self.minoritems_songs_selected = True
                 elif song.type == SongType.Event:
                     self.events_songs_selected = True
+
+    def is_valid_item_pool(self):
+        """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
+        junk_space_available = 0
+        if self.shuffle_items:
+            if Types.Enemies in self.shuffled_location_types:
+                junk_space_available += 100  # Rough estimate, not to be used as factual
+            if Types.Shop in self.shuffled_location_types:
+                junk_space_available += 30  # Rough estimate, not to be used as factual
+            if Types.Kong in self.shuffled_location_types:
+                junk_space_available -= 5 - len(self.starting_kong_list)  # Not always this, Kongs in cages are so rare it may as well be
+            # Shopkeepers don't get placed in their vanilla locations (essentially a start with)
+            if Types.Cranky in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Cranky]) <= 0:
+                    return False
+            if Types.Funky in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Funky]) <= 0:
+                    return False
+            if Types.Candy in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Candy]) <= 0:
+                    return False
+            if Types.Snide in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Snide]) <= 0:
+                    return False
+            return junk_space_available >= 0
+        return True
 
     def __repr__(self):
         """Return printable version of the object as json.

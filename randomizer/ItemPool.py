@@ -3,6 +3,7 @@
 import itertools
 import random
 
+from randomizer.Enums.Events import Events
 import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
@@ -120,6 +121,10 @@ def AllItemsUnrestricted(settings):
     else:
         allItems.append(Items.CameraAndShockwave)
     allItems.extend(Kongs(settings))
+    allItems.extend(CrankyItems())
+    allItems.extend(FunkyItems())
+    allItems.extend(CandyItems())
+    allItems.extend(SnideItems())
     return allItems
 
 
@@ -315,6 +320,31 @@ def Blueprints():
 def Keys():
     """Return all key items."""
     return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
+
+
+def KeysToPlace(settings):
+    """Return all keys that are non-starting keys."""
+    keysToPlace = []
+    for keyEvent in settings.krool_keys_required:
+        if keyEvent == Events.JapesKeyTurnedIn:
+            keysToPlace.append(Items.JungleJapesKey)
+        elif keyEvent == Events.AztecKeyTurnedIn:
+            keysToPlace.append(Items.AngryAztecKey)
+        elif keyEvent == Events.FactoryKeyTurnedIn:
+            keysToPlace.append(Items.FranticFactoryKey)
+        elif keyEvent == Events.GalleonKeyTurnedIn:
+            keysToPlace.append(Items.GloomyGalleonKey)
+        elif keyEvent == Events.ForestKeyTurnedIn:
+            keysToPlace.append(Items.FungiForestKey)
+        elif keyEvent == Events.CavesKeyTurnedIn:
+            keysToPlace.append(Items.CrystalCavesKey)
+        elif keyEvent == Events.CastleKeyTurnedIn:
+            keysToPlace.append(Items.CreepyCastleKey)
+        elif keyEvent == Events.HelmKeyTurnedIn:
+            keysToPlace.append(Items.HideoutHelmKey)
+    if settings.key_8_helm and Items.HideoutHelmKey in keysToPlace:
+        keysToPlace.remove(Items.HideoutHelmKey)
+    return keysToPlace
 
 
 def Kongs(settings):

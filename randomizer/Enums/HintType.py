@@ -29,3 +29,4 @@ class HintType(IntEnum):
     RegionItemCount = auto()
     ItemRegion = auto()
     Plando = auto()
+    RequiredSlamHint = auto()

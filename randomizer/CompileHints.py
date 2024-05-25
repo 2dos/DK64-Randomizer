@@ -397,9 +397,10 @@ hint_distribution_default = {
     HintType.FoolishRegion: 3,
     HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
-    HintType.RegionItemCount: 2,
+    HintType.RegionItemCount: 2,  # Also known as scouring hints
     HintType.ItemRegion: 0,
     HintType.Plando: 0,
+    HintType.RequiredSlamHint: 1,  # Essentially the slam microhint placed on a door
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
@@ -428,6 +429,7 @@ race_hint_distribution = {
     HintType.RegionItemCount: 3,
     HintType.ItemRegion: 0,
     HintType.Plando: 0,
+    HintType.RequiredSlamHint: 0,
 }
 
 # The item-hinting distribution has a K. Rool hint, a Helm hint, and then every other hint will point to a move.
@@ -455,6 +457,7 @@ item_hint_distribution = {
     HintType.RegionItemCount: 0,
     HintType.ItemRegion: 35,
     HintType.Plando: 0,
+    HintType.RequiredSlamHint: 0,
 }
 
 hint_reroll_cap = 2  # How many times are you willing to reroll a hinted location?
@@ -541,6 +544,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         HintType.Multipath,
         HintType.ItemRegion,
         HintType.Plando,
+        HintType.RequiredSlamHint,
     ]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
@@ -749,6 +753,12 @@ def compileHints(spoiler: Spoiler) -> bool:
             valid_types.append(HintType.FullShopWithItems)
             valid_types.append(HintType.MoveLocation)
         if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
+            starting_slam_count = 0
+            for loc in TrainingBarrelLocations.union(PreGivenLocations):
+                if spoiler.LocationList[loc].item == Items.ProgressiveSlam:
+                    starting_slam_count += 1
+            if starting_slam_count < 2:
+                valid_types.append(HintType.RequiredSlamHint)
             # With no logic WOTH isn't built correctly so we can't make any hints with it
             if spoiler.settings.logic_type != LogicType.nologic:
                 # If we're in full item rando with shops in the pool, we need to replace our bad filler with good filler
@@ -941,6 +951,25 @@ def compileHints(spoiler: Spoiler) -> bool:
                 progression_hint_locations.append(hint_for_location)
 
     # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first
+    # The required slam hint must go in a very specific door on progressive hints, so it must be placed first. Fortunately we're not likely to get conflicts for this door
+    if hint_distribution[HintType.RequiredSlamHint] > 0:
+        # If we're using hint doors, put it on a random hint door
+        hint_location = getRandomHintLocation()
+        # If we're using progressive hints, put it on the last hint
+        if spoiler.settings.enable_progressive_hints:
+            hint_location = [hint for hint in hints if hint.level == Levels.CreepyCastle and hint.kong == Kongs.chunky][0]
+        # Loop through locations looking for the slams - from prior calculations we can guarantee there are at least two in non-starting move locations
+        slam_levels = []
+        for id, location in spoiler.LocationList.items():
+            if location.item == Items.ProgressiveSlam and id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
+                if location.level not in slam_levels:
+                    slam_levels.append(location.level)
+        # Assemble a hint that resembles the microhint - only hint the levels the slams are in
+        slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
+        slam_text = " or ".join(slam_text_entries)
+        message = f"Still looking for some \x04super slam strength?\x04 Try looking in {slam_text}."
+        hint_location.hint_type = HintType.RequiredSlamHint
+        UpdateHint(hint_location, message)
     # Item rando kong hints are required and highly restrictive, only hinted to free kongs before (or as) the location is available
     if hint_distribution[HintType.RequiredKongHint] > 0:
         # The length of this list should match hint_distribution[HintType.RequiredKongHint]
@@ -2401,17 +2430,30 @@ def GenerateMultipathDict(
     multipath_dict_hints = {}
     multipath_dict_goals = {}
     for location in spoiler.woth_locations:
+        # Kongs are never on the path to anything (yet?) so we can just skip right over them
+        # We don't want the Kongs' locations to be path hinted, as they already get hinted elsewhere
+        if spoiler.LocationList[location].item in [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]:
+            continue
         path_to_keys = []
         path_to_krool_phases = []
         path_to_camera = []
         relevant_goal_locations = []
-        # Determine which keys this location is on the path to
+        path_to_family = False
+        # Determine which keys and kongs this location is on the path to
         for woth_loc in spoiler.woth_paths.keys():
             if location in spoiler.woth_paths[woth_loc]:
                 endpoint_item = ItemList[spoiler.LocationList[woth_loc].item]
                 if endpoint_item.type == Types.Key:
                     path_to_keys.append(str(endpoint_item.index))
                     relevant_goal_locations.append(woth_loc)
+                if endpoint_item.type == Types.Kong:
+                    path_to_family = True
+        # For path to family, we also have to check non-woth paths
+        for non_woth_loc in spoiler.other_paths.keys():
+            if location in spoiler.other_paths[non_woth_loc]:
+                endpoint_item = ItemList[spoiler.LocationList[non_woth_loc].item]
+                if endpoint_item.type == Types.Kong:
+                    path_to_family = True
         # Determine which K. Rool phases this is on the path to (if relevant)
         if spoiler.settings.win_condition == WinCondition.beat_krool:
             for map_id in spoiler.krool_paths.keys():
@@ -2450,7 +2492,9 @@ def GenerateMultipathDict(
             hint_text_components.append("\x0dThe battle against\x0d " + join_words(path_to_krool_phases))
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
-        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0:
+        if path_to_family:
+            hint_text_components.append("\x04Freeing Kongs\x04")
+        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations
     return multipath_dict_hints, multipath_dict_goals
