@@ -587,7 +587,7 @@ def patching_response(spoiler):
         applyHelmDoorCosmetics(spoiler.settings)
         applyKongModelSwaps(spoiler.settings)
 
-    patchAssembly(ROM_COPY, spoiler)
+        patchAssembly(ROM_COPY, spoiler)
 
     # Apply Hash
     order = 0

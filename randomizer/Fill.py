@@ -776,6 +776,10 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
     """Identify the Major Items in this seed based on the item placement and the settings."""
     # Use the settings to determine non-progression Major Items
     majorItems = ItemPool.AllKongMoves()
+    majorItems.extend(ItemPool.CrankyItems())
+    majorItems.extend(ItemPool.FunkyItems())
+    majorItems.extend(ItemPool.CandyItems())
+    majorItems.extend(ItemPool.SnideItems())
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
@@ -1452,26 +1456,7 @@ def PlaceItems(
 
 def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types], placed_items: List[Items]) -> None:
     """Fill Keys in shuffled locations based on the settings."""
-    keysToPlace = []
-    for keyEvent in spoiler.settings.krool_keys_required:
-        if keyEvent == Events.JapesKeyTurnedIn:
-            keysToPlace.append(Items.JungleJapesKey)
-        elif keyEvent == Events.AztecKeyTurnedIn:
-            keysToPlace.append(Items.AngryAztecKey)
-        elif keyEvent == Events.FactoryKeyTurnedIn:
-            keysToPlace.append(Items.FranticFactoryKey)
-        elif keyEvent == Events.GalleonKeyTurnedIn:
-            keysToPlace.append(Items.GloomyGalleonKey)
-        elif keyEvent == Events.ForestKeyTurnedIn:
-            keysToPlace.append(Items.FungiForestKey)
-        elif keyEvent == Events.CavesKeyTurnedIn:
-            keysToPlace.append(Items.CrystalCavesKey)
-        elif keyEvent == Events.CastleKeyTurnedIn:
-            keysToPlace.append(Items.CreepyCastleKey)
-        elif keyEvent == Events.HelmKeyTurnedIn:
-            keysToPlace.append(Items.HideoutHelmKey)
-    if spoiler.settings.key_8_helm and Items.HideoutHelmKey in keysToPlace:
-        keysToPlace.remove(Items.HideoutHelmKey)
+    keysToPlace = ItemPool.KeysToPlace(spoiler.settings)
     # Don't double-place keys
     for item in placed_items:
         if item in keysToPlace:
@@ -1624,43 +1609,64 @@ def Fill(spoiler: Spoiler) -> None:
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Rainbow Coins")
 
-    # Fill in Shop Owners
-    shop_owner_items = {
-        Types.Cranky: ItemPool.CrankyItems(),
-        Types.Funky: ItemPool.FunkyItems(),
-        Types.Candy: ItemPool.CandyItems(),
-        Types.Snide: ItemPool.SnideItems(),
-    }
-    shopowners_in_pool = False
-    for item_type in shop_owner_items:
-        if item_type in spoiler.settings.shuffled_location_types:
-            shopowners_in_pool = True
-            placed_types.append(item_type)
-            spoiler.Reset()
-            shopOwnerItemsToBePlaced = shop_owner_items[item_type]
-            for item in preplaced_items:
-                if item in shopOwnerItemsToBePlaced:
-                    shopOwnerItemsToBePlaced.remove(item)
-            unplacedShopOwners = PlaceItems(spoiler, FillAlgorithm.random, shopOwnerItemsToBePlaced, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
-            if unplacedShopOwners > 0:
-                raise Ex.ItemPlacementException(str(unplacedShopOwners) + " unplaced shop owners.")
-    if shopowners_in_pool:
-        for x in range(4):
-            if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
-                spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
-
-    # Now we place all logically-relevant low-quantity items
-    # Then fill Kongs and Moves - this should be a very early fill type for hopefully obvious reasons
-    FillKongsAndMoves(spoiler, placed_types, preplaced_items)
-    if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "all moves")
-
-    # Then place Keys
-    if Types.Key in spoiler.settings.shuffled_location_types:
+    if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
+        if spoiler.settings.kong_rando:
+            FillKongs(spoiler, placed_types, preplaced_items)
+        preplaced_items.extend([Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky])
+        preplaced_items.extend(FillTrainingMoves(spoiler, preplaced_items))
+        placed_types.append(Types.Shop)
+        placed_types.append(Types.TrainingBarrel)
+        placed_types.append(Types.Shockwave)
         placed_types.append(Types.Key)
-        FillShuffledKeys(spoiler, placed_types, preplaced_items)
-    if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Keys")
+        bigListOfItemsToPlace = []
+        if Types.Shop in spoiler.settings.shuffled_location_types:
+            bigListOfItemsToPlace.extend(ItemPool.ImportantSharedMoves.copy())
+            bigListOfItemsToPlace.extend(ItemPool.JunkSharedMoves.copy())
+            bigListOfItemsToPlace.extend(ItemPool.DonkeyMoves)
+            bigListOfItemsToPlace.extend(ItemPool.DiddyMoves)
+            bigListOfItemsToPlace.extend(ItemPool.LankyMoves)
+            bigListOfItemsToPlace.extend(ItemPool.TinyMoves)
+            bigListOfItemsToPlace.extend(ItemPool.ChunkyMoves)
+            if spoiler.settings.training_barrels != TrainingBarrels.normal:
+                bigListOfItemsToPlace.extend(ItemPool.TrainingBarrelAbilities())
+            if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+                bigListOfItemsToPlace.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
+        if Types.Key in spoiler.settings.shuffled_location_types:
+            bigListOfItemsToPlace.extend(ItemPool.KeysToPlace(spoiler.settings))
+        if Types.Cranky in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Cranky)
+            bigListOfItemsToPlace.extend(ItemPool.CrankyItems())
+        if Types.Funky in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Funky)
+            bigListOfItemsToPlace.extend(ItemPool.FunkyItems())
+        if Types.Candy in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Candy)
+            bigListOfItemsToPlace.extend(ItemPool.CandyItems())
+        if Types.Snide in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Snide)
+            bigListOfItemsToPlace.extend(ItemPool.SnideItems())
+        for item in preplaced_items:
+            if item in bigListOfItemsToPlace:
+                bigListOfItemsToPlace.remove(item)
+        unplaced = PlaceItems(spoiler, FillAlgorithm.assumed, bigListOfItemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
+        if unplaced > 0:
+            raise Ex.ItemPlacementException(str(miscUnplaced) + " unplaced items from the fill.")
+        if spoiler.settings.extreme_debugging:
+            DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "The Fill")
+
+    else:
+        # Now we place all logically-relevant low-quantity items
+        # Then fill Kongs and Moves - this should be a very early fill type for hopefully obvious reasons
+        FillKongsAndMoves(spoiler, placed_types, preplaced_items)
+        if spoiler.settings.extreme_debugging:
+            DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "all moves")
+
+        # Then place Keys
+        if Types.Key in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Key)
+            FillShuffledKeys(spoiler, placed_types, preplaced_items)
+        if spoiler.settings.extreme_debugging:
+            DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Keys")
 
     # Then place misc progression items
     if Types.Bean in spoiler.settings.shuffled_location_types:
@@ -1843,6 +1849,11 @@ def Fill(spoiler: Spoiler) -> None:
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly
     if spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].item is None:
         spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].PlaceItem(spoiler, Items.NoItem)
+    # Shopkeepers have been either placed in the world or set to vanilla. In case of the former, empty out their vanilla "locations" as needed
+    for x in range(4):
+        if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
+            spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
+
     # Finally, check if game is beatable
     spoiler.Reset()
     if not GetAccessibleLocations(spoiler, [], SearchMode.CheckAllReachable):
@@ -1850,6 +1861,70 @@ def Fill(spoiler: Spoiler) -> None:
         raise Ex.GameNotBeatableException("Game not able to complete 101% after placing all items.")
     # We have successfully filled the seed by this point. All that is left is to confirm there are no purchase order locks
     return
+
+
+def FillTrainingMoves(spoiler: Spoiler, placedMoves: List[Items]):
+    """Fill training barrels with your starting moves."""
+    # If we start with a slam as the training grounds reward, it counts as placed for fill purposes
+    if spoiler.settings.start_with_slam:
+        placedMoves.append(Items.ProgressiveSlam)
+    # First place our starting moves randomly
+    locationsNeedingMoves = []
+    # We can expect that all locations in this region are starting move locations or Training Barrels
+    for locationLogic in spoiler.RegionList[Regions.GameStart].locations:
+        location = spoiler.LocationList[locationLogic.id]
+        if location.item is None and not location.inaccessible:
+            locationsNeedingMoves.append(locationLogic.id)
+    # Fill the empty starting locations
+    newlyPlacedItems = []
+    if any(locationsNeedingMoves):
+        # Identify all possible items that can be starting moves if we need to randomly pick some
+        possibleStartingMoves = ItemPool.AllKongMoves().copy()
+        if len(locationsNeedingMoves) < 10:
+            # Generally only include one copy of the useless progressive moves to bias against picking them when you only have a few starting moves
+            possibleStartingMoves.append(Items.ProgressiveAmmoBelt)
+            possibleStartingMoves.append(Items.ProgressiveInstrumentUpgrade)
+        else:
+            # If we have lots of starting moves, we'll need to include all copies so we have enough stuff to fill all locations
+            possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
+        if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
+            possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
+        if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
+            possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
+        # Any placed items placed before this method can't be random starting items
+        for item in placedMoves:
+            if item in possibleStartingMoves:
+                possibleStartingMoves.remove(item)
+        shuffle(possibleStartingMoves)
+        # Assemble the starting move pool
+        startingMovePool = [move for move in spoiler.settings.random_starting_move_list_selected]  # These are the user-chosen moves eligible to be random starting moves
+        shuffle(startingMovePool)
+        startingMovePool.extend(spoiler.settings.starting_move_list_selected)  # Append the guaranteed starting moves at the end so they're always picked first
+        # For each location needing a move, put in a random valid move
+        for locationId in locationsNeedingMoves:
+            # If there are moves in the starting move pool, always pick from there first
+            if len(startingMovePool) > 0:
+                startingMove = startingMovePool.pop()
+                if startingMove in possibleStartingMoves:  # Make sure to ward off issues of duplication
+                    possibleStartingMoves.remove(startingMove)
+            # Otherwise, pick from any random eligible move
+            else:
+                startingMove = possibleStartingMoves.pop()
+            newlyPlacedItems.append(startingMove)  # This line of code now assumes we place starting moves first!!
+            spoiler.LocationList[locationId].PlaceItem(spoiler, startingMove)
+            # Helpful debug code to keep track of where all major items are placed - do not rely on this variable anywhere
+            if locationId in spoiler.settings.debug_fill.keys():
+                del spoiler.settings.debug_fill[spoiler.LocationList[locationId].name]
+            spoiler.settings.debug_fill[spoiler.LocationList[locationId].name] = startingMove
+        # If we ever decide to place starting moves after other moves, we may find ourselves having placed moves twice.
+        # I don't foresee a reason to do this ever, just something to consider if things change.
+        # if any(toBeUnplaced):
+        #     for location in LocationList.values():
+        #         if location.item in (toBeUnplaced) and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
+        #             toBeUnplaced.remove(location.item)
+        #             location.UnplaceItem()
+    # Return all the moves we now know are placed
+    return newlyPlacedItems
 
 
 def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: List[Types]) -> None:
@@ -2193,66 +2268,28 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
         FillKongs(spoiler, placedTypes, placedItems)
     placedMoves = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]  # Kongs are now placed, either in the above method or by default
     placedMoves.extend(placedItems)
-    # If we start with a slam as the training grounds reward, it counts as placed for fill purposes
-    if spoiler.settings.start_with_slam:
-        placedMoves.append(Items.ProgressiveSlam)
-    # First place our starting moves randomly
-    locationsNeedingMoves = []
-    # We can expect that all locations in this region are starting move locations or Training Barrels
-    for locationLogic in spoiler.RegionList[Regions.GameStart].locations:
-        location = spoiler.LocationList[locationLogic.id]
-        if location.item is None and not location.inaccessible:
-            locationsNeedingMoves.append(locationLogic.id)
-    # Fill the empty starting locations
-    if any(locationsNeedingMoves):
-        newlyPlacedItems = []
-        # Identify all possible items that can be starting moves if we need to randomly pick some
-        possibleStartingMoves = ItemPool.AllKongMoves().copy()
-        if len(locationsNeedingMoves) < 10:
-            # Generally only include one copy of the useless progressive moves to bias against picking them when you only have a few starting moves
-            possibleStartingMoves.append(Items.ProgressiveAmmoBelt)
-            possibleStartingMoves.append(Items.ProgressiveInstrumentUpgrade)
-        else:
-            # If we have lots of starting moves, we'll need to include all copies so we have enough stuff to fill all locations
-            possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
-        if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
-            possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
-        if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
-            possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
-        # Any placed items placed before this method can't be random starting items
-        for item in placedMoves:
-            if item in possibleStartingMoves:
-                possibleStartingMoves.remove(item)
-        shuffle(possibleStartingMoves)
-        # Assemble the starting move pool
-        startingMovePool = [move for move in spoiler.settings.random_starting_move_list_selected]  # These are the user-chosen moves eligible to be random starting moves
-        shuffle(startingMovePool)
-        startingMovePool.extend(spoiler.settings.starting_move_list_selected)  # Append the guaranteed starting moves at the end so they're always picked first
-        # For each location needing a move, put in a random valid move
-        for locationId in locationsNeedingMoves:
-            # If there are moves in the starting move pool, always pick from there first
-            if len(startingMovePool) > 0:
-                startingMove = startingMovePool.pop()
-                if startingMove in possibleStartingMoves:  # Make sure to ward off issues of duplication
-                    possibleStartingMoves.remove(startingMove)
-            # Otherwise, pick from any random eligible move
-            else:
-                startingMove = possibleStartingMoves.pop()
-            newlyPlacedItems.append(startingMove)  # This line of code now assumes we place starting moves first!!
-            spoiler.LocationList[locationId].PlaceItem(spoiler, startingMove)
-            # Helpful debug code to keep track of where all major items are placed - do not rely on this variable anywhere
-            if locationId in spoiler.settings.debug_fill.keys():
-                del spoiler.settings.debug_fill[spoiler.LocationList[locationId].name]
-            spoiler.settings.debug_fill[spoiler.LocationList[locationId].name] = startingMove
-        # If we ever decide to place starting moves after other moves, we may find ourselves having placed moves twice.
-        # I don't foresee a reason to do this ever, just something to consider if things change.
-        # if any(toBeUnplaced):
-        #     for location in LocationList.values():
-        #         if location.item in (toBeUnplaced) and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
-        #             toBeUnplaced.remove(location.item)
-        #             location.UnplaceItem()
-        # Compile all the moves we now know are placed
-        placedMoves.extend(newlyPlacedItems)
+
+    # Place Training Moves
+    placedMoves.extend(FillTrainingMoves(spoiler, placedItems))
+
+    # Fill in Shop Owners
+    shop_owner_items = {
+        Types.Cranky: ItemPool.CrankyItems(),
+        Types.Funky: ItemPool.FunkyItems(),
+        Types.Candy: ItemPool.CandyItems(),
+        Types.Snide: ItemPool.SnideItems(),
+    }
+    for item_type in shop_owner_items:
+        if item_type in spoiler.settings.shuffled_location_types:
+            placedTypes.append(item_type)
+            spoiler.Reset()
+            shopOwnerItemsToBePlaced = shop_owner_items[item_type]
+            for item in placedMoves:
+                if item in shopOwnerItemsToBePlaced:
+                    shopOwnerItemsToBePlaced.remove(item)
+            unplacedShopOwners = PlaceItems(spoiler, FillAlgorithm.random, shopOwnerItemsToBePlaced, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedItems))
+            if unplacedShopOwners > 0:
+                raise Ex.ItemPlacementException(str(unplacedShopOwners) + " unplaced shop owners.")
 
     # Handle shared moves before other moves in move rando
     if spoiler.settings.move_rando != MoveRando.off:
@@ -2832,11 +2869,11 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
             raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
     CorrectBossKongLocations(spoiler)
     GeneratePlaythrough(spoiler)
+    compileMicrohints(spoiler)
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         compileHints(spoiler)
     if spoiler.settings.spoiler_hints != SpoilerHints.off:
         compileSpoilerHints(spoiler)
-    compileMicrohints(spoiler)
     spoiler.Reset()
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()

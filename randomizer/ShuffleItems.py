@@ -98,7 +98,7 @@ def ShuffleItems(spoiler):
                     item_location.type == Types.TrainingBarrel and not item_location.constant
                 )  # Depending on starting moves, training barrels can be empty (only when constant). This quick check prevents weirdness later in this method.
             )
-            and not item_location.inaccessible
+            and (not item_location.inaccessible or item_location.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide))  # Shopkeepers' locations are either inaccessible or vanilla
             and item_location.type in spoiler.settings.shuffled_location_types
         ):
             # Create placement info for the patcher to use

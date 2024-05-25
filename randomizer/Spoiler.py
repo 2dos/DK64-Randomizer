@@ -6,6 +6,7 @@ import json
 from copy import deepcopy
 from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
 
+import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -129,6 +130,8 @@ class Spoiler:
         self.tied_hint_flags = {}
         self.settings.finalize_world_settings(self)
         self.settings.update_valid_locations(self)
+        if not self.settings.is_valid_item_pool():
+            raise Ex.SettingsIncompatibleException("Item pool is not a valid combination of items and cannot successfully fill the world.")
 
     def FlushAllExcessSpoilerData(self):
         """Flush all spoiler data that is not needed for the final result."""
