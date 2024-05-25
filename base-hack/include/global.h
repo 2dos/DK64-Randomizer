@@ -419,6 +419,10 @@ extern void snideCodeHandler(void);
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void playBalloonWhoosh(int path_index, float* x, float* y, float* z);
 
+extern void puppetLoop(void);
+extern void puppetActor(void);
+extern void wipeItemDestroyers(void);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];

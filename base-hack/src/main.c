@@ -23,6 +23,7 @@ void cFuncLoop(void) {
 	qualityOfLife_shorteners();
 	overlay_changes();
 	replace_zones(0);
+	puppetLoop();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
