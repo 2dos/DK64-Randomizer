@@ -60,7 +60,6 @@ extern void moveTransplant(void);
 extern void priceTransplant(void);
 
 extern void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag);
-extern void changeHelmLZ(void);
 extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
 

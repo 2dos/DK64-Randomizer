@@ -141,15 +141,7 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	changeHelmLZ();
 	handleSFXCache();
-	if (Rando.fast_start_helm == 2) {
-		if (TransitionSpeed > 0) {
-			if ((DestMap == MAP_HELM) && (CurrentMap == MAP_HELMLOBBY)) {
-				setPermFlag(FLAG_MODIFIER_HELMBOM);
-			}
-		}
-	}
 	handleDPadFunctionality();
 	if (Rando.quality_of_life.fast_boot) {
 		if (Gamemode == GAMEMODE_DKTV) {

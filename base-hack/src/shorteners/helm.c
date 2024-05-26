@@ -2,34 +2,6 @@
 
 #define TRIGGER_ELEMENT_SIZE 0x3A
 
-void changeHelmLZ(void) {
-	if (Rando.fast_start_helm) {
-		if (CurrentMap == MAP_HELMLOBBY) {
-			if (ObjectModel2Timer == 3) {
-				setPermFlag(FLAG_STORY_HELM); // Helm Story
-				setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
-				for (int j = 0; j < 4; j++) {
-					setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
-				}
-				for (int i = 0; i < TriggerSize; i++) {
-					trigger* focused_trigger = getObjectArrayAddr(TriggerArray,TRIGGER_ELEMENT_SIZE,i);
-					if (focused_trigger->type == 9) {
-						if (focused_trigger->map == MAP_HELM) {
-							if (focused_trigger->exit == 0) {
-								if (Rando.fast_start_helm == 1) {
-									focused_trigger->exit = 3;
-								} else if (Rando.fast_start_helm == 2) {
-									focused_trigger->exit = 4;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 void openCrownDoor(void) {
 	if (Rando.crown_door_requirement.item == REQITEM_NONE) {
 		setPermFlag(FLAG_HELM_CROWNDOOR);
