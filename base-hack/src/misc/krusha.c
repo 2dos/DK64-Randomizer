@@ -11,34 +11,38 @@
 #include "../../include/common.h"
 
 void adjustGunBone(playerData* player) {
-    for (int i = 0; i < 5; i++) {
-        custom_kong_models model = Rando.kong_models[i];
-        switch (model) {
-            case KONGMODEL_CRANKY:
-            case KONGMODEL_KROOL_CUTSCENE:
-                player->gun_bone = 5;
-                break;
-            case KONGMODEL_CANDY:
-                player->gun_bone = 2;
-                break;
-            case KONGMODEL_KROOL_FIGHT:
-                player->gun_bone = 6;
-                break;
-            case KONGMODEL_DEFAULT:
-                if (i == KONG_DIDDY) {
-                    if (!player->gun_bone) {
-                        player->gun_bone = 1;
-                    } else {
-                        player->gun_bone = 0;
-                    }
-                    break;
+    int kong = player->characterID - 2;
+    if (kong < 0) {
+        return;
+    } else if (kong > 4) {
+        return;
+    }
+    custom_kong_models model = Rando.kong_models[kong];
+    switch (model) {
+        case KONGMODEL_CRANKY:
+        case KONGMODEL_KROOL_CUTSCENE:
+            player->gun_bone = 5;
+            break;
+        case KONGMODEL_CANDY:
+            player->gun_bone = 2;
+            break;
+        case KONGMODEL_KROOL_FIGHT:
+            player->gun_bone = 6;
+            break;
+        case KONGMODEL_DEFAULT:
+            if (kong == KONG_DIDDY) {
+                if (!player->gun_bone) {
+                    player->gun_bone = 1;
+                } else {
+                    player->gun_bone = 0;
                 }
-            case KONGMODEL_DISCOCHUNKY:
-            case KONGMODEL_KRUSHA:
-            default:
-                player->gun_bone = 1;
                 break;
-        }
+            }
+        case KONGMODEL_DISCOCHUNKY:
+        case KONGMODEL_KRUSHA:
+        default:
+            player->gun_bone = 1;
+            break;
     }
 }
 
