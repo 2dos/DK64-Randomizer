@@ -224,6 +224,10 @@ text_rewards = {
     Types.NoItem: ("\x04NOTHING\x04", "\x04DIDDLY SQUAT\x04"),
     Types.RarewareCoin: ("\x04RAREWARE COIN\x04", "\x04DOUBLOON OF THE RAREST KIND\x04"),
     Types.NintendoCoin: ("\x04NINTENDO COIN\x04", "\x04ANCIENT DOUBLOON\x04"),
+    Types.Snide: ("\x04SHOPKEEPER\x04", "\x04NERDY SOUL\x04"),
+    Types.Cranky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
+    Types.Candy: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
+    Types.Funky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
 }
 
 level_names = {
