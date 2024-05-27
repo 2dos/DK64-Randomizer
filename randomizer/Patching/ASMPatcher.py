@@ -1825,8 +1825,8 @@ def patchAssembly(ROM_COPY, spoiler):
                 address_head = 0x807447A0 + (12 * race_index)
                 shuffled_back = spoiler.shuffled_exit_data[race_exit["tied_transition"]]
                 writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict, 4)
-                writeValue(ROM_COPY, address_head + 0, Overlay.Static, GetMapId(shuffled_back.regionId), offset_dict, 4)
-                writeValue(ROM_COPY, address_head + 0, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
+                writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(shuffled_back.regionId), offset_dict, 4)
+                writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
 
     # Boss Mapping
     for i in range(7):
