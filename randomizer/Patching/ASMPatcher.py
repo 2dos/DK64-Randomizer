@@ -2050,6 +2050,7 @@ def patchAssembly(ROM_COPY, spoiler):
         for slot_index, enemy_index in enumerate(order):
             writeValue(ROM_COPY, 0x8002E8F4 + (4 * slot_index), Overlay.Jetpac, functions[enemy_index], offset_dict, 4)
     writeFunction(ROM_COPY, 0x80025034, Overlay.Jetpac, "loadJetpacSprites_handler", offset_dict)
+    writeValue(ROM_COPY, 0x800281AC, Overlay.Jetpac, 0x5000, offset_dict) # Make Rareware Coin permanent once spawned until collected
 
     writeValue(ROM_COPY, 0x806BA5A8, Overlay.Static, 0x1D800003, offset_dict, 4)  # Fix some health oversights by making death if health <= 0 instead of == 0
     writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict)  # Change BHDM Cooldown
