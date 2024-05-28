@@ -72,14 +72,11 @@ static const item_info item_detection_data[] = {
     {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY, .fairy_model = 0x3D}, // Fairy
     {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN, .fairy_model = -1}, // Rainbow Coin
     {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0xFD}, // Fake Item
-    {.song = SONG_SILENCE, .sprite = 0x2C, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Orange)
-    {.song = SONG_SILENCE, .sprite = 0x48, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Ammo)
-    {.song = SONG_CRYSTALCOCONUTGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Crystal)
     {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
-    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11}, // Cranky
-    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x12}, // Funky
-    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x13}, // Candy
-    {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x1F}, // Snide
+    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x11}, // Cranky
+    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x12}, // Funky
+    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x13}, // Candy
+    {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x1F}, // Snide
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
 };
 
@@ -542,6 +539,12 @@ void getItem(int object_type) {
             playSong(SONG_MELONSLICEGET, pickup_volume);
             forceDance();
             break;
+        case 0x25F:
+        case 0x260:
+        case 0x261:
+        case 0x262:
+            // Shopkeepers
+            hh_item = HHITEM_KONG;
         case 0x59:
         case 0x5B:
         case 0x1F2:
@@ -553,7 +556,9 @@ void getItem(int object_type) {
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
-            hh_item = HHITEM_MOVE;
+            if (hh_item == HHITEM_NOTHING) {
+                hh_item = HHITEM_MOVE;
+            }
             break;
         case 0x74:
         case 0x288:

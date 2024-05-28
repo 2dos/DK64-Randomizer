@@ -282,6 +282,8 @@ def getTextRewardIndex(item) -> int:
         return 6
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         return 8
+    elif item.new_item in (Types.Snide, Types.Cranky, Types.Candy, Types.Funky):
+        return 9
     elif item.new_item is None:
         return 14
     else:
