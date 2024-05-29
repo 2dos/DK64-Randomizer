@@ -1142,7 +1142,8 @@ for x in range(2):
             )
 
 with open("empty_race.bin", "wb") as fh:
-    fh.write((0).to_bytes(2, "big"))
+    temp = 1
+    # fh.write((0).to_bytes(0x10, "big"))
 
 # Race Checkpoints
 races = [0xE, 0x27, 0x52, 0xB9]
