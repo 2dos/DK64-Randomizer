@@ -3013,6 +3013,11 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.Lanky, "Lanky Kong", "Llama Lanky Cage"),
         ItemReference(Items.Tiny, "Tiny Kong", "Aztec Tiny Cage"),
         ItemReference(Items.Chunky, "Chunky Kong", "Factory Chunky Cage"),
+        # Shopkeepers
+        ItemReference(Items.Cranky, "Cranky Kong", "Starting Item"),
+        ItemReference(Items.Candy, "Candy Kong", "Starting Item"),
+        ItemReference(Items.Funky, "Funky Kong", "Starting Item"),
+        ItemReference(Items.Snide, "Snide", "Starting Item"),
         # Early Keys
         ItemReference(Items.JungleJapesKey, "Key 1", "Starting Key"),
         ItemReference(Items.AngryAztecKey, "Key 2", "Starting Key"),

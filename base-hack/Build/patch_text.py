@@ -814,6 +814,11 @@ location_references = [
     ItemReference("Lanky Kong", "Llama Lanky Cage"),
     ItemReference("Tiny Kong", "Aztec Tiny Cage"),
     ItemReference("Chunky Kong", "Factory Chunky Cage"),
+    # Shopkeepers
+    ItemReference("Cranky Kong", "Starting Item"),
+    ItemReference("Candy Kong", "Starting Item"),
+    ItemReference("Funky Kong", "Starting Item"),
+    ItemReference("Snide", "Starting Item"),
     # Early Keys
     ItemReference("Key 1", "Japes Boss Defeated"),
     ItemReference("Key 2", "Aztec Boss Defeated"),
@@ -978,10 +983,10 @@ squawks_text.append(
     ]
 )
 squawks_text.append([{"text": ["A \x04GOLDEN BANANA\x04 FOR YOU IF YOU SAVE ME FROM THESE FIREBALLS. HEE HEE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT CRANKY HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HIM THERE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT FUNKY HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HIM THERE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT CANDY HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HER THERE."]}])
-squawks_text.append([{"text": ["SEE THE SIGN. IT SAYS THAT SNIDE HAS GONE ON VACATION TO LOCATION NAME. PERHAPS I WOULD FIND HIM THERE."]}])
+squawks_text.append([{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}])
+squawks_text.append([{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}])
+squawks_text.append([{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}])
+squawks_text.append([{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}])
 writeText("misc_squawks_text.bin", squawks_text)
 
 hint_region_text = []

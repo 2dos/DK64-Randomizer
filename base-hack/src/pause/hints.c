@@ -25,6 +25,7 @@ typedef enum itemloc_subgroups {
     ITEMLOC_BFITRAINING,
     ITEMLOC_INSUPG,
     ITEMLOC_KONGS,
+    ITEMLOC_SHOPKEEPERS,
     ITEMLOC_EARLYKEYS,
     ITEMLOC_LATEKEYS,
     ITEMLOC_TERMINATOR,
@@ -101,6 +102,11 @@ static itemloc_data itemloc_textnames[] = {
         .flags={FLAG_KONG_DK, FLAG_KONG_DIDDY, FLAG_KONG_LANKY, FLAG_KONG_TINY, FLAG_KONG_CHUNKY, 0}, 
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
+    {
+        .header="SHOPKEEPERS", 
+        .flags={FLAG_ITEM_CRANKY, FLAG_ITEM_CANDY, FLAG_ITEM_FUNKY, FLAG_ITEM_SNIDE, 0, 0}, 
+        .lengths={1, 1, 1, 1, -1, -1}
+    }, // 4
     {
         .header="EARLY KEYS", 
         .flags={FLAG_KEYHAVE_KEY1, FLAG_KEYHAVE_KEY2, FLAG_KEYHAVE_KEY3, FLAG_KEYHAVE_KEY4, 0, 0}, 
