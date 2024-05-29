@@ -41,6 +41,9 @@ void initSongDisplay(int song) {
     displayed_text_offset = -1;
     int text_length = cstring_strlen(displayed_text_music);
     display_timer = 60;
+    if (ObjectModel2Timer < 31) {
+        display_timer = 91;
+    }
     for (int i = 0; i < text_length; i++) {
         if (displayed_text_music[i] == 0xA) {
             displayed_text_music[i] = 0;
