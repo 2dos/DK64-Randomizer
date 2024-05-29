@@ -236,10 +236,21 @@ void setCrusher(void) {
 
 void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
 	if (Rando.randomize_more_loading_zones == 1) {
-		initiateTransition_0(entrance->map, entrance->exit, 0, 0);
+		int exit = entrance->exit;
+		if (entrance->map == MAP_HELM) {
+			exit = getHelmExit();
+		}
+		initiateTransition_0(entrance->map, exit, 0, 0);
 	} else {
 		initiateTransition_0(vanilla_map, 0, 0, 0);
 	}
+}
+
+void portalWarpFix(maps map, int exit) {
+	if (map == MAP_HELM) {
+		exit = getHelmExit();
+	}
+	initiateTransition(map, exit);
 }
 
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {

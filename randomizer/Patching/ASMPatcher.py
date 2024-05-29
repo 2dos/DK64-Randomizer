@@ -1775,6 +1775,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Helm Warp Handler
     writeFunction(ROM_COPY, 0x8068B04C, Overlay.Static, "WarpToHelm", offset_dict)
     writeValue(ROM_COPY, 0x8068B054, Overlay.Static, 0x5000, offset_dict)
+    writeFunction(ROM_COPY, 0x80640720, Overlay.Static, "portalWarpFix", offset_dict)
 
     # Misc LZR Stuff
     if settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:

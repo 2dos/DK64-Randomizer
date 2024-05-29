@@ -106,6 +106,8 @@ extern void saveHelmHurryTime(void);
 extern void writeDefaultFilename(void);
 extern void wipeFileStats(void);
 
+extern int getHelmExit(void);
+
 extern Gfx* drawTri(Gfx* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
 extern Gfx* drawPixelText(Gfx* dl, int x, int y, char* str, int red, int green, int blue, int alpha);

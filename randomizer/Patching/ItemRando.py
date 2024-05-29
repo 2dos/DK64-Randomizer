@@ -632,8 +632,6 @@ def place_randomized_items(spoiler, original_flut: list):
                                 elif (subtype == 2) or (subtype == 3):
                                     medal_index = 7
                             ROM_COPY.write(medal_index)
-                        elif item.new_item == Types.JunkItem:
-                            ROM_COPY.write(17 + subitems.index(item.new_subitem))
                         elif item.new_item == Types.RarewareCoin:
                             ROM_COPY.write(slots.index(Types.NintendoCoin))
                         else:
