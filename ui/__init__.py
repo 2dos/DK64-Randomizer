@@ -38,7 +38,7 @@ from ui.rando_options import (
     toggle_key_settings,
     toggle_medals_box,
     toggle_vanilla_door_rando,
-    update_boss_required,
+    change_level_randomization,
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
 )
@@ -50,7 +50,7 @@ set_random_weights_options()
 set_preset_options()
 toggle_counts_boxes(None)
 toggle_b_locker_boxes(None)
-update_boss_required(None)
+change_level_randomization(None)
 disable_colors(None)
 disable_music(None)
 disable_move_shuffles(None)

@@ -1029,11 +1029,6 @@ class LogicVarHolder:
                 return False
             elif order_of_level > 7 and (not self.CavesKey or not self.CastleKey):
                 return False
-
-        if level == Levels.HideoutHelm:
-            if (not self.snideAccess) and self.settings.helm_setting != HelmSetting.skip_all:  # Disable Helm Entry logically if you are missing Snide
-                return False
-
         # If we have the moves, ensure we have enough kongs as well
         return self.HasEnoughKongs(level, forPreviousLevel=True)
 
@@ -1225,6 +1220,13 @@ class LogicVarHolder:
             and self.saxophone
             and self.triangle
         )
+
+    def CanSurviveFallDamage(self):
+        """Check if you can survive a single instance of fall damage."""
+        if self.settings.damage_amount != DamageAmount.ohko:
+            if self.settings.damage_amount != DamageAmount.quad or self.Melons > 1:
+                return True
+        return False
 
 
 # Import regions from logic files

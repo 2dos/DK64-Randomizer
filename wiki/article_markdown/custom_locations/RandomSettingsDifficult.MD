@@ -247,6 +247,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Shuffled Decoupled: 30%
 	- Start With: 20%
 - Shorten Boss Fights: 80%
+- Shuffle Helm Location: 70%
 - Shuffle Shop Locations: 70%
 - Smaller Shops: 50%
 - Starting Kong: 

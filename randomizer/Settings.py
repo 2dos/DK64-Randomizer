@@ -6,6 +6,7 @@ import random
 from copy import deepcopy
 from random import randint
 
+from randomizer.Enums.Transitions import Transitions
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.LogicFiles.AngryAztec
@@ -570,6 +571,7 @@ class Settings:
         self.perma_death = False
         self.disable_tag_barrels = False
         self.level_randomization = LevelRandomization.vanilla
+        self.shuffle_helm_location = False
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
@@ -662,15 +664,17 @@ class Settings:
         self.helmhurry_list_colored_bananas = 3
         self.helmhurry_list_ice_traps = -40
         # Point spread
-        self.points_list_kongs = 9
-        self.points_list_keys = 9
-        self.points_list_guns = 7
-        self.points_list_instruments = 7
-        self.points_list_training_moves = 5
+        self.points_list_kongs = 11
+        self.points_list_keys = 11
+        self.points_list_shopkeepers = 11
+        self.points_list_guns = 9
+        self.points_list_instruments = 9
+        self.points_list_training_moves = 7
         self.points_list_important_shared = 5
+        self.points_list_fairy_moves = 7
         self.points_list_pad_moves = 3
-        self.points_list_barrel_moves = 3
-        self.points_list_active_moves = 3
+        self.points_list_barrel_moves = 7
+        self.points_list_active_moves = 5
         self.points_list_bean = 3
         # Progressive hints
         self.enable_progressive_hints = False
@@ -736,6 +740,7 @@ class Settings:
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
 
         # Switchsanity handling
+        ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {Kongs.donkey, Kongs.lanky, Kongs.tiny}  # This might get changed here, reset this to the default now
         self.switchsanity_data = deepcopy(SwitchData)
         if self.switchsanity != SwitchsanityLevel.off:
             kongs = GetKongs()
@@ -772,6 +777,13 @@ class Settings:
                         self.switchsanity_data[int(key)].kong = planned_data["kong"]
                     if "switch_type" in planned_data.keys():
                         self.switchsanity_data[int(key)].switch_type = planned_data["switch_type"]
+            # If we've shuffled all loading zones, we need to account for some entrances changing hands
+            if self.switchsanity == SwitchsanityLevel.all and self.shuffle_loading_zones == ShuffleLoadingZones.all:
+                ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {
+                    self.switchsanity_data[Switches.AztecLlamaCoconut].kong,
+                    self.switchsanity_data[Switches.AztecLlamaGrape].kong,
+                    self.switchsanity_data[Switches.AztecLlamaFeather].kong,
+                }
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava):
@@ -971,6 +983,8 @@ class Settings:
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
                 self.shuffled_location_types.append(Types.PreGivenMove)
+            if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
+                self.shuffled_location_types.append(Types.IslesMedal)
         kongs = GetKongs()
 
         # B Locker and Troff n Scoff amounts Rando
@@ -990,7 +1004,7 @@ class Settings:
         self.krool_pufftoss = False
         self.krool_kutout = False
 
-        self.krool_in_boss_pool = self.hard_level_progression  # TODO: Make this a setting and get this working for SLO
+        self.krool_in_boss_pool = False  # self.hard_level_progression - TODO: Make this a setting and get this working for SLO
         phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
         if self.krool_in_boss_pool:
             phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])
@@ -1257,6 +1271,7 @@ class Settings:
             self.decoupled_loading_zones = True
         elif self.level_randomization == LevelRandomization.vanilla:
             self.shuffle_loading_zones = ShuffleLoadingZones.none
+        self.shuffle_aztec_temples = self.shuffle_items and Types.Kong in self.shuffled_location_types
 
         # Kong rando
         # Temp until Slider UI binding gets fixed
@@ -1440,6 +1455,13 @@ class Settings:
         # We need to block PreGiven locations depending on the id of the first empty location
         for location_id in PreGivenLocations:
             spoiler.LocationList[location_id].inaccessible = location_id >= first_empty_location
+
+        if self.cb_rando != CBRando.on_with_isles:
+            spoiler.LocationList[Locations.IslesDonkeyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesDiddyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesLankyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesTinyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesChunkyMedal].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:

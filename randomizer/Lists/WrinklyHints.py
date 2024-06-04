@@ -84,16 +84,18 @@ def ClearHintMessages() -> None:
 
 PointSpreadSelector = []
 PointSpreadBase = [
-    ("Kongs", 9),
-    ("Keys", 9),
-    ("Guns", 7),
-    ("Instruments", 7),
-    ("Training/Fairy Moves", 5),
+    ("Kongs", 11),
+    ("Keys", 11),
+    ("Guns", 9),
+    ("Instruments", 9),
+    ("Training Moves", 7),
+    ("Fairy Moves", 7),
     ("Important Shared", 5),
     ("Pad Moves", 3),
-    ("Barrel Moves", 3),
-    ("Active Moves", 3),
+    ("Barrel Moves", 7),
+    ("Active Moves", 5),
     ("Bean", 3),
+    ("Shopkeepers", 11),
 ]
 for item in PointSpreadBase:
-    PointSpreadSelector.append({"name": item[0], "value": item[0].replace("Training/Fairy", "training").lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
+    PointSpreadSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

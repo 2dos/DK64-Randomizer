@@ -776,10 +776,14 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
     """Identify the Major Items in this seed based on the item placement and the settings."""
     # Use the settings to determine non-progression Major Items
     majorItems = ItemPool.AllKongMoves()
-    majorItems.extend(ItemPool.CrankyItems())
-    majorItems.extend(ItemPool.FunkyItems())
-    majorItems.extend(ItemPool.CandyItems())
-    majorItems.extend(ItemPool.SnideItems())
+    if Types.Cranky in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.CrankyItems())
+    if Types.Funky in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.FunkyItems())
+    if Types.Candy in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.CandyItems())
+    if Types.Snide in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.SnideItems())
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
@@ -1001,7 +1005,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
             if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
-        if "Shops" not in region.hint_name:
+        if "Shops" not in region.hint_name and region.hint_name not in nonHintableNames:
             # Count the number of region count hintable items in the region (again, ignore training moves)
             regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in regionCountHintableItems)
             if regionItemCount > 0:
@@ -2532,7 +2536,6 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     spoiler.Reset()
     accessible = GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
     runningGBTotal = spoiler.LogicVariables.GoldenBananas
-    minimumBLockerGBs = 0
 
     # Reset B. Lockers and T&S to initial values
     settings.BLockerEntryCount = [settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7]
@@ -2548,6 +2551,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     if settings.hard_blockers:
         BLOCKER_MIN = 0.6
         BLOCKER_MAX = 0.95
+    maximumMinRoll = round((settings.blocker_max / BLOCKER_MAX) * BLOCKER_MIN)
 
     levelsProgressed = []
     foundProgressionKeyEvents = []
@@ -2567,25 +2571,15 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             nextLevelToBeat = choice(openUnprogressedLevels)
             # If the level still isn't accessible, we have to truncate the required amount
             if settings.BLockerEntryCount[nextLevelToBeat] > maxEnterableBlocker:
-                # Each B. Locker must be greater than the previous one and at least a specified percentage of availalbe GBs
-                highroll = maxEnterableBlocker
-                if settings.randomize_blocker_required_amounts:
-                    highroll = min(highroll, settings.blocker_max)  # When there are more GBs available than the max B. Locker value
-                lowroll = max(minimumBLockerGBs, round(runningGBTotal * BLOCKER_MIN))
-                # Often as soon as a seed opens up, the GB count skyrockets. This can lead to the last few B. Lockers being very expensive
-                # This check corrects for it assuming we want random non-hard B. Lockers.
-                if settings.randomize_blocker_required_amounts and not settings.hard_blockers and runningGBTotal > settings.blocker_max:
-                    lowroll = minimumBLockerGBs
-                if lowroll > highroll:
+                # Each B. Locker must be greater than the previous one and at least a specified percentage of available GBs
+                highroll = min(maxEnterableBlocker, settings.blocker_max)
+                lowroll = min(maximumMinRoll, round(runningGBTotal * BLOCKER_MIN))
+                if lowroll > highroll:  # I think this impossible? It probably takes insane rng and very specific numbers
                     lowroll = highroll
                 settings.BLockerEntryCount[nextLevelToBeat] = randint(lowroll, highroll)
             accessibleIncompleteLevels = [nextLevelToBeat]
         else:
             nextLevelToBeat = choice(accessibleIncompleteLevels)
-            # Our last few lobbies could have very low B. Lockers, this condition makes sure B. Lockers always increase in value
-            if settings.randomize_blocker_required_amounts and runningGBTotal > settings.blocker_max and settings.BLockerEntryCount[nextLevelToBeat] < minimumBLockerGBs:
-                settings.BLockerEntryCount[nextLevelToBeat] = randint(minimumBLockerGBs, settings.blocker_max)
-        minimumBLockerGBs = settings.BLockerEntryCount[nextLevelToBeat]  # This B. Locker is now the minimum for the next one
         levelsProgressed.append(nextLevelToBeat)
 
         # Determine the Kong, GB, and Move accessibility from this level
@@ -2781,10 +2775,11 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         #     # Put it back so we don't accidentally an item
         #     bossLocation.PlaceItem(spoiler, bossReward)
 
+    mostExpensiveBLocker = max(settings.BLockerEntryCount[0:7])
     # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
-    if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < minimumBLockerGBs:
+    if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < mostExpensiveBLocker:
         # Ensure that Helm is the most expensive B. Locker
-        settings.BLockerEntryCount[7] = randint(minimumBLockerGBs, settings.blocker_max)
+        settings.BLockerEntryCount[7] = randint(mostExpensiveBLocker, settings.blocker_max)
     # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
     if not isKeyItemRando:
         # Place boss locations based on kongs and moves found for each level

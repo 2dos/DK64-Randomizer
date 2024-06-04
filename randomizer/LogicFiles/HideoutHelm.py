@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import HelmSetting
+from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
@@ -29,8 +30,10 @@ LogicRegions = {
         Event(Events.HelmGatesPunched, lambda l: l.settings.helm_setting != HelmSetting.default),
         Event(Events.HelmFinished, lambda l: l.settings.helm_setting == HelmSetting.skip_all),
     ], [
-        TransitionFront(Regions.HideoutHelmStart, lambda l: l.settings.helm_setting == HelmSetting.default),
-        TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting == HelmSetting.skip_start),
+        # These transitions route you to where the loading zone entering Helm will take you
+        # If we must turn off the Blast-O-Matic, also prevent the fill from entering Helm without Snide
+        TransitionFront(Regions.HideoutHelmStart, lambda l: l.settings.helm_setting == HelmSetting.default and (l.snideAccess or l.assumeFillSuccess)),
+        TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting == HelmSetting.skip_start and (l.snideAccess or l.assumeFillSuccess)),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all)
     ]),
 
@@ -38,7 +41,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_Start0, lambda l: True),
         LocationLogic(Locations.HelmMainEnemy_Start1, lambda l: True),
     ], [], [
-        TransitionFront(Regions.HideoutHelmLobby, lambda l: True),
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: True, Transitions.HelmToIsles),
         TransitionFront(Regions.HideoutHelmSwitchRoom, lambda l: (l.handstand and l.islanky) or l.advanced_platforming),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in l.Events),  # W1
     ]),

@@ -182,6 +182,15 @@ def AssumeExits(spoiler, frontpool, backpool, newpool):
         # When coupled, only transitions which have a reverse path can be included in the pools
         if not spoiler.settings.decoupled_loading_zones and exit.back.reverse is None:
             continue
+        # Don't shuffle the Aztec temples if they are not eligible to be shuffled
+        if not spoiler.settings.shuffle_aztec_temples and exitId in (Transitions.AztecStartToTemple, Transitions.AztecTempleToStart, Transitions.AztecMainToLlama, Transitions.AztecLlamaToMain):
+            continue
+        # Don't shuffle the Prison if we're not automatically turning in keys
+        if not spoiler.settings.auto_keys and exitId in (Transitions.IslesMainToPrison, Transitions.IslesMainToPrison):
+            continue
+        # Shuffling Helm's location is opt-in
+        if not spoiler.settings.shuffle_helm_location and exitId in (Transitions.IslesMainToHelmLobby, Transitions.IslesHelmLobbyToMain, Transitions.IslesToHelm, Transitions.HelmToIsles):
+            continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
         backpool.append(exitId)

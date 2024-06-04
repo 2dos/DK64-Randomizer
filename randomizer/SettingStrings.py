@@ -116,11 +116,13 @@ settingsExclusionMap = {
             "points_list_guns"
             "points_list_instruments"
             "points_list_training_moves"
+            "points_list_fairy_moves"
             "points_list_important_shared"
             "points_list_pad_moves"
             "points_list_barrel_moves"
             "points_list_active_moves"
             "points_list_bean"
+            "points_list_shopkeepers"
         ],
         SpoilerHints.vial_colors: [
             "points_list_kongs"
@@ -128,11 +130,13 @@ settingsExclusionMap = {
             "points_list_guns"
             "points_list_instruments"
             "points_list_training_moves"
+            "points_list_fairy_moves"
             "points_list_important_shared"
             "points_list_pad_moves"
             "points_list_barrel_moves"
             "points_list_active_moves"
             "points_list_bean"
+            "points_list_shopkeepers"
         ],
     },
 }
