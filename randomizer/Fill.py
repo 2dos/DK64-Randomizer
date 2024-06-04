@@ -984,6 +984,9 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
 
     # These regions never have anything useful or are otherwise accounted for in the hints and shouldn't be hinted
     nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits", "Jetpac Game"}
+    if spoiler.settings.cb_rando != CBRando.on_with_isles:
+        # Disable hinting this if CBs aren't in Isles. Obviously Isles CBs would be foolish if there's no CBs to get 
+        nonHintableNames.add("Isles Medal Rewards")
     spoiler.region_hintable_count = {}
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items

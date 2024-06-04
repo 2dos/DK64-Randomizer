@@ -4,6 +4,7 @@ import math
 import random
 
 import js
+from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -105,9 +106,60 @@ def pickChunkyCabinPadPositions():
                 picked_pads.append(pad)
     return {"picked": picked_pads.copy(), "index": 0}
 
+def SpeedUpFungiRabbit():
+    """Change the speed of the Fungi Rabbit."""
+    ROM_COPY = LocalROM()
+    file_start = js.pointer_addresses[16]["entries"][Maps.FungiForest]["pointing_to"]
+    ROM_COPY.seek(file_start)
+    fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    offset = 2
+    fence_bytes = []
+    used_fence_ids = []
+    if fence_count > 0:
+        for x in range(fence_count):
+            fence = []
+            fence_start = file_start + offset
+            ROM_COPY.seek(file_start + offset)
+            point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            offset += (point_count * 6) + 2
+            ROM_COPY.seek(file_start + offset)
+            point0_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            offset += (point0_count * 10) + 6
+            fence_finish = file_start + offset
+            fence_size = fence_finish - fence_start
+            ROM_COPY.seek(fence_finish - 4)
+            used_fence_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+            ROM_COPY.seek(fence_start)
+            for y in range(int(fence_size / 2)):
+                fence.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+            fence_bytes.append(fence)
+            ROM_COPY.seek(fence_finish)
+    spawner_count_location = file_start + offset
+    ROM_COPY.seek(spawner_count_location)
+    spawner_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    offset += 2
+    spawner_bytes = []
+    fairy_spawner_id = None
+    for x in range(spawner_count):
+        # Parse spawners
+        ROM_COPY.seek(file_start + offset)
+        enemy_id = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        ROM_COPY.seek(file_start + offset + 0x13)
+        enemy_index = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        init_offset = offset
+        ROM_COPY.seek(file_start + offset + 0x11)
+        extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        offset += 0x16 + (extra_count * 2)
+        end_offset = offset
+        if enemy_index == 2:
+            # If enemy is the rabbit, adjust stats
+            speed_buff = 0.7
+            ROM_COPY.seek(file_start + init_offset + 0xD)
+            ROM_COPY.write(int(136 * speed_buff))
 
 def randomize_setup(spoiler):
     """Randomize setup."""
+    SpeedUpFungiRabbit()
     pickup_weights = [
         {"item": "orange", "type": 0x56, "weight": 3},
         {"item": "film", "type": 0x98, "weight": 1},

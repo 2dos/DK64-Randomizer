@@ -1888,8 +1888,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
         # Random Toes
         for x in range(5):
-            writeValue(ROM_COPY, 0x80036950 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x])
-            writeValue(ROM_COPY, 0x80036968 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x + 5])
+            writeValue(ROM_COPY, 0x80036950 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x], offset_dict, 1)
+            writeValue(ROM_COPY, 0x80036968 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x + 5], offset_dict, 1)
 
     # Training
     writeValue(ROM_COPY, 0x80029610, Overlay.Critter, 0, offset_dict, 4)  # Disable set flag
@@ -2128,6 +2128,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeLabelValue(ROM_COPY, 0x8074B4EC, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Red Klaptrap
     writeLabelValue(ROM_COPY, 0x8074BC24, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Book
     writeLabelValue(ROM_COPY, 0x8074BBF0, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # All Zingers & Bats
+
+    writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
+    writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
+    writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
 
     # Expand Path Allocation
     writeValue(ROM_COPY, 0x80722E56, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)
