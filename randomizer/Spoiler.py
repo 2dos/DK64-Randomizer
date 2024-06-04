@@ -496,9 +496,11 @@ class Spoiler:
                     level = "Creepy Castle"
                 elif "Helm" in location.name:
                     level = "Hideout Helm"
-                humanspoiler["Items"][level][location.name] = item.name
+                if self.settings.enemy_drop_rando or location.item != Items.EnemyItem:
+                    humanspoiler["Items"][level][location.name] = item.name
                 humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
-
+        if not self.settings.enemy_drop_rando:
+            del humanspoiler[sorted_item_name]["Enemy Drops"]
         if self.settings.enemy_rando:
             placement_dict = {}
             for map_id in self.enemy_rando_data:
@@ -507,7 +509,10 @@ class Spoiler:
                 for enemy in self.enemy_rando_data[map_id]:
                     map_dict[enemy["location"]] = EnemyMetaData[enemy["enemy"]].name
                 placement_dict[map_name] = map_dict
-            humanspoiler["Enemy Placement"] = placement_dict
+            if not self.settings.enemy_drop_rando:
+                humanspoiler["Enemy Placement (Stringified JSON)"] = json.dumps(placement_dict)
+            else:
+                humanspoiler["Enemy Placement"] = placement_dict
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
@@ -759,10 +764,12 @@ class Spoiler:
                     "Fungi Lobby",
                     "Caves Lobby",
                     "Castle Lobby",
+                    "Helm Lobby",
                     "Snide's Room",
                     "Training Grounds",
                     "Banana Fairy Isle",
                     "DK's Treehouse",
+                    "K-Lumsy",
                 ],
                 "Jungle Japes": ["Jungle Japes"],
                 "Angry Aztec": ["Angry Aztec"],
@@ -771,6 +778,7 @@ class Spoiler:
                 "Fungi Forest": ["Fungi Forest"],
                 "Crystal Caves": ["Crystal Caves"],
                 "Creepy Castle": ["Creepy Castle"],
+                "Hideout Helm": ["Hideout Helm"],
             }
             level_data = {"Other": {}}
             for level in level_starts:

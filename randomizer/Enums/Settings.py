@@ -1051,6 +1051,9 @@ class SettingsStringEnum(IntEnum):
     serious_hints = 177
     cannons_require_blast = 178
     chunky_phase_slam_req = 179
+    shuffle_helm_location = 180
+    points_list_fairy_moves = 181
+    points_list_shopkeepers = 182
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1274,6 +1277,9 @@ SettingsStringTypeMap = {
     SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
     SettingsStringEnum.chunky_phase_slam_req: SlamRequirement,
+    SettingsStringEnum.shuffle_helm_location: SettingsStringDataType.bool,
+    SettingsStringEnum.points_list_fairy_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_shopkeepers: SettingsStringDataType.int16,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

@@ -107,6 +107,7 @@
                 {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.") }}
                 {{ toggle_input("crown_placement_rando", "Random Battle Crown Pad Locations", "Crown Locations are randomized. There's 1 in each level, except Isles which has two.", False, "Battle Crowns") }}
                 {{ toggle_input("random_crates", "Random Melon Crate Locations", "Melon Crate Locations are randomized.", False, "Melon Crates") }}
+                <div class="spacer"></div>
             </div>
             <div class="flex-container">
                 <div class="item-select">
@@ -291,6 +292,19 @@
                             Vanilla
                         </option>
                     </select>
+                    <div class="form-check form-switch" style="padding-top:10px;">
+                        <label data-toggle="tooltip"
+                                style="font-size:14px;"
+                                title="Shuffle the location of Hideout Helm. If enabled, Helm and Helm Lobby will be in random locations.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="shuffle_helm_location"
+                                    id="shuffle_helm_location"
+                                    display_name="Shuffle Helm Location"
+                                    value="True"/>
+                            Shuffle Helm Location
+                        </label>
+                    </div>
                 </div>
                 <div class="item-select">
                     <p class="select-title">Random Shop Prices</p>

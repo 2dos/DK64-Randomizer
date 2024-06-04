@@ -63,7 +63,18 @@ LogicRegions = {
         LocationLogic(Locations.PreGiven_Location33, lambda l: True),
         LocationLogic(Locations.PreGiven_Location34, lambda l: True),
         LocationLogic(Locations.PreGiven_Location35, lambda l: True),
-    ], [], [
+    ], [
+        # Everything you can do in the prison is autocompleted with auto_keys - just copy-paste the logic from the Prison region events here
+        Event(Events.KLumsyTalkedTo, lambda l: l.settings.auto_keys),
+        Event(Events.JapesKeyTurnedIn, lambda l: l.settings.auto_keys and l.JapesKey and l.HasFillRequirementsForLevel(l.settings.level_order[2])),
+        Event(Events.AztecKeyTurnedIn, lambda l: l.settings.auto_keys and l.AztecKey and l.HasFillRequirementsForLevel(l.settings.level_order[3])),
+        Event(Events.FactoryKeyTurnedIn, lambda l: l.settings.auto_keys and l.FactoryKey),
+        Event(Events.GalleonKeyTurnedIn, lambda l: l.settings.auto_keys and l.GalleonKey and l.HasFillRequirementsForLevel(l.settings.level_order[5])),
+        Event(Events.ForestKeyTurnedIn, lambda l: l.settings.auto_keys and l.ForestKey and l.HasFillRequirementsForLevel(l.settings.level_order[6])),
+        Event(Events.CavesKeyTurnedIn, lambda l: l.settings.auto_keys and l.CavesKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
+        Event(Events.CastleKeyTurnedIn, lambda l: l.settings.auto_keys and l.CastleKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
+        Event(Events.HelmKeyTurnedIn, lambda l: l.settings.auto_keys and l.HelmKey),
+    ], [
         TransitionFront(Regions.Credits, lambda l: True),
         # Replace these with the actual starting region if we choose to randomize it
         TransitionFront(Regions.IslesMain, lambda l: l.settings.fast_start_beginning_of_game),
@@ -71,11 +82,11 @@ LogicRegions = {
     ]),
 
     Regions.DKIslesMedals: Region("DK Isles Medals", "Isles Medal Rewards", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDonkeyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
-        LocationLogic(Locations.IslesDiddyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
-        LocationLogic(Locations.IslesLankyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
-        LocationLogic(Locations.IslesTinyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
-        LocationLogic(Locations.IslesChunkyMedal, lambda l: (l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= l.settings.medal_cb_req) or (l.settings.cb_rando != CBRando.on_with_isles)),
+        LocationLogic(Locations.IslesDonkeyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.IslesDiddyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.IslesLankyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.IslesTinyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.IslesChunkyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
     Regions.Credits: Region("Credits", "Credits", Levels.DKIsles, False, None, [
@@ -123,7 +134,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesMainToStart),
         TransitionFront(Regions.OuterIsles, lambda l: True),
-        TransitionFront(Regions.Prison, lambda l: True),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.phasewalk or l.CanSTS(), Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.KremIsle, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
@@ -171,6 +181,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesLankyPrisonOrangsprint, lambda l: (l.sprint and l.islanky) or (l.phasewalk and (l.islanky or l.settings.free_trade_items))),
         LocationLogic(Locations.RainbowCoin_Location12, lambda l: True),
     ], [
+        # Changes should match GameStart region for auto_keys considerations
         Event(Events.KLumsyTalkedTo, lambda l: True),
         Event(Events.JapesKeyTurnedIn, lambda l: l.JapesKey and l.HasFillRequirementsForLevel(l.settings.level_order[2])),  # To be able to turn a key in, you must have the *fill moves* required to enter the next level
         Event(Events.AztecKeyTurnedIn, lambda l: l.AztecKey and l.HasFillRequirementsForLevel(l.settings.level_order[3])),  # Only the kongs and moves, not the GBs
@@ -181,7 +192,7 @@ LogicRegions = {
         Event(Events.CastleKeyTurnedIn, lambda l: l.CastleKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
         Event(Events.HelmKeyTurnedIn, lambda l: l.HelmKey),
     ], [
-        TransitionFront(Regions.IslesMain, lambda l: True),
+        TransitionFront(Regions.KremIsle, lambda l: True, Transitions.IslesPrisonToMain),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -238,6 +249,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesMainEnemy_MonkeyportPad, lambda l: True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
+        TransitionFront(Regions.Prison, lambda l: True, Transitions.IslesMainToPrison),
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs or l.CanMoontail()),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.hasMoveSwitchsanity(Switches.IslesMonkeyport)),
@@ -264,8 +276,20 @@ LogicRegions = {
     ], [
         Event(Events.IslesChunkyBarrelSpawn, lambda l: l.saxophone and l.istiny),
     ], [
-        TransitionFront(Regions.HideoutHelmLobby, lambda l: (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events) or (l.generalclips and l.twirl)) or l.tbs),
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: (l.generalclips and l.twirl) or l.tbs, Transitions.IslesMainToHelmLobby, isGlitchTransition=True),
+        TransitionFront(Regions.KremIsleMouth, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True),
+        TransitionFront(Regions.DKIslesMedals, lambda l: True),
+    ]),
+
+    Regions.KremIsleMouth: Region("Krem Isle Mouth", "Krem Isle", Levels.DKIsles, False, None, [], [], [
+        # You fall through the mouth if the lobby hasn't been opened (if you used a glitch to get in or LZR)
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events), Transitions.IslesMainToHelmLobby),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
+        # This fall could be a logical point of progression, but you have to surive the drop
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.CanSurviveFallDamage()),
+        # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration.
+        TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
@@ -419,9 +443,8 @@ LogicRegions = {
     ], [
         Event(Events.HelmLobbyAccessed, lambda l: True),
     ], [
-        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
-        TransitionFront(Regions.KremIsleBeyondLift, lambda l: True),  # You fall through the mouth if the lobby hasn't been opened (if you used a glitch to get in)
-        TransitionFront(Regions.HideoutHelmEntry, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm)),
+        TransitionFront(Regions.KremIsleMouth, lambda l: True, Transitions.IslesHelmLobbyToMain),
+        TransitionFront(Regions.HideoutHelmEntry, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 

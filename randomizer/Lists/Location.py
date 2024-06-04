@@ -188,11 +188,11 @@ LocationListOriginal = {
     Locations.ShopOwner_Location02: Location(Levels.DKIsles, "Pre-Given Shop (2)", Items.Candy, Types.Candy, Kongs.any, [MapIDCombo(0, -1, 0x56E, Kongs.any)]),
     Locations.ShopOwner_Location03: Location(Levels.DKIsles, "Pre-Given Shop (3)", Items.Snide, Types.Snide, Kongs.any, [MapIDCombo(0, -1, 0x56F, Kongs.any)]),
     # DK Isles locations
-    Locations.IslesDonkeyMedal: Location(Levels.DKIsles, "Isles Donkey Medal", Items.BananaMedal, Types.Medal, Kongs.donkey),
-    Locations.IslesDiddyMedal: Location(Levels.DKIsles, "Isles Diddy Medal", Items.BananaMedal, Types.Medal, Kongs.diddy),
-    Locations.IslesLankyMedal: Location(Levels.DKIsles, "Isles Lanky Medal", Items.BananaMedal, Types.Medal, Kongs.lanky),
-    Locations.IslesTinyMedal: Location(Levels.DKIsles, "Isles Tiny Medal", Items.BananaMedal, Types.Medal, Kongs.tiny),
-    Locations.IslesChunkyMedal: Location(Levels.DKIsles, "Isles Chunky Medal", Items.BananaMedal, Types.Medal, Kongs.chunky),
+    Locations.IslesDonkeyMedal: Location(Levels.DKIsles, "Isles Donkey Medal", Items.BananaMedal, Types.IslesMedal, Kongs.donkey),
+    Locations.IslesDiddyMedal: Location(Levels.DKIsles, "Isles Diddy Medal", Items.BananaMedal, Types.IslesMedal, Kongs.diddy),
+    Locations.IslesLankyMedal: Location(Levels.DKIsles, "Isles Lanky Medal", Items.BananaMedal, Types.IslesMedal, Kongs.lanky),
+    Locations.IslesTinyMedal: Location(Levels.DKIsles, "Isles Tiny Medal", Items.BananaMedal, Types.IslesMedal, Kongs.tiny),
+    Locations.IslesChunkyMedal: Location(Levels.DKIsles, "Isles Chunky Medal", Items.BananaMedal, Types.IslesMedal, Kongs.chunky),
     Locations.IslesDonkeyJapesRock: Location(Levels.DKIsles, "Isles Japes Lobby Entrance Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.Isles, 0x4, 381, Kongs.donkey)]),  # Can be assigned to other kongs
     Locations.IslesTinyCagedBanana: Location(Levels.DKIsles, "Isles Tiny Feather Cage", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.Isles, 0x2B, 420, Kongs.tiny)]),
     Locations.IslesTinyInstrumentPad: Location(Levels.DKIsles, "Isles Tiny Saxophone Pad", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 425, Kongs.tiny)]),

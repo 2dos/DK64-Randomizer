@@ -45,6 +45,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random Patches
 - Random Starting Location
 - Guaranteed Starting Keys
+- Shuffle Helm Location
 - Tns Location Rando
 - Vanilla Door Rando
 - Wrinkly Location Rando
