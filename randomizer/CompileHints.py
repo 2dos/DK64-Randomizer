@@ -18,6 +18,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints, KongModels, SlamRequirement
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -29,7 +30,6 @@ from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
 
 if TYPE_CHECKING:
-    from randomizer.Enums.Transitions import Transitions
     from randomizer.Lists.WrinklyHints import HintLocation
     from randomizer.LogicClasses import Region
     from randomizer.Spoiler import Spoiler
@@ -217,6 +217,11 @@ hint_list = [
     ),
     Hint(hint="The dk64randomizer.com wiki has lots of helpful information about hints.", important=False, base=True),
     Hint(hint="If you're watching on YouTube, be sure to like, comment, subscribe, and smash that bell.", important=False, base=True),
+    Hint(hint="I could really go for a hot dog right now.", important=False, base=True),
+    Hint(hint="You can find statues of dinosnakes in Angry Aztec.", important=False, base=True),
+    Hint(hint="If this seed was a channel point redemption, you have my condolences. If it wasn't, you have many options for victims.", important=False, base=True),
+    Hint(hint="You wouldn't steal a coin. You wouldn't steal a banana. You wouldn't fail to report a bug to the devs.", important=False, base=True),
+    Hint(hint="It's time to get your counting practice in: 1, 2, 3, 4, 5, 6, 9...", important=False, base=True),
 ]
 
 kong_list = ["\x04Donkey\x04", "\x05Diddy\x05", "\x06Lanky\x06", "\x07Tiny\x07", "\x08Chunky\x08", "\x04Any kong\x04"]
@@ -387,6 +392,7 @@ hint_distribution_default = {
     HintType.KongLocation: 1,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
     HintType.Entrance: 5,
+    HintType.EntranceV2: 5,
     HintType.RequiredKongHint: -1,  # Fixed number based on the number of locked kongs
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
@@ -416,6 +422,7 @@ race_hint_distribution = {
     HintType.KongLocation: 0,
     # HintType.MedalsRequired: 0,
     HintType.Entrance: 0,
+    HintType.EntranceV2: 0,
     HintType.RequiredKongHint: 3,
     HintType.RequiredKeyHint: 0,
     HintType.RequiredWinConditionHint: 0,
@@ -444,6 +451,7 @@ item_hint_distribution = {
     HintType.KongLocation: 0,
     # HintType.MedalsRequired: 0,
     HintType.Entrance: 0,
+    HintType.EntranceV2: 0,
     HintType.RequiredKongHint: 0,
     HintType.RequiredKeyHint: 0,
     HintType.RequiredWinConditionHint: 0,
@@ -733,7 +741,12 @@ def compileHints(spoiler: Spoiler) -> bool:
             if spoiler.settings.randomize_blocker_required_amounts and not spoiler.settings.maximize_helm_blocker:
                 hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
             hint_distribution[HintType.TroffNScoff] = temp
-            valid_types.append(HintType.Entrance)
+            # V2 Entrance hints are only valid in full item rando where we have a proper WotH throughout the world
+            if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
+                valid_types.append(HintType.EntranceV2)
+            # OG Entrance hints are still solid outside of item rando because they will point to whole levels
+            else:
+                valid_types.append(HintType.Entrance)
         # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
         if (
             (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
@@ -1186,7 +1199,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             coin_flip = random.choice([1, 2])
             if coin_flip == 1:
                 # Option A: hint the region the item is in
-                region = GetRegionOfLocation(spoiler, loc_id)
+                region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc_id)]
                 if region.hint_name != "Troff 'N' Scoff":
                     hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                 else:
@@ -1284,7 +1297,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location = getRandomHintLocation()
 
             globally_hinted_location_ids.append(loc)
-            region = GetRegionOfLocation(spoiler, loc)
+            region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc)]
             if region.hint_name != "Troff 'N' Scoff":
                 hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
             else:
@@ -1368,7 +1381,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
                     globally_hinted_location_ids.append(path_location_id)
                     already_hinted_locations.append(path_location_id)
-                    region = GetRegionOfLocation(spoiler, path_location_id)
+                    region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
                     if region.hint_name != "Troff 'N' Scoff":
                         hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                     else:
@@ -1446,7 +1459,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 globally_hinted_location_ids.append(path_location_id)
                 already_chosen_krool_path_locations.append(path_location_id)
                 # Begin to build the hint - determine the region of the location
-                region = GetRegionOfLocation(spoiler, path_location_id)
+                region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
                 if region.hint_name != "Troff 'N' Scoff":  # Quick color-correction so that the color of "Troff 'N' Scoff" doesn't leak the level
                     hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                 else:
@@ -1482,7 +1495,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
                 globally_hinted_location_ids.append(path_location_id)
                 already_chosen_camera_path_locations.append(path_location_id)
-                region = GetRegionOfLocation(spoiler, path_location_id)
+                region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
                 if region.hint_name != "Troff 'N' Scoff":
                     hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                 else:
@@ -1651,6 +1664,129 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.hint_type = HintType.TroffNScoff
             UpdateHint(hint_location, message)
             placed_tns_hints += 1
+
+    if hint_distribution[HintType.EntranceV2] > 0:
+        # Dictionaries of exceptions for locations and regions that have to be handled with care
+        location_exceptions = {
+            # Japes Diddy Top of Mountain cares much more about the Mine than the main area
+            Locations.JapesDiddyMountain: (Transitions.JapesMineToMain),
+            # Forest Diddy Winch naturally needs to find the Winch room very badly
+            Locations.ForestDiddyCagedBanana: (Transitions.ForestWinchToMain),
+        }
+        region_exceptions = {
+            # Galleon ships share a map but have segmented sections. We want to be sure we're hinting the specific transition for each check.
+            Regions.TinyShip: (Transitions.GalleonTinyToShipyard),
+            Regions.LankyShip: (Transitions.GalleonLankyToShipyard),
+            Regions.BongosShip: (Transitions.GalleonBongosToShipyard),
+            Regions.SaxophoneShip: (Transitions.GalleonSaxophoneToShipyard),
+            Regions.GuitarShip: (Transitions.GalleonGuitarToShipyard),
+            Regions.TromboneShip: (Transitions.GalleonTromboneToShipyard),
+            Regions.TriangleShip: (Transitions.GalleonTriangleToShipyard),
+            # The Castle Museum is segmented by glass walls
+            Regions.Museum: (Transitions.CastleMuseumToMain),
+            Regions.MuseumBehindGlass: (Transitions.CastleMuseumToBallroom, Transitions.CastleMuseumToCarRace),
+        }
+        # First identify which maps contain WotH items - some maps are more interesting than others
+        isolated_interesting_transitions = []
+        connector_interesting_transitions = []
+        # Lists to prevent duplicate entrance hints from existing
+        tracked_maps = []
+        tracked_regions = []
+        priority_transition_to_helm = None
+        for woth_location_id in spoiler.woth_locations:
+            location = spoiler.LocationList[woth_location_id]
+            # If Helm is not shuffled, Helm is not an interesting map - we know where it is
+            if location.level == Levels.HideoutHelm and not spoiler.settings.shuffle_helm_location:
+                continue
+            # These types of locations (Helm locations are special) don't have a single map, so they don't really work for what we're trying to go for here
+            if location.level != Levels.HideoutHelm and location.type in (
+                Types.Shop,
+                Types.Medal,
+                Types.Key,
+                Types.RarewareCoin,
+                Types.TrainingBarrel,
+                Types.PreGivenMove,
+                Types.Cranky,
+                Types.Funky,
+                Types.Candy,
+                Types.Constant,
+            ):
+                continue
+            region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
+            woth_map = GetMapId(region_id)
+            # Ignore the main map of each level, these should be fairly straightforward to find - mind the exceptions!
+            main_level_maps = (Maps.Isles, Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
+            if woth_map in main_level_maps or woth_location_id in location_exceptions.keys():
+                continue
+            # Blast maps all happen to be contained in the main map of the respective level
+            if woth_map in (Maps.JapesBaboonBlast, Maps.AztecBaboonBlast, Maps.FactoryBaboonBlast, Maps.GalleonBaboonBlast, Maps.ForestBaboonBlast, Maps.CavesBaboonBlast, Maps.CastleBaboonBlast):
+                continue
+            # The Mechfish is its own map but is still not shuffled
+            if woth_map == Maps.GalleonMechafish:
+                continue
+            # Avoid hinting the same map section twice
+            if woth_map in tracked_maps and (region_id in tracked_regions or region_id not in region_exceptions.keys()):
+                continue
+            # Find all the transitions that lead to this map
+            relevant_entrances = []
+            for transitionId, exit in ShufflableExits.items():
+                destinationMap = None
+                destinationTransition = None
+                # If the exit of this transition is shuffled, check the shuffled data, otherwise check the bases data
+                if exit.shuffled:
+                    shuffledBack = spoiler.shuffled_exit_data[transitionId]
+                    destinationMap = GetMapId(shuffledBack.regionId)
+                    destinationTransition = shuffledBack.reverse
+                else:
+                    destinationMap = exit.back.regionId
+                    destinationTransition = exit.back.reverse
+                # If this transition reaches our target map, it's a relevant entrance
+                if destinationMap == woth_map:
+                    # UNLESS it falls afoul of the exceptions
+                    # Regions that trigger the exception protocol must instead hit a very specific entrance
+                    if region_id in region_exceptions.keys() and destinationTransition != region_exceptions[region_id]:
+                        continue
+                    # Locations that trigger the exception protocol should instead hint a very specific entrance
+                    if woth_location_id in location_exceptions.keys() and destinationTransition != location_exceptions[region_id]:
+                        continue
+                    relevant_entrances.append(transitionId)
+            tracked_maps.append(woth_map)
+            tracked_regions.append(region_id)
+            # If Helm is eligible to be hinted, we may want to guarantee it gets hinted
+            if location.level == Levels.HideoutHelm and spoiler.settings.key_8_helm:
+                priority_transition_to_helm = relevant_entrances[0]
+                continue
+            # If this map has only one entrance, it's an isolated entrance that would be among the most helpful to hint
+            if len(relevant_entrances) == 1:
+                isolated_interesting_transitions.append(relevant_entrances[0])
+            # Every map has at least one entrance (or else you couldn't get to it, duh)
+            elif len(relevant_entrances) == 0:
+                print("No entrances found for map " + woth_map.name)  # This should never happen but it's left as a failsafe
+            else:
+                # For connectors, pick a random entrance. I hope it's good, may revisit this later after some testing.
+                # I can see foresee issues where it picks a crappy entrance from the upper tunnel, lower cave, or training grounds as a hint.
+                connector_interesting_transitions.append(random.choice(relevant_entrances))
+        random.shuffle(isolated_interesting_transitions)
+        random.shuffle(connector_interesting_transitions)
+        # If Helm access must be prioritized, force it to be hinted first
+        if priority_transition_to_helm is not None:
+            isolated_interesting_transitions.append(priority_transition_to_helm)
+        # If there are more entrance hints planned than interesting transitions to hint, sounds like we need more WotH hints for the locations on larger maps
+        if len(isolated_interesting_transitions) + len(connector_interesting_transitions) < hint_distribution[HintType.EntranceV2]:
+            diff = hint_distribution[HintType.EntranceV2] - len(isolated_interesting_transitions) + len(connector_interesting_transitions)
+            hint_distribution[HintType.WothLocation] += diff
+            hint_distribution[HintType.EntranceV2] -= diff
+        for i in range(hint_distribution[HintType.EntranceV2]):
+            transition_id_to_hint = None
+            if len(isolated_interesting_transitions) > 0:
+                transition_id_to_hint = isolated_interesting_transitions.pop()
+            else:
+                transition_id_to_hint = connector_interesting_transitions.pop()
+            hint_location = getRandomHintLocation()
+            entranceName = ShufflableExits[transition_id_to_hint].name
+            message = f"The area entered through \x08{entranceName}\x08 should be of great interest to your quest."
+            hint_location.hint_type = HintType.EntranceV2
+            UpdateHint(hint_location, message)
 
     # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
     if hint_distribution[HintType.WothLocation] > 0:
@@ -1844,6 +1980,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             Regions.LankyTemple,
             Regions.TinyTemple,
             Regions.ChunkyTemple,
+            Regions.TempleStart,
+            Regions.LlamaTemple,
         ]
         criticalFactoryRegions = [
             Regions.FranticFactoryEntryHandler,
@@ -2073,7 +2211,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if bean_location_id is None:
                 message = joke_hint_list.pop()
             else:
-                bean_region = GetRegionOfLocation(spoiler, bean_location_id)
+                bean_region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, bean_location_id)]
                 hinted_location_text = bean_region.hint_name
                 message = f"The Way of the Bean concludes in the {hinted_location_text}."
                 hint_location.related_location = bean_location_id
@@ -2228,6 +2366,14 @@ def compileSpoilerHints(spoiler):
     }
     # Sort the items by level they're found in
     important_items = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings) + ItemPool.AllKongMoves() + ItemPool.ShockwaveTypeItems(spoiler.settings) + ItemPool.TrainingBarrelAbilities() + [Items.Bean]
+    if Types.Cranky in spoiler.settings.shuffled_location_types:
+        important_items.append(Items.Cranky)
+    if Types.Funky in spoiler.settings.shuffled_location_types:
+        important_items.append(Items.Funky)
+    if Types.Candy in spoiler.settings.shuffled_location_types:
+        important_items.append(Items.Candy)
+    if Types.Snide in spoiler.settings.shuffled_location_types:
+        important_items.append(Items.Snide)
     for location_id in spoiler.LocationList.keys():
         location = spoiler.LocationList[location_id]
         level_of_location = location.level
@@ -2286,8 +2432,10 @@ def compileSpoilerHints(spoiler):
             "pad_moves": spoiler.settings.points_list_pad_moves,
             "barrel_moves": spoiler.settings.points_list_barrel_moves,
             "training_moves": spoiler.settings.points_list_training_moves,
+            "fairy_moves": spoiler.settings.points_list_fairy_moves,
             "important_shared_moves": spoiler.settings.points_list_important_shared,
             "bean": spoiler.settings.points_list_bean,
+            "shopkeepers": spoiler.settings.points_list_shopkeepers,
         }
         spoiler.level_spoiler_human_readable["Point Spread"] = (
             "Kongs: "
@@ -2304,12 +2452,16 @@ def compileSpoilerHints(spoiler):
             + str(spoiler.settings.points_list_pad_moves)
             + " | Barrel Moves: "
             + str(spoiler.settings.points_list_barrel_moves)
-            + " | Training and Fairy Moves: "
+            + " | Training Moves: "
             + str(spoiler.settings.points_list_training_moves)
+            + " | Fairy Moves: "
+            + str(spoiler.settings.points_list_fairy_moves)
             + " | Shared Moves: "
             + str(spoiler.settings.points_list_important_shared)
             + " | Bean: "
             + str(spoiler.settings.points_list_bean)
+            + " | Shopkeepers: "
+            + str(spoiler.settings.points_list_shopkeepers)
         )
 
 
@@ -2358,7 +2510,9 @@ def PointValueOfItem(settings, item_id):
     elif item_id == Items.Bean:
         return settings.points_list_bean
     elif item_id in ItemPool.ShockwaveTypeItems(settings):
-        return settings.points_list_training_moves  # This will be changed to an independent option later
+        return settings.points_list_fairy_moves
+    elif item_id in [Items.Cranky, Items.Funky, Items.Candy, Items.Snide]:
+        return settings.points_list_shopkeepers
     return 0
 
 
@@ -2402,19 +2556,19 @@ def UpdateSpoilerHintList(spoiler: Spoiler) -> None:
         spoiler.short_hint_list[hint.name] = hint.short_hint if hint.short_hint is not None else hint.hint
 
 
-def GetRegionOfLocation(spoiler: Spoiler, location_id: Locations) -> Region:
+def GetRegionIdOfLocation(spoiler: Spoiler, location_id: Locations) -> Regions:
     """Given the id of a Location, return the Region it belongs to."""
     location = spoiler.LocationList[location_id]
     # Shop locations are tied to the level, not the shop regions
     if location.type == Types.Shop:
-        for region in [reg for id, reg in spoiler.RegionList.items() if reg.level == Levels.Shops]:
-            if location_id in [location_logic.id for location_logic in region.locations if not location_logic.isAuxiliaryLocation]:
-                return region
+        for region_id in [id for id, reg in spoiler.RegionList.items() if reg.level == Levels.Shops]:
+            if location_id in [location_logic.id for location_logic in spoiler.RegionList[region_id].locations if not location_logic.isAuxiliaryLocation]:
+                return region_id
     for region_id in Regions:
         region = spoiler.RegionList[region_id]
         if region.level == location.level:
             if location_id in [location_logic.id for location_logic in region.locations if not location_logic.isAuxiliaryLocation]:
-                return region
+                return region_id
     raise Exception("Unable to find Region for Location")  # This should never trigger!
 
 

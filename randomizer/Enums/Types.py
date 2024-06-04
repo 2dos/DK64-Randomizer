@@ -38,6 +38,7 @@ class Types(IntEnum):
     Funky = auto()
     Candy = auto()
     Snide = auto()
+    IslesMedal = auto()
 
 
 class BarrierItems(IntEnum):

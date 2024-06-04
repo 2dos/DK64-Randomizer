@@ -15,6 +15,7 @@ class ExitCategories(IntEnum):
     ForestLobby = auto()
     CavesLobby = auto()
     CastleLobby = auto()
+    HelmLobby = auto()
     JapesExterior = auto()
     AztecExterior = auto()
     FactoryExterior = auto()
@@ -30,3 +31,4 @@ class ExitCategories(IntEnum):
     CastleBallroom = auto()
     CastleCarRaceExterior = auto()
     CastleCrypt = auto()
+    HideoutHelm = auto()

@@ -26,6 +26,7 @@ class Regions(IntEnum):
     KremIsle = auto()
     KremIsleBeyondLift = auto()
     KremIsleTopLevel = auto()
+    KremIsleMouth = auto()
     IslesSnideRoom = auto()
     FranticFactoryLobby = auto()
     GloomyGalleonLobby = auto()

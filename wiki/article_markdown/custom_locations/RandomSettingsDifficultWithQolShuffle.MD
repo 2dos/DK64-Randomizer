@@ -246,6 +246,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Start With: 20%
 - Shop Indicator: 50%
 - Shorten Boss Fights: 80%
+- Shuffle Helm Location: 70%
 - Shuffle Shop Locations: 70%
 - Smaller Shops: 50%
 - Starting Kong: 

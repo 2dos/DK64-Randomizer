@@ -503,44 +503,43 @@ def toggle_counts_boxes(event):
 
 
 @bind("change", "level_randomization")
-def update_boss_required(evt):
-    """Disable certain page flags depending on checkboxes."""
+def change_level_randomization(evt):
+    """Disable certain page flags depending on level randomization."""
     level = document.getElementById("level_randomization")
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    moves = document.getElementById("move_off")
     hard_level_progression = document.getElementById("hard_level_progression")
-    if level.value == "level_order":
+    shuffle_helm_location = document.getElementById("shuffle_helm_location")
+
+    disable_boss_shuffles = level.value == "level_order" or (level.value == "vanilla" and kong_rando.checked)
+    disable_kong_rando = level.value == "level_order"
+    disable_hard_level_progression = level.value != "level_order"
+    disable_shuffle_helm_location = level.value in ("level_order", "vanilla")
+
+    if disable_boss_shuffles:
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
         boss_kong.checked = True
+    else:
+        boss_kong.removeAttribute("disabled")
+        boss_location.removeAttribute("disabled")
+    if disable_kong_rando:
         kong_rando.setAttribute("disabled", "disabled")
         kong_rando.checked = True
-        if moves.selected is True:
-            document.getElementById("move_on").selected = True
-        moves.setAttribute("disabled", "disabled")
-        hard_level_progression.removeAttribute("disabled")
-    elif level.value == "vanilla" and kong_rando.checked:
-        boss_location.setAttribute("disabled", "disabled")
-        boss_location.checked = True
-        boss_kong.setAttribute("disabled", "disabled")
-        boss_kong.checked = True
+    else:
         kong_rando.removeAttribute("disabled")
-        moves.removeAttribute("disabled")
+    if disable_hard_level_progression:
         hard_level_progression.setAttribute("disabled", "disabled")
         hard_level_progression.checked = False
     else:
-        try:
-            boss_kong.removeAttribute("disabled")
-            boss_location.removeAttribute("disabled")
-            kong_rando.removeAttribute("disabled")
-            moves.removeAttribute("disabled")
-            hard_level_progression.setAttribute("disabled", "disabled")
-            hard_level_progression.checked = False
-        except Exception:
-            pass
+        hard_level_progression.removeAttribute("disabled")
+    if disable_shuffle_helm_location:
+        shuffle_helm_location.setAttribute("disabled", "disabled")
+        shuffle_helm_location.checked = False
+    else:
+        shuffle_helm_location.removeAttribute("disabled")
 
 
 @bind("click", "kong_rando")
@@ -1067,7 +1066,7 @@ def update_ui_states(event):
     """Trigger any function that would update the status of a UI element based on the current settings configuration."""
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
-    update_boss_required(None)
+    change_level_randomization(None)
     disable_colors(None)
     disable_music(None)
     disable_move_shuffles(None)
