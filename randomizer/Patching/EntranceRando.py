@@ -160,6 +160,8 @@ def randomize_entrances(spoiler):
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
 
+banned_filtration = (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide, Maps.HideoutHelm)
+museum_exit_type = 13 # Maybe 9?
 
 def filterEntranceType():
     """Change LZ Type for some entrances so that warps from crown pads work correctly."""
@@ -173,13 +175,17 @@ def filterEntranceType():
             ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
             lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
             lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            if lz_type == 0x10 and lz_map not in (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide, Maps.HideoutHelm):
+            if lz_type == 0x10 and lz_map not in banned_filtration:
                 # Change type to 0xC
                 ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
                 ROM_COPY.writeMultipleBytes(0xC, 2)
                 # Change fade type to spin
                 ROM_COPY.seek(cont_map_lzs_address + start + 0x16)
                 ROM_COPY.writeMultipleBytes(0, 2)
+            if cont_map_id == Maps.CastleMuseum and lz_id == 0 and lz_map not in banned_filtration:
+                # Disable objects through museum exit
+                ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                ROM_COPY.writeMultipleBytes(museum_exit_type, 2)
 
 
 class ItemPreviewCutscene:
@@ -276,6 +282,10 @@ def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
                                 # Set to LZ Type 9, which does the Helm filtering
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
                                 ROM_COPY.writeMultipleBytes(9, 2)
+                            elif cont_map_id == Maps.CastleMuseum and lz_id == 0:
+                                # Disable objects through museum exit
+                                ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                                ROM_COPY.writeMultipleBytes(museum_exit_type, 2)
     level_7_lobby = lobbies[order[6]]
     ROM_COPY.seek(varspaceOffset + 0x5D)
     ROM_COPY.write(2)
