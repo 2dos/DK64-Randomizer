@@ -87,6 +87,14 @@ void renderHoop(void) {
     renderActor(CurrentActorPointer_0, 0);
 }
 
+void fixUpdraftBug(int state) {
+    controlStateControl(state);
+    if (CurrentActorPointer_0->yPos > 600.0f) {
+        playerData* player = (playerData*) CurrentActorPointer_0;
+        player->updraft_target = 700;
+    }
+}
+
 void quickWrinklyTextboxes(void) {
     /**
      * @brief Speeds up the wrinkly textboxes by setting the textbox timer to 0x1e upon init if A is pressed

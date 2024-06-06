@@ -52,8 +52,8 @@ loadNewModels()
 BuildInstanceScripts()
 
 portal_images = []
-portal_images.append(convertPortalImage("assets/portals/DK_rando_portal_1.png"))
-portal_images.append(convertPortalImage("assets/portals/DK_rando_portal_2.png"))
+for x in range(2):
+    portal_images.append(convertPortalImage(f"assets/portals/custom_portal_{x + 1}.png"))
 
 createTextFile("assets/credits")
 createSquishFile("assets/credits")
@@ -789,7 +789,7 @@ for x in range(10):
             name=f"Tag Barrel Bottom Texture ({x+1})",
             pointer_table_index=TableNames.TexturesGeometry,
             file_index=4749 + x,
-            source_file="assets/tagbarrel/bottom.png",
+            source_file="assets/tagbarrel/bottom_custom.png",
             texture_format=TextureFormat.RGBA5551,
         )
     )
@@ -1828,6 +1828,14 @@ with open(newROMName, "r+b") as fh:
     for x in range(216):
         if os.path.exists(f"exit{x}.bin"):
             os.remove(f"exit{x}.bin")
+    portal_im_removal = [
+        "tagbarrel/bottom_custom.png",
+        "portals/custom_portal_1.png",
+        "portals/custom_portal_2.png",
+    ]
+    for im in portal_im_removal:
+        if os.path.exists(f"assets/{im}"):
+            os.remove(f"assets/{im}")
     # pth = "assets/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)
