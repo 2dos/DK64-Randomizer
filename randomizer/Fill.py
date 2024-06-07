@@ -983,7 +983,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
             if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
-        if "Shops" not in region.hint_name:
+        if "Shops" not in region.hint_name and region.hint_name not in nonHintableNames:
             # Count the number of region count hintable items in the region (again, ignore training moves)
             regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in regionCountHintableItems)
             if regionItemCount > 0:
