@@ -8,4 +8,5 @@ class MinigameType(IntEnum):
 
     NoGame = auto()
     BonusBarrel = auto()
-    HelmBarrel = auto()
+    HelmBarrelFirst = auto()
+    HelmBarrelSecond = auto()

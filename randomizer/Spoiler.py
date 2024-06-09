@@ -681,7 +681,6 @@ class Spoiler:
 
         # Woth data
         humanspoiler["Way of the Hoard"] = self.woth
-        # Paths for Woth items - does not show up on the site, just for debugging
         humanspoiler["WotH Paths"] = {}
         slamCount = 0
         pearlCount = 0
@@ -700,7 +699,6 @@ class Spoiler:
                 pearlCount += 1
                 extra = " " + str(pearlCount)
             humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
-        # Paths for K. Rool phases - also do not show up on the site, just for debugging
         for map_id, path in self.krool_paths.items():
             path_dict = {}
             for path_loc_id in path:

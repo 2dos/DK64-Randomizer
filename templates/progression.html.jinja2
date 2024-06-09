@@ -113,14 +113,29 @@
             <div class="flex-container">
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="WIP Setting. B Lockers will require items other than golden bananas to clear.">
+                            title="B. Lockers will require items other than golden bananas to clear. This will override any B. Locker options set above!">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="chaos_blockers"
                                 display_name="Chaos B. Lockers"
                                 value="True"/>
-                        Chaos B. Lockers (WIP)
+                        Chaos B. Lockers
                     </label>
+                </div>
+                <div class="spacer"></div>
+                <div class="item-group" style="margin-left:auto;margin-right:auto">
+                    <p class="select-title">Chaos Ratio</p>
+                    <input class="form-control"
+                        min="0"
+                        max="100"
+                        name="chaos_ratio"
+                        id="chaos_ratio"
+                        display_name="Chaos Ratio"
+                        type="number"
+                        data-toggle="tooltip"
+                        title="The percentage of an item's maximum amount that your B. Lockers can roll up to. For example, a Chaos Ratio of 25 would have a maximum GB B. Locker of 50 (25% of 200)."
+                        default="25"
+                        placeholder="25"/>
                 </div>
                 <div class="spacer"></div>
             </div>

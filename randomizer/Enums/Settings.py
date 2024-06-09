@@ -1054,6 +1054,8 @@ class SettingsStringEnum(IntEnum):
     shuffle_helm_location = 180
     points_list_fairy_moves = 181
     points_list_shopkeepers = 182
+    chaos_ratio = 183
+    krool_in_boss_pool = 184
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1280,6 +1282,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.shuffle_helm_location: SettingsStringDataType.bool,
     SettingsStringEnum.points_list_fairy_moves: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_shopkeepers: SettingsStringDataType.int16,
+    SettingsStringEnum.chaos_ratio: SettingsStringDataType.int16,
+    SettingsStringEnum.krool_in_boss_pool: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
