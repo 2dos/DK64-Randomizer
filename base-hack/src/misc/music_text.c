@@ -65,6 +65,10 @@ Gfx* displaySongNameHandler(Gfx* dl) {
     if (displayed_text_offset == -1) {
         return dl;
     }
+    if ((CurrentMap == MAP_ISLES) && (CutsceneActive == 1) && (CutsceneIndex == 29)) {
+        // In K Rool gets launched cutscene
+        return dl;
+    }
     for (int i = 0; i < 2; i++) {
         mtx_item mtx0;
         mtx_item mtx1;

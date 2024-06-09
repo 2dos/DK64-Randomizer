@@ -1056,7 +1056,7 @@ class SettingsStringEnum(IntEnum):
     points_list_shopkeepers = 182
     chaos_ratio = 183
     krool_in_boss_pool = 184
-
+    enemy_kill_crown_timer = 185
 
 # If a setting needs to be removed, add it to this set instead of removing it
 # from the enum above.
@@ -1284,6 +1284,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.points_list_shopkeepers: SettingsStringDataType.int16,
     SettingsStringEnum.chaos_ratio: SettingsStringDataType.int16,
     SettingsStringEnum.krool_in_boss_pool: SettingsStringDataType.bool,
+    SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
