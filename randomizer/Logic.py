@@ -74,7 +74,7 @@ class LogicVarHolder:
         # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
         self.assumeFillSuccess = False
         # See CalculateWothPaths method for details on these assumptions
-        self.assumeInfiniteGBs = False
+        self.assumePaidBLockers = False
         self.assumeInfiniteCoins = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
@@ -628,8 +628,8 @@ class LogicVarHolder:
         if kong == Kongs.any:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
-    def ItemCheck(self, item: BarrierItems, count: int) -> bool:
-        """Check if item requirement has been fulfilled."""
+    def ItemCounts(self):
+        """Get the amount of items collected in terms of B. Locker-relevant items."""
         CBCount = 0
         for lvl in self.ColoredBananas:
             CBCount += sum(lvl)
@@ -702,6 +702,11 @@ class LogicVarHolder:
             BarrierItems.Move: sum(moves) + self.Slam + self.AmmoBelts + self.InstUpgrades,
             BarrierItems.Percentage: int(game_percentage),
         }
+        return check_counts
+
+    def ItemCheck(self, item: BarrierItems, count: int) -> bool:
+        """Check if item requirement has been fulfilled."""
+        check_counts = self.ItemCounts()
         if item in check_counts.keys():
             return check_counts[item] >= count
         return True
@@ -1046,8 +1051,10 @@ class LogicVarHolder:
         can_lanky_skip = self.islanky and self.lanky_blocker_skip and level != Levels.HideoutHelm
         can_tiny_skip = self.istiny and self.lanky_blocker_skip and level == Levels.HideoutHelm and self.generalclips
         can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch and level not in (Levels.FranticFactory, Levels.HideoutHelm)
-        # To enter a level, we either need (or assume) enough GBs to get rid of B. Locker or a glitch way to bypass it
-        return self.assumeInfiniteGBs or self.GoldenBananas >= self.settings.BLockerEntryCount[level] or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
+        available_items = self.ItemCounts()
+        can_pay_blocker = self.assumePaidBLockers or available_items[self.settings.BLockerEntryItems[level]] >= self.settings.BLockerEntryCount[level]
+        # To enter a level, we either need (or assume) enough stuff to get rid of B. Locker or a glitch way to bypass it
+        return can_pay_blocker or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""

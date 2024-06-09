@@ -242,35 +242,41 @@ class Settings:
             self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
+        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
+
         self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
         self.BLockerEntryCount = [0] * 8
+
         if self.chaos_blockers:
-            limits = {
+            self.chaos_ratio = self.chaos_ratio / 100.0
+            self.blocker_limits = {
                 # Will give customization to this eventually, just need to get a proof of concept working
                 # BarrierItems.Nothing: 0,
-                BarrierItems.Kong: 5,
-                BarrierItems.Move: 20,
-                BarrierItems.GoldenBanana: 60,
-                BarrierItems.Blueprint: 15,
-                BarrierItems.Fairy: 10,
-                BarrierItems.Key: 6,
-                BarrierItems.Crown: 4,
-                BarrierItems.CompanyCoin: 1,
-                BarrierItems.Medal: 20,
+                # BarrierItems.Kong: 5,
+                # BarrierItems.Move: 41,
+                BarrierItems.GoldenBanana: 200,
+                BarrierItems.Blueprint: 40,
+                BarrierItems.Fairy: 20,
+                # BarrierItems.Key: 8,
+                BarrierItems.Crown: 10,
+                BarrierItems.CompanyCoin: 2,
+                BarrierItems.Medal: 40,
                 BarrierItems.Bean: 1,
-                BarrierItems.Pearl: 3,
-                BarrierItems.RainbowCoin: 10,
+                BarrierItems.Pearl: 5,
+                BarrierItems.RainbowCoin: 16,
                 # BarrierItems.IceTrap: 10,
-                BarrierItems.Percentage: 20,
+                # BarrierItems.Percentage: 20,
                 # BarrierItems.ColoredBanana: 1000,
             }
+            locked_blocker_items = []
             for slot in range(8):
-                item = random.choice(list(limits.keys()))
-                count = random.randint(0, limits[item])
+                item = random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])
+                count = random.randint(1, math.ceil(self.blocker_limits[item] * self.chaos_ratio))
                 self.BLockerEntryItems[slot] = item
                 self.BLockerEntryCount[slot] = count
-            self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
-            return
+                # Some barriers can only show up once
+                if item in (BarrierItems.Bean, BarrierItems.Pearl, BarrierItems.CompanyCoin):
+                    locked_blocker_items.append(item)
         elif self.randomize_blocker_required_amounts:
             if self.blocker_max > 0:
                 randomlist = random.choices(range(1, self.blocker_max), k=7)
@@ -294,11 +300,8 @@ class Settings:
                 self.blocker_7 = self.blocker_max
             else:
                 self.blocker_7 = b_lockers[7]
-
-        # Store banana values in array
-
-        self.BLockerEntryCount = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
-        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
+            # Store banana values in array
+            self.BLockerEntryCount = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -1004,7 +1007,6 @@ class Settings:
         self.krool_pufftoss = False
         self.krool_kutout = False
 
-        self.krool_in_boss_pool = False  # self.hard_level_progression - TODO: Make this a setting and get this working for SLO
         phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
         if self.krool_in_boss_pool:
             phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])
