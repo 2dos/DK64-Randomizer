@@ -12,11 +12,12 @@ class HardModeItem:
 
 
 HardSelector = []
+HardBossSelector = []
 # If you make changes to this list, make sure to change the corresponding
 # MiscChangesSelected enum in randomizer.Enums.Settings.
 HardItems = [
-    HardModeItem("Hard Bosses", -1, "Boss fights are slightly harder, including allowing extra kongs the ability to fight Mad Jack."),
-    HardModeItem("Extra Hard Bosses", 2, "Boss fights are even harder, including raised pufftoss stars and a faster Mad Jack."),
+    # HardModeItem("Hard Bosses", -1, "Boss fights are slightly harder, including allowing extra kongs the ability to fight Mad Jack."),
+    # HardModeItem("Extra Hard Bosses", 2, "Boss fights are even harder, including raised pufftoss stars and a faster Mad Jack."),
     HardModeItem("Hard Enemies", 3, "Enemies fight back a little harder."),
     HardModeItem("Water is Lava", 1, "All water surfaces are lava water instead, damaging you."),
     HardModeItem("Reduced Fall Damage Threshold", 0, "The amount of distance required to fall too far has been reduced by 70%."),
@@ -30,6 +31,16 @@ HardItems = [
     ),
     HardModeItem("Donk in the Sky", -1, "Collision Geometry is disabled. Mixing this with 'Donk in the Dark World' will convert the challenge into 'Memory Challenge' instead."),
 ]
+HardBossItems = [
+    HardModeItem("Fast Mad Jack", -1, "Mad Jack is faster."),
+    HardModeItem("Alternative Mad Jack Kongs", -1, "Mad Jack can now be beaten with DK, Chunky and twirlless Tiny."),
+    HardModeItem("Pufftoss Star Rando", -1, "Star locations in Pufftoss are randomized."),
+    HardModeItem("Pufftoss Star Raised", -1, "Star locations in Pufftoss are raised slightly."),
+    HardModeItem("Kut Out Phase Rando", -1, "Kut Out Phases have been randomized in order, including the unused 4th phase."),
+]
 for item in HardItems:
     if item.name != "No Group":
         HardSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
+for item in HardBossItems:
+    if item.name != "No Group":
+        HardBossSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})

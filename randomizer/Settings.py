@@ -611,6 +611,8 @@ class Settings:
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.hard_mode_selected = []
+        self.hard_bosses = False
+        self.hard_bosses_selected = []
         self.faster_checks_enabled = False
         self.remove_barriers_enabled = False
         self.faster_checks_selected = []

@@ -7,7 +7,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import HardModeSelected, KongModels, SlamRequirement
+from randomizer.Enums.Settings import HardModeSelected, KongModels, SlamRequirement, HardBossesSelected
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected
@@ -32,9 +32,9 @@ def ShuffleBosses(boss_location_rando: bool, settings):
     return boss_maps
 
 
-def HardBossesEnabled(settings) -> bool:
+def HardBossesEnabled(settings, check: HardBossesSelected) -> bool:
     """Return whether the hard bosses setting is on."""
-    return IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_bosses)
+    return IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, check)
 
 
 def ShuffleBossKongs(settings):
@@ -58,7 +58,7 @@ def ShuffleBossKongs(settings):
     for level in range(7):
         boss_map = settings.boss_maps[level]
         if settings.boss_kong_rando:
-            kong = random.choice(GetKongOptionsForBoss(boss_map, HardBossesEnabled(settings)))
+            kong = random.choice(GetKongOptionsForBoss(boss_map, HardBossesEnabled(settings, HardBossesSelected.alternative_mad_jack_kongs)))
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
@@ -66,7 +66,7 @@ def ShuffleBossKongs(settings):
     return boss_kongs
 
 
-def GetKongOptionsForBoss(boss_map: Maps, hard_bosses: bool):
+def GetKongOptionsForBoss(boss_map: Maps, alt_mj_kongs: bool):
     """Randomly choses from the allowed list for the boss."""
     possibleKongs = []
     if boss_map == Maps.JapesBoss:
@@ -74,7 +74,7 @@ def GetKongOptionsForBoss(boss_map: Maps, hard_bosses: bool):
     elif boss_map == Maps.AztecBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FactoryBoss:
-        if hard_bosses:
+        if alt_mj_kongs:
             possibleKongs = [Kongs.donkey, Kongs.tiny, Kongs.chunky]
         else:
             possibleKongs = [Kongs.tiny]
@@ -143,7 +143,7 @@ def ShuffleKKOPhaseOrder(settings):
 #         ]
 #         donkeyFactoryBossOptions = []
 #         chunkyFactoryBossOptions = []
-#         if HardBossesEnabled(settings):
+#         if HardBossesEnabled(settings, HardBossesSelected.alternative_mad_jack_kongs):
 #             if settings.kong_model_tiny == KongModels.default:
 #                 tinyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
 #             if settings.kong_model_dk == KongModels.default:
@@ -162,7 +162,7 @@ def ShuffleKKOPhaseOrder(settings):
 #                 factoryBossOptions.remove(forestBossIndex)
 #         # Otherwise place Factory first
 #         bossTryingToBePlaced = "Mad Jack"
-#         if HardBossesEnabled(settings):
+#         if HardBossesEnabled(settings, HardBossesSelected.alternative_mad_jack_kongs):
 #             factoryBossIndex = random.choice(factoryBossOptions)
 #             factoryBossKongOptions = []
 #             if factoryBossIndex in tinyFactoryBossOptions:
@@ -291,7 +291,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
         # Mad Jack always requires a slam
         if Items.ProgressiveSlam in ownedMoves[level]:
             # In hard bosses any of Donkey, Tiny, or Chunky is sufficient
-            if HardBossesEnabled(spoiler.settings) and any([kong for kong in ownedKongs[level] if kong in [Kongs.donkey, Kongs.tiny, Kongs.chunky]]):
+            if HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs) and any([kong for kong in ownedKongs[level] if kong in [Kongs.donkey, Kongs.tiny, Kongs.chunky]]):
                 bossOptions[level].append(Maps.FactoryBoss)
             # Outside of hard bosses, you need exactly Tiny and Twirl
             elif Kongs.tiny in ownedKongs[level] and Items.PonyTailTwirl in ownedMoves[level]:
@@ -351,7 +351,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
                 raise BossOutOfLocationsException("Fill has no valid boss placement combinations.")
         else:
             chosenBoss = random.choice(notTakenBossOptions)
-        kongOptions = [kong for kong in GetKongOptionsForBoss(chosenBoss, HardBossesEnabled(spoiler.settings)) if kong in ownedKongs[mostRestrictiveLevel]]
+        kongOptions = [kong for kong in GetKongOptionsForBoss(chosenBoss, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs)) if kong in ownedKongs[mostRestrictiveLevel]]
         # This should be impossible, as bossOptions is populated referencing the ownedKongs dict
         # This could become possible if a boss becomes beatable with unique combinations of Kong + move (e.g. a boss is beatable with (Kong A + Move B) OR (Kong C + Move D))
         if not any(kongOptions):
@@ -390,7 +390,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
             spoiler.settings.boss_kongs = [
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.JapesBoss, False) if kong in bossOptions[Levels.JungleJapes]]),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.AztecBoss, False) if kong in bossOptions[Levels.AngryAztec]]),
-                random.choice([kong for kong in GetKongOptionsForBoss(Maps.FactoryBoss, HardBossesEnabled(spoiler.settings)) if kong in bossOptions[Levels.FranticFactory]]),
+                random.choice([kong for kong in GetKongOptionsForBoss(Maps.FactoryBoss, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs)) if kong in bossOptions[Levels.FranticFactory]]),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.GalleonBoss, False) if kong in bossOptions[Levels.GloomyGalleon]]),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.FungiBoss, False) if kong in bossOptions[Levels.FungiForest]]),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.CavesBoss, False) if kong in bossOptions[Levels.CrystalCaves]]),

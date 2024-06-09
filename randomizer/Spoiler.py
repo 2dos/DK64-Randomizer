@@ -21,6 +21,7 @@ from randomizer.Enums.Settings import (
     CBRando,
     GlitchesSelected,
     LogicType,
+    HardBossesSelected,
     MinigameBarrels,
     RandomPrices,
     ShockwaveStatus,
@@ -531,7 +532,7 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name.capitalize() + ", "
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order
 
-        if HardBossesEnabled(self.settings):
+        if HardBossesEnabled(self.settings, HardBossesSelected.kut_out_phase_rando):
             phase_names = []
             for phase in self.settings.kko_phase_order:
                 phase_names.append(f"Phase {phase+1}")

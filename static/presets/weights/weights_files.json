@@ -815,8 +815,6 @@
     "hard_level_progression": 0.6,
     "hard_mode": 0.2,
     "hard_mode_selected": {
-      "hard_bosses": 0.6,
-      "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
       "reduced_fall_damage_threshold": 0.5,

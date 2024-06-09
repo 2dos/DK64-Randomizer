@@ -247,31 +247,30 @@ kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "L
 
 def pushItemMicrohints(spoiler):
     """Push hint for the micro-hints system."""
-    if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
-        helm_prog_items = getHelmProgItems(spoiler)
-        hinted_items = [
-            # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
-            (helm_prog_items[0], 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            (helm_prog_items[1], 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            (Items.Bongos, 27, [MicrohintsEnabled.all]),
-            (Items.Triangle, 28, [MicrohintsEnabled.all]),
-            (Items.Saxophone, 29, [MicrohintsEnabled.all]),
-            (Items.Trombone, 30, [MicrohintsEnabled.all]),
-            (Items.Guitar, 31, [MicrohintsEnabled.all]),
-            (Items.ProgressiveSlam, 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            (Items.Cranky, 35, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            (Items.Funky, 36, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            (Items.Candy, 37, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-            (Items.Snide, 38, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        ]
-        for item_hint, item_data in enumerate(hinted_items):
-            if spoiler.settings.microhints_enabled in list(item_data[2]):
-                if ItemList[item_data[0]].name in spoiler.microhints:
-                    data = {"textbox_index": item_data[1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_data[0]].name]}
-                    if 19 in spoiler.text_changes:
-                        spoiler.text_changes[19].append(data)
-                    else:
-                        spoiler.text_changes[19] = [data]
+    helm_prog_items = getHelmProgItems(spoiler)
+    hinted_items = [
+        # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
+        (helm_prog_items[0], 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (helm_prog_items[1], 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Bongos, 27, [MicrohintsEnabled.all]),
+        (Items.Triangle, 28, [MicrohintsEnabled.all]),
+        (Items.Saxophone, 29, [MicrohintsEnabled.all]),
+        (Items.Trombone, 30, [MicrohintsEnabled.all]),
+        (Items.Guitar, 31, [MicrohintsEnabled.all]),
+        (Items.ProgressiveSlam, 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Cranky, 35, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Funky, 36, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Candy, 37, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Snide, 38, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+    ]
+    for item_hint, item_data in enumerate(hinted_items):
+        if spoiler.settings.microhints_enabled in list(item_data[2]):
+            if ItemList[item_data[0]].name in spoiler.microhints:
+                data = {"textbox_index": item_data[1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_data[0]].name]}
+                if 19 in spoiler.text_changes:
+                    spoiler.text_changes[19].append(data)
+                else:
+                    spoiler.text_changes[19] = [data]
 
 
 def getTextRewardIndex(item) -> int:

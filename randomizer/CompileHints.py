@@ -2297,57 +2297,58 @@ def getHelmProgItems(spoiler: Spoiler) -> list:
             base_list[switch_index] = switch_item_data[data.switch_type][data.kong]
     return base_list
 
+SHOPKEEPER_ITEMS = [Items.Cranky, Items.Candy, Items.Funky, Items.Snide]
+INSTRUMENT_ITEMS = [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle]
 
 def compileMicrohints(spoiler: Spoiler) -> None:
     """Create guaranteed level + kong hints for various items."""
     spoiler.microhints = {}
-    if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
-        slam_levels = []
-        helm_prog_items = getHelmProgItems(spoiler)
-        microhint_categories = {
-            MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
-            MicrohintsEnabled.all: helm_prog_items.copy()
-            + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam, Items.Cranky, Items.Candy, Items.Funky, Items.Snide],
-        }
-        items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
-        # Loop through locations looking for the items that need a microhint
-        for id, location in spoiler.LocationList.items():
-            if location.item in items_needing_microhints:
-                item = ItemList[location.item]
-                level_color = level_colors[location.level]
-                if location.item == Items.ProgressiveSlam:
-                    # Chunky Phase slam hint
-                    if id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
-                        if location.level not in slam_levels:
-                            slam_levels.append(location.level)
-                elif location.item in (Items.Cranky, Items.Funky, Items.Snide, Items.Candy):
-                    hint_text = f"The sign reads {item.name} has gone on vacation to the {vacation_levels_properties[location.level]} of {level_color}{level_list[location.level]}{level_color}. Perhaps I would find {'her' if location.item == Items.Candy else 'him'} there."
-                    spoiler.microhints[item.name] = hint_text.upper()
+    slam_levels = []
+    helm_prog_items = getHelmProgItems(spoiler)
+    microhint_categories = {
+        MicrohintsEnabled.off: SHOPKEEPER_ITEMS.copy(),
+        MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam] + SHOPKEEPER_ITEMS.copy(),
+        MicrohintsEnabled.all: helm_prog_items.copy() + INSTRUMENT_ITEMS.copy() + SHOPKEEPER_ITEMS.copy() + [Items.ProgressiveSlam],
+    }
+    items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
+    # Loop through locations looking for the items that need a microhint
+    for id, location in spoiler.LocationList.items():
+        if location.item in items_needing_microhints:
+            item = ItemList[location.item]
+            level_color = level_colors[location.level]
+            if location.item == Items.ProgressiveSlam:
+                # Chunky Phase slam hint
+                if id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
+                    if location.level not in slam_levels:
+                        slam_levels.append(location.level)
+            elif location.item in (Items.Cranky, Items.Funky, Items.Snide, Items.Candy):
+                hint_text = f"The sign reads {item.name} has gone on vacation to the {vacation_levels_properties[location.level]} of {level_color}{level_list[location.level]}{level_color}. Perhaps I would find {'her' if location.item == Items.Candy else 'him'} there."
+                spoiler.microhints[item.name] = hint_text.upper()
+            else:
+                if location.type in item_type_names.keys():
+                    hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_color}{level_list[location.level]}{level_color} for this.".upper()
+                elif location.type == Types.Shop:
+                    hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
                 else:
-                    if location.type in item_type_names.keys():
-                        hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_color}{level_list[location.level]}{level_color} for this.".upper()
-                    elif location.type == Types.Shop:
-                        hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
-                    else:
-                        hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
-                    settings_values = [
-                        spoiler.settings.kong_model_dk,
-                        spoiler.settings.kong_model_diddy,
-                        spoiler.settings.kong_model_lanky,
-                        spoiler.settings.kong_model_tiny,
-                        spoiler.settings.kong_model_chunky,
-                    ]
-                    for index, val in enumerate(settings_values):
-                        if val == KongModels.krusha:
-                            if index == location.kong:
-                                hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
-                    spoiler.microhints[item.name] = hint_text
-        if len(slam_levels) > 0:
-            slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
-            slam_text = " or ".join(slam_text_entries)
-            spoiler.microhints[ItemList[Items.ProgressiveSlam].name] = (
-                f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
-            )
+                    hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
+                settings_values = [
+                    spoiler.settings.kong_model_dk,
+                    spoiler.settings.kong_model_diddy,
+                    spoiler.settings.kong_model_lanky,
+                    spoiler.settings.kong_model_tiny,
+                    spoiler.settings.kong_model_chunky,
+                ]
+                for index, val in enumerate(settings_values):
+                    if val == KongModels.krusha:
+                        if index == location.kong:
+                            hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
+                spoiler.microhints[item.name] = hint_text
+    if len(slam_levels) > 0:
+        slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
+        slam_text = " or ".join(slam_text_entries)
+        spoiler.microhints[ItemList[Items.ProgressiveSlam].name] = (
+            f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
+        )
 
 
 def compileSpoilerHints(spoiler):

@@ -36,6 +36,8 @@ from randomizer.Enums.Settings import (
     FasterChecksSelected,
     GlitchesSelected,
     HardModeSelected,
+    HardBossesSelected,
+    HardBossesSelected,
     LogicType,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -449,9 +451,9 @@ class LogicVarHolder:
         """Determine whether the water is lava water or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.water_is_lava)
 
-    def HardBossesEnabled(self) -> bool:
+    def HardBossesSettingEnabled(self, check: HardBossesSelected) -> bool:
         """Determine whether the hard bosses feature is enabled or not."""
-        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.hard_bosses)
+        return IsItemSelected(self.settings.hard_bosses, self.settings.hard_bosses_selected, check)
 
     def IsHardFallDamage(self) -> bool:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
@@ -958,7 +960,7 @@ class LogicVarHolder:
         bossFight = self.settings.boss_maps[level]
         # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesEnabled() and self.settings.kong_model_tiny == KongModels.default):
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs) and self.settings.kong_model_tiny == KongModels.default):
             hasRequiredMoves = self.twirl and self.Slam
         elif bossFight == Maps.FactoryBoss:
             hasRequiredMoves = self.Slam
@@ -987,7 +989,7 @@ class LogicVarHolder:
                     order_of_level = level_order
             if order_of_level == 4 and not self.barrels:  # Prevent Barrels on boss 3
                 return False
-            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.HardBossesEnabled())):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
+            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs))):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
                 return False
         return self.IsKong(requiredKong) and hasRequiredMoves
 
@@ -1018,10 +1020,10 @@ class LogicVarHolder:
                 if not self.swim or not self.barrels or not self.vines:
                     return False
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
-                if not self.HardBossesEnabled() and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
+                if not self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs) and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
                 # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
-                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or self.HardBossesEnabled())):
+                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs))):
                     return False
             # Make sure we have access to all prior required keys before entering the next level - this prevents keys from being placed in levels beyond what they unlock
             if order_of_level > 1 and not self.JapesKey:

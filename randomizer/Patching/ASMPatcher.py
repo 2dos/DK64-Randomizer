@@ -16,6 +16,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     FreeTradeSetting,
     HardModeSelected,
+    HardBossesSelected,
     FungiTimeSetting,
     MiscChangesSelected,
     ColorblindMode,
@@ -1879,7 +1880,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x800339EE, Overlay.Boss, 0x4220, offset_dict)  # Stationary
 
     MJ_FAST_SPEED = 3
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_bosses):
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack):
         # MJ Fast Jumps
         writeFloat(ROM_COPY, 0x80036C40, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # Phase 1 Jump speed
         writeFloat(ROM_COPY, 0x80036C44, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # Phase 2

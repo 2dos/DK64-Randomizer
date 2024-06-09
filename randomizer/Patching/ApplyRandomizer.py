@@ -16,6 +16,7 @@ from randomizer.Enums.Settings import (
     FungiTimeSetting,
     GalleonWaterSetting,
     HardModeSelected,
+    HardBossesSelected,
     MiscChangesSelected,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -362,7 +363,7 @@ def patching_response(spoiler):
         else:
             spoiler.text_changes[8] = [data]
 
-    if HardModeSelected.hard_bosses in spoiler.settings.hard_mode_selected:
+    if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
         # KKO Phase Order
         for phase_slot in range(3):
             ROM_COPY.seek(sav + 0x17B + phase_slot)

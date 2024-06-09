@@ -357,6 +357,20 @@ class HelmBonuses(IntEnum):
     two = 2
 
 
+class HardBossesSelected(IntEnum):
+    """Various hard boss changes that can be applied.
+
+    These values are tied to the HardBossSelector in randomizer.Lists.HardMode. More
+    details on each can be found in that file.
+    """
+
+    fast_mad_jack = 1
+    alternative_mad_jack_kongs = 2
+    pufftoss_star_rando = 3
+    pufftoss_star_raised = 4
+    kut_out_phase_rando = 5
+
+
 class HardModeSelected(IntEnum):
     """Various hard mode changes that can be applied.
 
@@ -364,8 +378,8 @@ class HardModeSelected(IntEnum):
     details on each can be found in that file.
     """
 
-    hard_bosses = 1
-    extra_hard_bosses = 2
+    null_option_0 = 1  # Used to be hard bosses
+    null_option_1 = 2  # Used to be extra hard bosses
     hard_enemies = 3
     water_is_lava = 4
     reduced_fall_damage_threshold = 5
@@ -815,6 +829,7 @@ SettingsMap = {
     "galleon_water": GalleonWaterSetting,
     "gb_colors": CharacterColors,
     "glitches_selected": GlitchesSelected,
+    "hard_bosses_selected": HardBossesSelected,
     "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
     "helm_room_bonus_count": HelmBonuses,
@@ -1057,11 +1072,11 @@ class SettingsStringEnum(IntEnum):
     chaos_ratio = 183
     krool_in_boss_pool = 184
     enemy_kill_crown_timer = 185
+    hard_bosses_selected = 186
 
 # If a setting needs to be removed, add it to this set instead of removing it
 # from the enum above.
 DeprecatedSettings = {
-    SettingsStringEnum.hard_bosses,
     SettingsStringEnum.hard_enemies,
     SettingsStringEnum.choose_starting_moves,
     SettingsStringEnum.open_levels,
@@ -1146,6 +1161,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.hard_bosses: SettingsStringDataType.bool,
+    SettingsStringEnum.hard_bosses_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_enemies: SettingsStringDataType.bool,
     SettingsStringEnum.hard_level_progression: SettingsStringDataType.bool,
     SettingsStringEnum.hard_shooting: SettingsStringDataType.bool,
@@ -1302,6 +1318,7 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.random_starting_move_list_selected: Items,
     SettingsStringEnum.remove_barriers_selected: RemovedBarriersSelected,
     SettingsStringEnum.faster_checks_selected: FasterChecksSelected,
+    SettingsStringEnum.hard_bosses_selected: HardBossesSelected,
 }
 
 # This map specifies the minimum and maximum values for numeric settings.

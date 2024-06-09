@@ -31,7 +31,7 @@ async def initialize():
     # Module of Lists used for list_selector macros
     from randomizer.Enums.Types import ItemRandoSelector, KeySelector
     from randomizer.Lists.EnemyTypes import EnemySelector
-    from randomizer.Lists.HardMode import HardSelector
+    from randomizer.Lists.HardMode import HardSelector, HardBossSelector
     from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
     from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Lists.Minigame import MinigameSelector
@@ -88,6 +88,7 @@ async def initialize():
         minigames=MinigameSelector,
         misc_changes=QoLSelector,
         hard_mode=HardSelector,
+        hard_bosses=HardBossSelector,
         enemies=EnemySelector,
         excluded_songs=ExcludedSongsSelector,
         song_filters=SongFilteringSelector,

@@ -9,7 +9,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement
+from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement, HardBossesSelected
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
@@ -207,8 +207,8 @@ def randomize_setup(spoiler):
         spoiler.settings.random_patches,
         spoiler.settings.puzzle_rando,
         spoiler.settings.chunky_phase_slam_req_internal != SlamRequirement.blue,
-        IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.extra_hard_bosses),  # Pufftoss Stars Raised
-        IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_bosses),  # Pufftoss Stars Shuffled
+        IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_raised),  # Pufftoss Stars Raised
+        IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_rando),  # Pufftoss Stars Shuffled
         lighthouse_on,
         IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.raise_fungi_dirt_patch),
     ]
@@ -259,8 +259,8 @@ def randomize_setup(spoiler):
         random.shuffle(vase_puzzle_positions)
         vase_puzzle_rando_progress = 0
         raise_patch = IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.raise_fungi_dirt_patch)
-        random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_bosses)
-        higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.extra_hard_bosses)
+        random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardBossesSelected.pufftoss_star_rando)
+        higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardBossesSelected.pufftoss_star_raised)
         for cont_map_id in range(216):
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(cont_map_setup_address)
