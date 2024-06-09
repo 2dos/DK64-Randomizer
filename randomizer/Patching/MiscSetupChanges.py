@@ -106,6 +106,7 @@ def pickChunkyCabinPadPositions():
                 picked_pads.append(pad)
     return {"picked": picked_pads.copy(), "index": 0}
 
+
 def SpeedUpFungiRabbit():
     """Change the speed of the Fungi Rabbit."""
     ROM_COPY = LocalROM()
@@ -156,6 +157,7 @@ def SpeedUpFungiRabbit():
             speed_buff = 0.7
             ROM_COPY.seek(file_start + init_offset + 0xD)
             ROM_COPY.write(int(136 * speed_buff))
+
 
 def randomize_setup(spoiler):
     """Randomize setup."""

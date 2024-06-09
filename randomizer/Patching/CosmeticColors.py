@@ -288,7 +288,7 @@ spotlight_fish_models = [
     Model.SkeletonHead,
     Model.Vulture_76,
     Model.Vulture_77,
-    Model.Bat,
+    # Model.Bat, # Lighting bug
     Model.Tomato,
     Model.IceTomato,
     Model.FlySwatter_83,
@@ -1998,7 +1998,6 @@ def applyKongModelSwaps(settings: Settings) -> None:
                     source_start = js.pointer_addresses[5]["entries"][source_data[model_subindex]]["pointing_to"]
                     source_end = js.pointer_addresses[5]["entries"][source_data[model_subindex] + 1]["pointing_to"]
                     source_size = source_end - source_start
-                    print(index, hex(dest_data[model_subindex]), hex(source_data[model_subindex]), hex(dest_start), hex(source_start), hex(source_end - source_start))
                     ROM_COPY.seek(source_start)
                     file_bytes = ROM_COPY.readBytes(source_size)
                     ROM_COPY.seek(dest_start)
@@ -2192,7 +2191,6 @@ def darkenDPad():
     for y in range(32):
         for x in range(32):
             pix_data = list(px[x, y])
-            print(pix_data)
             if pix_data[0] > 245 and pix_data[1] > 245 and pix_data[2] > 245:
                 # Main white bit
                 pix_data[0] = 0
