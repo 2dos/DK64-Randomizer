@@ -812,6 +812,21 @@ def disable_hard_mode_modal(evt):
     except AttributeError:
         pass
 
+@bind("click", "hard_bosses")
+def disable_hard_bosses_modal(evt):
+    """Disable Hard Mode Selector when Hard Mode is off."""
+    disabled = True
+    selector = js.document.getElementById("hard_bosses_modal")
+    if js.document.getElementById("hard_bosses").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
 
 @bind("click", "nav-music-tab")
 @bind("click", "songs_excluded")
@@ -1081,6 +1096,7 @@ def update_ui_states(event):
     toggle_item_rando(None)
     disable_enemy_modal(None)
     disable_hard_mode_modal(None)
+    disable_hard_bosses_modal(None)
     disable_excluded_songs_modal(None)
     disable_music_filtering_modal(None)
     toggle_bananaport_selector(None)
