@@ -656,7 +656,7 @@ i {
   transform: translateY(5%);
 }
 
-.btn-close {
+.btn-close:not([data-bs-dismiss="toast"]) {
   background-color: grey;
 }
 

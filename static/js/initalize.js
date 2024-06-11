@@ -95,18 +95,7 @@ function toast_alert(text) {
   try {
     _LTracker.push({ text: text, agent: user_agent });
   } catch {}
-  Toastify({
-    text: text,
-    duration: 15000,
-    close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: "#800000",
-    },
-    onClick: function () {},
-  }).showToast();
+  generateToast(text, true);
 }
 function getFile(file) {
   return $.ajax({

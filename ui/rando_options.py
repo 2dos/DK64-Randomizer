@@ -1000,8 +1000,12 @@ def preset_select_changed(event):
     for val in js.progression_presets:
         if val.get("name") == element.value:
             presets = val
+    # if presets is None:
+    #     js.generateToast()
+    #     return
     if presets is not None and "settings_string" in presets:
         # Pass in setting string
+        js.generateToast(f"\"{presets['name']}\" preset applied.<br />All non-cosmetic settings have been overwritten.")
         settings = decrypt_settings_string_enum(presets["settings_string"])
         for select in js.document.getElementsByTagName("select"):
             if should_reset_select_on_preset(select):
@@ -1508,6 +1512,7 @@ def start_all_starting_moves(evt):
 @bind("click", "randomize_settings")
 def shuffle_settings(evt):
     """Randomize all non-cosmetic settings."""
+    js.generateToast(f"Randomizing settings ({js.document.getElementById('random-weights').value}).<br>All non-cosmetic settings have been overwritten.")
     randomize_settings()
 
     # Run additional functions to ensure there are no conflicts.

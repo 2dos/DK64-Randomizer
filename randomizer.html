@@ -156,6 +156,10 @@
                     </div>
                     <div class="container" id="tab-data" hidden></div>
                     <hr />
+                    <!-- Toasts -->
+                    <div id="toasts">
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+                    </div>
                     <div class="container" id="nav-gen-type-container">
                         <nav style="display: inline-block; float: none; vertical-align: top;">
                             <div class="nav nav-tabs" id="nav-gen-type" role="tablist">
@@ -674,6 +678,36 @@
                     navigator.clipboard.writeText(input.val());
                 })
             })
+        </script>
+        <script>
+            // TOAST GENERATOR
+            const toastTrigger = document.getElementById('liveToastBtn')
+            const toastContainer = document.getElementById("toasts")
+
+            let toast_counter = 0;
+
+            function generateToast(message, error=false) {
+                toastContainer.getElementsByClassName("toast-container")[0].innerHTML += `
+                <div 
+                  id="liveToast${toast_counter}"
+                  class="toast align-items-center ${error ? 'text-bg-danger' : ''} border-0"
+                  role="${error ? "alert" : "status"}"
+                  ${error ? "data-bs-autohide='false'" : ""}
+                  aria-live="${error ? "assertive" : "polite"}"
+                  aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">DK64 Randomizer (System)</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body text-start">
+                        ${message}
+                    </div>                  
+                </div>`
+                const toastEl = document.getElementById(`liveToast${toast_counter}`)
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl)
+                toastBootstrap.show()
+                toast_counter += 1;
+            }
         </script>
     </footer>
 </html>
