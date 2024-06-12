@@ -160,6 +160,9 @@ void updateKopStat(void) {
 }
 
 void updateEnemyKillStat(void) {
+    // Change character for K Rool
+    fixKRoolKong();
+    // Update Stat
     if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
         changeStat(STAT_ENEMIESKILLED, EnemiesKilledCounter);
         SaveToGlobal();

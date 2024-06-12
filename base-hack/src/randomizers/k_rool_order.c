@@ -111,6 +111,19 @@ void completeBoss(void) {
 	}
 }
 
+void fixKRoolKong(void) {
+	for (int i = 0; i < 5; i++) {
+		if (Rando.k_rool_order[i] == CurrentMap) {
+			if (CurrentMap == MAP_FACTORYJACK) {
+				Character = KONG_TINY;
+			} else if (CurrentMap == MAP_FUNGIDOGADON) {
+				Character = KONG_CHUNKY;
+			}
+			return;
+		}
+	}
+}
+
 static unsigned char valid_lz_types[] = {9, 12, 13, 16};
 void handleKRoolSaveProgress(void) {
 	if (Rando.quality_of_life.save_krool_progress) {
@@ -142,7 +155,7 @@ void handleKRoolSaveProgress(void) {
 			}
 			if (latest_map > -1) {
 				for (int i = 0; i < TriggerSize; i++) {
-					if ((TriggerArray[i].map >= MAP_KROOLDK) && (TriggerArray[i].map <= MAP_KROOLCHUNKY)) {
+					if (inBossMap(TriggerArray[i].map, 1, 1, 1)) {
 						for (int j = 0; j < sizeof(valid_lz_types); j++) {
 							if (TriggerArray[i].type == valid_lz_types[j]) {
 								TriggerArray[i].map = latest_map;

@@ -155,8 +155,8 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.around_dartboard_boxes),
         RaceBound(2560, 990, 2692, 1183, True, 1),
         RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_in),  # Tunnel In
-        RaceBound(3070, 1162, 3205, 987, True, 1),
-        RaceBound(3205, 987, 3070, 1162, True, 1),
+        RaceBound(3070, 1090, 3205, 987, True, 1),
+        RaceBound(3205, 1090, 3070, 1162, True, 1),
         RaceBound(0, 0, 0, 0, False, 0, CarRaceArea.tunnel_out),  # Tunnel Out
         RaceBound(0, 0, 0, 0, False, 1, CarRaceArea.castle_car_start_finish),  # Start/Finish Line
     ]

@@ -271,7 +271,7 @@ spotlight_fish_models = [
     Model.Krash,
     Model.SirDomino,
     Model.MrDice_41,
-    Model.Ruler,
+    # Model.Ruler, # Lighting issue
     Model.RoboKremling,
     Model.NintendoLogo,
     Model.MechanicalFish,
