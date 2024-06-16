@@ -64,8 +64,8 @@ LogicRegions = {
         LocationLogic(Locations.PreGiven_Location34, lambda l: True),
         LocationLogic(Locations.PreGiven_Location35, lambda l: True),
     ], [
+        Event(Events.KLumsyTalkedTo, lambda l: l.settings.fast_start_beginning_of_game),
         # Everything you can do in the prison is autocompleted with auto_keys - just copy-paste the logic from the Prison region events here
-        Event(Events.KLumsyTalkedTo, lambda l: l.settings.auto_keys),
         Event(Events.JapesKeyTurnedIn, lambda l: l.settings.auto_keys and l.JapesKey and l.HasFillRequirementsForLevel(l.settings.level_order[2])),
         Event(Events.AztecKeyTurnedIn, lambda l: l.settings.auto_keys and l.AztecKey and l.HasFillRequirementsForLevel(l.settings.level_order[3])),
         Event(Events.FactoryKeyTurnedIn, lambda l: l.settings.auto_keys and l.FactoryKey),
@@ -99,15 +99,17 @@ LogicRegions = {
     ]),
 
     Regions.TrainingGrounds: Region("Training Grounds", "Main Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: True, isAuxiliary=True),
-        LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True, isAuxiliary=True),
-        LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True, isAuxiliary=True),
-        LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True, isAuxiliary=True),
+        LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
+        LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
+        LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
+        LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
         LocationLogic(Locations.IslesFirstMove, lambda l: True, isAuxiliary=True),
         LocationLogic(Locations.RainbowCoin_Location13, lambda l: True),
         LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.vines or l.CanMoonkick()),  # Banana Hoard patch
-    ], [], [
-        TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
+    ], [
+        Event(Events.TrainingBarrelsSpawned, lambda l: l.crankyAccess or l.settings.fast_start_beginning_of_game), # Requires Cranky to spawn the training barrels
+    ], [
+        TransitionFront(Regions.IslesMain, lambda l: l.Slam or l.settings.fast_start_beginning_of_game, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
         TransitionFront(Regions.CrankyIsles, lambda l: l.crankyAccess),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),

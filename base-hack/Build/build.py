@@ -1745,6 +1745,8 @@ with open(newROMName, "r+b") as fh:
         "head32_dog2",
         "head32_dillo2",
         "head32_kko",
+        "osprint_logo_left",
+        "osprint_logo_right",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

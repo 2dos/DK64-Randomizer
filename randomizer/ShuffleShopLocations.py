@@ -87,8 +87,10 @@ def ShuffleShopLocations(spoiler):
     # Shuffle
     assortment = {}
     for level in available_shops:
-        # Don't shuffle Isles shops in entrance rando. This prevents having the one-entrance-locked Isles Snide room from being progression.
-        if level == Levels.DKIsles and spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+        # Don't shuffle Isles shops in entrance rando.
+        # This prevents having the one-entrance-locked Isles Snide room from being progression.
+        # Also ban it with fast start beginning of game off. Introduces a lot of oddities about things
+        if level == Levels.DKIsles and (spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or not spoiler.settings.fast_start_beginning_of_game):
             continue
         shop_array = available_shops[level]
         # Get list of shops in level

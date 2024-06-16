@@ -39,6 +39,12 @@ HelmMinigameLocations = [
     Locations.HelmChunky1,
     Locations.HelmChunky2,
 ]
+TrainingMinigameLocations = [
+    Locations.IslesSwimTrainingBarrel,
+    Locations.IslesVinesTrainingBarrel,
+    Locations.IslesBarrelsTrainingBarrel,
+    Locations.IslesOrangesTrainingBarrel,
+]
 
 MinigameRequirements = {
     Minigames.NoGame: Minigame(name="No Game", group="No Group", helm_enabled=False, logic=lambda l: True),
@@ -151,16 +157,15 @@ MinigameRequirements = {
     Minigames.SpeedySwingSortieHard: Minigame(
         name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: l.vines
     ),
-    # Krazy Kong Klamour - Fast flicker games banned from Helm because Wii U semi-requires pause buffer to hit Bananas. Not expecting users to know this trick
     Minigames.KrazyKongKlamourEasy: Minigame(name="Krazy Kong Klamour (10 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourEasy, logic=lambda l: True),
     Minigames.KrazyKongKlamourNormal: Minigame(
         name="Krazy Kong Klamour (15 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourNormal, difficulty_lvl=1, logic=lambda l: True
     ),
     Minigames.KrazyKongKlamourHard: Minigame(
-        name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: True
+        name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, difficulty_lvl=3, logic=lambda l: True
     ),
     Minigames.KrazyKongKlamourInsane: Minigame(
-        name="Krazy Kong Klamour (10 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourInsane, helm_enabled=False, difficulty_lvl=4, logic=lambda l: True
+        name="Krazy Kong Klamour (10 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourInsane, difficulty_lvl=4, logic=lambda l: True
     ),
     # Searchlight Seek
     Minigames.SearchlightSeekVEasy: Minigame(name="Searchlight Seek (4 Klaptraps)", group="Searchlight Seek", map_id=Maps.SearchlightSeekVEasy, logic=lambda l: True),
@@ -258,28 +263,28 @@ MinigameRequirements = {
         group="Training Minigames",
         map_id=Maps.BarrelBarrel,
         can_repeat=True,
-        logic=lambda l: l.barrels,
+        logic=lambda l: l.barrels or not l.settings.bonus_barrel_rando,
     ),
     Minigames.OrangeBarrel: Minigame(
         name="Orange Training",
         group="Training Minigames",
         map_id=Maps.OrangeBarrel,
         can_repeat=True,
-        logic=lambda l: l.oranges,
+        logic=lambda l: l.oranges or not l.settings.bonus_barrel_rando,
     ),
     Minigames.VineBarrel: Minigame(
         name="Vine Training",
         group="Training Minigames",
         map_id=Maps.VineBarrel,
         can_repeat=True,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.vines or not l.settings.bonus_barrel_rando,
     ),
     Minigames.DiveBarrel: Minigame(
         name="Dive Training",
         group="Training Minigames",
         map_id=Maps.DiveBarrel,
         can_repeat=True,
-        logic=lambda l: l.swim,
+        logic=lambda l: l.swim or not l.settings.bonus_barrel_rando,
     ),
 }
 
@@ -359,4 +364,8 @@ BarrelMetaData = {
     Locations.HelmTiny2: MinigameLocationData(Maps.HideoutHelm, 12, Minigames.TinyPonyTailTwirl, Kongs.tiny),
     Locations.HelmChunky1: MinigameLocationData(Maps.HideoutHelm, 14, Minigames.ChunkyHiddenKremling, Kongs.chunky),
     Locations.HelmChunky2: MinigameLocationData(Maps.HideoutHelm, 7, Minigames.ChunkyShooting, Kongs.chunky),
+    Locations.IslesVinesTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 6, Minigames.VineBarrel, Kongs.any),
+    Locations.IslesSwimTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 4, Minigames.DiveBarrel, Kongs.any),
+    Locations.IslesBarrelsTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 5, Minigames.BarrelBarrel, Kongs.any),
+    Locations.IslesOrangesTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 3, Minigames.OrangeBarrel, Kongs.any),
 }

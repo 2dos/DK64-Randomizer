@@ -7,7 +7,7 @@ from randomizer.Patching.Patcher import LocalROM
 
 def randomize_barrels(spoiler):
     """Randomize barrel locations."""
-    barrels = [12, 91]
+    barrels = [28, 107, 134]
     if spoiler.settings.bonus_barrel_rando or spoiler.settings.minigames_list_selected:
         ROM_COPY = LocalROM()
         barrel_replacements = []
@@ -36,7 +36,7 @@ def randomize_barrels(spoiler):
                 start_of_actor = start_of_actor_range + (0x38 * x)
                 ROM_COPY.seek(start_of_actor)
                 ROM_COPY.seek(start_of_actor + 0x32)
-                actor_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                actor_type = int.from_bytes(ROM_COPY.readBytes(2), "big") + 0x10
                 if actor_type in barrels:
                     ROM_COPY.seek(start_of_actor + 0x34)
                     actor_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
