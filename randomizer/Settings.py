@@ -407,6 +407,10 @@ class Settings:
         self.helm_barrels = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
 
+        # Not making this a setting that can be toggled by the user yet. 
+        # If people want to be able to toggle this, we can make a simple UI switch and the back-end has already been handled appropriately
+        self.sprint_barrel_requires_sprint = True
+
         self.chaos_blockers = False
 
         # hard_shooting: bool
@@ -1266,8 +1270,9 @@ class Settings:
             self.helm_barrels = MinigameBarrels.random
 
         # Loading Zone Rando
-        if self.level_randomization == LevelRandomization.level_order:
+        if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
             self.shuffle_loading_zones = ShuffleLoadingZones.levels
+            self.hard_level_progression = self.level_randomization == LevelRandomization.level_order_complex
         elif self.level_randomization == LevelRandomization.loadingzone:
             self.shuffle_loading_zones = ShuffleLoadingZones.all
         elif self.level_randomization == LevelRandomization.loadingzonesdecoupled:

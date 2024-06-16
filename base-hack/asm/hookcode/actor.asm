@@ -597,3 +597,16 @@ makeKongTranslucent:
         addiu $at, $zero, 0x1
         j 0x806CB780
         lui $v1, 0x8080
+
+expandTBarrelResponse:
+    lw $t6, 0x0 ($s1)
+    lw $t7, 0x58 ($t6) ; load actor type
+    addiu $at, $zero, 134 ; training barrel
+    beq $t7, $at, expandTBarrelResponse_isResponse
+    nop
+    j 0x80680ADC
+    addiu $at, $zero, 0x1C ; Regular Bonus
+
+    expandTBarrelResponse_isResponse:
+        j 0x80680AE4
+        nop

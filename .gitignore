@@ -203,3 +203,4 @@ last_generated_time.cfg
 generated_seeds/*
 local_presets.json
 base-hack/build/dir_hash.txt
+base-hack/build/skeleton/*.png

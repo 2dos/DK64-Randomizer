@@ -249,6 +249,7 @@ mergeModel(
 mergeModel(0x67, 0xDA, "k_rool_fight.bin", False, True, 1.377, True, [5, 6, 7, 8, 9, 10, 11], [2, 3, 4])  # Fight Version
 mergeModel(0x10, 3, "cranky_model.bin", False, True, None, True, [16, 17, 18, 19, 20, 21, 22, 23], [8, 9, 10, 11, 12, 13, 14, 15])
 mergeModel(0x12, 8, "candy_model.bin", False, True, None, True, [22, 23, 24, 25, 26, 27, 28], [15, 16, 17, 18, 19, 20, 21])
+mergeModel(0x11, 0, "funky_model.bin", False, True, None, True, [7, 8, 9], [4, 5, 6])
 
 with open("k_rool_fight.bin", "r+b") as fh:
     # Remove DL Call

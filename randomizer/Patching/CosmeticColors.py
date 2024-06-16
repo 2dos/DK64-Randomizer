@@ -308,6 +308,7 @@ model_mapping = {
     KongModels.krool_fight: 8,
     KongModels.cranky: 10,
     KongModels.candy: 11,
+    KongModels.funky: 12,
 }
 krusha_texture_replacement = {
     # Textures Krusha can use when he replaces various kongs (Main color, belt color)
@@ -1969,6 +1970,7 @@ model_index_mapping = {
     KongModels.krool_cutscene: (0x114, 0x114),
     KongModels.cranky: (0x115, 0x115),
     KongModels.candy: (0x116, 0x116),
+    KongModels.funky: (0x117, 0x117),
 }
 
 

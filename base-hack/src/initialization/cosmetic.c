@@ -19,6 +19,7 @@ static short pellets[] = {48, 36, 42, 43, 38};
 static const char* krool_name = "K. ROOL";
 static const char* cranky_name = "CRANKY";
 static const char* candy_name = "CANDY";
+static const char* funky_name = "FUNKY";
 
 void initKrusha(int slot) {
     /**
@@ -135,15 +136,25 @@ void initKrusha(int slot) {
     }
 }
 
+typedef struct kongmodel_recolor_data {
+    /* 0x000 */ unsigned char kong;
+    /* 0x001 */ unsigned char model;
+} kongmodel_recolor_data;
+
+static const kongmodel_recolor_data kongmodel_rc[] = {
+    {.kong = KONG_DK, .model=KONGMODEL_CRANKY},
+    {.kong = KONG_TINY, .model=KONGMODEL_CANDY},
+    {.kong = KONG_DIDDY, .model=KONGMODEL_FUNKY},
+};
+
 void* updateKongTB(int malloc_size) {
     unsigned short* paad = CurrentActorPointer_0->paad;
-    if (*paad == 2) {
-        if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
-            CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF;
-        }
-    } else if (*paad == 5) {
-        if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
-            CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF;
+    for (int k = 0; k < sizeof(kongmodel_rc)/sizeof(kongmodel_recolor_data); k++) {
+        int kong_index = kongmodel_rc[k].kong;
+        if (*paad == (2 + kong_index)) {
+            if (Rando.kong_models[kong_index] == kongmodel_rc[k].model) {
+                CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF;
+            }
         }
     }
     return dk_malloc(malloc_size);
@@ -315,6 +326,10 @@ void initModelChanges(void) {
             case KONGMODEL_CANDY:
                 KongTagNames[i] = 9;
                 KongTextNames[i] = candy_name;
+                break;
+            case KONGMODEL_FUNKY:
+                KongTagNames[i] = 10;
+                KongTextNames[i] = funky_name;
                 break;
             case KONGMODEL_DISCOCHUNKY:
                 if (i == 4) {

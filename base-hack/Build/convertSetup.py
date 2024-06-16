@@ -66,6 +66,7 @@ class ObjectChange:
         ry: float = None,
         rz: float = None,
         use_stream: bool = False,
+        new_bonus_id: int = None,
     ):
         """Initialize with given parameters."""
         # Mandatory
@@ -85,6 +86,7 @@ class ObjectChange:
         self.rx = rx
         self.ry = ry
         self.rz = rz
+        self.new_bonus_id = new_bonus_id
         self.added = False
 
     def getStream(self, data_stream: bytes) -> bytes:
@@ -112,6 +114,7 @@ class ObjectChange:
             byte_array = writeValueToByteArray(byte_array, self.y, 4, 0x4, True)
             byte_array = writeValueToByteArray(byte_array, self.z, 4, 0x8, True)
             byte_array = writeValueToByteArray(byte_array, self.scale, 4, 0xC, True)
+            byte_array = writeValueToByteArray(byte_array, self.new_bonus_id, 2, 0x1A, False)
             byte_array = writeValueToByteArray(byte_array, self.obj_type, 2, 0x32 if self.obj_master_type == ObjectTypes.actor else 0x28)
             byte_array = writeValueToByteArray(byte_array, self.new_id, 2, 0x34 if self.obj_master_type == ObjectTypes.actor else 0x2A)
             byte_array = writeValueToByteArray(byte_array, self.rx, 4, 0x18, True, self.obj_master_type == ObjectTypes.modeltwo)
@@ -204,6 +207,10 @@ def getObjectModifications(target_map: Maps) -> list:
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Caves5DIDK, 0x0, new_id=0x20, x=118.011, y=20, z=462.749, obj_type=0x29, rx=0, ry=1024, rz=0, scale=1),
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.CastleLibrary, 0x0, new_id=0x20, x=2668, y=216, z=287, obj_type=0x29, rx=0, ry=1024, rz=0, scale=1),
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Factory, 13, x=1237.001, y=175, z=840.569),  # Factory Diddy Storage Bonus
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 6, new_bonus_id=96),  # Vine Barrel
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 4, new_bonus_id=95),  # Dive Barrel
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 3, new_bonus_id=97),  # Orange Barrel
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 5, new_bonus_id=98),  # Barrel Barrel
     ]
 
     for switch_index in range(16):

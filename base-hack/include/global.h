@@ -182,7 +182,6 @@ extern void gbUpdateHandler(void);
 extern void handleProgressiveIndicator(int delta);
 extern int hasEnoughCBs(void);
 extern void initDingSprite(void);
-extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
 extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
@@ -422,7 +421,7 @@ extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void playBalloonWhoosh(int path_index, float* x, float* y, float* z);
 
 extern unsigned int cs_skip_db[432];
-extern bonus_barrel_info bonus_data[95];
+extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
 extern short tbarrel_flags[4];

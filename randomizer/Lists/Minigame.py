@@ -197,8 +197,13 @@ MinigameRequirements = {
         logic=lambda l: l.Slam and (l.jetpack and l.peanut and l.isdiddy) or l.phasewalk,
         kong_list=[Kongs.diddy],
     ),
-    # Supposed to use sprint but can make it without), even with Chunky
-    Minigames.LankyMaze: Minigame(name="Hideout Helm: Lanky Maze", group="Helm Minigames", map_id=Maps.HelmBarrelLankyMaze, can_repeat=True, logic=lambda l: True),
+    Minigames.LankyMaze: Minigame(
+        name="Hideout Helm: Lanky Maze",
+        group="Helm Minigames",
+        map_id=Maps.HelmBarrelLankyMaze,
+        can_repeat=True,
+        logic=lambda l: (not l.settings.sprint_barrel_requires_sprint) or (l.islanky and l.sprint),
+    ),
     Minigames.LankyShooting: Minigame(
         name="Hideout Helm: Lanky Shooting",
         group="Helm Minigames",

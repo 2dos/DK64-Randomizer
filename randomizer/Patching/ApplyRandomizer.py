@@ -178,7 +178,7 @@ def patching_response(spoiler):
         setItemReferenceName(spoiler, kong, 0, "Starting Kong")
 
     boolean_props = [
-        BooleanProperties(True, 0x2E),  # Fast Start Game
+        BooleanProperties(spoiler.settings.fast_start_beginning_of_game, 0x2E),  # Fast Start Game
         BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
         BooleanProperties(spoiler.settings.fps_display, 0x96),  # FPS Display
         BooleanProperties(spoiler.settings.no_melons, 0x128),  # No Melon Drops
@@ -199,6 +199,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
+        BooleanProperties(spoiler.settings.sprint_barrel_requires_sprint, 0x2F),  # Sprint Barrel requires OSprint
     ]
 
     for prop in boolean_props:

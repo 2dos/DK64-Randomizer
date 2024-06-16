@@ -3,6 +3,7 @@
 from BuildLib import main_pointer_table_offset, intf_to_float
 from BuildEnums import TableNames
 import zlib
+import os
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -93,9 +94,11 @@ def getSkeleton(model_index: int, model_file: str = None):
             draw.line([points[i[0]], points[i[1]]], fill="black", width=2)
 
         # Save or display the image
-        file_name = f"skeleton_{hex(model_index)}.png"
+        if not os.path.exists("./skeleton/"):
+            os.mkdir("./skeleton/")
+        file_name = f"./skeleton/model_{hex(model_index)}.png"
         if model_file is not None:
-            file_name = f"skeleton_{model_file.replace('.bin','').replace('../','')}.png"
+            file_name = f"./skeleton/model_{model_file.replace('.bin','').replace('../','')}.png"
         image.save(file_name)
 
 
@@ -106,3 +109,4 @@ getSkeleton(0x67)
 getSkeleton(0xDA)
 getSkeleton(8)
 getSkeleton(0x12)
+getSkeleton(0x11)

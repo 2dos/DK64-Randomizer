@@ -142,3 +142,4 @@
 #define CROWD_VOLUME 10000
 
 #define PATH_CAP 64
+#define BONUS_DATA_COUNT 99

@@ -4,7 +4,7 @@ typedef struct varspace {
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
 	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
-	/* 0x02F */ char unk_2F;
+	/* 0x02F */ char sprint_barrel_requires_sprint;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char unk_32[2];

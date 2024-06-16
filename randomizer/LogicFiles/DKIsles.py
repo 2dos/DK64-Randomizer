@@ -99,10 +99,11 @@ LogicRegions = {
     ]),
 
     Regions.TrainingGrounds: Region("Training Grounds", "Main Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: True),
-        LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True),
-        LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
-        LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True),
+        LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: True, isAuxiliary=True),
+        LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True, isAuxiliary=True),
+        LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True, isAuxiliary=True),
+        LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True, isAuxiliary=True),
+        LocationLogic(Locations.IslesFirstMove, lambda l: True, isAuxiliary=True),
         LocationLogic(Locations.RainbowCoin_Location13, lambda l: True),
         LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.vines or l.CanMoonkick()),  # Banana Hoard patch
     ], [], [

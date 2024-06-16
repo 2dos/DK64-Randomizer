@@ -29,7 +29,7 @@ from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
-from generate_yellow_wrinkly import generateYellowWrinkly
+from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
@@ -58,6 +58,7 @@ for x in range(2):
 createTextFile("assets/credits")
 createSquishFile("assets/credits")
 generateYellowWrinkly()
+generateSprintSwitch()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
@@ -206,6 +207,22 @@ file_dict = [
         target_compressed_size=0x800,
     ),
     File(
+        name="OSprint Logo (Left)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.OSprintLogoLeft),
+        source_file="assets/displays/osprint_logo_left.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="OSprint Logo (Right)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.OSprintLogoRight),
+        source_file="assets/displays/osprint_logo_right.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
         name="Melon Surface",
         pointer_table_index=TableNames.TexturesGeometry,
         file_index=getBonusSkinOffset(ExtraTextures.MelonSurface),
@@ -216,6 +233,7 @@ file_dict = [
     ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
@@ -1083,7 +1101,8 @@ model_changes = [
     ModelChange(0x114, "k_rool_cutscene.bin"),
     ModelChange(0x115, "cranky_model.bin"),
     ModelChange(0x116, "candy_model.bin"),
-    ModelChange(0x117, FINAL_RACE_HOOP),  # Used to set an endpoint
+    ModelChange(0x117, "funky_model.bin"),
+    ModelChange(0x118, FINAL_RACE_HOOP),  # Used to set an endpoint
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)

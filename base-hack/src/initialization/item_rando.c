@@ -35,7 +35,7 @@ static short fairy_item_table[20] = {}; // Fairy Rewards
 static unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
 static unsigned short crate_item_table[16] = {}; // Crate Rewards
 static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
-bonus_barrel_info bonus_data[95] = {}; // Bonus Barrel Rewards
+bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {}; // Bonus Barrel Rewards
 static meloncrate_db_item crate_flags[16] = {}; // Melon crate table
 
 int getBPItem(int index) {
@@ -278,7 +278,7 @@ enum_bonus_skin getBarrelSkinIndex(int actor) {
 
 int alterBonusVisuals(int index) {
     if (Rando.location_visuals.bonus_barrels) {
-        if (index < 95) {
+        if (index < BONUS_DATA_COUNT) {
             int actor = bonus_data[index].spawn_actor;
             enum_bonus_skin skin = getBarrelSkinIndex(actor);
             if (skin != SKIN_GB) {
@@ -330,6 +330,12 @@ void initItemRando(void) {
     bonus_data[94].flag = 215;
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
+    // Add 4 Training Minigames
+    for (int i = 0; i < 4; i++) {
+        bonus_data[95 + i].flag = FLAG_TBARREL_DIVE + i;
+        bonus_data[95 + i].spawn_actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONANY;
+        bonus_data[95 + i].kong_actor = 0;
+    }
     
     // Checks Screen
     pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
@@ -387,7 +393,7 @@ void initItemRando(void) {
     reward_rom_struct* reward_write = getFile(0x100, 0x1FF1200);
     for (int i = 0; i < 0x40; i++) {
         if (reward_write[i].flag > -1) {
-            for (int j = 0; j < 95; j++) {
+            for (int j = 0; j < BONUS_DATA_COUNT; j++) {
                 if (bonus_data[j].flag == reward_write[i].flag) {
                     bonus_data[j].spawn_actor = getActorIndex(reward_write[i].actor);
                 }

@@ -145,6 +145,13 @@ model_indexes = {
     Types.Snide: 0x1F,
 }
 
+TRAINING_LOCATIONS = (
+    Locations.IslesSwimTrainingBarrel,
+    Locations.IslesVinesTrainingBarrel,
+    Locations.IslesOrangesTrainingBarrel,
+    Locations.IslesBarrelsTrainingBarrel,
+)
+
 kong_flags = (385, 6, 70, 66, 117)
 
 subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
@@ -373,6 +380,21 @@ def place_randomized_items(spoiler, original_flut: list):
                     ROM_COPY.seek(sav + 0xA7)
                     ROM_COPY.write(1)
                     movespaceOffset = spoiler.settings.move_location_data
+                    if item.location in TRAINING_LOCATIONS:
+                        if not spoiler.settings.fast_start_beginning_of_game:
+                            # Add to bonus table
+                            old_tflag = 0x182 + TRAINING_LOCATIONS.index(item.location)
+                            ROM_COPY.seek(0x1FF1200 + (4 * bonus_table_offset))
+                            ROM_COPY.writeMultipleBytes(old_tflag, 2)
+                            ROM_COPY.writeMultipleBytes(getActorIndex(item), 2)
+                            bonus_table_offset += 1
+                            # Append to FLUT
+                            data = [old_tflag]
+                            if item.new_item is None:
+                                data.append(0)
+                            else:
+                                data.append(item.new_flag)
+                            flut_items.append(data)
                     for placement in item.placement_index:
                         write_space = movespaceOffset + (4 * placement)
                         if item.new_item is None:

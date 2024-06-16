@@ -820,11 +820,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8060D986, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film Refill
     writeValue(ROM_COPY, 0x806F6F76, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film Refill
     writeValue(ROM_COPY, 0x806F916A, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film max
-    # Disable training pre-checks
-    writeValue(ROM_COPY, 0x80698386, Overlay.Static, 0, offset_dict)  # Disable ability to use vines in vine barrel unless you have vines
-    writeValue(ROM_COPY, 0x806E426C, Overlay.Static, 0, offset_dict, 4)  # Disable ability to pick up objects in barrel barrel unless you have barrels
-    writeValue(ROM_COPY, 0x806E7736, Overlay.Static, 0, offset_dict)  # Disable ability to dive in dive barrel unless you have dive
-    writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
+    if settings.bonus_barrel_rando:
+        # Disable training pre-checks
+        writeValue(ROM_COPY, 0x80698386, Overlay.Static, 0, offset_dict)  # Disable ability to use vines in vine barrel unless you have vines
+        writeValue(ROM_COPY, 0x806E426C, Overlay.Static, 0, offset_dict, 4)  # Disable ability to pick up objects in barrel barrel unless you have barrels
+        writeValue(ROM_COPY, 0x806E7736, Overlay.Static, 0, offset_dict)  # Disable ability to dive in dive barrel unless you have dive
+        writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
     # Files
     balloon_patch_count = 150
     static_expansion = 0x180
@@ -1758,22 +1759,25 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
 
     # TBarrel/BFI Rewards
-    writeValue(ROM_COPY, 0x80681CE2, Overlay.Static, 0, offset_dict)
-    writeValue(ROM_COPY, 0x80681CFA, Overlay.Static, 1, offset_dict)
-    writeValue(ROM_COPY, 0x80681D06, Overlay.Static, 2, offset_dict)
-    writeValue(ROM_COPY, 0x80681D12, Overlay.Static, 3, offset_dict)
-    writeValue(ROM_COPY, 0x80681C8A, Overlay.Static, 0, offset_dict)
-    writeValue(ROM_COPY, 0x800295F6, Overlay.Critter, 0, offset_dict)
-    writeValue(ROM_COPY, 0x80029606, Overlay.Critter, 1, offset_dict)
-    writeValue(ROM_COPY, 0x800295FE, Overlay.Critter, 3, offset_dict)
-    writeValue(ROM_COPY, 0x800295DA, Overlay.Critter, 2, offset_dict)
-    writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
-    writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
-    writeFunction(ROM_COPY, 0x80681D38, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
-    writeFunction(ROM_COPY, 0x80681C98, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
-    writeFunction(ROM_COPY, 0x80029610, Overlay.Critter, "setLocationStatus", offset_dict)  # Set TBarrels Move
+    # writeValue(ROM_COPY, 0x80681CE2, Overlay.Static, 0, offset_dict)
+    # writeValue(ROM_COPY, 0x80681CFA, Overlay.Static, 1, offset_dict)
+    # writeValue(ROM_COPY, 0x80681D06, Overlay.Static, 2, offset_dict)
+    # writeValue(ROM_COPY, 0x80681D12, Overlay.Static, 3, offset_dict)
+    # writeValue(ROM_COPY, 0x80681C8A, Overlay.Static, 0, offset_dict)
+    # writeValue(ROM_COPY, 0x800295F6, Overlay.Critter, 0, offset_dict)
+    # writeValue(ROM_COPY, 0x80029606, Overlay.Critter, 1, offset_dict)
+    # writeValue(ROM_COPY, 0x800295FE, Overlay.Critter, 3, offset_dict)
+    # writeValue(ROM_COPY, 0x800295DA, Overlay.Critter, 2, offset_dict)
+    # writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
+    # writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
+    # writeFunction(ROM_COPY, 0x80681D38, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
+    # writeFunction(ROM_COPY, 0x80681C98, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
+    # writeFunction(ROM_COPY, 0x80029610, Overlay.Critter, "setLocationStatus", offset_dict)  # Set TBarrels Move
     writeFunction(ROM_COPY, 0x80027F24, Overlay.Critter, "setLocationStatus", offset_dict)  # Set BFI Move
     writeFunction(ROM_COPY, 0x80027E20, Overlay.Critter, "getLocationStatus", offset_dict)  # Get BFI Move
+    writeValue(ROM_COPY, 0x80681DE4, Overlay.Static, 0x5000, offset_dict)
+    writeHook(ROM_COPY, 0x80680AD4, Overlay.Static, "expandTBarrelResponse", offset_dict) # Allow Training Barrels to disappear if already beaten
+    writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict) # Disregard most special code from a bonus
 
     # Helm Warp Handler
     writeFunction(ROM_COPY, 0x8068B04C, Overlay.Static, "WarpToHelm", offset_dict)
@@ -2082,7 +2086,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeLabelValue(ROM_COPY, 0x80748088, Overlay.Static, "CrownDoorCheck", offset_dict)  # Update check on Crown Door
 
     # Fast Start: Beginning of game
-    if settings.fast_start_beginning_of_game or True:
+    if settings.fast_start_beginning_of_game:
         writeValue(ROM_COPY, 0x80714540, Overlay.Static, 0, offset_dict, 4)
         file_init_flags.extend(
             [
