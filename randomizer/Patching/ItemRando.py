@@ -348,6 +348,7 @@ def place_randomized_items(spoiler, original_flut: list):
     ROM_COPY.writeMultipleBytes(0xF0, 1)
     spoiler.japes_rock_actor = 45
     spoiler.aztec_vulture_actor = 45
+    FAST_START = spoiler.settings.fast_start_beginning_of_game
     if spoiler.settings.shuffle_items:
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
@@ -375,13 +376,13 @@ def place_randomized_items(spoiler, original_flut: list):
         pregiven_shop_owners = None
         for item in item_data:
             if item.can_have_item:
-                if item.is_shop:
+                if item.is_shop or (item.location == Locations.IslesFirstMove and FAST_START):
                     # Write in placement index
                     ROM_COPY.seek(sav + 0xA7)
                     ROM_COPY.write(1)
                     movespaceOffset = spoiler.settings.move_location_data
                     if item.location in TRAINING_LOCATIONS:
-                        if not spoiler.settings.fast_start_beginning_of_game:
+                        if not FAST_START:
                             # Add to bonus table
                             old_tflag = 0x182 + TRAINING_LOCATIONS.index(item.location)
                             ROM_COPY.seek(0x1FF1200 + (4 * bonus_table_offset))
@@ -395,7 +396,8 @@ def place_randomized_items(spoiler, original_flut: list):
                             else:
                                 data.append(item.new_flag)
                             flut_items.append(data)
-                    for placement in item.placement_index:
+                    placement_lst = [125] if item.location == Locations.IslesFirstMove else item.placement_index
+                    for placement in placement_lst:
                         write_space = movespaceOffset + (4 * placement)
                         if item.new_item is None:
                             # Is Nothing
@@ -635,8 +637,8 @@ def place_randomized_items(spoiler, original_flut: list):
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
-                        if item.old_flag >= 0x570:  # Isles Medals
-                            offset = 40 + (item.old_flag - 0x570)
+                        if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
+                            offset = 40 + (item.old_flag - 0x3C6)
                         ROM_COPY.seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6

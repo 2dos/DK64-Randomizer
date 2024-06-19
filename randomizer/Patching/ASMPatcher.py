@@ -828,7 +828,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
     # Files
     balloon_patch_count = 150
-    static_expansion = 0x180
+    static_expansion = 0x100
     if settings.enemy_drop_rando:
         static_expansion += 426  # Total Enemies
     if False:  # TODO: Check Archipelago
@@ -1956,7 +1956,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x80026720, Overlay.Menu, "getNextMovePurchase", offset_dict)
     writeFunction(ROM_COPY, 0x8002683C, Overlay.Menu, "getNextMovePurchase", offset_dict)
     # Menu/Shop: Write Modified purchase move stuff
-    writeFunction(ROM_COPY, 0x80027324, Overlay.Menu, "purchaseMove", offset_dict)
+    writeFunction(ROM_COPY, 0x80027324, Overlay.Menu, "purchaseFirstMoveHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x80027150, Overlay.Menu, "checkFirstMovePurchase", offset_dict)
     writeFunction(ROM_COPY, 0x8002691C, Overlay.Menu, "purchaseMove", offset_dict)
     writeFunction(ROM_COPY, 0x800270B8, Overlay.Menu, "showPostMoveText", offset_dict)
     writeFunction(ROM_COPY, 0x80026508, Overlay.Menu, "canPlayJetpac", offset_dict)

@@ -957,17 +957,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_TRAININGGROUNDS:
 				if (param2 == TGROUNDS_SWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(getKongFlag(Rando.starting_kong));
+						setPermFlag(FLAG_TGROUNDS_GATE_OPEN);
 					}
 				} else if (param2 == TGROUNDS_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;

@@ -69,7 +69,7 @@ class Location:
         elif self.type == Types.Medal and self.level != Levels.HideoutHelm:
             level_index = int(self.level)
             if self.level == Levels.DKIsles:
-                self.map_id_list = [MapIDCombo(0, -1, 0x570 + self.kong, self.kong)]
+                self.map_id_list = [MapIDCombo(0, -1, 0x3C6 + self.kong, self.kong)]
             else:
                 self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
         elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
@@ -183,10 +183,10 @@ LocationListOriginal = {
     Locations.PreGiven_Location34: Location(Levels.DKIsles, "Pre-Given Move (34)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location35: Location(Levels.DKIsles, "Pre-Given Move (35)", Items.NoItem, Types.PreGivenMove),
     # Shop Owners (Dummy Locations)
-    Locations.ShopOwner_Location00: Location(Levels.DKIsles, "Pre-Given Shop (0)", Items.Cranky, Types.Cranky, Kongs.any, [MapIDCombo(0, -1, 0x56C, Kongs.any)]),
-    Locations.ShopOwner_Location01: Location(Levels.DKIsles, "Pre-Given Shop (1)", Items.Funky, Types.Funky, Kongs.any, [MapIDCombo(0, -1, 0x56D, Kongs.any)]),
-    Locations.ShopOwner_Location02: Location(Levels.DKIsles, "Pre-Given Shop (2)", Items.Candy, Types.Candy, Kongs.any, [MapIDCombo(0, -1, 0x56E, Kongs.any)]),
-    Locations.ShopOwner_Location03: Location(Levels.DKIsles, "Pre-Given Shop (3)", Items.Snide, Types.Snide, Kongs.any, [MapIDCombo(0, -1, 0x56F, Kongs.any)]),
+    Locations.ShopOwner_Location00: Location(Levels.DKIsles, "Pre-Given Shop (0)", Items.Cranky, Types.Cranky, Kongs.any, [MapIDCombo(0, -1, 0x3C2, Kongs.any)]),
+    Locations.ShopOwner_Location01: Location(Levels.DKIsles, "Pre-Given Shop (1)", Items.Funky, Types.Funky, Kongs.any, [MapIDCombo(0, -1, 0x3C3, Kongs.any)]),
+    Locations.ShopOwner_Location02: Location(Levels.DKIsles, "Pre-Given Shop (2)", Items.Candy, Types.Candy, Kongs.any, [MapIDCombo(0, -1, 0x3C4, Kongs.any)]),
+    Locations.ShopOwner_Location03: Location(Levels.DKIsles, "Pre-Given Shop (3)", Items.Snide, Types.Snide, Kongs.any, [MapIDCombo(0, -1, 0x3C5, Kongs.any)]),
     # DK Isles locations
     Locations.IslesDonkeyMedal: Location(Levels.DKIsles, "Isles Donkey Medal", Items.BananaMedal, Types.IslesMedal, Kongs.donkey),
     Locations.IslesDiddyMedal: Location(Levels.DKIsles, "Isles Diddy Medal", Items.BananaMedal, Types.IslesMedal, Kongs.diddy),

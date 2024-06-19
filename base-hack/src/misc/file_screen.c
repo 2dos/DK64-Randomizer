@@ -362,27 +362,29 @@ void updateEnabledStates(void) {
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
-	for (int i = 0; i < 5; i++) {
-		int subtype = -1;
-		if (i < 4) {
-			// Training Moves
-			if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
-				subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+	if (Rando.fast_start_beginning) {
+		for (int i = 0; i < 5; i++) {
+			int subtype = -1;
+			if (i < 4) {
+				// Training Moves
+				if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
+					subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+				}
+			} else if (i == 4) {
+				// First Move
+				if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
+					subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+				}
 			}
-		} else if (i == 4) {
-			// First Move
-			if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
-				subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+			if (subtype == 0) {
+				slam_screen_level += 1;
+			} else if (subtype == 1) {
+				belt_screen_level += 1;
+			} else if (subtype == 2) {
+				ins_screen_level += 1;
 			}
+			
 		}
-		if (subtype == 0) {
-			slam_screen_level += 1;
-		} else if (subtype == 1) {
-			belt_screen_level += 1;
-		} else if (subtype == 2) {
-			ins_screen_level += 1;
-		}
-		
 	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);

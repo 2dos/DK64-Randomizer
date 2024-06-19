@@ -328,6 +328,41 @@ void purchaseMove(shop_paad* paad) {
 	save();
 }
 
+int checkFirstMovePurchase(void) {
+	if (!checkFlag(0x17F, FLAGTYPE_PERMANENT)) {
+		return 0; // Training Barrels not spawned
+	}
+	for (int i = 0; i < 4; i++) {
+		if (!checkFlag(FLAG_TBARREL_DIVE + i, FLAGTYPE_PERMANENT)) {
+			return 0; // Lacking a training barrel complete
+		}
+	}
+	if (checkFlag(0x180, FLAGTYPE_PERMANENT)) {
+		return 1; // First move given
+	}
+	if (FirstMove_New.purchase_type == PURCHASE_NOTHING) {
+		setFlag(0x180, 1, FLAGTYPE_PERMANENT);
+		return 1; // First move is nothing
+	}
+	return 0;
+}
+
+void purchaseFirstMoveHandler(shop_paad* paad) {
+	int purchase_type = FirstMove_New.purchase_type;
+	paad->purchase_type = FirstMove_New.purchase_type;
+	if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
+		paad->flag = FirstMove_New.purchase_value;
+	} else if (purchase_type == PURCHASE_NOTHING) {
+		CurrentActorPointer_0->control_state = 3;
+		return;
+	} else {
+		paad->purchase_value = FirstMove_New.purchase_value;
+	}
+	paad->kong = FirstMove_New.move_kong;
+	paad->price = 0;
+	purchaseMove(paad);
+}
+
 void setLocation(purchase_struct* purchase_data) {
 	int p_type = purchase_data->purchase_type;
 	int bitfield_index = purchase_data->purchase_value - 1;
