@@ -385,5 +385,6 @@ void initPauseMenu(void) {
     *(int*)(0x806AB2E8) = 0;
     *(int*)(0x806AB360) = 0;
     *(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
+    *(short*)(0x806A932A) = 0x2710; // Increase memory allocated for displaying the Pause menu (fixes hints corrupting the heap) Increase to 12500 at a later time
     initHintFlags();
 }
