@@ -437,6 +437,7 @@ class Spoiler:
         }
 
         self.pregiven_items = []
+        self.first_move_item = None
         for location_id, location in self.LocationList.items():
             # No need to spoiler constants or hints
             if location.type == Types.Constant or location.type == Types.Hint or location.inaccessible:
@@ -444,6 +445,8 @@ class Spoiler:
             if location_id in PreGivenLocations:
                 if self.settings.fast_start_beginning_of_game or location_id != Locations.IslesFirstMove:
                     self.pregiven_items.append(location.item)
+                else:
+                    self.first_move_item = location.item
             # Prevent weird null issues but get the item at the location
             if location.item is None:
                 item = Items.NoItem
