@@ -2318,7 +2318,13 @@ def GenerateMultipathDict(
     """
     multipath_dict_hints = {}
     multipath_dict_goals = {}
+    training_slam_hinted = False
     for location in spoiler.woth_locations:
+        # In worlds where you start with multiple slams and it could be hinted, you'll get identical-looking hints for each slam location. We only want to create that hint once.
+        if location in TrainingBarrelLocations or location in PreGivenLocations and spoiler.LocationList[location].item == Items.ProgressiveSlam:
+            if training_slam_hinted:
+                continue
+            training_slam_hinted = True
         path_to_keys = []
         path_to_krool_phases = []
         path_to_camera = []
