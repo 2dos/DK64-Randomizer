@@ -60,8 +60,7 @@
 #define FLAG_COLLECTABLE_BEAN 0x300
 #define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x28D (inc.) (35 flags)
 
-// Unused 0x290
-#define FLAG_TGROUNDS_GATE_OPEN 0x291
+// Unused 0x290, 0x291
 #define FLAG_ITEM_BELT_0 0x292
 #define FLAG_ITEM_BELT_1 0x293
 #define FLAG_ITEM_INS_0 0x294

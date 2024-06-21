@@ -957,17 +957,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_TRAININGGROUNDS:
 				if (param2 == TGROUNDS_SWITCH) {
 					if (index == 0) {
-						return checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(FLAG_TGROUNDS_GATE_OPEN);
+						setPermFlag(FLAG_ESCAPE);
 					}
 				} else if (param2 == TGROUNDS_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(FLAG_TGROUNDS_GATE_OPEN, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;

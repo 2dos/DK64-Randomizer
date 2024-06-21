@@ -64,7 +64,7 @@ LogicRegions = {
         LocationLogic(Locations.PreGiven_Location34, lambda l: True),
         LocationLogic(Locations.PreGiven_Location35, lambda l: True),
     ], [
-        Event(Events.KLumsyTalkedTo, lambda l: l.settings.fast_start_beginning_of_game),
+        Event(Events.KLumsyTalkedTo, lambda l: l.settings.fast_start_beginning_of_game or l.settings.auto_keys),
         # Everything you can do in the prison is autocompleted with auto_keys - just copy-paste the logic from the Prison region events here
         Event(Events.JapesKeyTurnedIn, lambda l: l.settings.auto_keys and l.JapesKey and l.HasFillRequirementsForLevel(l.settings.level_order[2])),
         Event(Events.AztecKeyTurnedIn, lambda l: l.settings.auto_keys and l.AztecKey and l.HasFillRequirementsForLevel(l.settings.level_order[3])),

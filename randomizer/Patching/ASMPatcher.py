@@ -826,6 +826,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806E426C, Overlay.Static, 0, offset_dict, 4)  # Disable ability to pick up objects in barrel barrel unless you have barrels
         writeValue(ROM_COPY, 0x806E7736, Overlay.Static, 0, offset_dict)  # Disable ability to dive in dive barrel unless you have dive
         writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
+    writeFunction(ROM_COPY, 0x80698368, Overlay.Static, "checkFlagDuplicate", offset_dict)  # Vines doesn't check FLUT
+    writeFunction(ROM_COPY, 0x8072F190, Overlay.Static, "checkFlagDuplicate", offset_dict)  # Vines doesn't check FLUT
+    writeFunction(ROM_COPY, 0x806E4250, Overlay.Static, "checkFlagDuplicate", offset_dict)  # Barrels doesn't check FLUT
+    writeFunction(ROM_COPY, 0x806E7718, Overlay.Static, "checkFlagDuplicate", offset_dict)  # Dive doesn't check FLUT
+    writeFunction(ROM_COPY, 0x806E2D6C, Overlay.Static, "checkFlagDuplicate", offset_dict)  # Oranges doesn't check FLUT
     # Files
     balloon_patch_count = 150
     static_expansion = 0x100
@@ -2097,7 +2102,10 @@ def patchAssembly(ROM_COPY, spoiler):
                 0x180,  # First Slam Given
             ]
         )
-
+    else:
+        writeValue(ROM_COPY, 0x80755F4C, Overlay.Static, 0, offset_dict) # Remove escape cutscene
+    if settings.auto_keys:
+        file_init_flags.append(0x1BB)  # Japes Open
     barrier_flags = {
         RemovedBarriersSelected.japes_shellhive_gate: [0x7],
         RemovedBarriersSelected.aztec_tunnel_door: [0x4E],
