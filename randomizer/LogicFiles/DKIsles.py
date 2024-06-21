@@ -111,7 +111,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.IslesMain, lambda l: l.Slam or l.settings.fast_start_beginning_of_game, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
-        TransitionFront(Regions.CrankyIsles, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyIsles, lambda l: l.crankyAccess and l.allTrainingChecks),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 

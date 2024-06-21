@@ -53,7 +53,7 @@ LogicRegions = {
         TransitionFront(Regions.IglooArea, lambda l: True),
         TransitionFront(Regions.CabinArea, lambda l: True),
         TransitionFront(Regions.FunkyCaves, lambda l: l.funkyAccess),
-        TransitionFront(Regions.CrankyCaves, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyCaves, lambda l: l.crankyAccess and l.allTrainingChecks),
         TransitionFront(Regions.CavesSnideArea, lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)

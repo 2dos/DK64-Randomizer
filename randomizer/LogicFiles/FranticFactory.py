@@ -145,7 +145,7 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.HatchOpened in l.Events),
         TransitionFront(Regions.LowerCore, lambda l: True),
-        TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess and l.allTrainingChecks),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)

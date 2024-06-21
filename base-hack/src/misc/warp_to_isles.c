@@ -11,9 +11,15 @@ static short isles_maps[] = {
 	MAP_FAIRYISLAND,
 	MAP_KLUMSY,
 	MAP_ISLES_SNIDEROOM,
+	MAP_TRAININGGROUNDS,
+	MAP_TREEHOUSE,
 };
 
 void handle_WTI(void) {
+	if (!checkFlagDuplicate(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) {
+		writeWTI(0);
+		return;
+	}
 	if (isLobby(CurrentMap)) {
 		// Lobbies
 		writeWTI(1);
@@ -25,9 +31,6 @@ void handle_WTI(void) {
 		writeWTI(1);
 	} else if (inShortList(CurrentMap, &isles_maps[0], sizeof(isles_maps) >> 1)) {
 		// Isles, BFI, K. Lumsy, Snide Room
-		writeWTI(1);
-	} else if ((checkFlagDuplicate(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) && ((CurrentMap == MAP_TRAININGGROUNDS) || (CurrentMap == MAP_TREEHOUSE))) {
-		// TGrounds & Treehouse (Only if escaped from Isles)
 		writeWTI(1);
 	} else {
 		writeWTI(0);

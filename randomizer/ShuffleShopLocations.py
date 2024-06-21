@@ -147,7 +147,7 @@ def ShuffleShopLocations(spoiler):
                 # Add exit to new containing region for logical access
                 region = spoiler.RegionList[shop.containing_region]
                 if shop.shop == Regions.CrankyGeneric:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess and l.allTrainingChecks))
                 elif shop.shop == Regions.FunkyGeneric:
                     region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess))
                 elif shop.shop == Regions.CandyGeneric:
