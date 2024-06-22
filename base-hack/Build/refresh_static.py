@@ -2,14 +2,14 @@
 
 import requests
 
-BRANCH = "dev"
+BRANCH = input("Enter the branch to download from: ")
 USER = "2dos"
 REPO = "DK64-Randomizer"
 
 
 def downloadStatic(file: str):
     """Download static file from github."""
-    print(f"Downloading {file} from GitHub")
+    print(f"Downloading {file} from GitHub ({BRANCH} branch)")
     r = requests.get(f"https://raw.githubusercontent.com/{USER}/{REPO}/{BRANCH}/{file}")
     with open(f"../../{file}", "wb") as af:
         af.write(r.content)
