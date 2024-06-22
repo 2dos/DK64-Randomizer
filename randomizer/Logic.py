@@ -196,6 +196,8 @@ class LogicVarHolder:
         self.HelmChunky1 = False
         self.HelmChunky2 = False
 
+        self.allTrainingChecks = False
+
         self.Slam = STARTING_SLAM
         self.AmmoBelts = 0
         self.InstUpgrades = 0
@@ -389,6 +391,12 @@ class LogicVarHolder:
         self.HelmTiny2 = self.HelmTiny2 or Items.HelmTiny2 in ownedItems
         self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
+
+        has_all = True
+        for loc in (Locations.IslesSwimTrainingBarrel, Locations.IslesVinesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel, Locations.IslesOrangesTrainingBarrel):
+            if self.spoiler.LocationList[loc].item not in ownedItems:
+                has_all = False
+        self.allTrainingChecks = self.allTrainingChecks or has_all
 
         self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
         if Items.ProgressiveSlam in self.banned_items:  # If slam is banned, prevent logic from owning a better slam

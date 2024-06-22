@@ -145,6 +145,13 @@ model_indexes = {
     Types.Snide: 0x1F,
 }
 
+TRAINING_LOCATIONS = (
+    Locations.IslesSwimTrainingBarrel,
+    Locations.IslesVinesTrainingBarrel,
+    Locations.IslesOrangesTrainingBarrel,
+    Locations.IslesBarrelsTrainingBarrel,
+)
+
 kong_flags = (385, 6, 70, 66, 117)
 
 subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
@@ -341,6 +348,7 @@ def place_randomized_items(spoiler, original_flut: list):
     ROM_COPY.writeMultipleBytes(0xF0, 1)
     spoiler.japes_rock_actor = 45
     spoiler.aztec_vulture_actor = 45
+    FAST_START = spoiler.settings.fast_start_beginning_of_game
     if spoiler.settings.shuffle_items:
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
@@ -366,13 +374,66 @@ def place_randomized_items(spoiler, original_flut: list):
         flut_items = original_flut.copy()
         pushItemMicrohints(spoiler)
         pregiven_shop_owners = None
+        # Place first move, if fast start is off
+        if not FAST_START:
+            placed_item = spoiler.first_move_item
+            write_space = spoiler.settings.move_location_data + (4 * 125)
+            if placed_item is None:
+                # Is Nothing
+                ROM_COPY.seek(write_space)
+                ROM_COPY.writeMultipleBytes(7 << 5, 1)
+                ROM_COPY.writeMultipleBytes(0, 1)
+                ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+            else:
+                prog_flags = {
+                    Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
+                    Items.ProgressiveAmmoBelt: [0x292, 0x293],
+                    Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
+                }
+                if placed_item in prog_flags:
+                    item_flag = prog_flags[placed_item][0]
+                else:
+                    print(placed_item)
+                    item_flag = ItemList[placed_item].flag
+                if item_flag is not None and item_flag & 0x8000:
+                    # Is move
+                    item_kong = (item_flag >> 12) & 7
+                    item_subtype = (item_flag >> 8) & 0xF
+                    if item_subtype == 7:
+                        item_subindex = 0
+                    else:
+                        item_subindex = (item_flag & 0xFF) - 1
+                    ROM_COPY.seek(write_space)
+                    ROM_COPY.writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
+                    ROM_COPY.writeMultipleBytes(0, 1)
+                    ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+                else:
+                    # Is Flagged Item
+                    ROM_COPY.seek(write_space)
+                    ROM_COPY.writeMultipleBytes(5 << 5, 1)
+                    ROM_COPY.writeMultipleBytes(0, 1)
+                    ROM_COPY.writeMultipleBytes(item_flag, 2)
+        # Go through bijection
         for item in item_data:
             if item.can_have_item:
                 if item.is_shop:
                     # Write in placement index
-                    ROM_COPY.seek(sav + 0xA7)
-                    ROM_COPY.write(1)
                     movespaceOffset = spoiler.settings.move_location_data
+                    if item.location in TRAINING_LOCATIONS:
+                        if not FAST_START:
+                            # Add to bonus table
+                            old_tflag = 0x182 + TRAINING_LOCATIONS.index(item.location)
+                            ROM_COPY.seek(0x1FF1200 + (4 * bonus_table_offset))
+                            ROM_COPY.writeMultipleBytes(old_tflag, 2)
+                            ROM_COPY.writeMultipleBytes(getActorIndex(item), 2)
+                            bonus_table_offset += 1
+                            # Append to FLUT
+                            data = [old_tflag]
+                            if item.new_item is None:
+                                data.append(0)
+                            else:
+                                data.append(item.new_flag)
+                            flut_items.append(data)
                     for placement in item.placement_index:
                         write_space = movespaceOffset + (4 * placement)
                         if item.new_item is None:
@@ -613,8 +674,8 @@ def place_randomized_items(spoiler, original_flut: list):
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
-                        if item.old_flag >= 0x570:  # Isles Medals
-                            offset = 40 + (item.old_flag - 0x570)
+                        if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
+                            offset = 40 + (item.old_flag - 0x3C6)
                         ROM_COPY.seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6

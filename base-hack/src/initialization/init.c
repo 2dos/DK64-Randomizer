@@ -423,6 +423,9 @@ void initHack(int source) {
 			if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
 				KongModelData[KONG_TINY].props_or = 0;
 			}
+			if (Rando.kong_models[KONG_DIDDY] == KONGMODEL_FUNKY) {
+				KongModelData[KONG_DIDDY].props_or = 0;
+			}
 			fixCutsceneModels();
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {

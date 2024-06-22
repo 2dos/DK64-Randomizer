@@ -18,6 +18,7 @@ class Events(IntEnum):
     CavesKeyTurnedIn = auto()
     CastleKeyTurnedIn = auto()
     HelmKeyTurnedIn = auto()
+    TrainingBarrelsSpawned = auto()
 
     # Jungle Japes events
     Rambi = auto()

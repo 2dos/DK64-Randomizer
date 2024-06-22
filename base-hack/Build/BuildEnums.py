@@ -810,22 +810,24 @@ class ExtraTextures(IntEnum):
     """Extra Textures in Table 25 after the bonus skins."""
 
     FakeGBShine = 0
-    RainbowCoin0 = 1
-    RainbowCoin1 = 2
-    RainbowCoin2 = 3
-    MelonSurface = 4
-    BonusShell = 5
-    BLockerItemMove = 6
-    BLockerItemBlueprint = 7
-    BLockerItemFairy = 8
-    BLockerItemBean = 9
-    BLockerItemPearl = 10
-    BLockerItemRainbowCoin = 11
-    BLockerItemIceTrap = 12
-    BLockerItemPercentage = 13
-    BLockerItemBalloon = 14
-    BLockerItemCompanyCoin = 15
-    BLockerItemKong = 16
+    RainbowCoin0 = auto()
+    RainbowCoin1 = auto()
+    RainbowCoin2 = auto()
+    MelonSurface = auto()
+    BonusShell = auto()
+    OSprintLogoLeft = auto()
+    OSprintLogoRight = auto()
+    BLockerItemMove = auto()
+    BLockerItemBlueprint = auto()
+    BLockerItemFairy = auto()
+    BLockerItemBean = auto()
+    BLockerItemPearl = auto()
+    BLockerItemRainbowCoin = auto()
+    BLockerItemIceTrap = auto()
+    BLockerItemPercentage = auto()
+    BLockerItemBalloon = auto()
+    BLockerItemCompanyCoin = auto()
+    BLockerItemKong = auto()
 
 
 class MoveTypes(IntEnum):

@@ -123,7 +123,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecOasis, lambda l: True),
         TransitionFront(Regions.AngryAztecMain, lambda l: True),
-        TransitionFront(Regions.CrankyAztec, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyAztec, lambda l: l.crankyAccess and l.allTrainingChecks),
     ]),
 
     Regions.AngryAztecMain: Region("Angry Aztec Main", "Aztec Oasis and Totem Area", Levels.AngryAztec, True, -1, [

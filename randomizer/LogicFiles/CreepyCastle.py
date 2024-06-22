@@ -71,7 +71,7 @@ LogicRegions = {
         TransitionFront(Regions.Museum, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToMuseum),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleMainToLower),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleMainToUpper),
-        TransitionFront(Regions.CrankyCastle, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyCastle, lambda l: l.crankyAccess and l.allTrainingChecks),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.CastleBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CastleMainToBBlast)

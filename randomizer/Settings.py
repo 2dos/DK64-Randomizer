@@ -405,7 +405,12 @@ class Settings:
         # normal
         # random
         self.helm_barrels = MinigameBarrels.normal
+        self.training_barrels = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
+
+        # Not making this a setting that can be toggled by the user yet. 
+        # If people want to be able to toggle this, we can make a simple UI switch and the back-end has already been handled appropriately
+        self.sprint_barrel_requires_sprint = True
 
         self.chaos_blockers = False
 
@@ -977,7 +982,12 @@ class Settings:
                         if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
                         elif type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide) and item == ItemRandoListSelected.shopowners:
-                            self.shuffled_location_types.extend([Types.Cranky, Types.Funky, Types.Candy, Types.Snide])
+                            shopowner_array = [Types.Funky, Types.Candy, Types.Snide]
+                            if self.fast_start_beginning_of_game or self.shuffle_loading_zones == ShuffleLoadingZones.all:
+                                # Only append cranky with settings that would require you to spawn the training barrels early
+                                # Also allow it in LZR
+                                shopowner_array.append(Types.Cranky)
+                            self.shuffled_location_types.extend(shopowner_array)
             if self.enemy_drop_rando:  # Enemy location type handled separately for UI/UX reasons
                 self.shuffled_location_types.append(Types.Enemies)
             if Types.Shop in self.shuffled_location_types:
@@ -1264,10 +1274,15 @@ class Settings:
             self.helm_barrels = MinigameBarrels.skip
         elif self.bonus_barrel_rando:
             self.helm_barrels = MinigameBarrels.random
+        if self.fast_start_beginning_of_game:
+            self.training_barrels = MinigameBarrels.skip
+        elif self.bonus_barrel_rando:
+            self.training_barrels = MinigameBarrels.random
 
         # Loading Zone Rando
-        if self.level_randomization == LevelRandomization.level_order:
+        if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
             self.shuffle_loading_zones = ShuffleLoadingZones.levels
+            self.hard_level_progression = self.level_randomization == LevelRandomization.level_order_complex
         elif self.level_randomization == LevelRandomization.loadingzone:
             self.shuffle_loading_zones = ShuffleLoadingZones.all
         elif self.level_randomization == LevelRandomization.loadingzonesdecoupled:

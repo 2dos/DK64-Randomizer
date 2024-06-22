@@ -180,29 +180,30 @@ void initQoL_FastWarp(void) {
 static const char exittoisles[] = "EXIT TO ISLES";
 static const char exittospawn[] = "EXIT TO SPAWN";
 
+void writeSpawn(int map, int exit) {
+    *(short*)(0x8071454A) = Rando.starting_map;
+    *(int*)(0x80714550) = 0x24050000 | Rando.starting_exit;
+}
+
 void initSpawn(void) {
     /**
      * @brief Initialize the world spawning procedure
      */
     // Starting map rando
-    int starting_map_rando_on = 1;
+    PauseSlot3TextPointer = (char*)&exittoisles;
     if (Rando.starting_map == 0) {
         // Default
+        if ((!Rando.fast_start_beginning) && (Rando.randomize_more_loading_zones == 2)) {
+            // No fast start beginning, with LZR
+            writeSpawn(MAP_TRAININGGROUNDS, 1);
+        }
         Rando.starting_map = MAP_ISLES;
         Rando.starting_exit = 0;
-        starting_map_rando_on = 0;
     } else {
-        *(short*)(0x8071454A) = Rando.starting_map;
-        *(int*)(0x80714550) = 0x24050000 | Rando.starting_exit;
+        writeSpawn(Rando.starting_map, Rando.starting_exit);
+        PauseSlot3TextPointer = (char*)&exittospawn;
     }
     setPrevSaveMap();
-    if (Rando.warp_to_isles_enabled) {
-        if (!starting_map_rando_on) {
-            PauseSlot3TextPointer = (char*)&exittoisles;
-        } else {
-            PauseSlot3TextPointer = (char*)&exittospawn;
-        }
-    }
 }
 
 void QoL_DisplayInstrument(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3) {

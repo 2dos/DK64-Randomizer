@@ -55,7 +55,7 @@ LogicRegions = {
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)),
         TransitionFront(Regions.LighthouseSurface, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or Events.LighthouseGateOpened in l.Events or l.phasewalk or l.CanSkew(False)),
         TransitionFront(Regions.Shipyard, lambda l: (l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or Events.ShipyardGateOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)) and (not l.IsLavaWater() or l.Melons >= 2)),
-        TransitionFront(Regions.CrankyGalleon, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyGalleon, lambda l: l.crankyAccess and l.allTrainingChecks),
     ]),
 
     Regions.GalleonPastVines: Region("Galleon Past Vines", "Galleon Caverns", Levels.GloomyGalleon, False, None, [

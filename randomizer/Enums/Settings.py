@@ -462,6 +462,7 @@ class KongModels(IntEnum):
     krool_cutscene = 4
     cranky = 5
     candy = 6
+    funky = 7
 
 
 class LevelRandomization(IntEnum):
@@ -473,12 +474,14 @@ class LevelRandomization(IntEnum):
     loadingzonesdecoupled: All entrances except for Helm/Helm Lobby.
         Going back through an entrance may not take you back to where you
         just were.
+    level_order_complex: Level order setting, but with complex order.
     """
 
     vanilla = 0
     level_order = 1
     loadingzone = 2
     loadingzonesdecoupled = 3
+    level_order_complex = 4
 
 
 class LogicType(IntEnum):
@@ -1082,6 +1085,7 @@ DeprecatedSettings = {
     SettingsStringEnum.open_levels,
     SettingsStringEnum.high_req,
     SettingsStringEnum.krusha_ui,
+    SettingsStringEnum.hard_level_progression,
 }
 
 

@@ -957,17 +957,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_TRAININGGROUNDS:
 				if (param2 == TGROUNDS_SWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(getKongFlag(Rando.starting_kong));
+						setPermFlag(FLAG_ESCAPE);
 					}
 				} else if (param2 == TGROUNDS_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;
@@ -1387,6 +1387,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				return 0;
 			}
 		}
+	} else if (index == -18) {
+		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

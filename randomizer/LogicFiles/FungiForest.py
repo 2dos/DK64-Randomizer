@@ -82,7 +82,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomNightExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip() or l.CanSkew(True)),
         TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill, isGlitchTransition=True),
-        TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess and l.allTrainingChecks),
     ]),
 
     Regions.MushroomLower: Region("Mushroom Lower", "Giant Mushroom Insides", Levels.FungiForest, True, -1, [

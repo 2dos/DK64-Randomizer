@@ -699,6 +699,19 @@ for x in range(2):
         portal_im = portal_im.resize((44, 44))
         portal_im.save(f"{tb_dir}bottom_custom.png")
 
+# OSprint Layer
+tracker_dir = getDir("assets/file_screen/tracker_images/")
+barrel_size = 48
+barrel_offset = int((64 - barrel_size) >> 1)
+barrel_im = Image.open(f"{tracker_dir}lankybarrel.png").resize((barrel_size, barrel_size)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+base_64_im = Image.new(mode="RGBA", size=(64, 64))
+base_64_im.paste(barrel_im, (barrel_offset, barrel_offset), barrel_im)
+barrel_im_left = base_64_im.crop((0, 0, 32, 64))
+barrel_im_right = base_64_im.crop((32, 0, 64, 64))
+barrel_im_left.save(f"{disp_dir}osprint_logo_left.png")
+barrel_im_right.save(f"{disp_dir}osprint_logo_right.png")
+
+
 rmve = [
     "01234.png",
     "56789.png",
