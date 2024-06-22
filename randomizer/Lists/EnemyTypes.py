@@ -478,6 +478,7 @@ enemies_shockwave_immune = [
     Enemies.ZingerLime,
     Enemies.ZingerRobo,
 ]
+enemies_not_ground_simple = [enemy for enemy in EnemyMetaData if not (EnemyMetaData[enemy].e_type == EnemySubtype.GroundSimple)]
 enemy_5dc_ban = [Enemies.Kosha, Enemies.Guard]
 
 enemy_location_list = {
@@ -619,10 +620,10 @@ enemy_location_list = {
     Locations.AztecTempleEnemy_Rotating13: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 14, enemies_nokill_gun, True, False),
     Locations.AztecTempleEnemy_Rotating14: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 15, enemies_nokill_gun, True, False),
     Locations.AztecTempleEnemy_Rotating15: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 16, enemies_nokill_gun, True, False),
-    Locations.AztecTempleEnemy_MiniRoom00: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 20, [Enemies.Guard], True, False),
-    Locations.AztecTempleEnemy_MiniRoom01: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 21, [Enemies.Guard], True, False),
-    Locations.AztecTempleEnemy_MiniRoom02: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 22, [Enemies.Guard], True, False),
-    Locations.AztecTempleEnemy_MiniRoom03: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 23, [Enemies.Guard], True, False),
+    Locations.AztecTempleEnemy_MiniRoom00: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 20, enemies_not_ground_simple, True, False),
+    Locations.AztecTempleEnemy_MiniRoom01: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 21, enemies_not_ground_simple, True, False),
+    Locations.AztecTempleEnemy_MiniRoom02: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 22, enemies_not_ground_simple, True, False),
+    Locations.AztecTempleEnemy_MiniRoom03: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 23, enemies_not_ground_simple, True, False),
     Locations.AztecTempleEnemy_GuardRotating0: EnemyLoc(Maps.AztecTinyTemple, Enemies.Klobber, 24, [], True),
     Locations.AztecTempleEnemy_GuardRotating1: EnemyLoc(Maps.AztecTinyTemple, Enemies.Klobber, 36, [], True),
     Locations.AztecTempleEnemy_MainRoom0: EnemyLoc(Maps.AztecTinyTemple, Enemies.Kremling, 26, [], True),
