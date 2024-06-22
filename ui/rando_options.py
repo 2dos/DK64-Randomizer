@@ -805,6 +805,7 @@ def disable_hard_mode_modal(evt):
     except AttributeError:
         pass
 
+
 @bind("click", "hard_bosses")
 def disable_hard_bosses_modal(evt):
     """Disable Hard Mode Selector when Hard Mode is off."""

@@ -968,7 +968,11 @@ class LogicVarHolder:
         bossFight = self.settings.boss_maps[level]
         # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs) and self.settings.kong_model_tiny == KongModels.default):
+        if (
+            bossFight == Maps.FactoryBoss
+            and requiredKong == Kongs.tiny
+            and not (self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs) and self.settings.kong_model_tiny == KongModels.default)
+        ):
             hasRequiredMoves = self.twirl and self.Slam
         elif bossFight == Maps.FactoryBoss:
             hasRequiredMoves = self.Slam
@@ -997,7 +1001,9 @@ class LogicVarHolder:
                     order_of_level = level_order
             if order_of_level == 4 and not self.barrels:  # Prevent Barrels on boss 3
                 return False
-            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs))):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
+            if order_of_level == 7 and (
+                not self.hunkyChunky or (not self.twirl and not self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs))
+            ):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
                 return False
         return self.IsKong(requiredKong) and hasRequiredMoves
 

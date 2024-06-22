@@ -11,6 +11,7 @@ from BuildLib import ROMName, getBonusSkinOffset
 hint_file = "assets/Gong/hint_door.bin"
 switch_file = "assets/Gong/sprint_switch.bin"
 
+
 def generateYellowWrinkly():
     """Pull geo file from ROM and modify."""
     with open(ROMName, "rb") as fh:
@@ -38,6 +39,7 @@ def generateYellowWrinkly():
         wrinkly_door.write(left.to_bytes(2, "big"))
         wrinkly_door.seek(0x13AE)
         wrinkly_door.write(right.to_bytes(2, "big"))
+
 
 def generateSprintSwitch():
     """Pull geo file from ROM and modify."""

@@ -161,9 +161,7 @@ MinigameRequirements = {
     Minigames.KrazyKongKlamourNormal: Minigame(
         name="Krazy Kong Klamour (15 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourNormal, difficulty_lvl=1, logic=lambda l: True
     ),
-    Minigames.KrazyKongKlamourHard: Minigame(
-        name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, difficulty_lvl=3, logic=lambda l: True
-    ),
+    Minigames.KrazyKongKlamourHard: Minigame(name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, difficulty_lvl=3, logic=lambda l: True),
     Minigames.KrazyKongKlamourInsane: Minigame(
         name="Krazy Kong Klamour (10 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourInsane, difficulty_lvl=4, logic=lambda l: True
     ),

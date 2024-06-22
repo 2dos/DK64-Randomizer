@@ -102,7 +102,6 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Galleon Water: 
 	- Random: 100%
 - Hard B. Lockers: 20%
-- Complex Level Progression: 40%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 20%
 - Shuffle Helm Rooms: 80%

@@ -100,7 +100,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Glitches Selected: 
 	- Advanced Platforming: 100%
 - Hard B. Lockers: 60%
-- Complex Level Progression: 60%
 - Hard Mode: 20%
 - Hard Mode Selected: 
 	- Hard Bosses: 60%

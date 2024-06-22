@@ -3083,7 +3083,11 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if spoiler.settings.enemy_rando:
         randomize_enemies_0(spoiler)
     # Handle bonus barrels
-    if spoiler.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected) or spoiler.settings.helm_barrels == MinigameBarrels.random or spoiler.settings.training_barrels == MinigameBarrels.random:
+    if (
+        spoiler.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected)
+        or spoiler.settings.helm_barrels == MinigameBarrels.random
+        or spoiler.settings.training_barrels == MinigameBarrels.random
+    ):
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # CB Shuffle

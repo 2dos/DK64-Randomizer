@@ -91,7 +91,11 @@ def BarrelShuffle(settings: Settings) -> None:
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = list(BarrelMetaData.keys())
-    if settings.bonus_barrels == MinigameBarrels.selected or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected) or (settings.training_barrels == MinigameBarrels.random and settings.minigames_list_selected):
+    if (
+        settings.bonus_barrels == MinigameBarrels.selected
+        or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected)
+        or (settings.training_barrels == MinigameBarrels.random and settings.minigames_list_selected)
+    ):
         minigame_dict = {
             MinigamesListSelected.batty_barrel_bandit: [Minigames.BattyBarrelBanditVEasy, Minigames.BattyBarrelBanditEasy, Minigames.BattyBarrelBanditNormal, Minigames.BattyBarrelBanditHard],
             MinigamesListSelected.big_bug_bash: [Minigames.BigBugBashVEasy, Minigames.BigBugBashEasy, Minigames.BigBugBashNormal, Minigames.BigBugBashHard],

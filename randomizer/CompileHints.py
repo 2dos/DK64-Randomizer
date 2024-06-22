@@ -2297,8 +2297,10 @@ def getHelmProgItems(spoiler: Spoiler) -> list:
             base_list[switch_index] = switch_item_data[data.switch_type][data.kong]
     return base_list
 
+
 SHOPKEEPER_ITEMS = [Items.Cranky, Items.Candy, Items.Funky, Items.Snide]
 INSTRUMENT_ITEMS = [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle]
+
 
 def compileMicrohints(spoiler: Spoiler) -> None:
     """Create guaranteed level + kong hints for various items."""

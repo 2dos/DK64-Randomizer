@@ -351,7 +351,9 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
                 raise BossOutOfLocationsException("Fill has no valid boss placement combinations.")
         else:
             chosenBoss = random.choice(notTakenBossOptions)
-        kongOptions = [kong for kong in GetKongOptionsForBoss(chosenBoss, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs)) if kong in ownedKongs[mostRestrictiveLevel]]
+        kongOptions = [
+            kong for kong in GetKongOptionsForBoss(chosenBoss, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs)) if kong in ownedKongs[mostRestrictiveLevel]
+        ]
         # This should be impossible, as bossOptions is populated referencing the ownedKongs dict
         # This could become possible if a boss becomes beatable with unique combinations of Kong + move (e.g. a boss is beatable with (Kong A + Move B) OR (Kong C + Move D))
         if not any(kongOptions):
@@ -390,7 +392,13 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
             spoiler.settings.boss_kongs = [
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.JapesBoss, False) if kong in bossOptions[Levels.JungleJapes]]),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.AztecBoss, False) if kong in bossOptions[Levels.AngryAztec]]),
-                random.choice([kong for kong in GetKongOptionsForBoss(Maps.FactoryBoss, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs)) if kong in bossOptions[Levels.FranticFactory]]),
+                random.choice(
+                    [
+                        kong
+                        for kong in GetKongOptionsForBoss(Maps.FactoryBoss, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs))
+                        if kong in bossOptions[Levels.FranticFactory]
+                    ]
+                ),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.GalleonBoss, False) if kong in bossOptions[Levels.GloomyGalleon]]),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.FungiBoss, False) if kong in bossOptions[Levels.FungiForest]]),
                 random.choice([kong for kong in GetKongOptionsForBoss(Maps.CavesBoss, False) if kong in bossOptions[Levels.CrystalCaves]]),

@@ -1077,6 +1077,7 @@ class SettingsStringEnum(IntEnum):
     enemy_kill_crown_timer = 185
     hard_bosses_selected = 186
 
+
 # If a setting needs to be removed, add it to this set instead of removing it
 # from the enum above.
 DeprecatedSettings = {

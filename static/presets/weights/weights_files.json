@@ -101,7 +101,6 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0,
-    "hard_level_progression": 0,
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0,
@@ -447,7 +446,6 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0.2,
-    "hard_level_progression": 0.4,
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0.5,
@@ -812,7 +810,6 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
-    "hard_level_progression": 0.6,
     "hard_mode": 0.2,
     "hard_mode_selected": {
       "hard_enemies": 0.6,
@@ -1217,7 +1214,6 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
-    "hard_level_progression": 0.6,
     "hard_mode": 0.2,
     "hard_mode_selected": {
       "hard_bosses": 0.6,

@@ -31,7 +31,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Enable Plandomizer
 - Dropsanity
 - Hard B. Lockers
-- Complex Level Progression
 - Hard Mode
 - Hard Shooting
 - Hard Troff n' Scoff

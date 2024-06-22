@@ -547,7 +547,11 @@ class Spoiler:
             for minigame in self.settings.minigames_list_selected:
                 selected_minigames.append(minigame.name)
             humanspoiler["Selected Minigames"] = selected_minigames
-        if self.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected) or self.settings.helm_barrels == MinigameBarrels.random or self.settings.training_barrels == MinigameBarrels.random:
+        if (
+            self.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected)
+            or self.settings.helm_barrels == MinigameBarrels.random
+            or self.settings.training_barrels == MinigameBarrels.random
+        ):
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
                 if location in HelmMinigameLocations and self.settings.helm_barrels == MinigameBarrels.skip:
