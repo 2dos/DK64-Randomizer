@@ -2584,11 +2584,17 @@ def GenerateMultipathDict(
     """
     multipath_dict_hints = {}
     multipath_dict_goals = {}
+    training_slam_hinted = False
     for location in spoiler.woth_locations:
         # Kongs are never on the path to anything (yet?) so we can just skip right over them
         # We don't want the Kongs' locations to be path hinted, as they already get hinted elsewhere
         if spoiler.LocationList[location].item in [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]:
             continue
+        # In worlds where you start with multiple slams and it could be hinted, you'll get identical-looking hints for each slam location. We only want to create that hint once.
+        if location in TrainingBarrelLocations or location in PreGivenLocations and spoiler.LocationList[location].item == Items.ProgressiveSlam:
+            if training_slam_hinted:
+                continue
+            training_slam_hinted = True
         path_to_keys = []
         path_to_krool_phases = []
         path_to_camera = []

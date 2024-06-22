@@ -29,6 +29,17 @@ def export_settings_string(event):
     js.settings_string.value = settings_string
 
 
+def should_clear_setting(select):
+    """Return true if the select should be cleared when importing settings."""
+    if js.document.querySelector("#nav-cosmetics").contains(select) is True:
+        return False
+    if select.name.startswith("plando_"):
+        return False
+    if select.name.startswith("music_select_"):
+        return False
+    return True
+
+
 @bind("click", "import_settings")
 def import_settings_string(event):
     """Click event for importing settings from a string.
@@ -41,7 +52,7 @@ def import_settings_string(event):
     settings = decrypt_settings_string_enum(settings_string)
     # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
     for select in js.document.getElementsByTagName("select"):
-        if js.document.querySelector("#nav-cosmetics").contains(select) is False and not select.name.startswith("plando_"):
+        if should_clear_setting(select):
             select.selectedIndex = -1
     # Uncheck all starting move radio buttons for the import to then set them correctly
     for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
