@@ -257,3 +257,26 @@ ApplyTextRecolorHints:
     sw $t3, 0x58 ($sp)
     j 0x806FC998
     nop
+
+updateGBSecondaryHUD:
+    ; load HUD and store
+    lui $t5, hi(HUD)
+    lw $t5, lo(HUD) ($t5)
+    sh $v0, 0x364 ($t5) ; (ITEMID_CHAOSBLOCKER_GB * 0x30) + 4
+    ; vanilla functions
+    sll $t4, $t4, 4
+    j 0x806F8334
+    addu $t5, $t9, $t4
+
+disableRouletteNumbers:
+    lw $t8, 0x4C ($a0)
+    lui $t7, hi(TBVoidByte)
+    lbu $t7, lo(TBVoidByte) ($t7)
+    andi $t7, $t7, 3
+    bnez $t7, disableRouletteNumbers_finish
+    or $t7, $t6, $zero
+    addiu $t7, $t6, 1
+
+    disableRouletteNumbers_finish:
+        j 0x80639F4C
+        nop

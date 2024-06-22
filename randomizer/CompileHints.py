@@ -2324,7 +2324,7 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                     if location.level not in slam_levels:
                         slam_levels.append(location.level)
             elif location.item in (Items.Cranky, Items.Funky, Items.Snide, Items.Candy):
-                hint_text = f"The sign reads {item.name} has gone on vacation to the {vacation_levels_properties[location.level]} of {level_color}{level_list[location.level]}{level_color}. Perhaps I would find {'her' if location.item == Items.Candy else 'him'} there."
+                hint_text = f"{item.name} has gone on vacation to the {vacation_levels_properties[location.level]} of {level_color}{level_list[location.level]}{level_color}."
                 spoiler.microhints[item.name] = hint_text.upper()
             else:
                 if location.type in item_type_names.keys():

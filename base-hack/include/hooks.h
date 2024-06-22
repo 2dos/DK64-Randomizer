@@ -81,3 +81,5 @@ extern void AlterHeadSize(void);
 extern void AlterHeadSize_0(void);
 extern void ApplyTextRecolorHints(void);
 extern void expandTBarrelResponse(void);
+extern void updateGBSecondaryHUD(void);
+extern void disableRouletteNumbers(void);
