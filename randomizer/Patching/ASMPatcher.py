@@ -1235,8 +1235,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806F9A78, Overlay.Static, "initHUDDirection", offset_dict)  # HUD Direction
     writeFunction(ROM_COPY, 0x806F9BC0, Overlay.Static, "initHUDDirection", offset_dict)  # HUD Direction
     writeFunction(ROM_COPY, 0x806F9D14, Overlay.Static, "initHUDDirection", offset_dict)  # HUD Direction
-    # writeHook(ROM_COPY, 0x806F832C, Overlay.Static, "updateGBSecondaryHUD", offset_dict)  # Update GB HUD - TODO: get this to work
     writeHook(ROM_COPY, 0x80639F44, Overlay.Static, "disableRouletteNumbers", offset_dict)  # Disable Roulette numbers during pause
+    writeHook(ROM_COPY, 0x806F93E0, Overlay.Static, "updateBarrierNumbers", offset_dict)  # Update barrier numbers
 
     writeFunction(ROM_COPY, 0x806D9E08, Overlay.Static, "fixUpdraftBug", offset_dict)  # Updraft fix
 

@@ -258,16 +258,6 @@ ApplyTextRecolorHints:
     j 0x806FC998
     nop
 
-updateGBSecondaryHUD:
-    ; load HUD and store
-    lui $t5, hi(HUD)
-    lw $t5, lo(HUD) ($t5)
-    sh $v0, 0x364 ($t5) ; (ITEMID_CHAOSBLOCKER_GB * 0x30) + 4
-    ; vanilla functions
-    sll $t4, $t4, 4
-    j 0x806F8334
-    addu $t5, $t9, $t4
-
 disableRouletteNumbers:
     lw $t8, 0x4C ($a0)
     lui $t7, hi(TBVoidByte)
@@ -279,4 +269,19 @@ disableRouletteNumbers:
 
     disableRouletteNumbers_finish:
         j 0x80639F4C
+        nop
+
+updateBarrierNumbers:
+    lui $a0, hi(CurrentMap)
+    jal isLobby
+    lw $a0, lo(CurrentMap) ($a0)
+    beqz $v0, updateBarrierNumbers_finish
+    nop
+    jal updateBarrierCounts
+    nop
+
+    updateBarrierNumbers_finish:
+        lw $ra, 0x14 ($sp)
+        addiu $sp, $sp, 0x50
+        jr $ra
         nop
