@@ -179,7 +179,7 @@ LogicRegions = {
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)),
-        TransitionFront(Regions.CrankyJapes, lambda l: l.crankyAccess and l.allTrainingChecks),
+        TransitionFront(Regions.CrankyJapes, lambda l: l.crankyAccess),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.CanMoonkick()),
     ]),
 
