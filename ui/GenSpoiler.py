@@ -128,6 +128,7 @@ async def GenerateSpoiler(spoiler):
                 formatted_spoiler["Requirements"]["Helm Rooms"] = formatted_spoiler["End Game"]["Helm"]["Helm Rooms"]
                 del formatted_spoiler["End Game"]["Helm"]["Helm Rooms"]
     del formatted_spoiler["End Game"]
+    del formatted_spoiler["Randomizer Version"]
 
     # modified_spoiler.update(formatted_spoiler)
     # print(modified_spoiler)

@@ -196,7 +196,7 @@ class LogicVarHolder:
         self.HelmChunky1 = False
         self.HelmChunky2 = False
 
-        self.allTrainingChecks = False
+        self.allTrainingChecks = self.settings.fast_start_beginning_of_game
 
         self.Slam = STARTING_SLAM
         self.AmmoBelts = 0
@@ -393,9 +393,10 @@ class LogicVarHolder:
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
         has_all = True
-        for loc in (Locations.IslesSwimTrainingBarrel, Locations.IslesVinesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel, Locations.IslesOrangesTrainingBarrel):
-            if self.spoiler.LocationList[loc].item not in ownedItems:
-                has_all = False
+        if not self.settings.fast_start_beginning_of_game:
+            for loc in (Locations.IslesSwimTrainingBarrel, Locations.IslesVinesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel, Locations.IslesOrangesTrainingBarrel):
+                if self.spoiler.LocationList[loc].item not in ownedItems:
+                    has_all = False
         self.allTrainingChecks = self.allTrainingChecks or has_all
 
         self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM

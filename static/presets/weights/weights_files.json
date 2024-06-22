@@ -23,8 +23,7 @@
     "boss_location_rando": 0.8,
     "cb_rando": {
       "off": 0.7,
-      "on": 0.25,
-      "on_with_isles": 0.05
+      "on": 0.3
     },
     "coin_door_item": {
       "vanilla": 0.2,
@@ -363,8 +362,7 @@
     "boss_location_rando": 0.8,
     "cb_rando": {
       "off": 0.5,
-      "on": 0.35,
-      "on_with_isles": 0.15
+      "on": 0.5
     },
     "coin_door_item": {
       "vanilla": 0.2,
@@ -725,8 +723,7 @@
     "boss_location_rando": 0.8,
     "cb_rando": {
       "off": 0.5,
-      "on": 0.25,
-      "on_with_isles": 0.25
+      "on": 0.5
     },
     "coin_door_item": {
       "vanilla": 0.3,
@@ -1129,8 +1126,7 @@
     "boss_location_rando": 0.8,
     "cb_rando": {
       "off": 0.7,
-      "on": 0.25,
-      "on_with_isles": 0.25
+      "on": 0.3
     },
     "coin_door_item": {
       "vanilla": 0.3,

@@ -8,12 +8,20 @@ This is the changelog for the initial push of 4.0 into Dev:
 
 ## CHANGELOG
 ### New Randomizers
-- **[!]** Chaos B. Lockers (No logic implemented yet)
+- Chaos B. Lockers
+    - Items other than Golden Bananas will be required to clear the B. Locker. The counts of which are dictated by `Chaos Ratio`
 - Added shop owners in the item pool
+    - These will need to be obtained to purchase items inside the shops. Hints which indicate the level a shopkeeper is in can be obtained by visiting their shop when they have yet to be obtained.
 - Nintendo & Rareware Coins have been split up in the item rando selector
-- **[!]** K Rool phases has been added into the boss pool, meaning they can appear behind boss doors. Consequently, regular bosses can now appear in the final boss sequence, turning it into a boss gauntlet (CLO Only, no external option yet)
-- Added custom races for Castle Car Race and Vulture Race
-- Added the ability to collect colored bananas in Isles, which will add 5 extra medals to the game. This is exclusive to CB Rando, and can be changed with the dropdown menu there.
+- K Rool phases has been added into the boss pool, meaning they can appear behind boss doors. Consequently, regular bosses can now appear in the final boss sequence, turning it into a boss gauntlet
+- Added custom races for Castle Car Race
+- **[!]** Added the ability to collect colored bananas in Isles, which will add 5 extra medals to the game. This is exclusive to CB Rando, and can be changed with the dropdown menu there.
+    - Currently has major issues with generating, hidden for now.
+- Changes to LZR:
+    - Added option to add Helm and Helm Lobby to the loading zone pool
+    - If auto-keys is enabled: K. Lumsy entrances are added to the pool
+    - If kongs are in the Item Rando pool: Tiny Temple and Llama Temple entrances are in the pool
+    - Better Hints have been written
 - Added DK Portal randomizer, which will randomize where the start of the level is. It uses the same pool as custom wrinkly doors and T&S Portals. There's a fair amount of excluded locations to prevent unbeatable scenarios
 
 ### Others
@@ -23,8 +31,7 @@ This is the changelog for the initial push of 4.0 into Dev:
 	- Amount of photos taken
 	- Amount of times caught by kops
 	- Amount of enemies killed
-- **[!]** Added functionality to make enemies in crowns decrease the timer, depending on what enemies are killed. Shockwave will nullify almost all bonus you receive from killing, so killing them without shockwave is always a better idea.
-	- This has no option yet for this
+- Added functionality to make enemies in crowns decrease the timer, depending on what enemies are killed. Shockwave will nullify almost all bonus you receive from killing, so killing them without shockwave is always a better idea.
 - Oranges have been enabled in crowns
 - You can now specify the exact amount of pearls to spawn Mermaid GB
 - Added an option to change the amount of bonus barrels per room that you need to complete in order to defeat a helm room. This comes with the following options:
@@ -32,6 +39,16 @@ This is the changelog for the initial push of 4.0 into Dev:
 	- One: The right-most barrel in each room will be completed
 	- None: Playing the instrument pad will play the room shutdown cutscene
 - Added Moontail glitched logic
+- Hard Mode changes:
+    - Hard bosses has been separated from Hard Mode again, with the ability to select the specific changes you want regarding bosses to be enabled
+    - Added `Shuffled Jetpac Enemies`, so that a level will utilize the enemies from a different level
+    - Added `Lower Max Refill Amounts`, so that you will have to think harder on using your resources more efficiently
+    - Added `Strict Helm Timer`, which will make the base start time of Hideout Helm 0 minutes instead of 10
+    - Added `Donk in the Dark World` and `Donk in the Sky`, which will make traversing the game harder and require you to try and remember how the game looks.
+        - `Donk in the Dark World` will apply the challenge of Fungi Dark Attic to the entire game (Excl. Japes Main area, Factory Testing and Factory Production room for performance reasons)
+        - `Donk in the Sky` will disable level geometry rendering.
+        - Enabling both will enable the secret `Memory Challenge` option, where some maps use Dark World and some maps use Sky.
+- Added the ability to start the game in Training Grounds, with the need to complete 4 minigames to unlock the training moves.
 
 ### Quality of life changes
 - Dirt patches have been added to item previews
@@ -54,6 +71,7 @@ This is the changelog for the initial push of 4.0 into Dev:
 	- Bats
 - Spider Boss fight room no longer has the `pickups_respawn` attribute, meaning that bizarre effects will no longer happen
 - Kabooms that are placed via enemy rando will now explode within a timely manner (4.67s), rather than potentially taking 18 minutes to do so.
+- The slam switch on the K. Rool Ship in Galleon will now respond to `Progressive Switch Strength`
 
 ### Cosmetic-adjacent changes
 - Added the ability for multiple kongs to play as Krusha, and added the ability to play as K Rool (both costumes), Cranky (DK only) and Candy (Tiny only). The Disco Chunky option has (temporarily) been made non-cosmetic
@@ -91,6 +109,10 @@ This is the changelog for the initial push of 4.0 into Dev:
 	- The kremlings that burp in the piano minigame in Frantic Factory
 	- The spotlight fish in Galleon
 - Crowns (excl. "Forest Fracas") will now have random names
+- Added "Keep Vanilla Song Locations" option
+- The background of the pause menu has been overhauled to remove the blurry background and change it to a simple darkening effect, making it easier on the eyes, more modern and less taxing on system resources
+- The numbers in Number Game in Factory will utilize random colors if "Random Misc Cosmetics" is on
+- The DK Portal and the transform/tag barrel underside textures have been updated to the updated DK64 Randomizer logo
 
 ### Misc
 - Irondonk now plays the game over cutscene upon losing all 5 kongs
@@ -105,9 +127,11 @@ This is the changelog for the initial push of 4.0 into Dev:
 ### Site Changes
 - The spoiler log display on the website has been completely reformatted
 - The site has been ported to boostrap 5.3.3 (from 5.1). This will mostly result in changes that you don't recognize. The major change as a result of this is that the sliders on the progression tab have been changed as our old sliders only supported bootstrap 3 and 4, and just so happened to work on 5.1.
+- Various events on the site will produce a toast providing the user feedback on what is happening.
+- `Complex Level Order` has been merged into the `Entrance Randomizer` selector
 
 ### Technical Changes
 - Lots of internal code cleanup
 - Converted all display list modifications to using f3dex2 macros
-- pointer_addresses.json has been vastly shrunk to be quicker on site loading
+- `pointer_addresses.json` has been vastly shrunk to be quicker on site loading
 - Boss doors which have 0 CBs as the unlock condition will now employ a less hacky way of doing this without crashing the game. This fixes a few bugs which occurred as a result of this.
