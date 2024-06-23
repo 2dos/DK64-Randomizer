@@ -471,6 +471,10 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
                         missingCBs.append(collectible)
             allCBsFound = False
     spoiler.Reset()
+    if not allLocationsReached:
+        print(f"Unable to reach all locations: {unreachables}")
+    if not allCBsFound:
+        print(f"Unable to reach all CBs: {spoiler.LogicVariables.ColoredBananas}")
     return allLocationsReached and allCBsFound
 
 

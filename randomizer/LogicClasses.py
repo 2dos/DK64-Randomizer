@@ -10,7 +10,6 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.EnemyTypes import enemy_location_list
-from randomizer.Enums.Types import BarrierItems
 
 if TYPE_CHECKING:
     from randomizer.Enums.Collectibles import Collectibles

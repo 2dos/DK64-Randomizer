@@ -14,7 +14,7 @@ class Minigame:
     """Class which stores name and logic for a minigame."""
 
     def __init__(
-        self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0, kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+        self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0, kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], training_enabled=True
     ) -> None:
         """Initialize with given parameters."""
         self.name = name
@@ -25,6 +25,7 @@ class Minigame:
         self.logic = logic
         self.group = group
         self.kong_list = kong_list
+        self.training_enabled = training_enabled and len(kong_list) == 5
 
 
 HelmMinigameLocations = [
@@ -206,6 +207,7 @@ MinigameRequirements = {
         map_id=Maps.HelmBarrelLankyMaze,
         can_repeat=True,
         logic=lambda l: (not l.settings.sprint_barrel_requires_sprint) or (l.islanky and l.sprint),
+        kong_list=[Kongs.lanky],
     ),
     Minigames.LankyShooting: Minigame(
         name="Hideout Helm: Lanky Shooting",
