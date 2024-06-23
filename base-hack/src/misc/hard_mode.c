@@ -424,3 +424,12 @@ void fallDamageWrapper(int action, void* actor, int player_index) {
     }
     setAction(action, actor, player_index);
 }
+
+void* spawnStalactite(short actor, int x, int y, int z, int unk0, int unk1, int unk2, void* unk3) {
+    if (Player) {
+        if (Player->control_state == 0x6E) { // Baboon Balloon
+            return (void*)0;
+        }
+    }
+    return spawnActorSpawnerContainer(actor, x, y, z, unk0, unk1, unk2, unk3);
+}

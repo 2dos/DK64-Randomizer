@@ -63,8 +63,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Boss Location Rando: 80%
 - Random CB Locations: 
 	- Off: 70%
-	- On: 25%
-	- On With Isles: 5%
+	- On: 30%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 60%
@@ -181,7 +180,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Factory Testing Gate: 75%
 	- Galleon Lighthouse Gate: 75%
 	- Galleon Shipyard Area Gate: 75%
-	- Galleon Shipwreck Gates: 100%
 	- Galleon Seasick Ship: 100%
 	- Forest Green Tunnel: 75%
 	- Forest Yellow Tunnel: 75%

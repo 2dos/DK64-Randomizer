@@ -124,3 +124,4 @@
 .definelabel snideCode, 0x80024CB0
 .definelabel getPathPosition, 0x807238D4
 .definelabel spawnKey, 0x80028478
+.definelabel spawnActorSpawnerContainer, 0x806891D8

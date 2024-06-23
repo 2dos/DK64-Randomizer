@@ -58,7 +58,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
         # Don't bother shuffling or validating barrel locations which are skipped
         if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == MinigameBarrels.skip:
             continue
-        elif BarrelMetaData[location].map == Maps.TrainingGrounds and settings.training_barrels == MinigameBarrels.skip:
+        elif BarrelMetaData[location].map == Maps.TrainingGrounds and settings.training_barrels_minigames == MinigameBarrels.skip:
             continue
         elif BarrelMetaData[location].map not in (Maps.HideoutHelm, Maps.TrainingGrounds) and settings.bonus_barrels == MinigameBarrels.skip:
             continue
@@ -94,7 +94,7 @@ def BarrelShuffle(settings: Settings) -> None:
     if (
         settings.bonus_barrels == MinigameBarrels.selected
         or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected)
-        or (settings.training_barrels == MinigameBarrels.random and settings.minigames_list_selected)
+        or (settings.training_barrels_minigames == MinigameBarrels.random and settings.minigames_list_selected)
     ):
         minigame_dict = {
             MinigamesListSelected.batty_barrel_bandit: [Minigames.BattyBarrelBanditVEasy, Minigames.BattyBarrelBanditEasy, Minigames.BattyBarrelBanditNormal, Minigames.BattyBarrelBanditHard],

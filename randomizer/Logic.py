@@ -476,7 +476,7 @@ class LogicVarHolder:
     def checkBarrier(self, check: RemovedBarriersSelected):
         """Determine whether a barrier has been removed by the removed barriers setting."""
         return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
-    
+
     def galleonGatesStayOpen(self) -> bool:
         """Determine whether the galleon gates stay open once the instrument is played."""
         return IsItemSelected(self.settings.quality_of_life, self.settings.misc_changes_selected, MiscChangesSelected.remove_galleon_ship_timers)

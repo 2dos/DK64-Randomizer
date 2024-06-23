@@ -1289,19 +1289,19 @@ def patchAssembly(ROM_COPY, spoiler):
     elif settings.activate_all_bananaports == ActivateAllBananaports.all:
         for lvl in WARPS_TOTAL:
             file_init_flags.extend(lvl.copy())
-    
+
     SCREEN_SHAKE_CAP = 7
     screen_shake_cap_patch = {
         0x8061F0C8: [
             0x30A500FF,  # andi a1, a1, 0xFF
-            0x2CC10000 | SCREEN_SHAKE_CAP,  # sltiu at, a2, SCREEN_SHAKE_CAP  
-            0x50200001,  # beql at, r0, 1   
-            0x24060000 | SCREEN_SHAKE_CAP,  # addiu a2, r0, SCREEN_SHAKE_CAP  
-            0x24010001,  # li at, 1         
+            0x2CC10000 | SCREEN_SHAKE_CAP,  # sltiu at, a2, SCREEN_SHAKE_CAP
+            0x50200001,  # beql at, r0, 1
+            0x24060000 | SCREEN_SHAKE_CAP,  # addiu a2, r0, SCREEN_SHAKE_CAP
+            0x24010001,  # li at, 1
         ],
         0x8061F0E4: [
-            0x00063082,  # srl a2, a2, 2    
-            0x00000000,  # nop              
+            0x00063082,  # srl a2, a2, 2
+            0x00000000,  # nop
         ],
     }
     for addr_head in screen_shake_cap_patch:
@@ -1319,6 +1319,8 @@ def patchAssembly(ROM_COPY, spoiler):
             accel = -45
         writeFloat(ROM_COPY, 0x80750398, Overlay.Static, accel, offset_dict)  # Stalactite Acceleration
         writeValue(ROM_COPY, 0x806A04E2, Overlay.Static, 0, offset_dict)  # Disable cam shake
+        writeValue(ROM_COPY, 0x806A051C, Overlay.Static, 0x1000001D, offset_dict, 4)  # Disable particles, lag reasons
+        writeFunction(ROM_COPY, 0x806464C4, Overlay.Static, "spawnStalactite", offset_dict)
     elif isQoLEnabled(spoiler, MiscChangesSelected.calm_caves):
         file_init_flags.append(0x12C)  # Giant Kosha Dead
 

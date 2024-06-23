@@ -47,8 +47,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Boss Location Rando: 80%
 - Random CB Locations: 
 	- Off: 50%
-	- On: 25%
-	- On With Isles: 25%
+	- On: 50%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 30%
 	- Hard Random: 30%
@@ -112,6 +111,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Shuffled Jetpac Enemies: 20%
 	- Lower Max Refill Amounts: 50%
 	- Strict Helm Timer: 20%
+	- Angry Caves: 5%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 50%
 - Helm Hurry Mode: 5%
@@ -232,7 +232,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Factory Testing Gate: 75%
 	- Galleon Lighthouse Gate: 75%
 	- Galleon Shipyard Area Gate: 75%
-	- Galleon Shipwreck Gates: 80%
 	- Galleon Seasick Ship: 80%
 	- Forest Green Tunnel: 75%
 	- Forest Yellow Tunnel: 75%

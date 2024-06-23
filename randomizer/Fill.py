@@ -290,7 +290,7 @@ def GetAccessibleLocations(
                             # The second Helm barrel only needs logic checked if we're doing both barrels
                             or (location.bonusBarrel is MinigameType.HelmBarrelSecond and settings.helm_barrels != MinigameBarrels.skip and settings.helm_room_bonus_count == HelmBonuses.two)
                             # Training barrels only need to be done if fast start beginning of game is off
-                            or (location.bonusBarrel is MinigameType.TrainingBarrel and settings.training_barrels != MinigameBarrels.skip)
+                            or (location.bonusBarrel is MinigameType.TrainingBarrel and settings.training_barrels_minigames != MinigameBarrels.skip)
                         ) and (not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(spoiler.LogicVariables)):
                             continue
                         # If this location is a hint door, then make sure we're the right Kong
@@ -3086,7 +3086,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if (
         spoiler.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected)
         or spoiler.settings.helm_barrels == MinigameBarrels.random
-        or spoiler.settings.training_barrels == MinigameBarrels.random
+        or spoiler.settings.training_barrels_minigames == MinigameBarrels.random
     ):
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
