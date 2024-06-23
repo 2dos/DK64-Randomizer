@@ -135,17 +135,13 @@ void handleProgressiveIndicator(int delta) {
     int gb_count = getTotalGBs();
     int old_progressive_level = -1;
     int new_progressive_level = -1;
-    for (int level = 0; level < 7; level++) {
-        for (int kong = 0; kong < 5; kong++) {
-            int index = (level * 5) + kong;
-            int local_req = getHintGBRequirement(level, kong);
-            if (gb_count >= local_req) {
-                new_progressive_level = index;
-            }
-            if ((gb_count - delta) >= local_req) {
-                old_progressive_level = index;
-            }
-
+    for (int i = 0; i < GAME_HINT_COUNT; i++) {
+        int local_req = getHintGBRequirement(i);
+        if (gb_count >= local_req) {
+            new_progressive_level = i;
+        }
+        if ((gb_count - delta) >= local_req) {
+            old_progressive_level = i;
         }
     }
     if (old_progressive_level != new_progressive_level) {
@@ -308,9 +304,12 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
     return dl;
 }
 
-int getHintGBRequirement(int level, int kong) {
+static unsigned char hints_per_screen = 5;
+static unsigned char hint_screen_count = 7;
+static unsigned char hint_offset = 140;
+
+int getHintGBRequirement(int slot) {
     int cap = Rando.progressive_hint_gb_cap;
-    int slot = (5 * level) + kong;
     if (slot < 34) {
         /*
             Little bit of chunking to reduce amount of times checking the pause menu
@@ -351,10 +350,9 @@ int getPluralCharacter(int amount) {
     return 0;
 }
 
-int showHint(int level, int kong) {
-    int slot = (5 * level) + kong;
+int showHint(int slot) {
     if (Rando.progressive_hint_gb_cap > 0) {
-        int req = getHintGBRequirement(level, kong);
+        int req = getHintGBRequirement(slot);
         int gb_count = getTotalGBs();
         return gb_count >= req;
     }
@@ -425,6 +423,11 @@ void getItemSpecificity(char** str, int step, int flag) {
 
 void initHintFlags(void) {
     unsigned short* hint_clear_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE000);
+    if (Rando.progressive_hint_gb_cap > 0) {
+        hints_per_screen = 4;
+        hint_screen_count = 9;
+        hint_offset = 170;
+    }
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
         hint_clear_flags[i] = hint_clear_write[i];
     }
@@ -434,31 +437,43 @@ int* drawHintScreen(int* dl, int level_x) {
     display_billboard_fix = 1;
     dl = printText(dl, level_x, 0x3C, 0.65f, "HINTS");
     // Handle Controls
-    handleCShifting(&hint_level, 7);
+    handleCShifting(&hint_level, hint_screen_count);
     // Display level
-    dk_strFormat((char*)level_hint_text, "w %s e", levels[(int)hint_level + 1]);
+    if (Rando.progressive_hint_gb_cap > 0) {
+        if (hint_level == 8) {
+            dk_strFormat((char*)level_hint_text, "w BATCHES 9 AND 10 e");
+        } else {
+            dk_strFormat((char*)level_hint_text, "w BATCH %d e", hint_level + 1);
+        }
+    } else {
+        dk_strFormat((char*)level_hint_text, "w %s e", levels[(int)hint_level + 1]);
+    }
     dl = printText(dl, level_x, 120, 0.5f, level_hint_text);
     // Display Hints
     dl = displayBubble(dl);
     mtx_counter = 0;
-    for (int i = 0; i < 5; i++) {
-        if (showHint(hint_level, i)) {
+    for (int i = 0; i < hints_per_screen; i++) {
+        int hint_local_index = (hints_per_screen * hint_level) + i;
+        if (hint_local_index > 34) {
+            return dl;
+        }
+        if (showHint(hint_local_index)) {
             int opacity = 0xFF;
-            int assoc_flag = hint_clear_flags[(5 * hint_level) + i];
+            int assoc_flag = hint_clear_flags[hint_local_index];
             if (assoc_flag != -1) {
                 if (hasMove(assoc_flag)) {
                     opacity = HINT_SOLVED_OPACITY;
                 }
             }
-            dl = drawSplitString(dl, (char*)hint_pointers[(5 * hint_level) + i], level_x, 140 + (120 * i), 40, opacity);
+            dl = drawSplitString(dl, (char*)hint_pointers[hint_local_index], level_x, hint_offset + (120 * i), 40, opacity);
         } else {
             if (Rando.progressive_hint_gb_cap == 0) {
                 unknown_hints[i] = "???";
             } else {
-                int requirement = getHintGBRequirement(hint_level, i);
+                int requirement = getHintGBRequirement(hint_local_index);
                 dk_strFormat(unknown_hints[i], "??? - %d GOLDEN BANANA%c", requirement, getPluralCharacter(requirement));
             }
-            dl = drawSplitString(dl, unknown_hints[i], level_x, 140 + (120 * i), 40, 0xFF);
+            dl = drawSplitString(dl, unknown_hints[i], level_x, hint_offset + (120 * i), 40, 0xFF);
         }
         
     }
