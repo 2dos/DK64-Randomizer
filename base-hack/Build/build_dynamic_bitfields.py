@@ -7,7 +7,7 @@ BITFIELDS = {
         "production_room_on",
         "seasick_ship_spawned",
         "igloo_pads_spawned",
-        "shipwreck_permanent",
+        "unused_4",
         "japes_coconut_gates",
         "shellhive_gate",
         "aztec_tunnel_door",

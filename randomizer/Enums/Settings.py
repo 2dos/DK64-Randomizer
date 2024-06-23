@@ -388,6 +388,7 @@ class HardModeSelected(IntEnum):
     strict_helm_timer = 8
     donk_in_the_dark_world = 9
     donk_in_the_sky = 10
+    angry_caves = 11
 
 
 # TODO: merge this with the Types enum.
@@ -593,6 +594,7 @@ class MiscChangesSelected(IntEnum):
     cannon_game_better_control = 25
     better_fairy_camera = 26
     remove_enemy_cabin_timer = 27
+    remove_galleon_ship_timers = 28
 
 
 class MoveRando(IntEnum):

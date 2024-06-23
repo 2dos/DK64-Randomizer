@@ -83,3 +83,4 @@ extern void ApplyTextRecolorHints(void);
 extern void expandTBarrelResponse(void);
 extern void disableRouletteNumbers(void);
 extern void updateBarrierNumbers(void);
+extern void capScreenShake(void);

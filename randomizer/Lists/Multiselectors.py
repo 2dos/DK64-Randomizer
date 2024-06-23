@@ -49,6 +49,7 @@ QoLItems = [
     MultiselectorItem("Cannon Game Better Control", 23, "Hold A during the Galleon Cannon Game to reduce the rotation speed of the cannon."),
     MultiselectorItem("Better Fairy Camera", -1, "Fairy camera range has been increased, and the wall check has been removed to improve ease of taking photos."),
     MultiselectorItem("Remove Enemy Cabin Timer", 24, "Removes the enemy 5-Door Cabin timer in Crystal Caves."),
+    MultiselectorItem("Remove Galleon Ship Timers", 6, "The gates to the two shipwrecks in Galleon will be permanently opened after activating their respective switches."),
 ]
 RemovedBarrierItems = [
     MultiselectorItem("Japes Coconut Gates", 5, "The gates that block the tunnels from Japes main to it's various tunnels will be opened."),
@@ -60,7 +61,7 @@ RemovedBarrierItems = [
     MultiselectorItem("Factory Testing Gate", 8, "The gate from the starting area of Factory to the Block Tower tunnel will be opened."),
     MultiselectorItem("Galleon Lighthouse Gate", 9, "The gate from the start of Galleon to the lighthouse portion will be opened."),
     MultiselectorItem("Galleon Shipyard Area Gate", 12, "The gate from the start of Galleon to the shipyard portion will be opened."),
-    MultiselectorItem("Galleon Shipwreck Gates", 4, "The gates to the two shipwrecks in Galleon will be permanently opened after activating their respective switches."),
+    # MultiselectorItem("Galleon Shipwreck Gates", 4, "The gates to the two shipwrecks in Galleon will be permanently opened after activating their respective switches."),
     MultiselectorItem("Galleon Seasick Ship", 2, "The seasick ship in the lighthouse side of Galleon will be spawned."),
     MultiselectorItem("Forest Green Tunnel", 10, "The green tunnel at the start of Forest will have it's gates opened."),
     MultiselectorItem("Forest Yellow Tunnel", 11, "The yellow tunnel to the owl tree area will have it's gate opened."),

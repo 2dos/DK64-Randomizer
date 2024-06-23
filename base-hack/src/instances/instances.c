@@ -287,9 +287,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case GALLEON_LANKY_SLAM:
 						case GALLEON_TINY_SLAM:
 							if (index == 0) { 
-								return Rando.removed_barriers.shipwreck_permanent == 0;
+								return Rando.quality_of_life.no_ship_timers == 0;
 							} else {
-								if (Rando.removed_barriers.shipwreck_permanent) {
+								if (Rando.quality_of_life.no_ship_timers) {
 									behaviour_pointer->next_state = 6;
 								} else {
 									behaviour_pointer->next_state = 5;
@@ -330,14 +330,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								gate_flag = GALLEON_2DSOPEN_TINY;
 							}
 							if (index == 0) {
-								if (Rando.removed_barriers.shipwreck_permanent) {
+								if (Rando.quality_of_life.no_ship_timers) {
 									if (checkFlag(gate_flag, FLAGTYPE_PERMANENT)) {
 										behaviour_pointer->current_state = 10;
 										behaviour_pointer->next_state = 10;
 									}
 								}
 							} else {
-								if (Rando.removed_barriers.shipwreck_permanent) {
+								if (Rando.quality_of_life.no_ship_timers) {
 									setPermFlag(gate_flag);
 								}
 							}

@@ -20,6 +20,7 @@ from randomizer.Enums.Settings import (
     FungiTimeSetting,
     MiscChangesSelected,
     ColorblindMode,
+    DamageAmount,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -1288,8 +1289,37 @@ def patchAssembly(ROM_COPY, spoiler):
     elif settings.activate_all_bananaports == ActivateAllBananaports.all:
         for lvl in WARPS_TOTAL:
             file_init_flags.extend(lvl.copy())
+    
+    SCREEN_SHAKE_CAP = 7
+    screen_shake_cap_patch = {
+        0x8061F0C8: [
+            0x30A500FF,  # andi a1, a1, 0xFF
+            0x2CC10000 | SCREEN_SHAKE_CAP,  # sltiu at, a2, SCREEN_SHAKE_CAP  
+            0x50200001,  # beql at, r0, 1   
+            0x24060000 | SCREEN_SHAKE_CAP,  # addiu a2, r0, SCREEN_SHAKE_CAP  
+            0x24010001,  # li at, 1         
+        ],
+        0x8061F0E4: [
+            0x00063082,  # srl a2, a2, 2    
+            0x00000000,  # nop              
+        ],
+    }
+    for addr_head in screen_shake_cap_patch:
+        for offset, value in enumerate(screen_shake_cap_patch[addr_head]):
+            writeValue(ROM_COPY, addr_head + (4 * offset), Overlay.Static, value, offset_dict, 4)
 
-    if isQoLEnabled(spoiler, MiscChangesSelected.calm_caves):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves):
+        writeValue(ROM_COPY, 0x807480F4, Overlay.Static, 1, offset_dict, 4)  # Constant rockfall
+        writeValue(ROM_COPY, 0x807480FC, Overlay.Static, 10, offset_dict, 4)  # Double rockfall rate
+        writeValue(ROM_COPY, 0x806466D4, Overlay.Static, 0, offset_dict, 4)  # Kosha is alive no matter what
+        writeValue(ROM_COPY, 0x806465DC, Overlay.Static, 0x1000, offset_dict)  # Kosha is alive no matter what
+        accel = -90
+        if settings.damage_amount in (DamageAmount.quad, DamageAmount.ohko):
+            # Lower the velocity to make it a little fairer in scenarios where you're gonna die from not too many hits
+            accel = -45
+        writeFloat(ROM_COPY, 0x80750398, Overlay.Static, accel, offset_dict)  # Stalactite Acceleration
+        writeValue(ROM_COPY, 0x806A04E2, Overlay.Static, 0, offset_dict)  # Disable cam shake
+    elif isQoLEnabled(spoiler, MiscChangesSelected.calm_caves):
         file_init_flags.append(0x12C)  # Giant Kosha Dead
 
     if settings.free_trade_setting != FreeTradeSetting.none:

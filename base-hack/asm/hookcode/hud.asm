@@ -285,3 +285,14 @@ updateBarrierNumbers:
         addiu $sp, $sp, 0x50
         jr $ra
         nop
+
+capScreenShake:
+    andi $t7, $a2, 0xFFFF
+    sltiu $at, $t7, 7
+    bnez $at, capScreenShake_finish
+    nop
+    addiu $t7, $zero, 7
+
+    capScreenShake_finish:
+        j 0x8061F0D4
+        addiu $at, $zero, 1

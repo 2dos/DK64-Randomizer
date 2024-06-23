@@ -13,7 +13,7 @@ typedef struct RemovedBarriers {
 	unsigned char production_room_on : 1; // 0x40 
 	unsigned char seasick_ship_spawned : 1; // 0x20 
 	unsigned char igloo_pads_spawned : 1; // 0x10 
-	unsigned char shipwreck_permanent : 1; // 0x8 
+	unsigned char unused_4 : 1; // 0x8 
 	unsigned char japes_coconut_gates : 1; // 0x4 
 	unsigned char shellhive_gate : 1; // 0x2 
 	unsigned char aztec_tunnel_door : 1; // 0x1 
@@ -30,7 +30,7 @@ typedef enum ENUM_RemovedBarriers {
 	/* 1 */ REMOVEDBARRIERS_ENUM_PRODUCTIONROOMON,
 	/* 2 */ REMOVEDBARRIERS_ENUM_SEASICKSHIPSPAWNED,
 	/* 3 */ REMOVEDBARRIERS_ENUM_IGLOOPADSSPAWNED,
-	/* 4 */ REMOVEDBARRIERS_ENUM_SHIPWRECKPERMANENT,
+	/* 4 */ REMOVEDBARRIERS_ENUM_UNUSED4,
 	/* 5 */ REMOVEDBARRIERS_ENUM_JAPESCOCONUTGATES,
 	/* 6 */ REMOVEDBARRIERS_ENUM_SHELLHIVEGATE,
 	/* 7 */ REMOVEDBARRIERS_ENUM_AZTECTUNNELDOOR,

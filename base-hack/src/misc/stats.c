@@ -162,6 +162,7 @@ void updateKopStat(void) {
 void updateEnemyKillStat(void) {
     // Change character for K Rool
     fixKRoolKong();
+    resetDisplayedMusic(); // Just to prevent against free issues
     // Update Stat
     if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
         changeStat(STAT_ENEMIESKILLED, EnemiesKilledCounter);

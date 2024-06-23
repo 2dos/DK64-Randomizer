@@ -7,7 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ShuffleLoadingZones, GalleonWaterSetting, FasterChecksSelected, RemovedBarriersSelected
+from randomizer.Enums.Settings import ShuffleLoadingZones, GalleonWaterSetting, RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -40,8 +40,8 @@ LogicRegions = {
         LocationLogic(Locations.GalleonMainEnemy_CoconutTunnel, lambda l: True),
     ], [
         Event(Events.GalleonEntered, lambda l: True),
-        Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
-        Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
+        Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.galleonGatesStayOpen())),
+        Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.galleonGatesStayOpen())),
         Event(Events.LighthouseGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)),
         Event(Events.ShipyardGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)),
         Event(Events.GalleonCannonRoomOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonCannonGame, False)),
@@ -80,7 +80,7 @@ LogicRegions = {
     Regions.LighthouseSurface: Region("Lighthouse Surface", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonKasplatLighthouseArea, lambda l: not l.settings.kasplat_rando),
     ], [
-        Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates)) and Events.WaterLowered in l.Events),
+        Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.galleonGatesStayOpen()) and Events.WaterLowered in l.Events),
         Event(Events.ActivatedLighthouse, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship)),
         Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
         Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
@@ -168,10 +168,10 @@ LogicRegions = {
         LocationLogic(Locations.MelonCrate_Location05, lambda l: True),
     ], [
         Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.advanced_platforming)),
-        Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
-        Event(Events.GalleonDiddyPad, lambda l: l.guitar and l.isdiddy and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates)) and Events.WaterLowered in l.Events),
-        Event(Events.GalleonLankyPad, lambda l: l.trombone and l.islanky and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates)) and Events.WaterLowered in l.Events),
-        Event(Events.GalleonTinyPad, lambda l: l.saxophone and l.istiny and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gates))),
+        Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.galleonGatesStayOpen())),
+        Event(Events.GalleonDiddyPad, lambda l: l.guitar and l.isdiddy and (l.swim or l.galleonGatesStayOpen()) and Events.WaterLowered in l.Events),
+        Event(Events.GalleonLankyPad, lambda l: l.trombone and l.islanky and (l.swim or l.galleonGatesStayOpen()) and Events.WaterLowered in l.Events),
+        Event(Events.GalleonTinyPad, lambda l: l.saxophone and l.istiny and (l.swim or l.galleonGatesStayOpen())),
         Event(Events.GalleonW2bTagged, lambda l: True),
         Event(Events.GalleonW4bTagged, lambda l: True),
         Event(Events.GalleonW5bTagged, lambda l: True),

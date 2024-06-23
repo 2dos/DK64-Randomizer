@@ -3,6 +3,7 @@
 .definelabel DamageMultiplier, 0x807FFFF9 // u8
 .definelabel ExpandPauseMenu, 0x807FFFF8
 .definelabel InitialPauseHeight, 0x807FFFF6
+.definelabel DisplayedSongNamePointer, 0x807FFFF0
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8

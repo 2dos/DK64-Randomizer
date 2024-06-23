@@ -11,12 +11,11 @@
 
 #include "../../include/common.h"
 
-static char* displayed_text_music = (char*)0;
 static unsigned char display_timer = 0;
 static short displayed_text_offset = -1;
 
 void resetDisplayedMusic(void) {
-    displayed_text_music = 0;
+    DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
 }
 
 void initSongDisplay(int song) {
@@ -34,19 +33,19 @@ void initSongDisplay(int song) {
     if ((MusicTrackChannels[channel] == song) && ((songData[song] & 0x200) == 0)) {
         return;
     }
-    if (displayed_text_music) {
-        complex_free(displayed_text_music);
+    if (DisplayedSongNamePointer) {
+        complex_free(DisplayedSongNamePointer);
     }
-    displayed_text_music = getTextPointer(46, song, 0);
+    DisplayedSongNamePointer = getTextPointer(46, song, 0);
     displayed_text_offset = -1;
-    int text_length = cstring_strlen(displayed_text_music);
+    int text_length = cstring_strlen(DisplayedSongNamePointer);
     display_timer = 60;
     if (ObjectModel2Timer < 31) {
         display_timer = 91;
     }
     for (int i = 0; i < text_length; i++) {
-        if (displayed_text_music[i] == 0xA) {
-            displayed_text_music[i] = 0;
+        if (DisplayedSongNamePointer[i] == 0xA) {
+            DisplayedSongNamePointer[i] = 0;
             displayed_text_offset = i + 1;
         }
     }
@@ -59,7 +58,7 @@ Gfx* displaySongNameHandler(Gfx* dl) {
     if (display_timer > 0) {
         display_timer -= 1;
     }
-    if (!displayed_text_music) {
+    if (!DisplayedSongNamePointer) {
         return dl;
     }
     if (displayed_text_offset == -1) {
@@ -85,7 +84,7 @@ Gfx* displaySongNameHandler(Gfx* dl) {
         gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
         gSPMatrix(dl++, (int)&static_mtx[20 + i], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        dl = displayText(dl,6,0,0,displayed_text_music + (displayed_text_offset * i),0);
+        dl = displayText(dl,6,0,0,DisplayedSongNamePointer + (displayed_text_offset * i),0);
         gSPPopMatrix(dl++, G_MTX_MODELVIEW);
     }
     return dl;

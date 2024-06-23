@@ -72,6 +72,7 @@ This is the changelog for the initial push of 4.0 into Dev:
 - Spider Boss fight room no longer has the `pickups_respawn` attribute, meaning that bizarre effects will no longer happen
 - Kabooms that are placed via enemy rando will now explode within a timely manner (4.67s), rather than potentially taking 18 minutes to do so.
 - The slam switch on the K. Rool Ship in Galleon will now respond to `Progressive Switch Strength`
+- The wind tower in Castle will now allow you to stay at the top after exiting the bonus barrel.
 
 ### Cosmetic-adjacent changes
 - Added the ability for multiple kongs to play as Krusha, and added the ability to play as K Rool (both costumes), Cranky (DK only) and Candy (Tiny only). The Disco Chunky option has (temporarily) been made non-cosmetic

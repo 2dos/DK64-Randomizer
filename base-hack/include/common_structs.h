@@ -1243,7 +1243,7 @@ typedef struct quality_options {
 	unsigned char unused_3 : 1; // 3
 	unsigned char dance_skip : 1;
 	unsigned char fast_boot : 1; // 5
-	unsigned char unused_6 : 1;
+	unsigned char no_ship_timers : 1;
 	unsigned char ammo_swap : 1; // 7
 	unsigned char cb_indicator : 1;
 	unsigned char galleon_star : 1; // 9
