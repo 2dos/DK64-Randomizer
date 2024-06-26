@@ -1997,7 +1997,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002683C, Overlay.Menu, "getNextMovePurchase", offset_dict)
     # Menu/Shop: Write Modified purchase move stuff
     writeFunction(ROM_COPY, 0x80027324, Overlay.Menu, "purchaseFirstMoveHandler", offset_dict)
-    writeFunction(ROM_COPY, 0x80027150, Overlay.Menu, "checkFirstMovePurchase", offset_dict)
+    if not settings.fast_start_beginning_of_game:
+        writeFunction(ROM_COPY, 0x80027150, Overlay.Menu, "checkFirstMovePurchase", offset_dict)
     writeFunction(ROM_COPY, 0x8002691C, Overlay.Menu, "purchaseMove", offset_dict)
     writeFunction(ROM_COPY, 0x800270B8, Overlay.Menu, "showPostMoveText", offset_dict)
     writeFunction(ROM_COPY, 0x80026508, Overlay.Menu, "canPlayJetpac", offset_dict)
