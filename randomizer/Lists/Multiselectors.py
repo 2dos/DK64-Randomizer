@@ -51,7 +51,7 @@ QoLItems = [
     MultiselectorItem("Remove Enemy Cabin Timer", 24, "Removes the enemy 5-Door Cabin timer in Crystal Caves."),
 ]
 RemovedBarrierItems = [
-    MultiselectorItem("Japes Coconut Gates", 5, "The gates that block the tunnels from Japes main to it's various tunnels will be opened."),
+    MultiselectorItem("Japes Coconut Gates", 5, "The gates that block the tunnels from Japes main to its various tunnels will be opened."),
     MultiselectorItem("Japes Shellhive Gate", 6, "The gate to the shellhive area in Japes is opened."),
     MultiselectorItem("Aztec Tunnel Door", 7, "The door which blocks access to the back half of Aztec will be opened."),
     MultiselectorItem("Aztec 5DTemple Switches", 0, "The switches on the Five-Door Temple in Aztec will be pre-spawned."),
