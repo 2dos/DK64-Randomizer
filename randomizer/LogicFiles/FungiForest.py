@@ -12,7 +12,7 @@ from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
-from randomizer.Enums.Settings import FungiTimeSetting, RemovedBarriersSelected
+from randomizer.Enums.Settings import FungiTimeSetting, MinigameBarrels, RemovedBarriersSelected
 
 LogicRegions = {
     Regions.FungiForestMedals: Region("Fungi Forest Medals", "Forest Medal Rewards", Levels.FungiForest, False, None, [
@@ -315,7 +315,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", "Forest Mills", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.isdonkey and l.Slam and l.camera),
         LocationLogic(Locations.MelonCrate_Location11, lambda l: True),
         LocationLogic(Locations.ForestThornBarnEnemy_Enemy, lambda l: True),
