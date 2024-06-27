@@ -1621,11 +1621,39 @@ int getTotalMoveCount(void) {
 	return count;
 }
 
+dynamic_flag_icetrap_junk isIceTrapFlag(int flag) {
+	if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
+		// Default Allocation
+		return DYNFLAG_ICETRAP;
+	}
+	int junk_invasion = 0;
+	int junk_capacity = 100;
+	if (Rando.ice_trap_flag_alloc > 16) {
+		junk_invasion = Rando.ice_trap_flag_alloc - 16;
+		junk_capacity = 116 - Rando.ice_trap_flag_alloc;
+	}
+	if (isFlagInRange(flag, FLAG_JUNKITEM, junk_invasion)) {
+		return DYNFLAG_ICETRAP;
+	}
+	if (isFlagInRange(flag, FLAG_JUNKITEM + junk_invasion, junk_capacity)) {
+		return DYNFLAG_JUNK;
+	}
+	return DYNFLAG_NEITHER;
+}
+
 int getItemCountReq(requirement_item item) {
 	int enabled_state = flag_counters[item].enabled;
 	int item_count = flag_counters[item].item_count;
 	int count = 0;
 	if (enabled_state == 1) {
+		if (item == REQITEM_ICETRAP) {
+			int ice_trap_count = countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
+			if (Rando.ice_trap_flag_alloc > 16) {
+				int extra_count = Rando.ice_trap_flag_alloc - 16;
+				ice_trap_count += countFlagArray(FLAG_JUNKITEM, extra_count, FLAGTYPE_PERMANENT);
+			}
+			return ice_trap_count;
+		}
 		return countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
 	} else if (enabled_state == 2) {
 		for (int i = 0; i < item_count; i++) {

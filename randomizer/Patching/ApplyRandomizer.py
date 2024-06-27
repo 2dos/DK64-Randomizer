@@ -50,7 +50,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected
+from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateKrushaMoveNames, updateRandomSwitches, updateSwitchsanity
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves, parseMoveBlock
 from randomizer.Patching.Patcher import LocalROM
@@ -185,7 +185,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.bonus_barrel_auto_complete, 0x126),  # Auto-Complete Bonus Barrels
         BooleanProperties(spoiler.settings.warp_to_isles, 0x135),  # Warp to Isles
         BooleanProperties(spoiler.settings.perma_death, 0x14D),  # Permadeath
-        BooleanProperties(spoiler.settings.perma_death, 0x14E),  # Disable Boss Door Check
         BooleanProperties(spoiler.settings.disable_tag_barrels, 0x14F),  # Disable Tag Spawning
         BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
@@ -460,6 +459,11 @@ def patching_response(spoiler):
     rom_flags |= 0x40 if spoiler.settings.generate_spoilerlog else 0
     ROM_COPY.seek(sav + 0xC4)
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
+
+    # Ice Trap Count
+    ROM_COPY.seek(sav + 0x14E)
+    ice_trap_count = max(16, getIceTrapCount(spoiler.settings))
+    ROM_COPY.writeMultipleBytes(ice_trap_count, 1)
 
     # Mill Levers
     if spoiler.settings.mill_levers[0] > 0:

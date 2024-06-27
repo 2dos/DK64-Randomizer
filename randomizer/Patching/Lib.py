@@ -16,7 +16,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
-from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem
+from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency
 
 if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
@@ -860,3 +860,15 @@ def writeRawFile(table_index: int, file_index: int, compressed: bool, data: byte
         raise Exception(f"Cannot write file {file_index} in table {table_index} to ROM as it's too big.")
     ROM_COPY.seek(file_start)
     ROM_COPY.writeBytes(write_data)
+
+
+def getIceTrapCount(settings) -> int:
+    """Get the amount of Ice Traps the game will attempt to place."""
+    ice_trap_freqs = {
+        IceTrapFrequency.rare: 4,
+        IceTrapFrequency.mild: 10,
+        IceTrapFrequency.common: 32,
+        IceTrapFrequency.frequent: 64,
+        IceTrapFrequency.pain: 100,
+    }
+    return ice_trap_freqs.get(settings.ice_trap_frequency, 16)

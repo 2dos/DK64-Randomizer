@@ -1034,3 +1034,9 @@ typedef enum custom_kong_models {
 	/* 0x00B */ KONGMODEL_CANDY,
 	/* 0x00C */ KONGMODEL_FUNKY,
 } custom_kong_models;
+
+typedef enum dynamic_flag_icetrap_junk {
+	/* 0x000 */ DYNFLAG_NEITHER,
+	/* 0x001 */ DYNFLAG_ICETRAP,
+	/* 0x002 */ DYNFLAG_JUNK,
+} dynamic_flag_icetrap_junk;

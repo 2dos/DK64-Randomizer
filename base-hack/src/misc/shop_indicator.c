@@ -180,7 +180,7 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 						return COUNTER_FAIRY;
 					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
 						return COUNTER_RAINBOWCOIN;
-					} else if (isFlagInRange(flag, FLAG_FAKEITEM, 16)) {
+					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
 						return COUNTER_FAKEITEM;
 					} else {
 						if (isTBarrelFlag(flag)) {

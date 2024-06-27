@@ -146,7 +146,7 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 						base = MRT_CANBUY_PEARL;
 					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
 						base = MRT_CANBUY_FAIRY;
-					} else if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
+					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
 						base = MRT_CANBUY_FAKEITEM;
 					} else {
 						// Kongs

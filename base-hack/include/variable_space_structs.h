@@ -111,7 +111,7 @@ typedef struct varspace {
 	/* 0x144 */ char unk_144[8];
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
-	/* 0x14E */ char unk_14E;
+	/* 0x14E */ unsigned char ice_trap_flag_alloc;
 	/* 0x14F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
 	/* 0x150 */ char unk_150;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init

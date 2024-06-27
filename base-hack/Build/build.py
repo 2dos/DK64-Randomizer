@@ -1517,6 +1517,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(ROM_DATA_OFFSET + 0x159)
     fh.write((2).to_bytes(1, "big"))
 
+    # Ice Trap Flag Alloc
+    fh.seek(ROM_DATA_OFFSET + 0x14E)
+    fh.write((16).to_bytes(1, "big"))
+
     # Default Menu Settings
     fh.seek(ROM_DATA_OFFSET + 0xC8)
     fh.write((40).to_bytes(1, "big"))

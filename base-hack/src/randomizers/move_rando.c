@@ -210,7 +210,7 @@ purchase_classification getPurchaseClassification(int purchase_type, int flag) {
 			return PCLASS_PEARL;
 		} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
 			return PCLASS_FAIRY;
-		} else if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
+		} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
 			return PCLASS_FAKEITEM;
 		} else {
 			for (int i = 0; i < 8; i++) {
@@ -286,7 +286,7 @@ void purchaseMove(shop_paad* paad) {
 				if (CollectableBase.Crystals < (10*150)) {
 					CollectableBase.Crystals = 10*150;
 				}
-			} else if ((paad->flag >= FLAG_FAKEITEM) && (paad->flag < (FLAG_FAKEITEM + 0x10))) {
+			} else if (isIceTrapFlag(paad->flag) == DYNFLAG_ICETRAP) {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				queueIceTrap();
 			} else {
@@ -423,7 +423,7 @@ void setLocation(purchase_struct* purchase_data) {
 			if (CollectableBase.Crystals < (10*150)) {
 				CollectableBase.Crystals = 10*150;
 			}
-		} else if ((p_type == PURCHASE_FLAG) && (isFlagInRange(purchase_data->purchase_value, FLAG_FAKEITEM, 0x10))) {
+		} else if ((p_type == PURCHASE_FLAG) && (isIceTrapFlag(purchase_data->purchase_value) == DYNFLAG_ICETRAP)) {
 			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
 			queueIceTrap();
 		} else if (p_type == PURCHASE_FLAG) {
@@ -709,7 +709,7 @@ void getNextMoveText(void) {
 							} else if (isFlagInRange(p_flag, FLAG_FAIRY_1, 20)) {
 								// Banana Fairy
 								top_item = ITEMTEXT_FAIRY;
-							} else if (isFlagInRange(p_flag, FLAG_FAKEITEM, 0x10)) {
+							} else if (isIceTrapFlag(p_flag) == DYNFLAG_ICETRAP) {
 								// Fake Item
 								top_item = ITEMTEXT_FAKEITEM;
 							} else if (isFlagInRange(p_flag, FLAG_ITEM_CRANKY, 4)) {

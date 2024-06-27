@@ -45,7 +45,7 @@ static char* general_text[] = {
     "S1:%08X\tS2:%08X\tS3:%08X\n",
     "S4:%08X\tS5:%08X\tS6:%08X\n",
     "S7:%08X\tT8:%08X\tT9:%08X\n",
-    "GP:%08X\tSP:%08X\tS8:%08X\n",
+    "GP:%08X\tSP:%08X\tFP:%08X\n",
     "RA:%08X\tLO:%08X\tHI:%08X\n",
 };
 

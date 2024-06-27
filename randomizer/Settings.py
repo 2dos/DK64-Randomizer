@@ -312,6 +312,7 @@ class Settings:
         self.disable_hard_minigames = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
+        self.ice_trap_frequency = IceTrapFrequency.mild
         self.start_with_slam = False
         self.random_patches = None
         self.random_crates = None

@@ -14,7 +14,17 @@ class Minigame:
     """Class which stores name and logic for a minigame."""
 
     def __init__(
-        self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0, kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], training_enabled=True
+        self,
+        *,
+        name="No Game",
+        group="No Group",
+        map_id=0,
+        helm_enabled=True,
+        can_repeat=True,
+        difficulty_lvl=0,
+        logic=0,
+        kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        training_enabled=True,
     ) -> None:
         """Initialize with given parameters."""
         self.name = name

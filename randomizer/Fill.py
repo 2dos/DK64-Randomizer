@@ -1598,7 +1598,7 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
     unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
     # Checkless can be on bosses, but we need shops in the pool in order to have room to do this reliably
     if Types.Shop in spoiler.settings.shuffled_location_types and Types.FakeItem in spoiler.settings.shuffled_location_types:
-        unplaced_items.extend(ItemPool.FakeItems())
+        unplaced_items.extend(ItemPool.FakeItems(spoiler.settings))
     for item in placed_items:
         if item in unplaced_items:
             unplaced_items.remove(item)
@@ -1869,7 +1869,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)
         spoiler.Reset()
-        fakeItemsToBePlaced = ItemPool.FakeItems()
+        fakeItemsToBePlaced = ItemPool.FakeItems(spoiler.settings)
         for item in preplaced_items:
             if item in fakeItemsToBePlaced:
                 fakeItemsToBePlaced.remove(item)
@@ -1881,7 +1881,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.JunkItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.JunkItem)
         spoiler.Reset()
-        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.JunkItems(), [])
+        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.JunkItems(spoiler.settings), [])
         # Don't raise exception if unplaced junk items
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)

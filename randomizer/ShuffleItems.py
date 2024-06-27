@@ -8,6 +8,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
+from randomizer.Patching.Lib import getIceTrapCount
 
 
 class LocationSelection:
@@ -75,13 +76,21 @@ class MoveData:
 
 def ShuffleItems(spoiler):
     """Shuffle items into assortment."""
+    ice_trap_count = getIceTrapCount(spoiler.settings)
+    ice_trap_flag_range = list(range(0x2AE, 0x2BE))
+    junk_invasion = 0
+    if ice_trap_count > 16:
+        junk_invasion = ice_trap_count - 16
+        ice_trap_flag_range.extend(list(range(0x320, 0x320 + junk_invasion)))
+    junk_item_flag_range = list(range(0x320 + junk_invasion, 0x320 + 100))
+
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-        Items.FakeItem: list(range(0x2AE, 0x2BE)),
+        Items.FakeItem: ice_trap_flag_range,
     }
-    junk_flag_dict = list(range(0x320, 0x320 + 100))
+    junk_flag_dict = junk_item_flag_range
     flag_dict = {}
     blueprint_flag_dict = {}
     locations_not_needing_flags = []

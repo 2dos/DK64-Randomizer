@@ -13,7 +13,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Lib import IsItemSelected, getIceTrapCount
 
 
 def PlaceConstants(spoiler):
@@ -105,8 +105,8 @@ def AllItemsUnrestricted(settings):
     allItems.extend(RainbowCoinItems())
     allItems.extend(MelonCrateItems())
     allItems.extend(EnemyItems())
-    allItems.extend(FakeItems())
-    allItems.extend(JunkItems())
+    allItems.extend(FakeItems(settings))
+    allItems.extend(JunkItems(settings))
     allItems.extend(DonkeyMoves)
     allItems.extend(DiddyMoves)
     allItems.extend(LankyMoves)
@@ -166,9 +166,9 @@ def AllItems(settings):
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
-        allItems.extend(FakeItems())
+        allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
-        allItems.extend(JunkItems())
+        allItems.extend(JunkItems(settings))
     if settings.move_rando != MoveRando.off:
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
@@ -227,9 +227,9 @@ def AllItemsForMovePlacement(settings):
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
-        allItems.extend(FakeItems())
+        allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
-        allItems.extend(JunkItems())
+        allItems.extend(JunkItems(settings))
     return allItems
 
 
@@ -516,10 +516,10 @@ def FairyItems():
     return itemPool
 
 
-def FakeItems():
+def FakeItems(settings):
     """Return a list of Fake Items to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
+    itemPool.extend(itertools.repeat(Items.FakeItem, getIceTrapCount(settings)))  # Up to 10 fake items
     return itemPool
 
 
@@ -543,13 +543,14 @@ def SnideItems():
     return [Items.Snide]
 
 
-def JunkItems():
+def JunkItems(settings):
     """Return a list of Junk Items to be placed."""
+    junk_count = min(100, 116 - getIceTrapCount(settings))
     itemPool = []
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange)
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkOrange)
     items_to_place = [Items.JunkMelon]
-    lim = int(100 / len(items_to_place))
+    lim = int(junk_count / len(items_to_place))
     for item_type in items_to_place:
         itemPool.extend(itertools.repeat(item_type, lim))
     return itemPool

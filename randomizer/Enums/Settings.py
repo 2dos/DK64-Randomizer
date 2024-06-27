@@ -391,6 +391,24 @@ class HardModeSelected(IntEnum):
     angry_caves = 11
 
 
+class IceTrapFrequency(IntEnum):
+    """The attempted frequency of ice traps in the seed.
+
+    Placing ice traps into the seed will take away from junk items
+    rare: 4 ice traps
+    mild: 10 ice traps.
+    common: 32 ice traps.
+    frequent: 64 ice traps.
+    pain: 100 ice traps.
+    """
+
+    rare = 0
+    mild = 1
+    common = 2
+    frequent = 3
+    pain = 4
+
+
 # TODO: merge this with the Types enum.
 class ItemRandoListSelected(IntEnum):
     """Item categories that may be randomized.
@@ -839,6 +857,7 @@ SettingsMap = {
     "helm_barrels": MinigameBarrels,
     "helm_room_bonus_count": HelmBonuses,
     "helm_setting": HelmSetting,
+    "ice_trap_frequency": IceTrapFrequency,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
     "krusha_ui": KrushaUi,
@@ -1078,6 +1097,7 @@ class SettingsStringEnum(IntEnum):
     krool_in_boss_pool = 184
     enemy_kill_crown_timer = 185
     hard_bosses_selected = 186
+    ice_trap_frequency = 187
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1308,6 +1328,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.chaos_ratio: SettingsStringDataType.int16,
     SettingsStringEnum.krool_in_boss_pool: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
+    SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

@@ -186,7 +186,10 @@ void initCarousel_onPause(void) {
         file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, FLAGTYPE_PERMANENT);
     }
     for (int i = 0; i < 100; i++) {
-        file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
+        // Junk Item Check
+        if (isIceTrapFlag(FLAG_JUNKITEM + i) == DYNFLAG_JUNK) {
+            file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
+        }
     }
 }
 
