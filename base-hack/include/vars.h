@@ -103,15 +103,6 @@
 #define STAT_BITS 16
 #define LETTER_BITS 7
 
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_FLAG 5
-#define PURCHASE_GB 6
-#define PURCHASE_NOTHING -1
-
 // Move Bitfield Checks
 #define MOVECHECK_BLAST 1
 #define MOVECHECK_STRONG 2

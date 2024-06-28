@@ -1,10 +1,18 @@
 #include "../../include/common.h"
 
+static short flag_purchase_types[] = {
+	PURCHASE_FLAG,
+	PURCHASE_GB,
+	PURCHASE_ICEBUBBLE,
+	PURCHASE_ICEREVERSE,
+	PURCHASE_ICESLOW,
+};
+
 int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 	if (kong > 4) {
 		kong = 0;
 	}
-	if (purchase_type != PURCHASE_NOTHING) {
+	if (purchase_type != -1) {
 		if (purchase_value != 0) {
 			if (purchase_type == PURCHASE_MOVES) {
 				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
@@ -44,7 +52,7 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 						return 5;
 					}
 				}
-			} else if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
+			} else if (inShortList(purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
 				if (purchase_value == -2) { // Shockwave & Camera Combo
 					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
 						return 6;
@@ -208,6 +216,10 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 				break;
 			case PURCHASE_GB:
 				return COUNTER_GB;
+			case PURCHASE_ICEBUBBLE:
+			case PURCHASE_ICEREVERSE:
+			case PURCHASE_ICESLOW:
+				return COUNTER_FAKEITEM;
 			break;
 		}
 	}

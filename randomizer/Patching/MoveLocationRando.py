@@ -6,6 +6,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
+from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Lib import setItemReferenceName
@@ -153,24 +154,26 @@ def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, k
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
-            ROM_COPY.writeMultipleBytes(5 << 5, 1)
-            ROM_COPY.writeMultipleBytes(x["price"], 1)
+            ROM_COPY.writeMultipleBytes(MoveTypes.Flag, 2)
             ROM_COPY.writeMultipleBytes(flag_index, 2)
-        elif x["move_type"] is None:
-            ROM_COPY.writeMultipleBytes(7 << 5, 1)
             ROM_COPY.writeMultipleBytes(0, 1)
-            ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+            ROM_COPY.writeMultipleBytes(x["price"], 1)
+        elif x["move_type"] is None:
+            ROM_COPY.writeMultipleBytes(MoveTypes.Nothing, 2)
+            ROM_COPY.writeMultipleBytes(0, 2)
+            ROM_COPY.writeMultipleBytes(0, 1)
+            ROM_COPY.writeMultipleBytes(0, 1)
         else:
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
-            data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
             price_var = 0
             if isinstance(x["price"], list):
                 price_var = 0
             else:
                 price_var = x["price"]
-            ROM_COPY.writeMultipleBytes(data, 1)
+            ROM_COPY.writeMultipleBytes(move_types.index(x["move_type"]), 2)
+            ROM_COPY.writeMultipleBytes(x["move_lvl"], 2)
+            ROM_COPY.writeMultipleBytes(x["move_kong"], 1)
             ROM_COPY.writeMultipleBytes(price_var, 1)
-            ROM_COPY.writeMultipleBytes(0xFFFF, 2)
         if enable_hints:
             if level_override is not None:
                 pushItemMicrohints(spoiler, x, level_override, kongs[xi], kong_slot)
@@ -414,24 +417,22 @@ def getMoveSlot(vendor: MoveDataSection, kong: Kongs, level: int) -> int:
 
 def readMoveData(ROM_COPY: LocalROM, move_data: int, vendor: MoveDataSection, kong: Kongs, level: int, data_request: MoveDataRequest) -> int:
     """Acquire data from move block."""
-    slot_address = move_data + (4 * getMoveSlot(vendor, kong, level))
+    slot_address = move_data + (6 * getMoveSlot(vendor, kong, level))
     if data_request == MoveDataRequest.price:
-        ROM_COPY.seek(slot_address + 1)
+        ROM_COPY.seek(slot_address + 5)
         return int.from_bytes(ROM_COPY.readBytes(1), "big")
-    elif data_request == MoveDataRequest.flag:
+    elif data_request in (MoveDataRequest.flag, MoveDataRequest.move_level):
         ROM_COPY.seek(slot_address + 2)
         return int.from_bytes(ROM_COPY.readBytes(2), "big")
-    elif data_request in (MoveDataRequest.move_type, MoveDataRequest.move_level, MoveDataRequest.move_kong, MoveDataRequest.move_no_kong):
+    elif data_request == MoveDataRequest.move_type:
         ROM_COPY.seek(slot_address)
-        raw_data = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        if data_request == MoveDataRequest.move_kong:
-            return raw_data & 7
-        elif data_request == MoveDataRequest.move_level:
-            return (raw_data >> 3) & 3
-        elif data_request == MoveDataRequest.move_type:
-            return (raw_data >> 5) & 7
-        elif data_request == MoveDataRequest.move_no_kong:
-            return raw_data & 0xF8
+        return int.from_bytes(ROM_COPY.readBytes(2), "big")
+    elif data_request == MoveDataRequest.move_no_kong:
+        ROM_COPY.seek(slot_address)
+        return int.from_bytes(ROM_COPY.readBytes(4), "big")
+    elif data_request == MoveDataRequest.move_kong:
+        ROM_COPY.seek(slot_address + 4)
+        return int.from_bytes(ROM_COPY.readBytes(1), "big")
     raise Exception(f"Invalid data request: {data_request}")
 
 
@@ -448,14 +449,14 @@ def filterMoveType(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection,
     """Filter move type for the purpose of writing to ROM."""
     move_type = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_type)
     move_level = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_level)
-    if move_type == 7:
+    if move_type == MoveTypes.Nothing:
         return -1
-    if move_type == 4:  # Instrument
+    if move_type == MoveTypes.Instruments:  # Instrument
         index = move_level + 1
         if index > 1:
-            return 5  # Flag
-    elif move_type in (1, 3):  # Slam, Belt
-        return 5  # Flag
+            return MoveTypes.Flag  # Flag
+    elif move_type in (MoveTypes.Slam, MoveTypes.AmmoBelt):  # Slam, Belt
+        return MoveTypes.Flag  # Flag
     return move_type
 
 
@@ -464,11 +465,11 @@ def filterMoveIndex(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection
     filtered_type = filterMoveType(ROM_COPY, move_data, section, kong, level)
     index = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_level) + 1
     original_item_type = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_type)
-    if original_item_type == 1:  # Slam
+    if original_item_type == MoveTypes.Slam:  # Slam
         return slam_flag + 1, belt_flag, ins_flag, slam_flag
-    if original_item_type == 3:  # Ammo Belt
+    if original_item_type == MoveTypes.AmmoBelt:  # Ammo Belt
         return slam_flag, belt_flag + 1, ins_flag, belt_flag
-    if original_item_type == 4:  # Instrument
+    if original_item_type == MoveTypes.Instruments:  # Instrument
         if index > 1:
             return slam_flag, belt_flag, ins_flag + 1, ins_flag
     if filtered_type in (5, 6):

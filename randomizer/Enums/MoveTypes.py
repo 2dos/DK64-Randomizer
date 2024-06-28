@@ -12,3 +12,8 @@ class MoveTypes(IntEnum):
     AmmoBelt = auto()
     Instruments = auto()
     Flag = auto()
+    GB = auto()
+    Nothing = auto()
+    IceTrapBubble = auto()
+    IceTrapReverse = auto()
+    IceTrapSlow = auto()

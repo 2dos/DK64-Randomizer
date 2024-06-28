@@ -1,12 +1,5 @@
 #include "../../include/common.h"
 
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_NOTHING -1
-
 void alter_price(purchase_struct* data) {
 	// int purchase_type, int purchase_value, int kong, int level, vendors shop_index
 	if (!data) {

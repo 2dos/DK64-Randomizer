@@ -9,6 +9,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Enums.Types import Types
+from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
@@ -317,6 +318,21 @@ def getTextRewardIndex(item) -> int:
             return item_text_indexes.index(item.new_item)
         return 14
 
+def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
+    """Write an empty shop slot."""
+    ROM_COPY.seek(location)
+    ROM_COPY.writeMultipleBytes(MoveTypes.Nothing, 2)
+    ROM_COPY.writeMultipleBytes(0, 2)
+    ROM_COPY.writeMultipleBytes(0, 1)
+    ROM_COPY.writeMultipleBytes(0, 1)
+
+def writeShopData(ROM_COPY: LocalROM, location: int, item_type: MoveTypes, flag: int, kong: int, price: int):
+    """Write shop data to slot."""
+    ROM_COPY.seek(location)
+    ROM_COPY.writeMultipleBytes(item_type, 2)
+    ROM_COPY.writeMultipleBytes(flag, 2)
+    ROM_COPY.writeMultipleBytes(kong, 1)
+    ROM_COPY.writeMultipleBytes(price, 1)
 
 def getActorIndex(item):
     """Get actor index from item."""
@@ -386,13 +402,10 @@ def place_randomized_items(spoiler, original_flut: list):
         # Place first move, if fast start is off
         if not FAST_START:
             placed_item = spoiler.first_move_item
-            write_space = spoiler.settings.move_location_data + (4 * 125)
+            write_space = spoiler.settings.move_location_data + (6 * 125)
             if placed_item is None:
                 # Is Nothing
-                ROM_COPY.seek(write_space)
-                ROM_COPY.writeMultipleBytes(7 << 5, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+                writeNullShopSlot(ROM_COPY, write_space)
             else:
                 prog_flags = {
                     Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
@@ -402,7 +415,6 @@ def place_randomized_items(spoiler, original_flut: list):
                 if placed_item in prog_flags:
                     item_flag = prog_flags[placed_item][0]
                 else:
-                    print(placed_item)
                     item_flag = ItemList[placed_item].flag
                 if item_flag is not None and item_flag & 0x8000:
                     # Is move
@@ -412,16 +424,10 @@ def place_randomized_items(spoiler, original_flut: list):
                         item_subindex = 0
                     else:
                         item_subindex = (item_flag & 0xFF) - 1
-                    ROM_COPY.seek(write_space)
-                    ROM_COPY.writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+                    writeShopData(ROM_COPY, write_space, item_subtype, item_subindex, item_kong, 0)
                 else:
                     # Is Flagged Item
-                    ROM_COPY.seek(write_space)
-                    ROM_COPY.writeMultipleBytes(5 << 5, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(item_flag, 2)
+                    writeShopData(ROM_COPY, write_space, MoveTypes.Flag, item_flag, 0, 0)
         # Go through bijection
         for item in item_data:
             if item.can_have_item:
@@ -444,17 +450,14 @@ def place_randomized_items(spoiler, original_flut: list):
                                 data.append(item.new_flag)
                             flut_items.append(data)
                     for placement in item.placement_index:
-                        write_space = movespaceOffset + (4 * placement)
+                        write_space = movespaceOffset + (6 * placement)
                         if item.new_item is None:
                             # Is Nothing
                             # First check if there is an item here
                             ROM_COPY.seek(write_space)
-                            check = int.from_bytes(ROM_COPY.readBytes(4), "big")
-                            if check == 0xE000FFFF or placement >= 120:  # No Item
-                                ROM_COPY.seek(write_space)
-                                ROM_COPY.writeMultipleBytes(7 << 5, 1)
-                                ROM_COPY.writeMultipleBytes(0, 1)
-                                ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+                            check = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                            if check == MoveTypes.Nothing or placement >= 120:  # No Item
+                                writeNullShopSlot(ROM_COPY, write_space)
                         elif item.new_flag & 0x8000:
                             # Is Move
                             item_kong = (item.new_flag >> 12) & 7
@@ -463,24 +466,25 @@ def place_randomized_items(spoiler, original_flut: list):
                                 item_subindex = 0
                             else:
                                 item_subindex = (item.new_flag & 0xFF) - 1
-                            ROM_COPY.seek(write_space)
-                            ROM_COPY.writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
-                            ROM_COPY.writeMultipleBytes(item.price, 1)
-                            ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+                            writeShopData(ROM_COPY, write_space, item_subtype, item_subindex, item_kong, item.price)
                         else:
                             # Is Flagged Item
-                            subtype = 5
+                            subtype = MoveTypes.Flag
                             if item.new_item == Types.Banana:
-                                subtype = 6
+                                subtype = MoveTypes.GB
+                            elif item.new_item == Types.FakeItem:
+                                trap_types = {
+                                    Items.IceTrapBubble: MoveTypes.IceTrapBubble,
+                                    Items.IceTrapReverse: MoveTypes.IceTrapReverse,
+                                    Items.IceTrapSlow: MoveTypes.IceTrapSlow,
+                                }
+                                subtype = trap_types.get(item.new_subitem, MoveTypes.IceTrapBubble)
                             price_var = 0
                             if isinstance(item.price, list):
                                 price_var = 0
                             else:
                                 price_var = item.price
-                            ROM_COPY.seek(write_space)
-                            ROM_COPY.writeMultipleBytes(subtype << 5, 1)
-                            ROM_COPY.writeMultipleBytes(price_var, 1)
-                            ROM_COPY.writeMultipleBytes(item.new_flag, 2)
+                            writeShopData(ROM_COPY, write_space, subtype, item.new_flag, 0, price_var)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
                         if map_id not in map_items:
