@@ -519,7 +519,13 @@ def FairyItems():
 def FakeItems(settings):
     """Return a list of Fake Items to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.FakeItem, getIceTrapCount(settings)))  # Up to 10 fake items
+    total_count = getIceTrapCount(settings)
+    slow_count = int(total_count / 3)
+    reverse_count = int(total_count / 3)
+    bubble_count = total_count - (slow_count + reverse_count)
+    itemPool.extend(itertools.repeat(Items.IceTrapBubble, bubble_count))
+    itemPool.extend(itertools.repeat(Items.IceTrapReverse, reverse_count))
+    itemPool.extend(itertools.repeat(Items.IceTrapSlow, slow_count))
     return itemPool
 
 

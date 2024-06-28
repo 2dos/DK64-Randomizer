@@ -288,7 +288,7 @@ void purchaseMove(shop_paad* paad) {
 				}
 			} else if (isIceTrapFlag(paad->flag) == DYNFLAG_ICETRAP) {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
-				queueIceTrap();
+				queueIceTrap(ICETRAP_BUBBLE);
 			} else {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				if (paad->flag == FLAG_ABILITY_CAMERA) {
@@ -425,7 +425,7 @@ void setLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (isIceTrapFlag(purchase_data->purchase_value) == DYNFLAG_ICETRAP)) {
 			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
-			queueIceTrap();
+			queueIceTrap(ICETRAP_BUBBLE);
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
 			progressiveChange(purchase_data->purchase_value);

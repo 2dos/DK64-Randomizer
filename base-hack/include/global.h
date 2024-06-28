@@ -329,7 +329,7 @@ extern void warpOutOfTraining(void);
 extern Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift);
 
 extern void initIceTrap(void);
-extern void queueIceTrap(void);
+extern void queueIceTrap(ICE_TRAP_TYPES trap_type);
 extern void callIceTrap(void);
 extern int getPatchWorld(int index);
 extern int getCrateWorld(int index);

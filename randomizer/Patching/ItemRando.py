@@ -40,7 +40,9 @@ class CustomActors(IntEnum):
     Bean = auto()
     Pearl = auto()
     Fairy = auto()
-    FakeItem = auto()
+    IceTrapBubble = auto()
+    IceTrapReverse = auto()
+    IceTrapSlow = auto()
     Medal = auto()
     JetpacItemOverlay = auto()
     CrankyItem = auto()
@@ -66,7 +68,7 @@ model_two_indexes = {
     Types.Pearl: 0x1B4,
     Types.Fairy: 0x25C,
     Types.RainbowCoin: 0xB7,
-    Types.FakeItem: 0x25D,
+    Types.FakeItem: [0x25D, 0x264, 0x265],
     Types.JunkItem: [0x56, 0x8F, 0x8E, 0x25E, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
     Types.Cranky: 0x25F,
     Types.Funky: 0x260,
@@ -116,7 +118,7 @@ actor_indexes = {
     Types.Pearl: CustomActors.Pearl,
     Types.Fairy: CustomActors.Fairy,
     Types.RainbowCoin: 0x8C,
-    Types.FakeItem: CustomActors.FakeItem,
+    Types.FakeItem: CustomActors.IceTrapBubble,
     Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0],  # Orange, Ammo, Crystal, Watermelon, Film
     Types.Cranky: CustomActors.CrankyItem,
     Types.Funky: CustomActors.FunkyItem,
@@ -132,7 +134,7 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: 0x103,
+    Types.FakeItem: [-4, -3, -2], # -4 for bubble trap, -3 for reverse trap, -2 for slow trap
     Types.Bean: 0x104,
     Types.Pearl: 0x106,
     Types.Medal: 0x108,
@@ -324,6 +326,13 @@ def getActorIndex(item):
         return actor_indexes[Types.Blueprint][item.new_kong]
     elif item.new_item == Types.JunkItem:
         return actor_indexes[Types.JunkItem][subitems.index(item.new_subitem)]
+    elif item.new_item == Types.FakeItem:
+        trap_types = {
+            Items.IceTrapBubble: CustomActors.IceTrapBubble,
+            Items.IceTrapReverse: CustomActors.IceTrapReverse,
+            Items.IceTrapSlow: CustomActors.IceTrapSlow,
+        }
+        return trap_types.get(item.new_subitem, CustomActors.IceTrapBubble)
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         if (item.new_flag & 0x8000) == 0:
             slot = 5
@@ -638,16 +647,15 @@ def place_randomized_items(spoiler, original_flut: list):
                         # 13 = Pearl
                         # 14 = Fairy
                         # 15 = Rainbow Coin
-                        # 16 = Fake Item
-                        # 17 = Junk Orange
-                        # 18 = Junk Ammo
-                        # 19 = Junk Crystal
-                        # 20 = Junk Melon
-                        # 21 = Cranky Item
-                        # 22 = Funky Item
-                        # 23 = Candy Item
-                        # 24 = Snide Item
-                        # 25 = Nothing
+                        # 16 = Ice Trap (Bubble)
+                        # 17 = Junk Melon
+                        # 18 = Cranky Item
+                        # 19 = Funky Item
+                        # 20 = Candy Item
+                        # 21 = Snide Item
+                        # 22 = Nothing
+                        # 23 = Ice Trap (Reverse)
+                        # 24 = Ice Trap (Slow)
                         slots = [
                             Types.Banana,  # GB
                             Types.Blueprint,  # BP
@@ -665,13 +673,15 @@ def place_randomized_items(spoiler, original_flut: list):
                             Types.Pearl,  # Pearl
                             Types.Fairy,  # Fairy
                             Types.RainbowCoin,  # Rainbow Coin
-                            Types.FakeItem,  # Fake Item
+                            Types.FakeItem,  # Fake Item (Bubble)
                             Types.JunkItem,  # Junk Item
                             Types.Cranky,  # Cranky Item
                             Types.Funky,  # Funky Item
                             Types.Candy,  # Candy Item
                             Types.Snide,  # Snide Item
                             None,  # No Item
+                            Types.FakeItem,  # Fake Item (Reverse)
+                            Types.FakeItem,  # Fake Item (Slow)
                         ]
                         offset = item.old_flag - 549
                         if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
@@ -694,6 +704,14 @@ def place_randomized_items(spoiler, original_flut: list):
                             ROM_COPY.write(medal_index)
                         elif item.new_item == Types.RarewareCoin:
                             ROM_COPY.write(slots.index(Types.NintendoCoin))
+                        elif item.new_item == Types.FakeItem:
+                            trap_types = {
+                                Items.IceTrapBubble: 16,
+                                Items.IceTrapReverse: 23,
+                                Items.IceTrapSlow: 24,
+                            }
+                            val = trap_types.get(item.new_subitem, 16)
+                            ROM_COPY.write(val)
                         else:
                             ROM_COPY.write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
@@ -725,6 +743,13 @@ def place_randomized_items(spoiler, original_flut: list):
                                 if item.new_flag in kong_flags:
                                     slot = kong_flags.index(item.new_flag)
                                 model = model_indexes[Types.Kong][slot]
+                            elif item.new_item == Types.FakeItem:
+                                trap_types = {
+                                    Items.IceTrapBubble: -4,
+                                    Items.IceTrapReverse: -3,
+                                    Items.IceTrapSlow: -2,
+                                }
+                                model = trap_types.get(item.new_subitem, -4) + 0x10000
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
             if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
@@ -829,6 +854,13 @@ def place_randomized_items(spoiler, original_flut: list):
                                 item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
                             elif item_slot["obj"] == Types.JunkItem:
                                 item_obj_index = model_two_indexes[Types.JunkItem][subitems.index(item_slot["subitem"])]
+                            elif item_slot["obj"] == Types.FakeItem:
+                                trap_types = {
+                                    Items.IceTrapBubble: 0x25D,
+                                    Items.IceTrapReverse: 0x264,
+                                    Items.IceTrapSlow: 0x265,
+                                }
+                                item_obj_index = trap_types.get(item_slot["subitem"], 0x25D)
                             elif item_slot["obj"] == Types.Shop:
                                 if (item_slot["flag"] & 0x8000) == 0:
                                     slot = 5

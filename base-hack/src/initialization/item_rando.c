@@ -259,12 +259,14 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_PEARL, .skin=SKIN_PEARL},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAIRY, .skin=SKIN_FAIRY},
     {.actor = 140, .skin=SKIN_RAINBOW_COIN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAKEITEM, .skin=SKIN_FAKE_ITEM},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPBUBBLE, .skin=SKIN_FAKE_ITEM},
     {.actor = 0x2F, .skin=SKIN_JUNK_ITEM},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_CRANKYITEM, .skin=SKIN_CRANKY},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_FUNKYITEM, .skin=SKIN_FUNKY},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_CANDYITEM, .skin=SKIN_CANDY},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_SNIDEITEM, .skin=SKIN_SNIDE},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPREVERSE, .skin=SKIN_FAKE_ITEM},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPSLOW, .skin=SKIN_FAKE_ITEM},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {

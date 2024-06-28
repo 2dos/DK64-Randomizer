@@ -88,7 +88,7 @@ def ShuffleItems(spoiler):
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-        Items.FakeItem: ice_trap_flag_range,
+        Items.IceTrapBubble: ice_trap_flag_range,
     }
     junk_flag_dict = junk_item_flag_range
     flag_dict = {}
@@ -158,7 +158,10 @@ def ShuffleItems(spoiler):
                 # If this item has a dedicated specific flag, then set it now (Moves, Kongs, andKeys right now)
                 if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
                     if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
-                        location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
+                        ref_item = item_location.item
+                        if new_item.type == Types.FakeItem:
+                            ref_item = Items.IceTrapBubble
+                        location_selection.new_flag = progressive_move_flag_dict[ref_item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag
                     locations_not_needing_flags.append(location_selection)

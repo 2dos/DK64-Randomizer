@@ -109,7 +109,9 @@ class CustomActors(IntEnum):
     Bean = auto()
     Pearl = auto()
     Fairy = auto()
-    FakeItem = auto()
+    IceTrapBubble = auto()
+    IceTrapReverse = auto()
+    IceTrapSlow = auto()
     Medal = auto()
     JetpacItemOverlay = auto()
     CrankyItem = auto()
@@ -151,7 +153,9 @@ db = [
     InGameItem(name="Pearl", actor=CustomActors.Pearl, is_custom=True, model_two=0x1B4, scale=0.25, will_dance=False, bounce=True),
     InGameItem(name="Fairy", actor=CustomActors.Fairy, is_custom=True, model_two=0x25C, bounce=True, scale=0.25),
     InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25),
-    InGameItem(name="Fake Item", actor=CustomActors.FakeItem, is_custom=True, model_two=0x25D, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bubble)", actor=CustomActors.IceTrapBubble, is_custom=True, model_two=0x25D, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Reverse)", actor=CustomActors.IceTrapReverse, is_custom=True, model_two=0x264, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Slow)", actor=CustomActors.IceTrapSlow, is_custom=True, model_two=0x265, bounce=True, scale=0.25),
     InGameItem(name="Junk Item (Orange)", actor=0x34, model_two=0x56, will_dance=False, force_dance=False, scale=1),
     InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x25E, will_dance=False, force_dance=False, scale=0.25),
     InGameItem(name="Junk Item (Crystal)", actor=0x79, model_two=0x8E, will_dance=False, force_dance=False, scale=1),
@@ -232,7 +236,9 @@ db2 = [
     ItemRandoDef(0x0198, CollectableTypes.Null, None, CustomActors.Bean, Hitbox(8, 4, 13), True),  # Bean
     ItemRandoDef(0x01B4, CollectableTypes.Null, None, CustomActors.Pearl, Hitbox(8, 4, 13), True),  # Pearl
     ItemRandoDef(0x025C, CollectableTypes.Null, None, CustomActors.Fairy, Hitbox(8, 4, 13), True),  # Fairy
-    ItemRandoDef(0x025D, CollectableTypes.Null, None, CustomActors.FakeItem, Hitbox(8, 4, 13), True),  # Fake Item
+    ItemRandoDef(0x025D, CollectableTypes.Null, None, CustomActors.IceTrapBubble, Hitbox(8, 4, 13), True),  # Fake Item
+    ItemRandoDef(0x0264, CollectableTypes.Null, None, CustomActors.IceTrapReverse, Hitbox(8, 4, 13), True),  # Fake Item
+    ItemRandoDef(0x0265, CollectableTypes.Null, None, CustomActors.IceTrapSlow, Hitbox(8, 4, 13), True),  # Fake Item
     ItemRandoDef(0x025F, CollectableTypes.Null, None, CustomActors.CrankyItem, Hitbox(8, 4, 13), True),  # Cranky
     ItemRandoDef(0x0260, CollectableTypes.Null, None, CustomActors.FunkyItem, Hitbox(8, 4, 13), True),  # Funky
     ItemRandoDef(0x0261, CollectableTypes.Null, None, CustomActors.CandyItem, Hitbox(8, 4, 13), True),  # Candy
