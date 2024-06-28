@@ -33,8 +33,12 @@ def should_clear_setting(select):
     """Return true if the select should be cleared when importing settings."""
     if js.document.querySelector("#nav-cosmetics").contains(select) is True:
         return False
+    if js.document.querySelector("#nav-music").contains(select) is True:
+        return False
     if select.name.startswith("plando_"):
         return False
+    # This should now be obsolete, because of the #nav-music clause, but I really don't feel like trying my luck
+    # TODO: change the plando_ clause into a #nav-plando clause and remove the music_select_clause
     if select.name.startswith("music_select_"):
         return False
     return True
