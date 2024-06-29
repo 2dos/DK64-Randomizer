@@ -57,9 +57,7 @@ LogicRegions = {
 
     ],
     Regions.ChunkyRoomPlatform: [
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),
 
-        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
     ],
     Regions.PowerHut: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 3),
@@ -79,6 +77,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 2),  # Halfway down the hatch
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),  # On pole down the hatch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # W1
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),  # Dark Room
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Bottom of pole
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.phasewalk, None, 3),  # High ledge in Chunky's room
