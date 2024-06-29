@@ -232,6 +232,8 @@ file_dict = [
         target_compressed_size=0x800,
     ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=612, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=613, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),

@@ -300,6 +300,7 @@ extern void unkSpriteRenderFunc_0(void);
 extern void unkSpriteRenderFunc_1(int unk0);
 extern void unkSpriteRenderFunc_2(int unk0);
 extern void unkSpriteRenderFunc_3(int unk0);
+extern void attachSpriteToBone(void* sprite, float scale, void* actor, int bone, int unk0);
 extern void loadSpriteFunction(int func);
 extern sprite_struct* displaySpriteAtXYZ(void* sprite, float scale, float x, float y, float z);
 extern void* getHUDSprite(int item);

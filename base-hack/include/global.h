@@ -187,7 +187,6 @@ extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
 extern int getTotalCBCount(void);
 
-extern move_block* getMoveBlock(void);
 extern void setLocationStatus(location_list location_index);
 extern int getLocationStatus(location_list location_index);
 extern void getNextMoveText(void);
@@ -329,7 +328,7 @@ extern void warpOutOfTraining(void);
 extern Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift);
 
 extern void initIceTrap(void);
-extern void queueIceTrap(void);
+extern void queueIceTrap(ICE_TRAP_TYPES trap_type);
 extern void callIceTrap(void);
 extern int getPatchWorld(int index);
 extern int getCrateWorld(int index);

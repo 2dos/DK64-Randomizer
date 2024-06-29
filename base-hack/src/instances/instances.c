@@ -478,9 +478,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					}
 					return 1;
-				} else {
-					// TestVariable = (int)behaviour_pointer;
-					// *(int*)(0x807FF700) = id;
 				}
 				break;
 			case MAP_AZTECLLAMATEMPLE:

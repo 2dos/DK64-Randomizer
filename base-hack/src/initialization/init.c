@@ -371,7 +371,9 @@ void initHack(int source) {
 			initActor(NEWACTOR_BEAN, 1, &beanCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			initActor(NEWACTOR_PEARL, 1, &pearlCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			initActor(NEWACTOR_FAIRY, 1, &fairyDuplicateCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_FAKEITEM, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
+			initActor(NEWACTOR_ICETRAPBUBBLE, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
+			initActor(NEWACTOR_ICETRAPREVERSE, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
+			initActor(NEWACTOR_ICETRAPSLOW, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			initActor(NEWACTOR_JETPACITEMOVERLAY, 1, &getNextMoveText, ACTORMASTER_CONTROLLER, 0, 0, 0x10, 324);
 			// Kong Rando
 			initKongRando();

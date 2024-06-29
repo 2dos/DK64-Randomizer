@@ -183,6 +183,9 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
         for (int i = 0; i < 31; i++) {
             if ((charspawnerflags[i].map == CurrentMap) && (charspawnerflags[i].spawner_id == spawner->spawn_trigger)) {
                 model = getFairyModel(charspawnerflags[i].tied_flag);
+                if ((model >= -4) && (model <= -2)) {
+                    model = 0x103;
+                }
             }
         }
         spawnActor(actor, model);

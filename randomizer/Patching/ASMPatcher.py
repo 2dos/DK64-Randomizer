@@ -1172,6 +1172,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x8072F458, Overlay.Static, "handleActionSet", offset_dict)  # Actor grabbables
         writeFunction(ROM_COPY, 0x8072F46C, Overlay.Static, "handleActionSet", offset_dict)  # Model 2 grabbables
         writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict)  # Ledge Grabbing
+        writeFunction(ROM_COPY, 0x806E5418, Overlay.Static, "handleActionSet", offset_dict)  # Instrument Play
 
     if settings.shorten_boss:
         writeValue(ROM_COPY, 0x8074D3A8, Overlay.Static, 3, offset_dict)  # Dillo Health 4 -> 3
@@ -1808,8 +1809,8 @@ def patchAssembly(ROM_COPY, spoiler):
     # writeValue(ROM_COPY, 0x80029606, Overlay.Critter, 1, offset_dict)
     # writeValue(ROM_COPY, 0x800295FE, Overlay.Critter, 3, offset_dict)
     # writeValue(ROM_COPY, 0x800295DA, Overlay.Critter, 2, offset_dict)
-    # writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
-    # writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
+    writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
+    writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
     # writeFunction(ROM_COPY, 0x80681D38, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
     # writeFunction(ROM_COPY, 0x80681C98, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
     # writeFunction(ROM_COPY, 0x80029610, Overlay.Critter, "setLocationStatus", offset_dict)  # Set TBarrels Move

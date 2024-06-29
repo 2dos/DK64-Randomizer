@@ -1310,7 +1310,7 @@ typedef struct tag_model_struct {
 } tag_model_struct;
 
 typedef struct mtx_item {
-	/* 0x000 */ char unk_0[0x40];
+	/* 0x000 */ float mf[4][4];
 } mtx_item;
 
 typedef struct actor_behaviour_def {

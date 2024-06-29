@@ -1040,3 +1040,24 @@ typedef enum dynamic_flag_icetrap_junk {
 	/* 0x001 */ DYNFLAG_ICETRAP,
 	/* 0x002 */ DYNFLAG_JUNK,
 } dynamic_flag_icetrap_junk;
+
+typedef enum ICE_TRAP_TYPES {
+    /* 0x000 */ ICETRAP_OFF,
+    /* 0x001 */ ICETRAP_BUBBLE,
+    /* 0x002 */ ICETRAP_REVERSECONTROLS,
+    /* 0x003 */ ICETRAP_SLOWED,
+} ICE_TRAP_TYPES;
+
+typedef enum PURCHASE_TYPES {
+	/*  0 */ PURCHASE_MOVES,
+	/*  1 */ PURCHASE_SLAM,
+	/*  2 */ PURCHASE_GUN,
+	/*  3 */ PURCHASE_AMMOBELT,
+	/*  4 */ PURCHASE_INSTRUMENT,
+	/*  5 */ PURCHASE_FLAG,
+	/*  6 */ PURCHASE_GB,
+	/*  7 */ PURCHASE_NOTHING,
+	/*  8 */ PURCHASE_ICEBUBBLE,
+	/*  9 */ PURCHASE_ICEREVERSE,
+	/* 10 */ PURCHASE_ICESLOW,
+} PURCHASE_TYPES;

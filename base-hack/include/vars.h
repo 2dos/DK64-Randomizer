@@ -33,8 +33,8 @@
 #define static_expansion_size 0x100
 
 #define ACTOR_VANILLA_LIMIT 345
-#define COLLISION_LIMIT 64
-#define DEFS_LIMIT 151
+#define COLLISION_LIMIT 66
+#define DEFS_LIMIT 153
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 #define CUSTOM_ACTORS_START 345
 
@@ -102,15 +102,6 @@
 #define HELM_HURRY_BITS 16
 #define STAT_BITS 16
 #define LETTER_BITS 7
-
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_FLAG 5
-#define PURCHASE_GB 6
-#define PURCHASE_NOTHING -1
 
 // Move Bitfield Checks
 #define MOVECHECK_BLAST 1
