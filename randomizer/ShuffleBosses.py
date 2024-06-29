@@ -148,7 +148,7 @@ def ShuffleKKOPhaseOrder(settings):
 #                 tinyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
 #             if settings.kong_model_dk == KongModels.default:
 #                 donkeyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-#             if settings.kong_model_chunky in (KongModels.default, KongModels.disco_chunky):
+#             if settings.kong_model_chunky == KongModels.default:
 #                 chunkyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
 #         factoryBossOptions = list(set(tinyFactoryBossOptions + donkeyFactoryBossOptions + chunkyFactoryBossOptions))
 #         # This sequence of placing Dogadon 2 and Mad Jack will only fail if both Hunky Chunky and Twirl are placed in level 7

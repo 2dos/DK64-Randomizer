@@ -24,7 +24,7 @@ from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
 from randomizer.Lists.Songs import getSongIndexFromName
 
 # from randomizer.Spoiler import Spoiler
-from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays
+from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays, KongModels
 from ui.GenSpoiler import GenerateSpoiler
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
@@ -119,10 +119,17 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         if from_patch_gen:
             recalculatePointerJSON(ROM())
         js.document.getElementById("patch_version_warning").hidden = True
+        print("Disco: ", settings.disco_chunky)
+        print("Model: ", settings.kong_model_chunky.name)
+        print("Override: ", settings.override_cosmetics)
+        ROM_COPY = ROM()
+        if settings.disco_chunky and settings.kong_model_chunky == KongModels.default and settings.override_cosmetics:
+            settings.kong_model_chunky = KongModels.disco_chunky
+            ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
+            ROM_COPY.writeMultipleBytes(int(settings.kong_model_chunky), 1)
         apply_cosmetic_colors(settings)
 
         if settings.override_cosmetics:
-            ROM_COPY = ROM()
             overwrite_object_colors(settings, ROM_COPY)
             writeMiscCosmeticChanges(settings)
             applyHolidayMode(settings)
