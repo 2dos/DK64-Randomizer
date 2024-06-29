@@ -126,7 +126,24 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         if settings.disco_chunky and settings.kong_model_chunky == KongModels.default and settings.override_cosmetics:
             settings.kong_model_chunky = KongModels.disco_chunky
             ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
-            ROM_COPY.writeMultipleBytes(int(settings.kong_model_chunky), 1)
+            ROM_COPY.writeMultipleBytes(6, 1)
+            chunky_slots = [11, 12]
+            disco_slots = [0xD, 0xEC]
+            for model_slot in range(2):
+                dest_start = js.pointer_addresses[5]["entries"][chunky_slots[model_slot]]["pointing_to"]
+                source_start = js.pointer_addresses[5]["entries"][disco_slots[model_slot]]["pointing_to"]
+                source_end = js.pointer_addresses[5]["entries"][disco_slots[model_slot] + 1]["pointing_to"]
+                source_size = source_end - source_start
+                ROM_COPY.seek(source_start)
+                file_bytes = ROM_COPY.readBytes(source_size)
+                ROM_COPY.seek(dest_start)
+                ROM_COPY.writeBytes(file_bytes)
+                # Write uncompressed size
+                unc_table = js.pointer_addresses[26]["entries"][5]["pointing_to"]
+                ROM_COPY.seek(unc_table + (disco_slots[model_slot] * 4))
+                unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                ROM_COPY.seek(unc_table + (chunky_slots[model_slot] * 4))
+                ROM_COPY.writeMultipleBytes(unc_size, 4)
         apply_cosmetic_colors(settings)
 
         if settings.override_cosmetics:

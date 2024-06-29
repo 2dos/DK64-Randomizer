@@ -1809,8 +1809,8 @@ def patchAssembly(ROM_COPY, spoiler):
     # writeValue(ROM_COPY, 0x80029606, Overlay.Critter, 1, offset_dict)
     # writeValue(ROM_COPY, 0x800295FE, Overlay.Critter, 3, offset_dict)
     # writeValue(ROM_COPY, 0x800295DA, Overlay.Critter, 2, offset_dict)
-    # writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
-    # writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
+    writeValue(ROM_COPY, 0x80027F2A, Overlay.Critter, 4, offset_dict)
+    writeValue(ROM_COPY, 0x80027E1A, Overlay.Critter, 4, offset_dict)
     # writeFunction(ROM_COPY, 0x80681D38, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
     # writeFunction(ROM_COPY, 0x80681C98, Overlay.Static, "getLocationStatus", offset_dict)  # Get TBarrels Move
     # writeFunction(ROM_COPY, 0x80029610, Overlay.Critter, "setLocationStatus", offset_dict)  # Set TBarrels Move
