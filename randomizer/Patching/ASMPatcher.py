@@ -1172,6 +1172,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x8072F458, Overlay.Static, "handleActionSet", offset_dict)  # Actor grabbables
         writeFunction(ROM_COPY, 0x8072F46C, Overlay.Static, "handleActionSet", offset_dict)  # Model 2 grabbables
         writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict)  # Ledge Grabbing
+        writeFunction(ROM_COPY, 0x806E5418, Overlay.Static, "handleActionSet", offset_dict)  # Instrument Play
 
     if settings.shorten_boss:
         writeValue(ROM_COPY, 0x8074D3A8, Overlay.Static, 3, offset_dict)  # Dillo Health 4 -> 3
