@@ -543,8 +543,8 @@ typedef struct move_overlay_paad {
 	/* 0x004 */ void* lower_text;
 	/* 0x008 */ unsigned char opacity;
 	/* 0x009 */ char unk_09[0x10-0x9];
-	/* 0x010 */ mtx_item unk_10;
-	/* 0x050 */ mtx_item unk_50;
+	/* 0x010 */ mtx_item matrix_0;
+	/* 0x050 */ mtx_item matrix_1;
 	/* 0x090 */ int timer;
 	/* 0x094 */ actorData* shop_owner;
 } move_overlay_paad;
@@ -557,12 +557,12 @@ Gfx* displayMoveText(Gfx* dl, actorData* actor) {
 	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
 	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, paad->opacity);
 	if (paad->upper_text) {
-		gSPMatrix(dl++, (int)&paad->unk_10, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+		gSPMatrix(dl++, (int)&paad->matrix_0, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 		dl = displayText(dl,1,0,0,paad->upper_text,0x80);
 		gSPPopMatrix(dl++, G_MTX_MODELVIEW);
 	}
 	if (paad->lower_text) {
-		gSPMatrix(dl++, (int)&paad->unk_50, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+		gSPMatrix(dl++, (int)&paad->matrix_1, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 		dl = displayText(dl,6,0,0,paad->lower_text,0x80);
 		gSPPopMatrix(dl++, G_MTX_MODELVIEW);
 	}
@@ -649,10 +649,10 @@ void getNextMoveText(void) {
 			float move_x = 640.0f;
 			_guTranslateF(&mtx1, move_x, position, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
-			_guMtxF2L(&mtx0, &paad->unk_10);
+			_guMtxF2L(&mtx0, &paad->matrix_0);
 			_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
-			_guMtxF2L(&mtx0, &paad->unk_50);
+			_guMtxF2L(&mtx0, &paad->matrix_1);
 			paad->timer = 0x82;
 			if ((CurrentMap == MAP_CRANKY) && (!is_jetpac)) {
 				paad->timer = 300;

@@ -206,13 +206,13 @@ static const hud_element_definition elements[] = {
         // Bean - 9
         .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
         .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_BEAN - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
-        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // TODO: handle sprites for this
+        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // Handled externally
     },
     {
         // Pearl - 10
         .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
         .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_PEARL - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
-        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // TODO: handle sprites for this
+        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // Handled externally
     },
     {
         // Rainbow Coin - 11
@@ -405,6 +405,11 @@ void* getHUDSprite_Complex(item_ids item) {
     }
     if (kong > 4) {
         return (void*)0;
+    }
+    if (item == ITEMID_CHAOSBLOCKER_BEAN) {
+        return &bean_sprite;
+    } else if (item == ITEMID_CHAOSBLOCKER_PEARL) {
+        return &pearl_sprite;
     }
     return sprite_table[elements[item].sprite_index[kong]];
 }
