@@ -1235,6 +1235,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									if (Rando.required_helm_minigames == 0) {
 										setFlag(HelmMinigameFlags[2 * barrel_index], 1, FLAGTYPE_TEMPORARY);
 										setFlag(HelmMinigameFlags[(2 * barrel_index) + 1], 1, FLAGTYPE_TEMPORARY);
+										int in_helm_sequence = 0;
+										for (int i = 0; i < 5; i++) {
+											if (Rando.helm_order[i] == slot) {
+												in_helm_sequence = 1;
+											}
+										}
+										if (!in_helm_sequence) {
+											PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
+										}
 									} else {
 										PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
 									}
