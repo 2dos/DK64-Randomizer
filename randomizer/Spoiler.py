@@ -38,8 +38,9 @@ from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements, TrainingMinigameLocations
+from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements, TrainingMinigameLocations, MinigameSelector
 from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
+from randomizer.Lists.EnemyTypes import EnemySelector
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
@@ -214,7 +215,7 @@ class Spoiler:
         return "Unknown"
 
     def dumpMultiselector(self, toggle: bool, settings_list: list, selector_list: list):
-        """Dumps multiselector list to a response which can be dumped to the spoiler."""
+        """Dump multiselector list to a response which can be dumped to the spoiler."""
         if toggle and any(settings_list):
             return [selector_list[x - 1]["name"] for x in settings_list]
         return toggle
@@ -315,6 +316,12 @@ class Spoiler:
         if self.settings.enable_progressive_hints:
             settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_text)
         settings["Item Reward Previews"] = self.settings.item_reward_previews
+        settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.bonus_barrel_rando, self.settings.minigames_list_selected, MinigameSelector)
+        if self.settings.enemy_rando and any(self.settings.enemies_selected):
+            value_lst = [x.name for x in self.settings.enemies_selected]
+            settings["Enemy Rando"] = [enemy["name"] for enemy in EnemySelector if enemy["value"] in value_lst]
+        else:
+            settings["Enemy Rando"] = self.settings.enemy_rando
         settings["Crown Enemy Rando"] = self.settings.crown_enemy_rando.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"

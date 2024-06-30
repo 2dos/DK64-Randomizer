@@ -13,6 +13,7 @@ ins_upg_prices = [5, 7, 9]
 
 DEFAULT_SLAM_PURCHASE = 1
 
+
 class MoveIndexes(IntEnum):
     """Enum for move indexes."""
 
@@ -24,6 +25,7 @@ class MoveIndexes(IntEnum):
     flag = auto()
     gb = auto()
     nothing = auto()
+
 
 class MoveType:
     """Class which stores info about move types."""
@@ -57,13 +59,13 @@ cranky_1 = [
 ]
 
 funky = [
-    MoveType(MoveIndexes.gun, 1, 3), 
-    MoveType(MoveIndexes.nothing), 
-    MoveType(MoveIndexes.ammo_belt, 1, 3), 
-    MoveType(MoveIndexes.nothing), 
-    MoveType(MoveIndexes.gun, 2, 5), 
-    MoveType(MoveIndexes.ammo_belt, 2, 5), 
-    MoveType(MoveIndexes.gun, 3, 7), 
+    MoveType(MoveIndexes.gun, 1, 3),
+    MoveType(MoveIndexes.nothing),
+    MoveType(MoveIndexes.ammo_belt, 1, 3),
+    MoveType(MoveIndexes.nothing),
+    MoveType(MoveIndexes.gun, 2, 5),
+    MoveType(MoveIndexes.ammo_belt, 2, 5),
+    MoveType(MoveIndexes.gun, 3, 7),
     MoveType(MoveIndexes.nothing),
 ]
 
@@ -121,12 +123,13 @@ def convertItem(fh: BinaryIO, item: dict, kong: int) -> int:
     fh.write((move_kong).to_bytes(1, "big"))
     # Price
     fh.write((item.price).to_bytes(1, "big"))
-    return 
+    return
 
 
 price_offset = 0x36
 space_offset = 0x1FED020
 move_offset = 0x1FEF000
+
 
 def writeVanillaMoveData(fh):
     """Write vanilla move data."""

@@ -135,7 +135,7 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: [-4, -3, -2], # -4 for bubble trap, -3 for reverse trap, -2 for slow trap
+    Types.FakeItem: [-4, -3, -2],  # -4 for bubble trap, -3 for reverse trap, -2 for slow trap
     Types.Bean: 0x104,
     Types.Pearl: 0x106,
     Types.Medal: 0x108,
@@ -318,6 +318,7 @@ def getTextRewardIndex(item) -> int:
             return item_text_indexes.index(item.new_item)
         return 14
 
+
 def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
     """Write an empty shop slot."""
     ROM_COPY.seek(location)
@@ -326,6 +327,7 @@ def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
     ROM_COPY.writeMultipleBytes(0, 1)
     ROM_COPY.writeMultipleBytes(0, 1)
 
+
 def writeShopData(ROM_COPY: LocalROM, location: int, item_type: MoveTypes, flag: int, kong: int, price: int):
     """Write shop data to slot."""
     ROM_COPY.seek(location)
@@ -333,6 +335,7 @@ def writeShopData(ROM_COPY: LocalROM, location: int, item_type: MoveTypes, flag:
     ROM_COPY.writeMultipleBytes(flag, 2)
     ROM_COPY.writeMultipleBytes(kong, 1)
     ROM_COPY.writeMultipleBytes(price, 1)
+
 
 def getActorIndex(item):
     """Get actor index from item."""
