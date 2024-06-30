@@ -39,7 +39,7 @@ from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements, TrainingMinigameLocations
-from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector
+from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
@@ -213,6 +213,12 @@ class Spoiler:
             return type_dict[item_type]
         return "Unknown"
 
+    def dumpMultiselector(self, toggle: bool, settings_list: list, selector_list: list):
+        """Dumps multiselector list to a response which can be dumped to the spoiler."""
+        if toggle and any(settings_list):
+            return [selector_list[x - 1]["name"] for x in settings_list]
+        return toggle
+
     def createJson(self) -> None:
         """Convert spoiler to JSON and save it."""
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
@@ -297,21 +303,19 @@ class Spoiler:
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
         settings["Helm Room Bonus Count"] = int(self.settings.helm_room_bonus_count)
-        settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
-        if self.settings.faster_checks_enabled and any(self.settings.faster_checks_selected):
-            settings["Fast GBs"] = [FasterCheckSelector[barrier_enum - 1]["name"] for barrier_enum in self.settings.faster_checks_selected]
-        else:
-            settings["Fast GBs"] = self.settings.faster_checks_enabled
-        if self.settings.remove_barriers_enabled and any(self.settings.remove_barriers_selected):
-            settings["Barriers Removed"] = [RemovedBarrierSelector[barrier_enum - 1]["name"] for barrier_enum in self.settings.remove_barriers_selected]
-        else:
-            settings["Barriers Removed"] = self.settings.remove_barriers_enabled
+        settings["Quality of Life"] = self.dumpMultiselector(self.settings.quality_of_life, self.settings.misc_changes_selected, QoLSelector)
+        settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, FasterCheckSelector)
+        settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, RemovedBarrierSelector)
         settings["Win Condition"] = self.settings.win_condition.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
+        if self.settings.enable_progressive_hints:
+            settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_text)
+        settings["Item Reward Previews"] = self.settings.item_reward_previews
+        settings["Crown Enemy Rando"] = self.settings.crown_enemy_rando.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
