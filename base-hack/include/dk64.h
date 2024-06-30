@@ -803,3 +803,4 @@ extern unsigned char RandomSwitches;
 extern unsigned char SwitchLevel[7];
 extern int ExtraSaveData[0x100];
 extern char* DisplayedSongNamePointer;
+extern unsigned char RandomizerVersion;
