@@ -425,9 +425,17 @@ void fallDamageWrapper(int action, void* actor, int player_index) {
     setAction(action, actor, player_index);
 }
 
+static short stalactite_spawn_bans[] = {
+    0x6E, // Baboon Balloon
+    0x3E, // Backflip
+};
+
 void* spawnStalactite(short actor, int x, int y, int z, int unk0, int unk1, int unk2, void* unk3) {
+    if (ObjectModel2Timer < 90) { // Prevent 
+        return (void*)0;
+    }
     if (Player) {
-        if (Player->control_state == 0x6E) { // Baboon Balloon
+        if (inShortList(Player->control_state, &stalactite_spawn_bans[0], sizeof(stalactite_spawn_bans) >> 1)) {
             return (void*)0;
         }
     }

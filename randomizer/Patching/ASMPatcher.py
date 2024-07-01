@@ -1312,7 +1312,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves):
         writeValue(ROM_COPY, 0x807480F4, Overlay.Static, 1, offset_dict, 4)  # Constant rockfall
-        writeValue(ROM_COPY, 0x807480FC, Overlay.Static, 10, offset_dict, 4)  # Double rockfall rate
+        writeValue(ROM_COPY, 0x807480FC, Overlay.Static, 15, offset_dict, 4)  # Increase rockfall spawn rate (Every 20f -> 15f)
         writeValue(ROM_COPY, 0x806466D4, Overlay.Static, 0, offset_dict, 4)  # Kosha is alive no matter what
         writeValue(ROM_COPY, 0x806465DC, Overlay.Static, 0x1000, offset_dict)  # Kosha is alive no matter what
         accel = -90
@@ -1323,6 +1323,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806A04E2, Overlay.Static, 0, offset_dict)  # Disable cam shake
         writeValue(ROM_COPY, 0x806A051C, Overlay.Static, 0x1000001D, offset_dict, 4)  # Disable particles, lag reasons
         writeFunction(ROM_COPY, 0x806464C4, Overlay.Static, "spawnStalactite", offset_dict)
+        writeValue(ROM_COPY, 0x806A04F6, Overlay.Static, 50, offset_dict)  # Reduce volume of stalactite crash
     elif isQoLEnabled(spoiler, MiscChangesSelected.calm_caves):
         file_init_flags.append(0x12C)  # Giant Kosha Dead
 
