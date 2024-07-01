@@ -1931,6 +1931,7 @@ door_locations = {
             location=[4648.0, 205.0, 2836.0, 280.0],
             group=2,
             moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
         ),
         DoorData(
             name="Fungi Forest: Immediately Inside the Thornvine Area - left",

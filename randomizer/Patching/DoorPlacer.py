@@ -26,7 +26,7 @@ PORTAL_MAP_EXIT_PAIRING = {
     Maps.AngryAztec: [0],
     Maps.FranticFactory: [0],
     Maps.GloomyGalleon: [0],
-    Maps.FungiForest: [0],
+    Maps.FungiForest: [0, 27],
     Maps.CrystalCaves: [0],
     Maps.CreepyCastle: [0, 21],
 }
