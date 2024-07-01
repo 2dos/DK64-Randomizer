@@ -428,6 +428,8 @@ void fallDamageWrapper(int action, void* actor, int player_index) {
 static short stalactite_spawn_bans[] = {
     0x6E, // Baboon Balloon
     0x3E, // Backflip
+    0x87, // Entering Portal
+    0x88, // Exiting Portal
 };
 
 void* spawnStalactite(short actor, int x, int y, int z, int unk0, int unk1, int unk2, void* unk3) {
