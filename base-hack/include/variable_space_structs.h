@@ -9,7 +9,7 @@ typedef struct varspace {
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char unk_32[2];
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
-	/* 0x035 */ char unk_35;
+	/* 0x035 */ char crown_timer_reduction;
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
 	/* 0x037 */ char unk_37[12];
 	/* 0x043 */ char colorblind_mode; // 0 = Off, 1 = Prot, 2 = Deut, 3 = Trit
@@ -83,8 +83,7 @@ typedef struct varspace {
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
 	/* 0x11E */ char tns_indicator;
-	/* 0x11F */ char unk_11F[6];
-	/* 0x125 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
+	/* 0x11F */ char unk_11F[7];
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
 	/* 0x127 */ unsigned char keys_preturned; // Bitfield. 0000 0001 = Key 1 turned, 0000 0010 = Key 2 turned etc. Eg. 0x7F = 0111 1111 = All keys except Key 8 turned
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
@@ -123,7 +122,7 @@ typedef struct varspace {
 	/* 0x157 */ char free_source_ttemple; // Kong who frees the kong in Tiny Temple
 	/* 0x158 */ char free_target_factory; // Kong you free in Factory
 	/* 0x159 */ char free_source_factory; // Kong who frees the kong in Factory
-	/* 0x15A */ char version; // 0 = Live, 1 = Dev Site, 2 = Superuser
+	/* 0x15A */ char unk_15a;
 	/* 0x15B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
 	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F

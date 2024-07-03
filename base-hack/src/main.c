@@ -234,11 +234,6 @@ void earlyFrame(void) {
 			}
 			*(short*)(0x8075575C) = fairy_model;
 		}
-		for (int i = 0; i < 8; i++) {
-			if (Rando.remove_blockers & (1 << i)) {
-				setPermFlag(FLAG_BLOCKER_JAPES + i);
-			}
-		}
 	}
 	if ((CurrentMap == MAP_KROOLCHUNKY) && (CutsceneIndex == 14) && (CutsceneActive == 1)) {
 		PauseText = 1;

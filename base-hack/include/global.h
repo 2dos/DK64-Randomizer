@@ -407,6 +407,8 @@ extern dynamic_flag_icetrap_junk isIceTrapFlag(int flag);
 
 extern int getGamePercentage(void);
 
+extern void handleCrownTimerInternal(void);
+
 extern void initSongDisplay(int song);
 extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
