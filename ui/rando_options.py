@@ -934,8 +934,12 @@ def should_reset_select_on_preset(selectElement):
     """Return true if the element should be reset when applying a preset."""
     if js.document.querySelector("#nav-cosmetics").contains(selectElement):
         return False
+    if js.document.querySelector("#nav-music").contains(selectElement) is True:
+        return False
     if selectElement.name.startswith("plando_"):
         return False
+    # This should now be obsolete, because of the #nav-music clause, but I really don't feel like trying my luck
+    # TODO: change the plando_ clause into a #nav-plando clause and remove the music_select_clause
     if selectElement.name.startswith("music_select_"):
         return False
     if selectElement.id == "random-weights":

@@ -200,9 +200,9 @@ function load_music_file_from_db() {
       console.log("Successfully loaded file from DB");
       // When we pull it from the DB load it in as a global var
       try {
+        cosmetic_pack_event(getMusicFile.result.value, true);
         $("#music_file_text").attr("placeholder", "Using cached music file");
         $("#music_file_text").val("Using cached music file");
-        cosmetic_pack_event(getMusicFile.result.value, true);
       } catch (error) {
         console.log("Error loading music file from the database:", error);
       }

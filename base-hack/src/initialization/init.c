@@ -444,6 +444,8 @@ void initHack(int source) {
 				writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
 				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
 				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
+				writeFunction(0x806E5418, &handleActionSet); // Instrument Play
+				writeFunction(0x806E6064, &handleActionSet); // Gun Pull
 			}
 			if (Rando.disabled_music.pause) {
 				*(int*)(0x805FC890) = 0; // Pause theme

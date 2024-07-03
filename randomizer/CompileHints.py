@@ -479,6 +479,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
     # Your training in moves which you know are always needed beat K. Rool are pointless to hint
+    if Kongs.donkey in spoiler.settings.krool_order and Kongs.donkey in spoiler.krool_paths.keys() and spoiler.settings.balanced_krool_phases:
+        useless_locations[Kongs.donkey] = [
+            loc for loc in spoiler.krool_paths[Kongs.donkey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item == Items.BaboonBlast
+        ]
     if Kongs.diddy in spoiler.settings.krool_order and Kongs.diddy in spoiler.krool_paths.keys():
         useless_locations[Kongs.diddy] = [
             loc
