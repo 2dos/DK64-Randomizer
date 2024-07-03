@@ -23,6 +23,11 @@ This is the changelog for the initial push of 4.0 into Dev:
     - If kongs are in the Item Rando pool: Tiny Temple and Llama Temple entrances are in the pool
     - Better Hints have been written
 - Added DK Portal randomizer, which will randomize where the start of the level is. It uses the same pool as custom wrinkly doors and T&S Portals. There's a fair amount of excluded locations to prevent unbeatable scenarios
+- Ice Trap Updates:
+	- Added the ability to customize how many ice traps are going to be **ATTEMPTED** to be placed. This takes away from the junk allocation, meaning that a seed with a lot of ice traps will not have a lot of junk (inc. Dropsanity).
+	- Added two new kinds of Ice Traps:
+		- Reverse Controls: Obtaining a "Reverse Controls" ice trap will reverse your controls for about 8 seconds.
+		- Slowing: Obtaining a "Slowing" ice trap will slow the player down to about 50% speed for 8 seconds, and place a lot of goop on the player. Our lawyers have told us to inform you that this green goop is not from K. Rool's toes.
 
 ### Others
 - A statistics screen has been added to the end sequence, which displays:
@@ -44,6 +49,7 @@ This is the changelog for the initial push of 4.0 into Dev:
     - Added `Shuffled Jetpac Enemies`, so that a level will utilize the enemies from a different level
     - Added `Lower Max Refill Amounts`, so that you will have to think harder on using your resources more efficiently
     - Added `Strict Helm Timer`, which will make the base start time of Hideout Helm 0 minutes instead of 10
+	- Added `Angry Caves`, which makes Caves rockfall constant, resulting in harder navigation of Caves. This takes priority over the `Calm Caves` QoL option.
     - Added `Donk in the Dark World` and `Donk in the Sky`, which will make traversing the game harder and require you to try and remember how the game looks.
         - `Donk in the Dark World` will apply the challenge of Fungi Dark Attic to the entire game (Excl. Japes Main area, Factory Testing and Factory Production room for performance reasons)
         - `Donk in the Sky` will disable level geometry rendering.
@@ -75,7 +81,7 @@ This is the changelog for the initial push of 4.0 into Dev:
 - The wind tower in Castle will now allow you to stay at the top after exiting the bonus barrel.
 
 ### Cosmetic-adjacent changes
-- Added the ability for multiple kongs to play as Krusha, and added the ability to play as K Rool (both costumes), Cranky (DK only) and Candy (Tiny only). The Disco Chunky option has (temporarily) been made non-cosmetic
+- Added the ability for multiple kongs to play as Krusha, and added the ability to play as K Rool (both costumes), Cranky (DK only) and Candy (Tiny only). Disco Chunky is still a cosmetic setting, but will only be available to enable if you have Chunky in his default costume.
 - Added ability to specify a specific transition spin image, using the transition editor: https://theballaam96.github.io/transition_editor
 - In Chunky Phase, chunky will now be translucent during the punch sequence
 - Dirt patches have been made easier to distinguish (no item preview)
@@ -130,9 +136,11 @@ This is the changelog for the initial push of 4.0 into Dev:
 - The site has been ported to boostrap 5.3.3 (from 5.1). This will mostly result in changes that you don't recognize. The major change as a result of this is that the sliders on the progression tab have been changed as our old sliders only supported bootstrap 3 and 4, and just so happened to work on 5.1.
 - Various events on the site will produce a toast providing the user feedback on what is happening.
 - `Complex Level Order` has been merged into the `Entrance Randomizer` selector
+- Galleon shipwreck gates remaining open is now in the `Misc Changes` selector rather than the `Removed Barriers` selector.
 
 ### Technical Changes
 - Lots of internal code cleanup
 - Converted all display list modifications to using f3dex2 macros
 - `pointer_addresses.json` has been vastly shrunk to be quicker on site loading
 - Boss doors which have 0 CBs as the unlock condition will now employ a less hacky way of doing this without crashing the game. This fixes a few bugs which occurred as a result of this.
+- More settings have been dumped to the spoiler. A lot of internal changes have been made to best facilitate trackers that aim to support 4.0 during dev.

@@ -792,6 +792,9 @@ def place_randomized_items(spoiler, original_flut: list):
                 Types.Candy: 0x20,
                 Types.Snide: 0x10,
             }
+            for x in or_data:
+                if x not in spoiler.settings.shuffled_location_types:
+                    data |= or_data[x]
             for x in pregiven_shop_owners:
                 data |= or_data[x]
             ROM_COPY.seek(sav + 0x1EC)
