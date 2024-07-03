@@ -426,6 +426,7 @@ extern const short kong_flags[5];
 extern const short normal_key_flags[8];
 extern short tbarrel_flags[4];
 extern short bfi_move_flags[2];
+extern const short tnsportal_flags[7];
 extern const unsigned short slam_flags[6];
 extern const unsigned short belt_flags[4];
 extern const unsigned short instrument_flags[6];

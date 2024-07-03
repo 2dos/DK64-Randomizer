@@ -179,6 +179,10 @@ void cFuncLoop(void) {
 	current_avg_lag /= LAG_CAP;
 }
 
+static short mj_falling_cutscenes[] = {
+	8, 2, 16, 18, 17
+};
+
 void earlyFrame(void) {
 	if (ObjectModel2Timer < 2) {
 		swap_ending_cutscene_model();
@@ -247,7 +251,7 @@ void earlyFrame(void) {
 		}
 	} else if (CurrentMap == MAP_FACTORYJACK) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
-			if ((CutsceneIndex == 8) || (CutsceneIndex == 2) || (CutsceneIndex == 16) || (CutsceneIndex == 18) || (CutsceneIndex == 17)) {
+			if (inShortList(CutsceneIndex, &mj_falling_cutscenes[0], sizeof(mj_falling_cutscenes) >> 1)) {
 				// Falling off Mad Jack
 				if (Player) {
 					Player->control_state = 0xC;
@@ -268,6 +272,14 @@ void earlyFrame(void) {
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
 		wipeHintCache();
+		if (CurrentMap == MAP_MAINMENU) {
+			FileScreenDLCode_Write();
+			initTracker();
+			if (Player) {
+				// Remove DK's shadow in the main menu
+				Player->unk_16E = 0;
+			}
+		}
 	}
 	if (Rando.item_rando) {
 		int has_sniper = 0;
@@ -297,14 +309,6 @@ void earlyFrame(void) {
 		for (int level = 0; level < 7; level++) {
 			MovesBase[kong].cb_count[level] &= 0xFF;
 			MovesBase[kong].tns_cb_count[level] &= 0xFF;
-		}
-	}
-	if ((CurrentMap == MAP_MAINMENU) && (ObjectModel2Timer < 5)) {
-		FileScreenDLCode_Write();
-		initTracker();
-		if(Player){
-			// Remove DK's shadow in the main menu
-			Player->unk_16E = 0;
 		}
 	}
 	if (CurrentMap == MAP_NFRTITLESCREEN) {
@@ -487,6 +491,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 					}
 				}
 			}
+			dl = displaySongNameHandler(dl);
 		} else {
 			dl = drawTextPointers(dl);
 			dl = displaySongNameHandler(dl);
@@ -531,10 +536,10 @@ Gfx* displayListModifiers(Gfx* dl) {
 						for (int i = 0; i < 8; i++) {
 							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,FLAGTYPE_PERMANENT);
 							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							if ((bp_has) && (!bp_turn)) {
-								bp_numerator += 1;
-							}
 							if (!bp_turn) {
+								if (bp_has) {
+									bp_numerator += 1;
+								}
 								bp_denominator += 1;
 							}
 						}

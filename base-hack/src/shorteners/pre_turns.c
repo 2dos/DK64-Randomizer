@@ -1,15 +1,5 @@
 #include "../../include/common.h"
 
-static const short tnsportal_flags[] = {
-	FLAG_PORTAL_JAPES,
-	FLAG_PORTAL_AZTEC,
-	FLAG_PORTAL_FACTORY,
-	FLAG_PORTAL_GALLEON,
-	FLAG_PORTAL_FUNGI,
-	FLAG_PORTAL_CAVES,
-	FLAG_PORTAL_CASTLE,
-};
-
 void apply_key(int index, int remove_troff, int set_key) {
 	if (set_key) {
 		setPermFlag(FLAG_KEYIN_KEY1 + index);

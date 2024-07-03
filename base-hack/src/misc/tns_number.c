@@ -51,16 +51,6 @@ static const unsigned char tns_count[] = {
 	1,
 };
 
-static const short tns_flags[] = {
-	FLAG_PORTAL_JAPES,
-	FLAG_PORTAL_AZTEC,
-	FLAG_PORTAL_FACTORY,
-	FLAG_PORTAL_GALLEON,
-	FLAG_PORTAL_FUNGI,
-	FLAG_PORTAL_CAVES,
-	FLAG_PORTAL_CASTLE,
-};
-
 void displayNumberOnTns(void) {
 	int in_tns_map = -1;
 	for (int i = 0; i < 9; i++) {
@@ -71,7 +61,7 @@ void displayNumberOnTns(void) {
 	if (in_tns_map > -1) {
 		int world_index = getWorld(CurrentMap, 0);
 		if (world_index <= 7) {
-			if (checkFlag(tns_flags[world_index], FLAGTYPE_PERMANENT) == 0) {
+			if (checkFlag(tnsportal_flags[world_index], FLAGTYPE_PERMANENT) == 0) {
 				for (int j = 0; j < tns_count[in_tns_map]; j++) {
 					int display_number = TroffNScoffReqArray[world_index] - TroffNScoffTurnedArray[world_index];
 					if (display_number < 0) {

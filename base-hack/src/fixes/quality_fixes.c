@@ -84,17 +84,6 @@ void playTransformationSong(songs song, float volume) {
 static unsigned short previous_total_cbs = 0xFFFF;
 static unsigned char previous_world = 0xFF;
 
-static const short tnsportal_flags[] = {
-	// Troff n Scoff portal clear flags
-	FLAG_PORTAL_JAPES,
-	FLAG_PORTAL_AZTEC,
-	FLAG_PORTAL_FACTORY,
-	FLAG_PORTAL_GALLEON,
-	FLAG_PORTAL_FUNGI,
-	FLAG_PORTAL_CAVES,
-	FLAG_PORTAL_CASTLE,
-};
-
 #define SPRITE_ALPHA_OUT 8
 #define SPRITE_ALPHA_IN 44
 #define SPRITE_ALPHA_END 52
