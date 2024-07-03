@@ -1470,9 +1470,7 @@ int filterSong(int* song_write) {
 			}
 		}
 	}
-	if (Rando.show_music_name) {
-		initSongDisplay(song);
-	}
+	initSongDisplay(song);
 	return getTrackChannel(song);
 }
 

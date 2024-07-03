@@ -334,7 +334,11 @@ void initItemRando(void) {
     bonus_data[94].kong_actor = 6;
     // Add 4 Training Minigames
     for (int i = 0; i < 4; i++) {
-        bonus_data[95 + i].flag = FLAG_TBARREL_DIVE + i;
+        int tbarrel_flag = 0;
+        if (!Rando.fast_start_beginning) {
+            tbarrel_flag = FLAG_TBARREL_DIVE + i;
+        }
+        bonus_data[95 + i].flag = tbarrel_flag;
         bonus_data[95 + i].spawn_actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONANY;
         bonus_data[95 + i].kong_actor = 0;
     }

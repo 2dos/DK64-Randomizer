@@ -13,10 +13,9 @@ This is the changelog for the initial push of 4.0 into Dev:
 - Added shop owners in the item pool
     - These will need to be obtained to purchase items inside the shops. Hints which indicate the level a shopkeeper is in can be obtained by visiting their shop when they have yet to be obtained.
 - Nintendo & Rareware Coins have been split up in the item rando selector
-- K Rool phases has been added into the boss pool, meaning they can appear behind boss doors. Consequently, regular bosses can now appear in the final boss sequence, turning it into a boss gauntlet
+- K Rool phases have been added into the boss pool, meaning they can appear behind boss doors. Consequently, regular bosses can now appear in the final boss sequence, turning it into a boss gauntlet
 - Added custom races for Castle Car Race
-- **[!]** Added the ability to collect colored bananas in Isles, which will add 5 extra medals to the game. This is exclusive to CB Rando, and can be changed with the dropdown menu there.
-    - Currently has major issues with generating, hidden for now.
+- Added the ability to collect colored bananas in Isles, which will add 5 extra medals to the game. This is exclusive to CB Rando, and can be changed with the dropdown menu there.
 - Changes to LZR:
     - Added option to add Helm and Helm Lobby to the loading zone pool
     - If auto-keys is enabled: K. Lumsy entrances are added to the pool
@@ -58,7 +57,7 @@ This is the changelog for the initial push of 4.0 into Dev:
 
 ### Quality of life changes
 - Dirt patches have been added to item previews
-- The "pad rising" cutscene in Castle Dungeon will now play if Item Rando is enabled to show the reward.
+- The "pad rising" cutscene in Castle Lanky Dungeon will now play if Item Rando is enabled to show the reward.
 - Bonus Minigames will now display the difficulty of the minigame below it
 - The lives mechanic has been removed from DK Arcade
 - Removed the troll flame from DK Arcade 75m
