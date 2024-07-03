@@ -66,7 +66,7 @@ class Location:
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
             self.map_id_list = [MapIDCombo(0, -1, 469 + self.kong + (5 * level_index), self.kong)]
-        elif self.type == Types.Medal and self.level != Levels.HideoutHelm:
+        elif self.type in [Types.Medal, Types.IslesMedal] and self.level != Levels.HideoutHelm:
             level_index = int(self.level)
             if self.level == Levels.DKIsles:
                 self.map_id_list = [MapIDCombo(0, -1, 0x3C6 + self.kong, self.kong)]

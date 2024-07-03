@@ -186,6 +186,8 @@ def ShuffleItems(spoiler):
             if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
                 if item_location.type == Types.ToughBanana and Types.Banana not in flag_dict.keys():
                     flag_dict[Types.Banana] = []
+                elif item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
+                    flag_dict[Types.Medal] = []
                 else:
                     flag_dict[item_location.type] = []
             # Add this location's vanilla flag as a valid flag for this type of item/kong pairing
