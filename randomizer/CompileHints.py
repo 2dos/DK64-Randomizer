@@ -2272,17 +2272,17 @@ def compileHints(spoiler: Spoiler) -> bool:
                 # If this is the only child of this parent and the parent is directly hinted, this is the only location that can resolve that hint.
                 if len(parent_node.children) == 1 and (parent_node.path_hinted or parent_node.woth_hinted):
                     # Halve the unhinted contribution of this node per hinted solo-parent
-                    node.score_multiplier *= .5
+                    node.score_multiplier *= 0.5
                 # A woth-hinted location with multiple children means it could resolve in many ways, which could possibly leave this item effectively unhinted
-                # If the parents are path hinted, we need to analyze siblings' goals to determine if this location uniquely solves some portion of the parent's path 
+                # If the parents are path hinted, we need to analyze siblings' goals to determine if this location uniquely solves some portion of the parent's path
                 elif len(parent_node.children) > 1 and parent_node.path_hinted:
                     # Compile a list of all goals that the siblings are on the path to - this is always a subset of the parent's goals!
-                    sibling_nodes = [hint_tree[loc_id] for loc_id in parent_node.children if loc_id != node.node_location_id]
+                    sibling_nodes = [hint_tree[loc_id] for loc_id in parent_node.children if loc_id != node.node_location_id and loc_id in hint_tree.keys()]
                     sibling_goals = set([goal for node in sibling_nodes for goal in node.goals])
                     # If this node has *any* goals that are unique to this location, then this is the only location that can resolve that portion of the parent's path hint.
                     if any(set(node.goals).difference(sibling_goals)):
                         # Because of that, it makes this less unhinted
-                        node.score_multiplier *= .4
+                        node.score_multiplier *= 0.4
                     # Identify any particularly problematic siblings more directly
                     for child_loc_id in parent_node.children:
                         if child_loc_id != node.node_location_id:
@@ -2290,17 +2290,17 @@ def compileHints(spoiler: Spoiler) -> bool:
                             # If a parent is path hinted and this sibling could resolve this node's goals, one of the two would be effectively unhinted
                             if set(node.goals).issubset(set(child_node.goals)):
                                 # Split the difference - the current node being evaluated gets half the value
-                                node.unhinted_score += .5
+                                node.unhinted_score += 0.5
                                 # If the goals *exactly* match, then the current node could mask their sibling, even if the sibling is hinted!
                                 if node.goals == child_node.goals:
-                                    child_node.unhinted_score += .5
+                                    child_node.unhinted_score += 0.5
                                 # Note that if both are unhinted you'll double the score, which is appropriate for two unhinted items that could resolve the same path hint
         # Now that we've completed tree decoration, we can assess the damage - we have to do this at the end because sibling calculations can affect nodes that were previously calculated
         for node in hint_tree.values():
             total_score = node.unhinted_score * node.score_multiplier
             spoiler.unhinted_score += total_score
             # Arbitrary threshold of .5 unhinted to be a suspected ugly location
-            if total_score > .5:
+            if total_score > 0.5:
                 spoiler.poor_scoring_locations[spoiler.LocationList[node.node_location_id].name] = total_score
 
     UpdateSpoilerHintList(spoiler)

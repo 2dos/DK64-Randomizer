@@ -7,11 +7,11 @@ from typing import TYPE_CHECKING, Any, List, Dict
 from randomizer.Enums.Locations import Locations
 
 
-
 class PathHintTreeNode:
     """A node on the greater path hint tree."""
 
     def __init__(self, loc: Locations) -> None:
+        """Create a path hint tree node for the parameter location."""
         self.node_location_id = loc
         self.path_hinted = False
         self.woth_hinted = False
@@ -24,7 +24,7 @@ class PathHintTreeNode:
 
 def BuildPathHintTree(woth_paths: Dict[Locations, List[Locations]]) -> Dict[Locations, PathHintTreeNode]:
     """Assemble a list of multipath nodes that represent a tree from a list of Way of the Hoard paths."""
-    # TWO EXTREMELY IMPORTANT ASSUMPTIONS: 
+    # TWO EXTREMELY IMPORTANT ASSUMPTIONS:
     # 1. The woth_paths keys are in order, meaning no earlier path has any elements that are a key for a future path.
     # 2. The woth_paths values are ordered such that each path is a subset of the list of all keys without any reordering. (The order of each path matches the order of the dict's keys)
     tree: Dict[Locations, PathHintTreeNode] = {}
