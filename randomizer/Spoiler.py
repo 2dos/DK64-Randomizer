@@ -856,6 +856,8 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
             humanspoiler["Wrinkly Hints"] = human_hint_list
+            humanspoiler["Unhinted Score"] = self.unhinted_score
+            humanspoiler["Potentially Awful Locations"] = self.poor_scoring_locations
 
         self.json = json.dumps(humanspoiler, indent=4)
 
