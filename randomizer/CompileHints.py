@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from math import ceil, floor
+from math import ceil, floor, sqrt
 import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
 from randomizer.Enums.MoveTypes import MoveTypes
@@ -25,6 +25,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import PreGivenLocations, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
+from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
@@ -152,7 +153,6 @@ hint_list = [
     Hint(hint="Lanky Kong is the only kong with no canonical relation to the main Kong family tree.", important=False, base=True),
     Hint(hint="Despite the line in the DK Rap stating otherwise, Chunky is the kong who can jump highest in DK64.", important=False, base=True),
     Hint(hint="Despite the line in the DK Rap stating otherwise, Tiny is one of the two slowest kongs in DK64.", important=False, base=True),
-    Hint(hint="Candy Kong does not appear in Jungle Japes or Fungi Forest.", important=False, base=True),
     Hint(hint="If you fail the twelfth round of K. Rool, the game will dictate that K. Rool is victorious and end the fight.", important=False, base=True),
     Hint(hint="Donkey Kong 64 Randomizer started as a LUA Script in early 2019, evolving into a ROM Hack in 2021.", important=False, base=True),
     Hint(hint="The maximum in-game time that the vanilla file screen time can display is 1165 hours and 5 minutes.", important=False, base=True),
@@ -1281,7 +1281,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 continue
             # When choosing hint doors, consider ALL goals when restricting door choice
             hint_door_options = set()
-            for goal_location in multipath_dict_goals[loc]:
+            for goal_location in [goal for goal in multipath_dict_goals[loc] if goal in spoiler.accessible_hints_for_location.keys()]:
                 if len(hint_door_options) == 0:
                     hint_door_options = set(spoiler.accessible_hints_for_location[goal_location])
                 else:
@@ -1298,15 +1298,16 @@ def compileHints(spoiler: Spoiler) -> bool:
 
             globally_hinted_location_ids.append(loc)
             region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc)]
-            if region.hint_name != "Troff 'N' Scoff":
-                hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
-            else:
-                hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
+            hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
             if loc in TrainingBarrelLocations or loc in PreGivenLocations:
                 # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                 hinted_item_name = ItemList[spoiler.LocationList[loc].item].name
                 message = f"\x0b{hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
                 hinted_location_text = f"\x0b{hinted_item_name}\x0b"
+            elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+                # Medal rewards and bosses are treated as "collecting colored bananas" for their region
+                hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                message = f"Something about collecting {hinted_location_text} is on the path to {multipath_dict_hints[loc]}"
             else:
                 message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
             hint_location.related_location = loc
@@ -1382,10 +1383,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     globally_hinted_location_ids.append(path_location_id)
                     already_hinted_locations.append(path_location_id)
                     region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
-                    if region.hint_name != "Troff 'N' Scoff":
-                        hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
-                    else:
-                        hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
+                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                     # Attempt to find a door that will be accessible before the Key
                     hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[key_location_ids[key_id]])
                     if len(hint_options) > 0:
@@ -1397,6 +1395,10 @@ def compileHints(spoiler: Spoiler) -> bool:
                         # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                         hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
                         message = f"\x0b{hinted_item_name}\x0b is on the path to \x04{key_item.name}\x04."
+                    elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+                        # Medal rewards and bosses are treated as "collecting colored bananas" for their region
+                        hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                        message = f"Something about collecting {hinted_location_text} is on the path to \x04{key_item.name}\x04."
                     else:
                         message = f"Something in the {hinted_location_text} is on the path to \x04{key_item.name}\x04."
                     hint_location.related_location = path_location_id
@@ -1460,15 +1462,16 @@ def compileHints(spoiler: Spoiler) -> bool:
                 already_chosen_krool_path_locations.append(path_location_id)
                 # Begin to build the hint - determine the region of the location
                 region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
-                if region.hint_name != "Troff 'N' Scoff":  # Quick color-correction so that the color of "Troff 'N' Scoff" doesn't leak the level
-                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
-                else:
-                    hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
+                hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                 kong_color = kong_colors[hinted_kong]
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[hinted_item_id].name
                     message = f"\x0b{hinted_item_name}\x0b is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
+                elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+                    # Medal rewards and bosses are treated as "collecting colored bananas" for their region
+                    hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                    message = f"Something about collecting {hinted_location_text} is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
                 else:
                     message = f"Something in the {hinted_location_text} is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
                 hint_location.related_location = path_location_id
@@ -1496,10 +1499,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 globally_hinted_location_ids.append(path_location_id)
                 already_chosen_camera_path_locations.append(path_location_id)
                 region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
-                if region.hint_name != "Troff 'N' Scoff":
-                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
-                else:
-                    hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
+                hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                 # Attempt to find a door that will be accessible before the Camera
                 hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[camera_location_id])
                 if len(hint_options) > 0:
@@ -1511,6 +1511,10 @@ def compileHints(spoiler: Spoiler) -> bool:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
                     message = f"\x0b{hinted_item_name}\x0b is on the path to \x07taking photos\x07."
+                elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+                    # Medal rewards and bosses are treated as "collecting colored bananas" for their region
+                    hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                    message = f"Something about collecting {hinted_location_text} is on the path to \x07taking photos\x07."
                 else:
                     message = f"Something in the {hinted_location_text} is on the path to \x07taking photos\x07."
                 hint_location.related_location = path_location_id
@@ -2218,17 +2222,93 @@ def compileHints(spoiler: Spoiler) -> bool:
         hint_location.hint_type = HintType.Joke
         UpdateHint(hint_location, message)
 
+    # # DEBUG CODE to alert when a hint is empty
+    # for hint in hints:
+    #     if hint.hint == "":
+    #         print("RED ALERT")
+
+    # Evaluate the strength of the hints and attempt to distill it to a score
+    spoiler.unhinted_score = -1
+    spoiler.poor_scoring_locations = {"N/A": "these hints do not get scored"}
+    # This evaluation only matters with multipath hints
+    if hint_distribution[HintType.Multipath] > 0:
+        spoiler.unhinted_score = 0
+        spoiler.poor_scoring_locations = {}
+        hint_tree = BuildPathHintTree(spoiler.woth_paths)
+        # Some locations are known quantities and can be pruned from the tree
+        del hint_tree[Locations.BananaHoard]
+        if spoiler.settings.key_8_helm:
+            del hint_tree[Locations.HelmKey]
+        # Decorate the tree with information from our placed hints
+        for hint in hints:
+            if hint.related_location is not None and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?
+                if hint.hint_type == HintType.Multipath:
+                    hint_tree[hint.related_location].path_hinted = True
+                else:
+                    hint_tree[hint.related_location].woth_hinted = True
+        for loc in hint_tree.keys():
+            if loc in multipath_dict_goals.keys():
+                hint_tree[loc].goals = multipath_dict_goals[loc]
+            # I'm pretty sure this can only happen to training moves
+            else:
+                hint_tree[loc].goals = []
+        # Loop through nodes, front-to-back, earliest items to latest items, applying unhinted_score based on the connections
+        for node in hint_tree.values():
+            node_location = spoiler.LocationList[node.node_location_id]
+            # Medal locations and Bosses get an automatic x2 unhinted multiplier because they are awful to orphan
+            if node_location.type in (Types.Medal, Types.Key):
+                node.score_multiplier *= 2
+            # Training barrel locations don't matter if they're hinted or not because you start with them
+            if node.node_location_id in TrainingBarrelLocations or node.node_location_id in PreGivenLocations:
+                node.score_multiplier *= 0
+            # If this location is hinted or isn't on the path to any goals, there's no further unhinted score changes required here
+            if node.path_hinted or node.woth_hinted or len(node.goals) == 0:
+                continue
+            # The baseline unhinted score for a node is inversely proportional to the number of goals this location is on the path to
+            # If something is on the path to a lot of goals, it's often found early and usually less disastrous to be missed
+            node.unhinted_score += sqrt(1.0 / len(node.goals))
+            for parent_loc_id in node.parents:
+                parent_node = hint_tree[parent_loc_id]
+                # If this is the only child of this parent and the parent is directly hinted, this is the only location that can resolve that hint.
+                if len(parent_node.children) == 1 and (parent_node.path_hinted or parent_node.woth_hinted):
+                    # Halve the unhinted contribution of this node per hinted solo-parent
+                    node.score_multiplier *= .5
+                # A woth-hinted location with multiple children means it could resolve in many ways, which could possibly leave this item effectively unhinted
+                # If the parents are path hinted, we need to analyze siblings' goals to determine if this location uniquely solves some portion of the parent's path 
+                elif len(parent_node.children) > 1 and parent_node.path_hinted:
+                    # Compile a list of all goals that the siblings are on the path to - this is always a subset of the parent's goals!
+                    sibling_nodes = [hint_tree[loc_id] for loc_id in parent_node.children if loc_id != node.node_location_id]
+                    sibling_goals = set([goal for node in sibling_nodes for goal in node.goals])
+                    # If this node has *any* goals that are unique to this location, then this is the only location that can resolve that portion of the parent's path hint.
+                    if any(set(node.goals).difference(sibling_goals)):
+                        # Because of that, it makes this less unhinted
+                        node.score_multiplier *= .4
+                    # Identify any particularly problematic siblings more directly
+                    for child_loc_id in parent_node.children:
+                        if child_loc_id != node.node_location_id:
+                            child_node = hint_tree[child_loc_id]
+                            # If a parent is path hinted and this sibling could resolve this node's goals, one of the two would be effectively unhinted
+                            if set(node.goals).issubset(set(child_node.goals)):
+                                # Split the difference - the current node being evaluated gets half the value
+                                node.unhinted_score += .5
+                                # If the goals *exactly* match, then the current node could mask their sibling, even if the sibling is hinted!
+                                if node.goals == child_node.goals:
+                                    child_node.unhinted_score += .5
+                                # Note that if both are unhinted you'll double the score, which is appropriate for two unhinted items that could resolve the same path hint
+        # Now that we've completed tree decoration, we can assess the damage - we have to do this at the end because sibling calculations can affect nodes that were previously calculated
+        for node in hint_tree.values():
+            total_score = node.unhinted_score * node.score_multiplier
+            spoiler.unhinted_score += total_score
+            # Arbitrary threshold of .5 unhinted to be a suspected ugly location
+            if total_score > .5:
+                spoiler.poor_scoring_locations[spoiler.LocationList[node.node_location_id].name] = total_score
+
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
 
     # Dim hints - these are only useful (and doable) if item rando is on
     if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
         AssociateHintsWithFlags(spoiler)
-
-    # # DEBUG CODE to alert when a hint is empty
-    # for hint in hints:
-    #     if hint.hint == "":
-    #         print("RED ALERT")
 
     return True
 
@@ -2470,7 +2550,7 @@ def compileSpoilerHints(spoiler):
 
 def CategorizeItem(item):
     """Identify the hint string for the given item."""
-    if item.type == Types.Kong:
+    if item.type in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
         return "Kong"
     elif item.type == Types.Key:
         return "Key"
@@ -2608,9 +2688,10 @@ def GenerateMultipathDict(
                 endpoint_item = ItemList[spoiler.LocationList[woth_loc].item]
                 if endpoint_item.type == Types.Key:
                     path_to_keys.append(str(endpoint_item.index))
-                    relevant_goal_locations.append(woth_loc)
+                    relevant_goal_locations.append(Locations(woth_loc))
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
+                    relevant_goal_locations.append(Locations(woth_loc))
         # For path to family, we also have to check non-woth paths
         for non_woth_loc in spoiler.other_paths.keys():
             if location in spoiler.other_paths[non_woth_loc]:
@@ -2622,6 +2703,7 @@ def GenerateMultipathDict(
             for map_id in spoiler.krool_paths.keys():
                 if location in spoiler.krool_paths[map_id]:
                     path_to_krool_phases.append(boss_names[map_id])
+                    relevant_goal_locations.append(Maps(map_id))
         # Determine if this location is on the path to taking photos for certain win conditions
         if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
@@ -2631,7 +2713,7 @@ def GenerateMultipathDict(
                     break
             if camera_location_id in spoiler.woth_paths.keys() and location in spoiler.woth_paths[camera_location_id]:
                 path_to_camera.append("taking photos")
-                relevant_goal_locations.append(camera_location_id)
+                relevant_goal_locations.append(Locations(camera_location_id))
         # Some locations are useless to hint on the path to some goals - every hint we construct should be useful
         if location in TrainingBarrelLocations or location in PreGivenLocations or location == Locations.HelmKey:
             # This is the assumed number of useful paths there are to hint for this location
