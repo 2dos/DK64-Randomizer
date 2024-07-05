@@ -456,12 +456,14 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
     if settings.logic_type == LogicType.nologic:
         return True  # Don't need to verify world in no logic
     unreachables = GetAccessibleLocations(spoiler, ItemPool.AllItemsUnrestricted(settings), SearchMode.GetUnreachable)
+    if len(spoiler.cb_placements) == 0:
+        unreachables = [x for x in unreachables if x not in [Locations.IslesDonkeyMedal, Locations.IslesDiddyMedal, Locations.IslesLankyMedal, Locations.IslesTinyMedal, Locations.IslesChunkyMedal]]
     allLocationsReached = len(unreachables) == 0
     allCBsFound = True
     for level_index in range(9):
         if level_index == Levels.HideoutHelm:
             continue
-        elif level_index == Levels.DKIsles and spoiler.settings.cb_rando != CBRando.on_with_isles:
+        elif level_index == Levels.DKIsles and spoiler.settings.cb_rando != CBRando.on_with_isles or len(spoiler.cb_placements) == 0:
             continue
         if sum(spoiler.LogicVariables.ColoredBananas[level_index]) != 500:
             missingCBs = []
@@ -1695,7 +1697,7 @@ def Fill(spoiler: Spoiler) -> None:
                 bigListOfItemsToPlace.remove(item)
         unplaced = PlaceItems(spoiler, FillAlgorithm.assumed, bigListOfItemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if unplaced > 0:
-            raise Ex.ItemPlacementException(str(miscUnplaced) + " unplaced items from the fill.")
+            raise Ex.ItemPlacementException(str(unplaced) + " unplaced items from the fill.")
         if spoiler.settings.extreme_debugging:
             DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "The Fill")
 

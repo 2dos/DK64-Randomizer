@@ -1029,7 +1029,7 @@ class Settings:
             self.krool_phase_count = randint(1, 5)
         if isinstance(self.krool_phase_count, str) is True:
             self.krool_phase_count = 5
-        if self.krool_phase_count < 5:
+        if self.krool_phase_count < len(phases):
             phases = random.sample(phases, self.krool_phase_count)
         # Plandomized K. Rool algorithm
         if self.enable_plandomizer:

@@ -2285,7 +2285,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         node.score_multiplier *= 0.4
                     # Identify any particularly problematic siblings more directly
                     for child_loc_id in parent_node.children:
-                        if child_loc_id != node.node_location_id:
+                        if child_loc_id != node.node_location_id and child_loc_id in hint_tree.keys():
                             child_node = hint_tree[child_loc_id]
                             # If a parent is path hinted and this sibling could resolve this node's goals, one of the two would be effectively unhinted
                             if set(node.goals).issubset(set(child_node.goals)):
