@@ -58,6 +58,18 @@ def handle_progressive_hint_text(event):
         progressive_hint_text.value = 201
 
 
+@bind("focusout", "chaos_ratio")
+def handle_chaos_ratio_text(event):
+    """Validate blocker input on loss of focus."""
+    chaos_ratio_text = js.document.getElementById("chaos_ratio")
+    if not chaos_ratio_text.value:
+        chaos_ratio_text.value = 25
+    elif int(chaos_ratio_text.value) < 1:
+        chaos_ratio_text.value = 1
+    elif int(chaos_ratio_text.value) > 100:
+        chaos_ratio_text.value = 100
+
+
 @bind("focusout", "blocker_text")
 def max_randomized_blocker(event):
     """Validate blocker input on loss of focus."""
@@ -1089,6 +1101,7 @@ def update_ui_states(event):
     disable_move_shuffles(None)
     max_randomized_blocker(None)
     handle_progressive_hint_text(None)
+    handle_chaos_ratio_text(None)
     max_randomized_troff(None)
     max_music(None)
     max_music_proportion(None)

@@ -18,6 +18,7 @@ from ui.rando_options import (
     disable_music,
     enable_plandomizer,
     handle_progressive_hint_text,
+    handle_chaos_ratio_text,
     item_rando_list_changed,
     max_doorone_requirement,
     max_doortwo_requirement,
@@ -57,6 +58,7 @@ disable_music(None)
 disable_move_shuffles(None)
 max_randomized_blocker(None)
 handle_progressive_hint_text(None)
+handle_chaos_ratio_text(None)
 max_randomized_troff(None)
 max_music(None)
 max_music_proportion(None)
