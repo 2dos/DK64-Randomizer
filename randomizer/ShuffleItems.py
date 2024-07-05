@@ -86,7 +86,6 @@ def ShuffleItems(spoiler):
     if Types.Enemies in spoiler.settings.shuffled_location_types:
         junk_item_flag_range.extend(list(range(0x3CB, 0x3CB + 426)))
 
-
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
