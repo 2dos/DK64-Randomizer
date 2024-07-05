@@ -137,7 +137,9 @@ class Location:
                 elif location_obj.inaccessible:
                     location_obj.inaccessible = False
 
+
 DROPSANITY_FLAG_START = 0x3CB
+
 
 LocationListOriginal = {
     # Training Barrel locations
