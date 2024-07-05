@@ -57,6 +57,7 @@ def handle_progressive_hint_text(event):
     elif int(progressive_hint_text.value) > 201:
         progressive_hint_text.value = 201
 
+
 @bind("focusout", "chaos_ratio")
 def handle_chaos_ratio_text(event):
     """Validate blocker input on loss of focus."""
