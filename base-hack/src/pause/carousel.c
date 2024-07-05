@@ -191,6 +191,11 @@ void initCarousel_onPause(void) {
             file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
         }
     }
+    if (Rando.enemy_item_rando) {
+        for (int i = 0; i < ENEMIES_TOTAL; i++) {
+            file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_ENEMY_KILLED_0 + i, FLAGTYPE_PERMANENT);
+        }
+    }
 }
 
 void initCarousel_onBoot(void) {

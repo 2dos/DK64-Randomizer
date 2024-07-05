@@ -552,6 +552,8 @@ def SnideItems():
 def JunkItems(settings):
     """Return a list of Junk Items to be placed."""
     junk_count = min(100, 116 - getIceTrapCount(settings))
+    if Types.Enemies in settings.shuffled_location_types:
+        junk_count += 426
     itemPool = []
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange)
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkOrange)
