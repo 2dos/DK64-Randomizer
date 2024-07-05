@@ -19,3 +19,6 @@ def getFile(filename):
 
 with open("./static/patches/pointer_addresses.json", "rb") as file:
     pointer_addresses = json.loads(file.read())
+
+with open("./static/patches/symbols.json", "rb") as file:
+    rom_symbols = json.loads(file.read())

@@ -36,3 +36,10 @@ HunkyChunkyFix2:
     HunkyChunkyFix2_Finish:
         j 0x8067ECD0
         nop
+
+DisableGunInCrowns:
+    subu $t5, $t5, $v0
+    lui $t4, 0x10 ; In crown
+    ori $t4, $t4, 0x200 ; Disable oranges/gun
+    j 0x806E6008
+    and $t3, $t2, $t4

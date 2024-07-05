@@ -143,7 +143,12 @@ void indicateCollectionStatus(void) {
 
 void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char unk1) {
     spawnFireballExplosion(x, y, z, scale, unk0, unk1);
-    spawnEnemyDrops(CurrentActorPointer_0);
+    if (Rando.enemy_item_rando) {
+        spawnEnemyDrops(CurrentActorPointer_0);
+    }
+    if (Rando.crown_timer_reduction) {
+        handleCrownTimerInternal();
+    }
 }
 
 void rulerEnemyDeath(void) {

@@ -3,8 +3,9 @@
 .definelabel DamageMultiplier, 0x807FFFF9 // u8
 .definelabel ExpandPauseMenu, 0x807FFFF8
 .definelabel InitialPauseHeight, 0x807FFFF6
+.definelabel DisplayedSongNamePointer, 0x807FFFF0
+.definelabel RandomizerVersion, 0x807FFFF4
 .definelabel LoadedHooks, 0x807FFFEF // u8
-.definelabel WidescreenEnabled, 0x807FFFEE // u8
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel TextHoldOn, 0x807FFFE8 // u8
@@ -39,13 +40,12 @@
 .definelabel SwitchLevel, 0x807FFF21
 .definelabel FedItem, 0x807FFF1C
 .definelabel FedString, 0x807FFEDF
-.definelabel MMMEnemiesBrightened, 0x807FFF28
 
 .definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F
 .definelabel CrankyMoves_New, 0x807FF400
-.definelabel CandyMoves_New, 0x807FF4F0
-.definelabel FunkyMoves_New, 0x807FF5E0
+.definelabel FunkyMoves_New, 0x807FF4F0
+.definelabel CandyMoves_New, 0x807FF5E0
 .definelabel TrainingMoves_New, 0x807FF6D0
 .definelabel BFIMove_New, 0x807FF6E8
 .definelabel FirstMove_New, 0x807FF6EE

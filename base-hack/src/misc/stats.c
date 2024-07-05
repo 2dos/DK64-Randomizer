@@ -135,17 +135,104 @@ void updatePercentageKongStat(void) {
     }
 }
 
-
-void updateTagStat(void* data) {
+void genericStatUpdate(bonus_stat stat) {
     if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
-        changeStat(STAT_TAGCOUNT, 1);
-        updatePercentageKongStat();
+        changeStat(stat, 1);
+        if (stat == STAT_TAGCOUNT) {
+            updatePercentageKongStat();
+        }
         SaveToGlobal();
     }
+}
+
+void updateTagStat(void* data) {
+    genericStatUpdate(STAT_TAGCOUNT);
     updateModel(data);
 }
 
+void updateFairyStat(void) {
+    genericStatUpdate(STAT_PHOTOSTAKEN);
+    changeCollectableCount(6, 0, -1);
+}
 
-void initStatistics(void) {
-    writeFunction(0x806C8ED0, &updateTagStat);
+void updateKopStat(void) {
+    genericStatUpdate(STAT_KOPCAUGHT);
+}
+
+void updateEnemyKillStat(void) {
+    // Change character for K Rool
+    fixKRoolKong();
+    resetDisplayedMusic(); // Just to prevent against free issues
+    // Update Stat
+    if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
+        changeStat(STAT_ENEMIESKILLED, EnemiesKilledCounter);
+        SaveToGlobal();
+    }
+    handleMusicTransition();
+}
+
+typedef struct dynamic_credits_item {
+    /* 0x000 */ char* header;
+    /* 0x004 */ unsigned char global_data;
+    /* 0x005 */ unsigned char sub_data;
+    /* 0x006 */ unsigned char has_data;
+} dynamic_credits_item;
+
+static const dynamic_credits_item stat_credits_items[] = {
+    {.header = "GAME STATISTICS", .global_data = 0, .sub_data = 0, .has_data = 0},
+    {.header = "KONG PLAYTIME", .global_data = 0, .sub_data = 0, .has_data = 0},
+    {.header = "DK: ", .global_data = EGD_KONGIGT, .sub_data = 0, .has_data = 1},
+    {.header = "DIDDY: ", .global_data = EGD_KONGIGT, .sub_data = 1, .has_data = 1},
+    {.header = "LANKY: ", .global_data = EGD_KONGIGT, .sub_data = 2, .has_data = 1},
+    {.header = "TINY: ", .global_data = EGD_KONGIGT, .sub_data = 3, .has_data = 1},
+    {.header = "CHUNKY: ", .global_data = EGD_KONGIGT, .sub_data = 4, .has_data = 1},
+    {.header = "MISC STATS", .global_data = 0, .sub_data = 0, .has_data = 0},
+    {.header = "TAGS: ", .global_data = EGD_BONUSSTAT, .sub_data = STAT_TAGCOUNT, .has_data = 1},
+    {.header = "PHOTOS TAKEN: ", .global_data = EGD_BONUSSTAT, .sub_data = STAT_PHOTOSTAKEN, .has_data = 1},
+    {.header = "CAUGHT BY KOPS: ", .global_data = EGD_BONUSSTAT, .sub_data = STAT_KOPCAUGHT, .has_data = 1},
+    {.header = "ENEMIES KILLED: ", .global_data = EGD_BONUSSTAT, .sub_data = STAT_ENEMIESKILLED, .has_data = 1},
+};
+
+static char number_text[10] = "";
+
+char* createEndSeqCreditsFile(void) {
+    char* text_data = dk_malloc(0x400);
+    int write_position = 0;
+    int raw_write_location = (int)text_data;
+    for (int i = 0; i < (int)(sizeof(stat_credits_items)/sizeof(dynamic_credits_item)); i++) {
+        int header_length = cstring_strlen(stat_credits_items[i].header);
+        dk_memcpy((void*)(raw_write_location + write_position), stat_credits_items[i].header, header_length);
+        write_position += header_length;
+        if (stat_credits_items[i].has_data) {
+            int value = 0;
+            int global_data = stat_credits_items[i].global_data;
+            if (global_data == EGD_BONUSSTAT) {
+                value = getStat(stat_credits_items[i].sub_data);
+                dk_strFormat(number_text, "%d", value);
+            } else if (global_data == EGD_KONGIGT) {
+                int current_kong = 0;
+                int total_kong = 0;
+                for (int j = 0; j < 5; j++) {
+                    int local_kong = ReadExtraData(EGD_KONGIGT, j);
+                    if (j == stat_credits_items[i].sub_data) {
+                        current_kong = local_kong;
+                    }
+                    total_kong += local_kong;
+                }
+                float value_f = 0.0f;
+                if (total_kong != 0) {
+                    value_f = 100 * current_kong;
+                    value_f /= total_kong;
+                }
+                dk_strFormat(number_text, "%.1f%%", value_f);
+            }
+            dk_memcpy((void*)(raw_write_location + write_position), number_text, 10);
+            write_position += cstring_strlen(number_text);
+        }
+        *(char*)(raw_write_location + write_position) = 0xA; // Newline character
+        write_position += 1;
+    }
+    void* raw_text_data = getMapData(0x13, 7, 1, 1);
+    dk_memcpy((void*)(raw_write_location + write_position), raw_text_data, 0x200);
+    return text_data;
 }

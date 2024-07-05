@@ -41,7 +41,7 @@ class Item:
             self.rando_flag = data[0]
         if type == Types.Hint:
             self.level = data[0]
-        if type == Types.Coin:
+        if type in (Types.NintendoCoin, Types.RarewareCoin):
             self.flag = data[0]
 
 
@@ -150,8 +150,8 @@ ItemList = {
     Items.CameraAndShockwave: Item(
         "Camera and Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera_shockwave", -2]
     ),  # -2 means do not use this rando_flag outside of full item rando
-    Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin, Kongs.any, [132]),
-    Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin, Kongs.any, [379]),
+    Items.NintendoCoin: Item("Nintendo Coin", True, Types.NintendoCoin, Kongs.any, [132]),
+    Items.RarewareCoin: Item("Rareware Coin", True, Types.RarewareCoin, Kongs.any, [379]),
     Items.JungleJapesKey: Item("Key 1", True, Types.Key, Kongs.any, [26, 1]),
     Items.AngryAztecKey: Item("Key 2", True, Types.Key, Kongs.any, [74, 2]),
     Items.FranticFactoryKey: Item("Key 3", True, Types.Key, Kongs.any, [138, 3]),
@@ -177,7 +177,9 @@ ItemList = {
     Items.Bean: Item("The Bean", False, Types.Bean, Kongs.any),
     Items.Pearl: Item("Pearl", False, Types.Pearl, Kongs.any),
     Items.RainbowCoin: Item("Rainbow Coin", False, Types.RainbowCoin, Kongs.any),
-    Items.FakeItem: Item("Ice Trap", False, Types.FakeItem, Kongs.any),
+    Items.IceTrapBubble: Item("Ice Trap (Bubble)", False, Types.FakeItem, Kongs.any),
+    Items.IceTrapReverse: Item("Ice Trap (Reverse)", False, Types.FakeItem, Kongs.any),
+    Items.IceTrapSlow: Item("Ice Trap (Slow)", False, Types.FakeItem, Kongs.any),
     Items.JunkCrystal: Item("Junk Item (Crystal)", False, Types.JunkItem, Kongs.any),
     Items.JunkMelon: Item("Junk Item (Melon Slice)", False, Types.JunkItem, Kongs.any),
     Items.JunkAmmo: Item("Junk Item (Ammo Crate)", False, Types.JunkItem, Kongs.any),
@@ -185,6 +187,10 @@ ItemList = {
     Items.JunkOrange: Item("Junk Item (Orange)", False, Types.JunkItem, Kongs.any),
     Items.CrateMelon: Item("Crate Melon", False, Types.CrateItem, Kongs.any),
     Items.EnemyItem: Item("Enemy Item", False, Types.Enemies, Kongs.any),
+    Items.Cranky: Item("Cranky", True, Types.Cranky, Kongs.any),
+    Items.Funky: Item("Funky", True, Types.Funky, Kongs.any),
+    Items.Candy: Item("Candy", True, Types.Candy, Kongs.any),
+    Items.Snide: Item("Snide", True, Types.Snide, Kongs.any),
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),

@@ -20,7 +20,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Numbers game
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Path to Funky
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # W5
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring, None, 5),  # Block Tower
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring or l.CanMoontail(), None, 5),  # Block Tower
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # Path to testing room
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Block tower side of Mini Monkey tunnel
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.phasewalk, None, 1),  # Spinning wheel
@@ -80,7 +80,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),  # Dark Room
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Bottom of pole
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.phasewalk, None, 3),  # High ledge in Chunky's room
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.phasewalk or l.CanMoontail(), None, 3),  # High ledge in Chunky's room
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # On boxes in Chunky's room
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # Around Tiny BP
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 5),  # W1

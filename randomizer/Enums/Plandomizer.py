@@ -172,7 +172,7 @@ ItemToPlandoItemMap = {
     Items.Bean: PlandoItems.Bean,
     Items.Pearl: PlandoItems.Pearl,
     Items.RainbowCoin: PlandoItems.RainbowCoin,
-    Items.FakeItem: PlandoItems.FakeItem,
+    Items.IceTrapBubble: PlandoItems.FakeItem,
     # All of the individual junk items map to the same plando item.
     Items.JunkCrystal: PlandoItems.JunkItem,
     Items.JunkMelon: PlandoItems.JunkItem,
@@ -279,7 +279,7 @@ PlandoItemToItemMap = {
     PlandoItems.Bean: Items.Bean,
     PlandoItems.Pearl: Items.Pearl,
     PlandoItems.RainbowCoin: Items.RainbowCoin,
-    PlandoItems.FakeItem: Items.FakeItem,
+    PlandoItems.FakeItem: Items.IceTrapBubble,
     PlandoItems.ProgressiveSlam: Items.ProgressiveSlam,
     PlandoItems.ProgressiveAmmoBelt: Items.ProgressiveAmmoBelt,
     PlandoItems.ProgressiveInstrumentUpgrade: Items.ProgressiveInstrumentUpgrade,

@@ -7,12 +7,11 @@ import unittest
 from parameterized import parameterized_class
 
 # from randomizer.Enums.Items import Items
-from randomizer.Enums.HintType import HintType
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
+from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
                                        CrownEnemyRando, DamageAmount,
                                        ExtraCutsceneSkips, FillAlgorithm,
-                                       FreeTradeSetting, HelmDoorItem,
+                                       FreeTradeSetting, HelmDoorItem, HelmBonuses,
                                        HelmSetting, KasplatRandoSetting,
                                        KrushaUi, LevelRandomization, LogicType,
                                        MicrohintsEnabled, MoveRando,
@@ -34,7 +33,7 @@ with open("static/presets/preset_files.json", "r") as file:
 # Add a custom preset for testing
 # If we're not running on github actions, add the custom preset
 if not os.environ.get("GITHUB_ACTIONS"):
-    valid_presets.append(("Custom", "bKEFCSKzzecrKEDRAejpFjAIbiDLWIQXr5/ANnj4YTRzu6leyszOKbOrYvhTgfVA8IhkQlS2Nc+EZU8Ro9dpcviFOWJtOCFAB2j0gOitNXwFILdT1+BJAMmihlEjILrJZYKAugBBgJ1AQOBuwDCAR3AgSCvAFCgZ5AwWDvQHDAhQhpk9shSPUTzORKRcklWi3gZwdHqLcFP0VEWARMRQBXrXHI3ar/fZFA5ixFASazZvPYkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADU5coclwqdMISQRfQJyQYYSofMxtMZaFpXLArQ5bDQnFgqMBMGBGJCmOKKTIjUoAqgEuAhk4AA"))
+    valid_presets.append(("Custom", "bKEHhEMhTHSpbGufFWUIGiA9HSLGAQ3EGWsQgvXz+AbPHwwmjnd1K9lZmcU2dWxfCnA+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBCgKPSA6K01fAUgt1PX4EkAyaKE0SMgusllgoA6AEGAHUBA4A7AMIAHcCBIA8AUKAHkDBYA9AcMAFCGnj2yFI9RUM5alpTLm0W8DODo9Rbgp+iuiwCJ6KAK9a45G7Vf77IoHMWIoAzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqVBgJgwIxIUxxTSeRSZEalAFUAlwEMnAA"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)
@@ -50,7 +49,7 @@ class TestSpoiler(unittest.TestCase):
         # Randomizers
         # Major Items
         data["shuffle_items"] = False  # Must be true to trigger the list selector below
-        # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
+        # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem", "shopowners"]  # all options
         data["move_rando"] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
         # if start_with, training barrels and "camera and shockwave" are FORCED to be normal and vanilla respectively
         data["training_barrels"] = TrainingBarrels.normal  # usually "normal", could be "shuffled"
@@ -58,7 +57,7 @@ class TestSpoiler(unittest.TestCase):
 
         # Shuffled Locations
         data["random_patches"] = True  # usually False
-        data["cb_rando"] = False  # likely to be False?
+        data["cb_rando"] = CBRando.off  # likely to be False?
         data["coin_rando"] = False
         data["random_fairies"] = False  # likely to be False
         data["wrinkly_location_rando"] = False  # likely to be False
@@ -105,7 +104,7 @@ class TestSpoiler(unittest.TestCase):
         data["win_condition"] = WinCondition.beat_krool  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
         data["free_trade_setting"] = FreeTradeSetting.none  # none | not_blueprints | major_collectibles
         data["activate_all_bananaports"] = ActivateAllBananaports.isles  # usually isles, could be all or off
-        data["krusha_ui"] = KrushaUi.dk
+        # data["krusha_ui"] = KrushaUi.dk # Deprecated
 
         # Difficulty
         data["no_healing"] = False
@@ -187,6 +186,7 @@ class TestSpoiler(unittest.TestCase):
 
         data["wrinkly_hints"] = WrinklyHints.standard
         data["helm_setting"] = HelmSetting.skip_start
+        data["helm_room_bonus_count"] = HelmBonuses.two
         data["microhints_enabled"] = MicrohintsEnabled.base  # off/base/all
         data["more_cutscene_skips"] = ExtraCutsceneSkips.auto
 
@@ -200,7 +200,7 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined from the preset_files.json file
-        # self.settings_string = "bKEGiRqzxNXnerKEDRAejpFjAIbiDLWIQXr5/ANnj4YTRzu6leyszOKbOrYvhTgfVA8IhkMhKlsa58Ij8Ro9dpcviFOWJtOCFA0ekCRNGeKvgKQW6nr8CSAZNFDKKGQXWSywUBdACDATqAgcDdgGEAjuBAkFeAKFAzyBgsHegOGBChDTx7ZCkQoqGciUy5JLNFvAjg6RaRcFP0VEWARMRQBXrXHI3ar/fZFA5ixFAGazZlUYkiwAJjAAJjQAHjgAHjwAFkAAFkQADkgADkwADlAADU5coclwqdMISQRfQJyQYYSqnMxtMYOLQtK5YFaHLYaE4sFRgJgwIymOKeRSZEalAFUAlwEMnCEICQoLDaUiKw8QESMsExQVJC0XGBklLhscHSYvHyAhJyg"
+        # self.settings_string = "bKEHCRorPE1ed6soQOCokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgeEQyGQlS2Nc+ER+I0eu0uXxC205Yk04IUDR6QJE0Z4q+ApBbqev2JIBk0UJooZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKRCioZyJTLmku0W8BOEWkXBT9FRFgETEUAV61xyN2q/32RQOYsRQBms2URJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LhU6YQkX0CckGGEqpzMYwcWhaVywK0OWw0JxYKjATBgRlMcU8ikyI1KAKoBLgIZOEIQEhQWG0pEVh4gIkZYJigqSFouMDJKXDY4OkxePkBCTlA"
         settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
@@ -230,7 +230,8 @@ class TestSpoiler(unittest.TestCase):
         print(types)
         print(values)
 
-    def printDesiredOutput(self, spoiler: Spoiler):
-        """Print any desired output from the spoiler. Customize to your heart's desire."""
-        print("# of path hints: " + str(spoiler.hint_distribution[HintType.Multipath]) + " | woth length: " + str(len(spoiler.woth_locations) - 2))
-        print()
+
+def printDesiredOutput(self, spoiler: Spoiler):
+    """Print any desired output from the spoiler. Customize to your heart's desire."""
+    print("# of path hints: " + str(spoiler.hint_distribution[HintType.Multipath]) + " | woth length: " + str(len(spoiler.woth_locations) - 2))
+    print()

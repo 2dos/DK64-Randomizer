@@ -22,6 +22,12 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
+    # This region serves to set up the entry for the level based on the DK Portal Location
+    Regions.FranticFactoryEntryHandler: Region("Frantic Factory Entry Handler", "This should not be hinted", Levels.FranticFactory, False, None, [], [], [
+        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
+    ], restart=-1),
+
     Regions.FranticFactoryStart: Region("Frantic Factory Start", "Frantic Factory Start", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryMainEnemy_LobbyLeft, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_LobbyRight, lambda l: True),
@@ -34,14 +40,13 @@ LogicRegions = {
         Event(Events.FactoryW3aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
-        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
         TransitionFront(Regions.Testing, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate) or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
         TransitionFront(Regions.BeyondHatch, lambda l: Events.HatchOpened in l.Events or l.phasewalk),
     ]),
 
     Regions.Testing: Region("Testing", "Testing Area", Levels.FranticFactory, True, -1, [
         LocationLogic(Locations.FactoryDonkeyNumberGame, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdonkey),
-        LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy), MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: (l.balloon or l.advanced_platforming) and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryTinyDartboard, lambda l: Events.DartsPlayed in l.Events and l.tiny),
         LocationLogic(Locations.FactoryKasplatBlocks, lambda l: not l.settings.kasplat_rando),
@@ -61,8 +66,8 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryStart, lambda l: Events.TestingGateOpened in l.Events or l.phasewalk),
         TransitionFront(Regions.RandD, lambda l: True),
-        TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.FunkyFactory, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
+        TransitionFront(Regions.FunkyFactory, lambda l: l.funkyAccess),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
@@ -140,8 +145,8 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.HatchOpened in l.Events),
         TransitionFront(Regions.LowerCore, lambda l: True),
-        TransitionFront(Regions.CrankyFactory, lambda l: True),
-        TransitionFront(Regions.CandyFactory, lambda l: True),
+        TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),

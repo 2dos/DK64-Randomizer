@@ -6,13 +6,14 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.CrystalCavesMain: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # Near BBlast
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: ((l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()) and l.coconut, None, 1),  # Warp 1
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: ((l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)) and l.coconut, None, 1),  # Warp 1
 
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Near Funky
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Near Bonus
@@ -26,14 +27,14 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # River To Igloo
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.phasewalk, None, 1),  # Warp 3 cave
 
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim(), None, 1),  # Gorilla Gone room
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim(), None, 3),  # Gorilla Gone room
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls), None, 1),  # Gorilla Gone room
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls), None, 3),  # Gorilla Gone room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On small boulder switch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.barrels, None, 1),  # Underneath small boulder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # On bridge to small boulder switch
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim()) and l.chunky, None, 3),  # Gorilla Gone room
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)) and l.chunky, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # On ice castle
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # In water below Funky
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 2),  # Pillar above warps
@@ -151,7 +152,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 4),
     ],
     Regions.DiddyUpperCabin: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack and (l.guitar or l.oranges) and l.spring, None, 3),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()), None, 3),
     ],
     Regions.LankyCabin: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),

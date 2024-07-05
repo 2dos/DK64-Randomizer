@@ -8,7 +8,7 @@
     }
 
     .plando-pill {
-        flex: 0 0 14%;
+        flex: 0 0 16%;
     }
 </style>
 {# TODO LIST #}
@@ -25,16 +25,16 @@
     </label>
     <div class="flex-container flex-center import-export-container">
         <input id="import_plando_settings"
-               class="btn btn-primary settings-button"
+               class="btn btn-secondary settings-button"
                type="button"
                onClick="plando_import_filebox()"
                value="Import Settings from File"/>
         <input id="export_plando_settings"
-               class="btn btn-primary settings-button"
+               class="btn btn-secondary settings-button"
                type="button"
                value="Export Settings to File"/>
         <input id="reset_plando_settings"
-               class="btn btn-primary settings-button"
+               class="btn btn-secondary settings-button"
                type="button"
                value="Reset Plando Settings"/>
     </div>
@@ -58,7 +58,7 @@
         </div>
         <div>
             <input id="export_plando_string"
-                    class="btn btn-primary plando-settings-button"
+                    class="btn btn-secondary plando-settings-button"
                     style="margin-top: 6px;"
                     type="button"
                     value="Export Plan String"/>
@@ -95,6 +95,7 @@
                     data-bs-target="#nav-plando-{{panelName}}"
                     type="button"
                     role="tab"
+                    {% if panelName == "Locations" %}style="display: none;"{% endif %}
                     aria-controls="nav-plando-{{panelName}}"
                     aria-selected="false">
                 <p class="select-title">{{panel["name"]}}</p>
@@ -110,6 +111,10 @@
         {% for panelName, panel in plando_panels.items() %}
             {% if panelName == "Shops" %}
                 {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
+            {% elif panelName == "Switches" %}
+                {% include 'plandomizer/plandomizer_switches.html.jinja2' %}
+            {% elif panelName == "Locations" %}
+                {% include 'plandomizer/plandomizer_locations.html.jinja2' %}
             {% elif panelName == "Minigames" %}
                 {% include 'plandomizer/plandomizer_minigames.html.jinja2' %}
             {% elif panelName == "Hints" %}

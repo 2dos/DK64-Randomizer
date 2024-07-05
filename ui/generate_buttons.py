@@ -90,21 +90,16 @@ def import_settings_string(event):
                             if option.value == item.name:
                                 option.selected = True
             else:
-                if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                    js.jq(f"#{key}").slider("setValue", settings[key])
-                    js.jq(f"#{key}").slider("enable")
-                    js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                selector = js.document.getElementById(key)
+                # If the selector is a select box, set the selectedIndex to the value of the option
+                if selector.tagName == "SELECT" and key != "random-weights":
+                    for option in selector.options:
+                        if option.value == SettingsMap[key](settings[key]).name:
+                            # Set the value of the select box to the value of the option
+                            option.selected = True
+                            break
                 else:
-                    selector = js.document.getElementById(key)
-                    # If the selector is a select box, set the selectedIndex to the value of the option
-                    if selector.tagName == "SELECT":
-                        for option in selector.options:
-                            if option.value == SettingsMap[key](settings[key]).name:
-                                # Set the value of the select box to the value of the option
-                                option.selected = True
-                                break
-                    else:
-                        js.jq(f"#{key}").val(settings[key])
+                    js.jq(f"#{key}").val(settings[key])
                 js.jq(f"#{key}").removeAttr("disabled")
         except Exception as e:
             print(e)

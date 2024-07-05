@@ -795,3 +795,50 @@ class Overlay(IntEnum):
     Bonus = 8
     Arcade = 9
     Jetpac = 10
+
+
+class Vendors(IntEnum):
+    """Vendors Enum."""
+
+    Cranky = 0
+    Funky = 1
+    Candy = 2
+    Snide = 3
+
+
+class ExtraTextures(IntEnum):
+    """Extra Textures in Table 25 after the bonus skins."""
+
+    FakeGBShine = 0
+    RainbowCoin0 = auto()
+    RainbowCoin1 = auto()
+    RainbowCoin2 = auto()
+    MelonSurface = auto()
+    BonusShell = auto()
+    OSprintLogoLeft = auto()
+    OSprintLogoRight = auto()
+    BLockerItemMove = auto()
+    BLockerItemBlueprint = auto()
+    BLockerItemFairy = auto()
+    BLockerItemBean = auto()
+    BLockerItemPearl = auto()
+    BLockerItemRainbowCoin = auto()
+    BLockerItemIceTrap = auto()
+    BLockerItemPercentage = auto()
+    BLockerItemBalloon = auto()
+    BLockerItemCompanyCoin = auto()
+    BLockerItemKong = auto()
+
+
+class MoveTypes(IntEnum):
+    """Move Types Enum."""
+
+    special = 0
+    slam = auto()
+    weapon = auto()
+    ammo_belt = auto()
+    instrument = auto()
+    flag = auto()
+    gb = auto()
+    gun_upgrade = auto()
+    instrument_upgrade = auto()

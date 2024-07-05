@@ -22,7 +22,7 @@
     lo, hi
 */
 
-static char version_string[] = "DK64R 3.0\n";
+static char version_string[] = "DK64R 4.0D\n";
 
 typedef struct crash_handler_info {
     /* 0x000 */ char unk_000[0x28];
@@ -45,7 +45,7 @@ static char* general_text[] = {
     "S1:%08X\tS2:%08X\tS3:%08X\n",
     "S4:%08X\tS5:%08X\tS6:%08X\n",
     "S7:%08X\tT8:%08X\tT9:%08X\n",
-    "GP:%08X\tSP:%08X\tS8:%08X\n",
+    "GP:%08X\tSP:%08X\tFP:%08X\n",
     "RA:%08X\tLO:%08X\tHI:%08X\n",
 };
 
@@ -170,9 +170,4 @@ void CrashHandler(crash_handler_info* info) {
     if (*(int*)(0x807563B8) == 4) {
         dumpReturns(info);
     }
-}
-
-void initStackTrace(void) {
-    writeFunction(0x80732314, &CrashHandler);
-    writeFunction(0x8073231C, &CrashHandler);
 }

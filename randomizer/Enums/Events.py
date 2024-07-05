@@ -18,6 +18,7 @@ class Events(IntEnum):
     CavesKeyTurnedIn = auto()
     CastleKeyTurnedIn = auto()
     HelmKeyTurnedIn = auto()
+    TrainingBarrelsSpawned = auto()
 
     # Jungle Japes events
     Rambi = auto()
@@ -106,6 +107,13 @@ class Events(IntEnum):
     KRoolLanky = auto()
     KRoolTiny = auto()
     KRoolChunky = auto()
+    KRoolDillo1 = auto()
+    KRoolDog1 = auto()
+    KRoolJack = auto()
+    KRoolPufftoss = auto()
+    KRoolDog2 = auto()
+    KRoolDillo2 = auto()
+    KRoolKKO = auto()
     KRoolDefeated = auto()
 
     # Level entered events for shops

@@ -4,7 +4,7 @@ import os
 import zlib
 import math
 
-from BuildEnums import TableNames
+from BuildEnums import TableNames, ExtraTextures
 from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset
 
 diddy_fix = """
@@ -122,7 +122,7 @@ modifications = [
     },
 ]
 
-krusha_kong = -1
+kong_models = [0, 0, 0, 0, 0]
 DK_SCALE = 0.75
 GENERIC_SCALE = 0.49
 krusha_scaling = [
@@ -138,12 +138,32 @@ krusha_scaling = [
     # Chunky
     [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
 ]
-krusha_file = "krusha_setting.txt"
-if os.path.exists(krusha_file):
-    with open(krusha_file, "r") as fh:
-        krusha_kong = int(fh.read())
+
+kong_pairing = [
+    (3, None),  # DK
+    (0, 1),  # Diddy
+    (5, 6),  # Lanky
+    (8, 9),  # Tiny
+    (11, 12),  # Chunky
+]
+
+model_pairing = {
+    1: (3, 3),  # DK
+    2: (0, 1),  # Diddy
+    3: (5, 6),  # Lanky
+    4: (8, 9),  # Tiny
+    5: (11, 12),  # Chunky
+    6: (13, 0xEC),  # Disco
+    7: (0xDA, 0xDA),  # Krusha
+    8: (0x113, 0x113),  # K Rool Fight
+    9: (0x114, 0x114),  # K Rool Cutscene
+}
+
+krusha_kong = -1
 
 BARREL_BASE = 0xE3  # 0x75
+BLOCKER_BASE = 0x64
+DIRT_BASE = 0xDF
 
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
@@ -162,40 +182,6 @@ with open(ROMName, "rb") as rom:
             decompress = zlib.decompress(compress, (15 + 32))
             fh.write(decompress)
         with open(model["model_file"], "r+b") as fh:
-            if idx == 0xDA:
-                if krusha_kong != -1:
-                    print(f"Scaling Krusha Down for kong {krusha_kong}")
-                    # Write Krusha
-                    base = 0x450C
-                    fh.seek(base)
-                    count_0 = int.from_bytes(fh.read(4), "big")
-                    changes = krusha_scaling[krusha_kong][:3]
-                    changes_0 = [
-                        krusha_scaling[krusha_kong][3],
-                        krusha_scaling[krusha_kong][4],
-                        krusha_scaling[krusha_kong][3],
-                    ]
-                    for i in range(count_0):
-                        i_start = base + 4 + (i * 0x14)
-                        for coord_index, change in enumerate(changes):
-                            fh.seek(i_start + (4 * coord_index) + 4)
-                            val_i = int.from_bytes(fh.read(4), "big")
-                            val_f = change(intf_to_float(val_i))
-                            fh.seek(i_start + (4 * coord_index) + 4)
-                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
-                    section_2_start = base + 4 + (count_0 * 0x14)
-                    fh.seek(section_2_start)
-                    count_1 = int.from_bytes(fh.read(4), "big")
-                    for i in range(count_1):
-                        i_start = section_2_start + 4 + (i * 0x10)
-                        for coord_index, change in enumerate(changes_0):
-                            fh.seek(i_start + (4 * coord_index))
-                            val_i = int.from_bytes(fh.read(4), "big")
-                            val_f = change(intf_to_float(val_i))
-                            fh.seek(i_start + (4 * coord_index))
-                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
-                else:
-                    print("Ignoring Krusha Scale Down")
             fh.seek(0)
             sub_idx = 0
             for wipe in model["wipe"]:
@@ -241,6 +227,7 @@ with open(ROMName, "rb") as rom:
                     bp_y += 65536
                 fh.seek(vtx_addr)
                 fh.write(bp_y.to_bytes(2, "big"))
+    # New Bonus Barrel
     rom.seek(actor_table + (BARREL_BASE << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -319,7 +306,87 @@ with open(ROMName, "rb") as rom:
                     fh.seek(0x28 + (0x10 * i) + 4)
                     fh.write(z.to_bytes(2, "big"))
             fh.seek(0x114C)
-            fh.write(getBonusSkinOffset(5).to_bytes(4, "big"))
+            fh.write(getBonusSkinOffset(ExtraTextures.BonusShell).to_bytes(4, "big"))
+    # New B. Locker
+    rom.seek(actor_table + (BLOCKER_BASE << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    BASE_TEXTURE = 0xF
+    rom.seek(model_start)
+    with open("blocker_base.bin", "wb") as fh:
+        compress = rom.read(model_size)
+        decompress = zlib.decompress(compress, (15 + 32))
+        fh.write(decompress[:0x304C])  # Copy initial data
+        number_array = [0x124B + x for x in range(10)]
+        texture_arrays = [
+            [0xDFB] + number_array,
+            [0xDF8] + number_array,
+            [0xDF3] + number_array,
+            [
+                0x1255,  # REQITEM_NONE
+                getBonusSkinOffset(ExtraTextures.BLockerItemKong),  # REQITEM_KONG - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemMove),  # REQITEM_MOVE - TODO: Get image for this
+                0x1255,  # REQITEM_GOLDENBANANA
+                getBonusSkinOffset(ExtraTextures.BLockerItemBlueprint),  # REQITEM_BLUEPRINT - TODO: Get image for this, sprite image is 48x42 rather than 44x44
+                getBonusSkinOffset(ExtraTextures.BLockerItemFairy),  # REQITEM_FAIRY - TODO: Get image for this, sprite image is RGBA32
+                0x16F5,  # REQITEM_KEY
+                0x1705,  # REQITEM_CROWN
+                getBonusSkinOffset(ExtraTextures.BLockerItemCompanyCoin),  # REQITEM_COMPANYCOIN
+                0x156D,  # REQITEM_MEDAL
+                getBonusSkinOffset(ExtraTextures.BLockerItemBean),  # REQITEM_BEAN - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemPearl),  # REQITEM_PEARL - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemRainbowCoin),  # REQITEM_RAINBOWCOIN - TODO: Get image for this, sprite image is 48x42 rather than 44x44
+                getBonusSkinOffset(ExtraTextures.BLockerItemIceTrap),  # REQITEM_ICETRAP - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemPercentage),  # REQITEM_GAMEPERCENTAGE - TODO: Get image for this
+                getBonusSkinOffset(ExtraTextures.BLockerItemBalloon),  # REQITEM_COLOREDBANANA
+            ],
+        ]
+        fh.write(len(texture_arrays).to_bytes(2, "big"))
+        for arr_index, arr in enumerate(texture_arrays):
+            fh.write(len(arr).to_bytes(2, "big"))
+            key = 0xC + arr_index
+            fh.write(key.to_bytes(2, "big"))
+            fh.write((1).to_bytes(2, "big"))
+            for item in arr:
+                fh.write(item.to_bytes(2, "big"))
+        raw_size = fh.tell()
+        offset = raw_size & 3
+        if offset != 0:
+            for x in range(4 - offset):
+                fh.write((0).to_bytes(1, "big"))
+    with open("blocker_base.bin", "r+b") as fh:
+        fh.seek(0x256C)
+        fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big"))
+    # New Dirt Patch
+    rom.seek(actor_table + (DIRT_BASE << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    BASE_TEXTURE = 0xC
+    rom.seek(model_start)
+    with open("dirt_base.bin", "wb") as fh:
+        compress = rom.read(model_size)
+        decompress = zlib.decompress(compress, (15 + 32))
+        fh.write(decompress[:0xD84])  # Copy initial data
+        dirt_reward_array = [x + 6026 + (2 * len(barrel_skins)) for x in range(len(barrel_skins))]
+        texture_arrays = [[0x1379] + dirt_reward_array]
+        fh.write(len(texture_arrays).to_bytes(2, "big"))
+        for arr_index, arr in enumerate(texture_arrays):
+            fh.write(len(arr).to_bytes(2, "big"))
+            key = 0xC + arr_index
+            fh.write(key.to_bytes(2, "big"))
+            fh.write((1).to_bytes(2, "big"))
+            for item in arr:
+                fh.write(item.to_bytes(2, "big"))
+        raw_size = fh.tell()
+        offset = raw_size & 3
+        if offset != 0:
+            for x in range(4 - offset):
+                fh.write((0).to_bytes(1, "big"))
+    with open("dirt_base.bin", "r+b") as fh:
+        fh.seek(0x5FC)
+        fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big"))
 
     # Fake Item - Model Two
     rom.seek(modeltwo_table + (0x74 << 2))
@@ -336,7 +403,7 @@ with open(ROMName, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xF4)
-        fh.write(getBonusSkinOffset(0).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.FakeGBShine).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):
@@ -358,7 +425,7 @@ with open(ROMName, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xACC)
-        fh.write(getBonusSkinOffset(0).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.FakeGBShine).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):

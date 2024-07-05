@@ -362,27 +362,29 @@ void updateEnabledStates(void) {
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
-	for (int i = 0; i < 5; i++) {
-		int subtype = -1;
-		if (i < 4) {
-			// Training Moves
-			if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
-				subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+	if (Rando.fast_start_beginning) {
+		for (int i = 0; i < 5; i++) {
+			int subtype = -1;
+			if (i < 4) {
+				// Training Moves
+				if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
+					subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+				}
+			} else if (i == 4) {
+				// First Move
+				if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
+					subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+				}
 			}
-		} else if (i == 4) {
-			// First Move
-			if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
-				subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+			if (subtype == 0) {
+				slam_screen_level += 1;
+			} else if (subtype == 1) {
+				belt_screen_level += 1;
+			} else if (subtype == 2) {
+				ins_screen_level += 1;
 			}
+			
 		}
-		if (subtype == 0) {
-			slam_screen_level += 1;
-		} else if (subtype == 1) {
-			belt_screen_level += 1;
-		} else if (subtype == 2) {
-			ins_screen_level += 1;
-		}
-		
 	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
@@ -504,13 +506,10 @@ void modifyTrackerImage(int dl_offset) {
 
 int getTrackerYOffset(void) {
 	float y_temp = DEFAULT_TRACKER_Y_OFFSET;
-	if ((Rando.true_widescreen) && (CurrentMap == MAP_MAINMENU)) {
-		y_temp = DEFAULT_TRACKER_Y_OFFSET * (SCREEN_HD_FLOAT / 240.0f);
-	}
 	return y_temp;
 }
 
-int* display_file_images(int* dl, int y_offset) {
+Gfx* display_file_images(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display images on the file screen
 	 * 
@@ -520,15 +519,12 @@ int* display_file_images(int* dl, int y_offset) {
 	 * @return New Display List Address
 	 */
 	int tracker_x = 160;
-	if (Rando.true_widescreen) {
-		tracker_x = SCREEN_WD >> 1;
-	}
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + getTrackerYOffset(),1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	return dl;
 }
 
-int* display_text(int* dl) {
+Gfx* display_text(Gfx* dl) {
 	/**
 	 * @brief Display Text on the file screen
 	 * 
@@ -537,9 +533,6 @@ int* display_text(int* dl) {
 	 * @return New Display List Address
 	 */
 	int y = FileScreenDLOffset - 320;
-	if (Rando.true_widescreen) {
-		y -= ((DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset()) * 2);
-	}
 	// Balanced IGT
 	// y += LINE_GAP;
 	int secs = IGT % 60;
@@ -549,9 +542,6 @@ int* display_text(int* dl) {
 	int minutes = hm % 60;
 	int hours = hm / 60;
 	float stat_x = 410;
-	if (Rando.true_widescreen) {
-		stat_x = SCREEN_WD + 90.0f;
-	}
 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
 	dl = drawText(dl, 1, stat_x, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	// Percentage Counter
@@ -567,7 +557,7 @@ int* display_text(int* dl) {
 static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
 #define INFO_Y_DIFF 50
 
-int* displayHash(int* dl, int y_offset) {
+Gfx* displayHash(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display seed hash on the file screen
 	 * 
@@ -580,10 +570,6 @@ int* displayHash(int* dl, int y_offset) {
 		int hash_index = Rando.hash[i] % 10;
 		int starting_x = 440.0f;
 		int hash_y = 920;
-		if (Rando.true_widescreen) {
-			starting_x = (SCREEN_WD << 1) - 200;
-			hash_y = (4 * SCREEN_HD) - 40;
-		}
 		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, starting_x + (100 * i), hash_y - y_offset, 3.0f, 3.0f, 0xFF);
 	}
 	int info_y = 480 - y_offset;
@@ -692,6 +678,18 @@ void wipeFileStats(void) {
 	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
 }
 
+void setAllDefaultFlags(void) {
+	short* data = getFile(0x800, 0x1FFD800);
+	for (int i = 0; i < 0x400; i++) {
+		short flag = data[i];
+		if (flag == -1) {
+			return;
+		} else {
+			setPermFlag(flag);
+		}
+	}
+}
+
 void file_progress_screen_code(actorData* actor, int buttons) {
 	/**
 	 * @brief Handle inputs on the file progress screen
@@ -720,18 +718,11 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 				fileStart(0);
 				if (file_empty) {
 					// New File
-					setFlagDuplicate(0,1,FLAGTYPE_PERMANENT); // Set null flag as it ensures no=item stuff is actually no-item
+					setAllDefaultFlags();
 					unlockMoves();
 					applyFastStart();
 					openCrownDoor();
 					giveCollectables();
-					activateBananaports();
-					if(Rando.faster_checks.rabbit_race) {
-						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
-					}
-					if (Rando.quality_of_life.caves_kosha_dead) {
-						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
-					}
 					if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
 						setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
 					}
@@ -742,8 +733,10 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
 					SaveToGlobal();
-					if (Rando.galleon_water_raised) {
-						setPermFlag(FLAG_MODIFIER_GALLEONWATER);
+					for (int i = 0; i < 4; i++) {
+						if (Rando.check_shop_flags & (0x80 >> i)) {
+							setPermFlag(FLAG_ITEM_CRANKY + i);
+						}
 					}
 					handleTimeOfDay(TODCALL_INITFILE);
 				} else {
@@ -752,6 +745,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					determineStartKong_PermaLossMode();
 					giveCollectables();
 				}
+				updateBarrierCounts();
 				if (ENABLE_FILENAME) {
 					writeDefaultFilename();
 				}
@@ -791,7 +785,7 @@ static char* inverted_controls_str[] = {
 	"NON-INVERTED"
 };
 
-int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
+Gfx* displayInverted(Gfx* dl, int style, int x, int y, char* str, int unk0) {
 	/**
 	 * @brief Display the inverted controls text on the options screen
 	 * 
@@ -808,22 +802,6 @@ int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
 		InvertedControls = 1;
 	}
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
-}
-
-void initOptionScreen(void) {
-	/**
-	 * @brief Initialize Options Screen
-	 */
-	*(char*)(0x800338FC) = 5; // 5 Options
-	*(short*)(0x8002DA86) = 1; // Cap to 1
-	*(short*)(0x8002DA46) = getHi(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA4E) = getLo(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA1E) = getHi(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA22) = getLo(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DADE) = getHi(&InvertedControls); // Save to global
-	*(short*)(0x8002DAE2) = getLo(&InvertedControls); // Save to global
-	*(short*)(0x8002DA88) = 0x1000; // Prevent Language Update
-	writeFunction(0x8002DEC4, &displayInverted); // Modify Function Call
 }
 
 static unsigned char previous_map_save = MAP_ISLES;

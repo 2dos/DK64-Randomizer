@@ -37,7 +37,7 @@ typedef struct text_params {
     - Text Bubble Color: 806a3cb2
 */
 
-int* displayModifiedText(int* dl, int style, int x, int y, char* text, text_params* params) {
+Gfx* displayModifiedText(int* dl, int style, int x, int y, char* text, text_params* params) {
     /**
      * @brief Display function for rendering a textbox with modified text colors
      */
@@ -49,8 +49,21 @@ int* displayModifiedText(int* dl, int style, int x, int y, char* text, text_para
             *(unsigned int*)(dl_old) = emph_text_colors[i] | (*(int*)(dl_old) & 0xFF);
         }
     }
-    return displayText(dl, style, x, y, text, 0);
+    return displayText((Gfx*)dl, style, x, y, text, 0);
 }
+
+unsigned int dark_mode_colors[] = {
+    0xFFA01000,
+    0xFF000000,
+    0x0C7DED00,
+    0xBB1CFF00,
+    0x59FF6400,
+    0xE8489800,
+    0x3EE1E100,
+    0xD2575700,
+    0xB5CDFF00,
+    0x00CE0E00,
+};
 
 void initTextChanges(void) {
     /**
@@ -60,16 +73,9 @@ void initTextChanges(void) {
     if (Rando.dark_mode_textboxes) {
         *(short*)(0x806A3CB2) = 0; // Set textbox color to #000000
         base_text_color = 0xFFFFFF00;
-        emph_text_colors[0] = 0xFFA01000;
-        emph_text_colors[1] = 0xFF000000;
-        emph_text_colors[2] = 0x0C7DED00;
-        emph_text_colors[3] = 0xBB1CFF00;
-        emph_text_colors[4] = 0x59FF6400;
-        emph_text_colors[5] = 0xE8489800;
-        emph_text_colors[6] = 0x3EE1E100;
-        emph_text_colors[7] = 0xD2575700;
-        emph_text_colors[8] = 0xB5CDFF00;
-        emph_text_colors[9] = 0x00CE0E00;
+        for (int i = 0; i < 10; i++) {
+            emph_text_colors[i] = dark_mode_colors[i];
+        }
     } else {
         float opacity = 200.0f;
         *(short*)(0x806A45C6) = *(short*)(&opacity);

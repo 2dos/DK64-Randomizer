@@ -52,15 +52,19 @@
       "problemMatcher": []
     },
     {
+      "label": "Build base hack builder",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./pyinstaller_handler.py",
+      "problemMatcher": []
+    },
+    {
       "label": "Lint Repo",
       "dependsOn": [
         "Format Repo",
         "Validate Styles",
         "Validate Docstrings",
-        //"Validate Jinja2",
         "Validate C",
-        "Update Custom Location Lists", // Also updates wiki
-        //"Update Wiki"
+        "Update Custom Location Lists"
       ],
       "problemMatcher": []
     },
@@ -74,6 +78,16 @@
       "label": "Build BPS",
       "type": "shell",
       "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Build Test Hack",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
       "problemMatcher": [],
       "group": {
         "kind": "build",

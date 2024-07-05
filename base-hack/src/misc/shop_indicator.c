@@ -1,10 +1,18 @@
 #include "../../include/common.h"
 
+static short flag_purchase_types[] = {
+	PURCHASE_FLAG,
+	PURCHASE_GB,
+	PURCHASE_ICEBUBBLE,
+	PURCHASE_ICEREVERSE,
+	PURCHASE_ICESLOW,
+};
+
 int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 	if (kong > 4) {
 		kong = 0;
 	}
-	if (purchase_type != PURCHASE_NOTHING) {
+	if (purchase_type != -1) {
 		if (purchase_value != 0) {
 			if (purchase_type == PURCHASE_MOVES) {
 				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
@@ -44,7 +52,7 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 						return 5;
 					}
 				}
-			} else if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
+			} else if (inShortList(purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
 				if (purchase_value == -2) { // Shockwave & Camera Combo
 					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
 						return 6;
@@ -84,39 +92,14 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 #define SHOPINDEX_FUNKY 1
 #define SHOPINDEX_CANDY 2
 
-int isSharedMove(int shop_index, int level) {
-	if (shop_index == SHOPINDEX_CRANKY) {
-		purchase_struct* targ = (purchase_struct*)&CrankyMoves_New[0][level];
-		for (int i = 1; i < 5; i++) {
-			purchase_struct* src = (purchase_struct*)&CrankyMoves_New[i][level];
-			if (targ->move_kong != src->move_kong) {
-				return 0;
-			}
-			if (targ->purchase_type != src->purchase_type) {
-				return 0;
-			}
-			if (targ->purchase_value != src->purchase_value) {
-				return 0;
-			}
-		}
-	} else if (shop_index == SHOPINDEX_FUNKY) {
-		purchase_struct* targ = (purchase_struct*)&FunkyMoves_New[0][level];
-		for (int i = 1; i < 5; i++) {
-			purchase_struct* src = (purchase_struct*)&FunkyMoves_New[i][level];
-			if (targ->move_kong != src->move_kong) {
-				return 0;
-			}
-			if (targ->purchase_type != src->purchase_type) {
-				return 0;
-			}
-			if (targ->purchase_value != src->purchase_value) {
-				return 0;
-			}
-		}
-	} else if (shop_index == SHOPINDEX_CANDY) {
-		purchase_struct* targ = (purchase_struct*)&CandyMoves_New[0][level];
-		for (int i = 1; i < 5; i++) {
-			purchase_struct* src = (purchase_struct*)&CandyMoves_New[i][level];
+int isSharedMove(vendors shop_index, int level) {
+	purchase_struct* targ = getShopData(shop_index, 0, level);
+	if (!targ) {
+		return 1;
+	}
+	for (int i = 1; i < 5; i++) {
+		purchase_struct* src = getShopData(shop_index, i, level);
+		if (src) {
 			if (targ->move_kong != src->move_kong) {
 				return 0;
 			}
@@ -164,17 +147,17 @@ typedef enum counter_items {
 	/* 0x012 */ COUNTER_FAIRY,
 	/* 0x013 */ COUNTER_RAINBOWCOIN,
 	/* 0x014 */ COUNTER_FAKEITEM,
+	/* 0x015 */ COUNTER_DILLO1,
+	/* 0x016 */ COUNTER_DOG1,
+	/* 0x017 */ COUNTER_MJ,
+	/* 0x018 */ COUNTER_PUFFTOSS,
+	/* 0x019 */ COUNTER_DOG2,
+	/* 0x01A */ COUNTER_DILLO2,
+	/* 0x01B */ COUNTER_KKO,
 } counter_items;
 
-int getCounterItem(int shop_index, int kong, int level) {
-	purchase_struct* data = 0;
-	if (shop_index == SHOPINDEX_CRANKY) {
-		data = (purchase_struct*)&CrankyMoves_New[kong][level];
-	} else if (shop_index == SHOPINDEX_FUNKY) {
-		data = (purchase_struct*)&FunkyMoves_New[kong][level];
-	} else if (shop_index == SHOPINDEX_CANDY) {
-		data = (purchase_struct*)&CandyMoves_New[kong][level];
-	}
+int getCounterItem(vendors shop_index, int kong, int level) {
+	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
 		switch(data->purchase_type) {
 			case PURCHASE_MOVES:
@@ -189,7 +172,7 @@ int getCounterItem(int shop_index, int kong, int level) {
 					int flag = data->purchase_value;
 					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						return COUNTER_BP;
-					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+					} else if (isMedalFlag(flag)) {
 						return COUNTER_MEDAL;
 					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
 						return COUNTER_CROWN;
@@ -205,7 +188,7 @@ int getCounterItem(int shop_index, int kong, int level) {
 						return COUNTER_FAIRY;
 					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
 						return COUNTER_RAINBOWCOIN;
-					} else if (isFlagInRange(flag, FLAG_FAKEITEM, 16)) {
+					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
 						return COUNTER_FAKEITEM;
 					} else {
 						if (isTBarrelFlag(flag)) {
@@ -233,25 +216,26 @@ int getCounterItem(int shop_index, int kong, int level) {
 				break;
 			case PURCHASE_GB:
 				return COUNTER_GB;
+			case PURCHASE_ICEBUBBLE:
+			case PURCHASE_ICEREVERSE:
+			case PURCHASE_ICESLOW:
+				return COUNTER_FAKEITEM;
 			break;
 		}
 	}
 	return COUNTER_NO_ITEM;
 }
 
-void getMoveCountInShop(counter_paad* paad, int shop_index) {
+void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 	int level = getWorld(CurrentMap,0);
 	int possess = 0;
 	int count = 0;
 	int slot = 0;
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
-			if (shop_index == SHOPINDEX_CRANKY) {
-				possess = doesKongPossessMove(CrankyMoves_New[i][level].purchase_type, CrankyMoves_New[i][level].purchase_value, CrankyMoves_New[i][level].move_kong);
-			} else if (shop_index == SHOPINDEX_FUNKY) {
-				possess = doesKongPossessMove(FunkyMoves_New[i][level].purchase_type, FunkyMoves_New[i][level].purchase_value, FunkyMoves_New[i][level].move_kong);
-			} else if (shop_index == SHOPINDEX_CANDY) {
-				possess = doesKongPossessMove(CandyMoves_New[i][level].purchase_type, CandyMoves_New[i][level].purchase_value, CandyMoves_New[i][level].move_kong);
+			purchase_struct* data = getShopData(shop_index, i, level);
+			if (data) {
+				possess = doesKongPossessMove(data->purchase_type, data->purchase_value, data->move_kong);
 			}
 			if ((possess == 1) && (isSharedMove(shop_index, level))) {
 				possess = 7;
@@ -433,6 +417,27 @@ float getShopScale(int index) {
 	return 1.0f;
 }
 
+typedef struct krool_head {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char texture_offset;
+} krool_head;
+
+static const krool_head helm_heads[] = {
+	{.map = MAP_JAPESDILLO, .texture_offset=COUNTER_DILLO1},
+	{.map = MAP_AZTECDOGADON, .texture_offset=COUNTER_DOG1},
+	{.map = MAP_FACTORYJACK, .texture_offset=COUNTER_MJ},
+	{.map = MAP_GALLEONPUFFTOSS, .texture_offset=COUNTER_PUFFTOSS},
+	{.map = MAP_FUNGIDOGADON, .texture_offset=COUNTER_DOG2},
+	{.map = MAP_CAVESDILLO, .texture_offset=COUNTER_DILLO2},
+	{.map = MAP_CASTLEKUTOUT, .texture_offset=COUNTER_KKO},
+	{.map = MAP_KROOLDK, .texture_offset=COUNTER_DK_FACE},
+	{.map = MAP_KROOLDIDDY, .texture_offset=COUNTER_DIDDY_FACE},
+	{.map = MAP_KROOLLANKY, .texture_offset=COUNTER_LANKY_FACE},
+	{.map = MAP_KROOLTINY, .texture_offset=COUNTER_TINY_FACE},
+	{.map = MAP_KROOLCHUNKY, .texture_offset=COUNTER_CHUNKY_FACE},
+	{.map = 0xFF, .texture_offset=COUNTER_NO_ITEM},
+};
+
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -500,9 +505,15 @@ void newCounterCode(void) {
 				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
 			}
 			int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
-			int face = Rando.k_rool_order[id - 0x100];
+			int face_map = Rando.k_rool_order[id - 0x100];
+			int face_img = COUNTER_NO_ITEM;
+			for (int i = 0; i < sizeof(helm_heads)/sizeof(krool_head); i++) {
+				if (helm_heads[i].map == face_map) {
+					face_img = helm_heads[i].texture_offset;
+				}
+			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face+1, 1);
+			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face_img, 1);
 		}
 	} else {
 		if (CurrentMap != MAP_HELM) {

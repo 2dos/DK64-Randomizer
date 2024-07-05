@@ -112,7 +112,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Behind Barn
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and (l.TimeAccess(Regions.MillArea, Time.Day) or l.advanced_platforming), None, 1),  # Snide
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Near Rafter Barn
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring, None, 1),  # Near Rafter Barn
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring or l.CanMoontail(), None, 1),  # Near Rafter Barn
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 7),  # Mill roof
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Above Balloon pad
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.TimeAccess(Regions.MillArea, Time.Night), None, 1),  # Attic Entrance

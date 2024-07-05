@@ -10,7 +10,7 @@
  */
 #include "../../include/common.h"
 
-static char ice_trap_queued = 0;
+static ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 static const map_bitfield banned_trap_maps = {
     .test_map = 0,
     .funkys_store = 1, // Reason: Shop
@@ -411,22 +411,41 @@ void trapPlayer_New(void) {
     }
 }
 
+static const float bone_slow_scales[] = {0.4f, 0.38f, 0.3f};
+static const char bone_slow_bones[] = {1, 5, 6};
+
 void initIceTrap(void) {
     /**
      * @brief Initialize an ice trap
      */
-    trapPlayer_New();
-    Player->trap_bubble_timer = 200;
-    playSFX(0x2D4); // K Rool Laugh
-    customDamageCode();
-    ice_trap_queued = 0;
+    if (ice_trap_queued == ICETRAP_BUBBLE) {
+        trapPlayer_New();
+        Player->trap_bubble_timer = 200;
+        playSFX(0x2D4); // K Rool Laugh
+        customDamageCode();
+    } else if (ice_trap_queued == ICETRAP_REVERSECONTROLS) {
+        Player->strong_kong_ostand_bitfield |= 0x80;
+        Player->trap_bubble_timer = 240;
+        playSFX(0x2D4); // K Rool Laugh
+    } else if (ice_trap_queued == ICETRAP_SLOWED) {
+        playSFX(0x2D4); // K Rool Laugh
+        for (int i = 0; i < 3; i++) {
+            unkSpriteRenderFunc(0xF0);
+            unkSpriteRenderFunc_1(1);
+            loadSpriteFunction(0x8071F758);
+            attachSpriteToBone((void*)0x80720E2C, bone_slow_scales[i], Player, bone_slow_bones[i], 2);
+        }
+        Player->strong_kong_ostand_bitfield |= 0x08000000;
+        Player->trap_bubble_timer = 240;
+    }
+    ice_trap_queued = ICETRAP_OFF;
 }
 
-void queueIceTrap(void) {
+void queueIceTrap(ICE_TRAP_TYPES trap_type) {
     /**
      * @brief Call the ice trap queue-ing system
      */
-    ice_trap_queued = 1;
+    ice_trap_queued = trap_type;
 }
 
 void callIceTrap(void) {

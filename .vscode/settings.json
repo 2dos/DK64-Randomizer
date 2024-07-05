@@ -8,6 +8,14 @@
     ],
     "python.testing.unittestEnabled": false,
     "files.associations": {
-        "common.h": "c"
+        "common.h": "c",
+        "xtree": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "xutility": "c",
+        "common_enums.h": "c",
+        "dynamic_structs.h": "c",
+        "common_structs.h": "c"
     }
 }

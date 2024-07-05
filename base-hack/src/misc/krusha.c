@@ -10,78 +10,167 @@
  */
 #include "../../include/common.h"
 
+void adjustGunBone(playerData* player) {
+    int kong = player->characterID - 2;
+    if (kong < 0) {
+        return;
+    } else if (kong > 4) {
+        return;
+    }
+    custom_kong_models model = Rando.kong_models[kong];
+    switch (model) {
+        case KONGMODEL_CRANKY:
+        case KONGMODEL_KROOL_CUTSCENE:
+            player->gun_bone = 5;
+            break;
+        case KONGMODEL_CANDY:
+            player->gun_bone = 2;
+            break;
+        case KONGMODEL_KROOL_FIGHT:
+            player->gun_bone = 6;
+            break;
+        case KONGMODEL_DEFAULT:
+            if (kong == KONG_DIDDY) {
+                if (!player->gun_bone) {
+                    player->gun_bone = 1;
+                } else {
+                    player->gun_bone = 0;
+                }
+                break;
+            }
+        case KONGMODEL_DISCOCHUNKY:
+        case KONGMODEL_KRUSHA:
+        default:
+            player->gun_bone = 1;
+            break;
+    }
+}
+
+static const unsigned char kong_vanilla_models[] = {3, 0, 5, 8, 0xB};
+static const unsigned char model_swap_base_index[] = {
+    0x00, // /* 0x000 */ KONGMODEL_DEFAULT,
+	0x03, // /* 0x001 */ KONGMODEL_DK,
+	0x00, // /* 0x002 */ KONGMODEL_DIDDY,
+	0x05, // /* 0x003 */ KONGMODEL_LANKY,
+	0x08, // /* 0x004 */ KONGMODEL_TINY,
+	0x0B, // /* 0x005 */ KONGMODEL_CHUNKY,
+	0x0D, // /* 0x006 */ KONGMODEL_DISCOCHUNKY,
+	0xDA, // /* 0x007 */ KONGMODEL_KRUSHA,
+	0x48, // /* 0x008 */ KONGMODEL_KROOL_FIGHT,
+	0x67, // /* 0x009 */ KONGMODEL_KROOL_CUTSCENE,
+	0x10, // /* 0x00A */ KONGMODEL_CRANKY,
+	0x12, // /* 0x00B */ KONGMODEL_CANDY,
+	0x11, // /* 0x00C */ KONGMODEL_FUNKY,
+};
+
+int getCutsceneModelTableIndex(int vanilla_index) {
+    if (vanilla_index < 0x88) {
+        return vanilla_index;
+    }
+    int slot = vanilla_index - 0xDB;
+    if (slot < 0) {
+        return -1;
+    } else if (slot >= 8) {
+        return -1;
+    }
+    return slot;
+}
+
+static short model_no_shift[] = {KONGMODEL_DEFAULT, KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
+
+void fixCutsceneModels(void) {
+    for (int i = 0; i < 5; i++) {
+        custom_kong_models model = Rando.kong_models[i];
+        if (inShortList(model, &model_no_shift[0], sizeof(model_no_shift) >> 1)) {
+            continue;
+        }
+        int dest_index = getCutsceneModelTableIndex(kong_vanilla_models[i]);
+        int src_index = getCutsceneModelTableIndex(model_swap_base_index[model]);
+        if ((dest_index == -1) || (src_index == -1)) {
+            continue;
+        }
+        CutsceneModelJumpTable[dest_index] = CutsceneModelJumpTable[src_index];
+    }
+}
+
 void adjustAnimationTables(void) {
     /**
      * @brief Adjust animation tables so that other kongs get Krusha's animations
      */
-    int slot = Rando.krusha_slot;
-    if ((slot >= 0) && (slot <= 4)) {
-        if (slot == 2) {
-            if (CurrentMap == MAP_KROOLLANKY) {
-                *(short*)(0x8075D7CE) = 0x3320; // Allow arm stretching
-            } else {
-                *(short*)(0x8075D7CE) = 0x36B4; // Prevent arm stretching (DK64 is a giant meme)
+    /*
+        TODO:
+        Kamerson — Today at 12:13 PM
+        but it still bugs me that Krusha's tag barrel non-selected anim is his losing anim and not his character select anim
+    */
+    for (int slot = 0; slot < 5; slot++) {
+        if (isKrushaAdjacentModel(slot)) {
+            if (slot == 2) {
+                if (CurrentMap == MAP_KROOLLANKY) {
+                    *(short*)(0x8075D7CE) = 0x3320; // Allow arm stretching
+                } else {
+                    *(short*)(0x8075D7CE) = 0x36B4; // Prevent arm stretching (DK64 is a giant meme)
+                }
             }
-        }
-        for (int i = 0; i < 0x8D; i++) {
-            if (i < 0x31) {
-                AnimationTable3[(7 * i) + slot] = AnimationTable3[(7 * i) + 5];
-            }
-            int excl_extra = 0;
-            if ((i >= 0x63) && (i <= 0x65)) {
-                // Instrument
-                excl_extra = 1;
-            } else if ((i >= 0x50) && (i <= 0x52)) {
-                if (((CurrentMap == MAP_KROOLLANKY) && (slot == 2)) || ((CurrentMap == MAP_FUNGIDOGADON) && (slot == 4))) {
-                    // Punch - During Lanky Phase and Dogadon 2
+            for (int i = 0; i < 0x8D; i++) {
+                if (i < 0x31) {
+                    AnimationTable3[(7 * i) + slot] = AnimationTable3[(7 * i) + 5];
+                }
+                int excl_extra = 0;
+                if ((i >= 0x63) && (i <= 0x65)) {
+                    // Instrument
                     excl_extra = 1;
+                } else if ((i >= 0x50) && (i <= 0x52)) {
+                    if (((CurrentMap == MAP_KROOLLANKY) && (slot == 2)) || ((CurrentMap == MAP_FUNGIDOGADON) && (slot == 4))) {
+                        // Punch - During Lanky Phase and Dogadon 2
+                        excl_extra = 1;
+                    }
+                } else if ((i >= 0x30) && (i <= 0x32)) {
+                    excl_extra = 1;
+                } else if ((i >= 0x48) && (i <= 0x4E)) {
+                    // excl_extra = 1;
                 }
-            } else if ((i >= 0x30) && (i <= 0x32)) {
-                excl_extra = 1;
-            } else if ((i >= 0x48) && (i <= 0x4E)) {
-                // excl_extra = 1;
-            }
-            if (i < 0x6E) {
-                if (!excl_extra) {
-                    AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
-                }
-            }
-            /*
-                Fixes a collision glitch with actors underwater if set to 2.
-                However, this causes the animation to be pretty bugged out.
-                if (slot == 2) {
-                    for (int i = 0; i < 3; i++) {
-                        int anim_targ = 0x30 + i;
-                        AnimationTable2[(7 * anim_targ) + slot] = AnimationTable2[(7 * *(int*)(0x807FF700)) + 5];
+                if (i < 0x6E) {
+                    if (!excl_extra) {
+                        AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
                     }
                 }
-            */
-            int excl_base = 0;
-            int dances[] = {0x43A, 0x434};
-            if (i == 0x5A) {
-                // Instrument
-                excl_base = 1;
-            } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == MAP_KROOLLANKY) && (slot == 2)) {
-                // Punch - During Lanky Phase
-                excl_base = 1;
-            } else if ((i >= 0x5C) && (i <= 0x5D)) {
-                // Dances
                 /*
-                    Animation 0x5B is also a good dance (Animation 0x43A), but replacing it will mean that you aren't transitioned out in crowns
+                    Fixes a collision glitch with actors underwater if set to 2.
+                    However, this causes the animation to be pretty bugged out.
+                    if (slot == 2) {
+                        for (int i = 0; i < 3; i++) {
+                            int anim_targ = 0x30 + i;
+                            AnimationTable2[(7 * anim_targ) + slot] = AnimationTable2[(7 * *(int*)(0x807FF700)) + 5];
+                        }
+                    }
                 */
-                AnimationTable1[(7 * i) + slot] = dances[i - 0x5C];
-                excl_base = 1;
-            } else if ((i >= 0x8A) && (i <= 0x8C)) {
-                // Tag Animation
-                int dance = dances[1];
-                if (i == 0x8B) {
-                    dance = dances[0];
+                int excl_base = 0;
+                int dances[] = {0x43A, 0x434};
+                if (i == 0x5A) {
+                    // Instrument
+                    excl_base = 1;
+                } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == MAP_KROOLLANKY) && (slot == 2)) {
+                    // Punch - During Lanky Phase
+                    excl_base = 1;
+                } else if ((i >= 0x5C) && (i <= 0x5D)) {
+                    // Dances
+                    /*
+                        Animation 0x5B is also a good dance (Animation 0x43A), but replacing it will mean that you aren't transitioned out in crowns
+                    */
+                    AnimationTable1[(7 * i) + slot] = dances[i - 0x5C];
+                    excl_base = 1;
+                } else if ((i >= 0x8A) && (i <= 0x8C)) {
+                    // Tag Animation
+                    int dance = dances[1];
+                    if (i == 0x8B) {
+                        dance = dances[0];
+                    }
+                    AnimationTable1[(7 * i) + slot] = dance;
+                    excl_base = 1;
                 }
-                AnimationTable1[(7 * i) + slot] = dance;
-                excl_base = 1;
-            }
-            if (!excl_base) {
-                AnimationTable1[(7 * i) + slot] = AnimationTable1[(7 * i) + 5];
+                if (!excl_base) {
+                    AnimationTable1[(7 * i) + slot] = AnimationTable1[(7 * i) + 5];
+                }
             }
         }
     }
@@ -108,9 +197,9 @@ void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_ind
      * @param player_index Player Index
      */
     int permit = 0;
-    if ((MovesBase[4].special_moves & 2) && (Rando.krusha_slot == 4)) {
+    if ((MovesBase[4].special_moves & 2) && (isKrushaAdjacentModel(KONG_CHUNKY))) {
         permit = 1;
-    } else if ((MovesBase[2].special_moves & 1) && (Rando.krusha_slot == 2)) {
+    } else if ((MovesBase[2].special_moves & 1) && (isKrushaAdjacentModel(KONG_LANKY))) {
         permit = 1;
     }
     if (permit) {
@@ -161,13 +250,13 @@ void updateCutsceneModels(actorData* actor, int size) {
      * @param size Player scale
      */
     short* model = actor->paad3;
-    if (*model == 0xDB) {
-        TiedCharacterSpawner->unk_46 |= 0x1000;
-        CurrentActorPointer_0->obj_props_bitfield |= 0x1400;
-        CurrentActorPointer_0->unk_CC = 1;
-        unkCutsceneKongFunction_0(2, 1);
-        clearGun(actor);
-    }
+    // if (*model == 0xDB) {
+    //     TiedCharacterSpawner->unk_46 |= 0x1000;
+    //     CurrentActorPointer_0->obj_props_bitfield |= 0x1400;
+    //     CurrentActorPointer_0->unk_CC = 1;
+    //     unkCutsceneKongFunction_0(2, 1);
+    //     clearGun(actor);
+    // }
     updateModelScales(actor, size);
 }
 
@@ -248,7 +337,7 @@ void OrangeGunCode(void) {
     int is_lime = 1;
     if (CurrentActorPointer_0->actorType == 43) {
         // Is Feather actor
-        if (Rando.krusha_slot != KONG_TINY) {
+        if (Rando.kong_models[KONG_TINY] != KONGMODEL_KRUSHA) {
             // Is not orange
             sprite = 0x80720854;
             pop_sprite_index = 5;

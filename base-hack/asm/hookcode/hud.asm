@@ -1,32 +1,3 @@
-CoinHUDReposition:
-    addiu $t8, $zero, 0x26
-    lui $t7, hi(CurrentMap)
-    lw $t7, lo(CurrentMap) ($t7)
-    addiu $a2, $zero, 1
-    beq $t7, $a2, CoinHUDReposition_Finish
-    nop
-    addiu $a2, $zero, 5
-    beq $t7, $a2, CoinHUDReposition_Finish
-    nop
-    addiu $a2, $zero, 0x19
-    beq $t7, $a2, CoinHUDReposition_Finish
-    nop
-
-    CoinHUDReposition_Lower:
-        addiu $t8, $zero, 0x4C
-
-    CoinHUDReposition_Finish:
-        lui $t7, hi(WidescreenEnabled)
-        lbu $t7, lo(WidescreenEnabled) ($t7)
-        bnez $t7, CoinHUDReposition_Widescreen
-        nop
-        j 0x806F88D0
-        addiu $t7, $zero, 0x122
-
-    CoinHUDReposition_Widescreen:
-        j 0x806F88D0
-        addiu $t7, $zero, hud_screen_wd - 30
-
 GiveItemPointerToMulti:
     lui $t8, hi(MultiBunchCount)
     addiu $t8, $t8, lo(MultiBunchCount)
@@ -286,3 +257,42 @@ ApplyTextRecolorHints:
     sw $t3, 0x58 ($sp)
     j 0x806FC998
     nop
+
+disableRouletteNumbers:
+    lw $t8, 0x4C ($a0)
+    lui $t7, hi(TBVoidByte)
+    lbu $t7, lo(TBVoidByte) ($t7)
+    andi $t7, $t7, 3
+    bnez $t7, disableRouletteNumbers_finish
+    or $t7, $t6, $zero
+    addiu $t7, $t6, 1
+
+    disableRouletteNumbers_finish:
+        j 0x80639F4C
+        nop
+
+updateBarrierNumbers:
+    lui $a0, hi(CurrentMap)
+    jal isLobby
+    lw $a0, lo(CurrentMap) ($a0)
+    beqz $v0, updateBarrierNumbers_finish
+    nop
+    jal updateBarrierCounts
+    nop
+
+    updateBarrierNumbers_finish:
+        lw $ra, 0x14 ($sp)
+        addiu $sp, $sp, 0x50
+        jr $ra
+        nop
+
+capScreenShake:
+    andi $t7, $a2, 0xFFFF
+    sltiu $at, $t7, 7
+    bnez $at, capScreenShake_finish
+    nop
+    addiu $t7, $zero, 7
+
+    capScreenShake_finish:
+        j 0x8061F0D4
+        addiu $at, $zero, 1

@@ -39,6 +39,7 @@ try {
           document.getElementById(boxes[input_box]).title =
             "CRC32: " + padZeroes(crc32(romFile), 4);
           document.getElementById(boxes[input_box]).classList.add("is-invalid");
+          generateToast("ROM is invalid and is unsupported by the randomizer.", true);
         } catch {}
       }
     }

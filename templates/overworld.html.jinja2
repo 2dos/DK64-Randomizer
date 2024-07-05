@@ -190,38 +190,6 @@
                             </select>
                         </div>
                         <div class="item-select">
-                            <p class="select-title">Krusha Slot</p>
-                            <select name="krusha_ui"
-                                    id="krusha_ui"
-                                    display_name="Krusha Slot"
-                                    class="form-select"
-                                    aria-label="Krusha">
-                                <option selected value="no_slot">
-                                    No Slot
-                                </option>
-                                <option value="dk">
-                                    DK
-                                </option>
-                                <option value="diddy">
-                                    Diddy
-                                </option>
-                                <option value="lanky">
-                                    Lanky
-                                </option>
-                                <option value="tiny">
-                                    Tiny
-                                </option>
-                                <option value="chunky">
-                                    Chunky
-                                </option>
-                                <option value="random"
-                                        data-toggle="tooltip"
-                                        title="Selects a random kong (If Disco Chunky is on, Chunky will not be selected).">
-                                    Random
-                                </option>
-                            </select>
-                        </div>
-                        <div class="item-select">
                             <p class="select-title">Fungi Time</p>
                             <select name="fungi_time"
                                     id="fungi_time"
@@ -233,7 +201,7 @@
                                 <option selected id="day" value="day">Daytime Start</option>
                                 <option id="night" value="night">Nighttime Start</option>
                                 <option id="random" value="random">Random Start</option>
-                                <option id="dusk" value="dusk" title="All time-specific gates are removed.">Dusk</option>
+                                <option id="dusk" value="dusk" title="All time-specific gates are closed.">Dusk</option>
                                 <option id="progressive" value="progressive" title="Time of day progressively changes.">Progressive</option>
                             </select>
                         </div>
@@ -251,6 +219,46 @@
                                 <option id="random" value="random">Random</option>
                             </select>
                         </div>
+                    </div>
+                    <h2 class="title">KONG MODELS</h2>
+                    <div class="flex-container">
+                        {% set kong_lst = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"] %}
+                        {% for kong in kong_lst %}
+                            <div class="item-select">   
+                                <p class="select-title">{{ kong }}</p>
+                                <select name="kong_model_{{ kong.lower() }}"
+                                        id="kong_model_{{ kong.lower() }}"
+                                        display_name="Kong Model - {{ kong }}"
+                                        class="form-select"
+                                        aria-label="{{ kong }}">
+                                    <option selected value="default">
+                                        Default
+                                    </option>
+                                    {% if kong == "DK" %}
+                                        <option value="cranky">
+                                            Cranky
+                                        </option>
+                                    {% elif kong == "Tiny" %}
+                                        <option value="candy">
+                                            Candy
+                                        </option>
+                                    {% elif kong == "Diddy" %}
+                                        <option value="funky">
+                                            Funky
+                                        </option>
+                                    {% endif %}
+                                    <option value="krusha">
+                                        Krusha
+                                    </option>
+                                    <option value="krool_fight">
+                                        K. Rool (Fight Gear)
+                                    </option>
+                                    <option value="krool_cutscene">
+                                        K. Rool (Cutscene Gear)
+                                    </option>
+                                </select>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col border panel">
@@ -299,7 +307,20 @@
                                value="True"/>
                         Hard Mode
                     </label>
-                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 5) }}
+                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 10) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="This option enables various harder challenges for boss fights.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_bosses"
+                               id="hard_bosses"
+                               display_name="Hard Bosses"
+                               value="True"/>
+                        Hard Bosses
+                    </label>
+                    {{ list_selector(hard_bosses, "hard_bosses", "HARD BOSSES", "This will open a popup that will let you customize what bosses are made harder.", 10) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
@@ -324,46 +345,6 @@
                         Tag Barrels Disabled
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Only relevant in Level Order shuffle. Generally increase the values randomly rolled by B. Lockers, making them closer to the total number of available GBs."
-                           style="text-align: left">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_blockers"
-                               id="hard_blockers"
-                               display_name="Hard B. Lockers"
-                               value="True"/>
-                        Hard B. Lockers
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Increase the minimum values rollable by Troff n Scoff."
-                           style="text-align: left">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_troff_n_scoff"
-                               id="hard_troff_n_scoff"
-                               display_name="Hard Troff n' Scoff"
-                               value="True"/>
-                        Hard Troff N' Scoff
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Level Order randomizer only. Shuffles levels without regard for key acquisition order or steady Kong progression. May have Kongs locked very deep into seeds. Likely to have high cost Troff n Scoffs that require returning to levels later."
-                           style="text-align: left">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_level_progression"
-                               id="hard_level_progression"
-                               display_name="Complex Level Progression"
-                               value="True"/>
-                        Complex Level Progression
-                    </label>
-                </div>
-                <div class="spacer"></div>
             </div>
             <div class = "flex-container">
                 <div class="item-select">

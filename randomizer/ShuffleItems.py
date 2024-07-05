@@ -8,6 +8,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
+from randomizer.Patching.Lib import getIceTrapCount
 
 
 class LocationSelection:
@@ -75,13 +76,23 @@ class MoveData:
 
 def ShuffleItems(spoiler):
     """Shuffle items into assortment."""
+    ice_trap_count = getIceTrapCount(spoiler.settings)
+    ice_trap_flag_range = list(range(0x2AE, 0x2BE))
+    junk_invasion = 0
+    if ice_trap_count > 16:
+        junk_invasion = ice_trap_count - 16
+        ice_trap_flag_range.extend(list(range(0x320, 0x320 + junk_invasion)))
+    junk_item_flag_range = list(range(0x320 + junk_invasion, 0x320 + 100))
+    if Types.Enemies in spoiler.settings.shuffled_location_types:
+        junk_item_flag_range.extend(list(range(0x3CB, 0x3CB + 426)))
+
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-        Items.FakeItem: list(range(0x2AE, 0x2BE)),
+        Items.IceTrapBubble: ice_trap_flag_range,
     }
-    junk_flag_dict = list(range(0x320, 0x320 + 100))
+    junk_flag_dict = junk_item_flag_range
     flag_dict = {}
     blueprint_flag_dict = {}
     locations_not_needing_flags = []
@@ -98,7 +109,7 @@ def ShuffleItems(spoiler):
                     item_location.type == Types.TrainingBarrel and not item_location.constant
                 )  # Depending on starting moves, training barrels can be empty (only when constant). This quick check prevents weirdness later in this method.
             )
-            and not item_location.inaccessible
+            and (not item_location.inaccessible or item_location.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide))  # Shopkeepers' locations are either inaccessible or vanilla
             and item_location.type in spoiler.settings.shuffled_location_types
         ):
             # Create placement info for the patcher to use
@@ -149,12 +160,15 @@ def ShuffleItems(spoiler):
                 # If this item has a dedicated specific flag, then set it now (Moves, Kongs, andKeys right now)
                 if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
                     if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
-                        location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
+                        ref_item = item_location.item
+                        if new_item.type == Types.FakeItem:
+                            ref_item = Items.IceTrapBubble
+                        location_selection.new_flag = progressive_move_flag_dict[ref_item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag
                     locations_not_needing_flags.append(location_selection)
                 # Company Coins keep their original flag
-                elif new_item.type == Types.Coin:
+                elif new_item.type in (Types.NintendoCoin, Types.RarewareCoin):
                     location_selection.new_flag = new_item.flag
                     locations_not_needing_flags.append(location_selection)
                 elif new_item.type == Types.JunkItem:
@@ -174,6 +188,8 @@ def ShuffleItems(spoiler):
             if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
                 if item_location.type == Types.ToughBanana and Types.Banana not in flag_dict.keys():
                     flag_dict[Types.Banana] = []
+                elif item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
+                    flag_dict[Types.Medal] = []
                 else:
                     flag_dict[item_location.type] = []
             # Add this location's vanilla flag as a valid flag for this type of item/kong pairing

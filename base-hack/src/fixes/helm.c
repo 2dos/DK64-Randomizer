@@ -96,3 +96,24 @@ void helmTime_exitKRool(void) {
 	initiateTransition(MAP_ISLES, 12);
 	fixHelmTimerCorrection();
 }
+
+static unsigned char helm_entry_points[] = {0, 3, 4};
+
+int getHelmExit(void) {
+	int setting = Rando.fast_start_helm;
+	if (setting > 0) {
+		setPermFlag(FLAG_STORY_HELM); // Helm Story
+		setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
+		for (int j = 0; j < 4; j++) {
+			setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
+		}
+		if (setting == 2) {
+			setPermFlag(FLAG_MODIFIER_HELMBOM);
+		}
+	}
+	return helm_entry_points[setting];
+}
+
+void WarpToHelm(void) {
+	initiateTransition(MAP_HELM, getHelmExit());
+}

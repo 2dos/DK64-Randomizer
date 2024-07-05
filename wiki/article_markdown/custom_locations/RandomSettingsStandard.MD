@@ -8,7 +8,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Random Helm Length
 - Item Reward Previews
 - Randomize Keys Required to Beat K. Rool
-- Shuffle Kongs
+- Kong Rando
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Misc Changes
@@ -44,15 +44,17 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Auto Complete Bonus Barrels: 30%
 - Shuffle Bonus Barrels: 70%
 - Shuffle Boss Kong Required: 50%
-- Shuffle Boss Location: 80%
-- Random CB Locations: 50%
+- Boss Location Rando: 80%
+- Random CB Locations: 
+	- Off: 50%
+	- On: 50%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 20%
 	- Medium Random: 40%
 	- Easy Random: 20%
 - Helm Door 2 Requirement Count: Between 1 and 10, usually close to 4
-- Random Banana Coin Locations: 50%
+- Coin Rando: 50%
 - Helm Door 1 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 20%
@@ -60,7 +62,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
 - Crown Enemy Randomizer: 95%
-- Random Battle Crown Pad Locations: 30%
+- Crown Placement Rando: 30%
 - Damage Multiplier: 
 	- Default: 50%
 	- Double: 35%
@@ -70,7 +72,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
-- Shuffle Enemy Speed: 50%
+- Enemy Speed Rando: 50%
 - Faster Checks Selected: 
 	- Factory Toy Monster Fight: 70%
 	- Factory Piano Game: 70%
@@ -79,7 +81,6 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Factory Car Race: 70%
 	- Galleon Seal Race: 70%
 	- Galleon Mech Fish: 70%
-	- Galleon Mermaid Gb: 70%
 	- Forest Mill Conveyor: 70%
 	- Forest Owl Race: 70%
 	- Forest Rabbit Race: 70%
@@ -100,7 +101,6 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Galleon Water: 
 	- Random: 100%
 - Hard B. Lockers: 20%
-- Complex Level Progression: 40%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 20%
 - Shuffle Helm Rooms: 80%
@@ -131,7 +131,8 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Blueprint: 70%
 	- Key: 85%
 	- Medal: 70%
-	- Coin: 70%
+	- Nintendocoin: 70%
+	- Rarewarecoin: 70%
 	- Kong: 85%
 	- Fairy: 70%
 	- Rainbowcoin: 70%
@@ -139,6 +140,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Fakeitem: 50%
 	- Junkitem: 50%
 	- Crateitem: 50%
+	- Shopowners: 30%
 - Random Kasplat Locations: 
 	- Off: 15%
 	- Vanilla Locations: 55%
@@ -146,9 +148,6 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Lock Key 8 in Helm: 50%
 - Key 8 Required: 70%
 - Shuffle K. Rool Phases: 80%
-- Krusha Slot: 
-	- No Slot: 50%
-	- Random: 50%
 - Entrance Randomizer: 
 	- Vanilla: 20%
 	- Level Order: 65%
@@ -157,6 +156,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Glitchless: 100%
 - Maximize Helm B. Locker: 15%
 - Randomize Medal CB Requirement: Between 15 and 90, usually close to 40
+- Pearls for Mermaid GB: Between 2 and 5, usually close to 3
 - Extra Hints: 
 	- Off: 30%
 	- Base: 35%
@@ -169,9 +169,9 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Open Lobbies: 60%
 - Progressive Hint 35 Requirement: Between 30 and 100, usually close to 60
 - Shuffle Puzzle Solutions: 50%
-- Random Melon Crate Locations: 30%
-- Random Banana Fairy Locations: 20%
-- Random Dirt Patch Locations: 20%
+- Random Crates: 30%
+- Random Fairies: 20%
+- Random Patches: 20%
 - Random Shop Prices: 
 	- Vanilla: 10%
 	- Free: 10%
@@ -191,29 +191,30 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Factory Testing Gate: 75%
 	- Galleon Lighthouse Gate: 75%
 	- Galleon Shipyard Area Gate: 75%
-	- Galleon Shipwreck Gates: 80%
 	- Galleon Seasick Ship: 80%
 	- Forest Green Tunnel: 75%
 	- Forest Yellow Tunnel: 75%
 	- Caves Igloo Pads: 80%
+	- Caves Ice Walls: 70%
 - No Joke Hints: 30%
 - Banana Fairy Island Move Status: 
 	- Vanilla: 20%
 	- Shuffled: 20%
 	- Shuffled Decoupled: 20%
 	- Start With: 40%
+- Shuffle Helm Location: 50%
 - Shuffle Shop Locations: 50%
 - Smaller Shops: 50%
-- Starting Kongs count: 
+- Starting Kong: 
 	- Any: 100%
 - Random Starting Move Count: Between 2 and 10, usually close to 4
 - Switchsanity: 
 	- Off: 85%
 	- Helm Access: 10%
 	- All: 5%
-- Random Troff 'n' Scoff Portal Locations: 30%
+- Tns Location Rando: 30%
 - Troff n' Scoff Max: Between 150 and 400, usually close to 300
-- Vanilla Door Shuffle: 40%
+- Vanilla Door Rando: 40%
 - Win Condition: 
 	- Beat Krool: 60%
 	- Get Key8: 25%
@@ -223,4 +224,4 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Standard: 50%
 	- Cryptic: 20%
 	- Item Hinting: 30%
-- Random Wrinkly Door Locations: 30%
+- Wrinkly Location Rando: 30%

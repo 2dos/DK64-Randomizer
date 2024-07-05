@@ -11,6 +11,7 @@ class Regions(IntEnum):
     Credits = auto()  # This holds the Banana Hoard
 
     # DK Isles Regions
+    DKIslesMedals = auto()
     Treehouse = auto()
     TrainingGrounds = auto()
     IslesMain = auto()
@@ -25,6 +26,7 @@ class Regions(IntEnum):
     KremIsle = auto()
     KremIsleBeyondLift = auto()
     KremIsleTopLevel = auto()
+    KremIsleMouth = auto()
     IslesSnideRoom = auto()
     FranticFactoryLobby = auto()
     GloomyGalleonLobby = auto()
@@ -41,6 +43,7 @@ class Regions(IntEnum):
 
     # Jungle Japes Regions
     JungleJapesMedals = auto()
+    JungleJapesEntryHandler = auto()
     JungleJapesStart = auto()
     JungleJapesMain = auto()
     JapesTnSAlcove = auto()
@@ -61,6 +64,7 @@ class Regions(IntEnum):
 
     # Angry Aztec Regions
     AngryAztecMedals = auto()
+    AngryAztecEntryHandler = auto()
     AngryAztecStart = auto()
     BetweenVinesByPortal = auto()
     AztecTunnelBeforeOasis = auto()
@@ -84,6 +88,7 @@ class Regions(IntEnum):
 
     # Frantic Factory Regions
     FranticFactoryMedals = auto()
+    FranticFactoryEntryHandler = auto()
     FranticFactoryStart = auto()
     Testing = auto()
     RandD = auto()
@@ -102,6 +107,7 @@ class Regions(IntEnum):
 
     # Gloomy Galleon Regions
     GloomyGalleonMedals = auto()
+    GloomyGalleonEntryHandler = auto()
     GloomyGalleonStart = auto()
     GalleonPastVines = auto()
     GalleonBeyondPineappleGate = auto()
@@ -133,6 +139,7 @@ class Regions(IntEnum):
 
     # Fungi Forest Regions
     FungiForestMedals = auto()
+    FungiForestEntryHandler = auto()
     FungiForestStart = auto()
     ForestMinecarts = auto()
     GiantMushroomArea = auto()
@@ -163,6 +170,7 @@ class Regions(IntEnum):
 
     # Crystal Caves Regions
     CrystalCavesMedals = auto()
+    CrystalCavesEntryHandler = auto()
     CrystalCavesMain = auto()
     CavesSnideArea = auto()
     CavesBlueprintCave = auto()
@@ -193,6 +201,7 @@ class Regions(IntEnum):
 
     # Creepy Castle Regions
     CreepyCastleMedals = auto()
+    CreepyCastleEntryHandler = auto()
     CreepyCastleMain = auto()
     CastleWaterfall = auto()
     CastleTree = auto()

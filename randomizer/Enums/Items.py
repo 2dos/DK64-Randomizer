@@ -103,7 +103,9 @@ class Items(IntEnum):
     Bean = auto()
     Pearl = auto()
     RainbowCoin = auto()
-    FakeItem = auto()
+    IceTrapBubble = auto()
+    IceTrapReverse = auto()
+    IceTrapSlow = auto()
 
     JunkCrystal = auto()
     JunkMelon = auto()
@@ -112,6 +114,11 @@ class Items(IntEnum):
     JunkOrange = auto()
     CrateMelon = auto()  # Separate from junk melon due to separate settings
     EnemyItem = auto()  # Separate item
+
+    Cranky = auto()
+    Funky = auto()
+    Candy = auto()
+    Snide = auto()
 
     BananaHoard = auto()
 

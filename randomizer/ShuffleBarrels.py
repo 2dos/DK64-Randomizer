@@ -9,6 +9,7 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Settings import MinigameBarrels, MinigamesListSelected
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Settings import Settings
@@ -48,7 +49,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
             helm_minigame_available = True
 
     # Apply plandomized minigame placement
-    if settings.enable_plandomizer and settings.plandomizer_dict["plando_bonus_barrels"] != -1:
+    if settings.enable_plandomizer and settings.plandomizer_dict["plando_bonus_barrels"] != {}:
         PreplacePlandoMinigames(settings, barrelLocations, helm_minigame_available)
     # Apply randomized minigame placement
     while len(barrelLocations) > 0:
@@ -57,7 +58,9 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
         # Don't bother shuffling or validating barrel locations which are skipped
         if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == MinigameBarrels.skip:
             continue
-        elif BarrelMetaData[location].map != Maps.HideoutHelm and settings.bonus_barrels == MinigameBarrels.skip:
+        elif BarrelMetaData[location].map == Maps.TrainingGrounds and settings.training_barrels_minigames == MinigameBarrels.skip:
+            continue
+        elif BarrelMetaData[location].map not in (Maps.HideoutHelm, Maps.TrainingGrounds) and settings.bonus_barrels == MinigameBarrels.skip:
             continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
@@ -75,7 +78,9 @@ def validate_minigame(location: Locations, minigame: Minigames, helm_minigame_av
     """Decide whether or not the given minigame is suitable for the given location."""
     valid = False
     # If this minigame isn't a minigame for the kong of this location, it's not valid
-    if BarrelMetaData[location].kong in MinigameRequirements[minigame].kong_list:
+    req_kong = BarrelMetaData[location].kong
+    kong_list = MinigameRequirements[minigame].kong_list
+    if req_kong in kong_list or (req_kong == Kongs.any and len(kong_list) == 5):
         # If there is a minigame that can be placed in Helm, don't validate banned minigames, otherwise continue as normal
         if (MinigameRequirements[minigame].helm_enabled or BarrelMetaData[location].map != Maps.HideoutHelm) or helm_minigame_available is False:
             valid = True
@@ -86,7 +91,11 @@ def BarrelShuffle(settings: Settings) -> None:
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = list(BarrelMetaData.keys())
-    if settings.bonus_barrels == MinigameBarrels.selected or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected):
+    if (
+        settings.bonus_barrels == MinigameBarrels.selected
+        or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected)
+        or (settings.training_barrels_minigames == MinigameBarrels.random and settings.minigames_list_selected)
+    ):
         minigame_dict = {
             MinigamesListSelected.batty_barrel_bandit: [Minigames.BattyBarrelBanditVEasy, Minigames.BattyBarrelBanditEasy, Minigames.BattyBarrelBanditNormal, Minigames.BattyBarrelBanditHard],
             MinigamesListSelected.big_bug_bash: [Minigames.BigBugBashVEasy, Minigames.BigBugBashEasy, Minigames.BigBugBashNormal, Minigames.BigBugBashHard],

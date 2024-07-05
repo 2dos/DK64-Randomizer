@@ -87,8 +87,10 @@ def ShuffleShopLocations(spoiler):
     # Shuffle
     assortment = {}
     for level in available_shops:
-        # Don't shuffle Isles shops in entrance rando. This prevents having the one-entrance-locked Isles Snide room from being progression.
-        if level == Levels.DKIsles and spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+        # Don't shuffle Isles shops in entrance rando.
+        # This prevents having the one-entrance-locked Isles Snide room from being progression.
+        # Also ban it with fast start beginning of game off. Introduces a lot of oddities about things
+        if level == Levels.DKIsles and (spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or not spoiler.settings.fast_start_beginning_of_game):
             continue
         shop_array = available_shops[level]
         # Get list of shops in level
@@ -144,7 +146,14 @@ def ShuffleShopLocations(spoiler):
                 placement_index += 1
                 # Add exit to new containing region for logical access
                 region = spoiler.RegionList[shop.containing_region]
-                region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: True))
+                if shop.shop == Regions.CrankyGeneric:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess))
+                elif shop.shop == Regions.FunkyGeneric:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess))
+                elif shop.shop == Regions.CandyGeneric:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.candyAccess))
+                elif shop.shop == Regions.Snide:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.snideAccess))
         assortment[level] = assortment_in_level
     # Write Assortment to spoiler
     spoiler.shuffled_shop_locations = assortment

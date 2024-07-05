@@ -16,6 +16,7 @@ class HintType(IntEnum):
     KongLocation = auto()
     MedalsRequired = auto()
     Entrance = auto()
+    EntranceV2 = auto()
     RequiredKongHint = auto()
     RequiredKeyHint = auto()
     RequiredWinConditionHint = auto()
@@ -29,3 +30,4 @@ class HintType(IntEnum):
     RegionItemCount = auto()
     ItemRegion = auto()
     Plando = auto()
+    RequiredSlamHint = auto()

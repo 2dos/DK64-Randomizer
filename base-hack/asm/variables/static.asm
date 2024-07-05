@@ -22,3 +22,5 @@
 .definelabel ReverseCryptLeverOrder, 0x807482E8
 .definelabel JetpacEnemyFunctions, 0x8002E8F4
 .definelabel SurfaceTypeInformation, 0x80748A90
+.definelabel CutsceneModelJumpTable, 0x8075BF08
+.definelabel KongRGBA, 0x8075054C

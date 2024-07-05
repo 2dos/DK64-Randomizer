@@ -10,6 +10,7 @@ from ui.rando_options import (
     disable_excluded_songs_modal,
     disable_music_filtering_modal,
     disable_hard_mode_modal,
+    disable_hard_bosses_modal,
     disable_helm_hurry,
     disable_remove_barriers,
     disable_faster_checks,
@@ -24,6 +25,7 @@ from ui.rando_options import (
     max_music_proportion,
     max_randomized_blocker,
     max_randomized_fairies,
+    max_randomized_pearls,
     max_randomized_medal_cb_req,
     max_randomized_medals,
     max_randomized_troff,
@@ -37,7 +39,7 @@ from ui.rando_options import (
     toggle_key_settings,
     toggle_medals_box,
     toggle_vanilla_door_rando,
-    update_boss_required,
+    change_level_randomization,
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
 )
@@ -49,7 +51,7 @@ set_random_weights_options()
 set_preset_options()
 toggle_counts_boxes(None)
 toggle_b_locker_boxes(None)
-update_boss_required(None)
+change_level_randomization(None)
 disable_colors(None)
 disable_music(None)
 disable_move_shuffles(None)
@@ -64,12 +66,14 @@ disable_enemy_modal(None)
 disable_excluded_songs_modal(None)
 disable_music_filtering_modal(None)
 disable_hard_mode_modal(None)
+disable_hard_bosses_modal(None)
 toggle_item_rando(None)
 disable_boss_rando(None)
 toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
 max_randomized_fairies(None)
+max_randomized_pearls(None)
 max_starting_moves_count(None)
 max_doorone_requirement(None)
 max_doortwo_requirement(None)

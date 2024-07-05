@@ -280,6 +280,10 @@ typedef enum item_purchase_text {
 	/* 0x056 */ ITEMTEXT_FAIRY,
 	/* 0x057 */ ITEMTEXT_RAINBOWCOIN,
 	/* 0x058 */ ITEMTEXT_FAKEITEM,
+	/* 0x059 */ ITEMTEXT_CRANKYITEM,
+	/* 0x05A */ ITEMTEXT_FUNKYITEM,
+	/* 0x05B */ ITEMTEXT_CANDYITEM,
+	/* 0x05C */ ITEMTEXT_SNIDEITEM,
 } item_purchase_text;
 
 typedef enum pausescreenlist {
@@ -318,11 +322,8 @@ typedef enum kongs {
 typedef enum win_conditions {
 	/* 0x000 */ GOAL_KROOL,
 	/* 0x001 */ GOAL_KEY8,
-	/* 0x002 */ GOAL_ALLFAIRIES,
-	/* 0x003 */ GOAL_ALLBLUEPRINTS,
-	/* 0x004 */ GOAL_ALLMEDALS,
-	/* 0x005 */ GOAL_POKESNAP,
-	/* 0x006 */ GOAL_ALLKEYS,
+	/* 0x002 */ GOAL_POKESNAP,
+	/* 0x003 */ GOAL_CUSTOMITEM,
 } win_conditions;
 
 typedef enum master_types_list {
@@ -602,6 +603,9 @@ typedef enum extra_global_data {
 
 typedef enum bonus_stat {
     /* 0x000 */ STAT_TAGCOUNT,
+	/* 0x001 */ STAT_PHOTOSTAKEN,
+	/* 0x002 */ STAT_ENEMIESKILLED,
+	/* 0x003 */ STAT_KOPCAUGHT,
     /* ----- */ STAT_TERMINATOR,
 } bonus_stat;
 
@@ -917,3 +921,143 @@ typedef enum level_indexes {
 	/* 0x00C */ LEVEL_TEST,
 	/* 0x00D */ LEVEL_SHARED,
 } level_indexes;
+
+typedef enum requirement_item {
+	/* 0x000 */ REQITEM_NONE,
+	/* 0x001 */ REQITEM_KONG,
+	/* 0x002 */ REQITEM_MOVE,
+	/* 0x003 */ REQITEM_GOLDENBANANA,
+	/* 0x004 */ REQITEM_BLUEPRINT,
+	/* 0x005 */ REQITEM_FAIRY,
+	/* 0x006 */ REQITEM_KEY,
+	/* 0x007 */ REQITEM_CROWN,
+	/* 0x008 */ REQITEM_COMPANYCOIN,
+	/* 0x009 */ REQITEM_MEDAL,
+	/* 0x00A */ REQITEM_BEAN,
+	/* 0x00B */ REQITEM_PEARL,
+	/* 0x00C */ REQITEM_RAINBOWCOIN,
+	/* 0x00D */ REQITEM_ICETRAP, // TODO: Not sure if this is a good idea given our "never require Ice Traps" logic
+	/* 0x00E */ REQITEM_GAMEPERCENTAGE,
+	/* 0x00F */ REQITEM_COLOREDBANANA,
+} requirement_item;
+
+typedef enum item_ids { 
+	/* 0x000 */ ITEMID_CB,
+	/* 0x001 */ ITEMID_COINS,
+	/* 0x002 */ ITEMID_STANDARDAMMO,
+	/* 0x003 */ ITEMID_HOMINGAMMO,
+	/* 0x004 */ ITEMID_ORANGES,
+	/* 0x005 */ ITEMID_CRYSTALS,
+	/* 0x006 */ ITEMID_FILM,
+	/* 0x007 */ ITEMID_INSTRUMENTENERGY,
+	/* 0x008 */ ITEMID_GBKONG,
+	/* 0x009 */ ITEMID_GBS,
+	/* 0x00A */ ITEMID_MEDAL,
+	/* 0x00B */ ITEMID_RACECOIN,
+	/* 0x00C */ ITEMID_BPFAIRY,
+	/* 0x00D */ ITEMID_CBS_0,
+	/* 0x00E */ ITEMID_MOVECOST,
+	/* 0x00F */ ITEMID_MULTIBUNCH,
+	/* 0x010 */ ITEMID_CHAOSBLOCKER_KONG,
+	/* 0x011 */ ITEMID_CHAOSBLOCKER_MOVE,
+	/* 0x012 */ ITEMID_CHAOSBLOCKER_GB,
+	/* 0x013 */ ITEMID_CHAOSBLOCKER_BLUEPRINT,
+	/* 0x014 */ ITEMID_CHAOSBLOCKER_FAIRY,
+	/* 0x015 */ ITEMID_CHAOSBLOCKER_KEY,
+	/* 0x016 */ ITEMID_CHAOSBLOCKER_CROWN,
+	/* 0x017 */ ITEMID_CHAOSBLOCKER_COMPANYCOIN,
+	/* 0x018 */ ITEMID_CHAOSBLOCKER_MEDAL,
+	/* 0x019 */ ITEMID_CHAOSBLOCKER_BEAN,
+	/* 0x01A */ ITEMID_CHAOSBLOCKER_PEARL,
+	/* 0x01B */ ITEMID_CHAOSBLOCKER_RAINBOWCOIN,
+	/* 0x01C */ ITEMID_CHAOSBLOCKER_ICETRAP,
+	/* 0x01D */ ITEMID_CHAOSBLOCKER_GAMEPERCENTAGE,
+	/* 0x01E */ ITEMID_CHAOSBLOCKER_COLOREDBANANA,
+	/* ----- */ ITEMID_TERMINATOR,
+	/* 0x000 */ ITEMID_RESERVED_SCOFF,
+	/* 0x001 */ ITEMID_RESERVED_FUNKY,
+	/* 0x002 */ ITEMID_RESERVED_CANDY,
+	/* 0x003 */ ITEMID_RESERVED_CRANKY,
+	/* 0x004 */ ITEMID_RESERVED_DK,
+	/* 0x005 */ ITEMID_RESERVED_DIDDY,
+	/* 0x006 */ ITEMID_RESERVED_LANKY,
+	/* 0x007 */ ITEMID_RESERVED_TINY,
+	/* 0x008 */ ITEMID_RESERVED_CHUNKY,
+} item_ids;
+
+typedef enum enum_bonus_skin {
+    /* 0x000 */ SKIN_GB,
+    /* 0x001 */ SKIN_KONG_DK,
+    /* 0x002 */ SKIN_KONG_DIDDY,
+    /* 0x003 */ SKIN_KONG_LANKY,
+    /* 0x004 */ SKIN_KONG_TINY,
+    /* 0x005 */ SKIN_KONG_CHUNKY,
+    /* 0x006 */ SKIN_BLUEPRINT,
+    /* 0x007 */ SKIN_NINTENDO_COIN,
+    /* 0x008 */ SKIN_RAREWARE_COIN,
+    /* 0x009 */ SKIN_KEY,
+    /* 0x00A */ SKIN_CROWN,
+    /* 0x00B */ SKIN_MEDAL,
+    /* 0x00C */ SKIN_POTION,
+    /* 0x00D */ SKIN_BEAN,
+    /* 0x00E */ SKIN_PEARL,
+    /* 0x00F */ SKIN_FAIRY,
+    /* 0x010 */ SKIN_RAINBOW_COIN,
+    /* 0x011 */ SKIN_FAKE_ITEM,
+    /* 0x012 */ SKIN_JUNK_ITEM,
+    /* 0x013 */ SKIN_CRANKY,
+    /* 0x014 */ SKIN_FUNKY,
+    /* 0x015 */ SKIN_CANDY,
+    /* 0x016 */ SKIN_SNIDE,
+    /* ----- */ SKIN_TERMINATOR,
+} enum_bonus_skin;
+
+typedef enum enum_script_runstate {
+	/* 0x000 */ RUNSTATE_INIT,
+	/* 0x001 */ RUNSTATE_RUNNING,
+	/* 0x002 */ RUNSTATE_PAUSED,
+	/* 0x003 */ RUNSTATE_DISTANCERUN,
+} enum_script_runstate;
+
+typedef enum custom_kong_models {
+	/* 0x000 */ KONGMODEL_DEFAULT,
+	/* 0x001 */ KONGMODEL_DK,
+	/* 0x002 */ KONGMODEL_DIDDY,
+	/* 0x003 */ KONGMODEL_LANKY,
+	/* 0x004 */ KONGMODEL_TINY,
+	/* 0x005 */ KONGMODEL_CHUNKY,
+	/* 0x006 */ KONGMODEL_DISCOCHUNKY,
+	/* 0x007 */ KONGMODEL_KRUSHA,
+	/* 0x008 */ KONGMODEL_KROOL_FIGHT,
+	/* 0x009 */ KONGMODEL_KROOL_CUTSCENE,
+	/* 0x00A */ KONGMODEL_CRANKY,
+	/* 0x00B */ KONGMODEL_CANDY,
+	/* 0x00C */ KONGMODEL_FUNKY,
+} custom_kong_models;
+
+typedef enum dynamic_flag_icetrap_junk {
+	/* 0x000 */ DYNFLAG_NEITHER,
+	/* 0x001 */ DYNFLAG_ICETRAP,
+	/* 0x002 */ DYNFLAG_JUNK,
+} dynamic_flag_icetrap_junk;
+
+typedef enum ICE_TRAP_TYPES {
+    /* 0x000 */ ICETRAP_OFF,
+    /* 0x001 */ ICETRAP_BUBBLE,
+    /* 0x002 */ ICETRAP_REVERSECONTROLS,
+    /* 0x003 */ ICETRAP_SLOWED,
+} ICE_TRAP_TYPES;
+
+typedef enum PURCHASE_TYPES {
+	/*  0 */ PURCHASE_MOVES,
+	/*  1 */ PURCHASE_SLAM,
+	/*  2 */ PURCHASE_GUN,
+	/*  3 */ PURCHASE_AMMOBELT,
+	/*  4 */ PURCHASE_INSTRUMENT,
+	/*  5 */ PURCHASE_FLAG,
+	/*  6 */ PURCHASE_GB,
+	/*  7 */ PURCHASE_NOTHING,
+	/*  8 */ PURCHASE_ICEBUBBLE,
+	/*  9 */ PURCHASE_ICEREVERSE,
+	/* 10 */ PURCHASE_ICESLOW,
+} PURCHASE_TYPES;

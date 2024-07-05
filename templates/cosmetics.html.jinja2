@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, toggle_input %}
 <div class="container" style="margin-top: 20px;">
     <div id="override_div"
          class="form-check form-switch item-switch center-flex"
@@ -60,68 +60,85 @@
                             </option>
                         </select>
                     </div>
+                    <div class="item-select">
+                        <p class="select-title">Random Enemy Colors</p>
+                        <select name="random_enemy_colors"
+                                id="random_enemy_colors"
+                                display_name="Random Enemy Colors"
+                                class="form-select center-div"
+                                aria-label="Random Enemy Colors"
+                                data-toggle="tooltip"
+                                title="Changes the colors of various enemies in the game">
+                            <option selected id="off" value="off" title="">
+                                Off
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="extreme" value="extreme">
+                                Extreme
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Head Size</p>
+                        <select name="big_head_mode"
+                                id="big_head_mode"
+                                display_name="Head Size"
+                                class="form-select center-div"
+                                aria-label="Head Size"
+                                data-toggle="tooltip"
+                                title="Changes the size of the various character's head to be bigger or smaller than usual">
+                            <option selected id="off" value="off" title="">
+                                Regular
+                            </option>
+                            <option id="big" value="big">
+                                Big Head Mode
+                            </option>
+                            <option id="small" value="small">
+                                Small Head Mode
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-color-select">
+                        <div class="color-selector">
+                            <p class="select-title">Golden Banana Skin Color</p>
+                            <div id="gb_custom">
+                                <div class="input-group mb-3 gbColorPicker" style="display:flex">
+                                    <select name="gb_colors" id="gb_colors" class="form-select" aria-label="GB Skin">
+                                        <option selected value="vanilla">Vanilla</option>
+                                        <option value="randomized">Randomized</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                    <div class="color-input-container">
+                                        <input type="color"
+                                            name="gb_custom_color"
+                                            id="gb_custom_color"
+                                            default="#000000"
+                                            class="color-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex-container">
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="misc_cosmetics"
-                                   id="misc_cosmetics"
-                                   display_name="Random Miscellaneous Cosmetics"
-                                   value="True"/>
-                            Random Miscellaneous Cosmetics
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Chunky will be replaced with his 'disco' variant that appears at the start of the DK Rap.">
-                            <input class="form-check-input"
-                                type="checkbox"
-                                name="disco_chunky"
-                                id="disco_chunky"
-                                display_name="Disco Chunky"
-                                value="True"/>
-                            Disco Chunky
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Text bubbles will be darkened, with the font brightened.">
-                            <input class="form-check-input"
-                                type="checkbox"
-                                name="dark_mode_textboxes"
-                                id="dark_mode_textboxes"
-                                display_name="Dark Mode Textboxes"
-                                value="True"/>
-                            Dark Mode Textboxes
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Various important segments in hints on the pause menu will be colored to assist with parsing.">
-                            <input class="form-check-input"
-                                type="checkbox"
-                                name="pause_hint_coloring"
-                                id="pause_hint_coloring"
-                                display_name="Color Hints in Pause Menu"
-                                value="True"
-                                checked/>
-                            Color Hints in Pause Menu
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch holiday" hidden>
-                        <label data-toggle="tooltip"
-                               title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="holiday_setting_offseason"
-                                   id="holiday_setting_offseason"
-                                   display_name="Holiday Mode"
-                                   value="False"/>
-                            Holiday Mode
-                        </label>
+                    {{ toggle_input("misc_cosmetics", "Random Miscellaneous Cosmetics", "Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors") }}
+                    {{ toggle_input("dark_mode_textboxes", "Dark Mode UI", "Text bubbles will be darkened, with the font brightened. The DPad Graphic will be darkened.") }}
+                    {{ toggle_input("pause_hint_coloring", "Color Hints in Pause Menu", "Various important segments in hints on the pause menu will be colored to assist with parsing.", True) }}
+                    {{ toggle_input("disco_chunky", "Disco Chunky", "Gives Chunky his disco outfit. Will only work if his model is set to regular chunky.") }}
+                    <div class="spacer"></div>
+                    <div class="form-check form-switch item-switch holiday" hidden data-toggle="tooltip"
+                        title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            name="holiday_setting_offseason"
+                            id="holiday_setting_offseason"
+                            display_name="Holiday Mode"
+                            value="True" />
+                        <label class="form-check-label" for="holiday_setting_offseason">Holiday Mode</label>
                     </div>
                     <div class="spacer holiday" hidden></div>
                     {# 
@@ -144,54 +161,12 @@
             <div class="row">
                 <h2 class="title">ACCESSIBILITY</h2>
                 <div class="flex-container">
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="remove_water_oscillation"
-                                   id="remove_water_oscillation"
-                                   display_name="Remove Water Oscillation"
-                                   value="True"/>
-                            Remove Water Oscillation
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="head_balloons"
-                                   id="head_balloons"
-                                   display_name="Kong Head on Balloons"
-                                   value="True"/>
-                            Kong Head on Balloons
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Brightens the door-opening sequence in Troff 'n' Scoff to make the reward easier to see.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="troff_brighten"
-                                   id="troff_brighten"
-                                   display_name="Brighten Boss Door Opening"
-                                   value="True"/>
-                            Brighten Boss Door Opening
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="The crosshair used in various situations, like shooting your gun, will have a black outline.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="crosshair_outline"
-                                   id="crosshair_outline"
-                                   display_name="Outlined Crosshair"
-                                   value="True"/>
-                            Outlined Crosshair
-                        </label>
-                    </div>
+                    {{ toggle_input("remove_water_oscillation", "Remove Water Oscillation", "Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.") }}
+                    {{ toggle_input("head_balloons", "Kong Head on Balloons", "Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.", True) }}
+                    {{ toggle_input("troff_brighten", "Brighten Boss Door Opening", "Brightens the door-opening sequence in Troff 'n' Scoff to make the reward easier to see.". True) }}
+                    {{ toggle_input("better_dirt_patch_cosmetic", "Higher contrast dirt patches", "Dirt Patches have the letters 'D' and 'K' colored yellow and red to make them more visible.". True) }}
+                    {{ toggle_input("crosshair_outline", "Outlined Crosshair", "The crosshair used in various situations, like shooting your gun, will have a black outline.") }}
+                    <div class="spacer"></div>
                 </div>
                 <div class="flex-container">
                     <div class="item-select">
@@ -266,45 +241,8 @@
             <div class="row">
                 <h2 class="title">DEFAULT GAME SETTINGS</h2>
                 <div class="flex-container">
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="If enabled, the camera will look up when the player holds up on the stick, the opposite of how the vanilla game behaves.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="camera_is_not_inverted"
-                                   id="camera_is_not_inverted"
-                                   display_name="Disable Y-Inverted First Person Camera"
-                                   value="True"/>
-                            Disable Y-Inverted First Person Camera
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Camera will always follow behind the player.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="camera_is_follow"
-                                   id="camera_is_follow"
-                                   display_name="Follow Cam"
-                                   value="True"/>
-                            Follow Cam
-                        </label>
-                    </div>
-                    <div class="flex-container" id="widescreen_row">
-                        <div class="form-check form-switch item-switch">
-                            <label data-toggle="tooltip"
-                                title="IN DEVELOPMENT: 16:9 version of DK64, based off the standalone hack by gamemasterplc. EMULATOR ONLY: Consoles don't like this.">
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="true_widescreen"
-                                    id="true_widescreen"
-                                    display_name="Widescreen (Emulator Only)"
-                                    value="True"/>
-                                Widescreen (Emulator Only)
-                            </label>
-                        </div>
-                        <div class="spacer"></div>
-                    </div>
+                    {{ toggle_input("camera_is_not_inverted", "Disable Y-Inverted First Person Camera", "If enabled, the camera will look up when the player holds up on the stick, the opposite of how the vanilla game behaves.") }}
+                    {{ toggle_input("camera_is_follow", "Follow Cam", "Camera will always follow behind the player.") }}
                 </div>
                 {# <div class="flex-container">
                     <div class="item-select">
@@ -385,6 +323,9 @@
                     }
                 })
             })
+            if (object.hasOwnProperty("gb_custom_color")) {
+                $(".gbColorPicker").attr("style", "background-color" + object["gb_custom_color"] + ";")
+            }
         }
     })
     $(function() {

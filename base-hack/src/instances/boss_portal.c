@@ -12,16 +12,6 @@
 #include "../../include/common.h"
 #define PORTAL_DELTA 40
 
-static const short tnsportal_flags[] = {
-	FLAG_PORTAL_JAPES,
-	FLAG_PORTAL_AZTEC,
-	FLAG_PORTAL_FACTORY,
-	FLAG_PORTAL_GALLEON,
-	FLAG_PORTAL_FUNGI,
-	FLAG_PORTAL_CAVES,
-	FLAG_PORTAL_CASTLE,
-};
-
 void alterParentLocationTNS(int id) {
 	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < 17; i++) {

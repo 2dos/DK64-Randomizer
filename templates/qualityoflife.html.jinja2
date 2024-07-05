@@ -4,12 +4,6 @@
         <div class="col border panel">
             <h2 class="title">GAMEPLAY</h2>
             <div class="flex-container">
-                {#<div class="form-check form-switch item-switch" hidden>
-                    <label data-toggle="tooltip" title="Training Barrels complete, start with Simian Slam, spawn in DK Isles, Japes lobby entrance open.">
-                        <input class="form-check-input" type="checkbox" name="fast_start_beginning_of_game" value="True"/>
-                        Fast Start - Beginning of Game
-                    </label>
-                </div>#}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                            title="This option enables various quality of life changes.">
@@ -29,6 +23,7 @@
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="shorten_boss"
+                                id="shorten_boss"
                                 display_name="Shorten Boss Fights"
                                 value="True"/>
                         Shorten Boss Fights
@@ -112,7 +107,23 @@
                         Auto Key Turn ins
                     </label>
                 </div>
-                <div class="spacer"></div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="Training Barrels complete, start with Simian Slam, spawn in DK Isles, Japes lobby entrance open.">
+                        <input class="form-check-input" type="checkbox" name="fast_start_beginning_of_game" display_name="Fast Start - Beginning of Game" value="True"/>
+                        Fast Start - Beginning of Game
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Killing enemies in battle crowns will reduce the time remaining on a crown.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="enemy_kill_crown_timer"
+                                display_name="Enemy Crown Timer Reduction"
+                                value="True"/>
+                        Enemy Crown Timer Reduction
+                    </label>
+                </div>
                 <div class="item-select">
                     <p class="select-title">Helm Start Location</p>
                     <select name="helm_setting"
@@ -130,6 +141,26 @@
                         </option>
                         <option value="skip_all">
                             Skip All
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Helm Room Bonus Count</p>
+                    <select name="helm_room_bonus_count"
+                            id="helm_room_bonus_count"
+                            display_name="Helm Room Bonus Count"
+                            class="form-select center-div"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines how many bonus barrels are required to beat a helm room. If set to zero, playing the instrument pad will complete a helm room.">
+                        <option selected value="two">
+                            Two
+                        </option>
+                        <option value="one">
+                            One
+                        </option>
+                        <option value="zero">
+                            Zero
                         </option>
                     </select>
                 </div>
@@ -157,7 +188,7 @@
         </div>
         <div class="col border panel">
             <h2 class="title">HINTS</h2>
-            <a class="btn btn-primary" href="./wiki/All-About-Hints.html" target="_blank">
+            <a class="btn btn-secondary" href="./wiki/All-About-Hints.html" target="_blank">
                 All About Hints
                 <img class="icon" src="./static/img/external_link.png">
             </a>

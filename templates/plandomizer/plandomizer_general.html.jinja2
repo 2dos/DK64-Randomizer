@@ -48,10 +48,10 @@
                     </label>
                 </div>
             </div> #}
-            {# <div class="item-select wide-select">
+            <div class="item-select wide-select">
                 <p class="select-title">Spawn Location</p>
-                <select name="plando_spawn_location"
-                        id="plando_spawn_location"
+                <select name="plando_starting_exit"
+                        id="plando_starting_exit"
                         class="form-select center-div"
                         aria-label="Spawn Location"
                         data-toggle="tooltip"
@@ -65,7 +65,7 @@
                         </option>
                     {% endfor %}
                 </select>
-            </div> #}
+            </div>
             <div class="flex-container">
                 <div class="item-multiselect wide-select">
                     <p class="select-title">Starting Kongs</p>
@@ -147,6 +147,102 @@
             <div style="font-style: italic;">
                 More plando settings in the works!
             </div>
+            <hr>
+            <h2 class="title">Custom Locations</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Allows the user to specify locations for each banana fairy."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="plando_place_fairies"
+                               id="plando_place_fairies"
+                               display_name="Banana Fairies"
+                               value="True"/>
+                        Banana Fairies
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Allows the user to specify locations for each battle arena."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="plando_place_arenas"
+                               id="plando_place_arenas"
+                               display_name="Battle Arenas"
+                               value="True"/>
+                        Battle Arenas
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Allows the user to specify locations for each dirt patch."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="plando_place_patches"
+                               id="plando_place_patches"
+                               display_name="Dirt Patches"
+                               value="True"/>
+                        Dirt Patches
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Allows the user to specify locations for each Kasplat."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="plando_place_kasplats"
+                               id="plando_place_kasplats"
+                               display_name="Kasplats"
+                               value="True"/>
+                        Kasplats
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Allows the user to specify locations for each melon crate."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="plando_place_crates"
+                               id="plando_place_crates"
+                               display_name="Melon Crates"
+                               value="True"/>
+                        Melon Crates
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Allows the user to specify locations for each Wrinkly door."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="plando_place_wrinkly"
+                               id="plando_place_wrinkly"
+                               display_name="Wrinkly Doors"
+                               value="True"/>
+                        Wrinkly Doors
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Allows the user to specify locations for each Troff 'n' Scoff portal."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="plando_place_tns"
+                               id="plando_place_tns"
+                               display_name="Troff 'n' Scoff Portals"
+                               value="True"/>
+                        Troff 'n' Scoff Portals
+                    </label>
+                </div>
+                <div class="spacer"></div>
+            </div>
         </div>
         <div class="col panel"
              style="border-left: 1px solid #e3e3e3;">
@@ -210,19 +306,19 @@
                                 <option value="" selected">
                                     -- Randomize --
                                 </option>
-                                <option value="donkey">
+                                <option value="KroolDonkeyPhase">
                                     Donkey
                                 </option>
-                                <option value="diddy">
+                                <option value="KroolDiddyPhase">
                                     Diddy
                                 </option>
-                                <option value="lanky">
+                                <option value="KroolLankyPhase">
                                     Lanky
                                 </option>
-                                <option value="tiny">
+                                <option value="KroolTinyPhase">
                                     Tiny
                                 </option>
-                                <option value="chunky">
+                                <option value="KroolChunkyPhase">
                                     Chunky
                                 </option>
                             </select>

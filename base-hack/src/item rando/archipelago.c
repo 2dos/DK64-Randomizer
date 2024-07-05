@@ -99,14 +99,10 @@ void handleSentItem(void) {
             setFlagDuplicate(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
             break;
         case TRANSFER_ITEM_FAKEITEM:
-            queueIceTrap();
+            queueIceTrap(ICETRAP_BUBBLE); // For now, always make ice
             break;
         case TRANSFER_ITEM_JUNKITEM:
-            if (DAMAGE_MASKING) {
-                applyDamageMask(0, 1);
-            } else {
-                applyDamage(0, 1);
-            }
+            applyDamageMask(0, 1);
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:

@@ -303,4 +303,9 @@ const check_struct item_db[] = {
 	{.flag=188, .type=10, .associated_level=3},
 	{.flag=189, .type=10, .associated_level=3},
 	{.flag=190, .type=10, .associated_level=3},
+	{.flag=0x3C6, .type=3, .associated_level=7},
+	{.flag=0x3C7, .type=3, .associated_level=7},
+	{.flag=0x3C8, .type=3, .associated_level=7},
+	{.flag=0x3C9, .type=3, .associated_level=7},
+	{.flag=0x3CA, .type=3, .associated_level=7},
 };

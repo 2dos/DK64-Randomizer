@@ -66,6 +66,10 @@ def randomize_entrances(spoiler):
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
                                 exit_bytes = intToArr(zone["new_exit"], 2)
                                 ROM_COPY.writeBytes(bytearray(exit_bytes))
+                                if zone["new_map"] == Maps.HideoutHelm:
+                                    # Set to LZ Type 9, which does the Helm filtering
+                                    ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                                    ROM_COPY.writeMultipleBytes(9, 2)
         varspaceOffset = spoiler.settings.rom_data
         # Force call parent filter
         ROM_COPY.seek(varspaceOffset + 0x47)
@@ -76,33 +80,16 @@ def randomize_entrances(spoiler):
         ROM_COPY.write(1)
         # /* 0x05E */ unsigned short aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
         shuffledBack = spoiler.shuffled_exit_data[Transitions.AztecMainToRace]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x060 */ unsigned short aztec_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.AztecRaceToMain]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x062 */ unsigned short caves_beetle_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CavesRaceToMain]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x064 */ unsigned short seal_race_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.GalleonSealToShipyard]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x066 */ unsigned short factory_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.FactoryRaceToRandD]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x068 */ unsigned short castle_car_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleRaceToMuseum]
+        ROM_COPY.seek(varspaceOffset + 0x5E)
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x06A */ unsigned short seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.GalleonLighthouseAreaToSickBay]
+        ROM_COPY.seek(varspaceOffset + 0x6A)
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x06C */ unsigned short fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+        ROM_COPY.seek(varspaceOffset + 0x6C)
         if Transitions.ForestMainToCarts in spoiler.shuffled_exit_data:
             shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestMainToCarts]
             ROM_COPY.write(GetMapId(shuffledBack.regionId))
@@ -110,81 +97,46 @@ def randomize_entrances(spoiler):
         else:
             ROM_COPY.write(Maps.ForestMinecarts)
             ROM_COPY.write(0)
-        # /* 0x06E */ unsigned short fungi_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        if Transitions.ForestCartsToMain in spoiler.shuffled_exit_data:
-            shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestCartsToMain]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
-            ROM_COPY.write(GetExitId(shuffledBack))
-        else:
-            ROM_COPY.write(Maps.FungiForest)
-            ROM_COPY.write(MapExitTable[Maps.FungiForest].index("From Minecart"))
-        # /* 0x070 */ unsigned short japes_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        if Transitions.JapesCartsToMain in spoiler.shuffled_exit_data:
-            shuffledBack = spoiler.shuffled_exit_data[Transitions.JapesCartsToMain]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
-            ROM_COPY.write(GetExitId(shuffledBack))
-        else:
-            ROM_COPY.write(Maps.JungleJapes)
-            ROM_COPY.write(MapExitTable[Maps.JungleJapes].index("From Minecart"))
-        # /* 0x072 */ unsigned short castle_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleCartsToCrypt]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x074 */ unsigned short castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+        ROM_COPY.seek(varspaceOffset + 0x74)
         shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesMainToCastleLobby]
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x076 */ unsigned short k_rool_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        # K rool exit is always vanilla
-        ROM_COPY.write(Maps.Isles)
-        ROM_COPY.write(12)
         # /* 0x078 */ unsigned short exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.JapesToIsles]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.AztecToIsles]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.FactoryToIsles]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.GalleonToIsles]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestToIsles]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CavesToIsles]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleToIsles]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # Helm exit is always vanilla
-        ROM_COPY.write(Maps.HideoutHelmLobby)
-        ROM_COPY.write(1)
+        enter_transitions = [
+            Transitions.IslesToJapes,
+            Transitions.IslesToAztec,
+            Transitions.IslesToFactory,
+            Transitions.IslesToGalleon,
+            Transitions.IslesToForest,
+            Transitions.IslesToCaves,
+            Transitions.IslesToCastle,
+        ]
+        exit_transitions = [
+            Transitions.JapesToIsles,
+            Transitions.AztecToIsles,
+            Transitions.FactoryToIsles,
+            Transitions.GalleonToIsles,
+            Transitions.ForestToIsles,
+            Transitions.CavesToIsles,
+            Transitions.CastleToIsles,
+            Transitions.HelmToIsles,
+        ]
+        ROM_COPY.seek(varspaceOffset + 0x78)
+        for transition in exit_transitions:
+            if transition == Transitions.HelmToIsles and not spoiler.settings.shuffle_helm_location:
+                # Helm exit won't be in the shuffled_exit_data dict, so just write the vanilla value without reference
+                ROM_COPY.write(Maps.HideoutHelmLobby)
+                ROM_COPY.write(1)
+            else:
+                shuffledBack = spoiler.shuffled_exit_data[transition]
+                ROM_COPY.write(GetMapId(shuffledBack.regionId))
+                ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToJapes]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToAztec]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToFactory]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToGalleon]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToForest]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToCaves]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToCastle]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
+        for transition in enter_transitions:
+            shuffledBack = spoiler.shuffled_exit_data[transition]
+            ROM_COPY.write(GetMapId(shuffledBack.regionId))
+            ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x120 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleBallroomToMuseum]
         ROM_COPY.seek(varspaceOffset + 0x130)
@@ -194,6 +146,10 @@ def randomize_entrances(spoiler):
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleMuseumToBallroom]
         ROM_COPY.write(GetMapId(shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
+
+
+banned_filtration = (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide, Maps.HideoutHelm)
+museum_exit_type = 13  # Maybe 9?
 
 
 def filterEntranceType():
@@ -208,13 +164,17 @@ def filterEntranceType():
             ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
             lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
             lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            if lz_type == 0x10 and lz_map not in (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide):
+            if lz_type == 0x10 and lz_map not in banned_filtration:
                 # Change type to 0xC
                 ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
                 ROM_COPY.writeMultipleBytes(0xC, 2)
                 # Change fade type to spin
                 ROM_COPY.seek(cont_map_lzs_address + start + 0x16)
                 ROM_COPY.writeMultipleBytes(0, 2)
+            if cont_map_id == Maps.CastleMuseum and lz_id == 0 and lz_map not in banned_filtration:
+                # Disable objects through museum exit
+                ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                ROM_COPY.writeMultipleBytes(museum_exit_type, 2)
 
 
 class ItemPreviewCutscene:
@@ -250,3 +210,74 @@ def enableTriggerText(spoiler):
                     # Change cutscene
                     ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
                     ROM_COPY.writeMultipleBytes(cs.new_cutscene, 2)
+
+
+def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
+    """Write level order to ROM."""
+    varspaceOffset = spoiler.settings.rom_data
+    lobbies = [
+        Maps.JungleJapesLobby,
+        Maps.AngryAztecLobby,
+        Maps.FranticFactoryLobby,
+        Maps.GloomyGalleonLobby,
+        Maps.FungiForestLobby,
+        Maps.CrystalCavesLobby,
+        Maps.CreepyCastleLobby,
+        Maps.HideoutHelmLobby,
+    ]
+    lobby_exits = [2, 3, 4, 5, 6, 10, 11]
+    altered_maps = {
+        Maps.Isles: [],
+        Maps.JungleJapesLobby: [],
+        Maps.AngryAztecLobby: [],
+        Maps.FranticFactoryLobby: [],
+        Maps.GloomyGalleonLobby: [],
+        Maps.FungiForestLobby: [],
+        Maps.CrystalCavesLobby: [],
+        Maps.CreepyCastleLobby: [],
+        Maps.HideoutHelmLobby: [],
+    }
+    for index, item in enumerate(order):
+        altered_maps[Maps.Isles].append({"original_map": lobbies[index], "original_exit": 0, "new_map": lobbies[item], "new_exit": 0})
+        exit = None
+        for index2, item2 in enumerate(order):
+            if index == item2:
+                exit = lobby_exits[index2]
+        altered_maps[lobbies[index]].append({"original_map": Maps.Isles, "original_exit": lobby_exits[index], "new_map": Maps.Isles, "new_exit": exit})
+
+    for cont_map_id in altered_maps:
+        cont_map_lzs_address = js.pointer_addresses[18]["entries"][cont_map_id]["pointing_to"]
+        ROM_COPY.seek(cont_map_lzs_address)
+        lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        for lz_id in range(lz_count):
+            start = (lz_id * 0x38) + 2
+            ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+            lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if lz_type in valid_lz_types:
+                ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
+                lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
+                lz_exit = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                for zone in altered_maps[cont_map_id]:
+                    if lz_map == zone["original_map"]:
+                        if lz_exit == zone["original_exit"]:
+                            ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
+                            map_bytes = intToArr(zone["new_map"], 2)
+                            ROM_COPY.writeBytes(bytearray(map_bytes))
+                            ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
+                            exit_bytes = intToArr(zone["new_exit"], 2)
+                            ROM_COPY.writeBytes(bytearray(exit_bytes))
+                            if zone["new_map"] == Maps.HideoutHelm:
+                                # Set to LZ Type 9, which does the Helm filtering
+                                ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                                ROM_COPY.writeMultipleBytes(9, 2)
+                            elif cont_map_id == Maps.CastleMuseum and lz_id == 0:
+                                # Disable objects through museum exit
+                                ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                                ROM_COPY.writeMultipleBytes(museum_exit_type, 2)
+    level_7_lobby = lobbies[order[6]]
+    ROM_COPY.seek(varspaceOffset + 0x5D)
+    ROM_COPY.write(2)
+    ROM_COPY.seek(varspaceOffset + 0x74)
+    ROM_COPY.write(level_7_lobby)
+    ROM_COPY.write(0)

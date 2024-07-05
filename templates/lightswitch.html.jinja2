@@ -1,0 +1,33 @@
+<div class="position-relative">
+    <div class="position-absolute bottom-0 end-0">
+        <button class="nav-link bg-transparent nav-item"
+                id="light-switch"
+                type="button"
+                aria-selected="false">
+            <p class="select-title d-flex text-end" style="min-width:0px">
+                <span id="light-switch-icon-light" hidden>
+                    <i class="fa-solid fa-lightbulb fa-xl"></i>
+                </span>
+                <span id="light-switch-icon-dark">
+                    <i class="fa-solid fa-moon fa-xl"></i>
+                </span>
+            </p>
+        </button>
+    </div>
+</div>
+<script>
+    document.getElementById('light-switch').addEventListener('click',()=>{
+        const dark_hook = document.getElementById("light-switch-icon-dark");
+        const light_hook = document.getElementById("light-switch-icon-light");
+        if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {
+            document.documentElement.setAttribute('data-bs-theme','light')
+            light_hook.removeAttribute("hidden")
+            dark_hook.setAttribute("hidden", "")
+        }
+        else {
+            document.documentElement.setAttribute('data-bs-theme','dark')
+            dark_hook.removeAttribute("hidden")
+            light_hook.setAttribute("hidden", "")
+        }
+    })
+</script>

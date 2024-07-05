@@ -116,11 +116,13 @@ settingsExclusionMap = {
             "points_list_guns"
             "points_list_instruments"
             "points_list_training_moves"
+            "points_list_fairy_moves"
             "points_list_important_shared"
             "points_list_pad_moves"
             "points_list_barrel_moves"
             "points_list_active_moves"
             "points_list_bean"
+            "points_list_shopkeepers"
         ],
         SpoilerHints.vial_colors: [
             "points_list_kongs"
@@ -128,11 +130,13 @@ settingsExclusionMap = {
             "points_list_guns"
             "points_list_instruments"
             "points_list_training_moves"
+            "points_list_fairy_moves"
             "points_list_important_shared"
             "points_list_pad_moves"
             "points_list_barrel_moves"
             "points_list_active_moves"
             "points_list_bean"
+            "points_list_shopkeepers"
         ],
     },
 }
@@ -181,6 +185,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "enguarde_skin_custom_color",
         "klaptrap_model",
         "random_models",
+        "random_enemy_colors",
         "misc_cosmetics",
         "disco_chunky",
         "dark_mode_textboxes",
@@ -191,12 +196,15 @@ def encrypt_settings_string_enum(dict_data: dict):
         "lanky_fur_custom_color",
         "rambi_skin_colors",
         "rambi_skin_custom_color",
+        "gb_colors",
+        "gb_custom_color",
         "random_colors",
         "random_music",
         "music_bgm_randomized",
         "music_events_randomized",
         "music_majoritems_randomized",
         "music_minoritems_randomized",
+        "music_vanilla_locations",
         "tiny_hair_colors",
         "tiny_clothes_colors",
         "tiny_hair_custom_color",
@@ -205,6 +213,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "remove_water_oscillation",
         "head_balloons",
         "colorblind_mode",
+        "big_head_mode",
         "search",
         "holiday_setting",
         "holiday_setting_offseason",
@@ -221,9 +230,11 @@ def encrypt_settings_string_enum(dict_data: dict):
         "music_filtering",
         "music_filtering_selected",
         "troff_brighten",
+        "better_dirt_patch_cosmetic",
         "crosshair_outline",
         "custom_music_proportion",
         "fill_with_custom_music",
+        "show_song_name",
         "delayed_spoilerlog_release",
     ]:
         if pop in dict_data:

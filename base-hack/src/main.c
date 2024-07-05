@@ -11,27 +11,18 @@ static char has_loaded = 0;
 static char new_picture = 0;
 int hint_pointers[35] = {};
 char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
-static char delayed_load = 0;
 char grab_lock_timer = -1;
 char tag_locked = 0;
 
 
 void cFuncLoop(void) {
 	regularFrameLoop();
-	if (!delayed_load) {
-		// loadWidescreen(OVERLAY_BOOT);
-		delayed_load = 1;
-	}
-	DataIsCompressed[18] = 0;
-	unlockKongs();
 	tagAnywhere();
-	initHack(0);
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	overlay_changes();
 	replace_zones(0);
-	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
@@ -45,7 +36,7 @@ void cFuncLoop(void) {
 		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
 			TextItemName = Rando.caves_beetle_reward;
 		}
-		if (Rando.krusha_slot == 3) {
+		if (isKrushaAdjacentModel(3)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
 				setActorDamage(43, 1);
 			} else {
@@ -56,7 +47,7 @@ void cFuncLoop(void) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
 				int kong_target = CurrentMap - MAP_KROOLDK;
 				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
-					initiateTransition(MAP_ISLES, 0xC);
+					exitBoss();
 					Character = Rando.starting_kong;
 				}
 			}
@@ -73,9 +64,7 @@ void cFuncLoop(void) {
 			grab_lock_timer = -1;
 		}
 	}
-	if (tag_locked) {
-		tag_locked = 0;
-	}
+	tag_locked = 0;
 	if (Rando.cutscene_skip_setting == CSSKIP_PRESS) {
 		clearSkipCache();
 	}
@@ -150,15 +139,7 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	changeHelmLZ();
 	handleSFXCache();
-	if (Rando.fast_start_helm == 2) {
-		if (TransitionSpeed > 0) {
-			if ((DestMap == MAP_HELM) && (CurrentMap == MAP_HELMLOBBY)) {
-				setPermFlag(FLAG_MODIFIER_HELMBOM);
-			}
-		}
-	}
 	handleDPadFunctionality();
 	if (Rando.quality_of_life.fast_boot) {
 		if (Gamemode == GAMEMODE_DKTV) {
@@ -196,8 +177,14 @@ void cFuncLoop(void) {
 	current_avg_lag /= LAG_CAP;
 }
 
+static short mj_falling_cutscenes[] = {
+	8, 2, 16, 18, 17
+};
+
 void earlyFrame(void) {
-	if (ObjectModel2Timer == 2) {
+	if (ObjectModel2Timer < 2) {
+		swap_ending_cutscene_model();
+	} else if (ObjectModel2Timer == 2) {
 		setFlag(FLAG_KROOL_INTRO_DK,1,FLAGTYPE_TEMPORARY); // DK Phase Intro
 		setFlag(FLAG_KROOL_INTRO_TINY,1,FLAGTYPE_TEMPORARY); // Tiny Phase Intro
 		if (CurrentMap == MAP_ISLES) {
@@ -257,7 +244,7 @@ void earlyFrame(void) {
 		}
 	} else if (CurrentMap == MAP_FACTORYJACK) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
-			if ((CutsceneIndex == 8) || (CutsceneIndex == 2) || (CutsceneIndex == 16) || (CutsceneIndex == 18) || (CutsceneIndex == 17)) {
+			if (inShortList(CutsceneIndex, &mj_falling_cutscenes[0], sizeof(mj_falling_cutscenes) >> 1)) {
 				// Falling off Mad Jack
 				if (Player) {
 					Player->control_state = 0xC;
@@ -274,14 +261,18 @@ void earlyFrame(void) {
 	}
 	fastWarpShockwaveFix();
 	catchWarpHandle();
-	write_kutoutorder();
-	remove_blockers();
-	determine_krool_order();
-	disable_krool_health_refills();
 	CBDing();
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
 		wipeHintCache();
+		if (CurrentMap == MAP_MAINMENU) {
+			FileScreenDLCode_Write();
+			initTracker();
+			if (Player) {
+				// Remove DK's shadow in the main menu
+				Player->unk_16E = 0;
+			}
+		}
 	}
 	if (Rando.item_rando) {
 		int has_sniper = 0;
@@ -311,14 +302,6 @@ void earlyFrame(void) {
 		for (int level = 0; level < 7; level++) {
 			MovesBase[kong].cb_count[level] &= 0xFF;
 			MovesBase[kong].tns_cb_count[level] &= 0xFF;
-		}
-	}
-	if ((CurrentMap == MAP_MAINMENU) && (ObjectModel2Timer < 5)) {
-		FileScreenDLCode_Write();
-		initTracker();
-		if(Player){
-			// Remove DK's shadow in the main menu
-			Player->unk_16E = 0;
 		}
 	}
 	if (CurrentMap == MAP_NFRTITLESCREEN) {
@@ -409,7 +392,7 @@ static unsigned char ammo_hud_timer = 0;
 #define LOADBAR_DIVISOR 35
 
 #define INFO_STYLE 6
-int* drawInfoText(int* dl, int x_offset, int y, char* str, int error) {
+Gfx* drawInfoText(Gfx* dl, int x_offset, int y, char* str, int error) {
 	int x = 93 + x_offset;
 	if (x_offset == -1) {
 		x = getCenter(INFO_STYLE,str);
@@ -421,7 +404,34 @@ int* drawInfoText(int* dl, int x_offset, int y, char* str, int error) {
 	return drawTextContainer(dl, INFO_STYLE, x, y, str, 0xFF, non_red, non_red, 255, 0);
 }
 
-int* displayListModifiers(int* dl) {
+typedef struct eeprom_warning_struct {
+	/* 0x000 */ char* text;
+	/* 0x004 */ short x_offset;
+	/* 0x006 */ char error;
+	/* 0x007 */ char margin_bottom;
+} eeprom_warning_struct;
+
+#define STANDARD_MARGIN_BOTTOM 14
+static const eeprom_warning_struct warning_text[] = {
+	{.text="WARNING", .x_offset=-10, .error=1, .margin_bottom=20},
+	{.text="DUE TO YOUR EMULATOR SETUP", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="YOUR GAME MAY EXPERIENCE", .x_offset=-80, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="ABNORMALITIES LIKE NOT SAVING", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="AND SPORADIC CRASHES THAT", .x_offset=-86, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="WE             SUPPORT.", .x_offset=-56, .error=0, .margin_bottom=0},
+	{.text="CANNOT", .x_offset=-31, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="PLEASE CONSULT THE WIKI", .x_offset=-72, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="OR THE DISCORD", .x_offset=-40, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="DISCORD.DK64RANDOMIZER.COM", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="FOR HELP", .x_offset=-8, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+};
+
+typedef struct menu_paad {
+	/* 0x000 */ char unk_00[0x12];
+	/* 0x012 */ unsigned char screen;
+} menu_paad;
+
+Gfx* displayListModifiers(Gfx* dl) {
 	if (CurrentMap != MAP_NINTENDOLOGO) {
 		if (CurrentMap == MAP_NFRTITLESCREEN) {
 			wait_progress_timer += 1;
@@ -432,12 +442,10 @@ int* displayListModifiers(int* dl) {
 					wait_progress_master = 0;
 				}
 			}
-			int address = 0x8075054C + (4 * wait_progress_master);
-			float left_f = (((LOADBAR_FINISH - LOADBAR_START) + LOADBAR_MAXWIDTH) / LOADBAR_DIVISOR) * wait_progress_timer;
-			left_f += LOADBAR_START;
-			left_f -= LOADBAR_MAXWIDTH;
-			float left = left_f;
-			float right = left + LOADBAR_MAXWIDTH;
+			rgba* address = &KongRGBA[wait_progress_master];
+			int left_f = (((LOADBAR_FINISH - LOADBAR_START) + LOADBAR_MAXWIDTH) / LOADBAR_DIVISOR) * wait_progress_timer;
+			int left = left_f + LOADBAR_START - LOADBAR_MAXWIDTH;
+			int right = left + LOADBAR_MAXWIDTH;
 			if (left < LOADBAR_START) {
 				left = LOADBAR_START;
 			}
@@ -450,21 +458,9 @@ int* displayListModifiers(int* dl) {
 			if (right < LOADBAR_START) {
 				right = LOADBAR_START;
 			}
-			left *= (SCREEN_WD_FLOAT / 320);
-			right *= (SCREEN_WD_FLOAT / 320);
-			if (left > 1023.0f) {
-				left = 1023.0f;
-			}
-			if (right > 1023.0f) {
-				right = 1023.0f;
-			}
 			int bar_y = 475;
 			int bar_text_y = 130;
-			if (Rando.true_widescreen) {
-				bar_y = (2 * SCREEN_HD) - 5;
-				bar_text_y = (SCREEN_HD >> 1) + 10;
-			}
-			dl = drawScreenRect(dl, left, bar_y, right, bar_y + 10, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
+			dl = drawScreenRect(dl, left, bar_y, right, bar_y + 10, address->red, address->green, address->blue, address->alpha);
 			int wait_x_offset = 55;
 			if (wait_progress_master > 0) {
 				wait_x_offset = 160 - (wait_text_lengths[wait_progress_master - 1] << 2);
@@ -473,47 +469,25 @@ int* displayListModifiers(int* dl) {
 			dl = drawPixelTextContainer(dl, 110, bar_text_y + 20, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAP_MAINMENU) {
 			if (EEPROMType != 2) {
-				int i = 0;
-				while (i < LoadedActorCount) {
-					if (LoadedActorArray[i].actor) {
-						if (LoadedActorArray[i].actor->actorType == 0x146) {
-							int screen = *(char*)((int)(LoadedActorArray[i].actor) + 0x18A);
-							if (screen < 2) {
-								// EEPROM Warning
-								dl = drawScreenRect(dl, 250, 200, 1000, 700, 3, 3, 3, 1);
-								dl = drawPixelTextContainer(dl, 128, 60, "WARNING", 0xFF, 0, 0, 0xFF, 1);
-								int y_info = 150;
-								int spacing = 14;
-								dl = drawInfoText(dl, -88, y_info, "DUE TO YOUR EMULATOR SETUP", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -80, y_info, "YOUR GAME MAY EXPERIENCE", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -96, y_info, "ABNORMALITIES LIKE NOT SAVING", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -86, y_info, "AND SPORADIC CRASHES THAT", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -56, y_info, "WE             SUPPORT.", 0);
-								dl = drawInfoText(dl, -31, y_info, "CANNOT", 1);
-								y_info += spacing;
-								dl = drawInfoText(dl, -72, y_info, "PLEASE CONSULT THE WIKI", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -40, y_info, "OR THE DISCORD", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -88, y_info, "DISCORD.DK64RANDOMIZER.COM", 0);
-								y_info += spacing;
-								dl = drawInfoText(dl, -8, y_info, "FOR HELP", 0);
-								y_info += spacing;
-							}
-							break;
+				actorData* actor = findActorWithType(0x146);
+				if (actor) {
+					menu_paad* paad = (menu_paad*)actor->paad;
+					if (paad->screen < 2) {
+						// EEPROM Warning
+						dl = drawScreenRect(dl, 250, 200, 1000, 700, 3, 3, 3, 1);
+						int y_info = 130;
+						for (int k = 0; k < sizeof(warning_text)/sizeof(eeprom_warning_struct); k++) {
+							eeprom_warning_struct* local_warning = &warning_text[k];
+							dl = drawInfoText(dl, local_warning->x_offset, y_info, local_warning->text, local_warning->error);
+							y_info += local_warning->margin_bottom;
 						}
 					}
-					i++;
 				}
-				
-
 			}
+			dl = displaySongNameHandler(dl);
 		} else {
 			dl = drawTextPointers(dl);
+			dl = displaySongNameHandler(dl);
 			if (Rando.item_rando) {
 				dl = controlKeyText(dl);
 			}
@@ -526,10 +500,6 @@ int* displayListModifiers(int* dl) {
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 				int fps_x = 250;
 				int fps_y = 210;
-				if (Rando.true_widescreen) {
-					fps_x = SCREEN_WD - 90;
-					fps_y = SCREEN_HD - 30;
-				}
 				dl = drawPixelTextContainer(dl, fps_x, fps_y, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 			dl = drawDPad(dl);
@@ -553,20 +523,22 @@ int* displayListModifiers(int* dl) {
 			if (HUD) {
 				int hud_st = HUD->item[0xC].hud_state;
 				if (hud_st) {
-					if (hud_st == 1) {
+					if ((hud_st == 1) || (hud_st == 2)) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
 							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,FLAGTYPE_PERMANENT);
 							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							if ((bp_has) && (!bp_turn)) {
-								bp_numerator += 1;
-							}
 							if (!bp_turn) {
+								if (bp_has) {
+									bp_numerator += 1;
+								}
 								bp_denominator += 1;
 							}
 						}
-						hud_timer += 1;
+						if (hud_st == 1) {
+							hud_timer += 1;
+						}
 					} else if (hud_st == 3) {
 						hud_timer -= 1;
 						if (hud_timer < 0) {
@@ -578,10 +550,6 @@ int* displayListModifiers(int* dl) {
 					opacity /= 12;
 					float bp_x = 355.0f;
 					float bp_y_start = 480.0f;
-					if (Rando.true_widescreen) {
-						bp_x = SCREEN_WD_FLOAT + 35.0f;
-						bp_y_start = SCREEN_HD_FLOAT * 2;
-					}
 					dl = drawText(dl, 1, bp_x, bp_y_start + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
 				} else {
 					hud_timer = 0;

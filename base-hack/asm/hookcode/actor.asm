@@ -480,3 +480,133 @@ scareBeaver:
     addiu $a1, $zero, 35
     j 0x806AD730
     sb $a1, 0x144 ($a0)
+
+AlterHeadSize:
+    addiu $t1, $t1, 0x6
+    ; Check Actor
+    lui $t7, 0x8074
+    lw $t7, 0x6E20 ($t7) ; Focused Model
+    beq $t7, $zero, AlterHeadSize_Finish
+    nop
+    lw $s0, 0x58 ($t7) ; Actor Type
+    slti $a1, $s0, 344
+    beq $a1, $zero, AlterHeadSize_Finish ; Not within first 344 actors
+    sra $t7, $s0, 3
+    lui $a1, hi(big_head_actors)
+    addu $a1, $a1, $t7
+    lbu $a1, lo(big_head_actors) ($a1)
+    andi $t7, $s0, 7
+    addiu $s0, $zero, 0x80
+    srav $t7, $s0, $t7
+    and $a1, $a1, $t7
+    beq $a1, $zero, AlterHeadSize_Finish ; Not allowed for big head mode
+    nop
+    ; No need to check whether setting is enabled, assume this is only called if setting is enabled
+    lui $t7, hi(BigHeadMode)
+    lbu $t7, lo(BigHeadMode) ($t7)
+    sll $t7, $t7, 8
+    lui $a1, 0x8074
+    addiu $a1, $a1, 0x7268
+    sh $t7, 0x0 ($a1)
+    sh $t7, 0x2 ($a1)
+    sh $t7, 0x4 ($a1)
+
+    AlterHeadSize_Finish:
+        lw $s0, 0x38 ($a0)
+        j 0x8061A4D0
+        lhu $t7, 0x0 ($s7)
+
+AlterHeadSize_0:
+    ; Check Actor
+    lui $t7, 0x8074
+    lw $t7, 0x6E20 ($t7) ; Focused Model
+    beq $t7, $zero, AlterHeadSize_0_Finish
+    nop
+    lw $s0, 0x58 ($t7) ; Actor Type
+    slti $a1, $s0, 344
+    beq $t9, $zero, AlterHeadSize_0_Finish ; Not within first 344 actors
+    sra $t7, $s0, 3
+    lui $t9, hi(big_head_actors)
+    addu $t9, $t9, $t7
+    lbu $t9, lo(big_head_actors) ($t9)
+    andi $t7, $s0, 7
+    addiu $s0, $zero, 0x80
+    srav $t7, $s0, $t7
+    and $t9, $t9, $t7
+    beq $t9, $zero, AlterHeadSize_0_Finish ; Not allowed for big head mode
+    nop
+    ; No need to check whether setting is enabled, assume this is only called if setting is enabled
+    lui $t9, hi(BigHeadMode)
+    lbu $t9, lo(BigHeadMode) ($t9)
+    sll $t9, $t9, 8
+    lui $s0, 0x8074
+    addiu $s0, $s0, 0x7268
+    sh $t9, 0x0 ($s0)
+    sh $t9, 0x2 ($s0)
+    sh $t9, 0x4 ($s0)
+    
+    AlterHeadSize_0_Finish:
+        ; Run replaced code
+        sll $s1, $s1, 1
+        j 0x806198DC
+        addu $t9, $s5, $s1
+
+makeKongTranslucent:
+    lui $v1, hi(CurrentMap)
+    lw $v1, lo(CurrentMap) ($v1)
+    addiu $at, $zero, 0xCF
+    bne $v1, $at, makeKongTranslucent_finish ; not in chunky phase
+    nop
+    addiu $at, $zero, 0x2
+    bne $t1, $at, makeKongTranslucent_clearTranslucency ; not hunky
+    nop
+    lui $v1, hi(CutsceneActive)
+    lbu $v1, lo(CutsceneActive) ($v1)
+    addiu $at, $zero, 0x1
+    beq $v1, $at, makeKongTranslucent_clearTranslucency ; In Cutscene
+    nop
+    lui $v1, hi(CurrentActorPointer_0)
+    lw $v1, lo(CurrentActorPointer_0) ($v1)
+    ; Enable Translucency
+    lw $t2, 0x60 ($v1)
+    lui $at, 0xFFFF
+    ori $at, $at, 0x7FFF
+    and $t2, $t2, $at
+    sw $t2, 0x60 ($v1)
+    ; Reduce Translucency
+    lh $t2, 0x128 ($v1)
+    addiu $t2, $t2, -4
+    slti $at, $t2, 100
+    beq $at, $zero, makeKongTranslucent_setTranslucency
+    nop
+    addiu $t2, $zero, 100
+
+    makeKongTranslucent_setTranslucency:
+        b makeKongTranslucent_finish
+        sh $t2, 0x128 ($v1)
+
+    makeKongTranslucent_clearTranslucency:
+        lui $v1, hi(CurrentActorPointer_0)
+        lw $v1, lo(CurrentActorPointer_0) ($v1)
+        ; Disable Translucency
+        lw $t2, 0x60 ($v1)
+        ori $t2, $t2, 0x8000
+        sw $t2, 0x60 ($v1)
+
+    makeKongTranslucent_finish:
+        addiu $at, $zero, 0x1
+        j 0x806CB780
+        lui $v1, 0x8080
+
+expandTBarrelResponse:
+    lw $t6, 0x0 ($s1)
+    lw $t7, 0x58 ($t6) ; load actor type
+    addiu $at, $zero, 134 ; training barrel
+    beq $t7, $at, expandTBarrelResponse_isResponse
+    nop
+    j 0x80680ADC
+    addiu $at, $zero, 0x1C ; Regular Bonus
+
+    expandTBarrelResponse_isResponse:
+        j 0x80680AE4
+        nop

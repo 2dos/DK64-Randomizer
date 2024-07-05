@@ -1,12 +1,35 @@
 """Apply Door Locations."""
 
 import js
+from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Enums.Maps import Maps
-from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID
+from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID, TableNames
 from randomizer.Patching.Patcher import LocalROM
+
+LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
+
+PORTAL_MAP_ID_PAIRING = {
+    Maps.JungleJapes: 0x11B,
+    Maps.AngryAztec: 0x1A0,
+    Maps.FranticFactory: 0x1C2,
+    Maps.GloomyGalleon: 0x57,
+    Maps.FungiForest: 0x5C,
+    Maps.CrystalCaves: 0x54,
+    Maps.CreepyCastle: 0xB8,
+}
+
+PORTAL_MAP_EXIT_PAIRING = {
+    Maps.JungleJapes: [0, 15],
+    Maps.AngryAztec: [0],
+    Maps.FranticFactory: [0],
+    Maps.GloomyGalleon: [0],
+    Maps.FungiForest: [0, 27],
+    Maps.CrystalCaves: [0],
+    Maps.CreepyCastle: [0, 21],
+}
 
 
 def remove_existing_indicators(spoiler):
@@ -58,6 +81,7 @@ def place_door_locations(spoiler):
         spoiler.settings.tns_location_rando,
         spoiler.settings.remove_wrinkly_puzzles,
         spoiler.settings.enable_progressive_hints,
+        spoiler.settings.dk_portal_location_rando,
     ]
     for boolean in settings_enable:
         if boolean:
@@ -72,6 +96,15 @@ def place_door_locations(spoiler):
         #   0x28: Lever (Fungi Lobby)
         #   0x35: Ice Block (Caves Lobby)
         #   0xCE: Grey Switch (Caves Lobby)
+        dk_portal_locations = {
+            Maps.JungleJapes: [0, 0, 0, 0],
+            Maps.AngryAztec: [0, 0, 0, 0],
+            Maps.FranticFactory: [0, 0, 0, 0],
+            Maps.GloomyGalleon: [0, 0, 0, 0],
+            Maps.FungiForest: [0, 0, 0, 0],
+            Maps.CrystalCaves: [0, 0, 0, 0],
+            Maps.CreepyCastle: [0, 0, 0, 0],
+        }
         # Handle Setup
         for cont_map_id in range(216):
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -96,6 +129,10 @@ def place_door_locations(spoiler):
                 if spoiler.settings.tns_location_rando:
                     if cont_map_id != 0x2A:
                         if item_type in (0x2AB, 0x2AC):
+                            retain = False
+                if spoiler.settings.dk_portal_location_rando:
+                    if cont_map_id in LEVEL_MAIN_MAPS:
+                        if item_type == 0x2AD:
                             retain = False
                 if retain:
                     ROM_COPY.seek(item_start)
@@ -134,7 +171,10 @@ def place_door_locations(spoiler):
                                 item_data = []
                                 for coord_index in range(3):
                                     item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
-                                item_data.append(int(float_to_hex(door.scale), 16))  # Scale
+                                default_scale = door.scale
+                                if door.default_placed == DoorType.dk_portal:
+                                    default_scale = 2
+                                item_data.append(int(float_to_hex(default_scale), 16))  # Scale
                                 item_data.append(0x5F0)
                                 item_data.append(0x80121B00)
                                 item_data.append(int(float_to_hex(door.rx), 16))  # rx
@@ -158,7 +198,10 @@ def place_door_locations(spoiler):
                                         item_data.append(int(float_to_hex(door.location[coord_index] - 30), 16))  # y
                                     else:
                                         item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
-                                item_data.append(int(float_to_hex([door.scale, 0.35][k]), 16))  # Scale
+                                default_scale = door.scale
+                                if door.default_placed == DoorType.dk_portal:
+                                    default_scale = 2
+                                item_data.append(int(float_to_hex([default_scale, 0.35 * default_scale][k]), 16))  # Scale
                                 item_data.append(0xFFFEFEFF)
                                 item_data.append(0x001BFFE1)
                                 item_data.append(int(float_to_hex(door.rx), 16))  # rx
@@ -175,6 +218,25 @@ def place_door_locations(spoiler):
                                 item_data.append(([0x2AC, 0x2AB][k] << 16) | id)
                                 item_data.append(1 << 16)
                                 retained_model2.append(item_data)
+                        elif door_type == "dk_portal" and spoiler.settings.dk_portal_location_rando:
+                            item_data = []
+                            for coord_index in range(3):
+                                item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
+                            for coord_index in range(4):
+                                dk_portal_locations[cont_map_id][coord_index] = door.location[coord_index]
+                            default_scale = 1
+                            if door.default_placed != DoorType.dk_portal:
+                                default_scale = door.scale / 2
+                            item_data.append(int(float_to_hex(default_scale), 16))  # Scale
+                            item_data.append(0xFFFFFEFF)
+                            item_data.append(0x0101F03E)
+                            item_data.append(int(float_to_hex(door.rx), 16))  # rx
+                            item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
+                            item_data.append(int(float_to_hex(door.rz), 16))  # rz
+                            item_data.append(0)
+                            item_data.append((0x2AD << 16) | PORTAL_MAP_ID_PAIRING[cont_map_id])
+                            item_data.append(1 << 16)
+                            retained_model2.append(item_data)
             if len(map_wrinkly_ids) > 0:
                 addNewScript(cont_map_id, map_wrinkly_ids, ScriptTypes.Wrinkly)
             if len(portal_ids) > 0:
@@ -189,3 +251,24 @@ def place_door_locations(spoiler):
                     ROM_COPY.writeMultipleBytes(data, 4)
             for data in other_retained_data:
                 ROM_COPY.writeMultipleBytes(data, 4)
+        if spoiler.settings.dk_portal_location_rando:
+            for portal_map in dk_portal_locations:
+                exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
+                exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
+                for exit_index in exits_to_alter:
+                    ROM_COPY.seek(exit_start + (exit_index * 10))
+                    for coord_index in range(3):
+                        coord_value = dk_portal_locations[portal_map][coord_index]
+                        coord_int = int(coord_value)
+                        if coord_int < 0:
+                            coord_int += 0x10000
+                        ROM_COPY.writeMultipleBytes(coord_int, 2)
+                    angle = int(255 * (dk_portal_locations[portal_map][3] / 360))
+                    cam_raw_angle = dk_portal_locations[portal_map][3]
+                    if cam_raw_angle >= 180:
+                        cam_raw_angle -= 180
+                    else:
+                        cam_raw_angle += 180
+                    cam_angle = int(255 * (cam_raw_angle / 360))
+                    ROM_COPY.writeMultipleBytes(angle, 1)
+                    ROM_COPY.writeMultipleBytes(cam_angle, 1)

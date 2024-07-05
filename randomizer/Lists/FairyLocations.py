@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 
 
@@ -382,7 +383,7 @@ fairy_locations = {
             region=Regions.Testing,
             fence=Fence(2311, 1184, 2565, 1439),
             spawn_y=1439,
-            logic=lambda l: l.camera and (l.spring and l.isdiddy),
+            logic=lambda l: l.camera and ((l.spring or l.CanMoontail()) and l.isdiddy),
         ),
         FairyData(
             name="Near Dartboard Boxes",
@@ -729,7 +730,7 @@ fairy_locations = {
             region=Regions.DiddyUpperCabin,
             is_vanilla=True,
             spawn_xyz=[140, 100, 505],
-            logic=lambda l: l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy,
+            logic=lambda l: l.camera and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) and l.jetpack and l.isdiddy,
             natural_index=1,
         ),
         FairyData(
@@ -754,7 +755,7 @@ fairy_locations = {
             region=Regions.CrystalCavesMain,
             fence=Fence(2461, 402, 2684, 542),
             spawn_y=76,
-            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim()),
+            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         ),
         FairyData(
             name="Ice Castle Roof",

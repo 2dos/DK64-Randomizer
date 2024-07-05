@@ -1,17 +1,5 @@
 #define NULL 0
 
-// Colors
-#define SelectedRGB 0xFFD700 // CSS Gold
-#define ReturnRGB 0xFF4500 // CSS OrangeRed
-#define KoshaRGB_Frozen 0x008B8B // CSS DarkCyan
-#define KoshaRGB_CancelRange 0xFFD700 // CSS Gold
-#define KoshaRGB_Music 0xD2691E // CSS Chocolate
-#define KoshaRGB_Tantrum 0x8B0000 // CSS DarkRed
-#define ISGRGB_FadeoutPending 0xFF4500 // CSS OrangeRed
-#define ISGRGB_Fading 0xFF0000 // CSS Red
-#define AngleRGB_PhaseState 0xFF4500 // CSS OrangeRed
-#define HeldObject_ObjectExists 0xFF4500 // CSS OrangeRed
-
 // SFX Index
 #define Banana 0x2A0
 #define Okay 0x23C
@@ -42,22 +30,11 @@
 #define ArcadeGrunt 83
 
 // Other
-#define MysteryWriteOffset 0x29C
-#define CurrentCharacter 0x36C
-#define MovesBaseSize 0x1D8
-#define MaxMenuItems 20 // 32 (practice rom cap) - 8 (normal cap) - 4 (watch)
-#define ErrorLength 180
-#define WarpScreens 38
-#define WatchCount 4
-#define FileStatesROMStart 0x2022000
-#define FileStateSize 0x340
-#define flagMenuScreenCount 11
-#define pointer_table_offset 0x101C50
 #define static_expansion_size 0x100
 
 #define ACTOR_VANILLA_LIMIT 345
-#define COLLISION_LIMIT 60
-#define DEFS_LIMIT 147
+#define COLLISION_LIMIT 66
+#define DEFS_LIMIT 153
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 #define CUSTOM_ACTORS_START 345
 
@@ -108,7 +85,13 @@
 #define FLAG_SHOPMOVE_SLAM_0 0x3BF
 #define FLAG_SHOPMOVE_SLAM_1 0x3C0
 #define FLAG_SHOPMOVE_SLAM_2 0x3C1
-#define FLAG_ENEMY_KILLED_0 0x3C2 // 0x3C2 -> 0x56B (inc.) (426 flags)
+#define FLAG_ITEM_CRANKY 0x3C2
+#define FLAG_ITEM_FUNKY 0x3C3
+#define FLAG_ITEM_CANDY 0x3C4
+#define FLAG_ITEM_SNIDE 0x3C5
+#define FLAG_MEDAL_ISLES_DK 0x3C6 // 0x3C6, 0x3C7, 0x3C8, 0x3C9, 0x3CA
+#define FLAG_ENEMY_KILLED_0 0x3CB // 0x3CB -> 0x574 (inc.) (426 flags)
+
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188
@@ -119,15 +102,6 @@
 #define HELM_HURRY_BITS 16
 #define STAT_BITS 16
 #define LETTER_BITS 7
-
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_FLAG 5
-#define PURCHASE_GB 6
-#define PURCHASE_NOTHING -1
 
 // Move Bitfield Checks
 #define MOVECHECK_BLAST 1
@@ -158,3 +132,6 @@
 
 #define ARCADE_IMAGE_COUNT 22
 #define CROWD_VOLUME 10000
+
+#define PATH_CAP 64
+#define BONUS_DATA_COUNT 99

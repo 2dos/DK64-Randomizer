@@ -254,7 +254,7 @@ def lambda_function():
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
-            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time"]
+            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time", "Item Pool"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
             else:
@@ -520,7 +520,7 @@ def get_seed_data():
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
-            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time"]
+            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time", "Item Pool"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
             else:

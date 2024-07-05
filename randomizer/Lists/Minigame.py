@@ -14,7 +14,17 @@ class Minigame:
     """Class which stores name and logic for a minigame."""
 
     def __init__(
-        self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0, kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+        self,
+        *,
+        name="No Game",
+        group="No Group",
+        map_id=0,
+        helm_enabled=True,
+        can_repeat=True,
+        difficulty_lvl=0,
+        logic=0,
+        kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        training_enabled=True,
     ) -> None:
         """Initialize with given parameters."""
         self.name = name
@@ -25,6 +35,7 @@ class Minigame:
         self.logic = logic
         self.group = group
         self.kong_list = kong_list
+        self.training_enabled = training_enabled and len(kong_list) == 5
 
 
 HelmMinigameLocations = [
@@ -38,6 +49,12 @@ HelmMinigameLocations = [
     Locations.HelmTiny2,
     Locations.HelmChunky1,
     Locations.HelmChunky2,
+]
+TrainingMinigameLocations = [
+    Locations.IslesSwimTrainingBarrel,
+    Locations.IslesVinesTrainingBarrel,
+    Locations.IslesBarrelsTrainingBarrel,
+    Locations.IslesOrangesTrainingBarrel,
 ]
 
 MinigameRequirements = {
@@ -145,22 +162,19 @@ MinigameRequirements = {
         group="Speedy Swing Sortie",
         map_id=Maps.SpeedySwingSortieNormal,
         difficulty_lvl=1,
-        logic=lambda l: (l.vines and (l.twirl and l.istiny)) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey),
+        logic=lambda l: l.vines and (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))),
         kong_list=[Kongs.tiny],
     ),
     Minigames.SpeedySwingSortieHard: Minigame(
         name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: l.vines
     ),
-    # Krazy Kong Klamour - Fast flicker games banned from Helm because Wii U semi-requires pause buffer to hit Bananas. Not expecting users to know this trick
     Minigames.KrazyKongKlamourEasy: Minigame(name="Krazy Kong Klamour (10 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourEasy, logic=lambda l: True),
     Minigames.KrazyKongKlamourNormal: Minigame(
         name="Krazy Kong Klamour (15 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourNormal, difficulty_lvl=1, logic=lambda l: True
     ),
-    Minigames.KrazyKongKlamourHard: Minigame(
-        name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: True
-    ),
+    Minigames.KrazyKongKlamourHard: Minigame(name="Krazy Kong Klamour (5 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourHard, difficulty_lvl=3, logic=lambda l: True),
     Minigames.KrazyKongKlamourInsane: Minigame(
-        name="Krazy Kong Klamour (10 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourInsane, helm_enabled=False, difficulty_lvl=4, logic=lambda l: True
+        name="Krazy Kong Klamour (10 Bananas, Fast Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourInsane, difficulty_lvl=4, logic=lambda l: True
     ),
     # Searchlight Seek
     Minigames.SearchlightSeekVEasy: Minigame(name="Searchlight Seek (4 Klaptraps)", group="Searchlight Seek", map_id=Maps.SearchlightSeekVEasy, logic=lambda l: True),
@@ -185,7 +199,7 @@ MinigameRequirements = {
         map_id=Maps.HelmBarrelDKTarget,
         can_repeat=True,
         difficulty_lvl=3,
-        logic=lambda l: l.isdonkey and (not l.settings.balanced_krool_phases or l.blast),
+        logic=lambda l: l.isdonkey and (not l.settings.cannons_require_blast or l.blast),
         kong_list=[Kongs.donkey],
     ),
     Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),
@@ -197,8 +211,14 @@ MinigameRequirements = {
         logic=lambda l: l.Slam and (l.jetpack and l.peanut and l.isdiddy) or l.phasewalk,
         kong_list=[Kongs.diddy],
     ),
-    # Supposed to use sprint but can make it without), even with Chunky
-    Minigames.LankyMaze: Minigame(name="Hideout Helm: Lanky Maze", group="Helm Minigames", map_id=Maps.HelmBarrelLankyMaze, can_repeat=True, logic=lambda l: True),
+    Minigames.LankyMaze: Minigame(
+        name="Hideout Helm: Lanky Maze",
+        group="Helm Minigames",
+        map_id=Maps.HelmBarrelLankyMaze,
+        can_repeat=True,
+        logic=lambda l: (not l.settings.sprint_barrel_requires_sprint) or (l.islanky and l.sprint),
+        kong_list=[Kongs.lanky],
+    ),
     Minigames.LankyShooting: Minigame(
         name="Hideout Helm: Lanky Shooting",
         group="Helm Minigames",
@@ -253,28 +273,28 @@ MinigameRequirements = {
         group="Training Minigames",
         map_id=Maps.BarrelBarrel,
         can_repeat=True,
-        logic=lambda l: l.barrels,
+        logic=lambda l: l.barrels or not l.settings.bonus_barrel_rando,
     ),
     Minigames.OrangeBarrel: Minigame(
         name="Orange Training",
         group="Training Minigames",
         map_id=Maps.OrangeBarrel,
         can_repeat=True,
-        logic=lambda l: l.oranges,
+        logic=lambda l: l.oranges or not l.settings.bonus_barrel_rando,
     ),
     Minigames.VineBarrel: Minigame(
         name="Vine Training",
         group="Training Minigames",
         map_id=Maps.VineBarrel,
         can_repeat=True,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.vines or not l.settings.bonus_barrel_rando,
     ),
     Minigames.DiveBarrel: Minigame(
         name="Dive Training",
         group="Training Minigames",
         map_id=Maps.DiveBarrel,
         can_repeat=True,
-        logic=lambda l: l.swim,
+        logic=lambda l: l.swim or not l.settings.bonus_barrel_rando,
     ),
 }
 
@@ -354,4 +374,8 @@ BarrelMetaData = {
     Locations.HelmTiny2: MinigameLocationData(Maps.HideoutHelm, 12, Minigames.TinyPonyTailTwirl, Kongs.tiny),
     Locations.HelmChunky1: MinigameLocationData(Maps.HideoutHelm, 14, Minigames.ChunkyHiddenKremling, Kongs.chunky),
     Locations.HelmChunky2: MinigameLocationData(Maps.HideoutHelm, 7, Minigames.ChunkyShooting, Kongs.chunky),
+    Locations.IslesVinesTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 6, Minigames.VineBarrel, Kongs.any),
+    Locations.IslesSwimTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 4, Minigames.DiveBarrel, Kongs.any),
+    Locations.IslesBarrelsTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 5, Minigames.BarrelBarrel, Kongs.any),
+    Locations.IslesOrangesTrainingBarrel: MinigameLocationData(Maps.TrainingGrounds, 3, Minigames.OrangeBarrel, Kongs.any),
 }

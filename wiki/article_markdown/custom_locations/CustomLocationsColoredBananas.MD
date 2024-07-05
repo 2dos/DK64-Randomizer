@@ -64,7 +64,7 @@
 | Above Melon Crate behind mountain | 5 | `` | 
 | Above melon crate behind boulder | 5 | `` | 
 | Inside Free Diddy cage | 5 | `l.CanFreeDiddy()` | 
-| Between starting vines (Donkey) | 5 | `l.vines or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)` | 
+| Between starting vines (Donkey) | 5 | `l.vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))` | 
 | On top of slippery slope in BP cave (Lanky) | 5 | `l.handstand` | 
 | W3 bunches (Donkey) | 10 | `` | 
 | Starting area (Diddy) | 5 | `` | 
@@ -385,9 +385,9 @@
 | All around Block tower room | 20 | `` | 
 | Around numbers game | 10 | `` | 
 | Tunnel to numbers game (5 custom, 5 Donkey) | 10 | `` | 
-| Block tower (lower block towards R&D and tunnel to numbers game) | 5 | `(l.spring and l.isdiddy) or (l.balloon and l.islanky)` | 
-| Block tower (R block near top) | 5 | `l.spring, locations=[[5, 1.0, 2416, 1432, 1338]]` | 
-| Block tower (middle D block on the right path up) | 5 | `l.spring` | 
+| Block tower (lower block towards R&D and tunnel to numbers game) | 5 | `((l.spring or l.CanMoontail()) and l.isdiddy) or (l.balloon and l.islanky)` | 
+| Block tower (R block near top) | 5 | `l.spring or l.CanMoontail()` | 
+| Block tower (middle D block on the right path up) | 5 | `l.spring or l.CanMoontail()` | 
 | Pole to R&D - lower room | 10 | `` | 
 | R&D Pole | 5 | `` | 
 | R&D pole - upper room | 10 | `` | 
@@ -409,7 +409,7 @@
 | Side walls of Lanky R&D room | 10 | `l.CanAccessRNDRoom() or l.trombone` | 
 | In fall from the hatch to power shed | 5 | `` | 
 | In Dark room on box | 5 | `l.punch or l.phasewalk` | 
-| On Simian Spring ledge with coins | 10 | `(l.spring and l.isdiddy) or l.phasewalk` | 
+| On Simian Spring ledge with coins | 10 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.phasewalk` | 
 | On box in stack of boxes to Candy/Cranky - left | 5 | `` | 
 | On box in stack of boxes to Candy/Cranky - right | 5 | `` | 
 | From BBlast pad to Tiny BP pole | 5 | `` | 
@@ -450,8 +450,8 @@
 | Production room spinning arms, outside ring (Chunky) | 10 | `` | 
 | Dark room above moving platforms (Chunky) | 15 | `l.punch` | 
 | Tunnel from entrance to hatch (Donkey) | 5 | `` | 
-| Block tower (set of 3 bunches) (Diddy) | 15 | `l.spring` | 
-| Block tower (set of 2 bunches) (Diddy) | 10 | `l.spring` | 
+| Block tower (set of 3 bunches) (Diddy) | 15 | `l.spring or l.CanMoontail()` | 
+| Block tower (set of 2 bunches) (Diddy) | 10 | `l.spring or l.CanMoontail()` | 
 | W5 (Diddy) | 5 | `` | 
 | W5 (Diddy) | 5 | `` | 
 | Prod room rotating cylinders (Diddy) | 15 | `` | 
@@ -486,7 +486,7 @@
 | Pole to block tower upper room | Balloon | `` | 
 | Tunnel between Snide's and block tower | Balloon | `` | 
 | Block tower room above arcade window | Balloon | `` | 
-| Block tower room above block tower | Balloon | `l.spring` | 
+| Block tower room above block tower | Balloon | `l.spring or l.CanMoontail()` | 
 | Around bottom of block tower | Balloon | `` | 
 | Block tower room in front of numbers game window | Balloon | `` | 
 | Tunnel to numbers game | Balloon | `` | 
@@ -645,7 +645,7 @@
 | W3 (Tiny) | 5 | `` | 
 | W3 (Tiny) | 5 | `` | 
 | In front of Tiny's treasure chest (Tiny) | 5 | `` | 
-| In cannon game room over planks (Tiny) | 15 | `(Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and l.settings.krusha_kong != Kongs.lanky) or l.ischunky)))` | 
+| In cannon game room over planks (Tiny) | 15 | `(Events.WaterRaised in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky)))` | 
 | On seafloor around lighthouse (Chunky) | 10 | `` | 
 | W2 (Chunky) | 5 | `Events.WaterRaised in l.Events` | 
 | W2 (Chunky) | 5 | `` | 
@@ -667,7 +667,7 @@
 | Around lighthouse (Donkey) | Balloon | `` | 
 | In chests room (Donkey) | Balloon | `` | 
 | In gold tower room (Diddy) | Balloon | `` | 
-| By cannon in cannon game room (Chunky) | Balloon | `(Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and l.settings.krusha_kong != Kongs.lanky) or l.ischunky)))` | 
+| By cannon in cannon game room (Chunky) | Balloon | `(Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky)))` | 
 | Above 2DS (Chunky) | Balloon | `` | 
 | Above 5DS (Lanky) | Balloon | `` | 
 | In front of Snide (Tiny) | Balloon | `Events.WaterRaised in l.Events` | 
@@ -844,7 +844,7 @@
 | Around tree (Diddy) | 10 | `` | 
 | Under starting area rocketbarrel (Diddy) | 10 | `` | 
 | Under giant mushroom rocketbarrel (Diddy) | 10 | `` | 
-| By entrance of rafters attic (Diddy) | 5 | `l.spring` | 
+| By entrance of rafters attic (Diddy) | 5 | `l.spring or l.CanMoontail()` | 
 | On hollow tree (Diddy) | 5 | `l.jetpack` | 
 | W4 (Diddy) | 5 | `` | 
 | W4 (Diddy) | 5 | `` | 
@@ -998,8 +998,8 @@
 | ---- | ------ | ----- |
 | Around DK portal | 10 | `` | 
 | Around room by ice wall to Gorilla Gone GB | 5 | `` | 
-| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
-| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Left side of first warps up the path | 10 | `` | 
 | On crystals on each side of W4 Mini Monkey room | 10 | `` | 
 | On Mini Monkey barrel ledge | 10 | `` | 
@@ -1094,7 +1094,7 @@
 | Above Tiny and Chunky igloos (Diddy) | 10 | `l.jetpack` | 
 | Around Diddy blueprint (Diddy) | 5 | `` | 
 | Chunky igloo (Chunky) | 5 | `Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim()` | 
-| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | On small boulder switch (Chunky) | 5 | `` | 
 | Inside giant boulder (Chunky) | 5 | `Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels` | 
 | W3 (Tiny) | 5 | `` | 
@@ -1134,7 +1134,7 @@
 | In front of Snide (Chunky) | Balloon | `` | 
 | Around Tiny blueprint (Tiny) | Balloon | `` | 
 | Waterfall (Lanky) | Balloon | `` | 
-| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Above 5DC (Diddy) | Balloon | `` | 
 | In bonus barrel cave (Chunky) | Balloon | `` | 
 | In Diddy BP room (Tiny) | Balloon | `` | 
@@ -1202,8 +1202,8 @@
 | ---- | ------ | ----- |
 | Books on shelf near entrance in Diddy's upper cabin | 5 | `` | 
 | Books on shelf on back wall in Diddy's upper cabin | 5 | `` | 
-| On candles (Diddy) | 15 | `l.jetpack and (l.guitar or l.oranges) and l.isdiddy and l.spring` | 
-| Above entrance high up in the room | Balloon | `(l.jetpack and (l.guitar or l.oranges) and l.spring) or l.scope` | 
+| On candles (Diddy) | 15 | `l.jetpack and (l.guitar or l.oranges) and l.isdiddy and (l.spring or l.CanMoontail())` | 
+| Above entrance high up in the room | Balloon | `(l.jetpack and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) or l.scope)` | 
 ## Caves Donkey Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1406,9 +1406,9 @@
 | On torches on Tiny's path | 10 | `` | 
 | Path to Lanky's side | 20 | `` | 
 | On trombone pad | 5 | `l.grape and l.sprint, locations=[[5, 1.0, 2100, 94, 560]]` | 
-| In green goo gap (Tiny) | 5 | `l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny)` | 
+| In green goo gap (Tiny) | 5 | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In and out of green goo pit | Balloon | `` | 
-| Above green goo room | Balloon | `l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny)` | 
+| Above green goo room | Balloon | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In Lanky's green goo room (Lanky) | Balloon | `l.sprint or l.generalclips or l.phasewalk` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |
@@ -1474,3 +1474,317 @@
 | First room | Balloon | `` | 
 | Above hole (Donkey) | Balloon | `` | 
 | In Chunky's room (Chunky) | Balloon | `l.punch or l.phasewalk` | 
+
+# DK Isles
+## Treehouse
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Next to the Radio | 5 | `` | 
+| On the crate | 5 | `` | 
+| On the hammock | 5 | `` | 
+| In DK's Treehouse | Balloon | `` | 
+## Training Grounds
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Treehouse balcony | 5 | `` | 
+| Windowsills | 10 | `` | 
+| Tree front of treehouse | 5 | `` | 
+| Tree right of treehouse | 5 | `` | 
+| Tree next to rear tunnel | 5 | `` | 
+| On exit ledge | 10 | `(l.istiny and l.twirl)` | 
+| On rear ledge | 10 | `` | 
+| Path to Cranky | 10 | `` | 
+| Around Cranky | 5 | `` | 
+| Next to Cranky | 10 | `` | 
+| Path to training area | 5 | `` | 
+| In the lake | 15 | `l.swim` | 
+| Behind the waterfall | 5 | `` | 
+| Banana hoard tunnel | 10 | `l.vines` | 
+| Banana hoard room | 20 | `l.vines` | 
+| Rear tunnel | 5 | `` | 
+| Around rear dirt patch | 10 | `` | 
+| Exit tunnel | 10 | `` | 
+| Tree in training area | 5 | `(l.istiny and l.twirl)` | 
+| Around treehouse tree | 10 | `` | 
+| Training area | 5 | `` | 
+| Above the lake | Balloon | `` | 
+| Banana hoard room | Balloon | `` | 
+| Around the treehouse | Balloon | `` | 
+| Above rear ledge | Balloon | `` | 
+| Above exit ledge | Balloon | `` | 
+| Next to Cranky | Balloon | `` | 
+| Training Area | Balloon | `` | 
+| Rear tunnel | Balloon | `` | 
+| Exit tunnel | Balloon | `` | 
+## Isles
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| W1 | 5 | `` | 
+| W2 | 5 | `` | 
+| W3 | 5 | `` | 
+| W4 | 5 | `` | 
+| W5 | 5 | `` | 
+| K.Lumsy W1 | 5 | `` | 
+| Aztec W2 | 5 | `` | 
+| Waterfall W3 | 5 | `` | 
+| Factory W4 | 5 | `` | 
+| Fairy Isle W5 | 5 | `` | 
+| Japes entrance | 5 | `` | 
+| Tree between tag barrel and Japes | 5 | `` | 
+| Tree next to Japes | 5 | `` | 
+| Tree on beaver beach | 5 | `` | 
+| Tree near W3 | 5 | `` | 
+| Behind cannon to Forest | 5 | `` | 
+| Waterfall pond | 15 | `l.swim` | 
+| Seafloor around the X platform | 10 | `l.swim` | 
+| In the pineapple cage | 10 | `l.pineapple or l.CanSTS() or l.phasewalk` | 
+| Beach below Caves | 5 | `` | 
+| Tree below Caves | 5 | `` | 
+| Path below Caves | 5 | `` | 
+| Stairs near Aztec | 10 | `` | 
+| Behind Aztec lobby | 5 | `` | 
+| Aztec lobby roof | 20 | `` | 
+| On trombone boulder | 5 | `` | 
+| On triangle boulder | 5 | `` | 
+| Between DK Isle's nostrils | 5 | `` | 
+| Caves lobby ledge | 5 | `` | 
+| Above Caves lobby | 15 | `` | 
+| Forest lobby roof | 10 | `` | 
+| Flower sniffing near Forest | 5 | `` | 
+| In the peanut cage | 10 | `l.peanut or l.phasewalk` | 
+| Waterfall upstream | 5 | `` | 
+| Flower next to peanut cage | 5 | `` | 
+| Waterfall freefall | 10 | `` | 
+| DK Isle peaks | 10 | `` | 
+| Above the Pound the X rock | 5 | `` | 
+| On DK Isle's ear above Aztec | 15 | `` | 
+| On DK Isle's right eyebrow | 5 | `` | 
+| On DK Isle's left eyebrow | 5 | `` | 
+| On Fairy Isle's banana peel hat right | 5 | `` | 
+| On Fairy Isle's banana peel hat left | 5 | `` | 
+| On top of Fairy Isle | 5 | `` | 
+| On Fairy Isle's wings | 10 | `` | 
+| On the fairy tree | 5 | `` | 
+| Around the fairy tree | 5 | `` | 
+| In the feather cage | 10 | `l.feather or l.CanSTS() or l.phasewalk` | 
+| Fairy Isle entrance | 5 | `` | 
+| In the Pound the X rock | 10 | `Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky` | 
+| Tag barrel shore | 10 | `` | 
+| Around Fairy Isle | 10 | `` | 
+| Under K.Lumsy's prison | 5 | `l.swim` | 
+| Around Castle cannon | 10 | `(l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events)` | 
+| On top of K.Lumsy's prison | 5 | `( (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko))) or ((l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack) or ( (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)) and (l.settings.damage_amount != DamageAmount.ohko)) or (l.istiny and l.twirl) ) )` | 
+| On top of side pipes | 15 | `` | 
+| Lower Monkeyport pad | 5 | `` | 
+| Upper Monkeyport pad | 5 | `` | 
+| Saxophone pad | 5 | `` | 
+| On vines to Snide | 5 | `l.vines` | 
+| On Krem Isle's right arm | 5 | `` | 
+| On Krem Isle's left arm | 5 | `` | 
+| Path to Factory | 15 | `` | 
+| Key 2 rising platform | 5 | `` | 
+| Underwater behind propellers | 10 | `l.swim` | 
+| Under path to Factory | 10 | `` | 
+| Prison cable | 5 | `` | 
+| Back of Krem Isle | 10 | `` | 
+| Snide ledge | 5 | `` | 
+| In the coconut cage | 10 | `l.coconut` | 
+| In the grape cage | 10 | `l.grape or l.CanPhaseswim() or l.phasewalk` | 
+| Waterfall lower | Balloon | `` | 
+| Waterfall upper | Balloon | `` | 
+| Above bananaports | Balloon | `` | 
+| Japes shore | Balloon | `` | 
+| Beaver beach | Balloon | `` | 
+| Between pineapple cage and the X platform | Balloon | `` | 
+| Around the tree below caves | Balloon | `` | 
+| Near Aztec | Balloon | `` | 
+| In front of DK Isle's eyes | Balloon | `` | 
+| Around the fairy tree | Balloon | `` | 
+| Front of Fairy Isle | Balloon | `` | 
+| Top of Fairy Isle | Balloon | `` | 
+| Behind Aztec | Balloon | `` | 
+| Near Forest | Balloon | `` | 
+| Around the Krem Krown | Balloon | `` | 
+| Upper Factory Path | Balloon | `` | 
+| Big pipe in Krem Isle middle back | Balloon | `` | 
+| In the Krem Krown | Balloon | `l.scope` | 
+## KLumsy
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Inside K.Lumsy's cage | 15 | `l.IsKLumsyFree()` | 
+| Prison sprint cage | 10 | `(l.sprint and l.lanky)` | 
+## Isles Snide Room
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| On the Snide boulder | 5 | `` | 
+| Above Snide's doorway | 5 | `(l.spring and l.diddy)` | 
+| Around Snide | Balloon | `` | 
+## Jungle Japes Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| On the boulder | 5 | `` | 
+| Around the boulder | 5 | `` | 
+| Right torch | 5 | `` | 
+| Left torch | 5 | `` | 
+| Back left torch | 5 | `` | 
+| Lanky door | 5 | `` | 
+| Donkey door | 5 | `` | 
+| Tiny door | 5 | `` | 
+| Diddy door | 5 | `` | 
+| Chunky door | 5 | `` | 
+| Middle path | 5 | `` | 
+| Around B.Locker | 5 | `` | 
+| Entrance | 10 | `` | 
+| Left side | Balloon | `` | 
+| Right side | Balloon | `` | 
+## Angry Aztec Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Right ramp | 5 | `` | 
+| Left ramp | 5 | `` | 
+| Ridge between the posts | 5 | `` | 
+| Between the Columns | 5 | `` | 
+| Around the barrel hole | 10 | `` | 
+| Also around the barrel hole | 10 | `` | 
+| Tunnel | 5 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Back room | 15 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Left post | 5 | `` | 
+| Right post | 5 | `` | 
+| Donkey door | 5 | `` | 
+| Diddy door | 5 | `` | 
+| Tiny door | 5 | `` | 
+| Lanky door | 5 | `` | 
+| Chunky door (back room wall) | 5 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| On the gongs | 10 | `` | 
+| Entrance | 10 | `` | 
+| Torch above Donkey door | 5 | `` | 
+| Back room torches | 10 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Between columns | Balloon | `` | 
+| Above B.Locker | Balloon | `` | 
+| Back room | Balloon | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+## Frantic Factory Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Entrance | 10 | `` | 
+| On the box | 5 | `` | 
+| Donkey door | 5 | `` | 
+| Chunky door | 5 | `` | 
+| Diddy door | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Tiny door | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Lanky door | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| On the lever | 5 | `` | 
+| Bongo pad | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Bridge | 10 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| In the box | 5 | `l.punch and l.chunky` | 
+| Post after bridge | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Stairs | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Towards doors | 10 | `` | 
+| Tag barrel | 5 | `` | 
+| Vents | Balloon | `` | 
+| Between pipes | Balloon | `` | 
+| Upper path | Balloon | `` | 
+## Gloomy Galleon Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Underwater entrance | 5 | `` | 
+| Under tag barrel | 5 | `` | 
+| Underwater along the wall | 10 | `` | 
+| Kasplat platform | 10 | `` | 
+| Donkey door | 5 | `` | 
+| Chunky door | 5 | `` | 
+| Tiny door | 5 | `` | 
+| Lanky door | 5 | `` | 
+| Diddy door | 5 | `` | 
+| Chunky switch | 5 | `` | 
+| Right water torch | 5 | `` | 
+| Left water torch | 5 | `` | 
+| Right land torch | 5 | `` | 
+| Left land torch | 5 | `` | 
+| On the Tiny platform | 15 | `l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
+| Mini tunnel | 5 | `l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
+| Above water | Balloon | `` | 
+| Above land | Balloon | `` | 
+| In the Tiny room | Balloon | `l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
+## Fungi Forest Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Tiny door (back wall) | 5 | `` | 
+| Chunky door (right wall) | 5 | `` | 
+| Lanky door (right corner) | 5 | `` | 
+| Where the lever used to be | 5 | `` | 
+| Entrance | 10 | `` | 
+| Center line | 5 | `` | 
+| Gorilla Gone pad | 5 | `((l.coconut and l.donkey) and (l.peanut and l.diddy) and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) or l.phasewalk)` | 
+| Crazy fairy balloon | Balloon | `` | 
+| Wrinkly wheel (back wall) | Balloon | `` | 
+## Crystal Caves Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Left path | 5 | `` | 
+| Right path | 5 | `` | 
+| Bridge | 10 | `` | 
+| Around the boulder | 10 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Path to boulder | 5 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Left side crystals | 15 | `` | 
+| Right side crystals | 10 | `` | 
+| Entrance | 10 | `` | 
+| On the boulder | 5 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Lanky door | 5 | `` | 
+| Chunky door | 5 | `` | 
+| Tiny door | 5 | `` | 
+| Donkey door | 5 | `` | 
+| Diddy door | 5 | `l.jetpack` | 
+| Guitar pad | 5 | `l.jetpack` | 
+| Behind the lava ice wall | 5 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Lava room | 20 | `((l.punch and l.chunky) or l.phasewalk or l.ledgeclip) and l.strongKong` | 
+| In the air | 10 | `l.jetpack` | 
+| In the lava | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Around the bridge | Balloon | `` | 
+| Boulder room | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+## Creepy Castle Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Chunky door | 5 | `` | 
+| Donkey door | 5 | `` | 
+| Diddy door | 5 | `` | 
+| Lanky door | 5 | `` | 
+| Tiny door | 5 | `` | 
+| On the boulder | 5 | `` | 
+| Around the boulder | 5 | `` | 
+| Kasplat cage | 5 | `(l.coconut and l.donkey) or l.phasewalk` | 
+| Around the lobby | 15 | `` | 
+| Right torch | 5 | `l.chunky and l.barrels` | 
+| Left torch | 5 | `l.chunky and l.barrels` | 
+| Stairs | 5 | `` | 
+| Above the entrance hole | 5 | `` | 
+| Torch way up | 10 | `l.chunky and l.barrels and l.balloon` | 
+| Wall windows | 20 | `l.chunky and l.barrels and l.balloon` | 
+| Acid moat | Balloon | `` | 
+| Above center piece | Balloon | `` | 
+| Near B.Locker | Balloon | `` | 
+## Hideout Helm Lobby
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Chunky pad | 5 | `` | 
+| W1 | 5 | `` | 
+| Under bonus barrel | 5 | `l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.vines` | 
+| Kasplat island | 5 | `l.scope and l.coconut` | 
+| Right side | 5 | `` | 
+| Left side | 5 | `` | 
+| Far W1 | 5 | `l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.vines` | 
+| Around Kasplat island | Balloon | `` | 
+| Left side | Balloon | `` | 
+## Banana Fairy Room
+| Name | Amount | Logic |
+| ---- | ------ | ----- |
+| Around the fairy | 5 | `` | 
+| Front corner torches | 10 | `` | 
+| Back corner torches | 10 | `` | 
+| Front ramp | 5 | `` | 
+| Left ramp | 5 | `` | 
+| Right ramp | 5 | `` | 
+| Back ramp | 5 | `` | 
+| Throne | 5 | `` | 
+| Rareware GB room | 20 | `` | 
+| Rareware GB room | Balloon | `` | 
+| Around the fairy | Balloon | `` | 

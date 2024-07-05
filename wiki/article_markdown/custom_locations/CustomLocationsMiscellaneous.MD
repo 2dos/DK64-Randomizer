@@ -100,7 +100,7 @@
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  | `` | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  | `` | 
 | Aztec Llama Temple | Llama Temple: Matching Room |  | `(l.grape and l.lanky) or l.phasewalk` | 
-| Aztec Llama Temple | In the Water | CrownPad, DirtPatch | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))` | 
+| Aztec Llama Temple | In the Water | CrownPad, DirtPatch | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))` | 
 | Aztec Llama Temple | Llama Temple: Snoop Switch |  | `` | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  | `` | 
 
@@ -132,7 +132,7 @@
 | Frantic Factory | Right Corridor |  | `` | 
 | Frantic Factory | Number Game |  | `` | 
 | Frantic Factory | Under Block Tower Stairs |  | `` | 
-| Frantic Factory | On Diddy's Block Tower | CrownPad | `(l.spring or l.CanMoonkick())` | 
+| Frantic Factory | On Diddy's Block Tower | CrownPad | `(l.spring or l.CanMoonkick() or l.CanMoontail())` | 
 | Frantic Factory | Block Tower Lower Bonus |  | `` | 
 | Frantic Factory | Funky Room (1) |  | `` | 
 | Frantic Factory | Funky Room (2) |  | `` | 
@@ -164,8 +164,8 @@
 | Gloomy Galleon | Near Chest Cannon (1) |  | `` | 
 | Gloomy Galleon | Near Chest Cannon (2) |  | `` | 
 | Gloomy Galleon | Near Chest GB Tunnel |  | `` | 
-| Gloomy Galleon | In Punch GB Chest Room |  | `` | 
-| Gloomy Galleon | Behind Punch GB Chest |  | `` | 
+| Gloomy Galleon | Behind Punch GB Chest (1) |  | `` | 
+| Gloomy Galleon | Behind Punch GB Chest (2) |  | `` | 
 | Gloomy Galleon | Behind the ship you shoot onto with the cannon |  | `` | 
 | Galleon2DShip | Galleon Lanky 2DS Inside Chest | CrownPad, DirtPatch | `` | 
 | Gloomy Galleon | Left of Cranky |  | `` | 
@@ -184,7 +184,7 @@
 | Gloomy Galleon | In the Shipwreck with Replenishables | CrownPad, DirtPatch | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | Behind Musical Cactus | CrownPad, DirtPatch | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | On Top of Mechfish Grate | DirtPatch, CrownPad | `Events.ShipyardEnguarde in l.Events` | 
-| Gloomy Galleon | On Gold Tower |  | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick()` | 
+| Gloomy Galleon | On Gold Tower |  | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or l.advanced_platforming) or l.CanMoonkick()` | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | CrownPad, DirtPatch | `Events.ShipyardTreasureRoomOpened in l.Events` | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | `` | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  | `` | 
@@ -260,7 +260,7 @@
 | Forest Giant Mushroom | Giant Mushroom: Near Gun Switches |  | `` | 
 | Forest Giant Mushroom | Giant Mushroom: Near Bottom Cannon |  | `` | 
 | Forest Giant Mushroom | Giant Mushroom: Near Night Door Vines |  | `` | 
-| Forest Giant Mushroom | Giant Mushroom: Next to a cannon |  | `((l.istiny and l.twirl) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey))` | 
+| Forest Giant Mushroom | Giant Mushroom: Next to a cannon |  | `((l.istiny and l.twirl) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | Forest Giant Mushroom | Giant Mushroom: Next to the cannon below the night door |  | `` | 
 | Forest Giant Mushroom | Giant Mushroom: On Top Viney Platform |  | `` | 
 | Forest Mill Attic | Mill Attic: Near Box |  | `` | 
@@ -277,10 +277,10 @@
 | Crystal Caves | Giant Kosha Room |  | `` | 
 | Crystal Caves | In Tiny Ice Shield |  | `((Events.CavesMonkeyportAccess in l.Events or l.CanPhaseswim()))` | 
 | Crystal Caves | In Chunky Ice Shield |  | `Events.CavesLargeBoulderButton in l.Events or l.CanPhaseswim() or l.generalclips` | 
-| Crystal Caves | On 5DI Pillar | MelonCrate | `(l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny)` | 
+| Crystal Caves | On 5DI Pillar | MelonCrate | `(l.jetpack and l.isdiddy) or (l.twirl and l.istiny and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | Crystal Caves | On top of the Igloo | CrownPad, MelonCrate | `` | 
 | Crystal Caves | Under tag barrel near igloo | MelonCrate | `` | 
-| Crystal Caves | In front of Igloo | CrownPad, DirtPatch | `(l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.Slam` | 
+| Crystal Caves | In front of Igloo | CrownPad, DirtPatch | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam` | 
 | Crystal Caves | In Hidden Bonus Room |  | `` | 
 | Crystal Caves | Near Primate Punch wall opposite cranky |  | `` | 
 | Crystal Caves | In Giant Boulder Room |  | `` | 
@@ -296,7 +296,7 @@
 | Crystal Caves | Under Small Boulder | DirtPatch, MelonCrate | `` | 
 | Crystal Caves | Near Primate Punch wall near entrance |  | `` | 
 | Crystal Caves | Near Gorilla Gone Room |  | `` | 
-| Crystal Caves | In Gorilla Gone Room |  | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()` | 
+| Crystal Caves | In Gorilla Gone Room |  | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Crystal Caves | Near Kasplat Spire |  | `` | 
 | Crystal Caves | Near Funky's |  | `` | 
 | Crystal Caves | Near Funky under Diddy's barrel |  | `` | 
@@ -395,7 +395,7 @@
 | Isles | Front of Fungi Building |  | `` | 
 | Isles | On Aztec Building |  | `` | 
 | Isles | Under Caves Lobby Entrance |  | `` | 
-| Creepy Castle Lobby | Castle Lobby: Center |  | `((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny))` | 
+| Creepy Castle Lobby | Castle Lobby: Center |  | `((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny))))` | 
 | Training Grounds | Banana Hoard |  | `(l.vines or l.CanMoonkick() or l.phasewalk)` | 
 | Training Grounds | Training Grounds Rear Tunnel |  | `` | 
 | KLumsy | Back of Prison |  | `` | 
@@ -449,11 +449,11 @@
 | Hideout Helm Lobby | Helm Lobby: Blueprint Platform |  | `((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming))` | 
 | Training Grounds | Training Grounds: Far Mountain |  | `` | 
 | Training Grounds | Training Grounds: On the rear hill |  | `` | 
-| Training Grounds | Training Grounds: On the entrance hill |  | `((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey))` | 
-| Training Grounds | Training Grounds: Near Mountain |  | `(l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)` | 
+| Training Grounds | Training Grounds: On the entrance hill |  | `((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
+| Training Grounds | Training Grounds: Near Mountain |  | `(l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))` | 
 | Training Grounds | Training Grounds: Rear Cave |  | `` | 
 | Training Grounds | Training Grounds: Banana Hoard |  | `l.vines or l.CanMoonkick() or l.phasewalk` | 
-| Training Grounds | Training Grounds: Under Water | CrownPad, DirtPatch | `l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope` | 
+| Training Grounds | Training Grounds: Under Water | CrownPad, DirtPatch | `l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope` | 
 | Training Grounds | Training Grounds: Near Pool |  | `` | 
 | Treehouse | Back of the treehouse |  | `` | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | `` | 

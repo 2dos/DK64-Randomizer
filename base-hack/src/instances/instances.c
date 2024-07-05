@@ -235,11 +235,22 @@ void setCrusher(void) {
 }
 
 void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
-	if (Rando.randomize_more_loading_zones) {
-		initiateTransition_0(entrance->map, entrance->exit, 0, 0);
+	if (Rando.randomize_more_loading_zones == 1) {
+		int exit = entrance->exit;
+		if (entrance->map == MAP_HELM) {
+			exit = getHelmExit();
+		}
+		initiateTransition_0(entrance->map, exit, 0, 0);
 	} else {
 		initiateTransition_0(vanilla_map, 0, 0, 0);
 	}
+}
+
+void portalWarpFix(maps map, int exit) {
+	if (map == MAP_HELM) {
+		exit = getHelmExit();
+	}
+	initiateTransition(map, exit);
 }
 
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
@@ -276,9 +287,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case GALLEON_LANKY_SLAM:
 						case GALLEON_TINY_SLAM:
 							if (index == 0) { 
-								return Rando.removed_barriers.shipwreck_permanent == 0;
+								return Rando.quality_of_life.no_ship_timers == 0;
 							} else {
-								if (Rando.removed_barriers.shipwreck_permanent) {
+								if (Rando.quality_of_life.no_ship_timers) {
 									behaviour_pointer->next_state = 6;
 								} else {
 									behaviour_pointer->next_state = 5;
@@ -319,14 +330,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								gate_flag = GALLEON_2DSOPEN_TINY;
 							}
 							if (index == 0) {
-								if (Rando.removed_barriers.shipwreck_permanent) {
+								if (Rando.quality_of_life.no_ship_timers) {
 									if (checkFlag(gate_flag, FLAGTYPE_PERMANENT)) {
 										behaviour_pointer->current_state = 10;
 										behaviour_pointer->next_state = 10;
 									}
 								}
 							} else {
-								if (Rando.removed_barriers.shipwreck_permanent) {
+								if (Rando.quality_of_life.no_ship_timers) {
 									setPermFlag(gate_flag);
 								}
 							}
@@ -377,7 +388,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEBALLROOM:
 				if (param2 == BALLROOM_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.ballroom_to_museum.map, Rando.ballroom_to_museum.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
@@ -391,7 +402,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones) {
+					if (Rando.randomize_more_loading_zones == 1) {
 						createCollisionObjInstance(COLLISION_MAPWARP, Rando.museum_to_ballroom.map, Rando.museum_to_ballroom.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
@@ -467,9 +478,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					}
 					return 1;
-				} else {
-					// TestVariable = (int)behaviour_pointer;
-					// *(int*)(0x807FF700) = id;
 				}
 				break;
 			case MAP_AZTECLLAMATEMPLE:
@@ -560,7 +568,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_BATTLEARENA_PLINTHPANIC:
 			case MAP_BATTLEARENA_PINNACLEPALAVER:
 			case MAP_BATTLEARENA_SHOCKWAVESHOWDOWN:
-				if (Rando.location_visuals & 4) {
+				if (Rando.location_visuals.crowns) {
 					if (param2 == CROWN_CONTROLLER) {
 						float x = 730.0f;
 						float y = 267.0f;
@@ -596,7 +604,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_TROFFNSCOFF:
-				if (Rando.location_visuals & 2) {
+				if (Rando.location_visuals.boss_doors) {
 					if (param2 == TNS_NUMBER) {
 						float x = 600.0f;
 						float y = 300.0f;
@@ -815,7 +823,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if (Rando.faster_checks.diddy_rnd) {
 							disableDiddyRDDoors();
 						} else {
-							setScriptRunState(behaviour_pointer, 2, 0);
+							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
 						}
 					}
 				} else if (param2 == FACTORY_DARTBOARD) {
@@ -946,17 +954,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_TRAININGGROUNDS:
 				if (param2 == TGROUNDS_SWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(getKongFlag(Rando.starting_kong));
+						setPermFlag(FLAG_ESCAPE);
 					}
 				} else if (param2 == TGROUNDS_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;
@@ -1003,22 +1011,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			// case TREASURE_CHEST:
-			// 	if (param2 == CHEST_PEARL_0) {
-			// 		if (Rando.faster_checks.mermaid) {
-			// 			int pearls_collected = 0;
-			// 			for (int i = 0; i < 5; i++) {
-			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
-			// 			}
-			// 			if (pearls_collected >= 1) {
-			// 				for (int i = 0; i < 5; i++) {
-			// 					setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, FLAGTYPE_PERMANENT);
-			// 				}
-			// 				behaviour_pointer->next_state = 2;
-			// 			}
-			// 		}
-			// 	}
-			// 	break;
 			case MAP_CAVES5DIDK:
 				if (param2 == ICE_MAZE) {
 					if (behaviour_pointer->switch_pressed == index) {
@@ -1078,7 +1070,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									//vanilla initiation code
 									unkObjFunction0(id_needed,1,1);
 									unkObjFunction1(id_needed,1,3);
-									setScriptRunState(gateBehaviour, 2, 0);
+									setScriptRunState(gateBehaviour, RUNSTATE_PAUSED, 0);
 								}
 							}
 						}
@@ -1096,7 +1088,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								if(grapeIndex != -1 && grapeSwitchBehaviour->pause_state == 0){
 									setObjectScriptState(17, 4, 0);
 									//vanilla initiation code
-									setScriptRunState(grapeSwitchBehaviour, 2, 0);
+									setScriptRunState(grapeSwitchBehaviour, RUNSTATE_PAUSED, 0);
 									unkObjFunction0(grape_switch_id_needed,1,1);
 									unkObjFunction1(grape_switch_id_needed,1,10);
 								}
@@ -1129,7 +1121,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								// If behaviour exists (always should do, but always good to check), activate the Goo Hand
 								setObjectScriptState(slot, 10, 0);
 								if(slot != -1){
-									setScriptRunState(behaviour, 0, 0);
+									setScriptRunState(behaviour, RUNSTATE_INIT, 0);
 								}
 							}
 						}
@@ -1155,6 +1147,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				{
 					int slot = -1;
 					int next_slot = -1;
+					int barrel_index = -1;
 					int previous_slot = -1;
 					int current_slot = -1;
 					int helm_pad_kong = -1;
@@ -1163,7 +1156,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || Rando.coin_door_open == 1;
+								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {
 								// Disable coin door text
 								return 1;
@@ -1172,25 +1165,30 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case HELM_PAD_BONGO:
 							slot = 0;
 							helm_pad_kong = 0;
+							barrel_index = 0;
 						case HELM_PAD_TRIANGLE:
 							if (slot == -1) {
 								slot = 1;
 								helm_pad_kong = 4;
+								barrel_index = 3;
 							}
 						case HELM_PAD_SAX:
 							if (slot == -1) {
 								slot = 2;
 								helm_pad_kong = 3;
+								barrel_index = 2;
 							}
 						case HELM_PAD_TROMBONE:
 							if (slot == -1) {
 								slot = 3;
 								helm_pad_kong = 2;
+								barrel_index = 4;
 							}
 						case HELM_PAD_GUITAR:
 							if (slot == -1) {
 								slot = 4;
 								helm_pad_kong = 1;
+								barrel_index = 1;
 							}
 							if (slot > -1) {
 								if (index < 2) {
@@ -1232,6 +1230,22 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									if (MovesBase[helm_pad_kong].instrument_bitfield & 1) {
 										behaviour_pointer->next_state = 0;
 										// behaviour_pointer->current_state = 0;
+									}
+								} else if (index == 4) {
+									if (Rando.required_helm_minigames == 0) {
+										setFlag(HelmMinigameFlags[2 * barrel_index], 1, FLAGTYPE_TEMPORARY);
+										setFlag(HelmMinigameFlags[(2 * barrel_index) + 1], 1, FLAGTYPE_TEMPORARY);
+										int in_helm_sequence = 0;
+										for (int i = 0; i < 5; i++) {
+											if (Rando.helm_order[i] == slot) {
+												in_helm_sequence = 1;
+											}
+										}
+										if (!in_helm_sequence) {
+											PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
+										}
+									} else {
+										PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
 									}
 								}
 							}
@@ -1348,13 +1362,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		}
 		return 1;
 	} else if (index == -9) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_CRANKY);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CRANKY);
 	} else if (index == -10) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_FUNKY);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_FUNKY);
 	} else if (index == -11) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_CANDY);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CANDY);
 	} else if (index == -12) {
-		shopGenericCode(behaviour_pointer, id, param2, SHOP_SNIDE);
+		// shopGenericCode(behaviour_pointer, id, param2, SHOP_SNIDE);
 	} else if (index == -13) {
 		MelonCrateGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -14) {
@@ -1379,6 +1393,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				return 0;
 			}
 		}
+	} else if (index == -18) {
+		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;
@@ -1397,7 +1413,7 @@ void disableDiddyRDDoors(void) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
 		behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
 		if (behaviour) {
-			setScriptRunState(behaviour,2,0);
+			setScriptRunState(behaviour, RUNSTATE_PAUSED, 0);
 		}
 	}
 }

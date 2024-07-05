@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, toggle_input %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -56,12 +56,28 @@
                             </option>
                         </select>
                     </div>
+                    <div class="item-select">
+                        <p class="select-title">Ice Trap Frequency</p>
+                        <select name="ice_trap_frequency"
+                                id="ice_trap_frequency"
+                                display_name="Ice Trap Frequency"
+                                class="form-select"
+                                aria-label="Ice Trap Frequency"
+                                data-toggle="tooltip"
+                                title="Frequency of ice traps attempted to be placed into the world.&#10;-Rare: 4 ice traps.&#10;-Mild: 10 ice traps.&#10;-Common: 32 ice traps.&#10;-Frequent: 64 ice traps.&#10;-Pain: 100 ice traps.">
+                            <option id="rare" value="rare">Rare</option>
+                            <option id="mild" selected value="mild">Mild</option>
+                            <option id="common" value="common">Common</option>
+                            <option id="frequent" value="frequent">Frequent</option>
+                            <option id="pain" value="pain">Pain</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="flex-column-container" style="flex-grow: 1">
                     
                     <div class="item-select" style="margin-top: 0; max-height: 34px;">
                         <button
-                            class="btn btn-primary"
+                            class="btn btn-secondary"
                             type="button"
                             href="#"
                             id="starting_moves_modal"
@@ -98,112 +114,15 @@
             <hr>
             <h2 class="title">SHUFFLED LOCATIONS</h2>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Dirt Patches for Rainbow Coins are in random locations.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="random_patches"
-                                id="random_patches"
-                                display_name="Random Dirt Patch Locations"
-                                value="True"/>
-                        Dirt Patches
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Shuffle the locations of colored bananas within each Level.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="cb_rando"
-                                id="cb_rando"
-                                display_name="Random CB Locations"
-                                value="True"/>
-                        Colored Bananas
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Shuffle the locations of coins within each Level.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="coin_rando"
-                                id="coin_rando"
-                                display_name="Random Banana Coin Locations"
-                                value="True"/>
-                        Banana Coins
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Fairy checks are in random locations.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="random_fairies"
-                                id="random_fairies"
-                                display_name="Random Banana Fairy Locations"
-                                value="True"/>
-                        Banana Fairies
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip" title="Wrinkly Door Locations are randomized">
-                        <input class="form-check-input"
-                                id="wrinkly_location_rando"
-                                type="checkbox"
-                                name="wrinkly_location_rando"
-                                display_name="Random Wrinkly Door Locations"
-                                value="True"/>
-                        Wrinkly Doors
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip" title="T&S Portal Locations are randomized">
-                        <input class="form-check-input"
-                                id="tns_location_rando"
-                                type="checkbox"
-                                name="tns_location_rando"
-                                display_name="Random Troff 'n' Scoff Portal Locations"
-                                value="True"/>
-                        Troff 'n' Scoff Portals
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.">
-                        <input class="form-check-input"
-                                id="vanilla_door_rando"
-                                type="checkbox"
-                                name="vanilla_door_rando"
-                                display_name="Vanilla Door Shuffle"
-                                value="True"/>
-                        Vanilla Door Shuffle
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Crown Locations are randomized. There's 1 in each level, except Isles which has two.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="crown_placement_rando"
-                                id="crown_placement_rando"
-                                display_name="Random Battle Crown Pad Locations"
-                                value="True"/>
-                        Battle Crowns
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Melon Crate Locations are randomized.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="random_crates"
-                                id="random_crates"
-                                display_name="Random Melon Crate Locations"
-                                value="True"/>
-                        Melon Crates
-                    </label>
-                </div>
+                {{ toggle_input("random_patches", "Random Dirt Patch Locations", "Dirt Patches for Rainbow Coins are in random locations.", False, "Dirt Patches") }}
+                {{ toggle_input("coin_rando", "Random Banana Coin Locations", "Shuffle the locations of coins within each Level.", False, "Banana Coins") }}
+                {{ toggle_input("random_fairies", "Random Banana Fairy Locations", "Fairy checks are in random locations.", False, "Banana Fairies") }}
+                {{ toggle_input("wrinkly_location_rando", "Random Wrinkly Door Locations", "Wrinkly Door Locations are randomized.", False, "Wrinkly Doors") }}
+                {{ toggle_input("tns_location_rando", "Random Troff 'n' Scoff Portal Locations", "T&S Portal Locations are randomized.", False, "Troff 'n' Scoff Portals") }}
+                {{ toggle_input("dk_portal_location_rando", "Random DK Portal Locations", "DK Portal Locations are randomized.", False, "DK Portals") }}
+                {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.") }}
+                {{ toggle_input("crown_placement_rando", "Random Battle Crown Pad Locations", "Crown Locations are randomized. There's 1 in each level, except Isles which has two.", False, "Battle Crowns") }}
+                {{ toggle_input("random_crates", "Random Melon Crate Locations", "Melon Crate Locations are randomized.", False, "Melon Crates") }}
                 <div class="spacer"></div>
             </div>
             <div class="flex-container">
@@ -224,6 +143,26 @@
                         </option>
                         <option id="location_shuffle" value="location_shuffle">
                             Location Shuffle
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Colored Bananas</p>
+                    <select name="cb_rando"
+                            id="cb_rando"
+                            display_name="Random CB Locations"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Shuffle the locations of colored bananas within each Level.&#10;-Off: Colored Bananas are in their vanilla locations.&#10;-On: Random placement of Colored Bananas within the main 7 levels.&#10;-On (Inc. Isles): Random placement of Colored Bananas in the 7 main levels and DK Isles.">
+                        <option id="off" selected value="off">
+                            Off
+                        </option>
+                        <option id="on" value="on">
+                            On
+                        </option>
+                        <option id="on_with_isles" value="on_with_isles">
+                            On (Inc. Isles)
                         </option>
                     </select>
                 </div>
@@ -258,40 +197,9 @@
                     </label>
                     {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, True) }}
                 {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip" title="Enemy speeds are randomized.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="enemy_speed_rando"
-                                display_name="Shuffle Enemy Speed"
-                                value="True"/>
-                        Shuffle Enemy Speed
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="The boss you can get in a level is different than normal.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="boss_location_rando"
-                                id="boss_location_rando"
-                                display_name="Shuffle Boss Location"
-                                value="True"/>
-                        Shuffle Boss Location
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Starting kong and kong locations have been randomized.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="kong_rando"
-                                id="kong_rando"
-                                display_name="Shuffle Kongs"
-                                value="True"/>
-                        Shuffle Kongs
-                    </label>
-                </div>
+                {{ toggle_input("enemy_speed_rando", "Shuffle Enemy Speed", "Enemy speeds are randomized.") }}
+                {{ toggle_input("boss_location_rando", "Shuffle Boss Location", "The boss you can get in a level is different than normal.") }}
+                {{ toggle_input("kong_rando", "Shuffle Kongs", "Starting kong and kong locations have been randomized.") }}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                             title="Shuffles the solutions to various puzzles in the game.">
@@ -344,6 +252,18 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
+                            title="K. Rool phases can be found in the T&S, and T&S bosses can be encountered as an endgame phase.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="krool_in_boss_pool"
+                                id="krool_in_boss_pool"
+                                display_name="Shuffle Boss Kong Required"
+                                value="True"/>
+                        K Rool Phases as Bosses
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
                             title="All Replenishables in the game are randomized.&#10;*Homing Ammo, Regular Ammo, Oranges, Film, Crystals">
                         <input class="form-check-input"
                                 type="checkbox"
@@ -376,6 +296,7 @@
                         Random Starting Location
                     </label>
                 </div>
+                <div class="spacer"></div>
             </div>
             <div class="flex-container">
                 <div class="item-select">
@@ -386,9 +307,12 @@
                             class="form-select"
                             aria-label="Randomization type"
                             data-toggle="tooltip"
-                            title="Determines how entrances are randomized and placed.&#10;-Level Order: Randomize only the order that the levels are in.&#10;-Loading Zones: Randomize every entrance except for Helm/Helm Lobby.&#10;-Decoupled Loading Zones: Randomize every entrance except for Helm/Helm Lobby. Going back through a entrance will take you somewhere else.&#10;-Vanilla: All entrances are the same as the base game.">
+                            title="Determines how entrances are randomized and placed.&#10;-Level Order: Randomize only the order that the levels are in.&#10;-Complex Level Order: Same as 'Level Order', but the order of level entry won't be linear. Additionally, other protections that regular Level Order enforces to make it better to play will be removed.&#10;-Loading Zones: Randomize every entrance except for Helm/Helm Lobby.&#10;-Decoupled Loading Zones: Randomize every entrance except for Helm/Helm Lobby. Going back through a entrance will take you somewhere else.&#10;-Vanilla: All entrances are the same as the base game.">
                         <option selected value="level_order">
                             Level Order
+                        </option>
+                        <option value="level_order_complex">
+                            Complex Level Order
                         </option>
                         <option value="loadingzone">
                             Loading Zones
@@ -400,6 +324,19 @@
                             Vanilla
                         </option>
                     </select>
+                    <div class="form-check form-switch" style="padding-top:10px;">
+                        <label data-toggle="tooltip"
+                                style="font-size:14px;"
+                                title="Shuffle the location of Hideout Helm. If enabled, Helm and Helm Lobby will be in random locations.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="shuffle_helm_location"
+                                    id="shuffle_helm_location"
+                                    display_name="Shuffle Helm Location"
+                                    value="True"/>
+                            Shuffle Helm Location
+                        </label>
+                    </div>
                 </div>
                 <div class="item-select">
                     <p class="select-title">Random Shop Prices</p>
@@ -530,16 +467,16 @@
                             <input class="btn-check" name="starting_move_box_{{ item.value }}" id="none-{{ item.value }}" type="radio" autocomplete="off">
                             <label class="btn-always-empty my-auto ms-1" for="none-{{ item.value }}">Reset</label>
                             <input class="btn-check" name="starting_move_box_{{ item.value }}" id="start-{{ item.value }}" type="radio" autocomplete="off">
-                            <label class="btn btn-sm btn-outline-primary my-auto ms-1" for="start-{{ item.value }}">Start With</label>
+                            <label class="btn btn-sm btn-outline-secondary my-auto ms-1" for="start-{{ item.value }}">Start With</label>
                             <input class="btn-check" name="starting_move_box_{{ item.value }}" id="random-{{ item.value }}" type="radio" autocomplete="off">
-                            <label class="btn btn-sm btn-outline-primary my-auto ms-1" for="random-{{ item.value }}">Random</label>
+                            <label class="btn btn-sm btn-outline-secondary my-auto ms-1" for="random-{{ item.value }}">Random</label>
                         </div>
                     {% endfor %}
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="starting_moves_reset">Reset</button>
-                <button type="button" class="btn btn-primary" id="starting_moves_start_all">Start With All</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_reset">Reset</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_start_all">Start With All</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

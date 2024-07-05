@@ -42,6 +42,9 @@
 .definelabel initCharSpawnerActor, 0x80729B00
 .definelabel cutsceneKongGenericCode, 0x806BFBF4
 .definelabel handleCutsceneKong, 0x806F09F0
+.definelabel addToHandState, 0x8068A764
+.definelabel removeFromHandState, 0x8068A784
+.definelabel playGunSFX, 0x806F0B34
 .definelabel playTagActorAnimation, 0x80682DF4
 .definelabel alterCutsceneKongProperties, 0x806C15E8
 .definelabel unkCutsceneKongFunction, 0x80714C08
@@ -103,6 +106,7 @@
 .definelabel unkProjectileCode_2, 0x806651FC
 .definelabel unkProjectileCode_3, 0x80665564
 .definelabel unkProjectileCode_4, 0x80608528
+.definelabel unkGunFunction, 0x80714608
 .definelabel updateModel, 0x806C8F8C
 .definelabel runAnimFrame, 0x80613CA8
 .definelabel handlePoleGrabbing, 0x8072F230
@@ -110,7 +114,14 @@
 .definelabel unkCutsceneFunction, 0x8061D1FC
 .definelabel genericKongCode, 0x806F3190
 .definelabel headphonesCode, 0x806A7BDC
-.definelabel updatePosition, 0x80671C0C
+.definelabel getBonePosition, 0x80671C0C
 .definelabel getActorModel, 0x80612E90
 .definelabel bounceObjectCode, 0x806A6DB4
 .definelabel unkLoadingZoneControllerFunction, 0x806C92C4
+.definelabel crankyCode, 0x800270E0
+.definelabel funkyCode, 0x80027738
+.definelabel candyCode, 0x800275FC
+.definelabel snideCode, 0x80024CB0
+.definelabel getPathPosition, 0x807238D4
+.definelabel spawnKey, 0x80028478
+.definelabel spawnActorSpawnerContainer, 0x806891D8

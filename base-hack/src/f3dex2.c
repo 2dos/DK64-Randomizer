@@ -1,158 +1,106 @@
 #include "../include/common.h"
 
-int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity) {
+Gfx* drawImageWithFilter(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity) {
 	dl = initDisplayList(dl);
-	*(unsigned int*)(dl++) = 0xE200001C;
-	*(unsigned int*)(dl++) = 0x00504240;
-	gDPSetPrimColor(dl, 0, 0, red, green, blue, opacity);
-	dl += 2;
-	*(unsigned int*)(dl++) = 0xFCFF97FF;
-	*(unsigned int*)(dl++) = 0xFF2CFE7F;
-	*(unsigned int*)(dl++) = 0xE3001201;
-	*(unsigned int*)(dl++) = 0x00000000;
-	dl = displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
-	return dl;
+	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+	gDPSetPrimColor(dl++, 0, 0, red, green, blue, opacity);
+	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+	gDPSetTextureFilter(dl++, G_TF_POINT);
+	return displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
 }
 
-int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity) {
+Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity) {
 	return drawImageWithFilter(dl, text_index, codec_index, img_width, img_height, x, y, xScale, yScale, 0xFF, 0xFF, 0xFF, opacity);
 }
 
-int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha) {
+Gfx* drawTri(Gfx* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha) {
 	dl = initDisplayList(dl);
-	// Set Combine
-	*(unsigned int*)(dl++) = 0xFC7EA004;
-	*(unsigned int*)(dl++) = 0x100C00F4;
-	// Mtx
-	*(unsigned int*)(dl++) = 0xDA380003;
-	*(unsigned int*)(dl++) = 0x02000180;
-	*(unsigned int*)(dl++) = 0xDA380007;
-	*(unsigned int*)(dl++) = 0x02000080;
+	gDPSetCombineLERP(dl++, NOISE, TEXEL0, 0, COMBINED, TEXEL1, COMBINED, LOD_FRACTION, COMBINED, COMBINED, COMBINED, SHADE, PRIMITIVE, COMBINED, 1, PRIMITIVE, SHADE);
+	gSPMatrix(dl++, 0x02000180, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+	gSPMatrix(dl++, 0x02000080, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 	// Vertex 0
-	*(unsigned int*)(dl++) = 0x02180000;
-	*(unsigned int*)(dl++) = (x1 << 16) | y1;
-	*(unsigned int*)(dl++) = 0x02100000;
-	*(unsigned int*)(dl++) = 0xFFFFFFFF;
+	gSPModifyVertex(dl++, 0, G_MWO_POINT_XYSCREEN, (x1 << 16) | y1);
+	gSPModifyVertex(dl++, 0, G_MWO_POINT_RGBA, 0xFFFFFFFF);
 	// Vertex 1
-	*(unsigned int*)(dl++) = 0x02180002;
-	*(unsigned int*)(dl++) = (x2 << 16) | y2;
-	*(unsigned int*)(dl++) = 0x02100002;
-	*(unsigned int*)(dl++) = 0xFFFFFFFF;
+	gSPModifyVertex(dl++, 1, G_MWO_POINT_XYSCREEN, (x2 << 16) | y2);
+	gSPModifyVertex(dl++, 1, G_MWO_POINT_RGBA, 0xFFFFFFFF);
 	// Vertex 2
-	*(unsigned int*)(dl++) = 0x02180004;
-	*(unsigned int*)(dl++) = (x3 << 16) | y3;
-	*(unsigned int*)(dl++) = 0x02100004;
-	*(unsigned int*)(dl++) = 0xFFFFFFFF;
-	gDPSetPrimColor(dl, 0, 0, red, green, blue, alpha);
-	dl += 2;
+	gSPModifyVertex(dl++, 2, G_MWO_POINT_XYSCREEN, (x3 << 16) | y3);
+	gSPModifyVertex(dl++, 2, G_MWO_POINT_RGBA, 0xFFFFFFFF);
+	gDPSetPrimColor(dl++, 0, 0, red, green, blue, alpha);
 	// Draw Tri
-	*(unsigned int*)(dl++) = 0x05000204;
-	*(unsigned int*)(dl++) = 0x00000000;
+	gSP1Triangle(dl++, 0, 1, 2, 0);
 	return dl;
 }
 
-int* drawPixelText(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha) {
-	*(unsigned int*)(dl++) = 0xE7000000;
-    *(unsigned int*)(dl++) = 0x00000000;
-    *(unsigned int*)(dl++) = 0xE3000A01;
-    *(unsigned int*)(dl++) = 0x00000000;
-    *(unsigned int*)(dl++) = 0xD9000000;
-    *(unsigned int*)(dl++) = 0x00000000;
-    *(unsigned int*)(dl++) = 0xD9FFFFFF;
-    *(unsigned int*)(dl++) = 0x00200004;
-    gDPSetPrimColor(dl, 0, 0, red, green, blue, alpha);
-    dl += 2;
-    *(unsigned int*)(dl++) = 0xFC119623;
-    *(unsigned int*)(dl++) = 0xFF2FFFFF;
-    *(unsigned int*)(dl++) = 0xE200001C;
-    *(unsigned int*)(dl++) = 0x00504240;
-    dl = textDraw(dl,2,x,y,str);
-	return dl;
+Gfx* drawPixelText(Gfx* dl, int x, int y, char* str, int red, int green, int blue, int alpha) {
+	gDPPipeSync(dl++);
+	gDPSetCycleType(dl++, G_CYC_1CYCLE);
+	gSPClearGeometryMode(dl++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x0040F9FA);
+	gSPSetGeometryMode(dl++, G_SHADE | G_SHADING_SMOOTH);
+    gDPSetPrimColor(dl++, 0, 0, red, green, blue, alpha);
+    gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    return textDraw(dl,2,x,y,str);
 }
 
-int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha, int offset) {
+Gfx* drawPixelTextContainer(Gfx* dl, int x, int y, char* str, int red, int green, int blue, int alpha, int offset) {
 	if (offset) {
 		dl = drawPixelText(dl,x-offset,y+offset,str,0,0,0,alpha);
 	}
-	dl = drawPixelText(dl,x,y,str,red,green,blue,alpha);
-	return dl;
+	return drawPixelText(dl,x,y,str,red,green,blue,alpha);
 }
 
-int* displayCenteredText(int* dl, int y, char* str, int offset) {
-	int center_x = 160;
-	if (Rando.true_widescreen) {
-		center_x = SCREEN_WD << 1;
-	}
+Gfx* displayCenteredText(Gfx* dl, int y, char* str, int offset) {
 	int length = cstring_strlen(str);
-	return drawPixelTextContainer(dl, center_x - (length << 2), y, str, 0xFF, 0xFF, 0xFF, 0xFF, offset);
+	return drawPixelTextContainer(dl, 160 - (length << 2), y, str, 0xFF, 0xFF, 0xFF, 0xFF, offset);
 }
 
-int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha) {
-	*(unsigned int*)(dl++) = 0xE7000000;
-	*(unsigned int*)(dl++) = 0x00000000;
-	*(unsigned int*)(dl++) = 0xE3000A01;
-	*(unsigned int*)(dl++) = 0x00300000;
-	*(unsigned int*)(dl++) = 0xE200001C;
-	*(unsigned int*)(dl++) = 0x00000000;
-	*(unsigned int*)(dl++) = 0xD9FFFFFE;
-	*(unsigned int*)(dl++) = 0x00000000;
-	*(unsigned int*)(dl++) = 0xF7000000;
-	*(unsigned int*)(dl++) = ((red & 0x1F) << 11) | ((green & 0x1F) << 6) | ((blue & 0x1F) << 1) | (alpha & 0x1);
-	*(unsigned int*)(dl++) = 0xED000000 | (((0xA * 4) & 0xFFF) << 12) | ((4 * 0xA) & 0xFFF);
-	if (Rando.true_widescreen) {
-		*(unsigned int*)(dl++) = (((4 * (SCREEN_WD - 11)) & 0xFFF) << 12) | ((4 * (SCREEN_HD - 11)) & 0xFFF);
-	} else {
-		*(unsigned int*)(dl++) = (((4 * 0x135) & 0xFFF) << 12) | ((4 * 0xE5) & 0xFFF);
-	}
-	*(unsigned int*)(dl++) = 0xF6000000 | ((x2 & 0x3FF) << 12) | (y2 & 0x3FF);
-	*(unsigned int*)(dl++) = ((x1 & 0x3FF) << 12) | (y1 & 0x3FF);
+Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha) {
+	gDPPipeSync(dl++);
+	gDPSetCycleType(dl++, G_CYC_FILL);
+	gDPSetRenderMode(dl++, G_RM_NOOP, G_RM_NOOP2);
+	gSPClearGeometryMode(dl++, G_ZBUFFER);
+	gDPSetFillColor(dl++, ((red & 0x1F) << 11) | ((green & 0x1F) << 6) | ((blue & 0x1F) << 1) | (alpha & 0x1));
+	gDPSetScissor(dl++, G_SC_NON_INTERLACE, 10, 10, 309, 229);
+	gDPFillRectangle(dl++, x1 >> 2, y1 >> 2, x2 >> 2, y2 >> 2);
 	return dl;
 }
 
-int* drawString(int* dl, int style, float x, float y, char* str) {
+Gfx* drawString(Gfx* dl, int style, float x, float y, char* str) {
 	float height = (float)getTextStyleHeight(style);
 	float text_y = y - (height * 0x5);
 	int centered = 0;
 	if (style & 0x80) {
 		centered = 0x80;
 	}
-	int* dl_copy = displayText(dl, style & 0x7F, 4 * x, 4 * text_y, str, centered);
-	return dl_copy;
+	return displayText(dl, style & 0x7F, 4 * x, 4 * text_y, str, centered);
 }
 
-int* drawText(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity) {
+Gfx* drawText(Gfx* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity) {
 	dl = initDisplayList(dl);
 	int short_style = style & 0x7F;
 	if (short_style == 1) {
-		*(unsigned int*)(dl++) = 0xFC119623; // G_SETCOMBINE
-		*(unsigned int*)(dl++) = 0xFF2FFFFF; // G_SETCIMG format: 1, 1, -1
-		*(unsigned int*)(dl++) = 0xDA380003;
-		*(unsigned int*)(dl++) = (int)&style128Mtx[0];
+		gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+		gSPMatrix(dl++, (int)&style128Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 	} else {
-		*(unsigned int*)(dl++) = 0xDE000000; // G_DL 0
-		*(unsigned int*)(dl++) = 0x01000118; // G_VTX 0 11
-		*(unsigned int*)(dl++) = 0xFC119623; // G_SETCOMBINE
-		*(unsigned int*)(dl++) = 0xFF2FFFFF; // G_SETCIMG format: 1, 1, -1
+		gSPDisplayList(dl++, 0x01000118);
+		gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 		if (short_style == 6) {
-			*(unsigned int*)(dl++) = 0xDA380003;
-			*(unsigned int*)(dl++) = (int)&style6Mtx[0];
+			gSPMatrix(dl++, (int)&style6Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 		} else if (short_style == 2) {
-			*(unsigned int*)(dl++) = 0xDA380003;
-			*(unsigned int*)(dl++) = (int)&style2Mtx[0];
+			gSPMatrix(dl++, (int)&style2Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 		}
-		gDPSetPrimColor(dl, 0, 0, red, green, blue, opacity);
-		dl += 2;
+		gDPSetPrimColor(dl++, 0, 0, red, green, blue, opacity);
 	}
-	dl = drawString(dl,style,x,y,str);
-	return dl;
+	return drawString(dl,style,x,y,str);
 }
 
-int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background) {
+Gfx* drawTextContainer(Gfx* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background) {
 	if (background) {
 		dl = drawText(dl,style,x-background,y+background,str,0,0,0,opacity);
 	}
-	dl = drawText(dl,style,x,y,str,red,green,blue,opacity);
-	return dl;
+	return drawText(dl,style,x,y,str,red,green,blue,opacity);
 }
 
 static char* character_recoloring_str = 0;
@@ -163,8 +111,6 @@ static unsigned char char_opacity_data[0x40];
 void setCharacterRecoloring(int output, char* stored_str) {
 	use_character_recoloring = output;
 	character_recoloring_str = stored_str;
-	
-	TestVariable = (int)&char_color_data[0];
 }
 
 void wipeTextColorData(void) {

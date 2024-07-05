@@ -35,6 +35,13 @@ static const unsigned char banned_filter_maps[] = {
 	MAP_FACTORYBBLAST, // Factory BBlast
 	MAP_CASTLEBBLAST, // Castle BBlast
 	MAP_JAPESBBLAST, // Japes BBlast
+	MAP_KROOLDK, // DK Phase
+	MAP_KROOLDIDDY, // Diddy Phase
+	MAP_KROOLLANKY, // Lanky Phase
+	MAP_KROOLTINY, // Tiny Phase
+	MAP_KROOLCHUNKY, // Chunky Phase
+	MAP_KROOLSHOE, // Tiny Phase: Shoe
+	MAP_KROOLARENA, // Arena (Used for the ran out of time cutscene)
 };
 
 typedef struct cutscene_wipe {
