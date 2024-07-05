@@ -2241,7 +2241,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             del hint_tree[Locations.HelmKey]
         # Decorate the tree with information from our placed hints
         for hint in hints:
-            if hint.related_location is not None and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?
+            if hint.related_location is not None and hint.related_location in hint_tree.keys() and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?
                 if hint.hint_type == HintType.Multipath:
                     hint_tree[hint.related_location].path_hinted = True
                 else:
