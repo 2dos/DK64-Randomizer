@@ -51,6 +51,9 @@ This is the changelog for the initial push of 4.0 into Dev:
         - `Donk in the Sky` will disable level geometry rendering.
         - Enabling both will enable the secret `Memory Challenge` option, where some maps use Dark World and some maps use Sky.
 - Added the ability to start the game in Training Grounds, with the need to complete 4 minigames to unlock the training moves.
+- Changes to hints:
+    - Added "Freeing Kongs" as a path endpoint which can be hinted.
+	- You will no longer see "Troff 'n' Scoff" path hints. Instead, they have been baked into the medal rewards region. The name of the medal rewards region in hints has been altered to make this a bit clearer.
 
 ### Quality of life changes
 - Dirt patches have been added to item previews

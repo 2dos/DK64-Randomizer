@@ -64,9 +64,7 @@ void cFuncLoop(void) {
 			grab_lock_timer = -1;
 		}
 	}
-	if (tag_locked) {
-		tag_locked = 0;
-	}
+	tag_locked = 0;
 	if (Rando.cutscene_skip_setting == CSSKIP_PRESS) {
 		clearSkipCache();
 	}
