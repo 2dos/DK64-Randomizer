@@ -7,7 +7,7 @@ pycodestyle==2.10.0
 pydocstyle==6.3.0
 css-html-js-minify==2.5.5
 python-minifier==2.9.0
-requests==2.31.0
+requests==2.32.0
 bs4==0.0.1
 beautifulsoup4==4.12.2
 djlint==1.30.2
