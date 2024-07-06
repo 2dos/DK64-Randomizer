@@ -218,7 +218,14 @@ class Spoiler:
     def dumpMultiselector(self, toggle: bool, settings_list: list, selector_list: list):
         """Dump multiselector list to a response which can be dumped to the spoiler."""
         if toggle and any(settings_list):
-            return [selector_list[x - 1]["name"] for x in settings_list]
+            lst = []
+            selector_name_dict = {}
+            for x in selector_list:
+                selector_name_dict[x["value"]] = x["name"]
+            for x in settings_list:
+                if x.name in selector_name_dict:
+                    lst.append(selector_name_dict[x.name])
+            return lst
         return toggle
 
     def createJson(self) -> None:
