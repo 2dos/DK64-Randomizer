@@ -102,7 +102,7 @@ def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
                         # If we get to this point in the code, the world itself is likely unstable from some combination of settings or bugs
                         js.postMessage("Settings combination is likely unstable.")
                         ResetShuffledKasplatLocations(spoiler)
-                        raise Ex.SettingsIncompatibleException
+                        raise Ex.SettingsIncompatibleException("Settings combination is likely unstable - report this to the devs!")
                 return
             except Ex.KasplatPlacementException:
                 retries += 1
