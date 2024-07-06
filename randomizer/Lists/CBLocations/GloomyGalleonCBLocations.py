@@ -1276,7 +1276,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
-        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))),
+        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky))),
         locations=[[5, 1.0, 1312.0430908203125, 1615.0, 2905.87890625], [5, 1.0, 1314.042724609375, 1648.0, 2806.0751953125], [5, 1.0, 1311.7952880859375, 1615.0, 2679.703857421875]],
     ),
     ColoredBananaGroup(
@@ -1690,7 +1690,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
-        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
+        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky))),
         points=[[1421, 1597, 3255], [1257, 1624, 3198]],
     ),
     Balloon(
