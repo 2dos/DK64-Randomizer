@@ -991,7 +991,7 @@ ColoredBananaGroupList = [
         name="Inside Free Diddy cage",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        logic=lambda l: l.CanFreeDiddy(),
+        logic=lambda l: Events.JapesFreeKongOpenGates in l.Events,
         locations=[[5, 1.0, 1065, 858, 2608]],
     ),
     ColoredBananaGroup(

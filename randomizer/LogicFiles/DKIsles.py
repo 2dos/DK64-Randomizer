@@ -7,7 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import MinigameBarrels, CBRando
+from randomizer.Enums.Settings import FungiTimeSetting, MinigameBarrels, CBRando
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -74,6 +74,8 @@ LogicRegions = {
         Event(Events.CavesKeyTurnedIn, lambda l: l.settings.auto_keys and l.CavesKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
         Event(Events.CastleKeyTurnedIn, lambda l: l.settings.auto_keys and l.CastleKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
         Event(Events.HelmKeyTurnedIn, lambda l: l.settings.auto_keys and l.HelmKey),
+        Event(Events.Night, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
+        Event(Events.Day, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
     ], [
         TransitionFront(Regions.Credits, lambda l: True),
         # Replace these with the actual starting region if we choose to randomize it
