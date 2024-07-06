@@ -516,7 +516,11 @@ Gfx* drawDPad(Gfx* dl) {
         }
         int mdl_opacity = 0x80;
         int world = getWorld(CurrentMap, 1);
-        if (world < 7) {
+        int world_limit = 7;
+        if (Rando.isles_cb_rando) {
+            world_limit = 8;
+        }
+        if (world < world_limit) {
             int kong_sum = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
             if (kong_sum >= applied_requirement) {
                 mdl_opacity = 0xFF;
@@ -537,9 +541,15 @@ void handleDPadFunctionality(void) {
             if (NewlyPressedControllerInput.Buttons.d_up) {
                 displayItemOnHUD(ITEMID_BPFAIRY,0,0);
                 int world = getWorld(CurrentMap,1);
-                if ((world < 7) && (CurrentMap != MAP_TROFFNSCOFF)) {
+                int world_limit = 7;
+                if (Rando.isles_cb_rando) {
+                    world_limit = 8;
+                }
+                if ((world < world_limit) && (CurrentMap != MAP_TROFFNSCOFF)) {
                     displayItemOnHUD(ITEMID_MULTIBUNCH,0,0);
-                    initDingSprite();
+                    if (world < 7) {
+                        initDingSprite();
+                    }
                 }
             }
         }
