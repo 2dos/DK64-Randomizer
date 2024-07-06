@@ -26,7 +26,6 @@ from randomizer.PlandoUtils import PlandoCustomLocationFilter, PlandoCustomLocat
 
 async def initialize():
     """Shifted code into an async function so we can properly lint await calls."""
-
     js.listeners = []
     js.progression_presets = []
     js.random_settings_presets = []
