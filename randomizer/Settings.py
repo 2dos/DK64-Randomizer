@@ -1047,6 +1047,8 @@ class Settings:
                     available_phases = [kong for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky] if kong not in planned_phases]
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
+            for i in range(len(phases)):
+                phases[i] = int(int(phases[i]) + int(Maps.KroolDonkeyPhase))
         orderedPhases = []
         # TODO: Fix logic (lol)
         for map_id in phases:
