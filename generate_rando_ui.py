@@ -6,7 +6,7 @@ from jinja2 import Environment, FunctionLoader
 from pyodide_importer import register_hook  # type: ignore  # noqa
 import js
 
-register_hook("/")
+register_hook("/") # type: ignore  # noqa
 # Module of Lists used for list_selector macros
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector
 from randomizer.Lists.EnemyTypes import EnemySelector
