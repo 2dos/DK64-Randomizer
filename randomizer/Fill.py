@@ -472,11 +472,11 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
                     if collectible.enabled and not collectible.added:
                         missingCBs.append(collectible)
             allCBsFound = False
-    spoiler.Reset()
     if not allLocationsReached:
         print(f"Unable to reach all locations: {unreachables}")
     if not allCBsFound:
         print(f"Unable to reach all CBs: {spoiler.LogicVariables.ColoredBananas}")
+    spoiler.Reset()
     return allLocationsReached and allCBsFound
 
 
@@ -1676,7 +1676,7 @@ def Fill(spoiler: Spoiler) -> None:
             bigListOfItemsToPlace.extend(ItemPool.ChunkyMoves)
             if spoiler.settings.training_barrels != TrainingBarrels.normal:
                 bigListOfItemsToPlace.extend(ItemPool.TrainingBarrelAbilities())
-            if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+            if spoiler.settings.shockwave_status not in (ShockwaveStatus.start_with, ShockwaveStatus.vanilla):
                 bigListOfItemsToPlace.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         if Types.Key in spoiler.settings.shuffled_location_types:
             bigListOfItemsToPlace.extend(ItemPool.KeysToPlace(spoiler.settings))
