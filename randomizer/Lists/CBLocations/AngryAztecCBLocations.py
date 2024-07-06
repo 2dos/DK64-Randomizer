@@ -1313,7 +1313,7 @@ ColoredBananaGroupList = [
         name="Llama Temple Water Corners",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
-        logic=lambda l: l.CanLlamaSpit() and l.swim,
+        logic=lambda l: Events.AztecLlamaSpit in l.Events and l.swim,
         locations=[
             [5, 1.0, 2038, 211, 2689],
             [5, 1.0, 2410, 211, 2113],

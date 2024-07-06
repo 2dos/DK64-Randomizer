@@ -880,17 +880,22 @@ def toggle_item_rando(evt):
     enemy_drop_rando = document.getElementById("enemy_drop_rando")
     non_item_rando_warning = document.getElementById("non_item_rando_warning")
     shared_shop_warning = document.getElementById("shared_shop_warning")
+    kong_rando = document.getElementById("kong_rando")
     shops_in_pool = False
+    kongs_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
         if option.value == "shop":
             if option.selected:
                 shops_in_pool = True
-                break
+        if option.value == "kong":
+            if option.selected:
+                kongs_in_pool = True
         if option.selected:
             nothing_selected = False
     if nothing_selected:
         shops_in_pool = True
+        kongs_in_pool = True
     if js.document.getElementById("shuffle_items").checked:
         disabled = False
     try:
@@ -906,6 +911,7 @@ def toggle_item_rando(evt):
             enemy_drop_rando.checked = False
             non_item_rando_warning.removeAttribute("hidden")
             shared_shop_warning.removeAttribute("hidden")
+            kong_rando.removeAttribute("disabled")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
@@ -922,10 +928,14 @@ def toggle_item_rando(evt):
                 move_rando.setAttribute("disabled", "disabled")
                 smaller_shops.removeAttribute("disabled")
                 # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
-                js.document.getElementById("training_barrels").removeAttribute("disabled")
                 js.document.getElementById("shockwave_status").removeAttribute("disabled")
                 js.document.getElementById("random_prices").removeAttribute("disabled")
-    except AttributeError:
+            if kongs_in_pool:
+                kong_rando.setAttribute("disabled", "disabled")
+                kong_rando.checked = True
+            else:
+                kong_rando.removeAttribute("disabled")
+    except AttributeError as e:
         pass
 
 
@@ -941,17 +951,22 @@ def item_rando_list_changed(evt):
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
     shared_shop_warning = document.getElementById("shared_shop_warning")
+    kong_rando = document.getElementById("kong_rando")
     shops_in_pool = False
+    kongs_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
         if option.value == "shop":
             if option.selected:
                 shops_in_pool = True
-                break
+        if option.value == "kong":
+            if option.selected:
+                kongs_in_pool = True
         if option.selected:
             nothing_selected = False
     if nothing_selected:
         shops_in_pool = True
+        kongs_in_pool = True
     if js.document.getElementById("shuffle_items").checked:
         item_rando_disabled = False
     if shops_in_pool and not item_rando_disabled:
@@ -976,6 +991,11 @@ def item_rando_list_changed(evt):
         move_rando.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
+    if kongs_in_pool and not item_rando_disabled:
+        kong_rando.setAttribute("disabled", "disabled")
+        kong_rando.checked = True
+    else:
+        kong_rando.removeAttribute("disabled")
     plando_disable_arena_custom_locations(None)
     plando_disable_crate_custom_locations(None)
     plando_disable_fairy_custom_locations(None)
