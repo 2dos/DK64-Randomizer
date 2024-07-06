@@ -840,6 +840,15 @@ def place_randomized_items(spoiler, original_flut: list):
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])
+        flags_to_push = []
+        if not FAST_START:
+            flags_to_push = [0x182, 0x183, 0x184, 0x185]
+        for flut in flut_items:
+            input_flag = flut[0]
+            if input_flag in flags_to_push:
+                flags_to_push = [x for x in flags_to_push if x != input_flag]
+        for flag in flags_to_push:
+            flut_items.append([flag, 0])
         ROM_COPY.seek(0x1FF2000)
         for flut in sorted(flut_items, key=lambda x: x[0]):
             for flag in flut:
