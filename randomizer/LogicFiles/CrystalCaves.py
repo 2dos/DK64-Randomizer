@@ -22,7 +22,9 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.CrystalCavesEntryHandler: Region("Crystal Caves Entry Handler", "This should not be hinted", Levels.CreepyCastle, False, None, [], [], [
+    Regions.CrystalCavesEntryHandler: Region("Crystal Caves Entry Handler", "This should not be hinted", Levels.CreepyCastle, False, None, [], [
+        Event(Events.CavesEntered, lambda l: True),
+    ], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
@@ -37,7 +39,6 @@ LogicRegions = {
         LocationLogic(Locations.CavesMainEnemy_NearBonusRoom, lambda l: True),
         LocationLogic(Locations.CavesMainEnemy_NearSnide, lambda l: True),
     ], [
-        Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.ischunky and l.barrels),
         Event(Events.CavesW1aTagged, lambda l: True),
         Event(Events.CavesW2aTagged, lambda l: True),

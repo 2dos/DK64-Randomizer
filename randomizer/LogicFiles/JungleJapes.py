@@ -23,7 +23,9 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.JungleJapesEntryHandler: Region("Jungle Japes Entry Handler", "This should not be hinted", Levels.JungleJapes, False, None, [], [], [
+    Regions.JungleJapesEntryHandler: Region("Jungle Japes Entry Handler", "This should not be hinted", Levels.JungleJapes, False, None, [], [
+        Event(Events.JapesEntered, lambda l: True),
+    ], [
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
@@ -37,7 +39,6 @@ LogicRegions = {
         LocationLogic(Locations.JapesMainEnemy_KilledInDemo, lambda l: True),
         LocationLogic(Locations.JapesMainEnemy_NearUnderground, lambda l: True),
     ], [
-        Event(Events.JapesEntered, lambda l: True),
         Event(Events.JapesW1aTagged, lambda l: True),
         Event(Events.JapesW1bTagged, lambda l: True),
         Event(Events.JapesW2aTagged, lambda l: True),

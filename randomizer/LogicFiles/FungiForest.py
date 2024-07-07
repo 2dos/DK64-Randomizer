@@ -24,7 +24,9 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.FungiForestEntryHandler: Region("Fungi Forest Entry Handler", "This should not be hinted", Levels.FungiForest, False, None, [], [], [
+    Regions.FungiForestEntryHandler: Region("Fungi Forest Entry Handler", "This should not be hinted", Levels.FungiForest, False, None, [], [
+        Event(Events.ForestEntered, lambda l: True),
+    ], [
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
         TransitionFront(Regions.FungiForestStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
@@ -35,7 +37,6 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearWellTag, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_GreenTunnel, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False))),
     ], [
-        Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.Day, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),

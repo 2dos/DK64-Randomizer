@@ -1266,7 +1266,7 @@ door_locations = {
             location=[1262.0, 867.0, 2025.0, 0.0],
             scale=0.48,
             group=7,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Frantic Factory: Clock Room - front left",
@@ -1274,6 +1274,7 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[1044.65, 842.0, 2223.0, 90.0],
             group=7,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Frantic Factory: Clock Room - back left",
@@ -1281,6 +1282,7 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[1044.65, 842.0, 2105.0, 90.0],
             group=7,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Frantic Factory: Clock Room - front right",
@@ -1288,6 +1290,7 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[1447.0, 842.0, 2283.5, 180.0],
             group=7,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Frantic Factory: Top of Pipe Near Kong-freeing Switch",
