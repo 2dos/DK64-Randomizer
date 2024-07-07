@@ -8,7 +8,8 @@ from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.ShuffleShopLocations import available_shops
 
-class FunctionData():
+
+class FunctionData:
     """Function Data Class."""
 
     def __init__(self, function: int, parameters: list, inverted: bool = False, exist_vendors: list = [VendorType.Candy, VendorType.Cranky, VendorType.Funky, VendorType.Snide]):
@@ -18,7 +19,8 @@ class FunctionData():
         self.inverted = inverted
         self.exist_vendors = exist_vendors.copy()
 
-class ScriptBlock():
+
+class ScriptBlock:
     """Script Block Class."""
 
     def __init__(self, conditions: list, executions: list, exist_vendors: list = [VendorType.Candy, VendorType.Cranky, VendorType.Funky, VendorType.Snide]):
@@ -26,6 +28,7 @@ class ScriptBlock():
         self.conditions = conditions.copy()
         self.executions = executions.copy()
         self.exist_vendors = exist_vendors.copy()
+
 
 def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, water_id_0: int = None) -> list:
     """Get the instance script associated with a shopkeeper."""
@@ -86,325 +89,335 @@ def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, water_
         VendorType.Cranky: 4,
         VendorType.Snide: 4,
     }
-    
+
     range_val = 100
     if water_id is not None:
-        script.append(ScriptBlock(
-            [
-                FunctionData(0, [0, 0, 0]),
-            ],
-            [
-                FunctionData(27, [water_id, 1, 0]),
-                FunctionData(123, [water_id_0, 1, 0]),
-            ]
-        ))
+        script.append(
+            ScriptBlock(
+                [
+                    FunctionData(0, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(27, [water_id, 1, 0]),
+                    FunctionData(123, [water_id_0, 1, 0]),
+                ],
+            )
+        )
         range_val = 120
     else:
-        script.append(ScriptBlock(
-            [
-                FunctionData(1, [0, 0, 0]),
-            ],
-            [
-                FunctionData(20, [data_arg_4.get(vendor, 0), data_arg_8.get(vendor, 0), 0]),
-                FunctionData(24, [data_arg_4.get(vendor, 0), 1, 0]),
-            ],
-            [VendorType.Cranky, VendorType.Funky],
-        ))
-
-    script.extend([
-        ScriptBlock(
-            [
-                FunctionData(1, [0, 0, 0]),
-            ],
-            [
-                FunctionData(90, [range_val,range_val,range_val]),
-                FunctionData(61, [4,0,0]),
-                FunctionData(20, [data_arg_0.get(vendor, 0),data_arg_8.get(vendor, 0),0]),
-                FunctionData(24, [data_arg_0.get(vendor, 0),1,0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [0, 0, 0]),
-            ],
-            [
-                FunctionData(20, [2, 80, 0], False, [VendorType.Cranky]),
-                FunctionData(24, [1,1,0]),
-                FunctionData(22, [1,1,0]),
-                FunctionData(20, [1,0,0]),
-            ]
+        script.append(
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(20, [data_arg_4.get(vendor, 0), data_arg_8.get(vendor, 0), 0]),
+                    FunctionData(24, [data_arg_4.get(vendor, 0), 1, 0]),
+                ],
+                [VendorType.Cranky, VendorType.Funky],
+            )
         )
-    ])
+
+    script.extend(
+        [
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(90, [range_val, range_val, range_val]),
+                    FunctionData(61, [4, 0, 0]),
+                    FunctionData(20, [data_arg_0.get(vendor, 0), data_arg_8.get(vendor, 0), 0]),
+                    FunctionData(24, [data_arg_0.get(vendor, 0), 1, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(20, [2, 80, 0], False, [VendorType.Cranky]),
+                    FunctionData(24, [1, 1, 0]),
+                    FunctionData(22, [1, 1, 0]),
+                    FunctionData(20, [1, 0, 0]),
+                ],
+            ),
+        ]
+    )
     if vendor in (VendorType.Candy, VendorType.Funky):
         script.extend(
             [
                 ScriptBlock(
                     [
-                        FunctionData(1, [0,0,0]),
-                        FunctionData(32, [400,0,0]),
+                        FunctionData(1, [0, 0, 0]),
+                        FunctionData(32, [400, 0, 0]),
                     ],
                     [
                         FunctionData(17, [3, 65535, 0]),
                     ],
-                    [VendorType.Funky]
+                    [VendorType.Funky],
                 ),
                 ScriptBlock(
                     [
-                        FunctionData(1, [0,0,0]),
-                        FunctionData(32, [400,0,0]),
+                        FunctionData(1, [0, 0, 0]),
+                        FunctionData(32, [400, 0, 0]),
                     ],
                     [
-                        FunctionData(17, [2,65535,0]),
-                        FunctionData(26, [1,41,100]),
-                        FunctionData(17, [1,1,0]),
-                        FunctionData(1, [1,0,0]),
-                    ]
+                        FunctionData(17, [2, 65535, 0]),
+                        FunctionData(26, [1, 41, 100]),
+                        FunctionData(17, [1, 1, 0]),
+                        FunctionData(1, [1, 0, 0]),
+                    ],
                 ),
             ]
-            
-            )
+        )
     elif vendor in (VendorType.Cranky, VendorType.Snide):
-        script.extend([
+        script.extend(
+            [
+                ScriptBlock(
+                    [
+                        FunctionData(1, [0, 0, 0]),
+                        FunctionData(32, [400, 0, 0]),
+                    ],
+                    [
+                        FunctionData(17, [4, 65535, 0]),
+                    ],
+                    [VendorType.Cranky],
+                ),
+                ScriptBlock(
+                    [
+                        FunctionData(1, [0, 0, 0]),
+                        FunctionData(32, [400, 0, 0]),
+                    ],
+                    [
+                        FunctionData(17, [4, 65535, 0], False, [VendorType.Snide]),
+                        FunctionData(38, [1, 0, 0], False, [VendorType.Cranky]),
+                        FunctionData(26, [1, data_arg_9.get(vendor, 0), 100]),
+                        FunctionData(17, [1, 1, 0]),
+                        FunctionData(1, [1, 0, 0]),
+                    ],
+                ),
+                ScriptBlock(
+                    [
+                        FunctionData(1, [0, 0, 0]),
+                        FunctionData(32, [400, 0, 0]),
+                    ],
+                    [
+                        FunctionData(38, [1, 0, 0]),
+                        FunctionData(124, [1, 0, 0]),
+                        FunctionData(125, [295, 0, 6480]),
+                    ],
+                    [VendorType.Snide],
+                ),
+            ]
+        )
+    script.extend(
+        [
             ScriptBlock(
                 [
-                    FunctionData(1, [0, 0, 0]),
-                    FunctionData(32, [400, 0, 0]),
-                ],
-                [
-                    FunctionData(17, [4, 65535, 0]),
-                ],
-                [VendorType.Cranky]
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [0, 0, 0]),
-                    FunctionData(32, [400, 0, 0]),
-                ],
-                [
-                    FunctionData(17, [4, 65535, 0], False, [VendorType.Snide]),
-                    FunctionData(38, [1, 0, 0], False, [VendorType.Cranky]),
-                    FunctionData(26, [1, data_arg_9.get(vendor, 0), 100]),
-                    FunctionData(17, [1, 1, 0]),
                     FunctionData(1, [1, 0, 0]),
-                ]
+                ],
+                [
+                    FunctionData(38, [1, 0, 0], False, [VendorType.Candy, VendorType.Funky]),
+                    FunctionData(18, [1, 0, 0]),
+                    FunctionData(1, [12, 0, 0]),
+                ],
             ),
             ScriptBlock(
                 [
                     FunctionData(1, [0, 0, 0]),
+                    FunctionData(32, [400, 0, 0], True),
+                ],
+                [
+                    FunctionData(69, [1, 0, 255]),
+                    FunctionData(26, [1, 0, 0]),
+                    FunctionData(17, [1, 1, 0]),
+                    FunctionData(1, [5, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [5, 0, 0]),
+                ],
+                [
+                    FunctionData(18, [1, 0, 0]),
+                    FunctionData(1, [10, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [10, 0, 0]),
+                    FunctionData(32, [1000, 0, 0]),
+                ],
+                [
+                    FunctionData(7, [94, data_arg_1.get(vendor, 0), 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [10, 0, 0]),
                     FunctionData(32, [400, 0, 0]),
                 ],
                 [
-                    FunctionData(38, [1, 0, 0]),
-                    FunctionData(124, [1, 0, 0]),
-                    FunctionData(125, [295, 0, 6480]),
+                    FunctionData(69, [0, 0, 255]),
+                    FunctionData(20, [1, data_arg_2.get(vendor, 0), 0]),
+                    FunctionData(17, [1, 1, 0]),
+                    FunctionData(1, [11, 0, 0], False, [VendorType.Candy, VendorType.Cranky, VendorType.Snide]),
                 ],
-                [VendorType.Snide]
             ),
-        ])
-    script.extend([
-        ScriptBlock(
-            [
-                FunctionData(1, [1,0,0]),
-            ],
-            [
-                FunctionData(38, [1,0,0], False, [VendorType.Candy, VendorType.Funky]),
-                FunctionData(18, [1,0,0]),
-                FunctionData(1, [12,0,0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [0,0,0]),
-                FunctionData(32, [400,0,0], True),
-            ],
-            [
-                FunctionData(69, [1,0,255]),
-                FunctionData(26, [1,0,0]),
-                FunctionData(17, [1,1,0]),
-                FunctionData(1, [5,0,0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [5,0,0]),
-            ],
-            [
-                FunctionData(18, [1,0,0]),
-                FunctionData(1, [10,0,0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [10,0,0]),
-                FunctionData(32, [1000,0,0]),
-            ],
-            [
-                FunctionData(7, [94, data_arg_1.get(vendor, 0), 0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [10,0,0]),
-                FunctionData(32, [400,0,0]),
-            ],
-            [
-                FunctionData(69, [0,0,255]),
-                FunctionData(20, [1,data_arg_2.get(vendor, 0),0]),
-                FunctionData(17, [1,1,0]),
-                FunctionData(1, [11,0,0], False, [VendorType.Candy, VendorType.Cranky, VendorType.Snide]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [10,0,0]),
-                FunctionData(32, [400,0,0]),
-            ],
-            [
-                FunctionData(17, [4, 65535, 0], False, [VendorType.Cranky]),
-                FunctionData(15, [74, 12160, 40], False, [VendorType.Snide]),
-                FunctionData(38, [1,0,0], False, [VendorType.Cranky, VendorType.Candy, VendorType.Funky]),
-                FunctionData(15, [data_arg_5.get(vendor, 0),0,40], False, [VendorType.Candy, VendorType.Funky]),
-                FunctionData(124, [1, 0, 0], False, [VendorType.Snide]),
-                FunctionData(125, [295, 0, 6480], False, [VendorType.Snide]),
-                FunctionData(17, [2,65535,0], False, [VendorType.Candy, VendorType.Funky]),
-                FunctionData(17, [3,65535,0], False, [VendorType.Funky]),
-                FunctionData(17, [4,65535,0], False, [VendorType.Snide]),
-                FunctionData(14, [256, 0, 40], False, [VendorType.Cranky]),
-                FunctionData(72, [0, 9000, 20], False, [VendorType.Cranky]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [10,0,0]),
-                FunctionData(32, [400,0,0]),
-            ],
-            [
-                FunctionData(3, [0, 18, 0], False, [VendorType.Funky, VendorType.Candy, VendorType.Cranky]),
-                FunctionData(38, [1, 0, 0], False, [VendorType.Snide]),
-                FunctionData(1, [11, 0, 0], False, [VendorType.Funky]),
-            ],
-            [VendorType.Funky, VendorType.Snide]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [11,0,0]),
-                FunctionData(4, [1,0,0]),
-            ],
-            [
-                FunctionData(15, [91, 0, 40]),
-            ],
-            [VendorType.Funky]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [11,0,0]),
-                FunctionData(21, [1,0,0], True),
-            ],
-            [
-                FunctionData(16, [0, 0, 0], False, [VendorType.Cranky]),
-                FunctionData(1, [12, 0, 0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [12, 0, 0]),
-            ],
-            [
-                FunctionData(7, [data_arg_3.get(vendor, 0), 1, 0]),
-            ],
-            [VendorType.Cranky, VendorType.Funky, VendorType.Candy]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [12, 0, 0]),
-                FunctionData(4, [0, 0, 0]),
-                FunctionData(21, [2, 0, 0], True),
-            ],
-            [
-                FunctionData(26, [2, 0, 0]),
-                FunctionData(17, [2, 1, 0]),
-                FunctionData(3, [0, 100, 0]),
-            ],
-            [VendorType.Cranky]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [12, 0, 0]),
-                FunctionData(4, [0, 1, 0]),
-                FunctionData(21, [3, 0, 0], True),
-            ],
-            [
-                FunctionData(26, [3, 0, 0]),
-                FunctionData(17, [3, 1, 0]),
-                FunctionData(3, [0, 150, 1]),
-            ],
-            [VendorType.Cranky]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [12,0,0]),
-                FunctionData(32, [500,0,0], True),
-            ],
-            [
-                FunctionData(18, [data_arg_10.get(vendor, 0),0,0]),
-                FunctionData(20, [1,data_arg_2.get(vendor, 0),0]),
-                FunctionData(17, [1,1,0]),
-                FunctionData(1, [13,0,0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [12,0,0]),
-                FunctionData(32, [500,0,0], True),
-            ],
-            [
-                FunctionData(14, [256, 0, 40], False, [VendorType.Cranky]),
-                FunctionData(72, [0, 7000, 20], False, [VendorType.Cranky]),
-                FunctionData(18, [3, 0, 0], False, [VendorType.Funky]),
-                FunctionData(16, [0, 0, 0], False, [VendorType.Snide]),
-                FunctionData(3, [0, 18, 0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [13,0,0]),
-                FunctionData(4, [data_arg_6.get(vendor, 0),0,0]),
-            ],
-            [
-                FunctionData(15, [data_arg_7.get(vendor, 0), 0, 40]),
-            ],
-            [VendorType.Candy, VendorType.Funky]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [13,0,0]),
-                FunctionData(4, [0,0,0]),
-            ],
-            [
-                FunctionData(15, [661, 0, 40]),
-                FunctionData(1, [14, 0, 0]),
-            ]
-        ),
-        ScriptBlock(
-            [
-                FunctionData(1, [14,0,0]),
-                FunctionData(21, [1,0,0], True),
-            ],
-            [
-                FunctionData(16, [0, 0, 0], False, [VendorType.Cranky]),
-                FunctionData(38, [0,0,0], False, [VendorType.Snide]),
-                FunctionData(69, [1,0,255]),
-                FunctionData(38, [0,0,0], False, [VendorType.Cranky, VendorType.Candy, VendorType.Funky]),
-                FunctionData(1, [10,0,0]),
-            ]
-        ),
-    ])
+            ScriptBlock(
+                [
+                    FunctionData(1, [10, 0, 0]),
+                    FunctionData(32, [400, 0, 0]),
+                ],
+                [
+                    FunctionData(17, [4, 65535, 0], False, [VendorType.Cranky]),
+                    FunctionData(15, [74, 12160, 40], False, [VendorType.Snide]),
+                    FunctionData(38, [1, 0, 0], False, [VendorType.Cranky, VendorType.Candy, VendorType.Funky]),
+                    FunctionData(15, [data_arg_5.get(vendor, 0), 0, 40], False, [VendorType.Candy, VendorType.Funky]),
+                    FunctionData(124, [1, 0, 0], False, [VendorType.Snide]),
+                    FunctionData(125, [295, 0, 6480], False, [VendorType.Snide]),
+                    FunctionData(17, [2, 65535, 0], False, [VendorType.Candy, VendorType.Funky]),
+                    FunctionData(17, [3, 65535, 0], False, [VendorType.Funky]),
+                    FunctionData(17, [4, 65535, 0], False, [VendorType.Snide]),
+                    FunctionData(14, [256, 0, 40], False, [VendorType.Cranky]),
+                    FunctionData(72, [0, 9000, 20], False, [VendorType.Cranky]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [10, 0, 0]),
+                    FunctionData(32, [400, 0, 0]),
+                ],
+                [
+                    FunctionData(3, [0, 18, 0], False, [VendorType.Funky, VendorType.Candy, VendorType.Cranky]),
+                    FunctionData(38, [1, 0, 0], False, [VendorType.Snide]),
+                    FunctionData(1, [11, 0, 0], False, [VendorType.Funky]),
+                ],
+                [VendorType.Funky, VendorType.Snide],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [11, 0, 0]),
+                    FunctionData(4, [1, 0, 0]),
+                ],
+                [
+                    FunctionData(15, [91, 0, 40]),
+                ],
+                [VendorType.Funky],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [11, 0, 0]),
+                    FunctionData(21, [1, 0, 0], True),
+                ],
+                [
+                    FunctionData(16, [0, 0, 0], False, [VendorType.Cranky]),
+                    FunctionData(1, [12, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [12, 0, 0]),
+                ],
+                [
+                    FunctionData(7, [data_arg_3.get(vendor, 0), 1, 0]),
+                ],
+                [VendorType.Cranky, VendorType.Funky, VendorType.Candy],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [12, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                    FunctionData(21, [2, 0, 0], True),
+                ],
+                [
+                    FunctionData(26, [2, 0, 0]),
+                    FunctionData(17, [2, 1, 0]),
+                    FunctionData(3, [0, 100, 0]),
+                ],
+                [VendorType.Cranky],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [12, 0, 0]),
+                    FunctionData(4, [0, 1, 0]),
+                    FunctionData(21, [3, 0, 0], True),
+                ],
+                [
+                    FunctionData(26, [3, 0, 0]),
+                    FunctionData(17, [3, 1, 0]),
+                    FunctionData(3, [0, 150, 1]),
+                ],
+                [VendorType.Cranky],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [12, 0, 0]),
+                    FunctionData(32, [500, 0, 0], True),
+                ],
+                [
+                    FunctionData(18, [data_arg_10.get(vendor, 0), 0, 0]),
+                    FunctionData(20, [1, data_arg_2.get(vendor, 0), 0]),
+                    FunctionData(17, [1, 1, 0]),
+                    FunctionData(1, [13, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [12, 0, 0]),
+                    FunctionData(32, [500, 0, 0], True),
+                ],
+                [
+                    FunctionData(14, [256, 0, 40], False, [VendorType.Cranky]),
+                    FunctionData(72, [0, 7000, 20], False, [VendorType.Cranky]),
+                    FunctionData(18, [3, 0, 0], False, [VendorType.Funky]),
+                    FunctionData(16, [0, 0, 0], False, [VendorType.Snide]),
+                    FunctionData(3, [0, 18, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [13, 0, 0]),
+                    FunctionData(4, [data_arg_6.get(vendor, 0), 0, 0]),
+                ],
+                [
+                    FunctionData(15, [data_arg_7.get(vendor, 0), 0, 40]),
+                ],
+                [VendorType.Candy, VendorType.Funky],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [13, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(15, [661, 0, 40]),
+                    FunctionData(1, [14, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [14, 0, 0]),
+                    FunctionData(21, [1, 0, 0], True),
+                ],
+                [
+                    FunctionData(16, [0, 0, 0], False, [VendorType.Cranky]),
+                    FunctionData(38, [0, 0, 0], False, [VendorType.Snide]),
+                    FunctionData(69, [1, 0, 255]),
+                    FunctionData(38, [0, 0, 0], False, [VendorType.Cranky, VendorType.Candy, VendorType.Funky]),
+                    FunctionData(1, [10, 0, 0]),
+                ],
+            ),
+        ]
+    )
     # Parse Script to remove anything unused
     script = [x for x in script if vendor in x.exist_vendors]
     for block in script:
         block.conditions = [x for x in block.conditions if vendor in x.exist_vendors]
         block.executions = [x for x in block.executions if vendor in x.exist_vendors]
     return script
+
 
 def pushNewShopLocationWrite(cont_map_id: Maps, obj_id: int, old_vendor: VendorType, new_vendor: VendorType):
     """Write new shop location script to ROM."""
@@ -467,6 +480,7 @@ def pushNewShopLocationWrite(cont_map_id: Maps, obj_id: int, old_vendor: VendorT
     for script in good_scripts:
         for x in script:
             ROM_COPY.writeMultipleBytes(x, 2)
+
 
 def ApplyShopRandomizer(spoiler):
     """Write shop locations to ROM."""
