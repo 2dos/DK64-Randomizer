@@ -21,7 +21,9 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.CreepyCastleEntryHandler: Region("Creepy Castle Entry Handler", "This should not be hinted", Levels.CreepyCastle, False, None, [], [], [
+    Regions.CreepyCastleEntryHandler: Region("Creepy Castle Entry Handler", "This should not be hinted", Levels.CreepyCastle, False, None, [], [
+        Event(Events.CastleEntered, lambda l: True),
+    ], [
         TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
@@ -45,7 +47,6 @@ LogicRegions = {
         LocationLogic(Locations.CastleMainEnemy_PathToDungeon, lambda l: True),
         LocationLogic(Locations.CastleMainEnemy_NearHeadphones, lambda l: True),
     ], [
-        Event(Events.CastleEntered, lambda l: True),
         Event(Events.CastleW1aTagged, lambda l: True),
         Event(Events.CastleW1bTagged, lambda l: True),
         Event(Events.CastleW2aTagged, lambda l: True),

@@ -23,7 +23,10 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.FranticFactoryEntryHandler: Region("Frantic Factory Entry Handler", "This should not be hinted", Levels.FranticFactory, False, None, [], [], [
+    Regions.FranticFactoryEntryHandler: Region("Frantic Factory Entry Handler", "This should not be hinted", Levels.FranticFactory, False, None, [], [
+        Event(Events.FactoryEntered, lambda l: True),
+        Event(Events.HatchOpened, lambda l: True),  # Always starts open in the randomizer - Placing in here to prevent logical issues (for now)
+    ], [
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
         TransitionFront(Regions.FranticFactoryStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
@@ -33,7 +36,6 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_LobbyRight, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToHatch, lambda l: True),
     ], [
-        Event(Events.FactoryEntered, lambda l: True),
         Event(Events.HatchOpened, lambda l: True),  # Always starts open in the randomizer
         Event(Events.FactoryW1aTagged, lambda l: True),
         Event(Events.FactoryW2aTagged, lambda l: True),

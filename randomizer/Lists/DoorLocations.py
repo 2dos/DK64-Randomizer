@@ -12,6 +12,16 @@ from randomizer.LogicClasses import TransitionFront
 
 LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
 
+LEVEL_ENTRY_HANDLER_REGIONS = (
+    Regions.JungleJapesEntryHandler,
+    Regions.AngryAztecEntryHandler,
+    Regions.FranticFactoryEntryHandler,
+    Regions.GloomyGalleonEntryHandler,
+    Regions.FungiForestEntryHandler,
+    Regions.CrystalCavesEntryHandler,
+    Regions.CreepyCastleEntryHandler,
+)
+
 
 class DoorData:
     """Stores information about a door location."""
@@ -72,6 +82,12 @@ class DoorData:
         portal_region = spoiler.RegionList[self.logicregion]
         boss_region_id = GetBossLobbyRegionIdForRegion(self.logicregion, portal_region)
         portal_region.exits.append(TransitionFront(boss_region_id, lambda l: self.logic))
+
+    def assignDKPortal(self, spoiler, level):
+        """Assign DK Portal to slot."""
+        self.placed = DoorType.dk_portal
+        placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level]
+        spoiler.RegionList[placement_region].exits[1] = TransitionFront(self.logicregion, lambda l: True)
 
 
 def GetBossLobbyRegionIdForRegion(region_id, region):
@@ -1251,7 +1267,7 @@ door_locations = {
             location=[1262.0, 867.0, 2025.0, 0.0],
             scale=0.48,
             group=7,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Frantic Factory: Clock Room - front left",
@@ -1259,6 +1275,7 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[1044.65, 842.0, 2223.0, 90.0],
             group=7,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Frantic Factory: Clock Room - back left",
@@ -1266,6 +1283,7 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[1044.65, 842.0, 2105.0, 90.0],
             group=7,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Frantic Factory: Clock Room - front right",
@@ -1273,6 +1291,7 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[1447.0, 842.0, 2283.5, 180.0],
             group=7,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Frantic Factory: Top of Pipe Near Kong-freeing Switch",
@@ -1284,7 +1303,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.islanky and l.handstand,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Frantic Factory: Pin Code Room - front-right",

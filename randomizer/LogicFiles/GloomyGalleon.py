@@ -23,7 +23,9 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.GloomyGalleonEntryHandler: Region("Gloomy Galleon Entry Handler", "This should not be hinted", Levels.GloomyGalleon, False, None, [], [], [
+    Regions.GloomyGalleonEntryHandler: Region("Gloomy Galleon Entry Handler", "This should not be hinted", Levels.GloomyGalleon, False, None, [], [
+        Event(Events.GalleonEntered, lambda l: True),
+    ], [
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
@@ -39,7 +41,6 @@ LogicRegions = {
         LocationLogic(Locations.GalleonMainEnemy_PeanutTunnel, lambda l: True),
         LocationLogic(Locations.GalleonMainEnemy_CoconutTunnel, lambda l: True),
     ], [
-        Event(Events.GalleonEntered, lambda l: True),
         Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.galleonGatesStayOpen())),
         Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.galleonGatesStayOpen())),
         Event(Events.LighthouseGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)),

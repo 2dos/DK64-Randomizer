@@ -146,13 +146,13 @@ def ShuffleShopLocations(spoiler):
                 placement_index += 1
                 # Add exit to new containing region for logical access
                 region = spoiler.RegionList[shop.containing_region]
-                if shop.shop == Regions.CrankyGeneric:
+                if shop.new_shop == Regions.CrankyGeneric:
                     region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess))
-                elif shop.shop == Regions.FunkyGeneric:
+                elif shop.new_shop == Regions.FunkyGeneric:
                     region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess))
-                elif shop.shop == Regions.CandyGeneric:
+                elif shop.new_shop == Regions.CandyGeneric:
                     region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.candyAccess))
-                elif shop.shop == Regions.Snide:
+                elif shop.new_shop == Regions.Snide:
                     region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.snideAccess))
         assortment[level] = assortment_in_level
     # Write Assortment to spoiler
