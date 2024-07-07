@@ -95,15 +95,6 @@ def ShuffleDoors(spoiler, block_wrinklytns: bool):
     if shuffle_wrinkly:
         ClearHintDoorLogic(spoiler)
     # Assign Doors
-    MAP_REGION = {
-        Maps.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions[Regions.JungleJapesEntryHandler],
-        Maps.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions[Regions.AngryAztecEntryHandler],
-        Maps.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions[Regions.FranticFactoryEntryHandler],
-        Maps.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions[Regions.GloomyGalleonEntryHandler],
-        Maps.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions[Regions.FungiForestEntryHandler],
-        Maps.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions[Regions.CrystalCavesEntryHandler],
-        Maps.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions[Regions.CreepyCastleEntryHandler],
-    }
     for level in door_locations:
         # Get all door locations that can be given a door
         available_doors = []
@@ -211,10 +202,9 @@ def ShuffleDoors(spoiler, block_wrinklytns: bool):
                 selected_entry = door_locations[level][selected_door_index]
                 # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
                 available_doors.remove(selected_door_index)
-                selected_entry.assignPortal(spoiler)
+                selected_entry.assignDKPortal(spoiler, level)
                 human_entry_doors[level_list[level]] = selected_entry.name
                 shuffled_door_data[level].append((selected_door_index, "dk_portal"))
-                MAP_REGION[selected_entry.map].exits[1].dest = selected_entry.logicregion
 
     # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
     spoiler.shuffled_door_data = shuffled_door_data

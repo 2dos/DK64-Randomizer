@@ -181,8 +181,8 @@ static const char exittoisles[] = "EXIT TO ISLES";
 static const char exittospawn[] = "EXIT TO SPAWN";
 
 void writeSpawn(int map, int exit) {
-    *(short*)(0x8071454A) = Rando.starting_map;
-    *(int*)(0x80714550) = 0x24050000 | Rando.starting_exit;
+    *(short*)(0x8071454A) = map;
+    *(int*)(0x80714550) = 0x24050000 | exit;
 }
 
 void initSpawn(void) {

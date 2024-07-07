@@ -12,6 +12,15 @@ from randomizer.LogicClasses import TransitionFront
 
 LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
 
+LEVEL_ENTRY_HANDLER_REGIONS = (
+    Regions.JungleJapesEntryHandler,
+    Regions.AngryAztecEntryHandler,
+    Regions.FranticFactoryEntryHandler,
+    Regions.GloomyGalleonEntryHandler,
+    Regions.FungiForestEntryHandler,
+    Regions.CrystalCavesEntryHandler,
+    Regions.CreepyCastleEntryHandler,
+)
 
 class DoorData:
     """Stores information about a door location."""
@@ -72,6 +81,12 @@ class DoorData:
         portal_region = spoiler.RegionList[self.logicregion]
         boss_region_id = GetBossLobbyRegionIdForRegion(self.logicregion, portal_region)
         portal_region.exits.append(TransitionFront(boss_region_id, lambda l: self.logic))
+
+    def assignDKPortal(self, spoiler, level):
+        """Assign DK Portal to slot."""
+        self.placed = DoorType.dk_portal
+        placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level]
+        spoiler.RegionList[placement_region].exits[1] = TransitionFront(self.logicregion, lambda l: True)
 
 
 def GetBossLobbyRegionIdForRegion(region_id, region):
