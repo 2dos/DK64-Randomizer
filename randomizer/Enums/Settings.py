@@ -1098,6 +1098,7 @@ class SettingsStringEnum(IntEnum):
     enemy_kill_crown_timer = 185
     hard_bosses_selected = 186
     ice_trap_frequency = 187
+    ice_traps_damage = 188
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1329,6 +1330,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.krool_in_boss_pool: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
+    SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

@@ -579,6 +579,7 @@ class Settings:
         self.maximize_helm_blocker = False
         self.perma_death = False
         self.disable_tag_barrels = False
+        self.ice_traps_damage = False
         self.level_randomization = LevelRandomization.vanilla
         self.shuffle_helm_location = False
         self.kong_rando = False
@@ -1428,8 +1429,9 @@ class Settings:
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
         bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
         is_bad = location.type in bad_fake_types
-        if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death:
-            is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
+        if self.ice_traps_damage:
+            if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death:
+                is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
     def finalize_world_settings(self, spoiler):
@@ -1666,6 +1668,9 @@ class Settings:
                 ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
+                    # Miscellaneous issues
+                    Locations.NintendoCoin,
+                    Locations.RarewareCoin,
                     # Caves Beetle Race causes issues with a blueprint potentially being there
                     Locations.CavesLankyBeetleRace,
                     # Stuff that may be required to access other stuff - Not really fair
@@ -1684,9 +1689,6 @@ class Settings:
                     Locations.CastleLankyGreenhouse,
                     Locations.HelmBananaFairy1,
                     Locations.HelmBananaFairy2,
-                    # Miscellaneous issues
-                    Locations.NintendoCoin,
-                    Locations.RarewareCoin,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(spoiler.LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:

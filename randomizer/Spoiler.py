@@ -294,6 +294,7 @@ class Spoiler:
         settings["Smaller Shops"] = self.settings.smaller_shops
         settings["Irondonk"] = self.settings.perma_death
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
+        settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
         # settings["Krusha Slot"] = self.settings.krusha_ui.name

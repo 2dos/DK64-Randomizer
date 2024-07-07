@@ -32,8 +32,8 @@ LogicRegions = {
     ], [
         # These transitions route you to where the loading zone entering Helm will take you
         # If we must turn off the Blast-O-Matic, also prevent the fill from entering Helm without Snide
-        TransitionFront(Regions.HideoutHelmStart, lambda l: l.settings.helm_setting == HelmSetting.default and (l.snideAccess or l.assumeFillSuccess)),
-        TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting == HelmSetting.skip_start and (l.snideAccess or l.assumeFillSuccess)),
+        TransitionFront(Regions.HideoutHelmStart, lambda l: l.settings.helm_setting == HelmSetting.default and l.canAccessHelm()),
+        TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting == HelmSetting.skip_start and l.canAccessHelm()),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all)
     ]),
 

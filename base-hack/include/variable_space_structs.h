@@ -112,7 +112,7 @@ typedef struct varspace {
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ unsigned char ice_trap_flag_alloc;
 	/* 0x14F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
-	/* 0x150 */ char unk_150;
+	/* 0x150 */ char ice_traps_damage;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
 	/* 0x152 */ char free_target_japes; // Kong you free in Japes
 	/* 0x153 */ char free_source_japes; // Kong who frees the kong in Japes
