@@ -270,10 +270,10 @@ void* DiddySwimFix(int ptr, int file, int c0, int c1) {
      * @param c1 Unk Compression Var
      */
     float* data = (float*)getMapData(ptr, file, c0, c1);
-    if ((file == 210) && (KrushaSlot == 1)) {
+    if ((file == 210) && (isKrushaAdjacentModel(KONG_DIDDY))) {
         // Diddy Swim Animation
         *data = 1.0f;
-    } else if ((file == 359) && (KrushaSlot == 2)) {
+    } else if ((file == 359) && (isKrushaAdjacentModel(KONG_LANKY))) {
         *data = 1.0f;
     }
     return (void*)data;

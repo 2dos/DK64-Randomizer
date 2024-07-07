@@ -410,6 +410,10 @@ void* getHUDSprite_Complex(item_ids item) {
         return &bean_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_PEARL) {
         return &pearl_sprite;
+    } else if ((item == ITEMID_STANDARDAMMO) || (item == ITEMID_HOMINGAMMO)) {
+        if (isKrushaAdjacentModel(kong)) {
+            return (void*)0x80720268; // Orange Ammo
+        }
     }
     return sprite_table[elements[item].sprite_index[kong]];
 }

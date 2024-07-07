@@ -19,7 +19,6 @@ from model_port import loadNewModels
 # Patcher functions for the extracted files
 from patch_text import writeNoExpPakMessages
 import portal_instance_script
-import shop_instance_script
 from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
@@ -669,11 +668,11 @@ for ki, kong in enumerate(switches):
 with open("./instance_scripts_data.json", "r") as json_f:
     instance_script_maps = json.load(json_f)
 maps_to_expand = list(range(0, 216))
-SCRIPT_EXPANSION_SIZE = 0x200
+SCRIPT_EXPANSION_SIZE = 0x2000
 for x in instance_script_maps:
     maps_to_expand.remove(x["map"])
     script_file_name = f"{x['name']}.raw"
-    expand_size = 0x2000
+    expand_size = 0x3000
     with open(script_file_name, "rb") as script_f:
         data = script_f.read()
         compress = gzip.compress(data, compresslevel=9)

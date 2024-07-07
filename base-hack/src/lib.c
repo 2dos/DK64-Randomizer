@@ -1665,7 +1665,7 @@ int getItemCountReq(requirement_item item) {
 		return countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
 	} else if (enabled_state == 2) {
 		for (int i = 0; i < item_count; i++) {
-			if (checkFlag(flag_counters[item].flag_array[i], FLAGTYPE_PERMANENT)) {
+			if (checkFlagDuplicate(flag_counters[item].flag_array[i], FLAGTYPE_PERMANENT)) {
 				count += 1;
 			}
 		}
