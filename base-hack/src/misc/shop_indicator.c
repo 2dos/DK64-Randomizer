@@ -438,6 +438,10 @@ static const krool_head helm_heads[] = {
 	{.map = 0xFF, .texture_offset=COUNTER_NO_ITEM},
 };
 
+static const short float_ids[] = {0x1F4, 0x36};
+static const short shop_obj_types[] = {0x73, 0x7A, 0x124};
+static const float float_offsets[] = {51.0f, 51.0f, 45.0f};
+
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -537,20 +541,26 @@ void newCounterCode(void) {
 			if (CurrentMap == MAP_GALLEON) {
 				int shop = paad->shop;
 				int* m2location = (int*)ObjectModel2Pointer;
-				if (shop == 1) {
-					int funky = convertIDToIndex(0x1F4);
-					if (funky > -1) {
-						ModelTwoData* funky_object = getObjectArrayAddr(m2location,0x90,funky);
-						int funky_y = funky_object->yPos;
-						CurrentActorPointer_0->yPos = funky_y + (40 * 1.12f);
+				int is_float = 0;
+				float float_y = 0.0f;
+				for (int i = 0; i < 2; i++) {
+					int float_id = float_ids[i];
+					int float_slot = convertIDToIndex(float_id);
+					if (float_slot > -1) {
+						ModelTwoData* float_slot_object = getObjectArrayAddr(m2location,0x90,float_slot);
+						int float_slot_obj_type = float_slot_object->object_type;
+						for (int j = 0; j < 3; j++) {
+							if (shop_obj_types[j] == float_slot_obj_type) {
+								if (j == shop) {
+									is_float = 1;
+									float_y = float_slot_object->yPos;
+								}
+							}
+						}
 					}
-				} else if (shop == 2) {
-					int candy = convertIDToIndex(0x36);
-					if (candy > -1) {
-						ModelTwoData* candy_object = getObjectArrayAddr(m2location,0x90,candy);
-						int candy_y = candy_object->yPos;
-						CurrentActorPointer_0->yPos = candy_y + (40 * 1.28f);
-					}
+				}
+				if (is_float) {
+					CurrentActorPointer_0->yPos = float_y + float_offsets[shop];
 				}
 			}
 		}
