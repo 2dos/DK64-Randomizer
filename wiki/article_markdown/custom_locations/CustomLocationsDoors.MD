@@ -142,11 +142,11 @@
 | Frantic Factory | Frantic Factory: Arcade Room - in a corner | Boss, Dk_Portal, Wrinkly | `` | 
 | Frantic Factory | Frantic Factory: Block Tower Room - Next to Tiny Barrel | Boss, Dk_Portal, Wrinkly | `` | 
 | Frantic Factory | Frantic Factory: Block Tower Room - at the Base of the Block Tower | Boss, Dk_Portal, Wrinkly | `` | 
-| Frantic Factory | Frantic Factory: Clock Room - Under Clock | Wrinkly | `` | 
-| Frantic Factory | Frantic Factory: Clock Room - front left | Boss, Dk_Portal, Wrinkly | `` | 
-| Frantic Factory | Frantic Factory: Clock Room - back left | Boss, Dk_Portal, Wrinkly | `` | 
-| Frantic Factory | Frantic Factory: Clock Room - front right | Boss, Dk_Portal, Wrinkly | `` | 
-| Frantic Factory | Frantic Factory: Top of Pipe Near Kong-freeing Switch | Wrinkly | `l.islanky and l.handstand` | 
+| Frantic Factory | Frantic Factory: Clock Room - Under Clock | Wrinkly, Dk_Portal | `` | 
+| Frantic Factory | Frantic Factory: Clock Room - front left | Wrinkly, Boss | `` | 
+| Frantic Factory | Frantic Factory: Clock Room - back left | Wrinkly, Boss | `` | 
+| Frantic Factory | Frantic Factory: Clock Room - front right | Wrinkly, Boss | `` | 
+| Frantic Factory | Frantic Factory: Top of Pipe Near Kong-freeing Switch | Wrinkly, Dk_Portal | `l.islanky and l.handstand` | 
 | Frantic Factory | Frantic Factory: Pin Code Room - front-right | Wrinkly | `(l.isdiddy and l.guitar) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Frantic Factory: Lanky's Piano Room - right | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Frantic Factory: Lanky's Piano Room - left | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 

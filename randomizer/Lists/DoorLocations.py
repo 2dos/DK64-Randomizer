@@ -22,6 +22,7 @@ LEVEL_ENTRY_HANDLER_REGIONS = (
     Regions.CreepyCastleEntryHandler,
 )
 
+
 class DoorData:
     """Stores information about a door location."""
 
@@ -1302,7 +1303,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.islanky and l.handstand,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Frantic Factory: Pin Code Room - front-right",
