@@ -113,10 +113,10 @@ void completeBoss(void) {
 
 void fixKRoolKong(void) {
 	for (int i = 0; i < 5; i++) {
-		if (Rando.k_rool_order[i] == CurrentMap) {
-			if (CurrentMap == MAP_FACTORYJACK) {
+		if (Rando.k_rool_order[i] == DestMap) {
+			if (DestMap == MAP_FACTORYJACK) {
 				Character = KONG_TINY;
-			} else if (CurrentMap == MAP_FUNGIDOGADON) {
+			} else if (DestMap == MAP_FUNGIDOGADON) {
 				Character = KONG_CHUNKY;
 			}
 			return;
