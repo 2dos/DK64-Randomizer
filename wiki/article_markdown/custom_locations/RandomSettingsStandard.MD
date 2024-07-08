@@ -69,6 +69,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Quad: 15%
 - Dim Solved Hints: 50%
 - Tag Barrels Disabled: 50%
+- Ice Traps Damage Player: 50%
 - Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
