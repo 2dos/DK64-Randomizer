@@ -469,6 +469,12 @@ class LogicVarHolder:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
 
+    def canAccessHelm(self) -> bool:
+        """Determine whether the player can access helm whilst the timer is active."""
+        if IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
+            return self.snideAccess
+        return self.snideAccess or self.assumeFillSuccess
+
     def checkFastCheck(self, check: FasterChecksSelected):
         """Determine whether a fast check is selected."""
         return IsItemSelected(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, check)

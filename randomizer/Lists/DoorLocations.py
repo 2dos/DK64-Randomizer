@@ -2720,7 +2720,7 @@ door_locations = {
             name="Crystal Caves: Vanilla Level Entry",
             map=Maps.CrystalCaves,
             logicregion=Regions.CrystalCavesMain,
-            location=[1571.664, -29.167, -217.347, 90],
+            location=[1571.664, -29.167, 217.347, 90],
             group=8,
             placed=DoorType.dk_portal,
         ),

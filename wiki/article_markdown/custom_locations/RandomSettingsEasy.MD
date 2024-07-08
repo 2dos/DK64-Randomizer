@@ -80,6 +80,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Default: 50%
 	- Double: 50%
 - Tag Barrels Disabled: 50%
+- Ice Traps Damage Player: 50%
 - Progressive Hints: 50%
 - Enemy Speed Rando: 50%
 - Faster Checks Selected: 

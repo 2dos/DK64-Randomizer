@@ -421,14 +421,10 @@ void initIceTrap(void) {
     if (ice_trap_queued == ICETRAP_BUBBLE) {
         trapPlayer_New();
         Player->trap_bubble_timer = 200;
-        playSFX(0x2D4); // K Rool Laugh
-        customDamageCode();
     } else if (ice_trap_queued == ICETRAP_REVERSECONTROLS) {
         Player->strong_kong_ostand_bitfield |= 0x80;
         Player->trap_bubble_timer = 240;
-        playSFX(0x2D4); // K Rool Laugh
     } else if (ice_trap_queued == ICETRAP_SLOWED) {
-        playSFX(0x2D4); // K Rool Laugh
         for (int i = 0; i < 3; i++) {
             unkSpriteRenderFunc(0xF0);
             unkSpriteRenderFunc_1(1);
@@ -437,6 +433,10 @@ void initIceTrap(void) {
         }
         Player->strong_kong_ostand_bitfield |= 0x08000000;
         Player->trap_bubble_timer = 240;
+    }
+    playSFX(0x2D4); // K Rool Laugh
+    if (Rando.ice_traps_damage) {
+        customDamageCode();
     }
     ice_trap_queued = ICETRAP_OFF;
 }

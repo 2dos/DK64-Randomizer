@@ -69,6 +69,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Quad: 20%
 	- Ohko: 10%
 - Tag Barrels Disabled: 50%
+- Ice Traps Damage Player: 50%
 - Progressive Hints: 50%
 - Enable Shop Hints: 50%
 - Dropsanity: 60%
