@@ -1307,7 +1307,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
                 # Medal rewards and bosses are treated as "collecting colored bananas" for their region
                 hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
-                message = f"Something about collecting {hinted_location_text} is on the path to {multipath_dict_hints[loc]}"
+                message = f"Something about collecting {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
             else:
                 message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
             hint_location.related_location = loc
@@ -2738,7 +2738,7 @@ def GenerateMultipathDict(
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
         if path_to_family:
-            hint_text_components.append("\x04Freeing Kongs\x04")
+            hint_text_components.append("\x04Free Kongs\x04")
         if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations

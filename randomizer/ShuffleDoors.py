@@ -21,42 +21,6 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
 
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
-human_hint_doors = {
-    "Jungle Japes": {},
-    "Angry Aztec": {},
-    "Frantic Factory": {},
-    "Gloomy Galleon": {},
-    "Fungi Forest": {},
-    "Crystal Caves": {},
-    "Creepy Castle": {},
-}
-human_portal_doors = {
-    "Jungle Japes": {},
-    "Angry Aztec": {},
-    "Frantic Factory": {},
-    "Gloomy Galleon": {},
-    "Fungi Forest": {},
-    "Crystal Caves": {},
-    "Creepy Castle": {},
-}
-human_entry_doors = {
-    "Jungle Japes": "Vanilla",
-    "Angry Aztec": "Vanilla",
-    "Frantic Factory": "Vanilla",
-    "Gloomy Galleon": "Vanilla",
-    "Fungi Forest": "Vanilla",
-    "Crystal Caves": "Vanilla",
-    "Creepy Castle": "Vanilla",
-}
-shuffled_door_data = {
-    Levels.JungleJapes: [],
-    Levels.AngryAztec: [],
-    Levels.FranticFactory: [],
-    Levels.GloomyGalleon: [],
-    Levels.FungiForest: [],
-    Levels.CrystalCaves: [],
-    Levels.CreepyCastle: [],
-}
 
 
 def GetDoorLocationForKongAndLevel(kong, level):
@@ -66,31 +30,68 @@ def GetDoorLocationForKongAndLevel(kong, level):
     return Locations(baseOffset + (5 * levelOffset) + int(kong))
 
 
-def ShuffleDoors(spoiler, block_wrinklytns: bool):
+def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Handle initial settings
-    shuffle_wrinkly = False if block_wrinklytns else spoiler.settings.wrinkly_location_rando
-    shuffle_tns = False if block_wrinklytns else spoiler.settings.tns_location_rando
+    shuffle_wrinkly = False if vanilla_doors_placed else spoiler.settings.wrinkly_location_rando
+    shuffle_tns = False if vanilla_doors_placed else spoiler.settings.tns_location_rando
     shuffle_dkportal = spoiler.settings.dk_portal_location_rando
-    disable_wrinkly_puzzles = False if block_wrinklytns else spoiler.settings.remove_wrinkly_puzzles
+    disable_wrinkly_puzzles = False if vanilla_doors_placed else spoiler.settings.remove_wrinkly_puzzles
+    # Prepare data structures that will hold the door info
+    human_hint_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    human_portal_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    human_entry_doors = {
+        "Jungle Japes": "Vanilla",
+        "Angry Aztec": "Vanilla",
+        "Frantic Factory": "Vanilla",
+        "Gloomy Galleon": "Vanilla",
+        "Fungi Forest": "Vanilla",
+        "Crystal Caves": "Vanilla",
+        "Creepy Castle": "Vanilla",
+    }
+    shuffled_door_data = {
+        Levels.JungleJapes: [],
+        Levels.AngryAztec: [],
+        Levels.FranticFactory: [],
+        Levels.GloomyGalleon: [],
+        Levels.FungiForest: [],
+        Levels.CrystalCaves: [],
+        Levels.CreepyCastle: [],
+    }
     # Reset Doors
     for level in door_locations:
-        # Also reset the data structures that share info across processes
-        shuffled_door_data[level] = []
-        human_hint_doors[level_list[level]] = {}
-        human_portal_doors[level_list[level]] = {}
-        human_entry_doors[level_list[level]] = "Vanilla"
         for door in door_locations[level]:
             door.placed = door.default_placed
-            if shuffle_wrinkly:
+            if shuffle_wrinkly and not vanilla_doors_placed:
                 if door.placed == DoorType.wrinkly:
                     door.placed = DoorType.null
-            if shuffle_tns:
+            if shuffle_tns and not vanilla_doors_placed:
                 if door.placed == DoorType.boss:
                     door.placed = DoorType.null
             if shuffle_dkportal:
                 if door.placed == DoorType.dk_portal:
                     door.placed = DoorType.null
+    # If we already placed vanilla doors, we've already saved some data we need to preserve post-reset
+    if vanilla_doors_placed:
+        shuffled_door_data = spoiler.shuffled_door_data
+        human_hint_doors = spoiler.human_hint_doors
+        human_portal_doors = spoiler.human_portal_doors
     # Hint doors have Locations tied to them. If we're about to add new ones, then we must remove the old ones.
     if shuffle_wrinkly:
         ClearHintDoorLogic(spoiler)
@@ -220,6 +221,34 @@ def ShuffleDoors(spoiler, block_wrinklytns: bool):
 def ShuffleVanillaDoors(spoiler):
     """Shuffle T&S and Wrinkly doors amongst the vanilla locations."""
     ClearHintDoorLogic(spoiler)
+    # Prepare data structures that will hold the door info
+    human_hint_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    human_portal_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    shuffled_door_data = {
+        Levels.JungleJapes: [],
+        Levels.AngryAztec: [],
+        Levels.FranticFactory: [],
+        Levels.GloomyGalleon: [],
+        Levels.FungiForest: [],
+        Levels.CrystalCaves: [],
+        Levels.CreepyCastle: [],
+    }
     for level in door_locations:
         # Reset the data structures for door shuffling information sharing
         shuffled_door_data[level] = []
