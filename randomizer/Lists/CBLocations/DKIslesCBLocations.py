@@ -2292,7 +2292,7 @@ ColoredBananaGroupList = [
         region=Regions.CrystalCavesLobby,
         locations=[
             [5, 1.0, 925, 8, 203],
-            [5, 1.0, 1304, 16, 215],
+            [5, 1.0, 1034, 16, 215],
         ],
     ),
     ColoredBananaGroup(
