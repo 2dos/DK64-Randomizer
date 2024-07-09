@@ -2,30 +2,32 @@
 
 import codecs
 import json
-from os import path, walk, environ, makedirs, listdir, remove
 import random
+import secrets
 import time
 import traceback
 import zipfile
+from datetime import UTC
+from datetime import datetime as Datetime
 from io import BytesIO
 from multiprocessing import Process, Queue
+from os import environ, listdir, makedirs, path, remove, walk
 from queue import Empty
 
-from flask import Flask, make_response, request, send_from_directory
+from apscheduler.schedulers.background import BackgroundScheduler
+from flask import Flask, make_response, redirect, render_template, request, send_from_directory, session
 from flask_cors import CORS
 from flask_executor import Executor
+from git import Repo
 from vidua import bps
 
+from oauth import DiscordAuth
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
-from randomizer.SettingStrings import encrypt_settings_string_enum, decrypt_settings_string_enum
+from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
-from git import Repo
-from datetime import datetime as Datetime
-from datetime import UTC
-from apscheduler.schedulers.background import BackgroundScheduler
 from version import version
 
 local_repo = Repo(path="./")
@@ -37,6 +39,9 @@ else:
     app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = environ.get("EXECUTOR_MAX_WORKERS", 2)
 app.config["EXECUTOR_TYPE"] = environ.get("EXECUTOR_TYPE", "process")
+app.config["SECRET_KEY"] = secrets.token_hex(256)
+discord = DiscordAuth(environ.get("CLIENT_ID"), environ.get("CLIENT_SECRET"), environ.get("REDIRECT", "http://localhost:8000/admin"), "463917049782075395")
+admin_roles = ["550784070188138508"]
 executor = Executor(app)
 CORS(app)
 current_total = 0
@@ -64,6 +69,7 @@ presets = []
 with open("static/presets/preset_files.json", "r") as f:
     presets = json.load(f)
 # Check if we have a file named local_presets.json and load it
+local_presets = None
 if path.isfile("local_presets.json"):
     with open("local_presets.json", "r") as f:
         local_presets = json.load(f)
@@ -603,6 +609,75 @@ def update_total():
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
     return current_total
+
+
+# Create a route for an admin portal
+@app.route("/admin", methods=["GET"])
+def admin_portal():
+    """Serve the admin portal."""
+    # Render the template with local_presets passed
+    if session.get("admin") is None:
+        # If not, return a 403 error
+        # Check the session for the user's access token
+        code = request.args.get("code")
+        if code is None:
+            # Return the 302 redirect to the discord login
+            return redirect(discord.login())
+        # Get the user's data from the access token
+        tokens = discord.get_tokens(code)
+        try:
+            guilds = discord.get_guild_roles(tokens.get("access_token"))
+        except Exception:
+            guilds = {}
+        if not any(role in admin_roles for role in guilds.get("roles", [])):
+            return make_response('You do not have permission to access this page. <script>history.pushState(null, "", location.href.split("?")[0]);</script>', 403)
+        else:
+            session["admin"] = True
+    else:
+        if not session.get("admin", False):
+            session.pop("admin")
+            return make_response('You do not have permission to access this page. <script>history.pushState(null, "", location.href.split("?")[0]);</script>', 403)
+    # Get if the user guilds
+    return render_template("admin.html.jinja2", local_presets=local_presets)
+
+
+@app.route("/admin/presets", methods=["PUT", "DELETE"])
+def update_presets():
+    """Update the local presets file."""
+    if not session.get("admin", False):
+        return make_response('{"message": "You do not have permission to access this page."}', 403)
+    content = request.json
+    if request.method == "PUT":
+        # Get the name of the preset
+        preset_name = content.get("name")
+        # For all the presets, if the name matches (case insensitive), update the preset
+        found_preset = False
+        for i, preset in enumerate(local_presets):
+            if preset.get("name").lower() == preset_name.lower():
+                local_presets[i] = content
+                found_preset = True
+                break
+        if not found_preset:
+            local_presets.append(content)
+        # Write the local presets to the file
+        with open("local_presets.json", "w") as f:
+            f.write(json.dumps(local_presets))
+        return make_response("Local presets updated", 200)
+    elif request.method == "DELETE":
+        # attempt to find the preset by name case insensitive and remove it
+        preset_name = content.get("name")
+        found = False
+        for i, preset in enumerate(local_presets):
+            if preset.get("name").lower() == preset_name.lower():
+                local_presets.pop(i)
+                found = True
+                break
+        if not found:
+            return make_response("Preset not found", 404)
+        else:
+            with open("local_presets.json", "w") as f:
+                f.write(json.dumps(local_presets))
+            return make_response("Local presets deleted", 200)
 
 
 # Setup the scheduler
