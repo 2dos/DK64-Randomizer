@@ -3053,7 +3053,8 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.vanilla_door_rando:
         ShuffleVanillaDoors(spoiler)
-        ShuffleDoors(spoiler, True)
+        if spoiler.settings.dk_portal_location_rando:
+            ShuffleDoors(spoiler, True)
     elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando:
         ShuffleDoors(spoiler, False)
     if spoiler.settings.enable_progressive_hints:
