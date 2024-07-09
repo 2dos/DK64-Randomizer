@@ -1,9 +1,12 @@
+"""OAuth2 for discord using the discord api."""
 import requests
 
 
 class DiscordAuth:
+    """Discord OAuth2 class for getting user data and guild roles."""
+    
     def __init__(self, client_id, client_secret, callback_url, guild_id):
-        """Usage: credentials(client_id, client_secret, callback_url)"""
+        """Usage: credentials(client_id, client_secret, callback_url)."""
         self.client_id = client_id
         self.client_secret = client_secret
         self.callback_url = callback_url
