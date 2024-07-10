@@ -1651,10 +1651,12 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
-            regular_items = (Types.Crown, Types.Key, Types.Medal, Types.NintendoCoin, Types.RarewareCoin, Types.Pearl, Types.Bean, Types.Fairy)
+            regular_items = (Types.Crown, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Pearl, Types.Bean, Types.Fairy)
             for item in regular_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledNonMoveLocations.copy()
+            if Types.Medal in self.shuffled_location_types:
+                self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
             shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
             for item in shop_owner_items:
                 if item in self.shuffled_location_types:

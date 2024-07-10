@@ -48,7 +48,7 @@
 | Japes Mountain | Jungle Japes: Diddy Mountain - Next to Conveyor Controls | Wrinkly | `(l.charge and l.isdiddy) or l.phasewalk` | 
 | Japes Mountain | Jungle Japes: Diddy Mountain - between River and GB switch | Wrinkly | `` | 
 | Japes Mountain | Jungle Japes: Diddy Mountain - between River and Peanut Switch | Wrinkly | `` | 
-| Jungle Japes | Jungle Japes: Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `` | 
+| Jungle Japes | Jungle Japes: Vanilla Level Entry | Dk_Portal, Wrinkly | `` | 
 
 # Angry Aztec
 | Map | Name | Door types acceptable in location | Logic |
@@ -102,7 +102,7 @@
 | Aztec Llama Temple | Angry Aztec: Llama Temple - Entrance Staircase - left | Boss, Wrinkly | `` | 
 | Aztec Llama Temple | Angry Aztec: Llama Temple - Entrance Staircase - right | Boss, Wrinkly | `` | 
 | Aztec Llama Temple | Angry Aztec: Llama Temple - Across from the Spit Gate | Boss, Wrinkly | `Events.AztecLlamaSpit in l.Events and l.swim` | 
-| Angry Aztec | Angry Aztec: Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `` | 
+| Angry Aztec | Angry Aztec: Vanilla Level Entry | Dk_Portal, Wrinkly | `` | 
 
 # Frantic Factory
 | Map | Name | Door types acceptable in location | Logic |
@@ -152,7 +152,7 @@
 | Frantic Factory | Frantic Factory: Lanky's Piano Room - left | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Frantic Factory: Chunky's Dark Room | Wrinkly, Boss | `(l.chunky and l.punch) or l.phasewalk or l.generalclips` | 
 | Factory Crusher | Frantic Factory: Crusher Room - start | Boss, Wrinkly | `` | 
-| Frantic Factory | Frantic Factory: Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `` | 
+| Frantic Factory | Frantic Factory: Vanilla Level Entry | Dk_Portal, Wrinkly | `` | 
 
 # Gloomy Galleon
 | Map | Name | Door types acceptable in location | Logic |
@@ -202,7 +202,7 @@
 | Galleon5DShip DKTiny | Gloomy Galleon: Tiny's 5D ship | Wrinkly | `` | 
 | Galleon5DShip Diddy Lanky Chunky | Gloomy Galleon: Lanky's 5D ship | Wrinkly | `` | 
 | Galleon2DShip | Gloomy Galleon: Lanky's 2D ship | Boss, Wrinkly | `` | 
-| Gloomy Galleon | Gloomy Galleon: Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `` | 
+| Gloomy Galleon | Gloomy Galleon: Vanilla Level Entry | Dk_Portal, Wrinkly | `` | 
 
 # Fungi Forest
 | Map | Name | Door types acceptable in location | Logic |
@@ -251,7 +251,7 @@
 | Forest Winch Room | Fungi Forest: Winch Room - on the Winch | Boss, Wrinkly | `` | 
 | Forest Mill Attic | Fungi Forest: Lanky's Attic | Boss, Wrinkly | `` | 
 | Forest Thornvine Barn | Fungi Forest: DK's Barn - Between 2 Barrels near Switch | Boss, Wrinkly | `` | 
-| Fungi Forest | Fungi Forest: Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `` | 
+| Fungi Forest | Fungi Forest: Vanilla Level Entry | Dk_Portal, Wrinkly | `` | 
 
 # Crystal Caves
 | Map | Name | Door types acceptable in location | Logic |
@@ -311,7 +311,7 @@
 | Crystal Caves | Crystal Caves: Outside Tiny's Cabin | Boss, Dk_Portal, Wrinkly | `` | 
 | Crystal Caves | Crystal Caves: Cabin Area - Next to Tag Barrel on 2nd Floor | Boss, Dk_Portal, Wrinkly | `` | 
 | Crystal Caves | Crystal Caves: Under Cranky Slope - small | Wrinkly | `` | 
-| Crystal Caves | Crystal Caves: Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `` | 
+| Crystal Caves | Crystal Caves: Vanilla Level Entry | Dk_Portal, Wrinkly | `` | 
 
 # Creepy Castle
 | Map | Name | Door types acceptable in location | Logic |
@@ -361,4 +361,4 @@
 | Castle Lower Cave | Creepy Castle: Lower Tunnel - Under Peanut Switch | Boss, Wrinkly | `` | 
 | Castle Lower Cave | Creepy Castle: Lower Tunnel - Under Coconut and Pineapple Switches | Boss, Wrinkly | `` | 
 | Castle Mausoleum | Creepy Castle: Crypt - Under Lanky's Switch | Wrinkly | `` | 
-| Creepy Castle | Creepy Castle: Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `` | 
+| Creepy Castle | Creepy Castle: Vanilla Level Entry | Dk_Portal, Wrinkly | `` | 

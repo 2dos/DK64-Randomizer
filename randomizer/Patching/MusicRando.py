@@ -119,6 +119,12 @@ TAG_CONVERSION_TABLE = {
 }
 
 
+def parseBinString(val: str) -> str:
+    """Attempt to parse a filename for binary files since they do not have a song name."""
+    removed_folders = val.split("/")[-1]
+    return removed_folders
+
+
 def filterSongString(val: str) -> str:
     """Filter newline characters from the string."""
     split_string = "".join([x for xi, x in enumerate([*val]) if x != "\n" and xi < 30])
@@ -132,8 +138,11 @@ class UploadInfo:
         """Initialize with given variables."""
         self.raw_input = push_array[0]
         self.name = push_array[1]
-        self.name_short = f"Unknown\n{filterSongString(self.name)}"
         self.extension = push_array[2]
+        passed_name = self.name
+        if self.extension == ".bin":
+            passed_name = parseBinString(self.name)
+        self.name_short = f"Unknown\n{filterSongString(passed_name)}"
         self.song_file = self.raw_input
         self.zip_file = None
         self.song_length = 0
