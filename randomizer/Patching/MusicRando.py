@@ -124,6 +124,7 @@ def parseBinString(val: str) -> str:
     removed_folders = val.split("/")[-1]
     return removed_folders
 
+
 def filterSongString(val: str) -> str:
     """Filter newline characters from the string."""
     split_string = "".join([x for xi, x in enumerate([*val]) if x != "\n" and xi < 30])
