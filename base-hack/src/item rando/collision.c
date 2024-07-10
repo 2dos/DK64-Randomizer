@@ -214,10 +214,6 @@ void checkModelTwoItemCollision(item_collision* obj_collision, int player_index,
     if (!obj_collision) {
         return;
     }
-    int obj_collision_ptr = (int)obj_collision;
-    if (((obj_collision_ptr >> 24) & 0xFF) != 0x80) {
-        return;
-    }
     playerData* player = SwapObject[player_index].player;
     while (1) {
         if (!obj_collision->colliding) {

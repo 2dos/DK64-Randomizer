@@ -251,12 +251,14 @@
                                         Krusha
                                     </option>
                                     {% if kong != "Chunky" %}
-                                        <option value="krool_fight">
-                                            K. Rool (Fight Gear)
-                                        </option>
-                                        <option value="krool_cutscene">
-                                            K. Rool (Cutscene Gear)
-                                        </option>
+                                        {% if kong != "Lanky" %}
+                                            <option value="krool_fight">
+                                                K. Rool (Fight Gear)
+                                            </option>
+                                            <option value="krool_cutscene">
+                                                K. Rool (Cutscene Gear)
+                                            </option>
+                                        {% endif %}
                                     {% endif %}
                                 </select>
                             </div>

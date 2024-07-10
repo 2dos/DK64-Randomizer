@@ -66,6 +66,11 @@ class DoorData:
         if DoorType.dk_portal in self.door_type and self.map not in LEVEL_MAIN_MAPS:
             # Disable non-main maps for now because of instance script/exit memes
             self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
+        if self.default_placed == DoorType.dk_portal:
+            # Disable T&S spawning here because of it being slightly bugged when exiting as DK/Chunky
+            # Instantly re-activates the portal for some reason?
+            # TODO: Figure out how to prevent this so we can remove this condition
+            self.door_type = [x for x in self.door_type if x != DoorType.boss]
         # if self.default_placed == DoorType.dk_portal:
         #     # Disable other doors being able to occupy the space of DK portals, for now
         #     self.door_type = [DoorType.dk_portal]

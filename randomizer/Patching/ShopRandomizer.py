@@ -30,7 +30,7 @@ class ScriptBlock:
         self.exist_vendors = exist_vendors.copy()
 
 
-def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, water_id_0: int = None) -> list:
+def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, lz_id: int = None) -> list:
     """Get the instance script associated with a shopkeeper."""
     script = []
     # Generate Script
@@ -99,7 +99,7 @@ def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, water_
                 ],
                 [
                     FunctionData(27, [water_id, 1, 0]),
-                    FunctionData(123, [water_id_0, 1, 0]),
+                    FunctionData(123, [lz_id, 1, 0]),
                 ],
             )
         )
@@ -665,8 +665,11 @@ def ApplyShopRandomizer(spoiler):
                 elif placement["replace_model"] == 0x79:
                     # Snide
                     base_model_scale = 87.5
-                ROM_COPY.seek(zone_item + 0x6)
-                ROM_COPY.writeMultipleBytes(int(base_model_scale * new_scale), 2)
+                ROM_COPY.seek(zone_item + 0xA)
+                lz_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if map != Maps.GloomyGalleon or lz_id not in (17, 24):
+                    ROM_COPY.seek(zone_item + 0x6)
+                    ROM_COPY.writeMultipleBytes(int(base_model_scale * new_scale), 2)
                 # Loading Zone
                 ROM_COPY.seek(zone_item + 0x12)
                 ROM_COPY.writeMultipleBytes(placement["replace_zone"], 2)
