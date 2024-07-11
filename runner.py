@@ -651,7 +651,7 @@ def admin_portal():
 
 
 @app.route("/admin/presets", methods=["PUT", "DELETE"])
-def update_presets():
+def admin_presets():
     """Update the local presets file."""
     if not session.get("admin", False):
         return make_response('{"message": "You do not have permission to access this page."}', 403)
