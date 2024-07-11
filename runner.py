@@ -77,6 +77,8 @@ local_presets = None
 
 def update_presets():
     """Update the presets list with the global and local presets."""
+    global presets
+    global local_presets
     with open("static/presets/preset_files.json", "r") as f:
         presets = json.load(f)
     # Check if we have a file named local_presets.json and load it
@@ -669,6 +671,7 @@ def update_presets():
         # Write the local presets to the file
         with open("local_presets.json", "w") as f:
             f.write(json.dumps(local_presets))
+        update_presets()
         return make_response("Local presets updated", 200)
     elif request.method == "DELETE":
         # attempt to find the preset by name case insensitive and remove it
@@ -684,8 +687,8 @@ def update_presets():
         else:
             with open("local_presets.json", "w") as f:
                 f.write(json.dumps(local_presets))
+            update_presets()
             return make_response("Local presets deleted", 200)
-    update_presets()
 
 
 # Setup the scheduler
