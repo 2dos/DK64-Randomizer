@@ -65,32 +65,39 @@ patch = open("./static/patches/shrink-dk64.bps", "rb")
 original = open("dk64.z64", "rb")
 # load all the settings strings into memory
 og_patched_rom = None
-presets = []
-with open("static/presets/preset_files.json", "r") as f:
-    presets = json.load(f)
-# Check if we have a file named local_presets.json and load it
-local_presets = None
-if path.isfile("local_presets.json"):
-    with open("local_presets.json", "r") as f:
-        local_presets = json.load(f)
-        for local_preset in local_presets:
-            # Look for a preset with the same name
-            found_preset = False
-            for i, global_preset in enumerate(presets):
-                if global_preset.get("name") == local_preset.get("name"):
-                    # Update the global preset with the local preset
-                    presets[i] = local_preset
-                    found_preset = True
-                    break
-            # If not found, append the local preset
-            if not found_preset:
-                presets.append(local_preset)
 
 
 if environ.get("HOSTED_SERVER") is not None:
     import boto3
 
     dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
+presets = []
+local_presets = None
+
+
+def update_presets():
+    """Update the presets list with the global and local presets."""
+    with open("static/presets/preset_files.json", "r") as f:
+        presets = json.load(f)
+    # Check if we have a file named local_presets.json and load it
+    if path.isfile("local_presets.json"):
+        with open("local_presets.json", "r") as f:
+            local_presets = json.load(f)
+            for local_preset in local_presets:
+                # Look for a preset with the same name
+                found_preset = False
+                for i, global_preset in enumerate(presets):
+                    if global_preset.get("name") == local_preset.get("name"):
+                        # Update the global preset with the local preset
+                        presets[i] = local_preset
+                        found_preset = True
+                        break
+                # If not found, append the local preset
+                if not found_preset:
+                    presets.append(local_preset)
+
+
+update_presets()
 
 
 def generate(default_rom, generate_settings, queue, post_body):
@@ -678,6 +685,7 @@ def update_presets():
             with open("local_presets.json", "w") as f:
                 f.write(json.dumps(local_presets))
             return make_response("Local presets deleted", 200)
+    update_presets()
 
 
 # Setup the scheduler
