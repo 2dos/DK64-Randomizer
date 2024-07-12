@@ -90,7 +90,8 @@ typedef struct actorData {
 	/* 0x068 */ char unk_68[0x6A-0x68];
 	/* 0x06A */ short grounded;
 	/* 0x06C */ short unk_6C;
-	/* 0x06E */ char unk_6E[0x7C-0x6E];
+	/* 0x06E */ short sound_slot;
+	/* 0x070 */ char unk_70[0x7C-0x70];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
@@ -105,7 +106,8 @@ typedef struct actorData {
 	/* 0x0E4 */ short rot_x;
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
-	/* 0x0EA */ char unk_EA[0x4];
+	/* 0x0EA */ short unk_EA;
+	/* 0x0EC */ short unk_EC;
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
 	/* 0x0F2 */ char unk_F2[0xFD-0xF2];

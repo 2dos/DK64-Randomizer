@@ -5,7 +5,7 @@ import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
-from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
+from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors
 from randomizer.Patching.LibImage import getImageFile, TextureFormat
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
@@ -1154,6 +1154,22 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFloat(ROM_COPY, 0x8075AC00, Overlay.Static, 1.3, offset_dict)  # Pause Menu Progression Rate
         writeValue(ROM_COPY, 0x806A901C, Overlay.Static, 4, offset_dict, 4)  # NOP - Remove thud
     writeFunction(ROM_COPY, 0x806A84C8, Overlay.Static, "updateFileVariables", offset_dict)  # Update file variables to transfer old locations to current
+
+    writeLabelValue(ROM_COPY, 0x8074C5F0, Overlay.Static, "handleBugEnemy", offset_dict)
+
+    # Alter data for zinger flamethrower enemy
+    writeValue(ROM_COPY, 0x8075F210, Overlay.Static, 345 + (CustomActors.ZingerFlamethrower - 0x8000), offset_dict)
+    writeValue(ROM_COPY, 0x8075F212, Overlay.Static, Model.Zinger + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075F214, Overlay.Static, 0x250, offset_dict)
+    writeValue(ROM_COPY, 0x8075F216, Overlay.Static, 0, offset_dict)
+    writeValue(ROM_COPY, 0x8075F218, Overlay.Static, 0, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F21C, Overlay.Static, 0xAA460508, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F220, Overlay.Static, 0x08020A0A, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F224, Overlay.Static, 0x5E5E0100, offset_dict, 4)
+
+    # Make Flame Zingers not lag the game *as* bad
+    writeValue(ROM_COPY, 0x806B3E36, Overlay.Static, 3, offset_dict)  # Change flame-spitting to once every 3f
+    writeValue(ROM_COPY, 0x806B3E38, Overlay.Static, 0x5700, offset_dict)  # BEQL -> BNEL
 
     # Statistics
     writeFunction(ROM_COPY, 0x806C8ED0, Overlay.Static, "updateTagStat", offset_dict)

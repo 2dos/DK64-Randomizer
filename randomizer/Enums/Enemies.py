@@ -66,6 +66,7 @@ class Enemies(IntEnum):
     Seal1 = 67
     Fairy = 68
     SquawksSpotlight = 69
+    ZingerFlamethrower = 70  # Kinda custom
     Rabbit = 72
     Owl = 73
     NintendoLogo = 74

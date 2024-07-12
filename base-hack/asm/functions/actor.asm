@@ -125,3 +125,6 @@
 .definelabel getPathPosition, 0x807238D4
 .definelabel spawnKey, 0x80028478
 .definelabel spawnActorSpawnerContainer, 0x806891D8
+.definelabel trashCanBugCode, 0x806B54BC
+.definelabel flyingEnemyHandler, 0x806B42A8
+.definelabel getAngleBetweenPoints, 0x80665DE0

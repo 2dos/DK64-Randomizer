@@ -14,42 +14,9 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
-from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName
+from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName, CustomActors
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems
-
-
-class CustomActors(IntEnum):
-    """Custom Actors Enum."""
-
-    NintendoCoin = 0x8000  # Starts at 0x8000
-    RarewareCoin = auto()
-    Null = auto()
-    PotionDK = auto()
-    PotionDiddy = auto()
-    PotionLanky = auto()
-    PotionTiny = auto()
-    PotionChunky = auto()
-    PotionAny = auto()
-    KongDK = auto()
-    KongDiddy = auto()
-    KongLanky = auto()
-    KongTiny = auto()
-    KongChunky = auto()
-    KongDisco = auto()
-    KongKrusha = auto()
-    Bean = auto()
-    Pearl = auto()
-    Fairy = auto()
-    IceTrapBubble = auto()
-    IceTrapReverse = auto()
-    IceTrapSlow = auto()
-    Medal = auto()
-    JetpacItemOverlay = auto()
-    CrankyItem = auto()
-    FunkyItem = auto()
-    CandyItem = auto()
-    SnideItem = auto()
 
 
 model_two_indexes = {

@@ -230,11 +230,12 @@ extern void handleGuardDetection(float offset, float radius);
 extern int guardShouldMove(void);
 extern void guardUnkFunction(int unk0);
 extern void generalActorHandle(int control_state, int x, int z, int unk0, float unk1);
-extern void handleGuardDefaultAnimation(void);
+extern void handleGuardDefaultAnimation(int unk0);
 extern void setActorSpeed(void* actor, short speed);
 extern void playActorAnimation(void* actor, int animation);
 extern void actorUnkFunction(void);
 extern int getRNGLower31(void);
+extern float getRNGAsFloat(void);
 extern void setActorAnimation(int animation);
 extern void actorUnkFunction_0(int control_state, int unk0);
 extern void spawnSparkles(float x, float y, float z, int size);
@@ -366,9 +367,10 @@ extern int checkDeathAction(void* player);
 extern int isObjectTangible(int id);
 extern int getCenterOffset(int style, char* str);
 
-extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2, unsigned char); //80604cbc
+extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2, unsigned char unk3, unsigned char unk4, float unk5, char unk6); //80604cbc
 extern void kongFollowingLightFunc(unsigned int unk0, unsigned short height_variance, float payerX, float PlayerY, float PlayerZ, unsigned short unk2, float unk3, float movement_speed, unsigned int unk4); //8072a920
 extern void lightShiningLightFunc(void); //806c6530
+extern int getAngleBetweenPoints(float x1, float z1, float x2, float z2);
 
 extern void unkCollisionFunc_0(int id, int unk0);
 extern collected_item_struct* addNewCollectedObject(item_collision* item);
@@ -431,6 +433,8 @@ extern void crankyCode(void);
 extern void funkyCode(void);
 extern void candyCode(void);
 extern void snideCode(void);
+extern void trashCanBugCode(void);
+extern void flyingEnemyHandler(void* func, int anim_0, int anim_1, int anim_2);
 
 extern int getLetterCount(char* str);
 extern int getCharacterWidth(int style, char* byte_char);
