@@ -418,7 +418,7 @@ def place_randomized_items(spoiler, original_flut: list):
                 if placed_item in prog_flags:
                     item_flag = prog_flags[placed_item][0]
                 else:
-                    item_flag = ItemList[placed_item].flag
+                    item_flag = ItemList[placed_item].rando_flag
                 if item_flag is not None and item_flag & 0x8000:
                     # Is move
                     item_kong = (item_flag >> 12) & 7

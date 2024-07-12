@@ -202,6 +202,7 @@ RegionMapList = {
     Regions.HideoutHelmEntry: Maps.HideoutHelm,
     Regions.HideoutHelmStart: Maps.HideoutHelm,
     Regions.HideoutHelmSwitchRoom: Maps.HideoutHelm,
+    Regions.HideoutHelmMiniRoom: Maps.HideoutHelm,
     Regions.HideoutHelmMain: Maps.HideoutHelm,
     Regions.HideoutHelmDonkeyRoom: Maps.HideoutHelm,
     Regions.HideoutHelmDiddyRoom: Maps.HideoutHelm,

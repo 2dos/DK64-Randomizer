@@ -232,7 +232,6 @@ class Spoiler:
         """Convert spoiler to JSON and save it."""
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
         humanspoiler = OrderedDict()
-
         # Settings data
         settings = OrderedDict()
         settings["Settings String"] = self.settings.settings_string
