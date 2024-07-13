@@ -7,6 +7,7 @@ import unittest
 from parameterized import parameterized_class
 
 # from randomizer.Enums.Items import Items
+from randomizer.Enums.HintType import HintType
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
                                        CrownEnemyRando, DamageAmount,

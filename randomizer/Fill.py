@@ -472,9 +472,9 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
                     if collectible.enabled and not collectible.added:
                         missingCBs.append(collectible)
             allCBsFound = False
-    if not allLocationsReached:
+    if spoiler.settings.extreme_debugging and not allLocationsReached:
         print(f"Unable to reach all locations: {unreachables}")
-    if not allCBsFound:
+    if spoiler.settings.extreme_debugging and not allCBsFound:
         print(f"Unable to reach all CBs: {spoiler.LogicVariables.ColoredBananas}")
     spoiler.Reset()
     return allLocationsReached and allCBsFound
@@ -2696,10 +2696,10 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 nextLevelToBeat = choice(accessibleIncompleteLevels)
         # Chaos B. Lockers will always have to update the B. Locker
         else:
-            openUnprogressedLevels = [level for level in openLevels if level not in levelsProgressed]
-            if len(openUnprogressedLevels) == 0:
+            accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed]
+            if len(accessibleIncompleteLevels) == 0:
                 raise Ex.FillException("E1-C: Hard level order shuffler failed to progress through levels.")
-            nextLevelToBeat = choice(openUnprogressedLevels)
+            nextLevelToBeat = choice(accessibleIncompleteLevels)
             # In CLO, we always recalculate the B. Locker items
             # Calculate the available quantity of the item for the B. Locker
             accessibleItems = spoiler.LogicVariables.ItemCounts()
