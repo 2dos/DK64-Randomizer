@@ -108,7 +108,7 @@ extern void removeFromHandState(void* actor, int index);
 extern int playGunSFX(void* actor);
 extern void playTagActorAnimation(void* actor, void* paad, int index);
 extern void alterCutsceneKongProperties(void);
-extern void unkCutsceneKongFunction(int unk0, int unk1, void* actor, int unk2, int unk3);
+extern void displaySpriteAttachedToActor(void* sprite, float scale, void* actor, int bone, int info_type);
 extern void spawnCutsceneKongText(int text_index, int text_file, int unk0);
 extern void unkCutsceneKongFunction_0(int unk0, int unk1);
 extern void changeActorColor(int red, int green, int blue, int alpha);
@@ -251,7 +251,7 @@ extern void displayWarpSparkles(behaviour_data* behaviour, int index, int unk0, 
 extern void setObjectScriptState(int id, int state, int offset);
 
 extern void updateActorProjectileInfo(void* actor, int unk0);
-extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
+extern void spawnProjectile(short object, short subtype, float speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
 extern void save(void);
 extern void getObjectPosition(int index, int unk0, int unk1, void* x, void* y, void* z);
@@ -390,7 +390,7 @@ extern void unkTextFunction(void* actor);
 extern void homing_code(int bitfield, void* actor, int unk0, int unk1);
 extern int madeContact(void);
 extern int madeGroundContact(void);
-extern void unkProjectileCode_0(void* actor, int unk0);
+extern void unkProjectileCode_0(void* actor, float unk0);
 extern void unkProjectileCode_1(void* actor, float x, float y, float z, float scale, int unk4);
 extern void allocateBone(void* actor, int unk0, int unk1, int unk2, int unk3);
 extern void unkProjectileCode_2(void* actor);
@@ -440,6 +440,10 @@ extern int getLetterCount(char* str);
 extern int getCharacterWidth(int style, char* byte_char);
 extern Gfx* styleSpecificDLStuff(Gfx* dl, int style, int file);
 extern void recolorVertBlockText(void* vert_block, int unk0, int bitfield);
+
+extern void unkWallFunc(void* actor, int unk0);
+extern void unkWallFunc_0(void* actor, int unk0);
+extern void adjustProjectileSpawnPosition(float x, float y, float z);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -756,6 +760,7 @@ extern unsigned short StoredOrangeCount;
 extern path_data_struct* PathData[32];
 extern fence_collective_struct* FenceInformation;
 extern rgba KongRGBA[5];
+extern char_spawner_paad* ActorPaad;
 
 //hack data
 extern int TestVariable;

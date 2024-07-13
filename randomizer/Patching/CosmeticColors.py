@@ -169,7 +169,7 @@ panic_models = [
     Model.KLumsy,  # K Lumsy
     Model.Spider,  # Spider
     Model.Rabbit,  # Rabbit
-    Model.Beanstalk,  # Beanstalk
+    # Model.Beanstalk,  # Beanstalk
     Model.KRoolCutscene,  # K Rool
     Model.SkeletonHead,  # Skeleton Head
     Model.Vulture_76,  # Vulture
@@ -253,7 +253,7 @@ piano_extreme_model = [
     Model.SkeletonHead,
     Model.Owl,
     Model.Kosha,
-    Model.Beanstalk,
+    # Model.Beanstalk,
 ]
 
 spotlight_fish_models = [

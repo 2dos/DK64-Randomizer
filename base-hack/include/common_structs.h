@@ -2284,3 +2284,8 @@ typedef struct vtx {
 typedef struct letter_data {
 	/* 0x000 */ vtx vtx_info[4];
 } letter_data;
+
+typedef struct char_spawner_paad {
+	/* 0x000 */ char unk_00[0x2C];
+	/* 0x02C */ short counter;
+} char_spawner_paad;

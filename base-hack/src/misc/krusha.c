@@ -352,7 +352,7 @@ void OrangeGunCode(void) {
         CurrentActorPointer_0->hSpeed = extra->initial_velocity;
         CurrentActorPointer_0->yVelocity = extra->initial_yvelocity;
         CurrentActorPointer_0->noclip_byte = 0x3C;
-        unkProjectileCode_0(CurrentActorPointer_0, 0x42700000);
+        unkProjectileCode_0(CurrentActorPointer_0, 60.0f);
         unkProjectileCode_1(CurrentActorPointer_0, 0.0f, 0.0f, 0.0f, 50.0f, -1);
         allocateBone(CurrentActorPointer_0, 0, 0, 0, -1);
         unkSpriteRenderFunc(-1);
@@ -361,7 +361,7 @@ void OrangeGunCode(void) {
         if (is_lime) {
             setKrushaAmmoColor();
         }
-        unkCutsceneKongFunction(sprite, *(int*)&extra->unkC, CurrentActorPointer_0, 1, 2);
+        displaySpriteAttachedToActor((void*)sprite, extra->unkC, CurrentActorPointer_0, 1, 2);
         paad->unk_14 = extra->unkC;
         paad->init_actor_timer = current_actor_timer;
         CurrentActorPointer_0->obj_props_bitfield |= 0x01080000;
