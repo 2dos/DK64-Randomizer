@@ -23,6 +23,8 @@ typedef struct renderingParamsData {
 	/* 0x034 */ float scale_x;
 	/* 0x038 */ float scale_y;
 	/* 0x03C */ float scale_z;
+	/* 0x040 */ char unk_40[0x64-0x40];
+	/* 0x064 */ short animation;
 } renderingParamsData;
 
 typedef struct actor_subdata {
@@ -2286,6 +2288,10 @@ typedef struct letter_data {
 } letter_data;
 
 typedef struct char_spawner_paad {
-	/* 0x000 */ char unk_00[0x2C];
+	/* 0x000 */ char unk_00[0xA];
+	/* 0x00A */ short x;
+	/* 0x00C */ short y;
+	/* 0x00E */ short z;
+	/* 0x010 */ char unk_10[0x2C-0x10];
 	/* 0x02C */ short counter;
 } char_spawner_paad;

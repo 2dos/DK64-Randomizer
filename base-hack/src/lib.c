@@ -1227,6 +1227,14 @@ void initActor(int actor_index, int is_custom, void* func, int master_type, int 
 	actor_collisions[actor_index].unk_4 = actor_collisions[base].unk_4;
 }
 
+void setCollisionAddress(int actor_index, int is_custom, void* collision_info, int subdata) {
+	if (is_custom) {
+		actor_index = CUSTOM_ACTORS_START + actor_index;
+	}
+	actor_collisions[actor_index].collision_info = collision_info;
+	actor_collisions[actor_index].unk_4 = subdata;
+}
+
 sprite_data_struct bean_sprite = {
 	.unk0 = 0xC4,
 	.images_per_frame_horizontal = 1,

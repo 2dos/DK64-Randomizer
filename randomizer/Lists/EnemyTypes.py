@@ -483,6 +483,14 @@ EnemyMetaData = {
         interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
         selector_enabled=False,
     ),
+    Enemies.KioskBugEnemy: EnemyData(
+        name="Scarab",
+        e_type=EnemySubtype.GroundSimple,
+        air=True,
+        crown_enabled=False,
+        interaction=InteractionMethods(),
+        size_cap=50,
+    )
 }
 
 enemies_nokill_gun = [enemy for enemy in EnemyMetaData if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard]

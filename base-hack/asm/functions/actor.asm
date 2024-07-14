@@ -105,7 +105,7 @@
 .definelabel allocateBone, 0x8066E854
 .definelabel unkProjectileCode_2, 0x806651FC
 .definelabel unkProjectileCode_3, 0x80665564
-.definelabel unkProjectileCode_4, 0x80608528
+.definelabel playSFXFromActor, 0x80608528
 .definelabel unkGunFunction, 0x80714608
 .definelabel updateModel, 0x806C8F8C
 .definelabel runAnimFrame, 0x80613CA8
@@ -131,3 +131,7 @@
 .definelabel unkWallFunc, 0x8066EA90
 .definelabel unkWallFunc_0, 0x8066EA64
 .definelabel adjustProjectileSpawnPosition, 0x806907F0
+.definelabel reduceShadowIntensity, 0x8072DC7C
+.definelabel unkActorFunc, 0x8072C918
+.definelabel unkActorFunc_0, 0x8072D714
+.definelabel unkCollisionFunc, 0x80676CB0

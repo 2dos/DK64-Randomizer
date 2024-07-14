@@ -828,6 +828,13 @@ class ExtraTextures(IntEnum):
     BLockerItemBalloon = auto()
     BLockerItemCompanyCoin = auto()
     BLockerItemKong = auto()
+    BeetleTex0 = auto()
+    BeetleTex1 = auto()
+    BeetleTex2 = auto()
+    BeetleTex3 = auto()
+    BeetleTex4 = auto()
+    BeetleTex5 = auto()
+    BeetleTex6 = auto()
 
 
 class MoveTypes(IntEnum):

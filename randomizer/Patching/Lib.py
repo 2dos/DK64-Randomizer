@@ -244,6 +244,7 @@ class CustomActors(IntEnum):
     CandyItem = auto()
     SnideItem = auto()
     ZingerFlamethrower = auto()
+    BugGroundEnemy = auto()
 
 compatible_background_textures = {
     0x47A: MenuTexture("Gold Tower Stack", False),

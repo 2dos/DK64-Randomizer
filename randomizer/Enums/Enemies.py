@@ -55,6 +55,7 @@ class Enemies(IntEnum):
     Scoff = 55
     RoboKremling = 56
     Dogadon = 57
+    KioskBugEnemy = 58
     Kremling = 59
     SpotlightFish = 60
     KasplatDK = 61

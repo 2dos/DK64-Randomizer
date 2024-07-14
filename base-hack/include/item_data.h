@@ -41,6 +41,7 @@ typedef enum new_custom_actors {
 	/* 0x01A */ NEWACTOR_CANDYITEM, 
 	/* 0x01B */ NEWACTOR_SNIDEITEM, 
 	/* 0x01C */ NEWACTOR_ZINGERFLAMETHROWER, 
+	/* 0x01D */ NEWACTOR_BUGGROUNDENEMY, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
-#define DROP_COUNT 34
+#define DROP_COUNT 35

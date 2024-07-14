@@ -69,6 +69,7 @@ extern int correctRefillCap(int index, int player);
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
 extern void PatchBonusCode(void);
+extern void kioskBugCode(void);
 extern void FileScreenDLCode_Write(void);
 extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
@@ -280,6 +281,7 @@ extern void getItem(int object_type);
 extern void checkModelTwoItemCollision(item_collision* obj_collision, int player_index, player_collision_info* player_collision);
 extern void CheckKasplatSpawnBitfield(void);
 extern void initActor(int actor_index, int is_custom, void* func, int master_type, int health, int damage_given, int initial_interactions, int base);
+extern void setCollisionAddress(int actor_index, int is_custom, void* collision_info, int subdata);
 extern void refreshPads(pad_refresh_signals signal);
 
 extern void indicateCollectionStatus(void);

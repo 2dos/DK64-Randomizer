@@ -395,7 +395,7 @@ extern void unkProjectileCode_1(void* actor, float x, float y, float z, float sc
 extern void allocateBone(void* actor, int unk0, int unk1, int unk2, int unk3);
 extern void unkProjectileCode_2(void* actor);
 extern void unkProjectileCode_3(void* actor, int unk0);
-extern void unkProjectileCode_4(void* actor, int sfx, int unk0, int unk1, int unk2);
+extern void playSFXFromActor(void* actor, int sfx, int unk0, int unk1, int unk2);
 extern int unkGunFunction(int unk0);
 
 extern void wipeGlobalFlags(void);
@@ -444,6 +444,10 @@ extern void recolorVertBlockText(void* vert_block, int unk0, int bitfield);
 extern void unkWallFunc(void* actor, int unk0);
 extern void unkWallFunc_0(void* actor, int unk0);
 extern void adjustProjectileSpawnPosition(float x, float y, float z);
+extern void reduceShadowIntensity(int delta);
+extern void unkActorFunc(int unk0, int anim_0, int anim_1);
+extern void unkActorFunc_0(void* actor, int unk0);
+extern int unkCollisionFunc(void* unk0, int unk1);
 
 //vanilla data
 extern float TransitionSpeed;

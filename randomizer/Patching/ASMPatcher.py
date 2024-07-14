@@ -1171,6 +1171,18 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806B3E36, Overlay.Static, 3, offset_dict)  # Change flame-spitting to once every 3f
     writeValue(ROM_COPY, 0x806B3E38, Overlay.Static, 0x5700, offset_dict)  # BEQL -> BNEL
 
+    # Alter data for bug enemy
+    writeValue(ROM_COPY, 0x8075F0F0, Overlay.Static, 345 + (CustomActors.BugGroundEnemy - 0x8000), offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F2, Overlay.Static, 0x118 + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F4, Overlay.Static, 0x281, offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F6, Overlay.Static, 0, offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F8, Overlay.Static, 1, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F0FC, Overlay.Static, 0xAA465A1E, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F100, Overlay.Static, 0x05030602, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F104, Overlay.Static, 0x5E5E0164, offset_dict, 4)
+    writeLabelValue(ROM_COPY, 0x8074B22C, Overlay.Static, "stompHandler", offset_dict)
+    writeValue(ROM_COPY, 0x8074B21E, Overlay.Static, 0xFF8, offset_dict)  # Allow other moves to knock down the bug
+
     # Statistics
     writeFunction(ROM_COPY, 0x806C8ED0, Overlay.Static, "updateTagStat", offset_dict)
     writeFunction(ROM_COPY, 0x805FE86C, Overlay.Static, "updateEnemyKillStat", offset_dict)  # Also updates K. Rool kong for MJ/Doga 2

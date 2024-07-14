@@ -408,7 +408,7 @@ void OrangeGunCode(void) {
         float y = CurrentActorPointer_0->yPos;
         float z = CurrentActorPointer_0->zPos;
         displaySpriteAtXYZ(sprite_table[pop_sprite_index], pop_scale, x, y, z);
-        unkProjectileCode_4(CurrentActorPointer_0, pop_sfx, 0xFF, 0x7F, 0x1E);
+        playSFXFromActor(CurrentActorPointer_0, pop_sfx, 0xFF, 0x7F, 0x1E);
         deleteActorContainer(CurrentActorPointer_0);
         if (*(char*)(0x80750AD0) == 0) {
             for (int i = 0; i < 6; i++) {
