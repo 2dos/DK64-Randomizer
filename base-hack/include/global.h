@@ -476,4 +476,4 @@ extern drop_item drops[DROP_COUNT];
 extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
-extern const int fixed_shockwave_collision[21];
+extern const collision_tree_struct fixed_shockwave_collision[3];

@@ -2295,3 +2295,13 @@ typedef struct char_spawner_paad {
 	/* 0x010 */ char unk_10[0x2C-0x10];
 	/* 0x02C */ short counter;
 } char_spawner_paad;
+
+typedef struct collision_tree_struct {
+	/* 0x000 */ short actor_interaction;
+	/* 0x002 */ short target_interaction;
+	/* 0x004 */ void* function;
+	/* 0x008 */ unsigned char collision_type;
+	/* 0x009 */ unsigned char unk9;
+	/* 0x00A */ unsigned char force_break;
+	/* 0x00B */ unsigned char unkB;
+} collision_tree_struct;
