@@ -284,6 +284,8 @@ extern void initActor(int actor_index, int is_custom, void* func, int master_typ
 extern void setCollisionAddress(int actor_index, int is_custom, void* collision_info, int subdata);
 extern void refreshPads(pad_refresh_signals signal);
 
+extern int stompHandler(void* unk0, playerData* player, int unk1);
+
 extern void indicateCollectionStatus(void);
 extern void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char unk1);
 extern void rulerEnemyDeath(void);
@@ -477,3 +479,5 @@ extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
 extern const collision_tree_struct fixed_shockwave_collision[3];
+extern const collision_tree_struct fixed_scarab_collision[4];
+extern const collision_tree_struct fixed_dice_collision[12];

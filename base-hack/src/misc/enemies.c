@@ -378,9 +378,6 @@ static short valid_stomp_states[] = {
     0x58, // Jumping off a vine
 };
 
-// Enemy spawner code: 0x3A
-// Test Addr: 378350
-
 int stompHandler(void* unk0, playerData* player, int unk1) {
     if (!unkCollisionFunc(unk1, 1)) { // Not sure what this signifies?
         return 0;
