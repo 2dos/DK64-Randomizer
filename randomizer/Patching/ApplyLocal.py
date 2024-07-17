@@ -310,6 +310,9 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         {"name": "Caves Tomato", "setting": settings.caves_tomato_model},
         {"name": "Factory Piano Burper", "setting": settings.piano_burp_model},
         {"name": "Spotlight Fish", "setting": settings.spotlight_fish_model},
+        {"name": "Candy (Chunky Phase, End Sequence)", "setting": settings.candy_cutscene_model},
+        {"name": "Funky (Chunky Phase, End Sequence)", "setting": settings.funky_cutscene_model},
+        {"name": "Funky's Boot (Chunky Phase)", "setting": settings.boot_cutscene_model},
     ]
 
     if settings.colors != {} or settings.random_models != RandomModels.off:

@@ -835,6 +835,14 @@ class ExtraTextures(IntEnum):
     BeetleTex4 = auto()
     BeetleTex5 = auto()
     BeetleTex6 = auto()
+    Feather0 = auto()
+    Feather1 = auto()
+    Feather2 = auto()
+    Feather3 = auto()
+    Feather4 = auto()
+    Feather5 = auto()
+    Feather6 = auto()
+    Feather7 = auto()
 
 
 class MoveTypes(IntEnum):

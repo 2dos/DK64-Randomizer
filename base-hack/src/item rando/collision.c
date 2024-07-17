@@ -130,6 +130,7 @@ int isObjectTangible_detailed(int id) {
     if ((CurrentMap == MAP_FUNGIMILLFRONT) && (id == 0xA)) {
         return 0;
     }
+    #ifdef HELM_COLLISION_FIX
     if (CurrentMap == MAP_HELM) {
         if (!checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
             if ((id >= 0x5D) && (id <= 0x61)) {
@@ -139,6 +140,7 @@ int isObjectTangible_detailed(int id) {
             }
         }
     }
+    #endif
     return isObjectTangible(id);
 }
 

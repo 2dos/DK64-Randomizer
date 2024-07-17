@@ -1274,6 +1274,28 @@ sprite_data_struct krool_sprite = {
 	.images = {0x383, 0x384},
 };
 
+sprite_data_struct feather_gun_sprite = {
+	.unk0 = 0xC7,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 32,
+	.image_count = 8,
+	.images = {
+		FEATHER_SPRITE_START + 0,
+		FEATHER_SPRITE_START + 1,
+		FEATHER_SPRITE_START + 2,
+		FEATHER_SPRITE_START + 3,
+		FEATHER_SPRITE_START + 4,
+		FEATHER_SPRITE_START + 5,
+		FEATHER_SPRITE_START + 6,
+		FEATHER_SPRITE_START + 7,
+	},
+};
+
 void giveGB(int kong, int level) {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);

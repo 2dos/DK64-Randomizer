@@ -420,6 +420,16 @@ for x in range(7):
         do_not_delete_source=True,
     ))
 
+for x in range(8):
+    file_dict.append(File(
+        name=f"Feather Sprite (firing) texture {x}",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.Feather0) + x,
+        source_file=f"assets/displays/feather{x}.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ))
+
 for item in range(3):
     file_dict.append(
         File(

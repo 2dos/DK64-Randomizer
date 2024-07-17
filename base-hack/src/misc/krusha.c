@@ -339,7 +339,7 @@ void OrangeGunCode(void) {
         // Is Feather actor
         if (Rando.kong_models[KONG_TINY] != KONGMODEL_KRUSHA) {
             // Is not orange
-            sprite = 0x80720854;
+            sprite = (int)&feather_gun_sprite;
             pop_sprite_index = 5;
             pop_sfx = 0x308;
             pop_scale = 0.35f;
