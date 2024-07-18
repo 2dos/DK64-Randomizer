@@ -113,6 +113,8 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0,
+    "hard_bosses": 0,
+    "hard_bosses_selected": {},
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0,
@@ -496,6 +498,8 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0.2,
+    "hard_bosses": 0,
+    "hard_bosses_selected": {},
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0.5,
@@ -899,6 +903,13 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
+    "hard_bosses": 0.6,
+    "hard_bosses_selected": {
+      "fast_mad_jack": 0.8,
+      "pufftoss_star_rando": 0.8,
+      "pufftoss_star_raised": 0.5,
+      "kut_out_phase_rando": 0.6
+    },
     "hard_mode": 0.2,
     "hard_mode_selected": {
       "hard_enemies": 0.6,
@@ -1342,10 +1353,15 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
+    "hard_bosses": 0.6,
+    "hard_bosses_selected": {
+      "fast_mad_jack": 0.8,
+      "pufftoss_star_rando": 0.8,
+      "pufftoss_star_raised": 0.5,
+      "kut_out_phase_rando": 0.6
+    },
     "hard_mode": 0.2,
     "hard_mode_selected": {
-      "hard_bosses": 0.6,
-      "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
       "reduced_fall_damage_threshold": 0.5,
