@@ -233,37 +233,23 @@
     "key_8_helm": 0.5,
     "keys_random": 1,
     "kong_model_chunky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_diddy": {
-      "default": 0.6,
-      "funky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_dk": {
-      "default": 0.6,
-      "cranky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_lanky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_tiny": {
-      "default": 0.6,
-      "candy": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_rando": 1,
     "krool_access": 0.7,
-    "krool_in_boss_pool": 0.5,
+    "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
@@ -636,37 +622,23 @@
     "key_8_helm": 0.5,
     "keys_random": 1,
     "kong_model_chunky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_diddy": {
-      "default": 0.6,
-      "funky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_dk": {
-      "default": 0.6,
-      "cranky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_lanky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_tiny": {
-      "default": 0.6,
-      "candy": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_rando": 1,
     "krool_access": 0.7,
-    "krool_in_boss_pool": 0.5,
+    "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
@@ -1059,33 +1031,19 @@
     "key_8_helm": 0.5,
     "keys_random": 1,
     "kong_model_chunky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_diddy": {
-      "default": 0.6,
-      "funky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_dk": {
-      "default": 0.6,
-      "cranky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_lanky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_tiny": {
-      "default": 0.6,
-      "candy": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_rando": 1,
     "krool_access": 0.7,
@@ -1518,33 +1476,19 @@
     "key_8_helm": 0.5,
     "keys_random": 1,
     "kong_model_chunky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_diddy": {
-      "default": 0.6,
-      "funky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_dk": {
-      "default": 0.6,
-      "cranky": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_model_lanky": {
-      "default": 0.6,
-      "krusha": 0.4
+      "default": 1
     },
     "kong_model_tiny": {
-      "default": 0.6,
-      "candy": 0.1,
-      "krusha": 0.1,
-      "krool_fight": 0.1,
-      "krool_cutscene": 0.1
+      "default": 1
     },
     "kong_rando": 1,
     "krool_access": 0.7,
