@@ -805,9 +805,9 @@
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
     "cb_rando": {
-      "off": 0.5,
+      "off": 0.4,
       "on": 0.3,
-      "on_with_isles": 0.2
+      "on_with_isles": 0.3
     },
     "chaos_blockers": 0.6,
     "chaos_ratio": {
@@ -1255,9 +1255,9 @@
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
     "cb_rando": {
-      "off": 0.5,
+      "off": 0.4,
       "on": 0.3,
-      "on_with_isles": 0.2
+      "on_with_isles": 0.3
     },
     "chaos_blockers": 0.6,
     "chaos_ratio": {
