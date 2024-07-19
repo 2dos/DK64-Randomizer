@@ -213,6 +213,41 @@ class MenuTexture:
         self.is_color = is_color
 
 
+class CustomActors(IntEnum):
+    """Custom Actors Enum."""
+
+    NintendoCoin = 0x8000  # Starts at 0x8000
+    RarewareCoin = auto()
+    Null = auto()
+    PotionDK = auto()
+    PotionDiddy = auto()
+    PotionLanky = auto()
+    PotionTiny = auto()
+    PotionChunky = auto()
+    PotionAny = auto()
+    KongDK = auto()
+    KongDiddy = auto()
+    KongLanky = auto()
+    KongTiny = auto()
+    KongChunky = auto()
+    KongDisco = auto()
+    KongKrusha = auto()
+    Bean = auto()
+    Pearl = auto()
+    Fairy = auto()
+    IceTrapBubble = auto()
+    IceTrapReverse = auto()
+    IceTrapSlow = auto()
+    Medal = auto()
+    JetpacItemOverlay = auto()
+    CrankyItem = auto()
+    FunkyItem = auto()
+    CandyItem = auto()
+    SnideItem = auto()
+    ZingerFlamethrower = auto()
+    Scarab = auto()
+
+
 compatible_background_textures = {
     0x47A: MenuTexture("Gold Tower Stack", False),
     0x9DD: MenuTexture("Book", False),

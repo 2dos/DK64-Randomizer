@@ -201,7 +201,7 @@
    "starting_map":34,
    "starting_exit":0,
    "disco_chunky":1,
-   "required_helm_minigames":0,
+   "required_helm_minigames":1,
    "krusha_slot":255,
    "kong_models":[
       0,

@@ -55,6 +55,13 @@ def stroke(img: Image, stroke_color: tuple = (255, 255, 255), stroke_radius: int
     return output
 
 
+def bump_saturation(image: Image, factor: float) -> Image:
+    """Increase the saturation of the provided PIL image."""
+    enhancer = ImageEnhance.Color(image)
+    enhanced_image = enhancer.enhance(factor)
+    return enhanced_image
+
+
 print("Composing complex images")
 number_crop = [
     {
@@ -710,6 +717,13 @@ barrel_im_left = base_64_im.crop((0, 0, 32, 64))
 barrel_im_right = base_64_im.crop((32, 0, 64, 64))
 barrel_im_left.save(f"{disp_dir}osprint_logo_left.png")
 barrel_im_right.save(f"{disp_dir}osprint_logo_right.png")
+
+# Beetle custom enemy
+for x in range(7):
+    beetle_im = Image.open(f"{hash_dir}beetle_img_{0xFC3 + x}.png")
+    beetle_im = hueShift(beetle_im, 100)
+    beetle_im = bump_saturation(beetle_im, 2)
+    beetle_im.save(f"{hash_dir}beetle_img_{0xFC3 + x}.png")
 
 
 rmve = [

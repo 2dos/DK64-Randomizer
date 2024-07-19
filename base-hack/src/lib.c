@@ -1227,6 +1227,14 @@ void initActor(int actor_index, int is_custom, void* func, int master_type, int 
 	actor_collisions[actor_index].unk_4 = actor_collisions[base].unk_4;
 }
 
+void setCollisionAddress(int actor_index, int is_custom, void* collision_info, int subdata) {
+	if (is_custom) {
+		actor_index = CUSTOM_ACTORS_START + actor_index;
+	}
+	actor_collisions[actor_index].collision_info = collision_info;
+	actor_collisions[actor_index].unk_4 = subdata;
+}
+
 sprite_data_struct bean_sprite = {
 	.unk0 = 0xC4,
 	.images_per_frame_horizontal = 1,
@@ -1264,6 +1272,28 @@ sprite_data_struct krool_sprite = {
 	.height = 64,
 	.image_count = 2,
 	.images = {0x383, 0x384},
+};
+
+sprite_data_struct feather_gun_sprite = {
+	.unk0 = 0xC7,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 32,
+	.image_count = 8,
+	.images = {
+		FEATHER_SPRITE_START + 0,
+		FEATHER_SPRITE_START + 1,
+		FEATHER_SPRITE_START + 2,
+		FEATHER_SPRITE_START + 3,
+		FEATHER_SPRITE_START + 4,
+		FEATHER_SPRITE_START + 5,
+		FEATHER_SPRITE_START + 6,
+		FEATHER_SPRITE_START + 7,
+	},
 };
 
 void giveGB(int kong, int level) {

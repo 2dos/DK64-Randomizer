@@ -33,18 +33,33 @@ collision_data_struct actor_collisions[ACTOR_LIMIT] = {};
 
 #define KONG_NONE -2
 
-const int fixed_shockwave_collision[21] = {
-    0xFFFF0004, 0x80676540,
-    0x06030200, 0xFFFF0008,
-    0x00000000, 0x06080200,
-    0xFFFF0400, 0x00000000,
-    0x08000200, 0xFFFF0000, // Set first to 0x08000200 (Disables shockwave dmg), Set second to 0xFFFF0000 (Disables slap dmg)
-    0x8067641C, 0x06020200,
-    0xFFFF0000, 0x00000000, // Set first to 0xFFFF0000 (Disables roll dmg)
-    0x06080200, 0xFFFFFFFF,
-    0x80676C10, 0x01020200,
-    0xFFFFFFFF, 0x00000000,
-    0x01050000,
+const collision_tree_struct fixed_shockwave_collision[3] = {
+    {.actor_interaction = -1, .target_interaction=COLBTF_SHOCKWAVE, .collision_type=1, .unk9=2, .force_break=1}, // If you're shockwaving, treat as immune
+    {.actor_interaction = -1, .target_interaction=-1, .function=(void*)0x80676C10, .collision_type=1, .unk9=2, .force_break=2},
+    {.actor_interaction = -1, .target_interaction=-1, .collision_type=4, .unk9=5},
+};
+
+const collision_tree_struct fixed_scarab_collision[4] = {
+    {.actor_interaction = -1, .target_interaction=COLBTF_RAMBI_ENGUARDEBATTACK, .collision_type=6, .unk9=10, .force_break=2}, // Rambi kills enemy
+    {.actor_interaction=0x1, .target_interaction=0xFE8, .collision_type=0x4, .force_break=0x2},
+    {.actor_interaction=0x2, .target_interaction=-1, .function=&stompHandler, .collision_type=0x9, .unk9=0x3, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
+};
+
+const collision_tree_struct fixed_dice_collision[12] = {
+    {.actor_interaction = 1, .target_interaction=COLBTF_RAMBI_ENGUARDEBATTACK, .collision_type=6, .unk9=10, .force_break=2}, // Rambi kills enemy
+    {.actor_interaction=0x1, .target_interaction=0xa00, .function=(void*)0x8067641c, .collision_type=0x6, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=0x1, .target_interaction=0x80, .function=(void*)0x806764d8, .collision_type=0x6, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=0x1, .target_interaction=0x4, .function=(void*)0x80676540, .collision_type=0x6, .unk9=0x3, .force_break=0x2},
+    {.actor_interaction=0x1, .target_interaction=0x420, .collision_type=0x6, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=0x1, .target_interaction=0xb48, .function=(void*)0x8067641c, .collision_type=0x6, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=0x2, .target_interaction=-1, .collision_type=0x2, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=0x4, .target_interaction=-1, .collision_type=0x1, .unk9=0x5, .force_break=0x2},
+    {.actor_interaction=0x8, .target_interaction=0xe60, .collision_type=0x4, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=0x8, .target_interaction=-1, .collision_type=0x2, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=-1, .function=(void*)0x80676c10, .collision_type=0x1, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
+
 };
 
 void initCollectableCollision(void) {

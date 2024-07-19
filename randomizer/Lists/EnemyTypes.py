@@ -466,7 +466,31 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False, can_bypass=False),  # Can be meleed with distraction mechanic, but we'll ignore that for now
     ),
-    # Enemies.Bug: EnemyData(aggro=0x40,crown_enabled=False,),
+    Enemies.Bug: EnemyData(
+        name="Bug",
+        e_type=EnemySubtype.Air,
+        air=True,
+        crown_weight=7,
+        disruptive=1,
+        interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
+    ),
+    Enemies.ZingerFlamethrower: EnemyData(
+        name="Zinger (Flamethrower)",
+        e_type=EnemySubtype.Air,
+        air=True,
+        crown_weight=7,
+        disruptive=1,
+        interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
+        selector_enabled=False,
+    ),
+    Enemies.Scarab: EnemyData(
+        name="Scarab",
+        e_type=EnemySubtype.GroundSimple,
+        air=True,
+        crown_enabled=False,
+        interaction=InteractionMethods(),
+        size_cap=50,
+    ),
 }
 
 enemies_nokill_gun = [enemy for enemy in EnemyMetaData if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard]

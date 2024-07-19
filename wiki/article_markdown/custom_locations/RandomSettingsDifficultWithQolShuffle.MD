@@ -1,8 +1,10 @@
 The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. Quality of life options may be disabled. All settings have a chance to be set.
 
 # Always On
+- DK Phase requires Baboon Blast
 - Faster Checks
 - Random Helm Length
+- Ice Traps Damage Player
 - Randomize Keys Required to Beat K. Rool
 - Kong Rando
 - Random K. Rool Phase Count
@@ -40,8 +42,14 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Shuffle Boss Kong Required: 50%
 - Boss Location Rando: 80%
 - Random CB Locations: 
-	- Off: 70%
+	- Off: 40%
 	- On: 30%
+	- On With Isles: 30%
+- Chaos B. Lockers: 60%
+- Chaos Ratio: Between 0.25 and 0.7, usually close to 0.4
+- Chunky Phase Slam Requirement: 
+	- Blue: 70%
+	- Red: 30%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 30%
 	- Hard Random: 30%
@@ -63,7 +71,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Quad: 20%
 	- Ohko: 10%
 - Tag Barrels Disabled: 50%
-- Ice Traps Damage Player: 50%
+- Dk Portal Location Rando: 30%
 - Progressive Hints: 50%
 - Enable Shop Hints: 50%
 - Enable Tag Anywhere: 90%
@@ -84,6 +92,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Castle Minecart: 70%
 	- Castle Car Race: 70%
 	- Jetpac: 70%
+- Fast Start - Beginning of Game: 90%
 - Fast Warps: 80%
 - Free Trade Agreement: 
 	- None: 20%
@@ -100,10 +109,14 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Glitches Selected: 
 	- Advanced Platforming: 100%
 - Hard B. Lockers: 60%
+- Hard Bosses: 60%
+- Hard Bosses Selected: 
+	- Fast Mad Jack: 80%
+	- Pufftoss Star Rando: 80%
+	- Pufftoss Star Raised: 50%
+	- Kut Out Phase Rando: 60%
 - Hard Mode: 20%
 - Hard Mode Selected: 
-	- Hard Bosses: 60%
-	- Extra Hard Bosses: 25%
 	- Hard Enemies: 60%
 	- Water Is Lava: 25%
 	- Reduced Fall Damage Threshold: 50%
@@ -115,6 +128,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Hard Troff n' Scoff: 50%
 - Helm Hurry Mode: 5%
 - Shuffle Helm Rooms: 80%
+- Helm Room Bonus Count: 
+	- Two: 100%
 - Helm Start Location: 
 	- Default: 30%
 	- Skip Start: 70%
@@ -133,6 +148,11 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Helmhurry List Pearl: Between 30 and 120, usually close to 50
 - Helmhurry List Rainbow Coin: Between 5 and 30, usually close to 15
 - Helmhurry List Starting Time: Between 900 and 1800, usually close to 1200
+- Ice Trap Frequency: 
+	- Mild: 45%
+	- Common: 40%
+	- Frequent: 10%
+	- Pain: 5%
 - Item Rando List Selected: 
 	- Shop: 95%
 	- Banana: 95%
@@ -157,6 +177,16 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Vanilla Locations: 55%
 	- Location Shuffle: 30%
 - Lock Key 8 in Helm: 50%
+- Kong Model Chunky: 
+	- Default: 100%
+- Kong Model Diddy: 
+	- Default: 100%
+- Kong Model Dk: 
+	- Default: 100%
+- Kong Model Lanky: 
+	- Default: 100%
+- Kong Model Tiny: 
+	- Default: 100%
 - Key 8 Required: 70%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 

@@ -5,7 +5,7 @@ import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
-from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
+from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors
 from randomizer.Patching.LibImage import getImageFile, TextureFormat
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
@@ -348,8 +348,8 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
 
-    if settings.troff_brighten:
-        writeFloat(ROM_COPY, 0x8075B8B0, Overlay.Static, 1, offset_dict)
+    troff_light = 1 if settings.troff_brighten else 0.15
+    writeFloat(ROM_COPY, 0x8075B8B0, Overlay.Static, troff_light, offset_dict)
 
     if settings.remove_water_oscillation:
         writeValue(ROM_COPY, 0x80661B54, Overlay.Static, 0, offset_dict, 4)  # Remove Ripple Timer 0
@@ -358,15 +358,10 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         writeValue(ROM_COPY, 0x8068BDFC, Overlay.Static, 0x1000, offset_dict)  # Disable rocking in Mech Fish
         writeValue(ROM_COPY, 0x805FCCEE, Overlay.Static, 0, offset_dict)  # Disable seasick camera effect
 
-    if settings.caves_tomato_model == Model.Tomato:
-        writeValue(ROM_COPY, 0x8075F602, Overlay.Static, Model.Tomato + 1, offset_dict)
-
-    if settings.fungi_tomato_model == Model.IceTomato:
-        writeValue(ROM_COPY, 0x8075F4E2, Overlay.Static, Model.IceTomato + 1, offset_dict)
-
-    if settings.bother_klaptrap_model:
-        writeValue(ROM_COPY, 0x806F0376, Overlay.Static, settings.bother_klaptrap_model + 1, offset_dict)
-        writeValue(ROM_COPY, 0x806C8B42, Overlay.Static, settings.bother_klaptrap_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075F602, Overlay.Static, settings.caves_tomato_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075F4E2, Overlay.Static, settings.fungi_tomato_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x806F0376, Overlay.Static, settings.bother_klaptrap_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x806C8B42, Overlay.Static, settings.bother_klaptrap_model + 1, offset_dict)
 
     if settings.rabbit_model == Model.Beetle:
         writeValue(ROM_COPY, 0x8075F242, Overlay.Static, Model.Beetle + 1, offset_dict)  # Rabbit Race
@@ -394,6 +389,9 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     writeValue(ROM_COPY, 0x8002A656, Overlay.Bonus, settings.panic_fairy_model + 1, offset_dict)
     writeValue(ROM_COPY, 0x8074F212, Overlay.Static, settings.piano_burp_model + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075F122, Overlay.Static, settings.spotlight_fish_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x80755758, Overlay.Static, settings.candy_cutscene_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075575A, Overlay.Static, settings.funky_cutscene_model + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075578C, Overlay.Static, settings.boot_cutscene_model + 1, offset_dict)
 
     # Skybox Handler
     skybox_rgba = None
@@ -428,10 +426,10 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
                         writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + ((y + 1) * 3) + zi, Overlay.Static, z, offset_dict, 1)
         writeValue(ROM_COPY, 0x8075E1EC, Overlay.Static, 0x80708234, offset_dict, 4)
 
+    writeValue(ROM_COPY, 0x8064F052, Overlay.Static, settings.wrinkly_rgb[0], offset_dict)
+    writeValue(ROM_COPY, 0x8064F04A, Overlay.Static, settings.wrinkly_rgb[1], offset_dict)
+    writeValue(ROM_COPY, 0x8064F046, Overlay.Static, settings.wrinkly_rgb[2], offset_dict)
     if settings.misc_cosmetics:
-        writeValue(ROM_COPY, 0x8064F052, Overlay.Static, settings.wrinkly_rgb[0], offset_dict)
-        writeValue(ROM_COPY, 0x8064F04A, Overlay.Static, settings.wrinkly_rgb[1], offset_dict)
-        writeValue(ROM_COPY, 0x8064F046, Overlay.Static, settings.wrinkly_rgb[2], offset_dict)
         # Menu Background
         if settings.menu_texture_index is not None:
             writeValue(ROM_COPY, 0x8070761A, Overlay.Static, 0, offset_dict)
@@ -446,10 +444,10 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
             writeValue(ROM_COPY, 0x8075EAE4, Overlay.Static, menu_background_rgba, offset_dict, 4)
             writeValue(ROM_COPY, 0x80754CEC, Overlay.Static, settings.menu_texture_index, offset_dict)
 
-    if settings.crosshair_outline:
-        writeValue(ROM_COPY, 0x806FFAFE, Overlay.Static, 113, offset_dict)
-        writeValue(ROM_COPY, 0x806FF116, Overlay.Static, 113, offset_dict)
-        writeValue(ROM_COPY, 0x806B78DA, Overlay.Static, 113, offset_dict)
+    crosshair_img = 113 if settings.crosshair_outline else 0x38
+    writeValue(ROM_COPY, 0x806FFAFE, Overlay.Static, crosshair_img, offset_dict)
+    writeValue(ROM_COPY, 0x806FF116, Overlay.Static, crosshair_img, offset_dict)
+    writeValue(ROM_COPY, 0x806B78DA, Overlay.Static, crosshair_img, offset_dict)
 
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
@@ -1154,6 +1152,34 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFloat(ROM_COPY, 0x8075AC00, Overlay.Static, 1.3, offset_dict)  # Pause Menu Progression Rate
         writeValue(ROM_COPY, 0x806A901C, Overlay.Static, 4, offset_dict, 4)  # NOP - Remove thud
     writeFunction(ROM_COPY, 0x806A84C8, Overlay.Static, "updateFileVariables", offset_dict)  # Update file variables to transfer old locations to current
+
+    writeLabelValue(ROM_COPY, 0x8074C5F0, Overlay.Static, "handleBugEnemy", offset_dict)
+
+    # Alter data for zinger flamethrower enemy
+    writeValue(ROM_COPY, 0x8075F210, Overlay.Static, 345 + (CustomActors.ZingerFlamethrower - 0x8000), offset_dict)
+    writeValue(ROM_COPY, 0x8075F212, Overlay.Static, Model.Zinger + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075F214, Overlay.Static, 0x250, offset_dict)
+    writeValue(ROM_COPY, 0x8075F216, Overlay.Static, 0, offset_dict)
+    writeValue(ROM_COPY, 0x8075F218, Overlay.Static, 0, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F21C, Overlay.Static, 0xAA460508, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F220, Overlay.Static, 0x08020A0A, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F224, Overlay.Static, 0x5E5E0100, offset_dict, 4)
+
+    # Make Flame Zingers not lag the game *as* bad
+    writeValue(ROM_COPY, 0x806B3E36, Overlay.Static, 3, offset_dict)  # Change flame-spitting to once every 3f
+    writeValue(ROM_COPY, 0x806B3E38, Overlay.Static, 0x5700, offset_dict)  # BEQL -> BNEL
+
+    # Alter data for bug enemy
+    writeValue(ROM_COPY, 0x8075F0F0, Overlay.Static, 345 + (CustomActors.Scarab - 0x8000), offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F2, Overlay.Static, 0x118 + 1, offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F4, Overlay.Static, 0x281, offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F6, Overlay.Static, 0, offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F8, Overlay.Static, 1, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F0FC, Overlay.Static, 0xAA465A1E, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F100, Overlay.Static, 0x05030602, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8075F104, Overlay.Static, 0x5E5E0164, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8074B21E, Overlay.Static, 0xFF8, offset_dict)  # Allow other moves to knock down the bug
+    writeLabelValue(ROM_COPY, 0x8074B244, Overlay.Static, "fixed_scarab_collision", offset_dict)  # Collision
 
     # Statistics
     writeFunction(ROM_COPY, 0x806C8ED0, Overlay.Static, "updateTagStat", offset_dict)
@@ -2188,6 +2214,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeLabelValue(ROM_COPY, 0x8074B4EC, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Red Klaptrap
     writeLabelValue(ROM_COPY, 0x8074BC24, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Book
     writeLabelValue(ROM_COPY, 0x8074BBF0, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # All Zingers & Bats
+    writeLabelValue(ROM_COPY, 0x8074B6B8, Overlay.Static, "fixed_dice_collision", offset_dict)  # Mr. Dice (Both), Sir Domino, Ruler
 
     writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
     writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown

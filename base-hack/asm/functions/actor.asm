@@ -47,7 +47,7 @@
 .definelabel playGunSFX, 0x806F0B34
 .definelabel playTagActorAnimation, 0x80682DF4
 .definelabel alterCutsceneKongProperties, 0x806C15E8
-.definelabel unkCutsceneKongFunction, 0x80714C08
+.definelabel displaySpriteAttachedToActor, 0x80714C08
 .definelabel spawnCutsceneKongText, 0x806C10A0
 .definelabel unkCutsceneKongFunction_0, 0x80724CA4
 .definelabel changeActorColor, 0x807149C8
@@ -105,7 +105,7 @@
 .definelabel allocateBone, 0x8066E854
 .definelabel unkProjectileCode_2, 0x806651FC
 .definelabel unkProjectileCode_3, 0x80665564
-.definelabel unkProjectileCode_4, 0x80608528
+.definelabel playSFXFromActor, 0x80608528
 .definelabel unkGunFunction, 0x80714608
 .definelabel updateModel, 0x806C8F8C
 .definelabel runAnimFrame, 0x80613CA8
@@ -125,3 +125,13 @@
 .definelabel getPathPosition, 0x807238D4
 .definelabel spawnKey, 0x80028478
 .definelabel spawnActorSpawnerContainer, 0x806891D8
+.definelabel trashCanBugCode, 0x806B54BC
+.definelabel flyingEnemyHandler, 0x806B42A8
+.definelabel getAngleBetweenPoints, 0x80665DE0
+.definelabel unkWallFunc, 0x8066EA90
+.definelabel unkWallFunc_0, 0x8066EA64
+.definelabel adjustProjectileSpawnPosition, 0x806907F0
+.definelabel reduceShadowIntensity, 0x8072DC7C
+.definelabel unkActorFunc, 0x8072C918
+.definelabel unkActorFunc_0, 0x8072D714
+.definelabel unkCollisionFunc, 0x80676CB0

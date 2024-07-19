@@ -80,6 +80,9 @@ pkmn_snap_enemies = [
     PkmnSnapEnemy(Enemies.Ghost),
     PkmnSnapEnemy(Enemies.Pufftup),
     PkmnSnapEnemy(Enemies.Kosha),
+    PkmnSnapEnemy(Enemies.Bug),
+    PkmnSnapEnemy(Enemies.ZingerFlamethrower),
+    PkmnSnapEnemy(Enemies.Scarab),
 ]
 
 valid_maps = [

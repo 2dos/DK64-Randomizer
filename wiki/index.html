@@ -1,4 +1,3 @@
-<!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
     <head>
@@ -16,7 +15,7 @@
         <meta content="Donkey Kong 64 Randomizer Wiki" property="og:site_name" />
         <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.png" property="og:image" />
         <script type="text/javascript" src="../static/js/showdown.min.js"></script>
-        <title>Season 3 Preset</title>
+        <title></title>
         <link href="../static/img/dk.png" rel="icon" />
         <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
               rel="stylesheet"/>
@@ -66,25 +65,46 @@
             alt="DK64 Randomizer"
             class="center_image"
             style="cursor: pointer; margin-top: 70px"/>
-        <div class="mt-4"></div>
+        <div class="mt-4">
+            <div class="show-if-thin">
+                <div class="container">
+                    <div class="row">
+                        <div class="mb-3" style="width:fit-content">
+                            <div class="card bg-vdark">
+                                <div class="sidebar-link fs-6 p-3 user-select-none" onclick="goTo('home.html')">
+                                    <i class="fa-solid fa-house"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 ps-0" style="width:fit-content">
+                            <div class="card bg-vdark">
+                                <div class="sidebar-link fs-6 p-3 user-select-none" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div class="row">
-                <div class="col-sm-3 p-0 hide-if-thin">
-                    <div class="px-3 mb-3">
+                <div class="col-sm-1 p-0 hide-if-thin" style="width:fit-content">
+                    <div class="ps-3 mb-3" style="width:fit-content">
                         <div class="card bg-vdark">
                             <div class="sidebar-link fs-6 p-3 user-select-none" onclick="goTo('home.html')">
                                 <i class="fa-solid fa-house"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="px-3 mb-3">
+                    <div class="ps-3 mb-3" style="width:fit-content">
                         <div class="card bg-vdark">
                             <div class="sidebar-link fs-6 p-3 user-select-none" data-bs-toggle="modal" data-bs-target="#searchModal">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </div>
                     </div>
-                    <div style="position:sticky; top:80px" class="px-3">
+                    <div style="position:sticky; top:80px; width:fit-content" class="ps-3">
                         <div class="card bg-vdark fs-6">
                             <div class="p-3 collapsable-header collapsed user-select-none" open="markdown_navigation_sidebar" onclick="toggleSidebarCollapse(this)">
                                 <i class="fa-solid fa-compass"></i>
@@ -107,9 +127,9 @@
                     </div>
                     </div>
                 </div>
-                <div class="pr-6 col-sm-9 max-if-thin">
+                <div class="pr-6 col max-if-thin">
                     <div class="card bg-vdark p-3">
-                        <h1 id="page-title">Season 3 Preset</h1>
+                        <h1 id="page-title"></h1>
                         <div id="last-modified"></div>
                         <hr />
                         <div id="content-summary">
@@ -125,7 +145,76 @@
                 </div>
             </div>
         </div>
-        <script id="redirect_handler">window.location.href="./index.html?title=Season-3-Preset-Settings-and-Rules";</script>
+        <script>
+            // Parse page arg
+            const locals = ["WikiEditing"]; // I hate this with a fiery passion. Please let us get away from this list
+            const startingSegs = [
+                {
+                    "search": "CustomLocations",
+                    "preface": "Custom Locations",
+                }, 
+                {
+                    "search": "RandomSettings",
+                    "preface": "Random Settings",
+                }, 
+            ];
+
+            function startsWith(str, substring) {
+                return str.indexOf(substring) === 0; // would use str.startswith, but don't want to break compat with older tech
+            }
+
+            function camelCaseToSpaces(str) {
+                return str.replace(/([a-z])([A-Z])/g, '$1 $2');
+            }
+
+            function getPageAttributes() {
+                const currentURL = window.location.href;
+                const url = new URL(currentURL);
+                const qp = new URLSearchParams(url.search);
+                const title_value = qp.get("title");
+                let target_md_url = `https://raw.githubusercontent.com/wiki/2dos/DK64-Randomizer/${title_value}.md`;
+                let title_pretty = decodeURI(title_value).replaceAll("-", " ");
+                if (locals.includes(title_value)) {
+                    target_md_url = `./article_markdown/${title_value}.md`
+                    title_pretty = camelCaseToSpaces(title_value);
+                }
+                startingSegs.forEach(seg => {
+                    if (startsWith(title_value, seg.search)) {
+                        target_md_url = `./article_markdown/custom_locations/${title_value}.md`;
+                        title_pretty = camelCaseToSpaces(title_value);
+                        title_pretty = title_pretty.replace(seg.preface, `${seg.preface}:`)
+                    }
+                });
+                return {
+                    "safe": target_md_url != null,
+                    "url": target_md_url,
+                    "raw": title_value,
+                    "pretty": title_pretty,
+                };
+            }
+            
+            function updateTitle(name) {
+                document.getElementById("page-title").innerText = name;
+                document.getElementById("site_page_identifier").setAttribute("content", name);
+                document.title = name;
+            }
+
+            function handleUpdates() {
+                const page_data = getPageAttributes();
+                if (page_data.safe == false) {
+                    throw new Error("Page could not be found");
+                }
+                document.getElementById("markdown_content").setAttribute("ref", page_data.url);
+                updateTitle(page_data.pretty);
+            }
+
+            try {
+                handleUpdates();
+            } catch (error) {
+                console.error(`Error: ${error}`)
+            }
+
+        </script>
         <script type="text/javascript" src="../static/js/wiki-code.js"></script>
         <script src="../static/js/autocomplete.js"></script>
         <script type="text/javascript">
@@ -196,7 +285,6 @@
 
             async function prepSuggestions() {
                 const article_lst = await getSuggestions();
-                console.log(article_lst)
                 $('#article-search').typeahead({
                     source: article_lst,
                     displayText: (item) => {

@@ -285,21 +285,21 @@ void pullOutGunHandler(actorData* actor) {
         if (!player->was_gun_out) {
             switch (Character) {
                 case 0:
-                    unkProjectileCode_4(actor, 0x186, 0xFF, 100, 0x19);
-                    unkProjectileCode_4(actor, 0x17C, 0xFF, 100, 0x19);
+                    playSFXFromActor(actor, 0x186, 0xFF, 100, 0x19);
+                    playSFXFromActor(actor, 0x17C, 0xFF, 100, 0x19);
                     break;
                 case 1:
-                    unkProjectileCode_4(actor, 0x17C, 200, 0xBE, 5);
+                    playSFXFromActor(actor, 0x17C, 200, 0xBE, 5);
                     break;
                 case 2:
-                    unkProjectileCode_4(actor, 0x186, 0xFF, 0x7F, 0x19);
-                    unkProjectileCode_4(actor, 0x17C, 0xFF, 0xA0, 5);
+                    playSFXFromActor(actor, 0x186, 0xFF, 0x7F, 0x19);
+                    playSFXFromActor(actor, 0x17C, 0xFF, 0xA0, 5);
                     break;
                 case 3:
-                    unkProjectileCode_4(actor, 0x185, 0xFF, 0x7F, 0x19);
+                    playSFXFromActor(actor, 0x185, 0xFF, 0x7F, 0x19);
                     break;
                 case 4:
-                    unkProjectileCode_4(actor, 0x18E, 0xFF, 0x7F, 0x19);
+                    playSFXFromActor(actor, 0x18E, 0xFF, 0x7F, 0x19);
                     break;
             }
             player->was_gun_out = 1;

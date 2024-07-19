@@ -489,6 +489,9 @@ class Settings:
         self.caves_tomato_model = Model.IceTomato
         self.piano_burp_model = Model.KoshKremlingRed
         self.spotlight_fish_model = Model.SpotlightFish
+        self.candy_cutscene_model = Model.Candy
+        self.funky_cutscene_model = Model.Funky
+        self.boot_cutscene_model = Model.Boot
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"

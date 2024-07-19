@@ -4,6 +4,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Auto Key Turn Ins
 - Enable Tag Anywhere
 - Faster Checks
+- Fast Start - Beginning of Game
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
@@ -24,6 +25,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 
 # Always Off
 - Enable Plandomizer
+- Hard Bosses
 - Hard Mode
 - Helm Hurry Mode
 - Vanilla K. Rool Requirement
@@ -43,11 +45,17 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - B. Locker Max: Between 40 and 100, usually close to 60
 - Auto Complete Bonus Barrels: 30%
 - Shuffle Bonus Barrels: 70%
-- Shuffle Boss Kong Required: 50%
+- Shuffle Boss Kong Required: 65%
 - Boss Location Rando: 80%
+- DK Phase requires Baboon Blast: 50%
 - Random CB Locations: 
 	- Off: 50%
-	- On: 50%
+	- On: 40%
+	- On With Isles: 10%
+- Chaos B. Lockers: 25%
+- Chaos Ratio: Between 0.1 and 0.35, usually close to 0.25
+- Chunky Phase Slam Requirement: 
+	- Random: 100%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 20%
@@ -69,7 +77,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Quad: 15%
 - Dim Solved Hints: 50%
 - Tag Barrels Disabled: 50%
-- Ice Traps Damage Player: 50%
+- Dk Portal Location Rando: 10%
 - Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
@@ -105,6 +113,9 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 20%
 - Shuffle Helm Rooms: 80%
+- Helm Room Bonus Count: 
+	- One: 30%
+	- Two: 70%
 - Helm Start Location: 
 	- Default: 20%
 	- Skip Start: 60%
@@ -124,6 +135,12 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Helmhurry List Pearl: Between 30 and 120, usually close to 50
 - Helmhurry List Rainbow Coin: Between 5 and 30, usually close to 15
 - Helmhurry List Starting Time: Between 900 and 1800, usually close to 1200
+- Ice Trap Frequency: 
+	- Rare: 50%
+	- Mild: 30%
+	- Common: 15%
+	- Frequent: 5%
+- Ice Traps Damage Player: 50%
 - Item Rando List Selected: 
 	- Shop: 95%
 	- Banana: 95%
@@ -147,6 +164,16 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Vanilla Locations: 55%
 	- Location Shuffle: 30%
 - Lock Key 8 in Helm: 50%
+- Kong Model Chunky: 
+	- Default: 100%
+- Kong Model Diddy: 
+	- Default: 100%
+- Kong Model Dk: 
+	- Default: 100%
+- Kong Model Lanky: 
+	- Default: 100%
+- Kong Model Tiny: 
+	- Default: 100%
 - Key 8 Required: 70%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 

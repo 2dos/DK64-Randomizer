@@ -48,7 +48,7 @@ void cutsceneDKCode(void) {
 		if (CurrentActorPointer_0->render->sub->unk_10 == 0x1a4) {
 			*(char*)(0x807FDB18) = 1;
 			changeActorColor(0x96,0xFF,0xFF,0xFF);
-			unkCutsceneKongFunction(0x8071FBA0,0x3F333333,CurrentActorPointer_0,5,0);
+			displaySpriteAttachedToActor((void*)0x8071FBA0,0.7f,CurrentActorPointer_0,5,0);
 		}
 		int iVar2 = 7;
 		if (*(int*)(0x807FBB4C) == *(int*)(0x807FDC94)) {

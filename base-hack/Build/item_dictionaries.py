@@ -118,6 +118,8 @@ class CustomActors(IntEnum):
     FunkyItem = auto()
     CandyItem = auto()
     SnideItem = auto()
+    ZingerFlamethrower = auto()
+    Scarab = auto()
 
 
 base_potion = InGameItem(scale=0.25, bounce=True)
@@ -277,6 +279,9 @@ item_drops = [
     EnemyDropDef(276, 0x34, Song.Silence, 2),  # Spiderling
     EnemyDropDef(273, 0x34, Song.Silence, 1),  # Fireball with Glasses
     EnemyDropDef(230, 0x2F, Song.MelonSliceDrop, 1),  # Ruler
+    EnemyDropDef(340, 0x2F, Song.MelonSliceDrop, 1),  # Bug
+    EnemyDropDef(345 + CustomActors.ZingerFlamethrower, 0x2F, Song.MelonSliceDrop, 2),  # Flamethrowing Zinger
+    EnemyDropDef(345 + CustomActors.Scarab, 0x2F, Song.MelonSliceDrop, 1),  # Kiosk Bug Replica
 ]
 
 dance_acceptable_items = [x for x in db if x.force_dance]

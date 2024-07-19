@@ -146,7 +146,15 @@ void genericStatUpdate(bonus_stat stat) {
 }
 
 void updateTagStat(void* data) {
-    genericStatUpdate(STAT_TAGCOUNT);
+    int next_kong = Character;
+    int prev_kong = Player->characterID - 2;
+    if (next_kong != prev_kong) {
+        if (next_kong <= KONG_CHUNKY) {
+            if (prev_kong <= KONG_CHUNKY) {
+                genericStatUpdate(STAT_TAGCOUNT);
+            }
+        }
+    }
     updateModel(data);
 }
 

@@ -23,6 +23,8 @@ typedef struct renderingParamsData {
 	/* 0x034 */ float scale_x;
 	/* 0x038 */ float scale_y;
 	/* 0x03C */ float scale_z;
+	/* 0x040 */ char unk_40[0x64-0x40];
+	/* 0x064 */ short animation;
 } renderingParamsData;
 
 typedef struct actor_subdata {
@@ -90,7 +92,8 @@ typedef struct actorData {
 	/* 0x068 */ char unk_68[0x6A-0x68];
 	/* 0x06A */ short grounded;
 	/* 0x06C */ short unk_6C;
-	/* 0x06E */ char unk_6E[0x7C-0x6E];
+	/* 0x06E */ short sound_slot;
+	/* 0x070 */ char unk_70[0x7C-0x70];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
@@ -105,7 +108,8 @@ typedef struct actorData {
 	/* 0x0E4 */ short rot_x;
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
-	/* 0x0EA */ char unk_EA[0x4];
+	/* 0x0EA */ short unk_EA;
+	/* 0x0EC */ short unk_EC;
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
 	/* 0x0F2 */ char unk_F2[0xFD-0xF2];
@@ -2282,3 +2286,22 @@ typedef struct vtx {
 typedef struct letter_data {
 	/* 0x000 */ vtx vtx_info[4];
 } letter_data;
+
+typedef struct char_spawner_paad {
+	/* 0x000 */ char unk_00[0xA];
+	/* 0x00A */ short x;
+	/* 0x00C */ short y;
+	/* 0x00E */ short z;
+	/* 0x010 */ char unk_10[0x2C-0x10];
+	/* 0x02C */ short counter;
+} char_spawner_paad;
+
+typedef struct collision_tree_struct {
+	/* 0x000 */ short actor_interaction;
+	/* 0x002 */ short target_interaction;
+	/* 0x004 */ void* function;
+	/* 0x008 */ unsigned char collision_type;
+	/* 0x009 */ unsigned char unk9;
+	/* 0x00A */ unsigned char force_break;
+	/* 0x00B */ unsigned char unkB;
+} collision_tree_struct;

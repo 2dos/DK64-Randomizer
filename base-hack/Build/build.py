@@ -410,6 +410,30 @@ for x in range(5):
 for x in range(0x5A, 0x5E):
     file_dict.append(File(name=f"Melon Slice ({hex(x)})", pointer_table_index=TableNames.TexturesHUD, file_index=x, source_file=f"melon{x}.bin", target_compressed_size=48 * 42 * 2))
 
+for x in range(7):
+    file_dict.append(
+        File(
+            name=f"Scarab Texture {x}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.BeetleTex0 + x),
+            source_file=f"assets/hash/beetle_img_{0xFC3 + x}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+        )
+    )
+
+for x in range(8):
+    file_dict.append(
+        File(
+            name=f"Feather Sprite (firing) texture {x}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.Feather0) + x,
+            source_file=f"assets/displays/feather{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+        )
+    )
+
 for item in range(3):
     file_dict.append(
         File(
@@ -1103,7 +1127,8 @@ model_changes = [
     ModelChange(0x115, "cranky_model.bin"),
     ModelChange(0x116, "candy_model.bin"),
     ModelChange(0x117, "funky_model.bin"),
-    ModelChange(0x118, FINAL_RACE_HOOP),  # Used to set an endpoint
+    ModelChange(0x118, "scarab_actor.bin"),
+    ModelChange(0x119, FINAL_RACE_HOOP),  # Used to set an endpoint
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
@@ -1804,6 +1829,13 @@ with open(newROMName, "r+b") as fh:
         "melon_resized",
         "melon_slice",
         "scoff_head",
+        "beetle_img_4035",
+        "beetle_img_4036",
+        "beetle_img_4037",
+        "beetle_img_4038",
+        "beetle_img_4039",
+        "beetle_img_4040",
+        "beetle_img_4041",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

@@ -119,6 +119,13 @@ for kong in kong_tex:
         images.append(ImageData(f"{kong}_face_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, tex_idx + x, 32, 64, False, True))
     tex_idx += 2
 
+for x in range(7):
+    size = 0xAB8
+    if x == 2:
+        size = 0xAF8
+    elif x == 6:
+        size = 0x560
+    images.append(ImageData(f"beetle_img_{0xFC3 + x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xFC3 + x, size >> 1, 1, False, False))
 
 if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")

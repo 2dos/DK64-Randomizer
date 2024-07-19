@@ -169,7 +169,7 @@ panic_models = [
     Model.KLumsy,  # K Lumsy
     Model.Spider,  # Spider
     Model.Rabbit,  # Rabbit
-    Model.Beanstalk,  # Beanstalk
+    # Model.Beanstalk,  # Beanstalk
     Model.KRoolCutscene,  # K Rool
     Model.SkeletonHead,  # Skeleton Head
     Model.Vulture_76,  # Vulture
@@ -253,7 +253,7 @@ piano_extreme_model = [
     Model.SkeletonHead,
     Model.Owl,
     Model.Kosha,
-    Model.Beanstalk,
+    # Model.Beanstalk,
 ]
 
 spotlight_fish_models = [
@@ -286,11 +286,11 @@ spotlight_fish_models = [
     Model.KRoolCutscene,
     Model.KRoolFight,
     Model.SkeletonHead,
-    Model.Vulture_76,
-    Model.Vulture_77,
+    # Model.Vulture_76, # Lighting bug
+    # Model.Vulture_77, # Lighting bug
     # Model.Bat, # Lighting bug
-    Model.Tomato,
-    Model.IceTomato,
+    # Model.Tomato, # Lighting bug
+    # Model.IceTomato, # Lighting bug
     Model.FlySwatter_83,
     Model.SpotlightFish,
     Model.Microphone,
@@ -300,6 +300,88 @@ spotlight_fish_models = [
     Model.MiniMonkeyBarrel,
     Model.HunkyChunkyBarrel,
 ]
+candy_cutscene_models = [
+    Model.Cranky,
+    # Model.Funky, # Disappears with collision
+    Model.Candy,
+    Model.Snide,
+    Model.Seal,
+    Model.BeaverBlue,
+    Model.BeaverGold,
+    Model.Klobber,
+    Model.Kaboom,
+    Model.Krash,
+    Model.Troff,
+    Model.Scoff,
+    Model.RoboKremling,
+    Model.Beetle,
+    Model.MrDice_41,
+    Model.MrDice_56,
+    Model.BananaFairy,
+    Model.Rabbit,
+    Model.KRoolCutscene,
+    Model.KRoolFight,
+    Model.Vulture_76,
+    Model.Vulture_77,
+    Model.Tomato,
+    Model.IceTomato,
+    Model.FlySwatter_83,
+    Model.Microphone,
+    Model.StrongKongBarrel,
+    Model.Rocketbarrel,
+    Model.OrangstandSprintBarrel,
+    Model.MiniMonkeyBarrel,
+    Model.HunkyChunkyBarrel,
+    Model.RambiCrate,
+    Model.EnguardeCrate,
+    Model.Boulder,
+    Model.SteelKeg,
+    Model.GoldenBanana_104,
+]
+
+funky_cutscene_models = [
+    Model.Cranky,
+    Model.Candy,
+    Model.Funky,
+    Model.Troff,
+    Model.Scoff,
+    Model.Ruler,
+    Model.RoboKremling,
+    Model.KRoolCutscene,
+    Model.KRoolFight,
+    Model.Microphone,
+]
+
+# Not holding gun
+funky_cutscene_models_extreme = [
+    Model.BeaverBlue,
+    Model.BeaverGold,
+    Model.Klobber,
+    Model.Kaboom,
+    Model.SirDomino,
+    Model.MechanicalFish,
+    Model.BananaFairy,
+    Model.SkeletonHand,
+    Model.IceTomato,
+    Model.Tomato,
+]
+
+boot_cutscene_models = [
+    Model.Turtle,
+    Model.Enguarde,
+    Model.BeaverBlue,
+    Model.BeaverGold,
+    Model.Zinger,
+    Model.Squawks_28,
+    Model.KlaptrapGreen,
+    Model.KlaptrapPurple,
+    Model.KlaptrapRed,
+    Model.BananaFairy,
+    Model.Spider,
+    Model.Bat,
+    Model.KRoolGlove,
+]
+
 model_mapping = {
     KongModels.default: 0,
     KongModels.disco_chunky: 6,
@@ -414,6 +496,9 @@ def apply_cosmetic_colors(settings: Settings):
     racer_rabbit = Model.Rabbit
     piano_burper = Model.KoshKremlingRed
     spotlight_fish_model_index = Model.SpotlightFish
+    candy_model_index = Model.Candy
+    funky_model_index = Model.Funky
+    boot_model_index = Model.Boot
     swap_bitfield = 0
 
     ROM_COPY = ROM()
@@ -462,10 +547,15 @@ def apply_cosmetic_colors(settings: Settings):
         fungi_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
         caves_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
         referenced_piano_models = piano_models.copy()
+        referenced_funky_models = funky_cutscene_models.copy()
         if model_setting == RandomModels.extreme:
             referenced_piano_models.extend(piano_extreme_model)
             spotlight_fish_model_index = random.choice(spotlight_fish_models)
+            referenced_funky_models.extend(funky_cutscene_models_extreme)
+            boot_model_index = random.choice(boot_cutscene_models)
         piano_burper = random.choice(referenced_piano_models)
+        candy_model_index = random.choice(candy_cutscene_models)
+        funky_model_index = random.choice(funky_cutscene_models)
     settings.bother_klaptrap_model = bother_model_index
     settings.beetle_model = racer_beetle
     settings.rabbit_model = racer_rabbit
@@ -477,6 +567,9 @@ def apply_cosmetic_colors(settings: Settings):
     settings.caves_tomato_model = caves_tomato_model_index
     settings.piano_burp_model = piano_burper
     settings.spotlight_fish_model = spotlight_fish_model_index
+    settings.candy_cutscene_model = candy_model_index
+    settings.funky_cutscene_model = funky_model_index
+    settings.boot_cutscene_model = boot_model_index
     settings.wrinkly_rgb = [255, 255, 255]
     # Compute swap bitfield
     swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0
