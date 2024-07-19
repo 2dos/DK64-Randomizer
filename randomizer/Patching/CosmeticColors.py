@@ -289,8 +289,8 @@ spotlight_fish_models = [
     # Model.Vulture_76, # Lighting bug
     # Model.Vulture_77, # Lighting bug
     # Model.Bat, # Lighting bug
-    Model.Tomato,
-    Model.IceTomato,
+    # Model.Tomato, # Lighting bug
+    # Model.IceTomato, # Lighting bug
     Model.FlySwatter_83,
     Model.SpotlightFish,
     Model.Microphone,
