@@ -21,9 +21,20 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "cannons_require_blast": 0,
     "cb_rando": {
       "off": 0.7,
       "on": 0.3
+    },
+    "chaos_blockers": 0,
+    "chaos_ratio": {
+      "min": 0,
+      "max": 0,
+      "mean": 0
+    },
+    "chunky_phase_slam_req": {
+      "green": 0.3,
+      "blue": 0.7
     },
     "coin_door_item": {
       "vanilla": 0.2,
@@ -58,7 +69,7 @@
     },
     "dim_solved_hints": 1,
     "disable_tag_barrels": 0.5,
-    "ice_traps_damage": 0.5,
+    "dk_portal_location_rando": 0,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 1,
@@ -84,6 +95,7 @@
       "castle_car_race": 1,
       "jetpac": 1
     },
+    "fast_start_beginning_of_game": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "not_blueprints": 0.3,
@@ -101,6 +113,8 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0,
+    "hard_bosses": 0,
+    "hard_bosses_selected": {},
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0,
@@ -108,6 +122,11 @@
     "helm_hurry": 0,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "zero": 0.1,
+      "one": 0.3,
+      "two": 0.6
+    },
     "helm_setting": {
       "skip_start": 0.7,
       "skip_all": 0.3
@@ -187,6 +206,12 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "rare": 0.7,
+      "mild": 0.2,
+      "common": 0.1
+    },
+    "ice_traps_damage": 0.2,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -209,8 +234,24 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
@@ -360,9 +401,20 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "cannons_require_blast": 0.5,
     "cb_rando": {
       "off": 0.5,
-      "on": 0.5
+      "on": 0.4,
+      "on_with_isles": 0.1
+    },
+    "chaos_blockers": 0.25,
+    "chaos_ratio": {
+      "min": 0.1,
+      "max": 0.35,
+      "mean": 0.25
+    },
+    "chunky_phase_slam_req": {
+      "random": 1
     },
     "coin_door_item": {
       "vanilla": 0.2,
@@ -401,7 +453,7 @@
     },
     "dim_solved_hints": 0.5,
     "disable_tag_barrels": 0.5,
-    "ice_traps_damage": 0.5,
+    "dk_portal_location_rando": 0.1,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.9,
@@ -427,6 +479,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
+    "fast_start_beginning_of_game": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "none": 0.1,
@@ -445,6 +498,8 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0.2,
+    "hard_bosses": 0,
+    "hard_bosses_selected": {},
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0.5,
@@ -452,6 +507,10 @@
     "helm_hurry": 0,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "one": 0.3,
+      "two": 0.7
+    },
     "helm_setting": {
       "default": 0.2,
       "skip_start": 0.6,
@@ -532,6 +591,13 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "rare": 0.5,
+      "mild": 0.3,
+      "common": 0.15,
+      "frequent": 0.05
+    },
+    "ice_traps_damage": 0.5,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -559,8 +625,24 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
@@ -721,9 +803,21 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "cannons_require_blast": 1,
     "cb_rando": {
-      "off": 0.5,
-      "on": 0.5
+      "off": 0.4,
+      "on": 0.3,
+      "on_with_isles": 0.3
+    },
+    "chaos_blockers": 0.6,
+    "chaos_ratio": {
+      "min": 0.25,
+      "max": 0.7,
+      "mean": 0.4
+    },
+    "chunky_phase_slam_req": {
+      "blue": 0.7,
+      "red": 0.3
     },
     "coin_door_item": {
       "vanilla": 0.3,
@@ -762,7 +856,7 @@
     },
     "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
-    "ice_traps_damage": 0.5,
+    "dk_portal_location_rando": 0.3,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
@@ -788,6 +882,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
+    "fast_start_beginning_of_game": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "none": 0.2,
@@ -808,6 +903,13 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
+    "hard_bosses": 0.6,
+    "hard_bosses_selected": {
+      "fast_mad_jack": 0.8,
+      "pufftoss_star_rando": 0.8,
+      "pufftoss_star_raised": 0.5,
+      "kut_out_phase_rando": 0.6
+    },
     "hard_mode": 0.2,
     "hard_mode_selected": {
       "hard_enemies": 0.6,
@@ -823,6 +925,9 @@
     "helm_hurry": 0.05,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "two": 1
+    },
     "helm_setting": {
       "default": 0.3,
       "skip_start": 0.7
@@ -902,6 +1007,13 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "mild": 0.45,
+      "common": 0.4,
+      "frequent": 0.1,
+      "pain": 0.05
+    },
+    "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -929,8 +1041,24 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
@@ -1125,9 +1253,21 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "cannons_require_blast": 1,
     "cb_rando": {
-      "off": 0.7,
-      "on": 0.3
+      "off": 0.4,
+      "on": 0.3,
+      "on_with_isles": 0.3
+    },
+    "chaos_blockers": 0.6,
+    "chaos_ratio": {
+      "min": 0.25,
+      "max": 0.7,
+      "mean": 0.4
+    },
+    "chunky_phase_slam_req": {
+      "blue": 0.7,
+      "red": 0.3
     },
     "coin_door_item": {
       "vanilla": 0.3,
@@ -1166,7 +1306,7 @@
     },
     "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
-    "ice_traps_damage": 0.5,
+    "dk_portal_location_rando": 0.3,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
@@ -1192,6 +1332,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
+    "fast_start_beginning_of_game": 0.9,
     "fast_warps": 0.8,
     "free_trade_setting": {
       "none": 0.2,
@@ -1212,10 +1353,15 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
+    "hard_bosses": 0.6,
+    "hard_bosses_selected": {
+      "fast_mad_jack": 0.8,
+      "pufftoss_star_rando": 0.8,
+      "pufftoss_star_raised": 0.5,
+      "kut_out_phase_rando": 0.6
+    },
     "hard_mode": 0.2,
     "hard_mode_selected": {
-      "hard_bosses": 0.6,
-      "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
       "reduced_fall_damage_threshold": 0.5,
@@ -1229,6 +1375,9 @@
     "helm_hurry": 0.05,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "two": 1
+    },
     "helm_setting": {
       "default": 0.3,
       "skip_start": 0.7
@@ -1308,6 +1457,13 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "mild": 0.45,
+      "common": 0.4,
+      "frequent": 0.1,
+      "pain": 0.05
+    },
+    "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -1335,8 +1491,24 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
