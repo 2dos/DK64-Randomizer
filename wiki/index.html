@@ -196,7 +196,7 @@
             function updateTitle(name) {
                 document.getElementById("page-title").innerText = name;
                 document.getElementById("site_page_identifier").setAttribute("content", name);
-                document.getElementsByTagName("title")[0].innerHTML = name;
+                document.title = name;
             }
 
             function handleUpdates() {

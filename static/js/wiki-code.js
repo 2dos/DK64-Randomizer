@@ -26,7 +26,12 @@ function goTo(url, new_tab=false) {
         window.location.href = url;
         return;
     }
-    if (url.indexOf(".html") === url.length - 5) {
+    const html_index = url.indexOf(".html");
+    if (html_index === -1) {
+        window.location.href = url;
+        return;
+    }
+    if (html_index === (url.length - 5)) {
         window.location.href = `./index.html?title=${url.substring(2, url.length - 5)}`
         return;
     }
