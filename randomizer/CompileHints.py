@@ -256,6 +256,18 @@ level_list = [
     "DK Isles",
     "Cranky's Lab",
 ]
+short_level_list = [
+    "Japes",
+    "Aztec",
+    "Factory",
+    "Galleon",
+    "Forest",
+    "Caves",
+    "Castle",
+    "Helm",
+    "Isles",
+    "Cranky's Lab",
+]
 vacation_levels_properties = [
     "Glorious Hills",
     "Arid Sands",
@@ -377,6 +389,20 @@ boss_names = {
     Maps.KroolLankyPhase: "Lanky Phase",
     Maps.KroolTinyPhase: "Tiny Phase",
     Maps.KroolChunkyPhase: "Chunky Phase",
+}
+boss_colors = {
+    Maps.JapesBoss: "\x08",
+    Maps.AztecBoss: "\x04",
+    Maps.FactoryBoss: "\x0c",
+    Maps.GalleonBoss: "\x06",
+    Maps.FungiBoss: "\x07",
+    Maps.CavesBoss: "\x0a",
+    Maps.CastleBoss: "\x09",
+    Maps.KroolDonkeyPhase: "\x04",
+    Maps.KroolDiddyPhase: "\x05",
+    Maps.KroolLankyPhase: "\x06",
+    Maps.KroolTinyPhase: "\x07",
+    Maps.KroolChunkyPhase: "\x08",
 }
 
 # Hint distribution that will be adjusted based on settings
@@ -1306,7 +1332,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hinted_location_text = f"\x0b{hinted_item_name}\x0b"
             elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
                 # Medal rewards and bosses are treated as "collecting colored bananas" for their region
-                hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                 message = f"Something about collecting {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
             else:
                 message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
@@ -1397,7 +1423,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         message = f"\x0b{hinted_item_name}\x0b is on the path to \x04{key_item.name}\x04."
                     elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
                         # Medal rewards and bosses are treated as "collecting colored bananas" for their region
-                        hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                        hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                         message = f"Something about collecting {hinted_location_text} is on the path to \x04{key_item.name}\x04."
                     else:
                         message = f"Something in the {hinted_location_text} is on the path to \x04{key_item.name}\x04."
@@ -1470,7 +1496,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     message = f"\x0b{hinted_item_name}\x0b is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
                 elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
                     # Medal rewards and bosses are treated as "collecting colored bananas" for their region
-                    hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                    hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                     message = f"Something about collecting {hinted_location_text} is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
                 else:
                     message = f"Something in the {hinted_location_text} is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
@@ -1513,7 +1539,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     message = f"\x0b{hinted_item_name}\x0b is on the path to \x07taking photos\x07."
                 elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
                     # Medal rewards and bosses are treated as "collecting colored bananas" for their region
-                    hinted_location_text = f"{level_colors[region.level]}Colored Bananas in {level_list[region.level]}{level_colors[region.level]}"
+                    hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                     message = f"Something about collecting {hinted_location_text} is on the path to \x07taking photos\x07."
                 else:
                     message = f"Something in the {hinted_location_text} is on the path to \x07taking photos\x07."
@@ -1714,6 +1740,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Types.Funky,
                 Types.Candy,
                 Types.Constant,
+                Types.IslesMedal,
             ):
                 continue
             region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
@@ -1876,13 +1903,14 @@ def compileHints(spoiler: Spoiler) -> bool:
             del foolish_region_location_score[hinted_region_name]
             hint_location = getRandomHintLocation()
             level_color = "\x05"
+            level = Levels.DKIsles
             for region_id in Regions:
                 if spoiler.RegionList[region_id].hint_name == hinted_region_name:
-                    level_color = level_colors[spoiler.RegionList[region_id].level]
+                    region_level = spoiler.RegionList[region_id].level
+                    level_color = level_colors[region_level]
                     break
             if "Medal Rewards" in hinted_region_name:
-                cutoff = hinted_region_name.index(" Medal Rewards")
-                message = f"It would be \x05foolish\x05 to collect {level_color}colored bananas in {hinted_region_name[0:cutoff]}{level_color}."
+                message = f"It would be \x05foolish\x05 to collect {level_color}{short_level_list[region_level]} Colored Bananas{level_color}."
             else:
                 message = f"It would be \x05foolish\x05 to explore the {level_color}{hinted_region_name}{level_color}."
             hint_location.hint_type = HintType.FoolishRegion
@@ -2175,7 +2203,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # No need to do anything fancy here - there's often already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):
         hint_location = getRandomHintLocation()
-        kong_krool_order = [boss_names[map_id] for map_id in spoiler.settings.krool_order]
+        kong_krool_order = [boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id] for map_id in spoiler.settings.krool_order]
         kong_krool_text = ", then ".join(kong_krool_order)
         associated_hint = f"\x08The final battle\x08 will be against {kong_krool_text}."
         hint_location.hint_type = HintType.KRoolOrder
@@ -2702,7 +2730,7 @@ def GenerateMultipathDict(
         if spoiler.settings.win_condition == WinCondition.beat_krool:
             for map_id in spoiler.krool_paths.keys():
                 if location in spoiler.krool_paths[map_id]:
-                    path_to_krool_phases.append(boss_names[map_id])
+                    path_to_krool_phases.append(boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id])
                     relevant_goal_locations.append(Maps(map_id))
         # Determine if this location is on the path to taking photos for certain win conditions
         if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
@@ -2734,7 +2762,7 @@ def GenerateMultipathDict(
                 key_text = "\x04Key "
             hint_text_components.append(key_text + join_words(path_to_keys) + "\x04")
         if len(path_to_krool_phases) > 0:
-            hint_text_components.append("\x0dThe battle against\x0d " + join_words(path_to_krool_phases))
+            hint_text_components.append("Final " + join_words(path_to_krool_phases))
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
         if path_to_family:

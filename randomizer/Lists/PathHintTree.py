@@ -35,7 +35,7 @@ def BuildPathHintTree(woth_paths: Dict[Locations, List[Locations]]) -> Dict[Loca
         # For each item in the path in reverse order - this ensures we find the most-direct parents of this child first
         for path_loc_id in reversed(path):
             # If we've seen this location in our traversal, it's not a direct parent of this node - obviously you're also not your own parent.
-            if path_loc_id not in seen_nodes and path_loc_id != woth_loc_id and path_loc_id in woth_paths.keys():
+            if path_loc_id not in seen_nodes and path_loc_id != woth_loc_id and path_loc_id in woth_paths.keys() and path_loc_id in tree.keys():
                 # Any node we haven't seen must be a direct parent of this node
                 node.parents.append(path_loc_id)
                 # Which means this is a child of that node as well
