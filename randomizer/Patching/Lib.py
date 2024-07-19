@@ -212,6 +212,7 @@ class MenuTexture:
         self.weight = weight
         self.is_color = is_color
 
+
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
 
@@ -244,7 +245,8 @@ class CustomActors(IntEnum):
     CandyItem = auto()
     SnideItem = auto()
     ZingerFlamethrower = auto()
-    BugGroundEnemy = auto()
+    Scarab = auto()
+
 
 compatible_background_textures = {
     0x47A: MenuTexture("Gold Tower Stack", False),

@@ -62,7 +62,7 @@ static const crown_timer_reduction actor_crown_timer_changes[] = {
     {.target_actor = 183, .timer_change = -3}, // Zinger (Charger)
     {.target_actor = 206, .timer_change = -4}, // Zinger (Lime Thrower)
     {.target_actor = CUSTOM_ACTORS_START + NEWACTOR_ZINGERFLAMETHROWER, .timer_change = -4}, // Zinger (Flame Thrower)
-    {.target_actor = CUSTOM_ACTORS_START + NEWACTOR_BUGGROUNDENEMY, .timer_change = -2}, // Scarab
+    {.target_actor = CUSTOM_ACTORS_START + NEWACTOR_SCARAB, .timer_change = -2}, // Scarab
     {.target_actor = 340, .timer_change = -3}, // Trash Can Bug
 };
 

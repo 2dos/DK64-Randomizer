@@ -1170,7 +1170,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806B3E38, Overlay.Static, 0x5700, offset_dict)  # BEQL -> BNEL
 
     # Alter data for bug enemy
-    writeValue(ROM_COPY, 0x8075F0F0, Overlay.Static, 345 + (CustomActors.BugGroundEnemy - 0x8000), offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F0, Overlay.Static, 345 + (CustomActors.Scarab - 0x8000), offset_dict)
     writeValue(ROM_COPY, 0x8075F0F2, Overlay.Static, 0x118 + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075F0F4, Overlay.Static, 0x281, offset_dict)
     writeValue(ROM_COPY, 0x8075F0F6, Overlay.Static, 0, offset_dict)
@@ -1179,7 +1179,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8075F100, Overlay.Static, 0x05030602, offset_dict, 4)
     writeValue(ROM_COPY, 0x8075F104, Overlay.Static, 0x5E5E0164, offset_dict, 4)
     writeValue(ROM_COPY, 0x8074B21E, Overlay.Static, 0xFF8, offset_dict)  # Allow other moves to knock down the bug
-    writeLabelValue(ROM_COPY, 0x8074B244, Overlay.Static, "fixed_scarab_collision", offset_dict) # Collision
+    writeLabelValue(ROM_COPY, 0x8074B244, Overlay.Static, "fixed_scarab_collision", offset_dict)  # Collision
 
     # Statistics
     writeFunction(ROM_COPY, 0x806C8ED0, Overlay.Static, "updateTagStat", offset_dict)

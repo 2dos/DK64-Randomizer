@@ -62,6 +62,9 @@ static const short poke_snap_actors[] = {
     289, // Ghost
     290, // Pufftup
     291, // Kosha
+    340, // Bug (Trash Can)
+    CUSTOM_ACTORS_START + NEWACTOR_ZINGERFLAMETHROWER, // Zinger (Flamethrower)
+    CUSTOM_ACTORS_START + NEWACTOR_SCARAB, // Scarab
 };
 
 void checkSeedVictory(void) {

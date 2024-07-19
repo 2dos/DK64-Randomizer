@@ -1,4 +1,5 @@
 """Adjusting the rotation of the pause menu."""
+
 from BuildEnums import ExtraTextures
 from BuildLib import getBonusSkinOffset
 

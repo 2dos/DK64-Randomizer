@@ -411,24 +411,28 @@ for x in range(0x5A, 0x5E):
     file_dict.append(File(name=f"Melon Slice ({hex(x)})", pointer_table_index=TableNames.TexturesHUD, file_index=x, source_file=f"melon{x}.bin", target_compressed_size=48 * 42 * 2))
 
 for x in range(7):
-    file_dict.append(File(
-        name=f"Scarab Texture {x}",
-        pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(ExtraTextures.BeetleTex0 + x),
-        source_file=f"assets/hash/beetle_img_{0xFC3 + x}.png",
-        texture_format=TextureFormat.RGBA5551,
-        do_not_delete_source=True,
-    ))
+    file_dict.append(
+        File(
+            name=f"Scarab Texture {x}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.BeetleTex0 + x),
+            source_file=f"assets/hash/beetle_img_{0xFC3 + x}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+        )
+    )
 
 for x in range(8):
-    file_dict.append(File(
-        name=f"Feather Sprite (firing) texture {x}",
-        pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(ExtraTextures.Feather0) + x,
-        source_file=f"assets/displays/feather{x}.png",
-        texture_format=TextureFormat.RGBA5551,
-        do_not_delete_source=True,
-    ))
+    file_dict.append(
+        File(
+            name=f"Feather Sprite (firing) texture {x}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.Feather0) + x,
+            source_file=f"assets/displays/feather{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+        )
+    )
 
 for item in range(3):
     file_dict.append(

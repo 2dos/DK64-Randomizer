@@ -54,6 +54,7 @@ def stroke(img: Image, stroke_color: tuple = (255, 255, 255), stroke_radius: int
     output = Image.alpha_composite(stroke_image, img)
     return output
 
+
 def bump_saturation(image: Image, factor: float) -> Image:
     """Increase the saturation of the provided PIL image."""
     enhancer = ImageEnhance.Color(image)
