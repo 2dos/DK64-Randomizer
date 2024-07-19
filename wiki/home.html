@@ -156,7 +156,6 @@
         <script type="text/javascript">
             async function prepSuggestions() {
                 const article_lst = await getSuggestions();
-                console.log(article_lst)
                 $('#article-search').typeahead({
                     source: article_lst,
                     displayText: (item) => {
