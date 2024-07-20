@@ -705,7 +705,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
-					if(param2 == JAPES_CAVE_GATE && Rando.switchsanity.japes.diddy_cave){
+					if ((param2 == JAPES_PEANUT_MOUNTAIN) && (index == 1)) {
+						if (Rando.quality_of_life.mountain_bridge_extended) {
+							return 1;
+						}
+						return 0;
+					}
+					if (param2 == JAPES_CAVE_GATE && Rando.switchsanity.japes.diddy_cave) {
 						return 0;
 					}
 					return !Rando.tag_anywhere;
