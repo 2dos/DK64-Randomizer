@@ -84,7 +84,7 @@ def ShuffleItems(spoiler):
         ice_trap_flag_range.extend(list(range(0x320, 0x320 + junk_invasion)))
     junk_item_flag_range = list(range(0x320 + junk_invasion, 0x320 + 100))
     if Types.Enemies in spoiler.settings.shuffled_location_types:
-        junk_item_flag_range.extend(list(range(0x3CB, 0x3CB + 426)))
+        junk_item_flag_range.extend(list(range(0x3CB, 0x3CB + 427)))
 
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],

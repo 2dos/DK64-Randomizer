@@ -834,7 +834,7 @@ def patchAssembly(ROM_COPY, spoiler):
     balloon_patch_count = 150
     static_expansion = 0x100
     if settings.enemy_drop_rando:
-        static_expansion += 426  # Total Enemies
+        static_expansion += 427  # Total Enemies
     if False:  # TODO: Check Archipelago
         static_expansion += 400  # Archipelago Flag size
     expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)

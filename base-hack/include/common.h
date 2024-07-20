@@ -9,7 +9,7 @@
 
 #define FILENAME_LENGTH 8
 #define SONG_COUNT 176
-#define ENEMIES_TOTAL 426
+#define ENEMIES_TOTAL 427
 #define ENEMY_REWARD_CACHE_SIZE 16
 #include "../include2/ultra64.h"
 #include "common_enums.h"
