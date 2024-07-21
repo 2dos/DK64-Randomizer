@@ -752,6 +752,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806AF70C, Overlay.Static, "GuardDeathHandle", offset_dict)
     writeHook(ROM_COPY, 0x806AE55C, Overlay.Static, "GuardAutoclear", offset_dict)
     writeHook(ROM_COPY, 0x80637148, Overlay.Static, "ObjectRotate", offset_dict)
+    writeHook(ROM_COPY, 0x8063365C, Overlay.Static, "WriteDefaultShopBone", offset_dict)
     writeHook(ROM_COPY, 0x806A86FC, Overlay.Static, "PauseControl_Control", offset_dict)
     writeHook(ROM_COPY, 0x806AA414, Overlay.Static, "PauseControl_Sprite", offset_dict)
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)

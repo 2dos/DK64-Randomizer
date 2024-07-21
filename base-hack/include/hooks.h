@@ -44,6 +44,7 @@ extern void GuardDeathHandle(void);
 extern void TextHandler(void);
 extern void GuardAutoclear(void);
 extern void ObjectRotate(void);
+extern void WriteDefaultShopBone(void);
 extern void SpriteFix(void);
 extern void PauseControl_Control(void);
 extern void PauseControl_Sprite(void);
