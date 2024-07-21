@@ -130,7 +130,7 @@ class EnemyLoc:
             permitted = []
             for x in range(4):
                 if len(permitted) == 0:
-                    permitted = [enemy for enemy in self.allowed_enemies[x] if enemy in enabled_enemies or len(enabled_enemies) == 0]
+                    permitted = [enemy for enemy in self.allowed_enemies[x] if (enemy in enabled_enemies or len(enabled_enemies) == 0) and EnemyMetaData[enemy].selector_enabled]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:
@@ -490,6 +490,7 @@ EnemyMetaData = {
         crown_enabled=False,
         interaction=InteractionMethods(),
         size_cap=50,
+        selector_enabled=False,
     ),
 }
 
