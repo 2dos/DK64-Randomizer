@@ -476,6 +476,7 @@ bloat_actors = [
     {"name": "Klump", "file": 0x39, "size": 0x56D0},
     {"name": "Candy", "file": 0x12, "size": 0x64A0},
     {"name": "Kasplat", "file": 0x36, "size": 0x42F4},
+    {"name": "Fairy", "file": 0x3C, "size": 0x1500},
 ]
 
 for actor in bloat_actors:
@@ -952,6 +953,9 @@ colorblind_changes = [
     [0xED6, 0xED6, 1, 1372],  # Funky Camo
     [0xEDF, 0xEDF, 1, 1372],  # Funky Camo
     [0xEF7, 0xEF8, 32, 32],  # Snake Skin
+    [0x138D, 0x1397, 32, 64],  # Fairy Particles
+    [0xFB2, 0xFC2], # Scoff
+    [0xF78, 0xF8F], # Troff
 ]
 
 kremling_dimensions = [
@@ -1002,18 +1006,6 @@ for dim_index, dims in enumerate(rabbit_dimensions):
 for tex_set in krobot_textures:
     for tex in tex_set[1]:
         colorblind_changes.append([tex, tex, tex_set[0][0], tex_set[0][1]])
-
-for change in colorblind_changes:
-    for file_index in range(change[0], change[1] + 1):
-        file_dict.append(
-            File(
-                name=f"Colorblind Expansion {file_index}",
-                pointer_table_index=TableNames.TexturesGeometry,
-                file_index=file_index,
-                source_file=f"colorblind_exp_{file_index}.bin",
-                target_size=2 * change[2] * change[3],
-            )
-        )
 
 for bi, b in enumerate(barrel_skins):
     for x in range(2):
@@ -1318,6 +1310,26 @@ for x in range(216):
 print("\nDK64 Extractor\nBuilt by Isotarge")
 
 with open(ROMName, "rb") as fh:
+    # Colorblind Change Work
+    fh.seek(0x101C50 + (TableNames.UncompressedFileSizes << 2))
+    unc_table = 0x101C50 + int.from_bytes(fh.read(4), "big")
+    fh.seek(unc_table + (TableNames.TexturesGeometry << 2))
+    unc_table_25 = 0x101C50 + int.from_bytes(fh.read(4), "big")
+    for change in colorblind_changes:
+        for file_index in range(change[0], change[1] + 1):
+            fh.seek(unc_table_25 + (file_index << 2))
+            file_size = int.from_bytes(fh.read(4), "big")
+            file_dict.append(
+                File(
+                    name=f"Colorblind Expansion {file_index}",
+                    pointer_table_index=TableNames.TexturesGeometry,
+                    file_index=file_index,
+                    source_file=f"colorblind_exp_{file_index}.bin",
+                    target_size=file_size,
+                )
+            )
+
+
     print("[1 / 7] - Parsing pointer tables")
     parsePointerTables(fh)
     readOverlayOriginalData(fh)
@@ -1590,6 +1602,9 @@ with open(newROMName, "r+b") as fh:
         True,  # Ghost
         True,  # Pufftup
         True,  # Kosha
+        False,  # Bug
+        False,  # Scarab
+        False,  # Zinger Flames
     ]
     values = [0, 0, 0, 0, 0]
     for pi, p in enumerate(pkmn_snap_enemies):

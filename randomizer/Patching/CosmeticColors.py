@@ -34,7 +34,7 @@ from randomizer.Patching.Lib import (
     getRawFile,
     writeRawFile,
 )
-from randomizer.Patching.LibImage import getImageFile, TextureFormat
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -1064,27 +1064,6 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
                     base[channel] = base_original[channel]
             pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
-
-
-def hueShift(im, amount):
-    """Apply a hue shift on an image."""
-    hsv_im = im.convert("HSV")
-    im_px = im.load()
-    w, h = hsv_im.size
-    hsv_px = hsv_im.load()
-    for y in range(h):
-        for x in range(w):
-            old = list(hsv_px[x, y]).copy()
-            old[0] = (old[0] + amount) % 360
-            hsv_px[x, y] = (old[0], old[1], old[2])
-    rgb_im = hsv_im.convert("RGB")
-    rgb_px = rgb_im.load()
-    for y in range(h):
-        for x in range(w):
-            new = list(rgb_px[x, y])
-            new.append(list(im_px[x, y])[3])
-            im_px[x, y] = (new[0], new[1], new[2], new[3])
-    return im
 
 
 def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
@@ -2401,11 +2380,6 @@ def getBonusSkinOffset(offset: int):
     return 6026 + (3 * len(barrel_skins)) + offset
 
 
-def getRandomHueShift(min: int = -359, max: int = 359) -> int:
-    """Get random hue shift."""
-    return random.randint(min, max)
-
-
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
     """Get value from byte array given an offset and size."""
     value = 0
@@ -2629,7 +2603,6 @@ def writeMiscCosmeticChanges(settings):
                 kosha_im = getImageFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
                 kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
                 writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
-        if enemy_setting == RandomModels.extreme:
             # Kremling
             kremling_dimensions = [
                 [32, 64],  # FCE
@@ -2678,6 +2651,69 @@ def writeMiscCosmeticChanges(settings):
             snake_shift = getRandomHueShift()
             for x in range(2):
                 hueShiftImageContainer(25, 0xEF7 + x, 32, 32, TextureFormat.RGBA5551, snake_shift)
+        headphones_shift = getRandomHueShift()
+        for x in range(8):
+            hueShiftImageContainer(7, 0x3D3 + x, 40, 40, TextureFormat.RGBA5551, headphones_shift)
+        fairy_particles_shift = getRandomHueShift()
+        for x in range(0xB):
+            hueShiftImageContainer(25, 0x138D + x, 32, 32, TextureFormat.RGBA32, fairy_particles_shift)
+        race_coin_shift = getRandomHueShift()
+        for x in range(8):
+            hueShiftImageContainer(7, 0x1F0 + x, 48, 42, TextureFormat.RGBA5551, race_coin_shift)
+        scoff_shift = getRandomHueShift()
+        troff_shift = getRandomHueShift()
+        scoff_data = {
+            0xfb8: 0x55c,
+            0xfb9: 0x800,
+            0xfba: 0x40,
+            0xfbb: 0x800,
+            0xfbc: 0x240,
+            0xfbd: 0x480,
+            0xfbe: 0x80,
+            0xfbf: 0x800,
+            0xfc0: 0x200,
+            0xfc1: 0x240,
+            0xfc2: 0x100,
+            0xfb2: 0x240,
+            0xfb3: 0x800,
+            0xfb4: 0x800,
+            0xfb5: 0x200,
+            0xfb6: 0x200,
+            0xfb7: 0x200,
+        }
+        troff_data = {
+            0xf78: 0x800,
+            0xf79: 0x800,
+            0xf7a: 0x800,
+            0xf7b: 0x800,
+            0xf7c: 0x800,
+            0xf7d: 0x400,
+            0xf7e: 0x600,
+            0xf7f: 0x400,
+            0xf80: 0x800,
+            0xf81: 0x600,
+            0xf82: 0x400,
+            0xf83: 0x400,
+            0xf84: 0x800,
+            0xf85: 0x800,
+            0xf86: 0x280,
+            0xf87: 0x180,
+            0xf88: 0x800,
+            0xf89: 0x800,
+            0xf8a: 0x400,
+            0xf8b: 0x300,
+            0xf8c: 0x800,
+            0xf8d: 0x400,
+            0xf8e: 0x500,
+            0xf8f: 0x180,
+        }
+        for img in scoff_data:
+            hueShiftImageContainer(25, img, 1, scoff_data[img], TextureFormat.RGBA5551, scoff_shift)
+            
+        # Scoff had too many bananas, and passed potassium poisoning onto Troff
+        # https://i.imgur.com/WFDLSzA.png
+        # for img in troff_data:
+        #     hueShiftImageContainer(25, img, 1, troff_data[img], TextureFormat.RGBA5551, troff_shift)
         # Krobot
         spinner_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0xFA9, 1, 1372, TextureFormat.RGBA5551, spinner_shift)
@@ -2760,6 +2796,7 @@ def writeMiscCosmeticChanges(settings):
                 ]
             ),
             Model.Kasplat: EnemyColorSwap([0x8FD8FF, 0x182A4F, 0x0B162C, 0x7A98D3, 0x3F6CC4, 0x8FD8FF, 0x284581]),
+            Model.BananaFairy: EnemyColorSwap([0xFFD400, 0xFFAA00, 0xFCD200, 0xD68F00, 0xD77D0A, 0xe49800, 0xdf7f1f, 0xa26c00, 0xd6b200, 0xdf9f1f])
         }
         if enemy_setting == RandomModels.extreme:
             enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859])
