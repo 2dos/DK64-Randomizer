@@ -670,6 +670,7 @@ def apply_cosmetic_colors(settings: Settings):
 
     if js.document.getElementById("override_cosmetics").checked or True:
         writeTransition(settings)
+        writeCustomPortal(settings)
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -3548,3 +3549,48 @@ def writeTransition(settings: Settings) -> None:
     settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)
+
+def writeCustomPortal(settings: Settings) -> None:
+    """Write custom portal file to ROM."""
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.tns_portals is None:
+        return
+    if js.cosmetic_names.tns_portals is None:
+        return
+    file_data = list(zip(js.cosmetics.tns_portals, js.cosmetic_names.tns_portals))
+    settings.custom_troff_portal = None
+    if len(file_data) == 0:
+        return
+    selected_portal = random.choice(file_data)
+    settings.custom_troff_portal = selected_portal[1].split("/")[-1]  # File Name
+    im_f = Image.open(BytesIO(bytes(selected_portal[0])))
+    im_f = im_f.resize((63, 63)).transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+    portal_data = {
+        "NW": {
+            "x_min": 0,
+            "y_min": 0,
+            "writes": [0x39E, 0x39F],
+        },
+        "SW": {
+            "x_min": 0,
+            "y_min": 31,
+            "writes": [0x3A0, 0x39D],
+        },
+        "SE": {
+            "x_min": 31,
+            "y_min": 31,
+            "writes": [0x3A2, 0x39B],
+        },
+        "NE": {
+            "x_min": 31,
+            "y_min": 0,
+            "writes": [0x39C, 0x3A1],
+        },
+    }
+    for sub in portal_data.keys():
+        x_min = portal_data[sub]["x_min"]
+        y_min = portal_data[sub]["y_min"]
+        local_img = im_f.crop((x_min, y_min, x_min + 32, y_min + 32))
+        for idx in portal_data[sub]["writes"]:
+            writeColorImageToROM(local_img, 7, idx, 32, 32, False, TextureFormat.RGBA5551)
