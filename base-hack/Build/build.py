@@ -1803,8 +1803,6 @@ with open(newROMName, "r+b") as fh:
         "osprint_logo_left",
         "osprint_logo_right",
         "fool_overlay",
-        "white_font_early",
-        "white_font_late",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -1864,6 +1862,8 @@ with open(newROMName, "r+b") as fh:
         "beetle_img_4039",
         "beetle_img_4040",
         "beetle_img_4041",
+        "white_font_early",
+        "white_font_late",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]
