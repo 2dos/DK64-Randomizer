@@ -435,15 +435,15 @@ for x in range(8):
     )
 
 file_dict.append(
-        File(
-            name=f"Fool Overlay",
-            pointer_table_index=TableNames.TexturesGeometry,
-            file_index=getBonusSkinOffset(ExtraTextures.FoolOverlay),
-            source_file=f"assets/displays/fool_overlay.png",
-            texture_format=TextureFormat.IA8,
-            do_not_delete_source=True,
-        )
+    File(
+        name=f"Fool Overlay",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.FoolOverlay),
+        source_file=f"assets/displays/fool_overlay.png",
+        texture_format=TextureFormat.IA8,
+        do_not_delete_source=True,
     )
+)
 
 for item in range(3):
     file_dict.append(
@@ -965,8 +965,8 @@ colorblind_changes = [
     [0xEDF, 0xEDF, 1, 1372],  # Funky Camo
     [0xEF7, 0xEF8, 32, 32],  # Snake Skin
     [0x138D, 0x1397, 32, 64],  # Fairy Particles
-    [0xFB2, 0xFC2], # Scoff
-    [0xF78, 0xF8F], # Troff
+    [0xFB2, 0xFC2],  # Scoff
+    [0xF78, 0xF8F],  # Troff
 ]
 
 kremling_dimensions = [
@@ -1339,7 +1339,6 @@ with open(ROMName, "rb") as fh:
                     target_size=file_size,
                 )
             )
-
 
     print("[1 / 7] - Parsing pointer tables")
     parsePointerTables(fh)

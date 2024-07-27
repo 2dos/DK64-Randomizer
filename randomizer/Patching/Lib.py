@@ -200,12 +200,14 @@ icon_db = {
     0xAF: "wrinkly",
 }
 
+
 class MenuTextDim(IntEnum):
     """Definition of base size of image."""
 
     size_w32_h32 = auto()
     size_w32_h64 = auto()
     size_w64_h32 = auto()
+
 
 class MenuTexture:
     """Class to store information regarding a texture compatible with the main menu background."""

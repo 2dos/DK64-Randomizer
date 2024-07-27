@@ -845,6 +845,7 @@ class ExtraTextures(IntEnum):
     Feather7 = auto()
     FoolOverlay = auto()
 
+
 class MoveTypes(IntEnum):
     """Move Types Enum."""
 

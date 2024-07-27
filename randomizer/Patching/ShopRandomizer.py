@@ -661,7 +661,7 @@ def ApplyShopRandomizer(spoiler):
                     0x124: VendorType.Candy,
                     0x79: VendorType.Snide,
                 }
-                
+
                 base_model_scale = [88, 88]
                 if placement["replace_model"] == 0x73:
                     # Cranky
@@ -675,7 +675,7 @@ def ApplyShopRandomizer(spoiler):
                 elif placement["replace_model"] == 0x79:
                     # Snide
                     base_model_scale = [87.5, 59.5]
-                
+
                 base_model_idx = 0
                 if map == Maps.GloomyGalleon and lz_id in (17, 24):
                     base_model_idx = 1

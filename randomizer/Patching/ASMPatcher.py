@@ -344,6 +344,7 @@ def getActorIndex(input: int) -> int:
         return CUSTOM_ACTORS_START + (input & 0x7FFF)
     return input
 
+
 def hueShiftImageFromAddress(address: int, width: int, height: int, format: TextureFormat, shift: int):
     size_per_px = {
         TextureFormat.RGBA5551: 2,
@@ -371,6 +372,7 @@ def hueShiftImageFromAddress(address: int, width: int, height: int, format: Text
     px_data = bytearray(bytes_array)
     ROM().seek(address)
     ROM().writeBytes(px_data)
+
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
@@ -511,7 +513,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
             0x8003D3B8,
             0x8003D600,
             0x8003D848,
-            0x8003DA90, # 8px version
+            0x8003DA90,  # 8px version
         ]
         dk_addresses = [
             0x8003E9F0,
@@ -537,6 +539,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         for addr in dk_addresses:
             rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
             hueShiftImageFromAddress(rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
+
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
     """Determine if a faster check setting is enabled."""

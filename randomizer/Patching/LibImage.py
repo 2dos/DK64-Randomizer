@@ -19,6 +19,7 @@ class TextureFormat(IntEnum):
     IA8 = auto()
     IA4 = auto()
 
+
 def getImageFromAddress(rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):
     """Get image from a ROM address."""
     try:
@@ -50,6 +51,7 @@ def getImageFromAddress(rom_address: int, width: int, height: int, compressed: b
             pix[x, y] = (red, green, blue, alpha)
     return im_f
 
+
 def getImageFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat):
     """Grab image from file."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
@@ -57,9 +59,11 @@ def getImageFile(table_index: int, file_index: int, compressed: bool, width: int
     file_size = file_end - file_start
     return getImageFromAddress(file_start, width, height, compressed, file_size, format)
 
+
 def getRandomHueShift(min: int = -359, max: int = 359) -> int:
     """Get random hue shift."""
     return random.randint(min, max)
+
 
 def hueShift(im, amount):
     """Apply a hue shift on an image."""
