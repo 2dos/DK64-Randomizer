@@ -89,6 +89,12 @@ def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, lz_id:
         VendorType.Cranky: 4,
         VendorType.Snide: 4,
     }
+    bone_id = {
+        VendorType.Candy: 1,
+        VendorType.Funky: 3,
+        VendorType.Cranky: 10,
+        VendorType.Snide: 10,
+    }
 
     range_val = 100
     if water_id is not None:
@@ -99,7 +105,7 @@ def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, lz_id:
                 ],
                 [
                     FunctionData(27, [water_id, 1, 0]),
-                    FunctionData(123, [lz_id, 1, 0]),
+                    FunctionData(123, [lz_id, bone_id.get(vendor, 0), 0]),
                 ],
             )
         )
@@ -641,10 +647,13 @@ def ApplyShopRandomizer(spoiler):
                     model_z = int(model_z) + 65536
                 else:
                     model_z = int(model_z)
-                ROM_COPY.seek(zone_item)
-                ROM_COPY.writeMultipleBytes(model_x, 2)
-                ROM_COPY.seek(zone_item + 0x4)
-                ROM_COPY.writeMultipleBytes(model_z, 2)
+                ROM_COPY.seek(zone_item + 0xA)
+                lz_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if map != Maps.GloomyGalleon or lz_id not in (17, 24):
+                    ROM_COPY.seek(zone_item)
+                    ROM_COPY.writeMultipleBytes(model_x, 2)
+                    ROM_COPY.seek(zone_item + 0x4)
+                    ROM_COPY.writeMultipleBytes(model_z, 2)
                 # Overwrite new radius
                 model_to_vendor_table = {
                     0x73: VendorType.Cranky,
@@ -652,24 +661,26 @@ def ApplyShopRandomizer(spoiler):
                     0x124: VendorType.Candy,
                     0x79: VendorType.Snide,
                 }
-                base_model_scale = 88
+
+                base_model_scale = [88, 88]
                 if placement["replace_model"] == 0x73:
                     # Cranky
-                    base_model_scale = 50
+                    base_model_scale = [50, 30]
                 elif placement["replace_model"] == 0x7A:
                     # Funky
-                    base_model_scale = 55
+                    base_model_scale = [55, 27]
                 elif placement["replace_model"] == 0x124:
                     # Candy
-                    base_model_scale = 40.1
+                    base_model_scale = [40.1, 14]
                 elif placement["replace_model"] == 0x79:
                     # Snide
-                    base_model_scale = 87.5
-                ROM_COPY.seek(zone_item + 0xA)
-                lz_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                if map != Maps.GloomyGalleon or lz_id not in (17, 24):
-                    ROM_COPY.seek(zone_item + 0x6)
-                    ROM_COPY.writeMultipleBytes(int(base_model_scale * new_scale), 2)
+                    base_model_scale = [87.5, 59.5]
+
+                base_model_idx = 0
+                if map == Maps.GloomyGalleon and lz_id in (17, 24):
+                    base_model_idx = 1
+                ROM_COPY.seek(zone_item + 0x6)
+                ROM_COPY.writeMultipleBytes(int(base_model_scale[base_model_idx] * new_scale), 2)
                 # Loading Zone
                 ROM_COPY.seek(zone_item + 0x12)
                 ROM_COPY.writeMultipleBytes(placement["replace_zone"], 2)

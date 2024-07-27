@@ -78,3 +78,13 @@ ObjectRotate:
         cvt.d.s $f8, $f6
         j 0x80637178
         sub.d $f16, $f8, $f10
+
+WriteDefaultShopBone:
+    lwc1 $f0, 0x8 ($t9)
+    swc1 $f0, 0x0 ($t2)
+    lw $t3, 0x28 ($sp)
+    lwc1 $f0, 0x4 ($t9)
+    swc1 $f0, 0x0 ($t3)
+    lwc1 $f0, 0x0 ($t9)
+    j 0x8063366C
+    swc1 $f0, 0x0 ($a3)

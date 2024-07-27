@@ -50,6 +50,7 @@ QoLItems = [
     MultiselectorItem("Better Fairy Camera", -1, "Fairy camera range has been increased, and the wall check has been removed to improve ease of taking photos."),
     MultiselectorItem("Remove Enemy Cabin Timer", 24, "Removes the enemy 5-Door Cabin timer in Crystal Caves."),
     MultiselectorItem("Remove Galleon Ship Timers", 6, "The gates to the two shipwrecks in Galleon will be permanently opened after activating their respective switches."),
+    MultiselectorItem("Japes Bridge Permanently Extended", 2, "The spiral bridge around Japes Mountain will be permanently extended as soon as you shoot the peanut switch."),
 ]
 RemovedBarrierItems = [
     MultiselectorItem("Japes Coconut Gates", 5, "The gates that block the tunnels from Japes main to its various tunnels will be opened."),

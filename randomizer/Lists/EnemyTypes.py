@@ -130,7 +130,7 @@ class EnemyLoc:
             permitted = []
             for x in range(4):
                 if len(permitted) == 0:
-                    permitted = [enemy for enemy in self.allowed_enemies[x] if enemy in enabled_enemies or len(enabled_enemies) == 0]
+                    permitted = [enemy for enemy in self.allowed_enemies[x] if (enemy in enabled_enemies or len(enabled_enemies) == 0) and EnemyMetaData[enemy].selector_enabled]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:
@@ -490,6 +490,7 @@ EnemyMetaData = {
         crown_enabled=False,
         interaction=InteractionMethods(),
         size_cap=50,
+        selector_enabled=False,
     ),
 }
 
@@ -576,6 +577,7 @@ enemy_location_list = {
     Locations.AztecMainEnemy_AroundTotem: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 33, [], True),
     Locations.AztecMainEnemy_StartingTunnel2: EnemyLoc(Maps.AngryAztec, Enemies.ZingerCharger, 38, [], True),
     Locations.AztecMainEnemy_StartingTunnel3: EnemyLoc(Maps.AngryAztec, Enemies.ZingerCharger, 39, [], True),
+    Locations.AztecMainEnemy_OutsideSnide: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 40, [], True),
     Locations.AztecMainEnemy_Outside5DT: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 41, [], True),
     Locations.AztecMainEnemy_NearSnoopTunnel: EnemyLoc(Maps.AngryAztec, Enemies.Kremling, 42, [], True),
     # Lobby

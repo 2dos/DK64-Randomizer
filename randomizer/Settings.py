@@ -554,6 +554,7 @@ class Settings:
         self.fill_with_custom_music = False
         self.show_song_name = False
         self.custom_transition = None
+        self.custom_troff_portal = None
 
         #  Misc
         self.generate_spoilerlog = None

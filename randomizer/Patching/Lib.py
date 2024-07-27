@@ -201,13 +201,21 @@ icon_db = {
 }
 
 
+class MenuTextDim(IntEnum):
+    """Definition of base size of image."""
+
+    size_w32_h32 = auto()
+    size_w32_h64 = auto()
+    size_w64_h32 = auto()
+
+
 class MenuTexture:
     """Class to store information regarding a texture compatible with the main menu background."""
 
-    def __init__(self, name: str, is32by32: bool, table: int = 25, weight: int = 100, is_color: bool = False):
+    def __init__(self, name: str, dim: MenuTextDim, table: int = 25, weight: int = 100, is_color: bool = False):
         """Initialize with given parameters."""
         self.name = name
-        self.is32by32 = is32by32
+        self.dim = dim
         self.table = table
         self.weight = weight
         self.is_color = is_color
@@ -249,33 +257,100 @@ class CustomActors(IntEnum):
 
 
 compatible_background_textures = {
-    0x47A: MenuTexture("Gold Tower Stack", False),
-    0x9DD: MenuTexture("Book", False),
-    0x5C8: MenuTexture("Bricks", False),
-    0x76F: MenuTexture("Bricks", False),
-    0xAAF: MenuTexture("Floodlights", False),
-    0x33D: MenuTexture("Wooden Board", False),
-    0x79C: MenuTexture("Grassy Brick", False),
-    0x992: MenuTexture("Wooden Door", False),
-    0x39B: MenuTexture("C Block", True, 25, 7),
-    0x39C: MenuTexture("G Block", True, 25, 7),
-    0x39D: MenuTexture("9 Block", True, 25, 7),
-    0x39F: MenuTexture("R Block", True, 25, 7),
-    0x3A0: MenuTexture("S Block", True, 25, 7),
-    0x3A1: MenuTexture("1 Block", True, 25, 7),
-    0x3A2: MenuTexture("F Block", True, 25, 7),
-    0x3A3: MenuTexture("8 Block", True, 25, 7),
-    0x3A4: MenuTexture("7 Block", True, 25, 7),
-    0x3A5: MenuTexture("B Block", True, 25, 7),
-    0x3A6: MenuTexture("4 Block", True, 25, 7),
-    0x3A7: MenuTexture("N Block", True, 25, 7),
-    0x3A8: MenuTexture("D Block", True, 25, 7),
-    0x3A9: MenuTexture("Q Block", True, 25, 7),
-    0x7B2: MenuTexture("Up Arrow", True, 25, 50),
-    0x7B3: MenuTexture("Down Arrow", True, 25, 50),
-    0xAC: MenuTexture("TNT", True),
-    0x7CD: MenuTexture("Night Sign", True),
-    0x3DE: MenuTexture("Color", True, 7, 50, True),
+    0x47A: MenuTexture("Gold Tower Stack", MenuTextDim.size_w32_h64),
+    0x9DD: MenuTexture("Book", MenuTextDim.size_w32_h64),
+    0x5C8: MenuTexture("Bricks", MenuTextDim.size_w32_h64),
+    0x76F: MenuTexture("Bricks", MenuTextDim.size_w32_h64),
+    0xAAF: MenuTexture("Floodlights", MenuTextDim.size_w32_h64),
+    0x33D: MenuTexture("Wooden Board", MenuTextDim.size_w32_h64),
+    0x79C: MenuTexture("Grassy Brick", MenuTextDim.size_w32_h64),
+    0x992: MenuTexture("Wooden Door", MenuTextDim.size_w32_h64),
+    0x39B: MenuTexture("C Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x39C: MenuTexture("G Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x39D: MenuTexture("9 Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x39F: MenuTexture("R Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A0: MenuTexture("S Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A1: MenuTexture("1 Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A2: MenuTexture("F Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A3: MenuTexture("8 Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A4: MenuTexture("7 Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A5: MenuTexture("B Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A6: MenuTexture("4 Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A7: MenuTexture("N Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A8: MenuTexture("D Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x3A9: MenuTexture("Q Block", MenuTextDim.size_w32_h32, 25, 7),
+    0x7B2: MenuTexture("Up Arrow", MenuTextDim.size_w32_h32, 25, 50),
+    0x7B3: MenuTexture("Down Arrow", MenuTextDim.size_w32_h32, 25, 50),
+    0xAC: MenuTexture("TNT", MenuTextDim.size_w32_h32),
+    0x7CD: MenuTexture("Night Sign", MenuTextDim.size_w32_h32),
+    0x3DE: MenuTexture("Color", MenuTextDim.size_w32_h32, 7, 50, MenuTextDim.size_w32_h32),
+    0xF7: MenuTexture("Grass", MenuTextDim.size_w32_h32),
+    0xA00: MenuTexture("Sand", MenuTextDim.size_w32_h32),
+    0xA84: MenuTexture("Sand", MenuTextDim.size_w32_h32),
+    0xB4D: MenuTexture("Leaf", MenuTextDim.size_w32_h32),
+    0xB19: MenuTexture("Boxes", MenuTextDim.size_w32_h32),
+    0xB24: MenuTexture("Pineapple Switch", MenuTextDim.size_w32_h32),
+    0xB25: MenuTexture("Coconut Switch", MenuTextDim.size_w32_h32),
+    0xB1E: MenuTexture("Peanut Switch", MenuTextDim.size_w32_h32),
+    0xC80: MenuTexture("Feather Switch", MenuTextDim.size_w32_h32),
+    0xC81: MenuTexture("Grape Switch", MenuTextDim.size_w32_h32),
+    0xB27: MenuTexture("Boxes", MenuTextDim.size_w32_h32),
+    0xCF1: MenuTexture("L Square", MenuTextDim.size_w32_h32),
+    0xCF4: MenuTexture("R Square", MenuTextDim.size_w32_h32),
+    0xE63: MenuTexture("Metallic Green", MenuTextDim.size_w32_h32),
+    0x9F3: MenuTexture("Watery Blue", MenuTextDim.size_w32_h32),
+    0x9F4: MenuTexture("Watery Yellow", MenuTextDim.size_w32_h32),
+    0x83: MenuTexture("Beige Strips", MenuTextDim.size_w32_h32),
+    0x788: MenuTexture("Beige Panels", MenuTextDim.size_w32_h32),
+    0x789: MenuTexture("Blue Panels", MenuTextDim.size_w32_h32),
+    0x792: MenuTexture("White Granite", MenuTextDim.size_w32_h32),
+    0x1258: MenuTexture("Horizontal Metal Green", MenuTextDim.size_w32_h32),
+    0x1260: MenuTexture("Red Light", MenuTextDim.size_w32_h32),
+    0x1343: MenuTexture("Fluid Red", MenuTextDim.size_w32_h32),
+    0x1344: MenuTexture("Fluid Green", MenuTextDim.size_w32_h32),
+    0x1347: MenuTexture("Fluid Orange", MenuTextDim.size_w32_h32),
+    0x1348: MenuTexture("Fluid Blue", MenuTextDim.size_w32_h32),
+    0xCC: MenuTexture("Bathroom Wall", MenuTextDim.size_w32_h64),
+    0xCD5: MenuTexture("Orange Barrel", MenuTextDim.size_w32_h64),
+    0xCD6: MenuTexture("Green Barrel", MenuTextDim.size_w32_h64),
+    0xCD7: MenuTexture("Purple Barrel", MenuTextDim.size_w32_h64),
+    0xCD8: MenuTexture("Yellow Barrel", MenuTextDim.size_w32_h64),
+    0xCD9: MenuTexture("Blue Barrel", MenuTextDim.size_w32_h64),
+    0xCDA: MenuTexture("Red Barrel", MenuTextDim.size_w32_h64),
+    0xE3A: MenuTexture("Light Fixing", MenuTextDim.size_w32_h64),
+    0x8F5: MenuTexture("Metal Pillars", MenuTextDim.size_w32_h64),
+    0x786: MenuTexture("Just Straight Dirt", MenuTextDim.size_w32_h64),
+    0x1257: MenuTexture("Copper", MenuTextDim.size_w32_h64),
+    # 0xC: MenuTexture("Shelf of Bananas", MenuTextDim.size_w64_h32),
+    # 0xD: MenuTexture("Shelf of Books", MenuTextDim.size_w64_h32),
+    # 0xE: MenuTexture("Shelf of Wine", MenuTextDim.size_w64_h32),
+    0xA8F: MenuTexture("Grime Panels", MenuTextDim.size_w64_h32),
+    0xA43: MenuTexture("Books", MenuTextDim.size_w64_h32),
+    0xA53: MenuTexture("Dolphins", MenuTextDim.size_w64_h32),
+    0xA70: MenuTexture("Way Out Sign", MenuTextDim.size_w64_h32),
+    0xA72: MenuTexture("Banana Hoard Sign", MenuTextDim.size_w64_h32),
+    0xA73: MenuTexture("Training Area Sign", MenuTextDim.size_w64_h32),
+    0xA74: MenuTexture("Cranky's Lab Sign", MenuTextDim.size_w64_h32),
+    0xA76: MenuTexture("DK's Sign", MenuTextDim.size_w64_h32),
+    0xC14: MenuTexture("No Admittance Sign", MenuTextDim.size_w64_h32),
+    0xC47: MenuTexture("Danger Sign", MenuTextDim.size_w64_h32),
+    0xC64: MenuTexture("Accept Sign", MenuTextDim.size_w64_h32),
+    0xCCF: MenuTexture("A Sign", MenuTextDim.size_w64_h32, 25, 7),
+    0xCD0: MenuTexture("B Sign", MenuTextDim.size_w64_h32, 25, 7),
+    0xCD1: MenuTexture("C Sign", MenuTextDim.size_w64_h32, 25, 7),
+    0xCD2: MenuTexture("D Sign", MenuTextDim.size_w64_h32, 25, 7),
+    0xCD3: MenuTexture("E Sign", MenuTextDim.size_w64_h32, 25, 7),
+    0xCD4: MenuTexture("F Sign", MenuTextDim.size_w64_h32, 25, 7),
+    0xD3C: MenuTexture("Blessed", MenuTextDim.size_w64_h32),  # Beans
+    0x8DA: MenuTexture("Museum Sign", MenuTextDim.size_w64_h32),
+    0x8DB: MenuTexture("Ballroom Sign", MenuTextDim.size_w64_h32),
+    0x8DE: MenuTexture("Library Sign", MenuTextDim.size_w64_h32),
+    0x9DA: MenuTexture("Library Wall", MenuTextDim.size_w64_h32),
+    0x79A: MenuTexture("Minecart Tracks", MenuTextDim.size_w64_h32),
+    0x339: MenuTexture("Piano Keys", MenuTextDim.size_w64_h32),
+    0x398: MenuTexture("4 and B Blocks", MenuTextDim.size_w64_h32, 25, 7),
+    0x399: MenuTexture("C and Z Blocks", MenuTextDim.size_w64_h32, 25, 7),
+    0x902: MenuTexture("Carpet", MenuTextDim.size_w64_h32),
 }
 
 

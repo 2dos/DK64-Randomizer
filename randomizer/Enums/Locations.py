@@ -737,6 +737,7 @@ class Locations(IntEnum):
     AztecMainEnemy_AroundTotem = auto()  # Klaptrap, 33
     AztecMainEnemy_StartingTunnel2 = auto()  # Zinger (0x5), 38
     AztecMainEnemy_StartingTunnel3 = auto()  # Zinger (0x5), 39
+    AztecMainEnemy_OutsideSnide = auto()  # Klaptrap, 40
     AztecMainEnemy_Outside5DT = auto()  # Zinger (0x1C), 41
     AztecMainEnemy_NearSnoopTunnel = auto()  # Kremling, 42
 

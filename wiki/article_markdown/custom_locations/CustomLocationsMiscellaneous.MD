@@ -330,10 +330,7 @@
 | --- | ---- | ------------ | ----- |
 | Castle Greenhouse | Greenhouse: Center | DirtPatch | `l.islanky or l.settings.free_trade_items` | 
 | Creepy Castle | Top of Castle near shop |  | `` | 
-| Castle Greenhouse | Greenhouse: Dead End (1) | DirtPatch | `` | 
-| Castle Greenhouse | Greenhouse: Dead End (2) | DirtPatch | `` | 
 | Castle Greenhouse | Greenhouse: GB Box | DirtPatch | `` | 
-| Castle Greenhouse | Greenhouse: Dead End (3) | DirtPatch | `` | 
 | Creepy Castle | Near Tree |  | `` | 
 | Creepy Castle | Next to Lanky coin tree (near catacombs door) |  | `` | 
 | Creepy Castle | Near Crypt Entrance (1) |  | `` | 

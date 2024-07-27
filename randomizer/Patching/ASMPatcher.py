@@ -5,8 +5,8 @@ import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
-from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors
-from randomizer.Patching.LibImage import getImageFile, TextureFormat
+from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     FasterChecksSelected,
@@ -21,6 +21,7 @@ from randomizer.Enums.Settings import (
     MiscChangesSelected,
     ColorblindMode,
     DamageAmount,
+    RandomModels,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -344,6 +345,36 @@ def getActorIndex(input: int) -> int:
     return input
 
 
+def hueShiftImageFromAddress(address: int, width: int, height: int, format: TextureFormat, shift: int):
+    """Hue shift image located at a certain ROM address."""
+    size_per_px = {
+        TextureFormat.RGBA5551: 2,
+        TextureFormat.RGBA32: 4,
+    }
+    data_size_per_px = size_per_px.get(format, None)
+    if data_size_per_px is None:
+        raise Exception(f"Texture Format unsupported by this function. Let the devs know if you see this. Attempted format: {format.name}")
+    loaded_im = getImageFromAddress(address, width, height, False, data_size_per_px * width * height, format)
+    loaded_im = hueShift(loaded_im, shift)
+    loaded_px = loaded_im.load()
+    bytes_array = []
+    for y in range(height):
+        for x in range(width):
+            pix_data = list(loaded_px[x, y])
+            if format == TextureFormat.RGBA32:
+                bytes_array.extend(pix_data)
+            elif format == TextureFormat.RGBA5551:
+                red = int((pix_data[0] >> 3) << 11)
+                green = int((pix_data[1] >> 3) << 6)
+                blue = int((pix_data[2] >> 3) << 1)
+                alpha = int(pix_data[3] != 0)
+                value = red | green | blue | alpha
+                bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+    px_data = bytearray(bytes_array)
+    ROM().seek(address)
+    ROM().writeBytes(px_data)
+
+
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -433,10 +464,19 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         # Menu Background
         if settings.menu_texture_index is not None:
             writeValue(ROM_COPY, 0x8070761A, Overlay.Static, 0, offset_dict)
-            if compatible_background_textures[settings.menu_texture_index].is32by32:
+            dimensions = compatible_background_textures[settings.menu_texture_index].dim
+            if dimensions == MenuTextDim.size_w32_h32:
                 writeValue(ROM_COPY, 0x8070762E, Overlay.Static, 0xFFE0, offset_dict)
                 writeValue(ROM_COPY, 0x8070727E, Overlay.Static, 0xC07C, offset_dict)
                 writeValue(ROM_COPY, 0x80707222, Overlay.Static, 0x073F, offset_dict)
+            elif dimensions == MenuTextDim.size_w64_h32:
+                writeValue(ROM_COPY, 0x8070762E, Overlay.Static, 0xFFE0, offset_dict)
+                writeValue(ROM_COPY, 0x80707616, Overlay.Static, 0x40, offset_dict)
+                writeValue(ROM_COPY, 0x80707272, Overlay.Static, 0xF, offset_dict)
+                writeValue(ROM_COPY, 0x8070727E, Overlay.Static, 0xC07C, offset_dict)
+                writeValue(ROM_COPY, 0x80707226, Overlay.Static, 0xF080, offset_dict)
+                writeValue(ROM_COPY, 0x8070725A, Overlay.Static, 0x2000, offset_dict)
+                writeValue(ROM_COPY, 0x807072A2, Overlay.Static, 0x0100, offset_dict)
             writeValue(ROM_COPY, 0x80707126, Overlay.Static, compatible_background_textures[settings.menu_texture_index].table, offset_dict)
             menu_background_rgba = 0x505050FF
             if compatible_background_textures[settings.menu_texture_index].is_color:
@@ -448,6 +488,58 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     writeValue(ROM_COPY, 0x806FFAFE, Overlay.Static, crosshair_img, offset_dict)
     writeValue(ROM_COPY, 0x806FF116, Overlay.Static, crosshair_img, offset_dict)
     writeValue(ROM_COPY, 0x806B78DA, Overlay.Static, crosshair_img, offset_dict)
+
+    if settings.override_cosmetics:
+        enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
+    else:
+        enemy_setting = settings.random_enemy_colors
+    if enemy_setting != RandomModels.off:
+        # Jumpman and DK
+        jumpman_addresses = [
+            0x8003B180,
+            0x8003B3C8,
+            0x8003B858,
+            0x8003BAA0,
+            0x8003BCE8,
+            0x8003BF30,
+            0x8003C178,
+            0x8003C3C0,
+            0x8003C608,
+            0x8003C850,
+            0x8003CA98,
+            0x8003CCE0,
+            0x8003B610,
+            0x8003CF28,
+            0x8003D170,
+            0x8003D3B8,
+            0x8003D600,
+            0x8003D848,
+            0x8003DA90,  # 8px version
+        ]
+        dk_addresses = [
+            0x8003E9F0,
+            0x800424D0,
+            0x800463F0,
+            0x800473B8,
+            0x80048380,
+            0x80049348,
+            0x80040540,
+            0x80041508,
+            0x80043498,
+            0x80044460,
+            0x80045428,
+        ]
+        jumpman_shift = getRandomHueShift()  # 16x16 except for 1 image
+        dk_shift = getRandomHueShift()  # 48x48
+        for addr in jumpman_addresses:
+            width = 16
+            if addr == 0x8003DA90:
+                width = 8
+            rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
+            hueShiftImageFromAddress(rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
+        for addr in dk_addresses:
+            rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
+            hueShiftImageFromAddress(rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
 
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
@@ -752,6 +844,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806AF70C, Overlay.Static, "GuardDeathHandle", offset_dict)
     writeHook(ROM_COPY, 0x806AE55C, Overlay.Static, "GuardAutoclear", offset_dict)
     writeHook(ROM_COPY, 0x80637148, Overlay.Static, "ObjectRotate", offset_dict)
+    writeHook(ROM_COPY, 0x8063365C, Overlay.Static, "WriteDefaultShopBone", offset_dict)
     writeHook(ROM_COPY, 0x806A86FC, Overlay.Static, "PauseControl_Control", offset_dict)
     writeHook(ROM_COPY, 0x806AA414, Overlay.Static, "PauseControl_Sprite", offset_dict)
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)
@@ -834,7 +927,7 @@ def patchAssembly(ROM_COPY, spoiler):
     balloon_patch_count = 150
     static_expansion = 0x100
     if settings.enemy_drop_rando:
-        static_expansion += 426  # Total Enemies
+        static_expansion += 427  # Total Enemies
     if False:  # TODO: Check Archipelago
         static_expansion += 400  # Archipelago Flag size
     expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)

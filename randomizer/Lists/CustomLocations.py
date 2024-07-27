@@ -2058,10 +2058,10 @@ CustomLocations = {
             logic_region=Regions.CreepyCastleMain,
             group=5,
         ),
-        CustomLocation(map=Maps.CastleGreenhouse, name="Greenhouse: Dead End (1)", x=224, y=0, z=494, max_size=32, logic_region=Regions.Greenhouse, group=5, banned_types=[LocationTypes.DirtPatch]),
-        CustomLocation(map=Maps.CastleGreenhouse, name="Greenhouse: Dead End (2)", x=874, y=0, z=522, max_size=32, logic_region=Regions.Greenhouse, group=5, banned_types=[LocationTypes.DirtPatch]),
+        # CustomLocation(map=Maps.CastleGreenhouse, name="Greenhouse: Dead End (1)", x=224, y=0, z=494, max_size=32, logic_region=Regions.Greenhouse, group=5, banned_types=[LocationTypes.DirtPatch]),
+        # CustomLocation(map=Maps.CastleGreenhouse, name="Greenhouse: Dead End (2)", x=874, y=0, z=522, max_size=32, logic_region=Regions.Greenhouse, group=5, banned_types=[LocationTypes.DirtPatch]),
         CustomLocation(map=Maps.CastleGreenhouse, name="Greenhouse: GB Box", x=170, y=0, z=227, max_size=56, logic_region=Regions.Greenhouse, group=5, banned_types=[LocationTypes.DirtPatch]),
-        CustomLocation(map=Maps.CastleGreenhouse, name="Greenhouse: Dead End (3)", x=779, y=0, z=125, max_size=32, logic_region=Regions.Greenhouse, group=5, banned_types=[LocationTypes.DirtPatch]),
+        # CustomLocation(map=Maps.CastleGreenhouse, name="Greenhouse: Dead End (3)", x=779, y=0, z=125, max_size=32, logic_region=Regions.Greenhouse, group=5, banned_types=[LocationTypes.DirtPatch]),
         CustomLocation(map=Maps.CreepyCastle, name="Near Tree", x=1201, y=471.5, z=105, max_size=80, logic_region=Regions.CreepyCastleMain, group=4),
         CustomLocation(
             name="Next to Lanky coin tree (near catacombs door)",

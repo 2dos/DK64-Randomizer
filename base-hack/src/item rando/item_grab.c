@@ -70,15 +70,15 @@ static const item_info item_detection_data[] = {
     {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL, .fairy_model = -1}, // Pearl
     {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY, .fairy_model = 0x3D}, // Fairy
     {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN, .fairy_model = -1}, // Rainbow Coin
-    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Bubble)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Bubble)
     {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
     {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x11}, // Cranky
     {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x12}, // Funky
     {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x13}, // Candy
     {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x1F}, // Snide
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
-    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Reversed Controls)
-    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Slowed)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Reversed Controls)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Slowed)
 };
 
 void banana_medal_acquisition(int flag) {
@@ -175,12 +175,15 @@ void banana_medal_acquisition(int flag) {
                 break;
             case MEDALITEM_ICETRAP_BUBBLE:
                 queueIceTrap(ICETRAP_BUBBLE);
+                sprite = &fool_overlay_sprite;
                 break;
             case MEDALITEM_ICETRAP_REVERSE:
                 queueIceTrap(ICETRAP_REVERSECONTROLS);
+                sprite = &fool_overlay_sprite;
                 break;
             case MEDALITEM_ICETRAP_SLOW:
                 queueIceTrap(ICETRAP_SLOWED);
+                sprite = &fool_overlay_sprite;
                 break;
             case MEDALITEM_JUNKMELON:
                 giveMelon();

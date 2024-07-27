@@ -48,6 +48,7 @@ static const crown_timer_reduction actor_crown_timer_changes[] = {
     {.target_actor = 208, .timer_change = -3}, // Klaptrap (Purple)
     {.target_actor = 209, .timer_change = -3}, // Klaptrap (Red)
     {.target_actor = 182, .timer_change = -3}, // Klobber
+    {.target_actor = 187, .timer_change = -5}, // Klump
     {.target_actor = 291, .timer_change = -5}, // Kosha
     {.target_actor = 238, .timer_change = -1}, // Kremling
     {.target_actor = 262, .timer_change = -1}, // Krossbones
@@ -56,14 +57,14 @@ static const crown_timer_reduction actor_crown_timer_changes[] = {
     {.target_actor = 224, .timer_change = -1}, // Mushroom Man
     {.target_actor = 235, .timer_change = -3}, // Robo Kremling
     {.target_actor = 230, .timer_change = -1}, // Ruler
+    {.target_actor = CUSTOM_ACTORS_START + NEWACTOR_SCARAB, .timer_change = -2}, // Scarab
     {.target_actor = 270, .timer_change = -1}, // Sir Domino
     {.target_actor = 276, .timer_change = -2}, // Spider
+    {.target_actor = 340, .timer_change = -3}, // Trash Can Bug
     {.target_actor = 261, .timer_change = -4}, // Zinger (Robo)
     {.target_actor = 183, .timer_change = -3}, // Zinger (Charger)
     {.target_actor = 206, .timer_change = -4}, // Zinger (Lime Thrower)
     {.target_actor = CUSTOM_ACTORS_START + NEWACTOR_ZINGERFLAMETHROWER, .timer_change = -4}, // Zinger (Flame Thrower)
-    {.target_actor = CUSTOM_ACTORS_START + NEWACTOR_SCARAB, .timer_change = -2}, // Scarab
-    {.target_actor = 340, .timer_change = -3}, // Trash Can Bug
 };
 
 typedef struct timer_paad {

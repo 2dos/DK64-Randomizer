@@ -336,7 +336,9 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         humanspoiler["Cosmetics"]["Minor Item Themes"] = music_data.get("music_minoritem_data")
     if settings.music_events_randomized or settings.events_songs_selected:
         humanspoiler["Cosmetics"]["Event Themes"] = music_data.get("music_event_data")
+    humanspoiler["Cosmetics"]["Textures"] = {}
     if settings.custom_transition is not None:
-        humanspoiler["Cosmetics"]["Textures"] = {}
         humanspoiler["Cosmetics"]["Textures"]["Transition"] = settings.custom_transition
+    if settings.custom_troff_portal is not None:
+        humanspoiler["Cosmetics"]["Textures"]["Troff 'n' Scoff Portal"] = settings.custom_troff_portal
     return humanspoiler

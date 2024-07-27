@@ -613,6 +613,7 @@ class MiscChangesSelected(IntEnum):
     better_fairy_camera = 26
     remove_enemy_cabin_timer = 27
     remove_galleon_ship_timers = 28
+    japes_bridge_permanently_extended = 29
 
 
 class MoveRando(IntEnum):
