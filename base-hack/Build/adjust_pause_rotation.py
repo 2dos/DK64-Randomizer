@@ -21,6 +21,7 @@ DEFINITION_TEXT = "#define ROTATION_SPLIT "
 DEFINITION_TEXT_TOTALS = "#define ROTATION_SPLIT_TOTALS "
 DEFINITION_TEXT_REDUCTION = "#define ROTATION_TOTALS_REDUCTION "
 DEFINITION_TEXT_FEATHER = "#define FEATHER_SPRITE_START "
+DEFINITION_TEXT_FOOL = "#define FOOL_SPRITE_START "
 ROTATION_TOTAL = 0x1000
 REDUCED_COUNT = 0
 
@@ -45,6 +46,8 @@ for line in lines:
         raw_line = f"{DEFINITION_TEXT_REDUCTION}{REDUCED_COUNT}"
     if DEFINITION_TEXT_FEATHER in raw_line:
         raw_line = f"{DEFINITION_TEXT_FEATHER}{getBonusSkinOffset(ExtraTextures.Feather0)}"
+    if DEFINITION_TEXT_FOOL in raw_line:
+        raw_line = f"{DEFINITION_TEXT_FOOL}{getBonusSkinOffset(ExtraTextures.FoolOverlay)}"
     new_lines.append(raw_line)
 with open(H_FILE, "w") as fh:
     fh.write("\n".join(new_lines))

@@ -725,6 +725,21 @@ for x in range(7):
     beetle_im = bump_saturation(beetle_im, 2)
     beetle_im.save(f"{hash_dir}beetle_img_{0xFC3 + x}.png")
 
+# Ice Trap Medal Overlay
+font_im = Image.open(f"{hash_dir}white_font_early.png")
+f_im = font_im.crop((46, 0, 53, 16))
+o_im = font_im.crop((123, 0, 133, 16))
+l_im = font_im.crop((96, 0, 103, 16))
+font_im = Image.open(f"{hash_dir}white_font_late.png")
+ex_im = font_im.crop((75, 0, 79, 16))
+fool_im = Image.new(mode="RGBA", size=(40, 16))
+fool_im.paste(f_im, (2, 0), f_im)
+fool_im.paste(o_im, (8, 0), o_im)
+fool_im.paste(o_im, (17, 0), o_im)
+fool_im.paste(l_im, (28, 0), l_im)
+fool_im.paste(ex_im, (34, 0), ex_im)
+fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+fool_im.save(f"{disp_dir}fool_overlay.png")
 
 rmve = [
     "01234.png",

@@ -448,6 +448,7 @@ extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;
 extern sprite_data_struct krool_sprite;
 extern sprite_data_struct feather_gun_sprite;
+extern sprite_data_struct fool_overlay_sprite;
 
 extern void* actor_functions[ACTOR_LIMIT];
 extern health_damage_struct actor_health_damage[ACTOR_LIMIT];

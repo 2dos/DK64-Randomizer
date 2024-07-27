@@ -434,6 +434,17 @@ for x in range(8):
         )
     )
 
+file_dict.append(
+        File(
+            name=f"Fool Overlay",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.FoolOverlay),
+            source_file=f"assets/displays/fool_overlay.png",
+            texture_format=TextureFormat.IA8,
+            do_not_delete_source=True,
+        )
+    )
+
 for item in range(3):
     file_dict.append(
         File(
@@ -1792,6 +1803,9 @@ with open(newROMName, "r+b") as fh:
         "head32_kko",
         "osprint_logo_left",
         "osprint_logo_right",
+        "fool_overlay",
+        "white_font_early",
+        "white_font_late",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

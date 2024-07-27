@@ -1296,6 +1296,21 @@ sprite_data_struct feather_gun_sprite = {
 	},
 };
 
+sprite_data_struct fool_overlay_sprite = {
+	.unk0 = 0xC8,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 1,
+	.unk8 = -1,
+	.table = 1,
+	.width = 40,
+	.height = 16,
+	.image_count = 1,
+	.images = {
+		FOOL_SPRITE_START,
+	},
+};
+
 void giveGB(int kong, int level) {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);

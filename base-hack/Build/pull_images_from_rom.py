@@ -100,6 +100,8 @@ images = [
     ImageData("diddy_balloon", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x16C3, 32, 64, False, False),
     ImageData("dirt_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1379, 32, 32, False, False),
     ImageData("snide_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x172E, 64, 32, False, False),
+    ImageData("white_font_early", TextureFormat.IA8, TableNames.TexturesHUD, 3, 176, 16, False, False),
+    ImageData("white_font_late", TextureFormat.IA8, TableNames.TexturesHUD, 4, 176, 16, False, False),
 ]
 
 shop_owners = {
