@@ -434,6 +434,7 @@ class ItemRandoListSelected(IntEnum):
     crateitem = 15
     rarewarecoin = 16
     shopowners = 17
+    hint = 18
 
 
 class KasplatRandoSetting(IntEnum):

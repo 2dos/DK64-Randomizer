@@ -1867,6 +1867,19 @@ def Fill(spoiler: Spoiler) -> None:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
+    # Place Hints
+    if Types.Hint in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Hint)
+        spoiler.Reset()
+        hintItemsToBePlaced = ItemPool.HintItems()
+        for item in preplaced_items:
+            if item in hintItemsToBePlaced:
+                hintItemsToBePlaced.remove(item)
+        hintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, hintItemsToBePlaced, [])
+        if hintsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(hintsUnplaced) + " unplaced Hints.")
+    if spoiler.settings.extreme_debugging:
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)

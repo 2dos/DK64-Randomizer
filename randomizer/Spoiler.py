@@ -210,6 +210,7 @@ class Spoiler:
             Types.Funky: "Shop Owners",
             Types.Candy: "Shop Owners",
             Types.Snide: "Shop Owners",
+            Types.Hint: "Hints",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -450,6 +451,7 @@ class Spoiler:
             "Ice Traps": {},
             "Junk Items": {},
             "Melon Crates": {},
+            "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
             "Empty": {},
@@ -459,8 +461,11 @@ class Spoiler:
         self.pregiven_items = []
         self.first_move_item = None
         for location_id, location in self.LocationList.items():
-            # No need to spoiler constants or hints
-            if location.type == Types.Constant or location.type == Types.Hint or location.inaccessible:
+            # No need to spoiler constants
+            if location.type == Types.Constant or location.inaccessible:
+                continue
+            # No hints if hint doors are not in the pool
+            if location.type == Types.Hint and Types.Hint not in self.settings.shuffled_location_types:
                 continue
             if location_id in PreGivenLocations:
                 if self.settings.fast_start_beginning_of_game or location_id != Locations.IslesFirstMove:

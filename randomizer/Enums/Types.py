@@ -90,6 +90,7 @@ ItemRandoSelector = [
     {"name": "Junk Items", "value": "junkitem", "tooltip": "Pointless items will fill no-item slots."},
     {"name": "Melon Crates", "value": "crateitem", "tooltip": "Melon Crates become possible locations for items."},
     {"name": "Shop Owners", "value": "shopowners", "tooltip": "Shop Owner Items are added into the pool."},
+    {"name": "Hints", "value": "hint", "tooltip": "Hints and Wrinkly Doors are in the pool."},
 ]
 
 KeySelector = [

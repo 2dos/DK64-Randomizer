@@ -205,6 +205,8 @@ purchase_classification getPurchaseClassification(int purchase_type, int flag) {
 			return PCLASS_SHOCKWAVE;
 		} else if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 			return PCLASS_BLUEPRINT;
+		} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
+			return PCLASS_HINT;
 		} else if (isMedalFlag(flag)) {
 			return PCLASS_MEDAL;
 		} else if ((flag == FLAG_COLLECTABLE_NINTENDOCOIN) || (flag == FLAG_COLLECTABLE_RAREWARECOIN)) {
@@ -718,6 +720,9 @@ void getNextMoveText(void) {
 							} else if (isFlagInRange(p_flag, FLAG_CROWN_JAPES, 10)) {
 								// Crown
 								top_item = ITEMTEXT_CROWN;
+							} else if (isFlagInRange(p_flag, FLAG_WRINKLYVIEWED, 35)) {
+								// Hint
+								top_item = ITEMTEXT_HINTITEM;
 							} else if (p_flag == FLAG_COLLECTABLE_BEAN) {
 								// Fungi Bean
 								top_item = ITEMTEXT_BEAN;

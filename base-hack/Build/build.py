@@ -116,6 +116,7 @@ file_dict = [
     File(name="Kong (Lanky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=601, source_file="kong_lanky_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Kong (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=602, source_file="kong_tiny_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Kong (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=603, source_file="kong_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Question Mark Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=638, source_file="question_mark_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Fairy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=604, source_file="fairy_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(
         name="DPad Image",
@@ -613,6 +614,7 @@ shop_face_array = [
     "fairy",
     "rainbow_coin",
     "fake_gb_shop",
+    "qmark32",
     "head32_dillo1",
     "head32_dog1",
     "head32_mj",
@@ -1803,6 +1805,7 @@ with open(newROMName, "r+b") as fh:
         "osprint_logo_left",
         "osprint_logo_right",
         "fool_overlay",
+        "qmark32",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -1864,6 +1867,7 @@ with open(newROMName, "r+b") as fh:
         "beetle_img_4041",
         "white_font_early",
         "white_font_late",
+        "question_mark"
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

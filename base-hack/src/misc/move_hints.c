@@ -132,6 +132,8 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 					int flag = shop_data->flag;
 					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						base = MRT_CANBUY_BLUEPRINT;
+					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
+						base = MRT_CANBUY_HINT;
 					} else if (isMedalFlag(flag)) {
 						base = MRT_CANBUY_MEDAL;
 					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {

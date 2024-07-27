@@ -314,6 +314,7 @@ item_type_names = {
     Types.RainbowCoin: "\x06a dirt patch\x06",
     Types.CrateItem: "\x06a melon crate\x06",
     Types.Enemies: "\x06an enemy\x06",
+    Types.Hint: "\x06a hint door\x06",
 }
 item_type_names_cryptic = {
     Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
@@ -322,6 +323,7 @@ item_type_names_cryptic = {
     Types.RainbowCoin: ["the initials of DK", "a muddy mess", "buried treasure"],
     Types.CrateItem: ["a bouncing box", "a breakable cube", "a crate of goodies"],
     Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"],
+    Types.Hint: ["a source of a riddle", "the old granny house", "a door to the granny"]
 }
 
 moves_data = [
@@ -2677,10 +2679,10 @@ def GetRegionIdOfLocation(spoiler: Spoiler, location_id: Locations) -> Regions:
                 return region_id
     for region_id in Regions:
         region = spoiler.RegionList[region_id]
-        if region.level == location.level:
+        if region.level == location.level or location.type == Types.Hint:
             if location_id in [location_logic.id for location_logic in region.locations if not location_logic.isAuxiliaryLocation]:
                 return region_id
-    raise Exception("Unable to find Region for Location")  # This should never trigger!
+    raise Exception(f"Unable to find Region for Location {location_id.name}")  # This should never trigger!
 
 
 def GenerateMultipathDict(

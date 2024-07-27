@@ -979,6 +979,7 @@ class Settings:
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.Hint,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -1659,6 +1660,8 @@ class Settings:
             for item in regular_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledNonMoveLocations.copy()
+            if Types.Hint in self.shuffled_location_types:
+                self.valid_locations[Types.Hint] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
             if Types.Medal in self.shuffled_location_types:
                 self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
             shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)

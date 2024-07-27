@@ -310,6 +310,9 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x0C5)
     ROM_COPY.write(int(Types.Enemies in spoiler.settings.shuffled_location_types))
 
+    ROM_COPY.seek(sav + 0x0C2)
+    ROM_COPY.write(int(Types.Hint in spoiler.settings.shuffled_location_types))
+
     # Progressive Hints
     ROM_COPY.seek(sav + 0x115)
     count = 0

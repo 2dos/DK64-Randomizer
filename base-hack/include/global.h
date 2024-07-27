@@ -265,6 +265,7 @@ extern int getFlagIndex_Corrected(int start, int level);
 extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
+extern int getWrinklyItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
@@ -410,6 +411,8 @@ extern int isItemRequirementSatisfied(ItemRequirement* req);
 extern dynamic_flag_icetrap_junk isIceTrapFlag(int flag);
 
 extern int getGamePercentage(void);
+
+extern void displayMedalOverlay(int flag, int item_type);
 
 extern void handleCrownTimerInternal(void);
 

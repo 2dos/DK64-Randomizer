@@ -353,6 +353,13 @@ move_hints = [
         "candy": "I AM NOT TOO SURE ABOUT THIS ITEM. ARE YOU SURE YOU WANT IT?",
     },
     {
+        "move": "Hint",
+        "kong": "~",
+        "cranky": "IT'S A RIDDLE FOR 30 PICORATS. WHAT IS THE CONVERSION RATE FROM PICORATS TO COINS?",
+        "funky": "THIS ONE WILL HELP YOU ON YOUR QUEST MY DUDE. GET YOUR PEN AND PAPER OUT!",
+        "candy": "IT'S A PIECE OF PAPER. I THINK WRINKLY DROPPED IT IN HER SAVE CAVE.",
+    },
+    {
         "move": "Not enough coins - Special Move",
         "kong": "~",
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD MY SPECIAL MOVE.",
@@ -604,6 +611,7 @@ move_names = [
     MoveName("Funky Kong", MoveTypes.flag),  # 90
     MoveName("Candy Kong", MoveTypes.flag),  # 91
     MoveName("Snide", MoveTypes.flag),  # 92
+    MoveName("Hint", MoveTypes.flag),  # 93
 ]
 
 move_names_arr = []
@@ -750,6 +758,7 @@ text_enum = [
     "ITEMTEXT_FUNKYITEM",  # 0x05A
     "ITEMTEXT_CANDYITEM",  # 0x05B
     "ITEMTEXT_SNIDEITEM",  # 0x05C
+    "ITEMTEXT_HINTITEM",  # 0x05D
 ]
 
 

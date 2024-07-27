@@ -36,6 +36,7 @@ typedef enum MEDAL_ITEMS {
     /* 22 */ MEDALITEM_NOTHING,
     /* 23 */ MEDALITEM_ICETRAP_REVERSE,
     /* 24 */ MEDALITEM_ICETRAP_SLOW,
+    /* 25 */ MEDALITEM_HINT,
 } MEDAL_ITEMS;
 
 typedef struct item_info {
@@ -79,20 +80,10 @@ static const item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
     {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Reversed Controls)
     {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Slowed)
+    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0xD2}, // Hint Item
 };
 
-void banana_medal_acquisition(int flag) {
-    /**
-     * @brief Acquire a banana medal, and handle the item acquired from it
-     * 
-     * @param flag Flag index of the banana medal
-     */
-    int item_type = 0;
-    if (flag >= FLAG_MEDAL_ISLES_DK) {
-        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
-    } else {
-        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
-    }
+void displayMedalOverlay(int flag, int item_type) {
     float reward_x = 160.f;
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -188,6 +179,9 @@ void banana_medal_acquisition(int flag) {
             case MEDALITEM_JUNKMELON:
                 giveMelon();
                 break;
+            case MEDALITEM_HINT:
+                playSFX(0x2EA);
+                break;
         }
         if (song != SONG_SILENCE) {
             playSFX(0xF2);
@@ -216,6 +210,21 @@ void banana_medal_acquisition(int flag) {
         loadSpriteFunction(0x8071EFDC);
         displaySpriteAtXYZ(sprite_table[0x8E], 1.0f, reward_x, reward_y, -10.0f);
     }
+}
+
+void banana_medal_acquisition(int flag) {
+    /**
+     * @brief Acquire a banana medal, and handle the item acquired from it
+     * 
+     * @param flag Flag index of the banana medal
+     */
+    int item_type = 0;
+    if (flag >= FLAG_MEDAL_ISLES_DK) {
+        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
+    } else {
+        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+    }
+    displayMedalOverlay(flag, item_type);
 }
 
 static unsigned char key_timer = 0;
@@ -688,6 +697,11 @@ void getItem(int object_type) {
             forceDance();
             queueIceTrap(it_type);
             hh_item = HHITEM_FAKEITEM;
+            break;
+        case 0x27E:
+            // Hint item
+            forceDance();
+            playSound(0x2EA, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
     }
     if (hh_item != HHITEM_NOTHING) {

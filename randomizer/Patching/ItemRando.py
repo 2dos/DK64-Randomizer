@@ -42,6 +42,7 @@ model_two_indexes = {
     Types.Funky: 0x260,
     Types.Candy: 0x261,
     Types.Snide: 0x262,
+    Types.Hint: 0x27E,
 }
 
 model_two_scales = {
@@ -67,6 +68,7 @@ model_two_scales = {
     Types.Funky: 0.25,
     Types.Candy: 0.25,
     Types.Snide: 0.25,
+    Types.Hint: 0.25,
 }
 
 actor_indexes = {
@@ -92,6 +94,7 @@ actor_indexes = {
     Types.Funky: CustomActors.FunkyItem,
     Types.Candy: CustomActors.CandyItem,
     Types.Snide: CustomActors.SnideItem,
+    Types.Hint: CustomActors.HintItem,
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -113,6 +116,7 @@ model_indexes = {
     Types.Funky: 0x12,
     Types.Candy: 0x13,
     Types.Snide: 0x1F,
+    Types.Hint: 0xD2,
 }
 
 TRAINING_LOCATIONS = (
@@ -205,6 +209,7 @@ text_rewards = {
     Types.Cranky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Candy: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Funky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
+    Types.Hint: ("\x04HINT\x04", "\x04LAYTON RIDDLE\x04"),
 }
 
 level_names = {
@@ -603,7 +608,7 @@ def place_randomized_items(spoiler, original_flut: list):
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].map, 1)
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
-                    elif item.old_item == Types.Medal:
+                    elif item.old_item in (Types.Medal, Types.Hint):
                         # Write to Medal Table
                         # Just need offset of subtype:
                         # 0 = Banana
@@ -657,11 +662,19 @@ def place_randomized_items(spoiler, original_flut: list):
                             None,  # No Item
                             Types.FakeItem,  # Fake Item (Reverse)
                             Types.FakeItem,  # Fake Item (Slow)
+                            Types.Hint,  # Hint Item
                         ]
-                        offset = item.old_flag - 549
-                        if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
-                            offset = 40 + (item.old_flag - 0x3C6)
-                        ROM_COPY.seek(0x1FF1080 + offset)
+                        offset = None
+                        base_addr = None
+                        if item.old_item == Types.Medal:
+                            offset = item.old_flag - 549
+                            if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
+                                offset = 40 + (item.old_flag - 0x3C6)
+                            base_addr = 0x1FF1080
+                        elif item.old_item == Types.Hint:
+                            offset = item.old_flag - 0x384
+                            base_addr = 0x1FF0EC0
+                        ROM_COPY.seek(base_addr + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6
                             if item.new_flag in (0x3BC, 0x3BD, 0x3BE):
