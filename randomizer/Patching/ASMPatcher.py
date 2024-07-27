@@ -346,6 +346,7 @@ def getActorIndex(input: int) -> int:
 
 
 def hueShiftImageFromAddress(address: int, width: int, height: int, format: TextureFormat, shift: int):
+    """Hue shift image located at a certain ROM address."""
     size_per_px = {
         TextureFormat.RGBA5551: 2,
         TextureFormat.RGBA32: 4,
