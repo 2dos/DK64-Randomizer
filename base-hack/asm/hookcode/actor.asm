@@ -427,6 +427,8 @@ checkBeforeApplyingQuicksand: ; $t4 contains colliding_actor->actor_type
     beq $at, $t4, correctActor
     addiu $at, $zero, 0x11D
     beq $at, $t4, correctActor
+    addiu $at, $zero, 0x154
+    beq $at, $t4, correctActor
     nop
 
     applyQuicksand: ; not a flying enemy (or not aztec), apply quicksand just as usual

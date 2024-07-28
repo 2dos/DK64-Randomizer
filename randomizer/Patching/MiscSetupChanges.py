@@ -683,12 +683,14 @@ def updateKrushaMoveNames(spoiler):
         spoiler.settings.kong_model_tiny,
         spoiler.settings.kong_model_chunky,
     ]
+    text_replacements = []
     for index, value in enumerate(settings_values):
         if value == KongModels.krusha:
-            spoiler.text_changes[39] = move_data[index]
+            text_replacements.extend(move_data[index])
             chosen_replacements = name_replacements[index]
             for reference in spoiler.location_references:
                 for replacement in chosen_replacements:
                     if reference.item_name == replacement["old"]:
                         reference.item_name = replacement["new"]
                         chosen_replacements.remove(replacement)
+    spoiler.text_changes[39] = text_replacements
