@@ -41,7 +41,7 @@ from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
-from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKongModelSwaps, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors
+from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKongModelSwaps, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors, showWinCondition
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
@@ -565,6 +565,7 @@ def patching_response(spoiler):
     randomize_cbs(spoiler)
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
+    showWinCondition(spoiler.settings)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
     place_randomized_items(spoiler, flut_items.copy())  # Has to be after kong rando cosmetic and moves

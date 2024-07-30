@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels, WinCondition
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
@@ -2551,6 +2551,8 @@ def writeMiscCosmeticChanges(settings):
                 for img_index in range(sprite_data[0], sprite_data[1] + 1):
                     dim = sprite_data[2]
                     hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
+            for img_index in range(0x29, 0x32 + 1):
+                hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
             # Number Game Numbers
             for x in range(16):
                 number_hue_shift = getRandomHueShift()
@@ -3328,6 +3330,54 @@ def lightenPauseBubble(settings: Settings):
     px_data = gzip.compress(px_data, compresslevel=9)
     ROM().seek(js.pointer_addresses[14]["entries"][107]["pointing_to"])
     ROM().writeBytes(px_data)
+
+class WinConData:
+    """Class to store information about win condition."""
+
+    def __init__(self, table: int, image: int, tex_format: TextureFormat, width: int, height: int, flip: bool, default_count: int):
+        """Initialize with given parameters."""
+        self.table = table
+        self.image = image
+        self.tex_format = tex_format
+        self.width = width
+        self.height = height
+        self.flip = flip
+        self.default_count = default_count
+
+def showWinCondition(settings: Settings):
+    """Alter the image that's shown on the main menu to display the win condition."""
+    win_con = settings.win_condition
+    if win_con == WinCondition.beat_krool:
+        # Default, don't alter image
+        return
+    if win_con == WinCondition.get_key8:
+        output_image = Image.open(BytesIO(js.getFile("./base-hack/assets/displays/key8.png")))
+        output_image = output_image.resize((32, 32))
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    if win_con == WinCondition.poke_snap:
+        item_im = getImageFile(14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
+        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    win_con_data = {
+        WinCondition.all_blueprints: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
+        WinCondition.all_medals: WinConData(25, 0x156C, TextureFormat.RGBA5551, 44, 44, True, 40),
+        WinCondition.all_fairies: WinConData(25, 0x16ED, TextureFormat.RGBA32, 32, 32, True, 20),
+        WinCondition.all_keys: WinConData(25, 0x16F6, TextureFormat.RGBA5551, 44, 44, True, 8),
+    }
+    if win_con not in win_con_data:
+        return
+    item_data = win_con_data[win_con]
+    item_im = getImageFile(item_data.table, item_data.image, item_data.table != 7, item_data.width, item_data.height, item_data.tex_format)
+    if item_data.flip:
+        item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
+    dim = max(item_data.width, item_data.height)
+    base_im = Image.new(mode="RGBA", size=(dim, dim))
+    base_im.paste(item_im, (int((dim - item_data.width) >> 1), int((dim - item_data.height) >> 1)), item_im)
+    num_im = numberToImage(item_data.default_count, (20, 20))
+    base_im = base_im.resize((32, 32))
+    base_im.paste(num_im, (6, 6), num_im)
+    writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
 
 
 boot_phrases = (
