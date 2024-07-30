@@ -196,7 +196,7 @@ def randomize_setup(spoiler):
     ]
     pickup_list = []
     for pickup in pickup_weights:
-        for count in range(pickup["weight"]):
+        for _ in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
     arcade_r1_shortened = IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
@@ -246,6 +246,7 @@ def randomize_setup(spoiler):
     raise_patch = IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.raise_fungi_dirt_patch)
     random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardBossesSelected.pufftoss_star_rando)
     higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardBossesSelected.pufftoss_star_raised)
+    removed_crypt_doors = IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.castle_crypt_doors)
     for cont_map_id in range(216):
         cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
         ROM_COPY.seek(cont_map_setup_address)
@@ -372,7 +373,7 @@ def randomize_setup(spoiler):
                 ROM_COPY.seek(item_start + 0x28)
                 ROM_COPY.writeMultipleBytes(slam_pads[spoiler.settings.chunky_phase_slam_req_internal], 2)
             # Delete crypt doors
-            if IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.castle_crypt_doors):
+            if removed_crypt_doors:
                 size_down = False
                 if cont_map_id == Maps.CastleLowerCave:
                     size_down = item_id in (0x9, 0x6, 0x5, 0x7, 0x8, 0x4, 0x3)
