@@ -3020,7 +3020,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
     Images = [
         HelmDoorImages(BarrierItems.GoldenBanana, [0x155C]),
         HelmDoorImages(BarrierItems.Blueprint, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
-        HelmDoorImages(BarrierItems.Bean, [0], True, 6, (20, 20)),
+        HelmDoorImages(BarrierItems.Bean, [6020], False, 25, (64, 32)),
         HelmDoorImages(BarrierItems.Pearl, [0xD5F], False, 25, (32, 32)),
         HelmDoorImages(BarrierItems.Fairy, [0x16ED], False, 25, (32, 32), TextureFormat.RGBA32),
         HelmDoorImages(BarrierItems.Key, [5877]),
