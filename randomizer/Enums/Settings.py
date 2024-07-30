@@ -695,7 +695,7 @@ class RemovedBarriersSelected(IntEnum):
     factory_testing_gate = 7
     galleon_lighthouse_gate = 8
     galleon_shipyard_area_gate = 9
-    galleon_shipwreck_gates = 10
+    castle_crypt_doors = 10
     galleon_seasick_ship = 11
     forest_green_tunnel = 12
     forest_yellow_tunnel = 13

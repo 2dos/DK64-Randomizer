@@ -259,6 +259,8 @@ def randomize_setup(spoiler):
             item_start = cont_map_setup_address + 4 + (model2_item * 0x30)
             ROM_COPY.seek(item_start + 0x28)
             item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            ROM_COPY.seek(item_start + 0x2A)
+            item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
             is_swap = False
             for swap in swap_list:
                 if swap["map"] == cont_map_id and item_type in swap["item_list"]:
@@ -369,6 +371,16 @@ def randomize_setup(spoiler):
                 }
                 ROM_COPY.seek(item_start + 0x28)
                 ROM_COPY.writeMultipleBytes(slam_pads[spoiler.settings.chunky_phase_slam_req_internal], 2)
+            # Delete crypt doors
+            if IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.castle_crypt_doors):
+                size_down = False
+                if cont_map_id == Maps.CastleLowerCave:
+                    size_down = item_id in (0x9, 0x6, 0x5, 0x7, 0x8, 0x4, 0x3)
+                elif cont_map_id == Maps.CastleCrypt:
+                    size_down = item_id in (0xF, 0xE, 0xD)
+                if size_down:
+                    ROM_COPY.seek(item_start + 0xC)
+                    ROM_COPY.writeMultipleBytes(0, 4)
 
         if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
             if len(positions) > 0 and len(offsets) > 0:
@@ -400,7 +412,8 @@ def randomize_setup(spoiler):
                         ROM_COPY.seek(offset["offset"] + 0x1C)
                         new_rot = (2 + rot_diff) % 4
                         ROM_COPY.writeMultipleBytes(int(rotation_hexes[new_rot], 16), 4)
-
+        
+        # Mystery
         ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30))
         mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         actor_block_start = cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24)

@@ -628,6 +628,8 @@ file_dict.append(File(
     file_index=195,
     source_file=f"assets/displays/win_con_logo.png",
     texture_format=TextureFormat.RGBA5551,
+    target_compressed_size=32 * 32 * 2,
+    target_uncompressed_size=32 * 32 * 2,
 ))
 for x, shop in enumerate(shop_face_array):
     data = File(
