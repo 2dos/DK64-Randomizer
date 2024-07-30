@@ -321,7 +321,7 @@ class Settings:
         self.boss_location_rando = None
         self.boss_kong_rando = None
         self.kasplat_rando_setting = None
-        self.puzzle_rando = None
+        self.puzzle_rando = None  # Deprecated
         self.puzzle_rando_difficulty = PuzzleRando.off
         self.shuffle_shops = None
         self.switchsanity = SwitchsanityLevel.off
@@ -643,7 +643,10 @@ class Settings:
         self.helm_hurry = False
         self.colorblind_mode = ColorblindMode.off
         self.big_head_mode = BigHeadMode.off
-        self.win_condition = WinCondition.beat_krool
+        self.win_condition = WinCondition.beat_krool  # Deprecated
+        self.win_condition_random = False
+        self.win_condition_item = WinConditionComplex.beat_krool
+        self.win_condition_count = 1
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
         self.random_starting_region = False
@@ -962,6 +965,100 @@ class Settings:
         self.coin_door_item = DoorItemToBarrierItem(self.coin_door_item, True)
         self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
+        # Win Condition
+        wincon_items = {
+            WinConditionComplex.beat_krool: HelmDoorInfo(
+                1,
+                HelmDoorInfo(1, 1, 0.1),                                          
+                HelmDoorInfo(1, 1, 0.1),                                          
+                HelmDoorInfo(1, 1, 0.05),                                          
+            ),
+            WinConditionComplex.krem_kapture: HelmDoorInfo(
+                1,
+                HelmDoorInfo(1, 1, 0.06),                                          
+                HelmDoorInfo(1, 1, 0.03),                                      
+            ),
+            WinConditionComplex.get_key8: HelmDoorInfo(1),
+            WinConditionComplex.req_gb: HelmDoorInfo(
+                201,
+                HelmDoorInfo(60, 100, 0.1),
+                HelmDoorInfo(40, 60, 0.1),
+                HelmDoorInfo(20, 40, 0.15),
+            ),
+            WinConditionComplex.req_bp: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(10, 30, 0.09),
+                HelmDoorRandomInfo(7, 25, 0.1),
+                HelmDoorRandomInfo(5, 15, 0.1),
+            ),
+            WinConditionComplex.req_companycoins: HelmDoorInfo(
+                2,
+                HelmDoorRandomInfo(1, 2, 0.05),
+            ),
+            WinConditionComplex.req_key: HelmDoorInfo(
+                8,
+                HelmDoorRandomInfo(6, 7, 0.05),
+                HelmDoorRandomInfo(7, 8, 0.1),
+                HelmDoorRandomInfo(8, 8, 0.1),
+            ),
+            WinConditionComplex.req_medal: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(10, 30, 0.09),
+                HelmDoorRandomInfo(7, 15, 0.1),
+                HelmDoorRandomInfo(5, 10, 0.1),
+            ),
+            WinConditionComplex.req_crown: HelmDoorInfo(
+                10,
+                HelmDoorRandomInfo(3, 6, 0.1),
+                HelmDoorRandomInfo(2, 4, 0.1),
+                HelmDoorRandomInfo(1, 3, 0.06),
+            ),
+            WinConditionComplex.req_fairy: HelmDoorInfo(
+                20,
+                HelmDoorRandomInfo(5, 10, 0.1),
+                HelmDoorRandomInfo(3, 7, 0.12),
+                HelmDoorRandomInfo(1, 5, 0.18),
+            ),
+            WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
+                16,
+                HelmDoorRandomInfo(6, 10, 0.11),
+                HelmDoorRandomInfo(4, 8, 0.14),
+                HelmDoorRandomInfo(3, 5, 0.18),
+            ),
+            WinConditionComplex.req_bean: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.01),
+            ),
+            WinConditionComplex.req_pearl: HelmDoorInfo(
+                5,
+                HelmDoorRandomInfo(2, 4, 0.05),
+                HelmDoorRandomInfo(1, 2, 0.1),
+                HelmDoorRandomInfo(1, 1, 0.13),
+            ),
+        }
+        random_win_con_settings = (WinConditionComplex.easy_random, WinConditionComplex.medium_random, WinConditionComplex.hard_random)
+        self.win_condition_random = self.win_condition_item in random_win_con_settings
+        win_con_pool = {}
+        wc_diff = random_win_con_settings.index(self.win_condition_item) if self.win_condition_item in random_win_con_settings else None
+        for item in wincon_items:
+            data = wincon_items[item]
+            wc_info = data.getDifficultyInfo(wc_diff)
+            if wc_info is not None:
+                win_con_pool[item] = wc_info.chooseAmount()
+        if self.win_condition_random:
+            potential_items = list(win_con_pool.keys())
+            potential_item_weights = []
+            for x in potential_items:
+                data = wincon_items[x].getDifficultyInfo(wc_diff)
+                weight = 0 if data is None else data.selection_weight
+                potential_item_weights.append(weight)
+            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            self.win_condition_item = selected_item
+            self.win_condition_count = win_con_pool[selected_item]
+        if self.win_condition_item in helmdoor_items.keys():
+            self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
+
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
@@ -1208,7 +1305,7 @@ class Settings:
             required_key_count = randint(0, 8)
         else:
             required_key_count = self.krool_key_count
-        key_8_required = self.krool_access or self.win_condition == WinCondition.get_key8
+        key_8_required = self.krool_access or self.win_condition_item == WinConditionComplex.get_key8
         # Remove the need for keys we intend to start with
         if self.select_keys:
             for key in self.starting_keys_list_selected:
@@ -1388,21 +1485,21 @@ class Settings:
             self.kasplat_location_rando = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
-        if self.win_condition == WinCondition.all_fairies or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
+        if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
             ItemList[Items.BananaFairy].playthrough = True
-        if self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
+        if self.win_condition_item == WinConditionComplex.req_rainbowcoin or self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
             ItemList[Items.RainbowCoin].playthrough = True
-        if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
+        if self.win_condition_item == WinConditionComplex.req_bp or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
                     ItemList[item_index].playthrough = True
-        if self.win_condition == WinCondition.all_medals or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
+        if self.win_condition_item == WinConditionComplex.req_medal or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
             ItemList[Items.BananaMedal].playthrough = True
-        if self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
+        if self.win_condition_item == WinConditionComplex.req_crown or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
-        if self.crown_door_item == BarrierItems.Bean or self.coin_door_item == BarrierItems.Bean or Types.Bean in self.shuffled_location_types:
+        if self.win_condition_item == WinConditionComplex.req_bean or self.crown_door_item == BarrierItems.Bean or self.coin_door_item == BarrierItems.Bean or Types.Bean in self.shuffled_location_types:
             ItemList[Items.Bean].playthrough = True
-        if self.crown_door_item == BarrierItems.Pearl or self.coin_door_item == BarrierItems.Pearl or Types.Pearl in self.shuffled_location_types:
+        if self.win_condition_item == WinConditionComplex.req_pearl or self.crown_door_item == BarrierItems.Pearl or self.coin_door_item == BarrierItems.Pearl or Types.Pearl in self.shuffled_location_types:
             ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none

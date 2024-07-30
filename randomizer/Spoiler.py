@@ -28,7 +28,7 @@ from randomizer.Enums.Settings import (
     ShuffleLoadingZones,
     SpoilerHints,
     TrainingBarrels,
-    WinCondition,
+    WinConditionComplex,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -318,7 +318,28 @@ class Spoiler:
         settings["Quality of Life"] = self.dumpMultiselector(self.settings.quality_of_life, self.settings.misc_changes_selected, QoLSelector)
         settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, FasterCheckSelector)
         settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, RemovedBarrierSelector)
-        settings["Win Condition"] = self.settings.win_condition.name
+        settings["Random Win Condition"] = self.settings.win_condition_random
+        if not self.settings.win_condition_random:
+            wc_count = self.settings.win_condition_count   
+            win_con_name_table = {
+                WinConditionComplex.beat_krool: "Beat K. Rool",
+                WinConditionComplex.get_key8: "Acquire Key 8",
+                WinConditionComplex.krem_kapture: "Kremling Kapture",
+                WinConditionComplex.req_bean: "Acquire the Bean",
+                WinConditionComplex.req_bp: f"{wc_count} Blueprint{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_companycoins: f"{wc_count} Company Coin{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_crown: f"{wc_count} Crown{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_fairy: f"{wc_count} Fair{'ies' if wc_count != 1 else 'y'}",
+                WinConditionComplex.req_gb: f"{wc_count} Golden Banana{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_key: f"{wc_count} Key{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_medal: f"{wc_count} Medal{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_pearl: f"{wc_count} Pearl{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_rainbowcoin: f"{wc_count} Rainbow Coin{'s' if wc_count != 1 else ''}",
+            }
+            if self.settings.win_condition_item in win_con_name_table:
+                settings["Win Condition"] = win_con_name_table[self.settings.win_condition_item]
+            else:
+                settings["Win Condition"] = self.settings.win_condition_item.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
@@ -1106,15 +1127,27 @@ class Spoiler:
         # GBs go last, there's a lot of them but they arent important
         if ItemList[location.item].type == Types.Banana:
             return 100
+        win_con_type_table = {
+            WinConditionComplex.req_bean: Types.Bean,
+            WinConditionComplex.req_bp: Types.Blueprint,
+            WinConditionComplex.req_companycoins: Types.NintendoCoin,  # Also Types.RarewareCoin
+            WinConditionComplex.req_crown: Types.Crown,
+            WinConditionComplex.req_fairy: Types.Fairy,
+            WinConditionComplex.req_gb: Types.Banana,  # Also Types.ToughBanana
+            # WinConditionComplex.req_key: Types.Key,
+            WinConditionComplex.req_medal: Types.Medal,
+            WinConditionComplex.req_pearl: Types.Pearl,
+            WinConditionComplex.req_rainbowcoin: Types.RainbowCoin,
+        }
         # Win condition items are more important than GBs but less than moves
-        elif self.settings.win_condition == WinCondition.all_fairies and ItemList[location.item].type == Types.Fairy:
-            return 10
-        elif self.settings.win_condition == WinCondition.all_blueprints and ItemList[location.item].type == Types.Blueprint:
-            return 10
-        elif self.settings.win_condition == WinCondition.all_medals and ItemList[location.item].type == Types.Medal:
-            return 10
+        if self.settings.win_condition_item in win_con_type_table:
+            if ItemList[location.item].type == win_con_type_table[self.settings.win_condition_item]:
+                return 10
+            if self.settings.win_condition_item == WinConditionComplex.req_companycoins:
+                if ItemList[location.item].type == Types.RarewareCoin:
+                    return 10
         # Kongs are most the single most important thing and should be at the top of spheres
-        elif ItemList[location.item].type == Types.Kong:
+        if ItemList[location.item].type == Types.Kong:
             return 0
         # Keys are best put first
         elif ItemList[location.item].type == Types.Key:

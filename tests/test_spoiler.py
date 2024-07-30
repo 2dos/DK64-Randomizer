@@ -18,7 +18,7 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, 
                                        MicrohintsEnabled, MoveRando,
                                        RandomPrices, SettingsMap,
                                        ShockwaveStatus, SpoilerHints,
-                                       TrainingBarrels, WinCondition,
+                                       TrainingBarrels, WinConditionComplex,
                                        WrinklyHints)
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings

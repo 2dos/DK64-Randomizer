@@ -372,9 +372,10 @@
     "vanilla_door_rando": 0,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.7,
-      "get_key8": 0.3
+    "win_condition_item": {
+      "beat_krool": 0.2,
+      "get_key8": 0.1,
+      "easy_random": 0.7
     },
     "wrinkly_available": 1,
     "wrinkly_hints": {
@@ -776,10 +777,11 @@
     "vanilla_door_rando": 0.4,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.6,
-      "get_key8": 0.25,
-      "all_keys": 0.15
+    "win_condition_item": {
+      "beat_krool": 0.25,
+      "easy_random": 0.2,
+      "medium_random": 0.5,
+      "krem_kapture": 0.05
     },
     "wrinkly_available": 0.9,
     "wrinkly_hints": {
@@ -1227,14 +1229,11 @@
     "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.45,
-      "get_key8": 0.25,
-      "all_fairies": 0.05,
-      "all_blueprints": 0.05,
-      "all_medals": 0.05,
-      "poke_snap": 0.05,
-      "all_keys": 0.1
+    "win_condition_item": {
+      "beat_krool": 0.2,
+      "medium_random": 0.3,
+      "hard_random": 0.45,
+      "krem_kapture": 0.05
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {
@@ -1682,14 +1681,11 @@
     "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
     "warp_to_isles": 0.9,
-    "win_condition": {
-      "beat_krool": 0.45,
-      "get_key8": 0.25,
-      "all_fairies": 0.05,
-      "all_blueprints": 0.05,
-      "all_medals": 0.05,
-      "poke_snap": 0.05,
-      "all_keys": 0.1
+    "win_condition_item": {
+      "beat_krool": 0.2,
+      "medium_random": 0.3,
+      "hard_random": 0.45,
+      "krem_kapture": 0.05
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {

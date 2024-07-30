@@ -811,6 +811,46 @@ class WinCondition(IntEnum):
     poke_snap = 5
     all_keys = 6
 
+class WinConditionComplex(IntEnum):
+    """The condition needed to complete the game.
+    
+    This enum is an iteration on the WinCondition enum.
+
+    beat_krool: Complete the King K. Rool boss fight.
+    get_key8: Collect Key 8. Mostly legacy.
+    krem_kapture: Capture a photograph of each enemy in the game.
+    req_gb: Golden Bananas.
+    req_bp: Blueprints.
+    req_companycoins: The Rareware and Nintendo coins.
+    req_key: Keys.
+    req_medal: Banana Medals.
+    req_crown: Battle Crowns.
+    req_fairy: Banana Fairies.
+    req_rainbowcoin: Rainbow Coins.
+    req_bean: The bean.
+    req_pearl: Pearls.
+    easy_random: The game is beaten by obtaining a random amount of a randomly selected item (Easy difficulty).
+    medium_random: The game is beaten by obtaining a random amount of a randomly selected item (Medium difficulty).
+    hard_random: The game is beaten by obtaining a random amount of a randomly selected item (Hard difficulty).
+    """
+
+    beat_krool = 0
+    get_key8 = 1
+    krem_kapture = 2
+    req_gb = 3
+    req_bp = 4
+    req_companycoins = 5
+    req_key = 6
+    req_medal = 7
+    req_crown = 8
+    req_fairy = 9
+    req_rainbowcoin = 10
+    req_bean = 11
+    req_pearl = 12
+    easy_random = 13
+    medium_random = 14
+    hard_random = 15
+
 
 class WrinklyHints(IntEnum):
     """Whether or not Wrinkly hints are replaced with useful randomizer hints.
@@ -902,6 +942,7 @@ SettingsMap = {
     "training_barrels": TrainingBarrels,
     "warp_level_list_selected": Maps,
     "win_condition": WinCondition,
+    "win_condition_item": WinConditionComplex,
     "wrinkly_hints": WrinklyHints,
     "spoiler_hints": SpoilerHints,
     "starting_kong": Kongs,
@@ -1119,6 +1160,8 @@ class SettingsStringEnum(IntEnum):
     ice_trap_frequency = 187
     ice_traps_damage = 188
     puzzle_rando_difficulty = 189
+    win_condition_item = 190
+    win_condition_count = 191
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1131,6 +1174,7 @@ DeprecatedSettings = {
     SettingsStringEnum.krusha_ui,
     SettingsStringEnum.hard_level_progression,
     SettingsStringEnum.puzzle_rando,
+    SettingsStringEnum.win_condition,
 }
 
 
@@ -1306,6 +1350,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition: WinCondition,
+    SettingsStringEnum.win_condition_item: WinConditionComplex,
+    SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
@@ -1413,3 +1459,4 @@ addSettingIntRange(SettingsStringEnum.troff_5, 500)
 addSettingIntRange(SettingsStringEnum.troff_6, 500)
 addSettingIntRange(SettingsStringEnum.troff_text, 500)
 addSettingIntRange(SettingsStringEnum.progressive_hint_text, 201)
+addSettingIntRange(SettingsStringEnum.win_condition_count, 201)

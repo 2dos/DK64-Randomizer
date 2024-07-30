@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels, WinCondition
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels, WinConditionComplex
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
@@ -3346,36 +3346,49 @@ class WinConData:
 
 def showWinCondition(settings: Settings):
     """Alter the image that's shown on the main menu to display the win condition."""
-    win_con = settings.win_condition
-    if win_con == WinCondition.beat_krool:
+    win_con = settings.win_condition_item
+    if win_con == WinConditionComplex.beat_krool:
         # Default, don't alter image
         return
-    if win_con == WinCondition.get_key8:
+    if win_con == WinConditionComplex.get_key8:
         output_image = Image.open(BytesIO(js.getFile("./base-hack/assets/displays/key8.png")))
         output_image = output_image.resize((32, 32))
         writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
         return
-    if win_con == WinCondition.poke_snap:
+    if win_con == WinConditionComplex.req_bean:
+        output_image = Image.open(BytesIO(js.getFile("./base-hack/assets/arcade_jetpac/arcade/bean.png")))
+        output_image = output_image.resize((32, 32))
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    if win_con == WinConditionComplex.krem_kapture:
         item_im = getImageFile(14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
         writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
         return
     win_con_data = {
-        WinCondition.all_blueprints: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
-        WinCondition.all_medals: WinConData(25, 0x156C, TextureFormat.RGBA5551, 44, 44, True, 40),
-        WinCondition.all_fairies: WinConData(25, 0x16ED, TextureFormat.RGBA32, 32, 32, True, 20),
-        WinCondition.all_keys: WinConData(25, 0x16F6, TextureFormat.RGBA5551, 44, 44, True, 8),
+        WinConditionComplex.req_bp: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
+        WinConditionComplex.req_medal: WinConData(25, 0x156C, TextureFormat.RGBA5551, 44, 44, True, 40),
+        WinConditionComplex.req_fairy: WinConData(25, 0x16ED, TextureFormat.RGBA32, 32, 32, True, 20),
+        WinConditionComplex.req_key: WinConData(25, 0x16F6, TextureFormat.RGBA5551, 44, 44, True, 8),
+        WinConditionComplex.req_companycoins: WinConData(25, 0x1718, TextureFormat.RGBA5551, 44, 44, True, 2),
+        WinConditionComplex.req_crown: WinConData(25, 0x1707, TextureFormat.RGBA5551, 44, 44, True, 10),
+        WinConditionComplex.req_gb: WinConData(25, 0x155C, TextureFormat.RGBA5551, 44, 44, True, 201),
+        WinConditionComplex.req_pearl: WinConData(25, 0, TextureFormat.RGBA5551, 44, 44, True, 5),
+        WinConditionComplex.req_rainbowcoin: WinConData(25, 0x174B, TextureFormat.RGBA5551, 48, 42, True, 16),
     }
     if win_con not in win_con_data:
         return
     item_data = win_con_data[win_con]
-    item_im = getImageFile(item_data.table, item_data.image, item_data.table != 7, item_data.width, item_data.height, item_data.tex_format)
-    if item_data.flip:
-        item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
-    dim = max(item_data.width, item_data.height)
-    base_im = Image.new(mode="RGBA", size=(dim, dim))
-    base_im.paste(item_im, (int((dim - item_data.width) >> 1), int((dim - item_data.height) >> 1)), item_im)
-    num_im = numberToImage(item_data.default_count, (20, 20))
+    if win_con == WinConditionComplex.req_pearl:
+        base_im = Image.open(BytesIO(js.getFile("./base-hack/assets/arcade_jetpac/arcade/pearl.png")))
+    else:
+        item_im = getImageFile(item_data.table, item_data.image, item_data.table != 7, item_data.width, item_data.height, item_data.tex_format)
+        if item_data.flip:
+            item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
+        dim = max(item_data.width, item_data.height)
+        base_im = Image.new(mode="RGBA", size=(dim, dim))
+        base_im.paste(item_im, (int((dim - item_data.width) >> 1), int((dim - item_data.height) >> 1)), item_im)
     base_im = base_im.resize((32, 32))
+    num_im = numberToImage(settings.win_condition_count, (20, 20))
     base_im.paste(num_im, (6, 6), num_im)
     writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
 

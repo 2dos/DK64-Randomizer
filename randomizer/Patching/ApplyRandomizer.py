@@ -23,7 +23,7 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     SlamRequirement,
-    WinCondition,
+    WinConditionComplex,
     WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
@@ -377,37 +377,57 @@ def patching_response(spoiler):
 
     # Win Condition
     win_con_table = {
-        WinCondition.beat_krool: {
+        WinConditionComplex.beat_krool: {
             "index": 0,
         },
-        WinCondition.all_blueprints: {
-            "index": 3,
-            "item": 4,
-            "count": 40,
-        },
-        WinCondition.all_fairies: {
-            "index": 3,
-            "item": 5,
-            "count": 20,
-        },
-        WinCondition.all_keys: {
-            "index": 3,
-            "item": 6,
-            "count": 8,
-        },
-        WinCondition.all_medals: {
-            "index": 3,
-            "item": 9,
-            "count": 40,
-        },
-        WinCondition.get_key8: {
+        WinConditionComplex.get_key8: {
             "index": 1,
         },
-        WinCondition.poke_snap: {
+        WinConditionComplex.krem_kapture: {
             "index": 2,
         },
+        WinConditionComplex.req_bean: {
+            "index": 3,
+            "item": 0xA,
+        },
+        WinConditionComplex.req_bp: {
+            "index": 3,
+            "item": 4,
+        },
+        WinConditionComplex.req_companycoins: {
+            "index": 3,
+            "item": 8,
+        },
+        WinConditionComplex.req_crown: {
+            "index": 3,
+            "item": 7,
+        },
+        WinConditionComplex.req_fairy: {
+            "index": 3,
+            "item": 5,
+        },
+        WinConditionComplex.req_gb: {
+            "index": 3,
+            "item": 3,
+        },
+        WinConditionComplex.req_pearl: {
+            "index": 3,
+            "item": 0xB,
+        },
+        WinConditionComplex.req_key: {
+            "index": 3,
+            "item": 6,
+        },
+        WinConditionComplex.req_medal: {
+            "index": 3,
+            "item": 9,
+        },
+        WinConditionComplex.req_rainbowcoin: {
+            "index": 3,
+            "item": 0xC,
+        },
     }
-    win_con = spoiler.settings.win_condition
+    win_con = spoiler.settings.win_condition_item
     win_con_data = win_con_table.get(win_con, None)
     if win_con_data is not None:
         ROM_COPY.seek(sav + 0x11D)
@@ -415,7 +435,7 @@ def patching_response(spoiler):
         if "item" in win_con_data:
             ROM_COPY.seek(sav + 0xC0)
             ROM_COPY.write(win_con_data["item"])
-            ROM_COPY.write(win_con_data["count"])
+            ROM_COPY.write(spoiler.settings.win_condition_count)
 
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
