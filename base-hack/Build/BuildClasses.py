@@ -323,7 +323,7 @@ pointer_tables = [
         do_not_compress=True,
         dont_overwrite_uncompressed_sizes=True,
     ),
-    TableInfo(index=TableNames.Unknown22),
+    TableInfo(index=TableNames.Critters),
     TableInfo(
         name="Map Exits",
         index=TableNames.Exits,

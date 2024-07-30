@@ -76,7 +76,6 @@ file_dict = [
         texture_format=TextureFormat.IA4,
         target_compressed_size=0x800,
     ),
-    # File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
     File(name="Tag Barrel Shell Texture", pointer_table_index=TableNames.TexturesGeometry, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551),
     File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
@@ -623,11 +622,18 @@ shop_face_array = [
     "head32_dillo2",
     "head32_kko",
 ]
+file_dict.append(File(
+    name="Win Con Logo",
+    pointer_table_index=TableNames.TexturesHUD,
+    file_index=195,
+    source_file=f"assets/displays/win_con_logo.png",
+    texture_format=TextureFormat.RGBA5551,
+))
 for x, shop in enumerate(shop_face_array):
     data = File(
         name=f"Shop Indicator ({shop})",
         pointer_table_index=TableNames.TexturesHUD,
-        file_index=195 + x,
+        file_index=196 + x,
         source_file=f"assets/displays/{shop}.png",
         texture_format=TextureFormat.RGBA32,
     )
@@ -1806,6 +1812,7 @@ with open(newROMName, "r+b") as fh:
         "osprint_logo_right",
         "fool_overlay",
         "qmark32",
+        "win_con_logo",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -1867,7 +1874,9 @@ with open(newROMName, "r+b") as fh:
         "beetle_img_4041",
         "white_font_early",
         "white_font_late",
-        "question_mark"
+        "question_mark",
+        "k_rool_head_left",
+        "k_rool_head_right",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

@@ -281,7 +281,7 @@ void* loadInternalTexture(int texture_start, int texture_offset) {
 }
 
 void* loadFontTexture_Counter(void* slot, int index, int slot_index) {
-	void* texture = loadInternalTexture(195, index); // Load texture
+	void* texture = loadInternalTexture(196, index); // Load texture
 	if (slot) {
 		wipeTextureSlot(slot);
 	}

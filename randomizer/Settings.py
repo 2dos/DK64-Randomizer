@@ -918,6 +918,13 @@ class Settings:
         self.coin_door_random = self.coin_door_item in random_helm_door_settings
         crown_door_pool = {}
         coin_door_pool = {}
+        if self.chaos_blockers:
+            helmdoor_items[HelmDoorItem.req_gb].hard = HelmDoorRandomInfo(60, 100, 0.05)
+            helmdoor_items[HelmDoorItem.req_gb].medium = HelmDoorRandomInfo(30, 60, 0.1)
+            helmdoor_items[HelmDoorItem.req_gb].easy = HelmDoorRandomInfo(10, 30, 0.125)
+            helmdoor_items[HelmDoorItem.req_bp].hard.selection_weight = 0.05
+            helmdoor_items[HelmDoorItem.req_bp].medium.selection_weight = 0.1
+            helmdoor_items[HelmDoorItem.req_bp].easy.selection_weight = 0.125
         crown_diff = random_helm_door_settings.index(self.crown_door_item) if self.crown_door_item in random_helm_door_settings else None
         coin_diff = random_helm_door_settings.index(self.coin_door_item) if self.coin_door_item in random_helm_door_settings else None
         for item in helmdoor_items:

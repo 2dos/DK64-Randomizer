@@ -55,14 +55,14 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 88, .max_x = 108, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PUNCH}, // Punch
 	{.min_x = 88, .max_x = 108, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GONE}, // Gone
 	{.min_x = 88, .max_x = 108, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HUNKY}, // Hunky
-	{.min_x = 125, .max_x = 138, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
-	{.min_x = 141, .max_x = 157, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
-	{.min_x = 156, .max_x = 171, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
-	{.min_x = 173, .max_x = 189, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
-	{.min_x = 189, .max_x = 204, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
-	{.min_x = 205, .max_x = 220, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
-	{.min_x = 221, .max_x = 236, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
-	{.min_x = 237, .max_x = 252, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
+	{.min_x = 156, .max_x = 172, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
+	{.min_x = 172, .max_x = 189, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
+	{.min_x = 189, .max_x = 203, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
+	{.min_x = 205, .max_x = 221, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
+	{.min_x = 157, .max_x = 172, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
+	{.min_x = 173, .max_x = 188, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
+	{.min_x = 189, .max_x = 204, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
+	{.min_x = 205, .max_x = 220, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
 	{.min_x = 136, .max_x = 150, .min_y = 0, .max_y = 20, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CAMERA}, // Camera
 	{.min_x = 130, .max_x = 152, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SHOCKWAVE}, // Shockwave
 	{.min_x = 132, .max_x = 138, .min_y = 54, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
@@ -77,12 +77,16 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 22, .max_x = 42, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ORANGE}, // Orange
 	{.min_x = 44, .max_x = 64, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BARREL}, // Barrel
 	{.min_x = 66, .max_x = 86, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_VINE}, // Vine
-	{.min_x = 186, .max_x = 202, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
-	{.min_x = 202, .max_x = 219, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
-	{.min_x = 218, .max_x = 238, .min_y = 22, .max_y = 40, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
-	{.min_x = 239, .max_x = 249, .min_y = 25, .max_y = 39, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
-	{.min_x = 220, .max_x = 235, .min_y = 44, .max_y = 57, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
-	{.min_x = 236, .max_x = 244, .min_y = 44, .max_y = 58, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
+	{.min_x = 176, .max_x = 192, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
+	{.min_x = 192, .max_x = 209, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
+	{.min_x = 218, .max_x = 238, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
+	{.min_x = 239, .max_x = 249, .min_y = 3, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
+	{.min_x = 220, .max_x = 235, .min_y = 22, .max_y = 36, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
+	{.min_x = 236, .max_x = 244, .min_y = 22, .max_y = 37, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
+	{.min_x = 135, .max_x = 149, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CRANKY}, // Cranky
+	{.min_x = 157, .max_x = 173, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_FUNKY}, // Funky
+	{.min_x = 177, .max_x = 194, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CANDY}, // Candy
+	{.min_x = 199, .max_x = 217, .min_y = 113, .max_y = 123, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIDE}, // Snide
 };
 
 void wipeTrackerCache(void) {
@@ -212,6 +216,14 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_KEY7:
 		case TRACKER_TYPE_KEY8:
 			if (Rando.keys_preturned & (1 << (index - TRACKER_TYPE_KEY1))) {
+				return 1;
+			}
+			return 0;
+		case TRACKER_TYPE_CRANKY:
+		case TRACKER_TYPE_FUNKY:
+		case TRACKER_TYPE_CANDY:
+		case TRACKER_TYPE_SNIDE:
+			if (Rando.check_shop_flags & (0x80 >> (index - TRACKER_TYPE_CRANKY))) {
 				return 1;
 			}
 			return 0;
@@ -349,6 +361,11 @@ int getEnabledState(int index) {
 				}
 				return key_there;
 			}
+		case TRACKER_TYPE_CRANKY:
+		case TRACKER_TYPE_FUNKY:
+		case TRACKER_TYPE_CANDY:
+		case TRACKER_TYPE_SNIDE:
+			return checkFlagDuplicate(FLAG_ITEM_CRANKY + (index - TRACKER_TYPE_CRANKY), FLAGTYPE_PERMANENT);
 		default:
 			break;
 	}
@@ -521,6 +538,13 @@ Gfx* display_file_images(Gfx* dl, int y_offset) {
 	int tracker_x = 160;
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + getTrackerYOffset(),1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
+	if (CurrentMap == MAP_MAINMENU) {
+		int opacity = 0x80;
+		if (checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
+			opacity = 0xFF;
+		}
+		dl = drawImage(dl, 195, RGBA16, 32, 32, 1110, y_offset + 690, 4.0f, 4.0f, opacity);
+	}
 	return dl;
 }
 
@@ -532,7 +556,7 @@ Gfx* display_text(Gfx* dl) {
 	 * 
 	 * @return New Display List Address
 	 */
-	int y = FileScreenDLOffset - 320;
+	int y = FileScreenDLOffset - 402;
 	// Balanced IGT
 	// y += LINE_GAP;
 	int secs = IGT % 60;
@@ -541,7 +565,7 @@ Gfx* display_text(Gfx* dl) {
 	int hm = IGT / 60;
 	int minutes = hm % 60;
 	int hours = hm / 60;
-	float stat_x = 410;
+	float stat_x = 385.0f;
 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
 	dl = drawText(dl, 1, stat_x, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	// Percentage Counter

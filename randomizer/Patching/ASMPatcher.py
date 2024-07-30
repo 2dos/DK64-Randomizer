@@ -2146,8 +2146,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80029818, Overlay.Menu, 0, offset_dict, 4)  # Hide A
     writeValue(ROM_COPY, 0x80029840, Overlay.Menu, 0, offset_dict, 4)  # Hide B
     # writeValue(ROM_COPY, 0x80029874, Overlay.Menu, 0, offset_dict, 4) # Hide GB
-    writeValue(ROM_COPY, 0x8002986E, Overlay.Menu, 208, offset_dict)  # Move GB to right
-    writeValue(ROM_COPY, 0x80029872, Overlay.Menu, 0x9A, offset_dict)  # Move GB down
+    writeValue(ROM_COPY, 0x8002986E, Overlay.Menu, 198, offset_dict)  # Move GB to right
+    writeValue(ROM_COPY, 0x80029872, Overlay.Menu, 114, offset_dict)  # Move GB down
     writeValue(ROM_COPY, 0x8002985A, Overlay.Menu, 0, offset_dict)  # Change sprite mode for GB
     writeFloat(ROM_COPY, 0x80033CA8, Overlay.Menu, 0.4, offset_dict)  # Change GB Scale
     # Menu/Shop: File Select

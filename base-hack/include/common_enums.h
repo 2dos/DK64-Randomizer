@@ -688,6 +688,10 @@ typedef enum tracker_types {
 	/* 48 */ TRACKER_TYPE_INSUPG_2,
 	/* 49 */ TRACKER_TYPE_BELT_1,
 	/* 50 */ TRACKER_TYPE_BELT_2,
+	/* 51 */ TRACKER_TYPE_CRANKY,
+	/* 52 */ TRACKER_TYPE_FUNKY,
+	/* 53 */ TRACKER_TYPE_CANDY,
+	/* 54 */ TRACKER_TYPE_SNIDE,
 } tracker_types;
 
 typedef enum overlays {
