@@ -292,7 +292,11 @@
       "max": 60,
       "mean": 45
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "off": 0.2,
+      "easy": 0.7,
+      "medium": 0.1
+    },
     "quality_of_life": 1,
     "random_crates": 0,
     "random_fairies": 0,
@@ -686,7 +690,12 @@
       "max": 100,
       "mean": 60
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "off": 0.1,
+      "easy": 0.2,
+      "medium": 0.6,
+      "hard": 0.1
+    },
     "quality_of_life": 1,
     "random_crates": 0.3,
     "random_fairies": 0.2,
@@ -1132,7 +1141,11 @@
       "max": 100,
       "mean": 70
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "easy": 0.2,
+      "medium": 0.3,
+      "hard": 0.5
+    },
     "quality_of_life": 1,
     "random_crates": 0.6,
     "random_fairies": 0.6,
@@ -1582,7 +1595,11 @@
       "max": 100,
       "mean": 70
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "easy": 0.2,
+      "medium": 0.3,
+      "hard": 0.5
+    },
     "quality_of_life": 1,
     "random_crates": 0.6,
     "random_fairies": 0.6,

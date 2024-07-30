@@ -1640,7 +1640,7 @@ with open(newROMName, "r+b") as fh:
             fh.write(bp_item.to_bytes(2, "big"))
     # Medals
     fh.seek(0x1FF1080)
-    for medal_item in range(40):
+    for medal_item in range(45):
         fh.write((5).to_bytes(1, "big"))
     # Crown
     fh.seek(0x1FF10C0)

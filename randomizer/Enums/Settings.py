@@ -641,7 +641,23 @@ class MusicFilters(IntEnum):
     """Determine how music is filtered."""
 
     length = 1
-    location = 1
+    location = 2
+
+class PuzzleRando(IntEnum):
+    """Determines the difficulty of puzzle rando.
+
+    off: Puzzle Solutions are NOT randomized.
+    easy: Easy boundaries, no castle car race.
+    medium: Medium boundaries, no castle car race.
+    hard: Hard boundaries.
+    chaos: Any value in the easy, medium or hard bounds
+    """
+
+    off = 0
+    easy = 1
+    medium = 2
+    hard = 3
+    chaos = 4
 
 
 class RandomPrices(IntEnum):
@@ -897,6 +913,7 @@ SettingsMap = {
     "kong_model_tiny": KongModels,
     "kong_model_chunky": KongModels,
     "chunky_phase_slam_req": SlamRequirement,
+    "puzzle_rando_difficulty": PuzzleRando,
 }
 
 
@@ -1101,6 +1118,7 @@ class SettingsStringEnum(IntEnum):
     hard_bosses_selected = 186
     ice_trap_frequency = 187
     ice_traps_damage = 188
+    puzzle_rando_difficulty = 189
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1112,6 +1130,7 @@ DeprecatedSettings = {
     SettingsStringEnum.high_req,
     SettingsStringEnum.krusha_ui,
     SettingsStringEnum.hard_level_progression,
+    SettingsStringEnum.puzzle_rando,
 }
 
 
@@ -1333,6 +1352,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
+    SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

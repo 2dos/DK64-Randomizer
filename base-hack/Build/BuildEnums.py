@@ -56,7 +56,7 @@ class TableNames(IntEnum):
     Unknown19 = auto()
     Unknown20 = auto()
     Autowalks = auto()
-    Unknown22 = auto()
+    Critters = auto()
     Exits = auto()
     RaceCheckpoints = auto()
     TexturesGeometry = auto()

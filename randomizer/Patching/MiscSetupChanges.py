@@ -9,7 +9,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement, HardBossesSelected
+from randomizer.Enums.Settings import DamageAmount, PuzzleRando, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement, HardBossesSelected
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
@@ -273,7 +273,7 @@ def randomize_setup(spoiler):
                     ROM_COPY.seek(item_start + 0x28)
                     ROM_COPY.writeMultipleBytes(random.choice(pickup_list), 2)
             elif is_swap:
-                if spoiler.settings.puzzle_rando:
+                if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
                     offsets.append(item_start)
                     ROM_COPY.seek(item_start)
                     x = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -282,7 +282,7 @@ def randomize_setup(spoiler):
                     ROM_COPY.seek(item_start + 0x1C)
                     ry = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     positions.append([x, y, z, ry])
-            elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
+            elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off)):
                 if cont_map_id == Maps.HideoutHelm:
                     y_position = random.uniform(-131, 500)
                     star_donut_center = [1055.704, 3446.966]
@@ -316,7 +316,7 @@ def randomize_setup(spoiler):
                 for coord_i, coord in enumerate(new_gb_coords):
                     ROM_COPY.seek(item_start + (coord_i * 4))
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(coord), 16), 4)
-            elif cont_map_id == Maps.FranticFactory and spoiler.settings.puzzle_rando and item_type >= 0xF4 and item_type <= 0x103:
+            elif cont_map_id == Maps.FranticFactory and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and item_type >= 0xF4 and item_type <= 0x103:
                 for subtype_item in number_gb_data:
                     for num_item in subtype_item["numbers"]:
                         if num_item["number"] == (item_type - 0xF3):
@@ -327,7 +327,7 @@ def randomize_setup(spoiler):
                             z = int.from_bytes(ROM_COPY.readBytes(4), "big")
                             number_replacement_data[subtype_name]["offsets"].append({"offset": item_start, "rotation": num_item["rot"], "number": item_type - 0xF3})
                             number_replacement_data[subtype_name]["positions"].append({"coords": [x, y, z], "rotation": num_item["rot"]})
-            elif cont_map_id == Maps.ForestLankyMushroomsRoom and spoiler.settings.puzzle_rando:
+            elif cont_map_id == Maps.ForestLankyMushroomsRoom and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
                 if item_type >= 0x1BA and item_type <= 0x1BE:  # Mushrooms
                     spawner_pos = lanky_fungi_mush["picked"][lanky_fungi_mush["index"]]
                     ROM_COPY.seek(item_start)
@@ -341,13 +341,13 @@ def randomize_setup(spoiler):
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
                     ROM_COPY.seek(item_start + 8)
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
-            elif cont_map_id == Maps.AngryAztec and spoiler.settings.puzzle_rando and (item_type == 0x121 or (item_type >= 0x226 and item_type <= 0x228)):
+            elif cont_map_id == Maps.AngryAztec and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and (item_type == 0x121 or (item_type >= 0x226 and item_type <= 0x228)):
                 # Is Vase Pad
                 ROM_COPY.seek(item_start)
                 for coord in range(3):
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                 vase_puzzle_rando_progress += 1
-            elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
+            elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and item_type == 0x203:
                 spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
                 ROM_COPY.seek(item_start)
                 ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
@@ -370,7 +370,7 @@ def randomize_setup(spoiler):
                 ROM_COPY.seek(item_start + 0x28)
                 ROM_COPY.writeMultipleBytes(slam_pads[spoiler.settings.chunky_phase_slam_req_internal], 2)
 
-        if spoiler.settings.puzzle_rando:
+        if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
             if len(positions) > 0 and len(offsets) > 0:
                 random.shuffle(positions)
                 for index, offset in enumerate(offsets):
@@ -461,14 +461,14 @@ def randomize_setup(spoiler):
             actor_type = int.from_bytes(ROM_COPY.readBytes(2), "big") + 0x10
             ROM_COPY.seek(actor_start + 0x34)
             actor_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            if actor_type >= 100 and actor_type <= 105 and spoiler.settings.puzzle_rando and cont_map_id == Maps.CavesDiddyIgloo:  # 5DI Spawner
+            if actor_type >= 100 and actor_type <= 105 and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and cont_map_id == Maps.CavesDiddyIgloo:  # 5DI Spawner
                 spawner_pos = diddy_5di_pads["picked"][diddy_5di_pads["index"]]
                 ROM_COPY.seek(actor_start)
                 ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
                 ROM_COPY.seek(actor_start + 8)
                 ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                 diddy_5di_pads["index"] += 1
-            elif actor_type >= 64 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:  # Exclude O Vase to force it to be vanilla
+            elif actor_type >= 64 and actor_type <= 66 and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and cont_map_id == Maps.AngryAztec:  # Exclude O Vase to force it to be vanilla
                 # Vase
                 ROM_COPY.seek(actor_start)
                 for coord in range(3):

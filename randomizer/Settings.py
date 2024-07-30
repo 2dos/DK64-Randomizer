@@ -322,6 +322,7 @@ class Settings:
         self.boss_kong_rando = None
         self.kasplat_rando_setting = None
         self.puzzle_rando = None
+        self.puzzle_rando_difficulty = PuzzleRando.off
         self.shuffle_shops = None
         self.switchsanity = SwitchsanityLevel.off
         self.switchsanity_data = {}
@@ -1148,9 +1149,9 @@ class Settings:
 
         # Mill Levers
         mill_shortened = IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
-        if not self.puzzle_rando and mill_shortened:
+        if self.puzzle_rando_difficulty == PuzzleRando.off and mill_shortened:
             self.mill_levers = [2, 3, 1, 0, 0]
-        elif self.puzzle_rando:
+        elif self.puzzle_rando_difficulty != PuzzleRando.off:
             mill_lever_cap = 3 if mill_shortened else 5
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
@@ -1161,7 +1162,7 @@ class Settings:
             random.shuffle(jetpac_levels)
             self.jetpac_enemy_order = jetpac_levels
 
-        if self.puzzle_rando:
+        if self.puzzle_rando_difficulty != PuzzleRando.off:
             # Crypt Levers
             self.crypt_levers = random.sample([x + 1 for x in range(6)], 3)
             # Diddy R&D Doors

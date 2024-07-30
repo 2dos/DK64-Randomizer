@@ -92,7 +92,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmDonkey1, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmDonkey2, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmDonkeyMedal, lambda l: Events.HelmDonkeyDone in l.Events and l.isdonkey),
-        LocationLogic(Locations.HelmMainEnemy_DKRoom, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_DKRoom, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk or (l.isdonkey and l.generalclips)),
@@ -102,8 +102,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmChunky1, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmChunky2, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmChunkyMedal, lambda l: Events.HelmChunkyDone in l.Events and l.ischunky),
-        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom0, lambda l: Events.HelmFinished in l.Events),
-        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom1, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom0, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk),
@@ -113,7 +113,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmTiny1, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmTiny2, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmTinyMedal, lambda l: Events.HelmTinyDone in l.Events and l.istiny),
-        LocationLogic(Locations.HelmMainEnemy_TinyRoom, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_TinyRoom, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk),
@@ -123,8 +123,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmLanky1, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmLanky2, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmLankyMedal, lambda l: Events.HelmLankyDone in l.Events and l.islanky),
-        LocationLogic(Locations.HelmMainEnemy_LankyRoom0, lambda l: Events.HelmFinished in l.Events),
-        LocationLogic(Locations.HelmMainEnemy_LankyRoom1, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_LankyRoom0, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_LankyRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
@@ -134,8 +134,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmDiddy1, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmDiddy2, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmDiddyMedal, lambda l: Events.HelmDiddyDone in l.Events and l.isdiddy),
-        LocationLogic(Locations.HelmMainEnemy_DiddyRoom0, lambda l: Events.HelmFinished in l.Events),
-        LocationLogic(Locations.HelmMainEnemy_DiddyRoom1, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_DiddyRoom0, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_DiddyRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),

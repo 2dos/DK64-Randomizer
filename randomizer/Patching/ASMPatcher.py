@@ -22,6 +22,7 @@ from randomizer.Enums.Settings import (
     ColorblindMode,
     DamageAmount,
     RandomModels,
+    PuzzleRando,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -1554,7 +1555,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806F53AC, Overlay.Static, 0, offset_dict, 4)  # Prevent LZ case
         writeValue(ROM_COPY, 0x806C7088, Overlay.Static, 0x1000, offset_dict)  # Mech fish dying
 
-    if settings.puzzle_rando:
+    if settings.puzzle_rando_difficulty != PuzzleRando.off:
         # Alter diddy R&D
         diddy_rnd_code_writes = [
             # Code 0: 4231

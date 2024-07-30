@@ -280,7 +280,7 @@ class Spoiler:
         settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
-        settings["Puzzle Randomization"] = self.settings.puzzle_rando
+        settings["Puzzle Randomization"] = self.settings.puzzle_rando_difficulty.name
         settings["Crown Door Open"] = self.settings.crown_door_item == BarrierItems.Nothing
         settings["Coin Door Open"] = self.settings.coin_door_item == BarrierItems.Nothing
         settings["Shockwave Shuffle"] = self.settings.shockwave_status.name
