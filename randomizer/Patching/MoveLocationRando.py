@@ -330,6 +330,7 @@ def place_pregiven_moves(spoiler):
         Items.Oranges,
         Items.Barrels,
         Items.Vines,
+        Items.Climbing,
         Items.Camera,
         Items.Shockwave,
     ]

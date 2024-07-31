@@ -191,7 +191,7 @@ ColoredBananaGroupList = [
         name="Leading up to and on BBlast pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.JungleJapesStart,
-        logic=lambda l: l.vines or l.CanMoonkick(),
+        logic=lambda l: l.can_use_vines or l.CanMoonkick(),
         locations=[[1, 1.0, 2308, 535, 1453], [1, 1.0, 2367, 550, 1330], [1, 1.0, 2422, 552, 1212], [1, 1.0, 2415, 530, 1123], [1, 1.0, 2511, 530, 1179], [5, 1.0, 2454, 544, 1152]],
     ),
     ColoredBananaGroup(
@@ -677,7 +677,7 @@ ColoredBananaGroupList = [
         name="On blueprint platform",
         konglist=[Kongs.chunky],
         region=Regions.JapesCatacomb,
-        logic=lambda l: l.pineapple and l.vines and l.ischunky,
+        logic=lambda l: l.pineapple and l.can_use_vines and l.ischunky,
         locations=[[5, 1.0, 203, 5, 686]],
     ),
     ColoredBananaGroup(
@@ -958,7 +958,7 @@ ColoredBananaGroupList = [
         name="between vines from funky to cannon",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[[5, 1.2, 1611, 565, 2099], [5, 1.2, 1524, 565, 2099]],
     ),
     ColoredBananaGroup(
@@ -1045,7 +1045,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
         vanilla=True,
-        logic=lambda l: l.vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))),
+        logic=lambda l: l.can_use_vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))),
         locations=[
             [1, 1.0, 955.9228515625, 502.0, 701.2963256835938],
             [1, 1.0, 998.90185546875, 499.64178466796875, 587.4546508789062],
@@ -1586,7 +1586,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         points=[[2284, 660, 1197], [2224, 610, 1430]],
     ),
     Balloon(

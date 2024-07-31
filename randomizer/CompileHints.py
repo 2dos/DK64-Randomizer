@@ -534,9 +534,9 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Some locations are particularly useless to hint
     useless_locations = {Items.HideoutHelmKey: [], Maps.KroolDonkeyPhase: [], Maps.KroolDiddyPhase: [], Maps.KroolLankyPhase: [], Maps.KroolTinyPhase: [], Maps.KroolChunkyPhase: []}
-    # Your training in Gorilla Gone, Monkeyport, and Vines are always pointless hints if Key 8 is in Helm, so let's not
+    # Your training in Gorilla Gone, Monkeyport, Climbing and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
-        useless_moves = [Items.Vines]
+        useless_moves = [Items.Vines, Items.Climbing]
         if not spoiler.settings.switchsanity:
             useless_moves.extend([Items.Monkeyport, Items.GorillaGone])
         useless_locations[Items.HideoutHelmKey] = [
@@ -1940,6 +1940,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Items.Triangle,
                 Items.Barrels,  # All the good training moves
                 Items.Vines,
+                Items.Climbing,
                 Items.Swim,
                 Items.Camera,  # Camera and Shockwave
                 Items.Shockwave,
@@ -2268,7 +2269,8 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Some locations are known quantities and can be pruned from the tree
         del hint_tree[Locations.BananaHoard]
         if spoiler.settings.key_8_helm:
-            del hint_tree[Locations.HelmKey]
+            if Locations.HelmKey in hint_tree:
+                del hint_tree[Locations.HelmKey]
         # Decorate the tree with information from our placed hints
         for hint in hints:
             if hint.related_location is not None and hint.related_location in hint_tree.keys() and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?

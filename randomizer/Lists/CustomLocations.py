@@ -568,7 +568,7 @@ CustomLocations = {
             z=4589,
             max_size=28.8,
             logic_region=Regions.AngryAztecMain,
-            logic=lambda l: l.vines or (l.jetpack and l.diddy) or l.CanMoonkick(),
+            logic=lambda l: l.can_use_vines or (l.jetpack and l.diddy) or l.CanMoonkick(),
             group=3,
         ),
         CustomLocation(map=Maps.AngryAztec, name="Under Vulture Cage", x=4102, y=120, z=4548, max_size=64, logic_region=Regions.AngryAztecMain, group=3),
@@ -2412,7 +2412,7 @@ CustomLocations = {
             max_size=64,
             vanilla_patch=True,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: (l.vines or l.CanMoonkick() or l.phasewalk),
+            logic=lambda l: (l.can_use_vines or l.CanMoonkick() or l.phasewalk),
             group=1,
         ),
         CustomLocation(
@@ -2700,7 +2700,7 @@ CustomLocations = {
             z=638,
             max_size=48,
             logic_region=Regions.HideoutHelmLobby,
-            logic=lambda l: (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl),
+            logic=lambda l: (l.can_use_vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl),
             group=7,
         ),
         CustomLocation(
@@ -2768,7 +2768,7 @@ CustomLocations = {
             z=920,
             max_size=56,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: l.vines or l.CanMoonkick() or l.phasewalk,
+            logic=lambda l: l.can_use_vines or l.CanMoonkick() or l.phasewalk,
             group=1,
         ),
         CustomLocation(

@@ -16,7 +16,7 @@ ColoredBananaGroupList = [
         name="At DK Portal before W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[[1, 1.0, 792, 120, 223], [1, 1.0, 794, 120, 318], [1, 1.0, 796, 120, 409], [1, 1.0, 795, 160, 533], [1, 1.0, 795, 160, 640]],
     ),
     ColoredBananaGroup(
@@ -43,7 +43,7 @@ ColoredBananaGroupList = [
         name="First tunnel (5 custom, 5 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BetweenVinesByPortal,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[
             [1, 1.0, 1173, 155, 1204],
         ],
@@ -122,7 +122,7 @@ ColoredBananaGroupList = [
         name="Singles on vines and bunch on guitar pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecOasis,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[[1, 1.2, 2450, 310, 1126], [1, 1.2, 2380, 325, 1226], [1, 1.2, 2309, 335, 1323], [1, 1.2, 2238, 345, 1421], [1, 1.2, 2171, 350, 1517], [5, 1.0, 2134, 326, 1556]],
     ),
     ColoredBananaGroup(
@@ -1356,7 +1356,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.LlamaTemple,
         vanilla=True,
-        logic=lambda l: (l.grape or l.phasewalk) and l.vines,
+        logic=lambda l: (l.grape or l.phasewalk) and l.can_use_vines,
         locations=[[5, 1.0, 792.3839721679688, 686.5, 2613.002685546875]],
     ),
     ColoredBananaGroup(

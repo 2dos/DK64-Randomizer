@@ -32,7 +32,7 @@ LogicRegions = {
 
     Regions.AngryAztecStart: Region("Angry Aztec Start", "Various Aztec Tunnels", Levels.AngryAztec, False, None, [], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
-        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.assumeAztecEntry or l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.assumeAztecEntry or l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
     ]),
 
     Regions.BetweenVinesByPortal: Region("Angry Aztec Between Vines By Portal", "Various Aztec Tunnels", Levels.AngryAztec, False, -1, [
@@ -46,8 +46,8 @@ LogicRegions = {
         Event(Events.AztecW1aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
-        TransitionFront(Regions.AngryAztecStart, lambda l: l.vines or (l.istiny and l.twirl) or l.phasewalk),
-        TransitionFront(Regions.AngryAztecOasis, lambda l: l.assumeAztecEntry or l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.AngryAztecStart, lambda l: l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.AngryAztecOasis, lambda l: l.assumeAztecEntry or l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
     ]),
 
     Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", "Various Aztec Tunnels", Levels.AngryAztec, False, -1, [
@@ -55,7 +55,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_StartingTunnel3, lambda l: True),
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
-        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
         TransitionFront(Regions.AngryAztecOasis, lambda l: True),
     ]),
 
@@ -66,7 +66,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_NearCandy, lambda l: True),
         LocationLogic(Locations.AztecMainEnemy_OasisDoor, lambda l: True),
     ], [
-        Event(Events.AztecGuitarPad, lambda l: (l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
+        Event(Events.AztecGuitarPad, lambda l: (l.can_use_vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
         Event(Events.AztecW1bTagged, lambda l: True),
         Event(Events.AztecW2aTagged, lambda l: True),
     ], [

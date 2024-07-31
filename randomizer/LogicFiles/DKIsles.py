@@ -63,6 +63,7 @@ LogicRegions = {
         LocationLogic(Locations.PreGiven_Location33, lambda l: True),
         LocationLogic(Locations.PreGiven_Location34, lambda l: True),
         LocationLogic(Locations.PreGiven_Location35, lambda l: True),
+        LocationLogic(Locations.PreGiven_Location36, lambda l: True),
     ], [
         Event(Events.KLumsyTalkedTo, lambda l: l.settings.fast_start_beginning_of_game or l.settings.auto_keys),
         # Everything you can do in the prison is autocompleted with auto_keys - just copy-paste the logic from the Prison region events here
@@ -107,7 +108,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
         LocationLogic(Locations.IslesFirstMove, lambda l: (l.allTrainingChecks and l.crankyAccess) or l.settings.fast_start_beginning_of_game, isAuxiliary=True),
         LocationLogic(Locations.RainbowCoin_Location13, lambda l: True),
-        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.vines or l.CanMoonkick()),  # Banana Hoard patch
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.can_use_vines or l.CanMoonkick()),  # Banana Hoard patch
     ], [
         Event(Events.TrainingBarrelsSpawned, lambda l: l.crankyAccess or l.settings.fast_start_beginning_of_game),  # Requires Cranky to spawn the training barrels
     ], [
@@ -141,7 +142,7 @@ LogicRegions = {
         TransitionFront(Regions.OuterIsles, lambda l: True),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.phasewalk or l.CanSTS(), Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.KremIsle, lambda l: True),
-        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
+        TransitionFront(Regions.IslesMainUpper, lambda l: l.can_use_vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
@@ -443,13 +444,13 @@ LogicRegions = {
     ]),
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", "Caves-Helm Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: (l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.ischunky and l.vines) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.advanced_platforming and l.istiny and l.twirl and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: (l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.ischunky and l.can_use_vines) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.advanced_platforming and l.istiny and l.twirl and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_rando and ((l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming))),
     ], [
         Event(Events.HelmLobbyAccessed, lambda l: True),
     ], [
         TransitionFront(Regions.KremIsleMouth, lambda l: True, Transitions.IslesHelmLobbyToMain),
-        TransitionFront(Regions.HideoutHelmEntry, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
+        TransitionFront(Regions.HideoutHelmEntry, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.can_use_vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 

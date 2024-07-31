@@ -52,7 +52,7 @@ LogicRegions = {
         Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
-        TransitionFront(Regions.GalleonPastVines, lambda l: l.vines or l.CanMoonkick()),
+        TransitionFront(Regions.GalleonPastVines, lambda l: l.can_use_vines or l.CanMoonkick()),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)),
         TransitionFront(Regions.LighthouseSurface, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or Events.LighthouseGateOpened in l.Events or l.phasewalk or l.CanSkew(False)),
         TransitionFront(Regions.Shipyard, lambda l: (l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or Events.ShipyardGateOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)) and (not l.IsLavaWater() or l.Melons >= 2)),

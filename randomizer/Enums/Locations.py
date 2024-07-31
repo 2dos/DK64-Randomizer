@@ -50,6 +50,7 @@ class Locations(IntEnum):
     PreGiven_Location33 = auto()
     PreGiven_Location34 = auto()
     PreGiven_Location35 = auto()
+    PreGiven_Location36 = auto()
 
     # DK Isles locations
     IslesDonkeyMedal = auto()  # ID: 42

@@ -90,7 +90,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk,
+            additional_logic=lambda l: (l.can_use_vines and l.pineapple and l.ischunky) or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk,
             vanilla=True,
         ),
         KasplatLocation(
@@ -253,7 +253,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
+            additional_logic=lambda l: l.can_use_vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near giant boulder",

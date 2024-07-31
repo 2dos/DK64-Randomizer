@@ -50,7 +50,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesCatacomb, lambda l: (l.Slam and l.chunky and l.barrels) or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False), Transitions.JapesMainToCatacomb),
-        TransitionFront(Regions.JapesBaboonBlast, lambda l: (l.vines or l.CanMoonkick()) and l.blast and l.isdonkey),  # , Transitions.JapesMainToBBlast)
+        TransitionFront(Regions.JapesBaboonBlast, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.blast and l.isdonkey),  # , Transitions.JapesMainToBBlast)
     ]),
 
     Regions.JungleJapesMain: Region("Jungle Japes Main", "Japes Hillside", Levels.JungleJapes, True, None, [
@@ -82,7 +82,7 @@ LogicRegions = {
         TransitionFront(Regions.FunkyJapes, lambda l: l.funkyAccess),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.BeyondRambiGate, lambda l: l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.phasewalk or l.generalclips),
-        TransitionFront(Regions.JapesTnSAlcove, lambda l: l.vines or (l.advanced_platforming and not l.IsHardFallDamage())),  # Falling from the top is now advanced platforming but you can't have hard fall damage on for it
+        TransitionFront(Regions.JapesTnSAlcove, lambda l: l.can_use_vines or (l.advanced_platforming and not l.IsHardFallDamage())),  # Falling from the top is now advanced platforming but you can't have hard fall damage on for it
     ]),
 
     Regions.JapesTnSAlcove: Region("Japes T&S Alcove", "Japes Hillside", Levels.JungleJapes, False, None, [], [], [
@@ -234,8 +234,8 @@ LogicRegions = {
 
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", "Japes Caves and Mines", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.vines and (l.isdiddy or l.istiny)) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk),
-        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk)),
+        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.can_use_vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.can_use_vines and (l.isdiddy or l.istiny)) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk),
+        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.can_use_vines and l.pineapple and l.ischunky) or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk)),
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True, Transitions.JapesCatacombToMain),

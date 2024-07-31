@@ -52,7 +52,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_SwitchRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmStart, lambda l: True),
-        TransitionFront(Regions.HideoutHelmMiniRoom, lambda l: l.pineapple and l.chunky and l.vines),
+        TransitionFront(Regions.HideoutHelmMiniRoom, lambda l: l.pineapple and l.chunky and l.can_use_vines),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanMoonkick() or l.phasewalk or l.CanOStandTBSNoclip())
     ]),
 

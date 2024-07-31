@@ -55,7 +55,7 @@ ColoredBananaGroupList = [
         name="On vines between two shrooms",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[[5, 1.2, 2140, 430, 2619], [5, 1.2, 2078, 445, 2434]],
     ),
     ColoredBananaGroup(
@@ -64,7 +64,7 @@ ColoredBananaGroupList = [
         name="Vines to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[[1, 1.2, 2489, 428, 2813], [1, 1.2, 2410, 415, 2895], [1, 1.2, 2348, 410, 2962], [1, 1.2, 2289, 405, 3024], [1, 1.2, 2226, 405, 3088]],
     ),
     ColoredBananaGroup(
@@ -73,7 +73,7 @@ ColoredBananaGroupList = [
         name="Around the roof of minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
+        logic=lambda l: l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
         locations=[
             [1, 1.0, 2092, 280, 3251],
             [1, 1.0, 2050, 280, 3192],
@@ -1018,7 +1018,7 @@ ColoredBananaGroupList = [
         name="On vines leading to night gate",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpper,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[[1, 1.2, 218, 980, 520], [1, 1.2, 365, 1035, 517], [1, 1.2, 475, 1030, 515], [1, 1.2, 580, 1030, 513], [1, 1.2, 675, 1035, 511]],
     ),
     ColoredBananaGroup(

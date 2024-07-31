@@ -88,7 +88,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Behind 5DT
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # Around Hunky Chunky barrel
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # W5
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.vines, None, 4),  # Vines by Snide's
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.can_use_vines, None, 4),  # Vines by Snide's
     ],
     Regions.AztecDonkeyQuicksandCave: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong, None, 4),
@@ -132,13 +132,13 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 6),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.phasewalk) and l.grape, None, 2),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.grape or l.phasewalk) and l.vines, None, 1),  # Matching game
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.grape or l.phasewalk) and l.can_use_vines, None, 1),  # Matching game
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 5),  # Instrument pad
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape or l.phasewalk) and l.vines, None, 2),  # Matching game room
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape or l.phasewalk) and l.can_use_vines, None, 2),  # Matching game room
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By tag barrel
     ],
     Regions.LlamaTempleBack: [

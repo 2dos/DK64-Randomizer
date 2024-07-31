@@ -128,7 +128,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLower, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True, Transitions.ForestUpperMushroomToLowerExterior),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestUpperMushroomToUpperExterior),
-        TransitionFront(Regions.MushroomNightDoor, lambda l: l.vines),
+        TransitionFront(Regions.MushroomNightDoor, lambda l: l.can_use_vines),
     ]),
 
     # This region basically just exists to facilitate the two entrances into upper mushroom
@@ -321,7 +321,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", "Forest Mills", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.can_use_vines or l.advanced_platforming or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.isdonkey and l.Slam and l.camera),
         LocationLogic(Locations.MelonCrate_Location11, lambda l: True),
         LocationLogic(Locations.ForestThornBarnEnemy_Enemy, lambda l: True),

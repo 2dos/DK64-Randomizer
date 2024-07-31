@@ -223,7 +223,7 @@ ColoredBananaGroupList = [
         name="Banana hoard tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[
             [1, 1.0, 2073, 211, 1180],
             [1, 1.0, 2125, 211, 1201],
@@ -243,7 +243,7 @@ ColoredBananaGroupList = [
         name="Banana hoard room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[
             [5, 1.0, 2422, 216, 1108],
             [5, 1.0, 2422, 216, 954],
@@ -1111,7 +1111,7 @@ ColoredBananaGroupList = [
         name="On vines to Snide",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.KremIsleBeyondLift,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[
             [5, 1.0, 2409, 946, 3208],
         ],
@@ -2618,7 +2618,7 @@ ColoredBananaGroupList = [
         name="Under bonus barrel",
         konglist=[Kongs.chunky],
         region=Regions.HideoutHelmLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.vines,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines,
         locations=[
             [5, 1.0, 687, 201, 639],
         ],
@@ -2668,7 +2668,7 @@ ColoredBananaGroupList = [
         name="Far W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HideoutHelmLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.vines,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines,
         locations=[
             [5, 1.0, 454, 216, 1013],
         ],

@@ -253,7 +253,7 @@ LogicRegions = {
     ),
 
     Regions.Mausoleum: Region("Mausoleum", "Castle Underground", Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleLankyMausoleum, lambda l: (((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.vines) or (l.advanced_platforming and l.sprint)) and l.islanky) or (l.settings.free_trade_items and l.phasewalk)),
+        LocationLogic(Locations.CastleLankyMausoleum, lambda l: (((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.can_use_vines) or (l.advanced_platforming and l.sprint)) and l.islanky) or (l.settings.free_trade_items and l.phasewalk)),
         LocationLogic(Locations.CastleTinyMausoleum, lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.twirl and l.istiny),
         LocationLogic(Locations.CastleMausoleumEnemy_TinyPath, lambda l: True),
         LocationLogic(Locations.CastleMausoleumEnemy_LankyPath0, lambda l: True),
@@ -280,7 +280,7 @@ LogicRegions = {
 
     Regions.Dungeon: Region("Dungeon", "Castle Underground", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDonkeyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or (l.Slam and l.phasewalk)) and l.donkey),
-        LocationLogic(Locations.CastleDiddyDungeon, lambda l: (l.phasewalk and (l.isdiddy or l.settings.free_trade_items)) or (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdiddy and (l.vines and ((l.scope and l.peanut and l.diddy) or (l.CanMoontail()))))),
+        LocationLogic(Locations.CastleDiddyDungeon, lambda l: (l.phasewalk and (l.isdiddy or l.settings.free_trade_items)) or (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdiddy and (l.can_use_vines and ((l.scope and l.peanut and l.diddy) or (l.CanMoontail()))))),
 
         LocationLogic(Locations.CastleLankyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleDungeonEnemy_FaceRoom, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.phasewalk),
