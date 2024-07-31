@@ -2268,7 +2268,8 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Some locations are known quantities and can be pruned from the tree
         del hint_tree[Locations.BananaHoard]
         if spoiler.settings.key_8_helm:
-            del hint_tree[Locations.HelmKey]
+            if Locations.HelmKey in hint_tree:
+                del hint_tree[Locations.HelmKey]
         # Decorate the tree with information from our placed hints
         for hint in hints:
             if hint.related_location is not None and hint.related_location in hint_tree.keys() and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?
