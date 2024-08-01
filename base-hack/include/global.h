@@ -265,6 +265,7 @@ extern int getFlagIndex_Corrected(int start, int level);
 extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
+extern int getWrinklyItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
@@ -411,6 +412,8 @@ extern dynamic_flag_icetrap_junk isIceTrapFlag(int flag);
 
 extern int getGamePercentage(void);
 
+extern void displayMedalOverlay(int flag, int item_type);
+
 extern void handleCrownTimerInternal(void);
 
 extern void initSongDisplay(int song);
@@ -483,3 +486,4 @@ extern short file_item_caps[16];
 extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];
+extern const collision_tree_struct fixed_klap_collision[8];

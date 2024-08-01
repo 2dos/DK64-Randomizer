@@ -290,6 +290,41 @@ def updateDoorTwoNumAccess(event):
         door_two_req.value = 16
 
 
+DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture")
+
+
+@bind("change", "win_condition_item")
+def updateWinConNumAccess(event):
+    """Toggle the textboxes for the win condition."""
+    win_con_selection = js.document.getElementById("win_condition_item")
+    disabled = win_con_selection.value in DISABLED_WIN_VALUES
+    win_con_req = js.document.getElementById("win_condition_count")
+    if disabled:
+        win_con_req.setAttribute("disabled", "disabled")
+    else:
+        win_con_req.removeAttribute("disabled")
+    if not win_con_req.value:
+        win_con_req.value = 1
+    elif win_con_selection.value == "req_gb" and int(win_con_req.value) > 201:
+        win_con_req.value = 201
+    elif win_con_selection.value == "req_bp" and int(win_con_req.value) > 40:
+        win_con_req.value = 40
+    elif win_con_selection.value == "req_key" and int(win_con_req.value) > 8:
+        win_con_req.value = 8
+    elif win_con_selection.value == "req_medal" and int(win_con_req.value) > 40:
+        win_con_req.value = 40
+    elif win_con_selection.value == "req_crown" and int(win_con_req.value) > 10:
+        win_con_req.value = 10
+    elif win_con_selection.value == "req_fairy" and int(win_con_req.value) > 18:
+        win_con_req.value = 18
+    elif win_con_selection.value == "req_bean" and int(win_con_req.value) > 1:
+        win_con_req.value = 1
+    elif win_con_selection.value == "req_pearl" and int(win_con_req.value) > 5:
+        win_con_req.value = 5
+    elif win_con_selection.value == "req_rainbowcoin" and int(win_con_req.value) > 16:
+        win_con_req.value = 16
+
+
 @bind("click", "nav-progression-tab")
 @bind("change", "coin_door_item")
 def updateDoorTwoCountText(evt):
@@ -463,6 +498,7 @@ def set_preset_options():
     toggle_bananaport_selector(None)
     updateDoorOneNumAccess(None)
     updateDoorTwoNumAccess(None)
+    updateWinConNumAccess(None)
 
     js.load_data()
 
@@ -1144,6 +1180,7 @@ def update_ui_states(event):
     updateDoorOneNumAccess(None)
     updateDoorOneCountText(None)
     updateDoorTwoNumAccess(None)
+    updateWinConNumAccess(None)
     updateDoorTwoCountText(None)
     disable_tag_spawn(None)
     disable_krool_phases(None)

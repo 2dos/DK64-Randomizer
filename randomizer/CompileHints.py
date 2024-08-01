@@ -17,7 +17,19 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints, KongModels, SlamRequirement
+from randomizer.Enums.Settings import (
+    HelmSetting,
+    LogicType,
+    MicrohintsEnabled,
+    MoveRando,
+    ShockwaveStatus,
+    ShuffleLoadingZones,
+    SpoilerHints,
+    WinConditionComplex,
+    WrinklyHints,
+    KongModels,
+    SlamRequirement,
+)
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
@@ -314,6 +326,7 @@ item_type_names = {
     Types.RainbowCoin: "\x06a dirt patch\x06",
     Types.CrateItem: "\x06a melon crate\x06",
     Types.Enemies: "\x06an enemy\x06",
+    Types.Hint: "\x06a hint door\x06",
 }
 item_type_names_cryptic = {
     Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
@@ -322,6 +335,7 @@ item_type_names_cryptic = {
     Types.RainbowCoin: ["the initials of DK", "a muddy mess", "buried treasure"],
     Types.CrateItem: ["a bouncing box", "a breakable cube", "a crate of goodies"],
     Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"],
+    Types.Hint: ["a source of a riddle", "the old granny house", "a door to the granny"],
 }
 
 moves_data = [
@@ -629,7 +643,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
         if (
             (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
-            and spoiler.settings.win_condition == WinCondition.beat_krool
+            and spoiler.settings.win_condition_item == WinConditionComplex.beat_krool
             and spoiler.settings.spoiler_hints == SpoilerHints.off
         ):
             valid_types.append(HintType.KRoolOrder)
@@ -776,7 +790,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
         if (
             (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
-            and spoiler.settings.win_condition == WinCondition.beat_krool
+            and spoiler.settings.win_condition_item == WinConditionComplex.beat_krool
             and spoiler.settings.spoiler_hints == SpoilerHints.off
         ):
             valid_types.append(HintType.KRoolOrder)
@@ -827,12 +841,12 @@ def compileHints(spoiler: Spoiler) -> bool:
 
                 valid_types.append(HintType.WothLocation)
                 # K. Rool seeds could use some help finding the last pesky moves
-                if spoiler.settings.win_condition == WinCondition.beat_krool:
+                if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
                     hint_distribution[HintType.RequiredWinConditionHint] = len([kong for kong in spoiler.settings.krool_order if len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0])
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
-                if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+                if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
                     for id, loc in spoiler.LocationList.items():
                         if loc.item in (Items.Camera, Items.CameraAndShockwave):
@@ -1260,7 +1274,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     location_to_hint = random.choice(location_options)
                     hinted_path_locations.append(location_to_hint)
         # If K. Rool is our goal, do the same with K. Rool phases
-        if spoiler.settings.win_condition == WinCondition.beat_krool:
+        if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
             for kong in spoiler.krool_paths.keys():
                 # Determine if any location we're already hinting is on the path to this phase of K. Rool
                 hinted_locations_on_this_path = set(spoiler.krool_paths[kong]) & set(hinted_path_locations)
@@ -1273,7 +1287,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         location_to_hint = random.choice(location_options)
                         hinted_path_locations.append(location_to_hint)
         # If the camera is critical to the win condition, guarantee one path hint for it
-        if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             # Find the camera's location
             camera_location_id = None
             for location_id in multipath_dict_hints.keys():
@@ -1434,7 +1448,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # Some win conditions need very specific items that we really should hint
     if hint_distribution[HintType.RequiredWinConditionHint] > 0:
         # To aid K. Rool goals create a number of path hints to help find items required specifically for K. Rool
-        if spoiler.settings.win_condition == WinCondition.beat_krool:
+        if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
             path = spoiler.woth_paths[Locations.BananaHoard]
             already_chosen_krool_path_locations = []
             chosen_krool_path_location_cap = hint_distribution[HintType.RequiredWinConditionHint]
@@ -1504,7 +1518,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
-        if spoiler.settings.win_condition == WinCondition.all_fairies or spoiler.settings.win_condition == WinCondition.poke_snap:
+        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture):
             camera_location_id = None
             for location_id in spoiler.woth_paths.keys():
                 if spoiler.LocationList[location_id].item in (Items.Camera, Items.CameraAndShockwave):
@@ -2266,7 +2280,8 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Some locations are known quantities and can be pruned from the tree
         del hint_tree[Locations.BananaHoard]
         if spoiler.settings.key_8_helm:
-            del hint_tree[Locations.HelmKey]
+            if Locations.HelmKey in hint_tree:
+                del hint_tree[Locations.HelmKey]
         # Decorate the tree with information from our placed hints
         for hint in hints:
             if hint.related_location is not None and hint.related_location in hint_tree.keys() and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?
@@ -2677,10 +2692,10 @@ def GetRegionIdOfLocation(spoiler: Spoiler, location_id: Locations) -> Regions:
                 return region_id
     for region_id in Regions:
         region = spoiler.RegionList[region_id]
-        if region.level == location.level:
+        if region.level == location.level or location.type == Types.Hint:
             if location_id in [location_logic.id for location_logic in region.locations if not location_logic.isAuxiliaryLocation]:
                 return region_id
-    raise Exception("Unable to find Region for Location")  # This should never trigger!
+    raise Exception(f"Unable to find Region for Location {location_id.name}")  # This should never trigger!
 
 
 def GenerateMultipathDict(
@@ -2727,13 +2742,13 @@ def GenerateMultipathDict(
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
         # Determine which K. Rool phases this is on the path to (if relevant)
-        if spoiler.settings.win_condition == WinCondition.beat_krool:
+        if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
             for map_id in spoiler.krool_paths.keys():
                 if location in spoiler.krool_paths[map_id]:
                     path_to_krool_phases.append(boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id])
                     relevant_goal_locations.append(Maps(map_id))
         # Determine if this location is on the path to taking photos for certain win conditions
-        if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
             for id, loc in spoiler.LocationList.items():
                 if loc.item in (Items.Camera, Items.CameraAndShockwave):

@@ -43,6 +43,7 @@ from ui.rando_options import (
     change_level_randomization,
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
+    updateWinConNumAccess,
 )
 
 js.check_seed_info_tab()
@@ -81,6 +82,7 @@ max_doorone_requirement(None)
 max_doortwo_requirement(None)
 updateDoorOneNumAccess(None)
 updateDoorTwoNumAccess(None)
+updateWinConNumAccess(None)
 item_rando_list_changed(None)
 toggle_key_settings(None)
 disable_helm_hurry(None)

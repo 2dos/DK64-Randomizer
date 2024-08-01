@@ -155,6 +155,8 @@ def AllItems(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.Hint in settings.shuffled_location_types:
+        allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
         allItems.extend(EnemyItems())
     if Types.Cranky in settings.shuffled_location_types:
@@ -216,6 +218,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.Hint in settings.shuffled_location_types:
+        allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
         allItems.extend(EnemyItems())
     if Types.Cranky in settings.shuffled_location_types:
@@ -549,6 +553,47 @@ def SnideItems():
     return [Items.Snide]
 
 
+def HintItems():
+    """Return a list of Hint Items to be placed."""
+    return [
+        Items.JapesDonkeyHint,
+        Items.JapesDiddyHint,
+        Items.JapesLankyHint,
+        Items.JapesTinyHint,
+        Items.JapesChunkyHint,
+        Items.AztecDonkeyHint,
+        Items.AztecDiddyHint,
+        Items.AztecLankyHint,
+        Items.AztecTinyHint,
+        Items.AztecChunkyHint,
+        Items.FactoryDonkeyHint,
+        Items.FactoryDiddyHint,
+        Items.FactoryLankyHint,
+        Items.FactoryTinyHint,
+        Items.FactoryChunkyHint,
+        Items.GalleonDonkeyHint,
+        Items.GalleonDiddyHint,
+        Items.GalleonLankyHint,
+        Items.GalleonTinyHint,
+        Items.GalleonChunkyHint,
+        Items.ForestDonkeyHint,
+        Items.ForestDiddyHint,
+        Items.ForestLankyHint,
+        Items.ForestTinyHint,
+        Items.ForestChunkyHint,
+        Items.CavesDonkeyHint,
+        Items.CavesDiddyHint,
+        Items.CavesLankyHint,
+        Items.CavesTinyHint,
+        Items.CavesChunkyHint,
+        Items.CastleDonkeyHint,
+        Items.CastleDiddyHint,
+        Items.CastleLankyHint,
+        Items.CastleTinyHint,
+        Items.CastleChunkyHint,
+    ]
+
+
 def JunkItems(settings):
     """Return a list of Junk Items to be placed."""
     junk_count = min(100, 116 - getIceTrapCount(settings))
@@ -617,8 +662,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     #     itemPool.extend(FakeItems())
     # if Types.JunkItem in unplacedTypes:
     #     itemPool.extend(JunkItems())
-    # if Types.Hint in unplacedTypes: someday???
-    #     itemPool.extend(HintItems()) hints in the pool???
+    if Types.Hint in unplacedTypes:
+        itemPool.extend(HintItems())
     # If shops are not part of the larger item pool and are not placed, we may still need to assume them
     # It is worth noting that TrainingBarrel and Shockwave type items are contingent on Shop type items being in the item rando pool
     if Types.Shop not in settings.shuffled_location_types and Types.Shop not in placed_types and settings.move_rando != MoveRando.off:

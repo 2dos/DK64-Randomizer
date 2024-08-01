@@ -44,10 +44,10 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
-    WinCondition,
     HelmSetting,
     KongModels,
     SlamRequirement,
+    WinConditionComplex,
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types, BarrierItems
@@ -1086,32 +1086,29 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == WinCondition.beat_krool:
+        # Special Win Cons
+        if self.settings.win_condition_item == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
-        # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
-        if self.settings.win_condition == WinCondition.poke_snap:
+        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:  # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events and self.camera
-        elif self.settings.win_condition == WinCondition.get_key8:
+        elif self.settings.win_condition_item == WinConditionComplex.get_key8:
             return self.HelmKey
-        elif self.settings.win_condition == WinCondition.all_fairies:
-            return self.BananaFairies >= 20
-        elif self.settings.win_condition == WinCondition.all_blueprints:
-            return len(self.Blueprints) >= 40
-        elif self.settings.win_condition == WinCondition.all_medals:
-            return self.BananaMedals >= 40
-        elif self.settings.win_condition == WinCondition.all_keys:
-            return (
-                Events.JapesKeyTurnedIn in self.Events
-                and Events.AztecKeyTurnedIn in self.Events
-                and Events.FactoryKeyTurnedIn in self.Events
-                and Events.GalleonKeyTurnedIn in self.Events
-                and Events.ForestKeyTurnedIn in self.Events
-                and Events.CavesKeyTurnedIn in self.Events
-                and Events.CastleKeyTurnedIn in self.Events
-                and Events.HelmKeyTurnedIn in self.Events
-            )
-        else:
-            return False
+        # Get X amount of Y item win cons
+        win_con_table = {
+            WinConditionComplex.req_bean: BarrierItems.Bean,
+            WinConditionComplex.req_bp: BarrierItems.Blueprint,
+            WinConditionComplex.req_companycoins: BarrierItems.CompanyCoin,
+            WinConditionComplex.req_crown: BarrierItems.Crown,
+            WinConditionComplex.req_fairy: BarrierItems.Fairy,
+            WinConditionComplex.req_key: BarrierItems.Key,
+            WinConditionComplex.req_gb: BarrierItems.GoldenBanana,
+            WinConditionComplex.req_medal: BarrierItems.Medal,
+            WinConditionComplex.req_pearl: BarrierItems.Pearl,
+            WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
+        }
+        if self.settings.win_condition_item not in win_con_table:
+            raise Exception(f"Invalid Win Condition {self.settings.win_condition_item.name}")
+        return self.ItemCheck(win_con_table[self.settings.win_condition_item], self.settings.win_condition_count)
 
     def CanGetRarewareCoin(self):
         """Check if you meet the logical requirements to obtain the Rareware Coin."""

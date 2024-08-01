@@ -1369,7 +1369,7 @@ KasplatLocationList = {
             zmin=2265,
             zmax=2406,
             region=Regions.Crypt,
-            additional_logic=lambda l: l.coconut or l.phasewalk or l.generalclips,
+            additional_logic=lambda l: l.coconut or l.phasewalk or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors),
         ),
         KasplatLocation(name="Castle Kasplat: Library", map_id=Maps.CastleLibrary, kong_lst=[Kongs.donkey], coords=[354, 191, 495], xmin=257, xmax=430, zmin=456, zmax=573, region=Regions.Library),
         KasplatLocation(

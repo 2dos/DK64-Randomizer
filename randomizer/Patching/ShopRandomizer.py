@@ -668,7 +668,7 @@ def ApplyShopRandomizer(spoiler):
                     base_model_scale = [50, 30]
                 elif placement["replace_model"] == 0x7A:
                     # Funky
-                    base_model_scale = [55, 27]
+                    base_model_scale = [55, 25]
                 elif placement["replace_model"] == 0x124:
                     # Candy
                     base_model_scale = [40.1, 14]

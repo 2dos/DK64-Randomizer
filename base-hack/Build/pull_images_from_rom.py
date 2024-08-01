@@ -102,6 +102,9 @@ images = [
     ImageData("snide_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x172E, 64, 32, False, False),
     ImageData("white_font_early", TextureFormat.IA8, TableNames.TexturesHUD, 3, 176, 16, False, False),
     ImageData("white_font_late", TextureFormat.IA8, TableNames.TexturesHUD, 4, 176, 16, False, False),
+    ImageData("question_mark", TextureFormat.IA8, TableNames.TexturesGeometry, 5923, 16, 32, False, True),
+    ImageData("k_rool_head_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x383, 32, 64, False, True),
+    ImageData("k_rool_head_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x384, 32, 64, False, True),
 ]
 
 shop_owners = {

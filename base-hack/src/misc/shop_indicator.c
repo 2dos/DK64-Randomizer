@@ -147,13 +147,14 @@ typedef enum counter_items {
 	/* 0x012 */ COUNTER_FAIRY,
 	/* 0x013 */ COUNTER_RAINBOWCOIN,
 	/* 0x014 */ COUNTER_FAKEITEM,
-	/* 0x015 */ COUNTER_DILLO1,
-	/* 0x016 */ COUNTER_DOG1,
-	/* 0x017 */ COUNTER_MJ,
-	/* 0x018 */ COUNTER_PUFFTOSS,
-	/* 0x019 */ COUNTER_DOG2,
-	/* 0x01A */ COUNTER_DILLO2,
-	/* 0x01B */ COUNTER_KKO,
+	/* 0x015 */ COUNTER_HINT,
+	/* 0x016 */ COUNTER_DILLO1,
+	/* 0x017 */ COUNTER_DOG1,
+	/* 0x018 */ COUNTER_MJ,
+	/* 0x019 */ COUNTER_PUFFTOSS,
+	/* 0x01A */ COUNTER_DOG2,
+	/* 0x01B */ COUNTER_DILLO2,
+	/* 0x01C */ COUNTER_KKO,
 } counter_items;
 
 int getCounterItem(vendors shop_index, int kong, int level) {
@@ -186,6 +187,8 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 						return COUNTER_PEARL;
 					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
 						return COUNTER_FAIRY;
+					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
+						return COUNTER_HINT;
 					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
 						return COUNTER_RAINBOWCOIN;
 					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
@@ -278,7 +281,7 @@ void* loadInternalTexture(int texture_start, int texture_offset) {
 }
 
 void* loadFontTexture_Counter(void* slot, int index, int slot_index) {
-	void* texture = loadInternalTexture(195, index); // Load texture
+	void* texture = loadInternalTexture(196, index); // Load texture
 	if (slot) {
 		wipeTextureSlot(slot);
 	}
@@ -296,10 +299,10 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image > 0x14)) {
+		if ((kong_image < 0) || (kong_image > 0x15)) {
 			kong_image = 0;
 		}
-		if ((item_image < 0) || (item_image > 0x14)) {
+		if ((item_image < 0) || (item_image > 0x15)) {
 			item_image = 0;
 		}
 		if (paad->use_item_display) {

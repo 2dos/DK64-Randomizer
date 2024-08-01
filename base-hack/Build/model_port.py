@@ -531,6 +531,7 @@ def loadNewModels():
     portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
     portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
     portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
+    portActorToModelTwo(0xD1, "", "question_mark", 0x90, True, 0.5)
     # portalModel_M2(f"{MODEL_DIRECTORY}dk_head.vtx", f"{MODEL_DIRECTORY}dk_head.dl", 0, "kong_dk", 0x90)
     # ripCollision(0x48, 0x67, "k_rool_cutscenes")
     # Misc

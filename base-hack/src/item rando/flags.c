@@ -153,6 +153,7 @@ static const flag_clamping_struct clamp_bounds[] = {
     {.flag_start = FLAG_MELONCRATE_0, .flag_count = 16}, // Melon Crates
     {.flag_start = FLAG_ENEMY_KILLED_0, .flag_count = ENEMIES_TOTAL}, // Dropsanity
     {.flag_start = FLAG_MEDAL_ISLES_DK, .flag_count = 5}, // Isles Medals
+    {.flag_start = FLAG_WRINKLYVIEWED, .flag_count = 35}, // Hints
 };
 
 int clampFlag(int flag) {

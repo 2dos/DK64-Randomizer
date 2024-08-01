@@ -317,16 +317,18 @@ for file_info in number_crop:
             key_im.paste(num_im, (targ_h - num_w - [5, 0, 2, -2, 0, -1, 0, -1][key_num - 1], 2), num_im)
             key_im = key_im.resize((20, 20))
             key_im.save(f"{getDir('assets/file_screen/key')}{key_num}.png")
-            tracker_im.paste(key_im, (249 - (small_gap * (9 - key_num)), 128 - dim), key_im)
+            key_row = int((key_num - 1) / 4)
+            key_col = int((key_num - 1) & 3)
+            tracker_im.paste(key_im, (249 - (small_gap * (6 - key_col)), 128 - dim - ((2 - key_row) * gap)), key_im)
 for melon in range(3):
     melon_im = Image.open(f"{hash_dir}melon.png")
     melon_im = melon_im.resize((dim, dim))
-    tracker_im.paste(melon_im, (200 - (small_gap * melon), 0), melon_im)
+    tracker_im.paste(melon_im, (190 - (small_gap * melon), 0), melon_im)
 prog_offset = 218
 for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}standard_crate.png"]):
     prog_im = Image.open(progressive)
     prog_im = prog_im.resize((dim, dim))
-    tracker_im.paste(prog_im, (prog_offset, gap + (p_i * gap)), prog_im)
+    tracker_im.paste(prog_im, (prog_offset, (p_i * gap)), prog_im)
     num_im = Image.open(f"{hash_dir}01234.png")
     num_im = num_im.crop((30, 0, 45, 24))
     num_w, num_h = num_im.size
@@ -334,7 +336,11 @@ for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}stan
     num_scale = num_size / num_h
     new_w = int(num_w * num_scale)
     num_im = num_im.resize((new_w, num_size))
-    tracker_im.paste(num_im, (prog_offset + [22, 17][p_i], int(gap + 3 + (p_i * small_gap * 1.2))), num_im)
+    tracker_im.paste(num_im, (prog_offset + [22, 17][p_i], int(3 + (p_i * small_gap * 1.2))), num_im)
+for h_i, head in enumerate(["cranky_head", "funky_head", "candy_head", "snide_head"]):
+    head_im = Image.open(f"{disp_dir}{head}.png")
+    head_im = head_im.resize((dim, dim))
+    tracker_im.paste(head_im, ((6 * gap) + (gap * h_i), 128 - dim), head_im)
 
 tracker_im.save(f"{getDir('assets/file_screen/')}tracker.png")
 
@@ -410,6 +416,11 @@ bean_small_im.paste(bean_im.resize((32, 16)), (0, 8), bean_im.resize((32, 16)))
 bean_small_im.save(f"{disp_dir}bean32.png")
 bean_small_im.resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean44.png")
 
+# Question Mark
+qmark_im = Image.new(mode="RGBA", size=(32, 32))
+raw_qmark_im = Image.open(f"{hash_dir}question_mark.png")
+qmark_im.paste(raw_qmark_im, (8, 0), raw_qmark_im)
+qmark_im.save(f"{disp_dir}qmark32.png")
 
 # Pearl
 pearl_im = Image.open(f"{hash_dir}pearl.png")
@@ -512,6 +523,7 @@ skins = {
     "funky": ("funky_head", None, "displays"),
     "candy": ("candy_head", None, "displays"),
     "snide": ("snide_head", None, "displays"),
+    "hint": ("qmark32", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -564,6 +576,15 @@ for skin_type in skins:
         barrel_1.paste(right, (0, BASE_SIZE), right)
     barrel_0.save(f"{disp_dir}barrel_{skin_type}_0.png")
     barrel_1.save(f"{disp_dir}barrel_{skin_type}_1.png")
+
+# Win Con Logo
+base_im = Image.new(mode="RGBA", size=(64, 64))
+left_im = Image.open(f"{hash_dir}k_rool_head_left.png")
+right_im = Image.open(f"{hash_dir}k_rool_head_right.png")
+base_im.paste(left_im, (0, 0), left_im)
+base_im.paste(right_im, (32, 0), right_im)
+base_im = base_im.resize((32, 32))
+base_im.save(f"{disp_dir}win_con_logo.png")
 
 # # Christmas Theme
 # snow_by = []

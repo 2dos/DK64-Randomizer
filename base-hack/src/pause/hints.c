@@ -352,7 +352,7 @@ int showHint(int slot) {
         return gb_count >= req;
     }
     // Not progressive hints
-    return checkFlag(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
+    return checkFlagDuplicate(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
 }
 
 Gfx* displayBubble(Gfx* dl) {
