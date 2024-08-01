@@ -65,6 +65,7 @@ extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
 
 extern int correctRefillCap(int index, int player);
+extern void cc_effect_handler(void);
 
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);

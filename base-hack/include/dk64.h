@@ -27,7 +27,6 @@ extern void dk_multiply(double val1, double val2, int unk1, int unk2);
 extern double convertTimestamp(double unk0, double unk1, unsigned int unk2, unsigned int unk3);
 extern void resetMap();
 extern void prepKongColoring();
-extern void callFunc(int* addr);
 extern int getTimestampDiff(unsigned int major, unsigned int minor);
 extern void patchHook(unsigned int hook_rdram_location, int offset_in_hook_list, char hook_byte_size);
 extern void* dk_memcpy(void* _dest, void* _src, int size);
@@ -119,6 +118,8 @@ extern void BananaMedalGet(void);
 extern void CrownGet(void);
 extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
+
+extern int callFunc(void* func);
 
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
@@ -778,7 +779,7 @@ extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
-extern short InstanceScriptParams[4];
+extern cc_effects* CCEffectData;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
 extern short style2Mtx[0x10];

@@ -17,6 +17,7 @@ char tag_locked = 0;
 
 void cFuncLoop(void) {
 	regularFrameLoop();
+	cc_effect_handler();
 	tagAnywhere();
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
