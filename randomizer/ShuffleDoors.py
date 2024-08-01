@@ -257,7 +257,7 @@ def ShuffleVanillaDoors(spoiler):
         # Find the vanilla doors that are valid hint locations and clear their door
         vanilla_door_indexes = []
         for door_index, door in enumerate(door_locations[level]):
-            if door.default_placed != DoorType.null:
+            if door.default_placed != DoorType.null and door.default_placed != DoorType.dk_portal:
                 door.placed = DoorType.null
                 vanilla_door_indexes.append(door_index)
         random.shuffle(vanilla_door_indexes)

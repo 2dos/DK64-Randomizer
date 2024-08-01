@@ -120,7 +120,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             recalculatePointerJSON(ROM())
         js.document.getElementById("patch_version_warning").hidden = True
         ROM_COPY = ROM()
-        if settings.disco_chunky and settings.kong_model_chunky == KongModels.default and settings.override_cosmetics:
+        ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
+        chunky_model_setting = int.from_bytes(ROM_COPY.readBytes(1), "big")  # 0 is default
+        if settings.disco_chunky and chunky_model_setting == 0 and settings.override_cosmetics:
             settings.kong_model_chunky = KongModels.disco_chunky
             ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
             ROM_COPY.writeMultipleBytes(6, 1)
