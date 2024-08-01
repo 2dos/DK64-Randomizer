@@ -153,7 +153,7 @@
 | Castle Greenhouse | Castle Kasplat: Greenhouse | `` | 
 | Castle Museum | Castle Kasplat: Museum Mysterious Pedestal | `l.monkeyport or l.phasewalk` | 
 | Castle Dungeon | Castle Kasplat: Caged in the Dungeon | `l.punch or l.phasewalk` | 
-| Castle Crypt | Castle Kasplat: Entrance to Minecart | `l.coconut or l.phasewalk or l.generalclips` | 
+| Castle Crypt | Castle Kasplat: Entrance to Minecart | `l.coconut or l.phasewalk or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
 | Castle Library | Castle Kasplat: Library | `` | 
 | Creepy Castle | Castle Kasplat: In the Clouds | `l.jetpack` | 
 

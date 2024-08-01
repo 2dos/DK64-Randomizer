@@ -1391,13 +1391,13 @@
 | Crypt - Path to W2 | 10 | `` | 
 | Crypt - Path to W1 | 15 | `` | 
 | Crypt - Path to W3 | 10 | `` | 
-| Back corners of DK's room | 10 | `l.coconut or l.phasewalk` | 
-| Bunch on coffin with pentagon of singles around it | 10 | `l.peanut or l.phasewalk` | 
-| In coffins (Chunky) | 10 | `(l.punch and l.pineapple) or l.phasewalk or l.generalclips` | 
+| Back corners of DK's room | 10 | `l.coconut or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Bunch on coffin with pentagon of singles around it | 10 | `l.peanut or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| In coffins (Chunky) | 10 | `(l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.phasewalk or l.generalclips` | 
 | Above warps | Balloon | `` | 
 | Around coffin in Chunky's room | Balloon | `` | 
 | Around coffin in Diddy's room | Balloon | `` | 
-| In coffin in Diddy's room (Diddy) | Balloon | `(l.charge or l.generalclips or l.phasewalk)` | 
+| In coffin in Diddy's room (Diddy) | Balloon | `(l.charge or l.generalclips or l.phasewalk) and (l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))` | 
 | In DK's room (Donkey) | Balloon | `` | 
 ## Castle Mausoleum
 | Name | Amount | Logic |

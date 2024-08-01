@@ -822,11 +822,11 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On Wall Torch | 2 | `` | 
-| On Diddy Coffin | 4 | `(l.peanut or l.phasewalk or l.generalclips) and l.isdiddy` | 
-| On incorrect Minecart levers | 3 | `(l.coconut or l.phasewalk) and l.isdonkey` | 
-| Inside Chunky's Coffin | 4 | `(((l.pineapple or l.generalclips) and l.Slam) or l.phasewalk) and l.ischunky` | 
-| Inside Chunky Coffins | 3 | `(l.pineapple and l.ischunky and l.punch) or l.phasewalk or l.generalclips` | 
-| Inside Diddy Coffins | 3 | `(l.peanut and l.isdiddy and l.charge) or l.phasewalk or l.generalclips` | 
+| On Diddy Coffin | 4 | `(l.peanut or l.phasewalk or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy` | 
+| On incorrect Minecart levers | 3 | `(l.coconut or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdonkey` | 
+| Inside Chunky's Coffin | 4 | `(((l.pineapple or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.Slam) or l.phasewalk) and l.ischunky` | 
+| Inside Chunky Coffins | 3 | `((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.ischunky and l.punch) or l.phasewalk or l.generalclips` | 
+| Inside Diddy Coffins | 3 | `((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy and l.charge) or l.phasewalk or l.generalclips` | 
 ## Castle Mausoleum
 | Name | Amount | Logic |
 | ---- | ------ | ----- |

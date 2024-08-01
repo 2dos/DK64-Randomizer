@@ -2243,10 +2243,26 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(
-            map=Maps.CastleCrypt, name="Chunky Crypt: Near Coffin", x=1280, y=160, z=2867, max_size=72, logic_region=Regions.Crypt, logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk, group=3
+            map=Maps.CastleCrypt,
+            name="Chunky Crypt: Near Coffin",
+            x=1280,
+            y=160,
+            z=2867,
+            max_size=72,
+            logic_region=Regions.Crypt,
+            logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors),
+            group=3,
         ),
         CustomLocation(
-            map=Maps.CastleCrypt, name="Diddy Crypt: Near Coffin", x=2069, y=0, z=593, max_size=72, logic_region=Regions.Crypt, logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk, group=3
+            map=Maps.CastleCrypt,
+            name="Diddy Crypt: Near Coffin",
+            x=2069,
+            y=0,
+            z=593,
+            max_size=72,
+            logic_region=Regions.Crypt,
+            logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors),
+            group=3,
         ),
         CustomLocation(
             name="2kong crypt entrance",

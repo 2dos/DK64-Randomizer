@@ -7219,7 +7219,7 @@ BananaCoinGroupList = {
             name="On Diddy Coffin",
             konglist=[Kongs.diddy],
             region=Regions.Crypt,
-            logic=lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy,
+            logic=lambda l: (l.peanut or l.phasewalk or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy,
             locations=[
                 [1.0, 2009, 68, 288],
                 [1.0, 2005, 68, 486],
@@ -7233,7 +7233,7 @@ BananaCoinGroupList = {
             name="On incorrect Minecart levers",
             konglist=[Kongs.donkey],
             region=Regions.Crypt,
-            logic=lambda l: (l.coconut or l.phasewalk) and l.isdonkey,
+            logic=lambda l: (l.coconut or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdonkey,
             locations=[
                 [1.0, 1607, 81, 2323],
                 [1.0, 1434, 81, 2318],
@@ -7246,7 +7246,7 @@ BananaCoinGroupList = {
             name="Inside Chunky's Coffin",
             konglist=[Kongs.chunky],
             region=Regions.Crypt,
-            logic=lambda l: (((l.pineapple or l.generalclips) and l.Slam) or l.phasewalk) and l.ischunky,
+            logic=lambda l: (((l.pineapple or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.Slam) or l.phasewalk) and l.ischunky,
             locations=[
                 [1.0, 1000, 160, 2903],
                 [1.0, 1000, 160, 2817],
@@ -7681,7 +7681,7 @@ BananaCoinGroupList = {
             name="Inside Chunky Coffins",
             konglist=[Kongs.chunky],
             region=Regions.Crypt,
-            logic=lambda l: (l.pineapple and l.ischunky and l.punch) or l.phasewalk or l.generalclips,
+            logic=lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.ischunky and l.punch) or l.phasewalk or l.generalclips,
             locations=[
                 [1.0, 732.0772094726562, 191.0411834716797, 2947.914794921875],
                 [1.0, 733.7160034179688, 190.70660400390625, 2951.262939453125],
@@ -7695,7 +7695,7 @@ BananaCoinGroupList = {
             name="Inside Diddy Coffins",
             konglist=[Kongs.diddy],
             region=Regions.Crypt,
-            logic=lambda l: (l.peanut and l.isdiddy and l.charge) or l.phasewalk or l.generalclips,
+            logic=lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy and l.charge) or l.phasewalk or l.generalclips,
             locations=[
                 [1.0, 2044.2547607421875, 4.043132781982422, 718.1364135742188],
                 [1.0, 2056.055419921875, 4.325083255767822, 719.5173950195312],

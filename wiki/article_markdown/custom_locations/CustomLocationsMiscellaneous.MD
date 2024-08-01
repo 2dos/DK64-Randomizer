@@ -367,8 +367,8 @@
 | Castle Lower Cave | Crypt Hub: Near Funky's |  | `` | 
 | Castle Lower Cave | Behind Mausoleum Entrance |  | `` | 
 | Castle Crypt | 3Kong crypt entrance |  | `` | 
-| Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.phasewalk, group=3` | 
-| Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.phasewalk, group=3` | 
+| Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors), group=3` | 
+| Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors), group=3` | 
 | Castle Mausoleum | 2kong crypt entrance |  | `` | 
 | Castle Mausoleum | Lanky Crypt: Lanky Tunnel |  | `` | 
 | Castle Upper Cave | Tunnel: Near Pit |  | `` | 
