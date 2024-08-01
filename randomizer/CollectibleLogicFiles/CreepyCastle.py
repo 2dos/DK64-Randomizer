@@ -96,7 +96,7 @@ LogicRegions = {
     ],
     Regions.Crypt: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # On W2
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors), None, 1),  # In minecart room
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On W1
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips or l.phasewalk) and l.peanut, None, 1),  # In Diddy's room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.generalclips or l.phasewalk, None, 2),  # In tombs in Chunky's room
