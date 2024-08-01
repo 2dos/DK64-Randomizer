@@ -108,12 +108,12 @@ LogicRegions = {
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
         LocationLogic(Locations.IslesFirstMove, lambda l: (l.allTrainingChecks and l.crankyAccess) or l.settings.fast_start_beginning_of_game, isAuxiliary=True),
         LocationLogic(Locations.RainbowCoin_Location13, lambda l: True),
-        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.can_use_vines or l.CanMoonkick()),  # Banana Hoard patch
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.can_use_vines or (l.CanMoonkick() and l.climbing)),  # Banana Hoard patch
     ], [
         Event(Events.TrainingBarrelsSpawned, lambda l: l.crankyAccess or l.settings.fast_start_beginning_of_game),  # Requires Cranky to spawn the training barrels
     ], [
         TransitionFront(Regions.IslesMain, lambda l: l.Slam or l.settings.fast_start_beginning_of_game, Transitions.IslesStartToMain),
-        TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
+        TransitionFront(Regions.Treehouse, lambda l: l.climbing, Transitions.IslesStartToTreehouse),
         TransitionFront(Regions.CrankyIsles, lambda l: l.crankyAccess),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
@@ -123,7 +123,6 @@ LogicRegions = {
         # the starting kong, so for logic we assume any kong can grab it since that's practically true.
         LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
         LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: (l.pineapple and l.chunky) or ((l.CanSTS() or l.phasewalk) and (l.ischunky or l.settings.free_trade_items))),
-        LocationLogic(Locations.RainbowCoin_Location04, lambda l: True),
         LocationLogic(Locations.IslesMainEnemy_PineappleCage0, lambda l: True),
         LocationLogic(Locations.IslesMainEnemy_FungiCannon0, lambda l: True),
         LocationLogic(Locations.IslesMainEnemy_JapesEntrance, lambda l: True),
@@ -142,7 +141,7 @@ LogicRegions = {
         TransitionFront(Regions.OuterIsles, lambda l: True),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.phasewalk or l.CanSTS(), Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.KremIsle, lambda l: True),
-        TransitionFront(Regions.IslesMainUpper, lambda l: l.can_use_vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
+        TransitionFront(Regions.IslesHill, lambda l: l.climbing or l.assumeUpperIslesAccess),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
@@ -162,6 +161,14 @@ LogicRegions = {
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
+    Regions.IslesHill: Region("Isles Hill", "Main Isles", Levels.DKIsles, False, None, [
+        LocationLogic(Locations.RainbowCoin_Location04, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.IslesMain, lambda l: True),
+        TransitionFront(Regions.DKIslesMedals, lambda l: True),
+        TransitionFront(Regions.IslesMainUpper, lambda l: l.can_use_vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
+    ]),
+
     Regions.IslesMainUpper: Region("Isles Main Upper", "Main Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.chunky and l.barrels),
         LocationLogic(Locations.IslesMainEnemy_NearAztec, lambda l: True),
@@ -170,6 +177,7 @@ LogicRegions = {
         Event(Events.IslesW2bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True),
+        TransitionFront(Regions.IslesHill, lambda l: True),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.CanMoonkick()),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.phasewalk, Transitions.IslesMainToAztecLobby),
         TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming) and not l.isKrushaAdjacent(l.kong)) or l.CanMoonkick())),

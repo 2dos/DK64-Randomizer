@@ -86,7 +86,7 @@ class LocationTypes(IntEnum):
 
 CustomLocations = {
     Levels.JungleJapes: [
-        CustomLocation(map=Maps.JungleJapes, name="Near Funky", x=1989.7, y=520, z=2086.71, max_size=72, logic_region=Regions.JungleJapesMain, vanilla_crown=True, group=4),
+        CustomLocation(map=Maps.JungleJapes, name="Near Funky", x=1989.7, y=520, z=2086.71, max_size=72, logic_region=Regions.JapesHill, vanilla_crown=True, group=4),
         CustomLocation(
             name="On Painting Hill",
             map=Maps.JungleJapes,
@@ -97,7 +97,7 @@ CustomLocations = {
             max_size=64,
             vanilla_patch=True,
             logic_region=Regions.JungleJapesMain,
-            logic=lambda l: ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy))),
+            logic=lambda l: ((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy))),
             group=1,
         ),
         CustomLocation(
@@ -111,7 +111,17 @@ CustomLocations = {
             logic_region=Regions.JungleJapesStart,
             group=3,
         ),
-        CustomLocation(map=Maps.JungleJapes, name="On Tree (Starting Area)", x=1101, y=478, z=266, max_size=40, logic_region=Regions.JungleJapesStart, group=3),
+        CustomLocation(
+            map=Maps.JungleJapes,
+            name="On Tree (Starting Area)",
+            x=1101,
+            y=478,
+            z=266,
+            max_size=40,
+            logic_region=Regions.JungleJapesStart,
+            logic=lambda l: l.climbing,
+            group=3,
+        ),
         CustomLocation(
             name="Next to first tunnel entrance",
             map=Maps.JungleJapes,
@@ -123,7 +133,16 @@ CustomLocations = {
             logic_region=Regions.JungleJapesStart,
             group=3,
         ),
-        CustomLocation(map=Maps.JungleJapes, name="Diddy Cavern", x=2381, y=280, z=392, max_size=56, logic_region=Regions.JapesBeyondPeanutGate, group=3),
+        CustomLocation(
+            map=Maps.JungleJapes,
+            name="Diddy Cavern",
+            x=2381,
+            y=280,
+            z=392,
+            max_size=56,
+            logic_region=Regions.JapesBeyondPeanutGate,
+            group=3,
+        ),
         CustomLocation(
             name="Inside Diddy's Cavern",
             map=Maps.JungleJapes,
@@ -259,7 +278,7 @@ CustomLocations = {
         #     logic_region=Regions.JungleJapesMain,
         #     group=1,
         # ),
-        CustomLocation(map=Maps.JungleJapes, name="Near High Shop", x=2045, y=680, z=2522, max_size=56, logic_region=Regions.JungleJapesMain, group=4),
+        CustomLocation(map=Maps.JungleJapes, name="Near High Shop", x=2045, y=680, z=2522, max_size=56, logic_region=Regions.JapesHillTop, group=4),
         # CrownLocation(map=Maps.JungleJapes, name="On Mountain", x=1616, y=989, z=2439, max_size=80, logic_region=Regions.JapesTopOfMountain, group=4),
         CustomLocation(
             name="Behind Diddy's Mountain",
@@ -269,10 +288,10 @@ CustomLocations = {
             z=2578.0,
             rot_y=2969,
             max_size=64,
-            logic_region=Regions.JungleJapesMain,
+            logic_region=Regions.JapesHillTop,
             group=4,
         ),
-        CustomLocation(map=Maps.JungleJapes, name="Near Kong Cage", x=949, y=852, z=2384, max_size=56, logic_region=Regions.JungleJapesMain, group=4),
+        CustomLocation(map=Maps.JungleJapes, name="Near Kong Cage", x=949, y=852, z=2384, max_size=56, logic_region=Regions.JapesHillTop, group=4),
         CustomLocation(
             name="Near Cannon to Diddy-freeing cage",
             map=Maps.JungleJapes,
@@ -281,13 +300,13 @@ CustomLocations = {
             z=2225.0,
             rot_y=2275,
             max_size=64,
-            logic_region=Regions.JungleJapesMain,
+            logic_region=Regions.JapesCannonPlatform,
             group=4,
         ),
         CustomLocation(
-            map=Maps.JungleJapes, name="Behind the Mountain", x=1586.9215087891, y=790.5, z=2616.7092285156, rot_y=349, max_size=64, logic_region=Regions.JungleJapesMain, group=4, vanilla_crate=True
+            map=Maps.JungleJapes, name="Behind the Mountain", x=1586.9215087891, y=790.5, z=2616.7092285156, rot_y=349, max_size=64, logic_region=Regions.JapesHillTop, group=4, vanilla_crate=True
         ),
-        CustomLocation(map=Maps.JungleJapes, name="Near Cannon Platform", x=1282, y=520, z=2262, max_size=56, logic_region=Regions.JungleJapesMain, group=4),
+        CustomLocation(map=Maps.JungleJapes, name="Near Cannon Platform", x=1282, y=520, z=2262, max_size=56, logic_region=Regions.JapesCannonPlatform, group=4),
         CustomLocation(map=Maps.JungleJapes, name="In Troff 'n' Scoff Alcove", x=770, y=538, z=2332, max_size=56, logic_region=Regions.JapesTnSAlcove, group=4),
         # CrownLocation(
         #     map=Maps.JungleJapes,
@@ -487,7 +506,7 @@ CustomLocations = {
             group=1,
         ),
         CustomLocation(
-            map=Maps.AngryAztec, name="On Tiny Temple", x=3192, y=352, z=500, max_size=48, logic_region=Regions.AngryAztecOasis, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick(), group=1
+            map=Maps.AngryAztec, name="On Tiny Temple", x=3192, y=352, z=500, max_size=48, logic_region=Regions.AngryAztecOasis, logic=lambda l: ((l.jetpack and l.diddy) or l.CanMoonkick()) and l.climbing, group=1
         ),
         CustomLocation(map=Maps.AngryAztec, name="Near Oasis Shop", x=2430, y=120, z=509, rot_y=3492, max_size=56, logic_region=Regions.AngryAztecOasis, group=1),
         # CrownLocation(
@@ -568,7 +587,7 @@ CustomLocations = {
             z=4589,
             max_size=28.8,
             logic_region=Regions.AngryAztecMain,
-            logic=lambda l: l.can_use_vines or (l.jetpack and l.diddy) or l.CanMoonkick(),
+            logic=lambda l: ((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.diddy),
             group=3,
         ),
         CustomLocation(map=Maps.AngryAztec, name="Under Vulture Cage", x=4102, y=120, z=4548, max_size=64, logic_region=Regions.AngryAztecMain, group=3),
@@ -733,7 +752,7 @@ CustomLocations = {
             y=1313,
             z=1165.81,
             max_size=81.6,
-            logic_region=Regions.RandD,
+            logic_region=Regions.RandDUpper,
             logic=lambda l: (l.grab and l.donkey) or l.CanAccessRNDRoom(),
             vanilla_crown=True,
             group=3,
@@ -824,7 +843,7 @@ CustomLocations = {
         CustomLocation(
             map=Maps.FranticFactory, name="Dark Room Corner", x=1850, y=6, z=525, max_size=72, logic_region=Regions.BeyondHatch, logic=lambda l: (l.punch and l.chunky) or l.phasewalk, group=4
         ),
-        CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.BeyondHatch, group=4),
+        CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.FactoryArcadeTunnel, group=4),
         CustomLocation(
             name="Next to DK Arcade",
             map=Maps.FranticFactory,
@@ -833,7 +852,7 @@ CustomLocations = {
             z=1273.0,
             rot_y=0,
             max_size=64,
-            logic_region=Regions.BeyondHatch,
+            logic_region=Regions.FactoryArcadeTunnel,
             group=4,
         ),
         CustomLocation(map=Maps.FranticFactory, name="Near Snide (1)", x=1702, y=810, z=2240, max_size=48, logic_region=Regions.Testing, group=5),
@@ -924,7 +943,7 @@ CustomLocations = {
             y=1336,
             z=735,
             max_size=72,
-            logic_region=Regions.RandD,
+            logic_region=Regions.RandDUpper,
             logic=lambda l: (l.guitar and l.diddy) or l.CanAccessRNDRoom(),
             group=3,
             banned_types=[LocationTypes.CrownPad],
@@ -937,7 +956,7 @@ CustomLocations = {
             z=551.0,
             rot_y=3528,
             max_size=64,
-            logic_region=Regions.RandD,
+            logic_region=Regions.RandDUpper,
             logic=lambda l: ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()),
             group=3,
             banned_types=[LocationTypes.CrownPad],
@@ -949,8 +968,8 @@ CustomLocations = {
             y=1336,
             z=1350,
             max_size=64,
-            logic_region=Regions.RandD,
-            logic=lambda l: (l.triangle and l.chunky and l.punch) or l.CanAccessRNDRoom(),
+            logic_region=Regions.RandDUpper,
+            logic=lambda l: (l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom(),
             group=3,
             banned_types=[LocationTypes.CrownPad],  # Entering a crown battle during the Toy Boss fight would break the fight until level re-entry
         ),
@@ -962,8 +981,8 @@ CustomLocations = {
             z=1354.0,
             rot_y=2654,
             max_size=64,
-            logic_region=Regions.RandD,
-            logic=lambda l: ((l.punch and l.ischunky) or l.CanAccessRNDRoom()),
+            logic_region=Regions.RandDUpper,
+            logic=lambda l: ((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom()),
             group=3,
             banned_types=[LocationTypes.CrownPad],  # Entering a crown battle during the Toy Boss fight would break the fight until level re-entry
         ),
@@ -998,7 +1017,7 @@ CustomLocations = {
             y=1313,
             z=776,
             max_size=80,
-            logic_region=Regions.RandD,
+            logic_region=Regions.RandDUpper,
             logic=lambda l: (l.grab and l.donkey) or l.phasewalk or l.generalclips,
             group=3,
             banned_types=[LocationTypes.MelonCrate],
@@ -1393,6 +1412,7 @@ CustomLocations = {
             rot_y=0,
             max_size=64,
             logic_region=Regions.Lighthouse,
+            logic=lambda l: l.climbing,
             group=1,
         ),
         CustomLocation(
@@ -1404,6 +1424,7 @@ CustomLocations = {
             rot_y=3572,
             max_size=64,
             logic_region=Regions.Lighthouse,
+            logic=lambda l: l.climbing,
             group=1,
         ),
     ],
@@ -2386,7 +2407,7 @@ CustomLocations = {
             rot_y=4028,
             max_size=64,
             vanilla_patch=True,
-            logic_region=Regions.IslesMain,
+            logic_region=Regions.IslesHill,
             group=3,
         ),
         CustomLocation(

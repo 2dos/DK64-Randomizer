@@ -74,6 +74,9 @@ LogicRegions = {
     Regions.IslesMainUpper: [
 
     ],
+    Regions.IslesHill: [
+
+    ],
     Regions.OuterIsles: [
 
     ],

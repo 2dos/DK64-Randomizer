@@ -104,7 +104,7 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseSurface, lambda l: True),
         # Rare case of needing to open gate before being able to go through backwards
-        TransitionFront(Regions.Lighthouse, lambda l: (l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.isdonkey) or l.generalclips, Transitions.GalleonLighthouseAreaToLighthouse),
+        TransitionFront(Regions.Lighthouse, lambda l: ((l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.isdonkey) or l.generalclips) and l.climbing, Transitions.GalleonLighthouseAreaToLighthouse),
         TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Transitions.GalleonLighthouseAreaToSickBay),
         TransitionFront(Regions.GalleonBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.GalleonMainToBBlast)
     ]),
@@ -138,12 +138,12 @@ LogicRegions = {
     ]),
 
     Regions.Lighthouse: Region("Lighthouse", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items)),
+        LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items) and l.climbing),
         LocationLogic(Locations.RainbowCoin_Location09, lambda l: True),
         LocationLogic(Locations.GalleonLighthouseEnemy_Enemy0, lambda l: True),
         LocationLogic(Locations.GalleonLighthouseEnemy_Enemy1, lambda l: True),
     ], [
-        Event(Events.ActivatedLighthouse, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.grab and l.isdonkey),
+        Event(Events.ActivatedLighthouse, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.grab and l.isdonkey and l.climbing),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthousePlatform, lambda l: True, Transitions.GalleonLighthouseToLighthouseArea),

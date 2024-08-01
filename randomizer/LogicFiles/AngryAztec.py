@@ -61,12 +61,12 @@ LogicRegions = {
 
     Regions.AngryAztecOasis: Region("Angry Aztec Oasis", "Aztec Oasis and Totem Area", Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events),
-        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_rando and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_rando and l.jetpack and l.isdiddy and l.climbing),
         LocationLogic(Locations.RainbowCoin_Location06, lambda l: True),
         LocationLogic(Locations.AztecMainEnemy_NearCandy, lambda l: True),
         LocationLogic(Locations.AztecMainEnemy_OasisDoor, lambda l: True),
     ], [
-        Event(Events.AztecGuitarPad, lambda l: (l.can_use_vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
+        Event(Events.AztecGuitarPad, lambda l: ((l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
         Event(Events.AztecW1bTagged, lambda l: True),
         Event(Events.AztecW2aTagged, lambda l: True),
     ], [

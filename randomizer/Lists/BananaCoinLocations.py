@@ -56,6 +56,7 @@ BananaCoinGroupList = {
             name="On left treetop by Cranky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.TrainingGrounds,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 889, 265, 1775],
                 [1.0, 871, 265, 1790],
@@ -67,6 +68,7 @@ BananaCoinGroupList = {
             name="On right treetop by Cranky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.TrainingGrounds,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 768, 272, 1683],
                 [1.0, 758, 272, 1704],
@@ -78,6 +80,7 @@ BananaCoinGroupList = {
             name="On cliff top by Cranky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.TrainingGrounds,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 1061, 253, 1853],
                 [1.0, 1048, 248, 1822],
@@ -167,6 +170,7 @@ BananaCoinGroupList = {
             name="On top of tree between Japes Lobby and Fungi cannon",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.IslesMain,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 3507, 695, 1375],
                 [1.0, 3501, 698, 1395],
@@ -178,7 +182,7 @@ BananaCoinGroupList = {
             map_id=Maps.Isles,
             name="On slope on path to Aztec lobby",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.IslesMain,
+            region=Regions.IslesHill,
             locations=[
                 [1.0, 2522, 812, 1378],
                 [1.0, 2546, 848, 1303],
@@ -1176,7 +1180,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="In front of Diddy's caged GB",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 2230, 520, 2112],
                 [1.0, 2237, 520, 2138],
@@ -1188,7 +1192,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="Around tree in front of Snide's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 2156, 680, 2298],
                 [1.0, 2124, 680, 2314],
@@ -1201,7 +1205,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="In front of Chunky's caged GB",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 2302, 680, 2293],
                 [1.0, 2286, 680, 2268],
@@ -1213,7 +1217,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="On slope between Snide's and mountain",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 1958, 687, 2545],
                 [1.0, 1923, 706, 2546],
@@ -1227,7 +1231,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="Behind melon crate",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 1611, 790, 2646],
                 [1.0, 1577, 790, 2645],
@@ -1239,7 +1243,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="On slope between mountain and Diddy cage",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 1383, 797, 2542],
                 [1.0, 1327, 821, 2541],
@@ -1251,7 +1255,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="Around tree in front of Diddy's cage",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 1007, 852, 2367],
                 [1.0, 972, 852, 2376],
@@ -1841,7 +1845,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="Cannon Path",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesCannonPlatform,
             locations=[
                 [1.0, 1222.9649658203125, 804.0, 2200.499755859375],
                 [1.0, 1225.0323486328125, 780.0, 2188.296142578125],
@@ -1921,7 +1925,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="Near Snide's HQ",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             locations=[
                 [1.0, 2279.154296875, 680.0, 2382.241943359375],
                 [1.0, 2295.2626953125, 680.0, 2424.940673828125],
@@ -2917,7 +2921,7 @@ BananaCoinGroupList = {
             name="Vines near Snide's HQ",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.AngryAztecMain,
-            logic=lambda l: l.can_use_vines,
+            logic=lambda l: l.can_use_vines and l.climbing,
             locations=[
                 [1.0, 3899.343505859375, 312.0, 4292.08837890625],
                 [1.0, 3992.395751953125, 306.0, 4411.8349609375],
@@ -3162,6 +3166,7 @@ BananaCoinGroupList = {
             name="On the spinning section in Lower Production Room",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MiddleCore,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 569, 308, 1392],
                 [1.0, 685, 308, 1388],
@@ -3290,7 +3295,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Around the top of the pole to Arcade",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.BeyondHatch,
+            region=Regions.FactoryArcadeTunnel,
             locations=[
                 [1.0, 1309, 1118, 932],
                 [1.0, 1251, 1118, 930],
@@ -3305,7 +3310,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Arcade Room Poles",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.BeyondHatch,
+            region=Regions.FactoryArcadeTunnel,
             locations=[
                 [1.0, 1626, 1106, 1482],
                 [1.0, 1669, 1106, 1527],
@@ -3318,7 +3323,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="On top of the Arcade Machine",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.BeyondHatch,
+            region=Regions.FactoryArcadeTunnel,
             locations=[
                 [1.0, 1849, 1165, 1226],
                 [1.0, 1872, 1166, 1227],
@@ -3533,7 +3538,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="In Diddy R&D Room",
             konglist=[Kongs.diddy],
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             logic=lambda l: (l.guitar and l.isdiddy) or l.CanAccessRNDRoom(),
             locations=[
                 [1.0, 4175, 1336, 444],
@@ -3546,7 +3551,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="In Chunky R&D Room",
             konglist=[Kongs.chunky],
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             logic=lambda l: (l.punch and l.triangle and l.ischunky) or l.CanAccessRNDRoom(),
             locations=[
                 [1.0, 4570, 1336, 1400],
@@ -3708,7 +3713,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Above chute to Power Shed",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             locations=[
                 [1.0, 4658.2060546875, 1335.6666259765625, 851.6416625976562],
                 [1.0, 4700.2529296875, 1335.6666259765625, 939.56689453125],
@@ -3784,6 +3789,7 @@ BananaCoinGroupList = {
             name="Around high W4",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MiddleCore,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 931.4605102539062, 422.5, 1553.5030517578125],
                 [1.0, 893.4967651367188, 422.5, 1561.4439697265625],
@@ -3871,6 +3877,7 @@ BananaCoinGroupList = {
             name="Around the spinning section in Production Room",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MiddleCore,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 677.56005859375, 338.6666564941406, 1279.873291015625],
                 [1.0, 569.2798461914062, 338.6666564941406, 1282.5758056640625],
@@ -3884,7 +3891,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Under a grate in R&D",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             logic=lambda l: (l.grab and l.donkey) or l.CanAccessRNDRoom(),
             locations=[
                 [0.8400001525878906, 4089.829833984375, 1313.7386474609375, 780.3251342773438],
@@ -3912,7 +3919,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Around Arcade Tunnel Bonus",
             konglist=[Kongs.chunky],
-            region=Regions.BeyondHatch,
+            region=Regions.FactoryArcadeTunnel,
             logic=lambda l: (l.punch and l.ischunky) or l.phasewalk,
             locations=[
                 [1.0, 1343.939208984375, 1106.5, 1885.8740234375],
@@ -4375,6 +4382,7 @@ BananaCoinGroupList = {
             name="Lighthouse Climb (1)",
             konglist=[Kongs.donkey],
             region=Regions.Lighthouse,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 449, 460, 365],
                 [1.0, 449, 500, 365],
@@ -4387,6 +4395,7 @@ BananaCoinGroupList = {
             name="Lighthouse Climb (2)",
             konglist=[Kongs.donkey],
             region=Regions.Lighthouse,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 381, 640, 533],
                 [1.0, 381, 590, 533],
@@ -4399,6 +4408,7 @@ BananaCoinGroupList = {
             name="Top of Lighthouse",
             konglist=[Kongs.donkey],
             region=Regions.Lighthouse,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 553, 720, 401],
                 [1.0, 515, 720, 362],
@@ -5021,7 +5031,7 @@ BananaCoinGroupList = {
             name="On well roof edges",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FungiForestStart,
-            logic=lambda l: l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
+            logic=lambda l: (l.climbing and (l.can_use_vines or l.CanMoonkick())) or (l.jetpack and l.isdiddy),
             locations=[
                 [1.0, 2306, 268, 3133],
                 [1.0, 2248, 273, 3051],
@@ -5033,6 +5043,7 @@ BananaCoinGroupList = {
             map_id=Maps.FungiForest,
             name="Mushroom Stem",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            logic=lambda l: l.climbing,
             region=Regions.FungiForestStart,
             locations=[
                 [1.0, 2204, 214, 2699],
@@ -5047,6 +5058,7 @@ BananaCoinGroupList = {
             name="On Clock Pendulum",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FungiForestStart,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 2531, 457, 2239],
                 [1.0, 2531, 441, 2304],
@@ -5190,6 +5202,7 @@ BananaCoinGroupList = {
             name="Above the second lowest ladder in the Giant Mushroom Area",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MushroomLowerExterior,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 679, 779, 1365],
                 [1.0, 622, 779, 1323],
@@ -6799,6 +6812,7 @@ BananaCoinGroupList = {
             name="High tree at the back of Castle",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.CreepyCastleMain,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 1463, 695, 1933],
                 [1.0, 1461, 645, 1965],
@@ -7550,6 +7564,7 @@ BananaCoinGroupList = {
             name="On thin tree near the Tree entrance",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.CreepyCastleMain,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 1135.9844970703125, 636.5, 147.59095764160156],
                 [1.0, 1133.508544921875, 636.5, 141.38092041015625],
@@ -7601,6 +7616,7 @@ BananaCoinGroupList = {
             name="On tree near Crypt Entrance",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.CreepyCastleMain,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 1705.875, 544.685302734375, 2036.1650390625],
                 [1.0, 1708.7713623046875, 540.0343017578125, 2040.3990478515625],

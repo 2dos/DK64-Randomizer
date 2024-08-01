@@ -309,7 +309,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.diddy],
             coords=[3169, 445, 647],
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.isdiddy and l.climbing,
             vanilla=True,
         ),
         KasplatLocation(
@@ -515,7 +515,7 @@ KasplatLocationList = {
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[4148, 1336, 1016],
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             vanilla=True,
         ),
         KasplatLocation(
@@ -728,6 +728,7 @@ KasplatLocationList = {
             zmin=501,
             zmax=530,
             region=Regions.Lighthouse,
+            additional_logic=lambda l: l.climbing,
         ),
         KasplatLocation(
             name="Galleon Kasplat: In the Mechfish", map_id=Maps.GalleonMechafish, kong_lst=[Kongs.diddy], coords=[314, 25, 528], xmin=303, xmax=322, zmin=497, zmax=537, region=Regions.Mechafish

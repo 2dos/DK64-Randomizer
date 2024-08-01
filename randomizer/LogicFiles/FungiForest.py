@@ -224,6 +224,23 @@ LogicRegions = {
         TransitionFront(Regions.HollowTreeArea, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any))), Transitions.ForestAnthillToTree),
     ]),
 
+    Regions.ForestVeryTopOfMill: Region("Very top of the Mill", "Forest Mills", Levels.FungiForest, False, None, [
+
+    ], [], [
+        TransitionFront(Regions.ForestTopOfMill, lambda l: True),
+        TransitionFront(Regions.MillArea, lambda l: True),
+        TransitionFront(Regions.FungiForestMedals, lambda l: True),
+        TransitionFront(Regions.WinchRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdiddy) or (l.CanMoonkick()), Transitions.ForestMainToWinch, time=Time.Night),
+    ]),
+
+    Regions.ForestTopOfMill: Region("Top of the Mill", "Forest Mills", Levels.FungiForest, False, None, [
+
+    ], [], [
+        TransitionFront(Regions.MillArea, lambda l: True),
+        TransitionFront(Regions.FungiForestMedals, lambda l: True),
+        TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
+    ]),
+
     Regions.MillArea: Region("Mill Area", "Forest Mills", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDonkeyMill, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip) and Events.ConveyorActivated in l.Events and l.donkey),
         LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy) or ((l.CanPhaseswim() or l.ledgeclip) and (l.isdiddy or l.settings.free_trade_items))),
@@ -243,12 +260,12 @@ LogicRegions = {
         TransitionFront(Regions.MillChunkyTinyArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToTinyMill),
         TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder, time=Time.Day),
         TransitionFront(Regions.MillRafters, lambda l: (l.spring or l.CanMoontail()) and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
-        TransitionFront(Regions.WinchRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdiddy) or (l.CanMoonkick()), Transitions.ForestMainToWinch, time=Time.Night),
-        TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess, time=Time.Day),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
         TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),
+        TransitionFront(Regions.ForestVeryTopOfMill, lambda l: l.climbing),
+        TransitionFront(Regions.ForestTopOfMill, lambda l: l.balloon and l.islanky),
     ]),
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", "Forest Mills", Levels.FungiForest, False, -1, [
