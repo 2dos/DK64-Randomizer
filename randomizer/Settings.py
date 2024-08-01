@@ -969,21 +969,21 @@ class Settings:
         wincon_items = {
             WinConditionComplex.beat_krool: HelmDoorInfo(
                 1,
-                HelmDoorInfo(1, 1, 0.1),
-                HelmDoorInfo(1, 1, 0.1),
-                HelmDoorInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.1),
+                HelmDoorRandomInfo(1, 1, 0.1),
+                HelmDoorRandomInfo(1, 1, 0.05),
             ),
             WinConditionComplex.krem_kapture: HelmDoorInfo(
                 1,
-                HelmDoorInfo(1, 1, 0.06),
-                HelmDoorInfo(1, 1, 0.03),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
                 201,
-                HelmDoorInfo(60, 100, 0.1),
-                HelmDoorInfo(40, 60, 0.1),
-                HelmDoorInfo(20, 40, 0.15),
+                HelmDoorRandomInfo(60, 100, 0.1),
+                HelmDoorRandomInfo(40, 60, 0.1),
+                HelmDoorRandomInfo(20, 40, 0.15),
             ),
             WinConditionComplex.req_bp: HelmDoorInfo(
                 40,
