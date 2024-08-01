@@ -3331,6 +3331,7 @@ def lightenPauseBubble(settings: Settings):
     ROM().seek(js.pointer_addresses[14]["entries"][107]["pointing_to"])
     ROM().writeBytes(px_data)
 
+
 class WinConData:
     """Class to store information about win condition."""
 
@@ -3343,6 +3344,7 @@ class WinConData:
         self.height = height
         self.flip = flip
         self.default_count = default_count
+
 
 def showWinCondition(settings: Settings):
     """Alter the image that's shown on the main menu to display the win condition."""

@@ -190,7 +190,10 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Cross Purchase: 100%
 - Open Lobbies: 90%
 - Progressive Hint 35 Requirement: Between 30 and 60, usually close to 45
-- Shuffle Puzzle Solutions: 50%
+- Random Puzzle Solutions: 
+	- Off: 20%
+	- Easy: 70%
+	- Medium: 10%
 - Random Shop Prices: 
 	- Vanilla: 20%
 	- Free: 20%
@@ -208,6 +211,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Factory Testing Gate: 75%
 	- Galleon Lighthouse Gate: 75%
 	- Galleon Shipyard Area Gate: 75%
+	- Castle Crypt Doors: 75%
 	- Galleon Seasick Ship: 100%
 	- Forest Green Tunnel: 75%
 	- Forest Yellow Tunnel: 75%
@@ -227,7 +231,8 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Off: 100%
 - Troff n' Scoff Max: Between 100 and 300, usually close to 200
 - Win Condition: 
-	- Beat Krool: 70%
-	- Get Key8: 30%
+	- Beat Krool: 20%
+	- Get Key8: 10%
+	- Easy Random: 70%
 - Wrinkly Hints: 
 	- Standard: 100%

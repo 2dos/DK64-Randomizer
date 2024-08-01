@@ -17,7 +17,19 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinConditionComplex, WrinklyHints, KongModels, SlamRequirement
+from randomizer.Enums.Settings import (
+    HelmSetting,
+    LogicType,
+    MicrohintsEnabled,
+    MoveRando,
+    ShockwaveStatus,
+    ShuffleLoadingZones,
+    SpoilerHints,
+    WinConditionComplex,
+    WrinklyHints,
+    KongModels,
+    SlamRequirement,
+)
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
@@ -323,7 +335,7 @@ item_type_names_cryptic = {
     Types.RainbowCoin: ["the initials of DK", "a muddy mess", "buried treasure"],
     Types.CrateItem: ["a bouncing box", "a breakable cube", "a crate of goodies"],
     Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"],
-    Types.Hint: ["a source of a riddle", "the old granny house", "a door to the granny"]
+    Types.Hint: ["a source of a riddle", "the old granny house", "a door to the granny"],
 }
 
 moves_data = [

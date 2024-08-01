@@ -271,7 +271,7 @@ class Spoiler:
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates
-        settings["Randomize CB Locations"] = self.settings.cb_rando
+        settings["Randomize CB Locations"] = self.settings.cb_rando.name
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Randomize Shop Locations"] = self.settings.shuffle_shops
         settings["Randomize Kasplats"] = self.settings.kasplat_rando_setting.name
@@ -320,7 +320,7 @@ class Spoiler:
         settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, RemovedBarrierSelector)
         settings["Random Win Condition"] = self.settings.win_condition_random
         if not self.settings.win_condition_random:
-            wc_count = self.settings.win_condition_count   
+            wc_count = self.settings.win_condition_count
             win_con_name_table = {
                 WinConditionComplex.beat_krool: "Beat K. Rool",
                 WinConditionComplex.get_key8: "Acquire Key 8",

@@ -969,14 +969,14 @@ class Settings:
         wincon_items = {
             WinConditionComplex.beat_krool: HelmDoorInfo(
                 1,
-                HelmDoorInfo(1, 1, 0.1),                                          
-                HelmDoorInfo(1, 1, 0.1),                                          
-                HelmDoorInfo(1, 1, 0.05),                                          
+                HelmDoorInfo(1, 1, 0.1),
+                HelmDoorInfo(1, 1, 0.1),
+                HelmDoorInfo(1, 1, 0.05),
             ),
             WinConditionComplex.krem_kapture: HelmDoorInfo(
                 1,
-                HelmDoorInfo(1, 1, 0.06),                                          
-                HelmDoorInfo(1, 1, 0.03),                                      
+                HelmDoorInfo(1, 1, 0.06),
+                HelmDoorInfo(1, 1, 0.03),
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
@@ -1497,9 +1497,19 @@ class Settings:
             ItemList[Items.BananaMedal].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_crown or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_bean or self.crown_door_item == BarrierItems.Bean or self.coin_door_item == BarrierItems.Bean or Types.Bean in self.shuffled_location_types:
+        if (
+            self.win_condition_item == WinConditionComplex.req_bean
+            or self.crown_door_item == BarrierItems.Bean
+            or self.coin_door_item == BarrierItems.Bean
+            or Types.Bean in self.shuffled_location_types
+        ):
             ItemList[Items.Bean].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_pearl or self.crown_door_item == BarrierItems.Pearl or self.coin_door_item == BarrierItems.Pearl or Types.Pearl in self.shuffled_location_types:
+        if (
+            self.win_condition_item == WinConditionComplex.req_pearl
+            or self.crown_door_item == BarrierItems.Pearl
+            or self.coin_door_item == BarrierItems.Pearl
+            or Types.Pearl in self.shuffled_location_types
+        ):
             ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none

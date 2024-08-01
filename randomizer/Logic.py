@@ -1089,7 +1089,7 @@ class LogicVarHolder:
         # Special Win Cons
         if self.settings.win_condition_item == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
-        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture: # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
+        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:  # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events and self.camera
         elif self.settings.win_condition_item == WinConditionComplex.get_key8:
             return self.HelmKey
