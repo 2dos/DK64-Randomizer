@@ -544,10 +544,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
     # Your training in moves which you know are always needed beat the final battle are pointless to hint
-    dk_phase_requirement = []
+    dk_phase_requirement = [Items.Climbing]
     chunky_phase_requirement = [Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
     if spoiler.settings.cannons_require_blast:
-        dk_phase_requirement = [Items.BaboonBlast]
+        dk_phase_requirement.append(Items.BaboonBlast)
     if spoiler.settings.chunky_phase_slam_req_internal != SlamRequirement.green:
         chunky_phase_requirement.append(Items.ProgressiveSlam)
     required_moves = {
@@ -2044,6 +2044,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Regions.MushroomLowerExterior,
                 Regions.MushroomNightExterior,
                 Regions.MushroomUpperExterior,
+                Regions.MushroomUpperMidExterior,
+                Regions.ForestVeryTopOfMill,
+                Regions.ForestTopOfMill,
                 Regions.MillArea,
                 Regions.ThornvineArea,
             ],

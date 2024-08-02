@@ -170,6 +170,8 @@ int isMovePregiven(int index) {
 			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
 		case TRACKER_TYPE_SNIPER:
 			return Rando.moves_pregiven.sniper || initFile_checkTraining(PURCHASE_GUN, -1, 3);
+		case TRACKER_TYPE_CLIMB:
+			return Rando.moves_pregiven.climbing || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CLIMBING);
 		case TRACKER_TYPE_DIVE:
 			return Rando.moves_pregiven.dive || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE);
 		case TRACKER_TYPE_ORANGE:
@@ -308,6 +310,8 @@ int getEnabledState(int index) {
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
 		case TRACKER_TYPE_SNIPER:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
+		case TRACKER_TYPE_CLIMB:
+			return checkFlagDuplicate(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_DIVE:
 			return checkFlagDuplicate(FLAG_TBARREL_DIVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_ORANGE:

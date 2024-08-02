@@ -60,7 +60,7 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 				} else {
 					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
 						int is_shared = 0;
-						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CLIMBING, FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
 						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
 							if (purchase_value == tied_flags[i]) {
 								is_shared = 1;

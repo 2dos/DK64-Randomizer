@@ -42,27 +42,34 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.MushroomCannonsSpawned in l.Events, None, 3),  # Cannon shots pathway
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
+    ],
+    Regions.MushroomLowerMid: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 1st Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 1st Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 2nd Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 2nd Ladder
     ],
     Regions.MushroomLowerExterior: [
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 15),
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 13),
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.climbing, None, 2),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Around BBlast pad
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.climbing, None, 3),  # Around BBlast pad
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # Around Tiny BP
     ],
     Regions.ForestBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
     ],
-    Regions.MushroomUpper: [
+    Regions.MushroomMiddle: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # Top
+    ],
+    Regions.MushroomUpperMid: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 3rd Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 3rd Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 4th Ladder
+    ],
+    Regions.MushroomUpper: [
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # Top
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 5th Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 6th Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 7th Ladder

@@ -610,11 +610,12 @@ fairy_locations = {
             region=Regions.MushroomLowerExterior,
             fence=Fence(126, 941, 545, 1020),
             spawn_y=764,
+            logic=lambda l: l.camera and l.climbing,
         ),
         FairyData(
             name="Near Crown",
             map=Maps.FungiForest,
-            region=Regions.MushroomLowerExterior,
+            region=Regions.MushroomUpperMidExterior,
             fence=Fence(652, 1516, 1169, 1623),
             spawn_y=1010,
         ),
@@ -691,7 +692,7 @@ fairy_locations = {
         FairyData(
             name="Lower Giant Mushroom Interior",
             map=Maps.ForestGiantMushroom,
-            region=Regions.MushroomLower,
+            region=Regions.MushroomLowerMid,
             fence=Fence(202, 338, 659, 650),
             spawn_y=357,
         ),

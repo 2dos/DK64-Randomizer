@@ -1592,7 +1592,7 @@ BalloonList = [
         name="Around top",
         speed=6,
         konglist=[Kongs.donkey],
-        region=
+        region=Regions.Lighthouse,
         logic=lambda l: l.climbing,
         points=[[372, 800, 315], [298, 807, 418], [298, 804, 535], [396, 810, 616], [517, 803, 616], [601, 808, 527], [601, 802, 407], [534, 806, 315]],
     ),

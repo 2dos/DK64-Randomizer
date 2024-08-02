@@ -1558,6 +1558,7 @@ CustomLocations = {
             rot_y=534,
             max_size=64,
             logic_region=Regions.MushroomLowerExterior,
+            logic=lambda l: l.climbing,
             group=4,
         ),
         # CrownLocation(
@@ -1570,7 +1571,7 @@ CustomLocations = {
         #     logic_region=Regions.MushroomLowerExterior,
         #     group=4,
         # ),
-        CustomLocation(map=Maps.FungiForest, name="Above Upper Baboon Blast Ladder", x=671, y=779, z=1320, max_size=56, logic_region=Regions.MushroomLowerExterior, group=4),
+        CustomLocation(map=Maps.FungiForest, name="Above Upper Baboon Blast Ladder", x=671, y=779, z=1320, max_size=56, logic_region=Regions.MushroomUpperMidExterior, group=4),
         CustomLocation(map=Maps.FungiForest, name="Highest Giant Mushroom Platform", x=1196, y=1250, z=1315, max_size=64, logic_region=Regions.MushroomUpperExterior, group=4),
         CustomLocation(map=Maps.FungiForest, name="Behind Rabbit", x=2408, y=142, z=3705, max_size=80, logic_region=Regions.HollowTreeArea, group=5),
         CustomLocation(
@@ -1670,10 +1671,10 @@ CustomLocations = {
             logic_region=Regions.MillChunkyTinyArea,
             group=3,
         ),
-        CustomLocation(map=Maps.ForestGiantMushroom, name="Giant Mushroom: Near Tiny Bonus", x=550, y=409, z=200, max_size=72, logic_region=Regions.MushroomLower, group=4),
+        CustomLocation(map=Maps.ForestGiantMushroom, name="Giant Mushroom: Near Tiny Bonus", x=550, y=409, z=200, max_size=72, logic_region=Regions.MushroomLowerMid, group=4),
         CustomLocation(map=Maps.ForestGiantMushroom, name="Giant Mushroom: Near Gun Switches", x=448, y=82, z=195, max_size=64, logic_region=Regions.MushroomLower, group=4),
         CustomLocation(map=Maps.ForestGiantMushroom, name="Giant Mushroom: Near Bottom Cannon", x=596, y=0, z=680, max_size=72, logic_region=Regions.MushroomLower, group=4),
-        CustomLocation(map=Maps.ForestGiantMushroom, name="Giant Mushroom: Near Night Door Vines", x=218, y=979, z=529, max_size=64, logic_region=Regions.MushroomUpper, group=4),
+        CustomLocation(map=Maps.ForestGiantMushroom, name="Giant Mushroom: Near Night Door Vines", x=218, y=979, z=529, max_size=64, logic_region=Regions.MushroomUpperMid, group=4),
         CustomLocation(
             name="Giant Mushroom: Next to a cannon",
             map=Maps.ForestGiantMushroom,

@@ -704,7 +704,9 @@ void getNextMoveText(void) {
 							}
 						}
 						if (top_item == -1) {
-							if (isFlagInRange(p_flag, FLAG_BP_JAPES_DK_HAS, 40)) {
+							if (p_flag == FLAG_ABILITY_CLIMBING) {
+								top_item = ITEMTEXT_CLIMBING;
+							} else if (isFlagInRange(p_flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 								// Blueprint
 								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
 								top_item = ITEMTEXT_BLUEPRINT_DK + kong;

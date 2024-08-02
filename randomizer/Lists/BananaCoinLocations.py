@@ -5191,6 +5191,7 @@ BananaCoinGroupList = {
             name="Behind the second lowest ladder in the Giant Mushroom Area",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MushroomLowerExterior,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 705, 589, 1256],
                 [1.0, 727, 589, 1273],
@@ -5201,8 +5202,7 @@ BananaCoinGroupList = {
             map_id=Maps.FungiForest,
             name="Above the second lowest ladder in the Giant Mushroom Area",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MushroomLowerExterior,
-            logic=lambda l: l.climbing,
+            region=Regions.MushroomUpperMidExterior,
             locations=[
                 [1.0, 679, 779, 1365],
                 [1.0, 622, 779, 1323],
@@ -5547,7 +5547,7 @@ BananaCoinGroupList = {
             map_id=Maps.ForestGiantMushroom,
             name="At the dead ends at the bottom",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MushroomLower,
+            region=Regions.MushroomLowerMid,
             locations=[
                 [1.0, 110, 278, 529],
                 [1.0, 790, 278, 533],
@@ -5644,6 +5644,7 @@ BananaCoinGroupList = {
             name="Around BBlast Pad",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MushroomLowerExterior,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 324.719970703125, 589.3333129882812, 973.1728515625],
                 [1.0, 321.9471130371094, 589.3333129882812, 922.9804077148438],

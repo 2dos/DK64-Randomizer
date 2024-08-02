@@ -154,6 +154,7 @@ static const flag_clamping_struct clamp_bounds[] = {
     {.flag_start = FLAG_ENEMY_KILLED_0, .flag_count = ENEMIES_TOTAL}, // Dropsanity
     {.flag_start = FLAG_MEDAL_ISLES_DK, .flag_count = 5}, // Isles Medals
     {.flag_start = FLAG_WRINKLYVIEWED, .flag_count = 35}, // Hints
+    {.flag_start = FLAG_ABILITY_CAMERA, .flag_count = 1}, // Climbing
 };
 
 int clampFlag(int flag) {
@@ -366,7 +367,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                     }
                 }
                 item_index += 1;
-            } else if ((flag_index >= FLAG_TBARREL_DIVE) && (flag_index <= FLAG_TBARREL_BARREL)) {
+            } else if (((flag_index >= FLAG_TBARREL_DIVE) && (flag_index <= FLAG_TBARREL_BARREL)) || (flag_index == FLAG_ABILITY_CLIMBING)) {
                 spawn_overlay = 1;
                 item_type = 5;
                 item_index = flag_index;

@@ -54,7 +54,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBaboonBlast, lambda l: (l.can_use_vines or (l.climbing and l.CanMoonkick())) and l.blast and l.isdonkey),  # , Transitions.JapesMainToBBlast)
     ]),
 
-    Regions.JapesCannonPlatform: Region("Jungle Japes Cannon Platform", Levels.JungleJapes, False, None, [
+    Regions.JapesCannonPlatform: Region("Jungle Japes Cannon Platform", "Japes Hillside", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesLankyCagedBanana, lambda l: ((Events.JapesLankySwitch in l.Events or ((not l.settings.shuffle_shops) and l.CanSkew(True)) or l.CanSkew(False)) and l.lanky) or (((not l.settings.shuffle_shops) and l.CanSkew(True)) or l.CanSkew(False) and l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.JapesHillTop, lambda l: True),
@@ -121,7 +121,7 @@ LogicRegions = {
         Event(Events.JapesW5bTagged, lambda l: Locations.JapesDiddyMountain in l.SpecialLocationsReached),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
-        TransitionFront(Regions.JungleJapesMain, lambda l: True),
+        TransitionFront(Regions.JapesHillTop, lambda l: True),
     ]),
 
     Regions.JapesBaboonBlast: Region("Japes Baboon Blast", "Japes Lowlands", Levels.JungleJapes, False, None, [
@@ -246,7 +246,7 @@ LogicRegions = {
         Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.peanut or l.advanced_platforming) and l.isdiddy),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
-        TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesMineToMain),
+        TransitionFront(Regions.JapesHillTop, lambda l: True, Transitions.JapesMineToMain),
         TransitionFront(Regions.JapesMinecarts, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and ((l.charge and l.isdiddy) or l.phasewalk or (l.advanced_platforming and l.isdiddy))),
     ]),
 

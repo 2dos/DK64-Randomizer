@@ -885,7 +885,7 @@ KasplatLocationList = {
             map_id=Maps.ForestGiantMushroom,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[329, 534, 402],
-            region=Regions.MushroomUpper,
+            region=Regions.MushroomMiddle,
             vanilla=True,
         ),
         KasplatLocation(
