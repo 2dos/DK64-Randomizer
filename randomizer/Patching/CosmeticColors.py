@@ -2339,7 +2339,7 @@ def placeKrushaHead(slot):
         ROM_COPY.writeBytes(data)
         ROM_COPY.seek(unc_addr)
         ROM_COPY.writeBytes(bytearray(img_data))
-    rgba32_addr32 = js.pointer_addresses[14]["entries"][196 + slot]["pointing_to"]
+    rgba32_addr32 = js.pointer_addresses[14]["entries"][197 + slot]["pointing_to"]
     rgba16_addr32 = js.pointer_addresses[14]["entries"][190 + slot]["pointing_to"]
     data32 = gzip.compress(bytearray(img32), compresslevel=9)
     data32_rgba32 = gzip.compress(bytearray(img32_rgba32), compresslevel=9)
