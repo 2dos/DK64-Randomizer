@@ -784,6 +784,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
                 del spoiler.woth_paths[path_loc]
     return WothLocations
 
+
 def checkCommonBarriers(settings: Settings, target_item: BarrierItems, target_win_con: WinConditionComplex) -> bool:
     """Check common barriers which would make an item a major one."""
     if settings.coin_door_item == target_item:
@@ -793,6 +794,7 @@ def checkCommonBarriers(settings: Settings, target_item: BarrierItems, target_wi
     if target_item in settings.BLockerEntryItems:
         return True
     return settings.win_condition_item == target_win_con
+
 
 def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
     """Identify the Major Items in this seed based on the item placement and the settings."""
@@ -816,9 +818,9 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
 
-    if checkCommonBarriers(spoiler.settings, BarrierItems.CompanyCoin, WinConditionComplex.req_companycoins):  
-        majorItems.append(Items.RarewareCoin) # A vanilla Rareware Coin should be considered a major item so medals will not be foolish
-        majorItems.append(Items.NintendoCoin) # A vanilla Nintendo Coin should be considered a major item
+    if checkCommonBarriers(spoiler.settings, BarrierItems.CompanyCoin, WinConditionComplex.req_companycoins):
+        majorItems.append(Items.RarewareCoin)  # A vanilla Rareware Coin should be considered a major item so medals will not be foolish
+        majorItems.append(Items.NintendoCoin)  # A vanilla Nintendo Coin should be considered a major item
     if checkCommonBarriers(spoiler.settings, BarrierItems.Blueprint, WinConditionComplex.req_bp):
         majorItems.extend(ItemPool.Blueprints())
     if checkCommonBarriers(spoiler.settings, BarrierItems.Medal, WinConditionComplex.req_medal):

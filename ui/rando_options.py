@@ -289,7 +289,9 @@ def updateDoorTwoNumAccess(event):
     elif door_two_selection.value == "req_rainbowcoin" and int(door_two_req.value) > 16:
         door_two_req.value = 16
 
+
 DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture")
+
 
 @bind("change", "win_condition_item")
 def updateWinConNumAccess(event):

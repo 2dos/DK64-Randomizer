@@ -552,6 +552,7 @@ def SnideItems():
     """Return a list of Snide shop owners to be placed."""
     return [Items.Snide]
 
+
 def HintItems():
     """Return a list of Hint Items to be placed."""
     return [
@@ -591,6 +592,7 @@ def HintItems():
         Items.CastleTinyHint,
         Items.CastleChunkyHint,
     ]
+
 
 def JunkItems(settings):
     """Return a list of Junk Items to be placed."""

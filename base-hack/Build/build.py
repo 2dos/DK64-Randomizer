@@ -622,15 +622,17 @@ shop_face_array = [
     "head32_dillo2",
     "head32_kko",
 ]
-file_dict.append(File(
-    name="Win Con Logo",
-    pointer_table_index=TableNames.TexturesHUD,
-    file_index=195,
-    source_file=f"assets/displays/win_con_logo.png",
-    texture_format=TextureFormat.RGBA5551,
-    target_compressed_size=32 * 32 * 2,
-    target_uncompressed_size=32 * 32 * 2,
-))
+file_dict.append(
+    File(
+        name="Win Con Logo",
+        pointer_table_index=TableNames.TexturesHUD,
+        file_index=195,
+        source_file=f"assets/displays/win_con_logo.png",
+        texture_format=TextureFormat.RGBA5551,
+        target_compressed_size=32 * 32 * 2,
+        target_uncompressed_size=32 * 32 * 2,
+    )
+)
 for x, shop in enumerate(shop_face_array):
     data = File(
         name=f"Shop Indicator ({shop})",

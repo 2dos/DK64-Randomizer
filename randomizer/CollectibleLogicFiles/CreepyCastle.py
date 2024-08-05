@@ -5,6 +5,7 @@ from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
@@ -98,10 +99,10 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On W1
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips or l.phasewalk) and l.peanut, None, 1),  # In Diddy's room
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.generalclips or l.phasewalk, None, 2),  # In tombs in Chunky's room
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.generalclips or l.phasewalk, None, 2),  # In tombs in Chunky's room
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: (l.charge and l.peanut) or l.phasewalk or l.generalclips, None, 3),  # In Diddy's room
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk or l.generalclips, None, 3),  # In tombs in Chunky's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.phasewalk or l.generalclips, None, 3),  # In tombs in Chunky's room
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk), None, 1),

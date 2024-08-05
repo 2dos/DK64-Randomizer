@@ -499,7 +499,10 @@ def patching_response(spoiler):
                 mill_text += str(spoiler.settings.mill_levers[x])
         # Change default wrinkly hint
         if spoiler.settings.wrinkly_hints == WrinklyHints.off:
-            if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor) or spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
+            if (
+                IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
+                or spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off
+            ):
                 wrinkly_index = 41
                 data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
                 if wrinkly_index in spoiler.text_changes:

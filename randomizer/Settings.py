@@ -972,21 +972,21 @@ class Settings:
         wincon_items = {
             WinConditionComplex.beat_krool: HelmDoorInfo(
                 1,
-                HelmDoorInfo(1, 1, 0.1),                                          
-                HelmDoorInfo(1, 1, 0.1),                                          
-                HelmDoorInfo(1, 1, 0.05),                                          
+                HelmDoorRandomInfo(1, 1, 0.1),
+                HelmDoorRandomInfo(1, 1, 0.1),
+                HelmDoorRandomInfo(1, 1, 0.05),
             ),
             WinConditionComplex.krem_kapture: HelmDoorInfo(
                 1,
-                HelmDoorInfo(1, 1, 0.06),                                          
-                HelmDoorInfo(1, 1, 0.03),                                      
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
                 201,
-                HelmDoorInfo(60, 100, 0.1),
-                HelmDoorInfo(40, 60, 0.1),
-                HelmDoorInfo(20, 40, 0.15),
+                HelmDoorRandomInfo(60, 100, 0.1),
+                HelmDoorRandomInfo(40, 60, 0.1),
+                HelmDoorRandomInfo(20, 40, 0.15),
             ),
             WinConditionComplex.req_bp: HelmDoorInfo(
                 40,
@@ -1500,9 +1500,19 @@ class Settings:
             ItemList[Items.BananaMedal].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_crown or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_bean or self.crown_door_item == BarrierItems.Bean or self.coin_door_item == BarrierItems.Bean or Types.Bean in self.shuffled_location_types:
+        if (
+            self.win_condition_item == WinConditionComplex.req_bean
+            or self.crown_door_item == BarrierItems.Bean
+            or self.coin_door_item == BarrierItems.Bean
+            or Types.Bean in self.shuffled_location_types
+        ):
             ItemList[Items.Bean].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_pearl or self.crown_door_item == BarrierItems.Pearl or self.coin_door_item == BarrierItems.Pearl or Types.Pearl in self.shuffled_location_types:
+        if (
+            self.win_condition_item == WinConditionComplex.req_pearl
+            or self.crown_door_item == BarrierItems.Pearl
+            or self.coin_door_item == BarrierItems.Pearl
+            or Types.Pearl in self.shuffled_location_types
+        ):
             ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
@@ -1534,8 +1544,8 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_text == 0:
-            # Disable progressive hints if hint text is 0
+        if self.progressive_hint_text == 0 or Types.Hint in self.shuffled_location_types:
+            # Disable progressive hints if hint text is 0 or if hints are in the item pool
             self.enable_progressive_hints = False
 
     def isBadIceTrapLocation(self, location: Locations):

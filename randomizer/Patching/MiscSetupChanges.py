@@ -285,7 +285,9 @@ def randomize_setup(spoiler):
                     ROM_COPY.seek(item_start + 0x1C)
                     ry = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     positions.append([x, y, z, ry])
-            elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off)):
+            elif item_type == 0x235 and (
+                (cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off)
+            ):
                 if cont_map_id == Maps.HideoutHelm:
                     y_position = random.uniform(-131, 500)
                     star_donut_center = [1055.704, 3446.966]
@@ -413,7 +415,7 @@ def randomize_setup(spoiler):
                         ROM_COPY.seek(offset["offset"] + 0x1C)
                         new_rot = (2 + rot_diff) % 4
                         ROM_COPY.writeMultipleBytes(int(rotation_hexes[new_rot], 16), 4)
-        
+
         # Mystery
         ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30))
         mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -697,12 +699,14 @@ def updateKrushaMoveNames(spoiler):
         spoiler.settings.kong_model_tiny,
         spoiler.settings.kong_model_chunky,
     ]
+    text_replacements = []
     for index, value in enumerate(settings_values):
         if value == KongModels.krusha:
-            spoiler.text_changes[39] = move_data[index]
+            text_replacements.extend(move_data[index])
             chosen_replacements = name_replacements[index]
             for reference in spoiler.location_references:
                 for replacement in chosen_replacements:
                     if reference.item_name == replacement["old"]:
                         reference.item_name = replacement["new"]
                         chosen_replacements.remove(replacement)
+    spoiler.text_changes[39] = text_replacements

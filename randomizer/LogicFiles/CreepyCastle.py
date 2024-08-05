@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
@@ -211,24 +212,24 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLowerToMain),
-        TransitionFront(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky) or l.phasewalk or l.ledgeclip, Transitions.CastleLowerToCrypt),
-        TransitionFront(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny) or l.phasewalk, Transitions.CastleLowerToMausoleum),
+        TransitionFront(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky) or l.phasewalk or l.ledgeclip or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors), Transitions.CastleLowerToCrypt),
+        TransitionFront(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors), Transitions.CastleLowerToMausoleum),
         TransitionFront(Regions.FunkyCastle, lambda l: l.funkyAccess),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.Crypt: Region("Crypt", "Castle Underground", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDiddyCrypt, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.charge and l.isdiddy),
+        LocationLogic(Locations.CastleDiddyCrypt, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.charge and l.isdiddy),
         LocationLogic(Locations.CastleChunkyCrypt, lambda l: (((l.pineapple and l.punch) or l.phasewalk or l.generalclips) and l.ischunky) or ((l.phasewalk or l.generalclips) and l.settings.free_trade_items), MinigameType.BonusBarrel),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin0, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin1, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin2, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin3, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin0, lambda l: (l.pineapple or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin1, lambda l: (l.pineapple or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin2, lambda l: (l.pineapple or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin3, lambda l: (l.pineapple or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_MinecartEntry, lambda l: (l.coconut and l.isdonkey) or l.phasewalk or l.generalclips),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin0, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin1, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin2, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin3, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin0, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin1, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin2, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin3, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
+        LocationLogic(Locations.CastleCryptEnemy_MinecartEntry, lambda l: (l.coconut and l.isdonkey) or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors) or l.phasewalk or l.generalclips),
         LocationLogic(Locations.CastleCryptEnemy_Fork, lambda l: True),
         LocationLogic(Locations.CastleCryptEnemy_NearDiddy, lambda l: True),
         LocationLogic(Locations.CastleCryptEnemy_NearChunky, lambda l: True),

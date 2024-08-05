@@ -59,7 +59,17 @@ const collision_tree_struct fixed_dice_collision[12] = {
     {.actor_interaction=0x8, .target_interaction=-1, .collision_type=0x2, .unk9=0x2, .force_break=0x2},
     {.actor_interaction=-1, .target_interaction=-1, .function=(void*)0x80676c10, .collision_type=0x1, .unk9=0x2, .force_break=0x2},
     {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
+};
 
+const collision_tree_struct fixed_klap_collision[8] = {
+    {.actor_interaction = 1, .target_interaction=COLBTF_RAMBI_ENGUARDEBATTACK, .collision_type=6, .unk9=10, .force_break=2}, // Rambi kills enemy
+    {.actor_interaction=-1, .target_interaction=0x4, .function=(void*)0x80676540, .collision_type=0x6, .unk9=0x3, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=0x8, .collision_type=0x6, .unk9=0x8, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=0x400, .collision_type=0x9, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=0xa00, .function=(void*)0x8067641c, .collision_type=0x6, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=0x1e8, .collision_type=0x6, .unk9=0x8, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=-1, .function=(void*)0x80676c10, .collision_type=0x1, .unk9=0x2, .force_break=0x2},
+    {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
 };
 
 void initCollectableCollision(void) {

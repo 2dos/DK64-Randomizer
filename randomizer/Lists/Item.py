@@ -41,6 +41,7 @@ class Item:
             self.rando_flag = data[0]
         if type == Types.Hint:
             self.level = data[0]
+            self.rando_flag = 0x384 + (self.level * 5) + self.kong
         if type in (Types.NintendoCoin, Types.RarewareCoin):
             self.flag = data[0]
 

@@ -643,6 +643,7 @@ class MusicFilters(IntEnum):
     length = 1
     location = 2
 
+
 class PuzzleRando(IntEnum):
     """Determines the difficulty of puzzle rando.
 
@@ -811,9 +812,10 @@ class WinCondition(IntEnum):
     poke_snap = 5
     all_keys = 6
 
+
 class WinConditionComplex(IntEnum):
     """The condition needed to complete the game.
-    
+
     This enum is an iteration on the WinCondition enum.
 
     beat_krool: Complete the King K. Rool boss fight.
