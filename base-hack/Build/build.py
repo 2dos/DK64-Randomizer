@@ -1078,6 +1078,7 @@ shrinkModel(False, "", 0x10, 1 / 0.15, "shrink_cranky.bin", True),
 shrinkModel(False, "", 0x11, 1 / 0.15, "shrink_funky.bin", True),
 shrinkModel(False, "", 0x12, 1 / 0.15, "shrink_candy.bin", True),
 shrinkModel(False, "", 0x1E, 1 / 0.15, "shrink_snide.bin", True),
+shrinkModel(False, "", 0xD1, 1 / 0.15, "shrink_qmark.bin", True)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1144,7 +1145,7 @@ model_changes = [
     ModelChange(0x116, "candy_model.bin"),
     ModelChange(0x117, "funky_model.bin"),
     ModelChange(0x118, "scarab_actor.bin"),
-    ModelChange(0x119, FINAL_RACE_HOOP),  # Used to set an endpoint
+    ModelChange(0x119, "shrink_qmark.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
