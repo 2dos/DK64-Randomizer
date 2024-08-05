@@ -103,10 +103,12 @@ void displayMedalOverlay(int flag, int item_type) {
                 break;
             case MEDALITEM_BP:
                 {
-                    if (kong > 4) {
-                        kong = 0;
+                    int bp_index = flut_flag - FLAG_BP_JAPES_DK_HAS;
+                    int bp_kong = bp_index & 5;
+                    if (bp_kong > 4) {
+                        bp_kong = 0;
                     }
-                    sprite_index = bp_sprites[kong];
+                    sprite_index = bp_sprites[bp_kong];
                 }
                 break;
             case MEDALITEM_KEY:

@@ -969,6 +969,7 @@ colorblind_changes = [
     [0x11AD, 0x11AE, 1, 1372],  # Ghost something
     [0x1379, 0x1379, 32, 32],  # Dirt Face
     [0xB7B, 0xB7B, 32, 32],  # GB Shine
+    [0x323, 0x323, 32, 32],  # GB Shine
     [0x155C, 0x1567, 44, 44],  # GB Sprite
     [0xECF, 0xECF, 1, 1372],  # Funky Camo
     [0xED6, 0xED6, 1, 1372],  # Funky Camo

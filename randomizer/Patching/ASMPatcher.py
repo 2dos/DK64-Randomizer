@@ -2014,6 +2014,15 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
+    k_rool_maps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase, Maps.KroolShoe]
+    for map_id in [x for x in k_rool_maps if x not in settings.krool_order]:
+        # K Rool map is *not* in the K Rool Seq
+        val = 0x21
+        if map_id == Maps.KroolLankyPhase:
+            val = 0x20
+        elif map_id == Maps.KroolShoe:
+            val = 1
+        writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, val, offset_dict, 4)
     for map_id in settings.krool_order:
         writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
         if map_id not in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]:
