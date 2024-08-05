@@ -146,7 +146,6 @@ LogicRegions = {
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.FactoryW1bTagged, lambda l: True),
         Event(Events.FactoryW4aTagged, lambda l: True),
-        
     ], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),

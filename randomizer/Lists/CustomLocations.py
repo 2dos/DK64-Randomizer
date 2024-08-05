@@ -506,7 +506,15 @@ CustomLocations = {
             group=1,
         ),
         CustomLocation(
-            map=Maps.AngryAztec, name="On Tiny Temple", x=3192, y=352, z=500, max_size=48, logic_region=Regions.AngryAztecOasis, logic=lambda l: ((l.jetpack and l.diddy) or l.CanMoonkick()) and l.climbing, group=1
+            map=Maps.AngryAztec,
+            name="On Tiny Temple",
+            x=3192,
+            y=352,
+            z=500,
+            max_size=48,
+            logic_region=Regions.AngryAztecOasis,
+            logic=lambda l: ((l.jetpack and l.diddy) or l.CanMoonkick()) and l.climbing,
+            group=1,
         ),
         CustomLocation(map=Maps.AngryAztec, name="Near Oasis Shop", x=2430, y=120, z=509, rot_y=3492, max_size=56, logic_region=Regions.AngryAztecOasis, group=1),
         # CrownLocation(
