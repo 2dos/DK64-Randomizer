@@ -1541,8 +1541,8 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_text == 0 or Types.Hint in self.shuffled_location_types:
-            # Disable progressive hints if hint text is 0 or if hints are in the item pool
+        if self.progressive_hint_text == 0:
+            # Disable progressive hints if hint text is 0
             self.enable_progressive_hints = False
 
     def isBadIceTrapLocation(self, location: Locations):

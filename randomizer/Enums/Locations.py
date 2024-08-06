@@ -641,7 +641,7 @@ class Locations(IntEnum):
     RainbowCoin_Location15 = auto()  # ID: 600
 
     # Melon Crate Locations
-    MelonCrate_Location00 = auto()
+    MelonCrate_Location00 = auto()  # ID: 601
     MelonCrate_Location01 = auto()
     MelonCrate_Location02 = auto()
     MelonCrate_Location03 = auto()
@@ -653,13 +653,13 @@ class Locations(IntEnum):
     MelonCrate_Location09 = auto()
     MelonCrate_Location10 = auto()
     MelonCrate_Location11 = auto()
-    MelonCrate_Location12 = auto()
+    MelonCrate_Location12 = auto()  # ID: 613
 
     # Shop Owner Locations
-    ShopOwner_Location00 = auto()
+    ShopOwner_Location00 = auto()  # ID: 614
     ShopOwner_Location01 = auto()
     ShopOwner_Location02 = auto()
-    ShopOwner_Location03 = auto()
+    ShopOwner_Location03 = auto()  # ID: 617
 
     # Enemies
     # Japes
@@ -1217,3 +1217,40 @@ class Locations(IntEnum):
     IslesMainEnemy_PineappleCage1 = auto()  # Zinger (0x5), 10
     IslesMainEnemy_LowerFactoryPath0 = auto()  # Zinger (0x1C), 11
     IslesMainEnemy_LowerFactoryPath1 = auto()  # Zinger (0x1C), 12
+
+    # Progressive Hint locations must remain grouped together in this specific order for progressive hint location logic
+    JapesDonkey_ProgressiveHint = auto()  # ID: 1045
+    JapesDiddy_ProgressiveHint = auto()
+    JapesLanky_ProgressiveHint = auto()
+    JapesTiny_ProgressiveHint = auto()
+    JapesChunky_ProgressiveHint = auto()
+    AztecDonkey_ProgressiveHint = auto()
+    AztecDiddy_ProgressiveHint = auto()
+    AztecLanky_ProgressiveHint = auto()
+    AztecTiny_ProgressiveHint = auto()
+    AztecChunky_ProgressiveHint = auto()
+    FactoryDonkey_ProgressiveHint = auto()
+    FactoryDiddy_ProgressiveHint = auto()
+    FactoryLanky_ProgressiveHint = auto()
+    FactoryTiny_ProgressiveHint = auto()
+    FactoryChunky_ProgressiveHint = auto()
+    GalleonDonkey_ProgressiveHint = auto()
+    GalleonDiddy_ProgressiveHint = auto()
+    GalleonLanky_ProgressiveHint = auto()
+    GalleonTiny_ProgressiveHint = auto()
+    GalleonChunky_ProgressiveHint = auto()
+    ForestDonkey_ProgressiveHint = auto()
+    ForestDiddy_ProgressiveHint = auto()
+    ForestLanky_ProgressiveHint = auto()
+    ForestTiny_ProgressiveHint = auto()
+    ForestChunky_ProgressiveHint = auto()
+    CavesDonkey_ProgressiveHint = auto()
+    CavesDiddy_ProgressiveHint = auto()
+    CavesLanky_ProgressiveHint = auto()
+    CavesTiny_ProgressiveHint = auto()
+    CavesChunky_ProgressiveHint = auto()
+    CastleDonkey_ProgressiveHint = auto()
+    CastleDiddy_ProgressiveHint = auto()
+    CastleLanky_ProgressiveHint = auto()
+    CastleTiny_ProgressiveHint = auto()
+    CastleChunky_ProgressiveHint = auto()  # ID: 1079
