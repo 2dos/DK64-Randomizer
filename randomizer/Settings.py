@@ -42,6 +42,7 @@ from randomizer.Lists.Location import (
     ShopLocationReference,
     TinyMoveLocations,
     TrainingBarrelLocations,
+    WrinklyHintLocations,
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
@@ -1610,6 +1611,10 @@ class Settings:
 
         for location_id in ProgressiveHintLocations:
             spoiler.LocationList[location_id].inaccessible = not self.enable_progressive_hints
+
+        if self.enable_progressive_hints and not (Types.Hint in self.shuffled_location_types):
+            for location_id in WrinklyHintLocations:
+                spoiler.LocationList[location_id].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
