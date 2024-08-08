@@ -257,7 +257,7 @@ piano_extreme_model = [
 ]
 
 spotlight_fish_models = [
-    Model.Turtle,
+    # Model.Turtle,  # Lighting Bug
     Model.Seal,
     Model.BeaverBlue,
     Model.BeaverGold,
