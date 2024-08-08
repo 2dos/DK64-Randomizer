@@ -7,7 +7,7 @@
 | Jungle Japes | Japes Kasplat: Beehive Area | `` | 
 | Jungle Japes | Japes Kasplat: Hive Tunnel Lower | `` | 
 | Jungle Japes | Japes Kasplat: Hive Tunnel Upper | `` | 
-| Japes Under Ground | Japes Kasplat: Underground | `(l.can_use_vines and l.pineapple and l.ischunky) or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk` | 
+| Japes Under Ground | Japes Kasplat: Underground | `(l.can_use_vines and l.pineapple and l.ischunky)` | 
 | Jungle Japes | Japes Kasplat: By Lanky Slope Bonus | `` | 
 | Jungle Japes | Japes Kasplat: Near Painting Room | `` | 
 | Jungle Japes | Japes Kasplat: Inside Tiny's Cage | `((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)` | 

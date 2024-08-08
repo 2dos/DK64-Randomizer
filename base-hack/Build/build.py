@@ -32,6 +32,7 @@ from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
+from port_krool_spawners import updateCutsceneScripts, updateSpawnerFiles, updatePathFiles
 
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
@@ -48,6 +49,9 @@ shutil.copyfile(ROMName, newROMName)
 
 # pullHandModels()
 loadNewModels()
+updateCutsceneScripts()
+updateSpawnerFiles()
+updatePathFiles()
 BuildInstanceScripts()
 
 portal_images = []
@@ -806,24 +810,50 @@ for x in range(221):
         )
 for x in range(221):
     if x != 2:  # DK Arcade path file is massive
-        file_dict.append(
-            File(
-                name=f"Paths for map {x}",
-                pointer_table_index=TableNames.Paths,
-                file_index=x,
-                source_file=f"paths{x}.bin",
-                target_size=0x600,
-                do_not_recompress=True,
+        if x in (Maps.KRoolDK, Maps.KRoolDiddy, Maps.KRoolLanky, Maps.KRoolTiny):
+            file_mapping = {
+                Maps.KRoolDK: "path_dk_phase.bin",
+                Maps.KRoolDiddy: "path_diddy_phase.bin",
+                Maps.KRoolLanky: "path_lanky_phase.bin",
+                Maps.KRoolTiny: "path_tiny_phase.bin",
+            }
+            file_dict.append(
+                File(
+                    name=f"Paths for map {x}",
+                    pointer_table_index=TableNames.Paths,
+                    file_index=x,
+                    source_file=file_mapping[x],
+                    target_size=0x600,
+                    do_not_recompress=True,
+                    do_not_delete_source=True,
+                )
             )
-        )
+        else:
+            file_dict.append(
+                File(
+                    name=f"Paths for map {x}",
+                    pointer_table_index=TableNames.Paths,
+                    file_index=x,
+                    source_file=f"paths{x}.bin",
+                    target_size=0x600,
+                    do_not_recompress=True,
+                )
+            )
 for x in range(221):
-    if x == Maps.Factory:
+    if x in (Maps.Factory, Maps.KRoolDK, Maps.KRoolDiddy, Maps.KRoolLanky, Maps.KRoolTiny):
+        file_mapping = {
+            Maps.Factory: "factory_spawners.bin",
+            Maps.KRoolDK: "spawner_dk_phase.bin",
+            Maps.KRoolDiddy: "spawner_diddy_phase.bin",
+            Maps.KRoolLanky: "spawner_lanky_phase.bin",
+            Maps.KRoolTiny: "spawner_tiny_phase.bin",
+        }
         file_dict.append(
             File(
                 name=f"Character Spawners for map {x}",
                 pointer_table_index=TableNames.Spawners,
                 file_index=x,
-                source_file="factory_spawners.bin",
+                source_file=file_mapping[x],
                 target_size=0x1400,
                 do_not_recompress=True,
                 do_not_delete_source=True,

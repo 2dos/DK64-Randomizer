@@ -280,6 +280,16 @@ static unsigned char jetpac_hh_bonus[] = {
 };
 
 static short banned_hh_items[] = {HHITEM_NOTHING, HHITEM_GB};
+static short flags_produce_overlay[] = {
+    FLAG_ABILITY_CAMERA,
+    FLAG_TBARREL_BARREL,
+    FLAG_TBARREL_DIVE,
+    FLAG_TBARREL_ORANGE,
+    FLAG_TBARREL_VINE,
+    FLAG_COLLECTABLE_BEAN,
+    FLAG_ABILITY_CAMERA,
+    FLAG_ABILITY_SHOCKWAVE,
+};
 
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
@@ -367,36 +377,25 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                     }
                 }
                 item_index += 1;
-            } else if (((flag_index >= FLAG_TBARREL_DIVE) && (flag_index <= FLAG_TBARREL_BARREL)) || (flag_index == FLAG_ABILITY_CLIMBING)) {
-                spawn_overlay = 1;
-                item_type = 5;
-                item_index = flag_index;
+            } else {
+                int is_shopkeeper = isFlagInRange(flag_index, FLAG_ITEM_CRANKY, 4);
+                int is_hint = isFlagInRange(flag_index, FLAG_WRINKLYVIEWED, 35) && Rando.hints_are_items == 1;
+                int is_kong = inShortList(flag_index, (short*)&kong_flags, sizeof(kong_flags) >> 1);
+                int is_special_flag = inShortList(flag_index, &flags_produce_overlay, sizeof(flags_produce_overlay) >> 1);
+                if ((is_shopkeeper) || (is_hint) || (is_kong) || (is_special_flag)) {
+                    spawn_overlay = 1;
+                    item_type = 5;
+                    item_index = flag_index;
+                }
                 if (flag_index == FLAG_TBARREL_VINE) {
                     refreshPads(ITEMREFRESH_VINE);
-                }
-            } else if ((flag_index == FLAG_ABILITY_CAMERA) || (flag_index == FLAG_ABILITY_SHOCKWAVE)) {
-                if (flag_index == FLAG_ABILITY_CAMERA) {
+                } else if (flag_index == FLAG_ABILITY_CAMERA) {
                     if (CollectableBase.Film < 10) {
                         CollectableBase.Film = 10;
                     }
                 } else if (flag_index == FLAG_ABILITY_SHOCKWAVE) {
                     if (CollectableBase.Crystals < (10*150)) {
                         CollectableBase.Crystals = 10*150;
-                    }
-                }
-                spawn_overlay = 1;
-                item_type = 5;
-                item_index = flag_index;
-            } else if ((isFlagInRange(flag_index, FLAG_ITEM_CRANKY, 4)) || (isFlagInRange(flag_index, FLAG_WRINKLYVIEWED, 35) && Rando.hints_are_items == 1)) {
-                spawn_overlay = 1;
-                item_type = 5;
-                item_index = flag_index;
-            } else {
-                for (int i = 0; i < 5; i++) {
-                    if (flag_index == kong_flags[i]) {
-                        spawn_overlay = 1;
-                        item_type = 5;
-                        item_index = flag_index;
                     }
                 }
             }

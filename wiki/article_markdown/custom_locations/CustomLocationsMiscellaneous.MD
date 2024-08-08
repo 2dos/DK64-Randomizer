@@ -65,7 +65,7 @@
 | Angry Aztec | Behind Tiny Temple |  | `` | 
 | Angry Aztec | Next to Tiny Temple - left |  | `` | 
 | Angry Aztec | Next to Tiny Temple - right |  | `` | 
-| Angry Aztec | On Tiny Temple |  | `((l.jetpack and l.diddy) or l.CanMoonkick()) and l.climbing, group=1` | 
+| Angry Aztec | On Tiny Temple |  | `((l.jetpack and l.diddy) or l.CanMoonkick()) and l.climbing` | 
 | Angry Aztec | Near Oasis Shop |  | `` | 
 | Angry Aztec | Behind Llama Cage |  | `` | 
 | Angry Aztec | Near Hunky Chunky Barrel |  | `` | 
