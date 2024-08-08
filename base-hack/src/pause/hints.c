@@ -228,8 +228,8 @@ Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
     int string_copy_ref = (int)string_copy;
     wipeMemory(string_copy, STRING_MAX_SIZE);
     dk_memcpy(string_copy, str, string_length);
-    string_copy[254] = 0;
-    string_copy[255] = 0;
+    string_copy[STRING_MAX_SIZE - 2] = 0;
+    string_copy[STRING_MAX_SIZE - 1] = 0;
     int header = 0;
     int letter_count = 0;
     int last_safe = 0;

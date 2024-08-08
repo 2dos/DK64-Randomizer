@@ -127,7 +127,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
             number_of_portals_in_level = random.choice([3, 4, 5])
             allow_multiple_portals_per_group = False
             # Make sure selected locations will be suitable to be a T&S portal
-            available_portals = [door for door in available_doors if DoorType.boss in door_locations[level][door].door_type and door_locations[level][door].default_placed != DoorType.dk_portal]
+            available_portals = [door for door in available_doors if DoorType.boss in door_locations[level][door].door_type]
             if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_tns_portals"] != -1:
                 level_to_string = str(level.value)
                 if level_to_string in spoiler.settings.plandomizer_dict["plando_tns_portals"].keys():
@@ -161,10 +161,9 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                     shuffled_door_data[level].append((selected_door_index, "tns"))
         if shuffle_wrinkly:
             # Place one hint door per kong
-            available_wrinkly_doors = [door for door in available_doors if door_locations[level][door].default_placed != DoorType.dk_portal]
             for kong in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
                 assignee = Kongs(kong % 5)
-                if len(available_wrinkly_doors) > 0:  # Should only fail if we don't have enough door locations
+                if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
                     # Give plandomizer an opportunity to get the final say
                     retry = True
                     location_var = str(GetDoorLocationForKongAndLevel(kong, level).value)
@@ -177,14 +176,14 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                             selected_door_index = [x for x in plando_indexes if door_locations[level][x].name == spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]][0]
                             retry = False
                         else:
-                            selected_door_index = available_wrinkly_doors.pop()
+                            selected_door_index = available_doors.pop()
                     else:
-                        selected_door_index = available_wrinkly_doors.pop(0)  # Popping from the top of the list makes it possible to append the selected door back into the list, if it's a bad pick
+                        selected_door_index = available_doors.pop(0)  # Popping from the top of the list makes it possible to append the selected door back into the list, if it's a bad pick
                     # Make sure that the kong is eligible to be assigned to the selected door, and that the door location is suitable to be a hint door
                     while (assignee not in door_locations[level][selected_door_index].kongs) or (DoorType.wrinkly not in door_locations[level][selected_door_index].door_type):
                         if retry:
-                            available_wrinkly_doors.append(selected_door_index)
-                            selected_door_index = available_wrinkly_doors.pop(0)
+                            available_doors.append(selected_door_index)
+                            selected_door_index = available_doors.pop(0)
                         else:
                             name = spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]
                             raise Exceptions.PlandoIncompatibleException(f"Bad door location: {name}.")
@@ -344,38 +343,38 @@ def SetProgressiveHintDoorLogic(spoiler):
             required_gb_count = spoiler.settings.progressive_hint_text
         hint_costs.append(required_gb_count)
     # I probably hate this more than you do but lambda functions in python REALLY like to mutate apparently
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesDonkey_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[0]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesDiddy_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[1]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesLanky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[2]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesTiny_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[3]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesChunky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[4]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecDonkey_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[5]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecDiddy_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[6]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecLanky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[7]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecTiny_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[8]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecChunky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[9]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryDonkey_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[10]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryDiddy_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[11]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryLanky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[12]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryTiny_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[13]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryChunky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[14]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonDonkey_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[15]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonDiddy_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[16]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonLanky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[17]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonTiny_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[18]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonChunky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[19]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestDonkey_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[20]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestDiddy_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[21]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestLanky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[22]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestTiny_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[23]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestChunky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[24]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesDonkey_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[25]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesDiddy_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[26]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesLanky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[27]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesTiny_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[28]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesChunky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[29]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleDonkey_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[30]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleDiddy_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[31]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleLanky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[32]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleTiny_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[33]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleChunky_ProgressiveHint, lambda l: l.GoldenBananas >= hint_costs[34]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_01, lambda l: l.GoldenBananas >= hint_costs[0]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_02, lambda l: l.GoldenBananas >= hint_costs[1]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_03, lambda l: l.GoldenBananas >= hint_costs[2]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_04, lambda l: l.GoldenBananas >= hint_costs[3]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_05, lambda l: l.GoldenBananas >= hint_costs[4]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_06, lambda l: l.GoldenBananas >= hint_costs[5]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_07, lambda l: l.GoldenBananas >= hint_costs[6]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_08, lambda l: l.GoldenBananas >= hint_costs[7]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_09, lambda l: l.GoldenBananas >= hint_costs[8]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_10, lambda l: l.GoldenBananas >= hint_costs[9]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_11, lambda l: l.GoldenBananas >= hint_costs[10]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_12, lambda l: l.GoldenBananas >= hint_costs[11]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_13, lambda l: l.GoldenBananas >= hint_costs[12]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_14, lambda l: l.GoldenBananas >= hint_costs[13]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_15, lambda l: l.GoldenBananas >= hint_costs[14]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_16, lambda l: l.GoldenBananas >= hint_costs[15]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_17, lambda l: l.GoldenBananas >= hint_costs[16]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_18, lambda l: l.GoldenBananas >= hint_costs[17]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_19, lambda l: l.GoldenBananas >= hint_costs[18]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_20, lambda l: l.GoldenBananas >= hint_costs[19]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_21, lambda l: l.GoldenBananas >= hint_costs[20]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_22, lambda l: l.GoldenBananas >= hint_costs[21]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_23, lambda l: l.GoldenBananas >= hint_costs[22]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_24, lambda l: l.GoldenBananas >= hint_costs[23]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_25, lambda l: l.GoldenBananas >= hint_costs[24]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_26, lambda l: l.GoldenBananas >= hint_costs[25]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_27, lambda l: l.GoldenBananas >= hint_costs[26]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_28, lambda l: l.GoldenBananas >= hint_costs[27]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_29, lambda l: l.GoldenBananas >= hint_costs[28]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_30, lambda l: l.GoldenBananas >= hint_costs[29]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_31, lambda l: l.GoldenBananas >= hint_costs[30]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_32, lambda l: l.GoldenBananas >= hint_costs[31]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_33, lambda l: l.GoldenBananas >= hint_costs[32]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_34, lambda l: l.GoldenBananas >= hint_costs[33]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_35, lambda l: l.GoldenBananas >= hint_costs[34]))
