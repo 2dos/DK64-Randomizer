@@ -323,9 +323,7 @@ def ClearHintDoorLogic(spoiler):
 
 def SetProgressiveHintDoorLogic(spoiler):
     """Set up hint door location logic for progressive hints to unlock them with GB amounts."""
-    dont_clear_hints = Types.Hint in spoiler.settings.shuffled_location_types and not (
-        spoiler.settings.vanilla_door_rando or spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando
-    )
+    dont_clear_hints = Types.Hint in spoiler.settings.shuffled_location_types and not (spoiler.settings.vanilla_door_rando or spoiler.settings.wrinkly_location_rando)
     # Clear out old hint logic, including any custom logic that may have been placed. Don't need any of it.
     if not dont_clear_hints:
         ClearHintDoorLogic(spoiler)

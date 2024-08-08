@@ -1427,6 +1427,44 @@ PreGivenLocations = {
     Locations.PreGiven_Location35,
 }
 
+ProgressiveHintLocations = {
+    Locations.ProgressiveHint_01,
+    Locations.ProgressiveHint_02,
+    Locations.ProgressiveHint_03,
+    Locations.ProgressiveHint_04,
+    Locations.ProgressiveHint_05,
+    Locations.ProgressiveHint_06,
+    Locations.ProgressiveHint_07,
+    Locations.ProgressiveHint_08,
+    Locations.ProgressiveHint_09,
+    Locations.ProgressiveHint_10,
+    Locations.ProgressiveHint_11,
+    Locations.ProgressiveHint_12,
+    Locations.ProgressiveHint_13,
+    Locations.ProgressiveHint_14,
+    Locations.ProgressiveHint_15,
+    Locations.ProgressiveHint_16,
+    Locations.ProgressiveHint_17,
+    Locations.ProgressiveHint_18,
+    Locations.ProgressiveHint_19,
+    Locations.ProgressiveHint_20,
+    Locations.ProgressiveHint_21,
+    Locations.ProgressiveHint_22,
+    Locations.ProgressiveHint_23,
+    Locations.ProgressiveHint_24,
+    Locations.ProgressiveHint_25,
+    Locations.ProgressiveHint_26,
+    Locations.ProgressiveHint_27,
+    Locations.ProgressiveHint_28,
+    Locations.ProgressiveHint_29,
+    Locations.ProgressiveHint_30,
+    Locations.ProgressiveHint_31,
+    Locations.ProgressiveHint_32,
+    Locations.ProgressiveHint_33,
+    Locations.ProgressiveHint_34,
+    Locations.ProgressiveHint_35,
+}
+
 # Dictionary to speed up lookups of related shop locations
 ShopLocationReference = {}
 ShopLocationReference[Levels.JungleJapes] = {}
