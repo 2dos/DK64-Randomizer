@@ -1527,6 +1527,9 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         for loc_id in spoiler.LocationList.keys()
         if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type not in (Types.Constant, Types.Enemies) and spoiler.LocationList[loc_id].item is None
     ]
+    # Make sure hints don't get placed, if progressive hints are enabled
+    if spoiler.settings.enable_progressive_hints:
+        placed_types.append(Types.Hint)
     # Rig the valid_locations for all relevant items to only be able to place things in Helm
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
         # Filter the valid locations down to only Helm locations
@@ -1580,6 +1583,9 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         for loc_id in spoiler.LocationList.keys()
         if spoiler.LocationList[loc_id].level != Levels.HideoutHelm and spoiler.LocationList[loc_id].type == Types.Key and spoiler.LocationList[loc_id].item is None
     ]
+    # Make sure hints don't get placed, if progressive hints are enabled
+    if spoiler.settings.enable_progressive_hints:
+        placed_types.append(Types.Hint)
     # Rig the valid_locations for all relevant items to only be able to place things on bosses
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
         # Any item eligible to be on a boss can be on any boss
@@ -1727,14 +1733,14 @@ def Fill(spoiler: Spoiler) -> None:
         or Types.Fairy in spoiler.settings.shuffled_location_types
         or Types.Key in spoiler.settings.shuffled_location_types
     ):
-        preplaced_items.extend(FillHelmLocations(spoiler, placed_types, preplaced_items))
+        preplaced_items.extend(FillHelmLocations(spoiler, placed_types.copy(), preplaced_items))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
 
     # If keys are shuffled in the pool we want to ensure an item is on every boss
     # This is to support broader settings that rely on boss kills and to enable reads on the boss fill algorithm
     if Types.Key in spoiler.settings.shuffled_location_types:
-        preplaced_items.extend(FillBossLocations(spoiler, placed_types, preplaced_items))
+        preplaced_items.extend(FillBossLocations(spoiler, placed_types.copy(), preplaced_items))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things on Bosses")
 
@@ -1856,7 +1862,7 @@ def Fill(spoiler: Spoiler) -> None:
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Place Hints
-    if Types.Hint in spoiler.settings.shuffled_location_types:
+    if Types.Hint in spoiler.settings.shuffled_location_types and not spoiler.settings.enable_progressive_hints:
         placed_types.append(Types.Hint)
         spoiler.Reset()
         hintItemsToBePlaced = ItemPool.HintItems()
@@ -3051,6 +3057,8 @@ class ItemReference:
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     resetCustomLocations()
+    if spoiler.settings.enable_progressive_hints:
+        SetProgressiveHintDoorLogic(spoiler)
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.vanilla_door_rando:
         ShuffleVanillaDoors(spoiler)
@@ -3058,8 +3066,6 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
             ShuffleDoors(spoiler, True)
     elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando:
         ShuffleDoors(spoiler, False)
-    if spoiler.settings.enable_progressive_hints:
-        SetProgressiveHintDoorLogic(spoiler)
     # Handle Crown Placement
     if spoiler.settings.crown_placement_rando:
         crown_replacements = {}

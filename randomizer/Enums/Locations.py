@@ -641,7 +641,7 @@ class Locations(IntEnum):
     RainbowCoin_Location15 = auto()  # ID: 600
 
     # Melon Crate Locations
-    MelonCrate_Location00 = auto()
+    MelonCrate_Location00 = auto()  # ID: 601
     MelonCrate_Location01 = auto()
     MelonCrate_Location02 = auto()
     MelonCrate_Location03 = auto()
@@ -653,13 +653,13 @@ class Locations(IntEnum):
     MelonCrate_Location09 = auto()
     MelonCrate_Location10 = auto()
     MelonCrate_Location11 = auto()
-    MelonCrate_Location12 = auto()
+    MelonCrate_Location12 = auto()  # ID: 613
 
     # Shop Owner Locations
-    ShopOwner_Location00 = auto()
+    ShopOwner_Location00 = auto()  # ID: 614
     ShopOwner_Location01 = auto()
     ShopOwner_Location02 = auto()
-    ShopOwner_Location03 = auto()
+    ShopOwner_Location03 = auto()  # ID: 617
 
     # Enemies
     # Japes
@@ -1217,3 +1217,40 @@ class Locations(IntEnum):
     IslesMainEnemy_PineappleCage1 = auto()  # Zinger (0x5), 10
     IslesMainEnemy_LowerFactoryPath0 = auto()  # Zinger (0x1C), 11
     IslesMainEnemy_LowerFactoryPath1 = auto()  # Zinger (0x1C), 12
+
+    # Progressive Hint locations must remain grouped together in this specific order for progressive hint location logic
+    ProgressiveHint_01 = auto()  # ID: 1045
+    ProgressiveHint_02 = auto()
+    ProgressiveHint_03 = auto()
+    ProgressiveHint_04 = auto()
+    ProgressiveHint_05 = auto()
+    ProgressiveHint_06 = auto()
+    ProgressiveHint_07 = auto()
+    ProgressiveHint_08 = auto()
+    ProgressiveHint_09 = auto()
+    ProgressiveHint_10 = auto()
+    ProgressiveHint_11 = auto()
+    ProgressiveHint_12 = auto()
+    ProgressiveHint_13 = auto()
+    ProgressiveHint_14 = auto()
+    ProgressiveHint_15 = auto()
+    ProgressiveHint_16 = auto()
+    ProgressiveHint_17 = auto()
+    ProgressiveHint_18 = auto()
+    ProgressiveHint_19 = auto()
+    ProgressiveHint_20 = auto()
+    ProgressiveHint_21 = auto()
+    ProgressiveHint_22 = auto()
+    ProgressiveHint_23 = auto()
+    ProgressiveHint_24 = auto()
+    ProgressiveHint_25 = auto()
+    ProgressiveHint_26 = auto()
+    ProgressiveHint_27 = auto()
+    ProgressiveHint_28 = auto()
+    ProgressiveHint_29 = auto()
+    ProgressiveHint_30 = auto()
+    ProgressiveHint_31 = auto()
+    ProgressiveHint_32 = auto()
+    ProgressiveHint_33 = auto()
+    ProgressiveHint_34 = auto()
+    ProgressiveHint_35 = auto()  # ID: 1079

@@ -312,7 +312,12 @@ def patching_response(spoiler):
     ROM_COPY.write(int(Types.Enemies in spoiler.settings.shuffled_location_types))
 
     ROM_COPY.seek(sav + 0x0C2)
-    ROM_COPY.write(int(Types.Hint in spoiler.settings.shuffled_location_types))
+    hints_in_pool_handler = 0
+    if Types.Hint in spoiler.settings.shuffled_location_types:
+        hints_in_pool_handler = 1
+        if spoiler.settings.enable_progressive_hints:
+            hints_in_pool_handler = 2
+    ROM_COPY.write(int(hints_in_pool_handler))
 
     # Progressive Hints
     ROM_COPY.seek(sav + 0x115)

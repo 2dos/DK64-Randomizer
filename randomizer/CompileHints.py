@@ -1353,7 +1353,13 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.related_location = loc
             hint_location.hint_type = HintType.Multipath
             UpdateHint(hint_location, message)
-            if len(message) > 123:
+            measure_message_size = message
+            measure_message_size_nospace = message
+            for character in ["\x04", "\x05", "\x06", "\x07", "\x08", "\x09", "\x0a", "\x0b", "\x0c", "\x0d"]:
+                if character in measure_message_size:
+                    measure_message_size = measure_message_size.replace(character, "")
+            measure_message_size_nospace = measure_message_size_nospace.replace(" ", "")
+            if len(message) > 255 or len(measure_message_size) > 150 or len(measure_message_size_nospace) > 125:
                 # In an attempt to avoid the dreaded '...' in the pause menu, remove more of the fluff for short_hint
                 hint_location.short_hint = f"{hinted_location_text}: Path to {multipath_dict_hints[loc]}"
 

@@ -488,6 +488,8 @@ class Spoiler:
             # No hints if hint doors are not in the pool
             if location.type == Types.Hint and Types.Hint not in self.settings.shuffled_location_types:
                 continue
+            if location.type == Types.ProgressiveHint:
+                continue
             if location_id in PreGivenLocations:
                 if self.settings.fast_start_beginning_of_game or location_id != Locations.IslesFirstMove:
                     self.pregiven_items.append(location.item)

@@ -4,6 +4,7 @@ import js
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
+from randomizer.Enums.Types import Types
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID, TableNames
@@ -365,7 +366,7 @@ def place_door_locations(spoiler):
                             spoiler.settings.wrinkly_location_rando
                             or IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles)
                         ):
-                            if not spoiler.settings.enable_progressive_hints:
+                            if (not spoiler.settings.enable_progressive_hints) or Types.Hint in spoiler.settings.shuffled_location_types:
                                 kong = data[2]
                                 item_data = []
                                 for coord_index in range(3):
