@@ -13,7 +13,7 @@ from typing import BinaryIO
 
 
 class KRoolCSMap:
-    """Information to store regarding a K Rool map that's being ported"""
+    """Information to store regarding a K Rool map that's being ported."""
 
     def __init__(self, map_index: Maps, folder: str, fence_start: int, spawner_start: int, kr_actual_id: int, kong_cs_id: int, cs_model: int):
         """Initialize with given parameters."""
@@ -81,7 +81,7 @@ used_subcommands = []
 
 
 def updateCutsceneScripts(pre: str = ""):
-    """Updates the cutscene scripts to shift the spawner IDs appropriately."""
+    """Update the cutscene scripts to shift the spawner IDs appropriately."""
     for m in MAP_DATA:
         m_path = f"{pre}assets/cutscene_scripts/{m.folder}"
         if os.path.exists(m_path):
