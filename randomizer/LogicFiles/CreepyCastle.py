@@ -243,7 +243,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleCryptToLower),
-        TransitionFront(Regions.CastleMinecarts, lambda l: ((l.coconut and l.grab and l.isdonkey) or l.generalclips or l.phasewalk), Transitions.CastleCryptToCarts),
+        TransitionFront(Regions.CastleMinecarts, lambda l: (((l.coconut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.grab and l.isdonkey) or l.generalclips or l.phasewalk), Transitions.CastleCryptToCarts),
     ]),
 
     Regions.CastleMinecarts: Region("Castle Minecarts", "Castle Underground", Levels.CreepyCastle, False, None, [

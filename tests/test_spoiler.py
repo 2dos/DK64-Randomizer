@@ -43,7 +43,7 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined from the preset_files.json file
-        # self.settings_string = "bKEHCRorPE1ed6soQOCokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgeEQyGQlS2Nc+ER+I0eu0uXxC205Yk04IUDR6QJE0Z4q+ApBbqev2JIBk0UJooZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKRCioZyJTLmku0W8BOEWkXBT9FRFgETEUAV61xyN2q/32RQOYsRQBms2URJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LhU6YQkX0CckGGEqpzMYwcWhaVywK0OWw0JxYKjATBgRlMcU8ikyI1KAKoBLgIZOEIQEhQWG0pEVh4gIkZYJigqSFouMDJKXDY4OkxePkBCTlA"
+        # self.settings_string = "bKsrsQgjDgq/cthGKJCUPR0hxgEO65lrEIL18/gGzx8MJzu6leyszOKbOrYvhTgfVA0IhkQlS2Nc+A/EaPS5fELbY6dGJ3qacEKCo9ICI18BSC3U9vhvwgkgGoZRNUKsVgrRXAZBdZYKAOgBBgB1AQOAOwDCAB3AgSAPAFCgB5AwWAPQHDAANAHsAVG3ABknqRCioZyVJSlZbMlySYRaRcFP0VEWARMRQCXrXHI3ar/fZFA5DuZi15EMAZrNmVjiSLAAmMAAmNAAeOAAePAAW1AAeQAAWRAAOSAAOTAAOUAAO2AAtTlyhyXCp1AoNKqdcGZaA4tC0rlheCtDigthoyFAWGAmDAjGhTHFPIpMiMhAFKAXQA3gCqAS4CGTgA"
         settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 

@@ -10,8 +10,8 @@
  */
 #include "../../include/common.h"
 
-#define STRING_MAX_SIZE 128
-#define ELLIPSIS_CUTOFF 123
+#define STRING_MAX_SIZE 256
+#define ELLIPSIS_CUTOFF 125
 #define GAME_HINT_COUNT 35
 #define HINT_SOLVED_OPACITY 0x80
 
@@ -222,21 +222,16 @@ Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
     int curr_y = y;
     int string_length = cstring_strlen(str);
     int trigger_ellipsis = 0;
-    if ((unsigned int)(string_length) > ELLIPSIS_CUTOFF) {
-        string_length = ELLIPSIS_CUTOFF;
-        trigger_ellipsis = 1;
+    if ((unsigned int)(string_length) > STRING_MAX_SIZE) {
+        string_length = STRING_MAX_SIZE;
     }
     int string_copy_ref = (int)string_copy;
     wipeMemory(string_copy, STRING_MAX_SIZE);
     dk_memcpy(string_copy, str, string_length);
-    if (trigger_ellipsis) {
-        string_copy[ELLIPSIS_CUTOFF] = 0x2E;
-        string_copy[ELLIPSIS_CUTOFF + 1] = 0x2E;
-        string_copy[ELLIPSIS_CUTOFF + 2] = 0x2E;
-    }
-    string_copy[126] = 0;
-    string_copy[127] = 0;
+    string_copy[STRING_MAX_SIZE - 2] = 0;
+    string_copy[STRING_MAX_SIZE - 1] = 0;
     int header = 0;
+    int letter_count = 0;
     int last_safe = 0;
     int line_count = 0;
     int color_index = 0;
@@ -276,6 +271,21 @@ Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
             int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
             int size = end - (string_copy_ref + header + 1);
             dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
+        } else {
+            // Actual letter or punctuation
+            letter_count += 1;
+            if(letter_count >= ELLIPSIS_CUTOFF){
+                *(char*)(referenced_character) = 0;
+                if(header > 2){
+                    // It should be impossible to hit 125 characters without being more than 2 characters into the third line
+                    // Insert ellipsis 
+                    *(char*)(string_copy_ref + header - 1) = 0x2E;
+                    *(char*)(string_copy_ref + header - 2) = 0x2E;
+                    *(char*)(string_copy_ref + header - 3) = 0x2E;
+                }
+                // It's also now a terminator, so:
+                return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
+            }
         }
         setCharacterColor(header, color_index, opacity);
         if (!is_control) {

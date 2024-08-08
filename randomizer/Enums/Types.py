@@ -39,6 +39,7 @@ class Types(IntEnum):
     Candy = auto()
     Snide = auto()
     IslesMedal = auto()
+    ProgressiveHint = auto()
 
 
 class BarrierItems(IntEnum):

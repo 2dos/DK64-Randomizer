@@ -37,6 +37,7 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     PreGivenLocations,
+    ProgressiveHintLocations,
     SharedShopLocations,
     ShopLocationReference,
     TinyMoveLocations,
@@ -1544,8 +1545,8 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_text == 0 or Types.Hint in self.shuffled_location_types:
-            # Disable progressive hints if hint text is 0 or if hints are in the item pool
+        if self.progressive_hint_text == 0:
+            # Disable progressive hints if hint text is 0
             self.enable_progressive_hints = False
 
     def isBadIceTrapLocation(self, location: Locations):
@@ -1609,6 +1610,9 @@ class Settings:
             spoiler.LocationList[Locations.IslesLankyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesTinyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesChunkyMedal].inaccessible = True
+
+        for location_id in ProgressiveHintLocations:
+            spoiler.LocationList[location_id].inaccessible = not self.enable_progressive_hints
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
