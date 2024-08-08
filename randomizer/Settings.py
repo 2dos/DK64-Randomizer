@@ -37,6 +37,7 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     PreGivenLocations,
+    ProgressiveHintLocations,
     SharedShopLocations,
     ShopLocationReference,
     TinyMoveLocations,
@@ -1606,6 +1607,9 @@ class Settings:
             spoiler.LocationList[Locations.IslesLankyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesTinyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesChunkyMedal].inaccessible = True
+
+        for location_id in ProgressiveHintLocations:
+            spoiler.LocationList[location_id].inaccessible = not self.enable_progressive_hints
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
