@@ -2140,7 +2140,7 @@ BalloonList = [
         name="Bottom of giant mushroom (Lanky)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerMid,
+        region=Regions.MushroomLower,
         vanilla=True,
         points=[[366, 150, 524], [353, 146, 378], [498, 144, 347], [533, 150, 487]],
     ),
