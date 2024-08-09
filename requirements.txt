@@ -1,5 +1,5 @@
 flask==3.0.0
-flask-cors==4.0.0
+flask-cors==4.0.1
 flask-executor==1.0.0
 pyxdelta==0.1.2
 pillow==10.3.0
