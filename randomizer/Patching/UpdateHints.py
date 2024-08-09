@@ -147,6 +147,7 @@ def PushHelpfulHints(spoiler, ROM_COPY: LocalROM):
         ROM_COPY.seek(0x1FFE000 + (2 * index))
         ROM_COPY.writeMultipleBytes(flag, 2)
 
+
 def PushHintTiedRegions(spoiler, ROM_COPY: LocalROM):
     """Push the flags to ROM which control the dim_solved_hints setting."""
     for index, flag in enumerate(spoiler.tied_hint_regions):

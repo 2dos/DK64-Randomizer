@@ -39,7 +39,7 @@ with open(C_FILE, "w") as fh:
         "\t\tBallaam",
         "*/",
         "",
-        "#include \"../../include/common.h\"",
+        '#include "../../include/common.h"',
         "",
     ]
     for w in warning:
@@ -47,11 +47,11 @@ with open(C_FILE, "w") as fh:
     fh.write("char* hint_region_names[] = {\n")
     max_length_text = ""
     for region in hint_region_list:
-        fh.write(f"\t\"{region.region_name.upper()}\",\n")
+        fh.write(f'\t"{region.region_name.upper()}",\n')
         if len(region.region_name) > len(max_length_text):
             max_length_text = region.region_name
     fh.write("};\n\n")
     fh.write("char* unknown_hints[] = {\n")
     for _ in range(5):
-        fh.write(f"\t\"??? - {max_length_text.upper()}\",\n")
+        fh.write(f'\t"??? - {max_length_text.upper()}",\n')
     fh.write("};\n")

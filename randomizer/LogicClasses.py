@@ -79,7 +79,6 @@ class Collectible:
         self.locked = locked
 
 
-
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
@@ -155,11 +154,11 @@ class Region:
         elif self.level == Levels.HideoutHelm:
             return Regions.HideoutHelmEntry
         return Regions.GameStart
-    
+
     def getHintRegionName(self) -> str:
         """Convert hint region enum to the name."""
         return HINT_REGION_PAIRING.get(self.hint_name, "Unknown Region")
-    
+
     def isMedalRegion(self) -> bool:
         """Return whether the associated hint region is a medal reward region."""
         return self.hint_name in MEDAL_REWARD_REGIONS
@@ -167,7 +166,7 @@ class Region:
     def isCBRegion(self) -> bool:
         """Return whether the associated hint region requires CBs to access (Bosses and medal rewards)."""
         return self.hint_name in MEDAL_REWARD_REGIONS or self.hint_name == HintRegion.Bosses
-    
+
     def isShopRegion(self) -> bool:
         """Return whether the associated hint region is a shop region."""
         return self.hint_name in SHOP_REGIONS

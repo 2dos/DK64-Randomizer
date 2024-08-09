@@ -80,6 +80,7 @@ class HintRegion(IntEnum):
     # Debuggging
     Error = auto()
 
+
 HINT_REGION_PAIRING = {
     HintRegion.NoRegion: "Null Region",
     # Shops

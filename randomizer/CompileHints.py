@@ -156,6 +156,7 @@ class LevelSpoiler:
         """Convert this object to JSON for the purposes of the spoiler log."""
         return json.dumps(self, default=lambda o: o.__dict__)
 
+
 hint_list = [
     Hint(hint="Did you know - Donkey Kong officially features in Donkey Kong 64.", important=False, base=True),
     Hint(hint="Fungi Forest was originally intended to be in the other N64 Rareware title, Banjo Kazooie.", important=False, base=True),
@@ -511,6 +512,7 @@ item_hint_distribution = {
 hint_reroll_cap = 2  # How many times are you willing to reroll a hinted location?
 hint_reroll_chance = 1.0  # What % of the time (from 0-1) do you reroll in conditions that could trigger a reroll?
 globally_hinted_location_ids = []
+
 
 def compileHints(spoiler: Spoiler) -> bool:
     """Create a hint distribution, generate buff hints, and place them in locations."""
