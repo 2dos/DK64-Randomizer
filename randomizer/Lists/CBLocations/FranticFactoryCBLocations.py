@@ -1022,7 +1022,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="R&D upper walkway (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
         locations=[
             [1, 1.0, 3983.73828125, 1336.0, 714.7798461914062],

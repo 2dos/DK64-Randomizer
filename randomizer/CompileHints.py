@@ -2046,6 +2046,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             Regions.ChunkyRoomPlatform,
             Regions.PowerHut,
             Regions.BeyondHatch,
+            Regions.FactoryArcadeTunnel,
             Regions.LowerCore,
             Regions.InsideCore,
         ]
