@@ -106,7 +106,7 @@ BananaCoinGroupList = {
             name="Banana hoard",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.TrainingGrounds,
-            logic=lambda l: l.can_use_vines or l.CanMoonkick(),
+            logic=lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing,
             locations=[
                 [1.0, 2547, 191, 1036],
                 [1.0, 2497, 191, 986],
@@ -5751,7 +5751,7 @@ BananaCoinGroupList = {
             name="On Well",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FungiForestStart,
-            logic=lambda l: l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
+            logic=lambda l: ((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy),
             locations=[
                 [1.0, 2146.2275390625, 295.5009460449219, 3232.423583984375],
                 [1.0, 2133.60595703125, 298.7270812988281, 3225.193115234375],

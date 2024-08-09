@@ -2458,7 +2458,7 @@ CustomLocations = {
             max_size=64,
             vanilla_patch=True,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: (l.can_use_vines or l.CanMoonkick() or l.phasewalk),
+            logic=lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing,
             group=1,
         ),
         CustomLocation(
@@ -2814,7 +2814,7 @@ CustomLocations = {
             z=920,
             max_size=56,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: l.can_use_vines or l.CanMoonkick() or l.phasewalk,
+            logic=lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing,
             group=1,
         ),
         CustomLocation(

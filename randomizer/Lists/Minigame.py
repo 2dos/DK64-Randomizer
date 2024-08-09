@@ -162,7 +162,7 @@ MinigameRequirements = {
         group="Speedy Swing Sortie",
         map_id=Maps.SpeedySwingSortieNormal,
         difficulty_lvl=1,
-        logic=lambda l: (l.can_use_vines and (l.twirl and l.istiny)) or (l.advanced_platforming and l.isdonkey and not l.isKrushaAdjacent(Kongs.donkey)),
+        logic=lambda l: (l.can_use_vines and (l.twirl and l.istiny)) or (l.advanced_platforming and l.isdonkey and l.climbing and not l.isKrushaAdjacent(Kongs.donkey)),
         kong_list=[Kongs.tiny],
     ),
     Minigames.SpeedySwingSortieHard: Minigame(
@@ -287,7 +287,7 @@ MinigameRequirements = {
         group="Training Minigames",
         map_id=Maps.VineBarrel,
         can_repeat=True,
-        logic=lambda l: l.can_use_vines or not l.settings.bonus_barrel_rando,
+        logic=lambda l: (l.can_use_vines and l.climbing) or not l.settings.bonus_barrel_rando,
     ),
     Minigames.DiveBarrel: Minigame(
         name="Dive Training",

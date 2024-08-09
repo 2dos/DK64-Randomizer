@@ -73,7 +73,7 @@ ColoredBananaGroupList = [
         name="Around the roof of minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
+        logic=lambda l: ((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy),
         locations=[
             [1, 1.0, 2092, 280, 3251],
             [1, 1.0, 2050, 280, 3192],
@@ -954,7 +954,16 @@ ColoredBananaGroupList = [
         locations=[[1, 1.0, 512, 4, 620], [1, 1.0, 512, 4, 565], [1, 1.0, 512, 4, 510], [1, 1.0, 512, 4, 455], [1, 1.0, 512, 4, 400]],
     ),
     ColoredBananaGroup(
-        group=87, map_id=Maps.ForestThornvineBarn, name="On boxes on upper level", konglist=[Kongs.donkey], region=Regions.ThornvineBarn, locations=[[5, 1.0, 207, 185, 100], [5, 1.0, 500, 185, 644]]
+        group=87,
+        map_id=Maps.ForestThornvineBarn,
+        name="On boxes on upper level",
+        konglist=[Kongs.donkey],
+        region=Regions.ThornvineBarn,
+        logic=lambda l: l.climbing,
+        locations=[
+            [5, 1.0, 207, 185, 100],
+            [5, 1.0, 500, 185, 644],
+        ],
     ),
     ColoredBananaGroup(
         group=88,
@@ -962,6 +971,7 @@ ColoredBananaGroupList = [
         name="On ladder",
         konglist=[Kongs.donkey],
         region=Regions.ThornvineBarn,
+        logic=lambda l: l.climbing,
         locations=[[1, 1.0, 180, 140, 514], [1, 1.0, 180, 110, 514], [1, 1.0, 180, 80, 514], [1, 1.0, 180, 50, 514], [1, 1.0, 180, 20, 514]],
     ),
     ColoredBananaGroup(

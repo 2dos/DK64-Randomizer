@@ -255,7 +255,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.can_use_vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
+            additional_logic=lambda l: ((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near giant boulder",
