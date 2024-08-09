@@ -30,7 +30,6 @@ LogicRegions = {
     ],
     Regions.JapesHill: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.climbing, None, 1),  # Tree by Funky's
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # On Funky's store
     ],
     Regions.JapesHillTop: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 6),  # Between Snide's and Diddy's cage
@@ -40,6 +39,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),  # Around mountain
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.climbing, None, 1),  # Treetop by Snide's
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Next to Snide's
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # On Funky's store
     ],
     Regions.JungleJapesMain: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # W3
