@@ -1717,6 +1717,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFE000)
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
+    # Hint Regions
+    fh.seek(0x1FFE080)
+    for x in range(35):
+        fh.write((0x0000).to_bytes(2, "big"))
 
     # Item Requirements
     # Helm Doors

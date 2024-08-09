@@ -547,6 +547,7 @@ class HintRegion:
 
 
 hint_region_list = [
+    HintRegion("???", "NullRegion"),
     # Shops
     HintRegion("Isles Shops", "ShopIsles"),
     HintRegion("Japes Shops", "ShopJapes"),
@@ -558,6 +559,7 @@ hint_region_list = [
     HintRegion("Castle Shops", "ShopCastle"),
     HintRegion("Jetpac Game", "Jetpac"),  # Shouldn't really be accessible
     # Medals
+    HintRegion("Isles Medal Rewards", "MedalsIsles"),  # Shouldn't be accessible
     HintRegion("Japes Medal Rewards", "MedalsJapes"),  # Shouldn't be accessible
     HintRegion("Aztec Medal Rewards", "MedalsAztec"),  # Shouldn't be accessible
     HintRegion("Factory Medal Rewards", "MedalsFactory"),  # Shouldn't be accessible
@@ -566,6 +568,8 @@ hint_region_list = [
     HintRegion("Caves Medal Rewards", "MedalsCaves"),  # Shouldn't be accessible
     HintRegion("Castle Medal Rewards", "MedalsCastle"),  # Shouldn't be accessible
     # Isles
+    HintRegion("Game Start", "GameStart"),
+    HintRegion("Credits", "Credits"),
     HintRegion("Main Isle", "IslesMain"),
     HintRegion("Outer Isles", "IslesOuter"),
     HintRegion("Krem Isle", "IslesKrem"),
@@ -614,6 +618,7 @@ hint_region_list = [
     # Other
     HintRegion("Hideout Helm", "OtherHelm"),
     HintRegion("Troff n Scoff", "OtherTnS"),
+    HintRegion("This should not be hinted", "Error"),
 ]
 
 

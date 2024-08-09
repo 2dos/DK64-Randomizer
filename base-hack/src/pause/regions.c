@@ -480,7 +480,7 @@ void getHintRegionText(void) {
     if (index < 0) {
         dk_memcpy(hint_region_text, "UNKNOWN", 8);
     } else {
-        char* text = getTextPointer(43, index, 0);
+        char* text = hint_region_names[index];
         wipeMemory(hint_region_text, 0x20);
         dk_memcpy(hint_region_text, text, 0x20);
     }

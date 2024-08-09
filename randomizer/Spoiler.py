@@ -15,6 +15,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.HintRegion import HintRegion
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
@@ -131,6 +132,7 @@ class Spoiler:
         self.hint_list = {}
         self.short_hint_list = {}
         self.tied_hint_flags = {}
+        self.tied_hint_regions = [HintRegion.NoRegion] * 35
         self.settings.finalize_world_settings(self)
         self.settings.update_valid_locations(self)
         if not self.settings.is_valid_item_pool():

@@ -59,7 +59,7 @@ from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
+from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints, PushHintTiedRegions
 from randomizer.Patching.ASMPatcher import patchAssembly
 from randomizer.CompileHints import getHelmOrderHint
 
@@ -615,6 +615,8 @@ def patching_response(spoiler):
         PushHints(spoiler)
         if spoiler.settings.dim_solved_hints:
             PushHelpfulHints(spoiler, ROM_COPY)
+    if Types.Hint in spoiler.settings.shuffled_location_types and not spoiler.settings.enable_progressive_hints:
+        PushHintTiedRegions(spoiler, ROM_COPY)
 
     writeBootMessages()
     enableTriggerText(spoiler)

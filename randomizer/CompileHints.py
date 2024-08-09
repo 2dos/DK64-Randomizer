@@ -17,6 +17,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, HINT_REGION_PAIRING
 from randomizer.Enums.Settings import (
     HelmSetting,
     LogicType,
@@ -154,7 +155,6 @@ class LevelSpoiler:
     def toJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
         return json.dumps(self, default=lambda o: o.__dict__)
-
 
 hint_list = [
     Hint(hint="Did you know - Donkey Kong officially features in Donkey Kong 64.", important=False, base=True),
@@ -511,7 +511,6 @@ item_hint_distribution = {
 hint_reroll_cap = 2  # How many times are you willing to reroll a hinted location?
 hint_reroll_chance = 1.0  # What % of the time (from 0-1) do you reroll in conditions that could trigger a reroll?
 globally_hinted_location_ids = []
-
 
 def compileHints(spoiler: Spoiler) -> bool:
     """Create a hint distribution, generate buff hints, and place them in locations."""
@@ -1240,10 +1239,10 @@ def compileHints(spoiler: Spoiler) -> bool:
             if coin_flip == 1:
                 # Option A: hint the region the item is in
                 region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc_id)]
-                if region.hint_name != "Troff 'N' Scoff":
-                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                if region.hint_name != HintRegion.Bosses:
+                    hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
                 else:
-                    hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
+                    hinted_location_text = level_colors[Levels.DKIsles] + region.getHintRegionName() + level_colors[Levels.DKIsles]
                 message += f" Try looking in the {hinted_location_text}."
             else:
                 # Option B: hint the kong + level the item is in, using similar systems as other hints to instead hint kasplats/shops/specific types of items
@@ -1338,13 +1337,13 @@ def compileHints(spoiler: Spoiler) -> bool:
 
             globally_hinted_location_ids.append(loc)
             region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc)]
-            hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+            hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
             if loc in TrainingBarrelLocations or loc in PreGivenLocations:
                 # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                 hinted_item_name = ItemList[spoiler.LocationList[loc].item].name
                 message = f"\x0b{hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
                 hinted_location_text = f"\x0b{hinted_item_name}\x0b"
-            elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+            elif region.isCBRegion():
                 # Medal rewards and bosses are treated as "collecting colored bananas" for their region
                 hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                 message = f"Something about collecting {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
@@ -1429,7 +1428,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     globally_hinted_location_ids.append(path_location_id)
                     already_hinted_locations.append(path_location_id)
                     region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
-                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                    hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
                     # Attempt to find a door that will be accessible before the Key
                     hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[key_location_ids[key_id]])
                     if len(hint_options) > 0:
@@ -1441,7 +1440,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                         hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
                         message = f"\x0b{hinted_item_name}\x0b is on the path to \x04{key_item.name}\x04."
-                    elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+                    elif region.isCBRegion():
                         # Medal rewards and bosses are treated as "collecting colored bananas" for their region
                         hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                         message = f"Something about collecting {hinted_location_text} is on the path to \x04{key_item.name}\x04."
@@ -1508,13 +1507,13 @@ def compileHints(spoiler: Spoiler) -> bool:
                 already_chosen_krool_path_locations.append(path_location_id)
                 # Begin to build the hint - determine the region of the location
                 region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
-                hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
                 kong_color = kong_colors[hinted_kong]
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[hinted_item_id].name
                     message = f"\x0b{hinted_item_name}\x0b is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
-                elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+                elif region.isCBRegion():
                     # Medal rewards and bosses are treated as "collecting colored bananas" for their region
                     hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                     message = f"Something about collecting {hinted_location_text} is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
@@ -1545,7 +1544,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 globally_hinted_location_ids.append(path_location_id)
                 already_chosen_camera_path_locations.append(path_location_id)
                 region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, path_location_id)]
-                hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
                 # Attempt to find a door that will be accessible before the Camera
                 hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[camera_location_id])
                 if len(hint_options) > 0:
@@ -1557,7 +1556,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
                     message = f"\x0b{hinted_item_name}\x0b is on the path to \x07taking photos\x07."
-                elif region.hint_name == "Troff 'N' Scoff" or "Medal Rewards" in region.hint_name:
+                elif region.isCBRegion():
                     # Medal rewards and bosses are treated as "collecting colored bananas" for their region
                     hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
                     message = f"Something about collecting {hinted_location_text} is on the path to \x07taking photos\x07."
@@ -1898,10 +1897,10 @@ def compileHints(spoiler: Spoiler) -> bool:
                 foolish_location_score += len(
                     [loc for loc in region.locations if not spoiler.LocationList[loc.id].inaccessible and spoiler.LocationList[loc.id].type in spoiler.settings.shuffled_location_types]
                 )
-                if region.level == Levels.Shops and region.hint_name != "Jetpac Game":  # Jetpac isn't a "real" shop, it's in the Shops level for convenience
+                if region.level == Levels.Shops and region.hint_name != HintRegion.Jetpac:  # Jetpac isn't a "real" shop, it's in the Shops level for convenience
                     shops_in_region += 1
             # "Medal Rewards" regions are cb foolish hints, which are just generally more valuable to hint foolish (so long as medals are relevant)
-            if "Medal Rewards" in foolish_name and Types.Medal in spoiler.settings.shuffled_location_types:
+            if foolish_name in MEDAL_REWARD_REGIONS and Types.Medal in spoiler.settings.shuffled_location_types:
                 foolish_location_score += 3
             elif shops_in_region > 0:  # Shops are generally overvalued (4/6 locations per shop) with this method due to having mutually exclusive locations
                 foolish_location_score -= 1 * shops_in_region  # With smaller shops, this reduces the location count to 3 locations per shop
@@ -1929,10 +1928,10 @@ def compileHints(spoiler: Spoiler) -> bool:
                     region_level = spoiler.RegionList[region_id].level
                     level_color = level_colors[region_level]
                     break
-            if "Medal Rewards" in hinted_region_name:
+            if hinted_region_name in MEDAL_REWARD_REGIONS:
                 message = f"It would be \x05foolish\x05 to collect {level_color}{short_level_list[region_level]} Colored Bananas{level_color}."
             else:
-                message = f"It would be \x05foolish\x05 to explore the {level_color}{hinted_region_name}{level_color}."
+                message = f"It would be \x05foolish\x05 to explore the {level_color}{HINT_REGION_PAIRING.get(hinted_region_name, hinted_region_name.name)}{level_color}."
             hint_location.hint_type = HintType.FoolishRegion
             UpdateHint(hint_location, message)
 
@@ -2006,7 +2005,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             plural = ""
             if spoiler.region_hintable_count[region_name_to_hint] > 1:
                 plural = "s"
-            message = f"Scouring the {level_color}{region_name_to_hint}{level_color} will yield you \x0d{spoiler.region_hintable_count[region_name_to_hint]} potion{plural}\x0d."
+            message = f"Scouring the {level_color}{HINT_REGION_PAIRING.get(region_name_to_hint, region_name_to_hint.name)}{level_color} will yield you \x0d{spoiler.region_hintable_count[region_name_to_hint]} potion{plural}\x0d."
             hint_location.hint_type = HintType.RegionItemCount
             UpdateHint(hint_location, message)
 
@@ -2271,7 +2270,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 message = joke_hint_list.pop()
             else:
                 bean_region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, bean_location_id)]
-                hinted_location_text = bean_region.hint_name
+                hinted_location_text = bean_region.getHintRegionName()
                 message = f"The Way of the Bean concludes in the {hinted_location_text}."
                 hint_location.related_location = bean_location_id
         hint_location.hint_type = HintType.Joke

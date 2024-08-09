@@ -1028,12 +1028,12 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in MajorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
-        elif "Medal Rewards" in region.hint_name and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
+        elif region.isMedalRegion() and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
             bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
             if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
-        if "Shops" not in region.hint_name and region.hint_name not in neverHintableNames:
+        if region.isShopRegion() and region.hint_name not in neverHintableNames:
             # Count the number of region count hintable items in the region (again, ignore training moves)
             regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in regionCountHintableItems)
             if regionItemCount > 0:
