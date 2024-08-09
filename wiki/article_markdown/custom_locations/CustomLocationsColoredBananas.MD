@@ -64,7 +64,7 @@
 | Above Melon Crate behind mountain | 5 | `` | 
 | Above melon crate behind boulder | 5 | `` | 
 | Inside Free Diddy cage | 5 | `Events.JapesFreeKongOpenGates in l.Events` | 
-| Between starting vines (Donkey) | 5 | `l.can_use_vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))` | 
+| Between starting vines (Donkey) | 5 | `l.climbing and (l.can_use_vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | On top of slippery slope in BP cave (Lanky) | 5 | `l.handstand` | 
 | W3 bunches (Donkey) | 10 | `` | 
 | Starting area (Diddy) | 5 | `` | 
