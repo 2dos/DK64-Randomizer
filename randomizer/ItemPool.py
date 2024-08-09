@@ -386,7 +386,7 @@ def Instruments(settings):
 
 def TrainingBarrelAbilities():
     """Return all training barrel abilities."""
-    barrelAbilities = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
+    barrelAbilities = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels, Items.Climbing]
     return barrelAbilities
 
 

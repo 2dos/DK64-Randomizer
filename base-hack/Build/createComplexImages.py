@@ -256,7 +256,7 @@ tracker_im = Image.new(mode="RGBA", size=(254, 128))
 instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
 pellets = ("coconut", "peanut", "grape", "feather", "pineapple")
 extra_moves = ("film", "shockwave", "slam", "homing_crate", "sniper")
-training_moves = ("swim", "orange", "barrel", "vine")
+training_moves = ("swim", "orange", "barrel", "vine", "climb")
 kong_submoves = ("_move", "pad", "barrel")
 dim = 20
 gap = int(dim * 1.1)

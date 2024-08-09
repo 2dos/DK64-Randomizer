@@ -747,6 +747,7 @@ class Settings:
             and Items.Barrels in self.starting_move_list_selected
             and Items.Oranges in self.starting_move_list_selected
             and Items.Swim in self.starting_move_list_selected
+            and Items.Climbing in self.starting_move_list_selected
         ):
             self.training_barrels = TrainingBarrels.normal
             if Items.Vines in self.starting_move_list_selected:
@@ -757,6 +758,8 @@ class Settings:
                 self.starting_move_list_selected.remove(Items.Oranges)
             if Items.Swim in self.starting_move_list_selected:
                 self.starting_move_list_selected.remove(Items.Swim)
+            if Items.Climbing in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.Climbing)
         else:
             self.training_barrels = TrainingBarrels.shuffled
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)

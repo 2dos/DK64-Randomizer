@@ -191,7 +191,7 @@ void initActorDefs(void) {
     index = addActorDef(index, NEWACTOR_ICETRAPBUBBLE, 0xFD, 0x80689F80, 0x80689FEC, 0, 1); // Fake Item
     index = addActorDef(index, NEWACTOR_ICETRAPREVERSE, 0xFD, 0x80689F80, 0x80689FEC, 0, 1); // Fake Item
     index = addActorDef(index, NEWACTOR_ICETRAPSLOW, 0xFD, 0x80689F80, 0x80689FEC, 0, 1); // Fake Item
-    index = addActorDef(index, NEWACTOR_HINTITEM, 0xD2, 0x80689F80, 0x80689FEC, 0, 1); // Hint Item
+    index = addActorDef(index, NEWACTOR_HINTITEM, 0x11A, 0x80689F80, 0x80689FEC, 0, 1); // Hint Item
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);

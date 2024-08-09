@@ -968,7 +968,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if not inAnotherPath:
                 # Never pare out these moves - the assumptions might overlook their need to enter levels with
                 # This is a bit of a compromise, as you *might* see these moves WotH purely for coins/GBs but they won't be on paths
-                if location.item in (Items.Swim, Items.Vines):
+                if location.item in (Items.Swim, Items.Vines, Items.Climbing):
                     continue
                 # In Chaos B. Lockers, you may need certain items purely to pass B. Locker
                 if spoiler.settings.chaos_blockers:
@@ -1028,12 +1028,12 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in MajorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
-        elif "Medal Rewards" in region.hint_name and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
+        elif region.isMedalRegion() and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
             bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
             if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
-        if "Shops" not in region.hint_name and region.hint_name not in neverHintableNames:
+        if region.isShopRegion() and region.hint_name not in neverHintableNames:
             # Count the number of region count hintable items in the region (again, ignore training moves)
             regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in regionCountHintableItems)
             if regionItemCount > 0:
@@ -2002,7 +2002,8 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         # First place training moves that are not placed. These should be the first moves placed outside of starting moves. Placement order is in relative importance.
-        trainingMovesToPlace = [move for move in [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges] if move not in placedMoves]
+        training = [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges, Items.Climbing]
+        trainingMovesToPlace = [move for move in training if move not in placedMoves]
         assumedItems = [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves) if x not in trainingMovesToPlace]
         trainingMovesUnplaced = PlaceItems(spoiler, FillAlgorithm.assumed, trainingMovesToPlace, assumedItems, inOrder=True)
         if trainingMovesUnplaced > 0:

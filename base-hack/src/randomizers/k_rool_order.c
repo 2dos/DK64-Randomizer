@@ -65,6 +65,14 @@ void swap_ending_cutscene_model(void) {
 	*(short*)(0x80755764) = model;
 }
 
+static short maps_with_extended_end_cs[] = {
+	MAP_KROOLDK,
+	MAP_KROOLDIDDY,
+	MAP_KROOLLANKY,
+	MAP_KROOLTINY,
+	MAP_KROOLCHUNKY,
+};
+
 void completeBoss(void) {
 	// Spawn Key
 	for (int i = 0; i < 7; i++) {
@@ -91,10 +99,14 @@ void completeBoss(void) {
 		if (Rando.k_rool_order[i] == CurrentMap) {
 			if ((i == 4) || (Rando.k_rool_order[i + 1] == 0xFF)) {
 				// Ending phase
-				if (CurrentMap != MAP_KROOLCHUNKY) {
-					initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
-				} else {
+				if (inShortList(CurrentMap, &maps_with_extended_end_cs, sizeof(maps_with_extended_end_cs) >> 1)) {
 					playCutscene(CurrentActorPointer_0, 0x1A, 1);
+					renderingParamsData* render = Player->rendering_param_pointer;
+					render->scale_x = 0.0f;
+					render->scale_y = 0.0f;
+					render->scale_z = 0.0f;
+				} else {
+					initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
 				}
 			} else {
 				maps next_map = Rando.k_rool_order[i + 1];

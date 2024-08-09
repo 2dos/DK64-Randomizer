@@ -197,7 +197,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Next to Diddy Cage - right",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JapesHillTop,
             location=[896.0, 852.0, 2427.0, 90.75],
             group=5,
         ),
@@ -316,7 +316,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Next to Funky - right",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JapesHill,
             location=[1928.0, 520.0, 2283.4, 140.0],
             group=5,
         ),
@@ -1024,7 +1024,7 @@ door_locations = {
         DoorData(
             name="Frantic Factory: Arcade Room",
             map=Maps.FranticFactory,
-            logicregion=Regions.BeyondHatch,
+            logicregion=Regions.FactoryArcadeTunnel,
             location=[1778.702, 1106.667, 1220.515, 357.0],
             group=2,
             placed=DoorType.boss,
@@ -1066,13 +1066,13 @@ door_locations = {
         DoorData(
             name="Frantic Factory: Behind Chunky's Toy Box - big",
             map=Maps.FranticFactory,
-            logicregion=Regions.RandD,
+            logicregion=Regions.RandDUpper,
             location=[5016.0, 1336.0, 1780.0, 236.0],
             scale=2,
             kong_lst=[Kongs.chunky],
             group=4,
             moveless=False,
-            logic=lambda l: (l.ischunky and l.punch and l.triangle) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -1200,7 +1200,7 @@ door_locations = {
         DoorData(
             name="Frantic Factory: R&D Room - Next to Diddy's Pincode Room",
             map=Maps.FranticFactory,
-            logicregion=Regions.RandD,
+            logicregion=Regions.RandDUpper,
             location=[4046.0, 1336.0, 608.0, 340.0],
             group=4,
             moveless=False,
@@ -1244,7 +1244,7 @@ door_locations = {
         DoorData(
             name="Frantic Factory: Arcade Room - in a corner",
             map=Maps.FranticFactory,
-            logicregion=Regions.BeyondHatch,
+            logicregion=Regions.FactoryArcadeTunnel,
             location=[1652.5, 1106.0, 1253.75, 43.0],
             scale=0.8669,
             group=2,
@@ -1313,7 +1313,7 @@ door_locations = {
         DoorData(
             name="Frantic Factory: Pin Code Room - front-right",
             map=Maps.FranticFactory,
-            logicregion=Regions.RandD,
+            logicregion=Regions.RandDUpper,
             location=[4386.2, 1336.0, 771.0, 124.0],
             kong_lst=[Kongs.diddy],
             group=4,
@@ -2102,7 +2102,7 @@ door_locations = {
         DoorData(
             name="Fungi Forest: Inside the Mushroom - halfway along the Dead End",
             map=Maps.ForestGiantMushroom,
-            logicregion=Regions.MushroomLower,
+            logicregion=Regions.MushroomLowerMid,
             location=[229.0, 217.0, 880.2, 147.5],
             rx=-3,
             rz=-3,

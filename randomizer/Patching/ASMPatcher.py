@@ -2015,10 +2015,38 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
+
+    writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
+    vanilla_props_values = {
+        Maps.JapesBoss: 1,
+        Maps.AztecBoss: 1,
+        Maps.FactoryBoss: 1,
+        Maps.GalleonBoss: 1,
+        Maps.FungiBoss: 1,
+        Maps.CavesBoss: 1,
+        Maps.CastleBoss: 1,
+        Maps.KroolDonkeyPhase: 0x23,
+        Maps.KroolDiddyPhase: 0x23,
+        Maps.KroolLankyPhase: 0x22,
+        Maps.KroolTinyPhase: 0x23,
+        Maps.KroolShoe: 3,
+        Maps.KroolChunkyPhase: 0x23,
+    }
     for map_id in settings.krool_order:
         writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
         if map_id not in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]:
             writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, 3, offset_dict, 4)
+    # Got a bunch of stuff to fix with this
+    # for map_id in vanilla_props_values:
+    #     new_value = vanilla_props_values[map_id]
+    #     if (map_id in settings.krool_order) or (map_id == Maps.KroolShoe and Maps.KroolTinyPhase in settings.krool_order):
+    #         new_value |= 0x200  # Deathwarp
+    #         new_value |= 0x2  # Is K. Rool
+    #     else:
+    #         new_value &= 0xFFFFFDFF  # Deathwarp
+    #         new_value &= 0xFFFFFFFD  # Not K. Rool
+    #     writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, new_value, offset_dict, 4)
+    # writeValue(ROM_COPY, 0x8071288A, Overlay.Static, 0x200, offset_dict)
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)
 
     boss_complete_functions = [

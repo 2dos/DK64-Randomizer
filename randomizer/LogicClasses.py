@@ -9,6 +9,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.HintRegion import HintRegion, HINT_REGION_PAIRING, MEDAL_REWARD_REGIONS, SHOP_REGIONS
 from randomizer.Lists.EnemyTypes import enemy_location_list
 
 if TYPE_CHECKING:
@@ -84,7 +85,7 @@ class Region:
     def __init__(
         self,
         name: str,
-        hint_name: str,
+        hint_name: HintRegion,
         level: Levels,
         tagbarrel: bool,
         deathwarp: Optional[Union[int, TransitionFront, Regions]],
@@ -153,6 +154,22 @@ class Region:
         elif self.level == Levels.HideoutHelm:
             return Regions.HideoutHelmEntry
         return Regions.GameStart
+
+    def getHintRegionName(self) -> str:
+        """Convert hint region enum to the name."""
+        return HINT_REGION_PAIRING.get(self.hint_name, "Unknown Region")
+
+    def isMedalRegion(self) -> bool:
+        """Return whether the associated hint region is a medal reward region."""
+        return self.hint_name in MEDAL_REWARD_REGIONS
+
+    def isCBRegion(self) -> bool:
+        """Return whether the associated hint region requires CBs to access (Bosses and medal rewards)."""
+        return self.hint_name in MEDAL_REWARD_REGIONS or self.hint_name == HintRegion.Bosses
+
+    def isShopRegion(self) -> bool:
+        """Return whether the associated hint region is a shop region."""
+        return self.hint_name in SHOP_REGIONS
 
 
 class TransitionBack:

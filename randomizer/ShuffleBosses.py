@@ -298,7 +298,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
                 bossOptions[level].append(Maps.FactoryBoss)
         if spoiler.settings.krool_in_boss_pool:
             # Donkey Phase may or may not need Blast
-            if Kongs.donkey in ownedKongs[level] and (not spoiler.settings.cannons_require_blast or Items.BaboonBlast in ownedMoves[level]):
+            if Kongs.donkey in ownedKongs[level] and Items.Climbing in ownedMoves[level] and (not spoiler.settings.cannons_require_blast or Items.BaboonBlast in ownedMoves[level]):
                 bossOptions[level].append(Maps.KroolDonkeyPhase)
             # Diddy Phase needs Peanut and Rocket
             if Kongs.diddy in ownedKongs[level] and Items.RocketbarrelBoost in ownedMoves[level] and Items.Peanut in ownedMoves[level]:

@@ -332,6 +332,7 @@ def place_pregiven_moves(spoiler):
         Items.Vines,
         Items.Camera,
         Items.Shockwave,
+        Items.Climbing,
     ]
     ROM_COPY = LocalROM()
     progressives = (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam)

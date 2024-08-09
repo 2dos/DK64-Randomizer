@@ -248,6 +248,13 @@ move_hints = [
         "candy": "THIS MOVE WILL ALLOW YOU TO GRAB ROPES.",
     },
     {
+        "move": "Climbing",
+        "kong": "~",
+        "cranky": "I DON'T REMEMBER THIS GAME BEING CALLED JUNGLE CLIMBER, BUT THIS WILL CERTAINLY LET YOU PAVE THE PATH TO GOOD ASCENSIONS.",
+        "funky": "ARE YOU TINY KONG, CAUSE IT LOOKS LIKE THIS WILL ALLOW YOU TO CLIMB UP TREES.",
+        "candy": "THIS MOVE WILL ALLOW YOU TO CLIMB TREES.",
+    },
+    {
         "move": "Camera Solo",
         "kong": "~",
         "cranky": "WITH THAT DEVICE, YOU MIGHT AS WELL CALL ME PROFESSOR OAK! WONDERFUL.",
@@ -612,6 +619,7 @@ move_names = [
     MoveName("Candy Kong", MoveTypes.flag),  # 91
     MoveName("Snide", MoveTypes.flag),  # 92
     MoveName("Hint", MoveTypes.flag),  # 93
+    MoveName("Climbing", MoveTypes.flag),  # 94
 ]
 
 move_names_arr = []
@@ -759,6 +767,7 @@ text_enum = [
     "ITEMTEXT_CANDYITEM",  # 0x05B
     "ITEMTEXT_SNIDEITEM",  # 0x05C
     "ITEMTEXT_HINTITEM",  # 0x05D
+    "ITEMTEXT_CLIMBING",  # 0x05E
 ]
 
 

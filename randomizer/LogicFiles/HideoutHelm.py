@@ -7,6 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.HintRegion import HintRegion
 from randomizer.Enums.Settings import HelmSetting
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -14,7 +15,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
 
 LogicRegions = {
     # This region serves to set up Helm and send the player to the right location based on the settings
-    Regions.HideoutHelmEntry: Region("Hideout Helm Entry Redirect", "Hideout Helm", Levels.HideoutHelm, False, None, [
+    Regions.HideoutHelmEntry: Region("Hideout Helm Entry Redirect", HintRegion.Helm, Levels.HideoutHelm, False, None, [
         LocationLogic(Locations.HelmDonkey1, lambda l: not l.settings.helm_donkey or l.settings.helm_setting == HelmSetting.skip_all),
         LocationLogic(Locations.HelmDonkey2, lambda l: not l.settings.helm_donkey or l.settings.helm_setting == HelmSetting.skip_all),
         LocationLogic(Locations.HelmChunky1, lambda l: not l.settings.helm_chunky or l.settings.helm_setting == HelmSetting.skip_all),
@@ -37,7 +38,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all)
     ]),
 
-    Regions.HideoutHelmStart: Region("Hideout Helm Start", "Hideout Helm", Levels.HideoutHelm, True, None, [
+    Regions.HideoutHelmStart: Region("Hideout Helm Start", HintRegion.Helm, Levels.HideoutHelm, True, None, [
         LocationLogic(Locations.HelmMainEnemy_Start0, lambda l: True),
         LocationLogic(Locations.HelmMainEnemy_Start1, lambda l: True),
     ], [], [
@@ -46,17 +47,17 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in l.Events),  # W1
     ]),
 
-    Regions.HideoutHelmSwitchRoom: Region("Hideout Helm Start", "Hideout Helm", Levels.HideoutHelm, True, -1, [
+    Regions.HideoutHelmSwitchRoom: Region("Hideout Helm Start", HintRegion.Helm, Levels.HideoutHelm, True, -1, [
         LocationLogic(Locations.HelmMainEnemy_Hill, lambda l: True),
         LocationLogic(Locations.HelmMainEnemy_SwitchRoom0, lambda l: True),
         LocationLogic(Locations.HelmMainEnemy_SwitchRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmStart, lambda l: True),
-        TransitionFront(Regions.HideoutHelmMiniRoom, lambda l: l.pineapple and l.chunky and l.vines),
+        TransitionFront(Regions.HideoutHelmMiniRoom, lambda l: l.pineapple and l.chunky and l.can_use_vines),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanMoonkick() or l.phasewalk or l.CanOStandTBSNoclip())
     ]),
 
-    Regions.HideoutHelmMiniRoom: Region("Hideout Helm Start", "Hideout Helm", Levels.HideoutHelm, True, -1, [
+    Regions.HideoutHelmMiniRoom: Region("Hideout Helm Start", HintRegion.Helm, Levels.HideoutHelm, True, -1, [
         LocationLogic(Locations.HelmMainEnemy_MiniRoom0, lambda l: True),
         LocationLogic(Locations.HelmMainEnemy_MiniRoom1, lambda l: True),
         LocationLogic(Locations.HelmMainEnemy_MiniRoom2, lambda l: True),
@@ -66,7 +67,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: (l.generalclips and l.ischunky) or l.phasewalk or l.CanOStandTBSNoclip()),
     ]),
 
-    Regions.HideoutHelmMain: Region("Hideout Helm Main", "Hideout Helm", Levels.HideoutHelm, True, -1, [
+    Regions.HideoutHelmMain: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, True, -1, [
         LocationLogic(Locations.HelmBattleArena, lambda l: not l.settings.crown_placement_rando and l.jetpack and l.isdiddy and Events.HelmFinished in l.Events),
     ], [
         Event(Events.HelmDoorsOpened, lambda l: l.grab and l.donkey and l.jetpack and l.diddy),
@@ -88,7 +89,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
     ]),
 
-    Regions.HideoutHelmDonkeyRoom: Region("Hideout Helm Main", "Hideout Helm", Levels.HideoutHelm, False, -1, [
+    Regions.HideoutHelmDonkeyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
         LocationLogic(Locations.HelmDonkey1, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmDonkey2, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmDonkeyMedal, lambda l: Events.HelmDonkeyDone in l.Events and l.isdonkey),
@@ -98,7 +99,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk or (l.isdonkey and l.generalclips)),
     ]),
 
-    Regions.HideoutHelmChunkyRoom: Region("Hideout Helm Main", "Hideout Helm", Levels.HideoutHelm, False, -1, [
+    Regions.HideoutHelmChunkyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
         LocationLogic(Locations.HelmChunky1, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmChunky2, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmChunkyMedal, lambda l: Events.HelmChunkyDone in l.Events and l.ischunky),
@@ -109,7 +110,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk),
     ]),
 
-    Regions.HideoutHelmTinyRoom: Region("Hideout Helm Main", "Hideout Helm", Levels.HideoutHelm, False, -1, [
+    Regions.HideoutHelmTinyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
         LocationLogic(Locations.HelmTiny1, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmTiny2, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmTinyMedal, lambda l: Events.HelmTinyDone in l.Events and l.istiny),
@@ -119,7 +120,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk),
     ]),
 
-    Regions.HideoutHelmLankyRoom: Region("Hideout Helm Main", "Hideout Helm", Levels.HideoutHelm, False, -1, [
+    Regions.HideoutHelmLankyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
         LocationLogic(Locations.HelmLanky1, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmLanky2, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmLankyMedal, lambda l: Events.HelmLankyDone in l.Events and l.islanky),
@@ -130,7 +131,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
     ]),
 
-    Regions.HideoutHelmDiddyRoom: Region("Hideout Helm Main", "Hideout Helm", Levels.HideoutHelm, False, -1, [
+    Regions.HideoutHelmDiddyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
         LocationLogic(Locations.HelmDiddy1, lambda l: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmDiddy2, lambda l: True, MinigameType.HelmBarrelSecond),
         LocationLogic(Locations.HelmDiddyMedal, lambda l: Events.HelmDiddyDone in l.Events and l.isdiddy),
@@ -141,7 +142,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
     ]),
 
-    Regions.HideoutHelmAfterBoM: Region("Hideout Helm Navigation Room", "Hideout Helm", Levels.HideoutHelm, False, -1, [
+    Regions.HideoutHelmAfterBoM: Region("Hideout Helm Navigation Room", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
         LocationLogic(Locations.HelmMainEnemy_NavRight, lambda l: Events.HelmFinished in l.Events),
         LocationLogic(Locations.HelmMainEnemy_NavLeft, lambda l: Events.HelmFinished in l.Events),
     ], [], [
@@ -151,13 +152,13 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.generalclips or l.phasewalk),
     ]),
 
-    Regions.HideoutHelmThroneRoom: Region("Hideout Helm Throne Room", "Hideout Helm", Levels.HideoutHelm, False, None, [], [], [
+    Regions.HideoutHelmThroneRoom: Region("Hideout Helm Throne Room", HintRegion.Helm, Levels.HideoutHelm, False, None, [], [], [
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.CrownDoorOpened()),
         TransitionFront(Regions.HideoutHelmKeyRoom, lambda l: l.CoinDoorOpened()),
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
     ]),
 
-    Regions.HideoutHelmKeyRoom: Region("Hideout Helm Key Room", "Hideout Helm", Levels.HideoutHelm, False, None, [
+    Regions.HideoutHelmKeyRoom: Region("Hideout Helm Key Room", HintRegion.Helm, Levels.HideoutHelm, False, None, [
         LocationLogic(Locations.HelmKey, lambda l: True),
         LocationLogic(Locations.HelmBananaFairy1, lambda l: l.camera),
         LocationLogic(Locations.HelmBananaFairy2, lambda l: l.camera),
@@ -165,7 +166,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
     ]),
 
-    Regions.HideoutHelmOOBChunky: Region("Hideout Helm OOB (Chunky Room Elevation)", "Hideout Helm", Levels.HideoutHelm, False, -1, [], [], [
+    Regions.HideoutHelmOOBChunky: Region("Hideout Helm OOB (Chunky Room Elevation)", HintRegion.Helm, Levels.HideoutHelm, False, -1, [], [], [
         TransitionFront(Regions.HideoutHelmStart, lambda l: True),
         TransitionFront(Regions.HideoutHelmSwitchRoom, lambda l: True),
         TransitionFront(Regions.HideoutHelmMiniRoom, lambda l: True),
@@ -178,7 +179,7 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.isdiddy or l.istiny),
     ]),
 
-    Regions.HideoutHelmOOBLanky: Region("Hideout Helm OOB (Lanky Room Elevation)", "Hideout Helm", Levels.HideoutHelm, False, -1, [], [], [
+    Regions.HideoutHelmOOBLanky: Region("Hideout Helm OOB (Lanky Room Elevation)", HintRegion.Helm, Levels.HideoutHelm, False, -1, [], [], [
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: True),
         TransitionFront(Regions.HideoutHelmLankyRoom, lambda l: True),
         TransitionFront(Regions.HideoutHelmDiddyRoom, lambda l: l.isdiddy or l.istiny),

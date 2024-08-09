@@ -204,3 +204,7 @@ generated_seeds/*
 local_presets.json
 base-hack/build/dir_hash.txt
 base-hack/build/skeleton/*.png
+base-hack/assets/cutscene_scripts/dk_phase
+base-hack/assets/cutscene_scripts/diddy_phase
+base-hack/assets/cutscene_scripts/lanky_phase
+base-hack/assets/cutscene_scripts/tiny_phase

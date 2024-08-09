@@ -82,6 +82,7 @@ extern void AlterHeadSize(void);
 extern void AlterHeadSize_0(void);
 extern void ApplyTextRecolorHints(void);
 extern void expandTBarrelResponse(void);
+extern void fixLankyPhaseHandState(void);
 extern void disableRouletteNumbers(void);
 extern void updateBarrierNumbers(void);
 extern void capScreenShake(void);

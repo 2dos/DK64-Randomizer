@@ -43,18 +43,11 @@ static char string_copy[STRING_MAX_SIZE] = "";
 static char mtx_counter = 0;
 static char* unk_string = "???";
 static short hint_clear_flags[35] = {};
+static short hint_item_regions[35] = {};
 static char hint_level = 0;
 static char item_subgroup = 0;
 static char level_hint_text[0x40] = "";
 static char item_loc_text[0x40] = "";
-
-static char* unknown_hints[] = {
-    "??? - 000 GOLDEN BANANAS",
-    "??? - 001 GOLDEN BANANAS",
-    "??? - 002 GOLDEN BANANAS",
-    "??? - 003 GOLDEN BANANAS",
-    "??? - 004 GOLDEN BANANAS",
-};
 
 static itemloc_data itemloc_textnames[] = {
     {
@@ -348,6 +341,10 @@ int getHintGBRequirement(int slot) {
     return req_i;
 }
 
+regions getHintItemRegion(int slot) {
+    return hint_item_regions[slot];
+}
+
 int getPluralCharacter(int amount) {
     if (amount != 1) {
         return 0x53; // "S"
@@ -424,6 +421,7 @@ void getItemSpecificity(char** str, int step, int flag) {
 
 void initHintFlags(void) {
     unsigned short* hint_clear_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE000);
+    unsigned short* hint_reg_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE080);
     if (Rando.progressive_hint_gb_cap > 0) {
         hints_per_screen = 4;
         hint_screen_count = 9;
@@ -431,6 +429,7 @@ void initHintFlags(void) {
     }
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
         hint_clear_flags[i] = hint_clear_write[i];
+        hint_item_regions[i] = hint_reg_write[i];
     }
 }
 
@@ -469,7 +468,12 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
             dl = drawSplitString(dl, (char*)hint_pointers[hint_local_index], level_x, hint_offset + (120 * i), 40, opacity);
         } else {
             if (Rando.progressive_hint_gb_cap == 0) {
-                unknown_hints[i] = "???";
+                regions tied_region = getHintItemRegion(hint_local_index);
+                if (tied_region == REGION_NULLREGION) {
+                    unknown_hints[i] = "???";
+                } else {
+                    dk_strFormat(unknown_hints[i], "??? - %s", hint_region_names[tied_region]);
+                }
             } else {
                 int requirement = getHintGBRequirement(hint_local_index);
                 dk_strFormat(unknown_hints[i], "??? - %d GOLDEN BANANA%c", requirement, getPluralCharacter(requirement));

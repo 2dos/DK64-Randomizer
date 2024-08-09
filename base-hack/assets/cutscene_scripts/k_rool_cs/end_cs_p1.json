@@ -1,0 +1,3449 @@
+{
+    "index": 26,
+    "point_data": [
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                4,
+                224
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    198,
+                    255,
+                    0
+                ]
+            },
+            "duration": 394
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    1047,
+                    255,
+                    0
+                ]
+            },
+            "duration": 542
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    2,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 20
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    2,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 50
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    2,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 70
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    2,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 100
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    2,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 127
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                4,
+                224
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    198,
+                    255,
+                    0
+                ]
+            },
+            "duration": 30
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    198,
+                    255,
+                    144
+                ]
+            },
+            "duration": 80
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    196,
+                    255,
+                    0
+                ]
+            },
+            "duration": 105
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    8,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 150
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    8,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 240
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    1,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 330
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    1,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 350
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 17,
+                "params": [
+                    1,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 10,
+                "params": [
+                    1,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                4,
+                83
+            ],
+            "detailed_command": {
+                "sub_command": 10,
+                "params": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                3,
+                216
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    2,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    11,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    11,
+                    1,
+                    6,
+                    180
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                231,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 6,
+                "params": [
+                    11,
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                12
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    4,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                255,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    2,
+                    175,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                6,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    11,
+                    3,
+                    108,
+                    9
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                222,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    4,
+                    1,
+                    8,
+                    160
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                17,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    183,
+                    8
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    13,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    14,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    15,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                228,
+                188
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    13,
+                    3,
+                    124,
+                    38
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                132,
+                133
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    14,
+                    3,
+                    124,
+                    38
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    15,
+                    3,
+                    124,
+                    29
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    65535,
+                    1002,
+                    150,
+                    0
+                ]
+            },
+            "duration": 187
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    65535,
+                    1004,
+                    150,
+                    0
+                ]
+            },
+            "duration": 195
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    65535,
+                    1003,
+                    150,
+                    0
+                ]
+            },
+            "duration": 203
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    65535,
+                    1004,
+                    150,
+                    0
+                ]
+            },
+            "duration": 228
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    65535,
+                    1003,
+                    150,
+                    0
+                ]
+            },
+            "duration": 256
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    65535,
+                    1004,
+                    150,
+                    0
+                ]
+            },
+            "duration": 265
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    183,
+                    9
+                ]
+            },
+            "duration": 328
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    678,
+                    255,
+                    0
+                ]
+            },
+            "duration": 328
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    183,
+                    10
+                ]
+            },
+            "duration": 351
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    13,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 351
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    14,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 351
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    15,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 351
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    13,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 412
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    14,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 411
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    15,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 410
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    13,
+                    1,
+                    24,
+                    90
+                ]
+            },
+            "duration": 412
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    14,
+                    1,
+                    26,
+                    90
+                ]
+            },
+            "duration": 411
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    15,
+                    1,
+                    28,
+                    180
+                ]
+            },
+            "duration": 410
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    13,
+                    3,
+                    124,
+                    0
+                ]
+            },
+            "duration": 412
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    13,
+                    11,
+                    100,
+                    0
+                ]
+            },
+            "duration": 412
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    13,
+                    12,
+                    24,
+                    25
+                ]
+            },
+            "duration": 412
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    14,
+                    3,
+                    124,
+                    0
+                ]
+            },
+            "duration": 411
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    14,
+                    11,
+                    100,
+                    0
+                ]
+            },
+            "duration": 411
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    14,
+                    12,
+                    26,
+                    27
+                ]
+            },
+            "duration": 411
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    15,
+                    3,
+                    124,
+                    0
+                ]
+            },
+            "duration": 410
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    15,
+                    11,
+                    80,
+                    0
+                ]
+            },
+            "duration": 410
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    15,
+                    12,
+                    28,
+                    29
+                ]
+            },
+            "duration": 410
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    199,
+                    255,
+                    0
+                ]
+            },
+            "duration": 400
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    198,
+                    255,
+                    144
+                ]
+            },
+            "duration": 400
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    13,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 459
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    14,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 459
+        },
+        {
+            "unk0": 8,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    15,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 470
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                255,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    2,
+                    175,
+                    0
+                ]
+            },
+            "duration": 412
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                255,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    2,
+                    175,
+                    0
+                ]
+            },
+            "duration": 460
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    198,
+                    255,
+                    144
+                ]
+            },
+            "duration": 495
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                3,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    2,
+                    176,
+                    0
+                ]
+            },
+            "duration": 540
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                215,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    11,
+                    45,
+                    0
+                ]
+            },
+            "duration": 540
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                230,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    12,
+                    8,
+                    20
+                ]
+            },
+            "duration": 540
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                231,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    4,
+                    90,
+                    0
+                ]
+            },
+            "duration": 540
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                255,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 6,
+                "params": [
+                    4,
+                    2,
+                    0,
+                    0
+                ]
+            },
+            "duration": 539
+        },
+        {
+            "unk0": 5,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 27,
+                "params": [
+                    167,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 570
+        },
+        {
+            "unk0": 5,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 23,
+                "params": [
+                    31,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 820
+        },
+        {
+            "unk0": 5,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 23,
+                "params": [
+                    6,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 1980
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                3,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    2,
+                    177,
+                    0
+                ]
+            },
+            "duration": 585
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                6,
+                16
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    11,
+                    15,
+                    0
+                ]
+            },
+            "duration": 585
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                6,
+                16
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    12,
+                    20,
+                    21
+                ]
+            },
+            "duration": 585
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    4,
+                    100,
+                    0
+                ]
+            },
+            "duration": 585
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    65535,
+                    290,
+                    255,
+                    0
+                ]
+            },
+            "duration": 585
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 25,
+                "params": [
+                    65535,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 600
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    121,
+                    16
+                ]
+            },
+            "duration": 674
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                62,
+                223
+            ],
+            "detailed_command": {
+                "sub_command": 5,
+                "params": [
+                    10,
+                    3,
+                    132,
+                    14
+                ]
+            },
+            "duration": 573
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    10,
+                    2,
+                    0,
+                    65446
+                ]
+            },
+            "duration": 573
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    10,
+                    778,
+                    255,
+                    0
+                ]
+            },
+            "duration": 573
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                1,
+                224
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    3,
+                    132,
+                    0
+                ]
+            },
+            "duration": 782
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                1,
+                224
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    11,
+                    200,
+                    0
+                ]
+            },
+            "duration": 782
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    12,
+                    0,
+                    1
+                ]
+            },
+            "duration": 782
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                7,
+                224
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    4,
+                    80,
+                    0
+                ]
+            },
+            "duration": 782
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                13,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    4,
+                    1,
+                    21,
+                    85
+                ]
+            },
+            "duration": 950
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                6,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    2,
+                    176,
+                    0
+                ]
+            },
+            "duration": 952
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                14,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    11,
+                    25,
+                    0
+                ]
+            },
+            "duration": 952
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                11,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    12,
+                    21,
+                    22
+                ]
+            },
+            "duration": 952
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                231,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    4,
+                    90,
+                    0
+                ]
+            },
+            "duration": 952
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    2,
+                    177,
+                    0
+                ]
+            },
+            "duration": 977
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                15,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    11,
+                    15,
+                    0
+                ]
+            },
+            "duration": 977
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                16,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    12,
+                    22,
+                    19
+                ]
+            },
+            "duration": 977
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    4,
+                    100,
+                    0
+                ]
+            },
+            "duration": 977
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    10,
+                    2,
+                    2,
+                    65446
+                ]
+            },
+            "duration": 1044
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    3,
+                    132,
+                    15
+                ]
+            },
+            "duration": 1045
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                128,
+                60
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    4,
+                    100,
+                    0
+                ]
+            },
+            "duration": 1045
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    10,
+                    53,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1091
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    10,
+                    53,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1575
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                255,
+                246
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    4,
+                    1,
+                    33,
+                    90
+                ]
+            },
+            "duration": 1184
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    183,
+                    5
+                ]
+            },
+            "duration": 1185
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    3,
+                    132,
+                    16
+                ]
+            },
+            "duration": 1235
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    1040,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1027
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    1027,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1200
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    963,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1210
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    4,
+                    1,
+                    23,
+                    90
+                ]
+            },
+            "duration": 1383
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                8
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    183,
+                    0
+                ]
+            },
+            "duration": 1385
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 60,
+                "params": [
+                    16,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 920
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    1049,
+                    160,
+                    0
+                ]
+            },
+            "duration": 1404
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    1050,
+                    160,
+                    0
+                ]
+            },
+            "duration": 1443
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    1049,
+                    160,
+                    0
+                ]
+            },
+            "duration": 1479
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    1050,
+                    160,
+                    0
+                ]
+            },
+            "duration": 1519
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    10,
+                    3,
+                    132,
+                    17
+                ]
+            },
+            "duration": 1535
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                16
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    183,
+                    1
+                ]
+            },
+            "duration": 1760
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                9,
+                48
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    4,
+                    70,
+                    0
+                ]
+            },
+            "duration": 1760
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    960,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1775
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    960,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1789
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    960,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1812
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    960,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1818
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    4,
+                    960,
+                    255,
+                    0
+                ]
+            },
+            "duration": 1828
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                255,
+                246
+            ],
+            "detailed_command": {
+                "sub_command": 19,
+                "params": [
+                    4,
+                    1,
+                    33,
+                    90
+                ]
+            },
+            "duration": 2228
+        },
+        {
+            "unk0": 7,
+            "command": 13,
+            "head": [
+                1,
+                224
+            ],
+            "detailed_command": {
+                "sub_command": 4,
+                "params": [
+                    4,
+                    3,
+                    183,
+                    2
+                ]
+            },
+            "duration": 2230
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                3,
+                96
+            ],
+            "detailed_command": {
+                "sub_command": 42,
+                "params": [
+                    11,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 952
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    416,
+                    255,
+                    0
+                ]
+            },
+            "duration": 360
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    196,
+                    170,
+                    0
+                ]
+            },
+            "duration": 547
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    196,
+                    170,
+                    0
+                ]
+            },
+            "duration": 575
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    416,
+                    120,
+                    0
+                ]
+            },
+            "duration": 730
+        },
+        {
+            "unk0": 6,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 20,
+                "params": [
+                    11,
+                    196,
+                    170,
+                    0
+                ]
+            },
+            "duration": 624
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                3,
+                249
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 0,
+                "z": 1248,
+                "rot": {
+                    "x": 0,
+                    "y": 12085,
+                    "z": 16127
+                },
+                "zoom": 9,
+                "roll": 60
+            },
+            "point_end": {
+                "x": 1107,
+                "y": 2368,
+                "z": 0,
+                "rot": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 7974
+                },
+                "zoom": 48,
+                "roll": 255
+            },
+            "points": [
+                {
+                    "x": 745,
+                    "y": 61,
+                    "z": 601,
+                    "rot": {
+                        "x": 8097,
+                        "y": 1462,
+                        "z": 7233
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 771,
+                    "y": 60,
+                    "z": 581,
+                    "rot": {
+                        "x": 263,
+                        "y": 1464,
+                        "z": 10469
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 100
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                6,
+                34
+            ],
+            "duration": 70
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 3,
+                "y": -154,
+                "z": 2342,
+                "rot": {
+                    "x": 150,
+                    "y": 2344,
+                    "z": 0
+                },
+                "zoom": 7,
+                "roll": 224
+            },
+            "point_end": {
+                "x": 992,
+                "y": -1,
+                "z": -154,
+                "rot": {
+                    "x": 2698,
+                    "y": 150,
+                    "z": 2167
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "points": [
+                {
+                    "x": 732,
+                    "y": 66,
+                    "z": 786,
+                    "rot": {
+                        "x": 60657,
+                        "y": 353,
+                        "z": 9058
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 728,
+                    "y": 66,
+                    "z": 791,
+                    "rot": {
+                        "x": 59252,
+                        "y": 353,
+                        "z": 7914
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 701,
+                    "y": 66,
+                    "z": 810,
+                    "rot": {
+                        "x": 58029,
+                        "y": 64774,
+                        "z": 6461
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 150
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                6,
+                34
+            ],
+            "duration": 30
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                7,
+                224
+            ],
+            "point_start": {
+                "x": 3,
+                "y": -1,
+                "z": -256,
+                "rot": {
+                    "x": 2342,
+                    "y": 150,
+                    "z": 2167
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "point_end": {
+                "x": 2016,
+                "y": 992,
+                "z": -1,
+                "rot": {
+                    "x": 65382,
+                    "y": 2697,
+                    "z": 150
+                },
+                "zoom": 7,
+                "roll": 197
+            },
+            "points": [
+                {
+                    "x": 811,
+                    "y": 75,
+                    "z": 677,
+                    "rot": {
+                        "x": 60451,
+                        "y": 64228,
+                        "z": 58257
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 817,
+                    "y": 75,
+                    "z": 669,
+                    "rot": {
+                        "x": 58653,
+                        "y": 64228,
+                        "z": 59979
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 823,
+                    "y": 61,
+                    "z": 606,
+                    "rot": {
+                        "x": 60014,
+                        "y": 1460,
+                        "z": 8207
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 80
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                6,
+                34
+            ],
+            "duration": 30
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                193,
+                194
+            ],
+            "point_start": {
+                "x": 1,
+                "y": 451,
+                "z": 2022,
+                "rot": {
+                    "x": 2,
+                    "y": 0,
+                    "z": 0
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "point_end": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rot": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "points": [
+                {
+                    "x": 676,
+                    "y": 113,
+                    "z": 836,
+                    "rot": {
+                        "x": 63135,
+                        "y": 954,
+                        "z": 10313
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 30
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                190,
+                181
+            ],
+            "point_start": {
+                "x": 1,
+                "y": 16168,
+                "z": -12853,
+                "rot": {
+                    "x": 11,
+                    "y": 20425,
+                    "z": 15076
+                },
+                "zoom": 89,
+                "roll": 51
+            },
+            "point_end": {
+                "x": 17295,
+                "y": -32768,
+                "z": 15023,
+                "rot": {
+                    "x": 42772,
+                    "y": 17338,
+                    "z": 36044
+                },
+                "zoom": 63,
+                "roll": 88
+            },
+            "points": [
+                {
+                    "x": 823,
+                    "y": 61,
+                    "z": 606,
+                    "rot": {
+                        "x": 60175,
+                        "y": 1460,
+                        "z": 8339
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 55
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                8,
+                39
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 2069,
+                "z": 0,
+                "rot": {
+                    "x": 4032,
+                    "y": 0,
+                    "z": 38563
+                },
+                "zoom": 183,
+                "roll": 255
+            },
+            "point_end": {
+                "x": 2100,
+                "y": 864,
+                "z": 2008,
+                "rot": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "zoom": 212,
+                "roll": 225
+            },
+            "points": [
+                {
+                    "x": 655,
+                    "y": 164,
+                    "z": 989,
+                    "rot": {
+                        "x": 3763,
+                        "y": 62506,
+                        "z": 57574
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 689,
+                    "y": 164,
+                    "z": 889,
+                    "rot": {
+                        "x": 3796,
+                        "y": 62507,
+                        "z": 57473
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 25
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 0,
+                "z": 0,
+                "rot": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "point_end": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rot": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 10
+                },
+                "zoom": 235,
+                "roll": 196
+            },
+            "points": [
+                {
+                    "x": 823,
+                    "y": 61,
+                    "z": 606,
+                    "rot": {
+                        "x": 60175,
+                        "y": 1460,
+                        "z": 8339
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 896,
+                    "y": 128,
+                    "z": 639,
+                    "rot": {
+                        "x": 57574,
+                        "y": 63729,
+                        "z": 4855
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 40
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                6,
+                34
+            ],
+            "duration": 102
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 4,
+                "y": 0,
+                "z": -25688,
+                "rot": {
+                    "x": 48383,
+                    "y": 2395,
+                    "z": 1088
+                },
+                "zoom": 8,
+                "roll": 225
+            },
+            "point_end": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rot": {
+                    "x": 25196,
+                    "y": 31487,
+                    "z": 2599
+                },
+                "zoom": 3,
+                "roll": 226
+            },
+            "points": [
+                {
+                    "x": 994,
+                    "y": 69,
+                    "z": 647,
+                    "rot": {
+                        "x": 56839,
+                        "y": 1386,
+                        "z": 2730
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1031,
+                    "y": 59,
+                    "z": 639,
+                    "rot": {
+                        "x": 58633,
+                        "y": 1376,
+                        "z": 6581
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1088,
+                    "y": 59,
+                    "z": 708,
+                    "rot": {
+                        "x": 10294,
+                        "y": 64130,
+                        "z": 4329
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1235,
+                    "y": 16,
+                    "z": 754,
+                    "rot": {
+                        "x": 10903,
+                        "y": 65199,
+                        "z": 3286
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 150
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                6,
+                34
+            ],
+            "duration": 90
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 1248,
+                "z": 22629,
+                "rot": {
+                    "x": 31231,
+                    "y": 2136,
+                    "z": 984
+                },
+                "zoom": 7,
+                "roll": 228
+            },
+            "point_end": {
+                "x": 0,
+                "y": 1248,
+                "z": 0,
+                "rot": {
+                    "x": 24428,
+                    "y": 33023,
+                    "z": 2036
+                },
+                "zoom": 4,
+                "roll": 27
+            },
+            "points": [
+                {
+                    "x": 1061,
+                    "y": 118,
+                    "z": 673,
+                    "rot": {
+                        "x": 57274,
+                        "y": 64674,
+                        "z": 4151
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1061,
+                    "y": 118,
+                    "z": 673,
+                    "rot": {
+                        "x": 57857,
+                        "y": 64675,
+                        "z": 5430
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 93
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                9,
+                252
+            ],
+            "point_start": {
+                "x": 1,
+                "y": 0,
+                "z": 480,
+                "rot": {
+                    "x": 19796,
+                    "y": 24575,
+                    "z": 2628
+                },
+                "zoom": 3,
+                "roll": 216
+            },
+            "point_end": {
+                "x": 2600,
+                "y": 0,
+                "z": 1504,
+                "rot": {
+                    "x": 0,
+                    "y": 37285,
+                    "z": 50175
+                },
+                "zoom": 10,
+                "roll": 81
+            },
+            "points": [
+                {
+                    "x": 1252,
+                    "y": 17,
+                    "z": 756,
+                    "rot": {
+                        "x": 11215,
+                        "y": 307,
+                        "z": 65484
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 140
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                185,
+                255
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 864,
+                "z": 2600,
+                "rot": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "zoom": 216,
+                "roll": 229
+            },
+            "point_end": {
+                "x": -1793,
+                "y": 2641,
+                "z": 984,
+                "rot": {
+                    "x": 2556,
+                    "y": 0,
+                    "z": 1504
+                },
+                "zoom": 1,
+                "roll": 224
+            },
+            "points": [
+                {
+                    "x": 1060,
+                    "y": 109,
+                    "z": 752,
+                    "rot": {
+                        "x": 56634,
+                        "y": 954,
+                        "z": 602
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1110,
+                    "y": 109,
+                    "z": 748,
+                    "rot": {
+                        "x": 56684,
+                        "y": 954,
+                        "z": 911
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 20
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                6,
+                34
+            ],
+            "duration": 30
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 31487,
+                "z": 2087,
+                "rot": {
+                    "x": 994,
+                    "y": 2069,
+                    "z": 0
+                },
+                "zoom": 15,
+                "roll": 192
+            },
+            "point_end": {
+                "x": 480,
+                "y": -26973,
+                "z": -18433,
+                "rot": {
+                    "x": 2311,
+                    "y": 1046,
+                    "z": 2293
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "points": [
+                {
+                    "x": 1246,
+                    "y": 13,
+                    "z": 752,
+                    "rot": {
+                        "x": 11241,
+                        "y": 65280,
+                        "z": 885
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1236,
+                    "y": 8,
+                    "z": 757,
+                    "rot": {
+                        "x": 11118,
+                        "y": 1411,
+                        "z": 145
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 150
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 3,
+                "y": -1,
+                "z": 2641,
+                "rot": {
+                    "x": 864,
+                    "y": 2556,
+                    "z": 0
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "point_end": {
+                "x": 0,
+                "y": 30076,
+                "z": -30721,
+                "rot": {
+                    "x": 2673,
+                    "y": 984,
+                    "z": 2589
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "points": [
+                {
+                    "x": 1152,
+                    "y": 109,
+                    "z": 688,
+                    "rot": {
+                        "x": 57390,
+                        "y": 65376,
+                        "z": 4356
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1006,
+                    "y": 176,
+                    "z": 582,
+                    "rot": {
+                        "x": 1202,
+                        "y": 61656,
+                        "z": 9720
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 893,
+                    "y": 176,
+                    "z": 721,
+                    "rot": {
+                        "x": 9972,
+                        "y": 61658,
+                        "z": 1784
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 100
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                6,
+                34
+            ],
+            "duration": 50
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                10,
+                29
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 0,
+                "z": 0,
+                "rot": {
+                    "x": 28534,
+                    "y": 33023,
+                    "z": 2628
+                },
+                "zoom": 3,
+                "roll": 216
+            },
+            "point_end": {
+                "x": 2600,
+                "y": 0,
+                "z": 1504,
+                "rot": {
+                    "x": 480,
+                    "y": 59644,
+                    "z": 65535
+                },
+                "zoom": 10,
+                "roll": 68
+            },
+            "points": [
+                {
+                    "x": 1239,
+                    "y": 8,
+                    "z": 743,
+                    "rot": {
+                        "x": 10684,
+                        "y": 854,
+                        "z": 3916
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1238,
+                    "y": 8,
+                    "z": 767,
+                    "rot": {
+                        "x": 11195,
+                        "y": 854,
+                        "z": 396
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 225
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                9,
+                217
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 0,
+                "z": 992,
+                "rot": {
+                    "x": 65535,
+                    "y": 65280,
+                    "z": 2697
+                },
+                "zoom": 0,
+                "roll": 150
+            },
+            "point_end": {
+                "x": 2344,
+                "y": 0,
+                "z": 0,
+                "rot": {
+                    "x": 0,
+                    "y": 65535,
+                    "z": 65280
+                },
+                "zoom": 9,
+                "roll": 38
+            },
+            "points": [
+                {
+                    "x": 1172,
+                    "y": 56,
+                    "z": 694,
+                    "rot": {
+                        "x": 57683,
+                        "y": 2551,
+                        "z": 4201
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1134,
+                    "y": 109,
+                    "z": 668,
+                    "rot": {
+                        "x": 58712,
+                        "y": 65375,
+                        "z": 6716
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 120
+        },
+        {
+            "unk0": 6,
+            "command": 4,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 3,
+                "y": 0,
+                "z": -4865,
+                "rot": {
+                    "x": 65535,
+                    "y": 2055,
+                    "z": 864
+                },
+                "zoom": 7,
+                "roll": 227
+            },
+            "point_end": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rot": {
+                    "x": 28020,
+                    "y": 32511,
+                    "z": 2100
+                },
+                "zoom": 3,
+                "roll": 216
+            },
+            "points": [
+                {
+                    "x": 546,
+                    "y": 114,
+                    "z": 646,
+                    "rot": {
+                        "x": 10170,
+                        "y": 64266,
+                        "z": 2984
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 546,
+                    "y": 114,
+                    "z": 646,
+                    "rot": {
+                        "x": 2899,
+                        "y": 64267,
+                        "z": 10266
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 481,
+                    "y": 47,
+                    "z": 714,
+                    "rot": {
+                        "x": 56606,
+                        "y": 64200,
+                        "z": 3798
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 100
+        },
+        {
+            "unk0": 7,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 8,
+                "params": [
+                    27,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        }
+    ]
+}

@@ -32,6 +32,7 @@ from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
+from port_krool_spawners import updateCutsceneScripts, updateSpawnerFiles, updatePathFiles
 
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
@@ -48,6 +49,9 @@ shutil.copyfile(ROMName, newROMName)
 
 # pullHandModels()
 loadNewModels()
+updateCutsceneScripts()
+updateSpawnerFiles()
+updatePathFiles()
 BuildInstanceScripts()
 
 portal_images = []
@@ -806,24 +810,50 @@ for x in range(221):
         )
 for x in range(221):
     if x != 2:  # DK Arcade path file is massive
-        file_dict.append(
-            File(
-                name=f"Paths for map {x}",
-                pointer_table_index=TableNames.Paths,
-                file_index=x,
-                source_file=f"paths{x}.bin",
-                target_size=0x600,
-                do_not_recompress=True,
+        if x in (Maps.KRoolDK, Maps.KRoolDiddy, Maps.KRoolLanky, Maps.KRoolTiny):
+            file_mapping = {
+                Maps.KRoolDK: "path_dk_phase.bin",
+                Maps.KRoolDiddy: "path_diddy_phase.bin",
+                Maps.KRoolLanky: "path_lanky_phase.bin",
+                Maps.KRoolTiny: "path_tiny_phase.bin",
+            }
+            file_dict.append(
+                File(
+                    name=f"Paths for map {x}",
+                    pointer_table_index=TableNames.Paths,
+                    file_index=x,
+                    source_file=file_mapping[x],
+                    target_size=0x600,
+                    do_not_recompress=True,
+                    do_not_delete_source=True,
+                )
             )
-        )
+        else:
+            file_dict.append(
+                File(
+                    name=f"Paths for map {x}",
+                    pointer_table_index=TableNames.Paths,
+                    file_index=x,
+                    source_file=f"paths{x}.bin",
+                    target_size=0x600,
+                    do_not_recompress=True,
+                )
+            )
 for x in range(221):
-    if x == Maps.Factory:
+    if x in (Maps.Factory, Maps.KRoolDK, Maps.KRoolDiddy, Maps.KRoolLanky, Maps.KRoolTiny):
+        file_mapping = {
+            Maps.Factory: "factory_spawners.bin",
+            Maps.KRoolDK: "spawner_dk_phase.bin",
+            Maps.KRoolDiddy: "spawner_diddy_phase.bin",
+            Maps.KRoolLanky: "spawner_lanky_phase.bin",
+            Maps.KRoolTiny: "spawner_tiny_phase.bin",
+        }
         file_dict.append(
             File(
                 name=f"Character Spawners for map {x}",
                 pointer_table_index=TableNames.Spawners,
                 file_index=x,
-                source_file="factory_spawners.bin",
+                source_file=file_mapping[x],
                 target_size=0x1400,
                 do_not_recompress=True,
                 do_not_delete_source=True,
@@ -971,6 +1001,7 @@ colorblind_changes = [
     [0x11AD, 0x11AE, 1, 1372],  # Ghost something
     [0x1379, 0x1379, 32, 32],  # Dirt Face
     [0xB7B, 0xB7B, 32, 32],  # GB Shine
+    [0x323, 0x323, 32, 32],  # GB Shine
     [0x155C, 0x1567, 44, 44],  # GB Sprite
     [0xECF, 0xECF, 1, 1372],  # Funky Camo
     [0xED6, 0xED6, 1, 1372],  # Funky Camo
@@ -1077,6 +1108,7 @@ shrinkModel(False, "", 0x10, 1 / 0.15, "shrink_cranky.bin", True),
 shrinkModel(False, "", 0x11, 1 / 0.15, "shrink_funky.bin", True),
 shrinkModel(False, "", 0x12, 1 / 0.15, "shrink_candy.bin", True),
 shrinkModel(False, "", 0x1E, 1 / 0.15, "shrink_snide.bin", True),
+shrinkModel(False, "", 0xD1, 1 / 0.15, "shrink_qmark.bin", True)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1143,7 +1175,7 @@ model_changes = [
     ModelChange(0x116, "candy_model.bin"),
     ModelChange(0x117, "funky_model.bin"),
     ModelChange(0x118, "scarab_actor.bin"),
-    ModelChange(0x119, FINAL_RACE_HOOP),  # Used to set an endpoint
+    ModelChange(0x119, "shrink_qmark.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
@@ -1685,6 +1717,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFE000)
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
+    # Hint Regions
+    fh.seek(0x1FFE080)
+    for x in range(35):
+        fh.write((0x0000).to_bytes(2, "big"))
 
     # Item Requirements
     # Helm Doors

@@ -571,6 +571,24 @@ Gfx* displayMoveText(Gfx* dl, actorData* actor) {
 	return dl;
 }
 
+static char hint_displayed_text[20] = "";
+static char* level_names[] = {
+	"JAPES",
+	"AZTEC",
+	"FACTORY",
+	"GALLEON",
+	"FUNGI",
+	"CAVES",
+	"CASTLE",
+};
+static char* kong_names[] = {
+	"DK",
+	"DIDDY",
+	"LANKY",
+	"TINY",
+	"CHUNKY",
+};
+
 void getNextMoveText(void) {
 	move_overlay_paad* paad = CurrentActorPointer_0->paad;
 	int start_hiding = 0;
@@ -704,7 +722,9 @@ void getNextMoveText(void) {
 							}
 						}
 						if (top_item == -1) {
-							if (isFlagInRange(p_flag, FLAG_BP_JAPES_DK_HAS, 40)) {
+							if (p_flag == FLAG_ABILITY_CLIMBING) {
+								top_item = ITEMTEXT_CLIMBING;
+							} else if (isFlagInRange(p_flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 								// Blueprint
 								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
 								top_item = ITEMTEXT_BLUEPRINT_DK + kong;
@@ -773,7 +793,21 @@ void getNextMoveText(void) {
 				if (top_item < 0) {
 					paad->upper_text = (void*)0;
 				} else {
-					paad->upper_text = getTextPointer(0x27,top_item,0);
+					if (top_item == ITEMTEXT_HINTITEM) {
+						int flag_offset = p_flag - FLAG_WRINKLYVIEWED;
+						int level_index = flag_offset / 5;
+						int kong_index = flag_offset % 5;
+						if ((kong_index >= 0) && (kong_index < 5) && (level_index >= 0) && (level_index < 7)) {
+							dk_strFormat(&hint_displayed_text, "%s %s HINT", level_names[level_index], kong_names[kong_index]);
+							paad->upper_text = &hint_displayed_text;
+						} else {
+							paad->upper_text = getTextPointer(0x27,top_item,0);
+						}
+					} else {
+						paad->upper_text = getTextPointer(0x27,top_item,0);
+					}
+
+
 				}
 			}
 			if (bottom_item < 0) {
