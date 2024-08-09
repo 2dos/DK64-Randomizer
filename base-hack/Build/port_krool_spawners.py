@@ -229,8 +229,6 @@ def updateSpawnerFiles(pre: str = ""):
                 current_fence["foot"] = int.from_bytes(fh.read(2), "big")
                 fence_data[fence_id] = current_fence
                 fh.seek(fence_finish)
-            with open(f"{pre}temp.json", "w") as fk:
-                fk.write(json.dumps(fence_data, indent=4))
         fh.seek(offset)
         spawner_count = int.from_bytes(fh.read(2), "big")
         offset += 2
