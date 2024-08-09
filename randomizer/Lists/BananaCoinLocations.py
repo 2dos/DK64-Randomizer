@@ -1712,7 +1712,7 @@ BananaCoinGroupList = {
             name="Around the Baboon Blast Pad",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
             region=Regions.JungleJapesStart,
-            logic=lambda l: l.can_use_vines or l.CanMoonkick(),
+            logic=lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing,
             locations=[
                 [1.0, 2433.09033203125, 530.0, 1123.9302978515625],
                 [1.0, 2488.2314453125, 530.0, 1157.3780517578125],

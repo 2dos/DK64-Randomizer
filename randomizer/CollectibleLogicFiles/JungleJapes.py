@@ -33,7 +33,6 @@ LogicRegions = {
     ],
     Regions.JapesHillTop: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 6),  # Between Snide's and Diddy's cage
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.climbing, None, 1),  # Tree by cannon
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.climbing, None, 1),  # Tree by Diddy's cage
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Snide's
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),  # Around mountain
@@ -41,12 +40,15 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Next to Snide's
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # On Funky's store
     ],
+    Regions.JapesCannonPlatform: [
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.climbing, None, 1),  # Tree by cannon
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
+    ],
     Regions.JungleJapesMain: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # W3
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.climbing, None, 2),  # Treetops, Painting room side
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 3),  # To painting room
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
     ],

@@ -828,7 +828,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Slopes to Diddy's cage (4 custom, 6 Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         locations=[
             [1, 1.0, 1208, 853, 2470],
             [1, 1.0, 1135, 853, 2459],
@@ -1199,7 +1199,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="On treetop by cannon (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JapesHillTop,
+        region=Regions.JapesCannonPlatform,
         vanilla=True,
         logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1917.8856201171875, 735.0, 2069.986572265625]],

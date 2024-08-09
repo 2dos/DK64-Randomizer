@@ -167,7 +167,7 @@
 | Around torch in the middle of fairy room on water surface | 4 | `` | 
 | Near entrance portal | 3 | `` | 
 | Main Area Underwater (1) | 3 | `l.swim` | 
-| Around the Baboon Blast Pad | 3 | `l.can_use_vines or l.CanMoonkick()` | 
+| Around the Baboon Blast Pad | 3 | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Start of first tunnel | 3 | `` | 
 | Diddy Cavern (1) | 3 | `` | 
 | Fairy Pool | 5 | `l.swim` | 
