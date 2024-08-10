@@ -164,6 +164,7 @@ LogicRegions = {
     Regions.MushroomNightDoor: Region("Mushroom Night Door", HintRegion.MushroomInterior, Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpperMid, lambda l: l.can_use_vines),
+        TransitionFront(Regions.MushroomMiddle, lambda l: True),
         TransitionFront(Regions.MushroomNightExterior, lambda l: True, Transitions.ForestNightToExterior, time=Time.Night),
     ]),
 
