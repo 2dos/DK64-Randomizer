@@ -281,7 +281,7 @@ static unsigned char jetpac_hh_bonus[] = {
 
 static short banned_hh_items[] = {HHITEM_NOTHING, HHITEM_GB};
 static short flags_produce_overlay[] = {
-    FLAG_ABILITY_CAMERA,
+    FLAG_ABILITY_CLIMBING,
     FLAG_TBARREL_BARREL,
     FLAG_TBARREL_DIVE,
     FLAG_TBARREL_ORANGE,
