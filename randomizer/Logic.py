@@ -126,7 +126,7 @@ class LogicVarHolder:
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.training_barrels == TrainingBarrels.normal
-        self.can_use_vines = self.vines and self.climbing
+        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         self.progDonkey = 0
         self.blast = False
@@ -330,7 +330,7 @@ class LogicVarHolder:
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
-        self.can_use_vines = self.vines and self.climbing
+        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
         self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
