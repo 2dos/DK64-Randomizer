@@ -357,7 +357,7 @@ LogicRegions = {
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
-    Regions.CabinIsle: Region("Cabin Isle", "Outer Isles", Levels.DKIsles, False, None, [
+    Regions.CabinIsle: Region("Cabin Isle", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
         LocationLogic(Locations.RainbowCoin_Location03, lambda l: True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
