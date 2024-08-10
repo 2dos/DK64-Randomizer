@@ -108,7 +108,7 @@ ColoredBananaGroupList = [
         name="On exit ledge",
         konglist=[Kongs.tiny],
         region=Regions.TrainingGrounds,
-        logic=lambda l: (l.istiny and l.twirl),
+        logic=lambda l: (l.istiny and l.twirl) and l.climbing,
         locations=[
             [1, 1.0, 1032, 236, 565],
             [1, 1.0, 1026, 228, 629],

@@ -115,12 +115,16 @@ LogicRegions = {
     ],
     Regions.Anthill: [
     ],
+    Regions.ForestVeryTopOfMill: [
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 2),  # Mill roof
+    ],
     Regions.ForestTopOfMill: [
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 7),  # Mill roof
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 4),  # Mill roof
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Above Balloon pad
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.TimeAccess(Regions.MillArea, Time.Night), None, 1),  # Attic Entrance
     ],
     Regions.MillArea: [
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 1),  # Mill roof
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Behind Barn
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and (l.TimeAccess(Regions.MillArea, Time.Day) or l.advanced_platforming), None, 1),  # Snide
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Near Rafter Barn
