@@ -115,6 +115,8 @@ LogicRegions = {
     ],
     Regions.Anthill: [
     ],
+    Regions.MushroomUpperMidExterior: [
+    ],
     Regions.ForestVeryTopOfMill: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 2),  # Mill roof
     ],
