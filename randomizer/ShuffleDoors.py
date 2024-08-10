@@ -98,6 +98,9 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
             if shuffle_dkportal:
                 if door.placed == DoorType.dk_portal:
                     door.placed = DoorType.null
+            # Reset door lists
+            door.door_type = door.default_door_list.copy()
+            door.updateDoorTypeLogic(spoiler)
     # If we already placed vanilla doors, we've already saved some data we need to preserve post-reset
     if vanilla_doors_placed:
         shuffled_door_data = spoiler.shuffled_door_data
