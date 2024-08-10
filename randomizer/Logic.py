@@ -125,6 +125,8 @@ class LogicVarHolder:
         self.swim = self.settings.training_barrels == TrainingBarrels.normal
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
+        self.climbing = self.settings.training_barrels == TrainingBarrels.normal
+        self.can_use_vines = self.vines and self.climbing
 
         self.progDonkey = 0
         self.blast = False
@@ -323,10 +325,12 @@ class LogicVarHolder:
         self.tiny = self.tiny or Items.Tiny in ownedItems or self.startkong == Kongs.tiny
         self.chunky = self.chunky or Items.Chunky in ownedItems or self.startkong == Kongs.chunky
 
+        self.climbing = self.climbing or Items.Climbing in ownedItems
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
+        self.can_use_vines = self.vines and self.climbing
 
         self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
         self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
@@ -661,6 +665,7 @@ class LogicVarHolder:
             self.swim,
             self.oranges,
             self.barrels,
+            self.climbing,
             # Special Moves
             self.blast,
             self.strongKong,
@@ -995,13 +1000,13 @@ class LogicVarHolder:
         elif bossFight == Maps.CastleBoss and self.IsLavaWater():
             hasRequiredMoves = self.Melons >= 3
         elif bossFight == Maps.KroolDonkeyPhase:
-            hasRequiredMoves = self.blast or (not self.settings.cannons_require_blast)
+            hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:
             hasRequiredMoves = self.jetpack and self.peanut
         elif bossFight == Maps.KroolLankyPhase:
             hasRequiredMoves = self.barrels and self.trombone
         elif bossFight == Maps.KroolTinyPhase:
-            hasRequiredMoves = self.mini and self.feather
+            hasRequiredMoves = self.mini and self.feather and (self.climbing or self.twirl)
         elif bossFight == Maps.KroolChunkyPhase:
             hasRequiredMoves = self.punch and self.CanSlamChunkyPhaseSwitch() and self.hunkyChunky and self.gorillaGone
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
@@ -1036,14 +1041,14 @@ class LogicVarHolder:
                 if self.settings.level_order[level_order] == Levels.AngryAztec:
                     order_of_aztec = level_order
             # You need to have vines or twirl before you can enter Aztec or any level beyond it
-            if order_of_level >= order_of_aztec and not (self.vines or (self.istiny and self.twirl)):
+            if order_of_level >= order_of_aztec and not (self.can_use_vines or (self.istiny and self.twirl)):
                 return False
             if order_of_level >= 4:
                 # Require the following moves by level 4:
                 # - Swim so you can get into Lobby 4. This prevents logic from skipping this level for T&S requirements, preventing 0'd T&S.
                 # - Barrels so there will always be an eligible boss fill given the available moves at any level.
                 # - Vines for gameplay reasons. Needing vines for Helm is a frequent bottleneck and this eases the hunt for it.
-                if not self.swim or not self.barrels or not self.vines:
+                if not self.swim or not self.barrels or not self.can_use_vines:
                     return False
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
                 if not self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs) and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
@@ -1137,6 +1142,8 @@ class LogicVarHolder:
                 self.barrels = False
             elif item == Items.Oranges:
                 self.oranges = False
+            elif item == Items.Climbing:
+                self.climbing = False
             elif item == Items.BaboonBlast:
                 self.blast = False
             elif item == Items.StrongKong:
@@ -1219,6 +1226,7 @@ class LogicVarHolder:
             and self.tiny
             and self.chunky
             and self.vines
+            and self.climbing
             and self.swim
             and self.barrels
             and self.oranges

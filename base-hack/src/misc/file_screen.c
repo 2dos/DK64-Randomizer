@@ -77,6 +77,7 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 22, .max_x = 42, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ORANGE}, // Orange
 	{.min_x = 44, .max_x = 64, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BARREL}, // Barrel
 	{.min_x = 66, .max_x = 86, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_VINE}, // Vine
+	{.min_x = 87, .max_x = 107, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CLIMB}, // Climbing
 	{.min_x = 176, .max_x = 192, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
 	{.min_x = 192, .max_x = 209, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
 	{.min_x = 218, .max_x = 238, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
@@ -170,6 +171,8 @@ int isMovePregiven(int index) {
 			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
 		case TRACKER_TYPE_SNIPER:
 			return Rando.moves_pregiven.sniper || initFile_checkTraining(PURCHASE_GUN, -1, 3);
+		case TRACKER_TYPE_CLIMB:
+			return Rando.moves_pregiven.climbing || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CLIMBING);
 		case TRACKER_TYPE_DIVE:
 			return Rando.moves_pregiven.dive || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE);
 		case TRACKER_TYPE_ORANGE:
@@ -308,6 +311,8 @@ int getEnabledState(int index) {
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
 		case TRACKER_TYPE_SNIPER:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
+		case TRACKER_TYPE_CLIMB:
+			return checkFlagDuplicate(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_DIVE:
 			return checkFlagDuplicate(FLAG_TBARREL_DIVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_ORANGE:

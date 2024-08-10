@@ -10,11 +10,12 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
+from randomizer.Enums.HintRegion import HintRegion
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.AngryAztecMedals: Region("Angry Aztec Medals", "Aztec Medal Rewards", Levels.AngryAztec, False, None, [
+    Regions.AngryAztecMedals: Region("Angry Aztec Medals", HintRegion.AztecCBs, Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= l.settings.medal_cb_req),
@@ -23,19 +24,19 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.AngryAztecEntryHandler: Region("Angry Aztec Entry Handler", "This should not be hinted", Levels.AngryAztec, False, None, [], [
+    Regions.AngryAztecEntryHandler: Region("Angry Aztec Entry Handler", HintRegion.Error, Levels.AngryAztec, False, None, [], [
         Event(Events.AztecEntered, lambda l: True),
     ], [
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
         TransitionFront(Regions.AngryAztecStart, lambda l: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
 
-    Regions.AngryAztecStart: Region("Angry Aztec Start", "Various Aztec Tunnels", Levels.AngryAztec, False, None, [], [], [
+    Regions.AngryAztecStart: Region("Angry Aztec Start", HintRegion.AztecTunnels, Levels.AngryAztec, False, None, [], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
-        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.assumeAztecEntry or l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.assumeAztecEntry or l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
     ]),
 
-    Regions.BetweenVinesByPortal: Region("Angry Aztec Between Vines By Portal", "Various Aztec Tunnels", Levels.AngryAztec, False, -1, [
+    Regions.BetweenVinesByPortal: Region("Angry Aztec Between Vines By Portal", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecChunkyVases, lambda l: (l.pineapple or l.phasewalk) and l.chunky and l.barrels),
         LocationLogic(Locations.AztecMainEnemy_VaseRoom0, lambda l: (l.pineapple and l.ischunky) or l.phasewalk),
         LocationLogic(Locations.AztecMainEnemy_VaseRoom1, lambda l: (l.pineapple and l.ischunky) or l.phasewalk),
@@ -46,27 +47,27 @@ LogicRegions = {
         Event(Events.AztecW1aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
-        TransitionFront(Regions.AngryAztecStart, lambda l: l.vines or (l.istiny and l.twirl) or l.phasewalk),
-        TransitionFront(Regions.AngryAztecOasis, lambda l: l.assumeAztecEntry or l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.AngryAztecStart, lambda l: l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.AngryAztecOasis, lambda l: l.assumeAztecEntry or l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
     ]),
 
-    Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", "Various Aztec Tunnels", Levels.AngryAztec, False, -1, [
+    Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_rando and (l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))))),
         LocationLogic(Locations.AztecMainEnemy_StartingTunnel3, lambda l: True),
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
-        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.can_use_vines or (l.istiny and l.twirl) or l.phasewalk),
         TransitionFront(Regions.AngryAztecOasis, lambda l: True),
     ]),
 
-    Regions.AngryAztecOasis: Region("Angry Aztec Oasis", "Aztec Oasis and Totem Area", Levels.AngryAztec, True, -1, [
+    Regions.AngryAztecOasis: Region("Angry Aztec Oasis", HintRegion.OasisAndTotem, Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events),
-        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_rando and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_rando and l.jetpack and l.isdiddy and l.climbing),
         LocationLogic(Locations.RainbowCoin_Location06, lambda l: True),
         LocationLogic(Locations.AztecMainEnemy_NearCandy, lambda l: True),
         LocationLogic(Locations.AztecMainEnemy_OasisDoor, lambda l: True),
     ], [
-        Event(Events.AztecGuitarPad, lambda l: (l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
+        Event(Events.AztecGuitarPad, lambda l: ((l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
         Event(Events.AztecW1bTagged, lambda l: True),
         Event(Events.AztecW2aTagged, lambda l: True),
     ], [
@@ -79,7 +80,7 @@ LogicRegions = {
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.TempleStart: Region("Temple Start", "Tiny Temple", Levels.AngryAztec, False, -1, [
+    Regions.TempleStart: Region("Temple Start", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: (l.triangle or l.CanPhaseswim() or l.phasewalk) and l.ischunky),
         LocationLogic(Locations.AztecTempleEnemy_GuardRotating0, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_GuardRotating1, lambda l: True),
@@ -92,7 +93,7 @@ LogicRegions = {
         TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),  # Ice pre-melted, without it would be "l.CanSlamSwitch(Levels.AngryAztec, 1) and l.guitar and l.diddyAccess"
     ]),
 
-    Regions.TempleUnderwater: Region("Temple Underwater", "Tiny Temple", Levels.AngryAztec, False, -1, [
+    Regions.TempleUnderwater: Region("Temple Underwater", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: ((l.mini and l.istiny) or l.phasewalk or l.generalclips or l.CanPhaseswim())),
         LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
         LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny() or l.phasewalk or l.ledgeclip or l.CanPhaseswim()),
@@ -108,7 +109,7 @@ LogicRegions = {
         TransitionFront(Regions.TempleStart, lambda l: True),
     ]),
 
-    Regions.AngryAztecConnectorTunnel: Region("Angry Aztec Connector Tunnel", "Various Aztec Tunnels", Levels.AngryAztec, False, -1, [
+    Regions.AngryAztecConnectorTunnel: Region("Angry Aztec Connector Tunnel", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.ischunky and ((l.hunkyChunky and (l.barrels or l.generalclips)) or l.phasewalk), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecKasplatNearLab, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.AztecMainEnemy_TunnelPad0, lambda l: True),
@@ -126,7 +127,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyAztec, lambda l: l.crankyAccess),
     ]),
 
-    Regions.AngryAztecMain: Region("Angry Aztec Main", "Aztec Oasis and Totem Area", Levels.AngryAztec, True, -1, [
+    Regions.AngryAztecMain: Region("Angry Aztec Main", HintRegion.OasisAndTotem, Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.MelonCrate_Location06, lambda l: (l.jetpack and l.isdiddy) or l.CanMoonkick()),
@@ -161,7 +162,7 @@ LogicRegions = {
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.AztecDonkeyQuicksandCave: Region("Aztec Donkey Sand Tunnel", "Various Aztec Tunnels", Levels.AngryAztec, False, -1, [
+    Regions.AztecDonkeyQuicksandCave: Region("Aztec Donkey Sand Tunnel", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: l.isdonkey or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [
         Event(Events.AztecW5bTagged, lambda l: Locations.AztecDonkeyQuicksandCave in l.SpecialLocationsReached),
@@ -170,7 +171,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMain, lambda l: (l.isdonkey and l.strongKong) or l.phasewalk)
     ]),
 
-    Regions.AztecBaboonBlast: Region("Aztec Baboon Blast", "Aztec Oasis and Totem Area", Levels.AngryAztec, False, None, [], [
+    Regions.AztecBaboonBlast: Region("Aztec Baboon Blast", HintRegion.OasisAndTotem, Levels.AngryAztec, False, None, [], [
         Event(Events.LlamaFreed, lambda l: l.isdonkey)
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
@@ -178,7 +179,7 @@ LogicRegions = {
     ]),
 
     # All the 5 door temple require their respective gun to die
-    Regions.DonkeyTemple: Region("Donkey Temple", "5 Door Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.coconut and l.isdonkey) or l.phasewalk), [
+    Regions.DonkeyTemple: Region("Donkey Temple", HintRegion.FiveDoorTemple, Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.coconut and l.isdonkey) or l.phasewalk), [
         LocationLogic(Locations.AztecDonkey5DoorTemple, lambda l: (l.coconut or l.phasewalk) and (l.isdonkey or l.settings.free_trade_items)),
         LocationLogic(Locations.AztecDK5DTEnemy_StartTrap0, lambda l: (l.coconut and l.isdonkey) or l.phasewalk),
         LocationLogic(Locations.AztecDK5DTEnemy_StartTrap1, lambda l: (l.coconut and l.isdonkey) or l.phasewalk),
@@ -194,7 +195,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecDonkeyToMain),
     ]),
 
-    Regions.DiddyTemple: Region("Diddy Temple", "5 Door Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.peanut and l.isdiddy) or l.phasewalk), [
+    Regions.DiddyTemple: Region("Diddy Temple", HintRegion.FiveDoorTemple, Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.peanut and l.isdiddy) or l.phasewalk), [
         LocationLogic(Locations.AztecDiddy5DoorTemple, lambda l: (l.peanut or l.phasewalk) and (l.isdiddy or l.settings.free_trade_items)),
         LocationLogic(Locations.AztecDiddy5DTEnemy_EndTrap0, lambda l: (l.peanut and l.isdiddy) or l.phasewalk),
         LocationLogic(Locations.AztecDiddy5DTEnemy_EndTrap1, lambda l: (l.peanut and l.isdiddy) or l.phasewalk),
@@ -208,7 +209,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecDiddyToMain),
     ]),
 
-    Regions.LankyTemple: Region("Lanky Temple", "5 Door Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.grape and l.islanky) or l.phasewalk), [
+    Regions.LankyTemple: Region("Lanky Temple", HintRegion.FiveDoorTemple, Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.grape and l.islanky) or l.phasewalk), [
         LocationLogic(Locations.AztecLanky5DoorTemple, lambda l: (l.grape or l.phasewalk) and (l.islanky or l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecLanky5DTEnemy_JoiningPaths, lambda l: (l.grape and l.islanky) or l.phasewalk),
         LocationLogic(Locations.AztecLanky5DTEnemy_EndTrap, lambda l: (l.grape and l.islanky) or l.phasewalk),
@@ -218,7 +219,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecLankyToMain),
     ]),
 
-    Regions.TinyTemple: Region("Tiny Temple", "5 Door Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.feather and l.istiny) or l.phasewalk), [
+    Regions.TinyTemple: Region("Tiny Temple", HintRegion.FiveDoorTemple, Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.feather and l.istiny) or l.phasewalk), [
         LocationLogic(Locations.AztecTiny5DoorTemple, lambda l: (l.feather or l.phasewalk) and (l.istiny or l.settings.free_trade_items)),
         LocationLogic(Locations.AztecBananaFairyTinyTemple, lambda l: l.camera and ((l.feather and l.mini and l.istiny) or l.phasewalk)),
         LocationLogic(Locations.AztecTiny5DTEnemy_StartRightFront, lambda l: (l.feather and l.istiny) or l.phasewalk),
@@ -234,7 +235,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecTinyToMain),
     ]),
 
-    Regions.ChunkyTemple: Region("Chunky Temple", "5 Door Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.pineapple and l.ischunky) or l.phasewalk), [
+    Regions.ChunkyTemple: Region("Chunky Temple", HintRegion.FiveDoorTemple, Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.pineapple and l.ischunky) or l.phasewalk), [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: (l.pineapple or l.phasewalk) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecKasplatChunky5DT, lambda l: not l.settings.kasplat_rando and ((l.pineapple and l.ischunky) or l.phasewalk)),
         LocationLogic(Locations.RainbowCoin_Location01, lambda l: (l.pineapple and l.ischunky) or l.phasewalk),
@@ -248,14 +249,14 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecChunkyToMain),
     ]),
 
-    Regions.AztecTinyRace: Region("Aztec Tiny Race", "Aztec Oasis and Totem Area", Levels.AngryAztec, False, None, [
+    Regions.AztecTinyRace: Region("Aztec Tiny Race", HintRegion.OasisAndTotem, Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecRaceToMain),
     ], Transitions.AztecMainToRace
     ),
 
-    Regions.LlamaTemple: Region("Llama Temple", "Llama Temple", Levels.AngryAztec, True, -1, [
+    Regions.LlamaTemple: Region("Llama Temple", HintRegion.LlamaTemple, Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and ((l.handstand and l.islanky) or (l.settings.free_trade_items and ((l.twirl and l.istiny and l.advanced_platforming) or l.CanMoonkick()))), MinigameType.BonusBarrel),
@@ -280,7 +281,7 @@ LogicRegions = {
         TransitionFront(Regions.LlamaTempleBack, lambda l: (l.mini and l.tiny) or l.phasewalk or l.ledgeclip or l.CanOStandTBSNoclip()),
     ]),
 
-    Regions.LlamaTempleBack: Region("Llama Temple Back", "Llama Temple", Levels.AngryAztec, False, -1, [
+    Regions.LlamaTempleBack: Region("Llama Temple Back", HintRegion.LlamaTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.istiny),
         LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: not l.settings.kasplat_rando),
     ], [
@@ -290,11 +291,11 @@ LogicRegions = {
         TransitionFront(Regions.LlamaTemple, lambda l: True),
     ]),
 
-    Regions.AztecBossLobby: Region("Aztec Boss Lobby", "Troff 'N' Scoff", Levels.AngryAztec, True, None, [], [], [
+    Regions.AztecBossLobby: Region("Aztec Boss Lobby", HintRegion.Bosses, Levels.AngryAztec, True, None, [], [], [
         TransitionFront(Regions.AztecBoss, lambda l: l.IsBossReachable(Levels.AngryAztec)),
     ]),
 
-    Regions.AztecBoss: Region("Aztec Boss", "Troff 'N' Scoff", Levels.AngryAztec, False, None, [
+    Regions.AztecBoss: Region("Aztec Boss", HintRegion.Bosses, Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecKey, lambda l: l.IsBossBeatable(Levels.AngryAztec)),
     ], [], []),
 }

@@ -113,7 +113,7 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 		} else if ((purchase_type == PURCHASE_INSTRUMENT) && (purchase_value != 1)) { // Instrument Upgrades
 			base = MRT_CANBUY_INSTRUMENTUPGRADE;
 		} else if (purchase_type == PURCHASE_FLAG) {
-			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
+			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CLIMBING, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
 			base = 0;
 			int subtype = getMoveProgressiveFlagType(shop_data->flag);
 			if (subtype == 0) {

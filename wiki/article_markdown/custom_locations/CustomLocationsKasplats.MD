@@ -7,7 +7,7 @@
 | Jungle Japes | Japes Kasplat: Beehive Area | `` | 
 | Jungle Japes | Japes Kasplat: Hive Tunnel Lower | `` | 
 | Jungle Japes | Japes Kasplat: Hive Tunnel Upper | `` | 
-| Japes Under Ground | Japes Kasplat: Underground | `(l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk` | 
+| Japes Under Ground | Japes Kasplat: Underground | `(l.can_use_vines and l.pineapple and l.ischunky)` | 
 | Jungle Japes | Japes Kasplat: By Lanky Slope Bonus | `` | 
 | Jungle Japes | Japes Kasplat: Near Painting Room | `` | 
 | Jungle Japes | Japes Kasplat: Inside Tiny's Cage | `((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)` | 
@@ -27,12 +27,12 @@
 | --- | ---- | ----- |
 | Angry Aztec | Aztec Kasplat: DK Quicksand Tunnel | `` | 
 | Angry Aztec | Aztec Kasplat: On the Oasis | `` | 
-| Angry Aztec | Aztec Kasplat: On Llama Cage | `l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick()` | 
+| Angry Aztec | Aztec Kasplat: On Llama Cage | `((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick()` | 
 | Angry Aztec | Aztec Kasplat: Near giant boulder | `` | 
 | Angry Aztec | Aztec Kasplat: Behind DK Stone Door | `l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
 | Aztec Llama Temple | Aztec Kasplat: Llama Temple Lava | `` | 
 | Angry Aztec | Aztec Kasplat: Hunky Chunky Barrel | `` | 
-| Angry Aztec | Aztec Kasplat: On Tiny Temple | `l.jetpack` | 
+| Angry Aztec | Aztec Kasplat: On Tiny Temple | `l.jetpack and l.isdiddy and l.climbing` | 
 | Angry Aztec | Aztec Kasplat: In Vase Room | `(l.chunky and l.pineapple) or l.phasewalk` | 
 | Angry Aztec | Aztec Kasplat: Behind 5-Door Temple | `` | 
 | Angry Aztec | Aztec Kasplat: Near Snide's | `` | 
@@ -76,7 +76,7 @@
 | Gloomy Galleon | Galleon Kasplat: Musical Cactus | `` | 
 | Gloomy Galleon | Galleon Kasplat: On the Crown Pad | `(l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)` | 
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's | `` | 
-| Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `` | 
+| Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `l.climbing` | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish | `` | 
 | Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | `(Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))` | 
 | Galleon Sick Bay | Galleon Kasplat: Sickbay | `` | 

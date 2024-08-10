@@ -150,23 +150,23 @@ MinigameRequirements = {
     ),
     Minigames.StashSnatchInsane: Minigame(name="Stash Snatch (120 seconds, 33 coins)", group="Stash Snatch", map_id=Maps.StashSnatchInsane, difficulty_lvl=4, logic=lambda l: True),
     # Splish Splash Salvage
-    Minigames.SplishSplashSalvageEasy: Minigame(name="Splish Splash Salvage (8 coins)", group="Splish Splash Salvage", map_id=Maps.SplishSplashSalvageEasy, logic=lambda l: l.swim and l.vines),
+    Minigames.SplishSplashSalvageEasy: Minigame(name="Splish Splash Salvage (8 coins)", group="Splish Splash Salvage", map_id=Maps.SplishSplashSalvageEasy, logic=lambda l: l.swim and l.can_use_vines),
     Minigames.SplishSplashSalvageNormal: Minigame(
         name="Splish Splash Salvage (10 coins)", group="Splish Splash Salvage", map_id=Maps.SplishSplashSalvageNormal, difficulty_lvl=1, logic=lambda l: l.swim
     ),
     Minigames.SplishSplashSalvageHard: Minigame(name="Splish Splash Salvage (15 coins)", group="Splish Splash Salvage", map_id=Maps.SplishSplashSalvageHard, difficulty_lvl=2, logic=lambda l: l.swim),
     # Speedy Swing Sortie
-    Minigames.SpeedySwingSortieEasy: Minigame(name="Speedy Swing Sortie (40 seconds, 9 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieEasy, logic=lambda l: l.vines),
+    Minigames.SpeedySwingSortieEasy: Minigame(name="Speedy Swing Sortie (40 seconds, 9 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieEasy, logic=lambda l: l.can_use_vines),
     Minigames.SpeedySwingSortieNormal: Minigame(
         name="Speedy Swing Sortie (45 seconds, 14 coins, need twirl)",
         group="Speedy Swing Sortie",
         map_id=Maps.SpeedySwingSortieNormal,
         difficulty_lvl=1,
-        logic=lambda l: (l.vines and (l.twirl and l.istiny)) or (l.advanced_platforming and l.isdonkey and not l.isKrushaAdjacent(Kongs.donkey)),
+        logic=lambda l: (l.can_use_vines and (l.twirl and l.istiny)) or (l.advanced_platforming and l.isdonkey and l.climbing and not l.isKrushaAdjacent(Kongs.donkey)),
         kong_list=[Kongs.tiny],
     ),
     Minigames.SpeedySwingSortieHard: Minigame(
-        name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: l.vines
+        name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: l.can_use_vines
     ),
     Minigames.KrazyKongKlamourEasy: Minigame(name="Krazy Kong Klamour (10 Bananas, Slow Flicker)", group="Krazy Kong Klamour", map_id=Maps.KrazyKongKlamourEasy, logic=lambda l: True),
     Minigames.KrazyKongKlamourNormal: Minigame(
@@ -287,7 +287,7 @@ MinigameRequirements = {
         group="Training Minigames",
         map_id=Maps.VineBarrel,
         can_repeat=True,
-        logic=lambda l: l.vines or not l.settings.bonus_barrel_rando,
+        logic=lambda l: (l.can_use_vines and l.climbing) or not l.settings.bonus_barrel_rando,
     ),
     Minigames.DiveBarrel: Minigame(
         name="Dive Training",

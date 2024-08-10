@@ -10,7 +10,7 @@ LogicRegions = {
     Regions.TrainingGrounds: [
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Cave
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Cave
-        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.vines and l.shockwave, None, ),  # Banana hoard
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.can_use_vines and l.shockwave, None, ),  # Banana hoard
 
     ],
     Regions.IslesMain: [
@@ -72,6 +72,9 @@ LogicRegions = {
 
     ],
     Regions.IslesMainUpper: [
+
+    ],
+    Regions.IslesHill: [
 
     ],
     Regions.OuterIsles: [

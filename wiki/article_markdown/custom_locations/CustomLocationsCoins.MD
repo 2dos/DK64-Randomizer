@@ -4,11 +4,11 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Around tree by training barrels | 4 | `` | 
-| On left treetop by Cranky's | 2 | `` | 
-| On right treetop by Cranky's | 2 | `` | 
-| On cliff top by Cranky's | 3 | `` | 
+| On left treetop by Cranky's | 2 | `l.climbing` | 
+| On right treetop by Cranky's | 2 | `l.climbing` | 
+| On cliff top by Cranky's | 3 | `l.climbing` | 
 | Bottom of the pool | 3 | `l.swim` | 
-| Banana hoard | 4 | `l.vines or l.CanMoonkick()` | 
+| Banana hoard | 4 | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Rear Tunnel | 3 | `` | 
 ## Treehouse
 | Name | Amount | Logic |
@@ -20,7 +20,7 @@
 | ---- | ------ | ----- |
 | On beach, in corner by path to Aztec lobby | 3 | `` | 
 | In water below waterfall | 5 | `l.swim` | 
-| On top of tree between Japes Lobby and Fungi cannon | 3 | `` | 
+| On top of tree between Japes Lobby and Fungi cannon | 3 | `l.climbing` | 
 | On slope on path to Aztec lobby | 3 | `` | 
 | At the bottom of Aztec steps | 5 | `` | 
 | In little alcove in DK's ear in front of Aztec lobby | 3 | `` | 
@@ -167,7 +167,7 @@
 | Around torch in the middle of fairy room on water surface | 4 | `` | 
 | Near entrance portal | 3 | `` | 
 | Main Area Underwater (1) | 3 | `l.swim` | 
-| Around the Baboon Blast Pad | 3 | `l.vines or l.CanMoonkick()` | 
+| Around the Baboon Blast Pad | 3 | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Start of first tunnel | 3 | `` | 
 | Diddy Cavern (1) | 3 | `` | 
 | Fairy Pool | 5 | `l.swim` | 
@@ -175,7 +175,7 @@
 | Diddy Cavern (2) | 3 | `` | 
 | Near Diddy Kasplat | 3 | `` | 
 | Near Tiny Kasplat | 3 | `` | 
-| In between the vines near Diddy Kasplat | 1 | `l.vines` | 
+| In between the vines near Diddy Kasplat | 1 | `l.can_use_vines` | 
 | Near DK Kasplat | 3 | `` | 
 | Cannon Path | 2 | `` | 
 | Near Lanky Kasplat | 3 | `` | 
@@ -191,7 +191,7 @@
 | Left side towards the end of the cave | 3 | `` | 
 | Around center platform | 3 | `` | 
 | Behind Entrance Cannon | 3 | `` | 
-| Near Underground Reward | 3 | `(l.vines and l.pineapple and l.ischunky) or l.phasewalk` | 
+| Near Underground Reward | 3 | `(l.can_use_vines and l.pineapple and l.ischunky) or l.phasewalk` | 
 ## Japes Lanky Cave
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -260,7 +260,7 @@
 | At the end of the quicksand tunnel | 4 | `` | 
 | Around the Giant Boulder | 3 | `` | 
 | Around the Bonus Barrel Cage | 4 | `` | 
-| Vines near Snide's HQ | 4 | `l.vines` | 
+| Vines near Snide's HQ | 4 | `l.can_use_vines and l.climbing` | 
 | Around Hunky Chunky Barrel | 3 | `` | 
 | Behind 5-Door Temple | 3 | `` | 
 | Under Oasis Tag | 4 | `` | 
@@ -310,7 +310,7 @@
 | Around the left lava room platform | 4 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny` | 
 | Around Instrument Pad | 5 | `` | 
 | Near Tag Barrel | 3 | `` | 
-| Matching Game Room Vines | 2 | `((l.grape and l.islanky) or l.phasewalk) and l.vines` | 
+| Matching Game Room Vines | 2 | `((l.grape and l.islanky) or l.phasewalk) and l.can_use_vines` | 
 ## Aztec Tiny Temple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -341,7 +341,7 @@
 | Corner of tunnel to Production Room | 3 | `` | 
 | On low boxes in lower Production Room | 4 | `` | 
 | On a pipe in lower Production Room | 3 | `` | 
-| On the spinning section in Lower Production Room | 4 | `` | 
+| On the spinning section in Lower Production Room | 4 | `l.climbing` | 
 | On the boxes at the top of production Room | 2 | `` | 
 | Around the production room Simian Spring pad | 4 | `` | 
 | On various boxes around Production Room | 4 | `` | 
@@ -386,13 +386,13 @@
 | Around Tiny's Kasplat | 5 | `` | 
 | Around pole to Block Tower Room | 5 | `` | 
 | Above pole to Snide's HQ | 5 | `` | 
-| Around high W4 | 5 | `` | 
+| Around high W4 | 5 | `l.climbing` | 
 | Below pole to R&D | 5 | `` | 
 | Above pole to R&D | 5 | `` | 
 | On elevators to upper production room | 3 | `` | 
 | Behind a box in Block Tower room | 4 | `` | 
 | Alcoves in Block Tower Room | 4 | `` | 
-| Around the spinning section in Production Room | 4 | `` | 
+| Around the spinning section in Production Room | 4 | `l.climbing` | 
 | Under a grate in R&D | 4 | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
 | Near Number Game | 3 | `` | 
 | Around Arcade Tunnel Bonus | 3 | `(l.punch and l.ischunky) or l.phasewalk` | 
@@ -473,9 +473,9 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Lighthouse Entry | 4 | `` | 
-| Lighthouse Climb (1) | 3 | `` | 
-| Lighthouse Climb (2) | 3 | `` | 
-| Top of Lighthouse | 2 | `` | 
+| Lighthouse Climb (1) | 3 | `l.climbing` | 
+| Lighthouse Climb (2) | 3 | `l.climbing` | 
+| Top of Lighthouse | 2 | `l.climbing` | 
 ## Galleon Mechafish
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -536,9 +536,9 @@
 | Around apple dropoff zone | 6 | `` | 
 | Right of blue tunnel entry | 3 | `` | 
 | Around well stump | 4 | `` | 
-| On well roof edges | 3 | `l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)` | 
-| Mushroom Stem | 4 | `` | 
-| On Clock Pendulum | 3 | `` | 
+| On well roof edges | 3 | `(l.climbing and (l.can_use_vines or l.CanMoonkick())) or (l.jetpack and l.isdiddy)` | 
+| Mushroom Stem | 4 | `l.climbing` | 
+| On Clock Pendulum | 3 | `l.climbing` | 
 | On Clock Torches | 2 | `` | 
 | Level Entry | 3 | `` | 
 | On bouncy mushroom in clock area | 3 | `` | 
@@ -549,7 +549,7 @@
 | On the pink tunnel rim on the Giant Mushroom side | 3 | `l.jetpack and l.isdiddy` | 
 | Behind the lowest ladder in the Giant Mushroom area | 2 | `` | 
 | Around the lower platform in the Giant Mushroom Area | 6 | `` | 
-| Behind the second lowest ladder in the Giant Mushroom Area | 2 | `` | 
+| Behind the second lowest ladder in the Giant Mushroom Area | 2 | `l.climbing` | 
 | Above the second lowest ladder in the Giant Mushroom Area | 2 | `` | 
 | On the entryways to the 3 top rooms in the Giant Mushroom Area | 3 | `` | 
 | On the Giant Mushroom top | 12 | `(l.jetpack and l.isdiddy) or (l.islanky and l.handstand)` | 
@@ -568,7 +568,7 @@
 | Behind the well exit | 3 | `` | 
 | Near the thornvine barn | 3 | `` | 
 | On Thorny Hedge | 3 | `l.isdonkey and l.strongKong` | 
-| Around BBlast Pad | 3 | `` | 
+| Around BBlast Pad | 3 | `l.climbing` | 
 | Behind Clock | 3 | `` | 
 | On Mushroom near Mill far tag | 3 | `` | 
 | Around Crown Pad | 3 | `` | 
@@ -576,7 +576,7 @@
 | On Mushroom near Dark Rafters Barn | 3 | `` | 
 | Behind Giant Mushroom | 3 | `` | 
 | Under Hollow Tree | 3 | `` | 
-| On Well | 3 | `l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)` | 
+| On Well | 3 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | On Archway to Giant Mushroom Area | 3 | `(l.twirl and l.istiny) or l.advanced_platforming` | 
 | Inside Hollow Tree night fence | 4 | `l.jetpack and l.isdiddy and l.TimeAccess(Regions.HollowTreeArea, Time.Night)` | 
 | Near Beanstalk Mini Monkey Barrel | 3 | `` | 
@@ -757,7 +757,7 @@
 | Near DK Portal | 4 | `` | 
 | Starting pool | 3 | `` | 
 | Near Low Tag Barrel | 4 | `` | 
-| High tree at the back of Castle | 4 | `` | 
+| High tree at the back of Castle | 4 | `l.climbing` | 
 | Above a gravestone near lower tunnel entry | 3 | `` | 
 | Outside lower tunnel entry | 4 | `` | 
 | Above retracting platforms | 2 | `` | 
@@ -775,11 +775,11 @@
 | Around Castle Tree exterior | 3 | `l.jetpack and l.isdiddy` | 
 | Around Tiny Kasplat | 3 | `` | 
 | Around upper W2 | 3 | `` | 
-| On thin tree near the Tree entrance | 2 | `` | 
+| On thin tree near the Tree entrance | 2 | `l.climbing` | 
 | Behind Grave (1) | 3 | `` | 
 | Hanging off ledge near Castle Tree entrance | 3 | `` | 
 | Behind Grave (2) | 3 | `` | 
-| On tree near Crypt Entrance | 2 | `` | 
+| On tree near Crypt Entrance | 2 | `l.climbing` | 
 | On Drawbridge | 4 | `l.jetpack and l.isdiddy` | 
 | Above Window | 2 | `l.jetpack and l.isdiddy` | 
 ## Castle Ballroom
@@ -798,7 +798,7 @@
 | Dungeon - Behind Gate (2) | 2 | `l.punch and l.chunky or l.phasewalk` | 
 | Dungeon - Behind Gate (3) | 2 | `l.punch and l.chunky or l.phasewalk` | 
 | Donkey's Dungeon Room | 4 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk` | 
-| Diddy's Dungeon Room | 4 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.scope and l.peanut and l.vines` | 
+| Diddy's Dungeon Room | 4 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.scope and l.peanut and l.can_use_vines` | 
 | Around Donkey Switch | 4 | `` | 
 | Inside punchable grate | 3 | `(l.punch and l.chunky) or l.phasewalk` | 
 | Above the acid in Lanky's Room | 3 | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.islanky and l.trombone and l.balloon` | 
@@ -831,9 +831,9 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On Goo Hands | 6 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.istiny and l.twirl` | 
-| Between Mausoleum Vines | 6 | `((l.grape and l.sprint) or l.generalclips or l.phasewalk) and l.islanky and l.trombone and l.vines` | 
+| Between Mausoleum Vines | 6 | `((l.grape and l.sprint) or l.generalclips or l.phasewalk) and l.islanky and l.trombone and l.can_use_vines` | 
 | Around Tiny Slam Pad | 2 | `(l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))) or l.phasewalk) and l.istiny` | 
-| Around Lanky Reward | 3 | `((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.vines) or l.advanced_platforming) and l.islanky` | 
+| Around Lanky Reward | 3 | `((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.can_use_vines) or l.advanced_platforming) and l.islanky` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |
 | ---- | ------ | ----- |

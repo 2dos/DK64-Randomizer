@@ -48,6 +48,7 @@ ColoredBananaGroupList = [
         name="Treehouse balcony",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 1410, 227, 1080],
             [1, 1.0, 1377, 227, 1080],
@@ -62,6 +63,7 @@ ColoredBananaGroupList = [
         name="Windowsills",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1266, 249, 1157],
             [5, 1.0, 1264, 249, 1217],
@@ -73,6 +75,7 @@ ColoredBananaGroupList = [
         name="Tree front of treehouse",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1405, 228, 1003],
         ],
@@ -83,6 +86,7 @@ ColoredBananaGroupList = [
         name="Tree right of treehouse",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1131, 243, 1112],
         ],
@@ -93,6 +97,7 @@ ColoredBananaGroupList = [
         name="Tree next to rear tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1201, 250, 1511],
         ],
@@ -103,7 +108,7 @@ ColoredBananaGroupList = [
         name="On exit ledge",
         konglist=[Kongs.tiny],
         region=Regions.TrainingGrounds,
-        logic=lambda l: (l.istiny and l.twirl),
+        logic=lambda l: (l.istiny and l.twirl) and l.climbing,
         locations=[
             [1, 1.0, 1032, 236, 565],
             [1, 1.0, 1026, 228, 629],
@@ -123,6 +128,7 @@ ColoredBananaGroupList = [
         name="On rear ledge",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 1002, 253, 1895],
             [1, 1.0, 1003, 248, 1853],
@@ -223,7 +229,7 @@ ColoredBananaGroupList = [
         name="Banana hoard tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[
             [1, 1.0, 2073, 211, 1180],
             [1, 1.0, 2125, 211, 1201],
@@ -243,7 +249,7 @@ ColoredBananaGroupList = [
         name="Banana hoard room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[
             [5, 1.0, 2422, 216, 1108],
             [5, 1.0, 2422, 216, 954],
@@ -491,6 +497,7 @@ ColoredBananaGroupList = [
         name="Tree next to Japes",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 3554, 709, 1920],
         ],
@@ -501,6 +508,7 @@ ColoredBananaGroupList = [
         name="Tree on beaver beach",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 3506, 706, 1388],
         ],
@@ -511,6 +519,7 @@ ColoredBananaGroupList = [
         name="Tree near W3",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 3170, 707, 880],
         ],
@@ -605,7 +614,7 @@ ColoredBananaGroupList = [
         map_id=Maps.Isles,
         name="Tree below Caves",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.IslesMain,
+        region=Regions.IslesHill,
         locations=[
             [5, 1.0, 2358, 807, 1747],
         ],
@@ -615,7 +624,7 @@ ColoredBananaGroupList = [
         map_id=Maps.Isles,
         name="Path below Caves",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.IslesMain,
+        region=Regions.IslesHill,
         locations=[
             [1, 1.0, 2509, 800, 1403],
             [1, 1.0, 2531, 825, 1350],
@@ -1111,7 +1120,7 @@ ColoredBananaGroupList = [
         name="On vines to Snide",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.KremIsleBeyondLift,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines,
         locations=[
             [5, 1.0, 2409, 946, 3208],
         ],
@@ -2618,7 +2627,7 @@ ColoredBananaGroupList = [
         name="Under bonus barrel",
         konglist=[Kongs.chunky],
         region=Regions.HideoutHelmLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.vines,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines,
         locations=[
             [5, 1.0, 687, 201, 639],
         ],
@@ -2668,7 +2677,7 @@ ColoredBananaGroupList = [
         name="Far W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HideoutHelmLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.vines,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines,
         locations=[
             [5, 1.0, 454, 216, 1013],
         ],
@@ -2943,7 +2952,7 @@ BalloonList = [
         name="Around the tree below caves",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.IslesMain,
+        region=Regions.IslesHill,
         points=[[2285, 750, 1800], [2405, 715, 1826], [2338, 700, 1703]],
     ),
     Balloon(

@@ -90,7 +90,9 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk,
+            additional_logic=lambda l: (l.can_use_vines and l.pineapple and l.ischunky)
+            or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items)
+            or l.phasewalk,
             vanilla=True,
         ),
         KasplatLocation(
@@ -253,7 +255,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
+            additional_logic=lambda l: ((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near giant boulder",
@@ -309,7 +311,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.diddy],
             coords=[3169, 445, 647],
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.isdiddy and l.climbing,
             vanilla=True,
         ),
         KasplatLocation(
@@ -515,7 +517,7 @@ KasplatLocationList = {
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[4148, 1336, 1016],
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             vanilla=True,
         ),
         KasplatLocation(
@@ -728,6 +730,7 @@ KasplatLocationList = {
             zmin=501,
             zmax=530,
             region=Regions.Lighthouse,
+            additional_logic=lambda l: l.climbing,
         ),
         KasplatLocation(
             name="Galleon Kasplat: In the Mechfish", map_id=Maps.GalleonMechafish, kong_lst=[Kongs.diddy], coords=[314, 25, 528], xmin=303, xmax=322, zmin=497, zmax=537, region=Regions.Mechafish
@@ -884,7 +887,7 @@ KasplatLocationList = {
             map_id=Maps.ForestGiantMushroom,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[329, 534, 402],
-            region=Regions.MushroomUpper,
+            region=Regions.MushroomMiddle,
             vanilla=True,
         ),
         KasplatLocation(

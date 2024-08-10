@@ -257,7 +257,7 @@ piano_extreme_model = [
 ]
 
 spotlight_fish_models = [
-    Model.Turtle,
+    # Model.Turtle,  # Lighting Bug
     Model.Seal,
     Model.BeaverBlue,
     Model.BeaverGold,
@@ -270,7 +270,7 @@ spotlight_fish_models = [
     Model.KlaptrapRed,
     Model.Krash,
     Model.SirDomino,
-    Model.MrDice_41,
+    # Model.MrDice_41,  # Lighting issue
     # Model.Ruler, # Lighting issue
     Model.RoboKremling,
     Model.NintendoLogo,
@@ -777,12 +777,12 @@ def apply_cosmetic_colors(settings: Settings):
                 finish = (2 * x) + 3
                 channel = int(settings.gb_custom_color[start:finish], 16)
                 channels.append(channel)
-        textures = [0xB7B] + list(range(0x155C, 0x1568))
+        textures = [0xB7B, 0x323] + list(range(0x155C, 0x1568))
         for tex in textures:
-            dimension = 32 if tex == 0xB7B else 44
+            dimension = 32 if tex in (0xB7B, 0x323) else 44
             shine_img = getImageFile(25, tex, True, dimension, dimension, TextureFormat.RGBA5551)
             gb_shine_img = maskImageGBSpin(shine_img, tuple(channels), tex)
-            if tex == 0xB7B:
+            if tex in (0xB7B, 0x323):
                 min_rgb = min(channels[0], channels[1], channels[2])
                 max_rgb = max(channels[0], channels[1], channels[2])
                 is_greyscale = (max_rgb - min_rgb) < 50

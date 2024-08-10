@@ -16,7 +16,7 @@ from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName, CustomActors
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.CompileHints import getHelmProgItems
+from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 
 
 model_two_indexes = {
@@ -740,6 +740,10 @@ def place_randomized_items(spoiler, original_flut: list):
                                 model = trap_types.get(item.new_subitem, -4) + 0x10000
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
+            if item.new_item == Types.Hint:
+                offset = item.new_flag - 0x384
+                tied_region = GetRegionIdOfLocation(spoiler, item.location)
+                spoiler.tied_hint_regions[offset] = spoiler.RegionList[tied_region].hint_name
             if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
                 # Write flag lookup table
                 data = [item.old_flag]

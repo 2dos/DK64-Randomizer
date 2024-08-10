@@ -152,7 +152,7 @@ LocationListOriginal = {
     Locations.IslesBarrelsTrainingBarrel: Location(Levels.DKIsles, "Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel, Kongs.any, [122]),
     # Pre-Given Moves
     Locations.IslesFirstMove: Location(Levels.DKIsles, "Isles Cranky's First Move", Items.ProgressiveSlam, Types.PreGivenMove),
-    Locations.PreGiven_Location00: Location(Levels.DKIsles, "Pre-Given Move (00)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location00: Location(Levels.DKIsles, "Pre-Given Move (00)", Items.Climbing, Types.PreGivenMove),
     Locations.PreGiven_Location01: Location(Levels.DKIsles, "Pre-Given Move (01)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location02: Location(Levels.DKIsles, "Pre-Given Move (02)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location03: Location(Levels.DKIsles, "Pre-Given Move (03)", Items.NoItem, Types.PreGivenMove),
@@ -188,6 +188,7 @@ LocationListOriginal = {
     Locations.PreGiven_Location33: Location(Levels.DKIsles, "Pre-Given Move (33)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location34: Location(Levels.DKIsles, "Pre-Given Move (34)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location35: Location(Levels.DKIsles, "Pre-Given Move (35)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location36: Location(Levels.DKIsles, "Pre-Given Move (36)", Items.NoItem, Types.PreGivenMove),
     # Shop Owners (Dummy Locations)
     Locations.ShopOwner_Location00: Location(Levels.DKIsles, "Pre-Given Shop (0)", Items.Cranky, Types.Cranky, Kongs.any, [MapIDCombo(0, -1, 0x3C2, Kongs.any)]),
     Locations.ShopOwner_Location01: Location(Levels.DKIsles, "Pre-Given Shop (1)", Items.Funky, Types.Funky, Kongs.any, [MapIDCombo(0, -1, 0x3C3, Kongs.any)]),
@@ -1425,6 +1426,7 @@ PreGivenLocations = {
     Locations.PreGiven_Location33,
     Locations.PreGiven_Location34,
     Locations.PreGiven_Location35,
+    Locations.PreGiven_Location36,
 }
 
 WrinklyHintLocations = {

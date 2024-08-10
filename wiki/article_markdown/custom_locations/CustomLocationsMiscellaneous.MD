@@ -3,9 +3,9 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Jungle Japes | Near Funky |  | `` | 
-| Jungle Japes | On Painting Hill |  | `((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)))` | 
+| Jungle Japes | On Painting Hill |  | `((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)))` | 
 | Jungle Japes | Next to level entrance |  | `` | 
-| Jungle Japes | On Tree (Starting Area) |  | `` | 
+| Jungle Japes | On Tree (Starting Area) |  | `l.climbing` | 
 | Jungle Japes | Next to first tunnel entrance |  | `` | 
 | Jungle Japes | Diddy Cavern |  | `` | 
 | Jungle Japes | Inside Diddy's Cavern |  | `` | 
@@ -65,7 +65,7 @@
 | Angry Aztec | Behind Tiny Temple |  | `` | 
 | Angry Aztec | Next to Tiny Temple - left |  | `` | 
 | Angry Aztec | Next to Tiny Temple - right |  | `` | 
-| Angry Aztec | On Tiny Temple |  | `(l.jetpack and l.diddy) or l.CanMoonkick(), group=1` | 
+| Angry Aztec | On Tiny Temple |  | `((l.jetpack and l.diddy) or l.CanMoonkick()) and l.climbing` | 
 | Angry Aztec | Near Oasis Shop |  | `` | 
 | Angry Aztec | Behind Llama Cage |  | `` | 
 | Angry Aztec | Near Hunky Chunky Barrel |  | `` | 
@@ -80,7 +80,7 @@
 | Angry Aztec | Near Sealed Quicksand Tunnel Shop |  | `` | 
 | Angry Aztec | On 5-Door Temple |  | `(l.jetpack and l.diddy) or l.CanMoonkick(), group=3` | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Exterior Warp |  | `` | 
-| Angry Aztec | Near Vulture Cage |  | `l.vines or (l.jetpack and l.diddy) or l.CanMoonkick()` | 
+| Angry Aztec | Near Vulture Cage |  | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.diddy)` | 
 | Angry Aztec | Under Vulture Cage |  | `` | 
 | Angry Aztec | Next to Snide |  | `` | 
 | Angry Aztec | Behind Gong-tower |  | `` | 
@@ -142,8 +142,8 @@
 | Frantic Factory | In Lanky's Piano Room | CrownPad | `((l.trombone and l.islanky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Diddy R and D | CrownPad | `(l.guitar and l.diddy) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In Diddy's Pincode enemies room | CrownPad | `((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Chunky R and D | CrownPad | `(l.triangle and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | In front of Chunky's toy boss room | CrownPad | `((l.punch and l.ischunky) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Chunky R and D | CrownPad | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | In front of Chunky's toy boss room | CrownPad | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.phasewalk)` | 
 | Frantic Factory | Tiny race entry area |  | `((l.mini and l.istiny) or l.phasewalk)` | 
 | Frantic Factory | R and D lever room - by Tiny's barrel |  | `` | 
@@ -194,8 +194,8 @@
 | Galleon Sick Bay | Seasick Ship: Behind Spinning Barrels |  | `(l.punch and l.ischunky) or l.phasewalk` | 
 | Galleon Lighthouse | Lighthouse: Bottom Left |  | `` | 
 | Galleon Lighthouse | Lighthouse: Back Right |  | `` | 
-| Galleon Lighthouse | Lighthouse: Behind Whomp's Fortress floor 2 |  | `` | 
-| Galleon Lighthouse | Lighthouse: On top of Whomp's Fortress |  | `` | 
+| Galleon Lighthouse | Lighthouse: Behind Whomp's Fortress floor 2 |  | `l.climbing` | 
+| Galleon Lighthouse | Lighthouse: On top of Whomp's Fortress |  | `l.climbing` | 
 
 # Fungi Forest
 | Map | Name | Banned Types | Logic |
@@ -233,7 +233,7 @@
 | Fungi Forest | Near Yellow Tunnel | DirtPatch | `` | 
 | Fungi Forest | Near Cranky |  | `` | 
 | Fungi Forest | Near Lower Baboon Blast Ladder |  | `` | 
-| Fungi Forest | Near Baboon Blast |  | `` | 
+| Fungi Forest | Near Baboon Blast |  | `l.climbing` | 
 | Fungi Forest | Above Upper Baboon Blast Ladder |  | `` | 
 | Fungi Forest | Highest Giant Mushroom Platform |  | `` | 
 | Fungi Forest | Behind Rabbit |  | `` | 
@@ -393,7 +393,7 @@
 | Isles | On Aztec Building |  | `` | 
 | Isles | Under Caves Lobby Entrance |  | `` | 
 | Creepy Castle Lobby | Castle Lobby: Center |  | `((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny))))` | 
-| Training Grounds | Banana Hoard |  | `(l.vines or l.CanMoonkick() or l.phasewalk)` | 
+| Training Grounds | Banana Hoard |  | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Training Grounds | Training Grounds Rear Tunnel |  | `` | 
 | KLumsy | Back of Prison |  | `` | 
 | Isles | Behind Fungi Building |  | `` | 
@@ -442,14 +442,14 @@
 | Creepy Castle Lobby | Castle Lobby: Right of Entrance |  | `` | 
 | Creepy Castle Lobby | Castle Lobby: Left of Portal |  | `` | 
 | Hideout Helm Lobby | Helm Lobby: Next to Tag Barrel |  | `` | 
-| Hideout Helm Lobby | Helm Lobby: Bonus Platform |  | `(l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl)` | 
+| Hideout Helm Lobby | Helm Lobby: Bonus Platform |  | `(l.can_use_vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl)` | 
 | Hideout Helm Lobby | Helm Lobby: Blueprint Platform |  | `((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming))` | 
-| Training Grounds | Training Grounds: Far Mountain |  | `` | 
-| Training Grounds | Training Grounds: On the rear hill |  | `` | 
-| Training Grounds | Training Grounds: On the entrance hill |  | `((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
-| Training Grounds | Training Grounds: Near Mountain |  | `(l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))` | 
+| Training Grounds | Training Grounds: Far Mountain |  | `l.climbing` | 
+| Training Grounds | Training Grounds: On the rear hill |  | `l.climbing` | 
+| Training Grounds | Training Grounds: On the entrance hill |  | `l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
+| Training Grounds | Training Grounds: Near Mountain |  | `l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | Training Grounds | Training Grounds: Rear Cave |  | `` | 
-| Training Grounds | Training Grounds: Banana Hoard |  | `l.vines or l.CanMoonkick() or l.phasewalk` | 
+| Training Grounds | Training Grounds: Banana Hoard |  | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Training Grounds | Training Grounds: Under Water | CrownPad, DirtPatch | `l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope` | 
 | Training Grounds | Training Grounds: Near Pool |  | `` | 
 | Treehouse | Back of the treehouse |  | `` | 
