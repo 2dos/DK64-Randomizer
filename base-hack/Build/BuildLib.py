@@ -13,6 +13,14 @@ heap_size = 0x34000 + music_size
 flut_size = 0
 MODEL_DIRECTORY = "assets/models/"
 
+INSTRUMENT_PADS = {
+    168: "bongo",
+    169: "guitar",
+    170: "sax",
+    171: "triangle",
+    172: "trombone",
+}
+
 barrel_skins = (
     "gb",
     "dk",
