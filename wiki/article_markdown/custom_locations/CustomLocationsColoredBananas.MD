@@ -782,7 +782,9 @@
 | Mushroom by back tag barrel | 5 | `` | 
 | Mushroom by Minecart exit | 5 | `` | 
 | Top of Minecart exit | 10 | `l.istiny and l.twirl` | 
-| Top of Mill (8 custom, 7 Lanky) | 15 | `` | 
+| Top of Mill (8 custom, 7 Lanky) | 1 | `` | 
+| Top of Mill (8 custom, 7 Lanky) | 10 | `` | 
+| Top of Mill (8 custom, 7 Lanky) | 4 | `` | 
 | Outside of conveyor belt (behind night gate) | 5 | `Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip` | 
 | W1 (1 custom, 1 Lanky bunch) | 5 | `` | 
 | W1 (1 custom, 1 Lanky bunch) | 5 | `` | 
@@ -1492,7 +1494,7 @@
 | Tree front of treehouse | 5 | `l.climbing` | 
 | Tree right of treehouse | 5 | `l.climbing` | 
 | Tree next to rear tunnel | 5 | `l.climbing` | 
-| On exit ledge | 10 | `(l.istiny and l.twirl)` | 
+| On exit ledge | 10 | `(l.istiny and l.twirl) and l.climbing` | 
 | On rear ledge | 10 | `l.climbing` | 
 | Path to Cranky | 10 | `` | 
 | Around Cranky | 5 | `` | 

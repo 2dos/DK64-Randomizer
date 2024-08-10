@@ -269,6 +269,16 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="Top of Mill (8 custom, 7 Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.MillArea,
+        locations=[
+            [1, 1.0, 4608.65478515625, 232.83334350585938, 3471.3701171875],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=28,
+        map_id=Maps.FungiForest,
+        name="Top of Mill (8 custom, 7 Lanky)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.ForestVeryTopOfMill,
         locations=[
             [1, 1.0, 4588, 462, 3493],
@@ -279,7 +289,6 @@ ColoredBananaGroupList = [
             [1, 1.0, 4448, 459, 3625],
             [1, 1.0, 4404, 459, 3588],
             [1, 1.0, 4490, 459, 3497],
-            [1, 1.0, 4608.65478515625, 232.83334350585938, 3471.3701171875],
             [1, 1.0, 4607.23486328125, 312.8333435058594, 3472.459228515625],
             [1, 1.0, 4610.38525390625, 412.8333435058594, 3471.267333984375],
         ],
