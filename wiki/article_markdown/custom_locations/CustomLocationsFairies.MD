@@ -170,7 +170,7 @@
 | Crystal Caves Lobby | Crystal Caves Lobby | `l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip)` | 
 | Isles Snide Room | Snide Room | `l.camera` | 
 | Training Grounds | Training Grounds Entrance | `l.camera` | 
-| Training Grounds | Training Grounds Hidden Mountain | `l.camera` | 
+| Training Grounds | Training Grounds Hidden Mountain | `l.climbing` | 
 | Treehouse | Treehouse Windows | `l.camera` | 
 
 # Hideout Helm

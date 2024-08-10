@@ -111,7 +111,7 @@ LogicRegions = {
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True),
-        TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestLowerExteriorToUpperMushroom),
+        TransitionFront(Regions.MushroomMiddle, lambda l: True, Transitions.ForestLowerExteriorToUpperMushroom),
     ]),
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", HintRegion.MushroomExterior, Levels.FungiForest, True, None, [
@@ -163,7 +163,7 @@ LogicRegions = {
     # This region basically just exists to facilitate the two entrances into upper mushroom
     Regions.MushroomNightDoor: Region("Mushroom Night Door", HintRegion.MushroomInterior, Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
-        TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomUpperMid, lambda l: l.can_use_vines),
         TransitionFront(Regions.MushroomNightExterior, lambda l: True, Transitions.ForestNightToExterior, time=Time.Night),
     ]),
 

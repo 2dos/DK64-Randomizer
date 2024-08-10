@@ -762,7 +762,7 @@
 | Mushroom with vines leading to minecart | 5 | `` | 
 | On vines between two shrooms | 10 | `l.can_use_vines` | 
 | Vines to minecart | 5 | `l.can_use_vines` | 
-| Around the roof of minecart | 10 | `l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)` | 
+| Around the roof of minecart | 10 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | Mushroom by blue tunnel | 5 | `` | 
 | Stumps leading to pendulum | 15 | `` | 
 | Up the pendulum | 5 | `` | 
@@ -915,8 +915,8 @@
 | On boxes by switch and ladder | 10 | `` | 
 | On two barrels by switch | 10 | `` | 
 | Near melon crate in thornvine area | 5 | `` | 
-| On boxes on upper level | 10 | `` | 
-| On ladder | 5 | `` | 
+| On boxes on upper level | 10 | `l.climbing` | 
+| On ladder | 5 | `l.climbing` | 
 | On switch (Donkey) | 5 | `l.Slam and l.isdonkey` | 
 ## Forest Mill Front
 | Name | Amount | Logic |
@@ -1487,13 +1487,13 @@
 ## Training Grounds
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Treehouse balcony | 5 | `` | 
-| Windowsills | 10 | `` | 
-| Tree front of treehouse | 5 | `` | 
-| Tree right of treehouse | 5 | `` | 
-| Tree next to rear tunnel | 5 | `` | 
+| Treehouse balcony | 5 | `l.climbing` | 
+| Windowsills | 10 | `l.climbing` | 
+| Tree front of treehouse | 5 | `l.climbing` | 
+| Tree right of treehouse | 5 | `l.climbing` | 
+| Tree next to rear tunnel | 5 | `l.climbing` | 
 | On exit ledge | 10 | `(l.istiny and l.twirl)` | 
-| On rear ledge | 10 | `` | 
+| On rear ledge | 10 | `l.climbing` | 
 | Path to Cranky | 10 | `` | 
 | Around Cranky | 5 | `` | 
 | Next to Cranky | 10 | `` | 

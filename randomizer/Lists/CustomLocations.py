@@ -2769,6 +2769,7 @@ CustomLocations = {
             z=1822,
             max_size=72,
             logic_region=Regions.TrainingGrounds,
+            logic=lambda l: l.climbing,
             group=1,
         ),
         CustomLocation(
@@ -2780,6 +2781,7 @@ CustomLocations = {
             rot_y=489,
             max_size=64,
             logic_region=Regions.TrainingGrounds,
+            logic=lambda l: l.climbing,
             group=1,
         ),
         CustomLocation(
@@ -2791,7 +2793,7 @@ CustomLocations = {
             rot_y=3026,
             max_size=64,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
+            logic=lambda l: l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=1,
         ),
         CustomLocation(
@@ -2802,7 +2804,7 @@ CustomLocations = {
             z=734,
             max_size=72,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))),
+            logic=lambda l: l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=1,
         ),
         CustomLocation(map=Maps.TrainingGrounds, name="Training Grounds: Rear Cave", x=1196, y=36.4, z=2119, max_size=56, logic_region=Regions.TrainingGrounds, group=1),

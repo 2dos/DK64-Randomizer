@@ -393,7 +393,7 @@
 | Isles | On Aztec Building |  | `` | 
 | Isles | Under Caves Lobby Entrance |  | `` | 
 | Creepy Castle Lobby | Castle Lobby: Center |  | `((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny))))` | 
-| Training Grounds | Banana Hoard |  | `(l.can_use_vines or l.CanMoonkick() or l.phasewalk)` | 
+| Training Grounds | Banana Hoard |  | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Training Grounds | Training Grounds Rear Tunnel |  | `` | 
 | KLumsy | Back of Prison |  | `` | 
 | Isles | Behind Fungi Building |  | `` | 
@@ -444,12 +444,12 @@
 | Hideout Helm Lobby | Helm Lobby: Next to Tag Barrel |  | `` | 
 | Hideout Helm Lobby | Helm Lobby: Bonus Platform |  | `(l.can_use_vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl)` | 
 | Hideout Helm Lobby | Helm Lobby: Blueprint Platform |  | `((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming))` | 
-| Training Grounds | Training Grounds: Far Mountain |  | `` | 
-| Training Grounds | Training Grounds: On the rear hill |  | `` | 
-| Training Grounds | Training Grounds: On the entrance hill |  | `((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
-| Training Grounds | Training Grounds: Near Mountain |  | `(l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))` | 
+| Training Grounds | Training Grounds: Far Mountain |  | `l.climbing` | 
+| Training Grounds | Training Grounds: On the rear hill |  | `l.climbing` | 
+| Training Grounds | Training Grounds: On the entrance hill |  | `l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
+| Training Grounds | Training Grounds: Near Mountain |  | `l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | Training Grounds | Training Grounds: Rear Cave |  | `` | 
-| Training Grounds | Training Grounds: Banana Hoard |  | `l.can_use_vines or l.CanMoonkick() or l.phasewalk` | 
+| Training Grounds | Training Grounds: Banana Hoard |  | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Training Grounds | Training Grounds: Under Water | CrownPad, DirtPatch | `l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope` | 
 | Training Grounds | Training Grounds: Near Pool |  | `` | 
 | Treehouse | Back of the treehouse |  | `` | 

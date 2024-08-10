@@ -1000,13 +1000,13 @@ class LogicVarHolder:
         elif bossFight == Maps.CastleBoss and self.IsLavaWater():
             hasRequiredMoves = self.Melons >= 3
         elif bossFight == Maps.KroolDonkeyPhase:
-            hasRequiredMoves = self.blast or (not self.settings.cannons_require_blast)
+            hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:
             hasRequiredMoves = self.jetpack and self.peanut
         elif bossFight == Maps.KroolLankyPhase:
             hasRequiredMoves = self.barrels and self.trombone
         elif bossFight == Maps.KroolTinyPhase:
-            hasRequiredMoves = self.mini and self.feather
+            hasRequiredMoves = self.mini and self.feather and (self.climbing or self.twirl)
         elif bossFight == Maps.KroolChunkyPhase:
             hasRequiredMoves = self.punch and self.CanSlamChunkyPhaseSwitch() and self.hunkyChunky and self.gorillaGone
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures

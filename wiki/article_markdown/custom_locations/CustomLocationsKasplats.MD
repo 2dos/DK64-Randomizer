@@ -27,7 +27,7 @@
 | --- | ---- | ----- |
 | Angry Aztec | Aztec Kasplat: DK Quicksand Tunnel | `` | 
 | Angry Aztec | Aztec Kasplat: On the Oasis | `` | 
-| Angry Aztec | Aztec Kasplat: On Llama Cage | `l.can_use_vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick()` | 
+| Angry Aztec | Aztec Kasplat: On Llama Cage | `((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick()` | 
 | Angry Aztec | Aztec Kasplat: Near giant boulder | `` | 
 | Angry Aztec | Aztec Kasplat: Behind DK Stone Door | `l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
 | Aztec Llama Temple | Aztec Kasplat: Llama Temple Lava | `` | 

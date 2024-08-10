@@ -1127,6 +1127,7 @@ fairy_locations = {
             region=Regions.TrainingGrounds,
             fence=Fence(756, 1111, 857, 1339),
             spawn_y=453,
+            logic=lambda l: l.climbing,
         ),
         FairyData(
             name="Treehouse Windows",

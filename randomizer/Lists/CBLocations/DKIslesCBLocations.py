@@ -48,6 +48,7 @@ ColoredBananaGroupList = [
         name="Treehouse balcony",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 1410, 227, 1080],
             [1, 1.0, 1377, 227, 1080],
@@ -62,6 +63,7 @@ ColoredBananaGroupList = [
         name="Windowsills",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1266, 249, 1157],
             [5, 1.0, 1264, 249, 1217],
@@ -73,6 +75,7 @@ ColoredBananaGroupList = [
         name="Tree front of treehouse",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1405, 228, 1003],
         ],
@@ -83,6 +86,7 @@ ColoredBananaGroupList = [
         name="Tree right of treehouse",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1131, 243, 1112],
         ],
@@ -93,6 +97,7 @@ ColoredBananaGroupList = [
         name="Tree next to rear tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1201, 250, 1511],
         ],
@@ -123,6 +128,7 @@ ColoredBananaGroupList = [
         name="On rear ledge",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 1002, 253, 1895],
             [1, 1.0, 1003, 248, 1853],

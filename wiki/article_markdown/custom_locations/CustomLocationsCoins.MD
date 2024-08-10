@@ -8,7 +8,7 @@
 | On right treetop by Cranky's | 2 | `l.climbing` | 
 | On cliff top by Cranky's | 3 | `l.climbing` | 
 | Bottom of the pool | 3 | `l.swim` | 
-| Banana hoard | 4 | `l.can_use_vines or l.CanMoonkick()` | 
+| Banana hoard | 4 | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Rear Tunnel | 3 | `` | 
 ## Treehouse
 | Name | Amount | Logic |
@@ -576,7 +576,7 @@
 | On Mushroom near Dark Rafters Barn | 3 | `` | 
 | Behind Giant Mushroom | 3 | `` | 
 | Under Hollow Tree | 3 | `` | 
-| On Well | 3 | `l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)` | 
+| On Well | 3 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | On Archway to Giant Mushroom Area | 3 | `(l.twirl and l.istiny) or l.advanced_platforming` | 
 | Inside Hollow Tree night fence | 4 | `l.jetpack and l.isdiddy and l.TimeAccess(Regions.HollowTreeArea, Time.Night)` | 
 | Near Beanstalk Mini Monkey Barrel | 3 | `` | 
