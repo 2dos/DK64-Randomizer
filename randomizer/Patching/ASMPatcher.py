@@ -472,9 +472,9 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
                 writeValue(ROM_COPY, 0x80707222, Overlay.Static, 0x073F, offset_dict)
             elif dimensions == MenuTextDim.size_w64_h32:
                 writeValue(ROM_COPY, 0x8070762E, Overlay.Static, 0xFFE0, offset_dict)
+                writeValue(ROM_COPY, 0x8070727E, Overlay.Static, 0xC07C, offset_dict)
                 writeValue(ROM_COPY, 0x80707616, Overlay.Static, 0x40, offset_dict)
                 writeValue(ROM_COPY, 0x80707272, Overlay.Static, 0xF, offset_dict)
-                writeValue(ROM_COPY, 0x8070727E, Overlay.Static, 0xC07C, offset_dict)
                 writeValue(ROM_COPY, 0x80707226, Overlay.Static, 0xF080, offset_dict)
                 writeValue(ROM_COPY, 0x8070725A, Overlay.Static, 0x2000, offset_dict)
                 writeValue(ROM_COPY, 0x807072A2, Overlay.Static, 0x0100, offset_dict)
@@ -1285,6 +1285,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806E9C50, Overlay.Static, "updateFairyStat", offset_dict)
     writeFunction(ROM_COPY, 0x806C7298, Overlay.Static, "createEndSeqCreditsFile", offset_dict)
 
+    writeHook(ROM_COPY, 0x8072F3DC, Overlay.Static, "blockTreeClimbing", offset_dict)
     if settings.enable_tag_anywhere:
         # Reduce TA Cooldown
         writeFunction(ROM_COPY, 0x806F5BE8, Overlay.Static, "tagAnywhereAmmo", offset_dict)
