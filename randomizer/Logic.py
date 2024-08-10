@@ -1098,6 +1098,38 @@ class LogicVarHolder:
             return Events.KRoolDefeated in self.Events and self.camera
         elif self.settings.win_condition_item == WinConditionComplex.get_key8:
             return self.HelmKey
+        elif self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            dk_rap_items = [
+                self.donkey,
+                self.diddy,
+                self.lanky,
+                self.tiny,
+                self.chunky,
+                self.coconut,
+                self.peanut,
+                self.grape,
+                self.pineapple,
+                self.guitar,
+                self.trombone,
+                self.strongKong,
+                self.spring,
+                self.jetpack,
+                self.handstand,
+                self.balloon,
+                self.mini,
+                self.twirl,
+                self.hunkyChunky,
+                self.barrels,
+                self.oranges,
+                self.shockwave,
+                self.climbing,
+                self.superDuperSlam,
+                self.crankyAccess,
+            ]
+            for k in dk_rap_items:
+                if not k:
+                    return False
+            return True
         # Get X amount of Y item win cons
         win_con_table = {
             WinConditionComplex.req_bean: BarrierItems.Bean,

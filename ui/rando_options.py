@@ -290,7 +290,7 @@ def updateDoorTwoNumAccess(event):
         door_two_req.value = 16
 
 
-DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture")
+DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture", "dk_rap_items")
 
 
 @bind("change", "win_condition_item")

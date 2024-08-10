@@ -852,6 +852,7 @@ class WinConditionComplex(IntEnum):
     easy_random = 13
     medium_random = 14
     hard_random = 15
+    dk_rap_items = 16
 
 
 class WrinklyHints(IntEnum):

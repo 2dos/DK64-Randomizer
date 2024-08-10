@@ -391,6 +391,9 @@ def patching_response(spoiler):
         WinConditionComplex.krem_kapture: {
             "index": 2,
         },
+        WinConditionComplex.dk_rap_items: {
+            "index": 4,
+        },
         WinConditionComplex.req_bean: {
             "index": 3,
             "item": 0xA,

@@ -9,7 +9,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import DamageAmount, PuzzleRando, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement, HardBossesSelected
+from randomizer.Enums.Settings import DamageAmount, PuzzleRando, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement, HardBossesSelected, WinConditionComplex
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
@@ -196,6 +196,9 @@ def randomize_setup(spoiler):
     ]
     pickup_list = []
     for pickup in pickup_weights:
+        if pickup["item"] == "film" and spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
+            # Kremling Kapture requires a lot more film
+            pickup["weight"] = 5
         for _ in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
