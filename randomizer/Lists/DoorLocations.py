@@ -131,6 +131,7 @@ def GetBossLobbyRegionIdForRegion(region_id, region):
 
 
 def isBarrierRemoved(spoiler, barrier_id: RemovedBarriersSelected):
+    """Return whether the barrier has been removed."""
     return IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, barrier_id)
 
 
