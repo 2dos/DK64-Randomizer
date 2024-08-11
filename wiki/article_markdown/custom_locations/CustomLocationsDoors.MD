@@ -8,7 +8,7 @@
 | Jungle Japes Lobby | Jungle Japes: Lobby - Far Right | Wrinkly | `` | 
 | Jungle Japes Lobby | Jungle Japes: Lobby - Close Left | Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Diddy Cave | Boss, Dk_Portal, Wrinkly | `` | 
-| Jungle Japes | Jungle Japes: Near Painting Room | Wrinkly | `` | 
+| Jungle Japes | Jungle Japes: Near Painting Room | Wrinkly, Dk_Portal | `` | 
 | Jungle Japes | Jungle Japes: Fairy Cave | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Next to Diddy Cage - right | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Alcove Above Diddy Tunnel - right | Wrinkly | `` | 
@@ -20,8 +20,8 @@
 | Jungle Japes | Jungle Japes: Beehive Area - Next to Beehive - left | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Behind Rambi Door - watery room - left | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Behind Rambi Door - watery room - right | Boss, Dk_Portal, Wrinkly | `` | 
-| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - left | Wrinkly | `(l.islanky and l.handstand) or l.phasewalk` | 
-| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - right | Wrinkly | `(l.islanky and l.handstand) or l.phasewalk` | 
+| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - left | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.phasewalk` | 
+| Jungle Japes | Jungle Japes: Top of Lanky's Useless Slope - right | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.phasewalk` | 
 | Jungle Japes | Jungle Japes: Underwater by Warp 2 | Boss, Dk_Portal, Wrinkly | `l.swim` | 
 | Jungle Japes | Jungle Japes: Underwater by Chunky's underground | Boss, Dk_Portal, Wrinkly | `l.swim` | 
 | Jungle Japes | Jungle Japes: Next to Funky - right | Boss, Dk_Portal, Wrinkly | `` | 
@@ -33,9 +33,9 @@
 | Jungle Japes | Jungle Japes: Entrance Tunnel - Near Diddy Cave - front left | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Entrance Tunnel - Near Warppad 1 and 2 | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Diddy Tunnel - next to hole - river side | Boss, Dk_Portal, Wrinkly | `` | 
-| Jungle Japes | Jungle Japes: Diddy Tunnel - river side | Wrinkly | `` | 
+| Jungle Japes | Jungle Japes: Diddy Tunnel - river side | Wrinkly, Dk_Portal | `` | 
 | Jungle Japes | Jungle Japes: Near Warp 4 and Tunnel Threeway crossing | Boss, Dk_Portal, Wrinkly | `` | 
-| Jungle Japes | Jungle Japes: Cranky Tunnel - Crossroad | Wrinkly | `` | 
+| Jungle Japes | Jungle Japes: Cranky Tunnel - Crossroad | Wrinkly, Dk_Portal | `` | 
 | Jungle Japes | Jungle Japes: Cranky Area - front-right | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Cranky Area - front left | Boss, Dk_Portal, Wrinkly | `` | 
 | Jungle Japes | Jungle Japes: Cranky Area - center left | Boss, Dk_Portal, Wrinkly | `` | 
@@ -64,10 +64,10 @@
 | Angry Aztec | Angry Aztec: Near Snide's | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Behind 5DT | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Next to Candy - right | Boss, Dk_Portal, Wrinkly | `` | 
-| Angry Aztec | Angry Aztec: Under Diddy's Tiny Temple Switch | Boss | `` | 
-| Angry Aztec | Angry Aztec: Under Chunky's Tiny Temple Switch | Boss | `` | 
-| Angry Aztec | Angry Aztec: Under Tiny's Tiny Temple Switch | Boss | `` | 
-| Angry Aztec | Angry Aztec: Under Lanky's Tiny Temple Switch | Boss | `` | 
+| Angry Aztec | Angry Aztec: Under Diddy's Tiny Temple Switch | Boss, Dk_Portal | `` | 
+| Angry Aztec | Angry Aztec: Under Chunky's Tiny Temple Switch | Boss, Dk_Portal | `` | 
+| Angry Aztec | Angry Aztec: Under Tiny's Tiny Temple Switch | Boss, Dk_Portal | `` | 
+| Angry Aztec | Angry Aztec: Under Lanky's Tiny Temple Switch | Boss, Dk_Portal | `` | 
 | Angry Aztec | Angry Aztec: Diddy Tower Stairs - left | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Next to Tag Barrel near Snides | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Under the Vulture Cage | Boss, Dk_Portal, Wrinkly | `` | 
@@ -80,7 +80,7 @@
 | Angry Aztec | Angry Aztec: 5Door Temple Staircase - back | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Entrance Tunnel - next to Coconut Switch | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Entrance Tunnel - left (near the oasis end) | Boss, Dk_Portal, Wrinkly | `` | 
-| Angry Aztec | Angry Aztec: in the sealed quicksand tunnel | Wrinkly | `l.isdonkey and l.strongKong` | 
+| Angry Aztec | Angry Aztec: in the sealed quicksand tunnel | Wrinkly, Dk_Portal | `l.isdonkey and l.strongKong` | 
 | Angry Aztec | Angry Aztec: Near Tag Barrel near Snides - strong kong | Wrinkly | `l.isdonkey and l.strongKong` | 
 | Aztec Llama Temple | Angry Aztec: In Face Matching Game - right | Wrinkly | `(l.islanky and l.grape) or l.phasewalk` | 
 | Aztec Llama Temple | Angry Aztec: In Face Matching Game - left | Wrinkly | `(l.islanky and l.grape) or l.phasewalk` | 
@@ -90,7 +90,7 @@
 | Angry Aztec | Angry Aztec: Oasis - Next to Tunnel - left | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Between Snides and Diddy Gong Tower | Boss, Dk_Portal, Wrinkly | `` | 
 | Angry Aztec | Angry Aztec: Next to Llama Temple - left | Boss, Dk_Portal, Wrinkly | `` | 
-| Angry Aztec | Angry Aztec: Llama Temple's switchless side | Boss | `` | 
+| Angry Aztec | Angry Aztec: Llama Temple's switchless side | Boss, Dk_Portal | `` | 
 | Aztec Tiny Temple | Angry Aztec: Tiny Temple - Main Room - left | Boss, Wrinkly | `` | 
 | Aztec Tiny Temple | Angry Aztec: Tiny Temple - Main Room - back | Wrinkly | `` | 
 | Aztec Tiny Temple | Angry Aztec: Tiny Temple - Across from Slope to Tiny Cage - left | Boss, Wrinkly | `` | 

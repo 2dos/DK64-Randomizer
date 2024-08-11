@@ -478,7 +478,7 @@ with open(ROMName, "rb") as rom:
         os.remove("temp.bin")
     with open("scarab_actor.bin", "wb") as fh:
         fh.write(data)
-    
+
     for obj_id in INSTRUMENT_PADS:
         file_name = INSTRUMENT_PADS[obj_id]
         rom.seek(modeltwo_table + (obj_id << 2))

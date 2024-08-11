@@ -9,7 +9,17 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import DamageAmount, PuzzleRando, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement, HardBossesSelected, WinConditionComplex
+from randomizer.Enums.Settings import (
+    DamageAmount,
+    PuzzleRando,
+    MiscChangesSelected,
+    FasterChecksSelected,
+    RemovedBarriersSelected,
+    KongModels,
+    SlamRequirement,
+    HardBossesSelected,
+    WinConditionComplex,
+)
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable

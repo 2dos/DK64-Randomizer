@@ -70,7 +70,7 @@ class DoorData:
             self.dk_portal_logic = lambda s: False
         else:
             self.dk_portal_logic = dk_portal_logic
-        if True: # Disable once I figure some stuff out
+        if True:  # Disable once I figure some stuff out
             if DoorType.dk_portal in self.door_type and self.map not in LEVEL_MAIN_MAPS:
                 # Disable non-main maps for now because of instance script/exit memes
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
@@ -128,7 +128,8 @@ def GetBossLobbyRegionIdForRegion(region_id, region):
         return Regions.CastleBossLobby
     else:
         return None
-    
+
+
 def isBarrierRemoved(spoiler, barrier_id: RemovedBarriersSelected):
     return IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, barrier_id)
 
@@ -1905,7 +1906,8 @@ door_locations = {
             logic=lambda l: Events.Night in l.Events,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive) and (isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all),
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive)
+            and (isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all),
         ),  # T&S Portal in Beanstalk Area
         DoorData(
             name="Fungi Forest: Near Snide's",
