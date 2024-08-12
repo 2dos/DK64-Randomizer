@@ -23,6 +23,7 @@ from randomizer.Enums.Settings import (
     DamageAmount,
     RandomModels,
     PuzzleRando,
+    WinConditionComplex,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -1931,6 +1932,24 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.rareware_gb_fairies > 0:
         writeValue(ROM_COPY, 0x80027E70, Overlay.Critter, 0x2C410000 | settings.rareware_gb_fairies, offset_dict, 4)  # SLTIU $at, $v0, count
         writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
+    if settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        writeValue(ROM_COPY, 0x8071280E, Overlay.Static, Maps.DKRap, offset_dict)  # End Sequence destination map
+        writeValue(ROM_COPY, 0x80712816, Overlay.Static, 0, offset_dict)  # End Sequence cutscene
+        writeValue(ROM_COPY, 0x8075E650, Overlay.Static, 0x807141D4, offset_dict, 4)  # Alter jump table entry
+        writeValue(ROM_COPY, 0x80712E76, Overlay.Static, 0x1644, offset_dict)  # Demo Fadeout Timer
+        # Speed up end sequence a little bit to fit within the confines of the rap
+        for index in range(21):
+            ROM_COPY.seek(0x1FFF800 + (index * 6))
+            duration = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            cooldown = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if duration == 0xFFFF and cooldown == 0xFFFF:
+                # Terminating card, do not alter values
+                break
+            else:
+                scale_down = 0.8
+                ROM_COPY.seek(0x1FFF800 + (index * 6))
+                ROM_COPY.writeMultipleBytes(int(duration * scale_down), 2)
+                ROM_COPY.writeMultipleBytes(int(cooldown * scale_down), 2)
 
     # TBarrel/BFI Rewards
     # writeValue(ROM_COPY, 0x80681CE2, Overlay.Static, 0, offset_dict)

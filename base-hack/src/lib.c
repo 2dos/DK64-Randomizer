@@ -1496,10 +1496,6 @@ void* malloc_wipe(int size) {
 
 int filterSong(int* song_write) {
 	int song = *song_write;
-	if ((song == SONG_ENDSEQUENCE) && (Rando.win_condition == GOAL_DKRAP)) {
-		*song_write = SONG_DKRAP;
-		song = SONG_DKRAP;
-	}
 	if ((Rando.disabled_music.events) || (Rando.disabled_music.shops)) {
 		if (Rando.disabled_music.events) {
 			if (music_types[song] == SONGTYPE_EVENT) {

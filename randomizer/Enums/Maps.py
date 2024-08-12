@@ -230,3 +230,6 @@ class Maps(IntEnum):
     Candy = 25
     Funky = 1
     Snide = 15
+
+    # Misc
+    DKRap = 76
