@@ -3511,6 +3511,13 @@ crown_heads = (
     "Crystal",
     "Creepy",
     "Hideout",
+    "Cranky", "Funky", "Candy", "Kong", "Monkey", "Amazing", "Incredible", "Ultimate", "Wrinkly", "Heroic", "Final", "Foolish", 
+    "Fantastic", "Krazy", "Komplete", "Unhinted", "Unstable", "Extreme", "Royal", "Monster", "Primate", "Baboon",
+    "Walnut", "Peanut", "Coconut", "Feather", "Grape", "Pineapple", "Barrel", "Monkeyport", "Kalamity", "Kaboom",
+    "Magic", "Fairy", "Karnivorous", "Krispy", "Kooky", "Cookin", "Klutz", "Kingdom", "Kiddy", "Super Duper", "Rainbow",
+    "Bongo", "Guitar", "Trombone", "Saxophone", "Triangle", "Twitch", "Dixie", "Gorilla", "Chimpy", "Museum", "Ballroom",
+    "Winch", "Shipyard", "Hillside", "Oasis", "Arcade", "Mushroom", "Igloo", "Stupid", "Spicy", "Dizzy", "Slot Car", "Minecart",
+    "Rambi", "Enguarde", "Reptile", "Bramble", "Toxic", 
 )
 
 crown_tails = (
@@ -3556,6 +3563,13 @@ crown_tails = (
     "Joust",
     "Scuffle",
     "Hootenanny",
+    "Blitz", "Tournament", "Party", "Dance", "Explosion", "Kontest", "Bean", "Adventure", "Experience", "Discord", "Chaos",
+    "Banana", "Medal", "Crown", "Madness", "Speedrun", "of the Hoard", "Smells", "Rap", "Meme", "Punch", "Smash", "Kombat",
+    "Knockdown", "Demolition", "Fridge", "Kapture", "Kicking", "Storm", "Earthquake", "of Legends", "Rabbit", "Beetle",
+    "Boulder", "Autoscroller", "Charge", "Beware", "Tomato", "Jumpscare", "Blast", "Gazump", "Tremor", "Trample", "Perils",
+    "Style", "Gauntlet", "Mission", "Twirl", "Survival", "Challenge", "Race", "Logic", "Festival", "Blowout", "Banquet", "Riot",
+    "Shindig", "Feast", "Escapade", "Buffoonery", "Hijinxs", "Frenzy", "Rampage", "Antics", "Trouble", "Revenge", "Klamber",
+    "Celebration", "Holidays", "Fun",
 )
 
 
