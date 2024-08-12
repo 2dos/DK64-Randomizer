@@ -104,14 +104,16 @@ LogicRegions = {
     Regions.LowerCore: [
 
     ],
-    Regions.MiddleCore: [
+    Regions.SpinningCore: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 3),  # On steps on middle level
-        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # On middle level
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),  # on rotating arms but reachable without machine on
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),  # First two coins on elevators by W4
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # W4
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # On middle level
+    ],
+    Regions.MiddleCore: [
+        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # On middle level
     ],
     Regions.UpperCore: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 3),  # On cylinders and Simian Spring pad

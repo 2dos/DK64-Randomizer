@@ -338,7 +338,7 @@ fairy_locations = {
         FairyData(
             name="Mid-section of Production Room",
             map=Maps.FranticFactory,
-            region=Regions.MiddleCore,
+            region=Regions.SpinningCore,
             fence=Fence(524, 986, 767, 1251),
             spawn_y=453,
         ),

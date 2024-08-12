@@ -81,20 +81,20 @@ static const dk_rap_wincon_data dk_rap_conditions[] = {
     {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_CHUNKY}, // Chunky, "So they're finally here"
     {.move_type = PURCHASE_GUN, .kong=KONG_DK, .signifier=1}, // Coconut Gun, "His Coconut Gun can fire in spurts"
     {.move_type = PURCHASE_MOVES, .kong=KONG_DK, .signifier=MOVECHECK_STRONG}, // Strong Kong, "He's bigger, faster and stronger too"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_ABILITY_SHOCKWAVE}, // Shockwave, implied through video
+    // {.move_type = PURCHASE_FLAG, .signifier=FLAG_ABILITY_SHOCKWAVE}, // Shockwave, implied through video
     {.move_type = PURCHASE_MOVES, .kong=KONG_TINY, .signifier=MOVECHECK_MINI}, // Mini Monkey, "She can shrink in style to suit her mood"
     {.move_type = PURCHASE_MOVES, .kong=KONG_TINY, .signifier=MOVECHECK_TWIRL}, // Twirl, "She can float through the air"
     {.move_type = PURCHASE_FLAG, .signifier=FLAG_ABILITY_CLIMBING}, // Climbing, "And climb up trees"
     {.move_type = PURCHASE_MOVES, .kong=KONG_LANKY, .signifier=MOVECHECK_OSTAND}, // Orangstand, "He can handstand, when he needs to"
     {.move_type = PURCHASE_MOVES, .kong=KONG_LANKY, .signifier=MOVECHECK_BALLOON}, // Balloon, "Inflate himself, just like a balloon"
     {.move_type = PURCHASE_INSTRUMENT, .kong=KONG_LANKY, .signifier=1}, // Trombone, "This crazy kong just digs this tune"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_DIDDY, .signifier=MOVECHECK_SPRING}, // Spring, implied through video
+    // {.move_type = PURCHASE_MOVES, .kong=KONG_DIDDY, .signifier=MOVECHECK_SPRING}, // Spring, implied through video
     {.move_type = PURCHASE_MOVES, .kong=KONG_DIDDY, .signifier=MOVECHECK_ROCKETBARREL}, // Rocket, "He can fly real high with his jetpac on"
     {.move_type = PURCHASE_GUN, .kong=KONG_DIDDY, .signifier=1}, // Popguns, "With his pistols out, he's one tough kong"
     {.move_type = PURCHASE_INSTRUMENT, .kong=KONG_DIDDY, .signifier=1}, // Guitar, "He'll make you smile when he plays his tune"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_CHUNKY, .signifier=MOVECHECK_HUNKY}, // Hunky, Implied through video
+    // {.move_type = PURCHASE_MOVES, .kong=KONG_CHUNKY, .signifier=MOVECHECK_HUNKY}, // Hunky, Implied through video
     {.move_type = PURCHASE_FLAG, .signifier=FLAG_TBARREL_BARREL}, // Barrels, "Can pick up a boulder with relative ease"
-    {.move_type = PURCHASE_SLAM, .signifier=3}, // SDSS, Implied through video
+    // {.move_type = PURCHASE_SLAM, .signifier=3}, // SDSS, Implied through video
     {.move_type = PURCHASE_FLAG, .signifier=FLAG_ITEM_CRANKY}, // Cranky, "C'mon Cranky, take it to the fridge"
     {.move_type = PURCHASE_GUN, .kong=KONG_CHUNKY, .signifier=1}, // Pineapple, "Walnuts, Peanuts, Pineapple Smells"
     {.move_type = PURCHASE_GUN, .kong=KONG_LANKY, .signifier=1}, // Grape, "Grapes, Melons, Oranges and Coconut Shells"
@@ -123,7 +123,6 @@ int hasBeatenDKRapWinCon(void) {
                 return 0;
             }
         }
-        return 0;
     }
     return 1;
 }

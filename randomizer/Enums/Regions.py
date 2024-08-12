@@ -106,6 +106,7 @@ class Regions(IntEnum):
     LowerCore = auto()
     InsideCore = auto()
     MiddleCore = auto()
+    SpinningCore = auto()
     UpperCore = auto()
     FactoryBossLobby = auto()
     FactoryBoss = auto()

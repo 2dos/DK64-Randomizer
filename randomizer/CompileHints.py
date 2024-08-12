@@ -2744,11 +2744,11 @@ def GenerateMultipathDict(
         has_path_to_verse = False
         verse_items = [
             # These do NOT contain the main kongs, as that's hinted by the freeing kongs path
-            [Items.Coconut, Items.StrongKong, Items.Shockwave, Items.CameraAndShockwave],
+            [Items.Coconut, Items.StrongKong],
             [Items.MiniMonkey, Items.PonyTailTwirl, Items.Climbing],
             [Items.Orangstand, Items.BaboonBalloon, Items.Trombone],
-            [Items.SimianSpring, Items.RocketbarrelBoost, Items.Peanut, Items.Guitar],
-            [Items.HunkyChunky, Items.Barrels, Items.ProgressiveSlam],
+            [Items.RocketbarrelBoost, Items.Peanut, Items.Guitar],
+            [Items.Barrels],
             [Items.Cranky, Items.Peanut, Items.Pineapple, Items.Grape, Items.Oranges, Items.Coconut],
         ]
         verse_names = ["Donkey", "Tiny", "Lanky", "Diddy", "Chunky", "The Fridge"]

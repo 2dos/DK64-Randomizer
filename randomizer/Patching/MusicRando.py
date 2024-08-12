@@ -11,7 +11,7 @@ from zipfile import ZipFile
 from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.SongGroups import SongGroup
-from randomizer.Enums.Settings import MusicFilters
+from randomizer.Enums.Settings import MusicFilters, WinConditionComplex
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
@@ -476,6 +476,7 @@ def randomize_music(settings: Settings):
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
             settings.music_events_randomized = True
+
     ROM_COPY = ROM()
 
     NON_BGM_DATA = [
@@ -525,6 +526,8 @@ def randomize_music(settings: Settings):
     for song in song_data.values():
         song.Reset()
         writeSongVolume(ROM_COPY, song.mem_idx, song.type)
+    if settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        song_data[Songs.DKRap].type = SongType.Protected  # Protect the rap, used for end seq
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm_randomized or categoriesHaveAssignedSongs(settings, [SongType.BGM]):
         # If the user selected standard rando
