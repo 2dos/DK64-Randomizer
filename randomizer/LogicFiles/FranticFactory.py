@@ -158,7 +158,7 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),
 
-    Regions.FactoryArcadeTunnel: Region("Arcade Tunnel", HintRegion.Testing, Levels.FranticFactory, False, None, [
+    Regions.FactoryArcadeTunnel: Region("Arcade Tunnel", HintRegion.Storage, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.GetCoins(Kongs.donkey) >= 2)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: (l.mini and l.tiny) or l.phasewalk),
         LocationLogic(Locations.FactoryChunkybyArcade, lambda l: ((l.punch or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
