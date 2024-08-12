@@ -208,7 +208,7 @@ LogicRegions = {
     Regions.MiddleCore: Region("Middle Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True),
-        TransitionFront(Regions.MiddleCore, lambda l: l.climbing),
+        TransitionFront(Regions.SpinningCore, lambda l: l.climbing),
         TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryBeyondHatchToInsideCore, isGlitchTransition=True),
     ]),
 
@@ -230,7 +230,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True),
-        TransitionFront(Regions.MiddleCore, lambda l: True),
+        TransitionFront(Regions.SpinningCore, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
