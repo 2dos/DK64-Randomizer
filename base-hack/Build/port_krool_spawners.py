@@ -342,9 +342,10 @@ def updateSpawnerFiles(pre: str = ""):
                 fh.write(new_id.to_bytes(1, "big"))
                 fh.seek(s_start + 0xE)
                 fh.write(fence_tying[i].to_bytes(1, "big"))
-                if i == 11:
-                    fh.seek(s_start + 0xA)
-                    fh.write(m.cs_model.to_bytes(1, "big"))
+                # I *think* this causes crashes on N64
+                # if i == 11:
+                #     fh.seek(s_start + 0xA)
+                #     fh.write(m.cs_model.to_bytes(1, "big"))
                 fh.seek(s_end)
     if os.path.exists("temp.bin"):
         os.remove("temp.bin")
