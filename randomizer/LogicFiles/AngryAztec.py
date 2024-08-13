@@ -87,10 +87,12 @@ LogicRegions = {
         LocationLogic(Locations.AztecTempleEnemy_MainRoom0, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom1, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom2, lambda l: True),
-    ], [], [
+    ], [
+        Event(Events.AztecIceMelted, lambda l: l.CanAccessTempleUnderwater()),
+    ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecOasis, lambda l: True, Transitions.AztecTempleToStart),
-        TransitionFront(Regions.TempleUnderwater, lambda l: l.swim and l.CanAccessTempleUnderwater()),
+        TransitionFront(Regions.TempleUnderwater, lambda l: l.swim and Events.AztecIceMelted in l.Events),
     ]),
 
     Regions.TempleUnderwater: Region("Temple Underwater", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
