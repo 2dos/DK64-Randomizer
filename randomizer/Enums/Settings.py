@@ -702,6 +702,8 @@ class RemovedBarriersSelected(IntEnum):
     forest_yellow_tunnel = 13
     caves_igloo_pads = 14
     caves_ice_walls = 15
+    galleon_treasure_room = 16
+    aztec_tiny_temple_ice = 17
 
 
 class ShockwaveStatus(IntEnum):

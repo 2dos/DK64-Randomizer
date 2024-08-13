@@ -743,7 +743,6 @@ def patchAssembly(ROM_COPY, spoiler):
         0x311,  # FLAG_TNS_2,
         0x175,  # FLAG_BUY_INSTRUMENT,
         0x176,  # FLAG_BUY_GUNS,
-        0x45,  # FLAG_ICEMELT,
         0x6D,  # FLAG_HATCH,
         0x00,  # FLAG_FIRSTJAPESGATE,
         0x17E,  # FLAG_FTT_BLOCKER,
@@ -2336,6 +2335,8 @@ def patchAssembly(ROM_COPY, spoiler):
         RemovedBarriersSelected.caves_igloo_pads: [0x128],
         RemovedBarriersSelected.galleon_shipyard_area_gate: [0xA1],
         RemovedBarriersSelected.caves_ice_walls: [266, 267, 265],  # Entrance, Snide, Giant Boulder
+        RemovedBarriersSelected.galleon_treasure_room: [0xA2],
+        RemovedBarriersSelected.aztec_tiny_temple_ice: [0x45],
     }
     for barrier in barrier_flags:
         if IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, barrier):

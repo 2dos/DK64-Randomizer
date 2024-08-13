@@ -169,7 +169,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location05, lambda l: True),
     ], [
-        Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.advanced_platforming)),
+        Event(Events.ShipyardTreasureRoomOpened, lambda l: (Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.advanced_platforming)) or l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
         Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.galleonGatesStayOpen())),
         Event(Events.GalleonDiddyPad, lambda l: l.guitar and l.isdiddy and (l.swim or l.galleonGatesStayOpen()) and Events.WaterLowered in l.Events),
         Event(Events.GalleonLankyPad, lambda l: l.trombone and l.islanky and (l.swim or l.galleonGatesStayOpen()) and Events.WaterLowered in l.Events),
@@ -190,6 +190,7 @@ LogicRegions = {
 
     Regions.ShipyardUnderwater: Region("Shipyard Underwater", HintRegion.ShipyardOutskirts, Levels.GloomyGalleon, True, None, [], [
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
+        Event(Events.ShipyardTreasureRoomOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.Shipyard, lambda l: not l.IsLavaWater() or l.Melons >= 2),
@@ -218,6 +219,7 @@ LogicRegions = {
     ], [
         Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
         Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
+        Event(Events.ShipyardTreasureRoomOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: (Events.ShipyardTreasureRoomOpened in l.Events or l.CanPhaseswim()) and l.swim),

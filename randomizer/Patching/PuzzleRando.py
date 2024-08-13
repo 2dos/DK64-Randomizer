@@ -135,7 +135,6 @@ class RaceBound:
                     new_angle += 4096
                 return new_angle
 
-
 def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
     """Write random castle car race pathing."""
     # Castle Car Race
