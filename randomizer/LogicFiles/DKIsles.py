@@ -109,7 +109,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
         LocationLogic(Locations.IslesFirstMove, lambda l: (l.allTrainingChecks and l.crankyAccess) or l.settings.fast_start_beginning_of_game, isAuxiliary=True),
         LocationLogic(Locations.RainbowCoin_Location13, lambda l: True),
-        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.can_use_vines or (l.CanMoonkick() and l.climbing)),  # Banana Hoard patch
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing),  # Banana Hoard patch
     ], [
         Event(Events.TrainingBarrelsSpawned, lambda l: l.crankyAccess or l.settings.fast_start_beginning_of_game),  # Requires Cranky to spawn the training barrels
     ], [

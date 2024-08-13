@@ -192,7 +192,7 @@ ColoredBananaGroupList = [
         name="Leading up to and on BBlast pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.JungleJapesStart,
-        logic=lambda l: l.can_use_vines or l.CanMoonkick(),
+        logic=lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing,
         locations=[[1, 1.0, 2308, 535, 1453], [1, 1.0, 2367, 550, 1330], [1, 1.0, 2422, 552, 1212], [1, 1.0, 2415, 530, 1123], [1, 1.0, 2511, 530, 1179], [5, 1.0, 2454, 544, 1152]],
     ),
     ColoredBananaGroup(

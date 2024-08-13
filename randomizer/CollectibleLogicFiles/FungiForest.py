@@ -24,7 +24,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Minecart Entry
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Behind clock
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.can_use_vines, None, 3),  # On roof of Chunky Minecart entrance
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.can_use_vines and l.climbing, None, 3),  # On roof of Chunky Minecart entrance
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.advanced_platforming, None, 3),  # On pink tunnel entrance
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Near Chunky Minecart entrance
     ],

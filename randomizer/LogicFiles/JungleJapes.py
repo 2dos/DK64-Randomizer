@@ -52,7 +52,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesCatacomb, lambda l: (l.Slam and l.chunky and l.barrels) or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False), Transitions.JapesMainToCatacomb),
-        TransitionFront(Regions.JapesBaboonBlast, lambda l: (l.can_use_vines or (l.climbing and l.CanMoonkick())) and l.blast and l.isdonkey),  # , Transitions.JapesMainToBBlast)
+        TransitionFront(Regions.JapesBaboonBlast, lambda l: ((l.can_use_vines or l.CanMoonkick()) and l.climbing) and l.blast and l.isdonkey),  # , Transitions.JapesMainToBBlast)
     ]),
 
     Regions.JapesCannonPlatform: Region("Jungle Japes Cannon Platform", HintRegion.Hillside, Levels.JungleJapes, False, None, [
