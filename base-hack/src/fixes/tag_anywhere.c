@@ -837,6 +837,10 @@ void handleLedgeLock(void) {
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
         return;
     }
+    if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
+        // Even Spike wants this trick patched
+        return;
+    }
     handleLedgeGrabbing();
 }
 
