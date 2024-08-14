@@ -1764,6 +1764,8 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8074D8FF, Overlay.Static, 4, offset_dict, 1)  # Master Type
         writeFloat(ROM_COPY, 0x80753E38, Overlay.Static, 350, offset_dict)  # Speed
         writeLabelValue(ROM_COPY, 0x8074C14C, Overlay.Static, "OrangeGunCode", offset_dict)
+        # Fix gun slide (kinda)
+        writeValue(ROM_COPY, 0x80751A2C, Overlay.Static, 0x806E2F3C, offset_dict, 4)  # Make it so that you can use Z to enter aim
         # Flags
         file_init_flags.append(0x309)  # Cranky FTT
 
