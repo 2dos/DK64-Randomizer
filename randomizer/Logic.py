@@ -1089,7 +1089,7 @@ class LogicVarHolder:
         # To enter a level, we either need (or assume) enough stuff to get rid of B. Locker or a glitch way to bypass it
         return can_pay_blocker or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 
-    def CanAccessTempleUnderwater(self) -> bool:
+    def CanMeltIce(self) -> bool:
         """Check whether underwater of Aztec Tiny Temple can be accessed."""
         if self.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
             return True
