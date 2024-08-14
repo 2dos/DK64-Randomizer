@@ -2740,6 +2740,19 @@ def GenerateMultipathDict(
         path_to_camera = []
         relevant_goal_locations = []
         path_to_family = False
+        path_to_verses = [False] * 6
+        has_path_to_verse = False
+        verse_items = [
+            # These do NOT contain the main kongs, as that's hinted by the freeing kongs path
+            [Items.Coconut, Items.StrongKong],
+            [Items.MiniMonkey, Items.PonyTailTwirl, Items.Climbing],
+            [Items.Orangstand, Items.BaboonBalloon, Items.Trombone],
+            [Items.RocketbarrelBoost, Items.Peanut, Items.Guitar],
+            [Items.Barrels],
+            [Items.Cranky, Items.Peanut, Items.Pineapple, Items.Grape, Items.Oranges, Items.Coconut],
+        ]
+        verse_names = ["Donkey", "Tiny", "Lanky", "Diddy", "Chunky", "The Fridge"]
+        verse_colors = ["\x04", "\x07", "\x06", "\x05", "\x08", "\x0A"]
         # Determine which keys and kongs this location is on the path to
         for woth_loc in spoiler.woth_paths.keys():
             if location in spoiler.woth_paths[woth_loc]:
@@ -2750,6 +2763,13 @@ def GenerateMultipathDict(
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
                     relevant_goal_locations.append(Locations(woth_loc))
+                if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+                    item = spoiler.LocationList[woth_loc].item
+                    for verse_index, verse in enumerate(verse_items):
+                        if item in verse:
+                            path_to_verses[verse_index] = True
+                            has_path_to_verse = True
+                            relevant_goal_locations.append(Locations(woth_loc))
         # For path to family, we also have to check non-woth paths
         for non_woth_loc in spoiler.other_paths.keys():
             if location in spoiler.other_paths[non_woth_loc]:
@@ -2797,7 +2817,25 @@ def GenerateMultipathDict(
             hint_text_components.append(path_to_camera[0])
         if path_to_family:
             hint_text_components.append("\x04Free Kongs\x04")
-        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family:
+        if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
+            if len(all_verses) == 6:
+                hint_text_components.append("All Verses")
+            else:
+                kong_verses = [xi for xi, x in enumerate(path_to_verses) if x and xi < 5]
+                if len(kong_verses) == 5:
+                    hint_text_components.append("All Kong Verses")
+                else:
+                    if len(kong_verses) == 1:
+                        verse_index = kong_verses[0]
+                        pushed_name = f"{verse_names[verse_index]} Verse"
+                        hint_text_components.append(f"{verse_colors[verse_index]}{pushed_name}{verse_colors[verse_index]}")
+                    elif len(kong_verses) > 1:
+                        kong_names = [f"{verse_colors[x]}{verse_names[x]}{verse_colors[x]}" for x in kong_verses]
+                        hint_text_components.append(f"{join_words(kong_names)} Verses")
+                if path_to_verses[5]:
+                    hint_text_components.append(f"{verse_colors[5]}The Fridge{verse_colors[5]}")
+        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or has_path_to_verse:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations
     return multipath_dict_hints, multipath_dict_goals

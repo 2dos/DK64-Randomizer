@@ -95,6 +95,7 @@ RegionMapList = {
     Regions.LowerCore: Maps.FranticFactory,
     Regions.InsideCore: Maps.FactoryCrusher,
     Regions.MiddleCore: Maps.FranticFactory,
+    Regions.SpinningCore: Maps.FranticFactory,
     Regions.UpperCore: Maps.FranticFactory,
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     Regions.FactoryArcadeTunnel: Maps.FranticFactory,

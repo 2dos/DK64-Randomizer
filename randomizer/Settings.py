@@ -974,9 +974,15 @@ class Settings:
         wincon_items = {
             WinConditionComplex.beat_krool: HelmDoorInfo(
                 1,
-                HelmDoorRandomInfo(1, 1, 0.1),
-                HelmDoorRandomInfo(1, 1, 0.1),
-                HelmDoorRandomInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.dk_rap_items: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.02),
             ),
             WinConditionComplex.krem_kapture: HelmDoorInfo(
                 1,

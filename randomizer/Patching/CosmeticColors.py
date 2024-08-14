@@ -3366,6 +3366,11 @@ def showWinCondition(settings: Settings):
         item_im = getImageFile(14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
         writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
         return
+    if win_con == WinConditionComplex.dk_rap_items:
+        item_im = getImageFile(7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
+        item_im = item_im.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
+        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
     win_con_data = {
         WinConditionComplex.req_bp: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
         WinConditionComplex.req_medal: WinConData(25, 0x156C, TextureFormat.RGBA5551, 44, 44, True, 40),

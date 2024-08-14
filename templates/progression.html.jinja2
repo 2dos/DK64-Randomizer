@@ -439,141 +439,137 @@
                 <div class="flex-container">
                     <div class="item-select">
                         <p class="select-title">Door 1 Requirements</p>
-                        <select name="crown_door_item"
-                                id="crown_door_item"
-                                display_name="Helm Door 1 Requirement Item"
-                                class="form-select center-div"
-                                aria-label="Door 1 Requirements"
-                                data-toggle="tooltip"
-                                title="Changes the requirement to open the first door in Helm">
-                            <option selected id="vanilla" value="vanilla" title="">
-                                Vanilla (Crowns)
-                            </option>
-                            <option id="opened" value="opened">
-                                Opened
-                            </option>
-                            <option id="easy_random" value="easy_random">
-                                Random (Easy)
-                            </option>
-                            <option id="medium_random" value="medium_random">
-                                Random (Medium)
-                            </option>
-                            <option id="hard_random" value="hard_random">
-                                Random (Hard)
-                            </option>
-                            <option id="req_gb" value="req_gb">
-                                Golden Bananas
-                            </option>
-                            <option id="req_bp" value="req_bp">
-                                Blueprints
-                            </option>
-                            <option id="req_companycoins" value="req_companycoins">
-                                Company Coins
-                            </option>
-                            <option id="req_key" value="req_key">
-                                Keys
-                            </option>
-                            <option id="req_medal" value="req_medal">
-                                Medals
-                            </option>
-                            <option id="req_fairy" value="req_fairy">
-                                Fairies
-                            </option>
-                            <option id="req_rainbowcoin" value="req_rainbowcoin">
-                                Rainbow Coins
-                            </option>
-                            <option id="req_bean" value="req_bean">
-                                Bean
-                            </option>
-                            <option id="req_pearl" value="req_pearl">
-                                Pearls
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item-select">
-                        <p id="door-1-select-title" class="select-title">Door 1 Item Count</p>
-                        <input min="0"
+                        <div class="d-flex select-number-container" id="door_1_container">
+                            <select name="crown_door_item"
+                                    id="crown_door_item"
+                                    display_name="Helm Door 1 Requirement Item"
+                                    class="form-select center-div"
+                                    aria-label="Door 1 Requirements"
+                                    data-toggle="tooltip"
+                                    title="Changes the requirement to open the first door in Helm">
+                                <option selected id="vanilla" value="vanilla" title="">
+                                    Vanilla (Crowns)
+                                </option>
+                                <option id="opened" value="opened">
+                                    Opened
+                                </option>
+                                <option id="easy_random" value="easy_random">
+                                    Random (Easy)
+                                </option>
+                                <option id="medium_random" value="medium_random">
+                                    Random (Medium)
+                                </option>
+                                <option id="hard_random" value="hard_random">
+                                    Random (Hard)
+                                </option>
+                                <option id="req_gb" value="req_gb">
+                                    Golden Bananas
+                                </option>
+                                <option id="req_bp" value="req_bp">
+                                    Blueprints
+                                </option>
+                                <option id="req_companycoins" value="req_companycoins">
+                                    Company Coins
+                                </option>
+                                <option id="req_key" value="req_key">
+                                    Keys
+                                </option>
+                                <option id="req_medal" value="req_medal">
+                                    Medals
+                                </option>
+                                <option id="req_fairy" value="req_fairy">
+                                    Fairies
+                                </option>
+                                <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                    Rainbow Coins
+                                </option>
+                                <option id="req_bean" value="req_bean">
+                                    Bean
+                                </option>
+                                <option id="req_pearl" value="req_pearl">
+                                    Pearls
+                                </option>
+                            </select>
+                            <input min="0"
                                 max="201"
                                 name="crown_door_item_count"
                                 id="crown_door_item_count"
                                 display_name="Helm Door 1 Requirement Count"
-                                style="width: 15%"
                                 class="form-control center-div"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Amount of the item specified to open the door."
                                 default="1"
                                 placeholder="1"/>
+                        </div>
                     </div>
                 </div>
                 <div class="flex-container">
                     <div class="item-select">
                         <p class="select-title">Door 2 Requirements</p>
-                        <select name="coin_door_item"
-                                id="coin_door_item"
-                                display_name="Helm Door 2 Requirement Item"
-                                class="form-select center-div"
-                                aria-label="Door 2 Requirements"
-                                data-toggle="tooltip"
-                                title="Changes the requirement to open the second door in Helm">
-                            <option selected id="vanilla" value="vanilla" title="">
-                                Vanilla (Company Coins)
-                            </option>
-                            <option id="opened" value="opened">
-                                Opened
-                            </option>
-                            <option id="easy_random" value="easy_random">
-                                Random (Easy)
-                            </option>
-                            <option id="medium_random" value="medium_random">
-                                Random (Medium)
-                            </option>
-                            <option id="hard_random" value="hard_random">
-                                Random (Hard)
-                            </option>
-                            <option id="req_gb" value="req_gb">
-                                Golden Bananas
-                            </option>
-                            <option id="req_bp" value="req_bp">
-                                Blueprints
-                            </option>
-                            <option id="req_key" value="req_key">
-                                Keys
-                            </option>
-                            <option id="req_medal" value="req_medal">
-                                Medals
-                            </option>
-                            <option id="req_crown" value="req_crown">
-                                Crowns
-                            </option>
-                            <option id="req_fairy" value="req_fairy">
-                                Fairies
-                            </option>
-                            <option id="req_rainbowcoin" value="req_rainbowcoin">
-                                Rainbow Coins
-                            </option>
-                            <option id="req_bean" value="req_bean">
-                                Bean
-                            </option>
-                            <option id="req_pearl" value="req_pearl">
-                                Pearls
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item-select">
-                        <p id="door-2-select-title" class="select-title">Door 2 Item Count</p>
-                        <input min="0"
+                        <div class="d-flex select-number-container" id="door_2_container">
+                            <select name="coin_door_item"
+                                    id="coin_door_item"
+                                    display_name="Helm Door 2 Requirement Item"
+                                    class="form-select center-div"
+                                    aria-label="Door 2 Requirements"
+                                    data-toggle="tooltip"
+                                    title="Changes the requirement to open the second door in Helm">
+                                <option selected id="vanilla" value="vanilla" title="">
+                                    Vanilla (Company Coins)
+                                </option>
+                                <option id="opened" value="opened">
+                                    Opened
+                                </option>
+                                <option id="easy_random" value="easy_random">
+                                    Random (Easy)
+                                </option>
+                                <option id="medium_random" value="medium_random">
+                                    Random (Medium)
+                                </option>
+                                <option id="hard_random" value="hard_random">
+                                    Random (Hard)
+                                </option>
+                                <option id="req_gb" value="req_gb">
+                                    Golden Bananas
+                                </option>
+                                <option id="req_bp" value="req_bp">
+                                    Blueprints
+                                </option>
+                                <option id="req_key" value="req_key">
+                                    Keys
+                                </option>
+                                <option id="req_medal" value="req_medal">
+                                    Medals
+                                </option>
+                                <option id="req_crown" value="req_crown">
+                                    Crowns
+                                </option>
+                                <option id="req_fairy" value="req_fairy">
+                                    Fairies
+                                </option>
+                                <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                    Rainbow Coins
+                                </option>
+                                <option id="req_bean" value="req_bean">
+                                    Bean
+                                </option>
+                                <option id="req_pearl" value="req_pearl">
+                                    Pearls
+                                </option>
+                            </select>
+                            <input min="0"
                                 max="201"
                                 name="coin_door_item_count"
                                 id="coin_door_item_count"
                                 display_name="Helm Door 2 Requirement Count"
-                                style="width: 15%"
                                 class="form-control center-div"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Amount of the item specified to open the door."
                                 default="1"
                                 placeholder="1"/>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,8 +7,10 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Switches import Switches
+from randomizer.Enums.Settings import RemovedBarriersSelected, ActivateAllBananaports, FungiTimeSetting
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
+from randomizer.Patching.Lib import IsItemSelected
 
 LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
 
@@ -43,6 +45,7 @@ class DoorData:
         placed: DoorType = DoorType.null,
         default_kong=None,
         door_type: list[DoorType] = [DoorType.boss, DoorType.dk_portal, DoorType.wrinkly],
+        dk_portal_logic=None,
     ):
         """Initialize with provided data."""
         self.name = name
@@ -63,14 +66,20 @@ class DoorData:
         self.default_kong = default_kong
         self.default_placed = placed  # info about what door_type a door location is in vanilla
         self.door_type = door_type.copy()  # denotes what types it can be
-        if DoorType.dk_portal in self.door_type and self.map not in LEVEL_MAIN_MAPS:
-            # Disable non-main maps for now because of instance script/exit memes
-            self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
+        if dk_portal_logic is None:
+            self.dk_portal_logic = lambda s: False
+        else:
+            self.dk_portal_logic = dk_portal_logic
+        if True:  # Disable once I figure some stuff out
+            if DoorType.dk_portal in self.door_type and self.map not in LEVEL_MAIN_MAPS:
+                # Disable non-main maps for now because of instance script/exit memes
+                self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
         if self.default_placed == DoorType.dk_portal:
             # Disable T&S spawning here because of it being slightly bugged when exiting as DK/Chunky
             # Instantly re-activates the portal for some reason?
             # TODO: Figure out how to prevent this so we can remove this condition
             self.door_type = [x for x in self.door_type if x != DoorType.boss]
+        self.default_door_list = self.door_type.copy()
         # if self.default_placed == DoorType.dk_portal:
         #     # Disable other doors being able to occupy the space of DK portals, for now
         #     self.door_type = [DoorType.dk_portal]
@@ -87,6 +96,12 @@ class DoorData:
         portal_region = spoiler.RegionList[self.logicregion]
         boss_region_id = GetBossLobbyRegionIdForRegion(self.logicregion, portal_region)
         portal_region.exits.append(TransitionFront(boss_region_id, lambda l: self.logic))
+
+    def updateDoorTypeLogic(self, spoiler):
+        """Update door type list depending on enabled settings."""
+        if self.dk_portal_logic(spoiler):
+            if DoorType.dk_portal not in self.door_type:
+                self.door_type.append(DoorType.dk_portal)
 
     def assignDKPortal(self, spoiler, level):
         """Assign DK Portal to slot."""
@@ -113,6 +128,11 @@ def GetBossLobbyRegionIdForRegion(region_id, region):
         return Regions.CastleBossLobby
     else:
         return None
+
+
+def isBarrierRemoved(spoiler, barrier_id: RemovedBarriersSelected):
+    """Return whether the barrier has been removed."""
+    return IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, barrier_id)
 
 
 door_locations = {
@@ -183,7 +203,7 @@ door_locations = {
             location=[722.473, 538.0, 2386.608, 141.0],
             group=3,
             placed=DoorType.boss,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),  # T&S Door in Near Painting Room. Ironically cannot be a T&S because the indicator is weird
         DoorData(
             name="Jungle Japes: Fairy Cave",
@@ -281,7 +301,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=7,
             moveless=False,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
             logic=lambda l: (l.islanky and l.handstand) or l.phasewalk,
         ),
         DoorData(
@@ -292,7 +312,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=7,
             moveless=False,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
             logic=lambda l: (l.islanky and l.handstand) or l.phasewalk,
         ),
         DoorData(
@@ -391,7 +411,7 @@ door_locations = {
             rx=6,
             group=2,
             moveless=False,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Jungle Japes: Near Warp 4 and Tunnel Threeway crossing",
@@ -408,7 +428,7 @@ door_locations = {
             location=[1754.4, 210.0, 3102.0, 279.7],
             group=7,
             moveless=False,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Jungle Japes: Cranky Area - front-right",
@@ -514,7 +534,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=10,
             moveless=False,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Jungle Japes: Diddy Mountain - between River and Peanut Switch",
@@ -524,7 +544,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=10,
             moveless=False,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Jungle Japes: Vanilla Level Entry",
@@ -645,7 +665,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3053.0, 214.0, 605.5, 217.5],
             group=4,
-            door_type=[DoorType.boss],
+            door_type=[DoorType.boss, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Under Chunky's Tiny Temple Switch",
@@ -653,7 +673,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3149.0, 212.0, 532.0, 217.5],
             group=4,
-            door_type=[DoorType.boss],
+            door_type=[DoorType.boss, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Under Tiny's Tiny Temple Switch",
@@ -661,7 +681,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3183.0, 213.0, 773.0, 37.5],
             group=4,
-            door_type=[DoorType.boss],
+            door_type=[DoorType.boss, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Under Lanky's Tiny Temple Switch",
@@ -669,7 +689,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3282.0, 213.0, 697.0, 37.5],
             group=4,
-            door_type=[DoorType.boss],
+            door_type=[DoorType.boss, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Diddy Tower Stairs - left",
@@ -775,7 +795,7 @@ door_locations = {
             group=2,
             moveless=False,
             logic=lambda l: l.isdonkey and l.strongKong,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Near Tag Barrel near Snides - strong kong",
@@ -797,7 +817,7 @@ door_locations = {
             group=9,
             moveless=False,
             logic=lambda l: (l.islanky and l.grape) or l.phasewalk,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: In Face Matching Game - left",
@@ -808,7 +828,7 @@ door_locations = {
             group=9,
             moveless=False,
             logic=lambda l: (l.islanky and l.grape) or l.phasewalk,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Next to Tiny Temple - front left",
@@ -861,7 +881,7 @@ door_locations = {
             location=[2997.6, 250.0, 2906.0, 105.0],
             group=10,
             moveless=False,
-            door_type=[DoorType.boss],
+            door_type=[DoorType.boss, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Tiny Temple - Main Room - left",
@@ -878,7 +898,7 @@ door_locations = {
             location=[1789.0, 287.0, 813.0, 270.0],
             group=11,
             moveless=False,
-            door_type=[DoorType.wrinkly],
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
             name="Angry Aztec: Tiny Temple - Across from Slope to Tiny Cage - left",
@@ -1439,6 +1459,7 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),  # T&S Door in meme hole
         DoorData(
             name="Gloomy Galleon: Behind 2DS",
@@ -1449,6 +1470,7 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),  # T&S Door behind 2DS
         DoorData(
             name="Gloomy Galleon: Behind Enguarde Door",
@@ -1460,6 +1482,7 @@ door_locations = {
             logic=lambda l: Events.LighthouseEnguarde in l.Events,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),  # T&S Door behind Enguarde Door
         DoorData(
             name="Gloomy Galleon: Cactus",
@@ -1470,6 +1493,7 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),  # T&S Door near Cactus
         DoorData(
             name="Gloomy Galleon: In hallway to Shipyard - Tiny switch",
@@ -1500,6 +1524,7 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Under RocketBarrel barrel",
@@ -1509,6 +1534,7 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Next to Cannonball game",
@@ -1549,6 +1575,7 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom front left",
@@ -1558,6 +1585,7 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom back right",
@@ -1567,6 +1595,7 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom front right",
@@ -1576,6 +1605,7 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: On top of Seal cage",
@@ -1587,6 +1617,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.isdiddy and l.jetpack,
             door_type=[DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Treasure Chest Exterior",
@@ -1630,6 +1661,7 @@ door_locations = {
             location=[540.3, 1564.0, 4094.0, 110.0],
             group=7,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Behind boxes in Cranky Area",
@@ -1646,6 +1678,7 @@ door_locations = {
             group=10,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - left",
@@ -1656,6 +1689,7 @@ door_locations = {
             group=10,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - middle",
@@ -1666,6 +1700,7 @@ door_locations = {
             group=10,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - right",
@@ -1708,6 +1743,7 @@ door_locations = {
             group=4,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - right",
@@ -1717,6 +1753,7 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - left",
@@ -1727,6 +1764,7 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel",
@@ -1857,6 +1895,7 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
         ),  # T&S Portal behind DK Barn
         DoorData(
             name="Fungi Forest: Beanstalk Area",
@@ -1868,6 +1907,8 @@ door_locations = {
             logic=lambda l: Events.Night in l.Events,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive)
+            and (isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all),
         ),  # T&S Portal in Beanstalk Area
         DoorData(
             name="Fungi Forest: Near Snide's",
@@ -1878,6 +1919,7 @@ door_locations = {
             logic=lambda l: Events.Day in l.Events,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
         ),  # T&S Portal near Snide's
         DoorData(
             name="Fungi Forest: Top of Giant Mushroom",
@@ -1896,6 +1938,7 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),  # T&S Portal near Owl Race
         DoorData(
             name="Fungi Forest: On top of Cage outside Conveyor Belt",
@@ -1956,6 +1999,7 @@ door_locations = {
             group=2,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
         ),
         DoorData(
             name="Fungi Forest: Immediately Inside the Thornvine Area - left",
@@ -1965,6 +2009,7 @@ door_locations = {
             group=2,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
         ),
         DoorData(
             name="Fungi Forest: Outside DK's Barn",
@@ -1975,6 +2020,7 @@ door_locations = {
             group=2,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
         ),
         DoorData(
             name="Fungi Forest: Next to Rabbit's House",
@@ -1984,6 +2030,7 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Fungi Forest: Owl Area - Near Rocketbarrel Barrel - far left",
@@ -1993,6 +2040,7 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Tiny Coins",
@@ -2002,6 +2050,7 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Fungi Forest: Mushroom Area - Next to Tag Barrel near Cranky's",
@@ -2073,6 +2122,7 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Beanstalk - back",
@@ -2082,6 +2132,7 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
         ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - All Kong Gun Switch - right",

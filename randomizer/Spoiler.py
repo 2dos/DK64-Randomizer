@@ -327,6 +327,7 @@ class Spoiler:
                 WinConditionComplex.beat_krool: "Beat K. Rool",
                 WinConditionComplex.get_key8: "Acquire Key 8",
                 WinConditionComplex.krem_kapture: "Kremling Kapture",
+                WinConditionComplex.dk_rap_items: "Complete the Rap",
                 WinConditionComplex.req_bean: "Acquire the Bean",
                 WinConditionComplex.req_bp: f"{wc_count} Blueprint{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_companycoins: f"{wc_count} Company Coin{'s' if wc_count != 1 else ''}",

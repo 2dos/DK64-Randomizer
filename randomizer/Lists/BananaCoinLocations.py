@@ -3165,7 +3165,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="On the spinning section in Lower Production Room",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MiddleCore,
+            region=Regions.SpinningCore,
             logic=lambda l: l.climbing,
             locations=[
                 [1.0, 569, 308, 1392],
@@ -3788,8 +3788,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Around high W4",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MiddleCore,
-            logic=lambda l: l.climbing,
+            region=Regions.SpinningCore,
             locations=[
                 [1.0, 931.4605102539062, 422.5, 1553.5030517578125],
                 [1.0, 893.4967651367188, 422.5, 1561.4439697265625],
@@ -3834,10 +3833,20 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="On elevators to upper production room",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.UpperCore,
+            region=Regions.SpinningCore,
             locations=[
                 [1.0, 1001.6917114257812, 406.5, 1353.4505615234375],
                 [1.0, 998.500732421875, 470.0, 1297.3572998046875],
+            ],
+            vanilla=True,
+        ),
+        BananaCoinGroup(
+            group=63,
+            map_id=Maps.FranticFactory,
+            name="On elevators to upper production room",
+            konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            region=Regions.UpperCore,
+            locations=[
                 [1.0, 1001.7814331054688, 520.0, 1239.797119140625],
             ],
             vanilla=True,
@@ -3876,8 +3885,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Around the spinning section in Production Room",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MiddleCore,
-            logic=lambda l: l.climbing,
+            region=Regions.SpinningCore,
             locations=[
                 [1.0, 677.56005859375, 338.6666564941406, 1279.873291015625],
                 [1.0, 569.2798461914062, 338.6666564941406, 1282.5758056640625],

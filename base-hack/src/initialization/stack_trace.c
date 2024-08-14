@@ -130,7 +130,7 @@ void CrashHandler(crash_handler_info* info) {
         }
         flag >>= 1;
     }
-    printDebugText("PC:%08X\tFCSR:%08X\tTHREAD:%d\n", (int)info->pc, (int)info->fcsr, __osGetThreadId((void*)0), 0);
+    printDebugText("PC:%08X\tFCSR:%08X\tTHREAD:%d\n", (int)info->pc, (int)info->fcsr, __osGetThreadId(info), 0);
     for (int i = 0; i < 10; i++) {
         int reg_start = 3 * i;
         int v1 = info->general_registers[reg_start][1];
@@ -170,4 +170,16 @@ void CrashHandler(crash_handler_info* info) {
     if (*(int*)(0x807563B8) == 4) {
         dumpReturns(info);
     }
+}
+
+OSThread* getFaultedThread(void) {
+    OSThread* thread = __osActiveQueue;
+    
+    while (thread->priority != -1) {
+        if (thread->priority > 0 && thread->priority < 0x7F && (thread->flags & 3)) {
+            return thread;
+        }
+        thread = thread->tlnext;
+    }
+    return 0;
 }

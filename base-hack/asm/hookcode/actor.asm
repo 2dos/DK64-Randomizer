@@ -637,3 +637,23 @@ fixLankyPhaseHandState:
         lw $t0, 0x0 ($s1)
         j 0x806C3268
         addiu $t9, $zero, 5
+
+blockTreeClimbing:
+    jal canPlayerClimb
+    nop
+    bnez $v0, blockTreeClimbing_canclimb
+    nop
+    lbu $a0, 0x6 ($s3) ; check model 2 status
+    bnez $a0, blockTreeClimbing_noclimb ; is model 2, cannot climb
+    nop
+
+    blockTreeClimbing_canclimb:
+        or $a0, $s2, $zero
+        lw $a1, 0x64 ($sp)
+        j 0x8072F3E4
+        or $a2, $s3, $zero
+
+
+    blockTreeClimbing_noclimb:
+        j 0x8072F474
+        or $a0, $s2, $zero
