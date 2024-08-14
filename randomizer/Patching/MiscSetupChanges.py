@@ -168,6 +168,7 @@ def SpeedUpFungiRabbit():
             ROM_COPY.seek(file_start + init_offset + 0xD)
             ROM_COPY.write(int(136 * speed_buff))
 
+
 def getRandomGalleonStarLocation() -> tuple:
     """Get location for the DK Star which opens the treasure room."""
     STAR_MAX_Y = 1657  # Star Y in vanilla game
@@ -183,6 +184,7 @@ def getRandomGalleonStarLocation() -> tuple:
     for x in range(3):
         coord[x] = random.randint(bound[0][x], bound[1][x])
     return tuple(coord)
+
 
 def randomize_setup(spoiler):
     """Randomize setup."""

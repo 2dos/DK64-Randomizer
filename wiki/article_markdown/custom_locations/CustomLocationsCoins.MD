@@ -386,13 +386,13 @@
 | Around Tiny's Kasplat | 5 | `` | 
 | Around pole to Block Tower Room | 5 | `` | 
 | Above pole to Snide's HQ | 5 | `` | 
-| Around high W4 | 5 | `l.climbing` | 
+| Around high W4 | 5 | `` | 
 | Below pole to R&D | 5 | `` | 
 | Above pole to R&D | 5 | `` | 
 | On elevators to upper production room | 3 | `` | 
 | Behind a box in Block Tower room | 4 | `` | 
 | Alcoves in Block Tower Room | 4 | `` | 
-| Around the spinning section in Production Room | 4 | `l.climbing` | 
+| Around the spinning section in Production Room | 4 | `` | 
 | Under a grate in R&D | 4 | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
 | Near Number Game | 3 | `` | 
 | Around Arcade Tunnel Bonus | 3 | `(l.punch and l.ischunky) or l.phasewalk` | 

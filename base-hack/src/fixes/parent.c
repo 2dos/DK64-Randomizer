@@ -134,33 +134,34 @@ void callParentMapFilter(void) {
 	/**
 	 * @brief Call the parent map filtration process
 	 */
-	if (Rando.call_parent_filter) {
-		if (ObjectModel2Timer == 2) {
-			int curr = CurrentMap;
-			int level = levelIndexMapping[curr];
-			if (level <= LEVEL_CASTLE) {
-				// Set permanent flag to clear the story cutscene of the level you're in
-				setPermFlag(FLAG_STORY_JAPES + level);
-			}
-			int banned = 0;
-			for (int i = 0; i < sizeof(banned_filter_maps); i++) {
-				if (banned_filter_maps[i] == curr) {
-					banned = 1;
-				}
-			}
-			if ((level == LEVEL_BONUS) || (level == LEVEL_SHARED)) {
-				banned = 1;
-			}
-			if (isPreventCutscenePlaying()) {
-				banned = 1;
-			}
-			if (!banned) {
-				// Reset Parent Chain
-				resetMapContainer();
-			}
-		} else if (ObjectModel2Timer < 2) {
-			// Fix DK Portal to be in state 2
-			correctDKPortal();
+	if (!Rando.call_parent_filter) {
+		return;
+	}
+	if (ObjectModel2Timer < 2) {
+		// Fix DK Portal to be in state 2
+		correctDKPortal();
+		return;
+	}
+	if (ObjectModel2Timer != 2) {
+		return;
+	}
+	int curr = CurrentMap;
+	int level = levelIndexMapping[curr];
+	if (level <= LEVEL_CASTLE) {
+		// Set permanent flag to clear the story cutscene of the level you're in
+		setPermFlag(FLAG_STORY_JAPES + level);
+	}
+	for (int i = 0; i < sizeof(banned_filter_maps); i++) {
+		if (banned_filter_maps[i] == curr) {
+			return;
 		}
 	}
+	if ((level == LEVEL_BONUS) || (level == LEVEL_SHARED)) {
+		return;
+	}
+	if (isPreventCutscenePlaying()) {
+		return;
+	}
+	// Reset Parent Chain
+	resetMapContainer();
 }

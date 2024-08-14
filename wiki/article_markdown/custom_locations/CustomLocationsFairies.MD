@@ -87,7 +87,7 @@
 | Forest Rafters | Dark Rafters | `l.guitar and l.isdiddy and l.camera` | 
 | Fungi Forest | Above Blue Tunnel | `l.camera` | 
 | Fungi Forest | Above the Clock | `l.camera` | 
-| Fungi Forest | Above the Well | `l.camera and (l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy))` | 
+| Fungi Forest | Above the Well | `l.camera and (((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy))` | 
 | Fungi Forest | Above BBlast Entrance | `l.camera and l.climbing` | 
 | Fungi Forest | Near Crown | `l.camera` | 
 | Fungi Forest | Top of Giant Mushroom | `l.camera` | 

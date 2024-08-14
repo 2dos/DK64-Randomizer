@@ -1095,7 +1095,7 @@ class LogicVarHolder:
             return True
         if not self.CanSlamSwitch(Levels.AngryAztec, 1):
             return False
-        return self.guitar and self.isdiddy      
+        return self.guitar and self.isdiddy
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""

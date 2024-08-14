@@ -16,6 +16,7 @@
 .include "asm/variables/static.asm"
 
 //vanilla data
+.definelabel __osActiveQueue, 0x800100EC
 .definelabel TransitionSpeed, 0x807FD88C
 .definelabel CutsceneWillPlay, 0x8075533B
 .definelabel KRoolRound, 0x80750AD4
