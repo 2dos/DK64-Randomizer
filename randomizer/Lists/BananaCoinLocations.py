@@ -3833,10 +3833,20 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="On elevators to upper production room",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.UpperCore,
+            region=Regions.SpinningCore,
             locations=[
                 [1.0, 1001.6917114257812, 406.5, 1353.4505615234375],
                 [1.0, 998.500732421875, 470.0, 1297.3572998046875],
+            ],
+            vanilla=True,
+        ),
+        BananaCoinGroup(
+            group=63,
+            map_id=Maps.FranticFactory,
+            name="On elevators to upper production room",
+            konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            region=Regions.UpperCore,
+            locations=[
                 [1.0, 1001.7814331054688, 520.0, 1239.797119140625],
             ],
             vanilla=True,
