@@ -1012,6 +1012,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If we're using progressive hints, put it on the last hint
         if spoiler.settings.enable_progressive_hints:
             hint_location = [hint for hint in hints if hint.level == Levels.CreepyCastle and hint.kong == Kongs.chunky][0]
+            if hint_location.hint_type == HintType.Plando:
+                hint_location = getRandomHintLocation()
+                if hint_location is None:
+                    raise Exception("Hint Plandomizer leaves no room for RequiredSlamHint")
         # Loop through locations looking for the slams - from prior calculations we can guarantee there are at least two in non-starting move locations
         slam_levels = []
         for id, location in spoiler.LocationList.items():
