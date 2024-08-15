@@ -3160,13 +3160,14 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.HomingAmmo, "Homing Ammo", "Shared Forest Funky"),
         ItemReference(Items.SniperSight, "Sniper Scope", "Shared Castle Funky"),
         ItemReference(Items.ProgressiveAmmoBelt, "Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+        ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
+        ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
         # Basic Moves
         ItemReference(Items.Swim, "Diving", "Dive Barrel"),
         ItemReference(Items.Oranges, "Orange Throwing", "Orange Barrel"),
         ItemReference(Items.Barrels, "Barrel Throwing", "Barrel Barrel"),
         ItemReference(Items.Vines, "Vine Swinging", "Vine Barrel"),
-        ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
-        ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
+        ItemReference(Items.Climbing, "Climbing", "Starting Move"),
         # Instrument Upgrades & Slams
         ItemReference(Items.ProgressiveInstrumentUpgrade, "Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
         ItemReference(Items.ProgressiveSlam, "Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),

@@ -812,17 +812,18 @@ location_references = [
     ItemReference("Gorilla Gone", "Chunky Caves Cranky"),
     ItemReference("Pineapple Launcher", "Chunky Japes Funky"),
     ItemReference("Triangle Trample", "Chunky Aztec Candy"),
-    # Gun Upgrades
+    # Gun Upgrades and Funky Moves
     ItemReference("Homing Ammo", "Shared Forest Funky"),
     ItemReference("Sniper Scope", "Shared Castle Funky"),
     ItemReference("Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+    ItemReference("Fairy Camera", "Banana Fairy Gift"),
+    ItemReference("Shockwave", "Banana Fairy Gift"),
     # Basic Moves
     ItemReference("Diving", "Dive Barrel"),
     ItemReference("Orange Throwing", "Orange Barrel"),
     ItemReference("Barrel Throwing", "Barrel Barrel"),
     ItemReference("Vine Swinging", "Vine Barrel"),
-    ItemReference("Fairy Camera", "Banana Fairy Gift"),
-    ItemReference("Shockwave", "Banana Fairy Gift"),
+    ItemReference("Climbing", "Starting Move"),
     # Instrument Upgrades & Slams
     ItemReference("Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
     ItemReference("Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),

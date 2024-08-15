@@ -5,7 +5,7 @@
 	If you wish to modify this file, please modify the code there
 */
 
-#define LOCATION_ITEM_COUNT 111
+#define LOCATION_ITEM_COUNT 113
 typedef struct name_latin_struct {
 	/* 0x000 */ unsigned char name;
 	/* 0x001 */ unsigned char latin;
