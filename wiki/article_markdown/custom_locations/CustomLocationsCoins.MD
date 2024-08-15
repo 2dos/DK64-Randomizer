@@ -389,7 +389,8 @@
 | Around high W4 | 5 | `` | 
 | Below pole to R&D | 5 | `` | 
 | Above pole to R&D | 5 | `` | 
-| On elevators to upper production room | 3 | `` | 
+| On elevators to upper production room | 2 | `` | 
+| On elevators to upper production room | 1 | `` | 
 | Behind a box in Block Tower room | 4 | `` | 
 | Alcoves in Block Tower Room | 4 | `` | 
 | Around the spinning section in Production Room | 4 | `` | 
