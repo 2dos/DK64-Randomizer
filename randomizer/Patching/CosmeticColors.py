@@ -291,7 +291,7 @@ spotlight_fish_models = [
     # Model.Bat, # Lighting bug
     # Model.Tomato, # Lighting bug
     # Model.IceTomato, # Lighting bug
-    Model.FlySwatter_83,
+    # Model.FlySwatter_83, # Lighting bug
     Model.SpotlightFish,
     Model.Microphone,
     Model.Rocketbarrel,
