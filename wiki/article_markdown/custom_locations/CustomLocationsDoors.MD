@@ -114,7 +114,7 @@
 | Frantic Factory Lobby | Frantic Factory: Lobby - Low Right | Wrinkly | `` | 
 | Frantic Factory | Frantic Factory: Arcade Room | Boss, Dk_Portal, Wrinkly | `` | 
 | Frantic Factory | Frantic Factory: Production Room | Boss, Dk_Portal, Wrinkly | `` | 
-| Frantic Factory | Frantic Factory: R&D | Boss, Dk_Portal, Wrinkly | `` | 
+| Frantic Factory | Frantic Factory: R and D | Boss, Dk_Portal, Wrinkly | `` | 
 | Frantic Factory | Frantic Factory: Block Tower | Boss, Dk_Portal, Wrinkly | `` | 
 | Frantic Factory | Frantic Factory: Storage Room | Boss, Dk_Portal, Wrinkly | `` | 
 | Frantic Factory | Frantic Factory: Behind Chunky's Toy Box - big | Wrinkly | `(l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
