@@ -12,6 +12,7 @@ import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import ShufflePortLocations, KasplatRandoSetting
 from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, LocationTypes
 from randomizer.Lists.Warps import BananaportVanilla
@@ -191,6 +192,24 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
             return False
     return location.isValidLocation(LocationTypes.Bananaport)
 
+REGION_KLUMPS = {
+    # A way to bias against zones of a map with a lot of logic regions
+    # Any entries in the list will sort regarding region dict based on the key rather than the normal value
+    Regions.IslesMainUpper: [Regions.IslesEar, Regions.IslesHill],
+    Regions.KremIsleBeyondLift: [Regions.KremIsleMouth, Regions.KremIsleTopLevel],
+    Regions.CabinIsle: [Regions.IslesAboveWaterfall],
+    Regions.JungleJapesMain: [Regions.JapesTnSAlcove],
+    Regions.JapesHill: [Regions.JapesHillTop, Regions.JapesCannonPlatform, Regions.JapesTopOfMountain],
+    Regions.JapesBeyondCoconutGate2: [Regions.JapesLankyCave],
+    Regions.AztecTunnelBeforeOasis: [Regions.AngryAztecStart, Regions.BetweenVinesByPortal],
+    Regions.LlamaTemple: [Regions.LlamaTempleBack],
+    Regions.RandD: [Regions.RandDUpper],
+    Regions.MiddleCore: [Regions.SpinningCore, Regions.UpperCore],
+    Regions.MushroomLowerExterior: [Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MushroomUpperMidExterior],
+    Regions.MillArea: [Regions.ForestTopOfMill, Regions.ForestVeryTopOfMill],
+    Regions.CrystalCavesMain: [Regions.CavesBlueprintPillar, Regions.CavesBananaportSpire, Regions.CavesBonusCave]
+}
+
 def ShufflePorts(spoiler, port_selection, human_ports):
     """Shuffle the location of bananaports."""
     levels_to_check = [
@@ -226,6 +245,12 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                     region_dict = {}
                     for x in index_lst:
                         region = level_lst[x].logic_region
+                        # Calculate the region based on klumping
+                        for prop_region in REGION_KLUMPS:
+                            if region in REGION_KLUMPS[prop_region]:
+                                region = prop_region
+                                break
+                        # Populate dict
                         if region not in region_dict:
                             region_dict[region] = []
                         region_dict[region].append(x)
