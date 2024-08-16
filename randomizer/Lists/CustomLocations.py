@@ -34,6 +34,7 @@ class CustomLocation:
         vanilla_crown=False,
         vanilla_crate=False,
         vanilla_patch=False,
+        vanilla_port=False,
         is_rotating_room=False,
         is_fungi_hidden_patch=False,
         is_galleon_floating_crate=False,
@@ -52,7 +53,8 @@ class CustomLocation:
         self.vanilla_crown = vanilla_crown
         self.vanilla_crate = vanilla_crate
         self.vanilla_patch = vanilla_patch
-        self.selected = vanilla_crown or vanilla_patch
+        self.vanilla_port = vanilla_port
+        self.selected = vanilla_crown or vanilla_patch or vanilla_port
         self.is_rotating_room = is_rotating_room
         self.is_fungi_hidden_patch = is_fungi_hidden_patch
         self.is_galleon_floating_crate = is_galleon_floating_crate
@@ -82,6 +84,7 @@ class LocationTypes(IntEnum):
     CrownPad = auto()
     DirtPatch = auto()
     MelonCrate = auto()
+    Bananaport = auto()
 
 
 CustomLocations = {
@@ -342,7 +345,7 @@ CustomLocations = {
             max_size=48,
             logic_region=Regions.JapesLankyCave,
             group=1,
-            banned_types=[LocationTypes.CrownPad],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],
         ),
         CustomLocation(map=Maps.JapesMountain, name="Mountain: Near Entrance (Ground)", x=328, y=40, z=471, max_size=48, logic_region=Regions.Mine, group=5),
         CustomLocation(map=Maps.JapesMountain, name="Mountain: Near Entrance (High)", x=497, y=140, z=512, max_size=56, logic_region=Regions.Mine, group=5),
@@ -747,7 +750,7 @@ CustomLocations = {
             logic_region=Regions.LlamaTemple,
             logic=lambda l: Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)),
             group=4,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(map=Maps.AztecLlamaTemple, name="Llama Temple: Snoop Switch", x=1695, y=433, z=1704, max_size=48, logic_region=Regions.LlamaTemple, group=4),
         CustomLocation(map=Maps.AztecLlamaTemple, name="Llama Temple: Lava Room", x=1227, y=420, z=3572, max_size=56, logic_region=Regions.LlamaTempleBack, group=4),
@@ -764,7 +767,7 @@ CustomLocations = {
             logic=lambda l: (l.grab and l.donkey) or l.CanAccessRNDRoom(),
             vanilla_crown=True,
             group=3,
-            banned_types=[LocationTypes.MelonCrate],
+            banned_types=[LocationTypes.MelonCrate, LocationTypes.Bananaport],
         ),
         CustomLocation(
             name="Dark Room",
@@ -929,7 +932,7 @@ CustomLocations = {
             logic_region=Regions.RandD,
             logic=lambda l: (l.trombone and l.lanky) or l.CanAccessRNDRoom(),
             group=3,
-            banned_types=[LocationTypes.CrownPad],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],
         ),
         CustomLocation(
             name="In Lanky's Piano Room",
@@ -942,7 +945,7 @@ CustomLocations = {
             logic_region=Regions.RandD,
             logic=lambda l: ((l.trombone and l.islanky) or l.CanAccessRNDRoom()),
             group=3,
-            banned_types=[LocationTypes.CrownPad],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.FranticFactory,
@@ -954,7 +957,7 @@ CustomLocations = {
             logic_region=Regions.RandDUpper,
             logic=lambda l: (l.guitar and l.diddy) or l.CanAccessRNDRoom(),
             group=3,
-            banned_types=[LocationTypes.CrownPad],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],
         ),
         CustomLocation(
             name="In Diddy's Pincode enemies room",
@@ -967,7 +970,7 @@ CustomLocations = {
             logic_region=Regions.RandDUpper,
             logic=lambda l: ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()),
             group=3,
-            banned_types=[LocationTypes.CrownPad],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.FranticFactory,
@@ -979,7 +982,7 @@ CustomLocations = {
             logic_region=Regions.RandDUpper,
             logic=lambda l: (l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom(),
             group=3,
-            banned_types=[LocationTypes.CrownPad],  # Entering a crown battle during the Toy Boss fight would break the fight until level re-entry
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],  # Entering a crown battle during the Toy Boss fight would break the fight until level re-entry
         ),
         CustomLocation(
             name="In front of Chunky's toy boss room",
@@ -992,7 +995,7 @@ CustomLocations = {
             logic_region=Regions.RandDUpper,
             logic=lambda l: ((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom()),
             group=3,
-            banned_types=[LocationTypes.CrownPad],  # Entering a crown battle during the Toy Boss fight would break the fight until level re-entry
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],  # Entering a crown battle during the Toy Boss fight would break the fight until level re-entry
         ),
         CustomLocation(map=Maps.FranticFactory, name="Near Car Race", x=3553, y=1264, z=1383, max_size=48, logic_region=Regions.RandD, logic=lambda l: (l.mini and l.istiny) or l.phasewalk),
         CustomLocation(
@@ -1028,7 +1031,7 @@ CustomLocations = {
             logic_region=Regions.RandDUpper,
             logic=lambda l: (l.grab and l.donkey) or l.phasewalk or l.generalclips,
             group=3,
-            banned_types=[LocationTypes.MelonCrate],
+            banned_types=[LocationTypes.MelonCrate, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.FactoryCrusher,
@@ -1164,7 +1167,7 @@ CustomLocations = {
             max_size=160,
             logic_region=Regions.LankyShip,
             group=8,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(map=Maps.GloomyGalleon, name="Left of Cranky", x=3175, y=1670, z=2527, max_size=56, logic_region=Regions.GloomyGalleonStart, group=3),
         # CustomLocation(
@@ -1224,7 +1227,7 @@ CustomLocations = {
             logic_region=Regions.LighthouseUnderwater,
             group=7,
             logic=lambda l: Events.LighthouseEnguarde in l.Events,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1236,7 +1239,7 @@ CustomLocations = {
             logic_region=Regions.LighthouseUnderwater,
             group=7,
             logic=lambda l: Events.LighthouseEnguarde in l.Events,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1248,7 +1251,7 @@ CustomLocations = {
             logic_region=Regions.LighthouseUnderwater,
             group=7,
             logic=lambda l: Events.LighthouseEnguarde in l.Events,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(map=Maps.GloomyGalleon, name="On Rocketbarrel platform", x=1336, y=1660, z=4071, rot_y=910, max_size=32, logic_region=Regions.LighthousePlatform, group=1),
         # CrownLocation(
@@ -1294,7 +1297,7 @@ CustomLocations = {
             logic_region=Regions.ShipyardUnderwater,
             group=6,
             logic=lambda l: Events.ShipyardEnguarde in l.Events,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1305,7 +1308,7 @@ CustomLocations = {
             logic_region=Regions.ShipyardUnderwater,
             group=6,
             logic=lambda l: Events.ShipyardEnguarde in l.Events,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1316,7 +1319,7 @@ CustomLocations = {
             logic_region=Regions.ShipyardUnderwater,
             group=6,
             logic=lambda l: Events.ShipyardEnguarde in l.Events,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1327,7 +1330,7 @@ CustomLocations = {
             logic_region=Regions.ShipyardUnderwater,
             group=6,
             logic=lambda l: Events.ShipyardEnguarde in l.Events,
-            banned_types=[LocationTypes.DirtPatch, LocationTypes.CrownPad],
+            banned_types=[LocationTypes.DirtPatch, LocationTypes.CrownPad, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1350,7 +1353,7 @@ CustomLocations = {
             logic_region=Regions.TreasureRoom,
             group=5,
             logic=lambda l: Events.ShipyardTreasureRoomOpened in l.Events,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(map=Maps.GalleonSickBay, name="Seasick Ship: Left of Cannon", x=718, y=20, z=129, max_size=56, logic_region=Regions.SickBay, group=2),
         CustomLocation(
@@ -1809,7 +1812,7 @@ CustomLocations = {
             logic_region=Regions.IglooArea,
             group=3,
             logic=lambda l: (l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam,
-            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
+            banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(map=Maps.CrystalCaves, name="In Hidden Bonus Room", x=453, y=180, z=2571, max_size=64, logic_region=Regions.CavesBonusCave, group=2),
         CustomLocation(

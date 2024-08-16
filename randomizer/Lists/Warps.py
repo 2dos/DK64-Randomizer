@@ -19,6 +19,7 @@ class BananaportData:
         self.name = name
         self.map_id = map_id
         self.region_id = region_id
+        self.default_region = region_id
         self.destination_region_id = None
         self.obj_id_vanilla = obj_id_vanilla
         self.locked = locked
@@ -38,6 +39,10 @@ class BananaportData:
     def setNewWarp(self, new_warp: int) -> None:
         """Set new warp type."""
         self.new_warp = new_warp
+
+    def reset(self) -> None:
+        """Resets object to default state."""
+        self.region_id = self.default_region
 
 
 BananaportVanilla = {

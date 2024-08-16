@@ -36,6 +36,7 @@ from randomizer.Enums.Settings import (
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    ShufflePortLocations,
     SpoilerHints,
     TrainingBarrels,
     WinConditionComplex,
@@ -67,6 +68,7 @@ from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import ResetShuffledKasplatLocations, ShuffleKasplatsAndLocations, ShuffleKasplatsInVanillaLocations, constants, shufflable
 from randomizer.ShufflePatches import ShufflePatches
+from randomizer.ShufflePorts import ShufflePorts, ResetPorts
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 
@@ -3059,6 +3061,13 @@ class ItemReference:
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     resetCustomLocations()
+    ResetPorts()
+    if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
+        port_replacements = {}
+        port_human_replacements = {}
+        ShufflePorts(spoiler, port_replacements, port_human_replacements)
+        spoiler.warp_locations = port_replacements
+        spoiler.human_warps = port_human_replacements
     if spoiler.settings.enable_progressive_hints:
         SetProgressiveHintDoorLogic(spoiler)
     # T&S and Wrinkly Door Shuffle

@@ -1,9 +1,14 @@
 """Rando write bananaport locations."""
 
 import js
-from randomizer.Enums.Settings import BananaportRando
+from randomizer.Enums.Settings import BananaportRando, ShufflePortLocations
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Enums.Maps import Maps
+from randomizer.Lists.Warps import BananaportVanilla
+from randomizer.Lists.CustomLocations import CustomLocations
+from randomizer.Enums.Levels import Levels
+from randomizer.Patching.Lib import float_to_hex
 
 
 def randomize_bananaport(spoiler):
@@ -104,3 +109,52 @@ def randomize_bananaport(spoiler):
                     if warp_change[0] == cont_map_id and warp_change[1] == obj_id:
                         ROM_COPY.seek(start + 0x28)
                         ROM_COPY.writeMultipleBytes(pad_types[warp_change[2]], 2)
+
+def move_bananaports(spoiler):
+    """Move bananaports around in conjunction with custom bananaport location rando."""
+    ROM_COPY = LocalROM()
+    MAPS_WITH_WARPS = {
+        Maps.JungleJapes: Levels.JungleJapes,
+        Maps.AngryAztec: Levels.AngryAztec,
+        Maps.FranticFactory: Levels.FranticFactory,
+        Maps.GloomyGalleon: Levels.GloomyGalleon,
+        Maps.FungiForest: Levels.FungiForest,
+        Maps.CrystalCaves: Levels.CrystalCaves,
+        Maps.CreepyCastle: Levels.CreepyCastle,
+        Maps.Isles: Levels.DKIsles,
+        Maps.AztecLlamaTemple: Levels.AngryAztec,
+        Maps.CastleCrypt: Levels.CreepyCastle,
+    }
+
+    if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
+        for cont_map_id in MAPS_WITH_WARPS:
+            level_id = MAPS_WITH_WARPS[cont_map_id]
+            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            # exit_table = js.pointer_addresses[23]["entries"][cont_map_id]["pointing_to"]
+            modification_table = []
+            for warp_id in spoiler.warp_locations:
+                if BananaportVanilla[warp_id].map_id == cont_map_id:
+                    custom_location_id = spoiler.warp_locations[warp_id]
+                    obj_id = BananaportVanilla[warp_id].obj_id_vanilla
+                    modification_table.append({
+                        "obj_id": obj_id,
+                        "coords": CustomLocations[level_id][custom_location_id].coords,
+                        "scale": CustomLocations[level_id][custom_location_id].max_size / (56 * 4),
+                    })
+                # exit_id = 
+
+            # Modify setup table
+            obj_id_list = [x["obj_id"] for x in modification_table]
+            ROM_COPY.seek(setup_table)
+            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            for model2_item in range(model2_count):
+                item_start = setup_table + 4 + (model2_item * 0x30)
+                ROM_COPY.seek(item_start + 0x2A)
+                item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if item_id in obj_id_list:
+                    ROM_COPY.seek(item_start)
+                    for k in modification_table:
+                        if k["obj_id"] == item_id:
+                            for c in k["coords"]:
+                                ROM_COPY.writeMultipleBytes(int(float_to_hex(c), 16), 4)
+                            ROM_COPY.writeMultipleBytes(int(float_to_hex(k["scale"]), 16), 4)

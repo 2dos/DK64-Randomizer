@@ -737,6 +737,20 @@ class ShuffleLoadingZones(IntEnum):
     levels = auto()
     all = auto()
 
+class ShufflePortLocations(IntEnum):
+    """Determines how bananaports are shuffled.
+
+    off = No shuffling
+    vanilla_only = Only reference a pool of vanilla locations
+    half_vanilla = For each pair, 1 of them is vanilla. Probably won't obey those rules with other bananaport shuffles
+    on = full shuffle. Maximum mayhem. Maximum pain. Minimal chance of your favorite streamer keeping it off their restrictions.
+    """
+
+    off = auto()
+    vanilla_only = auto()
+    half_vanilla = auto()
+    on = auto()
+
 
 class SlamRequirement(IntEnum):
     """Determines the slam requirement for a switch, currently only chunky phase.
