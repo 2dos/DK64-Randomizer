@@ -55,7 +55,7 @@ class CustomLocation:
         self.vanilla_crate = vanilla_crate
         self.vanilla_patch = vanilla_patch
         self.vanilla_port = vanilla_port
-        self.selected = vanilla_crown or vanilla_patch or vanilla_port
+        self.selected = vanilla_crown or vanilla_patch or vanilla_port or vanilla_crate
         self.is_rotating_room = is_rotating_room
         self.is_fungi_hidden_patch = is_fungi_hidden_patch
         self.is_galleon_floating_crate = is_galleon_floating_crate
@@ -93,7 +93,7 @@ def resetCustomLocations(spoiler) -> None:
             if spoiler.settings.random_crates and location.vanilla_crate:
                 location.selected = False
             if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off and location.vanilla_port:
-                location_selected = False
+                location.selected = False
 
 WARP_MAX_SIZE = 56
 

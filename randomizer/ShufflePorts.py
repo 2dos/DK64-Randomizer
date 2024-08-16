@@ -184,11 +184,15 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
         # Has to be in the right map
         return False
     BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
-    if location.tied_warp_event in BANNED_PORT_SHUFFLE_EVENTS:
-        # Disable all locked warp locations
-        return False
+    if location.tied_warp_event is not None:
+        if location.tied_warp_event in BANNED_PORT_SHUFFLE_EVENTS:
+            # Disable all locked warp locations
+            return False
     if spoiler.settings.enable_plandomizer:
         if location.name in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]:
+            return False
+    if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.vanilla_only:
+        if not location.vanilla_port:
             return False
     return location.isValidLocation(LocationTypes.Bananaport)
 
@@ -236,7 +240,7 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                 end_event = start_event + PortShufflerData[map]["global_warp_count"]
                 pick_count = global_count - len([x for x in BANNED_PORT_SHUFFLE_EVENTS if x >= start_event and x < end_event])
                 if len(index_lst) < pick_count:
-                    print(f"Lowering pick count for {map.name} from {pick_count} to {len(index_lst)}")
+                    raise Exception(f"Insufficient custom location count for {map.name}. Expected: {pick_count}. Actual: {len(index_lst)}")
                 pick_count = min(pick_count, len(index_lst))
                 warps = []
                 if spoiler.settings.useful_bananaport_placement:

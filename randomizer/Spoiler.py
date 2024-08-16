@@ -27,6 +27,7 @@ from randomizer.Enums.Settings import (
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    ShufflePortLocations,
     SpoilerHints,
     TrainingBarrels,
     WinConditionComplex,
@@ -623,6 +624,8 @@ class Spoiler:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
         if self.settings.random_crates:
             humanspoiler["Shuffled Melon Crates"] = self.human_crates
+        if self.settings.bananaport_placement_rando != ShufflePortLocations.off:
+            humanspoiler["Shuffled Bananaport Locations"] = self.human_warps
         if self.settings.bananaport_rando != BananaportRando.off:
             shuffled_warp_levels = [x.name for x in self.settings.warp_level_list_selected]
             humanspoiler["Shuffled Bananaport Levels"] = shuffled_warp_levels
