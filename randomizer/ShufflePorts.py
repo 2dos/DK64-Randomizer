@@ -182,6 +182,28 @@ def ResetPorts():
     for k in BananaportVanilla:
         BananaportVanilla[k].reset()
 
+# TODO: Add Llama, Factory->Castle warps to CustomLocations (boring)
+
+def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps) -> bool:
+    """Determines whether a custom location is valid for a warp pad."""
+    if location.map != map_id:
+        # Has to be in the right map
+        return False
+    BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
+    if location.tied_warp_event in BANNED_PORT_SHUFFLE_EVENTS:
+        # Disable all locked warp locations
+        return False
+    if location.vanilla_port:
+        # Vanilla port locations are always fine
+        return True
+    if LocationTypes.Bananaport in location.banned_types:
+        # Can't place a bananaport in a banned location
+        return False
+    if location.selected:
+        # If it's inhabited by a location already, can't place something here
+        return False
+    return True
+
 def ShufflePorts(spoiler, port_selection, human_ports):
     """Shuffle the location of bananaports."""
     removePorts(spoiler)
@@ -199,10 +221,10 @@ def ShufflePorts(spoiler, port_selection, human_ports):
     BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
     for level in levels_to_check:
         level_lst = CustomLocations[level]
-        index_lst = list(range(len(level_lst)))
         for map in PortShufflerData:
             if PortShufflerData[map]["level"] == level:
-                index_lst = [x for x in index_lst if (not level_lst[x].selected) and (LocationTypes.Bananaport not in level_lst[x].banned_types) and (level_lst[x].map == map)]
+                index_lst = list(range(len(level_lst)))
+                index_lst = [x for x in index_lst if isCustomLocationValid(spoiler, level_lst[x], map)]
                 global_count = PortShufflerData[map]["global_warp_count"]
                 start_event = PortShufflerData[map]["starting_warp"]
                 end_event = start_event + PortShufflerData[map]["global_warp_count"]
@@ -218,7 +240,6 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                         if event_id >= start_event and event_id < end_event and event_id not in BANNED_PORT_SHUFFLE_EVENTS:
                             selected_port = warps[idx_selection]
                             port_selection[k] = selected_port
-                            print(k.name, level_lst[selected_port].name)
                             addPort(spoiler, level_lst[selected_port], event_id)
                             CustomLocations[level][selected_port].setCustomLocation(True)
                             human_ports[event_id.name] = level_lst[selected_port].name
