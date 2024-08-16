@@ -9,7 +9,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected
+from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected, ShufflePortLocations
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
@@ -72,12 +72,28 @@ class CustomLocation:
         """Set location's state regarding rando."""
         self.selected = value
 
+    def isValidLocation(self, placement_type: LocationTypes) -> bool:
+        """Determine whether the location is valid for placement of a certain object."""
+        if self.selected:
+            return False
+        if placement_type in self.banned_types:
+            return False
+        return True
 
-def resetCustomLocations() -> None:
+
+def resetCustomLocations(spoiler) -> None:
     """Reset all locations to their default selection-state."""
     for key in CustomLocations.keys():
         for location in CustomLocations[key]:
             location.selected = location.vanilla_crown or location.vanilla_crate or location.vanilla_patch or location.vanilla_port
+            if spoiler.settings.crown_placement_rando and location.vanilla_crown:
+                location.selected = False
+            if spoiler.settings.random_patches and location.vanilla_patch:
+                location.selected = False
+            if spoiler.settings.random_crates and location.vanilla_crate:
+                location.selected = False
+            if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off and location.vanilla_port:
+                location_selected = False
 
 WARP_MAX_SIZE = 56
 

@@ -613,6 +613,7 @@ class Settings:
         self.coin_rando = False
         self.crown_placement_rando = False
         self.bananaport_placement_rando = ShufflePortLocations.half_vanilla
+        self.useful_bananaport_placement = True
         self.override_cosmetics = True
         self.random_colors = False
         self.hard_level_progression = False

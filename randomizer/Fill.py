@@ -3060,7 +3060,7 @@ class ItemReference:
 
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
-    resetCustomLocations()
+    resetCustomLocations(spoiler)
     ResetPorts()
     if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
         port_replacements = {}

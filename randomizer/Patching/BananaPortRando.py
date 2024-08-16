@@ -139,7 +139,8 @@ def move_bananaports(spoiler):
                     modification_table.append({
                         "obj_id": obj_id,
                         "coords": CustomLocations[level_id][custom_location_id].coords,
-                        "scale": CustomLocations[level_id][custom_location_id].max_size / (56 * 4),
+                        "scale": min(CustomLocations[level_id][custom_location_id].max_size / (56 * 4), 0.25),  # Make 0.25 the max size
+                        "rot_y": (CustomLocations[level_id][custom_location_id].rot_y / 4096) * 360,
                     })
                 # exit_id = 
 
@@ -158,3 +159,7 @@ def move_bananaports(spoiler):
                             for c in k["coords"]:
                                 ROM_COPY.writeMultipleBytes(int(float_to_hex(c), 16), 4)
                             ROM_COPY.writeMultipleBytes(int(float_to_hex(k["scale"]), 16), 4)
+                            ROM_COPY.seek(item_start + 0x18)
+                            ROM_COPY.writeMultipleBytes(0, 4)
+                            ROM_COPY.writeMultipleBytes(int(float_to_hex(k["rot_y"]), 16), 4)
+                            ROM_COPY.writeMultipleBytes(0, 4)

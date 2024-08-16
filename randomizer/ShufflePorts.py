@@ -12,11 +12,10 @@ import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Settings import MiscChangesSelected, ShufflePortLocations, CBRando, KasplatRandoSetting
+from randomizer.Enums.Settings import ShufflePortLocations, KasplatRandoSetting
 from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, LocationTypes
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.LogicClasses import Event
-from randomizer.Patching.Lib import IsItemSelected
 
 def addPort(spoiler, warp: CustomLocation, event_enum: Events):
     """Add bananaport to relevant Logic Region."""
@@ -36,24 +35,16 @@ def getBannedWarps(spoiler) -> list[Events]:
         Events.CavesW3bTagged,
         Events.CavesW4bTagged,
         Events.CavesW5aTagged,
+        # Locations with extra logic
+        Events.JapesW5bTagged,
+        Events.AztecW5bTagged,
+        Events.GalleonW4aTagged,
     ]
     WARP_SHUFFLE_SETTING = spoiler.settings.bananaport_placement_rando
-    JAPES_BRIDGE_PERM = IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.japes_bridge_permanently_extended)
-    COIN_RANDO = spoiler.settings.coin_rando
-    CB_RANDO = spoiler.settings.cb_rando != CBRando.off
     KASPLAT_LOCATION_RANDO = spoiler.settings.kasplat_rando_setting == KasplatRandoSetting.location_shuffle
-    if (not JAPES_BRIDGE_PERM) or WARP_SHUFFLE_SETTING in (ShufflePortLocations.vanilla_only, ShufflePortLocations.half_vanilla):
-        # Access to top of mountain region if the QoL setting isn't enabled
-        lst.append(Events.JapesW5bTagged)
-    if (not COIN_RANDO) or (not CB_RANDO) or WARP_SHUFFLE_SETTING in (ShufflePortLocations.vanilla_only, ShufflePortLocations.half_vanilla):
-        # Access to the Chunky coins with vanilla coins, Diddy CBs
-        lst.append(Events.AztecW5bTagged)
     if (not KASPLAT_LOCATION_RANDO and WARP_SHUFFLE_SETTING == ShufflePortLocations.on) or WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
         # Access to the Lanky Kasplat
         lst.append(Events.LlamaW2bTagged)
-    if (not KASPLAT_LOCATION_RANDO) or WARP_SHUFFLE_SETTING in (ShufflePortLocations.vanilla_only, ShufflePortLocations.half_vanilla):
-        # Access to the DK Kasplat with vanilla/vanilla shuffle kasplats
-        lst.append(Events.GalleonW4aTagged)
     if WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
         lst.extend([
             # Japes
@@ -106,23 +97,25 @@ def getBannedWarps(spoiler) -> list[Events]:
     return lst
 
 
-def removePorts(spoiler):
+def removePorts(spoiler, permitted_levels: list[Levels]):
     """Remove all bananaports from Logic regions."""
-    level_logic_regions = [
-        randomizer.LogicFiles.DKIsles.LogicRegions,
-        randomizer.LogicFiles.JungleJapes.LogicRegions,
-        randomizer.LogicFiles.AngryAztec.LogicRegions,
-        randomizer.LogicFiles.FranticFactory.LogicRegions,
-        randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-        randomizer.LogicFiles.FungiForest.LogicRegions,
-        randomizer.LogicFiles.CrystalCaves.LogicRegions,
-        randomizer.LogicFiles.CreepyCastle.LogicRegions,
-    ]
+    level_logic_regions = {
+        Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
+        Levels.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions,
+        Levels.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions,
+        Levels.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions,
+        Levels.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+        Levels.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions,
+        Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
+        Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
+    }
     BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
-    for level in level_logic_regions:
-        for region in level:
-            region_data = spoiler.RegionList[region]
-            region_data.events = [x for x in region_data.events if x.name < Events.JapesW1aTagged or x.name > Events.IslesW5bTagged or x.name in BANNED_PORT_SHUFFLE_EVENTS]
+    for level_id in level_logic_regions:
+        if level_id in permitted_levels:
+            level = level_logic_regions[level_id]
+            for region in level:
+                region_data = spoiler.RegionList[region]
+                region_data.events = [x for x in region_data.events if x.name < Events.JapesW1aTagged or x.name > Events.IslesW5bTagged or x.name in BANNED_PORT_SHUFFLE_EVENTS]
 
 PortShufflerData = {
     Maps.JungleJapes: {
@@ -184,7 +177,7 @@ def ResetPorts():
 
 # TODO: Add Llama, Factory->Castle warps to CustomLocations (boring)
 
-def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps) -> bool:
+def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level: Levels) -> bool:
     """Determines whether a custom location is valid for a warp pad."""
     if location.map != map_id:
         # Has to be in the right map
@@ -193,20 +186,13 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps) -> bo
     if location.tied_warp_event in BANNED_PORT_SHUFFLE_EVENTS:
         # Disable all locked warp locations
         return False
-    if location.vanilla_port:
-        # Vanilla port locations are always fine
-        return True
-    if LocationTypes.Bananaport in location.banned_types:
-        # Can't place a bananaport in a banned location
-        return False
-    if location.selected:
-        # If it's inhabited by a location already, can't place something here
-        return False
-    return True
+    if spoiler.settings.enable_plandomizer:
+        if location.name in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]:
+            return False
+    return location.isValidLocation(LocationTypes.Bananaport)
 
 def ShufflePorts(spoiler, port_selection, human_ports):
     """Shuffle the location of bananaports."""
-    removePorts(spoiler)
     levels_to_check = [
         # We can change this based on Jacob's multiselector
         Levels.JungleJapes,
@@ -218,13 +204,14 @@ def ShufflePorts(spoiler, port_selection, human_ports):
         Levels.CreepyCastle,
         Levels.DKIsles,
     ]
+    removePorts(spoiler, levels_to_check)
     BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
     for level in levels_to_check:
         level_lst = CustomLocations[level]
         for map in PortShufflerData:
             if PortShufflerData[map]["level"] == level:
                 index_lst = list(range(len(level_lst)))
-                index_lst = [x for x in index_lst if isCustomLocationValid(spoiler, level_lst[x], map)]
+                index_lst = [x for x in index_lst if isCustomLocationValid(spoiler, level_lst[x], map, level)]
                 global_count = PortShufflerData[map]["global_warp_count"]
                 start_event = PortShufflerData[map]["starting_warp"]
                 end_event = start_event + PortShufflerData[map]["global_warp_count"]
@@ -232,7 +219,32 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                 if len(index_lst) < pick_count:
                     print(f"Lowering pick count for {map.name} from {pick_count} to {len(index_lst)}")
                 pick_count = min(pick_count, len(index_lst))
-                warps = random.sample(index_lst, pick_count)
+                warps = []
+                if spoiler.settings.useful_bananaport_placement:
+                    random.shuffle(index_lst)
+                    # Populate the region dict with custom locations in each region
+                    region_dict = {}
+                    for x in index_lst:
+                        region = level_lst[x].logic_region
+                        if region not in region_dict:
+                            region_dict[region] = []
+                        region_dict[region].append(x)
+                    # For all regions, push the first location in each region. Loop through regions repeatedly until warp list is filled
+                    counter = pick_count
+                    while counter > 0:
+                        region_lst = [x for xi, x in enumerate(list(region_dict.keys())) if xi < counter]
+                        for region in region_lst:
+                            selected_warp = region_dict[region].pop(0)
+                            warps.append(selected_warp)
+                            counter -= 1
+                        del_lst = []
+                        for region in region_dict:
+                            if len(region_dict[region]) == 0:  # delete any empty region
+                                del_lst.append(region)
+                        for region in del_lst:
+                            del region_dict[region]
+                else:
+                    warps = random.sample(index_lst, pick_count)
                 idx_selection = 0
                 if pick_count > 0:
                     for k in BananaportVanilla:
