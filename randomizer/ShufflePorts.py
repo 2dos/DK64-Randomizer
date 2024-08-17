@@ -184,7 +184,7 @@ def ResetPorts():
         BananaportVanilla[k].reset()
 
 
-# TODO: Add Llama, Factory->Castle warps to CustomLocations (boring)
+# TODO: Add Galleon->Castle warps to CustomLocations (boring)
 
 
 def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level: Levels) -> bool:
@@ -265,8 +265,21 @@ def selectUsefulWarpFullShuffle(region: Regions, list_of_custom_locations, list_
         # Let's keep it at least a bit random. If there aren't enough locations to choose from, considering it's vanilla, it might as well not be random.
         if len(possible_warps) > 5:
             return random.choice(possible_warps)
-        else: 
+        else:
             return random.choice(list_of_warps)
+
+
+def EventToName(event_id: Events) -> str:
+    """Convert a warp event enum to a string."""
+    if event_id < Events.JapesW1aTagged or event_id > Events.IslesW5bTagged:
+        return None
+    init_name = event_id.name
+    for x in range(5):
+        search_str = f"W{x + 1}"
+        end_str = f"Warp {x + 1}"
+        if search_str in init_name:
+            return f"{init_name.split(search_str)[0]} {end_str}"
+    return None
 
 
 def ShufflePorts(spoiler, port_selection, human_ports):
@@ -303,13 +316,21 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                     # Populate the region dict with custom locations in each region
                     region_dict = {}
                     for x in index_lst:
-                        region = level_lst[x].logic_region
-                        # Calculate the region based on klumping
-                        for prop_region in REGION_KLUMPS:
-                            if region in REGION_KLUMPS[prop_region]:
-                                region = prop_region
-                                break
                         # Populate dict
+                        if map == Maps.CreepyCastle:
+                            # Castle is all 1 logic region, and it's usefulness is solely based on height
+                            # As such, set the region as it's height component
+                            y_val = level_lst[x].coords[1]
+                            # Castle bottom = 400 (roughly), top is 2000 (roughly)
+                            # 320 is deduced by (2000 - 400) / 5, splitting castle into 5 sections
+                            region = int(y_val / 320)
+                        else:
+                            region = level_lst[x].logic_region
+                            # Calculate the region based on klumping
+                            for prop_region in REGION_KLUMPS:
+                                if region in REGION_KLUMPS[prop_region]:
+                                    region = prop_region
+                                    break
                         if region not in region_dict:
                             region_dict[region] = []
                         region_dict[region].append(x)
@@ -357,6 +378,6 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                                     port_selection[k] = selected_port
                             addPort(spoiler, level_lst[selected_port], event_id)
                             CustomLocations[level][selected_port].setCustomLocation(True)
-                            human_ports[event_id.name] = level_lst[selected_port].name
+                            human_ports[EventToName(event_id)] = level_lst[selected_port].name
                             if len(warps) == 0:
                                 break

@@ -66,10 +66,10 @@ void swap_ending_cutscene_model(void) {
 }
 
 static short maps_with_extended_end_cs[] = {
-	MAP_KROOLDK,
-	MAP_KROOLDIDDY,
-	MAP_KROOLLANKY,
-	MAP_KROOLTINY,
+	// MAP_KROOLDK, // n64 lol
+	// MAP_KROOLDIDDY, // n64 lol
+	// MAP_KROOLLANKY, // n64 lol
+	// MAP_KROOLTINY, // n64 lol
 	MAP_KROOLCHUNKY,
 };
 
