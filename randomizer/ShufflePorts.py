@@ -1,6 +1,7 @@
 """Shuffle Bananaport Locations."""
 
 import random
+from randomizer.Lists.MapsAndExits import RegionMapList
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -18,6 +19,7 @@ from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, Lo
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.LogicClasses import Event
 
+
 def addPort(spoiler, warp: CustomLocation, event_enum: Events):
     """Add bananaport to relevant Logic Region."""
     spoiler.RegionList[warp.logic_region].events.append(Event(event_enum, warp.logic))
@@ -25,8 +27,9 @@ def addPort(spoiler, warp: CustomLocation, event_enum: Events):
         if BananaportVanilla[k].event == event_enum:
             BananaportVanilla[k].region_id = warp.logic_region
 
+
 def getBannedWarps(spoiler) -> list[Events]:
-    """Get list of banned warp events based on settings"""
+    """Get list of banned warp events based on settings."""
     lst = [
         # All of these float on water, lets make these static
         Events.GalleonW2bTagged,
@@ -47,54 +50,56 @@ def getBannedWarps(spoiler) -> list[Events]:
         # Access to the Lanky Kasplat
         lst.append(Events.LlamaW2bTagged)
     if WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
-        lst.extend([
-            # Japes
-            Events.JapesW1aTagged,  # W1 Portal
-            Events.JapesW2aTagged,  # W2 Entrance
-            Events.JapesW3aTagged,  # W3 Painting
-            Events.JapesW4aTagged,  # W4 Tunnel
-            # Aztec
-            Events.AztecW1aTagged,  # W1 Portal
-            Events.AztecW2aTagged,  # W2 Oasis
-            Events.AztecW3aTagged,  # W3 Totem
-            Events.AztecW4aTagged,  # W4 Totem
-            # Llama
-            Events.LlamaW1aTagged,  # W1 Near Entrance
-            # Factory
-            Events.FactoryW1aTagged,  # W1 Lobby
-            Events.FactoryW2aTagged,  # W2 Lobby
-            Events.FactoryW3aTagged,  # W3 Lobby
-            Events.FactoryW4aTagged,  # W4 Prod Bottom
-            Events.FactoryW5bTagged,  # W5 Funky
-            # Galleon
-            Events.GalleonW1aTagged,  # W1 Main Area
-            Events.GalleonW3aTagged,  # W3 Main Area
-            # Fungi
-            Events.ForestW1aTagged,  # W1 Clock
-            Events.ForestW2aTagged,  # W2 Clock
-            Events.ForestW3aTagged,  # W3 Clock
-            Events.ForestW4aTagged,  # W4 Clock
-            Events.ForestW5bTagged,  # W5 Low
-            # Caves
-            Events.CavesW1aTagged,  # W1 Start
-            Events.CavesW2aTagged,  # W2 Start
-            # Castle
-            Events.CastleW1aTagged,  # W1 Start
-            Events.CastleW2aTagged,  # W2 Start
-            Events.CastleW3aTagged,  # W3 Start
-            Events.CastleW4aTagged,  # W4 Start
-            Events.CastleW5aTagged,  # W5 Start
-            # Crypt
-            Events.CryptW1aTagged,  # W1 Start
-            Events.CryptW2aTagged,  # W2 Start
-            Events.CryptW3aTagged,  # W3 Start
-            # Isles
-            Events.IslesW1aTagged,  # W1 Ring
-            Events.IslesW2aTagged,  # W2 Ring
-            Events.IslesW3aTagged,  # W3 Ring
-            Events.IslesW4aTagged,  # W4 Ring
-            Events.IslesW5aTagged,  # W5 Ring
-        ])
+        lst.extend(
+            [
+                # Japes
+                Events.JapesW1aTagged,  # W1 Portal
+                Events.JapesW2aTagged,  # W2 Entrance
+                Events.JapesW3aTagged,  # W3 Painting
+                Events.JapesW4aTagged,  # W4 Tunnel
+                # Aztec
+                Events.AztecW1aTagged,  # W1 Portal
+                Events.AztecW2aTagged,  # W2 Oasis
+                Events.AztecW3aTagged,  # W3 Totem
+                Events.AztecW4aTagged,  # W4 Totem
+                # Llama
+                Events.LlamaW1aTagged,  # W1 Near Entrance
+                # Factory
+                Events.FactoryW1aTagged,  # W1 Lobby
+                Events.FactoryW2aTagged,  # W2 Lobby
+                Events.FactoryW3aTagged,  # W3 Lobby
+                Events.FactoryW4aTagged,  # W4 Prod Bottom
+                Events.FactoryW5bTagged,  # W5 Funky
+                # Galleon
+                Events.GalleonW1aTagged,  # W1 Main Area
+                Events.GalleonW3aTagged,  # W3 Main Area
+                # Fungi
+                Events.ForestW1aTagged,  # W1 Clock
+                Events.ForestW2aTagged,  # W2 Clock
+                Events.ForestW3aTagged,  # W3 Clock
+                Events.ForestW4aTagged,  # W4 Clock
+                Events.ForestW5bTagged,  # W5 Low
+                # Caves
+                Events.CavesW1aTagged,  # W1 Start
+                Events.CavesW2aTagged,  # W2 Start
+                # Castle
+                Events.CastleW1aTagged,  # W1 Start
+                Events.CastleW2aTagged,  # W2 Start
+                Events.CastleW3aTagged,  # W3 Start
+                Events.CastleW4aTagged,  # W4 Start
+                Events.CastleW5aTagged,  # W5 Start
+                # Crypt
+                Events.CryptW1aTagged,  # W1 Start
+                Events.CryptW2aTagged,  # W2 Start
+                Events.CryptW3aTagged,  # W3 Start
+                # Isles
+                Events.IslesW1aTagged,  # W1 Ring
+                Events.IslesW2aTagged,  # W2 Ring
+                Events.IslesW3aTagged,  # W3 Ring
+                Events.IslesW4aTagged,  # W4 Ring
+                Events.IslesW5aTagged,  # W5 Ring
+            ]
+        )
     return lst
 
 
@@ -117,6 +122,7 @@ def removePorts(spoiler, permitted_levels: list[Levels]):
             for region in level:
                 region_data = spoiler.RegionList[region]
                 region_data.events = [x for x in region_data.events if x.name < Events.JapesW1aTagged or x.name > Events.IslesW5bTagged or x.name in BANNED_PORT_SHUFFLE_EVENTS]
+
 
 PortShufflerData = {
     Maps.JungleJapes: {
@@ -171,15 +177,18 @@ PortShufflerData = {
     },
 }
 
+
 def ResetPorts():
     """Reset all bananaports to their vanilla state."""
     for k in BananaportVanilla:
         BananaportVanilla[k].reset()
 
+
 # TODO: Add Llama, Factory->Castle warps to CustomLocations (boring)
 
+
 def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level: Levels) -> bool:
-    """Determines whether a custom location is valid for a warp pad."""
+    """Determine whether a custom location is valid for a warp pad."""
     if location.map != map_id:
         # Has to be in the right map
         return False
@@ -196,6 +205,7 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
             return False
     return location.isValidLocation(LocationTypes.Bananaport)
 
+
 REGION_KLUMPS = {
     # A way to bias against zones of a map with a lot of logic regions
     # Any entries in the list will sort regarding region dict based on the key rather than the normal value
@@ -211,8 +221,53 @@ REGION_KLUMPS = {
     Regions.MiddleCore: [Regions.SpinningCore, Regions.UpperCore],
     Regions.MushroomLowerExterior: [Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MushroomUpperMidExterior],
     Regions.MillArea: [Regions.ForestTopOfMill, Regions.ForestVeryTopOfMill],
-    Regions.CrystalCavesMain: [Regions.CavesBlueprintPillar, Regions.CavesBananaportSpire, Regions.CavesBonusCave]
+    Regions.CrystalCavesMain: [Regions.CavesBlueprintPillar, Regions.CavesBananaportSpire, Regions.CavesBonusCave],
 }
+
+warp_event_pairs = {}
+
+
+def populate_warp_event_pairs():
+    """Populate the dict of warp_event_pairs."""
+    for k in BananaportVanilla:
+        warp = BananaportVanilla[k].event
+        if warp not in warp_event_pairs.keys():
+            other_warp = [
+                x.event for x in BananaportVanilla.values() if x.map_id == BananaportVanilla[k].map_id and x.vanilla_warp == BananaportVanilla[k].vanilla_warp and x.event != BananaportVanilla[k].event
+            ][0]
+            warp_event_pairs[warp] = other_warp
+            warp_event_pairs[other_warp] = warp
+
+
+def selectUsefulWarpFullShuffle(region: Regions, list_of_custom_locations, list_of_warps, warp: CustomLocation = None):
+    """Find a useful warp to link to given warp."""
+    klumped_regions = []
+    if region in REGION_KLUMPS.keys():
+        klumped_regions = REGION_KLUMPS[region]
+    if warp is not None:
+        x = warp.x
+        y = warp.y
+        z = warp.z
+        possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region and list_of_custom_locations[x].logic_region]
+        for range in [1400, 1000, 800]:
+            narrow_down = []
+            for loc in possible_warps:
+                warp_pad = list_of_custom_locations[loc]
+                if (abs(x, warp_pad.x) + abs(z, warp_pad.z)) > range or abs(y, warp_pad.y) > 200 or warp_pad.logic_region != region or warp_pad.logic_region not in klumped_regions:
+                    narrow_down.append(loc)
+            if len(narrow_down) > 5 or RegionMapList[region] in [Maps.AztecLlamaTemple, Maps.CastleCrypt]:
+                possible_warps = narrow_down
+                break
+        return possible_warps
+    else:
+        # Vanilla warp, so it's not in the CustomLocations list (yet)
+        possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region and list_of_custom_locations[x].logic_region not in klumped_regions]
+        # Let's keep it at least a bit random. If there aren't enough locations to choose from, considering it's vanilla, it might as well not be random.
+        if len(possible_warps) > 5:
+            return random.choice(possible_warps)
+        else: 
+            return random.choice(list_of_warps)
+
 
 def ShufflePorts(spoiler, port_selection, human_ports):
     """Shuffle the location of bananaports."""
@@ -274,16 +329,34 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                             del region_dict[region]
                 else:
                     warps = random.sample(index_lst, pick_count)
-                idx_selection = 0
                 if pick_count > 0:
                     for k in BananaportVanilla:
                         event_id = BananaportVanilla[k].event
                         if event_id >= start_event and event_id < end_event and event_id not in BANNED_PORT_SHUFFLE_EVENTS:
-                            selected_port = warps[idx_selection]
-                            port_selection[k] = selected_port
+                            if not (spoiler.settings.bananaport_placement_rando == ShufflePortLocations.on and spoiler.settings.useful_bananaport_placement):
+                                selected_port = warps.pop(0)
+                                port_selection[k] = selected_port
+                            else:
+                                populate_warp_event_pairs()
+                                if warp_event_pairs[event_id] in BANNED_PORT_SHUFFLE_EVENTS and warp_event_pairs[event_id] not in [Events.LlamaW2bTagged]:
+                                    region = [x.region_id for x in BananaportVanilla.values() if x.event == warp_event_pairs[event_id]][0]
+                                    selected_port = selectUsefulWarpFullShuffle(region, level_lst, index_lst)
+                                    warps = [x for x in warps if x != selected_port]
+                                    index_lst.remove(selected_port)
+                                    port_selection[k] = selected_port
+                                elif warp_event_pairs[event_id] in port_selection.keys():
+                                    warp = level_lst[port_selection[warp_event_pairs[event_id]]]
+                                    region = warp.logic_region
+                                    selected_port = selectUsefulWarpFullShuffle(region, level_lst, index_lst, warp)
+                                    warps = [x for x in warps if x != selected_port]
+                                    index_lst.remove(selected_port)
+                                    port_selection[k] = selected_port
+                                else:
+                                    selected_port = warps.pop(0)
+                                    index_lst.remove(selected_port)
+                                    port_selection[k] = selected_port
                             addPort(spoiler, level_lst[selected_port], event_id)
                             CustomLocations[level][selected_port].setCustomLocation(True)
                             human_ports[event_id.name] = level_lst[selected_port].name
-                            idx_selection += 1
-                            if idx_selection >= pick_count:
+                            if len(warps) == 0:
                                 break

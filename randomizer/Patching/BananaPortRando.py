@@ -110,6 +110,7 @@ def randomize_bananaport(spoiler):
                         ROM_COPY.seek(start + 0x28)
                         ROM_COPY.writeMultipleBytes(pad_types[warp_change[2]], 2)
 
+
 def move_bananaports(spoiler):
     """Move bananaports around in conjunction with custom bananaport location rando."""
     ROM_COPY = LocalROM()
@@ -136,13 +137,15 @@ def move_bananaports(spoiler):
                 if BananaportVanilla[warp_id].map_id == cont_map_id:
                     custom_location_id = spoiler.warp_locations[warp_id]
                     obj_id = BananaportVanilla[warp_id].obj_id_vanilla
-                    modification_table.append({
-                        "obj_id": obj_id,
-                        "coords": CustomLocations[level_id][custom_location_id].coords,
-                        "scale": min(CustomLocations[level_id][custom_location_id].max_size / (56 * 4), 0.25),  # Make 0.25 the max size
-                        "rot_y": (CustomLocations[level_id][custom_location_id].rot_y / 4096) * 360,
-                    })
-                # exit_id = 
+                    modification_table.append(
+                        {
+                            "obj_id": obj_id,
+                            "coords": CustomLocations[level_id][custom_location_id].coords,
+                            "scale": min(CustomLocations[level_id][custom_location_id].max_size / (56 * 4), 0.25),  # Make 0.25 the max size
+                            "rot_y": (CustomLocations[level_id][custom_location_id].rot_y / 4096) * 360,
+                        }
+                    )
+                # exit_id =
 
             # Modify setup table
             obj_id_list = [x["obj_id"] for x in modification_table]

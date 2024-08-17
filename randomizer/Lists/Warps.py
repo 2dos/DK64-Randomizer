@@ -41,7 +41,7 @@ class BananaportData:
         self.new_warp = new_warp
 
     def reset(self) -> None:
-        """Resets object to default state."""
+        """Reset object to default state."""
         self.region_id = self.default_region
 
 
