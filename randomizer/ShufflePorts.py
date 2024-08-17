@@ -162,34 +162,26 @@ def populate_warp_event_pairs():
             warp_event_pairs[other_warp] = warp
 
 
-def selectUsefulWarpFullShuffle(region: Regions, list_of_custom_locations, list_of_warps, warp: CustomLocation = None):
+def selectUsefulWarpFullShuffle(list_of_custom_locations, list_of_warps, warp: CustomLocation = None):
     """Find a useful warp to link to given warp."""
+    region = warp.logic_region
     klumped_regions = []
     if region in REGION_KLUMPS.keys():
         klumped_regions = REGION_KLUMPS[region]
-    if warp is not None:
-        x = warp.x
-        y = warp.y
-        z = warp.z
-        possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region and list_of_custom_locations[x].logic_region]
-        for range in [1400, 1000, 800]:
-            narrow_down = []
-            for loc in possible_warps:
-                warp_pad = list_of_custom_locations[loc]
-                if (abs(x, warp_pad.x) + abs(z, warp_pad.z)) > range or abs(y, warp_pad.y) > 200 or warp_pad.logic_region != region or warp_pad.logic_region not in klumped_regions:
-                    narrow_down.append(loc)
-            if len(narrow_down) > 5 or RegionMapList[region] in [Maps.AztecLlamaTemple, Maps.CastleCrypt]:
-                possible_warps = narrow_down
-                break
-        return possible_warps
-    else:
-        # Vanilla warp, so it's not in the CustomLocations list (yet)
-        possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region and list_of_custom_locations[x].logic_region not in klumped_regions]
-        # Let's keep it at least a bit random. If there aren't enough locations to choose from, considering it's vanilla, it might as well not be random.
-        if len(possible_warps) > 5:
-            return random.choice(possible_warps)
-        else:
-            return random.choice(list_of_warps)
+    x = warp.coords[0]
+    y = warp.coords[1]
+    z = warp.coords[2]
+    possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region and list_of_custom_locations[x].logic_region]
+    for range in [1400, 1000, 800]:
+        narrow_down = []
+        for loc in possible_warps:
+            warp_pad = list_of_custom_locations[loc]
+            if (abs(x - warp_pad.coords[0]) + abs(z - warp_pad.coords[2])) > range or abs(y - warp_pad.coords[1]) > 200 or warp_pad.logic_region != region or warp_pad.logic_region not in klumped_regions:
+                narrow_down.append(loc)
+        if len(narrow_down) > 5:
+            possible_warps = narrow_down
+            break
+    return random.choice(possible_warps)
 
 
 def EventToName(event_id: Events) -> str:
@@ -287,18 +279,14 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                                 port_selection[k] = selected_port
                             else:
                                 populate_warp_event_pairs()
-                                if warp_event_pairs[event_id] in BANNED_PORT_SHUFFLE_EVENTS and warp_event_pairs[event_id] not in [Events.LlamaW2bTagged]:
-                                    region = [x.region_id for x in BananaportVanilla.values() if x.event == warp_event_pairs[event_id]][0]
-                                    selected_port = selectUsefulWarpFullShuffle(region, level_lst, index_lst)
+                                if warp_event_pairs[event_id] in BANNED_PORT_SHUFFLE_EVENTS or warp_event_pairs[event_id] in port_selection.keys():
+                                    if warp_event_pairs[event_id] in port_selection.keys():
+                                        warp = level_lst[port_selection[warp_event_pairs[event_id]]]
+                                    else:
+                                        warp = [x for x in level_lst if x.tied_warp_event == warp_event_pairs[event_id]][0]
+                                    selected_port = selectUsefulWarpFullShuffle(level_lst, index_lst, warp)
                                     warps = [x for x in warps if x != selected_port]
-                                    index_lst.remove(selected_port)
-                                    port_selection[k] = selected_port
-                                elif warp_event_pairs[event_id] in port_selection.keys():
-                                    warp = level_lst[port_selection[warp_event_pairs[event_id]]]
-                                    region = warp.logic_region
-                                    selected_port = selectUsefulWarpFullShuffle(region, level_lst, index_lst, warp)
-                                    warps = [x for x in warps if x != selected_port]
-                                    index_lst.remove(selected_port)
+                                    index_lst = [x for x in warps if x != selected_port]
                                     port_selection[k] = selected_port
                                 else:
                                     selected_port = warps.pop(0)
