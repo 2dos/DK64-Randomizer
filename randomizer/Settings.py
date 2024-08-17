@@ -612,7 +612,7 @@ class Settings:
         self.cb_rando = CBRando.off
         self.coin_rando = False
         self.crown_placement_rando = False
-        self.bananaport_placement_rando = ShufflePortLocations.half_vanilla
+        self.bananaport_placement_rando = ShufflePortLocations.on
         self.useful_bananaport_placement = True
         self.override_cosmetics = True
         self.random_colors = False
@@ -1168,7 +1168,9 @@ class Settings:
             # Fill cleared out phases with available phases
             for i in range(len(phases)):
                 if phases[i] is None:
-                    available_phases = [map_id for map_id in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase] if map_id not in planned_phases]
+                    available_phases = [
+                        map_id for map_id in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase] if map_id not in planned_phases
+                    ]
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
             for i in range(len(phases)):

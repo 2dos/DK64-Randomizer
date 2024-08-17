@@ -35,10 +35,20 @@
 | Jungle Japes | Near Cannon Platform |  | `` | 
 | Jungle Japes | In Troff 'n' Scoff Alcove |  | `` | 
 | Jungle Japes | Lower River |  | `` | 
+| Jungle Japes | Vanilla Near Warp 1 |  | `` | 
+| Jungle Japes | Vanilla Hive Warp 5 |  | `` | 
+| Jungle Japes | Vanilla Near Warp 2 |  | `` | 
+| Jungle Japes | Vanilla Painting Warp 3 |  | `` | 
+| Jungle Japes | Vanilla Far Warp 1 |  | `` | 
+| Jungle Japes | Vanilla Blast Warp 3 |  | `` | 
+| Jungle Japes | Vanilla Mountain Warp 2 |  | `` | 
+| Jungle Japes | Vanilla Tunnel Warp 4 |  | `` | 
+| Jungle Japes | Vanilla Mountain Warp 5 |  | `` | 
+| Jungle Japes | Vanilla Cranky Warp 4 |  | `` | 
 | Jungle Japes | Behind Chunky Boulder |  | `` | 
 | Japes Under Ground | Underground: Behind Cannon |  | `` | 
 | Japes Under Ground | Underground: Near Vines |  | `` | 
-| Japes Lanky Cave | Painting Room: Near Peg | CrownPad | `` | 
+| Japes Lanky Cave | Painting Room: Near Peg | CrownPad, Bananaport | `` | 
 | Japes Mountain | Mountain: Near Entrance (Ground) |  | `` | 
 | Japes Mountain | Mountain: Near Entrance (High) |  | `` | 
 | Japes Mountain | Mountain: On Barrel |  | `` | 
@@ -87,6 +97,16 @@
 | Angry Aztec | Left of Gong-tower |  | `` | 
 | Angry Aztec | Near Gong Tower |  | `` | 
 | Angry Aztec | Sealed Quicksand Tunnel |  | `` | 
+| Angry Aztec | Vanilla Near Warp 1 |  | `` | 
+| Angry Aztec | Vanilla Oasis Warp 2 |  | `` | 
+| Angry Aztec | Vanilla Totem Warp 2 |  | `` | 
+| Angry Aztec | Vanilla Totem Warp 5 |  | `` | 
+| Angry Aztec | Vanilla Totem Warp 3 |  | `` | 
+| Angry Aztec | Vanilla Oasis Warp 1 |  | `` | 
+| Angry Aztec | Vanilla Near Warp 4 |  | `` | 
+| Angry Aztec | Vanilla Tunnel Warp 3 |  | `` | 
+| Angry Aztec | Vanilla Funky Warp 4 |  | `` | 
+| Angry Aztec | Vanilla Tunnel Warp 5 |  | `` | 
 | Aztec Donkey5DTemple | DK 5DT: Dead End |  | `(l.coconut and l.isdonkey) or l.phasewalk, group=7` | 
 | Aztec Diddy5DTemple | Diddy 5DT: Dead End |  | `(l.peanut and l.isdiddy) or l.phasewalk` | 
 | Aztec Lanky5DTemple | Lanky 5DT: Dead End |  | `(l.grape and l.islanky) or l.phasewalk, group=7` | 
@@ -100,14 +120,14 @@
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  | `` | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  | `` | 
 | Aztec Llama Temple | Llama Temple: Matching Room |  | `(l.grape and l.lanky) or l.phasewalk` | 
-| Aztec Llama Temple | In the Water | CrownPad, DirtPatch | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))` | 
+| Aztec Llama Temple | In the Water | CrownPad, DirtPatch, Bananaport | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))` | 
 | Aztec Llama Temple | Llama Temple: Snoop Switch |  | `` | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  | `` | 
 
 # Frantic Factory
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Frantic Factory | Under R and D Grate (1) | MelonCrate | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | Under R and D Grate (1) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Dark Room |  | `((l.punch and l.chunky) or l.phasewalk)` | 
 | Frantic Factory | Foyer Carpet |  | `` | 
 | Frantic Factory | Middle of Entrance Room |  | `` | 
@@ -138,16 +158,16 @@
 | Frantic Factory | Funky Room (2) |  | `` | 
 | Frantic Factory | Funky Room (3) |  | `` | 
 | Frantic Factory | Near Funky |  | `` | 
-| Frantic Factory | Piano Room | CrownPad | `(l.trombone and l.lanky) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | In Lanky's Piano Room | CrownPad | `((l.trombone and l.islanky) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Diddy R and D | CrownPad | `(l.guitar and l.diddy) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | In Diddy's Pincode enemies room | CrownPad | `((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Chunky R and D | CrownPad | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | In front of Chunky's toy boss room | CrownPad | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Piano Room | CrownPad, Bananaport | `(l.trombone and l.lanky) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | In Lanky's Piano Room | CrownPad, Bananaport | `((l.trombone and l.islanky) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Diddy R and D | CrownPad, Bananaport | `(l.guitar and l.diddy) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | In Diddy's Pincode enemies room | CrownPad, Bananaport | `((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Chunky R and D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | In front of Chunky's toy boss room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.phasewalk)` | 
 | Frantic Factory | Tiny race entry area |  | `((l.mini and l.istiny) or l.phasewalk)` | 
 | Frantic Factory | R and D lever room - by Tiny's barrel |  | `` | 
-| Frantic Factory | Under R and D Grate (2) | MelonCrate | `(l.grab and l.donkey) or l.phasewalk or l.generalclips` | 
+| Frantic Factory | Under R and D Grate (2) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.phasewalk or l.generalclips` | 
 | Factory Crusher | Crusher: Central Safehaven |  | `(l.strongKong and l.isdonkey) or l.phasewalk or l.generalclips` | 
 | Factory Power Hut | Power Shed: Corner |  | `` | 
 
@@ -167,25 +187,25 @@
 | Gloomy Galleon | In Punch GB Chest Room |  | `` | 
 | Gloomy Galleon | Behind Punch GB Chest |  | `` | 
 | Gloomy Galleon | Behind the ship you shoot onto with the cannon |  | `` | 
-| Galleon2DShip | Galleon Lanky 2DS Inside Chest | CrownPad, DirtPatch | `` | 
+| Galleon2DShip | Galleon Lanky 2DS Inside Chest | CrownPad, DirtPatch, Bananaport | `` | 
 | Gloomy Galleon | Left of Cranky |  | `` | 
 | Gloomy Galleon | In front of Cranky |  | `` | 
 | Gloomy Galleon | Near Bridge Warp 3 |  | `` | 
 | Gloomy Galleon | On Lighthouse Platform (Rocketbarrel) |  | `` | 
 | Gloomy Galleon | On Lighthouse Platform (Baboon Blast) |  | `` | 
 | Gloomy Galleon | Next to Lighthouse ladder |  | `` | 
-| Gloomy Galleon | Lighthouse: Under Enguarde Box | CrownPad, DirtPatch | `Events.LighthouseEnguarde in l.Events` | 
-| Gloomy Galleon | In Enguarde Alcove | CrownPad, DirtPatch | `Events.LighthouseEnguarde in l.Events` | 
-| Gloomy Galleon | In Front of Mermaid Palace | CrownPad, DirtPatch | `Events.LighthouseEnguarde in l.Events` | 
+| Gloomy Galleon | Lighthouse: Under Enguarde Box | CrownPad, DirtPatch, Bananaport | `Events.LighthouseEnguarde in l.Events` | 
+| Gloomy Galleon | In Enguarde Alcove | CrownPad, DirtPatch, Bananaport | `Events.LighthouseEnguarde in l.Events` | 
+| Gloomy Galleon | In Front of Mermaid Palace | CrownPad, DirtPatch, Bananaport | `Events.LighthouseEnguarde in l.Events` | 
 | Gloomy Galleon | On Rocketbarrel platform |  | `` | 
 | Gloomy Galleon | Blueprint Alcove | MelonCrate | `Events.WaterLowered in l.Events` | 
 | Gloomy Galleon | Behind Snide's |  | `` | 
-| Gloomy Galleon | Shipyard: On top of Tiny Submarine | CrownPad, DirtPatch | `Events.ShipyardEnguarde in l.Events` | 
-| Gloomy Galleon | In the Shipwreck with Replenishables | CrownPad, DirtPatch | `Events.ShipyardEnguarde in l.Events` | 
-| Gloomy Galleon | Behind Musical Cactus | CrownPad, DirtPatch | `Events.ShipyardEnguarde in l.Events` | 
-| Gloomy Galleon | On Top of Mechfish Grate | DirtPatch, CrownPad | `Events.ShipyardEnguarde in l.Events` | 
+| Gloomy Galleon | Shipyard: On top of Tiny Submarine | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
+| Gloomy Galleon | In the Shipwreck with Replenishables | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
+| Gloomy Galleon | Behind Musical Cactus | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
+| Gloomy Galleon | On Top of Mechfish Grate | DirtPatch, CrownPad, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | On Gold Tower |  | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick()` | 
-| Gloomy Galleon | Galleon Treasure Room UnderWater | CrownPad, DirtPatch | `Events.ShipyardTreasureRoomOpened in l.Events` | 
+| Gloomy Galleon | Galleon Treasure Room UnderWater | CrownPad, DirtPatch, Bananaport | `Events.ShipyardTreasureRoomOpened in l.Events` | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | `` | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  | `` | 
 | Galleon Sick Bay | Seasick Ship: Right of Cannon |  | `` | 
@@ -280,7 +300,7 @@
 | Crystal Caves | On 5DI Pillar | MelonCrate | `(l.jetpack and l.isdiddy) or (l.twirl and l.istiny and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | Crystal Caves | On top of the Igloo | CrownPad, MelonCrate | `` | 
 | Crystal Caves | Under tag barrel near igloo | MelonCrate | `` | 
-| Crystal Caves | In front of Igloo | CrownPad, DirtPatch | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam` | 
+| Crystal Caves | In front of Igloo | CrownPad, DirtPatch, Bananaport | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam` | 
 | Crystal Caves | In Hidden Bonus Room |  | `` | 
 | Crystal Caves | Near Primate Punch wall opposite cranky |  | `` | 
 | Crystal Caves | In Giant Boulder Room |  | `` | 
@@ -369,6 +389,12 @@
 | Castle Crypt | 3Kong crypt entrance |  | `` | 
 | Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
 | Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Castle Crypt | Vanilla Far Warp 1 |  | `` | 
+| Castle Crypt | Vanilla Close Warp 1 |  | `` | 
+| Castle Crypt | Vanilla Close Warp 2 |  | `` | 
+| Castle Crypt | Vanilla Close Warp 3 |  | `` | 
+| Castle Crypt | Vanilla Far Warp 3 |  | `` | 
+| Castle Crypt | Vanilla Far Warp 2 |  | `` | 
 | Castle Mausoleum | 2kong crypt entrance |  | `` | 
 | Castle Mausoleum | Lanky Crypt: Lanky Tunnel |  | `` | 
 | Castle Upper Cave | Tunnel: Near Pit |  | `` | 
@@ -422,6 +448,16 @@
 | Isles | Fairy Isle |  | `` | 
 | Isles | Behind BFI |  | `` | 
 | Isles | Small Island |  | `` | 
+| Isles | Vanilla Ring Warp 1 |  | `` | 
+| Isles | Vanilla K. Lumsy Warp 1 |  | `` | 
+| Isles | Vanilla Ring Warp 2 |  | `` | 
+| Isles | Vanilla Upper Warp 2 |  | `` | 
+| Isles | Vanilla Waterfall Warp 3 |  | `` | 
+| Isles | Vanilla Ring Warp 5 |  | `` | 
+| Isles | Vanilla Ring Warp 3 |  | `` | 
+| Isles | Vanilla Ring Warp 4 |  | `` | 
+| Isles | Vanilla Upper Warp 4 |  | `` | 
+| Isles | Vanilla Island Warp 5 |  | `` | 
 | Jungle Japes Lobby | Jungle Japes Lobby: Near Tag Barrel |  | `` | 
 | Jungle Japes Lobby | Japes Lobby: Near Portal |  | `` | 
 | Angry Aztec Lobby | Aztec Lobby: In Front of Feather Door |  | `` | 

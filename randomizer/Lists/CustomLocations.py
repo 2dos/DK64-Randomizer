@@ -40,7 +40,7 @@ class CustomLocation:
         is_galleon_floating_crate=False,
         banned_types: list = [],
         default_index=0,
-        tied_warp_event: Events=None,
+        tied_warp_event: Events = None,
     ) -> None:
         """Initialize with given data."""
         self.map = map
@@ -95,7 +95,9 @@ def resetCustomLocations(spoiler) -> None:
             if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off and location.vanilla_port:
                 location.selected = False
 
+
 WARP_MAX_SIZE = 56
+
 
 class LocationTypes(IntEnum):
     """Location type Enum."""

@@ -89,6 +89,7 @@ def hueShift(im: Image, amount: int):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+
 def convertToRGBA32(png_file):
     """Convert PNG to RGBA32 binary."""
     im = Image.open(png_file)

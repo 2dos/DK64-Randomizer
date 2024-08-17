@@ -737,6 +737,7 @@ class ShuffleLoadingZones(IntEnum):
     levels = auto()
     all = auto()
 
+
 class ShufflePortLocations(IntEnum):
     """Determines how bananaports are shuffled.
 
