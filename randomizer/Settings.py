@@ -612,7 +612,7 @@ class Settings:
         self.cb_rando = CBRando.off
         self.coin_rando = False
         self.crown_placement_rando = False
-        self.bananaport_placement_rando = ShufflePortLocations.on
+        self.bananaport_placement_rando = ShufflePortLocations.vanilla_only
         self.useful_bananaport_placement = True
         self.override_cosmetics = True
         self.random_colors = False

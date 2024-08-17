@@ -9,7 +9,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected, ShufflePortLocations
+from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected, ShufflePortLocations, KasplatRandoSetting
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
@@ -80,9 +80,83 @@ class CustomLocation:
             return False
         return True
 
+def getBannedWarps(spoiler) -> list[Events]:
+    """Get list of banned warp events based on settings."""
+    lst = [
+        # All of these float on water, lets make these static
+        Events.GalleonW2bTagged,
+        Events.GalleonW4bTagged,
+        Events.GalleonW5bTagged,
+        # Only way to ensure 2 hidden warps don't link to eachother
+        Events.CavesW3bTagged,
+        Events.CavesW4bTagged,
+        Events.CavesW5aTagged,
+        # Locations with extra logic
+        Events.JapesW5bTagged,
+        Events.AztecW5bTagged,
+        Events.GalleonW4aTagged,
+    ]
+    WARP_SHUFFLE_SETTING = spoiler.settings.bananaport_placement_rando
+    KASPLAT_LOCATION_RANDO = spoiler.settings.kasplat_rando_setting == KasplatRandoSetting.location_shuffle
+    if (not KASPLAT_LOCATION_RANDO and WARP_SHUFFLE_SETTING == ShufflePortLocations.on) or WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
+        # Access to the Lanky Kasplat
+        lst.append(Events.LlamaW2bTagged)
+    if WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
+        lst.extend(
+            [
+                # Japes
+                Events.JapesW1aTagged,  # W1 Portal
+                Events.JapesW2aTagged,  # W2 Entrance
+                Events.JapesW3aTagged,  # W3 Painting
+                Events.JapesW4aTagged,  # W4 Tunnel
+                # Aztec
+                Events.AztecW1aTagged,  # W1 Portal
+                Events.AztecW2aTagged,  # W2 Oasis
+                Events.AztecW3aTagged,  # W3 Totem
+                Events.AztecW4aTagged,  # W4 Totem
+                # Llama
+                Events.LlamaW1aTagged,  # W1 Near Entrance
+                # Factory
+                Events.FactoryW1aTagged,  # W1 Lobby
+                Events.FactoryW2aTagged,  # W2 Lobby
+                Events.FactoryW3aTagged,  # W3 Lobby
+                Events.FactoryW4aTagged,  # W4 Prod Bottom
+                Events.FactoryW5bTagged,  # W5 Funky
+                # Galleon
+                Events.GalleonW1aTagged,  # W1 Main Area
+                Events.GalleonW3aTagged,  # W3 Main Area
+                # Fungi
+                Events.ForestW1aTagged,  # W1 Clock
+                Events.ForestW2aTagged,  # W2 Clock
+                Events.ForestW3aTagged,  # W3 Clock
+                Events.ForestW4aTagged,  # W4 Clock
+                Events.ForestW5bTagged,  # W5 Low
+                # Caves
+                Events.CavesW1aTagged,  # W1 Start
+                Events.CavesW2aTagged,  # W2 Start
+                # Castle
+                Events.CastleW1aTagged,  # W1 Start
+                Events.CastleW2aTagged,  # W2 Start
+                Events.CastleW3aTagged,  # W3 Start
+                Events.CastleW4aTagged,  # W4 Start
+                Events.CastleW5aTagged,  # W5 Start
+                # Crypt
+                Events.CryptW1aTagged,  # W1 Start
+                Events.CryptW2aTagged,  # W2 Start
+                Events.CryptW3aTagged,  # W3 Start
+                # Isles
+                Events.IslesW1aTagged,  # W1 Ring
+                Events.IslesW2aTagged,  # W2 Ring
+                Events.IslesW3aTagged,  # W3 Ring
+                Events.IslesW4aTagged,  # W4 Ring
+                Events.IslesW5aTagged,  # W5 Ring
+            ]
+        )
+    return lst
 
 def resetCustomLocations(spoiler) -> None:
     """Reset all locations to their default selection-state."""
+    BANNED_WARPS = getBannedWarps(spoiler)
     for key in CustomLocations.keys():
         for location in CustomLocations[key]:
             location.selected = location.vanilla_crown or location.vanilla_crate or location.vanilla_patch or location.vanilla_port
@@ -94,6 +168,9 @@ def resetCustomLocations(spoiler) -> None:
                 location.selected = False
             if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off and location.vanilla_port:
                 location.selected = False
+            if location.tied_warp_event in BANNED_WARPS:
+                # Make sure these warps cannot be selected by anything
+                location.selected = True
 
 
 WARP_MAX_SIZE = 56
@@ -1818,6 +1895,136 @@ CustomLocations = {
             logic=lambda l: Events.ShipyardTreasureRoomOpened in l.Events,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
+        CustomLocation(
+            name="Vanilla Floating Warp 5",
+            map=Maps.GloomyGalleon,
+            x=3175.065,
+            y=1543.23,
+            z=1844.807,
+            rot_y=2913,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.Shipyard,
+            group=6,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW5bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Lighthouse Warp 1",
+            map=Maps.GloomyGalleon,
+            x=1519.874,
+            y=1610.421,
+            z=4220.399,
+            rot_y=0,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.LighthousePlatform,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW1bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Snide Warp 3",
+            map=Maps.GloomyGalleon,
+            x=1981.99,
+            y=1610,
+            z=4774.565,
+            rot_y=2480,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.LighthouseSnideAlcove,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW3bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Lighthouse Warp 5",
+            map=Maps.GloomyGalleon,
+            x=1395.717,
+            y=1609.944,
+            z=3969.458,
+            rot_y=2731,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.LighthousePlatform,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW5aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Start Warp 2",
+            map=Maps.GloomyGalleon,
+            x=2905.288,
+            y=1700,
+            z=3367.477,
+            rot_y=2094,
+            max_size=int(WARP_MAX_SIZE * 0.76),
+            logic_region=Regions.GloomyGalleonStart,
+            group=3,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW2aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Start Warp 3",
+            map=Maps.GloomyGalleon,
+            x=3067.098,
+            y=1890,
+            z=2922.948,
+            rot_y=0,
+            max_size=int(WARP_MAX_SIZE * 1.24),
+            logic_region=Regions.GalleonPastVines,
+            group=3,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW3aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Floating Warp 2",
+            map=Maps.GloomyGalleon,
+            x=1556.673,
+            y=1548.119,
+            z=2008.956,
+            rot_y=853,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.Shipyard,
+            group=6,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW2bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Gold Tower Warp 4",
+            map=Maps.GloomyGalleon,
+            x=2167.65,
+            y=1880,
+            z=763.183,
+            rot_y=2731,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.TreasureRoomDiddyGoldTower,
+            group=12,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW4aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Start Warp 1",
+            map=Maps.GloomyGalleon,
+            x=2844.223,
+            y=1673.752,
+            z=3235.207,
+            rot_y=3049,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.GloomyGalleonStart,
+            group=3,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW1aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Floating Warp 4",
+            map=Maps.GloomyGalleon,
+            x=2762.929,
+            y=1550.856,
+            z=1431.044,
+            rot_y=0,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.Shipyard,
+            group=6,
+            vanilla_port=True,
+            tied_warp_event=Events.GalleonW4bTagged,
+        ),
         CustomLocation(map=Maps.GalleonSickBay, name="Seasick Ship: Left of Cannon", x=718, y=20, z=129, max_size=56, logic_region=Regions.SickBay, group=2),
         CustomLocation(
             name="Sick Bay: Chunky ship entrance",
@@ -2100,6 +2307,136 @@ CustomLocations = {
             group=5,
         ),
         CustomLocation(map=Maps.FungiForest, name="On Mill", x=4164, y=376, z=3526, max_size=64, logic_region=Regions.MillArea, group=5),
+        CustomLocation(
+            name="Vanilla Clock Warp 1",
+            map=Maps.FungiForest,
+            x=2721.163,
+            y=275.479,
+            z=2346.108,
+            rot_y=956,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.FungiForestStart,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW1aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Mill Warp 1",
+            map=Maps.FungiForest,
+            x=4135.515,
+            y=164.246,
+            z=3744.737,
+            rot_y=3595,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.MillArea,
+            group=5,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW1bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Clock Warp 2",
+            map=Maps.FungiForest,
+            x=2554.467,
+            y=281.944,
+            z=2113.114,
+            rot_y=1843,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.FungiForestStart,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW2aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Beanstalk Warp 2",
+            map=Maps.FungiForest,
+            x=3253.749,
+            y=182.831,
+            z=224.007,
+            rot_y=3982,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.WormArea,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW2bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Clock Warp 3",
+            map=Maps.FungiForest,
+            x=2234.942,
+            y=273.516,
+            z=2227.188,
+            rot_y=2742,
+            max_size=int(WARP_MAX_SIZE * 1.08),
+            logic_region=Regions.FungiForestStart,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW3aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Clock Warp 4",
+            map=Maps.FungiForest,
+            x=2483.208,
+            y=256.76,
+            z=2555.135,
+            rot_y=0,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.FungiForestStart,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW4aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Tree Warp 4",
+            map=Maps.FungiForest,
+            x=1276.934,
+            y=249.333,
+            z=3533.974,
+            rot_y=2014,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.HollowTreeArea,
+            group=5,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW4bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Lower Warp 5",
+            map=Maps.FungiForest,
+            x=933.914,
+            y=219.5,
+            z=1724.376,
+            rot_y=1798,
+            max_size=int(WARP_MAX_SIZE * 1.24),
+            logic_region=Regions.GiantMushroomArea,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW5bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Upper Warp 5",
+            map=Maps.FungiForest,
+            x=459.833,
+            y=1250,
+            z=1200.736,
+            rot_y=3334,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.MushroomUpperExterior,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW5aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Mushroom Warp 3",
+            map=Maps.FungiForest,
+            x=1179.775,
+            y=179.333,
+            z=1242.065,
+            rot_y=546,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.GiantMushroomArea,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.ForestW3bTagged,
+        ),
         CustomLocation(map=Maps.ForestAnthill, name="Anthill: Orange Platform", x=768, y=205, z=421, max_size=56, logic_region=Regions.Anthill, group=5),
         CustomLocation(map=Maps.ForestWinchRoom, name="Winch Room: Opposite Entrance", x=310, y=0, z=342, max_size=64, logic_region=Regions.WinchRoom, group=3),
         CustomLocation(
@@ -2483,6 +2820,136 @@ CustomLocations = {
             group=1,
         ),
         CustomLocation(
+            name="Vanilla Close Warp 1",
+            map=Maps.CrystalCaves,
+            x=2170.177,
+            y=64.818,
+            z=651.922,
+            rot_y=2048,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CrystalCavesMain,
+            group=2,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW1aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Close Warp 2",
+            map=Maps.CrystalCaves,
+            x=2259.137,
+            y=71.157,
+            z=653.479,
+            rot_y=2048,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CrystalCavesMain,
+            group=2,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW2aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Igloo Warp 1",
+            map=Maps.CrystalCaves,
+            x=386.949,
+            y=48.5,
+            z=970.654,
+            rot_y=319,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.IglooArea,
+            group=3,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW1bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Cabins Warp 2",
+            map=Maps.CrystalCaves,
+            x=2652.649,
+            y=280,
+            z=2182.157,
+            rot_y=1411,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CabinArea,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW2bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Pillar Warp 5",
+            map=Maps.CrystalCaves,
+            x=2762.267,
+            y=366.833,
+            z=953.577,
+            rot_y=57,
+            max_size=int(0.68 * WARP_MAX_SIZE),
+            logic_region=Regions.CavesBlueprintPillar,
+            group=2,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW5aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Hidden Warp 3",
+            map=Maps.CrystalCaves,
+            x=539.131,
+            y=180.333,
+            z=2511.16,
+            rot_y=740,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CavesBonusCave,
+            group=2,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW3bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Igloo Warp 3",
+            map=Maps.CrystalCaves,
+            x=163.979,
+            y=50.167,
+            z=1136.328,
+            rot_y=683,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.IglooArea,
+            group=3,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW3aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Hidden Warp 4",
+            map=Maps.CrystalCaves,
+            x=3339.909,
+            y=286.667,
+            z=569.045,
+            rot_y=2697,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CavesBlueprintCave,
+            group=2,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW4bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Spire Warp 4",
+            map=Maps.CrystalCaves,
+            x=1196.707,
+            y=133.5,
+            z=1923.537,
+            rot_y=3948,
+            max_size=int(WARP_MAX_SIZE * 0.68),
+            logic_region=Regions.CavesBananaportSpire,
+            group=2,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW4aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Cabin Warp 5",
+            map=Maps.CrystalCaves,
+            x=3614.799,
+            y=343,
+            z=1838.974,
+            rot_y=3174,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CabinArea,
+            group=1,
+            vanilla_port=True,
+            tied_warp_event=Events.CavesW5bTagged,
+        ),
+        CustomLocation(
             map=Maps.CavesDiddyIgloo, name="Diddy 5DI: Center", x=286, y=0, z=295, max_size=64, logic_region=Regions.DiddyIgloo, group=3, banned_types=[LocationTypes.CrownPad]
         ),  # crown pad removed due to potential crash
         CustomLocation(map=Maps.CavesDonkeyIgloo, name="DK 5DI: Behind Maze", x=469, y=0, z=177, max_size=80, logic_region=Regions.DonkeyIgloo, group=3),
@@ -2671,6 +3138,136 @@ CustomLocations = {
         ),
         CustomLocation(map=Maps.CreepyCastle, name="Near Snide's HQ", x=713, y=1794, z=1243, max_size=64, logic_region=Regions.CreepyCastleMain, group=5),
         CustomLocation(map=Maps.CreepyCastle, name="On Wind Tower", x=1560, y=2023, z=1322, max_size=80, logic_region=Regions.CreepyCastleMain, logic=lambda l: l.jetpack and l.isdiddy, group=5),
+        CustomLocation(
+            name="Vanilla Upper Warp 2",
+            map=Maps.CreepyCastle,
+            x=1899.247,
+            y=904.136,
+            z=950.597,
+            rot_y=3664,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW2bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Upper Warp 5",
+            map=Maps.CreepyCastle,
+            x=1341.102,
+            y=1731.167,
+            z=1120.739,
+            rot_y=2526,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=5,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW5bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Close Warp 1",
+            map=Maps.CreepyCastle,
+            x=1532.901,
+            y=673.575,
+            z=799.607,
+            rot_y=1172,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW1aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Close Warp 5",
+            map=Maps.CreepyCastle,
+            x=938.578,
+            y=673.5,
+            z=652.779,
+            rot_y=2708,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW5aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Rear Warp 1",
+            map=Maps.CreepyCastle,
+            x=1023.578,
+            y=648.279,
+            z=1657.753,
+            rot_y=46,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW1bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Close Warp 3",
+            map=Maps.CreepyCastle,
+            x=1214.247,
+            y=673.5,
+            z=582.991,
+            rot_y=2071,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW3aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Close Warp 2",
+            map=Maps.CreepyCastle,
+            x=1384.938,
+            y=673.742,
+            z=633.478,
+            rot_y=1820,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW2aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Close Warp 4",
+            map=Maps.CreepyCastle,
+            x=1082.711,
+            y=673.5,
+            z=583.805,
+            rot_y=2094,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW4aTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Upper Warp 3",
+            map=Maps.CreepyCastle,
+            x=389.7,
+            y=1135.469,
+            z=1394.365,
+            rot_y=1138,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=4,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW3bTagged,
+        ),
+        CustomLocation(
+            name="Vanilla Upper Warp 4",
+            map=Maps.CreepyCastle,
+            x=1536.106,
+            y=1381.167,
+            z=1770.412,
+            rot_y=1991,
+            max_size=WARP_MAX_SIZE,
+            logic_region=Regions.CreepyCastleMain,
+            group=5,
+            vanilla_port=True,
+            tied_warp_event=Events.CastleW4bTagged,
+        ),
         CustomLocation(map=Maps.CastleBallroom, name="Ballroom: Near Left Candle", x=410, y=40, z=221, max_size=88, logic_region=Regions.Ballroom, group=1),
         CustomLocation(map=Maps.CastleBallroom, name="Ballroom: Near Right Candle", x=847, y=40, z=454, max_size=88, logic_region=Regions.Ballroom, group=1),
         CustomLocation(
