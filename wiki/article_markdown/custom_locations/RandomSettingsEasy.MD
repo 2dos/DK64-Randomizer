@@ -59,7 +59,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Off: 20%
 	- All: 60%
 	- Isles: 20%
-- Shuffle Bananaports: 
+- Cross-Map Bananaports: 
 	- Off: 100%
 - B. Locker Max: Between 30 and 70, usually close to 50
 - Auto Complete Bonus Barrels: 50%

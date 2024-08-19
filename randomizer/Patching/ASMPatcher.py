@@ -1897,6 +1897,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x80602B80, Overlay.Static, "filterSong_Cancelled", offset_dict)
     # Decompressed Overlays
     overlays_being_decompressed = [
+        0x08,  # Cutscenes
         0x09,  # Setup
         0x0A,  # Instance Scripts
         0x0C,  # Text

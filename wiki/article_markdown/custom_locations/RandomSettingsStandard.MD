@@ -38,7 +38,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- All: 40%
 	- Isles: 20%
 - Progressive Switch Strength: 50%
-- Shuffle Bananaports: 
+- Cross-Map Bananaports: 
 	- Off: 50%
 	- In Level: 30%
 	- Crossmap Coupled: 20%

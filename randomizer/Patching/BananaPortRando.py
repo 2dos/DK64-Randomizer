@@ -1,6 +1,7 @@
 """Rando write bananaport locations."""
 
 import js
+import math
 from randomizer.Enums.Settings import BananaportRando, ShufflePortLocations
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Patcher import LocalROM
@@ -41,6 +42,7 @@ def randomize_bananaport(spoiler):
                         ROM_COPY.seek(start + 0x28)
                         ROM_COPY.writeMultipleBytes(pad_types[warp_change[2]], 2)
 
+CAMERA_DISTANCE = 100
 
 def move_bananaports(spoiler):
     """Move bananaports around in conjunction with custom bananaport location rando."""
@@ -61,23 +63,63 @@ def move_bananaports(spoiler):
     if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
         for cont_map_id in MAPS_WITH_WARPS:
             level_id = MAPS_WITH_WARPS[cont_map_id]
+            cutscene_table = js.pointer_addresses[8]["entries"][cont_map_id]["pointing_to"]
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-            # exit_table = js.pointer_addresses[23]["entries"][cont_map_id]["pointing_to"]
+            exit_table = js.pointer_addresses[23]["entries"][cont_map_id]["pointing_to"]
             modification_table = []
             for warp_id in spoiler.warp_locations:
                 if BananaportVanilla[warp_id].map_id == cont_map_id:
                     custom_location_id = spoiler.warp_locations[warp_id]
                     obj_id = BananaportVanilla[warp_id].obj_id_vanilla
+                    exit_id = BananaportVanilla[warp_id].tied_exit
+                    new_coords = CustomLocations[level_id][custom_location_id].coords
+                    cam_lock_id = BananaportVanilla[warp_id].camera
+                    warp_angle = (CustomLocations[level_id][custom_location_id].rot_y / 4096) * 360
                     modification_table.append(
                         {
                             "obj_id": obj_id,
-                            "coords": CustomLocations[level_id][custom_location_id].coords,
+                            "coords": new_coords,
                             "scale": min(CustomLocations[level_id][custom_location_id].max_size / (56 * 4), 0.25),  # Make 0.25 the max size
-                            "rot_y": (CustomLocations[level_id][custom_location_id].rot_y / 4096) * 360,
+                            "rot_y": warp_angle,
                         }
                     )
-                # exit_id =
-
+                    # Modify Exit Table
+                    ROM_COPY.seek(exit_table + (10 * exit_id))
+                    ROM_COPY.writeMultipleBytes(int(new_coords[0]), 2)
+                    ROM_COPY.writeMultipleBytes(int(new_coords[1] + 4.25), 2)
+                    ROM_COPY.writeMultipleBytes(int(new_coords[2]), 2)
+                    # Modify Camera Lock Table
+                    if cam_lock_id is not None:
+                        ROM_COPY.seek(cutscene_table)
+                        header_end = 0x30
+                        for x in range(0x18):
+                            count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                            header_end += (0x12 * count)
+                        ROM_COPY.seek(cutscene_table + header_end)
+                        count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                        if cam_lock_id >= count:
+                            raise Exception(f"Invalid ID for camera lock. Map {cont_map_id}. Cam Lock ID {cam_lock_id}. Cap {count}. Header End {hex(header_end)}")
+                        # Update Prox Trigger Coordinates
+                        ROM_COPY.seek(cutscene_table + header_end + 2 + (0x1C * cam_lock_id) + 0x10)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[0]), 2)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[1] + 4.25), 2)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[2]), 2)
+                        # Update Distance
+                        ROM_COPY.seek(cutscene_table + header_end + 2 + (0x1C * cam_lock_id) + 0x19)
+                        ROM_COPY.writeMultipleBytes(0xA, 1)
+                        # Update camera position
+                        angle_rad = (CustomLocations[level_id][custom_location_id].rot_y / 4096) * math.pi * 2
+                        new_angle = 0
+                        if angle_rad >= math.pi:
+                            new_angle = angle_rad - math.pi
+                        else:
+                            new_angle = angle_rad + math.pi
+                        dz = math.cos(new_angle) * CAMERA_DISTANCE
+                        dx = math.sin(new_angle) * CAMERA_DISTANCE
+                        ROM_COPY.seek(cutscene_table + header_end + 2 + (0x1C * cam_lock_id) + 0x0)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[0] + dx), 2)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[1] + 30), 2)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[2] + dz), 2)
             # Modify setup table
             obj_id_list = [x["obj_id"] for x in modification_table]
             ROM_COPY.seek(setup_table)
