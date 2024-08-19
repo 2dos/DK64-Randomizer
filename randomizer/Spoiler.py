@@ -625,12 +625,11 @@ class Spoiler:
         if self.settings.random_crates:
             humanspoiler["Shuffled Melon Crates"] = self.human_crates
         if self.settings.bananaport_placement_rando != ShufflePortLocations.off:
-            humanspoiler["Shuffled Bananaport Locations"] = self.human_warps
-        if self.settings.bananaport_rando != BananaportRando.off:
             shuffled_warp_levels = [x.name for x in self.settings.warp_level_list_selected]
             humanspoiler["Shuffled Bananaport Levels"] = shuffled_warp_levels
+            humanspoiler["Shuffled Bananaport Locations"] = self.human_warps
+        if self.settings.bananaport_rando != BananaportRando.off:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
-
         if self.settings.wrinkly_location_rando:
             humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:

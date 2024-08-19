@@ -80,6 +80,7 @@ class CustomLocation:
             return False
         return True
 
+
 def getBannedWarps(spoiler) -> list[Events]:
     """Get list of banned warp events based on settings."""
     lst = [
@@ -153,6 +154,7 @@ def getBannedWarps(spoiler) -> list[Events]:
             ]
         )
     return lst
+
 
 def resetCustomLocations(spoiler) -> None:
     """Reset all locations to their default selection-state."""

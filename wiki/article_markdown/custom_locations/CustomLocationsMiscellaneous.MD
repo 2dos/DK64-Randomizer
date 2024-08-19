@@ -220,6 +220,16 @@
 | Gloomy Galleon | On Top of Mechfish Grate | DirtPatch, CrownPad, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | On Gold Tower |  | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick()` | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | CrownPad, DirtPatch, Bananaport | `Events.ShipyardTreasureRoomOpened in l.Events` | 
+| Gloomy Galleon | Vanilla Floating Warp 5 |  |  | 
+| Gloomy Galleon | Vanilla Lighthouse Warp 1 |  |  | 
+| Gloomy Galleon | Vanilla Snide Warp 3 |  |  | 
+| Gloomy Galleon | Vanilla Lighthouse Warp 5 |  |  | 
+| Gloomy Galleon | Vanilla Start Warp 2 |  |  | 
+| Gloomy Galleon | Vanilla Start Warp 3 |  |  | 
+| Gloomy Galleon | Vanilla Floating Warp 2 |  |  | 
+| Gloomy Galleon | Vanilla Gold Tower Warp 4 |  |  | 
+| Gloomy Galleon | Vanilla Start Warp 1 |  |  | 
+| Gloomy Galleon | Vanilla Floating Warp 4 |  |  | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  |  | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  |  | 
 | Galleon Sick Bay | Seasick Ship: Right of Cannon |  |  | 
@@ -279,6 +289,16 @@
 | Fungi Forest | Near Owl Rocketbarrel (2) | DirtPatch |  | 
 | Fungi Forest | Top of Owl Tree |  | `((l.jetpack and l.isdiddy) or l.CanMoonkick())` | 
 | Fungi Forest | On Mill |  |  | 
+| Fungi Forest | Vanilla Clock Warp 1 |  |  | 
+| Fungi Forest | Vanilla Mill Warp 1 |  |  | 
+| Fungi Forest | Vanilla Clock Warp 2 |  |  | 
+| Fungi Forest | Vanilla Beanstalk Warp 2 |  |  | 
+| Fungi Forest | Vanilla Clock Warp 3 |  |  | 
+| Fungi Forest | Vanilla Clock Warp 4 |  |  | 
+| Fungi Forest | Vanilla Tree Warp 4 |  |  | 
+| Fungi Forest | Vanilla Lower Warp 5 |  |  | 
+| Fungi Forest | Vanilla Upper Warp 5 |  |  | 
+| Fungi Forest | Vanilla Mushroom Warp 3 |  |  | 
 | Forest Anthill | Anthill: Orange Platform |  |  | 
 | Forest Winch Room | Winch Room: Opposite Entrance |  |  | 
 | Fungi Forest | Near Thornvine Barn |  |  | 
@@ -347,6 +367,16 @@
 | Crystal Caves | Near Tag barrel at 5D Cabin |  |  | 
 | Crystal Caves | Near Diddy Upper 5DC |  |  | 
 | Crystal Caves | Near Diddy top 5D Cabin door |  |  | 
+| Crystal Caves | Vanilla Close Warp 1 |  |  | 
+| Crystal Caves | Vanilla Close Warp 2 |  |  | 
+| Crystal Caves | Vanilla Igloo Warp 1 |  |  | 
+| Crystal Caves | Vanilla Cabins Warp 2 |  |  | 
+| Crystal Caves | Vanilla Pillar Warp 5 |  |  | 
+| Crystal Caves | Vanilla Hidden Warp 3 |  |  | 
+| Crystal Caves | Vanilla Igloo Warp 3 |  |  | 
+| Crystal Caves | Vanilla Hidden Warp 4 |  |  | 
+| Crystal Caves | Vanilla Spire Warp 4 |  |  | 
+| Crystal Caves | Vanilla Cabin Warp 5 |  |  | 
 | Caves Diddy Igloo | Diddy 5DI: Center | CrownPad |  | 
 | Caves Donkey Igloo | DK 5DI: Behind Maze |  |  | 
 | Caves Lanky Igloo | Lanky 5DI: High Platform |  | `((l.balloon or l.advanced_platforming) and l.islanky) or (l.advanced_platforming and (l.isdiddy or l.istiny))` | 
@@ -388,6 +418,16 @@
 | Creepy Castle | Top of Castle near fence |  |  | 
 | Creepy Castle | Near Snide's HQ |  |  | 
 | Creepy Castle | On Wind Tower |  | `l.jetpack and l.isdiddy, group=5)` | 
+| Creepy Castle | Vanilla Upper Warp 2 |  |  | 
+| Creepy Castle | Vanilla Upper Warp 5 |  |  | 
+| Creepy Castle | Vanilla Close Warp 1 |  |  | 
+| Creepy Castle | Vanilla Close Warp 5 |  |  | 
+| Creepy Castle | Vanilla Rear Warp 1 |  |  | 
+| Creepy Castle | Vanilla Close Warp 3 |  |  | 
+| Creepy Castle | Vanilla Close Warp 2 |  |  | 
+| Creepy Castle | Vanilla Close Warp 4 |  |  | 
+| Creepy Castle | Vanilla Upper Warp 3 |  |  | 
+| Creepy Castle | Vanilla Upper Warp 4 |  |  | 
 | Castle Ballroom | Ballroom: Near Left Candle |  |  | 
 | Castle Ballroom | Ballroom: Near Right Candle |  |  | 
 | Castle Ballroom | Ballroom - Back Left |  |  | 

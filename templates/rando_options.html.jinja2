@@ -74,7 +74,6 @@
                     </div>
                 </div>
                 <div class="flex-column-container" style="flex-grow: 1">
-                    
                     <div class="item-select" style="margin-top: 0; max-height: 34px;">
                         <button
                             class="btn btn-secondary"
@@ -165,6 +164,34 @@
                             On (Inc. Isles)
                         </option>
                     </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Bananaports</p>
+                    <div class="d-flex">
+                        <select name="bananaport_placement_rando"
+                                id="bananaport_placement_rando"
+                                display_name="Random Bananaport Locations"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Shuffle the locations of bananaports within each Level.&#10;-Off: Bananaports are in their vanilla locations.&#10;-Vanilla Only: Random placement of bananaports solely within the pool of vanilla locations.&#10;-Half-Vanilla: One bananaport in each pair is vanilla, the other is in a random location.&#10;-On: Both bananaports in each pair are in a random location (with a couple exceptions for technical reasons).">
+                            <option id="off" selected value="off">
+                                Off
+                            </option>
+                            <option id="vanilla_only" value="vanilla_only">
+                                Vanilla Only
+                            </option>
+                            <option id="half_vanilla" value="half_vanilla">
+                                Half-Vanilla
+                            </option>
+                            <option id="on" value="on">
+                                On
+                            </option>
+                        </select>
+                        <div style="padding: 5px;">
+                            {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10, True) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
+                    </div>
                 </div>
             </div>
         </div>
@@ -401,31 +428,25 @@
                     </select>
                 </div>
                 <div class="item-select">
-                    <p class="select-title">Shuffle Bananaports</p>
+                    <p class="select-title">Cross-Map Bananaports</p>
                     <div class="customize-select">
                     <select name="bananaport_rando"
                             id="bananaport_rando"
-                            display_name="Shuffle Bananaports"
+                            display_name="Cross-Map Bananaports"
                             class="form-select"
                             aria-label="Randomization type"
                             data-toggle="tooltip"
                             title="Random mappings of bananaport locations.">
                         <option id="off" selected value="off">
-                            Vanilla
-                        </option>
-                        <option id="in_level" value="in_level">
-                            In-Level
+                            Off
                         </option>
                         <option id="crossmap_coupled" value="crossmap_coupled">
-                            Cross-Map (Coupled)
+                            Coupled
                         </option>
                         <option id="crossmap_decoupled" value="crossmap_decoupled">
-                            Cross-Map (Decoupled)
+                            Decoupled
                         </option>
                     </select>
-                    <div style="padding: 5px;">
-                        {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10, True) }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
                 </div>
             </div>
             <div class="item-select">

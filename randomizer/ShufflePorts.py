@@ -19,36 +19,6 @@ from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, Lo
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.LogicClasses import Event
 
-
-def addPort(spoiler, warp: CustomLocation, event_enum: Events):
-    """Add bananaport to relevant Logic Region."""
-    spoiler.RegionList[warp.logic_region].events.append(Event(event_enum, warp.logic))
-    for k in BananaportVanilla:
-        if BananaportVanilla[k].event == event_enum:
-            BananaportVanilla[k].region_id = warp.logic_region
-
-
-def removePorts(spoiler, permitted_levels: list[Levels]):
-    """Remove all bananaports from Logic regions."""
-    level_logic_regions = {
-        Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
-        Levels.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions,
-        Levels.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions,
-        Levels.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions,
-        Levels.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-        Levels.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions,
-        Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
-        Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
-    }
-    BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
-    for level_id in level_logic_regions:
-        if level_id in permitted_levels:
-            level = level_logic_regions[level_id]
-            for region in level:
-                region_data = spoiler.RegionList[region]
-                region_data.events = [x for x in region_data.events if x.name < Events.JapesW1aTagged or x.name > Events.IslesW5bTagged or x.name in BANNED_PORT_SHUFFLE_EVENTS]
-
-
 PortShufflerData = {
     Maps.JungleJapes: {
         "level": Levels.JungleJapes,
@@ -101,6 +71,42 @@ PortShufflerData = {
         "global_warp_count": 6,
     },
 }
+
+
+def addPort(spoiler, warp: CustomLocation, event_enum: Events):
+    """Add bananaport to relevant Logic Region."""
+    spoiler.RegionList[warp.logic_region].events.append(Event(event_enum, warp.logic))
+    for k in BananaportVanilla:
+        if BananaportVanilla[k].event == event_enum:
+            BananaportVanilla[k].region_id = warp.logic_region
+
+
+def removePorts(spoiler, permitted_maps: list[Maps]):
+    """Remove all bananaports from Logic regions."""
+    level_logic_regions = {
+        Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
+        Levels.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions,
+        Levels.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions,
+        Levels.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions,
+        Levels.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+        Levels.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions,
+        Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
+        Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
+    }
+    BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
+    persisted_events = []
+    for map_id in PortShufflerData:
+        if map_id not in permitted_maps:
+            start_event = PortShufflerData[map_id]["starting_warp"]
+            total_count = PortShufflerData[map_id]["global_warp_count"]
+            persisted_events.extend([start_event + i for i in range(total_count)])
+    for level_id in level_logic_regions:
+        level = level_logic_regions[level_id]
+        for region in level:
+            region_data = spoiler.RegionList[region]
+            region_data.events = [
+                x for x in region_data.events if x.name < Events.JapesW1aTagged or x.name > Events.IslesW5bTagged or x.name in BANNED_PORT_SHUFFLE_EVENTS or x.name in persisted_events
+            ]
 
 
 def ResetPorts():
@@ -176,7 +182,12 @@ def selectUsefulWarpFullShuffle(list_of_custom_locations, list_of_warps, warp: C
         narrow_down = []
         for loc in possible_warps:
             warp_pad = list_of_custom_locations[loc]
-            if (abs(x - warp_pad.coords[0]) + abs(z - warp_pad.coords[2])) > range or abs(y - warp_pad.coords[1]) > 200 or warp_pad.logic_region != region or warp_pad.logic_region not in klumped_regions:
+            if (
+                (abs(x - warp_pad.coords[0]) + abs(z - warp_pad.coords[2])) > range
+                or abs(y - warp_pad.coords[1]) > 200
+                or warp_pad.logic_region != region
+                or warp_pad.logic_region not in klumped_regions
+            ):
                 narrow_down.append(loc)
         if len(narrow_down) > 5:
             possible_warps = narrow_down
@@ -199,23 +210,27 @@ def EventToName(event_id: Events) -> str:
 
 def ShufflePorts(spoiler, port_selection, human_ports):
     """Shuffle the location of bananaports."""
-    levels_to_check = [
-        # We can change this based on Jacob's multiselector
-        Levels.JungleJapes,
-        Levels.AngryAztec,
-        Levels.FranticFactory,
-        Levels.GloomyGalleon,
-        Levels.FungiForest,
-        Levels.CrystalCaves,
-        Levels.CreepyCastle,
-        Levels.DKIsles,
+    port_list = spoiler.settings.warp_level_list_selected
+    maps_to_check = [
+        Maps.Isles,
+        Maps.JungleJapes,
+        Maps.AngryAztec,
+        Maps.AztecLlamaTemple,
+        Maps.FranticFactory,
+        Maps.GloomyGalleon,
+        Maps.FungiForest,
+        Maps.CrystalCaves,
+        Maps.CreepyCastle,
+        Maps.CastleCrypt,
     ]
-    removePorts(spoiler, levels_to_check)
+    if len(port_list) > 0:
+        maps_to_check = port_list.copy()
+    removePorts(spoiler, maps_to_check)
     BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
-    for level in levels_to_check:
+    for level in CustomLocations:
         level_lst = CustomLocations[level]
         for map in PortShufflerData:
-            if PortShufflerData[map]["level"] == level:
+            if PortShufflerData[map]["level"] == level and map in maps_to_check:
                 index_lst = list(range(len(level_lst)))
                 index_lst = [x for x in index_lst if isCustomLocationValid(spoiler, level_lst[x], map, level)]
                 global_count = PortShufflerData[map]["global_warp_count"]
