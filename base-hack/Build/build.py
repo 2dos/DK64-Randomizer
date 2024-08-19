@@ -23,7 +23,7 @@ from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
@@ -434,6 +434,18 @@ for x in range(8):
             file_index=getBonusSkinOffset(ExtraTextures.Feather0) + x,
             source_file=f"assets/displays/feather{x}.png",
             texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+        )
+    )
+
+for obj_id in INSTRUMENT_PADS:
+    file_name = INSTRUMENT_PADS[obj_id]
+    file_dict.append(
+        File(
+            name=f"{file_name.title()} Pad",
+            pointer_table_index=TableNames.ModelTwoGeometry,
+            file_index=obj_id,
+            source_file=f"{file_name}_pad.bin",
             do_not_delete_source=True,
         )
     )

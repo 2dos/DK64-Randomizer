@@ -55,6 +55,7 @@ QoLItems = [
 RemovedBarrierItems = [
     MultiselectorItem("Japes Coconut Gates", 5, "The gates that block the tunnels from Japes main to its various tunnels will be opened."),
     MultiselectorItem("Japes Shellhive Gate", 6, "The gate to the shellhive area in Japes is opened."),
+    MultiselectorItem("Aztec Tiny Temple Ice", -1, "The ice in Tiny Temple is pre-melted."),
     MultiselectorItem("Aztec Tunnel Door", 7, "The door which blocks access to the back half of Aztec will be opened."),
     MultiselectorItem("Aztec 5DTemple Switches", 0, "The switches on the Five-Door Temple in Aztec will be pre-spawned."),
     MultiselectorItem("Aztec Llama Switches", 13, "The switches on the Llama Temple in Aztec will be pre-spawned."),
@@ -64,6 +65,7 @@ RemovedBarrierItems = [
     MultiselectorItem("Galleon Shipyard Area Gate", 12, "The gate from the start of Galleon to the shipyard portion will be opened."),
     # MultiselectorItem("Galleon Shipwreck Gates", 4, "The gates to the two shipwrecks in Galleon will be permanently opened after activating their respective switches."),
     MultiselectorItem("Galleon Seasick Ship", 2, "The seasick ship in the lighthouse side of Galleon will be spawned."),
+    MultiselectorItem("Galleon Treasure Room", -1, "The gate to treasure room in Galleon will be opened."),
     MultiselectorItem("Forest Green Tunnel", 10, "The green tunnel at the start of Forest will have it's gates opened."),
     MultiselectorItem("Forest Yellow Tunnel", 11, "The yellow tunnel to the owl tree area will have it's gate opened."),
     MultiselectorItem("Caves Igloo Pads", 3, "The pads to gain access to the five igloo rooms in Caves will be spawned."),

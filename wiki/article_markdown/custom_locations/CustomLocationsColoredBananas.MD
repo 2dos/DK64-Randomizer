@@ -19,7 +19,7 @@
 | From Diddy BP to river side (7 custom, 3 Diddy) | 7 | `` | 
 | Bunch in Minecart exit | 5 | `` | 
 | Up the slope to painting room | 10 | `(l.handstand and l.islanky) or (l.twirl and l.istiny)` | 
-| Leading up to and on BBlast pad | 10 | `l.can_use_vines or l.CanMoonkick()` | 
+| Leading up to and on BBlast pad | 10 | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Up the vine to Funky's and lining the edge of Funky's area | 15 | `` | 
 | On the edge of cannon platform | 10 | `` | 
 | Bunches on torches by DK and Tiny BPs | 10 | `` | 
@@ -421,9 +421,9 @@
 | Prod room Tiny switch | 5 | `` | 
 | Prod room from elevator to center | 15 | `` | 
 | Prod room around center piece (lower floor) | 15 | `` | 
-| Prod room around center piece (higher floor) | 10 | `l.climbing` | 
-| Prod room on spinning cylinder out from center piece | 5 | `l.climbing` | 
-| Bunches on W4 | 5 | `l.climbing` | 
+| Prod room around center piece (higher floor) | 10 | `` | 
+| Prod room on spinning cylinder out from center piece | 5 | `` | 
+| Bunches on W4 | 5 | `` | 
 | Bunches on W4 | 5 | `` | 
 | Prod room upper level from elevators to spinning cylinders | 15 | `` | 
 | Prod room below Tiny conveyors | 10 | `` | 
@@ -446,8 +446,8 @@
 | Tunnel to Funky's room (2 custom, 3 Diddy) | 5 | `` | 
 | Funky's room around Funky's platform | 10 | `` | 
 | Bunches around Funky's store | 15 | `` | 
-| Production room spinning arms, inside ring (Chunky) | 10 | `l.climbing` | 
-| Production room spinning arms, outside ring (Chunky) | 10 | `l.climbing` | 
+| Production room spinning arms, inside ring (Chunky) | 10 | `` | 
+| Production room spinning arms, outside ring (Chunky) | 10 | `` | 
 | Dark room above moving platforms (Chunky) | 15 | `l.punch` | 
 | Tunnel from entrance to hatch (Donkey) | 5 | `` | 
 | Block tower (set of 3 bunches) (Diddy) | 15 | `l.spring or l.CanMoontail()` | 
@@ -461,7 +461,7 @@
 | Pipe in corner of Chunky's room (Lanky) | 1 | `` | 
 | Pipe at the top of Prod room (Lanky) | 20 | `l.handstand or l.phasewalk` | 
 | Pipe at the top of Prod room (Lanky) | 5 | `` | 
-| Prod room on the middle steps between rotating cylinders and the spinning arms (Lanky) | 15 | `l.climbing` | 
+| Prod room on the middle steps between rotating cylinders and the spinning arms (Lanky) | 15 | `` | 
 | W2 (Lanky) | 5 | `` | 
 | W2 (Lanky) | 5 | `` | 
 | Tunnel from starting room towards Testing (2 custom, 3 Tiny) | 5 | `` | 
@@ -760,8 +760,8 @@
 | Mushroom with vines leading to other mushroom | 5 | `` | 
 | Other mushroom whose vines lead to | 5 | `` | 
 | Mushroom with vines leading to minecart | 5 | `` | 
-| On vines between two shrooms | 10 | `l.can_use_vines` | 
-| Vines to minecart | 5 | `l.can_use_vines` | 
+| On vines between two shrooms | 10 | `l.can_use_vines and l.climbing` | 
+| Vines to minecart | 5 | `l.can_use_vines and l.climbing` | 
 | Around the roof of minecart | 10 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | Mushroom by blue tunnel | 5 | `` | 
 | Stumps leading to pendulum | 15 | `` | 
@@ -1502,8 +1502,8 @@
 | Path to training area | 5 | `` | 
 | In the lake | 15 | `l.swim` | 
 | Behind the waterfall | 5 | `` | 
-| Banana hoard tunnel | 10 | `l.can_use_vines` | 
-| Banana hoard room | 20 | `l.can_use_vines` | 
+| Banana hoard tunnel | 10 | `l.can_use_vines and l.climbing` | 
+| Banana hoard room | 20 | `l.can_use_vines and l.climbing` | 
 | Rear tunnel | 5 | `` | 
 | Around rear dirt patch | 10 | `` | 
 | Exit tunnel | 10 | `` | 

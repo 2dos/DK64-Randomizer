@@ -229,7 +229,7 @@ ColoredBananaGroupList = [
         name="Banana hoard tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.can_use_vines,
+        logic=lambda l: l.can_use_vines and l.climbing,
         locations=[
             [1, 1.0, 2073, 211, 1180],
             [1, 1.0, 2125, 211, 1201],
@@ -249,7 +249,7 @@ ColoredBananaGroupList = [
         name="Banana hoard room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.can_use_vines,
+        logic=lambda l: l.can_use_vines and l.climbing,
         locations=[
             [5, 1.0, 2422, 216, 1108],
             [5, 1.0, 2422, 216, 954],

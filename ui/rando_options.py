@@ -202,12 +202,13 @@ DISABLED_HELM_DOOR_VALUES = ("easy_random", "medium_random", "hard_random", "ope
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
     door_one_selection = js.document.getElementById("crown_door_item")
+    door_one_container = js.document.getElementById("door_1_container")
     disabled = door_one_selection.value in DISABLED_HELM_DOOR_VALUES
     door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
-        door_one_req.setAttribute("disabled", "disabled")
+        door_one_container.classList.add("hide-input")
     else:
-        door_one_req.removeAttribute("disabled")
+        door_one_container.classList.remove("hide-input")
     if not door_one_req.value:
         door_one_req.value = 1
     elif door_one_selection.value == "vanilla" and int(door_one_req.value) > 10:
@@ -232,40 +233,17 @@ def updateDoorOneNumAccess(event):
         door_one_req.value = 16
 
 
-@bind("click", "nav-progression-tab")
-@bind("change", "crown_door_item")
-def updateDoorOneCountText(evt):
-    """Change the text of the door 1 item count label."""
-    label_text_map = {
-        "vanilla": "Crowns",
-        "req_gb": "Bananas",
-        "req_bp": "Blueprints",
-        "req_companycoins": "Coins",
-        "req_key": "Keys",
-        "req_medal": "Medals",
-        "req_fairy": "Fairies",
-        "req_rainbowcoin": "Coins",
-        "req_bean": "Bean",
-        "req_pearl": "Pearls",
-    }
-    door_one_text = js.document.getElementById("door-1-select-title")
-    door_one_selection = js.document.getElementById("crown_door_item").value
-    if door_one_selection in label_text_map:
-        door_one_text.innerText = f"{label_text_map[door_one_selection]} Needed For Door 1"
-    else:
-        door_one_text.innerText = "Door 1 Item Count"
-
-
 @bind("change", "coin_door_item")
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
     door_two_selection = js.document.getElementById("coin_door_item")
+    door_two_container = js.document.getElementById("door_2_container")
     disabled = door_two_selection.value in DISABLED_HELM_DOOR_VALUES
     door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
-        door_two_req.setAttribute("disabled", "disabled")
+        door_two_container.classList.add("hide-input")
     else:
-        door_two_req.removeAttribute("disabled")
+        door_two_container.classList.remove("hide-input")
     if not door_two_req.value:
         door_two_req.value = 1
     elif door_two_selection.value == "vanilla" and int(door_two_req.value) > 2:
@@ -290,19 +268,20 @@ def updateDoorTwoNumAccess(event):
         door_two_req.value = 16
 
 
-DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture")
+DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture", "dk_rap_items")
 
 
 @bind("change", "win_condition_item")
 def updateWinConNumAccess(event):
     """Toggle the textboxes for the win condition."""
     win_con_selection = js.document.getElementById("win_condition_item")
+    win_con_container = js.document.getElementById("win_condition_container")
     disabled = win_con_selection.value in DISABLED_WIN_VALUES
     win_con_req = js.document.getElementById("win_condition_count")
     if disabled:
-        win_con_req.setAttribute("disabled", "disabled")
+        win_con_container.classList.add("hide-input")
     else:
-        win_con_req.removeAttribute("disabled")
+        win_con_container.classList.remove("hide-input")
     if not win_con_req.value:
         win_con_req.value = 1
     elif win_con_selection.value == "req_gb" and int(win_con_req.value) > 201:
@@ -323,30 +302,6 @@ def updateWinConNumAccess(event):
         win_con_req.value = 5
     elif win_con_selection.value == "req_rainbowcoin" and int(win_con_req.value) > 16:
         win_con_req.value = 16
-
-
-@bind("click", "nav-progression-tab")
-@bind("change", "coin_door_item")
-def updateDoorTwoCountText(evt):
-    """Change the text of the door 2 item count label."""
-    label_text_map = {
-        "vanilla": "Coins",
-        "req_gb": "Bananas",
-        "req_bp": "Blueprints",
-        "req_key": "Keys",
-        "req_medal": "Medals",
-        "req_crown": "Crowns",
-        "req_fairy": "Fairies",
-        "req_rainbowcoin": "Coins",
-        "req_bean": "Bean",
-        "req_pearl": "Pearls",
-    }
-    door_two_text = js.document.getElementById("door-2-select-title")
-    door_two_selection = js.document.getElementById("coin_door_item").value
-    if door_two_selection in label_text_map:
-        door_two_text.innerText = f"{label_text_map[door_two_selection]} Needed For Door 2"
-    else:
-        door_two_text.innerText = "Door 2 Item Count"
 
 
 @bind("focusout", "crown_door_item_count")
@@ -1178,10 +1133,8 @@ def update_ui_states(event):
     toggle_key_settings(None)
     max_starting_moves_count(None)
     updateDoorOneNumAccess(None)
-    updateDoorOneCountText(None)
     updateDoorTwoNumAccess(None)
     updateWinConNumAccess(None)
-    updateDoorTwoCountText(None)
     disable_tag_spawn(None)
     disable_krool_phases(None)
     disable_helm_phases(None)

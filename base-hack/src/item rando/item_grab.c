@@ -104,7 +104,7 @@ void displayMedalOverlay(int flag, int item_type) {
             case MEDALITEM_BP:
                 {
                     int bp_index = flut_flag - FLAG_BP_JAPES_DK_HAS;
-                    int bp_kong = bp_index & 5;
+                    int bp_kong = bp_index % 5;
                     if (bp_kong > 4) {
                         bp_kong = 0;
                     }

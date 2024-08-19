@@ -9,7 +9,17 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import DamageAmount, PuzzleRando, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected, KongModels, SlamRequirement, HardBossesSelected
+from randomizer.Enums.Settings import (
+    DamageAmount,
+    PuzzleRando,
+    MiscChangesSelected,
+    FasterChecksSelected,
+    RemovedBarriersSelected,
+    KongModels,
+    SlamRequirement,
+    HardBossesSelected,
+    WinConditionComplex,
+)
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
@@ -159,6 +169,23 @@ def SpeedUpFungiRabbit():
             ROM_COPY.write(int(136 * speed_buff))
 
 
+def getRandomGalleonStarLocation() -> tuple:
+    """Get location for the DK Star which opens the treasure room."""
+    STAR_MAX_Y = 1657  # Star Y in vanilla game
+    boxes = [
+        [(1136, 1469, 1704), (1370, STAR_MAX_Y, 2207)],
+        [(2010, 1374, 1671), (2912, STAR_MAX_Y, 2216)],
+        [(2980, 663, 766), (2983, STAR_MAX_Y, 1311)],
+        [(3388, 594, 1834), (3441, STAR_MAX_Y, 2044)],
+        [(3731, 515, 1514), (3769, STAR_MAX_Y, 1833)],
+    ]
+    bound = random.choice(boxes)
+    coord = [0, 0, 0]
+    for x in range(3):
+        coord[x] = random.randint(bound[0][x], bound[1][x])
+    return tuple(coord)
+
+
 def randomize_setup(spoiler):
     """Randomize setup."""
     SpeedUpFungiRabbit()
@@ -196,6 +223,9 @@ def randomize_setup(spoiler):
     ]
     pickup_list = []
     for pickup in pickup_weights:
+        if pickup["item"] == "film" and spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
+            # Kremling Kapture requires a lot more film
+            pickup["weight"] = 5
         for _ in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
@@ -359,6 +389,11 @@ def randomize_setup(spoiler):
                 ROM_COPY.seek(item_start + 8)
                 ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                 chunky_5dc_pads["index"] += 1
+            elif cont_map_id == Maps.GloomyGalleon and item_id == 0xC and spoiler.settings.puzzle_rando_difficulty not in (PuzzleRando.off, PuzzleRando.easy):
+                coords = list(getRandomGalleonStarLocation())
+                ROM_COPY.seek(item_start)
+                for x in coords:
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(x), 16), 4)
             # Regular if because it can be combined with regular hard bosses
             if item_type == 0x235 and cont_map_id == Maps.GalleonBoss and higher_pufftoss_stars:
                 ROM_COPY.seek(item_start + 4)

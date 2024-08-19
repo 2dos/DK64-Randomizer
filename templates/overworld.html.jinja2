@@ -120,74 +120,75 @@
                         <div class="flex-container">
                             <div class="item-select">
                                 <p class="select-title">Win Condition</p>
-                                <select name="win_condition_item"
-                                        id="win_condition_item"
-                                        display_name="Win Condition"
-                                        class="form-select center-div"
-                                        aria-label="Win Condition"
-                                        data-toggle="tooltip"
-                                        title="Alter the condition required to show the credits.">
-                                    <option selected id="beat_krool" value="beat_krool" title="">
-                                        Beat K Rool
-                                    </option>
-                                    <option id="get_key8" value="get_key8">
-                                        Acquire Key 8
-                                    </option>
-                                    <option id="krem_kapture" value="krem_kapture" title="Photograph all enemies using the fairy camera">
-                                        Kremling Kapture
-                                    </option>
-                                    <option id="easy_random" value="easy_random">
-                                        Random (Easy)
-                                    </option>
-                                    <option id="medium_random" value="medium_random">
-                                        Random (Medium)
-                                    </option>
-                                    <option id="hard_random" value="hard_random">
-                                        Random (Hard)
-                                    </option>
-                                    <option id="req_gb" value="req_gb">
-                                        Golden Bananas
-                                    </option>
-                                    <option id="req_bp" value="req_bp">
-                                        Blueprints
-                                    </option>
-                                    <option id="req_key" value="req_key">
-                                        Keys
-                                    </option>
-                                    <option id="req_medal" value="req_medal">
-                                        Medals
-                                    </option>
-                                    <option id="req_crown" value="req_crown">
-                                        Crowns
-                                    </option>
-                                    <option id="req_fairy" value="req_fairy">
-                                        Fairies
-                                    </option>
-                                    <option id="req_rainbowcoin" value="req_rainbowcoin">
-                                        Rainbow Coins
-                                    </option>
-                                    <option id="req_bean" value="req_bean">
-                                        Bean
-                                    </option>
-                                    <option id="req_pearl" value="req_pearl">
-                                        Pearls
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="item-select">
-                                <p id="win-con-select-title" class="select-title">Win Condition Item Count</p>
-                                <input min="0"
-                                        max="201"
-                                        name="win_condition_count"
-                                        id="win_condition_count"
-                                        display_name="Win Condition Item Count"
-                                        style="width: 15%"
-                                        class="form-control center-div"
-                                        type="number"
-                                        data-toggle="tooltip"
-                                        title="Amount of the item specified to beat the game."
-                                        default="1"
-                                        placeholder="1"/>
+                                <div class="d-flex select-number-container" id="win_condition_container">
+                                    <select name="win_condition_item"
+                                            id="win_condition_item"
+                                            display_name="Win Condition"
+                                            class="form-select center-div"
+                                            aria-label="Win Condition"
+                                            data-toggle="tooltip"
+                                            title="Alter the condition required to show the credits.">
+                                        <option selected id="beat_krool" value="beat_krool" title="">
+                                            Beat K Rool
+                                        </option>
+                                        <option id="get_key8" value="get_key8">
+                                            Acquire Key 8
+                                        </option>
+                                        <option id="krem_kapture" value="krem_kapture" title="Photograph all enemies using the fairy camera">
+                                            Kremling Kapture
+                                        </option>
+                                        <option id="dk_rap_items" value="dk_rap_items" title="Acquire all items referenced in the DK Rap">
+                                            Complete the DK Rap
+                                        </option>
+                                        <option id="easy_random" value="easy_random">
+                                            Random (Easy)
+                                        </option>
+                                        <option id="medium_random" value="medium_random">
+                                            Random (Medium)
+                                        </option>
+                                        <option id="hard_random" value="hard_random">
+                                            Random (Hard)
+                                        </option>
+                                        <option id="req_gb" value="req_gb">
+                                            Golden Bananas
+                                        </option>
+                                        <option id="req_bp" value="req_bp">
+                                            Blueprints
+                                        </option>
+                                        <option id="req_key" value="req_key">
+                                            Keys
+                                        </option>
+                                        <option id="req_medal" value="req_medal">
+                                            Medals
+                                        </option>
+                                        <option id="req_crown" value="req_crown">
+                                            Crowns
+                                        </option>
+                                        <option id="req_fairy" value="req_fairy">
+                                            Fairies
+                                        </option>
+                                        <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                            Rainbow Coins
+                                        </option>
+                                        <option id="req_bean" value="req_bean">
+                                            Bean
+                                        </option>
+                                        <option id="req_pearl" value="req_pearl">
+                                            Pearls
+                                        </option>
+                                    </select>
+                                    <input min="0"
+                                            max="201"
+                                            name="win_condition_count"
+                                            id="win_condition_count"
+                                            display_name="Win Condition Item Count"
+                                            class="form-control center-div"
+                                            type="number"
+                                            data-toggle="tooltip"
+                                            title="Amount of the item specified to beat the game."
+                                            default="1"
+                                            placeholder="1"/>
+                                </div>
                             </div>
                         </div>
                         <div class="item-select">

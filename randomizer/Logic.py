@@ -126,7 +126,7 @@ class LogicVarHolder:
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.training_barrels == TrainingBarrels.normal
-        self.can_use_vines = self.vines and self.climbing
+        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         self.progDonkey = 0
         self.blast = False
@@ -330,7 +330,7 @@ class LogicVarHolder:
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
-        self.can_use_vines = self.vines and self.climbing
+        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
         self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
@@ -1089,6 +1089,14 @@ class LogicVarHolder:
         # To enter a level, we either need (or assume) enough stuff to get rid of B. Locker or a glitch way to bypass it
         return can_pay_blocker or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 
+    def CanMeltIce(self) -> bool:
+        """Check whether underwater of Aztec Tiny Temple can be accessed."""
+        if self.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
+            return True
+        if not self.CanSlamSwitch(Levels.AngryAztec, 1):
+            return False
+        return self.guitar and self.isdiddy and self.peanut
+
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
         # Special Win Cons
@@ -1098,6 +1106,38 @@ class LogicVarHolder:
             return Events.KRoolDefeated in self.Events and self.camera
         elif self.settings.win_condition_item == WinConditionComplex.get_key8:
             return self.HelmKey
+        elif self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            dk_rap_items = [
+                self.donkey,
+                self.diddy,
+                self.lanky,
+                self.tiny,
+                self.chunky,
+                self.coconut,
+                self.peanut,
+                self.grape,
+                self.pineapple,
+                self.guitar,
+                self.trombone,
+                self.strongKong,
+                # self.spring,
+                self.jetpack,
+                self.handstand,
+                self.balloon,
+                self.mini,
+                self.twirl,
+                # self.hunkyChunky,
+                self.barrels,
+                self.oranges,
+                # self.shockwave,
+                self.climbing,
+                # self.superDuperSlam,
+                self.crankyAccess,
+            ]
+            for k in dk_rap_items:
+                if not k:
+                    return False
+            return True
         # Get X amount of Y item win cons
         win_con_table = {
             WinConditionComplex.req_bean: BarrierItems.Bean,

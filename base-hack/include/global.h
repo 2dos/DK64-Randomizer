@@ -426,6 +426,8 @@ extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
 extern void snideCodeHandler(void);
 
+extern int canPlayerClimb(void);
+
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void playBalloonWhoosh(int path_index, float* x, float* y, float* z);
 

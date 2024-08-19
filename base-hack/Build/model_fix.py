@@ -5,7 +5,7 @@ import zlib
 import math
 
 from BuildEnums import TableNames, ExtraTextures
-from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset
+from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00
@@ -478,6 +478,31 @@ with open(ROMName, "rb") as rom:
         os.remove("temp.bin")
     with open("scarab_actor.bin", "wb") as fh:
         fh.write(data)
+
+    for obj_id in INSTRUMENT_PADS:
+        file_name = INSTRUMENT_PADS[obj_id]
+        rom.seek(modeltwo_table + (obj_id << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"{file_name}_pad.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"{file_name}_pad.bin", "r+b") as fh:
+            fh.seek(0x50)
+            floor_start = int.from_bytes(fh.read(4), "big")
+            fh.seek(floor_start)
+            floor_count = int.from_bytes(fh.read(4), "big")
+            for x in range(floor_count):
+                tri_start = floor_start + 0x10 + (0x18 * x)
+                fh.seek(tri_start + 0x15)
+                fh.write((2).to_bytes(1, "big"))
+
     # Base tex:
     #
     # Top

@@ -1505,10 +1505,10 @@ int filterSong(int* song_write) {
 		}
 		if (Rando.disabled_music.shops) {
 			if (
-				((song == 2) && (CurrentMap == MAP_CRANKY)) || // Cranky
-				((song == 6) && (CurrentMap == MAP_FUNKY)) || // Funky
-				((song == 31) && (CurrentMap == MAP_CANDY)) || // Candy
-				((song == 29) && (CurrentMap == MAP_SNIDE)) // Snide
+				((song == SONG_CRANKY) && (CurrentMap == MAP_CRANKY)) || // Cranky
+				((song == SONG_FUNKY) && (CurrentMap == MAP_FUNKY)) || // Funky
+				((song == SONG_CANDY) && (CurrentMap == MAP_CANDY)) || // Candy
+				((song == SONG_SNIDE) && (CurrentMap == MAP_SNIDE)) // Snide
 			) {
 				*song_write = 0;
 				song = 0;
@@ -1516,6 +1516,16 @@ int filterSong(int* song_write) {
 		}
 	}
 	initSongDisplay(song);
+	return getTrackChannel(song);
+}
+
+int filterSong_Cancelled(songs song) {
+	for (int i = 0; i < 12; i++) {
+		if ((MusicTrackChannels[i] != SONG_SILENCE) && (MusicTrackChannels[i] != song)) {
+			initSongDisplay(MusicTrackChannels[i]);
+			break;
+		}
+	}
 	return getTrackChannel(song);
 }
 

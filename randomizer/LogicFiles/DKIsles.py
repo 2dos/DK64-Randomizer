@@ -109,7 +109,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: Events.TrainingBarrelsSpawned in l.Events, MinigameType.TrainingBarrel, isAuxiliary=True),
         LocationLogic(Locations.IslesFirstMove, lambda l: (l.allTrainingChecks and l.crankyAccess) or l.settings.fast_start_beginning_of_game, isAuxiliary=True),
         LocationLogic(Locations.RainbowCoin_Location13, lambda l: True),
-        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.can_use_vines or (l.CanMoonkick() and l.climbing)),  # Banana Hoard patch
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing),  # Banana Hoard patch
     ], [
         Event(Events.TrainingBarrelsSpawned, lambda l: l.crankyAccess or l.settings.fast_start_beginning_of_game),  # Requires Cranky to spawn the training barrels
     ], [
@@ -362,7 +362,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.twirl and l.istiny and l.advanced_platforming),
-        TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.advanced_platforming and ((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl)),
+        TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.advanced_platforming and (((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl))),
         TransitionFront(Regions.IslesAirspace, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
@@ -373,7 +373,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.advanced_platforming),
-        TransitionFront(Regions.CabinIsle, lambda l: l.CanMoonkick() or (l.advanced_platforming and ((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl))),
+        TransitionFront(Regions.CabinIsle, lambda l: l.CanMoonkick() or (l.advanced_platforming and (((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl)))),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.advanced_platforming and l.istiny and l.twirl),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),

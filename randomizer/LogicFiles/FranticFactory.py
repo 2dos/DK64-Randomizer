@@ -205,15 +205,21 @@ LogicRegions = {
         TransitionFront(Regions.LowerCore, lambda l: True, Transitions.FactoryInsideCoreToBeyondHatch),
     ]),
 
-    Regions.MiddleCore: Region("Middle Core", HintRegion.ProductionRoom, Levels.FranticFactory, True, None, [
+    Regions.MiddleCore: Region("Middle Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [], [], [
+        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
+        TransitionFront(Regions.LowerCore, lambda l: True),
+        TransitionFront(Regions.SpinningCore, lambda l: l.climbing),
+        TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryBeyondHatchToInsideCore, isGlitchTransition=True),
+    ]),
+
+    Regions.SpinningCore: Region("Spinning Core", HintRegion.ProductionRoom, Levels.FranticFactory, True, None, [
         LocationLogic(Locations.FactoryChunkyProductionRoom, lambda l: Events.ChunkyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.chunky),
     ], [
         Event(Events.FactoryW4bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
-        TransitionFront(Regions.LowerCore, lambda l: True),
+        TransitionFront(Regions.MiddleCore, lambda l: True),
         TransitionFront(Regions.UpperCore, lambda l: Events.MainCoreActivated in l.Events),
-        TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryBeyondHatchToInsideCore, isGlitchTransition=True),
     ]),
 
     Regions.UpperCore: Region("Upper Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [
@@ -224,7 +230,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True),
-        TransitionFront(Regions.MiddleCore, lambda l: True),
+        TransitionFront(Regions.SpinningCore, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 

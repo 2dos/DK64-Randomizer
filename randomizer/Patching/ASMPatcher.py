@@ -23,6 +23,7 @@ from randomizer.Enums.Settings import (
     DamageAmount,
     RandomModels,
     PuzzleRando,
+    WinConditionComplex,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -77,6 +78,7 @@ NORMAL_KEY_FLAGS = [
     0x17C,  # Key 8
 ]
 ENABLE_FILENAME = False
+ENABLE_ALL_KONG_TRANSFORMS = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -472,9 +474,9 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
                 writeValue(ROM_COPY, 0x80707222, Overlay.Static, 0x073F, offset_dict)
             elif dimensions == MenuTextDim.size_w64_h32:
                 writeValue(ROM_COPY, 0x8070762E, Overlay.Static, 0xFFE0, offset_dict)
+                writeValue(ROM_COPY, 0x8070727E, Overlay.Static, 0xC07C, offset_dict)
                 writeValue(ROM_COPY, 0x80707616, Overlay.Static, 0x40, offset_dict)
                 writeValue(ROM_COPY, 0x80707272, Overlay.Static, 0xF, offset_dict)
-                writeValue(ROM_COPY, 0x8070727E, Overlay.Static, 0xC07C, offset_dict)
                 writeValue(ROM_COPY, 0x80707226, Overlay.Static, 0xF080, offset_dict)
                 writeValue(ROM_COPY, 0x8070725A, Overlay.Static, 0x2000, offset_dict)
                 writeValue(ROM_COPY, 0x807072A2, Overlay.Static, 0x0100, offset_dict)
@@ -742,7 +744,6 @@ def patchAssembly(ROM_COPY, spoiler):
         0x311,  # FLAG_TNS_2,
         0x175,  # FLAG_BUY_INSTRUMENT,
         0x176,  # FLAG_BUY_GUNS,
-        0x45,  # FLAG_ICEMELT,
         0x6D,  # FLAG_HATCH,
         0x00,  # FLAG_FIRSTJAPESGATE,
         0x17E,  # FLAG_FTT_BLOCKER,
@@ -1054,6 +1055,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeFunction(ROM_COPY, 0x80732314, Overlay.Static, "CrashHandler", offset_dict)
     writeFunction(ROM_COPY, 0x8073231C, Overlay.Static, "CrashHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x807322DC, Overlay.Static, "getFaultedThread", offset_dict)
     # Deathwarp Handle
     writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "WarpHandle", offset_dict)  # Check if in Helm, in which case, apply transition
     writeFunction(ROM_COPY, 0x806AD750, Overlay.Static, "beaverExtraHitHandle", offset_dict)  # Remove buff until we think of something better
@@ -1063,6 +1065,34 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x800306EC, Overlay.Menu, "filename_displaylist", offset_dict)
         writeFunction(ROM_COPY, 0x80030704, Overlay.Menu, "filename_code", offset_dict)
         writeFunction(ROM_COPY, 0x80030714, Overlay.Menu, "filename_init", offset_dict)
+
+    if ENABLE_ALL_KONG_TRANSFORMS:
+        transform_barrel_collisions = [
+            0x8074B190,  # Hunky
+            0x8074B1A0,  # Mini
+            0x8074B1B0,  # Rocket
+            0x8074B1C0,  # OSprint
+            0x8074B1D0,  # Strong Kong
+        ]
+        for col in transform_barrel_collisions:
+            writeValue(ROM_COPY, col, Overlay.Static, 0xFFFF, offset_dict)  # Set these barrels to check collisions with all kongs
+        writeValue(ROM_COPY, 0x8067EC58, Overlay.Static, 0x8CE20058, offset_dict, 4)  # Move actor check earlier on
+        writeValue(ROM_COPY, 0x8067EC5C, Overlay.Static, 0x2C460007, offset_dict, 4)  # SLTIU a2, v0, 0x7
+        writeValue(ROM_COPY, 0x8067EC60, Overlay.Static, 0x2C410007, offset_dict, 4)  # SLTIU at, v0, 0x7
+        writeValue(ROM_COPY, 0x8067EC64, Overlay.Static, 0x2C4A0007, offset_dict, 4)  # SLTIU t2, v0, 0x7
+        writeValue(ROM_COPY, 0x8067ECBC, Overlay.Static, 0x2C410007, offset_dict, 4)  # SLTIU at, v0, 0x7
+        writeValue(ROM_COPY, 0x8067ECC4, Overlay.Static, 0x2C410007, offset_dict, 4)  # SLTIU at, v0, 0x7
+        writeValue(ROM_COPY, 0x8067ECCC, Overlay.Static, 0x2C410007, offset_dict, 4)  # SLTIU at, v0, 0x7
+        writeValue(ROM_COPY, 0x8067EC6C, Overlay.Static, 0x10200008, offset_dict, 4)  # BEQZ at, 8 (mini)
+        writeValue(ROM_COPY, 0x8067EC90, Overlay.Static, 0x10C00007, offset_dict, 4)  # BEQZ a2, 7 (hunky)
+        writeValue(ROM_COPY, 0x8067ECB0, Overlay.Static, 0x10C00006, offset_dict, 4)  # BEQZ a2, 6 (hunky)
+        writeValue(ROM_COPY, 0x8067ECD0, Overlay.Static, 0x10C00007, offset_dict, 4)  # BEQZ a2, 7 (sprint)
+        writeValue(ROM_COPY, 0x8067ECF0, Overlay.Static, 0x11400006, offset_dict, 4)  # BEQZ t2, 6 (strong)
+        writeValue(ROM_COPY, 0x8067ED0C, Overlay.Static, 0x2C410007, offset_dict, 4)  # SLTIU at, v0, 0x7
+        writeValue(ROM_COPY, 0x8067ECF0, Overlay.Static, 0x50200005, offset_dict, 4)  # BEQZL at, 5 (enguarde)
+        writeValue(ROM_COPY, 0x80682008, Overlay.Static, 0x8D4B0058, offset_dict, 4)  # Move actor check for RB earlier on
+        writeValue(ROM_COPY, 0x80682010, Overlay.Static, 0x2D610007, offset_dict, 4)  # SLTIU at, t3, 0x7
+        writeValue(ROM_COPY, 0x80682014, Overlay.Static, 0x5020000B, offset_dict, 4)  # BEQZL at, 0xB (RB)
 
     if settings.cannons_require_blast:
         # Make Cannon Barrels require BBlast
@@ -1285,6 +1315,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806E9C50, Overlay.Static, "updateFairyStat", offset_dict)
     writeFunction(ROM_COPY, 0x806C7298, Overlay.Static, "createEndSeqCreditsFile", offset_dict)
 
+    writeHook(ROM_COPY, 0x8072F3DC, Overlay.Static, "blockTreeClimbing", offset_dict)
     if settings.enable_tag_anywhere:
         # Reduce TA Cooldown
         writeFunction(ROM_COPY, 0x806F5BE8, Overlay.Static, "tagAnywhereAmmo", offset_dict)
@@ -1653,6 +1684,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8067EAC6, Overlay.Static, 1, offset_dict)  # HC Dogadon 2
         writeValue(ROM_COPY, 0x8067EACA, Overlay.Static, 1, offset_dict)  # Others
         writeValue(ROM_COPY, 0x8067EA92, Overlay.Static, 1, offset_dict)  # Others 2
+        writeValue(ROM_COPY, 0x80681F06, Overlay.Static, 1, offset_dict)  # Rocketbarrel
     if isQoLEnabled(spoiler, MiscChangesSelected.animal_buddies_grab_items):
         # Transformations can pick up other's collectables
         writeValue(ROM_COPY, 0x806F6330, Overlay.Static, 0x96AC036E, offset_dict, 4)  # Collection
@@ -1860,6 +1892,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8060D01E, Overlay.Static, getLoSym("InvertedControls"), offset_dict)  # Change language store to inverted controls store
 
     writeFunction(ROM_COPY, 0x80602AB0, Overlay.Static, "filterSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80602B80, Overlay.Static, "filterSong_Cancelled", offset_dict)
     # Decompressed Overlays
     overlays_being_decompressed = [
         0x09,  # Setup
@@ -1929,6 +1962,24 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.rareware_gb_fairies > 0:
         writeValue(ROM_COPY, 0x80027E70, Overlay.Critter, 0x2C410000 | settings.rareware_gb_fairies, offset_dict, 4)  # SLTIU $at, $v0, count
         writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
+    if settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        writeValue(ROM_COPY, 0x8071280E, Overlay.Static, Maps.DKRap, offset_dict)  # End Sequence destination map
+        writeValue(ROM_COPY, 0x80712816, Overlay.Static, 0, offset_dict)  # End Sequence cutscene
+        writeValue(ROM_COPY, 0x8075E650, Overlay.Static, 0x807141D4, offset_dict, 4)  # Alter jump table entry
+        writeValue(ROM_COPY, 0x80712E76, Overlay.Static, 0x1644, offset_dict)  # Demo Fadeout Timer
+        # Speed up end sequence a little bit to fit within the confines of the rap
+        for index in range(21):
+            ROM_COPY.seek(0x1FFF800 + (index * 6))
+            duration = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            cooldown = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if duration == 0xFFFF and cooldown == 0xFFFF:
+                # Terminating card, do not alter values
+                break
+            else:
+                scale_down = 0.8
+                ROM_COPY.seek(0x1FFF800 + (index * 6))
+                ROM_COPY.writeMultipleBytes(int(duration * scale_down), 2)
+                ROM_COPY.writeMultipleBytes(int(cooldown * scale_down), 2)
 
     # TBarrel/BFI Rewards
     # writeValue(ROM_COPY, 0x80681CE2, Overlay.Static, 0, offset_dict)
@@ -2315,6 +2366,8 @@ def patchAssembly(ROM_COPY, spoiler):
         RemovedBarriersSelected.caves_igloo_pads: [0x128],
         RemovedBarriersSelected.galleon_shipyard_area_gate: [0xA1],
         RemovedBarriersSelected.caves_ice_walls: [266, 267, 265],  # Entrance, Snide, Giant Boulder
+        RemovedBarriersSelected.galleon_treasure_room: [0xA2],
+        RemovedBarriersSelected.aztec_tiny_temple_ice: [0x45],
     }
     for barrier in barrier_flags:
         if IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, barrier):

@@ -338,7 +338,7 @@ fairy_locations = {
         FairyData(
             name="Mid-section of Production Room",
             map=Maps.FranticFactory,
-            region=Regions.MiddleCore,
+            region=Regions.SpinningCore,
             fence=Fence(524, 986, 767, 1251),
             spawn_y=453,
         ),
@@ -602,7 +602,7 @@ fairy_locations = {
             region=Regions.FungiForestStart,
             fence=Fence(2067, 3098, 2335, 3237),
             spawn_y=540,
-            logic=lambda l: l.camera and (l.can_use_vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)),
+            logic=lambda l: l.camera and (((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)),
         ),
         FairyData(
             name="Above BBlast Entrance",

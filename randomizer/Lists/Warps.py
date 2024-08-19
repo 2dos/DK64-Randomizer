@@ -168,7 +168,7 @@ BananaportVanilla = {
         name="Frantic Factory: Production Room (Bottom)", map_id=Maps.FranticFactory, region_id=Regions.BeyondHatch, obj_id_vanilla=0x105, vanilla_warp=3, swap_index=41, event=Events.FactoryW4aTagged
     ),
     Warps.FactoryProdTop: BananaportData(
-        name="Frantic Factory: Production Room (Top)", map_id=Maps.FranticFactory, region_id=Regions.MiddleCore, obj_id_vanilla=0x10C, vanilla_warp=3, swap_index=40, event=Events.FactoryW4bTagged
+        name="Frantic Factory: Production Room (Top)", map_id=Maps.FranticFactory, region_id=Regions.SpinningCore, obj_id_vanilla=0x10C, vanilla_warp=3, swap_index=40, event=Events.FactoryW4bTagged
     ),
     Warps.FactoryArcade: BananaportData(
         name="Frantic Factory: Arcade Room", map_id=Maps.FranticFactory, region_id=Regions.FactoryArcadeTunnel, obj_id_vanilla=0x10B, vanilla_warp=4, swap_index=43, event=Events.FactoryW5aTagged

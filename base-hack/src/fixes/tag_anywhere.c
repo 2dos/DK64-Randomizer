@@ -818,19 +818,27 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
 }
 
 void handleGrabbingLock(void* player, int player_index, int allow_vines) {
-    if (ENABLE_CLIMBING_FLAG) {
-        if (!checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT)) {
-            return;
-        }
-    }
+    // if (ENABLE_CLIMBING_FLAG) {
+    //     if (!checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT)) {
+    //         return;
+    //     }
+    // }
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
         return;
     }
     handlePoleGrabbing(player, player_index, allow_vines);
 }
 
+int canPlayerClimb(void) {
+    return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
+}
+
 void handleLedgeLock(void) {
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
+        return;
+    }
+    if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
+        // Even Spike wants this trick patched
         return;
     }
     handleLedgeGrabbing();
