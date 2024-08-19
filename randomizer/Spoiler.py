@@ -15,6 +15,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.HintRegion import HintRegion
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
@@ -28,7 +29,7 @@ from randomizer.Enums.Settings import (
     ShuffleLoadingZones,
     SpoilerHints,
     TrainingBarrels,
-    WinCondition,
+    WinConditionComplex,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -90,6 +91,7 @@ class Spoiler:
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
+        self.cb_placements = []
         self.LogicVariables = LogicVarHolder(self)
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
@@ -130,6 +132,7 @@ class Spoiler:
         self.hint_list = {}
         self.short_hint_list = {}
         self.tied_hint_flags = {}
+        self.tied_hint_regions = [HintRegion.NoRegion] * 35
         self.settings.finalize_world_settings(self)
         self.settings.update_valid_locations(self)
         if not self.settings.is_valid_item_pool():
@@ -209,6 +212,7 @@ class Spoiler:
             Types.Funky: "Shop Owners",
             Types.Candy: "Shop Owners",
             Types.Snide: "Shop Owners",
+            Types.Hint: "Hints",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -217,14 +221,20 @@ class Spoiler:
     def dumpMultiselector(self, toggle: bool, settings_list: list, selector_list: list):
         """Dump multiselector list to a response which can be dumped to the spoiler."""
         if toggle and any(settings_list):
-            return [selector_list[x - 1]["name"] for x in settings_list]
+            lst = []
+            selector_name_dict = {}
+            for x in selector_list:
+                selector_name_dict[x["value"]] = x["name"]
+            for x in settings_list:
+                if x.name in selector_name_dict:
+                    lst.append(selector_name_dict[x.name])
+            return lst
         return toggle
 
     def createJson(self) -> None:
         """Convert spoiler to JSON and save it."""
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
         humanspoiler = OrderedDict()
-
         # Settings data
         settings = OrderedDict()
         settings["Settings String"] = self.settings.settings_string
@@ -263,7 +273,7 @@ class Spoiler:
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates
-        settings["Randomize CB Locations"] = self.settings.cb_rando
+        settings["Randomize CB Locations"] = self.settings.cb_rando.name
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Randomize Shop Locations"] = self.settings.shuffle_shops
         settings["Randomize Kasplats"] = self.settings.kasplat_rando_setting.name
@@ -272,7 +282,7 @@ class Spoiler:
         settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
-        settings["Puzzle Randomization"] = self.settings.puzzle_rando
+        settings["Puzzle Randomization"] = self.settings.puzzle_rando_difficulty.name
         settings["Crown Door Open"] = self.settings.crown_door_item == BarrierItems.Nothing
         settings["Coin Door Open"] = self.settings.coin_door_item == BarrierItems.Nothing
         settings["Shockwave Shuffle"] = self.settings.shockwave_status.name
@@ -286,6 +296,7 @@ class Spoiler:
         settings["Smaller Shops"] = self.settings.smaller_shops
         settings["Irondonk"] = self.settings.perma_death
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
+        settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
         # settings["Krusha Slot"] = self.settings.krusha_ui.name
@@ -309,7 +320,29 @@ class Spoiler:
         settings["Quality of Life"] = self.dumpMultiselector(self.settings.quality_of_life, self.settings.misc_changes_selected, QoLSelector)
         settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, FasterCheckSelector)
         settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, RemovedBarrierSelector)
-        settings["Win Condition"] = self.settings.win_condition.name
+        settings["Random Win Condition"] = self.settings.win_condition_random
+        if not self.settings.win_condition_random:
+            wc_count = self.settings.win_condition_count
+            win_con_name_table = {
+                WinConditionComplex.beat_krool: "Beat K. Rool",
+                WinConditionComplex.get_key8: "Acquire Key 8",
+                WinConditionComplex.krem_kapture: "Kremling Kapture",
+                WinConditionComplex.dk_rap_items: "Complete the Rap",
+                WinConditionComplex.req_bean: "Acquire the Bean",
+                WinConditionComplex.req_bp: f"{wc_count} Blueprint{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_companycoins: f"{wc_count} Company Coin{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_crown: f"{wc_count} Crown{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_fairy: f"{wc_count} Fair{'ies' if wc_count != 1 else 'y'}",
+                WinConditionComplex.req_gb: f"{wc_count} Golden Banana{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_key: f"{wc_count} Key{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_medal: f"{wc_count} Medal{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_pearl: f"{wc_count} Pearl{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_rainbowcoin: f"{wc_count} Rainbow Coin{'s' if wc_count != 1 else ''}",
+            }
+            if self.settings.win_condition_item in win_con_name_table:
+                settings["Win Condition"] = win_con_name_table[self.settings.win_condition_item]
+            else:
+                settings["Win Condition"] = self.settings.win_condition_item.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
@@ -442,6 +475,7 @@ class Spoiler:
             "Ice Traps": {},
             "Junk Items": {},
             "Melon Crates": {},
+            "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
             "Empty": {},
@@ -451,8 +485,13 @@ class Spoiler:
         self.pregiven_items = []
         self.first_move_item = None
         for location_id, location in self.LocationList.items():
-            # No need to spoiler constants or hints
-            if location.type == Types.Constant or location.type == Types.Hint or location.inaccessible:
+            # No need to spoiler constants
+            if location.type == Types.Constant or location.inaccessible:
+                continue
+            # No hints if hint doors are not in the pool
+            if location.type == Types.Hint and Types.Hint not in self.settings.shuffled_location_types:
+                continue
+            if location.type == Types.ProgressiveHint:
                 continue
             if location_id in PreGivenLocations:
                 if self.settings.fast_start_beginning_of_game or location_id != Locations.IslesFirstMove:
@@ -1093,15 +1132,27 @@ class Spoiler:
         # GBs go last, there's a lot of them but they arent important
         if ItemList[location.item].type == Types.Banana:
             return 100
+        win_con_type_table = {
+            WinConditionComplex.req_bean: Types.Bean,
+            WinConditionComplex.req_bp: Types.Blueprint,
+            WinConditionComplex.req_companycoins: Types.NintendoCoin,  # Also Types.RarewareCoin
+            WinConditionComplex.req_crown: Types.Crown,
+            WinConditionComplex.req_fairy: Types.Fairy,
+            WinConditionComplex.req_gb: Types.Banana,  # Also Types.ToughBanana
+            # WinConditionComplex.req_key: Types.Key,
+            WinConditionComplex.req_medal: Types.Medal,
+            WinConditionComplex.req_pearl: Types.Pearl,
+            WinConditionComplex.req_rainbowcoin: Types.RainbowCoin,
+        }
         # Win condition items are more important than GBs but less than moves
-        elif self.settings.win_condition == WinCondition.all_fairies and ItemList[location.item].type == Types.Fairy:
-            return 10
-        elif self.settings.win_condition == WinCondition.all_blueprints and ItemList[location.item].type == Types.Blueprint:
-            return 10
-        elif self.settings.win_condition == WinCondition.all_medals and ItemList[location.item].type == Types.Medal:
-            return 10
+        if self.settings.win_condition_item in win_con_type_table:
+            if ItemList[location.item].type == win_con_type_table[self.settings.win_condition_item]:
+                return 10
+            if self.settings.win_condition_item == WinConditionComplex.req_companycoins:
+                if ItemList[location.item].type == Types.RarewareCoin:
+                    return 10
         # Kongs are most the single most important thing and should be at the top of spheres
-        elif ItemList[location.item].type == Types.Kong:
+        if ItemList[location.item].type == Types.Kong:
             return 0
         # Keys are best put first
         elif ItemList[location.item].type == Types.Key:

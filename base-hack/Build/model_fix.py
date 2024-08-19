@@ -5,7 +5,7 @@ import zlib
 import math
 
 from BuildEnums import TableNames, ExtraTextures
-from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset
+from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00
@@ -445,6 +445,64 @@ with open(ROMName, "rb") as rom:
         data = zlib.decompress(data, (15 + 32))
     with open("temp.bin", "wb") as fh:
         fh.write(data)
+    # Beetle squishable enemy
+    rom.seek(actor_table + (0x2D << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("temp.bin", "wb") as fh:
+        fh.write(data)
+    with open("temp.bin", "r+b") as fh:
+        texture_alloc = {
+            ExtraTextures.BeetleTex0: [0x2424, 0x26CC, 0x29D4, 0x2C64, 0x2F0C, 0x3214, 0x3414],
+            ExtraTextures.BeetleTex1: [0x23A4, 0x2B84, 0x3534],
+            ExtraTextures.BeetleTex2: [0x1DDC, 0x249C, 0x279C, 0x2AA4, 0x2CDC, 0x2FDC, 0x32E4],
+            ExtraTextures.BeetleTex3: [0x2164, 0x2284],
+            ExtraTextures.BeetleTex4: [0x1FA4, 0x2204, 0x232C],
+            ExtraTextures.BeetleTex5: [0x204C, 0x2574, 0x287C, 0x2DB4, 0x30BC],
+            ExtraTextures.BeetleTex6: [0x2624, 0x292C, 0x2E64, 0x316C],
+        }
+        for tex in texture_alloc:
+            for write_loc in texture_alloc[tex]:
+                fh.seek(write_loc)
+                fh.write(getBonusSkinOffset(tex).to_bytes(4, "big"))
+        fh.seek(0)
+        data = fh.read()
+    if os.path.exists("temp.bin"):
+        os.remove("temp.bin")
+    with open("scarab_actor.bin", "wb") as fh:
+        fh.write(data)
+
+    for obj_id in INSTRUMENT_PADS:
+        file_name = INSTRUMENT_PADS[obj_id]
+        rom.seek(modeltwo_table + (obj_id << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"{file_name}_pad.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"{file_name}_pad.bin", "r+b") as fh:
+            fh.seek(0x50)
+            floor_start = int.from_bytes(fh.read(4), "big")
+            fh.seek(floor_start)
+            floor_count = int.from_bytes(fh.read(4), "big")
+            for x in range(floor_count):
+                tri_start = floor_start + 0x10 + (0x18 * x)
+                fh.seek(tri_start + 0x15)
+                fh.write((2).to_bytes(1, "big"))
+
     # Base tex:
     #
     # Top

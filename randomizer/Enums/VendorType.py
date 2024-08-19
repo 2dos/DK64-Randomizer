@@ -9,3 +9,4 @@ class VendorType(IntEnum):
     Cranky = 0
     Funky = auto()
     Candy = auto()
+    Snide = auto()

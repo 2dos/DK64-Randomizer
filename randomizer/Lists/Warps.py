@@ -52,7 +52,7 @@ BananaportVanilla = {
         name="Jungle Japes: Near Main Tag", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x98, vanilla_warp=1, swap_index=12, event=Events.JapesW2aTagged
     ),
     Warps.JapesNearMountain: BananaportData(
-        name="Jungle Japes: Outside the Mountain", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x9F, vanilla_warp=1, swap_index=13, event=Events.JapesW2bTagged
+        name="Jungle Japes: Outside the Mountain", map_id=Maps.JungleJapes, region_id=Regions.JapesHillTop, obj_id_vanilla=0x9F, vanilla_warp=1, swap_index=13, event=Events.JapesW2bTagged
     ),
     Warps.JapesFarRight: BananaportData(
         name="Jungle Japes: Near Painting Room", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x9E, vanilla_warp=2, swap_index=14, event=Events.JapesW3aTagged
@@ -168,10 +168,10 @@ BananaportVanilla = {
         name="Frantic Factory: Production Room (Bottom)", map_id=Maps.FranticFactory, region_id=Regions.BeyondHatch, obj_id_vanilla=0x105, vanilla_warp=3, swap_index=41, event=Events.FactoryW4aTagged
     ),
     Warps.FactoryProdTop: BananaportData(
-        name="Frantic Factory: Production Room (Top)", map_id=Maps.FranticFactory, region_id=Regions.MiddleCore, obj_id_vanilla=0x10C, vanilla_warp=3, swap_index=40, event=Events.FactoryW4bTagged
+        name="Frantic Factory: Production Room (Top)", map_id=Maps.FranticFactory, region_id=Regions.SpinningCore, obj_id_vanilla=0x10C, vanilla_warp=3, swap_index=40, event=Events.FactoryW4bTagged
     ),
     Warps.FactoryArcade: BananaportData(
-        name="Frantic Factory: Arcade Room", map_id=Maps.FranticFactory, region_id=Regions.BeyondHatch, obj_id_vanilla=0x10B, vanilla_warp=4, swap_index=43, event=Events.FactoryW5aTagged
+        name="Frantic Factory: Arcade Room", map_id=Maps.FranticFactory, region_id=Regions.FactoryArcadeTunnel, obj_id_vanilla=0x10B, vanilla_warp=4, swap_index=43, event=Events.FactoryW5aTagged
     ),
     Warps.FactoryFunky: BananaportData(
         name="Frantic Factory: Outside Funky's", map_id=Maps.FranticFactory, region_id=Regions.Testing, obj_id_vanilla=0xEE, vanilla_warp=4, swap_index=42, event=Events.FactoryW5bTagged

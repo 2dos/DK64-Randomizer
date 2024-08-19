@@ -27,6 +27,7 @@ def export_settings_string(event):
     setting_data = serialize_settings()
     settings_string = encrypt_settings_string_enum(setting_data)
     js.settings_string.value = settings_string
+    js.generateToast("Exported settings string to the setting string input field.")
 
 
 def should_clear_setting(select):
@@ -106,6 +107,7 @@ def import_settings_string(event):
             pass
     update_ui_states(None)
     js.savesettings()
+    js.generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.")
 
 
 @bind("change", "patchfileloader")

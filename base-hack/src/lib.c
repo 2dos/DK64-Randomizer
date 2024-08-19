@@ -1227,6 +1227,14 @@ void initActor(int actor_index, int is_custom, void* func, int master_type, int 
 	actor_collisions[actor_index].unk_4 = actor_collisions[base].unk_4;
 }
 
+void setCollisionAddress(int actor_index, int is_custom, void* collision_info, int subdata) {
+	if (is_custom) {
+		actor_index = CUSTOM_ACTORS_START + actor_index;
+	}
+	actor_collisions[actor_index].collision_info = collision_info;
+	actor_collisions[actor_index].unk_4 = subdata;
+}
+
 sprite_data_struct bean_sprite = {
 	.unk0 = 0xC4,
 	.images_per_frame_horizontal = 1,
@@ -1264,6 +1272,43 @@ sprite_data_struct krool_sprite = {
 	.height = 64,
 	.image_count = 2,
 	.images = {0x383, 0x384},
+};
+
+sprite_data_struct feather_gun_sprite = {
+	.unk0 = 0xC7,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 32,
+	.image_count = 8,
+	.images = {
+		FEATHER_SPRITE_START + 0,
+		FEATHER_SPRITE_START + 1,
+		FEATHER_SPRITE_START + 2,
+		FEATHER_SPRITE_START + 3,
+		FEATHER_SPRITE_START + 4,
+		FEATHER_SPRITE_START + 5,
+		FEATHER_SPRITE_START + 6,
+		FEATHER_SPRITE_START + 7,
+	},
+};
+
+sprite_data_struct fool_overlay_sprite = {
+	.unk0 = 0xC8,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 1,
+	.unk8 = -1,
+	.table = 1,
+	.width = 40,
+	.height = 16,
+	.image_count = 1,
+	.images = {
+		FOOL_SPRITE_START,
+	},
 };
 
 void giveGB(int kong, int level) {
@@ -1460,10 +1505,10 @@ int filterSong(int* song_write) {
 		}
 		if (Rando.disabled_music.shops) {
 			if (
-				((song == 2) && (CurrentMap == MAP_CRANKY)) || // Cranky
-				((song == 6) && (CurrentMap == MAP_FUNKY)) || // Funky
-				((song == 31) && (CurrentMap == MAP_CANDY)) || // Candy
-				((song == 29) && (CurrentMap == MAP_SNIDE)) // Snide
+				((song == SONG_CRANKY) && (CurrentMap == MAP_CRANKY)) || // Cranky
+				((song == SONG_FUNKY) && (CurrentMap == MAP_FUNKY)) || // Funky
+				((song == SONG_CANDY) && (CurrentMap == MAP_CANDY)) || // Candy
+				((song == SONG_SNIDE) && (CurrentMap == MAP_SNIDE)) // Snide
 			) {
 				*song_write = 0;
 				song = 0;
@@ -1471,6 +1516,16 @@ int filterSong(int* song_write) {
 		}
 	}
 	initSongDisplay(song);
+	return getTrackChannel(song);
+}
+
+int filterSong_Cancelled(songs song) {
+	for (int i = 0; i < 12; i++) {
+		if ((MusicTrackChannels[i] != SONG_SILENCE) && (MusicTrackChannels[i] != song)) {
+			initSongDisplay(MusicTrackChannels[i]);
+			break;
+		}
+	}
 	return getTrackChannel(song);
 }
 
@@ -1665,7 +1720,7 @@ int getItemCountReq(requirement_item item) {
 		return countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
 	} else if (enabled_state == 2) {
 		for (int i = 0; i < item_count; i++) {
-			if (checkFlag(flag_counters[item].flag_array[i], FLAGTYPE_PERMANENT)) {
+			if (checkFlagDuplicate(flag_counters[item].flag_array[i], FLAGTYPE_PERMANENT)) {
 				count += 1;
 			}
 		}

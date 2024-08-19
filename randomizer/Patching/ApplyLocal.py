@@ -120,7 +120,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             recalculatePointerJSON(ROM())
         js.document.getElementById("patch_version_warning").hidden = True
         ROM_COPY = ROM()
-        if settings.disco_chunky and settings.kong_model_chunky == KongModels.default and settings.override_cosmetics:
+        ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
+        chunky_model_setting = int.from_bytes(ROM_COPY.readBytes(1), "big")  # 0 is default
+        if settings.disco_chunky and chunky_model_setting == 0 and settings.override_cosmetics:
             settings.kong_model_chunky = KongModels.disco_chunky
             ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
             ROM_COPY.writeMultipleBytes(6, 1)
@@ -310,6 +312,9 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         {"name": "Caves Tomato", "setting": settings.caves_tomato_model},
         {"name": "Factory Piano Burper", "setting": settings.piano_burp_model},
         {"name": "Spotlight Fish", "setting": settings.spotlight_fish_model},
+        {"name": "Candy (Chunky Phase, End Sequence)", "setting": settings.candy_cutscene_model},
+        {"name": "Funky (Chunky Phase, End Sequence)", "setting": settings.funky_cutscene_model},
+        {"name": "Funky's Boot (Chunky Phase)", "setting": settings.boot_cutscene_model},
     ]
 
     if settings.colors != {} or settings.random_models != RandomModels.off:
@@ -333,7 +338,9 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         humanspoiler["Cosmetics"]["Minor Item Themes"] = music_data.get("music_minoritem_data")
     if settings.music_events_randomized or settings.events_songs_selected:
         humanspoiler["Cosmetics"]["Event Themes"] = music_data.get("music_event_data")
+    humanspoiler["Cosmetics"]["Textures"] = {}
     if settings.custom_transition is not None:
-        humanspoiler["Cosmetics"]["Textures"] = {}
         humanspoiler["Cosmetics"]["Textures"]["Transition"] = settings.custom_transition
+    if settings.custom_troff_portal is not None:
+        humanspoiler["Cosmetics"]["Textures"]["Troff 'n' Scoff Portal"] = settings.custom_troff_portal
     return humanspoiler

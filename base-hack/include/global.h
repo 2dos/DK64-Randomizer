@@ -69,6 +69,7 @@ extern int correctRefillCap(int index, int player);
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
 extern void PatchBonusCode(void);
+extern void kioskBugCode(void);
 extern void FileScreenDLCode_Write(void);
 extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
@@ -264,6 +265,7 @@ extern int getFlagIndex_Corrected(int start, int level);
 extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
+extern int getWrinklyItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
@@ -280,7 +282,10 @@ extern void getItem(int object_type);
 extern void checkModelTwoItemCollision(item_collision* obj_collision, int player_index, player_collision_info* player_collision);
 extern void CheckKasplatSpawnBitfield(void);
 extern void initActor(int actor_index, int is_custom, void* func, int master_type, int health, int damage_given, int initial_interactions, int base);
+extern void setCollisionAddress(int actor_index, int is_custom, void* collision_info, int subdata);
 extern void refreshPads(pad_refresh_signals signal);
+
+extern int stompHandler(void* unk0, playerData* player, int unk1);
 
 extern void indicateCollectionStatus(void);
 extern void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char unk1);
@@ -407,6 +412,8 @@ extern dynamic_flag_icetrap_junk isIceTrapFlag(int flag);
 
 extern int getGamePercentage(void);
 
+extern void displayMedalOverlay(int flag, int item_type);
+
 extern void handleCrownTimerInternal(void);
 
 extern void initSongDisplay(int song);
@@ -418,6 +425,8 @@ extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
 extern void snideCodeHandler(void);
+
+extern int canPlayerClimb(void);
 
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void playBalloonWhoosh(int path_index, float* x, float* y, float* z);
@@ -443,6 +452,8 @@ extern unsigned int dark_mode_colors[10];
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;
 extern sprite_data_struct krool_sprite;
+extern sprite_data_struct feather_gun_sprite;
+extern sprite_data_struct fool_overlay_sprite;
 
 extern void* actor_functions[ACTOR_LIMIT];
 extern health_damage_struct actor_health_damage[ACTOR_LIMIT];
@@ -474,4 +485,7 @@ extern drop_item drops[DROP_COUNT];
 extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
-extern const int fixed_shockwave_collision[21];
+extern const collision_tree_struct fixed_shockwave_collision[3];
+extern const collision_tree_struct fixed_scarab_collision[4];
+extern const collision_tree_struct fixed_dice_collision[12];
+extern const collision_tree_struct fixed_klap_collision[8];

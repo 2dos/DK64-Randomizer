@@ -200,9 +200,9 @@ FixKrushaAmmoHUDColor:
     nop
     jal getKong
     li $a0, 0
-    lui $at, hi(KrushaSlot)
-    lbu $at, lo(KrushaSlot) ($at)
-    bne $v0, $at, FixKrushaAmmoHUDColor_Finish
+    jal isKrushaAdjacentModel
+    or $a0, $v0, $zero
+    beqz $v0, FixKrushaAmmoHUDColor_Finish
     nop
     jal setKrushaAmmoColor
     nop
@@ -227,10 +227,10 @@ FixKrushaAmmoHUDSize:
         sw $v0, 0x8 ($s0)
         jal getKong
         li $a0, 0
-        lui $at, hi(KrushaSlot)
-        lbu $at, lo(KrushaSlot) ($at)
+        jal isKrushaAdjacentModel
+        or $a0, $v0, $zero
         lui $a1, 0x3F80
-        bne $v0, $at, FixKrushaAmmoHUDSize_FixRegisters
+        beqz $v0, FixKrushaAmmoHUDSize_FixRegisters
         nop
         lui $a1, 0x3F40
 

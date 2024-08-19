@@ -285,6 +285,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let minoritem_promises = [];
       let event_promises = [];
       let transition_promises = [];
+      let portal_promises = [];
 
       
       for (var filename of Object.keys(new_zip.files)) {
@@ -298,6 +299,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           event_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/transitions/", ".png")) {
           transition_promises.push(createMusicLoadPromise(new_zip, filename))
+        } else if (validFilename(filename, "textures/tns_portal/", ".png")) {
+          portal_promises.push(createMusicLoadPromise(new_zip, filename))
         }
       }
 
@@ -310,6 +313,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let event_files = await Promise.all(event_promises);
       sortLoadedMusic(event_files);
       let transition_files = await Promise.all(transition_promises);
+      let portal_files = await Promise.all(portal_promises);
 
 
       // BGM
@@ -336,12 +340,17 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transitions = transition_files.map((x) => x.file);
       let transition_names = transition_files.map((x) => x.name);
 
+      // T&S Portals
+      let tns_portals = portal_files.map((x) => x.file);
+      let tns_portal_names = portal_files.map((x) => x.name);
+
       cosmetics = {
         bgm: bgm,
         majoritems: majoritems,
         minoritems: minoritems,
         events: events,
         transitions: transitions,
+        tns_portals: tns_portals,
       };
       cosmetic_names = {
         bgm: bgm_names,
@@ -349,6 +358,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         minoritems: minoritem_names,
         events: event_names,
         transitions: transition_names,
+        tns_portals: tns_portal_names,
       };
       cosmetic_extensions = {
         bgm: bgm_ext,

@@ -4,6 +4,7 @@ import js
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
+from randomizer.Enums.Types import Types
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID, TableNames
@@ -30,6 +31,205 @@ PORTAL_MAP_EXIT_PAIRING = {
     Maps.CrystalCaves: [0],
     Maps.CreepyCastle: [0, 21],
 }
+
+
+class FunctionData:
+    """Function information regarding an instance script."""
+
+    def __init__(self, conditions: list, executions: list):
+        """Initialize with given parameters."""
+        self.conditions = conditions.copy()
+        self.executions = executions.copy()
+
+
+class InstanceInstruction:
+    """Information about an instruction regarding an instance script."""
+
+    def __init__(self, function: int, parameters: list, inverted: bool = False):
+        """Initialize with given parameters."""
+        self.function = function
+        self.parameters = parameters.copy()
+        self.inverted = inverted
+
+
+DK_PORTAL_NEW_PICKUP_RADIUS = 60
+DK_PORTAL_SCRIPT = [
+    FunctionData(
+        [InstanceInstruction(1, [0, 0, 0])], [InstanceInstruction(22, [1, 0, 0]), InstanceInstruction(22, [2, 0, 0]), InstanceInstruction(20, [1, 160, 0]), InstanceInstruction(20, [2, 115, 0])]
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [0, 0, 0]),
+        ],
+        [
+            InstanceInstruction(17, [1, 65535, 0]),
+            InstanceInstruction(17, [2, 65535, 0]),
+            InstanceInstruction(1, [1, 0, 0]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [1, 0, 0]),
+            InstanceInstruction(19, [DK_PORTAL_NEW_PICKUP_RADIUS, 0, 0]),
+            InstanceInstruction(35, [0, 0, 0], True),
+        ],
+        [
+            InstanceInstruction(3, [0, 60, 0]),
+            InstanceInstruction(7, [116, 0, 1]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [1, 0, 0]),
+            InstanceInstruction(19, [DK_PORTAL_NEW_PICKUP_RADIUS, 0, 0]),
+            InstanceInstruction(35, [0, 0, 0], True),
+        ],
+        [
+            InstanceInstruction(110, [1, 0, 0]),
+            InstanceInstruction(37, [29, 0, 15]),
+            InstanceInstruction(25, [90, 0, 0]),
+            InstanceInstruction(1, [100, 0, 0]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [100, 0, 0]),
+            InstanceInstruction(4, [0, 0, 0]),
+        ],
+        [
+            InstanceInstruction(1, [2, 0, 0]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [1, 0, 0]),
+            InstanceInstruction(19, [DK_PORTAL_NEW_PICKUP_RADIUS, 0, 0], True),
+        ],
+        [
+            InstanceInstruction(1, [2, 0, 0]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [1, 0, 0]),
+            InstanceInstruction(35, [0, 0, 0]),
+        ],
+        [
+            InstanceInstruction(1, [2, 0, 0]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [2, 0, 0]),
+            InstanceInstruction(4, [0, 0, 0]),
+        ],
+        [
+            InstanceInstruction(90, [60, 60, 60]),
+            InstanceInstruction(61, [3, 0, 0]),
+            InstanceInstruction(1, [3, 0, 0]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [3, 0, 0]),
+            InstanceInstruction(16, [1, 1, 0]),
+        ],
+        [
+            InstanceInstruction(3, [0, 40, 0]),
+            InstanceInstruction(7, [116, 0, 0]),
+            InstanceInstruction(110, [1, 0, 0]),
+            InstanceInstruction(37, [30, 0, 15]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [3, 0, 0]),
+            InstanceInstruction(16, [1, 1, 0]),
+        ],
+        [
+            InstanceInstruction(25, [89, 0, 0]),
+            InstanceInstruction(1, [4, 0, 0]),
+        ],
+    ),
+    FunctionData(
+        [
+            InstanceInstruction(1, [4, 0, 0]),
+            InstanceInstruction(4, [0, 0, 0]),
+        ],
+        [
+            InstanceInstruction(141, [0, 0, 0]),
+            InstanceInstruction(1, [5, 0, 0]),
+        ],
+    ),
+]
+
+
+def pushNewDKPortalScript(cont_map_id: Maps):
+    """Write new dk portal script to ROM."""
+    id_pairings = {
+        Maps.JungleJapes: 0x11B,
+        Maps.AngryAztec: 0x1A0,
+        Maps.FranticFactory: 0x1C2,
+        Maps.GloomyGalleon: 0x57,
+        Maps.FungiForest: 0x5C,
+        Maps.CrystalCaves: 0x54,
+        Maps.CreepyCastle: 0xB8,
+    }
+    if cont_map_id not in id_pairings:
+        raise Exception(f"Invalid map for pairing. Alert the devs (Map {cont_map_id})")
+    obj_id = id_pairings[cont_map_id]
+    ROM_COPY = LocalROM()
+    script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
+    ROM_COPY.seek(script_table)
+    script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    good_scripts = []
+    # Construct good pre-existing scripts
+    file_offset = 2
+    for script_item in range(script_count):
+        ROM_COPY.seek(script_table + file_offset)
+        script_start = script_table + file_offset
+        script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        file_offset += 6
+        for block_item in range(block_count):
+            ROM_COPY.seek(script_table + file_offset)
+            cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2 + (8 * cond_count)
+            ROM_COPY.seek(script_table + file_offset)
+            exec_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2 + (8 * exec_count)
+        script_end = script_table + file_offset
+        if script_id != obj_id:
+            script_data = []
+            ROM_COPY.seek(script_start)
+            for x in range(int((script_end - script_start) / 2)):
+                script_data.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+            good_scripts.append(script_data)
+    # Get new script data
+    script_arr = [
+        obj_id,
+        len(DK_PORTAL_SCRIPT),
+        0,
+    ]
+    for block in DK_PORTAL_SCRIPT:
+        script_arr.append(len(block.conditions))
+        for cond in block.conditions:
+            func = cond.function
+            if cond.inverted:
+                func |= 0x8000
+            script_arr.append(func)
+            script_arr.extend(cond.parameters)
+        script_arr.append(len(block.executions))
+        for ex in block.executions:
+            script_arr.append(ex.function)
+            script_arr.extend(ex.parameters)
+    good_scripts.append(script_arr)
+    # Reconstruct File
+    ROM_COPY.seek(script_table)
+    ROM_COPY.writeMultipleBytes(len(good_scripts), 2)
+    for script in good_scripts:
+        for x in script:
+            ROM_COPY.writeMultipleBytes(x, 2)
 
 
 def remove_existing_indicators(spoiler):
@@ -166,7 +366,7 @@ def place_door_locations(spoiler):
                             spoiler.settings.wrinkly_location_rando
                             or IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles)
                         ):
-                            if not spoiler.settings.enable_progressive_hints:
+                            if (not spoiler.settings.enable_progressive_hints) or Types.Hint in spoiler.settings.shuffled_location_types:
                                 kong = data[2]
                                 item_data = []
                                 for coord_index in range(3):
@@ -253,6 +453,7 @@ def place_door_locations(spoiler):
                 ROM_COPY.writeMultipleBytes(data, 4)
         if spoiler.settings.dk_portal_location_rando:
             for portal_map in dk_portal_locations:
+                pushNewDKPortalScript(portal_map)
                 exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
                 exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
                 for exit_index in exits_to_alter:

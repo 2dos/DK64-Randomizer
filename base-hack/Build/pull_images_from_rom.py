@@ -100,6 +100,11 @@ images = [
     ImageData("diddy_balloon", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x16C3, 32, 64, False, False),
     ImageData("dirt_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1379, 32, 32, False, False),
     ImageData("snide_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x172E, 64, 32, False, False),
+    ImageData("white_font_early", TextureFormat.IA8, TableNames.TexturesHUD, 3, 176, 16, False, False),
+    ImageData("white_font_late", TextureFormat.IA8, TableNames.TexturesHUD, 4, 176, 16, False, False),
+    ImageData("question_mark", TextureFormat.IA8, TableNames.TexturesGeometry, 5923, 16, 32, False, True),
+    ImageData("k_rool_head_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x383, 32, 64, False, True),
+    ImageData("k_rool_head_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x384, 32, 64, False, True),
 ]
 
 shop_owners = {
@@ -119,6 +124,13 @@ for kong in kong_tex:
         images.append(ImageData(f"{kong}_face_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, tex_idx + x, 32, 64, False, True))
     tex_idx += 2
 
+for x in range(7):
+    size = 0xAB8
+    if x == 2:
+        size = 0xAF8
+    elif x == 6:
+        size = 0x560
+    images.append(ImageData(f"beetle_img_{0xFC3 + x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xFC3 + x, size >> 1, 1, False, False))
 
 if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")

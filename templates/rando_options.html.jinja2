@@ -202,22 +202,6 @@
                 {{ toggle_input("kong_rando", "Shuffle Kongs", "Starting kong and kong locations have been randomized.") }}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="Shuffles the solutions to various puzzles in the game.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="puzzle_rando"
-                                id="puzzle_rando"
-                                display_name="Shuffle Puzzle Solutions"
-                                value="True"/>
-                        Shuffle Puzzle Solutions
-                    </label>
-                    <a href="./wiki/Feature-Explanations.html#puzzle-solution-randomizer"
-                        target="_blank">
-                        <img class="icon" src="./static/img/external_link.png">
-                    </a>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
                             title="The order of KRools boxing match will randomly order the sequence.">
                         <input class="form-check-input"
                                 type="checkbox"
@@ -364,6 +348,32 @@
                         </option>
                         <option id="extreme_price_option" value="extreme">
                             Extreme
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Random Puzzle Solutions</p>
+                    <select name="puzzle_rando_difficulty"
+                            id="puzzle_rando_difficulty"
+                            display_name="Random Puzzle Solutions"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Shuffles the solutions to various puzzles in the game.">
+                        <option value="off">
+                            Off
+                        </option>
+                        <option value="easy">
+                            Easy
+                        </option>
+                        <option selected value="medium">
+                            Medium
+                        </option>
+                        <option value="hard">
+                            Hard
+                        </option>
+                        <option value="chaos" title="Values picked can be any range between easy, medium and hard">
+                            Chaos
                         </option>
                     </select>
                 </div>

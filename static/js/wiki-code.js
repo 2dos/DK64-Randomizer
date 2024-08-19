@@ -22,6 +22,19 @@ function highlightInstancesOfText(find_text, in_text) {
 }
 
 function goTo(url, new_tab=false) {
+    if (url.indexOf("./") !== 0) {
+        window.location.href = url;
+        return;
+    }
+    const html_index = url.indexOf(".html");
+    if (html_index === -1) {
+        window.location.href = url;
+        return;
+    }
+    if (html_index === (url.length - 5)) {
+        window.location.href = `./index.html?title=${url.substring(2, url.length - 5)}`
+        return;
+    }
     window.location.href = url;
 }
 
@@ -33,9 +46,9 @@ function handleSuggestionClick(url) {
 
 function getLink(item) {
     if (Object.keys(item).includes("github")) {
-        return `./${item.github}.html`
+        return `./index.html?title=${item.github}`
     }
-    return `./${item.link}.html`
+    return `./index.html?title=${item.link}`
 }
 
 document.getElementById("article-search").addEventListener("keyup", (e) => {
@@ -58,22 +71,45 @@ document.getElementById("article-search").addEventListener("keyup", (e) => {
         matches = matches.sort((a, b) => a.score < b.score ? 1 : ((b.score < a.score) ? -1 : 0));
     }
     matches = matches.filter((item, index) => index < 5); // Clamp to 5 search results at most
-    const sugg_hook = document.getElementById("search_suggestions");
-    sugg_hook.innerHTML = matches.map(item => `
-        <div class="search-item user-select-none p-2" onclick="handleSuggestionClick('${item.link}')">
-            ${item.text}
-        </div>
-    `).join("");
-    const top_offset = e.target.clientTop + e.target.clientHeight;
-    const left_offset = e.target.clientLeft;
-    sugg_hook.style.top = `calc(${top_offset}px + 0.5rem)`;
-    sugg_hook.style.right = `calc(${left_offset}px + 0.5rem)`;
-    sugg_hook.style["min-width"] = `${e.target.clientWidth}px`;
+    // const sugg_hook = document.getElementById("search_suggestions");
+    // sugg_hook.innerHTML = matches.map(item => `
+    //     <div class="search-item user-select-none p-2" onclick="handleSuggestionClick('${item.link}')">
+    //         ${item.text}
+    //     </div>
+    // `).join("");
+    // const top_offset = e.target.clientTop + e.target.clientHeight;
+    // const left_offset = e.target.clientLeft;
+    // sugg_hook.style.top = `calc(${top_offset}px + 0.5rem)`;
+    // sugg_hook.style.right = `calc(${left_offset}px + 0.5rem)`;
+    // sugg_hook.style["min-width"] = `${e.target.clientWidth}px`;
 })
+
+let article_names = [];
+let articles_ready = false;
+async function getSuggestions() {
+    return new Promise((resolve) => {
+        const checkReady = () => {
+            if (articles_ready) {
+                resolve(article_names.slice());
+            } else {
+                setTimeout(checkReady, 100);
+            }
+        };
+        checkReady();
+    })
+}
 
 async function fetchArticles() {
     articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
     sugg_articles = await fetch("./home_articles.json", {cache: "no-store"}).then(x => x.json());
+    // Populate search suggestions
+    article_names = articles.map(item => {
+        return {
+            "name": item.name,
+            "link": getLink(item),
+        };
+    });
+    articles_ready = true;
     // Populate Suggested Article Text
     const sugg_article_holders = document.getElementsByClassName("sugg-articles");
     if (sugg_article_holders.length == 0) {
@@ -349,6 +385,7 @@ function filterHTML(element, output_html) {
     })
     element.innerHTML = output_html;
     element.removeAttribute("ref");
+    document.getElementById("content-pane").removeAttribute("hidden");
     // Content Filtration
     const content_hook = document.getElementById("markdown_content");
     // Add classes to code blocks where their parent element isn't a pre-tag

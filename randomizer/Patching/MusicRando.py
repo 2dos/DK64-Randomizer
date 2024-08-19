@@ -11,7 +11,7 @@ from zipfile import ZipFile
 from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.SongGroups import SongGroup
-from randomizer.Enums.Settings import MusicFilters
+from randomizer.Enums.Settings import MusicFilters, WinConditionComplex
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
@@ -119,6 +119,12 @@ TAG_CONVERSION_TABLE = {
 }
 
 
+def parseBinString(val: str) -> str:
+    """Attempt to parse a filename for binary files since they do not have a song name."""
+    removed_folders = val.split("/")[-1]
+    return removed_folders
+
+
 def filterSongString(val: str) -> str:
     """Filter newline characters from the string."""
     split_string = "".join([x for xi, x in enumerate([*val]) if x != "\n" and xi < 30])
@@ -132,8 +138,11 @@ class UploadInfo:
         """Initialize with given variables."""
         self.raw_input = push_array[0]
         self.name = push_array[1]
-        self.name_short = f"Unknown\n{filterSongString(self.name)}"
         self.extension = push_array[2]
+        passed_name = self.name
+        if self.extension == ".bin":
+            passed_name = parseBinString(self.name)
+        self.name_short = f"Unknown\n{filterSongString(passed_name)}"
         self.song_file = self.raw_input
         self.zip_file = None
         self.song_length = 0
@@ -467,6 +476,7 @@ def randomize_music(settings: Settings):
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
             settings.music_events_randomized = True
+
     ROM_COPY = ROM()
 
     NON_BGM_DATA = [
@@ -516,6 +526,8 @@ def randomize_music(settings: Settings):
     for song in song_data.values():
         song.Reset()
         writeSongVolume(ROM_COPY, song.mem_idx, song.type)
+    if settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        song_data[Songs.DKRap].type = SongType.Protected  # Protect the rap, used for end seq
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm_randomized or categoriesHaveAssignedSongs(settings, [SongType.BGM]):
         # If the user selected standard rando

@@ -6,6 +6,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Enable Shop Hints
 - Enable Tag Anywhere
 - Faster Checks
+- Fast Start - Beginning of Game
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
@@ -27,10 +28,14 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 
 # Always Off
 - Progressive Switch Strength
+- DK Phase requires Baboon Blast
+- Chaos B. Lockers
 - Crown Placement Rando
+- Dk Portal Location Rando
 - Enable Plandomizer
 - Dropsanity
 - Hard B. Lockers
+- Hard Bosses
 - Hard Mode
 - Hard Shooting
 - Hard Troff n' Scoff
@@ -59,11 +64,15 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - B. Locker Max: Between 30 and 70, usually close to 50
 - Auto Complete Bonus Barrels: 50%
 - Shuffle Bonus Barrels: 70%
-- Shuffle Boss Kong Required: 50%
+- Shuffle Boss Kong Required: 80%
 - Boss Location Rando: 80%
 - Random CB Locations: 
 	- Off: 70%
 	- On: 30%
+- Chaos Ratio: Between 0 and 0, usually close to 0
+- Chunky Phase Slam Requirement: 
+	- Green: 30%
+	- Blue: 70%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 60%
@@ -109,6 +118,10 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Galleon Water: 
 	- Random: 100%
 - Shuffle Helm Rooms: 80%
+- Helm Room Bonus Count: 
+	- Zero: 10%
+	- One: 30%
+	- Two: 60%
 - Helm Start Location: 
 	- Skip Start: 70%
 	- Skip All: 30%
@@ -127,6 +140,11 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Helmhurry List Pearl: Between 30 and 120, usually close to 50
 - Helmhurry List Rainbow Coin: Between 5 and 30, usually close to 15
 - Helmhurry List Starting Time: Between 900 and 1800, usually close to 1200
+- Ice Trap Frequency: 
+	- Rare: 70%
+	- Mild: 20%
+	- Common: 10%
+- Ice Traps Damage Player: 20%
 - Item Rando List Selected: 
 	- Shop: 95%
 	- Banana: 95%
@@ -145,6 +163,16 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Off: 30%
 	- Vanilla Locations: 70%
 - Lock Key 8 in Helm: 50%
+- Kong Model Chunky: 
+	- Default: 100%
+- Kong Model Diddy: 
+	- Default: 100%
+- Kong Model Dk: 
+	- Default: 100%
+- Kong Model Lanky: 
+	- Default: 100%
+- Kong Model Tiny: 
+	- Default: 100%
 - Key 8 Required: 70%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
@@ -162,7 +190,10 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Cross Purchase: 100%
 - Open Lobbies: 90%
 - Progressive Hint 35 Requirement: Between 30 and 60, usually close to 45
-- Shuffle Puzzle Solutions: 50%
+- Random Puzzle Solutions: 
+	- Off: 20%
+	- Easy: 70%
+	- Medium: 10%
 - Random Shop Prices: 
 	- Vanilla: 20%
 	- Free: 20%
@@ -180,6 +211,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Factory Testing Gate: 75%
 	- Galleon Lighthouse Gate: 75%
 	- Galleon Shipyard Area Gate: 75%
+	- Castle Crypt Doors: 75%
 	- Galleon Seasick Ship: 100%
 	- Forest Green Tunnel: 75%
 	- Forest Yellow Tunnel: 75%
@@ -199,7 +231,8 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Off: 100%
 - Troff n' Scoff Max: Between 100 and 300, usually close to 200
 - Win Condition: 
-	- Beat Krool: 70%
-	- Get Key8: 30%
+	- Beat Krool: 20%
+	- Get Key8: 10%
+	- Easy Random: 70%
 - Wrinkly Hints: 
 	- Standard: 100%

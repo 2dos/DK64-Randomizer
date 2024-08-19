@@ -14,42 +14,9 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
-from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName
+from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName, CustomActors
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.CompileHints import getHelmProgItems
-
-
-class CustomActors(IntEnum):
-    """Custom Actors Enum."""
-
-    NintendoCoin = 0x8000  # Starts at 0x8000
-    RarewareCoin = auto()
-    Null = auto()
-    PotionDK = auto()
-    PotionDiddy = auto()
-    PotionLanky = auto()
-    PotionTiny = auto()
-    PotionChunky = auto()
-    PotionAny = auto()
-    KongDK = auto()
-    KongDiddy = auto()
-    KongLanky = auto()
-    KongTiny = auto()
-    KongChunky = auto()
-    KongDisco = auto()
-    KongKrusha = auto()
-    Bean = auto()
-    Pearl = auto()
-    Fairy = auto()
-    IceTrapBubble = auto()
-    IceTrapReverse = auto()
-    IceTrapSlow = auto()
-    Medal = auto()
-    JetpacItemOverlay = auto()
-    CrankyItem = auto()
-    FunkyItem = auto()
-    CandyItem = auto()
-    SnideItem = auto()
+from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 
 
 model_two_indexes = {
@@ -75,6 +42,7 @@ model_two_indexes = {
     Types.Funky: 0x260,
     Types.Candy: 0x261,
     Types.Snide: 0x262,
+    Types.Hint: 0x27E,
 }
 
 model_two_scales = {
@@ -100,6 +68,7 @@ model_two_scales = {
     Types.Funky: 0.25,
     Types.Candy: 0.25,
     Types.Snide: 0.25,
+    Types.Hint: 0.25,
 }
 
 actor_indexes = {
@@ -125,6 +94,7 @@ actor_indexes = {
     Types.Funky: CustomActors.FunkyItem,
     Types.Candy: CustomActors.CandyItem,
     Types.Snide: CustomActors.SnideItem,
+    Types.Hint: CustomActors.HintItem,
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -146,6 +116,7 @@ model_indexes = {
     Types.Funky: 0x12,
     Types.Candy: 0x13,
     Types.Snide: 0x1F,
+    Types.Hint: 0xD2,
 }
 
 TRAINING_LOCATIONS = (
@@ -238,6 +209,7 @@ text_rewards = {
     Types.Cranky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Candy: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Funky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
+    Types.Hint: ("\x04HINT\x04", "\x04LAYTON RIDDLE\x04"),
 }
 
 level_names = {
@@ -292,7 +264,7 @@ def getTextRewardIndex(item) -> int:
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         return 8
     elif item.new_item in (Types.Snide, Types.Cranky, Types.Candy, Types.Funky):
-        return 9
+        return 15
     elif item.new_item is None:
         return 14
     else:
@@ -312,7 +284,8 @@ def getTextRewardIndex(item) -> int:
             Types.RainbowCoin,  # 12
             Types.FakeItem,  # 13
             Types.NoItem,  # 14
-            Types.JunkItem,  # 15
+            Types.Cranky,  # 15
+            Types.JunkItem,  # 16
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
@@ -418,7 +391,7 @@ def place_randomized_items(spoiler, original_flut: list):
                 if placed_item in prog_flags:
                     item_flag = prog_flags[placed_item][0]
                 else:
-                    item_flag = ItemList[placed_item].flag
+                    item_flag = ItemList[placed_item].rando_flag
                 if item_flag is not None and item_flag & 0x8000:
                     # Is move
                     item_kong = (item_flag >> 12) & 7
@@ -635,7 +608,7 @@ def place_randomized_items(spoiler, original_flut: list):
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].map, 1)
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
-                    elif item.old_item == Types.Medal:
+                    elif item.old_item in (Types.Medal, Types.Hint):
                         # Write to Medal Table
                         # Just need offset of subtype:
                         # 0 = Banana
@@ -689,11 +662,19 @@ def place_randomized_items(spoiler, original_flut: list):
                             None,  # No Item
                             Types.FakeItem,  # Fake Item (Reverse)
                             Types.FakeItem,  # Fake Item (Slow)
+                            Types.Hint,  # Hint Item
                         ]
-                        offset = item.old_flag - 549
-                        if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
-                            offset = 40 + (item.old_flag - 0x3C6)
-                        ROM_COPY.seek(0x1FF1080 + offset)
+                        offset = None
+                        base_addr = None
+                        if item.old_item == Types.Medal:
+                            offset = item.old_flag - 549
+                            if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
+                                offset = 40 + (item.old_flag - 0x3C6)
+                            base_addr = 0x1FF1080
+                        elif item.old_item == Types.Hint:
+                            offset = item.old_flag - 0x384
+                            base_addr = 0x1FF0EC0
+                        ROM_COPY.seek(base_addr + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6
                             if item.new_flag in (0x3BC, 0x3BD, 0x3BE):
@@ -759,6 +740,10 @@ def place_randomized_items(spoiler, original_flut: list):
                                 model = trap_types.get(item.new_subitem, -4) + 0x10000
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
+            if item.new_item == Types.Hint:
+                offset = item.new_flag - 0x384
+                tied_region = GetRegionIdOfLocation(spoiler, item.location)
+                spoiler.tied_hint_regions[offset] = spoiler.RegionList[tied_region].hint_name
             if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
                 # Write flag lookup table
                 data = [item.old_flag]
@@ -840,6 +825,15 @@ def place_randomized_items(spoiler, original_flut: list):
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])
+        flags_to_push = []
+        if not FAST_START:
+            flags_to_push = [0x182, 0x183, 0x184, 0x185]
+        for flut in flut_items:
+            input_flag = flut[0]
+            if input_flag in flags_to_push:
+                flags_to_push = [x for x in flags_to_push if x != input_flag]
+        for flag in flags_to_push:
+            flut_items.append([flag, 0])
         ROM_COPY.seek(0x1FF2000)
         for flut in sorted(flut_items, key=lambda x: x[0]):
             for flag in flut:

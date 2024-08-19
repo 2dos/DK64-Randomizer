@@ -44,6 +44,7 @@
 .definelabel getNewSaveTime, 0x805FC98C
 .definelabel save, 0x8060DEC8
 .definelabel getRNGLower31, 0x80611A44
+.definelabel getRNGAsFloat, 0x806119FC
 .definelabel fileStart, 0x807144B8
 .definelabel isFileEmpty, 0x800322D0
 .definelabel DetectGameOver, 0x80714394

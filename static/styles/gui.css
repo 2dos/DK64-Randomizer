@@ -656,7 +656,7 @@ i {
   transform: translateY(5%);
 }
 
-.btn-close:not([data-bs-dismiss="toast"]) {
+.btn-close:not([data-bs-dismiss="toast"]):not([data-bs-dismiss="modal"]) {
   background-color: grey;
 }
 
@@ -1093,4 +1093,20 @@ input[type=range][disabled]::-ms-fill-lower {
 }
 input[type=range][disabled]::-ms-fill-upper {
   background: var(--bs-gray-600);
+}
+
+.select-number-container:not(.hide-input) select {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.select-number-container input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  min-width: 0px !important;
+  width: fit-content;
+}
+
+.select-number-container.hide-input input {
+  display: none !important;
 }

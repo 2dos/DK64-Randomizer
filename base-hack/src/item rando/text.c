@@ -26,7 +26,8 @@ static char* text_rewards[] = {
     "RAINBOW COIN", // 12
     "GLODEN BANANE", // 13
     "NOTHING", // 14
-    "JUNK ITEM", // 15
+    "SHOPKEEPER", // 15
+    "JUNK ITEM", // 16
 };
 
 void handleDynamicItemText(char* location, char* format, int character) {
@@ -39,7 +40,7 @@ void handleDynamicItemText(char* location, char* format, int character) {
      */
     if (character == 0x7C) {
         // Dynamic Text
-        if ((TextItemName == 14) || (TextItemName > 15)) {
+        if ((TextItemName == 14) || (TextItemName > 16)) {
             TextItemName = 0;
         }
         dk_strFormat(location, "%s", text_rewards[(int)TextItemName]);

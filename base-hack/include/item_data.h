@@ -5,12 +5,12 @@
 Thanks,
 		Ballaam
 */
-extern const short acceptable_items[33];
-extern const item_conversion_info item_conversions[37];
-extern const unsigned short bounce_objects[27];
-extern const unsigned short actor_drops[38];
+extern const short acceptable_items[34];
+extern const item_conversion_info item_conversions[38];
+extern const unsigned short bounce_objects[28];
+extern const unsigned short actor_drops[39];
 extern const unsigned short danceless_items[6];
-extern const item_scale_info item_scales[38];
+extern const item_scale_info item_scales[39];
 typedef enum new_custom_actors {
 	/* 0x000 */ NEWACTOR_NINTENDOCOIN, 
 	/* 0x001 */ NEWACTOR_RAREWARECOIN, 
@@ -40,6 +40,9 @@ typedef enum new_custom_actors {
 	/* 0x019 */ NEWACTOR_FUNKYITEM, 
 	/* 0x01A */ NEWACTOR_CANDYITEM, 
 	/* 0x01B */ NEWACTOR_SNIDEITEM, 
+	/* 0x01C */ NEWACTOR_ZINGERFLAMETHROWER, 
+	/* 0x01D */ NEWACTOR_SCARAB, 
+	/* 0x01E */ NEWACTOR_HINTITEM, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
-#define DROP_COUNT 32
+#define DROP_COUNT 35

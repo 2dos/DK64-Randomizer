@@ -36,6 +36,7 @@ typedef enum MEDAL_ITEMS {
     /* 22 */ MEDALITEM_NOTHING,
     /* 23 */ MEDALITEM_ICETRAP_REVERSE,
     /* 24 */ MEDALITEM_ICETRAP_SLOW,
+    /* 25 */ MEDALITEM_HINT,
 } MEDAL_ITEMS;
 
 typedef struct item_info {
@@ -70,29 +71,19 @@ static const item_info item_detection_data[] = {
     {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL, .fairy_model = -1}, // Pearl
     {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY, .fairy_model = 0x3D}, // Fairy
     {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN, .fairy_model = -1}, // Rainbow Coin
-    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Bubble)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Bubble)
     {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
     {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x11}, // Cranky
     {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x12}, // Funky
     {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x13}, // Candy
     {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x1F}, // Snide
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
-    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Reversed Controls)
-    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Slowed)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Reversed Controls)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Slowed)
+    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0xD2}, // Hint Item
 };
 
-void banana_medal_acquisition(int flag) {
-    /**
-     * @brief Acquire a banana medal, and handle the item acquired from it
-     * 
-     * @param flag Flag index of the banana medal
-     */
-    int item_type = 0;
-    if (flag >= FLAG_MEDAL_ISLES_DK) {
-        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
-    } else {
-        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
-    }
+void displayMedalOverlay(int flag, int item_type) {
     float reward_x = 160.f;
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -112,10 +103,12 @@ void banana_medal_acquisition(int flag) {
                 break;
             case MEDALITEM_BP:
                 {
-                    if (kong > 4) {
-                        kong = 0;
+                    int bp_index = flut_flag - FLAG_BP_JAPES_DK_HAS;
+                    int bp_kong = bp_index % 5;
+                    if (bp_kong > 4) {
+                        bp_kong = 0;
                     }
-                    sprite_index = bp_sprites[kong];
+                    sprite_index = bp_sprites[bp_kong];
                 }
                 break;
             case MEDALITEM_KEY:
@@ -175,15 +168,21 @@ void banana_medal_acquisition(int flag) {
                 break;
             case MEDALITEM_ICETRAP_BUBBLE:
                 queueIceTrap(ICETRAP_BUBBLE);
+                sprite = &fool_overlay_sprite;
                 break;
             case MEDALITEM_ICETRAP_REVERSE:
                 queueIceTrap(ICETRAP_REVERSECONTROLS);
+                sprite = &fool_overlay_sprite;
                 break;
             case MEDALITEM_ICETRAP_SLOW:
                 queueIceTrap(ICETRAP_SLOWED);
+                sprite = &fool_overlay_sprite;
                 break;
             case MEDALITEM_JUNKMELON:
                 giveMelon();
+                break;
+            case MEDALITEM_HINT:
+                playSFX(0x2EA);
                 break;
         }
         if (song != SONG_SILENCE) {
@@ -213,6 +212,21 @@ void banana_medal_acquisition(int flag) {
         loadSpriteFunction(0x8071EFDC);
         displaySpriteAtXYZ(sprite_table[0x8E], 1.0f, reward_x, reward_y, -10.0f);
     }
+}
+
+void banana_medal_acquisition(int flag) {
+    /**
+     * @brief Acquire a banana medal, and handle the item acquired from it
+     * 
+     * @param flag Flag index of the banana medal
+     */
+    int item_type = 0;
+    if (flag >= FLAG_MEDAL_ISLES_DK) {
+        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
+    } else {
+        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+    }
+    displayMedalOverlay(flag, item_type);
 }
 
 static unsigned char key_timer = 0;
@@ -685,6 +699,11 @@ void getItem(int object_type) {
             forceDance();
             queueIceTrap(it_type);
             hh_item = HHITEM_FAKEITEM;
+            break;
+        case 0x27E:
+            // Hint item
+            forceDance();
+            playSound(0x2EA, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
     }
     if (hh_item != HHITEM_NOTHING) {

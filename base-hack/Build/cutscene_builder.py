@@ -326,7 +326,7 @@ def buildScripts() -> list:
         if script_table != 0:
             folders = [x[0] for x in os.walk(instance_dir)]
             for f in folders:
-                if f != "./" and "pycache" not in f:
+                if f != "./" and "pycache" not in f and "k_rool_cs" not in f:
                     files = [x[2] for x in os.walk(f)][0]
                     map_index = -1
                     if ".map" in files:

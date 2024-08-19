@@ -58,6 +58,18 @@ def handle_progressive_hint_text(event):
         progressive_hint_text.value = 201
 
 
+@bind("focusout", "chaos_ratio")
+def handle_chaos_ratio_text(event):
+    """Validate blocker input on loss of focus."""
+    chaos_ratio_text = js.document.getElementById("chaos_ratio")
+    if not chaos_ratio_text.value:
+        chaos_ratio_text.value = 25
+    elif int(chaos_ratio_text.value) < 1:
+        chaos_ratio_text.value = 1
+    elif int(chaos_ratio_text.value) > 100:
+        chaos_ratio_text.value = 100
+
+
 @bind("focusout", "blocker_text")
 def max_randomized_blocker(event):
     """Validate blocker input on loss of focus."""
@@ -190,12 +202,13 @@ DISABLED_HELM_DOOR_VALUES = ("easy_random", "medium_random", "hard_random", "ope
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
     door_one_selection = js.document.getElementById("crown_door_item")
+    door_one_container = js.document.getElementById("door_1_container")
     disabled = door_one_selection.value in DISABLED_HELM_DOOR_VALUES
     door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
-        door_one_req.setAttribute("disabled", "disabled")
+        door_one_container.classList.add("hide-input")
     else:
-        door_one_req.removeAttribute("disabled")
+        door_one_container.classList.remove("hide-input")
     if not door_one_req.value:
         door_one_req.value = 1
     elif door_one_selection.value == "vanilla" and int(door_one_req.value) > 10:
@@ -220,40 +233,17 @@ def updateDoorOneNumAccess(event):
         door_one_req.value = 16
 
 
-@bind("click", "nav-progression-tab")
-@bind("change", "crown_door_item")
-def updateDoorOneCountText(evt):
-    """Change the text of the door 1 item count label."""
-    label_text_map = {
-        "vanilla": "Crowns",
-        "req_gb": "Bananas",
-        "req_bp": "Blueprints",
-        "req_companycoins": "Coins",
-        "req_key": "Keys",
-        "req_medal": "Medals",
-        "req_fairy": "Fairies",
-        "req_rainbowcoin": "Coins",
-        "req_bean": "Bean",
-        "req_pearl": "Pearls",
-    }
-    door_one_text = js.document.getElementById("door-1-select-title")
-    door_one_selection = js.document.getElementById("crown_door_item").value
-    if door_one_selection in label_text_map:
-        door_one_text.innerText = f"{label_text_map[door_one_selection]} Needed For Door 1"
-    else:
-        door_one_text.innerText = "Door 1 Item Count"
-
-
 @bind("change", "coin_door_item")
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
     door_two_selection = js.document.getElementById("coin_door_item")
+    door_two_container = js.document.getElementById("door_2_container")
     disabled = door_two_selection.value in DISABLED_HELM_DOOR_VALUES
     door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
-        door_two_req.setAttribute("disabled", "disabled")
+        door_two_container.classList.add("hide-input")
     else:
-        door_two_req.removeAttribute("disabled")
+        door_two_container.classList.remove("hide-input")
     if not door_two_req.value:
         door_two_req.value = 1
     elif door_two_selection.value == "vanilla" and int(door_two_req.value) > 2:
@@ -278,28 +268,40 @@ def updateDoorTwoNumAccess(event):
         door_two_req.value = 16
 
 
-@bind("click", "nav-progression-tab")
-@bind("change", "coin_door_item")
-def updateDoorTwoCountText(evt):
-    """Change the text of the door 2 item count label."""
-    label_text_map = {
-        "vanilla": "Coins",
-        "req_gb": "Bananas",
-        "req_bp": "Blueprints",
-        "req_key": "Keys",
-        "req_medal": "Medals",
-        "req_crown": "Crowns",
-        "req_fairy": "Fairies",
-        "req_rainbowcoin": "Coins",
-        "req_bean": "Bean",
-        "req_pearl": "Pearls",
-    }
-    door_two_text = js.document.getElementById("door-2-select-title")
-    door_two_selection = js.document.getElementById("coin_door_item").value
-    if door_two_selection in label_text_map:
-        door_two_text.innerText = f"{label_text_map[door_two_selection]} Needed For Door 2"
+DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture", "dk_rap_items")
+
+
+@bind("change", "win_condition_item")
+def updateWinConNumAccess(event):
+    """Toggle the textboxes for the win condition."""
+    win_con_selection = js.document.getElementById("win_condition_item")
+    win_con_container = js.document.getElementById("win_condition_container")
+    disabled = win_con_selection.value in DISABLED_WIN_VALUES
+    win_con_req = js.document.getElementById("win_condition_count")
+    if disabled:
+        win_con_container.classList.add("hide-input")
     else:
-        door_two_text.innerText = "Door 2 Item Count"
+        win_con_container.classList.remove("hide-input")
+    if not win_con_req.value:
+        win_con_req.value = 1
+    elif win_con_selection.value == "req_gb" and int(win_con_req.value) > 201:
+        win_con_req.value = 201
+    elif win_con_selection.value == "req_bp" and int(win_con_req.value) > 40:
+        win_con_req.value = 40
+    elif win_con_selection.value == "req_key" and int(win_con_req.value) > 8:
+        win_con_req.value = 8
+    elif win_con_selection.value == "req_medal" and int(win_con_req.value) > 40:
+        win_con_req.value = 40
+    elif win_con_selection.value == "req_crown" and int(win_con_req.value) > 10:
+        win_con_req.value = 10
+    elif win_con_selection.value == "req_fairy" and int(win_con_req.value) > 18:
+        win_con_req.value = 18
+    elif win_con_selection.value == "req_bean" and int(win_con_req.value) > 1:
+        win_con_req.value = 1
+    elif win_con_selection.value == "req_pearl" and int(win_con_req.value) > 5:
+        win_con_req.value = 5
+    elif win_con_selection.value == "req_rainbowcoin" and int(win_con_req.value) > 16:
+        win_con_req.value = 16
 
 
 @bind("focusout", "crown_door_item_count")
@@ -451,6 +453,7 @@ def set_preset_options():
     toggle_bananaport_selector(None)
     updateDoorOneNumAccess(None)
     updateDoorTwoNumAccess(None)
+    updateWinConNumAccess(None)
 
     js.load_data()
 
@@ -868,17 +871,22 @@ def toggle_item_rando(evt):
     enemy_drop_rando = document.getElementById("enemy_drop_rando")
     non_item_rando_warning = document.getElementById("non_item_rando_warning")
     shared_shop_warning = document.getElementById("shared_shop_warning")
+    kong_rando = document.getElementById("kong_rando")
     shops_in_pool = False
+    kongs_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
         if option.value == "shop":
             if option.selected:
                 shops_in_pool = True
-                break
+        if option.value == "kong":
+            if option.selected:
+                kongs_in_pool = True
         if option.selected:
             nothing_selected = False
     if nothing_selected:
         shops_in_pool = True
+        kongs_in_pool = True
     if js.document.getElementById("shuffle_items").checked:
         disabled = False
     try:
@@ -894,6 +902,7 @@ def toggle_item_rando(evt):
             enemy_drop_rando.checked = False
             non_item_rando_warning.removeAttribute("hidden")
             shared_shop_warning.removeAttribute("hidden")
+            kong_rando.removeAttribute("disabled")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
@@ -910,10 +919,14 @@ def toggle_item_rando(evt):
                 move_rando.setAttribute("disabled", "disabled")
                 smaller_shops.removeAttribute("disabled")
                 # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
-                js.document.getElementById("training_barrels").removeAttribute("disabled")
                 js.document.getElementById("shockwave_status").removeAttribute("disabled")
                 js.document.getElementById("random_prices").removeAttribute("disabled")
-    except AttributeError:
+            if kongs_in_pool:
+                kong_rando.setAttribute("disabled", "disabled")
+                kong_rando.checked = True
+            else:
+                kong_rando.removeAttribute("disabled")
+    except AttributeError as e:
         pass
 
 
@@ -929,17 +942,22 @@ def item_rando_list_changed(evt):
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
     shared_shop_warning = document.getElementById("shared_shop_warning")
+    kong_rando = document.getElementById("kong_rando")
     shops_in_pool = False
+    kongs_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
         if option.value == "shop":
             if option.selected:
                 shops_in_pool = True
-                break
+        if option.value == "kong":
+            if option.selected:
+                kongs_in_pool = True
         if option.selected:
             nothing_selected = False
     if nothing_selected:
         shops_in_pool = True
+        kongs_in_pool = True
     if js.document.getElementById("shuffle_items").checked:
         item_rando_disabled = False
     if shops_in_pool and not item_rando_disabled:
@@ -964,6 +982,11 @@ def item_rando_list_changed(evt):
         move_rando.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
+    if kongs_in_pool and not item_rando_disabled:
+        kong_rando.setAttribute("disabled", "disabled")
+        kong_rando.checked = True
+    else:
+        kong_rando.removeAttribute("disabled")
     plando_disable_arena_custom_locations(None)
     plando_disable_crate_custom_locations(None)
     plando_disable_fairy_custom_locations(None)
@@ -1089,6 +1112,7 @@ def update_ui_states(event):
     disable_move_shuffles(None)
     max_randomized_blocker(None)
     handle_progressive_hint_text(None)
+    handle_chaos_ratio_text(None)
     max_randomized_troff(None)
     max_music(None)
     max_music_proportion(None)
@@ -1109,9 +1133,8 @@ def update_ui_states(event):
     toggle_key_settings(None)
     max_starting_moves_count(None)
     updateDoorOneNumAccess(None)
-    updateDoorOneCountText(None)
     updateDoorTwoNumAccess(None)
-    updateDoorTwoCountText(None)
+    updateWinConNumAccess(None)
     disable_tag_spawn(None)
     disable_krool_phases(None)
     disable_helm_phases(None)

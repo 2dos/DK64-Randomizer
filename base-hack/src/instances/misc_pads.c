@@ -42,15 +42,14 @@ int hasHelmProgMove(helm_prog_enum sub_id) {
     return 0;
 }
 
-int hasEnoughGBsMicrohint(int level_cap) {
-    int gb_count = getTotalGBs();
-    int max_gbs = 0;
+int canOpenAllBLockersUntil(int level_cap) {
     for (int level = 0; level < level_cap; level++) {
-        if (BLockerDefaultArray[level] > max_gbs) {
-            max_gbs = BLockerDefaultArray[level];
+        ItemRequirement req = {.count = BLockerDefaultArray[level], .item = Rando.b_locker_requirements[level]};
+        if (!isItemRequirementSatisfied(&req)) {
+            return 0;
         }
     }
-    return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
+    return Rando.microhints != MICROHINTS_NONE; 
 }
 
 int ableToUseMonkeyport(int id) {
@@ -108,7 +107,7 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
             setScriptRunState(behaviour_pointer, RUNSTATE_DISTANCERUN, 300);
             behaviour_pointer->next_state = 1;
         } else {
-            if (hasEnoughGBsMicrohint(7)) {
+            if (canOpenAllBLockersUntil(7)) {
                 if (standingOnM2Object(index)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 24, 1, 0);
                     behaviour_pointer->next_state = 6;
@@ -248,7 +247,7 @@ void HelmLobbyGoneLeverCode(behaviour_data* behaviour_pointer, int index) {
             setObjectOpacity(behaviour_pointer, 255);
             behaviour_pointer->next_state = 1;
         } else {
-            if (hasEnoughGBsMicrohint(8)) {
+            if (canOpenAllBLockersUntil(8)) {
                 if ((standingOnM2Object(index)) && (Player->standing_on_subposition == 2)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
                     behaviour_pointer->next_state = 8;
@@ -305,7 +304,7 @@ void HelmLobbyGoneGongCode(behaviour_data* behaviour_pointer, int index) {
             return;
         }
         if (inRangeOfGong()) {
-            if (hasEnoughGBsMicrohint(8)) {
+            if (canOpenAllBLockersUntil(8)) {
                 PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
                 behaviour_pointer->next_state = 6;
                 behaviour_pointer->current_state = 6;
@@ -456,7 +455,7 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
             setScriptRunState(behaviour_pointer, RUNSTATE_DISTANCERUN, 300);
             behaviour_pointer->next_state = 1;
         } else {
-            if (hasEnoughGBsMicrohint(8)) {
+            if (canOpenAllBLockersUntil(8)) {
                 if (standingOnM2Object(index)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
                     behaviour_pointer->next_state = 6;

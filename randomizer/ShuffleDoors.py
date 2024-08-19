@@ -9,6 +9,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Types import Types
 from randomizer.Lists import Exceptions
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
@@ -21,41 +22,15 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
 
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
-human_hint_doors = {
-    "Jungle Japes": {},
-    "Angry Aztec": {},
-    "Frantic Factory": {},
-    "Gloomy Galleon": {},
-    "Fungi Forest": {},
-    "Crystal Caves": {},
-    "Creepy Castle": {},
-}
-human_portal_doors = {
-    "Jungle Japes": {},
-    "Angry Aztec": {},
-    "Frantic Factory": {},
-    "Gloomy Galleon": {},
-    "Fungi Forest": {},
-    "Crystal Caves": {},
-    "Creepy Castle": {},
-}
-human_entry_doors = {
-    "Jungle Japes": "Vanilla",
-    "Angry Aztec": "Vanilla",
-    "Frantic Factory": "Vanilla",
-    "Gloomy Galleon": "Vanilla",
-    "Fungi Forest": "Vanilla",
-    "Crystal Caves": "Vanilla",
-    "Creepy Castle": "Vanilla",
-}
-shuffled_door_data = {
-    Levels.JungleJapes: [],
-    Levels.AngryAztec: [],
-    Levels.FranticFactory: [],
-    Levels.GloomyGalleon: [],
-    Levels.FungiForest: [],
-    Levels.CrystalCaves: [],
-    Levels.CreepyCastle: [],
+level_to_name = {
+    Levels.DKIsles: "Isles",
+    Levels.JungleJapes: "Japes",
+    Levels.AngryAztec: "Aztec",
+    Levels.FranticFactory: "Factory",
+    Levels.GloomyGalleon: "Galleon",
+    Levels.FungiForest: "Forest",
+    Levels.CrystalCaves: "Caves",
+    Levels.CreepyCastle: "Castle",
 }
 
 
@@ -66,44 +41,75 @@ def GetDoorLocationForKongAndLevel(kong, level):
     return Locations(baseOffset + (5 * levelOffset) + int(kong))
 
 
-def ShuffleDoors(spoiler, block_wrinklytns: bool):
+def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Handle initial settings
-    shuffle_wrinkly = False if block_wrinklytns else spoiler.settings.wrinkly_location_rando
-    shuffle_tns = False if block_wrinklytns else spoiler.settings.tns_location_rando
+    shuffle_wrinkly = False if vanilla_doors_placed else spoiler.settings.wrinkly_location_rando
+    shuffle_tns = False if vanilla_doors_placed else spoiler.settings.tns_location_rando
     shuffle_dkportal = spoiler.settings.dk_portal_location_rando
-    disable_wrinkly_puzzles = False if block_wrinklytns else spoiler.settings.remove_wrinkly_puzzles
+    disable_wrinkly_puzzles = False if vanilla_doors_placed else spoiler.settings.remove_wrinkly_puzzles
+    # Prepare data structures that will hold the door info
+    human_hint_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    human_portal_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    human_entry_doors = {
+        "Jungle Japes": "Vanilla",
+        "Angry Aztec": "Vanilla",
+        "Frantic Factory": "Vanilla",
+        "Gloomy Galleon": "Vanilla",
+        "Fungi Forest": "Vanilla",
+        "Crystal Caves": "Vanilla",
+        "Creepy Castle": "Vanilla",
+    }
+    shuffled_door_data = {
+        Levels.JungleJapes: [],
+        Levels.AngryAztec: [],
+        Levels.FranticFactory: [],
+        Levels.GloomyGalleon: [],
+        Levels.FungiForest: [],
+        Levels.CrystalCaves: [],
+        Levels.CreepyCastle: [],
+    }
     # Reset Doors
     for level in door_locations:
-        # Also reset the data structures that share info across processes
-        shuffled_door_data[level] = []
-        human_hint_doors[level_list[level]] = {}
-        human_portal_doors[level_list[level]] = {}
-        human_entry_doors[level_list[level]] = "Vanilla"
         for door in door_locations[level]:
             door.placed = door.default_placed
-            if shuffle_wrinkly:
+            if shuffle_wrinkly and not vanilla_doors_placed:
                 if door.placed == DoorType.wrinkly:
                     door.placed = DoorType.null
-            if shuffle_tns:
+            if shuffle_tns and not vanilla_doors_placed:
                 if door.placed == DoorType.boss:
                     door.placed = DoorType.null
             if shuffle_dkportal:
                 if door.placed == DoorType.dk_portal:
                     door.placed = DoorType.null
+            # Reset door lists
+            door.door_type = door.default_door_list.copy()
+            door.updateDoorTypeLogic(spoiler)
+    # If we already placed vanilla doors, we've already saved some data we need to preserve post-reset
+    if vanilla_doors_placed:
+        shuffled_door_data = spoiler.shuffled_door_data
+        human_hint_doors = spoiler.human_hint_doors
+        human_portal_doors = spoiler.human_portal_doors
     # Hint doors have Locations tied to them. If we're about to add new ones, then we must remove the old ones.
     if shuffle_wrinkly:
         ClearHintDoorLogic(spoiler)
     # Assign Doors
-    MAP_REGION = {
-        Maps.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions[Regions.JungleJapesEntryHandler],
-        Maps.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions[Regions.AngryAztecEntryHandler],
-        Maps.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions[Regions.FranticFactoryEntryHandler],
-        Maps.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions[Regions.GloomyGalleonEntryHandler],
-        Maps.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions[Regions.FungiForestEntryHandler],
-        Maps.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions[Regions.CrystalCavesEntryHandler],
-        Maps.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions[Regions.CreepyCastleEntryHandler],
-    }
     for level in door_locations:
         # Get all door locations that can be given a door
         available_doors = []
@@ -192,6 +198,7 @@ def ShuffleDoors(spoiler, block_wrinklytns: bool):
                     doorLocation = GetDoorLocationForKongAndLevel(kong, level)
                     region = spoiler.RegionList[selected_door.logicregion]
                     region.locations.append(LocationLogic(doorLocation, selected_door.logic))
+                    spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door: {selected_door.name}"
         elif disable_wrinkly_puzzles:
             # place vanilla wrinkly doors
             vanilla_wrinkly_doors = [door for door in available_doors if door_locations[level][door].default_placed == DoorType.wrinkly]
@@ -211,10 +218,9 @@ def ShuffleDoors(spoiler, block_wrinklytns: bool):
                 selected_entry = door_locations[level][selected_door_index]
                 # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
                 available_doors.remove(selected_door_index)
-                selected_entry.assignPortal(spoiler)
+                selected_entry.assignDKPortal(spoiler, level)
                 human_entry_doors[level_list[level]] = selected_entry.name
                 shuffled_door_data[level].append((selected_door_index, "dk_portal"))
-                MAP_REGION[selected_entry.map].exits[1].dest = selected_entry.logicregion
 
     # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
     spoiler.shuffled_door_data = shuffled_door_data
@@ -230,6 +236,34 @@ def ShuffleDoors(spoiler, block_wrinklytns: bool):
 def ShuffleVanillaDoors(spoiler):
     """Shuffle T&S and Wrinkly doors amongst the vanilla locations."""
     ClearHintDoorLogic(spoiler)
+    # Prepare data structures that will hold the door info
+    human_hint_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    human_portal_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    shuffled_door_data = {
+        Levels.JungleJapes: [],
+        Levels.AngryAztec: [],
+        Levels.FranticFactory: [],
+        Levels.GloomyGalleon: [],
+        Levels.FungiForest: [],
+        Levels.CrystalCaves: [],
+        Levels.CreepyCastle: [],
+    }
     for level in door_locations:
         # Reset the data structures for door shuffling information sharing
         shuffled_door_data[level] = []
@@ -238,7 +272,7 @@ def ShuffleVanillaDoors(spoiler):
         # Find the vanilla doors that are valid hint locations and clear their door
         vanilla_door_indexes = []
         for door_index, door in enumerate(door_locations[level]):
-            if door.default_placed != DoorType.null:
+            if door.default_placed != DoorType.null and door.default_placed != DoorType.dk_portal:
                 door.placed = DoorType.null
                 vanilla_door_indexes.append(door_index)
         random.shuffle(vanilla_door_indexes)
@@ -264,6 +298,7 @@ def ShuffleVanillaDoors(spoiler):
             doorLocation = GetDoorLocationForKongAndLevel(kong, level)
             region = spoiler.RegionList[selected_door.logicregion]
             region.locations.append(LocationLogic(doorLocation, selected_door.logic))
+            spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door: {selected_door.name}"
         # Any remaining vanilla door that isn't occupied and is a T&S door will get a T&S - the number of doors here will vary based on how many hints were placed in lobby vs level
         placed_tns_count = 1
         for door_index in vanilla_door_indexes:
@@ -291,8 +326,10 @@ def ClearHintDoorLogic(spoiler):
 
 def SetProgressiveHintDoorLogic(spoiler):
     """Set up hint door location logic for progressive hints to unlock them with GB amounts."""
+    dont_clear_hints = Types.Hint in spoiler.settings.shuffled_location_types and not (spoiler.settings.vanilla_door_rando or spoiler.settings.wrinkly_location_rando)
     # Clear out old hint logic, including any custom logic that may have been placed. Don't need any of it.
-    ClearHintDoorLogic(spoiler)
+    if not dont_clear_hints:
+        ClearHintDoorLogic(spoiler)
     hint_count = 35
     hint_costs = []
     for i in range(hint_count):
@@ -307,38 +344,38 @@ def SetProgressiveHintDoorLogic(spoiler):
             required_gb_count = spoiler.settings.progressive_hint_text
         hint_costs.append(required_gb_count)
     # I probably hate this more than you do but lambda functions in python REALLY like to mutate apparently
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[0]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[1]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesLankyDoor, lambda l: l.GoldenBananas >= hint_costs[2]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesTinyDoor, lambda l: l.GoldenBananas >= hint_costs[3]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[4]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[5]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[6]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecLankyDoor, lambda l: l.GoldenBananas >= hint_costs[7]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecTinyDoor, lambda l: l.GoldenBananas >= hint_costs[8]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[9]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[10]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[11]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryLankyDoor, lambda l: l.GoldenBananas >= hint_costs[12]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryTinyDoor, lambda l: l.GoldenBananas >= hint_costs[13]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[14]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[15]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[16]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonLankyDoor, lambda l: l.GoldenBananas >= hint_costs[17]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonTinyDoor, lambda l: l.GoldenBananas >= hint_costs[18]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[19]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[20]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[21]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestLankyDoor, lambda l: l.GoldenBananas >= hint_costs[22]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestTinyDoor, lambda l: l.GoldenBananas >= hint_costs[23]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[24]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[25]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[26]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesLankyDoor, lambda l: l.GoldenBananas >= hint_costs[27]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesTinyDoor, lambda l: l.GoldenBananas >= hint_costs[28]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[29]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[30]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[31]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleLankyDoor, lambda l: l.GoldenBananas >= hint_costs[32]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleTinyDoor, lambda l: l.GoldenBananas >= hint_costs[33]))
-    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[34]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_01, lambda l: l.GoldenBananas >= hint_costs[0]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_02, lambda l: l.GoldenBananas >= hint_costs[1]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_03, lambda l: l.GoldenBananas >= hint_costs[2]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_04, lambda l: l.GoldenBananas >= hint_costs[3]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_05, lambda l: l.GoldenBananas >= hint_costs[4]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_06, lambda l: l.GoldenBananas >= hint_costs[5]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_07, lambda l: l.GoldenBananas >= hint_costs[6]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_08, lambda l: l.GoldenBananas >= hint_costs[7]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_09, lambda l: l.GoldenBananas >= hint_costs[8]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_10, lambda l: l.GoldenBananas >= hint_costs[9]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_11, lambda l: l.GoldenBananas >= hint_costs[10]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_12, lambda l: l.GoldenBananas >= hint_costs[11]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_13, lambda l: l.GoldenBananas >= hint_costs[12]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_14, lambda l: l.GoldenBananas >= hint_costs[13]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_15, lambda l: l.GoldenBananas >= hint_costs[14]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_16, lambda l: l.GoldenBananas >= hint_costs[15]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_17, lambda l: l.GoldenBananas >= hint_costs[16]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_18, lambda l: l.GoldenBananas >= hint_costs[17]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_19, lambda l: l.GoldenBananas >= hint_costs[18]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_20, lambda l: l.GoldenBananas >= hint_costs[19]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_21, lambda l: l.GoldenBananas >= hint_costs[20]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_22, lambda l: l.GoldenBananas >= hint_costs[21]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_23, lambda l: l.GoldenBananas >= hint_costs[22]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_24, lambda l: l.GoldenBananas >= hint_costs[23]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_25, lambda l: l.GoldenBananas >= hint_costs[24]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_26, lambda l: l.GoldenBananas >= hint_costs[25]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_27, lambda l: l.GoldenBananas >= hint_costs[26]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_28, lambda l: l.GoldenBananas >= hint_costs[27]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_29, lambda l: l.GoldenBananas >= hint_costs[28]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_30, lambda l: l.GoldenBananas >= hint_costs[29]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_31, lambda l: l.GoldenBananas >= hint_costs[30]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_32, lambda l: l.GoldenBananas >= hint_costs[31]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_33, lambda l: l.GoldenBananas >= hint_costs[32]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_34, lambda l: l.GoldenBananas >= hint_costs[33]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_35, lambda l: l.GoldenBananas >= hint_costs[34]))

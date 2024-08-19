@@ -60,7 +60,7 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 				} else {
 					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
 						int is_shared = 0;
-						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CLIMBING, FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
 						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
 							if (purchase_value == tied_flags[i]) {
 								is_shared = 1;
@@ -147,13 +147,14 @@ typedef enum counter_items {
 	/* 0x012 */ COUNTER_FAIRY,
 	/* 0x013 */ COUNTER_RAINBOWCOIN,
 	/* 0x014 */ COUNTER_FAKEITEM,
-	/* 0x015 */ COUNTER_DILLO1,
-	/* 0x016 */ COUNTER_DOG1,
-	/* 0x017 */ COUNTER_MJ,
-	/* 0x018 */ COUNTER_PUFFTOSS,
-	/* 0x019 */ COUNTER_DOG2,
-	/* 0x01A */ COUNTER_DILLO2,
-	/* 0x01B */ COUNTER_KKO,
+	/* 0x015 */ COUNTER_HINT,
+	/* 0x016 */ COUNTER_DILLO1,
+	/* 0x017 */ COUNTER_DOG1,
+	/* 0x018 */ COUNTER_MJ,
+	/* 0x019 */ COUNTER_PUFFTOSS,
+	/* 0x01A */ COUNTER_DOG2,
+	/* 0x01B */ COUNTER_DILLO2,
+	/* 0x01C */ COUNTER_KKO,
 } counter_items;
 
 int getCounterItem(vendors shop_index, int kong, int level) {
@@ -186,6 +187,8 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 						return COUNTER_PEARL;
 					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
 						return COUNTER_FAIRY;
+					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
+						return COUNTER_HINT;
 					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
 						return COUNTER_RAINBOWCOIN;
 					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
@@ -278,7 +281,7 @@ void* loadInternalTexture(int texture_start, int texture_offset) {
 }
 
 void* loadFontTexture_Counter(void* slot, int index, int slot_index) {
-	void* texture = loadInternalTexture(195, index); // Load texture
+	void* texture = loadInternalTexture(196, index); // Load texture
 	if (slot) {
 		wipeTextureSlot(slot);
 	}
@@ -296,10 +299,10 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image > 0x14)) {
+		if ((kong_image < 0) || (kong_image > 0x15)) {
 			kong_image = 0;
 		}
-		if ((item_image < 0) || (item_image > 0x14)) {
+		if ((item_image < 0) || (item_image > 0x15)) {
 			item_image = 0;
 		}
 		if (paad->use_item_display) {
@@ -438,6 +441,10 @@ static const krool_head helm_heads[] = {
 	{.map = 0xFF, .texture_offset=COUNTER_NO_ITEM},
 };
 
+static const short float_ids[] = {0x1F4, 0x36};
+static const short shop_obj_types[] = {0x73, 0x7A, 0x124};
+static const float float_offsets[] = {51.0f, 51.0f, 45.0f};
+
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -537,20 +544,26 @@ void newCounterCode(void) {
 			if (CurrentMap == MAP_GALLEON) {
 				int shop = paad->shop;
 				int* m2location = (int*)ObjectModel2Pointer;
-				if (shop == 1) {
-					int funky = convertIDToIndex(0x1F4);
-					if (funky > -1) {
-						ModelTwoData* funky_object = getObjectArrayAddr(m2location,0x90,funky);
-						int funky_y = funky_object->yPos;
-						CurrentActorPointer_0->yPos = funky_y + (40 * 1.12f);
+				int is_float = 0;
+				float float_y = 0.0f;
+				for (int i = 0; i < 2; i++) {
+					int float_id = float_ids[i];
+					int float_slot = convertIDToIndex(float_id);
+					if (float_slot > -1) {
+						ModelTwoData* float_slot_object = getObjectArrayAddr(m2location,0x90,float_slot);
+						int float_slot_obj_type = float_slot_object->object_type;
+						for (int j = 0; j < 3; j++) {
+							if (shop_obj_types[j] == float_slot_obj_type) {
+								if (j == shop) {
+									is_float = 1;
+									float_y = float_slot_object->yPos;
+								}
+							}
+						}
 					}
-				} else if (shop == 2) {
-					int candy = convertIDToIndex(0x36);
-					if (candy > -1) {
-						ModelTwoData* candy_object = getObjectArrayAddr(m2location,0x90,candy);
-						int candy_y = candy_object->yPos;
-						CurrentActorPointer_0->yPos = candy_y + (40 * 1.28f);
-					}
+				}
+				if (is_float) {
+					CurrentActorPointer_0->yPos = float_y + float_offsets[shop];
 				}
 			}
 		}

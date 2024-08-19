@@ -4,7 +4,7 @@ import random
 
 import js
 from randomizer.Enums.EnemySubtypes import EnemySubtype
-from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount, WinCondition
+from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount, WinConditionComplex
 from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Locations import Locations
@@ -80,6 +80,9 @@ pkmn_snap_enemies = [
     PkmnSnapEnemy(Enemies.Ghost),
     PkmnSnapEnemy(Enemies.Pufftup),
     PkmnSnapEnemy(Enemies.Kosha),
+    PkmnSnapEnemy(Enemies.Bug),
+    PkmnSnapEnemy(Enemies.ZingerFlamethrower),
+    PkmnSnapEnemy(Enemies.Scarab),
 ]
 
 valid_maps = [
@@ -623,7 +626,7 @@ def randomize_enemies(spoiler):
                     elif spawner.enemy_id == Enemies.BattleCrownController:
                         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xB)
                         ROM_COPY.writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
-        if spoiler.settings.win_condition == WinCondition.poke_snap:
+        if spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
             # Pkmn snap handler
             values = [0, 0, 0, 0, 0]
             # In some cases, the Pkmn Snap data hasn't yet been initialized (enemy rando disabled)

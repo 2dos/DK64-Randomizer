@@ -29,6 +29,10 @@ void initSongDisplay(int song) {
     if (music_types[song] != SONGTYPE_BGM) {
         return;
     }
+    if ((CurrentMap == MAP_ISLES) && (CutsceneActive == 1) && (CutsceneIndex == 29)) {
+        // In K Rool gets launched cutscene
+        return;
+    }
     int channel = getTrackChannel(song);
     if ((MusicTrackChannels[channel] == song) && ((songData[song] & 0x200) == 0)) {
         return;
@@ -41,7 +45,7 @@ void initSongDisplay(int song) {
     int text_length = cstring_strlen(DisplayedSongNamePointer);
     display_timer = 60;
     if (ObjectModel2Timer < 31) {
-        display_timer = 91;
+        display_timer += 31;
     }
     for (int i = 0; i < text_length; i++) {
         if (DisplayedSongNamePointer[i] == 0xA) {
@@ -62,10 +66,6 @@ Gfx* displaySongNameHandler(Gfx* dl) {
         return dl;
     }
     if (displayed_text_offset == -1) {
-        return dl;
-    }
-    if ((CurrentMap == MAP_ISLES) && (CutsceneActive == 1) && (CutsceneIndex == 29)) {
-        // In K Rool gets launched cutscene
         return dl;
     }
     for (int i = 0; i < 2; i++) {

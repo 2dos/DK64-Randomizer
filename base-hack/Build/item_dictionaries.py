@@ -118,6 +118,9 @@ class CustomActors(IntEnum):
     FunkyItem = auto()
     CandyItem = auto()
     SnideItem = auto()
+    ZingerFlamethrower = auto()
+    Scarab = auto()
+    HintItem = auto()
 
 
 base_potion = InGameItem(scale=0.25, bounce=True)
@@ -164,6 +167,7 @@ db = [
     InGameItem(name="Funky Item", actor=CustomActors.FunkyItem, is_custom=True, model_two=0x260, base=base_kong, bounce=True),
     InGameItem(name="Candy Item", actor=CustomActors.CandyItem, is_custom=True, model_two=0x261, base=base_kong, bounce=True),
     InGameItem(name="Snide Item", actor=CustomActors.SnideItem, is_custom=True, model_two=0x262, base=base_kong, bounce=True),
+    InGameItem(name="Hint Item", actor=CustomActors.HintItem, is_custom=True, model_two=0x27E, base=base_kong, bounce=True),
 ]
 
 db2 = [
@@ -243,6 +247,7 @@ db2 = [
     ItemRandoDef(0x0260, CollectableTypes.Null, None, CustomActors.FunkyItem, Hitbox(8, 4, 13), True),  # Funky
     ItemRandoDef(0x0261, CollectableTypes.Null, None, CustomActors.CandyItem, Hitbox(8, 4, 13), True),  # Candy
     ItemRandoDef(0x0262, CollectableTypes.Null, None, CustomActors.SnideItem, Hitbox(8, 4, 13), True),  # Snide
+    ItemRandoDef(0x027E, CollectableTypes.Null, None, CustomActors.HintItem, Hitbox(8, 4, 13), True),  # Hint
 ]
 
 item_drops = [
@@ -277,6 +282,9 @@ item_drops = [
     EnemyDropDef(276, 0x34, Song.Silence, 2),  # Spiderling
     EnemyDropDef(273, 0x34, Song.Silence, 1),  # Fireball with Glasses
     EnemyDropDef(230, 0x2F, Song.MelonSliceDrop, 1),  # Ruler
+    EnemyDropDef(340, 0x2F, Song.MelonSliceDrop, 1),  # Bug
+    EnemyDropDef(345 + CustomActors.ZingerFlamethrower, 0x2F, Song.MelonSliceDrop, 2),  # Flamethrowing Zinger
+    EnemyDropDef(345 + CustomActors.Scarab, 0x2F, Song.MelonSliceDrop, 1),  # Kiosk Bug Replica
 ]
 
 dance_acceptable_items = [x for x in db if x.force_dance]

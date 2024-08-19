@@ -39,6 +39,7 @@ MoveSet = {
     PlandoItems.Swim.name,
     PlandoItems.Oranges.name,
     PlandoItems.Barrels.name,
+    PlandoItems.Climbing.name,
     PlandoItems.ProgressiveSlam.name,
     PlandoItems.BaboonBlast.name,
     PlandoItems.StrongKong.name,
@@ -168,6 +169,7 @@ kongRestrictedItemSet = {
     PlandoItems.Swim.name,
     PlandoItems.Oranges.name,
     PlandoItems.Barrels.name,
+    PlandoItems.Climbing.name,
     PlandoItems.ProgressiveSlam.name,
     PlandoItems.BaboonBlast.name,
     PlandoItems.StrongKong.name,
@@ -271,7 +273,7 @@ kongSpecificMoveItemSet = {
 }
 
 # Kong-specific shops have a handful of banned items.
-kongSpecificShopRestrictedItemSet = {PlandoItems.Vines.name, PlandoItems.Swim.name, PlandoItems.Oranges.name, PlandoItems.Barrels.name, PlandoItems.Shockwave.name}
+kongSpecificShopRestrictedItemSet = {PlandoItems.Vines.name, PlandoItems.Climbing.name, PlandoItems.Swim.name, PlandoItems.Oranges.name, PlandoItems.Barrels.name, PlandoItems.Shockwave.name}
 
 # General shops have few restrictions.
 shopRestrictedItemSet = {PlandoItems.RainbowCoin.name, PlandoItems.JunkItem.name}

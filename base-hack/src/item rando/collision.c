@@ -118,6 +118,8 @@ int getItemRequiredKong(maps map, int id) {
 }
 
 static const short helm_temp_flags[] = {0x4B, 0x4C, 0x4E, 0x4D, 0x4F};
+// Flag order: DK, Chunky, Tiny, Lanky, Diddy
+// ID order: DK, Chunky, Lanky, Tiny, Diddy
 
 int isObjectTangible_detailed(int id) {
     /**
@@ -130,15 +132,15 @@ int isObjectTangible_detailed(int id) {
     if ((CurrentMap == MAP_FUNGIMILLFRONT) && (id == 0xA)) {
         return 0;
     }
-    if (CurrentMap == MAP_HELM) {
-        if (!checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
-            if ((id >= 0x5D) && (id <= 0x61)) {
-                if (!checkFlag(helm_temp_flags[id - 0x5D], FLAGTYPE_TEMPORARY)) {
-                    return 0;
-                }
-            }
-        }
-    }
+    // if (CurrentMap == MAP_HELM) {
+    //     if (!checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
+    //         if ((id >= 0x5D) && (id <= 0x61)) {
+    //             if (!checkFlag(helm_temp_flags[id - 0x5D], FLAGTYPE_TEMPORARY)) {
+    //                 return 0;
+    //             }
+    //         }
+    //     }
+    // }
     return isObjectTangible(id);
 }
 
@@ -212,10 +214,6 @@ int isValidKongCollision(item_collision* object, playerData* player) {
 
 void checkModelTwoItemCollision(item_collision* obj_collision, int player_index, player_collision_info* player_collision) {
     if (!obj_collision) {
-        return;
-    }
-    int obj_collision_ptr = (int)obj_collision;
-    if (((obj_collision_ptr >> 24) & 0xFF) != 0x80) {
         return;
     }
     playerData* player = SwapObject[player_index].player;

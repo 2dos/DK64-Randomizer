@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels, WinConditionComplex
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
@@ -34,7 +34,7 @@ from randomizer.Patching.Lib import (
     getRawFile,
     writeRawFile,
 )
-from randomizer.Patching.LibImage import getImageFile, TextureFormat
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -169,7 +169,7 @@ panic_models = [
     Model.KLumsy,  # K Lumsy
     Model.Spider,  # Spider
     Model.Rabbit,  # Rabbit
-    Model.Beanstalk,  # Beanstalk
+    # Model.Beanstalk,  # Beanstalk
     Model.KRoolCutscene,  # K Rool
     Model.SkeletonHead,  # Skeleton Head
     Model.Vulture_76,  # Vulture
@@ -253,11 +253,11 @@ piano_extreme_model = [
     Model.SkeletonHead,
     Model.Owl,
     Model.Kosha,
-    Model.Beanstalk,
+    # Model.Beanstalk,
 ]
 
 spotlight_fish_models = [
-    Model.Turtle,
+    # Model.Turtle,  # Lighting Bug
     Model.Seal,
     Model.BeaverBlue,
     Model.BeaverGold,
@@ -270,7 +270,7 @@ spotlight_fish_models = [
     Model.KlaptrapRed,
     Model.Krash,
     Model.SirDomino,
-    Model.MrDice_41,
+    # Model.MrDice_41,  # Lighting issue
     # Model.Ruler, # Lighting issue
     Model.RoboKremling,
     Model.NintendoLogo,
@@ -286,11 +286,11 @@ spotlight_fish_models = [
     Model.KRoolCutscene,
     Model.KRoolFight,
     Model.SkeletonHead,
-    Model.Vulture_76,
-    Model.Vulture_77,
+    # Model.Vulture_76, # Lighting bug
+    # Model.Vulture_77, # Lighting bug
     # Model.Bat, # Lighting bug
-    Model.Tomato,
-    Model.IceTomato,
+    # Model.Tomato, # Lighting bug
+    # Model.IceTomato, # Lighting bug
     Model.FlySwatter_83,
     Model.SpotlightFish,
     Model.Microphone,
@@ -300,6 +300,88 @@ spotlight_fish_models = [
     Model.MiniMonkeyBarrel,
     Model.HunkyChunkyBarrel,
 ]
+candy_cutscene_models = [
+    Model.Cranky,
+    # Model.Funky, # Disappears with collision
+    Model.Candy,
+    Model.Snide,
+    Model.Seal,
+    Model.BeaverBlue,
+    Model.BeaverGold,
+    Model.Klobber,
+    Model.Kaboom,
+    Model.Krash,
+    Model.Troff,
+    Model.Scoff,
+    Model.RoboKremling,
+    Model.Beetle,
+    Model.MrDice_41,
+    Model.MrDice_56,
+    Model.BananaFairy,
+    Model.Rabbit,
+    Model.KRoolCutscene,
+    Model.KRoolFight,
+    Model.Vulture_76,
+    Model.Vulture_77,
+    Model.Tomato,
+    Model.IceTomato,
+    Model.FlySwatter_83,
+    Model.Microphone,
+    Model.StrongKongBarrel,
+    Model.Rocketbarrel,
+    Model.OrangstandSprintBarrel,
+    Model.MiniMonkeyBarrel,
+    Model.HunkyChunkyBarrel,
+    Model.RambiCrate,
+    Model.EnguardeCrate,
+    Model.Boulder,
+    Model.SteelKeg,
+    Model.GoldenBanana_104,
+]
+
+funky_cutscene_models = [
+    Model.Cranky,
+    Model.Candy,
+    Model.Funky,
+    Model.Troff,
+    Model.Scoff,
+    Model.Ruler,
+    Model.RoboKremling,
+    Model.KRoolCutscene,
+    Model.KRoolFight,
+    Model.Microphone,
+]
+
+# Not holding gun
+funky_cutscene_models_extreme = [
+    Model.BeaverBlue,
+    Model.BeaverGold,
+    Model.Klobber,
+    Model.Kaboom,
+    Model.SirDomino,
+    Model.MechanicalFish,
+    Model.BananaFairy,
+    Model.SkeletonHand,
+    Model.IceTomato,
+    Model.Tomato,
+]
+
+boot_cutscene_models = [
+    Model.Turtle,
+    Model.Enguarde,
+    Model.BeaverBlue,
+    Model.BeaverGold,
+    Model.Zinger,
+    Model.Squawks_28,
+    Model.KlaptrapGreen,
+    Model.KlaptrapPurple,
+    Model.KlaptrapRed,
+    Model.BananaFairy,
+    Model.Spider,
+    Model.Bat,
+    Model.KRoolGlove,
+]
+
 model_mapping = {
     KongModels.default: 0,
     KongModels.disco_chunky: 6,
@@ -414,6 +496,9 @@ def apply_cosmetic_colors(settings: Settings):
     racer_rabbit = Model.Rabbit
     piano_burper = Model.KoshKremlingRed
     spotlight_fish_model_index = Model.SpotlightFish
+    candy_model_index = Model.Candy
+    funky_model_index = Model.Funky
+    boot_model_index = Model.Boot
     swap_bitfield = 0
 
     ROM_COPY = ROM()
@@ -462,10 +547,15 @@ def apply_cosmetic_colors(settings: Settings):
         fungi_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
         caves_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
         referenced_piano_models = piano_models.copy()
+        referenced_funky_models = funky_cutscene_models.copy()
         if model_setting == RandomModels.extreme:
             referenced_piano_models.extend(piano_extreme_model)
             spotlight_fish_model_index = random.choice(spotlight_fish_models)
+            referenced_funky_models.extend(funky_cutscene_models_extreme)
+            boot_model_index = random.choice(boot_cutscene_models)
         piano_burper = random.choice(referenced_piano_models)
+        candy_model_index = random.choice(candy_cutscene_models)
+        funky_model_index = random.choice(funky_cutscene_models)
     settings.bother_klaptrap_model = bother_model_index
     settings.beetle_model = racer_beetle
     settings.rabbit_model = racer_rabbit
@@ -477,6 +567,9 @@ def apply_cosmetic_colors(settings: Settings):
     settings.caves_tomato_model = caves_tomato_model_index
     settings.piano_burp_model = piano_burper
     settings.spotlight_fish_model = spotlight_fish_model_index
+    settings.candy_cutscene_model = candy_model_index
+    settings.funky_cutscene_model = funky_model_index
+    settings.boot_cutscene_model = boot_model_index
     settings.wrinkly_rgb = [255, 255, 255]
     # Compute swap bitfield
     swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0
@@ -577,6 +670,7 @@ def apply_cosmetic_colors(settings: Settings):
 
     if js.document.getElementById("override_cosmetics").checked or True:
         writeTransition(settings)
+        writeCustomPortal(settings)
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -683,12 +777,12 @@ def apply_cosmetic_colors(settings: Settings):
                 finish = (2 * x) + 3
                 channel = int(settings.gb_custom_color[start:finish], 16)
                 channels.append(channel)
-        textures = [0xB7B] + list(range(0x155C, 0x1568))
+        textures = [0xB7B, 0x323] + list(range(0x155C, 0x1568))
         for tex in textures:
-            dimension = 32 if tex == 0xB7B else 44
+            dimension = 32 if tex in (0xB7B, 0x323) else 44
             shine_img = getImageFile(25, tex, True, dimension, dimension, TextureFormat.RGBA5551)
             gb_shine_img = maskImageGBSpin(shine_img, tuple(channels), tex)
-            if tex == 0xB7B:
+            if tex in (0xB7B, 0x323):
                 min_rgb = min(channels[0], channels[1], channels[2])
                 max_rgb = max(channels[0], channels[1], channels[2])
                 is_greyscale = (max_rgb - min_rgb) < 50
@@ -971,27 +1065,6 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
                     base[channel] = base_original[channel]
             pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
-
-
-def hueShift(im, amount):
-    """Apply a hue shift on an image."""
-    hsv_im = im.convert("HSV")
-    im_px = im.load()
-    w, h = hsv_im.size
-    hsv_px = hsv_im.load()
-    for y in range(h):
-        for x in range(w):
-            old = list(hsv_px[x, y]).copy()
-            old[0] = (old[0] + amount) % 360
-            hsv_px[x, y] = (old[0], old[1], old[2])
-    rgb_im = hsv_im.convert("RGB")
-    rgb_px = rgb_im.load()
-    for y in range(h):
-        for x in range(w):
-            new = list(rgb_px[x, y])
-            new.append(list(im_px[x, y])[3])
-            im_px[x, y] = (new[0], new[1], new[2], new[3])
-    return im
 
 
 def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
@@ -2266,7 +2339,7 @@ def placeKrushaHead(slot):
         ROM_COPY.writeBytes(data)
         ROM_COPY.seek(unc_addr)
         ROM_COPY.writeBytes(bytearray(img_data))
-    rgba32_addr32 = js.pointer_addresses[14]["entries"][196 + slot]["pointing_to"]
+    rgba32_addr32 = js.pointer_addresses[14]["entries"][197 + slot]["pointing_to"]
     rgba16_addr32 = js.pointer_addresses[14]["entries"][190 + slot]["pointing_to"]
     data32 = gzip.compress(bytearray(img32), compresslevel=9)
     data32_rgba32 = gzip.compress(bytearray(img32_rgba32), compresslevel=9)
@@ -2300,17 +2373,13 @@ barrel_skins = (
     "funky",
     "candy",
     "snide",
+    "hint",
 )
 
 
 def getBonusSkinOffset(offset: int):
     """Get texture index after the barrel skins."""
     return 6026 + (3 * len(barrel_skins)) + offset
-
-
-def getRandomHueShift(min: int = -359, max: int = 359) -> int:
-    """Get random hue shift."""
-    return random.randint(min, max)
 
 
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
@@ -2482,6 +2551,8 @@ def writeMiscCosmeticChanges(settings):
                 for img_index in range(sprite_data[0], sprite_data[1] + 1):
                     dim = sprite_data[2]
                     hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
+            for img_index in range(0x29, 0x32 + 1):
+                hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
             # Number Game Numbers
             for x in range(16):
                 number_hue_shift = getRandomHueShift()
@@ -2536,7 +2607,6 @@ def writeMiscCosmeticChanges(settings):
                 kosha_im = getImageFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
                 kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
                 writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
-        if enemy_setting == RandomModels.extreme:
             # Kremling
             kremling_dimensions = [
                 [32, 64],  # FCE
@@ -2585,6 +2655,69 @@ def writeMiscCosmeticChanges(settings):
             snake_shift = getRandomHueShift()
             for x in range(2):
                 hueShiftImageContainer(25, 0xEF7 + x, 32, 32, TextureFormat.RGBA5551, snake_shift)
+        headphones_shift = getRandomHueShift()
+        for x in range(8):
+            hueShiftImageContainer(7, 0x3D3 + x, 40, 40, TextureFormat.RGBA5551, headphones_shift)
+        fairy_particles_shift = getRandomHueShift()
+        for x in range(0xB):
+            hueShiftImageContainer(25, 0x138D + x, 32, 32, TextureFormat.RGBA32, fairy_particles_shift)
+        race_coin_shift = getRandomHueShift()
+        for x in range(8):
+            hueShiftImageContainer(7, 0x1F0 + x, 48, 42, TextureFormat.RGBA5551, race_coin_shift)
+        scoff_shift = getRandomHueShift()
+        troff_shift = getRandomHueShift()
+        scoff_data = {
+            0xFB8: 0x55C,
+            0xFB9: 0x800,
+            0xFBA: 0x40,
+            0xFBB: 0x800,
+            0xFBC: 0x240,
+            0xFBD: 0x480,
+            0xFBE: 0x80,
+            0xFBF: 0x800,
+            0xFC0: 0x200,
+            0xFC1: 0x240,
+            0xFC2: 0x100,
+            0xFB2: 0x240,
+            0xFB3: 0x800,
+            0xFB4: 0x800,
+            0xFB5: 0x200,
+            0xFB6: 0x200,
+            0xFB7: 0x200,
+        }
+        troff_data = {
+            0xF78: 0x800,
+            0xF79: 0x800,
+            0xF7A: 0x800,
+            0xF7B: 0x800,
+            0xF7C: 0x800,
+            0xF7D: 0x400,
+            0xF7E: 0x600,
+            0xF7F: 0x400,
+            0xF80: 0x800,
+            0xF81: 0x600,
+            0xF82: 0x400,
+            0xF83: 0x400,
+            0xF84: 0x800,
+            0xF85: 0x800,
+            0xF86: 0x280,
+            0xF87: 0x180,
+            0xF88: 0x800,
+            0xF89: 0x800,
+            0xF8A: 0x400,
+            0xF8B: 0x300,
+            0xF8C: 0x800,
+            0xF8D: 0x400,
+            0xF8E: 0x500,
+            0xF8F: 0x180,
+        }
+        for img in scoff_data:
+            hueShiftImageContainer(25, img, 1, scoff_data[img], TextureFormat.RGBA5551, scoff_shift)
+
+        # Scoff had too many bananas, and passed potassium poisoning onto Troff
+        # https://i.imgur.com/WFDLSzA.png
+        # for img in troff_data:
+        #     hueShiftImageContainer(25, img, 1, troff_data[img], TextureFormat.RGBA5551, troff_shift)
         # Krobot
         spinner_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0xFA9, 1, 1372, TextureFormat.RGBA5551, spinner_shift)
@@ -2667,6 +2800,7 @@ def writeMiscCosmeticChanges(settings):
                 ]
             ),
             Model.Kasplat: EnemyColorSwap([0x8FD8FF, 0x182A4F, 0x0B162C, 0x7A98D3, 0x3F6CC4, 0x8FD8FF, 0x284581]),
+            # Model.BananaFairy: EnemyColorSwap([0xFFD400, 0xFFAA00, 0xFCD200, 0xD68F00, 0xD77D0A, 0xe49800, 0xdf7f1f, 0xa26c00, 0xd6b200, 0xdf9f1f])
         }
         if enemy_setting == RandomModels.extreme:
             enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859])
@@ -2888,7 +3022,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
     Images = [
         HelmDoorImages(BarrierItems.GoldenBanana, [0x155C]),
         HelmDoorImages(BarrierItems.Blueprint, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
-        HelmDoorImages(BarrierItems.Bean, [0], True, 6, (20, 20)),
+        HelmDoorImages(BarrierItems.Bean, [6020], False, 25, (64, 32)),
         HelmDoorImages(BarrierItems.Pearl, [0xD5F], False, 25, (32, 32)),
         HelmDoorImages(BarrierItems.Fairy, [0x16ED], False, 25, (32, 32), TextureFormat.RGBA32),
         HelmDoorImages(BarrierItems.Key, [5877]),
@@ -3198,6 +3332,74 @@ def lightenPauseBubble(settings: Settings):
     ROM().writeBytes(px_data)
 
 
+class WinConData:
+    """Class to store information about win condition."""
+
+    def __init__(self, table: int, image: int, tex_format: TextureFormat, width: int, height: int, flip: bool, default_count: int):
+        """Initialize with given parameters."""
+        self.table = table
+        self.image = image
+        self.tex_format = tex_format
+        self.width = width
+        self.height = height
+        self.flip = flip
+        self.default_count = default_count
+
+
+def showWinCondition(settings: Settings):
+    """Alter the image that's shown on the main menu to display the win condition."""
+    win_con = settings.win_condition_item
+    if win_con == WinConditionComplex.beat_krool:
+        # Default, don't alter image
+        return
+    if win_con == WinConditionComplex.get_key8:
+        output_image = Image.open(BytesIO(js.getFile("./base-hack/assets/displays/key8.png")))
+        output_image = output_image.resize((32, 32))
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    if win_con == WinConditionComplex.req_bean:
+        output_image = Image.open(BytesIO(js.getFile("./base-hack/assets/arcade_jetpac/arcade/bean.png")))
+        output_image = output_image.resize((32, 32))
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    if win_con == WinConditionComplex.krem_kapture:
+        item_im = getImageFile(14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
+        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    if win_con == WinConditionComplex.dk_rap_items:
+        item_im = getImageFile(7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
+        item_im = item_im.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
+        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    win_con_data = {
+        WinConditionComplex.req_bp: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
+        WinConditionComplex.req_medal: WinConData(25, 0x156C, TextureFormat.RGBA5551, 44, 44, True, 40),
+        WinConditionComplex.req_fairy: WinConData(25, 0x16ED, TextureFormat.RGBA32, 32, 32, True, 20),
+        WinConditionComplex.req_key: WinConData(25, 0x16F6, TextureFormat.RGBA5551, 44, 44, True, 8),
+        WinConditionComplex.req_companycoins: WinConData(25, 0x1718, TextureFormat.RGBA5551, 44, 44, True, 2),
+        WinConditionComplex.req_crown: WinConData(25, 0x1707, TextureFormat.RGBA5551, 44, 44, True, 10),
+        WinConditionComplex.req_gb: WinConData(25, 0x155C, TextureFormat.RGBA5551, 44, 44, True, 201),
+        WinConditionComplex.req_pearl: WinConData(25, 0, TextureFormat.RGBA5551, 44, 44, True, 5),
+        WinConditionComplex.req_rainbowcoin: WinConData(25, 0x174B, TextureFormat.RGBA5551, 48, 42, True, 16),
+    }
+    if win_con not in win_con_data:
+        return
+    item_data = win_con_data[win_con]
+    if win_con == WinConditionComplex.req_pearl:
+        base_im = Image.open(BytesIO(js.getFile("./base-hack/assets/arcade_jetpac/arcade/pearl.png")))
+    else:
+        item_im = getImageFile(item_data.table, item_data.image, item_data.table != 7, item_data.width, item_data.height, item_data.tex_format)
+        if item_data.flip:
+            item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
+        dim = max(item_data.width, item_data.height)
+        base_im = Image.new(mode="RGBA", size=(dim, dim))
+        base_im.paste(item_im, (int((dim - item_data.width) >> 1), int((dim - item_data.height) >> 1)), item_im)
+    base_im = base_im.resize((32, 32))
+    num_im = numberToImage(settings.win_condition_count, (20, 20))
+    base_im.paste(num_im, (6, 6), num_im)
+    writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+
+
 boot_phrases = (
     "Removing Lanky Kong",
     "Telling 2dos to play DK64",
@@ -3418,3 +3620,49 @@ def writeTransition(settings: Settings) -> None:
     settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)
+
+
+def writeCustomPortal(settings: Settings) -> None:
+    """Write custom portal file to ROM."""
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.tns_portals is None:
+        return
+    if js.cosmetic_names.tns_portals is None:
+        return
+    file_data = list(zip(js.cosmetics.tns_portals, js.cosmetic_names.tns_portals))
+    settings.custom_troff_portal = None
+    if len(file_data) == 0:
+        return
+    selected_portal = random.choice(file_data)
+    settings.custom_troff_portal = selected_portal[1].split("/")[-1]  # File Name
+    im_f = Image.open(BytesIO(bytes(selected_portal[0])))
+    im_f = im_f.resize((63, 63)).transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+    portal_data = {
+        "NW": {
+            "x_min": 0,
+            "y_min": 0,
+            "writes": [0x39E, 0x39F],
+        },
+        "SW": {
+            "x_min": 0,
+            "y_min": 31,
+            "writes": [0x3A0, 0x39D],
+        },
+        "SE": {
+            "x_min": 31,
+            "y_min": 31,
+            "writes": [0x3A2, 0x39B],
+        },
+        "NE": {
+            "x_min": 31,
+            "y_min": 0,
+            "writes": [0x39C, 0x3A1],
+        },
+    }
+    for sub in portal_data.keys():
+        x_min = portal_data[sub]["x_min"]
+        y_min = portal_data[sub]["y_min"]
+        local_img = im_f.crop((x_min, y_min, x_min + 32, y_min + 32))
+        for idx in portal_data[sub]["writes"]:
+            writeColorImageToROM(local_img, 7, idx, 32, 32, False, TextureFormat.RGBA5551)

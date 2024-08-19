@@ -136,6 +136,7 @@ class Maps(IntEnum):
     KroolLankyPhase = 205
     KroolTinyPhase = 206
     KroolChunkyPhase = 207
+    KroolShoe = 214
 
     # Bonus Barrels
     BattyBarrelBanditVEasy = 32
@@ -229,3 +230,6 @@ class Maps(IntEnum):
     Candy = 25
     Funky = 1
     Snide = 15
+
+    # Misc
+    DKRap = 76

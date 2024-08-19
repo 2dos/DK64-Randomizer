@@ -130,7 +130,7 @@ class EnemyLoc:
             permitted = []
             for x in range(4):
                 if len(permitted) == 0:
-                    permitted = [enemy for enemy in self.allowed_enemies[x] if enemy in enabled_enemies or len(enabled_enemies) == 0]
+                    permitted = [enemy for enemy in self.allowed_enemies[x] if (enemy in enabled_enemies or len(enabled_enemies) == 0) and EnemyMetaData[enemy].selector_enabled]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:
@@ -466,7 +466,32 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False, can_bypass=False),  # Can be meleed with distraction mechanic, but we'll ignore that for now
     ),
-    # Enemies.Bug: EnemyData(aggro=0x40,crown_enabled=False,),
+    Enemies.Bug: EnemyData(
+        name="Bug",
+        e_type=EnemySubtype.Air,
+        air=True,
+        crown_weight=7,
+        disruptive=1,
+        interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
+    ),
+    Enemies.ZingerFlamethrower: EnemyData(
+        name="Zinger (Flamethrower)",
+        e_type=EnemySubtype.Air,
+        air=True,
+        crown_weight=7,
+        disruptive=1,
+        interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
+        selector_enabled=False,
+    ),
+    Enemies.Scarab: EnemyData(
+        name="Scarab",
+        e_type=EnemySubtype.GroundSimple,
+        air=True,
+        crown_enabled=False,
+        interaction=InteractionMethods(),
+        size_cap=50,
+        selector_enabled=False,
+    ),
 }
 
 enemies_nokill_gun = [enemy for enemy in EnemyMetaData if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard]
@@ -552,6 +577,7 @@ enemy_location_list = {
     Locations.AztecMainEnemy_AroundTotem: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 33, [], True),
     Locations.AztecMainEnemy_StartingTunnel2: EnemyLoc(Maps.AngryAztec, Enemies.ZingerCharger, 38, [], True),
     Locations.AztecMainEnemy_StartingTunnel3: EnemyLoc(Maps.AngryAztec, Enemies.ZingerCharger, 39, [], True),
+    Locations.AztecMainEnemy_OutsideSnide: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 40, [], True),
     Locations.AztecMainEnemy_Outside5DT: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 41, [], True),
     Locations.AztecMainEnemy_NearSnoopTunnel: EnemyLoc(Maps.AngryAztec, Enemies.Kremling, 42, [], True),
     # Lobby

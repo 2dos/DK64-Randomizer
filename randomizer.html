@@ -120,9 +120,15 @@
                         try {
                             pyodide = await loadPyodide();
                         } catch { }
-                        await pyodide.loadPackage("jinja2");
-                        await pyodide.loadPackage("micropip");
                         ui_script = await (await fetch("generate_rando_ui.py")).text();
+                        await pyodide.loadPackagesFromImports(ui_script);
+                        url = window.location.origin;
+                        await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
+                        if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
+                            await pyodide.loadPackage("micropip");
+                            const micropip = pyodide.pyimport("micropip");
+                            await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
+                        }
                         await pyodide.runPythonAsync(ui_script).then(function (result) {
                             var script = document.createElement("script");
                             script.src = "./static/js/initalize.js";
@@ -628,7 +634,6 @@
             </div>
         </div>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.11.2/src/toastify.js"></script>
-        <script type="text/javascript" src="./static/js/webworker_main.js" defer></script>
         <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>
         <script type="text/javascript" src="./static/js/rompatcher/formats/bps.js" defer></script>
         <script type="text/javascript" src="./static/js/rompatcher/MarcFile.js" defer></script>

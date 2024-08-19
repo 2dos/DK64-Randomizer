@@ -248,6 +248,13 @@ move_hints = [
         "candy": "THIS MOVE WILL ALLOW YOU TO GRAB ROPES.",
     },
     {
+        "move": "Climbing",
+        "kong": "~",
+        "cranky": "I DON'T REMEMBER THIS GAME BEING CALLED JUNGLE CLIMBER, BUT THIS WILL CERTAINLY LET YOU PAVE THE PATH TO GOOD ASCENSIONS.",
+        "funky": "ARE YOU TINY KONG, CAUSE IT LOOKS LIKE THIS WILL ALLOW YOU TO CLIMB UP TREES.",
+        "candy": "THIS MOVE WILL ALLOW YOU TO CLIMB TREES.",
+    },
+    {
         "move": "Camera Solo",
         "kong": "~",
         "cranky": "WITH THAT DEVICE, YOU MIGHT AS WELL CALL ME PROFESSOR OAK! WONDERFUL.",
@@ -351,6 +358,13 @@ move_hints = [
         "cranky": "THIS ITEM WAS DONATED BY A BARON K. ROOLENSTEIN. LOOKS FISHY BUT YOU CAN HAVE IT.",
         "funky": "THIS ONE LOOKS A BIT STRANGE MY DUDE. YOU CAN HAVE IT THOUGH!",
         "candy": "I AM NOT TOO SURE ABOUT THIS ITEM. ARE YOU SURE YOU WANT IT?",
+    },
+    {
+        "move": "Hint",
+        "kong": "~",
+        "cranky": "IT'S A RIDDLE FOR 30 PICORATS. WHAT IS THE CONVERSION RATE FROM PICORATS TO COINS?",
+        "funky": "THIS ONE WILL HELP YOU ON YOUR QUEST MY DUDE. GET YOUR PEN AND PAPER OUT!",
+        "candy": "IT'S A PIECE OF PAPER. I THINK WRINKLY DROPPED IT IN HER SAVE CAVE.",
     },
     {
         "move": "Not enough coins - Special Move",
@@ -604,6 +618,8 @@ move_names = [
     MoveName("Funky Kong", MoveTypes.flag),  # 90
     MoveName("Candy Kong", MoveTypes.flag),  # 91
     MoveName("Snide", MoveTypes.flag),  # 92
+    MoveName("Hint", MoveTypes.flag),  # 93
+    MoveName("Climbing", MoveTypes.flag),  # 94
 ]
 
 move_names_arr = []
@@ -750,6 +766,8 @@ text_enum = [
     "ITEMTEXT_FUNKYITEM",  # 0x05A
     "ITEMTEXT_CANDYITEM",  # 0x05B
     "ITEMTEXT_SNIDEITEM",  # 0x05C
+    "ITEMTEXT_HINTITEM",  # 0x05D
+    "ITEMTEXT_CLIMBING",  # 0x05E
 ]
 
 
@@ -1002,7 +1020,7 @@ vanilla_track_names = [
     "Cranky's Lab",
     "Jungle Japes (Minecart)",
     "Jungle Japes (Army Dillo)",
-    "Jungle Japes (Caves/Underground)",
+    "Jungle Japes (Caves and Underground)",
     "Funky's Hut",
     "Unused Coin Pickup",
     "Bonus Minigames",
@@ -1075,14 +1093,14 @@ vanilla_track_names = [
     "DK Rap",
     "Blueprint Drop",
     "Gloomy Galleon (2DS)",
-    "Gloomy Galleon (5DS/Submarine)",
+    "Gloomy Galleon (5DS and Submarine)",
     "Gloomy Galleon (Pearls Chest)",
     "Gloomy Galleon (Mermaid Palace)",
     "Fungi Forest (Dogadon)",
     "Mad Maze Maul",
     "Crystal Caves",
     "Crystal Caves (Giant Kosha Tantrum)",
-    "Nintendo Logo (Old?)",
+    "Nintendo Logo (Old)",
     "Success (Races)",
     "Failure (Races & Try Again)",
     "Bonus Barrel Introduction",
@@ -1126,7 +1144,7 @@ vanilla_track_names = [
     "Creepy Castle (Crypt)",
     "Headphones Get",
     "Pearl Get",
-    "Creepy Castle (Dungeon w/ Chains)",
+    "Creepy Castle (Dungeon with Chains)",
     "Angry Aztec (Lobby)",
     "Jungle Japes (Lobby)",
     "Frantic Factory (Lobby)",
@@ -1147,7 +1165,7 @@ vanilla_track_names = [
     "Bean Get",
     "Crystal Caves (Army Dillo)",
     "Creepy Castle (Kut Out)",
-    "Creepy Castle (Dungeon w/out Chains)",
+    "Creepy Castle (Dungeon without Chains)",
     "Banana Medal Get",
     "K Rool's Battle",
     "Fungi Forest (Lobby)",

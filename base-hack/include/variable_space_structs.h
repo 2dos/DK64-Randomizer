@@ -44,7 +44,7 @@ typedef struct varspace {
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
 	/* 0x0B4 */ char unk_B0[0xC0 - 0xB4];
 	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"
-	/* 0x0C2 */ char unk_c2;
+	/* 0x0C2 */ char hints_are_items; // Hints are collectable as items, wrinkly doors should behave differently
 	/* 0x0C3 */ char unk_c3;
 	/* 0x0C4 */ ROMFlags rom_flags;
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
@@ -112,7 +112,7 @@ typedef struct varspace {
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ unsigned char ice_trap_flag_alloc;
 	/* 0x14F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
-	/* 0x150 */ char unk_150;
+	/* 0x150 */ char ice_traps_damage;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
 	/* 0x152 */ char free_target_japes; // Kong you free in Japes
 	/* 0x153 */ char free_source_japes; // Kong who frees the kong in Japes

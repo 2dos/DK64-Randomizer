@@ -197,7 +197,7 @@ void newGuardCode(void) {
             CurrentActorPointer_0->control_state_progress = 0;
             spawnEnemyDrops(CurrentActorPointer_0);
         } else {
-            handleGuardDefaultAnimation();
+            handleGuardDefaultAnimation(0x2C0);
             switch(control_state) {
                 case 0x41:
                     // Damage
