@@ -206,6 +206,7 @@ def EventToMap(event_id: Events) -> str:
             return init_name.split(search_str)[0]
     return None
 
+
 def EventToName(spoiler, event_id: Events) -> str:
     """Convert a warp event enum to a string."""
     if event_id < Events.JapesW1aTagged or event_id > Events.IslesW5bTagged:
@@ -322,7 +323,7 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                                     port_selection[k] = selected_port
                             addPort(spoiler, level_lst[selected_port], event_id)
                             CustomLocations[level][selected_port].setCustomLocation(True)
-                            map_name_spoiler = EventToMap(event_id) 
+                            map_name_spoiler = EventToMap(event_id)
                             if map_name_spoiler not in human_ports:
                                 human_ports[map_name_spoiler] = {}
                             human_ports[map_name_spoiler][EventToName(spoiler, event_id)] = level_lst[selected_port].name

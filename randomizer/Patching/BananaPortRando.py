@@ -42,7 +42,9 @@ def randomize_bananaport(spoiler):
                         ROM_COPY.seek(start + 0x28)
                         ROM_COPY.writeMultipleBytes(pad_types[warp_change[2]], 2)
 
+
 CAMERA_DISTANCE = 100
+
 
 def move_bananaports(spoiler):
     """Move bananaports around in conjunction with custom bananaport location rando."""
@@ -94,7 +96,7 @@ def move_bananaports(spoiler):
                         header_end = 0x30
                         for x in range(0x18):
                             count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                            header_end += (0x12 * count)
+                            header_end += 0x12 * count
                         ROM_COPY.seek(cutscene_table + header_end)
                         count = int.from_bytes(ROM_COPY.readBytes(2), "big")
                         if cam_lock_id >= count:

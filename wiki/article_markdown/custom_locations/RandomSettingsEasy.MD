@@ -59,6 +59,11 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Off: 20%
 	- All: 60%
 	- Isles: 20%
+- Random Bananaport Locations: 
+	- Off: 70%
+	- Vanilla Only: 20%
+	- Half Vanilla: 8%
+	- On: 2%
 - Cross-Map Bananaports: 
 	- Off: 100%
 - B. Locker Max: Between 30 and 70, usually close to 50
