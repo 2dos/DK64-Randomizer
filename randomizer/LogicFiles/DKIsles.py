@@ -362,7 +362,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.twirl and l.istiny and l.advanced_platforming),
-        TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.advanced_platforming and ((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl)),
+        TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.advanced_platforming and (((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl))),
         TransitionFront(Regions.IslesAirspace, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
@@ -373,7 +373,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.advanced_platforming),
-        TransitionFront(Regions.CabinIsle, lambda l: l.CanMoonkick() or (l.advanced_platforming and ((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl))),
+        TransitionFront(Regions.CabinIsle, lambda l: l.CanMoonkick() or (l.advanced_platforming and (((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl)))),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.advanced_platforming and l.istiny and l.twirl),
         TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),

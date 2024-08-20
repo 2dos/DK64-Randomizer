@@ -140,7 +140,7 @@ HINT_REGION_PAIRING = {
     HintRegion.ForestCenterAndBeanstalk: "Forest Center and Beanstalk",
     HintRegion.MushroomExterior: "Giant Mushroom Exterior",
     HintRegion.MushroomInterior: "Giant Mushroom Insides",
-    HintRegion.OwlTree: "Owl Area",
+    HintRegion.OwlTree: "Owl Tree Area",
     HintRegion.Mills: "Forest Mills",
     # Caves
     HintRegion.MainCaves: "Main Caves Area",
