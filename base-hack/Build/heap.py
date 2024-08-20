@@ -5,7 +5,11 @@ from BuildLib import flut_size, heap_size, music_size
 
 code_end = 0x805FAE00
 
-variables = {"start": code_end - heap_size, "upper": ((code_end - heap_size) >> 16) & 0xFFFF, "lower": (code_end - heap_size) & 0xFFFF}
+variables = {
+    "start": code_end - heap_size,
+    "upper": ((code_end - heap_size) >> 16) & 0xFFFF,
+    "lower": (code_end - heap_size) & 0xFFFF,
+}
 
 
 def getHeapSize() -> int:

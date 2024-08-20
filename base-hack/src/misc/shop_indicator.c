@@ -200,6 +200,9 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 						if (isFairyFlag(flag)) {
 							return COUNTER_POTION;
 						}
+						if (flag == FLAG_ABILITY_CLIMBING) {
+							return COUNTER_POTION;
+						}
 						int subtype = getMoveProgressiveFlagType(flag);
 						if (subtype >= 0) {
 							return COUNTER_POTION;

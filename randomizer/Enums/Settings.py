@@ -738,6 +738,21 @@ class ShuffleLoadingZones(IntEnum):
     all = auto()
 
 
+class ShufflePortLocations(IntEnum):
+    """Determines how bananaports are shuffled.
+
+    off = No shuffling
+    vanilla_only = Only reference a pool of vanilla locations
+    half_vanilla = For each pair, 1 of them is vanilla. Probably won't obey those rules with other bananaport shuffles
+    on = full shuffle. Maximum mayhem. Maximum pain. Minimal chance of your favorite streamer keeping it off their restrictions.
+    """
+
+    off = auto()
+    vanilla_only = auto()
+    half_vanilla = auto()
+    on = auto()
+
+
 class SlamRequirement(IntEnum):
     """Determines the slam requirement for a switch, currently only chunky phase.
 
@@ -894,6 +909,7 @@ class SpoilerHints(IntEnum):
 # The key for each enum must exactly match the HTML name of the associated select.
 SettingsMap = {
     "activate_all_bananaports": ActivateAllBananaports,
+    "bananaport_placement_rando": ShufflePortLocations,
     "bananaport_rando": BananaportRando,
     "big_head_mode": BigHeadMode,
     "bonus_barrels": MinigameBarrels,
@@ -1167,6 +1183,7 @@ class SettingsStringEnum(IntEnum):
     puzzle_rando_difficulty = 189
     win_condition_item = 190
     win_condition_count = 191
+    bananaport_placement_rando = 192
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1216,6 +1233,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.activate_all_bananaports: ActivateAllBananaports,
     SettingsStringEnum.alter_switch_allocation: SettingsStringDataType.bool,
     SettingsStringEnum.auto_keys: SettingsStringDataType.bool,
+    SettingsStringEnum.bananaport_placement_rando: ShufflePortLocations,
     SettingsStringEnum.bananaport_rando: BananaportRando,
     SettingsStringEnum.blocker_0: SettingsStringDataType.var_int,
     SettingsStringEnum.blocker_1: SettingsStringDataType.var_int,

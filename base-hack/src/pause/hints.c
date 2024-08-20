@@ -76,15 +76,15 @@ static itemloc_data itemloc_textnames[] = {
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="GUN UPGRADES", 
-        .flags={0xD202, 0xD203, FLAG_ITEM_BELT_0, 0, 0, 0}, 
-        .lengths={1, 1, 2, -1, -1, -1}
-    }, // 4
+        .header="GUN UPGRADES AND FAIRY MOVES", 
+        .flags={0xD202, 0xD203, FLAG_ITEM_BELT_0, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, 0}, 
+        .lengths={1, 1, 2, 1, 1, -1}
+    }, // 6
     {
         .header="BASIC MOVES", 
-        .flags={FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE}, 
-        .lengths={1, 1, 1, 1, 1, 1}
-    }, // 6
+        .flags={FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CLIMBING, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
     {
         .header="INSTRUMENT UPGRADES AND SLAMS", 
         .flags={FLAG_ITEM_INS_0, FLAG_ITEM_SLAM_0, 0, 0, 0, 0}, 

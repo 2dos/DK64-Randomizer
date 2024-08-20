@@ -4,7 +4,7 @@ import math
 import random
 
 import js
-from randomizer.Enums.Settings import BananaportRando, LogicType, SettingsStringDataType, SettingsStringEnum, SettingsStringListTypeMap, SettingsStringTypeMap
+from randomizer.Enums.Settings import ShufflePortLocations, LogicType, SettingsStringDataType, SettingsStringEnum, SettingsStringListTypeMap, SettingsStringTypeMap
 
 
 def random_bool_setting(weight: float) -> bool:
@@ -173,7 +173,7 @@ def randomize_settings():
     if not randSettings["enemy_rando"]:
         randSettings["enemies_selected"] = []
     # Ignore the warp level list if bananaports are not shuffled.
-    if randSettings["bananaport_rando"] == BananaportRando.off:
+    if randSettings["bananaport_placement_rando"] == ShufflePortLocations.off:
         randSettings["warp_level_list_selected"] = []
 
     # Now we assign the random values to the HTML settings.

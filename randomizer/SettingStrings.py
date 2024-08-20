@@ -105,7 +105,6 @@ settingsExclusionMap = {
     "starting_moves_count": {0: ["random_starting_move_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
     "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
-    "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
     "hard_mode": {False: ["hard_mode_selected"]},

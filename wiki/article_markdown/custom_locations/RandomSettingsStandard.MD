@@ -38,10 +38,13 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- All: 40%
 	- Isles: 20%
 - Progressive Switch Strength: 50%
-- Shuffle Bananaports: 
+- Random Bananaport Locations: 
 	- Off: 50%
-	- In Level: 30%
-	- Crossmap Coupled: 20%
+	- Vanilla Only: 30%
+	- Half Vanilla: 15%
+	- On: 5%
+- Cross-Map Bananaports: 
+	- Off: 100%
 - B. Locker Max: Between 40 and 100, usually close to 60
 - Auto Complete Bonus Barrels: 30%
 - Shuffle Bonus Barrels: 70%

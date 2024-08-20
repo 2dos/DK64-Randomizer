@@ -41,7 +41,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
     for level in CustomLocations:
         level_lst = CustomLocations[level]
         index_lst = list(range(len(level_lst)))
-        index_lst = [x for x in index_lst if level_lst[x].vanilla_crown or (not level_lst[x].selected and LocationTypes.CrownPad not in level_lst[x].banned_types)]
+        index_lst = [x for x in index_lst if level_lst[x].isValidLocation(LocationTypes.CrownPad)]
         if spoiler.settings.enable_plandomizer:
             index_lst = [x for x in index_lst if level_lst[x].name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]]
         pick_count = 1
