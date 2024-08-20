@@ -484,3 +484,4 @@ extern short file_item_caps[16];
 extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];
+extern ICE_TRAP_TYPES ice_trap_queued;

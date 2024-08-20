@@ -14,19 +14,13 @@ static cc_effects effect_data;
     - Caves Stalactite Fall (anywhere)
 */
 
-typedef enum cc_state {
-    CC_READY, // 0
-    CC_ENABLING, // 1
-    CC_ENABLED, // 2
-    CC_DISABLING, // 3
-    CC_LOCKED, // 4
-} cc_state;
-
 typedef struct cc_effect_data {
     /* 0x000 */ void* enabler; // Enabling function
     /* 0x004 */ void* disabler; // Disabling function
     /* 0x008 */ void* allower; // Function which checks if the function is allowed to run
     /* 0x00C */ char restart_upon_map_entry; // Restart effect upon map entry (usually happens if the func has a disabler)
+    /* 0x00D */ char active; // Run the enabler function whilst active
+    /* 0x00E */ char auto_disable; // Disable once enabled (usually for fixed-length events)
 } cc_effect_data;
 
 int cc_enable_drunky(void) {
@@ -45,7 +39,7 @@ int cc_disable_drunky(void) {
     return 1;
 }
 
-int cc_allower_drunky(void) {
+int cc_allower_generic(void) {
     if (ObjectModel2Timer < 2) {
         return 0;
     }
@@ -57,8 +51,54 @@ int cc_allower_drunky(void) {
     return 0;
 }
 
+int cc_enabler_icetrap(void) {
+    queueIceTrap(ICETRAP_BUBBLE);
+    return 1;
+}
+
+int cc_allower_icetrap(void) {
+    if (!cc_allower_generic()) {
+        return 0;
+    }
+    return ice_trap_queued == ICETRAP_OFF;
+}
+
+typedef struct actor_init_data {
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+} actor_init_data;
+
+int cc_allower_rockfall(void) {
+    if (!cc_allower_generic()) {
+        return 0;
+    }
+    return LoadedActorCount < 50; // Not safe to add it
+}
+
+int cc_enabler_rockfall(void) {
+    if (ObjectModel2Timer % 20) {
+        return 0;
+    }
+    float x_offset = determineXRatioMovement(Player->facing_angle) * Player->hSpeed;
+    float z_offset = determineZRatioMovement(Player->facing_angle) * Player->hSpeed;
+    float x = Player->xPos + x_offset;
+    float y = Player->yPos + 200.0f;
+    float z = Player->zPos + z_offset;
+    actor_init_data unk; // 0x48 -> 0x67
+    return spawnActorSpawnerContainer(0x5C, *(int*)(&x), *(int*)(&y), *(int*)(&z), 0, 0x3F000000, 0, &unk);
+}
+
 static const cc_effect_data cc_funcs[] = {
-    {.enabler = &cc_enable_drunky, .disabler=&cc_disable_drunky, .allower=&cc_allower_drunky, .restart_upon_map_entry=1},
+    {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .allower = &cc_allower_generic, .restart_upon_map_entry = 1}, // Drunky Kong
+    {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
+    {.enabler = &cc_enabler_icetrap, .allower=&cc_allower_icetrap, .auto_disable = 1}, // Ice Trap
+    {.enabler = &cc_enabler_rockfall, .allower=&cc_allower_rockfall, .active = 1}, // Rockfall
 };
 
 void cc_effect_handler(void) {
@@ -81,6 +121,19 @@ void cc_effect_handler(void) {
                 }
                 break;
             case CC_ENABLED:
+                if (cc_funcs[i].auto_disable) {
+                    *eff_data = CC_DISABLING;
+                    break;
+                }
+                if (cc_funcs[i].active) {
+                    if (cc_funcs[i].allower) {
+                        if (callFunc(cc_funcs[i].allower)) {
+                            if (cc_funcs[i].enabler) {
+                                callFunc(cc_funcs[i].enabler);
+                            }
+                        }
+                    }
+                }
                 if (!cc_funcs[i].restart_upon_map_entry) {
                     break;
                 }
@@ -91,8 +144,8 @@ void cc_effect_handler(void) {
                 if (cc_funcs[i].enabler) {
                     if (callFunc(cc_funcs[i].enabler)) {
                         *eff_data = CC_ENABLED;
-                        break;
                     }
+                    break;
                 }
                 *eff_data = CC_ENABLED;
                 break;

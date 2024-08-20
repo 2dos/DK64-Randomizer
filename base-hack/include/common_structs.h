@@ -2305,7 +2305,3 @@ typedef struct collision_tree_struct {
 	/* 0x00A */ unsigned char force_break;
 	/* 0x00B */ unsigned char unkB;
 } collision_tree_struct;
-
-typedef struct cc_effects {
-	/* 0x000 */ unsigned char drunky_chunky;
-} cc_effects;

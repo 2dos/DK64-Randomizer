@@ -410,6 +410,11 @@ int canTagAnywhere(void) {
      * 
      * @return Can player perform Tag Anywhere
      */
+    if (CCEffectData) {
+        if (CCEffectData->disable_tag_anywhere == CC_ENABLED) {
+            return 0;
+        }
+    }
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
         return 0;
