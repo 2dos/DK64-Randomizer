@@ -195,7 +195,18 @@ def selectUsefulWarpFullShuffle(list_of_custom_locations, list_of_warps, warp: C
     return random.choice(possible_warps)
 
 
-def EventToName(event_id: Events) -> str:
+def EventToMap(event_id: Events) -> str:
+    """Convert a warp event enum to a map name string."""
+    if event_id < Events.JapesW1aTagged or event_id > Events.IslesW5bTagged:
+        return None
+    init_name = event_id.name
+    for x in range(5):
+        search_str = f"W{x + 1}"
+        if search_str in init_name:
+            return init_name.split(search_str)[0]
+    return None
+
+def EventToName(spoiler, event_id: Events) -> str:
     """Convert a warp event enum to a string."""
     if event_id < Events.JapesW1aTagged or event_id > Events.IslesW5bTagged:
         return None
@@ -204,7 +215,9 @@ def EventToName(event_id: Events) -> str:
         search_str = f"W{x + 1}"
         end_str = f"Warp {x + 1}"
         if search_str in init_name:
-            return f"{init_name.split(search_str)[0]} {end_str}"
+            if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.half_vanilla:
+                return end_str
+            return f"{end_str} ({init_name.split(search_str)[1][0]})"
     return None
 
 
@@ -309,6 +322,9 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                                     port_selection[k] = selected_port
                             addPort(spoiler, level_lst[selected_port], event_id)
                             CustomLocations[level][selected_port].setCustomLocation(True)
-                            human_ports[EventToName(event_id)] = level_lst[selected_port].name
+                            map_name_spoiler = EventToMap(event_id) 
+                            if map_name_spoiler not in human_ports:
+                                human_ports[map_name_spoiler] = {}
+                            human_ports[map_name_spoiler][EventToName(spoiler, event_id)] = level_lst[selected_port].name
                             if len(warps) == 0:
                                 break
