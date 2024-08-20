@@ -8,7 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
-from randomizer.Enums.Settings import FungiTimeSetting, MinigameBarrels, CBRando
+from randomizer.Enums.Settings import FungiTimeSetting, MinigameBarrels, CBRando, RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -78,11 +78,29 @@ LogicRegions = {
         Event(Events.HelmKeyTurnedIn, lambda l: l.settings.auto_keys and l.HelmKey),
         Event(Events.Night, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.Day, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
+        Event(Events.AztecIceMelted, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice)),
+        Event(Events.TestingGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate)),
+        Event(Events.LighthouseGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate)),
+        Event(Events.ShipyardGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate)),
+        Event(Events.ActivatedLighthouse, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship)),
+        Event(Events.ShipyardTreasureRoomOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
+        Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel)),
+        Event(Events.HollowTreeGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel)),
     ], [
+        # These first 3 Transitions NEED to be in this order, due to Random Starting Location!
         TransitionFront(Regions.Credits, lambda l: True),
         # Replace these with the actual starting region if we choose to randomize it
         TransitionFront(Regions.IslesMain, lambda l: l.settings.fast_start_beginning_of_game),
-        TransitionFront(Regions.Treehouse, lambda l: not l.settings.fast_start_beginning_of_game)
+        TransitionFront(Regions.Treehouse, lambda l: not l.settings.fast_start_beginning_of_game),
+        # Medal regions
+        TransitionFront(Regions.DKIslesMedals, lambda l: True),
+        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
+        TransitionFront(Regions.AngryAztecMedals, lambda l: True),
+        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
+        TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
+        TransitionFront(Regions.FungiForestMedals, lambda l: True),
+        TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
+        TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
     ]),
 
     Regions.DKIslesMedals: Region("DK Isles Medals", HintRegion.IslesCBs, Levels.DKIsles, False, None, [
@@ -99,7 +117,6 @@ LogicRegions = {
 
     Regions.Treehouse: Region("Treehouse", HintRegion.MainIsles, Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesTreehouseToStart),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.TrainingGrounds: Region("Training Grounds", HintRegion.MainIsles, Levels.DKIsles, False, None, [
@@ -116,7 +133,6 @@ LogicRegions = {
         TransitionFront(Regions.IslesMain, lambda l: l.Slam or l.settings.fast_start_beginning_of_game, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: l.climbing, Transitions.IslesStartToTreehouse),
         TransitionFront(Regions.CrankyIsles, lambda l: l.crankyAccess),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.IslesMain: Region("Isles Main", HintRegion.MainIsles, Levels.DKIsles, True, None, [
@@ -147,7 +163,6 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
         TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.assumeKRoolAccess),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.OuterIsles: Region("Outer Isles", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
@@ -159,14 +174,12 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.BananaFairyRoom, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSTS(), Transitions.IslesMainToFairy),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.IslesHill: Region("Isles Hill", HintRegion.MainIsles, Levels.DKIsles, False, None, [
         LocationLogic(Locations.RainbowCoin_Location04, lambda l: True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.can_use_vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
     ]),
 
@@ -182,14 +195,12 @@ LogicRegions = {
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.CanMoonkick()),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.phasewalk, Transitions.IslesMainToAztecLobby),
         TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming) and not l.isKrushaAdjacent(l.kong)) or l.CanMoonkick())),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.IslesEar: Region("Isles Ear", HintRegion.MainIsles, Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.IslesMainToCavesLobby),
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: (l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming) and not l.isKrushaAdjacent(l.kong))),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.Prison: Region("Prison", HintRegion.KremIsles, Levels.DKIsles, False, None, [
@@ -208,7 +219,6 @@ LogicRegions = {
         Event(Events.HelmKeyTurnedIn, lambda l: l.HelmKey),
     ], [
         TransitionFront(Regions.KremIsle, lambda l: True, Transitions.IslesPrisonToMain),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.BananaFairyRoom: Region("Banana Fairy Room", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
@@ -216,14 +226,12 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.OuterIsles, lambda l: True, Transitions.IslesFairyToMain),
         TransitionFront(Regions.RarewareGBRoom, lambda l: l.CanGetRarewareGB()),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.RarewareGBRoom: Region("Rareware GB Room", HintRegion.RarewareRoom, Levels.DKIsles, False, None, [
         LocationLogic(Locations.RarewareBanana, lambda l: True),
     ], [], [
         TransitionFront(Regions.BananaFairyRoom, lambda l: True),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     # All lobies take you to themselves when you die
@@ -241,7 +249,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesJapesLobbyToMain),
         TransitionFront(Regions.JungleJapesEntryHandler, lambda l: l.IsLevelEnterable(Levels.JungleJapes), Transitions.IslesToJapes),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
@@ -256,7 +263,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True, Transitions.IslesAztecLobbyToMain),
         TransitionFront(Regions.AngryAztecEntryHandler, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.KremIsle: Region("Krem Isle Base", HintRegion.KremIsles, Levels.DKIsles, False, None, [
@@ -268,7 +274,6 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs or l.CanMoontail()),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.hasMoveSwitchsanity(Switches.IslesMonkeyport)),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.KremIsleBeyondLift: Region("Krem Isle Beyond Lift", HintRegion.KremIsles, Levels.DKIsles, False, None, [
@@ -282,7 +287,6 @@ LogicRegions = {
         TransitionFront(Regions.KremIsle, lambda l: True),
         TransitionFront(Regions.IslesSnideRoom, lambda l: True, Transitions.IslesMainToSnideRoom),
         TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events, Transitions.IslesMainToFactoryLobby),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.KremIsleTopLevel: Region("Krem Isle Top Level", HintRegion.KremIsles, Levels.DKIsles, False, None, [
@@ -294,7 +298,6 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmLobby, lambda l: (l.generalclips and l.twirl) or l.tbs, Transitions.IslesMainToHelmLobby, isGlitchTransition=True),
         TransitionFront(Regions.KremIsleMouth, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.KremIsleMouth: Region("Krem Isle Mouth", HintRegion.KremIsles, Levels.DKIsles, False, None, [], [], [
@@ -305,7 +308,6 @@ LogicRegions = {
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.CanSurviveFallDamage()),
         # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration.
         TransitionFront(Regions.IslesMain, lambda l: True),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", HintRegion.KremIsles, Levels.DKIsles, True, None, [
@@ -314,7 +316,6 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.FranticFactoryLobby: Region("Frantic Factory Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
@@ -332,13 +333,11 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesFactoryLobbyToMain),
         TransitionFront(Regions.FranticFactoryEntryHandler, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.GloomyGalleonLobbyEntrance: Region("Gloomy Galleon Lobby Entrance", HintRegion.EarlyLobbies, Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesGalleonLobbyToMain),
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
@@ -354,7 +353,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: l.swim),
         TransitionFront(Regions.GloomyGalleonEntryHandler, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.CabinIsle: Region("Cabin Isle", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
@@ -365,7 +363,6 @@ LogicRegions = {
         TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.advanced_platforming and (((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl))),
         TransitionFront(Regions.IslesAirspace, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.IslesAboveWaterfall: Region("Isles Above Waterfall", HintRegion.MainIsles, Levels.DKIsles, False, None, [
@@ -375,7 +372,6 @@ LogicRegions = {
         TransitionFront(Regions.IslesMainUpper, lambda l: l.advanced_platforming),
         TransitionFront(Regions.CabinIsle, lambda l: l.CanMoonkick() or (l.advanced_platforming and (((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl)))),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.advanced_platforming and l.istiny and l.twirl),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.IslesAirspace: Region("Isles Airspace", HintRegion.MainIsles, Levels.DKIsles, False, None, [  # You are assumed to be on Rocketbarrel in this region
@@ -387,7 +383,6 @@ LogicRegions = {
         TransitionFront(Regions.AztecLobbyRoof, lambda l: True),
         TransitionFront(Regions.IslesAboveWaterfall, lambda l: True),
         TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events)),  # This is likely never relevant because it takes Chunky to spawn the Rocketbarrel
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.AztecLobbyRoof: Region("Aztec Lobby Roof", HintRegion.MainIsles, Levels.DKIsles, False, None, [
@@ -395,7 +390,6 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True),
         TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.CanMoonkick()),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.FungiForestLobby: Region("Fungi Forest Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
@@ -412,7 +406,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.CabinIsle, lambda l: True, Transitions.IslesForestLobbyToMain),
         TransitionFront(Regions.FungiForestEntryHandler, lambda l: l.IsLevelEnterable(Levels.FungiForest), Transitions.IslesToForest),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", HintRegion.LateLobbies, Levels.DKIsles, True, None, [
@@ -429,7 +422,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.IslesEar, lambda l: True, Transitions.IslesCavesLobbyToMain),
         TransitionFront(Regions.CrystalCavesEntryHandler, lambda l: l.IsLevelEnterable(Levels.CrystalCaves), Transitions.IslesToCaves),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", HintRegion.LateLobbies, Levels.DKIsles, True, None, [
@@ -449,7 +441,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
         TransitionFront(Regions.CreepyCastleEntryHandler, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", HintRegion.LateLobbies, Levels.DKIsles, True, None, [
@@ -460,7 +451,6 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.KremIsleMouth, lambda l: True, Transitions.IslesHelmLobbyToMain),
         TransitionFront(Regions.HideoutHelmEntry, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.can_use_vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
-        TransitionFront(Regions.DKIslesMedals, lambda l: True),
     ]),
 
     Regions.KRool: Region("K. Rool", HintRegion.KRool, Levels.DKIsles, True, None, [], [
