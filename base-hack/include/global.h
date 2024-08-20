@@ -489,3 +489,4 @@ extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];
 extern const collision_tree_struct fixed_klap_collision[8];
+extern const collision_tree_struct fixed_bug_collision[2];
