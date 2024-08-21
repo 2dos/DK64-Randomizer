@@ -77,6 +77,7 @@ class Events(IntEnum):
     HollowTreeGateOpened = auto()
     MushroomCannonsSpawned = auto()
     DonkeyMushroomSwitch = auto()
+    TinyMushroomSwitch = auto()
     Bean = auto()
     GrinderActivated = auto()
     MillBoxBroken = auto()

@@ -39,10 +39,12 @@ from randomizer.Enums.Settings import (
     HardBossesSelected,
     HardBossesSelected,
     LogicType,
+    MinigameBarrels,
     MiscChangesSelected,
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    ShufflePortLocations,
     TrainingBarrels,
     HelmSetting,
     KongModels,
@@ -499,7 +501,7 @@ class LogicVarHolder:
 
     def canTravelToMechFish(self):
         """Determine whether or not there is a fast enough path to the Mech Fish is open."""
-        if self.settings.shuffle_loading_zones != ShuffleLoadingZones.all or self.settings.bananaport_rando == BananaportRando.off:
+        if self.settings.shuffle_loading_zones != ShuffleLoadingZones.all or self.settings.bananaport_rando == BananaportRando.off and self.settings.bananaport_placement_rando == ShufflePortLocations.off:
             return self.swim
         lighthouse_gate = self.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or self.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)
         shipyard_gate = self.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or self.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
@@ -1307,6 +1309,14 @@ class LogicVarHolder:
             if self.settings.damage_amount != DamageAmount.quad or self.Melons > 1:
                 return True
         return False
+    
+    def CanAccessTinyMushBarrel(self):
+        """Check if the player can access the Tiny Mushroom barrel."""
+        if self.settings.bonus_barrels == MinigameBarrels.skip:  # Has to be autocomplete to persist the item
+            if self.settings.shuffle_loading_zones != ShuffleLoadingZones.all:  # Causes parent map filter to be active
+                if self.settings.bananaport_rando not in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):  # Causes parent map filter to be active
+                    return Events.TinyMushroomSwitch in self.Events
+        return self.CanSlamSwitch(Levels.FungiForest, 2) and self.istiny and self.climbing
 
 
 # Import regions from logic files
