@@ -97,7 +97,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLowerMid: Region("Mushroom Lower Middle", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.istiny, MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.istiny and l.climbing, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.MushroomLower, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True, Transitions.ForestLowerMushroomToLowerExterior),
