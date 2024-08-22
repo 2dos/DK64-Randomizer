@@ -256,6 +256,7 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
         cutscene_data = Cutscene(mod["index"], segments.copy(), [x["duration"] for x in mod["point_data"]])
         cutscenes[mod["index"]] = cutscene_data
     # Recompile
+    entry_size = None
     with open(map_file_name, "wb") as fg:
         # Header Bytes
         for val in header_bytes:
@@ -311,7 +312,16 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
                 fg.write(item.song.to_bytes(2, "big"))
             else:
                 fg.write(bytearray(item.read))
-    return File(name=f"Cutscenes ({map_name})", pointer_table_index=TableNames.Cutscenes, file_index=map_index, source_file=map_file_name, do_not_delete_source=True)
+        entry_size = fg.tell()
+    return File(
+        name=f"Cutscenes ({map_name})",
+        pointer_table_index=TableNames.Cutscenes,
+        file_index=map_index,
+        source_file=map_file_name,
+        do_not_delete_source=True,
+        do_not_recompress=True,
+        target_size=entry_size,
+    )
 
 
 def buildScripts() -> list:

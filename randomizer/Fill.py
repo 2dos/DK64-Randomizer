@@ -36,6 +36,7 @@ from randomizer.Enums.Settings import (
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    ShufflePortLocations,
     SpoilerHints,
     TrainingBarrels,
     WinConditionComplex,
@@ -67,6 +68,7 @@ from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import ResetShuffledKasplatLocations, ShuffleKasplatsAndLocations, ShuffleKasplatsInVanillaLocations, constants, shufflable
 from randomizer.ShufflePatches import ShufflePatches
+from randomizer.ShufflePorts import ShufflePorts, ResetPorts
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 
@@ -3058,7 +3060,14 @@ class ItemReference:
 
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
-    resetCustomLocations()
+    resetCustomLocations(spoiler)
+    ResetPorts()
+    if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
+        port_replacements = {}
+        port_human_replacements = {}
+        ShufflePorts(spoiler, port_replacements, port_human_replacements)
+        spoiler.warp_locations = port_replacements
+        spoiler.human_warps = port_human_replacements
     if spoiler.settings.enable_progressive_hints:
         SetProgressiveHintDoorLogic(spoiler)
     # T&S and Wrinkly Door Shuffle
@@ -3076,13 +3085,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         spoiler.crown_locations = crown_replacements
         spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
     # Handle Bananaports
-    if spoiler.settings.bananaport_rando == BananaportRando.in_level:
-        replacements = []
-        human_replacements = {}
-        ShuffleWarps(replacements, human_replacements, spoiler.settings.warp_level_list_selected)
-        spoiler.bananaport_replacements = replacements.copy()
-        spoiler.human_warp_locations = human_replacements
-    elif spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
+    if spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
         replacements = []
         human_replacements = {}
         ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == BananaportRando.crossmap_coupled, spoiler.settings.warp_level_list_selected)
@@ -3160,13 +3163,14 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.HomingAmmo, "Homing Ammo", "Shared Forest Funky"),
         ItemReference(Items.SniperSight, "Sniper Scope", "Shared Castle Funky"),
         ItemReference(Items.ProgressiveAmmoBelt, "Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+        ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
+        ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
         # Basic Moves
         ItemReference(Items.Swim, "Diving", "Dive Barrel"),
         ItemReference(Items.Oranges, "Orange Throwing", "Orange Barrel"),
         ItemReference(Items.Barrels, "Barrel Throwing", "Barrel Barrel"),
         ItemReference(Items.Vines, "Vine Swinging", "Vine Barrel"),
-        ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
-        ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
+        ItemReference(Items.Climbing, "Climbing", "Starting Move"),
         # Instrument Upgrades & Slams
         ItemReference(Items.ProgressiveInstrumentUpgrade, "Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
         ItemReference(Items.ProgressiveSlam, "Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),

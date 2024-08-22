@@ -42,8 +42,7 @@ LogicRegions = {
         Event(Events.FactoryW2aTagged, lambda l: True),
         Event(Events.FactoryW3aTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
-        TransitionFront(Regions.Testing, lambda l: (l.checkBarrier(RemovedBarriersSelected.factory_testing_gate) or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips) and l.climbing),
+        TransitionFront(Regions.Testing, lambda l: (Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips) and l.climbing),
         TransitionFront(Regions.BeyondHatch, lambda l: Events.HatchOpened in l.Events or l.phasewalk),
     ]),
 
@@ -67,7 +66,6 @@ LogicRegions = {
         Event(Events.FactoryW3bTagged, lambda l: True),
         Event(Events.FactoryW5bTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryStart, lambda l: Events.TestingGateOpened in l.Events or l.phasewalk),
         TransitionFront(Regions.RandD, lambda l: l.climbing),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
@@ -81,7 +79,6 @@ LogicRegions = {
         LocationLogic(Locations.FactoryKasplatRandD, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryBattleArena, lambda l: not l.settings.crown_placement_rando and ((l.grab and l.donkey) or l.CanAccessRNDRoom())),
     ], [], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True),
         TransitionFront(Regions.RandD, lambda l: True),
     ]),
@@ -95,14 +92,12 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.Testing, lambda l: True),
         TransitionFront(Regions.RandDUpper, lambda l: (l.climbing or l.isdiddy or l.istiny) or l.advanced_platforming),
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanOStandTBSNoclip()),
         TransitionFront(Regions.FactoryTinyRace, lambda l: l.phasewalk or l.CanOStandTBSNoclip(), Transitions.FactoryRandDToRace, isGlitchTransition=True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", HintRegion.ResearchAndDevelopment, Levels.FranticFactory, False, None, [], [], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.RandD, lambda l: (l.mini and l.istiny) or l.phasewalk),
         TransitionFront(Regions.FactoryTinyRace, lambda l: (l.mini and l.istiny) or l.phasewalk, Transitions.FactoryRandDToRace)
     ]),
@@ -117,7 +112,6 @@ LogicRegions = {
     Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", HintRegion.Storage, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdiddy and (l.can_use_vines or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),
     ], [], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.PowerHut, lambda l: (l.coconut and l.isdonkey) or l.phasewalk or l.CanMoonkick(), Transitions.FactoryChunkyRoomToPower),
         TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),
@@ -127,7 +121,6 @@ LogicRegions = {
     ], [
         Event(Events.MainCoreActivated, lambda l: l.grab and l.isdonkey),
     ], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True, Transitions.FactoryPowerToChunkyRoom),
     ]),
 
@@ -149,8 +142,7 @@ LogicRegions = {
         Event(Events.FactoryW4aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
-        TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or (Events.HatchOpened in l.Events and l.climbing)),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: Events.HatchOpened in l.Events and l.climbing),
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
@@ -167,7 +159,6 @@ LogicRegions = {
         Event(Events.FactoryW5aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.BeyondHatch, lambda l: True),
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
     ]),
 
     Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", HintRegion.Storage, Levels.FranticFactory, False, None, [
@@ -175,7 +166,6 @@ LogicRegions = {
     ], [
         Event(Events.ArcadeLeverSpawned, lambda l: l.isdonkey)
     ], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.BeyondHatch, lambda l: True)
     ]),
 
@@ -192,7 +182,6 @@ LogicRegions = {
         Event(Events.TinyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.tiny),
         Event(Events.ChunkyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.chunky),
     ], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.BeyondHatch, lambda l: True),
         TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events or l.phasewalk, Transitions.FactoryBeyondHatchToInsideCore),
         TransitionFront(Regions.MiddleCore, lambda l: Events.MainCoreActivated in l.Events),
@@ -201,12 +190,10 @@ LogicRegions = {
     Regions.InsideCore: Region("Inside Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDonkeyCrusherRoom, lambda l: (l.strongKong and l.isdonkey) or l.generalclips or l.phasewalk),
     ], [], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True, Transitions.FactoryInsideCoreToBeyondHatch),
     ]),
 
     Regions.MiddleCore: Region("Middle Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [], [], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.SpinningCore, lambda l: l.climbing),
         TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryBeyondHatchToInsideCore, isGlitchTransition=True),
@@ -217,7 +204,6 @@ LogicRegions = {
     ], [
         Event(Events.FactoryW4bTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.MiddleCore, lambda l: True),
         TransitionFront(Regions.UpperCore, lambda l: Events.MainCoreActivated in l.Events),
     ]),
@@ -228,7 +214,6 @@ LogicRegions = {
         LocationLogic(Locations.FactoryTinyProductionRoom, lambda l: Events.TinyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.twirl and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatProductionTop, lambda l: not l.settings.kasplat_rando)
     ], [], [
-        TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.SpinningCore, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),

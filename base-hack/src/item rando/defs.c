@@ -72,6 +72,11 @@ const collision_tree_struct fixed_klap_collision[8] = {
     {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
 };
 
+const collision_tree_struct fixed_bug_collision[2] = {
+    {.actor_interaction = -1, .target_interaction=COLBTF_SHOCKWAVE, .collision_type=1, .unk9=2, .force_break=1}, // If you're shockwaving, treat as immune
+    {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
+};
+
 void initCollectableCollision(void) {
     /**
      * @brief Initialize all collectable collisions

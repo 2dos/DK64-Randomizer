@@ -38,7 +38,7 @@ from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
-from randomizer.Patching.BananaPortRando import randomize_bananaport
+from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKongModelSwaps, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors, showWinCondition
@@ -587,6 +587,7 @@ def patching_response(spoiler):
     randomize_krool(spoiler)
     randomize_helm(spoiler)
     randomize_barrels(spoiler)
+    move_bananaports(spoiler)  # Has to be before randomize_bananaport
     randomize_bananaport(spoiler)
     randomize_kasplat_locations(spoiler)
     randomize_enemies(spoiler)

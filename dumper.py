@@ -204,28 +204,33 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         fh.write("| --- | ---- | --------------------------------- | ----- |\n")
                     groupings = {}
                     for y in data[x]:
+                        logic = ""
+                        if "logic" in y:
+                            logic = f"`{y['logic']}`"
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             if dumper == Dumpers.Coins:
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | `{y.get('logic', '')}` | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | {logic} | \n")
                             elif y["class"] == "cb":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | `{y.get('logic', '')}` | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | {logic} | \n")
                             elif y["class"] == "balloon":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | Balloon | `{y.get('logic', '')}` | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | Balloon | {logic} | \n")
                         elif dumper == Dumpers.Fairies:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('logic', '')}` | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {logic} | \n")
                         elif dumper == Dumpers.CustomLocations:
                             banned_types = y.get("banned_types", [])
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([x.name for x in banned_types])} | `{y.get('logic', '')}` | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([x.name for x in banned_types])} | {logic} | \n")
                         elif dumper == Dumpers.Kasplats:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('additional_logic', '')}` | \n")
+                            if "additional_logic" in y:
+                                logic = f"`{y['additional_logic']}`"
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {logic} | \n")
                         elif dumper == Dumpers.Doors:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([z.name.title() for z in y['door_type']])} | `{y.get('logic', '')}` | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([z.name.title() for z in y['door_type']])} | {logic} | \n")
                     for group in groupings:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             # fh.write("<details>\n")

@@ -348,7 +348,29 @@ file_dict = [
     File(name="Galleon K. Rool Ship", pointer_table_index=TableNames.ModelTwoGeometry, file_index=305, source_file="galleon_ship_krool.bin", target_size=0x2500),
 ]
 
-file_dict = file_dict + buildScripts()
+cutscene_scripts = buildScripts()
+file_dict = file_dict + cutscene_scripts
+cutscene_maps_decompressed = [x.file_index for x in cutscene_scripts]
+cutscene_maps_to_decompress = [x for x in list(range(221)) if x not in cutscene_maps_decompressed]
+for x in cutscene_maps_to_decompress:
+    with open(ROMName, "rb") as fh:
+        cutscene_f = ROMPointerFile(fh, TableNames.Cutscenes, x)
+        item_size = cutscene_f.size
+        if cutscene_f.compressed:
+            fh.seek(cutscene_f.start)
+            data = fh.read(cutscene_f.size)
+            data = zlib.decompress(data, (15 + 32))
+            item_size = len(data)
+        file_dict.append(
+            File(
+                name=f"Cutscenes for map {x}",
+                pointer_table_index=TableNames.Cutscenes,
+                file_index=x,
+                source_file=f"cutscenes{x}.bin",
+                target_size=item_size,
+                do_not_recompress=True,
+            )
+        )
 
 for bell in [692, 693]:
     file_dict.append(

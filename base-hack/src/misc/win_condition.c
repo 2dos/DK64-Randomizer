@@ -148,16 +148,14 @@ void checkSeedVictory(void) {
                 beatGame();
                 break;
             case GOAL_DKRAP:
-                if (!hasBeatenDKRapWinCon()) {
-                    return;
+                if (hasBeatenDKRapWinCon()) {
+                    beatGame();
                 }
-                beatGame();
                 break;
             case GOAL_CUSTOMITEM:
-                if (!isItemRequirementSatisfied(&Rando.win_condition_extra)) {
-                    return;
+                if (isItemRequirementSatisfied(&Rando.win_condition_extra)) {
+                    beatGame();
                 }
-                beatGame();
             break;
         }
     }
@@ -221,23 +219,21 @@ void pokemonSnapMode(void) {
         actorData* actor = LoadedActorArray[i].actor;
         if (actor) {
             int type = actor->actorType;
-            if ((type != 0) && (type >= 175) && (type <= 291)) {
-                for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
-                    if (poke_snap_actors[j] == type) {
-                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
-                            int offset = j >> 3;
-                            int shift = j & 7;
-                            if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                                float x_store = 0;
-                                float y_store = 0;
-                                calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
-                                int x_int = x_store;
-                                int y_int = y_store;
-                                if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
-                                    if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
-                                        setPermFlag(FLAG_PKMNSNAP_PICTURES + j);
-                                        updated = 1;
-                                    }
+            for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
+                if (poke_snap_actors[j] == type) {
+                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
+                        int offset = j >> 3;
+                        int shift = j & 7;
+                        if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
+                            float x_store = 0;
+                            float y_store = 0;
+                            calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
+                            int x_int = x_store;
+                            int y_int = y_store;
+                            if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
+                                if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
+                                    setPermFlag(FLAG_PKMNSNAP_PICTURES + j);
+                                    updated = 1;
                                 }
                             }
                         }

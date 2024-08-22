@@ -7,8 +7,7 @@ import math
 
 import encoders
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
-from BuildLib import float_to_hex, main_pointer_table_offset
-from image_converter import convertToRGBA32
+from BuildLib import float_to_hex, main_pointer_table_offset, convertToRGBA32
 
 
 class File:

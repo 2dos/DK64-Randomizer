@@ -152,9 +152,9 @@ def getFileInfo(pointer_table_index: int, file_index: int) -> PointerFile:
 def replaceROMFile(rom: BinaryIO, pointer_table_index: int, file_index: int, data: bytes, uncompressed_size: int, filename: str = ""):
     """Replace the ROM file."""
     # TODO: Get this working
-    if pointer_table_index == TableNames.Cutscenes and file_index == 0:
-        print(" - WARNING: Tried to replace Test Map cutscenes. This will replace global cutscenes, so it has been disabled for now to prevent crashes.")
-        return
+    # if pointer_table_index == TableNames.Cutscenes and file_index == 0:
+    #     print(" - WARNING: Tried to replace Test Map cutscenes. This will replace global cutscenes, so it has been disabled for now to prevent crashes.")
+    #     return
 
     # Align data to 2 byte boundary for DMA
     if len(data) % 2 == 1:

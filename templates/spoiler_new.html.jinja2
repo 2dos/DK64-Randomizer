@@ -104,7 +104,7 @@
                                                 </div>
                                             </div>
                                         {% endfor %}
-                                    {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","T&S Portal Locations","Enemy Placement","Paths", "WotH Paths", "Other Paths","End Game", "Hints", "Misc Custom Locations") %}
+                                    {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","Shuffled Bananaport Locations","T&S Portal Locations","Enemy Placement","Paths", "WotH Paths", "Other Paths","End Game", "Hints", "Misc Custom Locations") %}
                                         {# Attributes with sub-dicts #}
                                         {% set local_loop = loop.index %}
                                         {% for sub_group in spoiler[item] %}

@@ -9,6 +9,12 @@
     },
     "alter_switch_allocation": 0,
     "auto_keys": 1,
+    "bananaport_placement_rando": {
+      "off": 0.7,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.08,
+      "on": 0.02
+    },
     "bananaport_rando": {
       "off": 1
     },
@@ -393,10 +399,14 @@
     },
     "alter_switch_allocation": 0.5,
     "auto_keys": 1,
-    "bananaport_rando": {
+    "bananaport_placement_rando": {
       "off": 0.5,
-      "in_level": 0.3,
-      "crossmap_coupled": 0.2
+      "vanilla_only": 0.3,
+      "half_vanilla": 0.15,
+      "on": 0.05
+    },
+    "bananaport_rando": {
+      "off": 1
     },
     "blocker_text": {
       "min": 40,
@@ -801,9 +811,14 @@
     },
     "alter_switch_allocation": 0.8,
     "auto_keys": 1,
+    "bananaport_placement_rando": {
+      "off": 0.2,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.4,
+      "on": 0.2
+    },
     "bananaport_rando": {
-      "off": 0.5,
-      "in_level": 0.3,
+      "off": 0.8,
       "crossmap_coupled": 0.1,
       "crossmap_decoupled": 0.1
     },
@@ -1253,9 +1268,14 @@
     },
     "alter_switch_allocation": 0.8,
     "auto_keys": 0.5,
+    "bananaport_placement_rando": {
+      "off": 0.2,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.4,
+      "on": 0.2
+    },
     "bananaport_rando": {
-      "off": 0.5,
-      "in_level": 0.3,
+      "off": 0.8,
       "crossmap_coupled": 0.1,
       "crossmap_decoupled": 0.1
     },

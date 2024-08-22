@@ -45,7 +45,6 @@ LogicRegions = {
         Event(Events.JapesW2aTagged, lambda l: True),
         Event(Events.JapesW3bTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesHill, lambda l: l.climbing),
         TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.hasMoveSwitchsanity(Switches.JapesDiddyCave, False) or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
@@ -61,7 +60,6 @@ LogicRegions = {
         TransitionFront(Regions.JapesHillTop, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesHill, lambda l: l.can_use_vines),
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
     ]),
 
     Regions.JapesHillTop: Region("Jungle Japes Hilltop", HintRegion.Hillside, Levels.JungleJapes, True, None, [
@@ -82,7 +80,6 @@ LogicRegions = {
         TransitionFront(Regions.JapesHill, lambda l: True),
         TransitionFront(Regions.JapesCannonPlatform, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
     ]),
 
     Regions.JapesHill: Region("Jungle Japes Hill", HintRegion.Hillside, Levels.JungleJapes, True, None, [
@@ -93,7 +90,6 @@ LogicRegions = {
         TransitionFront(Regions.JapesCannonPlatform, lambda l: l.can_use_vines),
         TransitionFront(Regions.FunkyJapes, lambda l: l.funkyAccess),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
     ]),
 
     Regions.JungleJapesMain: Region("Jungle Japes Main", HintRegion.Hillside, Levels.JungleJapes, False, None, [
@@ -105,7 +101,6 @@ LogicRegions = {
     ], [
         Event(Events.JapesW3aTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
         TransitionFront(Regions.JapesCannonPlatform, lambda l: l.handstand and l.advanced_platforming),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
@@ -124,14 +119,12 @@ LogicRegions = {
     ], [
         Event(Events.JapesW5bTagged, lambda l: Locations.JapesDiddyMountain in l.SpecialLocationsReached),
     ], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesHillTop, lambda l: True),
     ]),
 
     Regions.JapesBaboonBlast: Region("Japes Baboon Blast", HintRegion.Lowlands, Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDonkeyBaboonBlast, lambda l: l.isdonkey),
     ], [], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True)
     ]),
 
@@ -141,7 +134,6 @@ LogicRegions = {
         LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: (l.feather and l.istiny) or ((l.phasewalk or l.CanSkew(True) or l.CanSkew(False)) and (l.istiny or l.settings.free_trade_items)), MinigameType.BonusBarrel),
         LocationLogic(Locations.JapesMainEnemy_DiddyCavern, lambda l: True),
     ], [], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -151,7 +143,6 @@ LogicRegions = {
         LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.JapesMainEnemy_FeatherTunnel, lambda l: True),
     ], [], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_shellhive_gate) or l.hasMoveSwitchsanity(Switches.JapesFeather, False) or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)),
     ]),
@@ -167,7 +158,6 @@ LogicRegions = {
     ], [
         Event(Events.JapesW5aTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
         TransitionFront(Regions.TinyHive, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True) or l.CanSkew(False) or (l.hunkyChunky and l.ischunky and l.generalclips), Transitions.JapesMainToTinyHive),
         TransitionFront(Regions.BeyondRambiGate, lambda l: l.hunkyChunky and l.ischunky and l.generalclips),
@@ -184,7 +174,6 @@ LogicRegions = {
         LocationLogic(Locations.JapesShellhiveEnemy_ThirdRoom3, lambda l: (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips))),
         LocationLogic(Locations.JapesShellhiveEnemy_MainRoom, lambda l: True),
     ], [], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.isdiddy or l.istiny or l.islanky or l.phasewalk, Transitions.JapesTinyHiveToMain),  # It is technically possible to leave with DK and Chunky, just tricky
     ]),
 
@@ -205,7 +194,6 @@ LogicRegions = {
         Event(Events.JapesW4aTagged, lambda l: True),
         Event(Events.JapesW4bTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)),
@@ -219,7 +207,6 @@ LogicRegions = {
     ], [
         Event(Events.JapesChunkySwitch, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.ischunky and l.barrels),
     ], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -229,7 +216,6 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyFairyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky),
         LocationLogic(Locations.JapesBananaFairyLankyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky and l.camera),
     ], [], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesLankyCaveToMain),
     ]),
 
@@ -249,7 +235,6 @@ LogicRegions = {
         # but can just jump without too much trouble.
         Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.peanut or l.advanced_platforming) and l.isdiddy),
     ], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesHillTop, lambda l: True, Transitions.JapesMineToMain),
         TransitionFront(Regions.JapesMinecarts, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and ((l.charge and l.isdiddy) or l.phasewalk or (l.advanced_platforming and l.isdiddy))),
     ]),
@@ -266,7 +251,6 @@ LogicRegions = {
         LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.can_use_vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.can_use_vines and (l.isdiddy or l.istiny)) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk),
         LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.can_use_vines and l.pineapple and l.ischunky) or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk)),
     ], [], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True, Transitions.JapesCatacombToMain),
     ]),
 
