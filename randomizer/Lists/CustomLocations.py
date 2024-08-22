@@ -1101,7 +1101,7 @@ CustomLocations = {
             group=4,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 1",
+            name="Llama Temple: Vanilla Close Warp 1",
             map=Maps.AztecLlamaTemple,
             x=2644.013,
             y=371.333,
@@ -1114,7 +1114,7 @@ CustomLocations = {
             tied_warp_event=Events.LlamaW1aTagged,
         ),
         CustomLocation(
-            name="Vanilla Matching Warp 1",
+            name="Llama Temple: Vanilla Matching Warp 1",
             map=Maps.AztecLlamaTemple,
             x=1529.909,
             y=641.333,
@@ -1127,7 +1127,7 @@ CustomLocations = {
             tied_warp_event=Events.LlamaW1bTagged,
         ),
         CustomLocation(
-            name="Vanilla Lava Warp 2",
+            name="Llama Temple: Vanilla Lava Warp 2",
             map=Maps.AztecLlamaTemple,
             x=1408.806,
             y=420.333,
@@ -1140,7 +1140,7 @@ CustomLocations = {
             tied_warp_event=Events.LlamaW2bTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 2",
+            name="Llama Temple: Vanilla Close Warp 2",
             map=Maps.AztecLlamaTemple,
             x=2638.672,
             y=371.333,
@@ -3360,7 +3360,7 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(
-            name="Vanilla Far Warp 1",
+            name="Crypt: Vanilla Far Warp 1",
             map=Maps.CastleCrypt,
             x=1740.353,
             y=0,
@@ -3373,7 +3373,7 @@ CustomLocations = {
             tied_warp_event=Events.CryptW1bTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 1",
+            name="Crypt: Vanilla Close Warp 1",
             map=Maps.CastleCrypt,
             x=734.276,
             y=240,
@@ -3386,7 +3386,7 @@ CustomLocations = {
             tied_warp_event=Events.CryptW1aTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 2",
+            name="Crypt: Vanilla Close Warp 2",
             map=Maps.CastleCrypt,
             x=732.318,
             y=240,
@@ -3399,7 +3399,7 @@ CustomLocations = {
             tied_warp_event=Events.CryptW2aTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 3",
+            name="Crypt: Vanilla Close Warp 3",
             map=Maps.CastleCrypt,
             x=731.274,
             y=240,
@@ -3412,7 +3412,7 @@ CustomLocations = {
             tied_warp_event=Events.CryptW3aTagged,
         ),
         CustomLocation(
-            name="Vanilla Far Warp 3",
+            name="Crypt: Vanilla Far Warp 3",
             map=Maps.CastleCrypt,
             x=1076.167,
             y=160,
@@ -3425,7 +3425,7 @@ CustomLocations = {
             tied_warp_event=Events.CryptW3bTagged,
         ),
         CustomLocation(
-            name="Vanilla Far Warp 2",
+            name="Crypt: Vanilla Far Warp 2",
             map=Maps.CastleCrypt,
             x=1511.406,
             y=80,
