@@ -19,7 +19,7 @@
 | Jungle Japes | Lanky Alcove Hill |  | `(l.handstand and l.lanky) or (l.phasewalk and (l.isdiddy or l.istiny))` | 
 | Jungle Japes | On the useless Lanky ramp |  | `(l.handstand and l.islanky) or l.phasewalk` | 
 | Jungle Japes | Cranky-tunnel Crossing |  |  | 
-| Jungle Japes | In the Rambi Cave |  |  | 
+| Jungle Japes | In the Rambi Cave | CrownPad, Bananaport |  | 
 | Jungle Japes | Fairy Pool |  |  | 
 | Jungle Japes | Behind Lanky Hut |  |  | 
 | Jungle Japes | Behind DK Hut (1) |  |  | 
@@ -53,7 +53,7 @@
 | Japes Mountain | Mountain: Near Entrance (High) |  |  | 
 | Japes Mountain | Mountain: On Barrel |  |  | 
 | Japes Mountain | Mountain: Near HiLo Machine |  | `(l.charge and l.isdiddy) or l.phasewalk, group=5` | 
-| Japes Mountain | Mountain: Under Conveyor |  | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.phasewalk` | 
+| Japes Mountain | Mountain: Under Conveyor | CrownPad, Bananaport | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.phasewalk` | 
 | Japes Tiny Hive | Shell: Main Room |  |  | 
 | Japes Tiny Hive | Shell: 1st Room |  |  | 
 | Japes Tiny Hive | Shell: 3rd Room |  | `(l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.tiny` | 
