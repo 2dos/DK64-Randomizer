@@ -1986,6 +1986,9 @@ def FillTrainingMoves(spoiler: Spoiler, placedMoves: List[Items]):
 
 def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: List[Types]) -> None:
     """Shuffles shared kong moves into shops and then returns the remaining ones and their valid locations."""
+    # If we start with a slam as the training grounds reward, it counts as placed for fill purposes
+    if spoiler.settings.start_with_slam:
+        placedMoves.append(Items.ProgressiveSlam)
     # If shared moves have to be in shared shops, confirm there are enough locations available for each remaining shared move
     if not spoiler.settings.shuffle_items or Types.Shop not in spoiler.settings.shuffled_location_types:
         availableSharedShops = [location for location in SharedMoveLocations if spoiler.LocationList[location].item is None]
