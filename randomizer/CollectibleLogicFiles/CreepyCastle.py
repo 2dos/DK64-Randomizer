@@ -5,6 +5,7 @@ from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
@@ -22,8 +23,8 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # W2
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack, None, 4),  # Above main warps
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack, None, 2),  # Above windows
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),  # Atop tree near lower T&S
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 2),  # Atop tree near big tree
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.climbing, None, 2),  # Atop tree near lower T&S
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.climbing, None, 2),  # Atop tree near big tree
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # Behind gravestone by lower cave
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Off the edge by big tree
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Behind gravestone near lower cave
@@ -98,16 +99,16 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On W1
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips or l.phasewalk) and l.peanut, None, 1),  # In Diddy's room
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.generalclips or l.phasewalk, None, 2),  # In tombs in Chunky's room
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.generalclips or l.phasewalk, None, 2),  # In tombs in Chunky's room
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: (l.charge and l.peanut) or l.phasewalk or l.generalclips, None, 3),  # In Diddy's room
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk or l.generalclips, None, 3),  # In tombs in Chunky's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.phasewalk or l.generalclips, None, 3),  # In tombs in Chunky's room
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk), None, 1),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))), None, 1),  # In Green Goo Gap
 
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk and ((l.trombone and l.vines) or l.advanced_platforming), None, 3),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk and ((l.trombone and l.can_use_vines) or l.advanced_platforming), None, 3),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))) or l.phasewalk, None, 2),
     ],
     Regions.UpperCave: [

@@ -41,6 +41,7 @@ class Item:
             self.rando_flag = data[0]
         if type == Types.Hint:
             self.level = data[0]
+            self.rando_flag = 0x384 + (self.level * 5) + self.kong
         if type in (Types.NintendoCoin, Types.RarewareCoin):
             self.flag = data[0]
 
@@ -105,6 +106,7 @@ ItemList = {
     Items.Swim: Item("Diving", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "dive", 386]),
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
+    Items.Climbing: Item("Climbing", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "climbing", 0x297]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
     Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
@@ -296,6 +298,7 @@ StartingMoveOptions = [
     Items.Swim,
     Items.Oranges,
     Items.Barrels,
+    Items.Climbing,
     Items.ProgressiveSlam,
     Items.ProgressiveSlam2,
     Items.ProgressiveSlam3,

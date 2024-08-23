@@ -55,7 +55,7 @@ ColoredBananaGroupList = [
         name="On vines between two shrooms",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines and l.climbing,
         locations=[[5, 1.2, 2140, 430, 2619], [5, 1.2, 2078, 445, 2434]],
     ),
     ColoredBananaGroup(
@@ -64,7 +64,7 @@ ColoredBananaGroupList = [
         name="Vines to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines and l.climbing,
         locations=[[1, 1.2, 2489, 428, 2813], [1, 1.2, 2410, 415, 2895], [1, 1.2, 2348, 410, 2962], [1, 1.2, 2289, 405, 3024], [1, 1.2, 2226, 405, 3088]],
     ),
     ColoredBananaGroup(
@@ -73,7 +73,7 @@ ColoredBananaGroupList = [
         name="Around the roof of minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
+        logic=lambda l: ((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy),
         locations=[
             [1, 1.0, 2092, 280, 3251],
             [1, 1.0, 2050, 280, 3192],
@@ -271,6 +271,16 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
         locations=[
+            [1, 1.0, 4608.65478515625, 232.83334350585938, 3471.3701171875],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=28,
+        map_id=Maps.FungiForest,
+        name="Top of Mill (8 custom, 7 Lanky)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.ForestVeryTopOfMill,
+        locations=[
             [1, 1.0, 4588, 462, 3493],
             [1, 1.0, 4540, 462, 3542],
             [1, 1.0, 4579, 459, 3578],
@@ -279,13 +289,21 @@ ColoredBananaGroupList = [
             [1, 1.0, 4448, 459, 3625],
             [1, 1.0, 4404, 459, 3588],
             [1, 1.0, 4490, 459, 3497],
-            [1, 1.0, 4389.43896484375, 376.6666564941406, 3753.939208984375],
-            [1, 1.0, 4608.65478515625, 232.83334350585938, 3471.3701171875],
             [1, 1.0, 4607.23486328125, 312.8333435058594, 3472.459228515625],
+            [1, 1.0, 4610.38525390625, 412.8333435058594, 3471.267333984375],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=28,
+        map_id=Maps.FungiForest,
+        name="Top of Mill (8 custom, 7 Lanky)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.ForestTopOfMill,
+        locations=[
+            [1, 1.0, 4389.43896484375, 376.6666564941406, 3753.939208984375],
             [1, 1.0, 4120.13671875, 376.6666564941406, 3484.602294921875],
             [1, 1.0, 4214.1572265625, 376.6666564941406, 3578.652099609375],
             [1, 1.0, 4307.08740234375, 376.6666564941406, 3668.4267578125],
-            [1, 1.0, 4610.38525390625, 412.8333435058594, 3471.267333984375],
         ],
     ),
     ColoredBananaGroup(
@@ -609,6 +627,7 @@ ColoredBananaGroupList = [
         name="Behind ladder leading to Giant Mushroom middle entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLowerExterior,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 697, 595, 1251], [5, 1.0, 757, 595, 1300]],
     ),
     ColoredBananaGroup(
@@ -617,6 +636,7 @@ ColoredBananaGroupList = [
         name="Around baboon blast platform",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLowerExterior,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 407, 589, 846],
             [1, 1.0, 354, 589, 843],
@@ -636,6 +656,7 @@ ColoredBananaGroupList = [
         name="On BBlast pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLowerExterior,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 340, 605, 951]],
     ),
     ColoredBananaGroup(
@@ -643,7 +664,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="On path to giant mushroom middle entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerExterior,
+        region=Regions.MushroomUpperMidExterior,
         locations=[[5, 1.0, 679, 785, 1312], [5, 1.0, 722, 785, 1257], [5, 1.0, 770, 785, 1193]],
     ),
     ColoredBananaGroup(
@@ -951,7 +972,16 @@ ColoredBananaGroupList = [
         locations=[[1, 1.0, 512, 4, 620], [1, 1.0, 512, 4, 565], [1, 1.0, 512, 4, 510], [1, 1.0, 512, 4, 455], [1, 1.0, 512, 4, 400]],
     ),
     ColoredBananaGroup(
-        group=87, map_id=Maps.ForestThornvineBarn, name="On boxes on upper level", konglist=[Kongs.donkey], region=Regions.ThornvineBarn, locations=[[5, 1.0, 207, 185, 100], [5, 1.0, 500, 185, 644]]
+        group=87,
+        map_id=Maps.ForestThornvineBarn,
+        name="On boxes on upper level",
+        konglist=[Kongs.donkey],
+        region=Regions.ThornvineBarn,
+        logic=lambda l: l.climbing,
+        locations=[
+            [5, 1.0, 207, 185, 100],
+            [5, 1.0, 500, 185, 644],
+        ],
     ),
     ColoredBananaGroup(
         group=88,
@@ -959,6 +989,7 @@ ColoredBananaGroupList = [
         name="On ladder",
         konglist=[Kongs.donkey],
         region=Regions.ThornvineBarn,
+        logic=lambda l: l.climbing,
         locations=[[1, 1.0, 180, 140, 514], [1, 1.0, 180, 110, 514], [1, 1.0, 180, 80, 514], [1, 1.0, 180, 50, 514], [1, 1.0, 180, 20, 514]],
     ),
     ColoredBananaGroup(
@@ -1001,7 +1032,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Up first ladder up each path",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLower,
+        region=Regions.MushroomLowerMid,
         locations=[[5, 1.0, 122, 275, 621], [5, 1.0, 779, 275, 601]],
     ),
     ColoredBananaGroup(
@@ -1009,7 +1040,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="On first island to Speedy Swing Sortie",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLower,
+        region=Regions.MushroomLowerMid,
         locations=[[5, 1.0, 550, 415, 199]],
     ),
     ColoredBananaGroup(
@@ -1017,8 +1048,8 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="On vines leading to night gate",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
-        logic=lambda l: l.vines,
+        region=Regions.MushroomUpperMid,
+        logic=lambda l: l.can_use_vines,
         locations=[[1, 1.2, 218, 980, 520], [1, 1.2, 365, 1035, 517], [1, 1.2, 475, 1030, 515], [1, 1.2, 580, 1030, 513], [1, 1.2, 675, 1035, 511]],
     ),
     ColoredBananaGroup(
@@ -1144,9 +1175,20 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLowerExterior,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 458.903564453125, 570.3333740234375, 862.6621704101562],
             [1, 1.0, 461.7091369628906, 495.3333740234375, 857.4607543945312],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=105,
+        map_id=Maps.FungiForest,
+        name="Path to Baboon Blast pad (Donkey)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.MushroomLowerExterior,
+        vanilla=True,
+        locations=[
             [1, 1.0, 461.7499694824219, 389.3333435058594, 857.510986328125],
             [1, 1.0, 634.3507080078125, 389.3333435058594, 802.1203002929688],
             [1, 1.0, 527.4633178710938, 389.3333435058594, 781.2810668945312],
@@ -1339,7 +1381,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="In entrance to Lanky's attic (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MillArea,
+        region=Regions.ForestTopOfMill,
         vanilla=True,
         logic=lambda l: Events.Night in l.Events,
         locations=[[5, 1.0, 4206.09912109375, 328.66845703125, 3661.584716796875]],
@@ -1349,7 +1391,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="Over baboon balloon pad (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MillArea,
+        region=Regions.ForestTopOfMill,
         vanilla=True,
         locations=[[5, 1.0, 4021.470458984375, 291.83331298828125, 3603.982666015625]],
     ),
@@ -1600,7 +1642,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Around Diddy's blueprint (3 custom, 7 Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomMiddle,
         locations=[
             [1, 1.0, 536, 543, 315],
             [1, 1.0, 358, 581, 744],
@@ -1628,7 +1670,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="First ladder up mushroom (2 custom, 3 Chunky)",  # Altered 3 vanilla so there's no jankness with other kongs
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLower,
+        region=Regions.MushroomLowerMid,
         locations=[
             [1, 1.0, 448.25, 207.75, 918.25],
             [1, 1.0, 446.875, 168, 918, 75],
@@ -1642,7 +1684,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Second ladder up mushroom (2 custom, 3 Chunky)",  # Altered 3 vanilla so there's no jankness with other kong
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLower,
+        region=Regions.MushroomLowerMid,
         locations=[
             [1, 1.0, 746.25, 396.75, 805.25],
             [1, 1.0, 744.25, 353, 808],
@@ -1656,7 +1698,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Third ladder up mushroom (2 custom, 3 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomUpperMid,
         vanilla=True,
         locations=[
             [1, 1.0, 202.72119140625, 651.1666870117188, 268.6103210449219],
@@ -1671,7 +1713,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Fourth ladder up mushroom (2 custom, 3 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomUpperMid,
         vanilla=True,
         locations=[
             [1, 1.0, 510.3544616699219, 896.6666870117188, 881.4966430664062],
@@ -1731,7 +1773,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Lowest bunch up mushroom (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLower,
+        region=Regions.MushroomLowerMid,
         vanilla=True,
         locations=[[5, 1.0, 617.3297119140625, 216.20155334472656, 840.7553100585938]],
     ),
@@ -1749,7 +1791,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Bunch in middle of climb up mushroom (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomUpperMid,
         vanilla=True,
         locations=[[5, 1.0, 173.313720703125, 739.6666870117188, 752.3272094726562]],
     ),
@@ -1758,7 +1800,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Top of lower portion of mushroom (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLower,
+        region=Regions.MushroomLowerMid,
         vanilla=True,
         locations=[[5, 1.0, 288.6304931640625, 483.5830383300781, 834.6895141601562]],
     ),
@@ -1767,7 +1809,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="By night gate (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomUpperMid,
         vanilla=True,
         locations=[[5, 1.0, 770.0504760742188, 979.1666870117188, 501.8072204589844]],
     ),
@@ -1936,6 +1978,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLowerExterior,
+        logic=lambda l: l.climbing,
         points=[[523, 590, 505], [245, 580, 819]],
     ),
     Balloon(
@@ -1944,7 +1987,7 @@ BalloonList = [
         name="By second level entrance",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerExterior,
+        region=Regions.MushroomUpperMidExterior,
         points=[[870, 920, 1253], [710, 925, 1430]],
     ),
     Balloon(
@@ -2026,7 +2069,7 @@ BalloonList = [
         name="Diddy BP floor",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomMiddle,
         points=[[490, 700, 699], [426, 690, 521], [608, 690, 442], [662, 700, 638]],
     ),
     Balloon(

@@ -18,7 +18,7 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, 
                                        MicrohintsEnabled, MoveRando,
                                        RandomPrices, SettingsMap,
                                        ShockwaveStatus, SpoilerHints,
-                                       TrainingBarrels, WinCondition,
+                                       TrainingBarrels, WinConditionComplex,
                                        WrinklyHints)
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
@@ -43,7 +43,7 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined from the preset_files.json file
-        # self.settings_string = "bKEHCRorPE1ed6soQOCokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqgeEQyGQlS2Nc+ER+I0eu0uXxC205Yk04IUDR6QJE0Z4q+ApBbqev2JIBk0UJooZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKRCioZyJTLmku0W8BOEWkXBT9FRFgETEUAV61xyN2q/32RQOYsRQBms2URJFgATGAATGgAPHAAPHgALIAALIgAHJAAHJgAHKAAGpy5Q5LhU6YQkX0CckGGEqpzMYwcWhaVywK0OWw0JxYKjATBgRlMcU8ikyI1KAKoBLgIZOEIQEhQWG0pEVh4gIkZYJigqSFouMDJKXDY4OkxePkBCTlA"
+        self.settings_string = "bKEJBEMhTHRBKlsa58ZKyuxCAIgJI9D6oHBEMiEqWxrnwjTx+I0ely+IU4sTvU04IUBR6QICMhjoW4CkFup7fAvwEkgGoTRVUKsVgrRXAZBdZLLBQB0AIMAOoCBwB2AYQAO4ECQB4AoUAPIGCwB6A4YAKENQHtkW4AMqRKitZyVJSnZbMlySWaLeBHJ2i0i4KfoqIsAiYigEvWuORu1X++yKByHczFr6IoAzWbMrHEkWABMYABMaAA8cAA8eAAtqAA8gAAsiAAckAAcmAAcoAAdsABanLlDkuFTphQRfQJyWCDDCVXBmNpjWgOLQtK5YXgrQ4oLYaVAnFhgJgwIymOKeRSZEYdAKUAugBVAJcICAkKCwwNKjE"
         settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 

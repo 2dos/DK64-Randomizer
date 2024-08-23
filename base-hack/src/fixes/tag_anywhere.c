@@ -227,7 +227,7 @@ static const map_bitfield banned_map_btf = {
     .k_rool_fight_chunky_phase = 1, // Reason: Boss Map
     .bloopers_ending = 1, // Reason: Cutscene Map
     .k_rool_barrel_chunkys_hidden_kremling_game = 0,
-    .k_rool_barrel_tinys_pony_tail_twirl_game = 0,
+    .k_rool_barrel_tinys_pony_tail_twirl_game = 1,  // Reason: Very toxic twirlless tech
     .k_rool_barrel_chunkys_shooting_game = 0,
     .k_rool_barrel_dks_rambi_game = 1, // Reason: Rambi-Only Room
     .k_lumsy_ending = 1, // Reason: Cutscene Map
@@ -823,19 +823,27 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
 }
 
 void handleGrabbingLock(void* player, int player_index, int allow_vines) {
-    if (ENABLE_CLIMBING_FLAG) {
-        if (!checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT)) {
-            return;
-        }
-    }
+    // if (ENABLE_CLIMBING_FLAG) {
+    //     if (!checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT)) {
+    //         return;
+    //     }
+    // }
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
         return;
     }
     handlePoleGrabbing(player, player_index, allow_vines);
 }
 
+int canPlayerClimb(void) {
+    return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
+}
+
 void handleLedgeLock(void) {
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
+        return;
+    }
+    if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
+        // Even Spike wants this trick patched
         return;
     }
     handleLedgeGrabbing();

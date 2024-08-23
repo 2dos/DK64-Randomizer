@@ -36,6 +36,7 @@ class Events(IntEnum):
     AztecGuitarPad = auto()
     AztecDonkeySwitch = auto()
     AztecLlamaSpit = auto()
+    AztecIceMelted = auto()
 
     # Frantic Factory events
     HatchOpened = auto()

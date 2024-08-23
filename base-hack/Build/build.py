@@ -23,7 +23,7 @@ from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
@@ -32,6 +32,7 @@ from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
+from port_krool_spawners import updateCutsceneScripts, updateSpawnerFiles, updatePathFiles
 
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
@@ -48,6 +49,9 @@ shutil.copyfile(ROMName, newROMName)
 
 # pullHandModels()
 loadNewModels()
+updateCutsceneScripts()
+updateSpawnerFiles()
+updatePathFiles()
 BuildInstanceScripts()
 
 portal_images = []
@@ -76,7 +80,6 @@ file_dict = [
         texture_format=TextureFormat.IA4,
         target_compressed_size=0x800,
     ),
-    # File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
     File(name="Tag Barrel Shell Texture", pointer_table_index=TableNames.TexturesGeometry, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551),
     File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
@@ -116,6 +119,7 @@ file_dict = [
     File(name="Kong (Lanky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=601, source_file="kong_lanky_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Kong (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=602, source_file="kong_tiny_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Kong (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=603, source_file="kong_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Question Mark Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=638, source_file="question_mark_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Fairy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=604, source_file="fairy_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(
         name="DPad Image",
@@ -344,7 +348,29 @@ file_dict = [
     File(name="Galleon K. Rool Ship", pointer_table_index=TableNames.ModelTwoGeometry, file_index=305, source_file="galleon_ship_krool.bin", target_size=0x2500),
 ]
 
-file_dict = file_dict + buildScripts()
+cutscene_scripts = buildScripts()
+file_dict = file_dict + cutscene_scripts
+cutscene_maps_decompressed = [x.file_index for x in cutscene_scripts]
+cutscene_maps_to_decompress = [x for x in list(range(221)) if x not in cutscene_maps_decompressed]
+for x in cutscene_maps_to_decompress:
+    with open(ROMName, "rb") as fh:
+        cutscene_f = ROMPointerFile(fh, TableNames.Cutscenes, x)
+        item_size = cutscene_f.size
+        if cutscene_f.compressed:
+            fh.seek(cutscene_f.start)
+            data = fh.read(cutscene_f.size)
+            data = zlib.decompress(data, (15 + 32))
+            item_size = len(data)
+        file_dict.append(
+            File(
+                name=f"Cutscenes for map {x}",
+                pointer_table_index=TableNames.Cutscenes,
+                file_index=x,
+                source_file=f"cutscenes{x}.bin",
+                target_size=item_size,
+                do_not_recompress=True,
+            )
+        )
 
 for bell in [692, 693]:
     file_dict.append(
@@ -430,6 +456,18 @@ for x in range(8):
             file_index=getBonusSkinOffset(ExtraTextures.Feather0) + x,
             source_file=f"assets/displays/feather{x}.png",
             texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+        )
+    )
+
+for obj_id in INSTRUMENT_PADS:
+    file_name = INSTRUMENT_PADS[obj_id]
+    file_dict.append(
+        File(
+            name=f"{file_name.title()} Pad",
+            pointer_table_index=TableNames.ModelTwoGeometry,
+            file_index=obj_id,
+            source_file=f"{file_name}_pad.bin",
             do_not_delete_source=True,
         )
     )
@@ -613,6 +651,7 @@ shop_face_array = [
     "fairy",
     "rainbow_coin",
     "fake_gb_shop",
+    "qmark32",
     "head32_dillo1",
     "head32_dog1",
     "head32_mj",
@@ -621,11 +660,22 @@ shop_face_array = [
     "head32_dillo2",
     "head32_kko",
 ]
+file_dict.append(
+    File(
+        name="Win Con Logo",
+        pointer_table_index=TableNames.TexturesHUD,
+        file_index=195,
+        source_file=f"assets/displays/win_con_logo.png",
+        texture_format=TextureFormat.RGBA5551,
+        target_compressed_size=32 * 32 * 2,
+        target_uncompressed_size=32 * 32 * 2,
+    )
+)
 for x, shop in enumerate(shop_face_array):
     data = File(
         name=f"Shop Indicator ({shop})",
         pointer_table_index=TableNames.TexturesHUD,
-        file_index=195 + x,
+        file_index=196 + x,
         source_file=f"assets/displays/{shop}.png",
         texture_format=TextureFormat.RGBA32,
     )
@@ -794,24 +844,50 @@ for x in range(221):
         )
 for x in range(221):
     if x != 2:  # DK Arcade path file is massive
-        file_dict.append(
-            File(
-                name=f"Paths for map {x}",
-                pointer_table_index=TableNames.Paths,
-                file_index=x,
-                source_file=f"paths{x}.bin",
-                target_size=0x600,
-                do_not_recompress=True,
+        if x in (Maps.KRoolDK, Maps.KRoolDiddy, Maps.KRoolLanky, Maps.KRoolTiny):
+            file_mapping = {
+                Maps.KRoolDK: "path_dk_phase.bin",
+                Maps.KRoolDiddy: "path_diddy_phase.bin",
+                Maps.KRoolLanky: "path_lanky_phase.bin",
+                Maps.KRoolTiny: "path_tiny_phase.bin",
+            }
+            file_dict.append(
+                File(
+                    name=f"Paths for map {x}",
+                    pointer_table_index=TableNames.Paths,
+                    file_index=x,
+                    source_file=file_mapping[x],
+                    target_size=0x600,
+                    do_not_recompress=True,
+                    do_not_delete_source=True,
+                )
             )
-        )
+        else:
+            file_dict.append(
+                File(
+                    name=f"Paths for map {x}",
+                    pointer_table_index=TableNames.Paths,
+                    file_index=x,
+                    source_file=f"paths{x}.bin",
+                    target_size=0x600,
+                    do_not_recompress=True,
+                )
+            )
 for x in range(221):
-    if x == Maps.Factory:
+    if x in (Maps.Factory, Maps.KRoolDK, Maps.KRoolDiddy, Maps.KRoolLanky, Maps.KRoolTiny):
+        file_mapping = {
+            Maps.Factory: "factory_spawners.bin",
+            Maps.KRoolDK: "spawner_dk_phase.bin",
+            Maps.KRoolDiddy: "spawner_diddy_phase.bin",
+            Maps.KRoolLanky: "spawner_lanky_phase.bin",
+            Maps.KRoolTiny: "spawner_tiny_phase.bin",
+        }
         file_dict.append(
             File(
                 name=f"Character Spawners for map {x}",
                 pointer_table_index=TableNames.Spawners,
                 file_index=x,
-                source_file="factory_spawners.bin",
+                source_file=file_mapping[x],
                 target_size=0x1400,
                 do_not_recompress=True,
                 do_not_delete_source=True,
@@ -959,6 +1035,7 @@ colorblind_changes = [
     [0x11AD, 0x11AE, 1, 1372],  # Ghost something
     [0x1379, 0x1379, 32, 32],  # Dirt Face
     [0xB7B, 0xB7B, 32, 32],  # GB Shine
+    [0x323, 0x323, 32, 32],  # GB Shine
     [0x155C, 0x1567, 44, 44],  # GB Sprite
     [0xECF, 0xECF, 1, 1372],  # Funky Camo
     [0xED6, 0xED6, 1, 1372],  # Funky Camo
@@ -1065,6 +1142,7 @@ shrinkModel(False, "", 0x10, 1 / 0.15, "shrink_cranky.bin", True),
 shrinkModel(False, "", 0x11, 1 / 0.15, "shrink_funky.bin", True),
 shrinkModel(False, "", 0x12, 1 / 0.15, "shrink_candy.bin", True),
 shrinkModel(False, "", 0x1E, 1 / 0.15, "shrink_snide.bin", True),
+shrinkModel(False, "", 0xD1, 1 / 0.15, "shrink_qmark.bin", True)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1131,7 +1209,7 @@ model_changes = [
     ModelChange(0x116, "candy_model.bin"),
     ModelChange(0x117, "funky_model.bin"),
     ModelChange(0x118, "scarab_actor.bin"),
-    ModelChange(0x119, FINAL_RACE_HOOP),  # Used to set an endpoint
+    ModelChange(0x119, "shrink_qmark.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
@@ -1638,7 +1716,7 @@ with open(newROMName, "r+b") as fh:
             fh.write(bp_item.to_bytes(2, "big"))
     # Medals
     fh.seek(0x1FF1080)
-    for medal_item in range(40):
+    for medal_item in range(45):
         fh.write((5).to_bytes(1, "big"))
     # Crown
     fh.seek(0x1FF10C0)
@@ -1673,6 +1751,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFE000)
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
+    # Hint Regions
+    fh.seek(0x1FFE080)
+    for x in range(35):
+        fh.write((0x0000).to_bytes(2, "big"))
 
     # Item Requirements
     # Helm Doors
@@ -1803,6 +1885,8 @@ with open(newROMName, "r+b") as fh:
         "osprint_logo_left",
         "osprint_logo_right",
         "fool_overlay",
+        "qmark32",
+        "win_con_logo",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -1864,6 +1948,9 @@ with open(newROMName, "r+b") as fh:
         "beetle_img_4041",
         "white_font_early",
         "white_font_late",
+        "question_mark",
+        "k_rool_head_left",
+        "k_rool_head_right",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

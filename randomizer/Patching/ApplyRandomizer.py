@@ -18,11 +18,12 @@ from randomizer.Enums.Settings import (
     HardModeSelected,
     HardBossesSelected,
     MiscChangesSelected,
+    PuzzleRando,
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
     SlamRequirement,
-    WinCondition,
+    WinConditionComplex,
     WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
@@ -37,10 +38,10 @@ from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
-from randomizer.Patching.BananaPortRando import randomize_bananaport
+from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
-from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKongModelSwaps, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors
+from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKongModelSwaps, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors, showWinCondition
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
@@ -58,7 +59,7 @@ from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
+from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints, PushHintTiedRegions
 from randomizer.Patching.ASMPatcher import patchAssembly
 from randomizer.CompileHints import getHelmOrderHint
 
@@ -310,6 +311,14 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x0C5)
     ROM_COPY.write(int(Types.Enemies in spoiler.settings.shuffled_location_types))
 
+    ROM_COPY.seek(sav + 0x0C2)
+    hints_in_pool_handler = 0
+    if Types.Hint in spoiler.settings.shuffled_location_types:
+        hints_in_pool_handler = 1
+        if spoiler.settings.enable_progressive_hints:
+            hints_in_pool_handler = 2
+    ROM_COPY.write(int(hints_in_pool_handler))
+
     # Progressive Hints
     ROM_COPY.seek(sav + 0x115)
     count = 0
@@ -373,37 +382,60 @@ def patching_response(spoiler):
 
     # Win Condition
     win_con_table = {
-        WinCondition.beat_krool: {
+        WinConditionComplex.beat_krool: {
             "index": 0,
         },
-        WinCondition.all_blueprints: {
-            "index": 3,
-            "item": 4,
-            "count": 40,
-        },
-        WinCondition.all_fairies: {
-            "index": 3,
-            "item": 5,
-            "count": 20,
-        },
-        WinCondition.all_keys: {
-            "index": 3,
-            "item": 6,
-            "count": 8,
-        },
-        WinCondition.all_medals: {
-            "index": 3,
-            "item": 9,
-            "count": 40,
-        },
-        WinCondition.get_key8: {
+        WinConditionComplex.get_key8: {
             "index": 1,
         },
-        WinCondition.poke_snap: {
+        WinConditionComplex.krem_kapture: {
             "index": 2,
         },
+        WinConditionComplex.dk_rap_items: {
+            "index": 4,
+        },
+        WinConditionComplex.req_bean: {
+            "index": 3,
+            "item": 0xA,
+        },
+        WinConditionComplex.req_bp: {
+            "index": 3,
+            "item": 4,
+        },
+        WinConditionComplex.req_companycoins: {
+            "index": 3,
+            "item": 8,
+        },
+        WinConditionComplex.req_crown: {
+            "index": 3,
+            "item": 7,
+        },
+        WinConditionComplex.req_fairy: {
+            "index": 3,
+            "item": 5,
+        },
+        WinConditionComplex.req_gb: {
+            "index": 3,
+            "item": 3,
+        },
+        WinConditionComplex.req_pearl: {
+            "index": 3,
+            "item": 0xB,
+        },
+        WinConditionComplex.req_key: {
+            "index": 3,
+            "item": 6,
+        },
+        WinConditionComplex.req_medal: {
+            "index": 3,
+            "item": 9,
+        },
+        WinConditionComplex.req_rainbowcoin: {
+            "index": 3,
+            "item": 0xC,
+        },
     }
-    win_con = spoiler.settings.win_condition
+    win_con = spoiler.settings.win_condition_item
     win_con_data = win_con_table.get(win_con, None)
     if win_con_data is not None:
         ROM_COPY.seek(sav + 0x11D)
@@ -411,7 +443,7 @@ def patching_response(spoiler):
         if "item" in win_con_data:
             ROM_COPY.seek(sav + 0xC0)
             ROM_COPY.write(win_con_data["item"])
-            ROM_COPY.write(win_con_data["count"])
+            ROM_COPY.write(spoiler.settings.win_condition_count)
 
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
@@ -475,7 +507,10 @@ def patching_response(spoiler):
                 mill_text += str(spoiler.settings.mill_levers[x])
         # Change default wrinkly hint
         if spoiler.settings.wrinkly_hints == WrinklyHints.off:
-            if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor) or spoiler.settings.puzzle_rando:
+            if (
+                IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
+                or spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off
+            ):
                 wrinkly_index = 41
                 data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
                 if wrinkly_index in spoiler.text_changes:
@@ -552,6 +587,7 @@ def patching_response(spoiler):
     randomize_krool(spoiler)
     randomize_helm(spoiler)
     randomize_barrels(spoiler)
+    move_bananaports(spoiler)  # Has to be before randomize_bananaport
     randomize_bananaport(spoiler)
     randomize_kasplat_locations(spoiler)
     randomize_enemies(spoiler)
@@ -561,6 +597,7 @@ def patching_response(spoiler):
     randomize_cbs(spoiler)
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
+    showWinCondition(spoiler.settings)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
     place_randomized_items(spoiler, flut_items.copy())  # Has to be after kong rando cosmetic and moves
@@ -582,6 +619,8 @@ def patching_response(spoiler):
         PushHints(spoiler)
         if spoiler.settings.dim_solved_hints:
             PushHelpfulHints(spoiler, ROM_COPY)
+    if Types.Hint in spoiler.settings.shuffled_location_types and not spoiler.settings.enable_progressive_hints:
+        PushHintTiedRegions(spoiler, ROM_COPY)
 
     writeBootMessages()
     enableTriggerText(spoiler)

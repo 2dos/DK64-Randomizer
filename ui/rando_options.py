@@ -202,12 +202,13 @@ DISABLED_HELM_DOOR_VALUES = ("easy_random", "medium_random", "hard_random", "ope
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
     door_one_selection = js.document.getElementById("crown_door_item")
+    door_one_container = js.document.getElementById("door_1_container")
     disabled = door_one_selection.value in DISABLED_HELM_DOOR_VALUES
     door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
-        door_one_req.setAttribute("disabled", "disabled")
+        door_one_container.classList.add("hide-input")
     else:
-        door_one_req.removeAttribute("disabled")
+        door_one_container.classList.remove("hide-input")
     if not door_one_req.value:
         door_one_req.value = 1
     elif door_one_selection.value == "vanilla" and int(door_one_req.value) > 10:
@@ -232,40 +233,17 @@ def updateDoorOneNumAccess(event):
         door_one_req.value = 16
 
 
-@bind("click", "nav-progression-tab")
-@bind("change", "crown_door_item")
-def updateDoorOneCountText(evt):
-    """Change the text of the door 1 item count label."""
-    label_text_map = {
-        "vanilla": "Crowns",
-        "req_gb": "Bananas",
-        "req_bp": "Blueprints",
-        "req_companycoins": "Coins",
-        "req_key": "Keys",
-        "req_medal": "Medals",
-        "req_fairy": "Fairies",
-        "req_rainbowcoin": "Coins",
-        "req_bean": "Bean",
-        "req_pearl": "Pearls",
-    }
-    door_one_text = js.document.getElementById("door-1-select-title")
-    door_one_selection = js.document.getElementById("crown_door_item").value
-    if door_one_selection in label_text_map:
-        door_one_text.innerText = f"{label_text_map[door_one_selection]} Needed For Door 1"
-    else:
-        door_one_text.innerText = "Door 1 Item Count"
-
-
 @bind("change", "coin_door_item")
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
     door_two_selection = js.document.getElementById("coin_door_item")
+    door_two_container = js.document.getElementById("door_2_container")
     disabled = door_two_selection.value in DISABLED_HELM_DOOR_VALUES
     door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
-        door_two_req.setAttribute("disabled", "disabled")
+        door_two_container.classList.add("hide-input")
     else:
-        door_two_req.removeAttribute("disabled")
+        door_two_container.classList.remove("hide-input")
     if not door_two_req.value:
         door_two_req.value = 1
     elif door_two_selection.value == "vanilla" and int(door_two_req.value) > 2:
@@ -290,28 +268,40 @@ def updateDoorTwoNumAccess(event):
         door_two_req.value = 16
 
 
-@bind("click", "nav-progression-tab")
-@bind("change", "coin_door_item")
-def updateDoorTwoCountText(evt):
-    """Change the text of the door 2 item count label."""
-    label_text_map = {
-        "vanilla": "Coins",
-        "req_gb": "Bananas",
-        "req_bp": "Blueprints",
-        "req_key": "Keys",
-        "req_medal": "Medals",
-        "req_crown": "Crowns",
-        "req_fairy": "Fairies",
-        "req_rainbowcoin": "Coins",
-        "req_bean": "Bean",
-        "req_pearl": "Pearls",
-    }
-    door_two_text = js.document.getElementById("door-2-select-title")
-    door_two_selection = js.document.getElementById("coin_door_item").value
-    if door_two_selection in label_text_map:
-        door_two_text.innerText = f"{label_text_map[door_two_selection]} Needed For Door 2"
+DISABLED_WIN_VALUES = ("easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture", "dk_rap_items")
+
+
+@bind("change", "win_condition_item")
+def updateWinConNumAccess(event):
+    """Toggle the textboxes for the win condition."""
+    win_con_selection = js.document.getElementById("win_condition_item")
+    win_con_container = js.document.getElementById("win_condition_container")
+    disabled = win_con_selection.value in DISABLED_WIN_VALUES
+    win_con_req = js.document.getElementById("win_condition_count")
+    if disabled:
+        win_con_container.classList.add("hide-input")
     else:
-        door_two_text.innerText = "Door 2 Item Count"
+        win_con_container.classList.remove("hide-input")
+    if not win_con_req.value:
+        win_con_req.value = 1
+    elif win_con_selection.value == "req_gb" and int(win_con_req.value) > 201:
+        win_con_req.value = 201
+    elif win_con_selection.value == "req_bp" and int(win_con_req.value) > 40:
+        win_con_req.value = 40
+    elif win_con_selection.value == "req_key" and int(win_con_req.value) > 8:
+        win_con_req.value = 8
+    elif win_con_selection.value == "req_medal" and int(win_con_req.value) > 40:
+        win_con_req.value = 40
+    elif win_con_selection.value == "req_crown" and int(win_con_req.value) > 10:
+        win_con_req.value = 10
+    elif win_con_selection.value == "req_fairy" and int(win_con_req.value) > 18:
+        win_con_req.value = 18
+    elif win_con_selection.value == "req_bean" and int(win_con_req.value) > 1:
+        win_con_req.value = 1
+    elif win_con_selection.value == "req_pearl" and int(win_con_req.value) > 5:
+        win_con_req.value = 5
+    elif win_con_selection.value == "req_rainbowcoin" and int(win_con_req.value) > 16:
+        win_con_req.value = 16
 
 
 @bind("focusout", "crown_door_item_count")
@@ -463,6 +453,7 @@ def set_preset_options():
     toggle_bananaport_selector(None)
     updateDoorOneNumAccess(None)
     updateDoorTwoNumAccess(None)
+    updateWinConNumAccess(None)
 
     js.load_data()
 
@@ -1142,9 +1133,8 @@ def update_ui_states(event):
     toggle_key_settings(None)
     max_starting_moves_count(None)
     updateDoorOneNumAccess(None)
-    updateDoorOneCountText(None)
     updateDoorTwoNumAccess(None)
-    updateDoorTwoCountText(None)
+    updateWinConNumAccess(None)
     disable_tag_spawn(None)
     disable_krool_phases(None)
     disable_helm_phases(None)
@@ -1310,11 +1300,11 @@ def toggle_logic_type(event):
         glitch_customization.setAttribute("disabled", "disabled")
 
 
-@bind("change", "bananaport_rando")
+@bind("change", "bananaport_placement_rando")
 def toggle_bananaport_selector(event):
     """Toggle bananaport settings if shuffling is enabled."""
     bananaport_customization = document.getElementById("warp_level_list_modal")
-    if document.getElementById("bananaport_rando").value != "off":
+    if document.getElementById("bananaport_placement_rando").value != "off":
         bananaport_customization.removeAttribute("disabled")
     else:
         bananaport_customization.setAttribute("disabled", "disabled")

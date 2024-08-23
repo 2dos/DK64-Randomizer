@@ -612,3 +612,48 @@ expandTBarrelResponse:
     expandTBarrelResponse_isResponse:
         j 0x80680AE4
         nop
+
+fixLankyPhaseHandState:
+    lui $t0, hi(CutsceneActive)
+    lbu $t0, lo(CutsceneActive) ($t0)
+    beqz $t0, fixLankyPhaseHandState_nohead
+    nop
+    lui $t0, hi(CutsceneIndex)
+    lh $t0, lo(CutsceneIndex) ($t0)
+    addiu $t9, $zero, 26
+    beq $t0, $t9, fixLankyPhaseHandState_hashead
+    addiu $t9, $zero, 27
+    beq $t0, $t9, fixLankyPhaseHandState_hashead
+    addiu $t9, $zero, 28
+    beq $t0, $t9, fixLankyPhaseHandState_hashead
+    nop
+
+    fixLankyPhaseHandState_nohead:
+        lw $t0, 0x0 ($s1)
+        j 0x806C3268
+        addiu $t9, $zero, 1
+
+    fixLankyPhaseHandState_hashead:
+        lw $t0, 0x0 ($s1)
+        j 0x806C3268
+        addiu $t9, $zero, 5
+
+blockTreeClimbing:
+    jal canPlayerClimb
+    nop
+    bnez $v0, blockTreeClimbing_canclimb
+    nop
+    lbu $a0, 0x6 ($s3) ; check model 2 status
+    bnez $a0, blockTreeClimbing_noclimb ; is model 2, cannot climb
+    nop
+
+    blockTreeClimbing_canclimb:
+        or $a0, $s2, $zero
+        lw $a1, 0x64 ($sp)
+        j 0x8072F3E4
+        or $a2, $s3, $zero
+
+
+    blockTreeClimbing_noclimb:
+        j 0x8072F474
+        or $a0, $s2, $zero

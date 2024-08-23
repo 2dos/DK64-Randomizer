@@ -13,7 +13,7 @@ beautifulsoup4==4.12.2
 djlint==1.30.2
 cpplint==1.6.1
 flask==3.0.0
-flask-cors==4.0.0
+flask-cors==4.0.1
 waitress==2.1.2
 flask-executor==1.0.0
 vidua==0.4.5

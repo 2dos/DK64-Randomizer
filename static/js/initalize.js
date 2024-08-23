@@ -55,6 +55,7 @@ if (location.hostname == "dk64randomizer.com") {
   document.getElementById("spoiler_warning_1").style.display = "none";
   document.getElementById("spoiler_warning_2").style.background = "";
   document.getElementById("spoiler_warning_3").style.display = "none";
+  document.getElementById("spoiler_warning_4").style.display = "none";
   document.getElementById("plandomizer_container").style.display = "none";
 }
 if (location.hostname != "localhost") {

@@ -13,6 +13,14 @@ heap_size = 0x34000 + music_size
 flut_size = 0
 MODEL_DIRECTORY = "assets/models/"
 
+INSTRUMENT_PADS = {
+    168: "bongo",
+    169: "guitar",
+    170: "sax",
+    171: "triangle",
+    172: "trombone",
+}
+
 barrel_skins = (
     "gb",
     "dk",
@@ -37,6 +45,7 @@ barrel_skins = (
     "funky",
     "candy",
     "snide",
+    "hint",
 )
 
 
@@ -79,3 +88,19 @@ def hueShift(im: Image, amount: int):
             new.append(list(im_px[x, y])[3])
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
+
+
+def convertToRGBA32(png_file):
+    """Convert PNG to RGBA32 binary."""
+    im = Image.open(png_file)
+    width, height = im.size
+    pix = im.load()
+    new_file = png_file.replace(".png", ".rgba32")
+    with open(new_file, "wb") as fh:
+        for y in range(height):
+            for x in range(width):
+                r, g, b, a = im.getpixel((x, y))
+                fh.write((r & 0xFF).to_bytes(1, "big"))
+                fh.write((g & 0xFF).to_bytes(1, "big"))
+                fh.write((b & 0xFF).to_bytes(1, "big"))
+                fh.write((a & 0xFF).to_bytes(1, "big"))

@@ -7,8 +7,7 @@ import math
 
 import encoders
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
-from BuildLib import float_to_hex, main_pointer_table_offset
-from image_converter import convertToRGBA32
+from BuildLib import float_to_hex, main_pointer_table_offset, convertToRGBA32
 
 
 class File:
@@ -323,7 +322,7 @@ pointer_tables = [
         do_not_compress=True,
         dont_overwrite_uncompressed_sizes=True,
     ),
-    TableInfo(index=TableNames.Unknown22),
+    TableInfo(index=TableNames.Critters),
     TableInfo(
         name="Map Exits",
         index=TableNames.Exits,
@@ -547,6 +546,7 @@ class HintRegion:
 
 
 hint_region_list = [
+    HintRegion("???", "NullRegion"),
     # Shops
     HintRegion("Isles Shops", "ShopIsles"),
     HintRegion("Japes Shops", "ShopJapes"),
@@ -558,6 +558,7 @@ hint_region_list = [
     HintRegion("Castle Shops", "ShopCastle"),
     HintRegion("Jetpac Game", "Jetpac"),  # Shouldn't really be accessible
     # Medals
+    HintRegion("Isles Medal Rewards", "MedalsIsles"),  # Shouldn't be accessible
     HintRegion("Japes Medal Rewards", "MedalsJapes"),  # Shouldn't be accessible
     HintRegion("Aztec Medal Rewards", "MedalsAztec"),  # Shouldn't be accessible
     HintRegion("Factory Medal Rewards", "MedalsFactory"),  # Shouldn't be accessible
@@ -566,6 +567,8 @@ hint_region_list = [
     HintRegion("Caves Medal Rewards", "MedalsCaves"),  # Shouldn't be accessible
     HintRegion("Castle Medal Rewards", "MedalsCastle"),  # Shouldn't be accessible
     # Isles
+    HintRegion("Game Start", "GameStart"),
+    HintRegion("Credits", "Credits"),
     HintRegion("Main Isle", "IslesMain"),
     HintRegion("Outer Isles", "IslesOuter"),
     HintRegion("Krem Isle", "IslesKrem"),
@@ -614,6 +617,7 @@ hint_region_list = [
     # Other
     HintRegion("Hideout Helm", "OtherHelm"),
     HintRegion("Troff n Scoff", "OtherTnS"),
+    HintRegion("This should not be hinted", "Error"),
 ]
 
 

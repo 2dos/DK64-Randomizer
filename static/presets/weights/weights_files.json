@@ -9,6 +9,12 @@
     },
     "alter_switch_allocation": 0,
     "auto_keys": 1,
+    "bananaport_placement_rando": {
+      "off": 0.7,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.08,
+      "on": 0.02
+    },
     "bananaport_rando": {
       "off": 1
     },
@@ -292,7 +298,11 @@
       "max": 60,
       "mean": 45
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "off": 0.2,
+      "easy": 0.7,
+      "medium": 0.1
+    },
     "quality_of_life": 1,
     "random_crates": 0,
     "random_fairies": 0,
@@ -325,6 +335,7 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 1,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
@@ -367,9 +378,10 @@
     "vanilla_door_rando": 0,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.7,
-      "get_key8": 0.3
+    "win_condition_item": {
+      "beat_krool": 0.2,
+      "get_key8": 0.1,
+      "easy_random": 0.7
     },
     "wrinkly_available": 1,
     "wrinkly_hints": {
@@ -387,10 +399,14 @@
     },
     "alter_switch_allocation": 0.5,
     "auto_keys": 1,
-    "bananaport_rando": {
+    "bananaport_placement_rando": {
       "off": 0.5,
-      "in_level": 0.3,
-      "crossmap_coupled": 0.2
+      "vanilla_only": 0.3,
+      "half_vanilla": 0.15,
+      "on": 0.05
+    },
+    "bananaport_rando": {
+      "off": 1
     },
     "blocker_text": {
       "min": 40,
@@ -686,7 +702,12 @@
       "max": 100,
       "mean": 60
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "off": 0.1,
+      "easy": 0.2,
+      "medium": 0.6,
+      "hard": 0.1
+    },
     "quality_of_life": 1,
     "random_crates": 0.3,
     "random_fairies": 0.2,
@@ -720,6 +741,7 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
@@ -765,10 +787,11 @@
     "vanilla_door_rando": 0.4,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.6,
-      "get_key8": 0.25,
-      "all_keys": 0.15
+    "win_condition_item": {
+      "beat_krool": 0.25,
+      "easy_random": 0.2,
+      "medium_random": 0.5,
+      "krem_kapture": 0.05
     },
     "wrinkly_available": 0.9,
     "wrinkly_hints": {
@@ -788,9 +811,14 @@
     },
     "alter_switch_allocation": 0.8,
     "auto_keys": 1,
+    "bananaport_placement_rando": {
+      "off": 0.2,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.4,
+      "on": 0.2
+    },
     "bananaport_rando": {
-      "off": 0.5,
-      "in_level": 0.3,
+      "off": 0.8,
       "crossmap_coupled": 0.1,
       "crossmap_decoupled": 0.1
     },
@@ -1132,7 +1160,11 @@
       "max": 100,
       "mean": 70
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "easy": 0.2,
+      "medium": 0.3,
+      "hard": 0.5
+    },
     "quality_of_life": 1,
     "random_crates": 0.6,
     "random_fairies": 0.6,
@@ -1166,6 +1198,7 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
@@ -1211,14 +1244,11 @@
     "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.45,
-      "get_key8": 0.25,
-      "all_fairies": 0.05,
-      "all_blueprints": 0.05,
-      "all_medals": 0.05,
-      "poke_snap": 0.05,
-      "all_keys": 0.1
+    "win_condition_item": {
+      "beat_krool": 0.2,
+      "medium_random": 0.3,
+      "hard_random": 0.45,
+      "krem_kapture": 0.05
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {
@@ -1238,9 +1268,14 @@
     },
     "alter_switch_allocation": 0.8,
     "auto_keys": 0.5,
+    "bananaport_placement_rando": {
+      "off": 0.2,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.4,
+      "on": 0.2
+    },
     "bananaport_rando": {
-      "off": 0.5,
-      "in_level": 0.3,
+      "off": 0.8,
       "crossmap_coupled": 0.1,
       "crossmap_decoupled": 0.1
     },
@@ -1582,7 +1617,11 @@
       "max": 100,
       "mean": 70
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "easy": 0.2,
+      "medium": 0.3,
+      "hard": 0.5
+    },
     "quality_of_life": 1,
     "random_crates": 0.6,
     "random_fairies": 0.6,
@@ -1616,6 +1655,7 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
@@ -1661,14 +1701,11 @@
     "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
     "warp_to_isles": 0.9,
-    "win_condition": {
-      "beat_krool": 0.45,
-      "get_key8": 0.25,
-      "all_fairies": 0.05,
-      "all_blueprints": 0.05,
-      "all_medals": 0.05,
-      "poke_snap": 0.05,
-      "all_keys": 0.1
+    "win_condition_item": {
+      "beat_krool": 0.2,
+      "medium_random": 0.3,
+      "hard_random": 0.45,
+      "krem_kapture": 0.05
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {

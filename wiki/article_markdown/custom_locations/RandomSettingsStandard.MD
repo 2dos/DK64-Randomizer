@@ -38,10 +38,13 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- All: 40%
 	- Isles: 20%
 - Progressive Switch Strength: 50%
-- Shuffle Bananaports: 
+- Random Bananaport Locations: 
 	- Off: 50%
-	- In Level: 30%
-	- Crossmap Coupled: 20%
+	- Vanilla Only: 30%
+	- Half Vanilla: 15%
+	- On: 5%
+- Cross-Map Bananaports: 
+	- Off: 100%
 - B. Locker Max: Between 40 and 100, usually close to 60
 - Auto Complete Bonus Barrels: 30%
 - Shuffle Bonus Barrels: 70%
@@ -196,7 +199,11 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - No Melon Slice Drops: 20%
 - Open Lobbies: 60%
 - Progressive Hint 35 Requirement: Between 30 and 100, usually close to 60
-- Shuffle Puzzle Solutions: 50%
+- Random Puzzle Solutions: 
+	- Off: 10%
+	- Easy: 20%
+	- Medium: 60%
+	- Hard: 10%
 - Random Crates: 30%
 - Random Fairies: 20%
 - Random Patches: 20%
@@ -219,6 +226,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Factory Testing Gate: 75%
 	- Galleon Lighthouse Gate: 75%
 	- Galleon Shipyard Area Gate: 75%
+	- Castle Crypt Doors: 75%
 	- Galleon Seasick Ship: 80%
 	- Forest Green Tunnel: 75%
 	- Forest Yellow Tunnel: 75%
@@ -244,9 +252,10 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Troff n' Scoff Max: Between 150 and 400, usually close to 300
 - Vanilla Door Rando: 40%
 - Win Condition: 
-	- Beat Krool: 60%
-	- Get Key8: 25%
-	- All Keys: 15%
+	- Beat Krool: 25%
+	- Easy Random: 20%
+	- Medium Random: 50%
+	- Krem Kapture: 5%
 - Kongless Hint Doors: 90%
 - Wrinkly Hints: 
 	- Standard: 50%

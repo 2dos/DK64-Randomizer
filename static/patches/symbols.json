@@ -1606,8 +1606,8 @@
         "arcadegrunt": 83,
         "static_expansion_size": 256,
         "actor_vanilla_limit": 345,
-        "collision_limit": 66,
-        "defs_limit": 153,
+        "collision_limit": 67,
+        "defs_limit": 154,
         "custom_actors_start": 345,
         "kong_locked_start": 744,
         "snoopdoor_open": 749,
@@ -1690,7 +1690,7 @@
         "movecheck_upgrade2": 8,
         "default_tracker_y_offset": 150.0,
         "fungi_night_check": 1048576,
-        "enable_climbing_flag": 0,
+        "enable_climbing_flag": 1,
         "disable_training_prechecks": 1,
         "arcade_image_count": 22,
         "crowd_volume": 10000,
@@ -1728,6 +1728,7 @@
         "newactor_snideitem": 27,
         "newactor_zingerflamethrower": 28,
         "newactor_scarab": 29,
-        "newactor_terminator": 30
+        "newactor_hintitem": 30,
+        "newactor_terminator": 31
     }
 }

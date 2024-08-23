@@ -81,7 +81,7 @@ extern void __osCreateMesgQueue(void* queue, void* message, int unk);
 extern void __osRecvMesg(void* queue, void* message, int os_state);
 extern void __osEPiStartDMA(void* unk, void* iomessage, int os_state);
 extern void __osPiRawReadIo(int a0, void* a1);
-extern int __osGetThreadId(void* thread);
+extern int __osGetThreadId(OSThread* thread);
 extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
 extern int __osEepromProbe(void* unk0);
@@ -452,6 +452,7 @@ extern void unkActorFunc_0(void* actor, int unk0);
 extern int unkCollisionFunc(void* unk0, int unk1);
 
 //vanilla data
+extern OSThread* __osActiveQueue;
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
 extern char KRoolRound;

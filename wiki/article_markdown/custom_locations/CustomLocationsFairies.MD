@@ -53,7 +53,7 @@
 | Frantic Factory | Near Dartboard Boxes | `l.camera` | 
 | Frantic Factory | Research and Development Pole | `l.camera` | 
 | Frantic Factory | Car Race Entryway | `l.camera` | 
-| Frantic Factory | Toy Monster Room | `l.camera and ((l.triangle and l.punch and l.ischunky) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Toy Monster Room | `l.camera and ((l.triangle and l.punch and l.ischunky and l.climbing) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Diddy Research and Development Room | `l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Chute to Storage Room | `l.camera` | 
 | Frantic Factory | Dark Room | `l.camera and ((l.punch and l.chunky) or l.phasewalk)` | 
@@ -73,7 +73,7 @@
 | Gloomy Galleon | Around Cactus | `l.camera` | 
 | Gloomy Galleon | Around Lighthouse | `l.camera` | 
 | Galleon Sick Bay | Seasick Ship | `l.camera` | 
-| Galleon Lighthouse | Top of Lighthouse | `l.camera` | 
+| Galleon Lighthouse | Top of Lighthouse | `l.climbing` | 
 | Galleon Mermaid Room | Mermaid Window | `l.camera` | 
 | Galleon5DShip Diddy Lanky Chunky | Lanky's 5-Door Ship | `l.camera` | 
 | Galleon2DShip | Tiny's 2-Door Ship | `l.camera` | 
@@ -87,8 +87,8 @@
 | Forest Rafters | Dark Rafters | `l.guitar and l.isdiddy and l.camera` | 
 | Fungi Forest | Above Blue Tunnel | `l.camera` | 
 | Fungi Forest | Above the Clock | `l.camera` | 
-| Fungi Forest | Above the Well | `l.camera and (l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy))` | 
-| Fungi Forest | Above BBlast Entrance | `l.camera` | 
+| Fungi Forest | Above the Well | `l.camera and (((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy))` | 
+| Fungi Forest | Above BBlast Entrance | `l.camera and l.climbing` | 
 | Fungi Forest | Near Crown | `l.camera` | 
 | Fungi Forest | Top of Giant Mushroom | `l.camera` | 
 | Fungi Forest | Owl Tree Tunnel | `l.camera` | 
@@ -170,7 +170,7 @@
 | Crystal Caves Lobby | Crystal Caves Lobby | `l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip)` | 
 | Isles Snide Room | Snide Room | `l.camera` | 
 | Training Grounds | Training Grounds Entrance | `l.camera` | 
-| Training Grounds | Training Grounds Hidden Mountain | `l.camera` | 
+| Training Grounds | Training Grounds Hidden Mountain | `l.climbing` | 
 | Treehouse | Treehouse Windows | `l.camera` | 
 
 # Hideout Helm

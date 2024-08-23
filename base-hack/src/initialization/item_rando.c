@@ -29,6 +29,7 @@ typedef struct meloncrate_db_item {
 
 static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
 static unsigned char medal_item_table[45] = {}; // Medal Rewards
+static unsigned char wrinkly_item_table[35] = {}; // Wrinkly Rewards
 static unsigned short crown_item_table[10] = {}; // Crown Rewards
 static unsigned short key_item_table[8] = {}; // Boss Rewards
 static short fairy_item_table[20] = {}; // Fairy Rewards
@@ -58,6 +59,17 @@ int getMedalItem(int index) {
      * @return Medal Item Index of the reward
      */
 	return medal_item_table[index];
+}
+
+int getWrinklyItem(int index) {
+    /**
+     * @brief Get Wrinkly Door item from medal index
+     * 
+     * @param index Medal Index: (5 * level) + kong
+     * 
+     * @return Medal Item Index of the reward
+     */
+	return wrinkly_item_table[index];
 }
 
 int getCrownItem(maps map) {
@@ -267,6 +279,7 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_SNIDEITEM, .skin=SKIN_SNIDE},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPREVERSE, .skin=SKIN_FAKE_ITEM},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPSLOW, .skin=SKIN_FAKE_ITEM},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEM, .skin=SKIN_HINT},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -359,6 +372,12 @@ void initItemRando(void) {
     unsigned char* medal_write = getFile(medal_size, 0x1FF1080);
     for (int i = 0; i < medal_size; i++) {
         medal_item_table[i] = medal_write[i];
+    }
+    // Hint Table
+    int wrinkly_size = 35;
+    unsigned char* wrinkly_write = getFile(wrinkly_size, 0x1FF0EC0);
+    for (int i = 0; i < wrinkly_size; i++) {
+        wrinkly_item_table[i] = wrinkly_write[i];
     }
     // Crown Table
     int crown_size = 0xA;

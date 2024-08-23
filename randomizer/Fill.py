@@ -18,6 +18,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.HintRegion import HintRegion
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
@@ -35,9 +36,10 @@ from randomizer.Enums.Settings import (
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    ShufflePortLocations,
     SpoilerHints,
     TrainingBarrels,
-    WinCondition,
+    WinConditionComplex,
     WrinklyHints,
 )
 from randomizer.Enums.Time import Time
@@ -66,6 +68,7 @@ from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import ResetShuffledKasplatLocations, ShuffleKasplatsAndLocations, ShuffleKasplatsInVanillaLocations, constants, shufflable
 from randomizer.ShufflePatches import ShufflePatches
+from randomizer.ShufflePorts import ShufflePorts, ResetPorts
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 
@@ -785,6 +788,17 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
     return WothLocations
 
 
+def checkCommonBarriers(settings: Settings, target_item: BarrierItems, target_win_con: WinConditionComplex) -> bool:
+    """Check common barriers which would make an item a major one."""
+    if settings.coin_door_item == target_item:
+        return True
+    if settings.crown_door_item == target_item:
+        return True
+    if target_item in settings.BLockerEntryItems:
+        return True
+    return settings.win_condition_item == target_win_con
+
+
 def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
     """Identify the Major Items in this seed based on the item placement and the settings."""
     # Use the settings to determine non-progression Major Items
@@ -806,46 +820,23 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.append(Items.Camera)
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
-    requires_rareware = spoiler.settings.coin_door_item == BarrierItems.CompanyCoin
-    requires_nintendo = spoiler.settings.coin_door_item == BarrierItems.CompanyCoin
-    requires_crowns = spoiler.settings.crown_door_item == BarrierItems.Crown or spoiler.settings.coin_door_item == BarrierItems.Crown
-    for x in (spoiler.settings.crown_door_item, spoiler.settings.coin_door_item):
-        if x == BarrierItems.CompanyCoin:
-            requires_rareware = True
-            requires_nintendo = True
 
-    if requires_rareware or BarrierItems.CompanyCoin in spoiler.settings.BLockerEntryItems:  # A vanilla Rareware Coin should be considered a major item so medals will not be foolish
-        majorItems.append(Items.RarewareCoin)
-    if requires_nintendo or BarrierItems.CompanyCoin in spoiler.settings.BLockerEntryItems:  # A vanilla Rareware Coin should be considered a major item so Grab will not be foolish
-        majorItems.append(Items.NintendoCoin)
-    if (
-        spoiler.settings.win_condition == WinCondition.all_blueprints
-        or spoiler.settings.coin_door_item == BarrierItems.Blueprint
-        or spoiler.settings.crown_door_item == BarrierItems.Blueprint
-        or BarrierItems.Blueprint in spoiler.settings.BLockerEntryItems
-    ):
+    if checkCommonBarriers(spoiler.settings, BarrierItems.CompanyCoin, WinConditionComplex.req_companycoins):
+        majorItems.append(Items.RarewareCoin)  # A vanilla Rareware Coin should be considered a major item so medals will not be foolish
+        majorItems.append(Items.NintendoCoin)  # A vanilla Nintendo Coin should be considered a major item
+    if checkCommonBarriers(spoiler.settings, BarrierItems.Blueprint, WinConditionComplex.req_bp):
         majorItems.extend(ItemPool.Blueprints())
-    if (
-        spoiler.settings.win_condition == WinCondition.all_medals
-        or spoiler.settings.coin_door_item == BarrierItems.Medal
-        or spoiler.settings.crown_door_item == BarrierItems.Medal
-        or BarrierItems.Medal in spoiler.settings.BLockerEntryItems
-    ):
+    if checkCommonBarriers(spoiler.settings, BarrierItems.Medal, WinConditionComplex.req_medal):
         majorItems.append(Items.BananaMedal)
-    if (
-        spoiler.settings.win_condition == WinCondition.all_fairies
-        or spoiler.settings.coin_door_item == BarrierItems.Fairy
-        or spoiler.settings.crown_door_item == BarrierItems.Fairy
-        or BarrierItems.Fairy in spoiler.settings.BLockerEntryItems
-    ):
+    if checkCommonBarriers(spoiler.settings, BarrierItems.Fairy, WinConditionComplex.req_fairy):
         majorItems.append(Items.BananaFairy)
-    if requires_crowns or BarrierItems.Crown in spoiler.settings.BLockerEntryItems:
+    if checkCommonBarriers(spoiler.settings, BarrierItems.Crown, WinConditionComplex.req_crown):
         majorItems.append(Items.BattleCrown)
-    if spoiler.settings.coin_door_item == BarrierItems.Pearl or spoiler.settings.crown_door_item == BarrierItems.Pearl or BarrierItems.Pearl in spoiler.settings.BLockerEntryItems:
+    if checkCommonBarriers(spoiler.settings, BarrierItems.Pearl, WinConditionComplex.req_pearl):
         majorItems.append(Items.Pearl)
-    if spoiler.settings.coin_door_item == BarrierItems.Bean or spoiler.settings.crown_door_item == BarrierItems.Bean or BarrierItems.Bean in spoiler.settings.BLockerEntryItems:
+    if checkCommonBarriers(spoiler.settings, BarrierItems.Bean, WinConditionComplex.req_bean):
         majorItems.append(Items.Bean)
-    if spoiler.settings.coin_door_item == BarrierItems.RainbowCoin or spoiler.settings.crown_door_item == BarrierItems.RainbowCoin or BarrierItems.RainbowCoin in spoiler.settings.BLockerEntryItems:
+    if checkCommonBarriers(spoiler.settings, BarrierItems.RainbowCoin, WinConditionComplex.req_rainbowcoin):
         majorItems.append(Items.RainbowCoin)
     # The contents of some locations can make entire classes of items not foolish
     # Loop through these locations until no new items are added to the list of major items
@@ -914,7 +905,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             ordered_interesting_locations.append(locationId)
 
     # If K. Rool is the win condition, prepare phase-specific paths as well
-    if spoiler.settings.win_condition == WinCondition.beat_krool:
+    if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
     for locationId in ordered_interesting_locations:
@@ -938,7 +929,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if other_location not in accessible:
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
-        if spoiler.settings.win_condition == WinCondition.beat_krool:
+        if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
             final_boss_associated_event = {
                 Maps.JapesBoss: Events.KRoolDillo1,
                 Maps.AztecBoss: Events.KRoolDog1,
@@ -980,7 +971,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if not inAnotherPath:
                 # Never pare out these moves - the assumptions might overlook their need to enter levels with
                 # This is a bit of a compromise, as you *might* see these moves WotH purely for coins/GBs but they won't be on paths
-                if location.item in (Items.Swim, Items.Vines):
+                if location.item in (Items.Swim, Items.Vines, Items.Climbing):
                     continue
                 # In Chaos B. Lockers, you may need certain items purely to pass B. Locker
                 if spoiler.settings.chaos_blockers:
@@ -1026,11 +1017,11 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         regionCountHintableItems.append(Items.Camera)
 
     # These regions never have anything useful or are otherwise accounted for in the hints and shouldn't be hinted
-    neverHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits", "Jetpac Game"}
-    nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits", "Jetpac Game"}
+    neverHintableNames = {HintRegion.GameStart, HintRegion.KRool, HintRegion.Error, HintRegion.Credits, HintRegion.Jetpac}
+    nonHintableNames = {HintRegion.GameStart, HintRegion.KRool, HintRegion.Error, HintRegion.Credits, HintRegion.Jetpac}
     if spoiler.settings.cb_rando != CBRando.on_with_isles:
         # Disable hinting this if CBs aren't in Isles. Obviously Isles CBs would be foolish if there's no CBs to get
-        nonHintableNames.add("Isles Medal Rewards")
+        nonHintableNames.add(HintRegion.IslesCBs)
     spoiler.region_hintable_count = {}
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
@@ -1040,12 +1031,12 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in MajorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
-        elif "Medal Rewards" in region.hint_name and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
+        elif region.isMedalRegion() and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
             bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
             if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
-        if "Shops" not in region.hint_name and region.hint_name not in neverHintableNames:
+        if region.isShopRegion() and region.hint_name not in neverHintableNames:
             # Count the number of region count hintable items in the region (again, ignore training moves)
             regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in regionCountHintableItems)
             if regionItemCount > 0:
@@ -1539,6 +1530,9 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         for loc_id in spoiler.LocationList.keys()
         if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type not in (Types.Constant, Types.Enemies) and spoiler.LocationList[loc_id].item is None
     ]
+    # Make sure hints don't get placed, if progressive hints are enabled
+    if spoiler.settings.enable_progressive_hints:
+        placed_types.append(Types.Hint)
     # Rig the valid_locations for all relevant items to only be able to place things in Helm
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
         # Filter the valid locations down to only Helm locations
@@ -1592,6 +1586,9 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         for loc_id in spoiler.LocationList.keys()
         if spoiler.LocationList[loc_id].level != Levels.HideoutHelm and spoiler.LocationList[loc_id].type == Types.Key and spoiler.LocationList[loc_id].item is None
     ]
+    # Make sure hints don't get placed, if progressive hints are enabled
+    if spoiler.settings.enable_progressive_hints:
+        placed_types.append(Types.Hint)
     # Rig the valid_locations for all relevant items to only be able to place things on bosses
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
         # Any item eligible to be on a boss can be on any boss
@@ -1739,14 +1736,14 @@ def Fill(spoiler: Spoiler) -> None:
         or Types.Fairy in spoiler.settings.shuffled_location_types
         or Types.Key in spoiler.settings.shuffled_location_types
     ):
-        preplaced_items.extend(FillHelmLocations(spoiler, placed_types, preplaced_items))
+        preplaced_items.extend(FillHelmLocations(spoiler, placed_types.copy(), preplaced_items))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
 
     # If keys are shuffled in the pool we want to ensure an item is on every boss
     # This is to support broader settings that rely on boss kills and to enable reads on the boss fill algorithm
     if Types.Key in spoiler.settings.shuffled_location_types:
-        preplaced_items.extend(FillBossLocations(spoiler, placed_types, preplaced_items))
+        preplaced_items.extend(FillBossLocations(spoiler, placed_types.copy(), preplaced_items))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things on Bosses")
 
@@ -1865,6 +1862,19 @@ def Fill(spoiler: Spoiler) -> None:
         gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, toughGbsToBePlaced, [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
+    if spoiler.settings.extreme_debugging:
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
+    # Place Hints
+    if Types.Hint in spoiler.settings.shuffled_location_types and not spoiler.settings.enable_progressive_hints:
+        placed_types.append(Types.Hint)
+        spoiler.Reset()
+        hintItemsToBePlaced = ItemPool.HintItems()
+        for item in preplaced_items:
+            if item in hintItemsToBePlaced:
+                hintItemsToBePlaced.remove(item)
+        hintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, hintItemsToBePlaced, [])
+        if hintsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(hintsUnplaced) + " unplaced Hints.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Fill in fake items
@@ -1995,7 +2005,8 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         # First place training moves that are not placed. These should be the first moves placed outside of starting moves. Placement order is in relative importance.
-        trainingMovesToPlace = [move for move in [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges] if move not in placedMoves]
+        training = [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges, Items.Climbing]
+        trainingMovesToPlace = [move for move in training if move not in placedMoves]
         assumedItems = [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves) if x not in trainingMovesToPlace]
         trainingMovesUnplaced = PlaceItems(spoiler, FillAlgorithm.assumed, trainingMovesToPlace, assumedItems, inOrder=True)
         if trainingMovesUnplaced > 0:
@@ -3049,7 +3060,16 @@ class ItemReference:
 
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
-    resetCustomLocations()
+    resetCustomLocations(spoiler)
+    ResetPorts()
+    if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
+        port_replacements = {}
+        port_human_replacements = {}
+        ShufflePorts(spoiler, port_replacements, port_human_replacements)
+        spoiler.warp_locations = port_replacements
+        spoiler.human_warps = port_human_replacements
+    if spoiler.settings.enable_progressive_hints:
+        SetProgressiveHintDoorLogic(spoiler)
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.vanilla_door_rando:
         ShuffleVanillaDoors(spoiler)
@@ -3057,8 +3077,6 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
             ShuffleDoors(spoiler, True)
     elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando:
         ShuffleDoors(spoiler, False)
-    if spoiler.settings.enable_progressive_hints:
-        SetProgressiveHintDoorLogic(spoiler)
     # Handle Crown Placement
     if spoiler.settings.crown_placement_rando:
         crown_replacements = {}
@@ -3067,13 +3085,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         spoiler.crown_locations = crown_replacements
         spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
     # Handle Bananaports
-    if spoiler.settings.bananaport_rando == BananaportRando.in_level:
-        replacements = []
-        human_replacements = {}
-        ShuffleWarps(replacements, human_replacements, spoiler.settings.warp_level_list_selected)
-        spoiler.bananaport_replacements = replacements.copy()
-        spoiler.human_warp_locations = human_replacements
-    elif spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
+    if spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
         replacements = []
         human_replacements = {}
         ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == BananaportRando.crossmap_coupled, spoiler.settings.warp_level_list_selected)
@@ -3151,13 +3163,14 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.HomingAmmo, "Homing Ammo", "Shared Forest Funky"),
         ItemReference(Items.SniperSight, "Sniper Scope", "Shared Castle Funky"),
         ItemReference(Items.ProgressiveAmmoBelt, "Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+        ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
+        ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
         # Basic Moves
         ItemReference(Items.Swim, "Diving", "Dive Barrel"),
         ItemReference(Items.Oranges, "Orange Throwing", "Orange Barrel"),
         ItemReference(Items.Barrels, "Barrel Throwing", "Barrel Barrel"),
         ItemReference(Items.Vines, "Vine Swinging", "Vine Barrel"),
-        ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
-        ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
+        ItemReference(Items.Climbing, "Climbing", "Starting Move"),
         # Instrument Upgrades & Slams
         ItemReference(Items.ProgressiveInstrumentUpgrade, "Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
         ItemReference(Items.ProgressiveSlam, "Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),
@@ -3194,7 +3207,7 @@ def ValidateFixedHints(settings: Settings) -> None:
         raise Ex.SettingsIncompatibleException("No Logic is not compatible with fixed hints.")
     if not settings.shuffle_items:
         raise Ex.SettingsIncompatibleException("Item Randomizer must be enabled with Fixed hints.")
-    if settings.win_condition != WinCondition.beat_krool:
+    if settings.win_condition_item != WinConditionComplex.beat_krool:
         raise Ex.SettingsIncompatibleException("Alternate win conditions will not work with Fixed hints.")
     if len(settings.starting_kong_list) != 2:
         raise Ex.SettingsIncompatibleException("Fixed hints require starting with exactly 2 Kongs.")

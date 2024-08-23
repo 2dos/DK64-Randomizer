@@ -69,6 +69,7 @@
 .importobj "obj/src_overlays_race.o"
 .importobj "obj/src_pause_carousel.o"
 .importobj "obj/src_pause_hints.o"
+.importobj "obj/src_pause_hint_region_list.o"
 .importobj "obj/src_pause_lib.o"
 .importobj "obj/src_pause_regions.o"
 .importobj "obj/src_randomizers_b_locker_requirement.o"

@@ -19,6 +19,7 @@ class Items(IntEnum):
     Swim = auto()
     Oranges = auto()
     Barrels = auto()
+    Climbing = auto()
 
     ProgressiveSlam = auto()
     ProgressiveSlam2 = auto()

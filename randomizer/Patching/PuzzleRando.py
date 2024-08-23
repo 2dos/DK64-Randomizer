@@ -8,7 +8,7 @@ from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Lib import IsItemSelected, float_to_hex
-from randomizer.Enums.Settings import FasterChecksSelected
+from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 
 def chooseSFX():
@@ -371,9 +371,25 @@ class PuzzleRandoBound:
         self.upper = upper
         self.selected = None
 
-    def generateRequirement(self) -> int:
+    def generateRequirement(self, spoiler) -> int:
         """Generate random requirement between the upper and lower bounds."""
-        self.selected = random.randint(self.lower, self.upper)
+        lower = self.lower
+        lower_mid = int((((self.upper - self.lower) / 3) * 1) + self.lower)
+        upper_mid = int((((self.upper - self.lower) / 3) * 2) + self.lower)
+        upper = self.upper
+        selected_upper = upper
+        selected_lower = lower
+        puzzle_setting = spoiler.settings.puzzle_rando_difficulty
+        if puzzle_setting == PuzzleRando.easy:
+            selected_lower = lower
+            selected_upper = lower_mid
+        elif puzzle_setting == PuzzleRando.medium:
+            selected_lower = lower_mid
+            selected_upper = upper_mid
+        elif puzzle_setting == PuzzleRando.hard:
+            selected_lower = upper_mid
+            selected_upper = upper
+        self.selected = random.randint(selected_lower, selected_upper)
         return self.selected
 
 
@@ -402,22 +418,22 @@ def randomize_puzzles(spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     sav = spoiler.settings.rom_data
     spoiler.coin_requirements = {}
-    if spoiler.settings.puzzle_rando:
+    if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
         ROM_COPY = LocalROM()
         coin_req_info = [
-            PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 50)),
-            PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13D, PuzzleRandoBound(20, 50)),
-            PuzzleItem("Factory Car Race", Maps.FactoryTinyRace, 0x13E, PuzzleRandoBound(5, 15), PuzzleRandoBound(3, 8), FasterChecksSelected.factory_car_race),
+            PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 60)),
+            PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13D, PuzzleRandoBound(20, 60)),
+            PuzzleItem("Factory Car Race", Maps.FactoryTinyRace, 0x13E, PuzzleRandoBound(5, 18), PuzzleRandoBound(3, 12), FasterChecksSelected.factory_car_race),
             PuzzleItem("Galleon Seal Race", Maps.GalleonSealRace, 0x13F, PuzzleRandoBound(5, 12), PuzzleRandoBound(5, 10), FasterChecksSelected.galleon_seal_race),
             PuzzleItem("Castle Car Race", Maps.CastleTinyRace, 0x140, PuzzleRandoBound(5, 15), PuzzleRandoBound(5, 12), FasterChecksSelected.castle_car_race),
             PuzzleItem("Japes Minecart", Maps.JapesMinecarts, 0x141, PuzzleRandoBound(40, 70)),
-            PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 0x142, PuzzleRandoBound(25, 55)),
+            PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 0x142, PuzzleRandoBound(25, 60)),
             PuzzleItem("Castle Minecart", Maps.CastleMinecarts, 0x143, PuzzleRandoBound(10, 45), PuzzleRandoBound(5, 30), FasterChecksSelected.castle_minecart),
         ]
         for coinreq in coin_req_info:
             coinreq.updateBoundSetting(spoiler)
             ROM_COPY.seek(sav + coinreq.offset)
-            selected_requirement = coinreq.selected_bound.generateRequirement()
+            selected_requirement = coinreq.selected_bound.generateRequirement(spoiler)
             spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
             ROM_COPY.writeMultipleBytes(selected_requirement, 1)
         chosen_sounds = []
@@ -462,6 +478,7 @@ def randomize_puzzles(spoiler):
         spoiler.arcade_order = [0] * 4
         for lvl_index, lvl in enumerate(arcade_levels):
             spoiler.arcade_order[lvl_index] = arcade_level_data[lvl]
+    if spoiler.settings.puzzle_rando_difficulty in (PuzzleRando.hard, PuzzleRando.chaos):
         # Random Race Paths
         race_data = {
             # Maps.AngryAztec: {

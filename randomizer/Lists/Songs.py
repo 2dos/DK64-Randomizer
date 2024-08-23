@@ -21,6 +21,7 @@ class Song:
         self.output_name = name
         self.output_name_short = name
         self.type = type
+        self.default_type = type
         self.memory = memory
         self.default_memory = memory
         self.channel = (memory >> 3) & 0xF
@@ -35,6 +36,7 @@ class Song:
         self.output_name_short = self.name
         self.memory = self.default_memory
         self.shuffled = False
+        self.type = self.default_type
 
 
 class SongMultiselectorItem:

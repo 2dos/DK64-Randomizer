@@ -911,6 +911,7 @@ ColoredBananaGroupList = [
         name="Ladder at the bottom",
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
+        logic=lambda l: l.climbing,
         locations=[[1, 1.0, 450, 16, 287], [1, 1.0, 450, 59, 288], [1, 1.0, 450, 103, 289], [1, 1.0, 450, 146, 290], [1, 1.0, 450, 190, 291]],
     ),
     ColoredBananaGroup(
@@ -919,6 +920,7 @@ ColoredBananaGroupList = [
         name="Around first floor platforms",
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 332, 200, 352],
             [1, 1.0, 303, 200, 425],
@@ -938,6 +940,7 @@ ColoredBananaGroupList = [
         name="Around the top of the lighthouse",
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
+        logic=lambda l: l.climbing,
         locations=[[1, 1.0, 428, 720, 414], [1, 1.0, 400, 720, 461], [1, 1.0, 428, 720, 511], [1, 1.0, 474, 720, 514], [1, 1.0, 502, 720, 471]],
     ),
     ColoredBananaGroup(
@@ -946,6 +949,7 @@ ColoredBananaGroupList = [
         name="Around the bottom of the lighthouse",
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
+        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 379, 0, 221],
             [1, 1.0, 286, 0, 269],
@@ -1477,6 +1481,7 @@ ColoredBananaGroupList = [
         name="Group 1 up the lighthouse (Donkey)",
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
+        logic=lambda l: l.climbing,
         vanilla=True,
         locations=[[5, 1.0, 550.31982421875, 343.0, 467.5648193359375], [5, 1.0, 483.4810485839844, 723.0, 440.6039123535156]],
     ),
@@ -1486,6 +1491,7 @@ ColoredBananaGroupList = [
         name="Group 2 up the lighthouse (Donkey)",
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
+        logic=lambda l: l.climbing,
         vanilla=True,
         locations=[[5, 1.0, 379.747802734375, 505.0, 392.3007507324219], [5, 1.0, 452.7491455078125, 220.0, 366.3783874511719]],
     ),
@@ -1587,6 +1593,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
+        logic=lambda l: l.climbing,
         points=[[372, 800, 315], [298, 807, 418], [298, 804, 535], [396, 810, 616], [517, 803, 616], [601, 808, 527], [601, 802, 407], [534, 806, 315]],
     ),
     Balloon(

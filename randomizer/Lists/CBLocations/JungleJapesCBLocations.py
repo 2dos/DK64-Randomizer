@@ -34,6 +34,7 @@ ColoredBananaGroupList = [
         name="Starting area treetops",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1073, 461, 612], [5, 1.0, 1103, 488, 266], [5, 1.0, 1307, 461, 404]],
     ),
     ColoredBananaGroup(
@@ -81,7 +82,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="W2 bunches",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         locations=[[5, 1.0, 1492, 295, 1425], [5, 1.0, 1520, 805, 2302]],
     ),
     ColoredBananaGroup(
@@ -113,7 +114,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Cannon to Diddy cage (2 bunches)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesCannonPlatform,
         locations=[[5, 1.0, 1233, 703, 2165], [5, 1.0, 1217, 880, 2229]],
     ),
     ColoredBananaGroup(
@@ -191,7 +192,7 @@ ColoredBananaGroupList = [
         name="Leading up to and on BBlast pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.JungleJapesStart,
-        logic=lambda l: l.vines or l.CanMoonkick(),
+        logic=lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing,
         locations=[[1, 1.0, 2308, 535, 1453], [1, 1.0, 2367, 550, 1330], [1, 1.0, 2422, 552, 1212], [1, 1.0, 2415, 530, 1123], [1, 1.0, 2511, 530, 1179], [5, 1.0, 2454, 544, 1152]],
     ),
     ColoredBananaGroup(
@@ -199,7 +200,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Up the vine to Funky's and lining the edge of Funky's area",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHill,
         locations=[
             [1, 1.0, 2191, 520, 2064],
             [1, 1.0, 2141, 520, 2034],
@@ -223,7 +224,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="On the edge of cannon platform",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesCannonPlatform,
         locations=[
             [1, 1.0, 1088, 520, 2234],
             [1, 1.0, 1079, 520, 2166],
@@ -417,6 +418,7 @@ ColoredBananaGroupList = [
         name="Cranky trees (1 custom, 1 Lanky, 1 Tiny bunch)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1844, 484, 3950], [5, 1.0, 1833.0638427734375, 480.0, 4210.4951171875], [5, 1.0, 1431.26953125, 480.0, 4010.7890625]],
     ),
     ColoredBananaGroup(
@@ -628,7 +630,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Ring around mountain (3 custom, 7 Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         locations=[
             [1, 1.0, 1575, 790, 2592],
             [1, 1.0, 1463, 790, 2485],
@@ -677,7 +679,7 @@ ColoredBananaGroupList = [
         name="On blueprint platform",
         konglist=[Kongs.chunky],
         region=Regions.JapesCatacomb,
-        logic=lambda l: l.pineapple and l.vines and l.ischunky,
+        logic=lambda l: l.pineapple and l.can_use_vines and l.ischunky,
         locations=[[5, 1.0, 203, 5, 686]],
     ),
     ColoredBananaGroup(
@@ -826,7 +828,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Slopes to Diddy's cage (4 custom, 6 Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         locations=[
             [1, 1.0, 1208, 853, 2470],
             [1, 1.0, 1135, 853, 2459],
@@ -876,7 +878,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Next to Snide",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         locations=[[5, 1.0, 2054, 690, 2566], [5, 1.0, 2274, 690, 2513]],
     ),
     ColoredBananaGroup(
@@ -903,7 +905,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="On the edge of Diddy's cage platform",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         locations=[[1, 1.0, 1204, 853, 2350], [1, 1.0, 1134, 853, 2300], [1, 1.0, 1041, 853, 2297], [1, 1.0, 929, 853, 2328], [1, 1.0, 907, 853, 2454]],
     ),
     ColoredBananaGroup(
@@ -921,7 +923,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Lanky's caged GB",
         konglist=[Kongs.lanky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesCannonPlatform,
         logic=lambda l: ((Events.JapesLankySwitch in l.Events or l.CanSkew(False)) and l.lanky) or (l.CanSkew(False) and l.settings.free_trade_items),
         locations=[[5, 1.0, 1140, 525, 2346], [5, 1.0, 1186, 525, 2326]],
     ),
@@ -938,7 +940,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Diddy's Caged GB",
         konglist=[Kongs.diddy],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHill,
         logic=lambda l: ((Events.JapesDiddySwitch1 in l.Events or l.phasewalk or l.generalclips or l.CanSkew(False)) and l.diddy)
         or ((l.phasewalk or l.generalclips or l.CanSkew(False)) and l.settings.free_trade_items),
         locations=[[5, 1.0, 2305, 525, 2101], [5, 1.0, 2310, 525, 2142]],
@@ -948,7 +950,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Chunky's Caged GB",
         konglist=[Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         logic=lambda l: ((Events.JapesChunkySwitch in l.Events or l.phasewalk or l.CanSkew(False)) and l.chunky) or ((l.phasewalk or l.CanSkew(False)) and l.settings.free_trade_items),
         locations=[[5, 1.0, 2335, 685, 2207], [5, 1.0, 2362, 685, 2253]],
     ),
@@ -957,8 +959,8 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="between vines from funky to cannon",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
-        logic=lambda l: l.vines,
+        region=Regions.JapesHill,
+        logic=lambda l: l.can_use_vines,
         locations=[[5, 1.2, 1611, 565, 2099], [5, 1.2, 1524, 565, 2099]],
     ),
     ColoredBananaGroup(
@@ -974,7 +976,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Above Melon Crate behind mountain",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         locations=[[5, 1.0, 1586, 844, 2619]],
     ),
     ColoredBananaGroup(
@@ -990,7 +992,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Inside Free Diddy cage",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         logic=lambda l: Events.JapesFreeKongOpenGates in l.Events,
         locations=[[5, 1.0, 1065, 858, 2608]],
     ),
@@ -1045,7 +1047,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
         vanilla=True,
-        logic=lambda l: l.vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))),
+        logic=lambda l: l.climbing and (l.can_use_vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
         locations=[
             [1, 1.0, 955.9228515625, 502.0, 701.2963256835938],
             [1, 1.0, 998.90185546875, 499.64178466796875, 587.4546508789062],
@@ -1093,7 +1095,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="On Funky's shop (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         vanilla=True,
         locations=[[5, 1.0, 2025.6510009765625, 610.0, 2223.663818359375], [5, 1.0, 2083.292236328125, 610.0, 2194.638916015625]],
     ),
@@ -1154,6 +1156,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1476.8092041015625, 491.60882568359375, 1467.7108154296875], [5, 1.0, 1910.9310302734375, 493.4305419921875, 1433.4444580078125]],
     ),
     ColoredBananaGroup(
@@ -1186,8 +1189,9 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="On treetop by Funky (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHill,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1261.9549560546875, 735.0, 1963.5047607421875]],
     ),
     ColoredBananaGroup(
@@ -1195,8 +1199,9 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="On treetop by cannon (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesCannonPlatform,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1917.8856201171875, 735.0, 2069.986572265625]],
     ),
     ColoredBananaGroup(
@@ -1216,6 +1221,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 923.9661254882812, 498.0, 1890.0908203125], [5, 1.0, 1047.989990234375, 498.0, 1698.77587890625]],
     ),
     ColoredBananaGroup(
@@ -1251,8 +1257,9 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Diddy's cage treetop (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1013.440673828125, 1067.333251953125, 2338.938720703125]],
     ),
     ColoredBananaGroup(
@@ -1294,8 +1301,9 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Treetop by Snide's (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 2093.632080078125, 895.0, 2318.272705078125]],
     ),
     ColoredBananaGroup(
@@ -1320,6 +1328,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 1692.72265625, 400.0, 3996.624267578125]],
     ),
     ColoredBananaGroup(
@@ -1327,7 +1336,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="Bunch by Snide's (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         vanilla=True,
         locations=[[5, 1.0, 2281.537841796875, 685.0, 2405.91015625]],
     ),
@@ -1468,7 +1477,7 @@ BalloonList = [
         name="T&S portal above Diddy BP",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesTnSAlcove,
         points=[[781, 600, 2364], [725, 604, 2316]],
     ),
     Balloon(
@@ -1477,7 +1486,7 @@ BalloonList = [
         name="Around mountain",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         points=[[1500, 900, 2555], [1652, 905, 2614], [1760, 895, 2516], [1780, 895, 2392], [1700, 890, 2293], [1557, 880, 2245], [1425, 890, 2407]],
     ),
     Balloon(
@@ -1486,7 +1495,7 @@ BalloonList = [
         name="In front of Diddy's cage",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         points=[[1187, 960, 2524], [989, 960, 2504]],
     ),
     Balloon(
@@ -1495,7 +1504,7 @@ BalloonList = [
         name="Funky's Armory",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         points=[[2105, 595, 2091], [1920, 600, 2168]],
     ),
     Balloon(
@@ -1504,7 +1513,7 @@ BalloonList = [
         name="Cannon to Diddy's cage",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesCannonPlatform,
         points=[[1368, 625, 2076], [1289, 630, 2250], [1138, 630, 2207], [1150, 625, 2060]],
     ),
     Balloon(
@@ -1531,7 +1540,7 @@ BalloonList = [
         name="Near high W2 above river",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         points=[[1350, 900, 1950], [1650, 900, 1900]],
     ),
     Balloon(
@@ -1586,7 +1595,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.can_use_vines and l.climbing,
         points=[[2284, 660, 1197], [2224, 610, 1430]],
     ),
     Balloon(
@@ -1699,7 +1708,7 @@ BalloonList = [
         name="In front of Snide's (Donkey)",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesHillTop,
         vanilla=True,
         points=[[2192, 740, 2428], [2075, 738, 2471]],
     ),

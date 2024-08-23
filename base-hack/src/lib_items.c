@@ -8,7 +8,7 @@ Thanks,
 		Ballaam
 */
 
-const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4,0x25c,0xb7,0x25d,0x264,0x265,0x25f,0x260,0x261,0x262};
+const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4,0x25c,0xb7,0x25d,0x264,0x265,0x25f,0x260,0x261,0x262,0x27e};
 const item_conversion_info item_conversions[] = {
 	{.actor=45, .model_two=116, .scale=0.25f},
 	{.actor=78, .model_two=222, .scale=2.00f},
@@ -46,10 +46,11 @@ const item_conversion_info item_conversions[] = {
 	{.actor=369, .model_two=607, .scale=0.25f},
 	{.actor=370, .model_two=608, .scale=0.25f},
 	{.actor=371, .model_two=609, .scale=0.25f},
-	{.actor=372, .model_two=610, .scale=0.25f}
+	{.actor=372, .model_two=610, .scale=0.25f},
+	{.actor=375, .model_two=638, .scale=0.25f}
 };
-const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372};
-const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372};
+const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372,375};
+const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372,375};
 const unsigned short danceless_items[] = {361,362,52,47,121,51};
 const item_scale_info item_scales[] = {
 	{.type=116, .scale=0.25f},
@@ -89,7 +90,8 @@ const item_scale_info item_scales[] = {
 	{.type=607, .scale=0.25f},
 	{.type=608, .scale=0.25f},
 	{.type=609, .scale=0.25f},
-	{.type=610, .scale=0.25f}
+	{.type=610, .scale=0.25f},
+	{.type=638, .scale=0.25f}
 };
 collision_info object_collisions[] = {
 	{.type=13, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=2, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
@@ -157,7 +159,8 @@ collision_info object_collisions[] = {
 	{.type=607, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=24 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=608, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=25 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=609, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=26 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
-	{.type=610, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=27 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13}
+	{.type=610, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=27 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=638, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=30 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13}
 };
 drop_item drops[] = {
 	{.source_object=178, .dropped_object=47, .drop_music=47, .drop_count=1},

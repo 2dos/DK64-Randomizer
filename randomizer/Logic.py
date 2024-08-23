@@ -44,10 +44,10 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
-    WinCondition,
     HelmSetting,
     KongModels,
     SlamRequirement,
+    WinConditionComplex,
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types, BarrierItems
@@ -125,6 +125,8 @@ class LogicVarHolder:
         self.swim = self.settings.training_barrels == TrainingBarrels.normal
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
+        self.climbing = self.settings.training_barrels == TrainingBarrels.normal
+        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         self.progDonkey = 0
         self.blast = False
@@ -323,10 +325,12 @@ class LogicVarHolder:
         self.tiny = self.tiny or Items.Tiny in ownedItems or self.startkong == Kongs.tiny
         self.chunky = self.chunky or Items.Chunky in ownedItems or self.startkong == Kongs.chunky
 
+        self.climbing = self.climbing or Items.Climbing in ownedItems
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
+        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
         self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
@@ -661,6 +665,7 @@ class LogicVarHolder:
             self.swim,
             self.oranges,
             self.barrels,
+            self.climbing,
             # Special Moves
             self.blast,
             self.strongKong,
@@ -995,13 +1000,13 @@ class LogicVarHolder:
         elif bossFight == Maps.CastleBoss and self.IsLavaWater():
             hasRequiredMoves = self.Melons >= 3
         elif bossFight == Maps.KroolDonkeyPhase:
-            hasRequiredMoves = self.blast or (not self.settings.cannons_require_blast)
+            hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:
             hasRequiredMoves = self.jetpack and self.peanut
         elif bossFight == Maps.KroolLankyPhase:
             hasRequiredMoves = self.barrels and self.trombone
         elif bossFight == Maps.KroolTinyPhase:
-            hasRequiredMoves = self.mini and self.feather
+            hasRequiredMoves = self.mini and self.feather and (self.climbing or self.twirl)
         elif bossFight == Maps.KroolChunkyPhase:
             hasRequiredMoves = self.punch and self.CanSlamChunkyPhaseSwitch() and self.hunkyChunky and self.gorillaGone
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
@@ -1036,14 +1041,14 @@ class LogicVarHolder:
                 if self.settings.level_order[level_order] == Levels.AngryAztec:
                     order_of_aztec = level_order
             # You need to have vines or twirl before you can enter Aztec or any level beyond it
-            if order_of_level >= order_of_aztec and not (self.vines or (self.istiny and self.twirl)):
+            if order_of_level >= order_of_aztec and not (self.can_use_vines or (self.istiny and self.twirl)):
                 return False
             if order_of_level >= 4:
                 # Require the following moves by level 4:
                 # - Swim so you can get into Lobby 4. This prevents logic from skipping this level for T&S requirements, preventing 0'd T&S.
                 # - Barrels so there will always be an eligible boss fill given the available moves at any level.
                 # - Vines for gameplay reasons. Needing vines for Helm is a frequent bottleneck and this eases the hunt for it.
-                if not self.swim or not self.barrels or not self.vines:
+                if not self.swim or not self.barrels or not self.can_use_vines:
                     return False
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
                 if not self.HardBossesSettingEnabled(HardBossesSelected.alternative_mad_jack_kongs) and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
@@ -1084,34 +1089,71 @@ class LogicVarHolder:
         # To enter a level, we either need (or assume) enough stuff to get rid of B. Locker or a glitch way to bypass it
         return can_pay_blocker or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 
+    def CanMeltIce(self) -> bool:
+        """Check whether underwater of Aztec Tiny Temple can be accessed."""
+        if self.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
+            return True
+        if not self.CanSlamSwitch(Levels.AngryAztec, 1):
+            return False
+        return self.guitar and self.isdiddy and self.peanut
+
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == WinCondition.beat_krool:
+        # Special Win Cons
+        if self.settings.win_condition_item == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
-        # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
-        if self.settings.win_condition == WinCondition.poke_snap:
+        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:  # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events and self.camera
-        elif self.settings.win_condition == WinCondition.get_key8:
+        elif self.settings.win_condition_item == WinConditionComplex.get_key8:
             return self.HelmKey
-        elif self.settings.win_condition == WinCondition.all_fairies:
-            return self.BananaFairies >= 20
-        elif self.settings.win_condition == WinCondition.all_blueprints:
-            return len(self.Blueprints) >= 40
-        elif self.settings.win_condition == WinCondition.all_medals:
-            return self.BananaMedals >= 40
-        elif self.settings.win_condition == WinCondition.all_keys:
-            return (
-                Events.JapesKeyTurnedIn in self.Events
-                and Events.AztecKeyTurnedIn in self.Events
-                and Events.FactoryKeyTurnedIn in self.Events
-                and Events.GalleonKeyTurnedIn in self.Events
-                and Events.ForestKeyTurnedIn in self.Events
-                and Events.CavesKeyTurnedIn in self.Events
-                and Events.CastleKeyTurnedIn in self.Events
-                and Events.HelmKeyTurnedIn in self.Events
-            )
-        else:
-            return False
+        elif self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            dk_rap_items = [
+                self.donkey,
+                self.diddy,
+                self.lanky,
+                self.tiny,
+                self.chunky,
+                self.coconut,
+                self.peanut,
+                self.grape,
+                self.pineapple,
+                self.guitar,
+                self.trombone,
+                self.strongKong,
+                # self.spring,
+                self.jetpack,
+                self.handstand,
+                self.balloon,
+                self.mini,
+                self.twirl,
+                # self.hunkyChunky,
+                self.barrels,
+                self.oranges,
+                # self.shockwave,
+                self.climbing,
+                # self.superDuperSlam,
+                self.crankyAccess,
+            ]
+            for k in dk_rap_items:
+                if not k:
+                    return False
+            return True
+        # Get X amount of Y item win cons
+        win_con_table = {
+            WinConditionComplex.req_bean: BarrierItems.Bean,
+            WinConditionComplex.req_bp: BarrierItems.Blueprint,
+            WinConditionComplex.req_companycoins: BarrierItems.CompanyCoin,
+            WinConditionComplex.req_crown: BarrierItems.Crown,
+            WinConditionComplex.req_fairy: BarrierItems.Fairy,
+            WinConditionComplex.req_key: BarrierItems.Key,
+            WinConditionComplex.req_gb: BarrierItems.GoldenBanana,
+            WinConditionComplex.req_medal: BarrierItems.Medal,
+            WinConditionComplex.req_pearl: BarrierItems.Pearl,
+            WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
+        }
+        if self.settings.win_condition_item not in win_con_table:
+            raise Exception(f"Invalid Win Condition {self.settings.win_condition_item.name}")
+        return self.ItemCheck(win_con_table[self.settings.win_condition_item], self.settings.win_condition_count)
 
     def CanGetRarewareCoin(self):
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
@@ -1140,6 +1182,8 @@ class LogicVarHolder:
                 self.barrels = False
             elif item == Items.Oranges:
                 self.oranges = False
+            elif item == Items.Climbing:
+                self.climbing = False
             elif item == Items.BaboonBlast:
                 self.blast = False
             elif item == Items.StrongKong:
@@ -1222,6 +1266,7 @@ class LogicVarHolder:
             and self.tiny
             and self.chunky
             and self.vines
+            and self.climbing
             and self.swim
             and self.barrels
             and self.oranges

@@ -248,6 +248,13 @@ move_hints = [
         "candy": "THIS MOVE WILL ALLOW YOU TO GRAB ROPES.",
     },
     {
+        "move": "Climbing",
+        "kong": "~",
+        "cranky": "I DON'T REMEMBER THIS GAME BEING CALLED JUNGLE CLIMBER, BUT THIS WILL CERTAINLY LET YOU PAVE THE PATH TO GOOD ASCENSIONS.",
+        "funky": "ARE YOU TINY KONG, CAUSE IT LOOKS LIKE THIS WILL ALLOW YOU TO CLIMB UP TREES.",
+        "candy": "THIS MOVE WILL ALLOW YOU TO CLIMB TREES.",
+    },
+    {
         "move": "Camera Solo",
         "kong": "~",
         "cranky": "WITH THAT DEVICE, YOU MIGHT AS WELL CALL ME PROFESSOR OAK! WONDERFUL.",
@@ -351,6 +358,13 @@ move_hints = [
         "cranky": "THIS ITEM WAS DONATED BY A BARON K. ROOLENSTEIN. LOOKS FISHY BUT YOU CAN HAVE IT.",
         "funky": "THIS ONE LOOKS A BIT STRANGE MY DUDE. YOU CAN HAVE IT THOUGH!",
         "candy": "I AM NOT TOO SURE ABOUT THIS ITEM. ARE YOU SURE YOU WANT IT?",
+    },
+    {
+        "move": "Hint",
+        "kong": "~",
+        "cranky": "IT'S A RIDDLE FOR 30 PICORATS. WHAT IS THE CONVERSION RATE FROM PICORATS TO COINS?",
+        "funky": "THIS ONE WILL HELP YOU ON YOUR QUEST MY DUDE. GET YOUR PEN AND PAPER OUT!",
+        "candy": "IT'S A PIECE OF PAPER. I THINK WRINKLY DROPPED IT IN HER SAVE CAVE.",
     },
     {
         "move": "Not enough coins - Special Move",
@@ -604,6 +618,8 @@ move_names = [
     MoveName("Funky Kong", MoveTypes.flag),  # 90
     MoveName("Candy Kong", MoveTypes.flag),  # 91
     MoveName("Snide", MoveTypes.flag),  # 92
+    MoveName("Hint", MoveTypes.flag),  # 93
+    MoveName("Climbing", MoveTypes.flag),  # 94
 ]
 
 move_names_arr = []
@@ -750,6 +766,8 @@ text_enum = [
     "ITEMTEXT_FUNKYITEM",  # 0x05A
     "ITEMTEXT_CANDYITEM",  # 0x05B
     "ITEMTEXT_SNIDEITEM",  # 0x05C
+    "ITEMTEXT_HINTITEM",  # 0x05D
+    "ITEMTEXT_CLIMBING",  # 0x05E
 ]
 
 
@@ -794,17 +812,18 @@ location_references = [
     ItemReference("Gorilla Gone", "Chunky Caves Cranky"),
     ItemReference("Pineapple Launcher", "Chunky Japes Funky"),
     ItemReference("Triangle Trample", "Chunky Aztec Candy"),
-    # Gun Upgrades
+    # Gun Upgrades and Funky Moves
     ItemReference("Homing Ammo", "Shared Forest Funky"),
     ItemReference("Sniper Scope", "Shared Castle Funky"),
     ItemReference("Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+    ItemReference("Fairy Camera", "Banana Fairy Gift"),
+    ItemReference("Shockwave", "Banana Fairy Gift"),
     # Basic Moves
     ItemReference("Diving", "Dive Barrel"),
     ItemReference("Orange Throwing", "Orange Barrel"),
     ItemReference("Barrel Throwing", "Barrel Barrel"),
     ItemReference("Vine Swinging", "Vine Barrel"),
-    ItemReference("Fairy Camera", "Banana Fairy Gift"),
-    ItemReference("Shockwave", "Banana Fairy Gift"),
+    ItemReference("Climbing", "Starting Move"),
     # Instrument Upgrades & Slams
     ItemReference("Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
     ItemReference("Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),

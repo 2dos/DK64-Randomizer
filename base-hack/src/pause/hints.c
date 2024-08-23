@@ -10,8 +10,8 @@
  */
 #include "../../include/common.h"
 
-#define STRING_MAX_SIZE 128
-#define ELLIPSIS_CUTOFF 123
+#define STRING_MAX_SIZE 256
+#define ELLIPSIS_CUTOFF 125
 #define GAME_HINT_COUNT 35
 #define HINT_SOLVED_OPACITY 0x80
 
@@ -43,18 +43,11 @@ static char string_copy[STRING_MAX_SIZE] = "";
 static char mtx_counter = 0;
 static char* unk_string = "???";
 static short hint_clear_flags[35] = {};
+static short hint_item_regions[35] = {};
 static char hint_level = 0;
 static char item_subgroup = 0;
 static char level_hint_text[0x40] = "";
 static char item_loc_text[0x40] = "";
-
-static char* unknown_hints[] = {
-    "??? - 000 GOLDEN BANANAS",
-    "??? - 001 GOLDEN BANANAS",
-    "??? - 002 GOLDEN BANANAS",
-    "??? - 003 GOLDEN BANANAS",
-    "??? - 004 GOLDEN BANANAS",
-};
 
 static itemloc_data itemloc_textnames[] = {
     {
@@ -83,15 +76,15 @@ static itemloc_data itemloc_textnames[] = {
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="GUN UPGRADES", 
-        .flags={0xD202, 0xD203, FLAG_ITEM_BELT_0, 0, 0, 0}, 
-        .lengths={1, 1, 2, -1, -1, -1}
-    }, // 4
+        .header="GUN UPGRADES AND FAIRY MOVES", 
+        .flags={0xD202, 0xD203, FLAG_ITEM_BELT_0, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, 0}, 
+        .lengths={1, 1, 2, 1, 1, -1}
+    }, // 6
     {
         .header="BASIC MOVES", 
-        .flags={FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE}, 
-        .lengths={1, 1, 1, 1, 1, 1}
-    }, // 6
+        .flags={FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CLIMBING, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
     {
         .header="INSTRUMENT UPGRADES AND SLAMS", 
         .flags={FLAG_ITEM_INS_0, FLAG_ITEM_SLAM_0, 0, 0, 0, 0}, 
@@ -222,21 +215,16 @@ Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
     int curr_y = y;
     int string_length = cstring_strlen(str);
     int trigger_ellipsis = 0;
-    if ((unsigned int)(string_length) > ELLIPSIS_CUTOFF) {
-        string_length = ELLIPSIS_CUTOFF;
-        trigger_ellipsis = 1;
+    if ((unsigned int)(string_length) > STRING_MAX_SIZE) {
+        string_length = STRING_MAX_SIZE;
     }
     int string_copy_ref = (int)string_copy;
     wipeMemory(string_copy, STRING_MAX_SIZE);
     dk_memcpy(string_copy, str, string_length);
-    if (trigger_ellipsis) {
-        string_copy[ELLIPSIS_CUTOFF] = 0x2E;
-        string_copy[ELLIPSIS_CUTOFF + 1] = 0x2E;
-        string_copy[ELLIPSIS_CUTOFF + 2] = 0x2E;
-    }
-    string_copy[126] = 0;
-    string_copy[127] = 0;
+    string_copy[STRING_MAX_SIZE - 2] = 0;
+    string_copy[STRING_MAX_SIZE - 1] = 0;
     int header = 0;
+    int letter_count = 0;
     int last_safe = 0;
     int line_count = 0;
     int color_index = 0;
@@ -276,6 +264,21 @@ Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
             int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
             int size = end - (string_copy_ref + header + 1);
             dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
+        } else {
+            // Actual letter or punctuation
+            letter_count += 1;
+            if(letter_count >= ELLIPSIS_CUTOFF){
+                *(char*)(referenced_character) = 0;
+                if(header > 2){
+                    // It should be impossible to hit 125 characters without being more than 2 characters into the third line
+                    // Insert ellipsis 
+                    *(char*)(string_copy_ref + header - 1) = 0x2E;
+                    *(char*)(string_copy_ref + header - 2) = 0x2E;
+                    *(char*)(string_copy_ref + header - 3) = 0x2E;
+                }
+                // It's also now a terminator, so:
+                return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
+            }
         }
         setCharacterColor(header, color_index, opacity);
         if (!is_control) {
@@ -338,6 +341,10 @@ int getHintGBRequirement(int slot) {
     return req_i;
 }
 
+regions getHintItemRegion(int slot) {
+    return hint_item_regions[slot];
+}
+
 int getPluralCharacter(int amount) {
     if (amount != 1) {
         return 0x53; // "S"
@@ -352,7 +359,7 @@ int showHint(int slot) {
         return gb_count >= req;
     }
     // Not progressive hints
-    return checkFlag(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
+    return checkFlagDuplicate(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
 }
 
 Gfx* displayBubble(Gfx* dl) {
@@ -414,6 +421,7 @@ void getItemSpecificity(char** str, int step, int flag) {
 
 void initHintFlags(void) {
     unsigned short* hint_clear_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE000);
+    unsigned short* hint_reg_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE080);
     if (Rando.progressive_hint_gb_cap > 0) {
         hints_per_screen = 4;
         hint_screen_count = 9;
@@ -421,6 +429,7 @@ void initHintFlags(void) {
     }
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
         hint_clear_flags[i] = hint_clear_write[i];
+        hint_item_regions[i] = hint_reg_write[i];
     }
 }
 
@@ -459,7 +468,12 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
             dl = drawSplitString(dl, (char*)hint_pointers[hint_local_index], level_x, hint_offset + (120 * i), 40, opacity);
         } else {
             if (Rando.progressive_hint_gb_cap == 0) {
-                unknown_hints[i] = "???";
+                regions tied_region = getHintItemRegion(hint_local_index);
+                if (tied_region == REGION_NULLREGION) {
+                    unknown_hints[i] = "???";
+                } else {
+                    dk_strFormat(unknown_hints[i], "??? - %s", hint_region_names[tied_region]);
+                }
             } else {
                 int requirement = getHintGBRequirement(hint_local_index);
                 dk_strFormat(unknown_hints[i], "??? - %d GOLDEN BANANA%c", requirement, getPluralCharacter(requirement));

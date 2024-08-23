@@ -114,6 +114,7 @@ typedef enum purchase_classification {
 	/* 0x010 */ PCLASS_KONG,
 	/* 0x011 */ PCLASS_FAIRY,
 	/* 0x012 */ PCLASS_FAKEITEM,
+	/* 0x013 */ PCLASS_HINT,
 } purchase_classification;
 
 typedef enum pad_refresh_signals {
@@ -160,34 +161,36 @@ typedef enum moverando_hinttext {
 	/* 0x01F */ MRT_CANBUY_ORANGE,
 	/* 0x020 */ MRT_CANBUY_BARREL,
 	/* 0x021 */ MRT_CANBUY_VINE,
-	/* 0x022 */ MRT_CANBUY_CAMERA,
-	/* 0x023 */ MRT_CANBUY_SHOCKWAVE,
-	/* 0x024 */ MRT_CANBUY_CAMERACOMBO,
-	/* 0x025 */ MRT_CANBUY_BANANA,
-	/* 0x026 */ MRT_CANBUY_CROWN,
-	/* 0x027 */ MRT_CANBUY_MEDAL,
-	/* 0x028 */ MRT_CANBUY_KEY,
-	/* 0x029 */ MRT_CANBUY_BLUEPRINT,
-	/* 0x02A */ MRT_CANBUY_NINTENDO,
-	/* 0x02B */ MRT_CANBUY_RAREWARE,
-	/* 0x02C */ MRT_CANBUY_BEAN,
-	/* 0x02D */ MRT_CANBUY_PEARL,
-	/* 0x02E */ MRT_CANBUY_KONG,
-	/* 0x02F */ MRT_CANBUY_FAIRY,
-	/* 0x030 */ MRT_CANBUY_FAKEITEM,
-	/* 0x031 */ MRT_NOBUY_SPECIALMOVE,
-	/* 0x032 */ MRT_NOBUY_SLAM,
-	/* 0x033 */ MRT_NOBUY_GUN,
-	/* 0x034 */ MRT_NOBUY_GUNUPGRADE,
-	/* 0x035 */ MRT_NOBUY_AMMOBELT,
-	/* 0x036 */ MRT_NOBUY_INSTRUMENT,
-	/* 0x037 */ MRT_NOBUY_TRAINING,
-	/* 0x038 */ MRT_NOBUY_FAIRYMOVE,
-	/* 0x039 */ MRT_NOBUY_ITEM,
-	/* 0x03A */ MRT_NOBUY_BANANA,
-	/* 0x03B */ MRT_NOBUY_BLUEPRINT,
-	/* 0x03C */ MRT_NOBUY_MEDAL,
-	/* 0x03D */ MRT_NOBUY_KONG,
+	/* 0x022 */ MRT_CANBUY_CLIMB,
+	/* 0x023 */ MRT_CANBUY_CAMERA,
+	/* 0x024 */ MRT_CANBUY_SHOCKWAVE,
+	/* 0x025 */ MRT_CANBUY_CAMERACOMBO,
+	/* 0x026 */ MRT_CANBUY_BANANA,
+	/* 0x027 */ MRT_CANBUY_CROWN,
+	/* 0x028 */ MRT_CANBUY_MEDAL,
+	/* 0x029 */ MRT_CANBUY_KEY,
+	/* 0x02A */ MRT_CANBUY_BLUEPRINT,
+	/* 0x02B */ MRT_CANBUY_NINTENDO,
+	/* 0x02C */ MRT_CANBUY_RAREWARE,
+	/* 0x02D */ MRT_CANBUY_BEAN,
+	/* 0x02E */ MRT_CANBUY_PEARL,
+	/* 0x02F */ MRT_CANBUY_KONG,
+	/* 0x030 */ MRT_CANBUY_FAIRY,
+	/* 0x031 */ MRT_CANBUY_FAKEITEM,
+	/* 0x032 */ MRT_CANBUY_HINT,
+	/* 0x033 */ MRT_NOBUY_SPECIALMOVE,
+	/* 0x034 */ MRT_NOBUY_SLAM,
+	/* 0x035 */ MRT_NOBUY_GUN,
+	/* 0x036 */ MRT_NOBUY_GUNUPGRADE,
+	/* 0x037 */ MRT_NOBUY_AMMOBELT,
+	/* 0x038 */ MRT_NOBUY_INSTRUMENT,
+	/* 0x039 */ MRT_NOBUY_TRAINING,
+	/* 0x03A */ MRT_NOBUY_FAIRYMOVE,
+	/* 0x03B */ MRT_NOBUY_ITEM,
+	/* 0x03C */ MRT_NOBUY_BANANA,
+	/* 0x03D */ MRT_NOBUY_BLUEPRINT,
+	/* 0x03E */ MRT_NOBUY_MEDAL,
+	/* 0x03F */ MRT_NOBUY_KONG,
 } moverando_hinttext;
 
 typedef enum item_purchase_text {
@@ -284,6 +287,8 @@ typedef enum item_purchase_text {
 	/* 0x05A */ ITEMTEXT_FUNKYITEM,
 	/* 0x05B */ ITEMTEXT_CANDYITEM,
 	/* 0x05C */ ITEMTEXT_SNIDEITEM,
+	/* 0x05D */ ITEMTEXT_HINTITEM,
+	/* 0x05E */ ITEMTEXT_CLIMBING,
 } item_purchase_text;
 
 typedef enum pausescreenlist {
@@ -324,6 +329,7 @@ typedef enum win_conditions {
 	/* 0x001 */ GOAL_KEY8,
 	/* 0x002 */ GOAL_POKESNAP,
 	/* 0x003 */ GOAL_CUSTOMITEM,
+	/* 0x004 */ GOAL_DKRAP,
 } win_conditions;
 
 typedef enum master_types_list {
@@ -685,6 +691,11 @@ typedef enum tracker_types {
 	/* 48 */ TRACKER_TYPE_INSUPG_2,
 	/* 49 */ TRACKER_TYPE_BELT_1,
 	/* 50 */ TRACKER_TYPE_BELT_2,
+	/* 51 */ TRACKER_TYPE_CRANKY,
+	/* 52 */ TRACKER_TYPE_FUNKY,
+	/* 53 */ TRACKER_TYPE_CANDY,
+	/* 54 */ TRACKER_TYPE_SNIDE,
+	/* 55 */ TRACKER_TYPE_CLIMB,
 } tracker_types;
 
 typedef enum overlays {
@@ -1009,6 +1020,7 @@ typedef enum enum_bonus_skin {
     /* 0x014 */ SKIN_FUNKY,
     /* 0x015 */ SKIN_CANDY,
     /* 0x016 */ SKIN_SNIDE,
+    /* 0x017 */ SKIN_HINT,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 
