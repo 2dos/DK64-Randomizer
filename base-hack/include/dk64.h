@@ -209,6 +209,7 @@ extern void unkMultiplayerWarpFunction(void* actor, int player_index);
 extern void renderScreenTransition(int transition_type);
 
 extern int inDKTV(void);
+extern void handleGamemodes(void);
 
 extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);

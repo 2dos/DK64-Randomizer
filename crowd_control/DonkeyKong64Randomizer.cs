@@ -24,6 +24,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         NO_TA_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x1);
         ICE_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x2);
         ROCKFALL_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x3);
+        RAP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x4);
     }
 
     private AddressChain DRUNK_STATE;
@@ -39,6 +40,13 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private const uint ADDR_NEXT_GAMEMODE = 0x80755318;
     private const uint ADDR_TBVOID_BYTE = 0x807FBB63;
     private const uint ADDR_KONG_BASE = 0x807FC950;
+    private const uint ADDR_RANDO_CANARY = 0x807FFFF4;
+    private const uint ADDR_CUTSCENE_ACTIVE = 0x807444EC;
+    private const uint ADDR_TRANSITION_SPEED = 0x807FD88C;
+    private const uint ADDR_HEALTH = 0x807FCC4B;
+    private const uint ADDR_MELONS = 0x807FCC4C;
+    private const uint ADDR_APPLIED_DAMAGE_MULTIPLIER = 0x807FF8A5;
+
     private const byte COIN_CHANGE_AMOUNT = 2;
     private enum CC_STATE
     {
@@ -57,10 +65,15 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 5, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
         new("Ice Trap the Player","ice_trap") { Price = 0, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
         new("Spawn Rocks","rockfall") { Price = 0, Duration = 5, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
-        new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Player" },
-        new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Player" },
-        new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Player" },
-        new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Player" },
+        new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
+        new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
+        new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Inventory" },
+        new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
+        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Kirkhope Appreciation" },
+        new("Refill Health","refill_health") { Price = 0, Description = "Refills the player's health to max.", Category="Health" },
+        new("One Hit KO","damage_ohko") { Price = 0, Description = "From now onwards, the player will be killed for any damage taken.", Category="Health" },
+        new("Double Damage","damage_double") { Price = 0, Description = "From now onwards, the player will take double damage.", Category="Health" },
+        new("Single Damage","damage_single") { Price = 0, Description = "From now onwards, the player will take the normal amount of damage.", Category="Health" },
     };
 
     public override ROMTable ROMTable => new[]
@@ -77,6 +90,13 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if (!Connector.Read32(ADDR_MAP_TIMER, out uint map_timer)) return GameState.Unknown;
         if (!Connector.Read32(ADDR_PLAYER_POINTER, out uint player_pointer)) return GameState.Unknown;
         if (!Connector.Read32(ADDR_TBVOID_BYTE, out uint tb_void_byte)) return GameState.Unknown;
+        if (!Connector.Read8(ADDR_RANDO_CANARY, out byte rando_version)) return GameState.Unknown;
+        if (!Connector.Read8(ADDR_CUTSCENE_ACTIVE, out byte cutscene_state)) return GameState.Unknown;
+        if (!Connector.ReadFloat(ADDR_TRANSITION_SPEED, out float transition_speed)) return GameState.Unknown;
+        if (rando_version != 4) {
+            // Not randomizer or a currently supported version
+            return GameState.Unknown;
+        }
         if ((current_gamemode != 6) || (next_gamemode != 6)) {
             // Not in adventure mode
             return GameState.WrongMode;
@@ -96,6 +116,18 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if ((tb_void_byte & 3) != 0) {
             // Player is pausing or is paused
             return GameState.Paused;
+        }
+        if ((cutscene_state == 2) || (cutscene_state == 3)) {
+            // In Arcade/Jetpac
+            return GameState.SafeArea;
+        }
+        if (cutscene_state != 0) {
+            // Cutscene is playing
+            return GameState.Paused;
+        }
+        if (transition_speed > 0.0f) {
+            // Transitioning to another map
+            return GameState.BadPlayerState;
         }
         //probably want to do a general state check here?
         //there are A LOT of GameState return values to choose from so be sure to pick the right one
@@ -146,6 +178,11 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 TryEffect(request,
                     () => Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_READY),
                     () => ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
+                return;
+            case "play_the_rap":
+                TryEffect(request,
+                    () => Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_READY),
+                    () => RAP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
                 return;
             case "give_coins":
                 TryEffect(request,
@@ -249,6 +286,31 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         return result;
                     });
                 return;
+            case "refill_health":
+                TryEffect(request,
+                    () => true,
+                    () => {
+                        bool result = true;
+                        result &= Connector.Read8(ADDR_MELONS, out byte melon_count);
+                        result &= Connector.Write8(ADDR_HEALTH, (byte)(melon_count * 4));
+                        return result;
+                    });
+                return;
+            case "damage_ohko":
+                TryEffect(request,
+                    () => true,
+                    () => Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(12)));
+                return;
+            case "damage_double":
+                TryEffect(request,
+                    () => true,
+                    () => Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(2)));
+                return;
+            case "damage_single":
+                TryEffect(request,
+                    () => true,
+                    () => Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(1)));
+                return;
             default:
                 Respond(request, EffectStatus.FailPermanent, StandardErrors.UnknownEffect, request);
                 return;
@@ -272,6 +334,11 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "rockfall":
                 if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLED)) {
                     return ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
+            case "play_the_rap":
+                if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                    return RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
 

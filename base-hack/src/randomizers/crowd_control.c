@@ -25,6 +25,9 @@ int cc_enable_drunky(void) {
     if (!Player) {
         return 0;
     }
+    if (ObjectModel2Timer < 2) {
+        return 0;
+    }
     Player->strong_kong_ostand_bitfield |= 0x180;
     return 1;
 }
@@ -39,6 +42,21 @@ int cc_disable_drunky(void) {
 
 int cc_allower_generic(void) {
     if (ObjectModel2Timer < 2) {
+        return 0;
+    }
+    if (Gamemode != GAMEMODE_ADVENTURE) {
+        return 0;
+    }
+    if (Mode != GAMEMODE_ADVENTURE) {
+        return 0;
+    }
+    if (TBVoidByte & 3) {
+        return 0;
+    }
+    if (CutsceneActive) {
+        return 0;
+    }
+    if (TransitionSpeed > 0.0f) {
         return 0;
     }
     if (Player) {
@@ -56,6 +74,42 @@ int cc_enabler_icetrap(void) {
 
 int cc_allower_icetrap(void) {
     return ice_trap_queued == ICETRAP_OFF;
+}
+
+static char in_forced_rap = 0;
+static unsigned char previous_rap_map = 0;
+static unsigned char previous_rap_exit = 0;
+int cc_enabler_warptorap(void) {
+    in_forced_rap = 1;
+    previous_rap_map = CurrentMap;
+    previous_rap_exit = DestExit;
+    initiateTransitionFade(MAP_DKRAP, 0, GAMEMODE_RAP);
+}
+
+void handleGamemodeWrapper(void) {
+    handleGamemodes();
+    if ((in_forced_rap) && (Gamemode == GAMEMODE_RAP)) {
+        ButtonsEnabledBitfield = 0;
+    }
+}
+
+int cc_disabler_warptorap(void) {
+    if ((in_forced_rap) && (Gamemode == GAMEMODE_RAP)) {
+        setNextTransitionType(1);
+        initiateTransition(previous_rap_map, previous_rap_exit);
+        Mode = GAMEMODE_ADVENTURE;
+        in_forced_rap = 0;
+    }
+}
+
+void skipDKTV(void) {
+    if (in_forced_rap) {
+        CCEffectData->warp_to_rap = CC_DISABLING;
+    } else {
+        setNextTransitionType(1);
+        initiateTransition(MAP_MAINMENU, 0);
+        Mode = GAMEMODE_MAINMENU;
+    }
 }
 
 typedef struct actor_init_data {
@@ -86,102 +140,30 @@ int cc_enabler_rockfall(void) {
     return spawnActorSpawnerContainer(0x5C, *(int*)(&x), *(int*)(&y), *(int*)(&z), 0, 0x3F000000, 0, &unk);
 }
 
-#define COIN_DELTA 2
-
-int cc_allower_givecoins(void) {
-    for (int i = 0; i < 5; i++) {
-        if (MovesBase[i].coins < 255) {
-            return 1;
-        }
+void dummyGuardCode(void) {
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        guardCatchInternal(); // Catch the player
     }
-    return 0;
+    // Render Light
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    getBonePosition(CurrentActorPointer_0, 1, &x, &y, &z);
+    renderLight(x, y, z, 0.0f, 0.0f, 0.0f, 70.0f, 0, 0xFF, 0xFF, 0xFF);
+    // Change kop angle
+    CurrentActorPointer_0->rot_y = getAngleBetweenPoints(Player->xPos, Player->zPos, CurrentActorPointer_0->xPos, CurrentActorPointer_0->zPos);
 }
 
-int cc_enabler_givecoins(void) {
-    for (int i = 0; i < 5; i++) {
-        if (MovesBase[i].coins < (255 - COIN_DELTA)) {
-            MovesBase[i].coins += COIN_DELTA;
-        } else {
-            MovesBase[i].coins = 255;
-        }
-    }
-    setPermFlag(FLAG_FIRST_COIN_COLLECTION);
-    return 1;
+int cc_enabler_spawnkop(void) {
+    
 }
-
-int cc_allower_removecoins(void) {
-    for (int i = 0; i < 5; i++) {
-        if (MovesBase[i].coins > 0) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-int cc_enabler_removecoins(void) {
-    for (int i = 0; i < 5; i++) {
-        if (MovesBase[i].coins >= COIN_DELTA) {
-            MovesBase[i].coins -= COIN_DELTA;
-        } else {
-            MovesBase[i].coins = 0;
-        }
-    }
-    return 1;
-}
-
-#define GB_CAP_COUNT
-
-int cc_enabler_givegb(void) {
-    int min_kong = -1;
-    int min_level = -1;
-    int min_gb = 999999;
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (MovesBase[i].gb_count[j] < min_gb) {
-                min_gb = MovesBase[i].gb_count[j];
-                min_kong = i;
-                min_level = j;
-            }
-        }
-    }
-    MovesBase[min_kong].gb_count[min_level] += 1;
-    return 1;
-}
-
-int cc_allower_removegb(void) {
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (MovesBase[i].gb_count[j] > 0) {
-                return 1;
-            }
-        }
-    }
-    return 0;
-}
-
-int cc_enabler_removegb(void) {
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (MovesBase[i].gb_count[j] > 0) {
-                MovesBase[i].gb_count[j] -= 1;
-                return 1;
-            }
-        }
-    }
-    return 0;
-}
-
-
 
 static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
     {.enabler = &cc_enabler_icetrap, .allower=&cc_allower_icetrap, .auto_disable = 1}, // Ice Trap
     {.enabler = &cc_enabler_rockfall, .allower=&cc_allower_rockfall, .active = 1}, // Rockfall
-    {.enabler = &cc_enabler_givecoins, .allower=&cc_allower_givecoins, .auto_disable = 1}, // Give Coins
-    {.enabler = &cc_enabler_removecoins, .allower=&cc_allower_removecoins, .auto_disable = 1}, // Remove Coins
-    {.enabler = &cc_enabler_givegb, .auto_disable = 1}, // Give GB
-    {.enabler = &cc_enabler_removegb, .allower=&cc_allower_removegb, .auto_disable = 1}, // Remove GB
+    {.enabler = &cc_enabler_warptorap, .disabler=&cc_disabler_warptorap}, // Warp to Rap
 };
 
 void cc_effect_handler(void) {
@@ -224,10 +206,15 @@ void cc_effect_handler(void) {
                 if (!cc_funcs[i].restart_upon_map_entry) {
                     break;
                 }
-                if (ObjectModel2Timer >= 2) { // Have this so effects can last through loading zones
+                if (ObjectModel2Timer > 2) { // Have this so effects can last through loading zones
                     break;
                 }
+                *eff_data = CC_ENABLING;
+                break;
             case CC_ENABLING:
+                if (!cc_allower_generic()) {
+                    break;
+                }
                 if (cc_funcs[i].enabler) {
                     if (callFunc(cc_funcs[i].enabler)) {
                         *eff_data = CC_ENABLED;

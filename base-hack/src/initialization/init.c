@@ -295,12 +295,6 @@ void loadHooks(void) {
 	}
 }
 
-void skipDKTV(void) {
-	setNextTransitionType(1);
-	initiateTransition(MAP_MAINMENU, 0);
-	Mode = GAMEMODE_MAINMENU;
-}
-
 void initHack(int source) {
 	/**
 	 * @brief Initialize Hack

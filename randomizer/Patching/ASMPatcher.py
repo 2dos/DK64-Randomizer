@@ -1630,6 +1630,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80758BC9, Overlay.Static, 0xAE, offset_dict, 1)  # Quadruple Growth Speed (8E -> AE)
         writeValue(ROM_COPY, 0x80758BD1, Overlay.Static, 0xAE, offset_dict, 1)  # Quadruple Shrink Speed (8E -> AE)
         writeFunction(ROM_COPY, 0x806A5C30, Overlay.Static, "quickWrinklyTextboxes", offset_dict)
+    writeFunction(ROM_COPY, 0x80713258, Overlay.Static, "skipDKTV", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_boot):
         # Remove DKTV - Game Over
         writeValue(ROM_COPY, 0x8071319E, Overlay.Static, 0x50, offset_dict)
@@ -1639,8 +1640,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8071404E, Overlay.Static, 5, offset_dict)
         # Set NFR song to unused coin pickup, which is replaced by the windows 95 theme
         writeValue(ROM_COPY, 0x80745D20, Overlay.Static, 7, offset_dict, 1)
-    else:
-        writeFunction(ROM_COPY, 0x80713258, Overlay.Static, "skipDKTV", offset_dict)
     for index, kong in enumerate(settings.kutout_kongs):
         writeValue(ROM_COPY, 0x80035B44 + index, Overlay.Boss, kong, offset_dict, 1)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_transform_animation):
@@ -1875,6 +1874,10 @@ def patchAssembly(ROM_COPY, spoiler):
     # Boot setup checker optimization
     writeFunction(ROM_COPY, 0x805FEB00, Overlay.Static, "bootSpeedup", offset_dict)  # Modify Function Call
     writeValue(ROM_COPY, 0x805FEB08, Overlay.Static, 0, offset_dict, 4)  # Cancel 2nd check
+
+    # Crowd Control Stuff
+    writeFunction(ROM_COPY, 0x805FEDC8, Overlay.Static, "handleGamemodeWrapper", offset_dict)  # disable skipping the rap
+
 
     # Golden Banana Requirements
     order = 0

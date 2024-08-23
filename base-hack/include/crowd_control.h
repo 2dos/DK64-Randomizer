@@ -11,8 +11,5 @@ typedef struct cc_effects {
     /* 0x001 */ unsigned char disable_tag_anywhere;
     /* 0x002 */ unsigned char ice_trap;
     /* 0x003 */ unsigned char rockfall;
-    /* 0x004 */ unsigned char give_coins;
-    /* 0x005 */ unsigned char remove_coins;
-    /* 0x006 */ unsigned char give_gb;
-    /* 0x007 */ unsigned char remove_gb;
+    /* 0x004 */ unsigned char warp_to_rap;
 } cc_effects;

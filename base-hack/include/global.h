@@ -146,6 +146,7 @@ extern void updateActorHandStates_gun(actorData* actor, int type);
 extern void clearGunHandler(actorData* actor);
 
 extern void guardCatch(void);
+extern void guardCatchInternal(void);
 extern void catchWarpHandle(void);
 extern void handleFootProgress(actorData* actor);
 extern void cancelCutscene(int enable_movement);
