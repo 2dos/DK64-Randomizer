@@ -266,7 +266,8 @@ typedef struct playerData {
 	/* 0x211 */ char unk_211[0x23C - 0x211];
 	/* 0x23C */ short unk_rocketbarrel_value1;
 	/* 0x23E */ short unk_rocketbarrel_value2;
-	/* 0x240 */ char unk_240[0x248 - 0x240];
+	/* 0x240 */ short balloon_timer;
+	/* 0x242 */ char unk_242[0x248 - 0x242];
 	/* 0x248 */ short shockwave_timer;
 	/* 0x24A */ char unk_24A[0x254 - 0x24A];
 	/* 0x254 */ short invulnerability_timer;

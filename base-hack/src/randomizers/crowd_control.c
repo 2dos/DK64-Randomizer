@@ -176,6 +176,30 @@ int cc_enabler_spawnkop(void) {
     return 1;
 }
 
+int cc_allower_balloon(void) {
+    if (Player->grounded_bitfield & 6) {
+        return 0;
+    }
+    if (Character == 7) {
+        return 0;
+    }
+    return 1;
+}
+
+int cc_enabler_balloon(void) {
+    if (Player->control_state == 0x6E) {
+        Player->balloon_timer += 15;
+    } else {
+        Player->control_state = 0x6E;
+        Player->control_state_progress = 0;
+        Player->yVelocity = 0.0f;
+        Player->yAccel = 4.0f;
+        Player->balloon_timer = 30;
+        playActorAnimation(Player, 0x169);
+    }
+    return 1;
+}
+
 static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
@@ -183,6 +207,7 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_rockfall, .allower=&cc_allower_rockfall, .active = 1}, // Rockfall
     {.enabler = &cc_enabler_warptorap, .disabler=&cc_disabler_warptorap}, // Warp to Rap
     {.enabler = &cc_enabler_spawnkop, .allower=&cc_allower_spawnkop, .auto_disable = 1}, // Get Kaught
+    {.enabler = &cc_enabler_balloon, .allower=&cc_allower_balloon, .auto_disable = 1}, // Baboon Balloon
 };
 
 void cc_effect_handler(void) {

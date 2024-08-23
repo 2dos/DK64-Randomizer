@@ -26,6 +26,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         ROCKFALL_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x3);
         RAP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x4);
         KOP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x5);
+        BALLOON_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x6);
     }
 
     private AddressChain DRUNK_STATE;
@@ -34,6 +35,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private AddressChain ROCKFALL_STATE;
     private AddressChain RAP_STATE;
     private AddressChain KOP_STATE;
+    private AddressChain BALLOON_STATE;
 
     private const uint ADDR_STATE_POINTER = 0x807FFFB4;
     private const uint ADDR_MAP_TIMER = 0x8076A064;
@@ -64,20 +66,25 @@ public class DonkeyKong64Randomizer : N64EffectPack
 
     public override EffectList Effects { get; } = new List<Effect>
     {
+        // Player
         new("Drunk Kong","drunky_kong") { Price = 0, Duration = 5, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
         new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 5, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
         new("Ice Trap the Player","ice_trap") { Price = 0, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
         new("Spawn Rocks","rockfall") { Price = 0, Duration = 5, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
+        new("Instant Balloon","balloon") { Price = 0, Description = "Inflate the balloon (kong) just like a balloon.", Category="Player" },
+        // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
         new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Inventory" },
         new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
-        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Misc" },
+        // Health
         new("Refill Health","refill_health") { Price = 0, Description = "Refills the player's health to max.", Category="Health" },
         new("One Hit KO","damage_ohko") { Price = 0, Description = "From now onwards, the player will be killed for any damage taken.", Category="Health" },
         new("Double Damage","damage_double") { Price = 0, Description = "From now onwards, the player will take double damage.", Category="Health" },
         new("Single Damage","damage_single") { Price = 0, Description = "From now onwards, the player will take the normal amount of damage.", Category="Health" },
+        // Misc
         new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
+        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Misc" },
     };
 
     public override ROMTable ROMTable => new[]
@@ -192,6 +199,11 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 TryEffect(request,
                     () => Connector.IsEqual8(KOP_STATE, (byte)CC_STATE.CC_READY),
                     () => KOP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
+                return;
+            case "balloon":
+                TryEffect(request,
+                    () => Connector.IsEqual8(BALLOON_STATE, (byte)CC_STATE.CC_READY),
+                    () => BALLOON_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
                 return;
             case "give_coins":
                 TryEffect(request,
