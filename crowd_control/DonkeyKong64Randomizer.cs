@@ -72,31 +72,31 @@ public class DonkeyKong64Randomizer : N64EffectPack
     {
         if (!Connector.Connected) return GameState.Unknown;
 
-        // if (!Connector.Read8(ADDR_CURRENT_GAMEMODE, out byte current_gamemode)) return GameState.Unknown;
-        // if (!Connector.Read8(ADDR_NEXT_GAMEMODE, out byte next_gamemode)) return GameState.Unknown;
-        // if (!Connector.Read32(ADDR_MAP_TIMER, out uint map_timer)) return GameState.Unknown;
-        // if (!Connector.Read32(ADDR_PLAYER_POINTER, out uint player_pointer)) return GameState.Unknown;
-        // if (!Connector.Read32(ADDR_TBVOID_BYTE, out uint tb_void_byte)) return GameState.Unknown;
-        // if ((current_gamemode != 6) || (next_gamemode != 6)) {
-        //     // Not in adventure mode
-        //     return GameState.WrongMode;
-        // }
-        // if (map_timer < 2) {
-        //     // Loading
-        //     return GameState.BadPlayerState;
-        // }
-        // if (player_pointer != 0) {
-        //     // No player, also loading
-        //     return GameState.BadPlayerState;
-        // }
-        // if (Connector.IsNonZero8(ADDR_AUTOWALK_STATE)) {
-        //     // Player is autowalking
-        //     return GameState.BadPlayerState;
-        // }
-        // if ((tb_void_byte & 3) != 0) {
-        //     // Player is pausing or is paused
-        //     return GameState.Paused;
-        // }
+        if (!Connector.Read8(ADDR_CURRENT_GAMEMODE, out byte current_gamemode)) return GameState.Unknown;
+        if (!Connector.Read8(ADDR_NEXT_GAMEMODE, out byte next_gamemode)) return GameState.Unknown;
+        if (!Connector.Read32(ADDR_MAP_TIMER, out uint map_timer)) return GameState.Unknown;
+        if (!Connector.Read32(ADDR_PLAYER_POINTER, out uint player_pointer)) return GameState.Unknown;
+        if (!Connector.Read32(ADDR_TBVOID_BYTE, out uint tb_void_byte)) return GameState.Unknown;
+        if ((current_gamemode != 6) || (next_gamemode != 6)) {
+            // Not in adventure mode
+            return GameState.WrongMode;
+        }
+        if (map_timer < 2) {
+            // Loading
+            return GameState.BadPlayerState;
+        }
+        if (player_pointer == 0) {
+            // No player, also loading
+            return GameState.BadPlayerState;
+        }
+        if (Connector.IsNonZero8(ADDR_AUTOWALK_STATE)) {
+            // Player is autowalking
+            return GameState.BadPlayerState;
+        }
+        if ((tb_void_byte & 3) != 0) {
+            // Player is pausing or is paused
+            return GameState.Paused;
+        }
         //probably want to do a general state check here?
         //there are A LOT of GameState return values to choose from so be sure to pick the right one
         //nothing works unless you return GameState.Ready, every other state is just an informational failure state
