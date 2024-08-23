@@ -25,12 +25,15 @@ public class DonkeyKong64Randomizer : N64EffectPack
         ICE_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x2);
         ROCKFALL_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x3);
         RAP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x4);
+        KOP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x5);
     }
 
     private AddressChain DRUNK_STATE;
     private AddressChain NO_TA_STATE;
     private AddressChain ICE_STATE;
     private AddressChain ROCKFALL_STATE;
+    private AddressChain RAP_STATE;
+    private AddressChain KOP_STATE;
 
     private const uint ADDR_STATE_POINTER = 0x807FFFB4;
     private const uint ADDR_MAP_TIMER = 0x8076A064;
@@ -69,11 +72,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
         new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Inventory" },
         new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
-        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Kirkhope Appreciation" },
+        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Misc" },
         new("Refill Health","refill_health") { Price = 0, Description = "Refills the player's health to max.", Category="Health" },
         new("One Hit KO","damage_ohko") { Price = 0, Description = "From now onwards, the player will be killed for any damage taken.", Category="Health" },
         new("Double Damage","damage_double") { Price = 0, Description = "From now onwards, the player will take double damage.", Category="Health" },
         new("Single Damage","damage_single") { Price = 0, Description = "From now onwards, the player will take the normal amount of damage.", Category="Health" },
+        new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
     };
 
     public override ROMTable ROMTable => new[]
@@ -183,6 +187,11 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 TryEffect(request,
                     () => Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_READY),
                     () => RAP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
+                return;
+            case "spawn_kop":
+                TryEffect(request,
+                    () => Connector.IsEqual8(KOP_STATE, (byte)CC_STATE.CC_READY),
+                    () => KOP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
                 return;
             case "give_coins":
                 TryEffect(request,

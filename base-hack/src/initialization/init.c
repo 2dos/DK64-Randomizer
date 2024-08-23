@@ -374,6 +374,7 @@ void initHack(int source) {
 			initActor(NEWACTOR_ZINGERFLAMETHROWER, 1, (void*)0x806B4958, ACTORMASTER_3D, 1, 0, 2, 183);
 			initActor(NEWACTOR_SCARAB, 1, &kioskBugCode, ACTORMASTER_3D, 1, 0, 2, 183);
 			setCollisionAddress(NEWACTOR_SCARAB, 1, (void*)0x8074B240, 1);
+			initActor(NEWACTOR_KOPDUMMY, 1, &dummyGuardCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			// Kong Rando
 			initKongRando();
             initQoL(); // Also includes initializing spawn point and HUD realignment

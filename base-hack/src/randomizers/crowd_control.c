@@ -143,6 +143,7 @@ int cc_enabler_rockfall(void) {
 void dummyGuardCode(void) {
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         guardCatchInternal(); // Catch the player
+        playActorAnimation(CurrentActorPointer_0, 0x2C0);
     }
     // Render Light
     float x = 0.0f;
@@ -152,10 +153,27 @@ void dummyGuardCode(void) {
     renderLight(x, y, z, 0.0f, 0.0f, 0.0f, 70.0f, 0, 0xFF, 0xFF, 0xFF);
     // Change kop angle
     CurrentActorPointer_0->rot_y = getAngleBetweenPoints(Player->xPos, Player->zPos, CurrentActorPointer_0->xPos, CurrentActorPointer_0->zPos);
+    renderActor(CurrentActorPointer_0, 0);
+}
+
+int cc_allower_spawnkop(void) {
+    if (isActorLoaded(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY)) {
+        return 0;
+    }
+    return 1;
 }
 
 int cc_enabler_spawnkop(void) {
-    
+    if (!cc_allower_spawnkop()) {
+        return 0;
+    }
+    spawnActor(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY, 0x3F);
+    float dx = determineXRatioMovement(Player->facing_angle) * 50.0f;
+    float dz = determineZRatioMovement(Player->facing_angle) * 50.0f;
+    LastSpawnedActor->xPos = Player->xPos + dx;
+    LastSpawnedActor->yPos = Player->yPos;
+    LastSpawnedActor->zPos = Player->zPos + dz;
+    return 1;
 }
 
 static const cc_effect_data cc_funcs[] = {
@@ -164,6 +182,7 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_icetrap, .allower=&cc_allower_icetrap, .auto_disable = 1}, // Ice Trap
     {.enabler = &cc_enabler_rockfall, .allower=&cc_allower_rockfall, .active = 1}, // Rockfall
     {.enabler = &cc_enabler_warptorap, .disabler=&cc_disabler_warptorap}, // Warp to Rap
+    {.enabler = &cc_enabler_spawnkop, .allower=&cc_allower_spawnkop, .auto_disable = 1}, // Get Kaught
 };
 
 void cc_effect_handler(void) {
