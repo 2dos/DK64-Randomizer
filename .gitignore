@@ -205,4 +205,3 @@ local_presets.json
 base-hack/build/dir_hash.txt
 base-hack/build/skeleton/*.png
 /crowd_control/SDK/*
-!/crowd_control/SDK/DonkeyKong64Randomizer.cs
