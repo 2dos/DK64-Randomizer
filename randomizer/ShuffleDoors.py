@@ -42,6 +42,7 @@ def GetDoorLocationForKongAndLevel(kong, level):
 
 
 def UpdateDoorLevels(spoiler):
+    """Ensure that the location for each hint door counts towards the correct level."""
     for region in spoiler.RegionList:
         for location_logic in spoiler.RegionList[region].locations:
             if spoiler.LocationList[location_logic.id].type == Types.Hint:

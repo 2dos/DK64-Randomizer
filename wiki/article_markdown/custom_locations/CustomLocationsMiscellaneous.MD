@@ -190,7 +190,7 @@
 | --- | ---- | ------------ | ----- |
 | Gloomy Galleon | Under Cranky |  | `(l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)` | 
 | Galleon Lighthouse | Lighthouse: Interior Rear |  |  | 
-| Gloomy Galleon | Near Cactus |  |  | 
+| Gloomy Galleon | Near Cactus | DirtPatch, CrownPad, Bananaport |  | 
 | Gloomy Galleon | Next to Cannonball - in front |  | `l.CanGetOnCannonGamePlatform()` | 
 | Gloomy Galleon | Next to Cannonball - behind |  | `l.CanGetOnCannonGamePlatform()` | 
 | Gloomy Galleon | Next to cannon in cannonball room |  | `l.CanGetOnCannonGamePlatform()` | 
