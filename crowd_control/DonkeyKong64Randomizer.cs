@@ -53,10 +53,10 @@ public class DonkeyKong64Randomizer : N64EffectPack
 
     public override EffectList Effects { get; } = new List<Effect>
     {
-        new("Drunk Kong","drunky_kong") { Price = 0, Duration = 30, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
-        new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 30, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
+        new("Drunk Kong","drunky_kong") { Price = 0, Duration = 5, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
+        new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 5, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
         new("Ice Trap the Player","ice_trap") { Price = 0, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
-        new("Spawn Rocks","rockfall") { Price = 0, Duration = 30, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
+        new("Spawn Rocks","rockfall") { Price = 0, Duration = 5, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Player" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Player" },
         new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Player" },
@@ -260,13 +260,27 @@ public class DonkeyKong64Randomizer : N64EffectPack
         switch (request.EffectID)
         {
             case "drunky_kong":
+                if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                    return DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
+            case "disable_ta":
+                if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                    return NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
+            case "rockfall":
+                if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                    return ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
+
                 //set some value back to normal for effects that need turning off
                 //this is the preferred method! - it's always preferable to let CC
                 //(and thus the streamer) be in control of an effect's duration
                 //rather than relying on fixed timers
 
                 //return ADDR_CC_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING))
-                return true;
             default:
                 return base.StopEffect(request);
         }
