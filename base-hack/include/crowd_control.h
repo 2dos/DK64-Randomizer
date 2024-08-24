@@ -14,4 +14,5 @@ typedef struct cc_effects {
     /* 0x004 */ unsigned char warp_to_rap;
     /* 0x005 */ unsigned char get_kaught;
     /* 0x006 */ unsigned char balloon;
+    /* 0x007 */ unsigned char slip;
 } cc_effects;

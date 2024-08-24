@@ -199,7 +199,9 @@ typedef struct playerData {
 	/* 0x064 */ char unk_64[0x6A-0x64];
 	/* 0x06A */ short grounded_bitfield;
 	/* 0x06C */ short unk_bitfield;
-	/* 0x06E */ char unk_6E[0x7C-0x6E];
+	/* 0x06E */ char unk_6E[0x78-0x6E];
+	/* 0x078 */ unsigned char sfx_floor;
+	/* 0x079 */ char unk_79[0x7C-0x79];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;

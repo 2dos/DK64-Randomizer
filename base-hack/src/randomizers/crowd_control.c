@@ -84,6 +84,7 @@ int cc_enabler_warptorap(void) {
     previous_rap_map = CurrentMap;
     previous_rap_exit = DestExit;
     initiateTransitionFade(MAP_DKRAP, 0, GAMEMODE_RAP);
+    return 1;
 }
 
 void handleGamemodeWrapper(void) {
@@ -100,6 +101,7 @@ int cc_disabler_warptorap(void) {
         Mode = GAMEMODE_ADVENTURE;
         in_forced_rap = 0;
     }
+    return 1;
 }
 
 void skipDKTV(void) {
@@ -193,10 +195,18 @@ int cc_enabler_balloon(void) {
         Player->control_state = 0x6E;
         Player->control_state_progress = 0;
         Player->yVelocity = 0.0f;
-        Player->yAccel = 4.0f;
+        Player->yAccel = 2.0f + (*(double*)(0x8075D308) * 10.0f);
         Player->balloon_timer = 30;
         playActorAnimation(Player, 0x169);
     }
+    return 1;
+}
+
+int cc_enabler_slip(void) {
+    int original_sfx = Player->sfx_floor;
+    Player->sfx_floor = 0xC;
+    bananaslip();
+    Player->sfx_floor = original_sfx;
     return 1;
 }
 
@@ -208,6 +218,7 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_warptorap, .disabler=&cc_disabler_warptorap}, // Warp to Rap
     {.enabler = &cc_enabler_spawnkop, .allower=&cc_allower_spawnkop, .auto_disable = 1}, // Get Kaught
     {.enabler = &cc_enabler_balloon, .allower=&cc_allower_balloon, .auto_disable = 1}, // Baboon Balloon
+    {.enabler = &cc_enabler_slip, .auto_disable=1}, // Banana Slip
 };
 
 void cc_effect_handler(void) {

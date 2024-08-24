@@ -1,4 +1,5 @@
-﻿using ConnectorLib;
+﻿using System;
+using ConnectorLib;
 using ConnectorLib.Memory;
 using CrowdControl.Common;
 using JetBrains.Annotations;
@@ -48,8 +49,14 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private const uint ADDR_RANDO_CANARY = 0x807FFFF4;
     private const uint ADDR_CUTSCENE_ACTIVE = 0x807444EC;
     private const uint ADDR_TRANSITION_SPEED = 0x807FD88C;
+    private const uint ADDR_STANDARD_AMMO = 0x807FCC40;
+    private const uint ADDR_HOMING_AMMO = 0x807FCC42;
+    private const uint ADDR_ORANGES = 0x807FCC44;
+    private const uint ADDR_CRYSTALS = 0x807FCC46;
+    private const uint ADDR_FILM = 0x807FCC48;
     private const uint ADDR_HEALTH = 0x807FCC4B;
     private const uint ADDR_MELONS = 0x807FCC4C;
+    private const uint ADDR_GLOBAL_INSTRUMENT = 0x807FCC4E;
     private const uint ADDR_APPLIED_DAMAGE_MULTIPLIER = 0x807FF8A5;
 
     private const byte COIN_CHANGE_AMOUNT = 2;
@@ -72,9 +79,13 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Ice Trap the Player","ice_trap") { Price = 0, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
         new("Spawn Rocks","rockfall") { Price = 0, Duration = 5, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
         new("Instant Balloon","balloon") { Price = 0, Description = "Inflate the balloon (kong) just like a balloon.", Category="Player" },
+        new("High Gravity","gravity_high") { Price = 0, Duration = 5, Description = "Crank(y) that gravity up to 11.", Category="Player" },
+        new("Low Gravity","gravity_low") { Price = 0, Duration = 5, Description = "Make the moonkick not so special anymore.", Category="Player" },
         // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
+        new("Give Replenishibles","give_replenishibles") { Price = 0, Description = "Help the player out by giving them some ammo, crystals amongst other things.", Category="Inventory" },
+        new("Remove all Replenishibles","remove_replenishibles") { Price = 0, Description = "Remove everything the player has in terms of ammo, crystals and other things.", Category="Inventory" },
         new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Inventory" },
         new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
         // Health
@@ -161,6 +172,121 @@ public class DonkeyKong64Randomizer : N64EffectPack
             default:
                 return await base.RequestData(key);
         }
+    }
+
+    private bool Write16(uint address, ushort value)
+    {
+        byte upper = (byte)(value >> 8);
+        byte lower = (byte)(value & 0xFF);
+        bool result = true;
+        result &= Connector.Write8(address + 0, upper);
+        result &= Connector.Write8(address + 1, lower);
+        return result;
+    }
+
+    private bool Add16(uint address, short change, short lower_bound, short upper_bound)
+    {
+        bool result = true;
+        result &= Connector.Read8(address + 0, out byte upper);
+        result &= Connector.Read8(address + 1, out byte lower);
+        short value = (short)((upper << 8) + lower);
+        value += change;
+        if (value < lower_bound) {
+            value = lower_bound;
+        } else if (value > upper_bound) {
+            value = upper_bound;
+        }
+        result &= Connector.Write8(address + 0, (byte)(value >> 8));
+        result &= Connector.Write8(address + 1, (byte)(value & 0xFF));
+        return result;
+    }
+
+    private bool Write32(uint address, int value)
+    {
+        bool result = true;
+        byte b0 = (byte)((value >> 24) & 0xFF);
+        byte b1 = (byte)((value >> 16) & 0xFF);
+        byte b2 = (byte)((value >> 8) & 0xFF);
+        byte b3 = (byte)((value >> 0) & 0xFF);
+        result &= Connector.Write8(address + 0, b0);
+        result &= Connector.Write8(address + 1, b1);
+        result &= Connector.Write8(address + 2, b2);
+        result &= Connector.Write8(address + 3, b3);
+        return result;
+    }
+
+    private int floattoint(float value)
+    {
+        byte[] bytes = BitConverter.GetBytes(value);
+        return BitConverter.ToInt32(bytes, 0);
+    }
+
+    private bool WriteFloat(uint address, float value)
+    {
+        int val_i = floattoint(value);   
+        return Write32(address, val_i);
+    }
+
+    private bool WriteDouble(uint address, double value)
+    {
+        bool result = true;
+        byte[] bytes = BitConverter.GetBytes(value);
+        int val_i = BitConverter.ToInt32(bytes, 0);
+        result &= Write32(address, val_i);
+        val_i = BitConverter.ToInt32(bytes, 4);
+        result &= Write32((uint)(address + 4), val_i);
+        return result;
+    }
+
+    private bool ChangeGravity(float scale)
+    {
+        if (scale == 0) return false;
+        bool result = true;
+        // 8068B38C - Set by the trigger
+        // 8068F858 - Hardcoded -30 // Boat
+        result &= WriteFloat(0x80750300, (float)(-20 * scale));
+        result &= WriteFloat(0x807502F8, (float)(-28 * scale)); // Subtracted from with a random value (???)
+        // 806AE064 - Hardcoded -30 // Krossbones Head
+        // 806b40ac - Hardcoded? // Enemies
+        result &= WriteFloat(0x807502EC, (float)(-15 * scale));
+        result &= WriteFloat(0x807502E8, (float)(-20 * scale));
+        result &= WriteFloat(0x807502F4, (float)(-30 * scale)); // Seal
+
+        result &= WriteFloat(0x80753578, (float)(-20 * scale)); // yaccel array
+        result &= WriteFloat(0x8075357C, (float)(-20 * scale)); // yaccel array
+        result &= WriteFloat(0x80753580, (float)(-30 * scale)); // yaccel array
+        result &= WriteFloat(0x80753584, (float)(-30 * scale)); // yaccel array
+        result &= WriteFloat(0x80753588, (float)(-20 * scale)); // yaccel array
+        result &= WriteFloat(0x8075358C, (float)(-20 * scale)); // yaccel array
+        result &= WriteFloat(0x80753590, (float)(-30 * scale)); // yaccel array
+        for (byte i = 0; i < 7; i++) {
+            result &= WriteFloat((uint)(0x807537A8 + (4 * i)), (float)(-10.66 * scale)); // 807537A8 array
+            result &= WriteFloat((uint)(0x80753738 + (4 * i)), (float)(-14 * scale)); // 80753738 array
+            result &= WriteFloat((uint)(0x80753024 + (4 * i)), (float)(-20 * scale)); // 80753024 array
+            result &= WriteFloat((uint)(0x80753754 + (4 * i)), (float)(-14 * scale)); // 80753754 array
+            result &= WriteFloat((uint)(0x80753700 + (4 * i)), (float)(-14 * scale)); // 80753700 array
+            result &= WriteFloat((uint)(0x80753658 + (4 * i)), (float)(-25 * scale)); // 80753658 array
+            result &= WriteFloat((uint)(0x807536E4 + (4 * i)), (float)(-10.67 * scale)); // 807536E4 array
+            result &= WriteFloat((uint)(0x8075363C + (4 * i)), (float)(-17.78 * scale)); // 8075363C array
+            result &= WriteFloat((uint)(0x8075310C + (4 * i)), (float)(-20 * scale)); // 8075310C array
+        }
+        // 806d146c - hardcoded -8 // Enguarde leap?
+        // 806D5090 - hardcoded -30 // Simian Slam
+
+        result &= WriteFloat(0x8075CE60, (float)(-0.001 * scale)); // Cannon short
+        // 806d9dd4 - hardcoded 2
+        result &= WriteDouble(0x8075CE80, 150 * (1 / scale));
+        result &= WriteFloat(0x8075CE88, (float)(-0.001 * scale)); // Updraft
+        result &= WriteDouble(0x8075CEA8, 0.036 * scale);
+        result &= WriteFloat(0x8075CEB0, (float)(-0.001 * scale));
+        // 806DA13C - hardcoded -1
+        // 806DA28C - hardcoded -1
+        result &= WriteDouble(0x8075D308, 0.2 * scale); // balloon
+
+        // Reset player yaccel
+        AddressChain ADDR_YACCEL = AddressChain.Begin(Connector).Move(ADDR_PLAYER_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xC4);
+        result &= WriteFloat((uint)(ADDR_YACCEL.Address), -20 * scale);
+        return result;
     }
 
     protected override void StartEffect(EffectRequest request)
@@ -255,6 +381,40 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         return result;
                     });
                 return;
+            case "give_replenishibles":
+                TryEffect(request,
+                    () => true,
+                    () => {
+                        bool result = true;
+                        result &= Add16(ADDR_STANDARD_AMMO, 5, 0, 200);
+                        result &= Add16(ADDR_HOMING_AMMO, 5, 0, 200);
+                        result &= Add16(ADDR_ORANGES, 1, 0, 30);
+                        result &= Add16(ADDR_CRYSTALS, 150, 0, 3000);
+                        result &= Add16(ADDR_FILM, 1, 0, 20);
+                        result &= Add16(ADDR_GLOBAL_INSTRUMENT, 1, 0, 20);
+                        for (byte kong = 0; kong < 5; kong++) {
+                            result &= Add16((uint)(ADDR_KONG_BASE + (kong * 0x5E) + 8), 1, 0, 20);
+                        }
+                        return result;
+                    });
+                return;
+            case "remove_replenishibles":
+                TryEffect(request,
+                    () => true,
+                    () => {
+                        bool result = true;
+                        result &= Write16(ADDR_STANDARD_AMMO, 0);
+                        result &= Write16(ADDR_HOMING_AMMO, 0);
+                        result &= Write16(ADDR_ORANGES, 0);
+                        result &= Write16(ADDR_CRYSTALS, 0);
+                        result &= Write16(ADDR_FILM, 0);
+                        result &= Write16(ADDR_GLOBAL_INSTRUMENT, 0);
+                        for (byte kong = 0; kong < 5; kong++) {
+                            result &= Write16((uint)(ADDR_KONG_BASE + (kong * 0x5E) + 8), 0);
+                        }
+                        return result;
+                    });
+                return;
             case "give_gb":
                 TryEffect(request,
                     () => true,
@@ -332,6 +492,16 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     () => true,
                     () => Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(1)));
                 return;
+            case "gravity_high":
+                TryEffect(request,
+                    () => true,
+                    () => ChangeGravity(4.0f));
+                return;
+            case "gravity_low":
+                TryEffect(request,
+                    () => true,
+                    () => ChangeGravity(0.25f));
+                return;
             default:
                 Respond(request, EffectStatus.FailPermanent, StandardErrors.UnknownEffect, request);
                 return;
@@ -362,6 +532,10 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     return RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
+            case "gravity_high":
+                return ChangeGravity(1);
+            case "gravity_low":
+                return ChangeGravity(1);
 
                 //set some value back to normal for effects that need turning off
                 //this is the preferred method! - it's always preferable to let CC

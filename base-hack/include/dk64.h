@@ -272,6 +272,8 @@ extern void changeCollectableCount(int item, int player_index, int change);
 extern void save(void);
 extern void* getSpawnerTiedActor(short target_trigger, short props_change);
 
+extern void bananaslip(void);
+
 extern void _guScaleF(void* mtx, int x, int y, int z);
 extern void _guTranslateF(void* mtx, float x, float y, float z);
 extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);

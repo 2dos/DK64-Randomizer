@@ -747,6 +747,7 @@ def patchAssembly(ROM_COPY, spoiler):
         0x6D,  # FLAG_HATCH,
         0x00,  # FLAG_FIRSTJAPESGATE,
         0x17E,  # FLAG_FTT_BLOCKER,
+        0x18C,  # FLAG_FIRST_COIN_COLLECTION
     ]
 
     alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
