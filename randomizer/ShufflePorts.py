@@ -128,6 +128,11 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
     if spoiler.settings.enable_plandomizer:
         if location.name in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]:
             return False
+    if location.is_galleon_floating_crate:
+        return False
+    if location.map in [Maps.FungiForestLobby, Maps.CavesRotatingCabin]:
+        if location.vanilla_crown:
+            return False
     if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.vanilla_only:
         if not location.vanilla_port:
             return False

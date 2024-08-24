@@ -254,17 +254,23 @@ class Spoiler:
         settings["Move Randomization type"] = self.settings.move_rando.name
         settings["Loading Zones Shuffled"] = self.settings.shuffle_loading_zones.name
         settings["Decoupled Loading Zones"] = self.settings.decoupled_loading_zones
+        settings["Helm Location Shuffled"] = self.settings.shuffle_helm_location
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
         settings["Hard B Lockers"] = self.settings.hard_blockers
         if self.settings.randomize_blocker_required_amounts:
             settings["Maximum B Locker"] = self.settings.blocker_text
+            if self.settings.maximize_helm_blocker:
+                settings["Maximum B Locker ensured"] = self.settings.maximize_helm_blocker
         settings["Hard Troff N Scoff"] = self.settings.hard_troff_n_scoff
         if self.settings.randomize_cb_required_amounts:
             settings["Maximum Troff N Scoff"] = self.settings.troff_text
         settings["Open Lobbies"] = self.settings.open_lobbies
         settings["Auto Complete Bonus Barrels"] = self.settings.bonus_barrel_auto_complete
+        settings["Auto Key Turn ins"] = self.settings.auto_keys
+        settings["Chaos B.Lockers"] = self.settings.chaos_blockers
+        settings["Chaos Ratio"] = self.settings.chaos_ratio
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Shooting"] = self.settings.hard_shooting
@@ -293,10 +299,12 @@ class Spoiler:
         settings["Pearls Required for Mermaid GB"] = self.settings.mermaid_gb_pearls
         settings["Random Shop Prices"] = self.settings.random_prices.name
         settings["Banana Port Randomization"] = self.settings.bananaport_rando.name
+        settings["Banana port Location Shuffle"] = self.settings.bananaport_placement_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
         settings["Smaller Shops"] = self.settings.smaller_shops
         settings["Irondonk"] = self.settings.perma_death
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
+        settings["Ice Trap Frequency"] = self.settings.ice_trap_frequency.name
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
@@ -308,6 +316,7 @@ class Spoiler:
         settings["Chunky Model"] = self.settings.kong_model_chunky.name
 
         settings["Key 8 Required"] = self.settings.krool_access
+        settings["Vanilla K. Rool Requirement"] = self.settings.k_rool_vanilla_requirement
         settings["Key 8 in Helm"] = self.settings.key_8_helm
         settings["Select Starting Keys"] = self.settings.select_keys
         if not self.settings.keys_random:
@@ -347,8 +356,11 @@ class Spoiler:
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
+        settings["Hint Preset"] = self.settings.wrinkly_hints
         if self.settings.enable_progressive_hints:
             settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_text)
+        settings["Dim Solved Hints"] = self.settings.dim_solved_hints
+        settings["No Joke Hints"] = self.settings.serious_hints
         settings["Item Reward Previews"] = self.settings.item_reward_previews
         settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.bonus_barrel_rando, self.settings.minigames_list_selected, MinigameSelector)
         if self.settings.enemy_rando and any(self.settings.enemies_selected):
