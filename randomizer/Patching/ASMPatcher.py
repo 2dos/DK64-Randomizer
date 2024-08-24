@@ -1919,6 +1919,9 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Crowd Control Stuff
     writeFunction(ROM_COPY, 0x805FEDC8, Overlay.Static, "handleGamemodeWrapper", offset_dict)  # disable skipping the rap
+    writeFloat(ROM_COPY, 0x8075EB4C, Overlay.Static, -2.5, offset_dict)  # Have the initial moonkick accel reading from a "const" addr
+    writeValue(ROM_COPY, 0x806EB618, Overlay.Static, 0x3C018076, offset_dict, 4)  # LUI $at, 0x8076
+    writeValue(ROM_COPY, 0x806EB61C, Overlay.Static, 0xC426EB4C, offset_dict, 4)  # LWC1 $f6, 0xEB4C ($at)
 
 
     # Golden Banana Requirements

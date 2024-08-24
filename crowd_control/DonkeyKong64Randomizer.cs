@@ -279,6 +279,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         result &= WriteFloat(0x8075CE88, (float)(-0.001 * scale)); // Updraft
         result &= WriteDouble(0x8075CEA8, 0.036 * scale);
         result &= WriteFloat(0x8075CEB0, (float)(-0.001 * scale));
+        result &= WriteFloat(0x8075EB4C, (float)(-2.5 * scale)); // Aerial attack, specially patching this for a moonkick (everyone is gonna do this, so need to plan for this)
         // 806DA13C - hardcoded -1
         // 806DA28C - hardcoded -1
         result &= WriteDouble(0x8075D308, 0.2 * scale); // balloon
