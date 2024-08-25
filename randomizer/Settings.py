@@ -281,7 +281,11 @@ class Settings:
                     locked_blocker_items.append(item)
         elif self.randomize_blocker_required_amounts:
             if self.blocker_max > 0:
-                randomlist = random.choices(range(1, self.blocker_max), k=7)
+                choice_list = range(1, self.blocker_max)
+                if self.blocker_max < 7:
+                    # Can't create a random list with purely the range. Too small of a list
+                    choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
+                randomlist = random.choices(choice_list, k=7)
                 b_lockers = randomlist
                 if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
                     b_lockers.append(random.randint(1, self.blocker_max))

@@ -38,51 +38,12 @@ function goTo(url, new_tab=false) {
     window.location.href = url;
 }
 
-function handleSuggestionClick(url) {
-    document.getElementById("search_suggestions").innerHTML = "";
-    document.getElementById("article-search").value = "";
-    goTo(url);
-}
-
 function getLink(item) {
     if (Object.keys(item).includes("github")) {
         return `./index.html?title=${item.github}`
     }
     return `./index.html?title=${item.link}`
 }
-
-document.getElementById("article-search").addEventListener("keyup", (e) => {
-    const input_value = e.target.value;
-    if (articles.length == 0) {
-        return; // No articles
-    }
-    let matches = [];
-    if (input_value.length >= 1) {
-        articles.forEach(article => {
-            const score = getSearchScore(input_value, article.name);
-            if (score > 0) {
-                matches.push({
-                    "score": score,
-                    "text": highlightInstancesOfText(input_value, article.name),
-                    "link": getLink(article),
-                })
-            }
-        })
-        matches = matches.sort((a, b) => a.score < b.score ? 1 : ((b.score < a.score) ? -1 : 0));
-    }
-    matches = matches.filter((item, index) => index < 5); // Clamp to 5 search results at most
-    // const sugg_hook = document.getElementById("search_suggestions");
-    // sugg_hook.innerHTML = matches.map(item => `
-    //     <div class="search-item user-select-none p-2" onclick="handleSuggestionClick('${item.link}')">
-    //         ${item.text}
-    //     </div>
-    // `).join("");
-    // const top_offset = e.target.clientTop + e.target.clientHeight;
-    // const left_offset = e.target.clientLeft;
-    // sugg_hook.style.top = `calc(${top_offset}px + 0.5rem)`;
-    // sugg_hook.style.right = `calc(${left_offset}px + 0.5rem)`;
-    // sugg_hook.style["min-width"] = `${e.target.clientWidth}px`;
-})
 
 let article_names = [];
 let articles_ready = false;
@@ -461,5 +422,16 @@ function filterHTML(element, output_html) {
         if (hash_hook) {
             hash_hook.scrollIntoView();
         }
+    }
+
+    const imgs = document.getElementsByTagName("img");
+    for (let i = 0; i < imgs.length; i++) {
+        if (imgs[i].parentElement.classList.contains("img-btn-container")) {
+            continue;
+        }
+        imgs[i].addEventListener("click", (e) => {
+            const alt_text = e.target.getAttribute("alt");
+            updateImage(e.target.getAttribute("src"), alt_text == "image" ? "" : alt_text);
+        });
     }
 }

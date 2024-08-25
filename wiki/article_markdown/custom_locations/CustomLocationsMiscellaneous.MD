@@ -120,10 +120,10 @@
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  |  | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  |  | 
 | Aztec Llama Temple | Llama Temple: Matching Room |  | `(l.grape and l.lanky) or l.phasewalk` | 
-| Aztec Llama Temple | Vanilla Close Warp 1 |  |  | 
-| Aztec Llama Temple | Vanilla Matching Warp 1 |  |  | 
-| Aztec Llama Temple | Vanilla Lava Warp 2 |  |  | 
-| Aztec Llama Temple | Vanilla Close Warp 2 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Close Warp 1 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Matching Warp 1 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Lava Warp 2 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Close Warp 2 |  |  | 
 | Aztec Llama Temple | In the Water | CrownPad, DirtPatch, Bananaport | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))` | 
 | Aztec Llama Temple | Llama Temple: Snoop Switch |  |  | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  |  | 
@@ -443,12 +443,12 @@
 | Castle Crypt | 3Kong crypt entrance |  |  | 
 | Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
 | Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
-| Castle Crypt | Vanilla Far Warp 1 |  |  | 
-| Castle Crypt | Vanilla Close Warp 1 |  |  | 
-| Castle Crypt | Vanilla Close Warp 2 |  |  | 
-| Castle Crypt | Vanilla Close Warp 3 |  |  | 
-| Castle Crypt | Vanilla Far Warp 3 |  |  | 
-| Castle Crypt | Vanilla Far Warp 2 |  |  | 
+| Castle Crypt | Crypt: Vanilla Far Warp 1 |  |  | 
+| Castle Crypt | Crypt: Vanilla Close Warp 1 |  |  | 
+| Castle Crypt | Crypt: Vanilla Close Warp 2 |  |  | 
+| Castle Crypt | Crypt: Vanilla Close Warp 3 |  |  | 
+| Castle Crypt | Crypt: Vanilla Far Warp 3 |  |  | 
+| Castle Crypt | Crypt: Vanilla Far Warp 2 |  |  | 
 | Castle Mausoleum | 2kong crypt entrance |  |  | 
 | Castle Mausoleum | Lanky Crypt: Lanky Tunnel |  |  | 
 | Castle Upper Cave | Tunnel: Near Pit |  |  | 
