@@ -46,7 +46,7 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
             if "http://" in link or "https://" in link:
                 pre = ""
                 if "wiki/" in f:
-                    pre = ".."
+                    pre = "."
                 file_name = pre + "/web_cache" + urlparse(link).path + urlparse(link).query
                 Path(os.getcwd() + os.path.dirname(file_name)).mkdir(parents=True, exist_ok=True)
                 req = requests.get(link, allow_redirects=False)

@@ -181,7 +181,7 @@
                 }
                 startingSegs.forEach(seg => {
                     if (startsWith(title_value, seg.search)) {
-                        target_md_url = `./article_markdown/custom_locations/${title_value}.md`;
+                        target_md_url = `./article_markdown/custom_locations/${title_value}.MD`;
                         title_pretty = camelCaseToSpaces(title_value);
                         title_pretty = title_pretty.replace(seg.preface, `${seg.preface}:`)
                     }
