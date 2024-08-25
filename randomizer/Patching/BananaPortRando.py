@@ -82,7 +82,9 @@ def move_bananaports(spoiler):
                             "obj_id": obj_id,
                             "coords": new_coords,
                             "scale": min(CustomLocations[level_id][custom_location_id].max_size / (56 * 4), 0.25),  # Make 0.25 the max size
+                            "rot_x": CustomLocations[level_id][custom_location_id].rot_x,
                             "rot_y": warp_angle,
+                            "rot_z": CustomLocations[level_id][custom_location_id].rot_z,
                         }
                     )
                     # Modify Exit Table
@@ -138,6 +140,6 @@ def move_bananaports(spoiler):
                                 ROM_COPY.writeMultipleBytes(int(float_to_hex(c), 16), 4)
                             ROM_COPY.writeMultipleBytes(int(float_to_hex(k["scale"]), 16), 4)
                             ROM_COPY.seek(item_start + 0x18)
-                            ROM_COPY.writeMultipleBytes(0, 4)
+                            ROM_COPY.writeMultipleBytes(int(float_to_hex(k["rot_x"]), 16), 4)
                             ROM_COPY.writeMultipleBytes(int(float_to_hex(k["rot_y"]), 16), 4)
-                            ROM_COPY.writeMultipleBytes(0, 4)
+                            ROM_COPY.writeMultipleBytes(int(float_to_hex(k["rot_z"]), 16), 4)

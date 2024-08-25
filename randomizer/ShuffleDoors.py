@@ -41,6 +41,14 @@ def GetDoorLocationForKongAndLevel(kong, level):
     return Locations(baseOffset + (5 * levelOffset) + int(kong))
 
 
+def UpdateDoorLevels(spoiler):
+    """Ensure that the location for each hint door counts towards the correct level."""
+    for region in spoiler.RegionList:
+        for location_logic in spoiler.RegionList[region].locations:
+            if spoiler.LocationList[location_logic.id].type == Types.Hint:
+                spoiler.LocationList[location_logic.id].level = spoiler.RegionList[region].level
+
+
 def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Handle initial settings

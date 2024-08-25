@@ -11,10 +11,12 @@ from randomizer.Patching.Patcher import LocalROM
 class CrownPlacementShortData:
     """Class to store small parts of information relevant to the placement algorithm."""
 
-    def __init__(self, map, coords, max_size, default, vanilla):
+    def __init__(self, map, coords, rot_x, rot_z, max_size, default, vanilla):
         """Initialize with provided data."""
         self.map = map
         self.coords = coords
+        self.rot_x = rot_x
+        self.rot_z = rot_z
         self.max_size = max_size
         self.default = default
         self.vanilla = vanilla
@@ -43,7 +45,7 @@ def randomize_crown_pads(spoiler):
             for crown in spoiler.crown_locations[level]:
                 crown_data = CustomLocations[level][crown]
                 idx = spoiler.crown_locations[level][crown]
-                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.max_size, idx, crown_data.vanilla_crown))
+                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.rot_x, crown_data.rot_z, crown_data.max_size, idx, crown_data.vanilla_crown))
                 if crown_data.vanilla_crown:
                     new_vanilla_crowns.append(crown_data.map)
                 if not crown_data.vanilla_crown:
@@ -89,9 +91,9 @@ def randomize_crown_pads(spoiler):
                                 int(float_to_hex(crown_scale), 16),
                                 0x6B0BEE32,
                                 0x9B4D326F,
+                                int(float_to_hex(crown.rot_x), 16),
                                 0,
-                                0,
-                                0,
+                                int(float_to_hex(crown.rot_z), 16),
                                 0,
                                 (0x1C6 << 16) | selected_id,
                                 1 << 16,
