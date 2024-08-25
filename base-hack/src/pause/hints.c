@@ -284,6 +284,22 @@ Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
         if (!is_control) {
             if ((header > SPLIT_STRING_LINE_LIMIT) || (force_split)) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
+                if(line_count == 2 && header > SPLIT_STRING_LINE_LIMIT){
+                    // When reaching the 51st character of the 3rd line, add ellipsis depending on last safe position
+                    if((last_safe + 3) < SPLIT_STRING_LINE_LIMIT){
+                        // Insert ellipsis 
+                        *(char*)(string_copy_ref + last_safe) = 0x2E;
+                        *(char*)(string_copy_ref + last_safe + 1) = 0x2E;
+                        *(char*)(string_copy_ref + last_safe + 2) = 0x2E;
+                        *(char*)(string_copy_ref + last_safe + 3) = 0;
+                    } else {
+                        // Insert ellipsis 
+                        *(char*)(string_copy_ref + header - 1) = 0x2E;
+                        *(char*)(string_copy_ref + header - 2) = 0x2E;
+                        *(char*)(string_copy_ref + header - 3) = 0x2E;
+                    }
+                    
+                }
                 dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
                 line_count += 1;
                 if (line_count == 3) {
