@@ -24,8 +24,8 @@
         <link href="../static/styles/styles.css" rel="stylesheet" />
         <link href="../static/styles/gui.css" rel="stylesheet" type="text/css" />
         <link href="../static/styles/wiki.css" rel="stylesheet" type="text/css" />
-        <script src="../static/js/jq_v3_6_0.min.js"></script>
-        <script src="../static/js/jqui_v1_13_2.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     </head>
     <body id="page-top">
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
@@ -196,7 +196,7 @@
             
             function updateTitle(name) {
                 document.getElementById("page-title").innerText = name;
-                document.getElementById("site_page_identifier").setAttribute("content", name);
+                //document.getElementById("site_page_identifier").setAttribute("content", name);
                 document.title = name;
             }
 

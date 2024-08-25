@@ -44,7 +44,10 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
         css_link = find_list_resources("link", "href", soup)
         for link in [*css_link, *script_src, *image_src]:
             if "http://" in link or "https://" in link:
-                file_name = "/web_cache" + urlparse(link).path + urlparse(link).query
+                pre = ""
+                if "wiki/" in f:
+                    pre = ".."
+                file_name = pre + "/web_cache" + urlparse(link).path + urlparse(link).query
                 Path(os.getcwd() + os.path.dirname(file_name)).mkdir(parents=True, exist_ok=True)
                 req = requests.get(link, allow_redirects=False)
                 open(f".{file_name}", "wb").write(req.content)
