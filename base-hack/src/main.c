@@ -5,6 +5,7 @@
 
 #define LAG_CAP 10
 static short past_lag[LAG_CAP] = {};
+static short instrument_cs_indexes[] = {0, 4, 7, 8, 9};
 static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
@@ -13,7 +14,6 @@ int hint_pointers[35] = {};
 char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
 char grab_lock_timer = -1;
 char tag_locked = 0;
-
 
 void cFuncLoop(void) {
 	regularFrameLoop();
@@ -156,7 +156,7 @@ void cFuncLoop(void) {
 	// }
 	if (CurrentMap == MAP_HELM) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
-			if ((CutsceneIndex == 0) || (CutsceneIndex == 4) || (CutsceneIndex == 7) || (CutsceneIndex == 8) || (CutsceneIndex == 9)) {
+			if (inShortList(CutsceneIndex, &instrument_cs_indexes[0], 5)) {
 				if (checkFlag(FLAG_MODIFIER_HELMBOM,FLAGTYPE_PERMANENT)) {
 					setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
 				}
