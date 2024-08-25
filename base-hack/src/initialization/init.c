@@ -316,6 +316,7 @@ void initHack(int source) {
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
+			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			if (Rando.big_head_mode == 1) {
 				BigHeadMode = 0xFF;
 			} else if (Rando.big_head_mode == 2) {

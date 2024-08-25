@@ -58,6 +58,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private const uint ADDR_MELONS = 0x807FCC4C;
     private const uint ADDR_GLOBAL_INSTRUMENT = 0x807FCC4E;
     private const uint ADDR_APPLIED_DAMAGE_MULTIPLIER = 0x807FF8A5;
+    private const uint ADDR_ORIGINAl_DAMAGE_MULTIPLIER = 0x807FFFF9;
 
     private const byte COIN_CHANGE_AMOUNT = 2;
     private enum CC_STATE
@@ -84,15 +85,14 @@ public class DonkeyKong64Randomizer : N64EffectPack
         // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
-        new("Give Replenishibles","give_replenishibles") { Price = 0, Description = "Help the player out by giving them some ammo, crystals amongst other things.", Category="Inventory" },
-        new("Remove all Replenishibles","remove_replenishibles") { Price = 0, Description = "Remove everything the player has in terms of ammo, crystals and other things.", Category="Inventory" },
+        new("Give Consumables","give_replenishibles") { Price = 0, Description = "Help the player out by giving them some ammo, crystals amongst other things.", Category="Inventory" },
+        new("Remove all Consumables","remove_replenishibles") { Price = 0, Description = "Remove everything the player has in terms of ammo, crystals and other things.", Category="Inventory" },
         new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Inventory" },
         new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
         // Health
         new("Refill Health","refill_health") { Price = 0, Description = "Refills the player's health to max.", Category="Health" },
-        new("One Hit KO","damage_ohko") { Price = 0, Description = "From now onwards, the player will be killed for any damage taken.", Category="Health" },
-        new("Double Damage","damage_double") { Price = 0, Description = "From now onwards, the player will take double damage.", Category="Health" },
-        new("Single Damage","damage_single") { Price = 0, Description = "From now onwards, the player will take the normal amount of damage.", Category="Health" },
+        new("One Hit KO","damage_ohko") { Price = 0, Duration = 5, Description = "The player will be killed for any damage taken.", Category="Health" },
+        new("Double Damage","damage_double") { Price = 0, Duration = 5, Description = "The player will take double damage.", Category="Health" },
         // Misc
         new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
         new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Misc" },
@@ -115,8 +115,13 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if (!Connector.Read8(ADDR_RANDO_CANARY, out byte rando_version)) return GameState.Unknown;
         if (!Connector.Read8(ADDR_CUTSCENE_ACTIVE, out byte cutscene_state)) return GameState.Unknown;
         if (!Connector.ReadFloat(ADDR_TRANSITION_SPEED, out float transition_speed)) return GameState.Unknown;
+        if (!Connector.ReadFloat(ADDR_STATE_POINTER, out float state_pointer)) return GameState.Unknown;
         if (rando_version != 4) {
             // Not randomizer or a currently supported version
+            return GameState.Unknown;
+        }
+        if (state_pointer == 0) {
+            // CC Data not yet loaded
             return GameState.Unknown;
         }
         if ((current_gamemode != 6) || (next_gamemode != 6)) {
@@ -287,6 +292,14 @@ public class DonkeyKong64Randomizer : N64EffectPack
         // Reset player yaccel
         AddressChain ADDR_YACCEL = AddressChain.Begin(Connector).Move(ADDR_PLAYER_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xC4);
         result &= WriteFloat((uint)(ADDR_YACCEL.Address), -20 * scale);
+        return result;
+    }
+
+    private bool resetDamageMultiplier(void)
+    {
+        bool result = true;
+        result &= Connector.Read8(ADDR_ORIGINAl_DAMAGE_MULTIPLIER, out byte damage_multiplier);
+        result &= Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, damage_multiplier);
         return result;
     }
 
@@ -488,11 +501,6 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     () => true,
                     () => Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(2)));
                 return;
-            case "damage_single":
-                TryEffect(request,
-                    () => true,
-                    () => Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(1)));
-                return;
             case "gravity_high":
                 TryEffect(request,
                     () => true,
@@ -537,6 +545,10 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return ChangeGravity(1);
             case "gravity_low":
                 return ChangeGravity(1);
+            case "damage_ohko":
+                return resetDamageMultiplier();
+            case "damage_double":
+                return resetDamageMultiplier();
 
                 //set some value back to normal for effects that need turning off
                 //this is the preferred method! - it's always preferable to let CC
