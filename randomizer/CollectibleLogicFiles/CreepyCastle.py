@@ -19,15 +19,17 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # W5
 
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Behind Snide's
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # By Tiny BP
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # W2
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack, None, 4),  # Above main warps
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack, None, 2),  # Above windows
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.climbing, None, 2),  # Atop tree near lower T&S
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.climbing, None, 2),  # Atop tree near big tree
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # Behind gravestone by lower cave
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Off the edge by big tree
+    ],
+    Regions.CastleVeryBottom: [
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # By Tiny BP
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.climbing, None, 2),  # Atop tree near lower T&S
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Behind gravestone near lower cave
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # Behind gravestone by lower cave
     ],
     Regions.CastleBaboonBlast: [
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 5),
