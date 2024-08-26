@@ -9,7 +9,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected, ShufflePortLocations, KasplatRandoSetting
+from randomizer.Enums.Settings import FreeTradeSetting, HelmSetting, RemovedBarriersSelected, ShufflePortLocations, KasplatRandoSetting
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
@@ -102,10 +102,13 @@ def getBannedWarps(spoiler) -> list[Events]:
         Events.GalleonW4aTagged,
     ]
     WARP_SHUFFLE_SETTING = spoiler.settings.bananaport_placement_rando
-    KASPLAT_LOCATION_RANDO = spoiler.settings.kasplat_rando_setting == KasplatRandoSetting.location_shuffle
-    if (not KASPLAT_LOCATION_RANDO and WARP_SHUFFLE_SETTING == ShufflePortLocations.on) or WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
-        # Access to the Lanky Kasplat
+    PLATFORMING_SETTING = spoiler.LogicVariables.advanced_platforming
+    if WARP_SHUFFLE_SETTING in [ShufflePortLocations.on, ShufflePortLocations.half_vanilla]:
+        # Access to the Lanky Kasplat and potential coins or coloured bananas
         lst.append(Events.LlamaW2bTagged)
+    if not PLATFORMING_SETTING:
+        # Access to Blueprint Pillar or Bonus Cave for not [Diddy or Tiny]
+        lst.append(Events.CavesW4aTagged)
     if WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
         lst.extend(
             [
@@ -728,6 +731,7 @@ CustomLocations = {
             logic_region=Regions.AztecTunnelBeforeOasis,
             logic=lambda l: l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             group=1,
+            banned_types=[LocationTypes.Bananaport],  # Hard to detect that it's bad to link to Quicksand Cave, in which case it tricks the seed into assuming any kong can use this port
         ),
         CustomLocation(map=Maps.AngryAztec, name="Near Oasis Sand", x=2151, y=120, z=983, max_size=56, logic_region=Regions.AngryAztecOasis, group=1),
         CustomLocation(map=Maps.AngryAztec, name="Behind Tiny Temple", x=3345, y=153, z=507, max_size=48, logic_region=Regions.AngryAztecOasis, group=1),
@@ -1900,6 +1904,7 @@ CustomLocations = {
             logic_region=Regions.TreasureRoom,
             logic=lambda l: ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick(),
             group=5,
+            banned_types=[LocationTypes.Bananaport],  # Hard to detect that it's bad to link to Diddy's tower, in which case it bricks seed gen
         ),
         CustomLocation(
             name="Galleon Treasure Room UnderWater",
