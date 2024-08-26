@@ -199,15 +199,16 @@ def selectUsefulWarpFullShuffle(list_of_custom_locations, list_of_warps, warp: C
     x = warp.coords[0]
     y = warp.coords[1]
     z = warp.coords[2]
-    possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region or list_of_custom_locations[x].logic_region == Regions.CreepyCastleMain]
+    big_logic_regions = [Regions.CrystalCavesMain, Regions.CreepyCastleMain]
+    possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region or list_of_custom_locations[x].logic_region in big_logic_regions]
     if warp.logic_region in ONE_KONG_REGIONS:
         possible_warps = [x for x in possible_warps if list_of_custom_locations[x].logic_region not in ONE_KONG_REGIONS]
-    for range in [800, 1000, 1400]:
+    for range in [1400, 1000, 800]:
         narrow_down = []
         for loc in possible_warps:
             warp_pad = list_of_custom_locations[loc]
             if (
-                (abs(x - warp_pad.coords[0]) + abs(z - warp_pad.coords[2])) > range
+                abs(abs(x - warp_pad.coords[0]) - abs(z - warp_pad.coords[2])) > range
                 or abs(y - warp_pad.coords[1]) > 200
                 or warp_pad.logic_region != region
                 or warp_pad.logic_region not in klumped_regions
@@ -279,7 +280,7 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                     raise Exception(f"Insufficient custom location count for {map.name}. Expected: {pick_count}. Actual: {len(index_lst)}")
                 pick_count = min(pick_count, len(index_lst))
                 warps = []
-                if spoiler.settings.useful_bananaport_placement and spoiler.settings.bananaport_placement_rando not in [ShufflePortLocations.vanilla_only, ShufflePortLocations.on]:
+                if spoiler.settings.useful_bananaport_placement and spoiler.settings.bananaport_placement_rando != ShufflePortLocations.vanilla_only:
                     random.shuffle(index_lst)
                     # Populate the region dict with custom locations in each region
                     region_dict = {}
