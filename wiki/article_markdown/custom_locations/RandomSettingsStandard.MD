@@ -1,0 +1,264 @@
+The generated settings will be of average difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will be roughly around their defaults. Some of the most difficult settings will never be set.
+
+# Always On
+- Auto Key Turn Ins
+- Enable Tag Anywhere
+- Faster Checks
+- Fast Start - Beginning of Game
+- Fast Warps
+- Random Helm Length
+- Item Reward Previews
+- Randomize Keys Required to Beat K. Rool
+- Kong Rando
+- Random K. Rool Phase Count
+- Troff n Scoff Portal Numbers
+- Misc Changes
+- Randomize Medals for Rareware Coin
+- Random B. Locker Amounts
+- Randomize CB Required Amounts
+- Remove Barriers
+- Shop Indicator
+- Shorten Boss Fights
+- Item Randomizer
+- Randomize number of starting Kongs
+- Warp to Isles menu option
+
+# Always Off
+- Enable Plandomizer
+- Hard Bosses
+- Hard Mode
+- Helm Hurry Mode
+- Vanilla K. Rool Requirement
+- Irondonk
+- Guaranteed Starting Keys
+
+# Other Settings
+- Activate Bananaports: 
+	- Off: 40%
+	- All: 40%
+	- Isles: 20%
+- Progressive Switch Strength: 50%
+- Random Bananaport Locations: 
+	- Off: 50%
+	- Vanilla Only: 30%
+	- Half Vanilla: 15%
+	- On: 5%
+- Cross-Map Bananaports: 
+	- Off: 100%
+- B. Locker Max: Between 40 and 100, usually close to 60
+- Auto Complete Bonus Barrels: 30%
+- Shuffle Bonus Barrels: 70%
+- Shuffle Boss Kong Required: 65%
+- Boss Location Rando: 80%
+- DK Phase requires Baboon Blast: 50%
+- Random CB Locations: 
+	- Off: 50%
+	- On: 40%
+	- On With Isles: 10%
+- Chaos B. Lockers: 25%
+- Chaos Ratio: Between 0.1 and 0.35, usually close to 0.25
+- Chunky Phase Slam Requirement: 
+	- Random: 100%
+- Helm Door 2 Requirement Item: 
+	- Vanilla: 20%
+	- Opened: 20%
+	- Medium Random: 40%
+	- Easy Random: 20%
+- Helm Door 2 Requirement Count: Between 1 and 10, usually close to 4
+- Coin Rando: 50%
+- Helm Door 1 Requirement Item: 
+	- Vanilla: 20%
+	- Opened: 20%
+	- Medium Random: 40%
+	- Easy Random: 20%
+- Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
+- Crown Enemy Randomizer: 95%
+- Crown Placement Rando: 30%
+- Damage Multiplier: 
+	- Default: 50%
+	- Double: 35%
+	- Quad: 15%
+- Dim Solved Hints: 50%
+- Tag Barrels Disabled: 50%
+- Dk Portal Location Rando: 10%
+- Progressive Hints: 50%
+- Enable Shop Hints: 90%
+- Dropsanity: 25%
+- Enemy Speed Rando: 50%
+- Faster Checks Selected: 
+	- Factory Toy Monster Fight: 70%
+	- Factory Piano Game: 70%
+	- Factory Diddy Rnd: 70%
+	- Factory Arcade Round 1: 70%
+	- Factory Car Race: 70%
+	- Galleon Seal Race: 70%
+	- Galleon Mech Fish: 70%
+	- Forest Mill Conveyor: 70%
+	- Forest Owl Race: 70%
+	- Forest Rabbit Race: 70%
+	- Caves Ice Tomato Minigame: 70%
+	- Castle Minecart: 70%
+	- Castle Car Race: 70%
+	- Jetpac: 70%
+- Free Trade Agreement: 
+	- None: 10%
+	- Not Blueprints: 30%
+	- Major Collectibles: 60%
+- Fungi Time: 
+	- Day: 20%
+	- Night: 20%
+	- Random: 30%
+	- Dusk: 15%
+	- Progressive: 15%
+- Galleon Water: 
+	- Random: 100%
+- Hard B. Lockers: 20%
+- Hard Shooting: 50%
+- Hard Troff n' Scoff: 20%
+- Shuffle Helm Rooms: 80%
+- Helm Room Bonus Count: 
+	- One: 30%
+	- Two: 70%
+- Helm Start Location: 
+	- Default: 20%
+	- Skip Start: 60%
+	- Skip All: 20%
+- Helmhurry List Banana Medal: Between 30 and 120, usually close to 60
+- Helmhurry List Battle Crown: Between 30 and 150, usually close to 90
+- Helmhurry List Bean: Between 30 and 180, usually close to 120
+- Helmhurry List Blueprint: Between 30 and 120, usually close to 45
+- Helmhurry List Boss Key: Between 90 and 300, usually close to 150
+- Helmhurry List Colored Bananas: Between 1 and 5, usually close to 3
+- Helmhurry List Company Coins: Between 120 and 600, usually close to 300
+- Helmhurry List Fairies: Between 30 and 120, usually close to 50
+- Helmhurry List Golden Banana: Between 10 and 60, usually close to 20
+- Helmhurry List Ice Traps: Between -60 and -15, usually close to -40
+- Helmhurry List Kongs: Between 120 and 600, usually close to 240
+- Helmhurry List Move: Between 15 and 90, usually close to 30
+- Helmhurry List Pearl: Between 30 and 120, usually close to 50
+- Helmhurry List Rainbow Coin: Between 5 and 30, usually close to 15
+- Helmhurry List Starting Time: Between 900 and 1800, usually close to 1200
+- Ice Trap Frequency: 
+	- Rare: 50%
+	- Mild: 30%
+	- Common: 15%
+	- Frequent: 5%
+- Ice Traps Damage Player: 50%
+- Item Rando List Selected: 
+	- Shop: 95%
+	- Banana: 95%
+	- Toughbanana: 50%
+	- Crown: 70%
+	- Blueprint: 70%
+	- Key: 85%
+	- Medal: 70%
+	- Nintendocoin: 70%
+	- Rarewarecoin: 70%
+	- Kong: 85%
+	- Fairy: 70%
+	- Rainbowcoin: 70%
+	- Beanpearl: 70%
+	- Fakeitem: 50%
+	- Junkitem: 50%
+	- Crateitem: 50%
+	- Shopowners: 30%
+- Random Kasplat Locations: 
+	- Off: 15%
+	- Vanilla Locations: 55%
+	- Location Shuffle: 30%
+- Lock Key 8 in Helm: 50%
+- Kong Model Chunky: 
+	- Default: 100%
+- Kong Model Diddy: 
+	- Default: 100%
+- Kong Model Dk: 
+	- Default: 100%
+- Kong Model Lanky: 
+	- Default: 100%
+- Kong Model Tiny: 
+	- Default: 100%
+- Key 8 Required: 70%
+- Shuffle K. Rool Phases: 80%
+- Entrance Randomizer: 
+	- Vanilla: 20%
+	- Level Order: 65%
+	- Loadingzone: 15%
+- Logic: 
+	- Glitchless: 100%
+- Maximize Helm B. Locker: 15%
+- Randomize Medal CB Requirement: Between 15 and 90, usually close to 40
+- Pearls for Mermaid GB: Between 2 and 5, usually close to 3
+- Extra Hints: 
+	- Off: 30%
+	- Base: 35%
+	- All: 35%
+- Move Randomizer: 
+	- On: 30%
+	- Cross Purchase: 70%
+- No Heals: 50%
+- No Melon Slice Drops: 20%
+- Open Lobbies: 60%
+- Progressive Hint 35 Requirement: Between 30 and 100, usually close to 60
+- Random Puzzle Solutions: 
+	- Off: 10%
+	- Easy: 20%
+	- Medium: 60%
+	- Hard: 10%
+- Random Crates: 30%
+- Random Fairies: 20%
+- Random Patches: 20%
+- Random Shop Prices: 
+	- Vanilla: 10%
+	- Free: 10%
+	- Low: 20%
+	- Medium: 35%
+	- High: 25%
+- Random Starting Location: 30%
+- Randomize Pickups: 60%
+- Fairies for Rareware GB: Between 1 and 20, usually close to 10
+- Remove Barriers Selected: 
+	- Japes Coconut Gates: 75%
+	- Japes Shellhive Gate: 75%
+	- Aztec Tunnel Door: 75%
+	- Aztec 5dtemple Switches: 80%
+	- Aztec Llama Switches: 75%
+	- Factory Production Room: 80%
+	- Factory Testing Gate: 75%
+	- Galleon Lighthouse Gate: 75%
+	- Galleon Shipyard Area Gate: 75%
+	- Castle Crypt Doors: 75%
+	- Galleon Seasick Ship: 80%
+	- Forest Green Tunnel: 75%
+	- Forest Yellow Tunnel: 75%
+	- Caves Igloo Pads: 80%
+	- Caves Ice Walls: 70%
+- No Joke Hints: 30%
+- Banana Fairy Island Move Status: 
+	- Vanilla: 20%
+	- Shuffled: 20%
+	- Shuffled Decoupled: 20%
+	- Start With: 40%
+- Shuffle Helm Location: 50%
+- Shuffle Shop Locations: 50%
+- Smaller Shops: 50%
+- Starting Kong: 
+	- Any: 100%
+- Random Starting Move Count: Between 2 and 10, usually close to 4
+- Switchsanity: 
+	- Off: 85%
+	- Helm Access: 10%
+	- All: 5%
+- Tns Location Rando: 30%
+- Troff n' Scoff Max: Between 150 and 400, usually close to 300
+- Vanilla Door Rando: 40%
+- Win Condition: 
+	- Beat Krool: 25%
+	- Easy Random: 20%
+	- Medium Random: 50%
+	- Krem Kapture: 5%
+- Kongless Hint Doors: 90%
+- Wrinkly Hints: 
+	- Standard: 50%
+	- Cryptic: 20%
+	- Item Hinting: 30%
+- Wrinkly Location Rando: 30%
