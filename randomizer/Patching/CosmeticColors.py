@@ -1009,7 +1009,7 @@ def getSpinPixels() -> dict:
 
 def maskImageGBSpin(im_f, color: tuple, image_index: int):
     """Mask the GB Spin Sprite."""
-    if image_index == getBonusSkinOffset(ExtraTextures.MedalRim):
+    if image_index in (getBonusSkinOffset(ExtraTextures.MedalRim), 0xBAA):
         color = tuple([int(x * 0.75) for x in list(color)])
     masked_im = maskImageWithColor(im_f, color)
     spin_pixels = getSpinPixels()
