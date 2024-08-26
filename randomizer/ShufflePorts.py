@@ -136,6 +136,11 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
     if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.vanilla_only:
         if not location.vanilla_port:
             return False
+    if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.half_vanilla or (
+        spoiler.settings.bananaport_placement_rando == ShufflePortLocations.on and not spoiler.settings.useful_bananaport_placement
+    ):
+        if location.logic_region in ONE_KONG_REGIONS:
+            return False
     return location.isValidLocation(LocationTypes.Bananaport)
 
 
@@ -158,6 +163,19 @@ REGION_KLUMPS = {
     Regions.CrystalCavesMain: [Regions.CavesBlueprintPillar, Regions.CavesBananaportSpire, Regions.CavesBonusCave],
 }
 
+ONE_KONG_REGIONS = [
+    # These regions are not accessible by every kong.
+    Regions.JapesTopOfMountain,
+    Regions.AztecDonkeyQuicksandCave,
+    Regions.LlamaTempleBack,
+    Regions.FactoryTinyRaceLobby,
+    Regions.TreasureRoomDiddyGoldTower,
+    Regions.CavesBonusCave,
+    Regions.CavesBlueprintCave,
+    Regions.CavesBlueprintPillar,
+    Regions.CavesBananaportSpire,
+]
+
 warp_event_pairs = {}
 
 
@@ -179,22 +197,26 @@ def selectUsefulWarpFullShuffle(list_of_custom_locations, list_of_warps, warp: C
     klumped_regions = []
     if region in REGION_KLUMPS.keys():
         klumped_regions = REGION_KLUMPS[region]
+    klumped_regions.append(Regions.CreepyCastleMain)
     x = warp.coords[0]
     y = warp.coords[1]
     z = warp.coords[2]
-    possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region and list_of_custom_locations[x].logic_region]
+    big_logic_regions = [Regions.CrystalCavesMain, Regions.CreepyCastleMain]
+    possible_warps = [x for x in list_of_warps if list_of_custom_locations[x].logic_region != region or list_of_custom_locations[x].logic_region in big_logic_regions]
+    if warp.logic_region in ONE_KONG_REGIONS:
+        possible_warps = [x for x in possible_warps if list_of_custom_locations[x].logic_region not in ONE_KONG_REGIONS]
     for range in [1400, 1000, 800]:
         narrow_down = []
         for loc in possible_warps:
             warp_pad = list_of_custom_locations[loc]
             if (
-                (abs(x - warp_pad.coords[0]) + abs(z - warp_pad.coords[2])) > range
+                abs(abs(x - warp_pad.coords[0]) - abs(z - warp_pad.coords[2])) > range
                 or abs(y - warp_pad.coords[1]) > 200
                 or warp_pad.logic_region != region
                 or warp_pad.logic_region not in klumped_regions
             ):
                 narrow_down.append(loc)
-        if len(narrow_down) > 5:
+        if len(narrow_down) > 8:
             possible_warps = narrow_down
             break
     return random.choice(possible_warps)

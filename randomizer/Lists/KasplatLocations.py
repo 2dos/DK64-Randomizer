@@ -1228,7 +1228,7 @@ KasplatLocationList = {
             xmax=1720,
             zmin=1970,
             zmax=2090,
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
         ),
         KasplatLocation(
             name="Castle Kasplat: Ballroom",
@@ -1282,7 +1282,7 @@ KasplatLocationList = {
             map_id=Maps.CreepyCastle,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[66, 392, 911],
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
             vanilla=True,
         ),
         KasplatLocation(

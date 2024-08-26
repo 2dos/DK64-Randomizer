@@ -102,10 +102,13 @@ def getBannedWarps(spoiler) -> list[Events]:
         Events.GalleonW4aTagged,
     ]
     WARP_SHUFFLE_SETTING = spoiler.settings.bananaport_placement_rando
-    KASPLAT_LOCATION_RANDO = spoiler.settings.kasplat_rando_setting == KasplatRandoSetting.location_shuffle
-    if (not KASPLAT_LOCATION_RANDO and WARP_SHUFFLE_SETTING == ShufflePortLocations.on) or WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
-        # Access to the Lanky Kasplat
+    PLATFORMING_SETTING = spoiler.LogicVariables.advanced_platforming
+    if WARP_SHUFFLE_SETTING in [ShufflePortLocations.on, ShufflePortLocations.half_vanilla]:
+        # Access to the Lanky Kasplat and potential coins or coloured bananas
         lst.append(Events.LlamaW2bTagged)
+    if not PLATFORMING_SETTING:
+        # Access to Blueprint Pillar or Bonus Cave for not [Diddy or Tiny]
+        lst.append(Events.CavesW4aTagged)
     if WARP_SHUFFLE_SETTING == ShufflePortLocations.half_vanilla:
         lst.extend(
             [
@@ -728,6 +731,7 @@ CustomLocations = {
             logic_region=Regions.AztecTunnelBeforeOasis,
             logic=lambda l: l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             group=1,
+            banned_types=[LocationTypes.Bananaport],  # Hard to detect that it's bad to link to Quicksand Cave, in which case it tricks the seed into assuming any kong can use this port
         ),
         CustomLocation(map=Maps.AngryAztec, name="Near Oasis Sand", x=2151, y=120, z=983, max_size=56, logic_region=Regions.AngryAztecOasis, group=1),
         CustomLocation(map=Maps.AngryAztec, name="Behind Tiny Temple", x=3345, y=153, z=507, max_size=48, logic_region=Regions.AngryAztecOasis, group=1),
@@ -1333,7 +1337,7 @@ CustomLocations = {
             banned_types=[LocationTypes.CrownPad],
         ),
         CustomLocation(map=Maps.FranticFactory, name="Block Tower Lower Bonus", x=2634, y=1026, z=1101, max_size=80, logic_region=Regions.Testing, group=5),
-        CustomLocation(map=Maps.FranticFactory, name="Funky Room (1)", x=1595, y=1113, z=760, max_size=64, logic_region=Regions.Testing, group=5),
+        CustomLocation(map=Maps.FranticFactory, name="Funky Room (1)", x=1595, y=1113, z=760, max_size=64, logic_region=Regions.Testing, group=5, banned_types=[LocationTypes.MelonCrate]),
         CustomLocation(map=Maps.FranticFactory, name="Funky Room (2)", x=1370, y=1131, z=551, max_size=48, logic_region=Regions.Testing, group=5),
         CustomLocation(
             name="Funky Room (3)",
@@ -1900,6 +1904,7 @@ CustomLocations = {
             logic_region=Regions.TreasureRoom,
             logic=lambda l: ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick(),
             group=5,
+            banned_types=[LocationTypes.Bananaport],  # Hard to detect that it's bad to link to Diddy's tower, in which case it bricks seed gen
         ),
         CustomLocation(
             name="Galleon Treasure Room UnderWater",
@@ -3064,12 +3069,12 @@ CustomLocations = {
             z=1995.0,
             rot_y=3561,
             max_size=64,
-            logic_region=Regions.CreepyCastleMain,
+            logic_region=Regions.CastleVeryBottom,
             group=4,
         ),
-        CustomLocation(map=Maps.CreepyCastle, name="Near Crypt Entrance (1)", x=1361, y=366, z=2108, max_size=64, logic_region=Regions.CreepyCastleMain, group=4),
-        CustomLocation(map=Maps.CreepyCastle, name="Near Crypt Entrance (2)", x=420, y=366, z=1934, max_size=64, logic_region=Regions.CreepyCastleMain, group=4),
-        CustomLocation(map=Maps.CreepyCastle, name="Near Crypt Entrance (3)", x=500, y=523, z=1660, max_size=64, logic_region=Regions.CreepyCastleMain, group=4),
+        CustomLocation(map=Maps.CreepyCastle, name="Near Crypt Entrance (1)", x=1361, y=366, z=2108, max_size=64, logic_region=Regions.CastleVeryBottom, group=4),
+        CustomLocation(map=Maps.CreepyCastle, name="Near Crypt Entrance (2)", x=420, y=366, z=1934, max_size=64, logic_region=Regions.CastleVeryBottom, group=4),
+        CustomLocation(map=Maps.CreepyCastle, name="Near Crypt Entrance (3)", x=500, y=523, z=1660, max_size=64, logic_region=Regions.CastleGraveyardPlatform, group=4),
         CustomLocation(
             name="Between the catacombs door and Tiny Kasplat",
             map=Maps.CreepyCastle,
@@ -3078,7 +3083,7 @@ CustomLocations = {
             z=1810.0,
             rot_y=3766,
             max_size=64,
-            logic_region=Regions.CreepyCastleMain,
+            logic_region=Regions.CastleVeryBottom,
             group=4,
         ),
         CustomLocation(
@@ -3100,7 +3105,7 @@ CustomLocations = {
             z=1873.0,
             rot_y=3280,
             max_size=64,
-            logic_region=Regions.CreepyCastleMain,
+            logic_region=Regions.CastleGraveyardPlatform,
             group=4,
         ),
         CustomLocation(map=Maps.CreepyCastle, name="Near Dungeon Tunnel Steps", x=1298, y=523, z=1777, max_size=64, logic_region=Regions.CreepyCastleMain, group=4),
