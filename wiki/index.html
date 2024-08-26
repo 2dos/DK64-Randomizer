@@ -181,7 +181,7 @@
                 }
                 startingSegs.forEach(seg => {
                     if (startsWith(title_value, seg.search)) {
-                        target_md_url = `./article_markdown/custom_locations/${title_value}.md`;
+                        target_md_url = `./article_markdown/custom_locations/${title_value}.MD`;
                         title_pretty = camelCaseToSpaces(title_value);
                         title_pretty = title_pretty.replace(seg.preface, `${seg.preface}:`)
                     }
@@ -196,7 +196,7 @@
             
             function updateTitle(name) {
                 document.getElementById("page-title").innerText = name;
-                document.getElementById("site_page_identifier").setAttribute("content", name);
+                //document.getElementById("site_page_identifier").setAttribute("content", name);
                 document.title = name;
             }
 
