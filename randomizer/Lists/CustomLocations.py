@@ -9,7 +9,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import FreeTradeSetting, HelmSetting, RemovedBarriersSelected, ShufflePortLocations, KasplatRandoSetting
+from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected, ShufflePortLocations, KasplatRandoSetting
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
