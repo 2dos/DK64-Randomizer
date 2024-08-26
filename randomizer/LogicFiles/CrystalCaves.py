@@ -62,6 +62,7 @@ LogicRegions = {
 
     Regions.CavesSnideArea: Region("Caves Snide Area", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [], [], [
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
