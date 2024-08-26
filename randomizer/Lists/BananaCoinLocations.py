@@ -6846,7 +6846,7 @@ BananaCoinGroupList = {
             map_id=Maps.CreepyCastle,
             name="Outside lower tunnel entry",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
             locations=[
                 [1.0, 895, 366, 1837],
                 [1.0, 933, 366, 1835],
@@ -7546,7 +7546,7 @@ BananaCoinGroupList = {
             map_id=Maps.CreepyCastle,
             name="Around Tiny Kasplat",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
             locations=[
                 [1.0, 81.56172943115234, 392.0283508300781, 914.9120483398438],
                 [1.0, 57.68967819213867, 392.5829772949219, 912.5903930664062],
@@ -7585,7 +7585,7 @@ BananaCoinGroupList = {
             map_id=Maps.CreepyCastle,
             name="Behind Grave (1)",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
             locations=[
                 [1.0, 811.68896484375, 366.3333435058594, 2016.2047119140625],
                 [1.0, 823.4928588867188, 366.3333435058594, 1998.4842529296875],
@@ -7611,7 +7611,7 @@ BananaCoinGroupList = {
             map_id=Maps.CreepyCastle,
             name="Behind Grave (2)",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
             locations=[
                 [1.0, 1284.5264892578125, 366.3333435058594, 2060.625732421875],
                 [1.0, 1274.8592529296875, 366.3333435058594, 2056.375732421875],
@@ -7624,7 +7624,7 @@ BananaCoinGroupList = {
             map_id=Maps.CreepyCastle,
             name="On tree near Crypt Entrance",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
             logic=lambda l: l.climbing,
             locations=[
                 [1.0, 1705.875, 544.685302734375, 2036.1650390625],

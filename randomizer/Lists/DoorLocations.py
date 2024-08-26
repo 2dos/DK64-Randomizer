@@ -2978,7 +2978,7 @@ door_locations = {
         DoorData(
             name="Creepy Castle: Back of Castle",
             map=Maps.CreepyCastle,
-            logicregion=Regions.CreepyCastleMain,
+            logicregion=Regions.CastleVeryBottom,
             location=[1704.55, 368.026, 1896.767, 4.0],
             group=4,
             placed=DoorType.boss,

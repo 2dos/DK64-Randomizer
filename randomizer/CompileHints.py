@@ -2814,7 +2814,8 @@ def GenerateMultipathDict(
             key_text = "\x04Keys "
             if len(path_to_keys) == 1:
                 key_text = "\x04Key "
-            if len(path_to_keys) == 8:
+            amount_of_keys_required = len(spoiler.settings.krool_keys_required)
+            if amount_of_keys_required > 1 and len(path_to_keys) == amount_of_keys_required:
                 hint_text_components.append("\x04All Keys\x04")
             else:
                 hint_text_components.append(key_text + join_words(path_to_keys) + "\x04")
