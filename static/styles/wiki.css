@@ -100,7 +100,7 @@ pre.pulse {
     font-size: 1.1rem;
     font-weight: bold;
 }
-#markdown_content p {
+#markdown_content p, #markdown_content ul, #markdown_content ol {
     color: #aaa;
 }
 .collapsable-header {

@@ -152,6 +152,7 @@ extern void clearVultureCutscene(void);
 extern void fastWarp(void* actor, int player_index);
 
 extern int isKrushaAdjacentModel(int kong);
+extern int isGlobalCutscenePlaying(int cutscene_index);
 extern void adjustGunBone(playerData* player);
 
 extern int getTagAnywhereKong(int direction);

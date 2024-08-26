@@ -346,6 +346,7 @@ file_dict = [
     File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=113, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
     File(name="Wrinkly Sprite", pointer_table_index=TableNames.TexturesHUD, file_index=108, source_file="assets/displays/wrinkly_sprite.png", texture_format=TextureFormat.IA8),
     File(name="Galleon K. Rool Ship", pointer_table_index=TableNames.ModelTwoGeometry, file_index=305, source_file="galleon_ship_krool.bin", target_size=0x2500),
+    File(name="Banana Medal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x90, source_file="updated_medal.bin", do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()
@@ -474,12 +475,23 @@ for obj_id in INSTRUMENT_PADS:
 
 file_dict.append(
     File(
-        name=f"Fool Overlay",
+        name="Fool Overlay",
         pointer_table_index=TableNames.TexturesGeometry,
         file_index=getBonusSkinOffset(ExtraTextures.FoolOverlay),
         source_file=f"assets/displays/fool_overlay.png",
         texture_format=TextureFormat.IA8,
         do_not_delete_source=True,
+    )
+)
+file_dict.append(
+    File(
+        name="Medal Rim",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.MedalRim),
+        source_file=f"assets/hash/medal_rim.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_size=32 * 32 * 2,
     )
 )
 
@@ -1044,6 +1056,8 @@ colorblind_changes = [
     [0x138D, 0x1397, 32, 64],  # Fairy Particles
     [0xFB2, 0xFC2],  # Scoff
     [0xF78, 0xF8F],  # Troff
+    [0xE4D, 0xE4E],  # Banana Hoard
+    [0xBAA, 0xBAA],  # Medal Handle Palette
 ]
 
 kremling_dimensions = [
@@ -1951,6 +1965,7 @@ with open(newROMName, "r+b") as fh:
         "question_mark",
         "k_rool_head_left",
         "k_rool_head_right",
+        "medal_rim",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

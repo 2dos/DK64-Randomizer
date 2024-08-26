@@ -34,7 +34,7 @@ from randomizer.Patching.Lib import (
     getRawFile,
     writeRawFile,
 )
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -456,6 +456,7 @@ def getKongColor(settings: Settings, index: int):
 
 DEFAULT_COLOR = "#000000"
 KLAPTRAPS = [Model.KlaptrapGreen, Model.KlaptrapPurple, Model.KlaptrapRed]
+RECOLOR_MEDAL_RIM = False
 
 
 def getRandomKlaptrapModel() -> Model:
@@ -777,12 +778,28 @@ def apply_cosmetic_colors(settings: Settings):
                 finish = (2 * x) + 3
                 channel = int(settings.gb_custom_color[start:finish], 16)
                 channels.append(channel)
-        textures = [0xB7B, 0x323] + list(range(0x155C, 0x1568))
+        rim_texture = getBonusSkinOffset(ExtraTextures.MedalRim)
+        base_textures = [0xB7B, 0x323]
+        if RECOLOR_MEDAL_RIM:
+            base_textures.extend([rim_texture, 0xBAA])  # Medal and top ring
+        # base_textures = [0xB7B, 0x323, 0xBAA, rim_texture, 0xE4D, 0xE4E]  # Banana hoard looks **very** strange like this
+        textures = base_textures + list(range(0x155C, 0x1568))
         for tex in textures:
-            dimension = 32 if tex in (0xB7B, 0x323) else 44
-            shine_img = getImageFile(25, tex, True, dimension, dimension, TextureFormat.RGBA5551)
+            dim_pattern = {
+                0xB7B: (32, 32),
+                0x323: (32, 32),
+                0xBAA: (4, 4),
+                rim_texture: (32, 32),
+                0xE4D: (64, 32),
+                0xE4E: (64, 32),
+            }
+            dim_pattern_local = dim_pattern.get(tex, (44, 44))
+            width = dim_pattern_local[0]
+            height = dim_pattern_local[1]
+            shine_img = getImageFile(25, tex, True, width, height, TextureFormat.RGBA5551)
             gb_shine_img = maskImageGBSpin(shine_img, tuple(channels), tex)
-            if tex in (0xB7B, 0x323):
+            if tex == 0xB7B:
+                # Create fake GB shine img
                 min_rgb = min(channels[0], channels[1], channels[2])
                 max_rgb = max(channels[0], channels[1], channels[2])
                 is_greyscale = (max_rgb - min_rgb) < 50
@@ -796,8 +813,8 @@ def apply_cosmetic_colors(settings: Settings):
                 else:
                     new_color = hueShiftColor(tuple(channels), 60, 1750)
                     fakegb_shine_img = maskImageWithColor(shine_img, new_color)
-                writeColorImageToROM(fakegb_shine_img, 25, getBonusSkinOffset(0), 32, 32, False, TextureFormat.RGBA5551)
-            writeColorImageToROM(gb_shine_img, 25, tex, dimension, dimension, False, TextureFormat.RGBA5551)
+                writeColorImageToROM(fakegb_shine_img, 25, getBonusSkinOffset(ExtraTextures.FakeGBShine), width, height, False, TextureFormat.RGBA5551)
+            writeColorImageToROM(gb_shine_img, 25, tex, width, height, False, TextureFormat.RGBA5551)
 
 
 color_bases = []
@@ -992,6 +1009,8 @@ def getSpinPixels() -> dict:
 
 def maskImageGBSpin(im_f, color: tuple, image_index: int):
     """Mask the GB Spin Sprite."""
+    if image_index in (getBonusSkinOffset(ExtraTextures.MedalRim), 0xBAA):
+        color = tuple([int(x * 0.75) for x in list(color)])
     masked_im = maskImageWithColor(im_f, color)
     spin_pixels = getSpinPixels()
     if image_index not in spin_pixels:
@@ -2506,12 +2525,12 @@ def writeMiscCosmeticChanges(settings):
         enemy_setting = settings.random_enemy_colors
     if settings.misc_cosmetics:
         # Melon HUD
-        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(4), getBonusSkinOffset(4)]}
+        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)]}
         shift = getRandomHueShift()
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
-                if table == 25 and img == getBonusSkinOffset(4):
+                if table == 25 and img == getBonusSkinOffset(ExtraTextures.MelonSurface):
                     dims = (32, 32)
                 else:
                     dims = (48, 42)

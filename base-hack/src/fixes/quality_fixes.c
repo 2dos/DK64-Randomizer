@@ -69,6 +69,9 @@ int CanDive_WithCheck(void) {
 	if (ObjectModel2Timer < 5) {
 		return 1;
 	}
+	if (isGlobalCutscenePlaying(29)) {
+		return 1;
+	}
 	return CanDive();
 }
 
