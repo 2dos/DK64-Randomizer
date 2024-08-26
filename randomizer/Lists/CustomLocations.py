@@ -1337,7 +1337,7 @@ CustomLocations = {
             banned_types=[LocationTypes.CrownPad],
         ),
         CustomLocation(map=Maps.FranticFactory, name="Block Tower Lower Bonus", x=2634, y=1026, z=1101, max_size=80, logic_region=Regions.Testing, group=5),
-        CustomLocation(map=Maps.FranticFactory, name="Funky Room (1)", x=1595, y=1113, z=760, max_size=64, logic_region=Regions.Testing, group=5),
+        CustomLocation(map=Maps.FranticFactory, name="Funky Room (1)", x=1595, y=1113, z=760, max_size=64, logic_region=Regions.Testing, group=5, banned_types=[LocationTypes.MelonCrate]),
         CustomLocation(map=Maps.FranticFactory, name="Funky Room (2)", x=1370, y=1131, z=551, max_size=48, logic_region=Regions.Testing, group=5),
         CustomLocation(
             name="Funky Room (3)",
