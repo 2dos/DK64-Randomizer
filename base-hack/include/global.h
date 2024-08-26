@@ -477,7 +477,7 @@ extern char enable_skip_check;
 extern unsigned int base_text_color;
 extern unsigned int emph_text_colors[10];
 extern unsigned char BigHeadMode;
-extern const actor_bitfield big_head_actors;
+extern const char big_head_actors[344];
 
 // Items we're extern-ing for usage with "ASMPatcher.py"
 // DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING

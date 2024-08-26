@@ -525,386 +525,414 @@ static const char overlay_indexes[] = {
 	OVERLAY_BOSS, // K. Rool's Shoe
 	OVERLAY_NONE, // K. Rool's Arena
 };
-const actor_bitfield big_head_actors = {
+const char big_head_actors[344] = {
 	// 0
-	.unknown_0 = 0,
-	.unknown_1 = 0,
-	.dk = 1,
-	.diddy = 1,
-	.lanky = 1,
-	.tiny = 1,
-	.chunky = 1,
-	.krusha = 1,
-	.rambi = 1,
-	.enguarde = 1,
+	-1, // unknown_0
+	-1, // unknown_1
+	0, // dk
+	0, // diddy
+	0, // lanky
+	0, // tiny
+	0, // chunky
+	0, // krusha
+	0, // rambi
+	0, // enguarde // 0
+
 	// 10
-	.unknown_10 = 0,
-	.unknown_11 = 0,
-	.loading_zone_controller = 0,
-	.object_model_2_controller = 0,
-	.unknown_14 = 0,
-	.unknown_15 = 0,
-	.unknown_16 = 0,
-	.cannon_barrel = 0,
-	.rambi_crate = 0,
-	.barrel_diddy_5di = 0,
+	-1, // unknown_10
+	-1, // unknown_11
+	-1, // loading_zone_controller
+	-1, // object_model_2_controller
+	-1, // unknown_14
+	-1, // unknown_15
+	-1, // unknown_16
+	-1, // cannon_barrel
+	-1, // rambi_crate
+	-1, // barrel_diddy_5di
+
 	// 20
-	.camera_focus_point = 0,
-	.pushable_box = 0,
-	.barrel_spawner = 0,
-	.cannon = 0,
-	.race_hoop = 0,
-	.hunky_chunky_barrel = 0,
-	.tnt_barrel = 0,
-	.tnt_barrel_spawner = 0,
-	.bonus_barrel = 0,
-	.minecart = 0,
+	-1, // camera_focus_point
+	-1, // pushable_box
+	-1, // barrel_spawner
+	-1, // cannon
+	-1, // race_hoop
+	-1, // hunky_chunky_barrel
+	-1, // tnt_barrel
+	-1, // tnt_barrel_spawner
+	-1, // bonus_barrel
+	-1, // minecart
+
 	// 30
-	.fireball = 0,
-	.bridge_castle = 0,
-	.swinging_light = 0,
-	.vine = 0,
-	.kremling_kosh_controller = 0,
-	.melon_projectile = 0,
-	.peanut = 0,
-	.rocketbarrel = 0,
-	.pineapple = 0,
-	.large_brown_bridge = 0,
+	-1, // fireball
+	-1, // bridge_castle
+	-1, // swinging_light
+	-1, // vine
+	-1, // kremling_kosh_controller
+	-1, // melon_projectile
+	-1, // peanut
+	-1, // rocketbarrel
+	-1, // pineapple
+	-1, // large_brown_bridge
+
 	// 40
-	.mini_monkey_barrel = 0,
-	.orange = 0,
-	.grape = 0,
-	.feather = 0,
-	.laser = 0,
-	.golden_banana = 0,
-	.barrel_gun = 0,
-	.watermelon_slice = 0,
-	.coconut = 0,
-	.rocketbarrel_49 = 0,
+	-1, // mini_monkey_barrel
+	-1, // orange
+	-1, // grape
+	-1, // feather
+	-1, // laser
+	-1, // golden_banana
+	-1, // barrel_gun
+	-1, // watermelon_slice
+	-1, // coconut
+	-1, // rocketbarrel_49
+
 	// 50
-	.lime = 0,
-	.ammo_crate = 0,
-	.orange_pickup = 0,
-	.banana_coin = 0,
-	.dk_coin = 0,
-	.small_explosion = 0,
-	.orangstand_sprint_barrel = 0,
-	.strong_kong_barrel = 0,
-	.swinging_light_58 = 0,
-	.fireball_59 = 0,
+	-1, // lime
+	-1, // ammo_crate
+	-1, // orange_pickup
+	-1, // banana_coin
+	-1, // dk_coin
+	-1, // small_explosion
+	-1, // orangstand_sprint_barrel
+	-1, // strong_kong_barrel
+	-1, // swinging_light_58
+	-1, // fireball_59
+
 	// 60
-	.bananaporter = 0,
-	.boulder = 0,
-	.minecart_62 = 0,
-	.vase_o = 0,
-	.vase_colon = 0,
-	.vase_triangle = 0,
-	.vase_plus = 0,
-	.cannon_ball = 0,
-	.unknown_68 = 0,
-	.vine_69 = 0,
+	-1, // bananaporter
+	-1, // boulder
+	-1, // minecart_62
+	-1, // vase_o
+	-1, // vase_colon
+	-1, // vase_triangle
+	-1, // vase_plus
+	-1, // cannon_ball
+	-1, // unknown_68
+	-1, // vine_69
+
 	// 70
-	.counter = 0,
-	.kremling_red = 1,
-	.boss_key = 0,
-	.cannon_73 = 0,
-	.cannon_ball_74 = 0,
-	.blueprint_diddy = 0,
-	.blueprint_chunky = 0,
-	.blueprint_lanky = 0,
-	.blueprint_dk = 0,
-	.blueprint_tiny = 0,
+	-1, // counter
+	0, // kremling_red
+	-1, // boss_key
+	-1, // cannon_73
+	-1, // cannon_ball_74
+	-1, // blueprint_diddy
+	-1, // blueprint_chunky
+	-1, // blueprint_lanky
+	-1, // blueprint_dk
+	-1, // blueprint_tiny
+	
 	// 80
-	.minecart_80 = 0,
-	.fire_spawner_dogadon = 0,
-	.boulder_debris = 0,
-	.spider_web = 0,
-	.steel_keg_spawner = 0,
-	.steel_keg = 0,
-	.crown = 0,
-	.minecart_87 = 0,
-	.unknown_88 = 0,
-	.fire = 0,
+	-1, // minecart_80
+	-1, // fire_spawner_dogadon
+	-1, // boulder_debris
+	-1, // spider_web
+	-1, // steel_keg_spawner
+	-1, // steel_keg
+	-1, // crown
+	-1, // minecart_87
+	-1, // unknown_88
+	-1, // fire
+
 	// 90
-	.ice_wall = 0,
-	.balloon_diddy = 0,
-	.stalactite = 0,
-	.rock_debris = 0,
-	.car = 0,
-	.pause_menu = 0,
-	.hunky_chunky_barrel_dogadon = 0,
-	.tnt_barrel_spawner_dogadon = 0,
-	.tag_barrel = 0,
-	.fireball_99 = 0,
+	-1, // ice_wall
+	-1, // balloon_diddy
+	-1, // stalactite
+	-1, // rock_debris
+	-1, // car
+	-1, // pause_menu
+	-1, // hunky_chunky_barrel_dogadon
+	-1, // tnt_barrel_spawner_dogadon
+	-1, // tag_barrel
+	-1, // fireball_99
+
 	// 100
-	.pad_1_diddy_5di = 0,
-	.pad_2_diddy_5di = 0,
-	.pad_3_diddy_5di = 0,
-	.pad_4_diddy_5di = 0,
-	.pad_5_diddy_5di = 0,
-	.pad_6_diddy_5di = 0,
-	.kong_reflection = 0,
-	.bonus_barrel_hideout_helm = 0,
-	.unknown_108 = 0,
-	.race_checkpoint = 0,
+	-1, // pad_1_diddy_5di
+	-1, // pad_2_diddy_5di
+	-1, // pad_3_diddy_5di
+	-1, // pad_4_diddy_5di
+	-1, // pad_5_diddy_5di
+	-1, // pad_6_diddy_5di
+	-1, // kong_reflection
+	-1, // bonus_barrel_hideout_helm
+	-1, // unknown_108
+	-1, // race_checkpoint
+
 	// 110
-	.cb_bunch = 0,
-	.balloon_chunky = 0,
-	.balloon_tiny = 0,
-	.balloon_lanky = 0,
-	.balloon_dk = 0,
-	.klumsys_cage = 0,
-	.chain = 0,
-	.beanstalk = 0,
-	.yellow_qmark = 0,
-	.cb_single_blue = 0,
+	-1, // cb_bunch
+	-1, // balloon_chunky
+	-1, // balloon_tiny
+	-1, // balloon_lanky
+	-1, // balloon_dk
+	-1, // klumsys_cage
+	-1, // chain
+	-1, // beanstalk
+	-1, // yellow_qmark
+	-1, // cb_single_blue
+
 	// 120
-	.cb_single_yellow = 0,
-	.crystal_coconut = 0,
-	.dk_coin_122 = 0,
-	.kong_mirror = 0,
-	.barrel_gun_124 = 0,
-	.barrel_gun_125 = 0,
-	.fly_swatter = 0,
-	.searchlight = 0,
-	.headphones = 0,
-	.enguarde_crate = 0,
+	-1, // cb_single_yellow
+	-1, // crystal_coconut
+	-1, // dk_coin_122
+	0, // kong_mirror
+	-1, // barrel_gun_124
+	-1, // barrel_gun_125
+	-1, // fly_swatter
+	-1, // searchlight
+	-1, // headphones
+	-1, // enguarde_crate
+
 	// 130
-	.apple = 0,
-	.worm = 0,
-	.enguarde_crate_unused = 0,
-	.barrel = 0,
-	.training_barrel = 0,
-	.boombox = 0,
-	.tag_barrel_136 = 0,
-	.tag_barrel_137 = 0,
-	.b_locker = 0,
-	.rainbow_coin_patch = 0,
+	-1, // apple
+	0, // worm
+	-1, // enguarde_crate_unused
+	-1, // barrel
+	-1, // training_barrel
+	-1, // boombox
+	-1, // tag_barrel_136
+	-1, // tag_barrel_137
+	23, // b_locker // B. Locker's right eye
+	-1, // rainbow_coin_patch
+
 	// 140
-	.rainbow_coin = 0,
-	.unknown_141 = 0,
-	.unknown_142 = 0,
-	.unknown_143 = 0,
-	.unknown_144 = 0,
-	.cannon_seasick_chunky = 0,
-	.unknown_146 = 0,
-	.balloon_unused_k_rool = 0,
-	.rope = 0,
-	.banana_barrel = 0,
+	-1, // rainbow_coin
+	-1, // unknown_141
+	-1, // unknown_142
+	-1, // unknown_143
+	-1, // unknown_144
+	-1, // cannon_seasick_chunky
+	-1, // unknown_146
+	-1, // balloon_unused_k_rool
+	-1, // rope
+	-1, // banana_barrel
+
 	// 150
-	.banana_barrel_spawner = 0,
-	.unknown_151 = 0,
-	.unknown_152 = 0,
-	.unknown_153 = 0,
-	.unknown_154 = 0,
-	.unknown_155 = 0,
-	.wrinkly = 0,
-	.unknown_157 = 0,
-	.unknown_158 = 0,
-	.unknown_159 = 0,
+	-1, // banana_barrel_spawner
+	-1, // unknown_151
+	-1, // unknown_152
+	-1, // unknown_153
+	-1, // unknown_154
+	-1, // unknown_155
+	-1, // wrinkly
+	-1, // unknown_157
+	-1, // unknown_158
+	-1, // unknown_159
+
 	// 160
-	.unknown_160 = 0,
-	.unknown_161 = 0,
-	.unknown_162 = 0,
-	.banana_fairy_bfi = 1,
-	.ice_tomato = 0,
-	.tag_barrel_king_kut_out = 0,
-	.king_kut_out_part = 0,
-	.cannon_167 = 0,
-	.unknown_168 = 0,
-	.puftup = 0,
+	-1, // unknown_160
+	-1, // unknown_161
+	-1, // unknown_162
+	0, // banana_fairy_bfi
+	18, // ice_tomato // jaw
+	-1, // tag_barrel_king_kut_out
+	-1, // king_kut_out_part
+	-1, // cannon_167
+	-1, // unknown_168
+	0, // puftup // jaw
+
 	// 170
-	.damage_source = 0,
-	.orange_171 = 0,
-	.unknown_172 = 0,
-	.cutscene_controller = 0,
-	.unknown_174 = 0,
-	.kaboom = 0,
-	.timer = 0,
-	.timer_controller = 0,
-	.beaver = 1,
-	.shockwave_mad_jack = 0,
+	-1, // damage_source
+	-1, // orange_171
+	-1, // unknown_172
+	-1, // cutscene_controller
+	-1, // unknown_174
+	0, // kaboom // Might not work properly
+	-1, // timer
+	-1, // timer_controller
+	0, // beaver
+	-1, // shockwave_mad_jack
+	
 	// 180
-	.krash = 1,
-	.book = 0,
-	.klobber = 0,
-	.zinger = 0,
-	.snide = 1,
-	.army_dillo = 0, // Causes collision issues with the TNT Barrel
-	.kremling = 1,
-	.klump = 1,
-	.camera = 0,
-	.cranky = 1,
+	1, // krash
+	17, // book
+	0, // klobber // Might not work properly
+	21, // zinger // Big ass, 0 for eyes. Polled the easiest person to amuse
+	3, // snide // 0 for funny
+	-1, // army_dillo // Causes collision issues with the TNT Barrel
+	0, // kremling
+	0, // klump
+	-1, // camera
+	0, // cranky
+	
 	// 190
-	.funky = 1,
-	.candy = 1,
-	.beetle = 1,
-	.mermaid = 1,
-	.vulture = 0,
-	.squawks = 0,
-	.cutscene_dk = 1,
-	.cutscene_diddy = 1,
-	.cutscene_lanky = 1,
-	.cutscene_tiny = 1,
+	0, // funky
+	0, // candy
+	0, // beetle
+	0, // mermaid
+	-1, // vulture
+	-1, // squawks
+	0, // cutscene_dk
+	0, // cutscene_diddy
+	0, // cutscene_lanky
+	0, // cutscene_tiny
+
 	// 200
-	.cutscene_chunky = 1,
-	.llama = 1,
-	.fairy_picture = 0,
-	.padlock_tns = 0,
-	.mad_jack = 0, // Causes him to jump to the ceiling?
-	.klaptrap = 1,
-	.zinger_206 = 0,
-	.vulture_race = 1,
-	.klaptrap_purple = 1,
-	.klaptrap_red = 1,
+	0, // cutscene_chunky
+	0, // llama
+	-1, // fairy_picture
+	-1, // padlock_tns
+	-1, // mad_jack // Causes him to jump to the ceiling?
+	0, // klaptrap
+	21, // zinger_206
+	0, // vulture_race
+	0, // klaptrap_purple
+	0, // klaptrap_red
+
 	// 210
-	.getout_controller = 0,
-	.klaptrap_skeleton = 0,
-	.beaver_gold = 1,
-	.fire_column_spawner = 0,
-	.minecart_tnt = 0,
-	.minecart_tnt_215 = 0,
-	.puftoss = 0, // Inconsequential
-	.unknown_217 = 0,
-	.handle = 0,
-	.slot = 0,
+	-1, // getout_controller
+	-1, // klaptrap_skeleton
+	0, // beaver_gold
+	-1, // fire_column_spawner
+	-1, // minecart_tnt
+	-1, // minecart_tnt_215
+	-1, // puftoss // Inconsequential
+	-1, // unknown_217
+	-1, // handle
+	-1, // slot
+
 	// 220
-	.cannon_seasick_chunky_220 = 0,
-	.light_piece = 0,
-	.banana_peel = 0,
-	.fireball_spawner = 0,
-	.mushroom_man = 0,
-	.unknown_225 = 0,
-	.troff = 1,
-	.k_rools_foot = 0,
-	.bad_hit_detection_man = 0,
-	.k_rools_toe = 0,
+	-1, // cannon_seasick_chunky_220
+	-1, // light_piece
+	-1, // banana_peel
+	-1, // fireball_spawner
+	15, // mushroom_man
+	-1, // unknown_225
+	0, // troff
+	-1, // k_rools_foot
+	-1, // bad_hit_detection_man
+	-1, // k_rools_toe
+
 	// 230
-	.ruler = 0,
-	.toy_box = 0,
-	.text_overlay = 0,
-	.squawks_233 = 0,
-	.scoff = 1,
-	.robo_kremling = 1,
-	.dogadon = 1,
-	.unknown_237 = 0,
-	.kremling_238 = 1,
-	.bongos = 0,
+	-1, // ruler
+	-1, // toy_box
+	-1, // text_overlay
+	-1, // squawks_233
+	0, // scoff
+	0, // robo_kremling
+	0, // dogadon
+	-1, // unknown_237
+	0, // kremling_238
+	-1, // bongos
+
 	// 240
-	.spotlight_fish = 0,
-	.kasplat_dk = 1,
-	.kasplat_diddy = 1,
-	.kasplat_lanky = 1,
-	.kasplat_tiny = 1,
-	.kasplat_chunky = 1,
-	.mechanical_fish = 0,
-	.seal = 1,
-	.banana_fairy = 1,
-	.squawks_with_spotlight = 0,
+	-1, // spotlight_fish
+	0, // kasplat_dk
+	0, // kasplat_diddy
+	0, // kasplat_lanky
+	0, // kasplat_tiny
+	0, // kasplat_chunky
+	5, // mechanical_fish // tail fin
+	0, // seal
+	0, // banana_fairy
+	-1, // squawks_with_spotlight
+
 	// 250
-	.owl = 1,
-	.spider_miniboss = 1,
-	.rabbit = 1,
-	.nintendo_logo = 0,
-	.cutscene_object = 1,
-	.shockwave = 0,
-	.minigame_controller = 0,
-	.fire_breath_spawner = 0,
-	.shockwave_258 = 0,
-	.guard = 0, // Would be funny, but it extends their arm
+	0, // owl
+	0, // spider_miniboss
+	0, // rabbit
+	-1, // nintendo_logo
+	0, // cutscene_object
+	-1, // shockwave
+	-1, // minigame_controller
+	-1, // fire_breath_spawner
+	-1, // shockwave_258
+	12, // guard
+
 	// 260
-	.text_overlay_260 = 0,
-	.robo_zinger = 0,
-	.krossbones = 1,
-	.fire_shockwave_dogadon = 0,
-	.squawks_264 = 0,
-	.light_beam = 0,
-	.dk_rap_controller = 0,
-	.shuri = 0,
-	.gimpfish = 0,
-	.mr_dice = 0,
+	-1, // text_overlay_260
+	2, // robo_zinger
+	0, // krossbones
+	-1, // fire_shockwave_dogadon
+	-1, // squawks_264
+	-1, // light_beam
+	-1, // dk_rap_controller
+	-1, // shuri
+	-1, // gimpfish
+	-1, // mr_dice
+
 	// 270
-	.sir_domino = 0,
-	.mr_dice_271 = 0,
-	.rabbit_272 = 0,
-	.fireball_with_glasses = 0,
-	.unknown_274 = 0,
-	.k_lumsy = 1,
-	.spiderling = 1,
-	.squawks_277 = 0,
-	.projectile = 0,
-	.trap_bubble = 0,
+	8, // sir_domino // right eye
+	-1, // mr_dice_271
+	0, // rabbit_272
+	-1, // fireball_with_glasses
+	-1, // unknown_274
+	0, // k_lumsy
+	0, // spiderling
+	-1, // squawks_277
+	-1, // projectile
+	-1, // trap_bubble
+
 	// 280
-	.spider_silk_string = 0,
-	.k_rool_dk_phase = 1,
-	.retexturing_controller = 0,
-	.skeleton_head = 0,
-	.unknown_284 = 0,
-	.bat = 0,
-	.giant_clam = 0,
-	.unknown_287 = 0,
-	.tomato = 0,
-	.kritter_in_a_sheet = 0,
+	-1, // spider_silk_string
+	0, // k_rool_dk_phase
+	-1, // retexturing_controller
+	0, // skeleton_head // jaw
+	-1, // unknown_284
+	0, // bat // jaw
+	-1, // giant_clam
+	-1, // unknown_287
+	18, // tomato // jaw
+	9, // kritter_in_a_sheet // tail
 	// 290
-	.puftup_290 = 0,
-	.kosha = 1,
-	.k_rool_diddy_phase = 1,
-	.k_rool_lanky_phase = 1,
-	.k_rool_tiny_phase = 1,
-	.k_rool_chunky_phase = 1,
-	.unknown_296 = 0,
-	.battle_crown_controller = 0,
-	.unknown_298 = 0,
-	.textbox = 0,
+	-1, // puftup_290
+	0, // kosha
+	0, // k_rool_diddy_phase
+	0, // k_rool_lanky_phase
+	0, // k_rool_tiny_phase
+	0, // k_rool_chunky_phase
+	-1, // unknown_296
+	-1, // battle_crown_controller
+	-1, // unknown_298
+	-1, // textbox
 	// 300
-	.snake = 1,
-	.turtle = 1,
-	.toy_car = 0,
-	.toy_car_303 = 0,
-	.camera_304 = 0,
-	.missile = 0,
-	.unknown_306 = 0,
-	.unknown_307 = 0,
-	.seal_308 = 0,
-	.kong_logo_instrument = 0,
+	11, // snake
+	0, // turtle
+	-1, // toy_car
+	-1, // toy_car_303
+	-1, // camera_304
+	-1, // missile
+	-1, // unknown_306
+	-1, // unknown_307
+	-1, // seal_308
+	-1, // kong_logo_instrument
 	// 310
-	.spotlight = 0,
-	.race_checkpoint_311 = 0,
-	.minecart_tnt_312 = 0,
-	.idle_particle = 0,
-	.rareware_logo = 0,
-	.unknown_315 = 0,
-	.kong_tag_barrel = 1,
-	.locked_kong_tag_barrel = 0,
-	.unknown_318 = 0,
-	.propeller_boat = 0,
+	-1, // spotlight
+	-1, // race_checkpoint_311
+	-1, // minecart_tnt_312
+	-1, // idle_particle
+	-1, // rareware_logo
+	-1, // unknown_315
+	0, // kong_tag_barrel
+	-1, // locked_kong_tag_barrel
+	-1, // unknown_318
+	-1, // propeller_boat
 	// 320
-	.potion = 0,
-	.fairy_refill = 0,
-	.car_322 = 0,
-	.enemy_car = 0,
-	.text_overlay_controller = 0,
-	.shockwave_325 = 0,
-	.main_menu_controller = 0,
-	.kong = 0,
-	.klaptrap_328 = 0,
-	.fairy = 0,
+	-1, // potion
+	-1, // fairy_refill
+	-1, // car_322
+	-1, // enemy_car
+	-1, // text_overlay_controller
+	-1, // shockwave_325
+	-1, // main_menu_controller
+	0, // kong
+	-1, // klaptrap_328
+	0, // fairy
 	// 330
-	.bug = 0,
-	.klaptrap_331 = 0,
-	.big_bug_bash_controller = 0,
-	.barrel_main_menu = 0,
-	.padlock_k_lumsy = 0,
-	.snides_menu = 0,
-	.training_barrel_controller = 0,
-	.multiplayer_model_main_menu = 0,
-	.end_sequence_controller = 0,
-	.arena_controller = 0,
+	-1, // bug
+	-1, // klaptrap_331
+	-1, // big_bug_bash_controller
+	-1, // barrel_main_menu
+	-1, // padlock_k_lumsy
+	-1, // snides_menu
+	-1, // training_barrel_controller
+	-1, // multiplayer_model_main_menu
+	-1, // end_sequence_controller
+	-1, // arena_controller
 	// 340
-	.bug_340 = 0,
-	.unknown_341 = 0,
-	.try_again_dialog = 0,
-	.pause_menu_343 = 0,
+	-1, // bug_340
+	-1, // unknown_341
+	-1, // try_again_dialog
+	-1, // pause_menu_343
 };
 
 

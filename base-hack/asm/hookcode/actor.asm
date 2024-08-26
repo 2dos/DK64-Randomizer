@@ -493,25 +493,33 @@ AlterHeadSize:
     lw $s0, 0x58 ($t7) ; Actor Type
     slti $a1, $s0, 344
     beq $a1, $zero, AlterHeadSize_Finish ; Not within first 344 actors
-    sra $t7, $s0, 3
-    lui $a1, hi(big_head_actors)
-    addu $a1, $a1, $t7
-    lbu $a1, lo(big_head_actors) ($a1)
-    andi $t7, $s0, 7
-    addiu $s0, $zero, 0x80
-    srav $t7, $s0, $t7
-    and $a1, $a1, $t7
-    beq $a1, $zero, AlterHeadSize_Finish ; Not allowed for big head mode
     nop
+    lui $t7, hi(big_head_actors)
+    addu $t7, $t7, $s0
+    lbu $t7, lo(big_head_actors) ($t7)
+    andi $a1, $t7, 0x80
+    ; bne $a1, $zero, AlterHeadSize_Finish ; Not allowed for big head mode
+    ; nop
+
+    beq $a1, $zero, AlterHeadSize_persist
+    nop
+    lui $t7, 0x8080 ; test
+    lw $t7, 0xFFFC ($t7) ; test
+    AlterHeadSize_persist:
+    
+    
     ; No need to check whether setting is enabled, assume this is only called if setting is enabled
+    sll $t7, $t7, 1
+    lui $a1, 0x8074
+    addu $a1, $a1, $t7
+    sll $t7, $t7, 1
+    addu $a1, $a1, $t7
     lui $t7, hi(BigHeadMode)
     lbu $t7, lo(BigHeadMode) ($t7)
-    sll $t7, $t7, 8
-    lui $a1, 0x8074
-    addiu $a1, $a1, 0x7268
-    sh $t7, 0x0 ($a1)
-    sh $t7, 0x2 ($a1)
-    sh $t7, 0x4 ($a1)
+    sll $t7, $t7, 8  ; Big Head Value
+    sh $t7, 0x7268 ($a1)
+    sh $t7, 0x726A ($a1)
+    sh $t7, 0x726C ($a1)
 
     AlterHeadSize_Finish:
         lw $s0, 0x38 ($a0)
@@ -527,25 +535,32 @@ AlterHeadSize_0:
     lw $s0, 0x58 ($t7) ; Actor Type
     slti $a1, $s0, 344
     beq $t9, $zero, AlterHeadSize_0_Finish ; Not within first 344 actors
-    sra $t7, $s0, 3
-    lui $t9, hi(big_head_actors)
-    addu $t9, $t9, $t7
-    lbu $t9, lo(big_head_actors) ($t9)
-    andi $t7, $s0, 7
-    addiu $s0, $zero, 0x80
-    srav $t7, $s0, $t7
-    and $t9, $t9, $t7
-    beq $t9, $zero, AlterHeadSize_0_Finish ; Not allowed for big head mode
     nop
+    lui $t9, hi(big_head_actors)
+    addu $t9, $t9, $s0
+    lbu $t9, lo(big_head_actors) ($t9)
+    andi $s0, $t9, 0x80
+    ; bne $s0, $zero, AlterHeadSize_0_Finish ; Not allowed for big head mode
+    ; nop
+
+    beq $s0, $zero, AlterHeadSize_0_persist
+    nop
+    lui $t9, 0x8080 ; test
+    lw $t9, 0xFFFC ($t9) ; test
+    AlterHeadSize_0_persist:
+    
     ; No need to check whether setting is enabled, assume this is only called if setting is enabled
+    sll $t9, $t9, 1
+    lui $s0, 0x8074
+    addu $s0, $s0, $t9
+    sll $t9, $t9, 1
+    addu $s0, $s0, $t9
     lui $t9, hi(BigHeadMode)
     lbu $t9, lo(BigHeadMode) ($t9)
-    sll $t9, $t9, 8
-    lui $s0, 0x8074
-    addiu $s0, $s0, 0x7268
-    sh $t9, 0x0 ($s0)
-    sh $t9, 0x2 ($s0)
-    sh $t9, 0x4 ($s0)
+    sll $t9, $t9, 8  ; Big Head Value
+    sh $t9, 0x7268 ($s0)
+    sh $t9, 0x726A ($s0)
+    sh $t9, 0x726C ($s0)
     
     AlterHeadSize_0_Finish:
         ; Run replaced code
