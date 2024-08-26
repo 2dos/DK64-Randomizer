@@ -1236,10 +1236,12 @@
 | Around DK portal platform | 5 |  | 
 | Center of DK portal platform | 5 |  | 
 | Around small pool outside tree | 5 |  | 
-| On tree by small pool outside big tree | 5 |  | 
+| On tree by small pool outside big tree | 2 |  | 
+| On tree by small pool outside big tree | 3 | `l.climbing` | 
 | On steps to big tree | 5 |  | 
-| On tree by big tree (Tiny coins) | 5 |  | 
-| On branch sticking out of big tree | 5 |  | 
+| On tree by big tree (Tiny coins) | 2 |  | 
+| On tree by big tree (Tiny coins) | 3 | `l.climbing` | 
+| On branch sticking out of big tree | 5 | `l.climbing` | 
 | On big tree | 5 | `l.jetpack, locations=[[5, 1.0, 1240, 770, 230]])` | 
 | On BBlast pad | 5 |  | 
 | On sewer pipe | 5 |  | 
@@ -1249,13 +1251,17 @@
 | Along side of staircase to W1 | 5 |  | 
 | On staircase to W1 (1 custom, 4 Donkey) | 5 |  | 
 | On stones on path from moving platforms to W1 | 15 |  | 
-| On tree by staircase to W1 | 5 |  | 
-| On tree by low T&S portal (by Lanky coins) | 5 |  | 
+| On tree by staircase to W1 | 2 |  | 
+| On tree by staircase to W1 | 3 | `l.climbing` | 
+| On tree by low T&S portal (by Lanky coins) | 2 |  | 
+| On tree by low T&S portal (by Lanky coins) | 3 | `l.climbing` | 
 | Path from crypt to low T&S portal | 10 |  | 
-| On ladder from W1 stairs to crypt | 5 |  | 
+| On ladder from W1 stairs to crypt | 2 |  | 
+| On ladder from W1 stairs to crypt | 3 |  | 
 | Path from Crypt to Tiny BP | 20 |  | 
 | On Tiny BP platform | 10 |  | 
-| On ladder from past crypt to random platform below/past W1 | 5 |  | 
+| On ladder from past crypt to random platform below/past W1 | 2 |  | 
+| On ladder from past crypt to random platform below/past W1 | 3 |  | 
 | On pile of bricks on random platform past/below W1 | 5 |  | 
 | Below moving platforms past W1 | 5 |  | 
 | Around random platform past/below W1 | 10 |  | 
@@ -1264,8 +1270,10 @@
 | W3 | 10 |  | 
 | W4 | 10 |  | 
 | W5 | 10 |  | 
-| On tree on platform past/below W1 | 5 |  | 
-| On ladder next to Tiny BP | 5 |  | 
+| On tree on platform past/below W1 | 2 |  | 
+| On tree on platform past/below W1 | 3 | `l.climbing` | 
+| On ladder next to Tiny BP | 2 |  | 
+| On ladder next to Tiny BP | 3 |  | 
 | Path from W1 to ladder (7 custom, 8 Donkey) | 15 |  | 
 | On ladder towards W2 (4 custom, 1 Donkey) | 5 |  | 
 | Stone path from drawbridge to wooden path (4 custom, 6 Donkey) | 10 |  | 
@@ -1273,7 +1281,8 @@
 | On path near Lanky BP (5 custom, 5 Donkey) | 10 |  | 
 | Near W2 (1 custom, 4 Donkey) | 5 |  | 
 | On brick piles past W1 | 10 |  | 
-| On tree past W1 | 5 |  | 
+| On tree past W1 | 2 |  | 
+| On tree past W1 | 3 | `l.climbing` | 
 | In moat by warps | 10 | `l.swim` | 
 | In moat by upper cave entrance | 10 | `l.swim` | 
 | On steps of upper cave entrance (warps side) | 10 |  | 

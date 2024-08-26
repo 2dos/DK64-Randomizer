@@ -253,7 +253,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CreepyCastle,
         name="On ladder from W1 stairs to crypt",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CreepyCastleMain,  #  Climbing requirement is implied in the logicRegion
+        region=Regions.CreepyCastleMain,  # Climbing requirement is implied in the logicRegion
         locations=[[1, 1.0, 1186, 445, 1969], [1, 1.0, 1186, 475, 1969], [1, 1.0, 1186, 505, 1969]],
     ),
     ColoredBananaGroup(
@@ -306,7 +306,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CreepyCastle,
         name="On ladder from past crypt to random platform below/past W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CastleGraveyardPlatform,  #  Climbing requirement is implied in the logicRegion
+        region=Regions.CastleGraveyardPlatform,  # Climbing requirement is implied in the logicRegion
         locations=[[1, 1.0, 579, 440, 2015], [1, 1.0, 579, 470, 2014], [1, 1.0, 578, 500, 2013]],
     ),
     ColoredBananaGroup(
@@ -414,7 +414,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CreepyCastle,
         name="On ladder next to Tiny BP",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CreepyCastleMain,  #  Climbing requirement is implied in the logicRegion
+        region=Regions.CreepyCastleMain,  # Climbing requirement is implied in the logicRegion
         locations=[[1, 1.0, 50, 475, 1129], [1, 1.0, 51, 505, 1129], [1, 1.0, 52, 535, 1129]],
     ),
     ColoredBananaGroup(

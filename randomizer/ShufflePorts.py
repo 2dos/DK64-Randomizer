@@ -136,7 +136,9 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
     if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.vanilla_only:
         if not location.vanilla_port:
             return False
-    if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.half_vanilla or (spoiler.settings.bananaport_placement_rando == ShufflePortLocations.on and not spoiler.settings.useful_bananaport_placement):
+    if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.half_vanilla or (
+        spoiler.settings.bananaport_placement_rando == ShufflePortLocations.on and not spoiler.settings.useful_bananaport_placement
+    ):
         if location.logic_region in ONE_KONG_REGIONS:
             return False
     return location.isValidLocation(LocationTypes.Bananaport)
