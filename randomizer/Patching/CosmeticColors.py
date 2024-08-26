@@ -456,7 +456,7 @@ def getKongColor(settings: Settings, index: int):
 
 DEFAULT_COLOR = "#000000"
 KLAPTRAPS = [Model.KlaptrapGreen, Model.KlaptrapPurple, Model.KlaptrapRed]
-RECOLOR_MEDAL_RIM = True
+RECOLOR_MEDAL_RIM = False
 
 
 def getRandomKlaptrapModel() -> Model:
@@ -779,9 +779,9 @@ def apply_cosmetic_colors(settings: Settings):
                 channel = int(settings.gb_custom_color[start:finish], 16)
                 channels.append(channel)
         rim_texture = getBonusSkinOffset(ExtraTextures.MedalRim)
-        base_textures = [0xB7B, 0x323, 0xBAA]
+        base_textures = [0xB7B, 0x323]
         if RECOLOR_MEDAL_RIM:
-            base_textures.append(rim_texture)
+            base_textures.extend([rim_texture, 0xBAA])  # Medal and top ring
         # base_textures = [0xB7B, 0x323, 0xBAA, rim_texture, 0xE4D, 0xE4E]  # Banana hoard looks **very** strange like this
         textures = base_textures + list(range(0x155C, 0x1568))
         for tex in textures:
