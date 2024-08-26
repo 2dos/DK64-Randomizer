@@ -491,7 +491,7 @@ file_dict.append(
         source_file=f"assets/hash/medal_rim.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_size=32*32*2,
+        target_size=32 * 32 * 2,
     )
 )
 

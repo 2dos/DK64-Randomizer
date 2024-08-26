@@ -19,6 +19,7 @@ class TextureFormat(IntEnum):
     IA8 = auto()
     IA4 = auto()
 
+
 class ExtraTextures(IntEnum):
     """Extra Textures in Table 25 after the bonus skins."""
 
