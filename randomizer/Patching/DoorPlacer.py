@@ -1,6 +1,7 @@
 """Apply Door Locations."""
 
 import js
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
@@ -11,6 +12,16 @@ from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, 
 from randomizer.Patching.Patcher import LocalROM
 
 LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
+
+MAP_LEVEL_PAIRING = {
+    Maps.JungleJapes: Levels.JungleJapes,
+    Maps.AngryAztec: Levels.AngryAztec,
+    Maps.FranticFactory: Levels.FranticFactory,
+    Maps.GloomyGalleon: Levels.GloomyGalleon,
+    Maps.FungiForest: Levels.FungiForest,
+    Maps.CrystalCaves: Levels.CrystalCaves,
+    Maps.CreepyCastle: Levels.CreepyCastle,
+}
 
 PORTAL_MAP_ID_PAIRING = {
     Maps.JungleJapes: 0x11B,
@@ -334,6 +345,12 @@ def place_door_locations(spoiler):
                     if cont_map_id in LEVEL_MAIN_MAPS:
                         if item_type == 0x2AD:
                             retain = False
+                            level = MAP_LEVEL_PAIRING[cont_map_id]
+                            for data in spoiler.shuffled_door_data[level]:
+                                if data[1] == "dk_portal":
+                                    if door_locations[level][data[0]].default_placed == DoorType.dk_portal:
+                                        retain = True
+
                 if retain:
                     ROM_COPY.seek(item_start)
                     item_data = []
