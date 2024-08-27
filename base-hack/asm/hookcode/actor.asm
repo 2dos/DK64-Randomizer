@@ -490,32 +490,26 @@ AlterHeadSize:
     lw $t7, 0x6E20 ($t7) ; Focused Model
     beq $t7, $zero, AlterHeadSize_Finish
     nop
-    lw $s0, 0x58 ($t7) ; Actor Type
-    slti $a1, $s0, 344
-    beq $a1, $zero, AlterHeadSize_Finish ; Not within first 344 actors
+    lhu $s0, 0x172 ($t7) ; Model Index
+    slti $a1, $s0, 0xED
+    beq $a1, $zero, AlterHeadSize_Finish ; Not within first 0xED models
     nop
     lui $t7, hi(big_head_actors)
     addu $t7, $t7, $s0
     lbu $t7, lo(big_head_actors) ($t7)
-    andi $a1, $t7, 0x80
-    ; bne $a1, $zero, AlterHeadSize_Finish ; Not allowed for big head mode
-    ; nop
-
-    beq $a1, $zero, AlterHeadSize_persist
+    addiu $a1, $zero, 0xFD
+    beq $a1, $t7, AlterHeadSize_Finish ; Not allowed for big head mode
     nop
-    lui $t7, 0x8080 ; test
-    lw $t7, 0xFFFC ($t7) ; test
-    AlterHeadSize_persist:
-    
-    
-    ; No need to check whether setting is enabled, assume this is only called if setting is enabled
+    ; Model has tied bone
     sll $t7, $t7, 1
     lui $a1, 0x8074
     addu $a1, $a1, $t7
     sll $t7, $t7, 1
     addu $a1, $a1, $t7
-    lui $t7, hi(BigHeadMode)
-    lbu $t7, lo(BigHeadMode) ($t7)
+    lui $t7, hi(HeadSize)
+    addu $t7, $t7, $s0
+    lbu $t7, lo(HeadSize) ($t7)
+    beqz $t7, AlterHeadSize_Finish
     sll $t7, $t7, 8  ; Big Head Value
     sh $t7, 0x7268 ($a1)
     sh $t7, 0x726A ($a1)
@@ -532,31 +526,31 @@ AlterHeadSize_0:
     lw $t7, 0x6E20 ($t7) ; Focused Model
     beq $t7, $zero, AlterHeadSize_0_Finish
     nop
-    lw $s0, 0x58 ($t7) ; Actor Type
-    slti $a1, $s0, 344
-    beq $t9, $zero, AlterHeadSize_0_Finish ; Not within first 344 actors
+    lhu $s0, 0x172 ($t7) ; Model Index
+    slti $a1, $s0, 0xED
+    beq $t9, $zero, AlterHeadSize_0_Finish ; Not within first 0xED actors
     nop
     lui $t9, hi(big_head_actors)
     addu $t9, $t9, $s0
     lbu $t9, lo(big_head_actors) ($t9)
-    andi $s0, $t9, 0x80
-    ; bne $s0, $zero, AlterHeadSize_0_Finish ; Not allowed for big head mode
-    ; nop
-
-    beq $s0, $zero, AlterHeadSize_0_persist
+    addiu $s0, $zero, 0xFD
+    beq $s0, $t9, AlterHeadSize_0_Finish ; Not allowed for big head mode
     nop
-    lui $t9, 0x8080 ; test
-    lw $t9, 0xFFFC ($t9) ; test
-    AlterHeadSize_0_persist:
-    
-    ; No need to check whether setting is enabled, assume this is only called if setting is enabled
+    ; Model has tied bone
     sll $t9, $t9, 1
     lui $s0, 0x8074
     addu $s0, $s0, $t9
     sll $t9, $t9, 1
     addu $s0, $s0, $t9
-    lui $t9, hi(BigHeadMode)
-    lbu $t9, lo(BigHeadMode) ($t9)
+    lui $t9, hi(HeadSize)
+    ; offset index
+    lhu $t7, 0x172 ($t7)
+    addu $t9, $t9, $t7
+    lui $t7, 0x8074
+    lw $t7, 0x6E20 ($t7) ; Focused Model
+    ;
+    lbu $t9, lo(HeadSize) ($t9)
+    beqz $t9, AlterHeadSize_0_Finish
     sll $t9, $t9, 8  ; Big Head Value
     sh $t9, 0x7268 ($s0)
     sh $t9, 0x726A ($s0)

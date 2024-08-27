@@ -476,8 +476,8 @@ extern char enable_skip_check;
 
 extern unsigned int base_text_color;
 extern unsigned int emph_text_colors[10];
-extern unsigned char BigHeadMode;
-extern const char big_head_actors[344];
+extern unsigned char HeadSize[MODEL_COUNT];
+extern const char big_head_actors[MODEL_COUNT];
 
 // Items we're extern-ing for usage with "ASMPatcher.py"
 // DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING

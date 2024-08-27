@@ -1255,6 +1255,10 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806A986A, Overlay.Static, 4, offset_dict)  # Yes/No Prompt
         writeValue(ROM_COPY, 0x806A9990, Overlay.Static, 0x2A210000 | 0x270, offset_dict, 4)  # SLTI $at, $s1, 0x270 (y_cap = 0x270)
 
+    # Big Head Static stuff
+    writeValue(ROM_COPY, 0x80612E98, Overlay.Static, 0xA4850172, offset_dict, 4)  # sh $a1, 0x172 ($a0)
+    writeValue(ROM_COPY, 0x80612E9E, Overlay.Static, 0xBB30, offset_dict)  # change lhu offset
+
     # Pause Stuff
     FLAG_BP_JAPES_DK_HAS = 0x1D5
     # Prevent GBs being required to view extra screens

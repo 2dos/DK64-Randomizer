@@ -140,7 +140,8 @@ typedef struct actorData {
 	/* 0x16D */ char unk_16D;
 	/* 0x16E */ char unk_16E;
 	/* 0x16F */ char unk_16F;
-	/* 0x170 */ char unk_170[0x174-0x170];
+	/* 0x170 */ char unk_170[0x172-0x170];
+	/* 0x172 */ short actor_model; // Custom slot. unused I think?? 
 	/* 0x174 */ void* paad;
 	/* 0x178 */ void* paad2;
 	/* 0x17C */ void* paad3;

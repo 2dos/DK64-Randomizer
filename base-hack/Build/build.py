@@ -1722,6 +1722,11 @@ with open(newROMName, "r+b") as fh:
     fh.seek(ROM_DATA_OFFSET + 0x1E3)
     fh.write((2).to_bytes(1, "big"))
 
+    # Head Size
+    fh.seek(0x1FEE800)
+    for _ in range(0x100):
+        fh.write((0).to_bytes(1, "big"))  # Change to 0
+
     # Item Rando defaults
     # Blueprints
     fh.seek(0x1FF0E00)
