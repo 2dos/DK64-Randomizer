@@ -3009,7 +3009,8 @@ def BlockCompletionOfLevelSet(settings: Settings, lockedLevels):
 
 def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     """Generate a complete spoiler based on input settings."""
-    # Init logic vars with settings
+    # Check for settings incompatibilities
+    CheckForIncompatibleSettings(spoiler.settings)
     if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
         ValidateFixedHints(spoiler.settings)
     # Reset LocationList for a new fill
@@ -3218,6 +3219,18 @@ def ValidateFixedHints(settings: Settings) -> None:
         raise Ex.SettingsIncompatibleException("Fixed hints require starting with exactly 2 Kongs.")
     if settings.enable_plandomizer and len(settings.plandomizer_dict["hints"]) > 5:
         raise Ex.SettingsIncompatibleException("Fixed hints are incompatible with more than 5 plandomized hints.")
+
+
+def CheckForIncompatibleSettings(settings: Settings) -> None:
+    """Check for known settings conflicts and throw an exception immediately."""
+    found_incompatibilities = ""
+    if not settings.fast_start_beginning_of_game:
+        if settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+            found_incompatibilities += "Cannot turn off Fast Start with LZR. "
+        if settings.random_starting_region:
+            found_incompatibilities += "Cannot turn off Fast Start with a Random Starting Location. "
+    if found_incompatibilities != "":
+        raise Ex.SettingsIncompatibleException(found_incompatibilities)
 
 
 def DebugCheckAllReachable(spoiler: Spoiler, owned, what_just_got_placed):
