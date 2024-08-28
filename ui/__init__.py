@@ -44,6 +44,7 @@ from ui.rando_options import (
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
     updateWinConNumAccess,
+    validate_fast_start_status,
 )
 
 js.check_seed_info_tab()
@@ -89,4 +90,5 @@ disable_helm_hurry(None)
 disable_remove_barriers(None)
 disable_faster_checks(None)
 toggle_vanilla_door_rando(None)
+validate_fast_start_status(None)
 enable_plandomizer(None)

@@ -508,6 +508,7 @@ def toggle_counts_boxes(event):
 @bind("change", "level_randomization")
 def change_level_randomization(evt):
     """Disable certain page flags depending on level randomization."""
+    validate_fast_start_status(evt)
     level = document.getElementById("level_randomization")
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
@@ -996,6 +997,19 @@ def item_rando_list_changed(evt):
     plando_disable_tns_custom_locations(None)
 
 
+@bind("click", "random_starting_region")
+def validate_fast_start_status(evt):
+    """Confirm that fast start is eligible to be disabled with the given settings."""
+    loading_zone_status = document.getElementById("level_randomization")
+    is_random_starting_region = document.getElementById("random_starting_region").checked
+    fast_start = document.getElementById("fast_start_beginning_of_game")
+    if is_random_starting_region or loading_zone_status.value in ("loadingzone", "loadingzonesdecoupled"):
+        fast_start.setAttribute("disabled", "disabled")
+        fast_start.checked = False
+    else:
+        fast_start.removeAttribute("disabled")
+
+
 def should_reset_select_on_preset(selectElement):
     """Return true if the element should be reset when applying a preset."""
     if js.document.querySelector("#nav-cosmetics").contains(selectElement):
@@ -1142,6 +1156,7 @@ def update_ui_states(event):
     toggle_medals_box(None)
     toggle_extreme_prices_option(None)
     toggle_vanilla_door_rando(None)
+    validate_fast_start_status(None)
     sliders = js.document.getElementsByClassName("pretty-slider")
     for s in range(len(sliders)):
         event = js.document.createEvent("HTMLEvents")
