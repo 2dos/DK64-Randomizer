@@ -258,7 +258,8 @@ typedef struct playerData {
 	/* 0x1D0 */ short ostand_value;
 	/* 0x1D2 */ char unk_1D2[0x1D4-0x1D2];
 	/* 0x1D4 */ float blast_y_velocity;
-	/* 0x1D8 */ char unk_1D8[0x1E8-0x1D8];
+	/* 0x1D8 */ int unk_1D8;
+	/* 0x1DC */ char unk_1DC[0x1E8-0x1DC];
 	/* 0x1E8 */ float unk_1E8;
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;

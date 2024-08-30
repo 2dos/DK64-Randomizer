@@ -53,9 +53,7 @@ void guardCatchInternal(void) {
     Player->noclip = 1;
     if (Player->control_state != 0x7D) {
         if ((Player->grounded_bitfield & 4) == 0) {
-            if ((Player->grounded_bitfield & 2) == 0) {
-                playAnimation(Player,0x5D);
-            }
+            playAnimation(Player,0x5D);
         } else {
             playAnimation(Player,0x34);
         }

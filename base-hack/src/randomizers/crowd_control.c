@@ -179,13 +179,20 @@ int cc_enabler_spawnkop(void) {
 }
 
 int cc_allower_balloon(void) {
-    if (Player->grounded_bitfield & 6) {
+    if (Player->grounded_bitfield & 4) {
         return 0;
     }
     if (Character == 7) {
         return 0;
     }
     return 1;
+}
+
+int cc_allower_backflip(void) {
+    if (!cc_allower_balloon()) {
+        return 0;
+    }
+    return Player->grounded_bitfield & 1;
 }
 
 int cc_enabler_balloon(void) {
@@ -210,6 +217,47 @@ int cc_enabler_slip(void) {
     return 1;
 }
 
+int cc_allower_tag(void) {
+    if (!getTAState()) {
+        return 0;
+    }
+    int unlock_count = 0;
+    for (int i = 0; i < 5; i++) {
+        if (hasAccessToKong(i)) {
+            unlock_count += 1;
+            if (unlock_count > 1) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int cc_enabler_tag(void) {
+    int change_counter = getRNGLower31() & 7;
+    for (int j = 0; j < 8; j++) { // Not a while, but a for just in case we get stuck in an inf loop
+        for (int i = 0; i < 5; i++) {
+            if ((i != Character) && (hasAccessToKong(i))) {
+                change_counter--;
+                if (change_counter <= 0) {
+                    changeKong(i);
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+int cc_enabler_doabackflip(void) {
+    Player->control_state = 0x3E;
+    Player->control_state_progress = 0;
+    Player->blast_y_velocity = BackflipVelArray[KongIndex];
+    Player->ostand_value = 0;
+    playAnimation(Player, 0xE);
+    return 1;
+}
+
 static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
@@ -219,6 +267,8 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_spawnkop, .allower=&cc_allower_spawnkop, .auto_disable = 1}, // Get Kaught
     {.enabler = &cc_enabler_balloon, .allower=&cc_allower_balloon, .auto_disable = 1}, // Baboon Balloon
     {.enabler = &cc_enabler_slip, .auto_disable=1}, // Banana Slip
+    {.enabler = &cc_enabler_tag, .allower=&cc_allower_tag, .restart_upon_map_entry = 0}, // Change Kong
+    {.enabler = &cc_enabler_doabackflip, .allower=&cc_allower_backflip, .auto_disable = 1}, // Backflip
 };
 
 void cc_effect_handler(void) {

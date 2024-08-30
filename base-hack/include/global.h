@@ -159,6 +159,8 @@ extern void adjustGunBone(playerData* player);
 
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
+extern int hasAccessToKong(int kong);
+extern void changeKong(int next_character);
 extern void toggleStandardAmmo(void);
 extern void initTagAnywhere(void);
 extern void initItemDropTable(void);

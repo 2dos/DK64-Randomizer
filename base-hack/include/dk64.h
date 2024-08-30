@@ -521,6 +521,7 @@ extern Controller PreviouslyPressedButtons;
 extern playerData* Player;
 extern SwapObjectData* SwapObject;
 extern char Character;
+extern short KongIndex;
 extern cameraData* Camera;
 extern char ISGActive;
 extern unsigned int ISGTimestampMajor;
@@ -770,6 +771,8 @@ extern path_data_struct* PathData[32];
 extern fence_collective_struct* FenceInformation;
 extern rgba KongRGBA[5];
 extern char_spawner_paad* ActorPaad;
+extern float unkFloatArray[7];
+extern float BackflipVelArray[7];
 
 //hack data
 extern int TestVariable;

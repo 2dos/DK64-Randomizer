@@ -28,6 +28,9 @@ public class DonkeyKong64Randomizer : N64EffectPack
         RAP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x4);
         KOP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x5);
         BALLOON_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x6);
+        SLIP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x7);
+        TAG_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x8);
+        BACKFLIP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x9);
     }
 
     private AddressChain DRUNK_STATE;
@@ -37,6 +40,9 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private AddressChain RAP_STATE;
     private AddressChain KOP_STATE;
     private AddressChain BALLOON_STATE;
+    private AddressChain SLIP_STATE;
+    private AddressChain TAG_STATE;
+    private AddressChain BACKFLIP_STATE;
 
     private const uint ADDR_STATE_POINTER = 0x807FFFB4;
     private const uint ADDR_MAP_TIMER = 0x8076A064;
@@ -59,6 +65,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private const uint ADDR_GLOBAL_INSTRUMENT = 0x807FCC4E;
     private const uint ADDR_APPLIED_DAMAGE_MULTIPLIER = 0x807FF8A5;
     private const uint ADDR_ORIGINAl_DAMAGE_MULTIPLIER = 0x807FFFF9;
+    private const uint ADDR_BASE_ASPECT = 0x80010520;
 
     private const byte COIN_CHANGE_AMOUNT = 2;
     private enum CC_STATE
@@ -82,6 +89,9 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Instant Balloon","balloon") { Price = 0, Description = "Inflate the balloon (kong) just like a balloon.", Category="Player" },
         new("High Gravity","gravity_high") { Price = 0, Duration = 5, Description = "Crank(y) that gravity up to 11.", Category="Player" },
         new("Low Gravity","gravity_low") { Price = 0, Duration = 5, Description = "Make the moonkick not so special anymore.", Category="Player" },
+        new("Slip","player_slip") { Price = 0, Description = "Who placed a banana under the DK's foot?", Category="Player" },
+        new("Change Kong","tag_kong") { Price = 0, Duration = 5, Description = "Change the player to a different kong and lock tagging", Category="Player" },
+        new("Do a Backflip","backflip") { Price = 0, Description = "Peppy says: 'Do a backflip'.", Category="Player" },
         // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
@@ -95,6 +105,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Double Damage","damage_double") { Price = 0, Duration = 5, Description = "The player will take double damage.", Category="Health" },
         // Misc
         new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
+        new("Flip Screen","flip_screen") { Price = 0, Description = "Flips the screen vertically.", Category="Misc" },
         new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Misc" },
     };
 
@@ -143,6 +154,10 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if ((tb_void_byte & 3) != 0) {
             // Player is pausing or is paused
             return GameState.Paused;
+        }
+        if ((tb_void_byte & 0x30) == 0) {
+            // Player is in tag
+            return GameState.BadPlayerState;
         }
         if ((cutscene_state == 2) || (cutscene_state == 3)) {
             // In Arcade/Jetpac
@@ -295,12 +310,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
         return result;
     }
 
-    private bool resetDamageMultiplier(void)
+    private bool resetDamageMultiplier()
     {
         bool result = true;
         result &= Connector.Read8(ADDR_ORIGINAl_DAMAGE_MULTIPLIER, out byte damage_multiplier);
         result &= Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, damage_multiplier);
         return result;
+    }
+
+    private bool resetScreen()
+    {
+        return Connector.Write8(ADDR_BASE_ASPECT, (byte)(0x3F));
     }
 
     protected override void StartEffect(EffectRequest request)
@@ -344,6 +364,21 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 TryEffect(request,
                     () => Connector.IsEqual8(BALLOON_STATE, (byte)CC_STATE.CC_READY),
                     () => BALLOON_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
+                return;
+            case "player_slip":
+                TryEffect(request,
+                    () => Connector.IsEqual8(SLIP_STATE, (byte)CC_STATE.CC_READY),
+                    () => SLIP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
+                return;
+            case "tag_kong":
+                TryEffect(request,
+                    () => Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_READY),
+                    () => TAG_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
+                return;
+            case "backflip":
+                TryEffect(request,
+                    () => Connector.IsEqual8(BACKFLIP_STATE, (byte)CC_STATE.CC_READY),
+                    () => BACKFLIP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
                 return;
             case "give_coins":
                 TryEffect(request,
@@ -511,6 +546,11 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     () => true,
                     () => ChangeGravity(0.25f));
                 return;
+            case "flip_screen":
+                TryEffect(request,
+                    () => true,
+                    () => Connector.Write8(ADDR_BASE_ASPECT, (byte)(0xBF)));
+                return;
             default:
                 Respond(request, EffectStatus.FailPermanent, StandardErrors.UnknownEffect, request);
                 return;
@@ -549,6 +589,13 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return resetDamageMultiplier();
             case "damage_double":
                 return resetDamageMultiplier();
+            case "flip_screen":
+                return resetScreen();
+            case "tag_kong":
+                if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                    return TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
 
                 //set some value back to normal for effects that need turning off
                 //this is the preferred method! - it's always preferable to let CC

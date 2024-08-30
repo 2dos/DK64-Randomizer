@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crowd_control", "crowd_control", "{03AF5693-4586-42ED-BD3A-E149A6B8E999}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crowd_control", "crowd_control", "{CE3E4B9D-42FC-4FD8-A4E7-6B6CC01F8DBE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{7CC09C2F-12AE-46DF-811C-D2503747D33B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{037951B7-6250-4BFE-A017-CCB97B29FD68}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewPack", "crowd_control\SDK\PackProject\NewPack.csproj", "{84BBFD46-A764-4FB2-8DA0-0DF1451339B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewPack", "crowd_control\SDK\PackProject\NewPack.csproj", "{F971082E-66B7-4967-9473-A844E3EED41B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,17 +15,17 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{84BBFD46-A764-4FB2-8DA0-0DF1451339B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84BBFD46-A764-4FB2-8DA0-0DF1451339B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84BBFD46-A764-4FB2-8DA0-0DF1451339B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84BBFD46-A764-4FB2-8DA0-0DF1451339B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F971082E-66B7-4967-9473-A844E3EED41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F971082E-66B7-4967-9473-A844E3EED41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F971082E-66B7-4967-9473-A844E3EED41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F971082E-66B7-4967-9473-A844E3EED41B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7CC09C2F-12AE-46DF-811C-D2503747D33B} = {03AF5693-4586-42ED-BD3A-E149A6B8E999}
-		{84BBFD46-A764-4FB2-8DA0-0DF1451339B9} = {7CC09C2F-12AE-46DF-811C-D2503747D33B}
+		{037951B7-6250-4BFE-A017-CCB97B29FD68} = {CE3E4B9D-42FC-4FD8-A4E7-6B6CC01F8DBE}
+		{F971082E-66B7-4967-9473-A844E3EED41B} = {037951B7-6250-4BFE-A017-CCB97B29FD68}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18B6B6DF-F1A3-449B-98AC-F702E9080AC7}
