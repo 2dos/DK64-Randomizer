@@ -171,7 +171,7 @@ void fakeGetOut(void) {
                     Player->control_state = 0xC;
                     Player->noclip = 0x3C;
                     playCutscene((void*)0, 6, 5);
-                    adjustProjectileSpawnPosition(Player->xPos, Player->yPos + 100.0f, Player->zPos);
+                    adjustProjectileSpawnPosition(Player->xPos, Player->yPos + 1.0f, Player->zPos);
                     spawnProjectile(99, 1, 0.5f, Player->xPos, Player->yPos, Player->zPos, 285.0f, timer);
                 }
                 getout_killed = 1;
