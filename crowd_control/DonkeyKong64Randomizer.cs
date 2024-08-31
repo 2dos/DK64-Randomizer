@@ -31,6 +31,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         SLIP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x7);
         TAG_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x8);
         BACKFLIP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x9);
+        ICEFLOOR_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xA);
     }
 
     private AddressChain DRUNK_STATE;
@@ -43,6 +44,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private AddressChain SLIP_STATE;
     private AddressChain TAG_STATE;
     private AddressChain BACKFLIP_STATE;
+    private AddressChain ICEFLOOR_STATE;
 
     private const uint ADDR_STATE_POINTER = 0x807FFFB4;
     private const uint ADDR_MAP_TIMER = 0x8076A064;
@@ -92,6 +94,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Slip","player_slip") { Price = 0, Description = "Who placed a banana under the DK's foot?", Category="Player" },
         new("Change Kong","tag_kong") { Price = 0, Duration = 5, Description = "Change the player to a different kong and lock tagging", Category="Player" },
         new("Do a Backflip","backflip") { Price = 0, Description = "Peppy says: 'Do a backflip'.", Category="Player" },
+        new("Ice Floor","ice_floor") { Price = 0, Duration = 5, Description = "Donkey goes weeeeeeee.", Category="Player" },
         // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
@@ -380,6 +383,11 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     () => Connector.IsEqual8(BACKFLIP_STATE, (byte)CC_STATE.CC_READY),
                     () => BACKFLIP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
                 return;
+            case "ice_floor":
+                TryEffect(request,
+                    () => Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_READY),
+                    () => ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING));
+                return;
             case "give_coins":
                 TryEffect(request,
                     () => {
@@ -594,6 +602,11 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "tag_kong":
                 if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLED)) {
                     return TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
+            case "ice_floor":
+                if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                    return ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
 

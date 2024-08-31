@@ -258,6 +258,19 @@ int cc_enabler_doabackflip(void) {
     return 1;
 }
 
+int cc_enabler_ice(void) {
+    Player->traction = 1;
+    return 1;
+}
+
+int cc_disabler_ice(void) {
+    Player->traction = 100;
+    if (CurrentMap == MAP_CAVESBEETLERACE) {
+        Player->traction = 20;
+    }
+    return 1;
+}
+
 static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
@@ -269,6 +282,7 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_slip, .auto_disable=1}, // Banana Slip
     {.enabler = &cc_enabler_tag, .allower=&cc_allower_tag, .restart_upon_map_entry = 0}, // Change Kong
     {.enabler = &cc_enabler_doabackflip, .allower=&cc_allower_backflip, .auto_disable = 1}, // Backflip
+    {.enabler = &cc_enabler_ice, .disabler = &cc_disabler_ice, .restart_upon_map_entry = 1}, // Ice Floor
 };
 
 void cc_effect_handler(void) {

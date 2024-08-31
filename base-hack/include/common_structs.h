@@ -246,7 +246,9 @@ typedef struct playerData {
 	/* 0x16E */ char unk_16E; // shadow width or something
 	/* 0x16F */ char unk_16F[0x18A-0x16F];
 	/* 0x18A */ short moving_angle;
-	/* 0x18C */ char unk_18C[0x1B0-0x18C];
+	/* 0x18C */ char unk_18C[0x1A6-0x18C];
+	/* 0x1A6 */ short traction;
+	/* 0x1A8 */ char unk_1A8[0x1B0-0x1A8];
 	/* 0x1B0 */ float unk_1B0;
 	/* 0x1B4 */ char unk_1B4[0x1B8-0x1B4];
 	/* 0x1B8 */ float velocity_cap;
