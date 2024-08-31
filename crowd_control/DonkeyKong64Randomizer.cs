@@ -340,6 +340,55 @@ public class DonkeyKong64Randomizer : N64EffectPack
         0x0061, // K. Lumsy
     ];
 
+    private static readonly short[] BANNED_CONTROL_STATES = [
+        0x0006, // Locked - Bonus
+        0x0007, // Minecart - Idle
+        0x0008, // Minecart - Crouch
+        0x0009, // Minecart - Jump
+        0x000A, // Minecart - Left
+        0x000B, // Minecart - Right
+        0x003B, // Death - Lava
+        0x0042, // Tag Barrel lock
+        0x0043, // Underwater
+        0x0044, // BBlast shot
+        0x0052, // Bananaport
+        0x0053, // Monkeyport
+        0x0054, // Bananaport (Multiplayer)
+        0x0056, // Locked - Learning move
+        0x0064, // Taking photo
+        0x0065, // Taking photo (Underwater)
+        0x0067, // Instrument
+        0x006A, // Learning Gun
+        0x006B, // Locked (Bonus Barrel)
+        0x006D, // Boat
+        0x0075, // Castle Car Race
+        0x0076, // Entering Crown
+        0x0077, // Cutscene Lock
+        0x0078, // Gorilla Grab
+        0x0079, // Learning Move
+        0x007A, // Locked
+        0x007B, // Locked
+        0x007C, // Trap Bubble
+        0x007D, // Beaver Bother
+        0x0083, // Fairy Refill
+        0x0087, // Enter Portal
+        0x0088, // Exit Portal
+    ];
+
+    private bool isGoodMovementState()
+    {
+        bool result = true;
+        AddressChain ADDR_CONTROL_STATE = AddressChain.Begin(Connector).Move(ADDR_PLAYER_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x154);
+        result &= Connector.Read8((uint)(ADDR_CONTROL_STATE.Address), out byte control_state_id);
+        if (!result) {
+            return false;
+        }
+        if (BANNED_CONTROL_STATES.Contains(control_state_id)) {
+            return false;
+        }
+        return true;
+    }
+
     private bool resetScreen()
     {
         return Connector.Write8(ADDR_BASE_ASPECT, (byte)(0x3F));
@@ -435,7 +484,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return;
             case "balloon":
                 TryEffect(request,
-                    () => Connector.IsEqual8(BALLOON_STATE, (byte)CC_STATE.CC_READY),
+                    () => {
+                        bool result = true;
+                        result &= Connector.IsEqual8(BALLOON_STATE, (byte)CC_STATE.CC_READY);
+                        result &= isGoodMovementState();
+                        return result;
+                    },
                     () => {
                         bool result = BALLOON_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
                         if (result) {
@@ -446,7 +500,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return;
             case "player_slip":
                 TryEffect(request,
-                    () => Connector.IsEqual8(SLIP_STATE, (byte)CC_STATE.CC_READY),
+                    () => {
+                        bool result = true;
+                        result &= Connector.IsEqual8(SLIP_STATE, (byte)CC_STATE.CC_READY);
+                        result &= isGoodMovementState();
+                        return result;
+                    },
                     () => {
                         bool result = SLIP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
                         if (result) {
