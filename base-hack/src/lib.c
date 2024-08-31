@@ -1799,3 +1799,16 @@ int isKrushaAdjacentModel(int kong) {
 	}
 	return 0;
 }
+
+int isGlobalCutscenePlaying(int cutscene_index) {
+	if (CutsceneActive != 1) {
+		return 0;
+	}
+	if (CutsceneIndex != cutscene_index) {
+		return 0;
+	}
+	if ((CutsceneStateBitfield & 4) != 0) {
+		return 1;
+	}
+	return 0;
+}

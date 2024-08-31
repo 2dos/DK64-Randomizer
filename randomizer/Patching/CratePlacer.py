@@ -11,12 +11,14 @@ from randomizer.Patching.Patcher import LocalROM
 class MelonCrateShortData:
     """Class to store small parts of information relevant to the placement algorithm."""
 
-    def __init__(self, map, coords, max_size, rot_y, is_galleon_floating_crate):
+    def __init__(self, map, coords, max_size, rot_x, rot_y, rot_z, is_galleon_floating_crate):
         """Initialize with provided data."""
         self.map = map
         self.coords = coords
         self.max_size = max_size
+        self.rot_x = rot_x
         self.rot_y = rot_y
+        self.rot_z = rot_z
         self.is_galleon_floating_crate = is_galleon_floating_crate
 
 
@@ -41,7 +43,7 @@ def randomize_melon_crate(spoiler):
         for crate_item in spoiler.meloncrate_placement:
             for crate in CustomLocations[crate_item["level"]]:
                 if crate.name == crate_item["name"]:
-                    placements.append(MelonCrateShortData(crate.map, crate.coords, crate.max_size, crate.rot_y, crate.is_galleon_floating_crate))
+                    placements.append(MelonCrateShortData(crate.map, crate.coords, crate.max_size, crate.rot_x, crate.rot_y, crate.rot_z, crate.is_galleon_floating_crate))
                     if crate.map not in action_maps:
                         action_maps.append(crate.map)
                     if crate.is_galleon_floating_crate:
@@ -84,9 +86,9 @@ def randomize_melon_crate(spoiler):
                             int(float_to_hex(crate_scale), 16),
                             0x027B0002,
                             0x05800640,
-                            0,
+                            int(float_to_hex(crate.rot_x), 16),
                             int(float_to_hex(rotation), 16),
-                            0,
+                            int(float_to_hex(crate.rot_z), 16),
                             0,
                             (0xB5 << 16) | selected_id,
                             1 << 16,

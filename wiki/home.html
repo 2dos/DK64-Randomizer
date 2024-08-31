@@ -23,8 +23,8 @@
         <link href="../static/styles/styles.css" rel="stylesheet" />
         <link href="../static/styles/gui.css" rel="stylesheet" type="text/css" />
         <link href="../static/styles/wiki.css" rel="stylesheet" type="text/css" />
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
     </head>
     <body id="page-top">
         <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
@@ -87,8 +87,8 @@
             <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="searchModalLabel">Search</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="searchModalLabel">Search</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input class="form-control mr-sm-2" id="article-search" type="text" placeholder="Search" autocomplete="off" data-lpignore="true" data-form-type="other">
@@ -148,7 +148,15 @@
                 const articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
                 const sorted_articles = articles.sort((a, b) => a.name > b.name ? 1 : ((b.name > a.name) ? -1 : 0));
                 const article_hook = document.getElementById("article-list");
-                article_hook.innerHTML = sorted_articles.map(article => `<li><a href="${getLink(article)}">${article.name}</a></li>`).join("");
+                article_hook.innerHTML = sorted_articles.map(article => {
+                    if (article.name.includes("Custom Locations: ")) {
+                        return "";
+                    }
+                    if (article.name.includes("Random Settings: ")) {
+                        return "";
+                    }
+                    return `<li><a href="${getLink(article)}">${article.name}</a></li>`;
+                }).join("");
             }
             fetchArticles();
         </script>
@@ -163,7 +171,9 @@
                         return item.name;
                     },
                     afterSelect: (item) => {
-                        window.location.href = item.link;
+                        $(document).on('click', '.typeahead .dropdown-menu li', function() {
+                            window.location.href = item.link;
+                        });
                     }
                 });
             }

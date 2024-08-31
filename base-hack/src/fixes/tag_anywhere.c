@@ -830,6 +830,12 @@ void handleGrabbingLock(void* player, int player_index, int allow_vines) {
 }
 
 int canPlayerClimb(void) {
+    int parent_map = 0;
+    int parent_exit = 0;
+    getParentMap(&parent_map, &parent_exit);
+    if(CurrentMap == MAP_TBARREL_VINE && parent_map == MAP_TRAININGGROUNDS){
+        return 1;
+    }
     return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
 }
 

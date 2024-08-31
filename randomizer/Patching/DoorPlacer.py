@@ -1,6 +1,7 @@
 """Apply Door Locations."""
 
 import js
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
@@ -11,6 +12,16 @@ from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, 
 from randomizer.Patching.Patcher import LocalROM
 
 LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
+
+MAP_LEVEL_PAIRING = {
+    Maps.JungleJapes: Levels.JungleJapes,
+    Maps.AngryAztec: Levels.AngryAztec,
+    Maps.FranticFactory: Levels.FranticFactory,
+    Maps.GloomyGalleon: Levels.GloomyGalleon,
+    Maps.FungiForest: Levels.FungiForest,
+    Maps.CrystalCaves: Levels.CrystalCaves,
+    Maps.CreepyCastle: Levels.CreepyCastle,
+}
 
 PORTAL_MAP_ID_PAIRING = {
     Maps.JungleJapes: 0x11B,
@@ -334,6 +345,12 @@ def place_door_locations(spoiler):
                     if cont_map_id in LEVEL_MAIN_MAPS:
                         if item_type == 0x2AD:
                             retain = False
+                            level = MAP_LEVEL_PAIRING[cont_map_id]
+                            for data in spoiler.shuffled_door_data[level]:
+                                if data[1] == "dk_portal":
+                                    if door_locations[level][data[0]].default_placed == DoorType.dk_portal:
+                                        retain = True
+
                 if retain:
                     ROM_COPY.seek(item_start)
                     item_data = []
@@ -418,7 +435,7 @@ def place_door_locations(spoiler):
                                 item_data.append(([0x2AC, 0x2AB][k] << 16) | id)
                                 item_data.append(1 << 16)
                                 retained_model2.append(item_data)
-                        elif door_type == "dk_portal" and spoiler.settings.dk_portal_location_rando:
+                        elif door_type == "dk_portal" and spoiler.settings.dk_portal_location_rando and door.default_placed != DoorType.dk_portal:
                             item_data = []
                             for coord_index in range(3):
                                 item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
@@ -453,23 +470,24 @@ def place_door_locations(spoiler):
                 ROM_COPY.writeMultipleBytes(data, 4)
         if spoiler.settings.dk_portal_location_rando:
             for portal_map in dk_portal_locations:
-                pushNewDKPortalScript(portal_map)
-                exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
-                exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
-                for exit_index in exits_to_alter:
-                    ROM_COPY.seek(exit_start + (exit_index * 10))
-                    for coord_index in range(3):
-                        coord_value = dk_portal_locations[portal_map][coord_index]
-                        coord_int = int(coord_value)
-                        if coord_int < 0:
-                            coord_int += 0x10000
-                        ROM_COPY.writeMultipleBytes(coord_int, 2)
-                    angle = int(255 * (dk_portal_locations[portal_map][3] / 360))
-                    cam_raw_angle = dk_portal_locations[portal_map][3]
-                    if cam_raw_angle >= 180:
-                        cam_raw_angle -= 180
-                    else:
-                        cam_raw_angle += 180
-                    cam_angle = int(255 * (cam_raw_angle / 360))
-                    ROM_COPY.writeMultipleBytes(angle, 1)
-                    ROM_COPY.writeMultipleBytes(cam_angle, 1)
+                if dk_portal_locations[portal_map][0] + dk_portal_locations[portal_map][1] + dk_portal_locations[portal_map][2] + dk_portal_locations[portal_map][3] != 0:
+                    pushNewDKPortalScript(portal_map)
+                    exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
+                    exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
+                    for exit_index in exits_to_alter:
+                        ROM_COPY.seek(exit_start + (exit_index * 10))
+                        for coord_index in range(3):
+                            coord_value = dk_portal_locations[portal_map][coord_index]
+                            coord_int = int(coord_value)
+                            if coord_int < 0:
+                                coord_int += 0x10000
+                            ROM_COPY.writeMultipleBytes(coord_int, 2)
+                        angle = int(255 * (dk_portal_locations[portal_map][3] / 360))
+                        cam_raw_angle = dk_portal_locations[portal_map][3]
+                        if cam_raw_angle >= 180:
+                            cam_raw_angle -= 180
+                        else:
+                            cam_raw_angle += 180
+                        cam_angle = int(255 * (cam_raw_angle / 360))
+                        ROM_COPY.writeMultipleBytes(angle, 1)
+                        ROM_COPY.writeMultipleBytes(cam_angle, 1)

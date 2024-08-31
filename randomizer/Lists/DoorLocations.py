@@ -7,7 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import RemovedBarriersSelected, ActivateAllBananaports, FungiTimeSetting
+from randomizer.Enums.Settings import BananaportRando, RemovedBarriersSelected, ActivateAllBananaports, FungiTimeSetting, ShufflePortLocations
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Patching.Lib import IsItemSelected
@@ -1459,7 +1459,12 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),  # TnS Door in meme hole
         DoorData(
             name="Gloomy Galleon: Behind 2DS",
@@ -1470,7 +1475,12 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),  # TnS Door behind 2DS
         DoorData(
             name="Gloomy Galleon: Behind Enguarde Door",
@@ -1482,7 +1492,12 @@ door_locations = {
             logic=lambda l: Events.LighthouseEnguarde in l.Events,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),  # TnS Door behind Enguarde Door
         DoorData(
             name="Gloomy Galleon: Cactus",
@@ -1493,7 +1508,12 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),  # TnS Door near Cactus
         DoorData(
             name="Gloomy Galleon: In hallway to Shipyard - Tiny switch",
@@ -1524,7 +1544,12 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Under RocketBarrel barrel",
@@ -1534,7 +1559,12 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Next to Cannonball game",
@@ -1575,7 +1605,12 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom front left",
@@ -1585,7 +1620,12 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom back right",
@@ -1595,7 +1635,12 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom front right",
@@ -1605,7 +1650,12 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: On top of Seal cage",
@@ -1617,7 +1667,12 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.isdiddy and l.jetpack,
             door_type=[DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Treasure Chest Exterior",
@@ -1661,7 +1716,12 @@ door_locations = {
             location=[540.3, 1564.0, 4094.0, 110.0],
             group=7,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Behind boxes in Cranky Area",
@@ -1678,7 +1738,12 @@ door_locations = {
             group=10,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - left",
@@ -1689,7 +1754,12 @@ door_locations = {
             group=10,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - middle",
@@ -1700,7 +1770,12 @@ door_locations = {
             group=10,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - right",
@@ -1743,7 +1818,12 @@ door_locations = {
             group=4,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - right",
@@ -1753,7 +1833,12 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - left",
@@ -1764,7 +1849,12 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel",
@@ -1908,7 +1998,14 @@ door_locations = {
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive)
-            and (isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all),
+            and (
+                isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel)
+                or (
+                    s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                    and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                    and s.settings.bananaport_rando == BananaportRando.off
+                )
+            ),
         ),  # TnS Portal in Beanstalk Area
         DoorData(
             name="Fungi Forest: Near Snide's",
@@ -1938,7 +2035,12 @@ door_locations = {
             moveless=False,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),  # TnS Portal near Owl Race
         DoorData(
             name="Fungi Forest: On top of Cage outside Conveyor Belt",
@@ -2030,7 +2132,12 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Fungi Forest: Owl Area - Near Rocketbarrel Barrel - far left",
@@ -2040,7 +2147,12 @@ door_locations = {
             group=6,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_yellow_tunnel)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Tiny Coins",
@@ -2050,7 +2162,12 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Fungi Forest: Mushroom Area - Next to Tag Barrel near Cranky's",
@@ -2122,7 +2239,12 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Beanstalk - back",
@@ -2132,7 +2254,12 @@ door_locations = {
             group=3,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel) or s.settings.activate_all_bananaports == ActivateAllBananaports.all,
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - All Kong Gun Switch - right",
@@ -2851,7 +2978,7 @@ door_locations = {
         DoorData(
             name="Creepy Castle: Back of Castle",
             map=Maps.CreepyCastle,
-            logicregion=Regions.CreepyCastleMain,
+            logicregion=Regions.CastleVeryBottom,
             location=[1704.55, 368.026, 1896.767, 4.0],
             group=4,
             placed=DoorType.boss,

@@ -191,6 +191,8 @@ RegionMapList = {
     # Castle
     Regions.CreepyCastleEntryHandler: Maps.CreepyCastle,
     Regions.CreepyCastleMain: Maps.CreepyCastle,
+    Regions.CastleVeryBottom: Maps.CreepyCastle,
+    Regions.CastleGraveyardPlatform: Maps.CreepyCastle,
     Regions.CastleWaterfall: Maps.CreepyCastle,
     Regions.CastleTree: Maps.CastleTree,
     Regions.Library: Maps.CastleLibrary,

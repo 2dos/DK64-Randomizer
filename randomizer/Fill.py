@@ -63,7 +63,7 @@ from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins
 from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
-from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors
+from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors, UpdateDoorLevels
 from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import ResetShuffledKasplatLocations, ShuffleKasplatsAndLocations, ShuffleKasplatsInVanillaLocations, constants, shufflable
@@ -1986,6 +1986,9 @@ def FillTrainingMoves(spoiler: Spoiler, placedMoves: List[Items]):
 
 def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: List[Types]) -> None:
     """Shuffles shared kong moves into shops and then returns the remaining ones and their valid locations."""
+    # If we start with a slam as the training grounds reward, it counts as placed for fill purposes
+    if spoiler.settings.start_with_slam:
+        placedMoves.append(Items.ProgressiveSlam)
     # If shared moves have to be in shared shops, confirm there are enough locations available for each remaining shared move
     if not spoiler.settings.shuffle_items or Types.Shop not in spoiler.settings.shuffled_location_types:
         availableSharedShops = [location for location in SharedMoveLocations if spoiler.LocationList[location].item is None]
@@ -3006,7 +3009,8 @@ def BlockCompletionOfLevelSet(settings: Settings, lockedLevels):
 
 def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     """Generate a complete spoiler based on input settings."""
-    # Init logic vars with settings
+    # Check for settings incompatibilities
+    CheckForIncompatibleSettings(spoiler.settings)
     if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
         ValidateFixedHints(spoiler.settings)
     # Reset LocationList for a new fill
@@ -3077,6 +3081,8 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
             ShuffleDoors(spoiler, True)
     elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando:
         ShuffleDoors(spoiler, False)
+    if Types.Hint in spoiler.settings.shuffled_location_types:
+        UpdateDoorLevels(spoiler)
     # Handle Crown Placement
     if spoiler.settings.crown_placement_rando:
         crown_replacements = {}
@@ -3213,6 +3219,18 @@ def ValidateFixedHints(settings: Settings) -> None:
         raise Ex.SettingsIncompatibleException("Fixed hints require starting with exactly 2 Kongs.")
     if settings.enable_plandomizer and len(settings.plandomizer_dict["hints"]) > 5:
         raise Ex.SettingsIncompatibleException("Fixed hints are incompatible with more than 5 plandomized hints.")
+
+
+def CheckForIncompatibleSettings(settings: Settings) -> None:
+    """Check for known settings conflicts and throw an exception immediately."""
+    found_incompatibilities = ""
+    if not settings.fast_start_beginning_of_game:
+        if settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+            found_incompatibilities += "Cannot turn off Fast Start with LZR. "
+        if settings.random_starting_region:
+            found_incompatibilities += "Cannot turn off Fast Start with a Random Starting Location. "
+    if found_incompatibilities != "":
+        raise Ex.SettingsIncompatibleException(found_incompatibilities)
 
 
 def DebugCheckAllReachable(spoiler: Spoiler, owned, what_just_got_placed):
