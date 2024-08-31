@@ -262,6 +262,9 @@ extern void setActorModel(void* actor, int index);
 extern void spawn3DActor(spawnerPacket* packet);
 extern int getChunk(float x, float y, float z, int unk0);
 extern void spawnKey(short flag, int x, int y, int z, short unk0, short unk1);
+extern void spawnTimer(int x, int y, int timer);
+extern void initTimer(void* actor);
+extern void mushroomBounce(void);
 
 extern int crystalsUnlocked(int kong);
 extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);

@@ -239,7 +239,9 @@ typedef struct playerData {
 	/* 0x148 */ char unk_148[0x154 - 0x148];
 	/* 0x154 */ unsigned char control_state;
 	/* 0x155 */ char control_state_progress;
-	/* 0x156 */ char unk_156[0x168-0x156];
+	/* 0x156 */ char unk_156[0x15E - 0x156];
+	/* 0x15E */ unsigned char height;
+	/* 0x15F */ char unk_15F[0x168 - 0x15F];
 	/* 0x168 */ short updraft_target;
 	/* 0x16A */ unsigned char rgb_components[3];
 	/* 0x16D */ char unk_16D;

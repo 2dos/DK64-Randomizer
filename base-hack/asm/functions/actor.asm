@@ -136,3 +136,6 @@
 .definelabel unkActorFunc_0, 0x8072D714
 .definelabel unkCollisionFunc, 0x80676CB0
 .definelabel bananaslip, 0x806F0930
+.definelabel spawnTimer, 0x806A2A10
+.definelabel initTimer, 0x806A2B08
+.definelabel mushroomBounce, 0x806CBE44

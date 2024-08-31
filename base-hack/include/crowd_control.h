@@ -18,4 +18,5 @@ typedef struct cc_effects {
     /* 0x008 */ unsigned char tag;
     /* 0x009 */ unsigned char backflip;
     /* 0x00A */ unsigned char ice_floor;
+    /* 0x00B */ unsigned char get_out;
 } cc_effects;

@@ -114,6 +114,74 @@ void skipDKTV(void) {
     }
 }
 
+typedef struct timer_paad {
+    /* 0x000 */ char unk0[0xc];
+    /* 0x00C */ int time;
+} timer_paad;
+
+static char getout_killed = 0;
+static char getout_init = 0;
+Gfx* displayGetOutReticle(Gfx* dl) {
+    float x = 0.0f;
+    float y = 0.0f;
+    calculateScreenPosition(Player->xPos, Player->yPos + Player->height, Player->zPos, &x, &y, 0, 1.0f, 0);
+    gDPPipeSync(dl++);
+    gDPSetPrimColor(dl++, 0, 0, 0x00, 0xC8, 0x00, 0xFF);
+    gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    gSPDisplayList(dl++, 0x01000118);
+    gSPMatrix(dl++, 0x02000080, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    return displayImage(dl, 0x38, 3, 1, 64, 64, x, y, 0.5f, 0.5f, 0x2D, 0.0f);
+}
+
+int cc_enable_getout(void) {
+    MapProperties.disable_fairy_camera = 1;
+    ButtonsEnabledBitfield &= ~START_BUTTON; // You ain't getting out of this one easily, champ
+    spawnActor(0xB0, 0);
+    LastSpawnedActor->sub_state = 6;
+    Player->krool_timer_pointer = LastSpawnedActor;
+    timer_paad* paad = LastSpawnedActor->paad;
+    paad->time = 10;
+    LastSpawnedActor->xPos = 125;
+    LastSpawnedActor->yPos = 0x2A;
+    LastSpawnedActor->control_state = 1;
+    LastSpawnedActor->shadow_intensity = 0;
+    getout_killed = 0;
+    getout_init = 1;
+    playSFX(0x1A2);
+    initTimer(LastSpawnedActor);
+}
+
+void fakeGetOut(void) {
+    mushroomBounce();
+    if (!CCEffectData) {
+        return;
+    }
+    if (CCEffectData->get_out == CC_ENABLED) {
+        if (TransitionSpeed > 0.0f) {
+            CCEffectData->get_out = CC_DISABLING;
+        } else {
+            actorData* timer = Player->krool_timer_pointer;
+            if (!timer) {
+                return;
+            }
+            if (timer->control_state == 5) {
+                if (!getout_killed) {
+                    Player->hSpeed = 0.0f;
+                    Player->control_state = 0xC;
+                    Player->noclip = 0x3C;
+                    playCutscene((void*)0, 6, 5);
+                    adjustProjectileSpawnPosition(Player->xPos, Player->yPos + 100.0f, Player->zPos);
+                    spawnProjectile(99, 1, 0.5f, Player->xPos, Player->yPos, Player->zPos, 285.0f, timer);
+                }
+                getout_killed = 1;
+            } else {
+                addDLToOverlay((int)&displayGetOutReticle, CurrentActorPointer_0, 3);
+            }
+        }
+    }
+}
+
 typedef struct actor_init_data {
     float unk0;
     float unk4;
@@ -203,7 +271,7 @@ int cc_enabler_balloon(void) {
         Player->control_state_progress = 0;
         Player->yVelocity = 0.0f;
         Player->yAccel = 2.0f + (*(double*)(0x8075D308) * 10.0f);
-        Player->balloon_timer = 30;
+        Player->balloon_timer = 10;
         playActorAnimation(Player, 0x169);
     }
     return 1;
@@ -280,9 +348,10 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_spawnkop, .allower=&cc_allower_spawnkop, .auto_disable = 1}, // Get Kaught
     {.enabler = &cc_enabler_balloon, .allower=&cc_allower_balloon, .auto_disable = 1}, // Baboon Balloon
     {.enabler = &cc_enabler_slip, .auto_disable=1}, // Banana Slip
-    {.enabler = &cc_enabler_tag, .allower=&cc_allower_tag, .restart_upon_map_entry = 0}, // Change Kong
+    {.enabler = &cc_enabler_tag, .allower=&cc_allower_tag}, // Change Kong
     {.enabler = &cc_enabler_doabackflip, .allower=&cc_allower_backflip, .auto_disable = 1}, // Backflip
     {.enabler = &cc_enabler_ice, .disabler = &cc_disabler_ice, .restart_upon_map_entry = 1}, // Ice Floor
+    {.enabler = &cc_enable_getout}, // Get out
 };
 
 void cc_effect_handler(void) {
