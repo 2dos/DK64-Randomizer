@@ -1392,6 +1392,7 @@ SharedShopLocations = {
 }
 PreGivenLocations = {
     Locations.IslesFirstMove,
+    Locations.IslesClimbing,
     Locations.PreGiven_Location00,
     Locations.PreGiven_Location01,
     Locations.PreGiven_Location02,
