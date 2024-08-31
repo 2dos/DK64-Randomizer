@@ -1005,7 +1005,7 @@ def validate_fast_start_status(evt):
     fast_start = document.getElementById("fast_start_beginning_of_game")
     if is_random_starting_region or loading_zone_status.value in ("loadingzone", "loadingzonesdecoupled"):
         fast_start.setAttribute("disabled", "disabled")
-        fast_start.checked = False
+        fast_start.checked = True
     else:
         fast_start.removeAttribute("disabled")
 
