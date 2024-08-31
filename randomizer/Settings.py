@@ -838,7 +838,7 @@ class Settings:
 
         # Move Location Rando
         if self.move_rando == MoveRando.start_with:
-            self.starting_moves_count = 41
+            self.starting_moves_count = 42
             self.training_barrels = TrainingBarrels.normal
             self.shockwave_status = ShockwaveStatus.start_with
 
@@ -1126,6 +1126,7 @@ class Settings:
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
+                    self.shuffled_location_types.append(Types.Climbing)
                 self.shuffled_location_types.append(Types.PreGivenMove)
             if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
                 self.shuffled_location_types.append(Types.IslesMedal)
@@ -1589,7 +1590,7 @@ class Settings:
         spoiler.LocationList[Locations.IslesBarrelsTrainingBarrel].type = Types.TrainingBarrel
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].default = Items.Oranges
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].type = Types.TrainingBarrel
-        location_cap = 37  # Increment this for every new potential starting move added
+        location_cap = 38  # Increment this for every new potential starting move added
         if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
             location_cap -= 2
         if self.shockwave_status == ShockwaveStatus.shuffled:
