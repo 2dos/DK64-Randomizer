@@ -235,6 +235,7 @@ PlandoItemToItemMap = {
     PlandoItems.Swim: Items.Swim,
     PlandoItems.Oranges: Items.Oranges,
     PlandoItems.Barrels: Items.Barrels,
+    PlandoItems.Climbing: Items.Climbing,
     PlandoItems.BaboonBlast: Items.BaboonBlast,
     PlandoItems.StrongKong: Items.StrongKong,
     PlandoItems.GorillaGrab: Items.GorillaGrab,
