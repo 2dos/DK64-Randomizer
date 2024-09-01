@@ -296,7 +296,7 @@
                 {% for i in range(0, 5) %}
                     <label id="plando_krool_order_div_{{i}}"
                         class="flex-container select-order">
-                        <span class="order-label">Kong {{i+1}}:</span>
+                        <span class="order-label">Phase {{i+1}}:</span>
                         <div id="plando_krool_order_{{i}}_wrapper"
                              data-toggle="tooltip"
                              title>
@@ -306,21 +306,11 @@
                                 <option value="" selected">
                                     -- Randomize --
                                 </option>
-                                <option value="KroolDonkeyPhase">
-                                    Donkey
-                                </option>
-                                <option value="KroolDiddyPhase">
-                                    Diddy
-                                </option>
-                                <option value="KroolLankyPhase">
-                                    Lanky
-                                </option>
-                                <option value="KroolTinyPhase">
-                                    Tiny
-                                </option>
-                                <option value="KroolChunkyPhase">
-                                    Chunky
-                                </option>
+                                {% for phase in plando_phases %}
+                                  <option value="{{phase["value"]}}">
+                                    {{phase["name"]}}
+                                  </option>
+                                {% endfor %}
                             </select>
                         </div>
                     </label>

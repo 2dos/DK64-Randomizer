@@ -560,27 +560,27 @@ def validate_level_order_no_duplicates(evt):
 
 @bind("change", "plando_krool_order_", 5)
 def validate_krool_order_no_duplicates(evt):
-    """Raise an error if the same Kong is chosen twice in the K. Rool order."""
-    kongDict = {}
-    # Count the instances of each Kong.
+    """Raise an error if the same boss is chosen twice in the K. Rool order."""
+    battleDict = {}
+    # Count the instances of each boss battle.
     for i in range(0, 5):
         kroolElemName = f"plando_krool_order_{i}"
         kroolOrderElem = js.document.getElementById(kroolElemName)
-        kong = kroolOrderElem.value
-        if kong in kongDict:
-            kongDict[kong].append(kroolElemName)
+        battle = kroolOrderElem.value
+        if battle in battleDict:
+            battleDict[battle].append(kroolElemName)
         else:
-            kongDict[kong] = [kroolElemName]
-    # Invalidate any selects that re-use the same Kong.
-    for kong, selects in kongDict.items():
-        if kong == "" or len(selects) == 1:
+            battleDict[battle] = [kroolElemName]
+    # Invalidate any selects that re-use the same battle.
+    for battle, selects in battleDict.items():
+        if battle == "" or len(selects) == 1:
             for select in selects:
                 selectElem = js.document.getElementById(select)
                 mark_option_valid(selectElem, ValidationError.krool_order_duplicates)
         else:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                errString = "The same Kong cannot be used twice in the K. Rool order."
+                errString = "The same boss battle cannot be used twice in the K. Rool order."
                 mark_option_invalid(selectElem, ValidationError.krool_order_duplicates, errString)
 
 
@@ -1485,18 +1485,19 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
         else:
             levelOrderSet.add(level)
 
-    # Ensure that no Kong was selected more than once in the K. Rool order.
+    # Ensure that no boss battle was selected more than once in the K. Rool
+    # order.
     kroolOrderSet = set()
     for i in range(0, 5):
-        kong = plando_dict[f"plando_krool_order_{i}"]
-        if kong == PlandoItems.Randomize:
+        battle = plando_dict[f"plando_krool_order_{i}"]
+        if battle == PlandoItems.Randomize:
             continue
-        if kong in kroolOrderSet:
-            errString = "The same Kong cannot be used twice in the K. Rool order."
+        if battle in kroolOrderSet:
+            errString = "The same boss battle cannot be used twice in the K. Rool order."
             errList.append(errString)
             break
         else:
-            kroolOrderSet.add(kong)
+            kroolOrderSet.add(battle)
 
     # Ensure that no Kong was selected more than once in the Helm order.
     helmOrderSet = set()
