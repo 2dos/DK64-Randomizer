@@ -6,6 +6,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Switches import Switches
@@ -408,6 +409,61 @@ for minigameEnum, minigameObj in MinigameRequirements.items():
         continue
     minigameJson = {"name": minigameObj.name, "value": minigameEnum.name}
     PlannableMinigames.append(minigameJson)
+
+##################
+# K. ROOL PHASES #
+##################
+
+PlannableKroolPhases = [
+    {
+        "name": "Army Dillo 1 (Japes)",
+        "value": Maps.JapesBoss.name,
+    },
+    {
+        "name": "Dogadon 1 (Aztec)",
+        "value": Maps.AztecBoss.name,
+    },
+    {
+        "name": "Mad Jack (Factory)",
+        "value": Maps.FactoryBoss.name,
+    },
+    {
+        "name": "Pufftoss (Galleon)",
+        "value": Maps.GalleonBoss.name,
+    },
+    {
+        "name": "Dogadon 2 (Forest)",
+        "value": Maps.FungiBoss.name,
+    },
+    {
+        "name": "Army Dillo 2 (Caves)",
+        "value": Maps.CavesBoss.name,
+    },
+    {
+        "name": "King Kut-Out (Castle)",
+        "value": Maps.CastleBoss.name,
+    },
+    {
+        "name": "Donkey Phase (K. Rool)",
+        "value": Maps.KroolDonkeyPhase.name,
+    },
+    {
+        "name": "Diddy Phase (K. Rool)",
+        "value": Maps.KroolDiddyPhase.name,
+    },
+    {
+        "name": "Lanky Phase (K. Rool)",
+        "value": Maps.KroolLankyPhase.name,
+    },
+    {
+        "name": "Tiny Phase (K. Rool)",
+        "value": Maps.KroolTinyPhase.name,
+    },
+    {
+        "name": "Chunky Phase (K. Rool)",
+        "value": Maps.KroolChunkyPhase.name,
+    },
+]
 
 ###################
 # SPAWN LOCATIONS #
