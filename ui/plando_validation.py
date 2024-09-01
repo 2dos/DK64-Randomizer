@@ -884,9 +884,17 @@ def enable_switch_plando(evt):
         switchElem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
         if switchsanity == "all":
             mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
+            # If this switch is currently set to its vanilla value, change it
+            # to "Randomize".
+            if switchElem.value == SwitchVanillaMap[switchEnum.name]:
+                switchElem.value = ""
         elif switchEnum in [Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport]:
             if switchsanity == "helm_access":
                 mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
+                # If this switch is currently set to its vanilla value, change
+                # it to "Randomize".
+                if switchElem.value == SwitchVanillaMap[switchEnum.name]:
+                    switchElem.value = ""
             else:
                 errString = 'To set this switch, Switchsanity must be set to "All" or "Helm Access Only".'
                 mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
