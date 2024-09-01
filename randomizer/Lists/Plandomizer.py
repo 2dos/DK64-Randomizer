@@ -403,6 +403,61 @@ for minigameEnum, minigameObj in MinigameRequirements.items():
     minigameJson = {"name": minigameObj.name, "value": minigameEnum.name}
     PlannableMinigames.append(minigameJson)
 
+##################
+# K. ROOL PHASES #
+##################
+
+PlannableKroolPhases = [
+    {
+        "name": "Army Dillo 1 (Japes)",
+        "value": "JapesBoss",
+    },
+    {
+        "name": "Dogadon 1 (Aztec)",
+        "value": "AztecBoss",
+    },
+    {
+        "name": "Mad Jack (Factory)",
+        "value": "FactoryBoss",
+    },
+    {
+        "name": "Pufftoss (Galleon)",
+        "value": "GalleonBoss",
+    },
+    {
+        "name": "Dogadon 2 (Forest)",
+        "value": "ForestBoss",
+    },
+    {
+        "name": "Army Dillo 2 (Caves)",
+        "value": "CavesBoss",
+    },
+    {
+        "name": "King Kut-Out (Castle)",
+        "value": "CastleBoss",
+    },
+    {
+        "name": "Donkey Phase (K. Rool)",
+        "value": "KroolDonkeyPhase",
+    },
+    {
+        "name": "Diddy Phase (K. Rool)",
+        "value": "KroolDiddyPhase",
+    },
+    {
+        "name": "Lanky Phase (K. Rool)",
+        "value": "KroolLankyPhase",
+    },
+    {
+        "name": "Tiny Phase (K. Rool)",
+        "value": "KroolTinyPhase",
+    },
+    {
+        "name": "Chunky Phase (K. Rool)",
+        "value": "KroolChunkyPhase",
+    },
+]
+
 ###################
 # SPAWN LOCATIONS #
 ###################
