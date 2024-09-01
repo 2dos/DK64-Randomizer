@@ -216,6 +216,12 @@ for locationEnum, locationObj in LocationList.items():
     # those automatically based on the user's selected starting moves.
     if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove]:
         continue
+    # Do not include the shopkeepers.
+    if locationObj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+        continue
+    # Do not include progressive hints.
+    if locationObj.type == Types.ProgressiveHint:
+        continue
     locationJson = {"name": locationObj.name, "value": locationEnum.name}
     kongString = getKongString(locationObj.kong)
     if locationObj.type == Types.BlueprintBanana:
