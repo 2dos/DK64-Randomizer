@@ -589,7 +589,7 @@ const char big_head_actors[MODEL_COUNT] = {
 	-3, // Puftoss // Inconsequential
 	0, // Dogadon
 	0, // Banana Fairy
-	0, // Llama
+	3, // Llama
 	12, // Guard
 	2, // Robo-Zinger
 	-3, // Turntable

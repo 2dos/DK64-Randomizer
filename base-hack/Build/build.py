@@ -538,6 +538,8 @@ bloat_actors = [
     {"name": "Candy", "file": 0x12, "size": 0x64A0},
     {"name": "Kasplat", "file": 0x36, "size": 0x42F4},
     {"name": "Fairy", "file": 0x3C, "size": 0x1500},
+    {"name": "Zinger", "file": 0x1B, "size": 0xC00},
+    {"name": "Robo-Zinger", "file": 0x3F, "size": 0x1D00},
 ]
 
 for actor in bloat_actors:
@@ -1058,6 +1060,13 @@ colorblind_changes = [
     [0xF78, 0xF8F],  # Troff
     [0xE4D, 0xE4E],  # Banana Hoard
     [0xBAA, 0xBAA],  # Medal Handle Palette
+    [0x13B9, 0x13C3],  # Small Explosion
+    [0x12F4, 0x12F4],  # Boulder Texture
+    [0xDE1, 0xDE2],  # Boulder switch texture
+    [0xC2D, 0xC2E],  # Number Game Side
+    [0xF0A, 0xF0A],  # Zinger
+    [0x10a0, 0x10A0],  # Mechazinger
+    [0x10A2, 0x10A5],  # Mechazinger
 ]
 
 kremling_dimensions = [

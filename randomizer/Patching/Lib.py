@@ -295,7 +295,7 @@ compatible_background_textures = {
     0xB1E: MenuTexture("Peanut Switch", MenuTextDim.size_w32_h32),
     0xC80: MenuTexture("Feather Switch", MenuTextDim.size_w32_h32),
     0xC81: MenuTexture("Grape Switch", MenuTextDim.size_w32_h32),
-    0xB27: MenuTexture("Boxes", MenuTextDim.size_w32_h32),
+    # 0xB27: MenuTexture("Boxes", MenuTextDim.size_w32_h32),
     0xCF1: MenuTexture("L Square", MenuTextDim.size_w32_h32),
     0xCF4: MenuTexture("R Square", MenuTextDim.size_w32_h32),
     0xE63: MenuTexture("Metallic Green", MenuTextDim.size_w32_h32),
