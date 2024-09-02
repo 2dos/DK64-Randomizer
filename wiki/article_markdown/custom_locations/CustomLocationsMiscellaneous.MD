@@ -19,7 +19,7 @@
 | Jungle Japes | Lanky Alcove Hill |  | `(l.handstand and l.lanky) or (l.phasewalk and (l.isdiddy or l.istiny))` | 
 | Jungle Japes | On the useless Lanky ramp |  | `(l.handstand and l.islanky) or l.phasewalk` | 
 | Jungle Japes | Cranky-tunnel Crossing |  |  | 
-| Jungle Japes | In the Rambi Cave |  |  | 
+| Jungle Japes | In the Rambi Cave | CrownPad, Bananaport |  | 
 | Jungle Japes | Fairy Pool |  |  | 
 | Jungle Japes | Behind Lanky Hut |  |  | 
 | Jungle Japes | Behind DK Hut (1) |  |  | 
@@ -53,7 +53,7 @@
 | Japes Mountain | Mountain: Near Entrance (High) |  |  | 
 | Japes Mountain | Mountain: On Barrel |  |  | 
 | Japes Mountain | Mountain: Near HiLo Machine |  | `(l.charge and l.isdiddy) or l.phasewalk, group=5` | 
-| Japes Mountain | Mountain: Under Conveyor |  | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.phasewalk` | 
+| Japes Mountain | Mountain: Under Conveyor | CrownPad, Bananaport | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.phasewalk` | 
 | Japes Tiny Hive | Shell: Main Room |  |  | 
 | Japes Tiny Hive | Shell: 1st Room |  |  | 
 | Japes Tiny Hive | Shell: 3rd Room |  | `(l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.tiny` | 
@@ -70,7 +70,7 @@
 | Aztec Tiny Temple | Tiny Temple: Kong Free Room |  |  | 
 | Aztec Tiny Temple | Tiny Temple: Next to Tiny cage |  |  | 
 | Angry Aztec | Entrance tunnel - near DK door |  |  | 
-| Angry Aztec | Blueprint Room |  | `l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
+| Angry Aztec | Blueprint Room | Bananaport | `l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
 | Angry Aztec | Near Oasis Sand |  |  | 
 | Angry Aztec | Behind Tiny Temple |  |  | 
 | Angry Aztec | Next to Tiny Temple - left |  |  | 
@@ -120,10 +120,10 @@
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  |  | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  |  | 
 | Aztec Llama Temple | Llama Temple: Matching Room |  | `(l.grape and l.lanky) or l.phasewalk` | 
-| Aztec Llama Temple | Vanilla Close Warp 1 |  |  | 
-| Aztec Llama Temple | Vanilla Matching Warp 1 |  |  | 
-| Aztec Llama Temple | Vanilla Lava Warp 2 |  |  | 
-| Aztec Llama Temple | Vanilla Close Warp 2 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Close Warp 1 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Matching Warp 1 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Lava Warp 2 |  |  | 
+| Aztec Llama Temple | Llama Temple: Vanilla Close Warp 2 |  |  | 
 | Aztec Llama Temple | In the Water | CrownPad, DirtPatch, Bananaport | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))` | 
 | Aztec Llama Temple | Llama Temple: Snoop Switch |  |  | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  |  | 
@@ -158,7 +158,7 @@
 | Frantic Factory | Under Block Tower Stairs |  |  | 
 | Frantic Factory | On Diddy's Block Tower | CrownPad | `(l.spring or l.CanMoonkick() or l.CanMoontail())` | 
 | Frantic Factory | Block Tower Lower Bonus |  |  | 
-| Frantic Factory | Funky Room (1) |  |  | 
+| Frantic Factory | Funky Room (1) | MelonCrate |  | 
 | Frantic Factory | Funky Room (2) |  |  | 
 | Frantic Factory | Funky Room (3) |  |  | 
 | Frantic Factory | Near Funky |  |  | 
@@ -190,7 +190,7 @@
 | --- | ---- | ------------ | ----- |
 | Gloomy Galleon | Under Cranky |  | `(l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)` | 
 | Galleon Lighthouse | Lighthouse: Interior Rear |  |  | 
-| Gloomy Galleon | Near Cactus |  |  | 
+| Gloomy Galleon | Near Cactus | DirtPatch, CrownPad, Bananaport |  | 
 | Gloomy Galleon | Next to Cannonball - in front |  | `l.CanGetOnCannonGamePlatform()` | 
 | Gloomy Galleon | Next to Cannonball - behind |  | `l.CanGetOnCannonGamePlatform()` | 
 | Gloomy Galleon | Next to cannon in cannonball room |  | `l.CanGetOnCannonGamePlatform()` | 
@@ -218,7 +218,7 @@
 | Gloomy Galleon | In the Shipwreck with Replenishables | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | Behind Musical Cactus | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | On Top of Mechfish Grate | DirtPatch, CrownPad, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
-| Gloomy Galleon | On Gold Tower |  | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick()` | 
+| Gloomy Galleon | On Gold Tower | Bananaport | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick()` | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | CrownPad, DirtPatch, Bananaport | `Events.ShipyardTreasureRoomOpened in l.Events` | 
 | Gloomy Galleon | Vanilla Floating Warp 5 |  |  | 
 | Gloomy Galleon | Vanilla Lighthouse Warp 1 |  |  | 
@@ -443,12 +443,12 @@
 | Castle Crypt | 3Kong crypt entrance |  |  | 
 | Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
 | Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
-| Castle Crypt | Vanilla Far Warp 1 |  |  | 
-| Castle Crypt | Vanilla Close Warp 1 |  |  | 
-| Castle Crypt | Vanilla Close Warp 2 |  |  | 
-| Castle Crypt | Vanilla Close Warp 3 |  |  | 
-| Castle Crypt | Vanilla Far Warp 3 |  |  | 
-| Castle Crypt | Vanilla Far Warp 2 |  |  | 
+| Castle Crypt | Crypt: Vanilla Far Warp 1 |  |  | 
+| Castle Crypt | Crypt: Vanilla Close Warp 1 |  |  | 
+| Castle Crypt | Crypt: Vanilla Close Warp 2 |  |  | 
+| Castle Crypt | Crypt: Vanilla Close Warp 3 |  |  | 
+| Castle Crypt | Crypt: Vanilla Far Warp 3 |  |  | 
+| Castle Crypt | Crypt: Vanilla Far Warp 2 |  |  | 
 | Castle Mausoleum | 2kong crypt entrance |  |  | 
 | Castle Mausoleum | Lanky Crypt: Lanky Tunnel |  |  | 
 | Castle Upper Cave | Tunnel: Near Pit |  |  | 

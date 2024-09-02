@@ -281,7 +281,11 @@ class Settings:
                     locked_blocker_items.append(item)
         elif self.randomize_blocker_required_amounts:
             if self.blocker_max > 0:
-                randomlist = random.choices(range(1, self.blocker_max), k=7)
+                choice_list = range(1, self.blocker_max)
+                if self.blocker_max < 7:
+                    # Can't create a random list with purely the range. Too small of a list
+                    choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
+                randomlist = random.choices(choice_list, k=7)
                 b_lockers = randomlist
                 if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
                     b_lockers.append(random.randint(1, self.blocker_max))
@@ -1122,6 +1126,7 @@ class Settings:
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
+                    self.shuffled_location_types.append(Types.Climbing)
                 self.shuffled_location_types.append(Types.PreGivenMove)
             if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
                 self.shuffled_location_types.append(Types.IslesMedal)
@@ -1628,6 +1633,9 @@ class Settings:
         if self.enable_progressive_hints and not (Types.Hint in self.shuffled_location_types):
             for location_id in WrinklyHintLocations:
                 spoiler.LocationList[location_id].inaccessible = True
+
+        if Types.Climbing in self.shuffled_location_types:
+            spoiler.LocationList[Locations.IslesClimbing].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:

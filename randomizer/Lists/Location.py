@@ -150,9 +150,11 @@ LocationListOriginal = {
     Locations.IslesSwimTrainingBarrel: Location(Levels.DKIsles, "Isles Dive Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
     Locations.IslesOrangesTrainingBarrel: Location(Levels.DKIsles, "Isles Oranges Training Barrel", Items.Oranges, Types.TrainingBarrel, Kongs.any, [121]),
     Locations.IslesBarrelsTrainingBarrel: Location(Levels.DKIsles, "Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel, Kongs.any, [122]),
+    # Basic moves that didn't require obtaining in vanilla
+    Locations.IslesClimbing: Location(Levels.DKIsles, "Climbing Default Location", Items.Climbing, Types.Climbing, Kongs.any),
     # Pre-Given Moves
     Locations.IslesFirstMove: Location(Levels.DKIsles, "Isles Cranky's First Move", Items.ProgressiveSlam, Types.PreGivenMove),
-    Locations.PreGiven_Location00: Location(Levels.DKIsles, "Pre-Given Move (00)", Items.Climbing, Types.PreGivenMove),
+    Locations.PreGiven_Location00: Location(Levels.DKIsles, "Pre-Given Move (00)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location01: Location(Levels.DKIsles, "Pre-Given Move (01)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location02: Location(Levels.DKIsles, "Pre-Given Move (02)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location03: Location(Levels.DKIsles, "Pre-Given Move (03)", Items.NoItem, Types.PreGivenMove),
@@ -1390,6 +1392,7 @@ SharedShopLocations = {
 }
 PreGivenLocations = {
     Locations.IslesFirstMove,
+    Locations.IslesClimbing,
     Locations.PreGiven_Location00,
     Locations.PreGiven_Location01,
     Locations.PreGiven_Location02,

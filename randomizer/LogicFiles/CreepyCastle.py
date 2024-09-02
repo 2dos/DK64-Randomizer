@@ -33,7 +33,6 @@ LogicRegions = {
     Regions.CreepyCastleMain: Region("Creepy Castle Main", HintRegion.CastleSurroundings, Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatHalfway, lambda l: not l.settings.kasplat_rando),
-        LocationLogic(Locations.CastleKasplatLowerLedge, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.RainbowCoin_Location11, lambda l: True),
         LocationLogic(Locations.CastleMainEnemy_NearBridge0, lambda l: True),
         LocationLogic(Locations.CastleMainEnemy_NearBridge1, lambda l: True),
@@ -43,9 +42,6 @@ LogicRegions = {
         LocationLogic(Locations.CastleMainEnemy_NearLibrary, lambda l: True),
         LocationLogic(Locations.CastleMainEnemy_NearTower, lambda l: True),
         LocationLogic(Locations.CastleMainEnemy_MuseumSteps, lambda l: True),
-        LocationLogic(Locations.CastleMainEnemy_NearLowCave, lambda l: True),
-        LocationLogic(Locations.CastleMainEnemy_PathToLowKasplat, lambda l: True),
-        LocationLogic(Locations.CastleMainEnemy_LowTnS, lambda l: True),
         LocationLogic(Locations.CastleMainEnemy_PathToDungeon, lambda l: True),
         LocationLogic(Locations.CastleMainEnemy_NearHeadphones, lambda l: True),
     ], [
@@ -62,6 +58,8 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.CastleWaterfall, lambda l: True),
         TransitionFront(Regions.CastleTree, lambda l: (Events.CastleTreeOpened in l.Events) or l.phasewalk or l.CanPhaseswim(), Transitions.CastleMainToTree),
+        TransitionFront(Regions.CastleGraveyardPlatform, lambda l: True),
+        TransitionFront(Regions.CastleVeryBottom, lambda l: True),
         TransitionFront(Regions.Library, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey), Transitions.CastleMainToLibraryStart),
         # Special Case for back door - it's only open right when you leave
         # TransitionFront(Regions.LibraryPastBooks, lambda l: True, Transitions.CastleMainToLibraryEnd),
@@ -71,12 +69,28 @@ LogicRegions = {
         TransitionFront(Regions.TrashCan, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToTrash),
         TransitionFront(Regions.Shed, lambda l: (l.punch and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToShed),
         TransitionFront(Regions.Museum, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToMuseum),
-        TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleMainToLower),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleMainToUpper),
         TransitionFront(Regions.CrankyCastle, lambda l: l.crankyAccess),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.CastleBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CastleMainToBBlast)
+    ]),
+
+    Regions.CastleVeryBottom: Region("Creepy Castle Very Bottom", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
+        LocationLogic(Locations.CastleKasplatLowerLedge, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.CastleMainEnemy_NearLowCave, lambda l: True),
+        LocationLogic(Locations.CastleMainEnemy_PathToLowKasplat, lambda l: True),
+        LocationLogic(Locations.CastleMainEnemy_LowTnS, lambda l: True)
+    ], [], [
+        TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleMainToLower),
+        TransitionFront(Regions.CastleGraveyardPlatform, lambda l: l.climbing),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.climbing),
+        TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando)
+    ]),
+
+    Regions.CastleGraveyardPlatform: Region("Creepy Graveyard Platform", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [], [], [
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.climbing),
+        TransitionFront(Regions.CastleVeryBottom, lambda l: True)
     ]),
 
     Regions.CastleBaboonBlast: Region("Castle Baboon Blast", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [], [

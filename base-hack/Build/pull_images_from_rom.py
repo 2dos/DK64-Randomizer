@@ -105,6 +105,7 @@ images = [
     ImageData("question_mark", TextureFormat.IA8, TableNames.TexturesGeometry, 5923, 16, 32, False, True),
     ImageData("k_rool_head_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x383, 32, 64, False, True),
     ImageData("k_rool_head_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x384, 32, 64, False, True),
+    ImageData("medal_rim", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xBAB, 32, 32, False, False),
 ]
 
 shop_owners = {

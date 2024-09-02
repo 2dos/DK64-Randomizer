@@ -216,6 +216,8 @@ class Regions(IntEnum):
     CreepyCastleMedals = auto()
     CreepyCastleEntryHandler = auto()
     CreepyCastleMain = auto()
+    CastleVeryBottom = auto()
+    CastleGraveyardPlatform = auto()
     CastleWaterfall = auto()
     CastleTree = auto()
     Library = auto()
