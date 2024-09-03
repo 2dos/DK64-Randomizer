@@ -284,7 +284,7 @@ compatible_background_textures = {
     0x7B3: MenuTexture("Down Arrow", MenuTextDim.size_w32_h32, 25, 50),
     0xAC: MenuTexture("TNT", MenuTextDim.size_w32_h32),
     0x7CD: MenuTexture("Night Sign", MenuTextDim.size_w32_h32),
-    0x3DE: MenuTexture("Color", MenuTextDim.size_w32_h32, 7, 50, MenuTextDim.size_w32_h32),
+    0x3DE: MenuTexture("Color", MenuTextDim.size_w32_h32, 7, 50, True),
     0xF7: MenuTexture("Grass", MenuTextDim.size_w32_h32),
     0xA00: MenuTexture("Sand", MenuTextDim.size_w32_h32),
     0xA84: MenuTexture("Sand", MenuTextDim.size_w32_h32),
