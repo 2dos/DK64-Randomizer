@@ -23,7 +23,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Models import Model
+from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.SongType import SongType
@@ -499,6 +499,8 @@ class Settings:
         self.candy_cutscene_model = Model.Candy
         self.funky_cutscene_model = Model.Funky
         self.boot_cutscene_model = Model.Boot
+        #
+        self.minigame_melon_sprite = Sprite.BouncingMelon
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"

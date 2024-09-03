@@ -295,7 +295,7 @@ compatible_background_textures = {
     0xB1E: MenuTexture("Peanut Switch", MenuTextDim.size_w32_h32),
     0xC80: MenuTexture("Feather Switch", MenuTextDim.size_w32_h32),
     0xC81: MenuTexture("Grape Switch", MenuTextDim.size_w32_h32),
-    0xB27: MenuTexture("Boxes", MenuTextDim.size_w32_h32),
+    # 0xB27: MenuTexture("Boxes", MenuTextDim.size_w32_h32),
     0xCF1: MenuTexture("L Square", MenuTextDim.size_w32_h32),
     0xCF4: MenuTexture("R Square", MenuTextDim.size_w32_h32),
     0xE63: MenuTexture("Metallic Green", MenuTextDim.size_w32_h32),
@@ -332,7 +332,7 @@ compatible_background_textures = {
     0xA72: MenuTexture("Banana Hoard Sign", MenuTextDim.size_w64_h32),
     0xA73: MenuTexture("Training Area Sign", MenuTextDim.size_w64_h32),
     0xA74: MenuTexture("Cranky's Lab Sign", MenuTextDim.size_w64_h32),
-    0xA76: MenuTexture("DK's Sign", MenuTextDim.size_w64_h32),
+    # 0xA76: MenuTexture("DK's Sign", MenuTextDim.size_w64_h32),
     0xC14: MenuTexture("No Admittance Sign", MenuTextDim.size_w64_h32),
     0xC47: MenuTexture("Danger Sign", MenuTextDim.size_w64_h32),
     0xC64: MenuTexture("Accept Sign", MenuTextDim.size_w64_h32),
@@ -983,3 +983,67 @@ def getIceTrapCount(settings) -> int:
         IceTrapFrequency.pain: 100,
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
+
+
+plando_colors = {
+    "\x04": [
+        "orange",
+        "woth",
+        "keys",
+        "donkey",
+        "aztec",
+        "freekongs",
+        "dogadon1",
+    ],
+    "\x05": [
+        "red",
+        "foolish",
+        "diddy",
+        "helm",
+    ],
+    "\x06": [
+        "blue",
+        "lanky",
+        "galleon",
+        "pufftoss",
+    ],
+    "\x07": [
+        "purple",
+        "tiny",
+        "forest",
+        "fungi",
+        "dogadon2",
+    ],
+    "\x08": [
+        "lightgreen",
+        "chunky",
+        "japes",
+        "dillo1",
+    ],
+    "\x09": [
+        "magenta",
+        "castle",
+        "kutout",
+    ],
+    "\x0a": [
+        "cyan",
+        "caves",
+        "fridge",
+        "dillo2",
+    ],
+    "\x0b": [
+        "rust",
+        "isles",
+        "training",
+    ],
+    "\x0c": [
+        "paleblue",
+        "allkongs",
+        "factory",
+        "madjack",
+    ],
+    "\x0d": [
+        "green",
+        "jetpac",
+    ],
+}

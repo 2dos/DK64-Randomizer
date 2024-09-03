@@ -27,7 +27,6 @@ extern void dk_multiply(double val1, double val2, int unk1, int unk2);
 extern double convertTimestamp(double unk0, double unk1, unsigned int unk2, unsigned int unk3);
 extern void resetMap();
 extern void prepKongColoring();
-extern void callFunc(int* addr);
 extern int getTimestampDiff(unsigned int major, unsigned int minor);
 extern void patchHook(unsigned int hook_rdram_location, int offset_in_hook_list, char hook_byte_size);
 extern void* dk_memcpy(void* _dest, void* _src, int size);
@@ -450,6 +449,11 @@ extern void reduceShadowIntensity(int delta);
 extern void unkActorFunc(int unk0, int anim_0, int anim_1);
 extern void unkActorFunc_0(void* actor, int unk0);
 extern int unkCollisionFunc(void* unk0, int unk1);
+
+extern void collisionStuff(void* actor);
+extern void unkActorHandler(void* actor);
+extern short getScreenDist(short x, short y);
+extern int getDistanceCap(short input_dist);
 
 //vanilla data
 extern OSThread* __osActiveQueue;

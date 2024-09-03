@@ -42,6 +42,7 @@ from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
+from randomizer.Patching.Lib import plando_colors
 
 if TYPE_CHECKING:
     from randomizer.Lists.WrinklyHints import HintLocation
@@ -2949,28 +2950,11 @@ def AssociateHintsWithFlags(spoiler):
 def ApplyColorToPlandoHint(hint):
     """Replace plandomizer color tags with the appropriate characters."""
     new_hint = hint
-    color_replace_dict = {
-        "[orange]": "\x04",
-        "[/orange]": "\x04",
-        "[red]": "\x05",
-        "[/red]": "\x05",
-        "[blue]": "\x06",
-        "[/blue]": "\x06",
-        "[purple]": "\x07",
-        "[/purple]": "\x07",
-        "[lightgreen]": "\x08",
-        "[/lightgreen]": "\x08",
-        "[magenta]": "\x09",
-        "[/magenta]": "\x09",
-        "[cyan]": "\x0a",
-        "[/cyan]": "\x0a",
-        "[rust]": "\x0b",
-        "[/rust]": "\x0b",
-        "[paleblue]": "\x0c",
-        "[/paleblue]": "\x0c",
-        "[green]": "\x0d",
-        "[/green]": "\x0d",
-    }
+    color_replace_dict = {}
+    for code in plando_colors:
+        for key in plando_colors[code]:
+            color_replace_dict[f"[{key}]"] = code
+            color_replace_dict[f"[/{key}]"] = code
     for color_tag, color_character in color_replace_dict.items():
         new_hint = new_hint.replace(color_tag, color_character)
     return new_hint

@@ -525,386 +525,245 @@ static const char overlay_indexes[] = {
 	OVERLAY_BOSS, // K. Rool's Shoe
 	OVERLAY_NONE, // K. Rool's Arena
 };
-const actor_bitfield big_head_actors = {
-	// 0
-	.unknown_0 = 0,
-	.unknown_1 = 0,
-	.dk = 1,
-	.diddy = 1,
-	.lanky = 1,
-	.tiny = 1,
-	.chunky = 1,
-	.krusha = 1,
-	.rambi = 1,
-	.enguarde = 1,
-	// 10
-	.unknown_10 = 0,
-	.unknown_11 = 0,
-	.loading_zone_controller = 0,
-	.object_model_2_controller = 0,
-	.unknown_14 = 0,
-	.unknown_15 = 0,
-	.unknown_16 = 0,
-	.cannon_barrel = 0,
-	.rambi_crate = 0,
-	.barrel_diddy_5di = 0,
-	// 20
-	.camera_focus_point = 0,
-	.pushable_box = 0,
-	.barrel_spawner = 0,
-	.cannon = 0,
-	.race_hoop = 0,
-	.hunky_chunky_barrel = 0,
-	.tnt_barrel = 0,
-	.tnt_barrel_spawner = 0,
-	.bonus_barrel = 0,
-	.minecart = 0,
-	// 30
-	.fireball = 0,
-	.bridge_castle = 0,
-	.swinging_light = 0,
-	.vine = 0,
-	.kremling_kosh_controller = 0,
-	.melon_projectile = 0,
-	.peanut = 0,
-	.rocketbarrel = 0,
-	.pineapple = 0,
-	.large_brown_bridge = 0,
-	// 40
-	.mini_monkey_barrel = 0,
-	.orange = 0,
-	.grape = 0,
-	.feather = 0,
-	.laser = 0,
-	.golden_banana = 0,
-	.barrel_gun = 0,
-	.watermelon_slice = 0,
-	.coconut = 0,
-	.rocketbarrel_49 = 0,
-	// 50
-	.lime = 0,
-	.ammo_crate = 0,
-	.orange_pickup = 0,
-	.banana_coin = 0,
-	.dk_coin = 0,
-	.small_explosion = 0,
-	.orangstand_sprint_barrel = 0,
-	.strong_kong_barrel = 0,
-	.swinging_light_58 = 0,
-	.fireball_59 = 0,
-	// 60
-	.bananaporter = 0,
-	.boulder = 0,
-	.minecart_62 = 0,
-	.vase_o = 0,
-	.vase_colon = 0,
-	.vase_triangle = 0,
-	.vase_plus = 0,
-	.cannon_ball = 0,
-	.unknown_68 = 0,
-	.vine_69 = 0,
-	// 70
-	.counter = 0,
-	.kremling_red = 1,
-	.boss_key = 0,
-	.cannon_73 = 0,
-	.cannon_ball_74 = 0,
-	.blueprint_diddy = 0,
-	.blueprint_chunky = 0,
-	.blueprint_lanky = 0,
-	.blueprint_dk = 0,
-	.blueprint_tiny = 0,
-	// 80
-	.minecart_80 = 0,
-	.fire_spawner_dogadon = 0,
-	.boulder_debris = 0,
-	.spider_web = 0,
-	.steel_keg_spawner = 0,
-	.steel_keg = 0,
-	.crown = 0,
-	.minecart_87 = 0,
-	.unknown_88 = 0,
-	.fire = 0,
-	// 90
-	.ice_wall = 0,
-	.balloon_diddy = 0,
-	.stalactite = 0,
-	.rock_debris = 0,
-	.car = 0,
-	.pause_menu = 0,
-	.hunky_chunky_barrel_dogadon = 0,
-	.tnt_barrel_spawner_dogadon = 0,
-	.tag_barrel = 0,
-	.fireball_99 = 0,
-	// 100
-	.pad_1_diddy_5di = 0,
-	.pad_2_diddy_5di = 0,
-	.pad_3_diddy_5di = 0,
-	.pad_4_diddy_5di = 0,
-	.pad_5_diddy_5di = 0,
-	.pad_6_diddy_5di = 0,
-	.kong_reflection = 0,
-	.bonus_barrel_hideout_helm = 0,
-	.unknown_108 = 0,
-	.race_checkpoint = 0,
-	// 110
-	.cb_bunch = 0,
-	.balloon_chunky = 0,
-	.balloon_tiny = 0,
-	.balloon_lanky = 0,
-	.balloon_dk = 0,
-	.klumsys_cage = 0,
-	.chain = 0,
-	.beanstalk = 0,
-	.yellow_qmark = 0,
-	.cb_single_blue = 0,
-	// 120
-	.cb_single_yellow = 0,
-	.crystal_coconut = 0,
-	.dk_coin_122 = 0,
-	.kong_mirror = 0,
-	.barrel_gun_124 = 0,
-	.barrel_gun_125 = 0,
-	.fly_swatter = 0,
-	.searchlight = 0,
-	.headphones = 0,
-	.enguarde_crate = 0,
-	// 130
-	.apple = 0,
-	.worm = 0,
-	.enguarde_crate_unused = 0,
-	.barrel = 0,
-	.training_barrel = 0,
-	.boombox = 0,
-	.tag_barrel_136 = 0,
-	.tag_barrel_137 = 0,
-	.b_locker = 0,
-	.rainbow_coin_patch = 0,
-	// 140
-	.rainbow_coin = 0,
-	.unknown_141 = 0,
-	.unknown_142 = 0,
-	.unknown_143 = 0,
-	.unknown_144 = 0,
-	.cannon_seasick_chunky = 0,
-	.unknown_146 = 0,
-	.balloon_unused_k_rool = 0,
-	.rope = 0,
-	.banana_barrel = 0,
-	// 150
-	.banana_barrel_spawner = 0,
-	.unknown_151 = 0,
-	.unknown_152 = 0,
-	.unknown_153 = 0,
-	.unknown_154 = 0,
-	.unknown_155 = 0,
-	.wrinkly = 0,
-	.unknown_157 = 0,
-	.unknown_158 = 0,
-	.unknown_159 = 0,
-	// 160
-	.unknown_160 = 0,
-	.unknown_161 = 0,
-	.unknown_162 = 0,
-	.banana_fairy_bfi = 1,
-	.ice_tomato = 0,
-	.tag_barrel_king_kut_out = 0,
-	.king_kut_out_part = 0,
-	.cannon_167 = 0,
-	.unknown_168 = 0,
-	.puftup = 0,
-	// 170
-	.damage_source = 0,
-	.orange_171 = 0,
-	.unknown_172 = 0,
-	.cutscene_controller = 0,
-	.unknown_174 = 0,
-	.kaboom = 0,
-	.timer = 0,
-	.timer_controller = 0,
-	.beaver = 1,
-	.shockwave_mad_jack = 0,
-	// 180
-	.krash = 1,
-	.book = 0,
-	.klobber = 0,
-	.zinger = 0,
-	.snide = 1,
-	.army_dillo = 0, // Causes collision issues with the TNT Barrel
-	.kremling = 1,
-	.klump = 1,
-	.camera = 0,
-	.cranky = 1,
-	// 190
-	.funky = 1,
-	.candy = 1,
-	.beetle = 1,
-	.mermaid = 1,
-	.vulture = 0,
-	.squawks = 0,
-	.cutscene_dk = 1,
-	.cutscene_diddy = 1,
-	.cutscene_lanky = 1,
-	.cutscene_tiny = 1,
-	// 200
-	.cutscene_chunky = 1,
-	.llama = 1,
-	.fairy_picture = 0,
-	.padlock_tns = 0,
-	.mad_jack = 0, // Causes him to jump to the ceiling?
-	.klaptrap = 1,
-	.zinger_206 = 0,
-	.vulture_race = 1,
-	.klaptrap_purple = 1,
-	.klaptrap_red = 1,
-	// 210
-	.getout_controller = 0,
-	.klaptrap_skeleton = 0,
-	.beaver_gold = 1,
-	.fire_column_spawner = 0,
-	.minecart_tnt = 0,
-	.minecart_tnt_215 = 0,
-	.puftoss = 0, // Inconsequential
-	.unknown_217 = 0,
-	.handle = 0,
-	.slot = 0,
-	// 220
-	.cannon_seasick_chunky_220 = 0,
-	.light_piece = 0,
-	.banana_peel = 0,
-	.fireball_spawner = 0,
-	.mushroom_man = 0,
-	.unknown_225 = 0,
-	.troff = 1,
-	.k_rools_foot = 0,
-	.bad_hit_detection_man = 0,
-	.k_rools_toe = 0,
-	// 230
-	.ruler = 0,
-	.toy_box = 0,
-	.text_overlay = 0,
-	.squawks_233 = 0,
-	.scoff = 1,
-	.robo_kremling = 1,
-	.dogadon = 1,
-	.unknown_237 = 0,
-	.kremling_238 = 1,
-	.bongos = 0,
-	// 240
-	.spotlight_fish = 0,
-	.kasplat_dk = 1,
-	.kasplat_diddy = 1,
-	.kasplat_lanky = 1,
-	.kasplat_tiny = 1,
-	.kasplat_chunky = 1,
-	.mechanical_fish = 0,
-	.seal = 1,
-	.banana_fairy = 1,
-	.squawks_with_spotlight = 0,
-	// 250
-	.owl = 1,
-	.spider_miniboss = 1,
-	.rabbit = 1,
-	.nintendo_logo = 0,
-	.cutscene_object = 1,
-	.shockwave = 0,
-	.minigame_controller = 0,
-	.fire_breath_spawner = 0,
-	.shockwave_258 = 0,
-	.guard = 0, // Would be funny, but it extends their arm
-	// 260
-	.text_overlay_260 = 0,
-	.robo_zinger = 0,
-	.krossbones = 1,
-	.fire_shockwave_dogadon = 0,
-	.squawks_264 = 0,
-	.light_beam = 0,
-	.dk_rap_controller = 0,
-	.shuri = 0,
-	.gimpfish = 0,
-	.mr_dice = 0,
-	// 270
-	.sir_domino = 0,
-	.mr_dice_271 = 0,
-	.rabbit_272 = 0,
-	.fireball_with_glasses = 0,
-	.unknown_274 = 0,
-	.k_lumsy = 1,
-	.spiderling = 1,
-	.squawks_277 = 0,
-	.projectile = 0,
-	.trap_bubble = 0,
-	// 280
-	.spider_silk_string = 0,
-	.k_rool_dk_phase = 1,
-	.retexturing_controller = 0,
-	.skeleton_head = 0,
-	.unknown_284 = 0,
-	.bat = 0,
-	.giant_clam = 0,
-	.unknown_287 = 0,
-	.tomato = 0,
-	.kritter_in_a_sheet = 0,
-	// 290
-	.puftup_290 = 0,
-	.kosha = 1,
-	.k_rool_diddy_phase = 1,
-	.k_rool_lanky_phase = 1,
-	.k_rool_tiny_phase = 1,
-	.k_rool_chunky_phase = 1,
-	.unknown_296 = 0,
-	.battle_crown_controller = 0,
-	.unknown_298 = 0,
-	.textbox = 0,
-	// 300
-	.snake = 1,
-	.turtle = 1,
-	.toy_car = 0,
-	.toy_car_303 = 0,
-	.camera_304 = 0,
-	.missile = 0,
-	.unknown_306 = 0,
-	.unknown_307 = 0,
-	.seal_308 = 0,
-	.kong_logo_instrument = 0,
-	// 310
-	.spotlight = 0,
-	.race_checkpoint_311 = 0,
-	.minecart_tnt_312 = 0,
-	.idle_particle = 0,
-	.rareware_logo = 0,
-	.unknown_315 = 0,
-	.kong_tag_barrel = 1,
-	.locked_kong_tag_barrel = 0,
-	.unknown_318 = 0,
-	.propeller_boat = 0,
-	// 320
-	.potion = 0,
-	.fairy_refill = 0,
-	.car_322 = 0,
-	.enemy_car = 0,
-	.text_overlay_controller = 0,
-	.shockwave_325 = 0,
-	.main_menu_controller = 0,
-	.kong = 0,
-	.klaptrap_328 = 0,
-	.fairy = 0,
-	// 330
-	.bug = 0,
-	.klaptrap_331 = 0,
-	.big_bug_bash_controller = 0,
-	.barrel_main_menu = 0,
-	.padlock_k_lumsy = 0,
-	.snides_menu = 0,
-	.training_barrel_controller = 0,
-	.multiplayer_model_main_menu = 0,
-	.end_sequence_controller = 0,
-	.arena_controller = 0,
-	// 340
-	.bug_340 = 0,
-	.unknown_341 = 0,
-	.try_again_dialog = 0,
-	.pause_menu_343 = 0,
+
+const char big_head_actors[MODEL_COUNT] = {
+	-3, // No Model
+	0, // Diddy
+	0, // Diddy (Instrument)
+	0, // Diddy (Low Poly)
+	0, // DK
+	0, // DK (Low Poly)
+	0, // Lanky
+	0, // Lanky (Instrument)
+	0, // Lanky (Low Poly)
+	0, // Tiny
+	0, // Tiny (Instrument)
+	0, // Tiny (Low Poly)
+	0, // Chunky
+	0, // Chunky (Instrument)
+	0, // Disco Chunky
+	0, // Chunky (Low Poly)
+	0, // Invisible Chunky
+	0, // Cranky
+	0, // Funky
+	0, // Candy
+	0, // Rambi
+	11, // Snake
+	0, // Turtle
+	8, // Seal // 0 for butt
+	0, // Enguarde
+	0, // Beaver (Low Poly)
+	0, // Beaver
+	0, // Beaver (Gold)
+	21, // Zinger // Big ass, 0 for eyes. Polled the easiest person to amuse
+	-1, // Squawks
+	0, // Klobber // Might not work properly
+	3, // Snide // 0 for hench snide
+	0, // Kaboom // might not work properly
+	0, // Klaptrap (Green)
+	0, // Klaptrap (Purple)
+	0, // Klaptrap (Red)
+	-3, // Klaptrap (Teeth)
+	-3, // Mad Jack // Causes him to jump into the ceiling
+	1, // Krash
+	0, // Troff
+	-3, // Bad Hit Detection Man
+	8, // Sir Domino // Right eye
+	-3, // Mr. Dice
+	-3, // Ruler
+	0, // Robo-Kremling
+	0, // Scoff
+	0, // Beetle
+	-3, // Klaptrap (Teeth?)
+	-3, // Nintendo Logo
+	0, // Kremling
+	0, // Kremling (Red - Kosh)
+	0, // Kremling (Green - Kosh)
+	5, // Mechanical Fish // Tail Fin
+	-3, // Toy Car
+	-3, // Giant Clam
+	0, // Kasplat
+	-3, // Army Dillo // Causes collision issues with the TNT Barrel
+	-3, // Mr. Dice
+	0, // Klump
+	-3, // Puftoss // Inconsequential
+	0, // Dogadon
+	0, // Banana Fairy
+	3, // Llama
+	12, // Guard
+	2, // Robo-Zinger
+	-3, // Turntable
+	0, // Krossbones
+	-3, // Shuri
+	-3, // Gimpfish
+	0, // K. Lumsy
+	-1, // Spider // -1 actually works somehow???
+	0, // Rabbit
+	-3, // Beanstalk
+	0, // K. Rool (Cutscene)
+	-3, // Fireball (With Glasses)
+	-3, // Skeleton Head // 0 for jaw
+	-3, // Skeleton Hand
+	0, // Vulture (Race)
+	0, // Vulture (Shooting)
+	0, // Bat // Jaw
+	-3, // Skull
+	18, // Tomato // Jaw
+	-3, // Kritter-in-a-Sheet
+	-1, // Fly
+	-3, // Fly Swatter
+	-3, // Fly Swatter
+	0, // Owl
+	17, // Book
+	-3, // Ship's Wheel
+	-1, // Spotlight Fish
+	0, // Puftup // Jaw
+	0, // Mermaid
+	15, // Mushroom
+	-3, // Shockwave (Mad Jack)
+	-1, // Squawks
+	0, // Worm (apple)
+	-3, // Cuckoo Bird
+	0, // Kosha
+	18, // Ice Tomato // Jaw
+	-3, // Army Dillo (No Shell)
+	-3, // Boombox
+	23, // B. Locker // Right eye
+	-3, // Escape Ship
+	-3, // Army Dillo's Cannon
+	0, // K. Rool (Fight)
+	-3, // Golden Banana
+	-3, // Shockwave
+	-3, // K. Rool's Glove
+	-3, // K. Rool's Foot
+	-3, // K. Rool's Toe
+	-3, // K. Rool's Toe
+	-3, // K. Rool's Toe
+	-1, // Microphone
+	3, // Desk (K. Rool)
+	-3, // Bell
+	-3, // Clapper Board
+	-3, // Cannon
+	-3, // Barrel?
+	-3, // Bonus Barrel
+	-3, // Hunky Chunky Barrel
+	-3, // Mini Monkey Barrel
+	-3, // Barrel
+	-3, // Pushable Box
+	-3, // TNT Barrel Spawner
+	-3, // Cannon
+	-3, // TNT Barrel
+	-3, // Rambi Crate
+	-3, // Enguarde Crate
+	-3, // Chain
+	-3, // Swinging Light
+	-3, // Minecart
+	-3, // Barrel
+	-3, // Bridge (Castle)
+	-3, // Large Brown Bridge
+	-3, // Feather
+	-3, // Laser
+	-3, // Golden Banana (Item Drop)
+	-3, // Rocketbarrel
+	-3, // Strong Kong Barrel
+	-3, // Orangstand Sprint Barrel
+	-3, // Diddy's Jetpack
+	-3, // Photo
+	-3, // Minecart (TNT)
+	-3, // Weird glitch texture (computer screen?)
+	-3, // BBB Slot
+	-3, // BBB Slot
+	-3, // BBB Slot
+	-3, // BBB Slot
+	-3, // BBB Lever
+	-3, // Tiny's Car
+	-3, // Missile
+	-3, // Swinging light
+	-3, // Bananaporter Zipper
+	-3, // Boulder
+	-3, // Vase (O)
+	-3, // Vase (:)
+	-3, // Vase (Triangle)
+	-3, // Vase (+)
+	-3, // Toy Box
+	-3, // Boat
+	-3, // Padlock
+	-3, // Cannon Ball
+	-3, // Vine
+	-3, // Vine
+	-3, // Counter
+	-3, // Key
+	-3, // Bongos
+	-3, // DK Star
+	-3, // Spotlight
+	-3, // Cannon (Seasick Chunky)
+	-3, // Boulder Debris
+	-3, // Spider Web
+	-3, // Steel Keg
+	-3, // Shockwave
+	-3, // Shockwave
+	-3, // Battle Crown
+	-3, // Buoy
+	-3, // Buoy (Green)
+	-3, // Nothing?
+	-3, // DK Banana Counter
+	-3, // Diddy Banana Counter
+	-3, // Tiny Banana Counter
+	-3, // Lanky Banana Counter
+	-3, // Chunky Banana Counter
+	-3, // Shockwave (Green)
+	-3, // Potion
+	-3, // Missile (Army Dillo)
+	-3, // Shockwave (Red)
+	-3, // Ice wall? 
+	-3, // Rareware Logo
+	-3, // Stalactite
+	-3, // Rock Debris
+	-3, // Spotlight (BONUS)
+	-3, // Tag Barrel
+	-3, // Krossbones Head
+	-3, // Lever", -- Gorilla Grab
+	-3, // K. Lumsy's Cage
+	-3, // Freeze Attack
+	-3, // 1 Pad (Diddy 5DI)
+	-3, // 2 Pad (Diddy 5DI)
+	-3, // 3 Pad (Diddy 5DI)
+	-3, // 4 Pad (Diddy 5DI)
+	-3, // 5 Pad (Diddy 5DI)
+	-3, // 6 Pad (Diddy 5DI)
+	-3, // Race Checkpoint
+	-3, // Padlock & Key
+	-3, // Finish Line
+	-3, // Shockwave (Green)
+	-3, // Shockwave (Blue)
+	-3, // Shockwave (Purple)
+	-3, // Question Mark
+	-3, // Flower (Instrument)
+	-3, // DK Logo (Instrument)
+	-3, // Golden Banana
+	-3, // Apple
+	-3, // Barrel
+	-3, // Flag
+	-3, // Flag
+	-3, // Boat
+	0, // Krusha (Gun)
+	-3, // King Kut Out Body
+	-3, // King Kut Out Head
+	-3, // King Kut Out Arm
+	-3, // King Kut Out Arm
+	-3, // Rainbow Coin Patch
+	-3, // Rope
+	-3, // DK Smoke Trail
+	-3, // Light (K. Rool fight)
+	-3, // Bonus Barrel (Hideout Helm)
+	-3, // Banana
+	-3, // Banana Barrel
+	-3, // Training Barrel
+	-3, // Pirate Photo
+	-3, // Butterfly
+	-3, // Barrel
+	-3, // Funky's Gun
+	-3, // Boot
 };
 
 

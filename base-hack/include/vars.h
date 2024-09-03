@@ -92,6 +92,7 @@
 #define FLAG_MEDAL_ISLES_DK 0x3C6 // 0x3C6, 0x3C7, 0x3C8, 0x3C9, 0x3CA
 #define FLAG_ENEMY_KILLED_0 0x3CB // 0x3CB -> 0x574 (inc.) (426 flags)
 
+#define MODEL_COUNT 0xED
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188

@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels, WinConditionComplex
-from randomizer.Enums.Models import Model
+from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
 from randomizer.Patching.generate_kong_color_images import convertColors
@@ -382,6 +382,24 @@ boot_cutscene_models = [
     Model.KRoolGlove,
 ]
 
+melon_random_sprites = [
+    Sprite.BouncingMelon,
+    Sprite.BouncingOrange,
+    Sprite.Coconut,
+    Sprite.Peanut,
+    Sprite.Grape,
+    Sprite.Feather,
+    Sprite.Pineapple,
+    Sprite.CrystalCoconut0,
+    Sprite.DKCoin,
+    Sprite.DiddyCoin,
+    Sprite.LankyCoin,
+    Sprite.TinyCoin,
+    Sprite.ChunkyCoin,
+    Sprite.Fairy,
+    Sprite.RaceCoin,
+]
+
 model_mapping = {
     KongModels.default: 0,
     KongModels.disco_chunky: 6,
@@ -500,6 +518,7 @@ def apply_cosmetic_colors(settings: Settings):
     candy_model_index = Model.Candy
     funky_model_index = Model.Funky
     boot_model_index = Model.Boot
+    melon_sprite = Sprite.BouncingMelon
     swap_bitfield = 0
 
     ROM_COPY = ROM()
@@ -605,6 +624,8 @@ def apply_cosmetic_colors(settings: Settings):
             value = random.randint(brightness_threshold, 0xFF)
             jetman_color[channel] = value
         settings.jetman_color = jetman_color.copy()
+        melon_sprite = random.choice(melon_random_sprites)
+    settings.minigame_melon_sprite = melon_sprite
     color_palettes = []
     color_obj = {}
     colors_dict = {}
@@ -2525,33 +2546,42 @@ def writeMiscCosmeticChanges(settings):
         enemy_setting = settings.random_enemy_colors
     if settings.misc_cosmetics:
         # Melon HUD
-        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)]}
+        data = {
+            7: [[0x13C, 0x147]],
+            14: [[0x5A, 0x5D]],
+            25: [
+                [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)],
+                [0x144B, 0x1452],
+            ],
+        }
         shift = getRandomHueShift()
         for table in data:
             table_data = data[table]
-            for img in range(table_data[0], table_data[1] + 1):
-                if table == 25 and img == getBonusSkinOffset(ExtraTextures.MelonSurface):
-                    dims = (32, 32)
-                else:
-                    dims = (48, 42)
-                melon_im = getImageFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
-                melon_im = hueShift(melon_im, shift)
-                melon_px = melon_im.load()
-                bytes_array = []
-                for y in range(dims[1]):
-                    for x in range(dims[0]):
-                        pix_data = list(melon_px[x, y])
-                        red = int((pix_data[0] >> 3) << 11)
-                        green = int((pix_data[1] >> 3) << 6)
-                        blue = int((pix_data[2] >> 3) << 1)
-                        alpha = int(pix_data[3] != 0)
-                        value = red | green | blue | alpha
-                        bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-                px_data = bytearray(bytes_array)
-                if table != 7:
-                    px_data = gzip.compress(px_data, compresslevel=9)
-                ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
-                ROM().writeBytes(px_data)
+            for set in table_data:
+                for img in range(set[0], set[1] + 1):
+                    if table == 25:
+                        dims = (32, 32)
+                    else:
+                        dims = (48, 42)
+                    melon_im = getImageFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
+                    melon_im = hueShift(melon_im, shift)
+                    melon_px = melon_im.load()
+                    bytes_array = []
+                    for y in range(dims[1]):
+                        for x in range(dims[0]):
+                            pix_data = list(melon_px[x, y])
+                            red = int((pix_data[0] >> 3) << 11)
+                            green = int((pix_data[1] >> 3) << 6)
+                            blue = int((pix_data[2] >> 3) << 1)
+                            alpha = int(pix_data[3] != 0)
+                            value = red | green | blue | alpha
+                            bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+                    px_data = bytearray(bytes_array)
+                    if table != 7:
+                        px_data = gzip.compress(px_data, compresslevel=9)
+                    ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
+                    ROM().writeBytes(px_data)
+
         # Shockwave Particles
         shockwave_shift = getRandomHueShift()
         for img_index in range(0x174F, 0x1757):
@@ -2565,6 +2595,7 @@ def writeMiscCosmeticChanges(settings):
                 [0x1554, 0x155B, 16],  # Small Fireball. RGBA32 16x16
                 [0x1654, 0x1683, 32],  # Fire Wall. RGBA32 32x32
                 [0x1495, 0x14A0, 32],  # Small Explosion, RGBA32 32x32
+                [0x13B9, 0x13C3, 32],  # Small Explosion, RGBA32 32x32
             )
             for sprite_data in fires:
                 for img_index in range(sprite_data[0], sprite_data[1] + 1):
@@ -2572,12 +2603,35 @@ def writeMiscCosmeticChanges(settings):
                     hueShiftImageContainer(25, img_index, dim, dim, TextureFormat.RGBA32, fire_shift)
             for img_index in range(0x29, 0x32 + 1):
                 hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
+            for img_index in range(0x250, 0x26F + 1):
+                hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
+            for img_index in range(0xA0, 0xA7 + 1):
+                hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA5551, fire_shift)
+            # Blue Fire
+            for img_index in range(129, 138 + 1):
+                hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
             # Number Game Numbers
+            COLOR_COUNT = 16  # 2 or 16
+            colors = [getRandomHueShift() for x in range(COLOR_COUNT)]
+            # vanilla_green = [2, 4, 5, 7, 9, 10, 12, 13]
+            vanilla_blue = [1, 3, 6, 8, 11, 14, 15, 16]
             for x in range(16):
-                number_hue_shift = getRandomHueShift()
+                number_hue_shift = colors[0]
+                if COLOR_COUNT == 2:
+                    if x in vanilla_blue:
+                        number_hue_shift = colors[1]
+                else:
+                    number_hue_shift = colors[x]
                 for sub_img in range(2):
                     img_index = 0x1FE + (2 * x) + sub_img
                     hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA5551, number_hue_shift)
+            if COLOR_COUNT == 2:
+                hueShiftImageContainer(25, 0xC2D, 32, 32, TextureFormat.RGBA5551, colors[1])
+                hueShiftImageContainer(25, 0xC2E, 32, 32, TextureFormat.RGBA5551, colors[0])
+        boulder_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x12F4, 1, 1372, TextureFormat.RGBA5551, boulder_shift)
+        for img_index in range(2):
+            hueShiftImageContainer(25, 0xDE1 + img_index, 32, 64, TextureFormat.RGBA5551, boulder_shift)
 
     if enemy_setting != RandomModels.off:
         # Barrel Enemy Skins - Random
@@ -2788,6 +2842,37 @@ def writeMiscCosmeticChanges(settings):
         hueShiftImageContainer(25, 0xECF, 1, 1372, TextureFormat.RGBA5551, funky_shift)
         hueShiftImageContainer(25, 0xED6, 1, 1372, TextureFormat.RGBA5551, funky_shift)
         hueShiftImageContainer(25, 0xEDF, 1, 1372, TextureFormat.RGBA5551, funky_shift)
+        # Zinger
+        zinger_shift = getRandomHueShift()
+        zinger_color = hueShiftColor((0xFF, 0xFF, 0x0A), zinger_shift)
+        zinger_color_int = (zinger_color[0] << 16) | (zinger_color[1] << 8) | (zinger_color[2])
+        hueShiftImageContainer(25, 0xF0A, 1, 1372, TextureFormat.RGBA5551, zinger_shift)
+        # Mechazinger, use zinger color
+        for img_index in (0x10A0, 0x10A2, 0x10A4, 0x10A5):
+            hueShiftImageContainer(25, img_index, 1, 1372, TextureFormat.RGBA5551, zinger_shift)
+        hueShiftImageContainer(25, 0x10A3, 32, 32, TextureFormat.RGBA32, zinger_shift)
+        # Spider
+        spider_shift = getRandomHueShift()
+        spider_dims = {
+            0x110A: (32, 64),
+            0x110B: (32, 64),
+            0x110C: (32, 64),
+            0x110D: (64, 16),
+            0x110E: (32, 64),
+            0x110F: (32, 64),
+            0x1110: (32, 64),
+            0x1111: (32, 64),
+            0x1112: (32, 64),
+            0x1113: (16, 32),
+            0x1114: (32, 32),
+            0x1115: (32, 32),
+            0x1116: (32, 32),
+            0x1117: (64, 16),
+            0x1118: (64, 32),
+            0x1119: (64, 32),
+        }
+        for img_index in spider_dims:
+            hueShiftImageContainer(25, img_index, spider_dims[img_index][0], spider_dims[img_index][1], TextureFormat.RGBA5551, spider_shift)
 
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
@@ -2795,6 +2880,8 @@ def writeMiscCosmeticChanges(settings):
             Model.BeaverBlue_LowPoly: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
             Model.BeaverBlue: EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color),  # Primary
             Model.BeaverGold: EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116]),  # Primary
+            Model.Zinger: EnemyColorSwap([0xFFFF0A, 0xFF7F00], zinger_color_int),  # Legs
+            Model.RoboZinger: EnemyColorSwap([0xFFFF00, 0xFF5500], zinger_color_int),  # Legs
             Model.Candy: EnemyColorSwap(
                 [
                     0xFF96EB,
@@ -2818,6 +2905,7 @@ def writeMiscCosmeticChanges(settings):
                     0xB86CAA,
                 ]
             ),
+            Model.Laser: EnemyColorSwap([0xF30000]),
             Model.Kasplat: EnemyColorSwap([0x8FD8FF, 0x182A4F, 0x0B162C, 0x7A98D3, 0x3F6CC4, 0x8FD8FF, 0x284581]),
             # Model.BananaFairy: EnemyColorSwap([0xFFD400, 0xFFAA00, 0xFCD200, 0xD68F00, 0xD77D0A, 0xe49800, 0xdf7f1f, 0xa26c00, 0xd6b200, 0xdf9f1f])
         }
@@ -3490,6 +3578,7 @@ boot_phrases = (
     "Enhancing Cfox Luck Voice Linesmizers",
     "Enforcing the law of the Jungle",
     "Saving 20 frames",
+    "Reporting bugs. Unlike some",
 )
 
 crown_heads = (

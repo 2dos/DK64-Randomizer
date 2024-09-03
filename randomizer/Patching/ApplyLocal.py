@@ -12,8 +12,8 @@ import string
 from datetime import datetime as Datetime
 from datetime import UTC
 import js
-from randomizer.Enums.Models import Model
-from randomizer.Enums.Settings import RandomModels
+from randomizer.Enums.Models import Model, ModelNames, HeadResizeImmune
+from randomizer.Enums.Settings import RandomModels, BigHeadMode
 from randomizer.Lists.Songs import ExcludedSongsSelector
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames, darkenDPad, lightenPauseBubble
 from randomizer.Patching.Hash import get_hash_images
@@ -178,9 +178,45 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.write(int(settings.colorblind_mode))
 
             # Big head mode
-            ROM_COPY.seek(sav + 0x1E1)
-            # The BigHeadMode enum is indexed to allow this.
-            ROM_COPY.write(int(settings.big_head_mode))
+            ROM_COPY.seek(0x1FEE800)
+            setting_size = {
+                BigHeadMode.off: 0x00,
+                BigHeadMode.big: 0xFF,
+                BigHeadMode.small: 0x2F,
+                BigHeadMode.random: 0x00,
+            }
+            applied_sizes = []
+            tied_models = {
+                0x04: [0x5],  # DK
+                0x01: [0x2, 0x3],  # Diddy
+                0x06: [0x7, 0x8],  # Lanky
+                0x09: [0xA, 0xB],  # Tiny
+                0x0C: [0xD, 0xE, 0xF, 0x10],  # Chunky
+                0x19: [0x1A],  # Beaver
+                0x1D: [0x5E],
+            }
+            head_sizes = {}
+            for x in range(0xED):
+                value = setting_size.get(settings.big_head_mode, 0x00)
+                if settings.big_head_mode == BigHeadMode.random:
+                    value = random.choice([0x00, 0x2F, 0x2F, 0xFF, 0xFF])  # Make abnormal head sizes more likely than a normal head size
+                    # Check if model chosen is part of a tied model
+                    push_name = True
+                    if x == 0 or (x - 1) in HeadResizeImmune:
+                        push_name = False
+                    for m in tied_models:
+                        if x in tied_models[m]:
+                            value = applied_sizes[m]
+                            push_name = False
+                    if push_name:
+                        head_size_names = {
+                            0x00: "Normal",
+                            0x2F: "Small",
+                            0xFF: "Big",
+                        }
+                        head_sizes[ModelNames[x - 1]] = head_size_names.get(value, f"Unknown {hex(value)}")
+                applied_sizes.append(value)
+                ROM_COPY.write(value)
 
             # Remaining Menu Settings
             ROM_COPY.seek(sav + 0xC7)
@@ -243,7 +279,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM_COPY.seek(sav + 0x1ED)
                 ROM_COPY.write(1)
 
-            spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
+            spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix), head_sizes)
 
         # Apply Hash
         order = 0
@@ -296,7 +332,7 @@ def FormatSpoiler(value):
     return result
 
 
-def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
+def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes):
     """Update spoiler JSON with cosmetic settings."""
     humanspoiler = spoiler
     humanspoiler["Settings"]["Cosmetic Seed"] = cosmetic_seed
@@ -321,6 +357,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
     if settings.colors != {} or settings.random_models != RandomModels.off:
         humanspoiler["Cosmetics"]["Colors"] = {}
         humanspoiler["Cosmetics"]["Models"] = {}
+        humanspoiler["Cosmetics"]["Sprites"] = {}
         for color_item in settings.colors:
             if color_item == "dk":
                 humanspoiler["Cosmetics"]["Colors"]["DK Color"] = settings.colors[color_item]
@@ -331,6 +368,8 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
                 humanspoiler["Cosmetics"]["Models"][data["name"]] = camelCaseToWords(data["setting"].name)
             else:
                 humanspoiler["Cosmetics"]["Models"][data["name"]] = f"Unknown Model {hex(int(data['setting']))}"
+    if settings.misc_cosmetics:
+        humanspoiler["Cosmetics"]["Sprites"]["Minigame Melon"] = camelCaseToWords(settings.minigame_melon_sprite.name)
     if settings.music_bgm_randomized or settings.bgm_songs_selected:
         humanspoiler["Cosmetics"]["Background Music"] = music_data.get("music_bgm_data")
     if settings.music_majoritems_randomized or settings.majoritems_songs_selected:
@@ -339,6 +378,8 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
         humanspoiler["Cosmetics"]["Minor Item Themes"] = music_data.get("music_minoritem_data")
     if settings.music_events_randomized or settings.events_songs_selected:
         humanspoiler["Cosmetics"]["Event Themes"] = music_data.get("music_event_data")
+    if settings.big_head_mode == BigHeadMode.random:
+        humanspoiler["Cosmetics"]["Head Sizes"] = head_sizes
     humanspoiler["Cosmetics"]["Textures"] = {}
     if settings.custom_transition is not None:
         humanspoiler["Cosmetics"]["Textures"]["Transition"] = settings.custom_transition

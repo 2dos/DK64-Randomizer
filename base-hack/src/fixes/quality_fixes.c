@@ -65,9 +65,21 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
+int force_enable_diving_timer = 0;
+
+void dropWrapper(void* actor) {
+	clearTagSlide(actor);
+	force_enable_diving_timer = ObjectModel2Timer;
+}
+
 int CanDive_WithCheck(void) {
 	if (ObjectModel2Timer < 5) {
 		return 1;
+	}
+	if (ObjectModel2Timer >= force_enable_diving_timer) {
+		if ((ObjectModel2Timer - force_enable_diving_timer) < 2) {
+			return 1;
+		}
 	}
 	if (isGlobalCutscenePlaying(29)) {
 		return 1;
@@ -379,6 +391,33 @@ void fixChimpyCamBug(void) {
 		writeDefaultFilename();
 	}
 	SaveToGlobal();
+}
+
+void movePelletWrapper(actorData* actor) {
+	if (!(CurrentActorPointer_0->obj_props_bitfield & 0x10)) {
+		if ((Player->control_state == 2) && (Player->was_gun_out == 1)) {
+			int dist = getScreenDist(screenCenterX >> 1, screenCenterY >> 1);
+			int cap = getDistanceCap(dist);
+			if ((cap == 0) || (cap == 996)) {
+				// Lets not get into a div-by-0 mess
+				unkProjectileCode_2(actor);
+				return;
+			}
+			float dxz = CurrentActorPointer_0->hSpeed * 0.025f;
+			float dy = CurrentActorPointer_0->yVelocity * 0.025f;
+			float cap_f = cap;
+			float d_one_frame = dk_sqrt((dxz * dxz) + (dy * dy));
+			float ratio = cap_f / d_one_frame;
+			int rotation = CurrentActorPointer_0->rot_y_copy;
+			float dxz_ratio = dxz * ratio;
+
+			CurrentActorPointer_0->xPos += (dxz_ratio * determineXRatioMovement(rotation));
+			CurrentActorPointer_0->yPos += (dy * ratio);
+			CurrentActorPointer_0->zPos += (dxz_ratio * determineZRatioMovement(rotation));
+			return;
+		}
+	}
+	unkProjectileCode_2(actor);
 }
 
 // Segment framebuffer
