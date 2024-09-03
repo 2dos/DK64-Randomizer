@@ -374,6 +374,33 @@ function filterHTML(element, output_html) {
         const btn_text = img_buttons[0].getAttribute("text");
         img_buttons[0].outerHTML = `<div class="img-btn-container p-3 m-2 user-select-none" onclick="goTo('${btn_href}')"><img src=${btn_img} /><div class="img-btn-text">${btn_text}</div></div>`
     }
+    // Image Info
+    const image_info = content_hook.getElementsByTagName("imginfo");
+    while (image_info.length > 0) {
+        const info_img = image_info[0].getAttribute("img");
+        const has_text = image_info[0].hasAttribute("text");
+        const info_text = image_info[0].getAttribute("text");
+        const has_header = image_info[0].hasAttribute("header");
+        const info_header = image_info[0].getAttribute("header");
+        const has_subtitle = image_info[0].hasAttribute("subtitle");
+        const info_subtitle = image_info[0].getAttribute("subtitle");
+        image_info[0].outerHTML = `
+            <div class="card mx-2" style="width: 18rem;">
+                <img src=${info_img} class="card-img-top" alt="${info_text}" />
+                <div class="card-body">
+                    ${has_header ? `
+                        <h5 class="card-title">${info_header}</h5>
+                    ` : ""}
+                    ${has_subtitle ? `
+                        <h6 class="card-subtitle mb-2 text-body-secondary">${info_subtitle}</h6>
+                    ` : ""}
+                    ${has_text ? `
+                        <p class="card-text">${info_text}</p>
+                    ` : ""}
+                    </p>
+                </div>
+            </div>`
+    }
     // Font-Awesome icons <fa-icon>cls</fa-icon>
     const fa_icons = content_hook.getElementsByTagName("fa-icon");
     while (fa_icons.length > 0) {

@@ -983,3 +983,59 @@ def getIceTrapCount(settings) -> int:
         IceTrapFrequency.pain: 100,
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
+
+plando_colors = {
+    "\x04": [
+        "orange",
+        "woth",
+        "keys",
+        "donkey",
+        "aztec",
+        "freekongs",
+    ],
+    "\x05": [
+        "red",
+        "foolish",
+        "diddy",
+        "helm",
+    ],
+    "\x06": [
+        "blue",
+        "lanky",
+        "galleon",
+    ],
+    "\x07": [
+        "purple",
+        "tiny",
+        "forest",
+        "fungi",
+    ],
+    "\x08": [
+        "lightgreen",
+        "chunky",
+        "japes",
+    ],
+    "\x09": [
+        "magenta",
+        "castle",
+    ],
+    "\x0a": [
+        "cyan",
+        "caves",
+        "fridge",
+    ],
+    "\x0b": [
+        "rust",
+        "isles",
+        "training",
+    ],
+    "\x0c": [
+        "paleblue",
+        "allkongs",
+        "factory",
+    ],
+    "\x0d": [
+        "green",
+        "jetpac",
+    ],
+}

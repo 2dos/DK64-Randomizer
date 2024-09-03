@@ -171,7 +171,7 @@
                         return item.name;
                     },
                     afterSelect: (item) => {
-                        $(document).on('click', '.typeahead .dropdown-menu li', function() {
+                        $(document).on('click', '.typeahead.dropdown-menu li', function() {
                             window.location.href = item.link;
                         });
                     }
