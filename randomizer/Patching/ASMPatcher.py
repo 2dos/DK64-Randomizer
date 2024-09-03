@@ -79,6 +79,7 @@ NORMAL_KEY_FLAGS = [
 ]
 ENABLE_FILENAME = False
 ENABLE_ALL_KONG_TRANSFORMS = False
+ENABLE_HITSCAN = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -772,6 +773,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict)  # perm flag set hook
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict)  # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict)  # Fix some silk memes
+
+    if ENABLE_HITSCAN:
+        writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "movePelletWrapper", offset_dict)
 
     # Kong Model Swap handlers
     writeFunction(ROM_COPY, 0x806C871C, Overlay.Static, "adjustGunBone", offset_dict)
