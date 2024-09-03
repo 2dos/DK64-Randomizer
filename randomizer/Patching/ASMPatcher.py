@@ -27,7 +27,7 @@ from randomizer.Enums.Settings import (
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Enums.Models import Model
+from randomizer.Enums.Models import Model, Sprite
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Types import Types
@@ -80,6 +80,7 @@ NORMAL_KEY_FLAGS = [
 ENABLE_FILENAME = False
 ENABLE_ALL_KONG_TRANSFORMS = False
 ENABLE_HITSCAN = False
+DISABLE_BORDERS = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -427,6 +428,25 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     writeValue(ROM_COPY, 0x80755758, Overlay.Static, settings.candy_cutscene_model + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075575A, Overlay.Static, settings.funky_cutscene_model + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075578C, Overlay.Static, settings.boot_cutscene_model + 1, offset_dict)
+
+    # Refill Count
+    projectile_mapping = {
+        Sprite.BouncingMelon: Sprite.VerticalRollingMelon,
+        Sprite.BouncingOrange: Sprite.Orange,
+    }
+    is_new_sprite = settings.minigame_melon_sprite != Sprite.BouncingMelon
+    projectile_sprite = projectile_mapping.get(settings.minigame_melon_sprite, settings.minigame_melon_sprite)
+    is_small_sprite = settings.minigame_melon_sprite in (Sprite.BouncingMelon, Sprite.BouncingOrange)
+    hi = getHi(int(settings.minigame_melon_sprite)) if is_new_sprite else 0x8072
+    lo = getLo(int(settings.minigame_melon_sprite)) if is_new_sprite else 0xFFD4
+    proj_hi = getHi(int(projectile_sprite)) if is_new_sprite else 0x8072
+    proj_lo = getLo(int(projectile_sprite)) if is_new_sprite else 0x0020
+    writeValue(ROM_COPY, 0x8002737E, Overlay.Bonus, hi, offset_dict)
+    writeValue(ROM_COPY, 0x8002739A, Overlay.Bonus, lo, offset_dict)
+    writeValue(ROM_COPY, 0x80027366, Overlay.Bonus, 0x3F80 if is_small_sprite else 0x3F33, offset_dict)
+    writeValue(ROM_COPY, 0x8069274E, Overlay.Static, proj_hi, offset_dict)
+    writeValue(ROM_COPY, 0x8069275A, Overlay.Static, proj_lo, offset_dict)
+    writeValue(ROM_COPY, 0x80027448, Overlay.Bonus, 0x3C073F80, offset_dict, 4)  # Ensure melon sfx is always usual pitch
 
     # Skybox Handler
     skybox_rgba = None
@@ -776,6 +796,9 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if ENABLE_HITSCAN:
         writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "movePelletWrapper", offset_dict)
+
+    if DISABLE_BORDERS:
+        writeValue(ROM_COPY, 0x805FBAB4, Overlay.Static, 0x1000FFC7, offset_dict, 4)  # Disable borders around game. Has "quirks"
 
     # Kong Model Swap handlers
     writeFunction(ROM_COPY, 0x806C871C, Overlay.Static, "adjustGunBone", offset_dict)

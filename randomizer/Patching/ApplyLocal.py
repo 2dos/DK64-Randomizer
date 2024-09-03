@@ -356,6 +356,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
     if settings.colors != {} or settings.random_models != RandomModels.off:
         humanspoiler["Cosmetics"]["Colors"] = {}
         humanspoiler["Cosmetics"]["Models"] = {}
+        humanspoiler["Cosmetics"]["Sprites"] = {}
         for color_item in settings.colors:
             if color_item == "dk":
                 humanspoiler["Cosmetics"]["Colors"]["DK Color"] = settings.colors[color_item]
@@ -366,6 +367,8 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
                 humanspoiler["Cosmetics"]["Models"][data["name"]] = camelCaseToWords(data["setting"].name)
             else:
                 humanspoiler["Cosmetics"]["Models"][data["name"]] = f"Unknown Model {hex(int(data['setting']))}"
+    if settings.misc_cosmetics:
+        humanspoiler["Cosmetics"]["Sprites"]["Minigame Melon"] = camelCaseToWords(settings.minigame_melon_sprite.name)
     if settings.music_bgm_randomized or settings.bgm_songs_selected:
         humanspoiler["Cosmetics"]["Background Music"] = music_data.get("music_bgm_data")
     if settings.music_majoritems_randomized or settings.majoritems_songs_selected:

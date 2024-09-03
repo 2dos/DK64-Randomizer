@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, RandomModels, KongModels, WinConditionComplex
-from randomizer.Enums.Models import Model
+from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
 from randomizer.Patching.generate_kong_color_images import convertColors
@@ -382,6 +382,24 @@ boot_cutscene_models = [
     Model.KRoolGlove,
 ]
 
+melon_random_sprites = [
+    Sprite.BouncingMelon,
+    Sprite.BouncingOrange,
+    Sprite.Coconut,
+    Sprite.Peanut,
+    Sprite.Grape,
+    Sprite.Feather,
+    Sprite.Pineapple,
+    Sprite.CrystalCoconut0,
+    Sprite.DKCoin,
+    Sprite.DiddyCoin,
+    Sprite.LankyCoin,
+    Sprite.TinyCoin,
+    Sprite.ChunkyCoin,
+    Sprite.Fairy,
+    Sprite.RaceCoin,
+]
+
 model_mapping = {
     KongModels.default: 0,
     KongModels.disco_chunky: 6,
@@ -500,6 +518,7 @@ def apply_cosmetic_colors(settings: Settings):
     candy_model_index = Model.Candy
     funky_model_index = Model.Funky
     boot_model_index = Model.Boot
+    melon_sprite = Sprite.BouncingMelon
     swap_bitfield = 0
 
     ROM_COPY = ROM()
@@ -605,6 +624,8 @@ def apply_cosmetic_colors(settings: Settings):
             value = random.randint(brightness_threshold, 0xFF)
             jetman_color[channel] = value
         settings.jetman_color = jetman_color.copy()
+        melon_sprite = random.choice(melon_random_sprites)
+    settings.minigame_melon_sprite = melon_sprite
     color_palettes = []
     color_obj = {}
     colors_dict = {}
@@ -2525,33 +2546,42 @@ def writeMiscCosmeticChanges(settings):
         enemy_setting = settings.random_enemy_colors
     if settings.misc_cosmetics:
         # Melon HUD
-        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)]}
+        data = {
+            7: [[0x13C, 0x147]],
+            14: [[0x5A, 0x5D]],
+            25: [
+                    [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)],
+                    [0x144B, 0x1452],
+                ]
+        }
         shift = getRandomHueShift()
         for table in data:
             table_data = data[table]
-            for img in range(table_data[0], table_data[1] + 1):
-                if table == 25 and img == getBonusSkinOffset(ExtraTextures.MelonSurface):
-                    dims = (32, 32)
-                else:
-                    dims = (48, 42)
-                melon_im = getImageFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
-                melon_im = hueShift(melon_im, shift)
-                melon_px = melon_im.load()
-                bytes_array = []
-                for y in range(dims[1]):
-                    for x in range(dims[0]):
-                        pix_data = list(melon_px[x, y])
-                        red = int((pix_data[0] >> 3) << 11)
-                        green = int((pix_data[1] >> 3) << 6)
-                        blue = int((pix_data[2] >> 3) << 1)
-                        alpha = int(pix_data[3] != 0)
-                        value = red | green | blue | alpha
-                        bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-                px_data = bytearray(bytes_array)
-                if table != 7:
-                    px_data = gzip.compress(px_data, compresslevel=9)
-                ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
-                ROM().writeBytes(px_data)
+            for set in table_data:
+                for img in range(set[0], set[1] + 1):
+                    if table == 25:
+                        dims = (32, 32)
+                    else:
+                        dims = (48, 42)
+                    melon_im = getImageFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
+                    melon_im = hueShift(melon_im, shift)
+                    melon_px = melon_im.load()
+                    bytes_array = []
+                    for y in range(dims[1]):
+                        for x in range(dims[0]):
+                            pix_data = list(melon_px[x, y])
+                            red = int((pix_data[0] >> 3) << 11)
+                            green = int((pix_data[1] >> 3) << 6)
+                            blue = int((pix_data[2] >> 3) << 1)
+                            alpha = int(pix_data[3] != 0)
+                            value = red | green | blue | alpha
+                            bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+                    px_data = bytearray(bytes_array)
+                    if table != 7:
+                        px_data = gzip.compress(px_data, compresslevel=9)
+                    ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
+                    ROM().writeBytes(px_data)
+                
         # Shockwave Particles
         shockwave_shift = getRandomHueShift()
         for img_index in range(0x174F, 0x1757):
@@ -2577,6 +2607,9 @@ def writeMiscCosmeticChanges(settings):
                 hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
             for img_index in range(0xA0, 0xA7 + 1):
                 hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA5551, fire_shift)
+            # Blue Fire
+            for img_index in range(129, 138 + 1):
+                hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
             # Number Game Numbers
             COLOR_COUNT = 16  # 2 or 16
             colors = [getRandomHueShift() for x in range(COLOR_COUNT)]

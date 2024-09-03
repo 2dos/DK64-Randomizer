@@ -992,6 +992,7 @@ plando_colors = {
         "donkey",
         "aztec",
         "freekongs",
+        "dogadon1",
     ],
     "\x05": [
         "red",
@@ -1003,26 +1004,31 @@ plando_colors = {
         "blue",
         "lanky",
         "galleon",
+        "pufftoss",
     ],
     "\x07": [
         "purple",
         "tiny",
         "forest",
         "fungi",
+        "dogadon2",
     ],
     "\x08": [
         "lightgreen",
         "chunky",
         "japes",
+        "dillo1",
     ],
     "\x09": [
         "magenta",
         "castle",
+        "kutout",
     ],
     "\x0a": [
         "cyan",
         "caves",
         "fridge",
+        "dillo2",
     ],
     "\x0b": [
         "rust",
@@ -1033,6 +1039,7 @@ plando_colors = {
         "paleblue",
         "allkongs",
         "factory",
+        "madjack",
     ],
     "\x0d": [
         "green",
