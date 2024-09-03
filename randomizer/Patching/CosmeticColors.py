@@ -2851,6 +2851,7 @@ def writeMiscCosmeticChanges(settings):
                     0xB86CAA,
                 ]
             ),
+            Model.Laser: EnemyColorSwap([0xF30000]),
             Model.Kasplat: EnemyColorSwap([0x8FD8FF, 0x182A4F, 0x0B162C, 0x7A98D3, 0x3F6CC4, 0x8FD8FF, 0x284581]),
             # Model.BananaFairy: EnemyColorSwap([0xFFD400, 0xFFAA00, 0xFCD200, 0xD68F00, 0xD77D0A, 0xe49800, 0xdf7f1f, 0xa26c00, 0xd6b200, 0xdf9f1f])
         }
