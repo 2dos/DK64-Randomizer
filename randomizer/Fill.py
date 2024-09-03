@@ -158,6 +158,26 @@ def GetLobbyOfRegion(region):
         return None
 
 
+def GetLevelExitTransition(region):
+    """Get the exit level transition for the parameter region's level."""
+    if region.level == Levels.JungleJapes:
+        return Transitions.JapesToIsles
+    elif region.level == Levels.AngryAztec:
+        return Transitions.AztecToIsles
+    elif region.level == Levels.FranticFactory:
+        return Transitions.FactoryToIsles
+    elif region.level == Levels.GloomyGalleon:
+        return Transitions.GalleonToIsles
+    elif region.level == Levels.FungiForest:
+        return Transitions.ForestToIsles
+    elif region.level == Levels.CrystalCaves:
+        return Transitions.CavesToIsles
+    elif region.level == Levels.CreepyCastle:
+        return Transitions.CastleToIsles
+    else:
+        return None
+
+
 def GetAccessibleLocations(
     spoiler: Spoiler, startingOwnedItems: List[Union[Any, Items]], searchType: SearchMode, purchaseList: Optional[List[Locations]] = None, targetItemId: None = None
 ) -> Union[List[Sphere], List[Locations], bool, Set[Union[Locations, int]]]:
@@ -172,6 +192,8 @@ def GetAccessibleLocations(
     newLocations = set()
     ownedItems = startingOwnedItems.copy()
     newItems = []  # debug code utility
+    if searchType == SearchMode.GeneratePlaythrough:
+        spoiler.playthroughTransitionOrder = []
     playthroughLocations = []
     unpurchasedEmptyShopLocationIds = []
     kongAccessibleRegions = [{Regions.GameStart}, {Regions.GameStart}, {Regions.GameStart}, {Regions.GameStart}, {Regions.GameStart}]
@@ -338,6 +360,12 @@ def GetAccessibleLocations(
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
                         exits.append(TransitionFront(dest, lambda l: True))
+                        # If we're generating the final playthrough, note down the order in which we access entrances for LZR purposes
+                        # No need to check access on this transition, it's always accessible
+                        if searchType == SearchMode.GeneratePlaythrough:
+                            levelExitTransitionId = GetLevelExitTransition(region)
+                            if levelExitTransitionId not in spoiler.playthroughTransitionOrder:
+                                spoiler.playthroughTransitionOrder.append(exit.exitShuffleId)
                 # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
                 elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops:
                     levelLobby = GetLobbyOfRegion(region)
@@ -356,22 +384,26 @@ def GetAccessibleLocations(
                             continue
                     # If we can access this transition...
                     if exit.logic(spoiler.LogicVariables):
-                        # If a region is accessible through this exit that has not yet been added, add it to the queue to be visited eventually
-                        if destination not in kongAccessibleRegions[kong]:
-                            # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
-                            if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
-                                if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
-                                    continue
-                                # Mainly Seal Race exit. Situations where this matters are extremely rare.
-                                if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
-                                    continue
-                            # Check time of day
-                            timeAccess = True
-                            if exit.time == Time.Night and not region.nightAccess[kong]:
-                                timeAccess = False
-                            elif exit.time == Time.Day and not region.dayAccess[kong]:
-                                timeAccess = False
-                            if timeAccess:
+                        # ...with one caveat: If water is lava, don't consider underwater locations in Galleon before having 3rd melon
+                        if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                            if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
+                                continue
+                            # Mainly Seal Race exit. Situations where this matters are extremely rare.
+                            if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
+                                continue
+                        # Check time of day
+                        timeAccess = True
+                        if exit.time == Time.Night and not region.nightAccess[kong]:
+                            timeAccess = False
+                        elif exit.time == Time.Day and not region.dayAccess[kong]:
+                            timeAccess = False
+                        if timeAccess:
+                            # If we're generating the final playthrough, note down the order in which we access entrances for LZR purposes
+                            if searchType == SearchMode.GeneratePlaythrough and settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+                                if exit.exitShuffleId is not None and exit.exitShuffleId not in spoiler.playthroughTransitionOrder:
+                                    spoiler.playthroughTransitionOrder.append(exit.exitShuffleId)
+                            # If a region is accessible through this exit that has not yet been added, add it to the queue to be visited eventually
+                            if destination not in kongAccessibleRegions[kong]:
                                 kongAccessibleRegions[kong].add(destination)
                                 newRegion = spoiler.RegionList[destination]
                                 newRegion.id = destination
@@ -3226,7 +3258,7 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
     found_incompatibilities = ""
     if not settings.fast_start_beginning_of_game:
         if settings.shuffle_loading_zones == ShuffleLoadingZones.all:
-            found_incompatibilities += "Cannot turn off Fast Start with LZR. "
+            found_incompatibilities += "Cannot turn off Fast Start with Loading Zones Randomized. "
         if settings.random_starting_region:
             found_incompatibilities += "Cannot turn off Fast Start with a Random Starting Location. "
     if found_incompatibilities != "":
