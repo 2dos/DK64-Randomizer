@@ -1724,9 +1724,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Dictionaries of exceptions for locations and regions that have to be handled with care
         location_exceptions = {
             # Japes Diddy Top of Mountain cares much more about the Mine than the main area
-            Locations.JapesDiddyMountain: (Transitions.JapesMineToMain),
+            Locations.JapesDiddyMountain: [Regions.Mine, Maps.JapesMountain],
             # Forest Diddy Winch naturally needs to find the Winch room very badly
-            Locations.ForestDiddyCagedBanana: (Transitions.ForestWinchToMain),
+            Locations.ForestDiddyCagedBanana: [Regions.WinchRoom, Maps.ForestWinchRoom],
         }
         region_exceptions = {
             # Galleon ships share a map but have segmented sections. We want to be sure we're hinting the specific transition for each check.
@@ -1741,9 +1741,32 @@ def compileHints(spoiler: Spoiler) -> bool:
             Regions.Museum: (Transitions.CastleMuseumToMain),
             Regions.MuseumBehindGlass: (Transitions.CastleMuseumToBallroom, Transitions.CastleMuseumToCarRace),
         }
+        connector_maps = {
+            Maps.TrainingGrounds: [Regions.TrainingGrounds],
+            Maps.JungleJapesLobby: [Regions.JungleJapesLobby],
+            Maps.AngryAztecLobby: [Regions.AngryAztecLobby],
+            Maps.FranticFactoryLobby: [Regions.FranticFactoryLobby],
+            Maps.GloomyGalleonLobby: [Regions.GloomyGalleonLobby, Regions.GloomyGalleonLobbyEntrance],
+            Maps.FungiForestLobby: [Regions.FungiForestLobby],
+            Maps.CrystalCavesLobby: [Regions.CrystalCavesLobby],
+            Maps.CreepyCastleLobby: [Regions.CreepyCastleLobby],
+            Maps.HideoutHelmLobby: [Regions.HideoutHelmLobby],
+            Maps.ForestMillFront: [Regions.GrinderRoom],  # The Mini entrance counts
+            Maps.CastleMuseum: [Regions.MuseumBehindGlass],  # Weird, but technically a connector between MP and Mini entrances
+            Maps.CastleBallroom: [Regions.Ballroom],  # Also weird, as one side is all-kong and the other side is a MP pad
+            Maps.CastleCrypt: [Regions.Crypt],  # Similar to Ballroom, just replace MP pad with a Coconut + Grab locked door
+            Maps.JapesMountain: [Regions.Mine],  # If Diddy Minecart is WotH, we want to hint the way to get into the mountain, not the Minecart entrance
+            # These are not real connectors, as one of their entrances is a one-way ticket to zilch
+            # Maps.CastleGreenhouse: [Regions.Greenhouse],  # Always kicks you out to Castle Main
+            # Maps.CastleTree: [Regions.CastleTree],  # Always kicks you out to Castle Main
+            # These larger connectors have enough entrances it should be somewhat less painful to have to find them for a hinted entrance there
+            # Maps.ForestMillBack: [Regions.MillChunkyTinyArea],
+            # Maps.ForestGiantMushroom: [Regions.MushroomLower, Regions.MushroomLowerMid, Regions.MushroomMiddle, Regions.MushroomUpperMid, Regions.MushroomUpper, Regions.MushroomNightDoor],
+            # Maps.CastleUpperCave: [Regions.UpperCave],
+            # Maps.CastleLowerCave: [Regions.LowerCave],
+        }
         # First identify which maps contain WotH items - some maps are more interesting than others
         isolated_interesting_transitions = []
-        connector_interesting_transitions = []
         # Lists to prevent duplicate entrance hints from existing
         tracked_maps = []
         tracked_regions = []
@@ -1753,26 +1776,32 @@ def compileHints(spoiler: Spoiler) -> bool:
             # If Helm is not shuffled, Helm is not an interesting map - we know where it is
             if location.level == Levels.HideoutHelm and not spoiler.settings.shuffle_helm_location:
                 continue
-            # These types of locations (Helm locations are special) don't have a single map, so they don't really work for what we're trying to go for here
-            if location.level != Levels.HideoutHelm and location.type in (
-                Types.Shop,
-                Types.Medal,
-                Types.Key,
-                Types.RarewareCoin,
-                Types.TrainingBarrel,
-                Types.PreGivenMove,
-                Types.Cranky,
-                Types.Funky,
-                Types.Candy,
-                Types.Constant,
-                Types.IslesMedal,
-            ):
-                continue
-            region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
-            woth_map = GetMapId(region_id)
+            # Some locations are exceptions to their own positioning due to other circumstances - see the dict for details
+            if woth_location_id in location_exceptions.keys():
+                region_id = location_exceptions[woth_location_id][0]
+                woth_map = location_exceptions[woth_location_id][1]
+            # For every other normal location...
+            else:
+                # These types of locations (Helm locations are special) don't have a single map, so they don't really work for what we're trying to go for here
+                if location.level != Levels.HideoutHelm and location.type in (
+                    Types.Shop,  # TODO: Investigate the feasibility of hinting shops if they're outside of the level's main map (while still taking into consideration shop location shuffle)
+                    Types.Medal,
+                    Types.Key,
+                    Types.RarewareCoin,
+                    Types.TrainingBarrel,
+                    Types.PreGivenMove,
+                    Types.Cranky,
+                    Types.Funky,
+                    Types.Candy,
+                    Types.Constant,
+                    Types.IslesMedal,
+                ):
+                    continue
+                region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
+                woth_map = GetMapId(region_id)
             # Ignore the main map of each level, these should be fairly straightforward to find - mind the exceptions!
             main_level_maps = (Maps.Isles, Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
-            if woth_map in main_level_maps or woth_location_id in location_exceptions.keys():
+            if woth_map in main_level_maps:
                 continue
             # Blast maps all happen to be contained in the main map of the respective level
             if woth_map in (Maps.JapesBaboonBlast, Maps.AztecBaboonBlast, Maps.FactoryBaboonBlast, Maps.GalleonBaboonBlast, Maps.ForestBaboonBlast, Maps.CavesBaboonBlast, Maps.CastleBaboonBlast):
@@ -1794,21 +1823,71 @@ def compileHints(spoiler: Spoiler) -> bool:
                     destinationMap = GetMapId(shuffledBack.regionId)
                     destinationTransition = shuffledBack.reverse
                 else:
-                    destinationMap = exit.back.regionId
+                    destinationMap = GetMapId(exit.back.regionId)
                     destinationTransition = exit.back.reverse
+                hintable_transition_id = transitionId
                 # If this transition reaches our target map, it's a relevant entrance
                 if destinationMap == woth_map:
                     # UNLESS it falls afoul of the exceptions
                     # Regions that trigger the exception protocol must instead hit a very specific entrance
                     if region_id in region_exceptions.keys() and destinationTransition != region_exceptions[region_id]:
                         continue
-                    # Locations that trigger the exception protocol should instead hint a very specific entrance
-                    if woth_location_id in location_exceptions.keys() and destinationTransition != location_exceptions[region_id]:
-                        continue
-                    relevant_entrances.append(transitionId)
+                    # In coupled LZR, getting a connector's entrance hinted isn't really helpful, as you still have to find the connector
+                    if not spoiler.settings.decoupled_loading_zones:
+                        # If this location's source is a connector, dig deeper to find a transition to a non-connector map
+                        sourceMap = GetMapId(exit.region)
+                        if sourceMap in connector_maps.keys() and exit.region in connector_maps[sourceMap]:
+                            # Recursively find our way back to a non-connector non-deadend map
+                            source_is_connector_map = True
+                            goalRegion = exit.region
+                            goalMap = sourceMap
+                            seenMaps = [woth_map]
+                            while source_is_connector_map:
+                                found_at_least_one_connection = False
+                                for connectorTransitionId, connectorExit in ShufflableExits.items():
+                                    connectedMap = None
+                                    connectedTransition = None
+                                    # If the exit of this transition is shuffled, check the shuffled data, otherwise check the bases data
+                                    if connectorExit.shuffled:
+                                        shuffledConnectorBack = spoiler.shuffled_exit_data[connectorTransitionId]
+                                        connectedMap = GetMapId(shuffledConnectorBack.regionId)
+                                        connectedTransition = shuffledConnectorBack.reverse
+                                    else:
+                                        connectedMap = connectorExit.back.regionId
+                                        connectedTransition = connectorExit.back.reverse
+                                    # If this transition reaches our goal map AND is not the original goal, then this is the entrance that leads to the connector
+                                    if connectedMap == goalMap:
+                                        # UNLESS it falls afoul of the same exceptions
+                                        # No Locations that trigger the exception protocol are located in connectors (fortunately)
+                                        # Regions that trigger the exception protocol must instead hit a very specific entrance
+                                        if goalRegion in region_exceptions.keys() and connectedTransition != region_exceptions[goalRegion]:
+                                            continue
+                                        sourceMap = GetMapId(connectorExit.region)
+                                        # So long as we're not wrapping back on ourselves - we know this is a connector, so this won't be an issue... right?
+                                        # There *might* be a possibility that we get into some sort of connector loop
+                                        if sourceMap not in seenMaps:
+                                            # Here's the recursion: If the connector's connection is a connector, we have to go deeper
+                                            if sourceMap in connector_maps.keys() and exit.region in connector_maps[sourceMap]:
+                                                # Change the target map and restart the loop
+                                                seenMaps.append(goalMap)
+                                                goalMap = sourceMap
+                                                goalRegion = connectorExit.region
+                                                found_at_least_one_connection = True
+                                                break
+                                            else:
+                                                # We won - this entrance is the last step of getting back to here from a larger area
+                                                hintable_transition_id = connectorTransitionId
+                                                source_is_connector_map = False
+                                                found_at_least_one_connection = True
+                                                break
+                                # If we looked at every transition and didn't find a valid one, I think we found a loop? It's time to go just in case
+                                if not found_at_least_one_connection:
+                                    break
+                    # We now definitively know this transition will lead to our goal location, but is this transition accessible? We'll find out later.
+                    relevant_entrances.append(hintable_transition_id)
             tracked_maps.append(woth_map)
             tracked_regions.append(region_id)
-            # If Helm is eligible to be hinted, we may want to guarantee it gets hinted
+            # If Helm is eligible to be hinted, we may want to guarantee it gets hinted - note that Helm only ever has one entry transition
             if location.level == Levels.HideoutHelm and spoiler.settings.key_8_helm:
                 priority_transition_to_helm = relevant_entrances[0]
                 continue
@@ -1816,28 +1895,26 @@ def compileHints(spoiler: Spoiler) -> bool:
             if len(relevant_entrances) == 1:
                 isolated_interesting_transitions.append(relevant_entrances[0])
             # Every map has at least one entrance (or else you couldn't get to it, duh)
-            elif len(relevant_entrances) == 0:
-                print("No entrances found for map " + woth_map.name)  # This should never happen but it's left as a failsafe
-            else:
-                # For connectors, pick a random entrance. I hope it's good, may revisit this later after some testing.
-                # I can see foresee issues where it picks a crappy entrance from the upper tunnel, lower cave, or training grounds as a hint.
-                connector_interesting_transitions.append(random.choice(relevant_entrances))
+            # If there are no relevant entrances, it's probably a region accessed by unshuffled entrances (e.g. Chunky Minecart in coupled)
+            elif len(relevant_entrances) != 0:
+                # For connectors, pick the entrance that the playthrough finds first
+                for transition_id in spoiler.playthroughTransitionOrder:
+                    if transition_id in relevant_entrances:
+                        isolated_interesting_transitions.append(transition_id)
+                        break
         random.shuffle(isolated_interesting_transitions)
-        random.shuffle(connector_interesting_transitions)
         # If Helm access must be prioritized, force it to be hinted first
         if priority_transition_to_helm is not None:
             isolated_interesting_transitions.append(priority_transition_to_helm)
         # If there are more entrance hints planned than interesting transitions to hint, sounds like we need more WotH hints for the locations on larger maps
-        if len(isolated_interesting_transitions) + len(connector_interesting_transitions) < hint_distribution[HintType.EntranceV2]:
-            diff = hint_distribution[HintType.EntranceV2] - len(isolated_interesting_transitions) + len(connector_interesting_transitions)
+        if len(isolated_interesting_transitions) < hint_distribution[HintType.EntranceV2]:
+            diff = hint_distribution[HintType.EntranceV2] - len(isolated_interesting_transitions)
             hint_distribution[HintType.WothLocation] += diff
             hint_distribution[HintType.EntranceV2] -= diff
         for i in range(hint_distribution[HintType.EntranceV2]):
             transition_id_to_hint = None
             if len(isolated_interesting_transitions) > 0:
                 transition_id_to_hint = isolated_interesting_transitions.pop()
-            else:
-                transition_id_to_hint = connector_interesting_transitions.pop()
             hint_location = getRandomHintLocation()
             entranceName = ShufflableExits[transition_id_to_hint].name
             message = f"The area entered through \x08{entranceName}\x08 should be of great interest to your quest."

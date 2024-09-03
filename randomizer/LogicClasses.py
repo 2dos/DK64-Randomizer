@@ -197,9 +197,9 @@ class TransitionFront:
         isBananaportTransition: bool = False,
     ) -> None:
         """Initialize with given parameters."""
-        self.dest = dest  # Planning to remove this
+        self.dest = dest
         self.logic = logic  # Lambda function for accessibility
-        self.exitShuffleId = exitShuffleId  # Planning to remove this
+        self.exitShuffleId = exitShuffleId
         self.time = time
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root
         self.isGlitchTransition = isGlitchTransition  # Indicates if this is a glitch-logic transition for this entrance
