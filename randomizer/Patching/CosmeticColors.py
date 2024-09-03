@@ -2550,9 +2550,9 @@ def writeMiscCosmeticChanges(settings):
             7: [[0x13C, 0x147]],
             14: [[0x5A, 0x5D]],
             25: [
-                    [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)],
-                    [0x144B, 0x1452],
-                ]
+                [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)],
+                [0x144B, 0x1452],
+            ],
         }
         shift = getRandomHueShift()
         for table in data:
@@ -2581,7 +2581,7 @@ def writeMiscCosmeticChanges(settings):
                         px_data = gzip.compress(px_data, compresslevel=9)
                     ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
                     ROM().writeBytes(px_data)
-                
+
         # Shockwave Particles
         shockwave_shift = getRandomHueShift()
         for img_index in range(0x174F, 0x1757):
@@ -2632,7 +2632,6 @@ def writeMiscCosmeticChanges(settings):
         hueShiftImageContainer(25, 0x12F4, 1, 1372, TextureFormat.RGBA5551, boulder_shift)
         for img_index in range(2):
             hueShiftImageContainer(25, 0xDE1 + img_index, 32, 64, TextureFormat.RGBA5551, boulder_shift)
-
 
     if enemy_setting != RandomModels.off:
         # Barrel Enemy Skins - Random

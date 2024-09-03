@@ -473,6 +473,7 @@ extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+extern int force_enable_diving_timer;
 
 extern unsigned int base_text_color;
 extern unsigned int emph_text_colors[10];

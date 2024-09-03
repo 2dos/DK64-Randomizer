@@ -14,6 +14,7 @@ class MultiselectorItem:
         self.shift = shift
         self.tooltip = tooltip
 
+
 QoLSelector = []
 RemovedBarrierSelector = []
 FasterCheckSelector = []

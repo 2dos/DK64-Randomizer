@@ -499,7 +499,7 @@ class Settings:
         self.candy_cutscene_model = Model.Candy
         self.funky_cutscene_model = Model.Funky
         self.boot_cutscene_model = Model.Boot
-        # 
+        #
         self.minigame_melon_sprite = Sprite.BouncingMelon
         # DK
         self.dk_fur_colors = CharacterColors.vanilla

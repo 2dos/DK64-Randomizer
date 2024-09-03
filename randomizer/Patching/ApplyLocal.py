@@ -185,19 +185,19 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             }
             applied_sizes = []
             tied_models = {
-                0x04: [0x5], # DK
-                0x01: [0x2, 0x3], # Diddy
-                0x06: [0x7, 0x8], # Lanky
-                0x09: [0xA, 0xB], # Tiny
-                0x0C: [0xD, 0xE, 0xF, 0x10], # Chunky
-                0x19: [0x1A], # Beaver
-                0x1D: [0x5E]
+                0x04: [0x5],  # DK
+                0x01: [0x2, 0x3],  # Diddy
+                0x06: [0x7, 0x8],  # Lanky
+                0x09: [0xA, 0xB],  # Tiny
+                0x0C: [0xD, 0xE, 0xF, 0x10],  # Chunky
+                0x19: [0x1A],  # Beaver
+                0x1D: [0x5E],
             }
             head_sizes = {}
             for x in range(0xED):
                 value = setting_size.get(settings.big_head_mode, 0x00)
                 if settings.big_head_mode == BigHeadMode.random:
-                    value = random.choice([0x00, 0x2F, 0x2F, 0xFF, 0xFF]) # Make abnormal head sizes more likely than a normal head size
+                    value = random.choice([0x00, 0x2F, 0x2F, 0xFF, 0xFF])  # Make abnormal head sizes more likely than a normal head size
                     # Check if model chosen is part of a tied model
                     push_name = True
                     if x == 0 or (x - 1) in HeadResizeImmune:

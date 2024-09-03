@@ -65,9 +65,21 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
+int force_enable_diving_timer = 0;
+
+void dropWrapper(void* actor) {
+	clearTagSlide(actor);
+	force_enable_diving_timer = ObjectModel2Timer;
+}
+
 int CanDive_WithCheck(void) {
 	if (ObjectModel2Timer < 5) {
 		return 1;
+	}
+	if (ObjectModel2Timer >= force_enable_diving_timer) {
+		if ((ObjectModel2Timer - force_enable_diving_timer) < 2) {
+			return 1;
+		}
 	}
 	if (isGlobalCutscenePlaying(29)) {
 		return 1;

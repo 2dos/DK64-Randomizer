@@ -243,7 +243,9 @@ class Model(IntEnum):
     FunkyGun = 234
     Boot = 235
 
+
 class Sprite(IntEnum):
+    """Sprite Enum."""
     WaterfallTall = 0x8071FA80
     WaterfallShort = 0x8071FAAC
     Water = 0x8071FAD8
@@ -420,6 +422,7 @@ class Sprite(IntEnum):
     ChunkyFace = 0x80721500
     FairyTick = 0x80721518
     Wrinkly = 0x80721530
+
 
 ModelNames = [
     "Diddy",

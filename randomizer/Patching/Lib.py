@@ -984,6 +984,7 @@ def getIceTrapCount(settings) -> int:
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
+
 plando_colors = {
     "\x04": [
         "orange",

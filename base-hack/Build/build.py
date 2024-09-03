@@ -1066,7 +1066,7 @@ colorblind_changes = [
     [0xDE1, 0xDE2],  # Boulder switch texture
     [0xC2D, 0xC2E],  # Number Game Side
     [0xF0A, 0xF0A],  # Zinger
-    [0x10a0, 0x10A0],  # Mechazinger
+    [0x10A0, 0x10A0],  # Mechazinger
     [0x10A2, 0x10A5],  # Mechazinger
     [0x144B, 0x1452],  # Bouncing Melon (Minigame HUDs)
     [0x110A, 0x1119],  # Spiders

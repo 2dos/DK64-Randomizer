@@ -553,6 +553,7 @@ def dump_random_settings(format: str):
                 fh.write("\n".join([f"- {x}: {others[x]}" for x in list(others.keys())]))
                 fh.write("\n")
 
+
 def dump_plando_colors(format: str):
     """Dump all random settings information."""
     if format != "md":
@@ -577,7 +578,7 @@ def dump_plando_colors(format: str):
         text = "{"
         in_dict = False
         for line in lines:
-            no_newline = line.replace("\n","")
+            no_newline = line.replace("\n", "")
             if no_newline == "}":
                 if in_dict:
                     text += "}"
@@ -588,8 +589,8 @@ def dump_plando_colors(format: str):
                 in_dict = True
         chars = list(color_data.keys())
         for c in chars:
-            text = text.replace(f"\"\\x0{c}\"", f"\"{c}\"")
-        data = json.loads(re.sub(r',\s*([\]}])', r'\1', text))
+            text = text.replace(f'"\\x0{c}"', f'"{c}"')
+        data = json.loads(re.sub(r",\s*([\]}])", r"\1", text))
     with open(f"{LIST_DIRECTORY}/PlandoColors.MD", "w") as fh:
         fh.write("This article covers the color formatting for plandomizer hints, and how to use it effectively\n")
         fh.write("# Reference Images\n")
@@ -603,7 +604,10 @@ def dump_plando_colors(format: str):
         for key in data:
             primary_tag = f"[{data[key][0]}][/{data[key][0]}]"
             alt_tags = [f"[{x}][/{x}]" for x in data[key][1:]]
-            fh.write(f"| {primary_tag} | {'<br>'.join(alt_tags)} | Light Mode: {color_data[key][0].upper()}<br>Dark Mode: {color_data[key][1].upper()} | <span class='p-1' style='color:{color_data[key][0]}; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:{color_data[key][1]}; font-weight:bold'>DARK MODE</span> |\n")
+            fh.write(
+                f"| {primary_tag} | {'<br>'.join(alt_tags)} | Light Mode: {color_data[key][0].upper()}<br>Dark Mode: {color_data[key][1].upper()} | <span class='p-1' style='color:{color_data[key][0]}; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:{color_data[key][1]}; font-weight:bold'>DARK MODE</span> |\n"
+            )
+
 
 all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat", "random_settings", "plando_colors"]
 valid_args = all_args + ["all"]

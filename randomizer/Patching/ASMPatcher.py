@@ -1914,6 +1914,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806F662C, Overlay.Static, "checkModelTwoItemCollision", offset_dict)
     # Dive Check
     writeFunction(ROM_COPY, 0x806E9658, Overlay.Static, "CanDive_WithCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x806DEFDC, Overlay.Static, "dropWrapper", offset_dict)
     # Prevent Japes Dillo Cutscene for the key acquisition
     writeValue(ROM_COPY, 0x806EFCEC, Overlay.Static, 0x1000, offset_dict)
     # New Helm Barrel Code
