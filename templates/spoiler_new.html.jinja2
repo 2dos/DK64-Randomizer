@@ -134,36 +134,34 @@
                                                         <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                                                             <tbody>
                                                                 {% for item2 in spoiler[item][sub_group] %}
-                                                                    {% if item != "Hints" or sub_group != "Wrinkly Hints" or item2 != "First Time Talk" %}
-                                                                        <tr>
-                                                                            {% if item in ("Items", "Items (Sorted by Item)") %}
-                                                                                {% if item2 == "Diddy Kong" %}
-                                                                                    <td>Japes Kong</td>
-                                                                                {% elif item2 == "Lanky Kong" %}
-                                                                                    <td>Llama Temple Kong</td>
-                                                                                {% elif item2 == "Tiny Kong" %}
-                                                                                    <td>Tiny Temple Kong</td>
-                                                                                {% elif item2 == "Chunky Kong" %}
-                                                                                    <td>Factory Kong</td>
-                                                                                {% else %}
-                                                                                    <td>{{ item2 }}</td>
-                                                                                {% endif %}
+                                                                    <tr>
+                                                                        {% if item in ("Items", "Items (Sorted by Item)") %}
+                                                                            {% if item2 == "Diddy Kong" %}
+                                                                                <td>Japes Kong</td>
+                                                                            {% elif item2 == "Lanky Kong" %}
+                                                                                <td>Llama Temple Kong</td>
+                                                                            {% elif item2 == "Tiny Kong" %}
+                                                                                <td>Tiny Temple Kong</td>
+                                                                            {% elif item2 == "Chunky Kong" %}
+                                                                                <td>Factory Kong</td>
                                                                             {% else %}
                                                                                 <td>{{ item2 }}</td>
                                                                             {% endif %}
-                                                                            {% if spoiler[item][sub_group][item2] is iterable and (spoiler[item][sub_group][item2] is not string and spoiler[item][sub_group][item2] is not mapping) %}
-                                                                                <td>{{ spoiler[item][sub_group][item2]|join("<br>") }}</td>
-                                                                            {% else %}
-                                                                                <td>
-                                                                                    {{ spoiler[item][sub_group][item2] }}
-                                                                                    {% if item == "Cosmetics" and sub_group == "Colors" and "color" in item2.lower() %}
-                                                                                        <span class="color-demo-box"
-                                                                                            style="background-color:{{ spoiler[item][sub_group][item2] }}">&nbsp;</span>
-                                                                                    {% endif %}
-                                                                                </td>
-                                                                            {% endif %}
-                                                                        </tr>
-                                                                    {% endif %}
+                                                                        {% else %}
+                                                                            <td>{{ item2 }}</td>
+                                                                        {% endif %}
+                                                                        {% if spoiler[item][sub_group][item2] is iterable and (spoiler[item][sub_group][item2] is not string and spoiler[item][sub_group][item2] is not mapping) %}
+                                                                            <td>{{ spoiler[item][sub_group][item2]|join("<br>") }}</td>
+                                                                        {% else %}
+                                                                            <td>
+                                                                                {{ spoiler[item][sub_group][item2] }}
+                                                                                {% if item == "Cosmetics" and sub_group == "Colors" and "color" in item2.lower() %}
+                                                                                    <span class="color-demo-box"
+                                                                                        style="background-color:{{ spoiler[item][sub_group][item2] }}">&nbsp;</span>
+                                                                                {% endif %}
+                                                                            </td>
+                                                                        {% endif %}
+                                                                    </tr>
                                                                 {% endfor %}
                                                             </tbody>
                                                         </table>
