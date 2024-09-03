@@ -34,8 +34,15 @@ void initSongDisplay(int song) {
         return;
     }
     int channel = getTrackChannel(song);
+    int writeSlot = getSongWriteSlot(song);
     if ((MusicTrackChannels[channel] == song) && ((songData[song] & 0x200) == 0)) {
-        return;
+        if(cspGetState(compactSequencePlayers[writeSlot]) == 1){
+            // If CompactSequence Player is already playing this song
+            // Not gonna bother looking through the event queue whether or not
+            // the CompactSequence Player is being stopped and started on the same audio frame
+            // because that's hard to trigger and very expensive, if even reliable.
+            return;
+        }
     }
     if (DisplayedSongNamePointer) {
         complex_free(DisplayedSongNamePointer);

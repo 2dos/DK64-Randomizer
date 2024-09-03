@@ -143,6 +143,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
                 ROM_COPY.seek(unc_table + (chunky_slots[model_slot] * 4))
                 ROM_COPY.writeMultipleBytes(unc_size, 4)
+        # Fetch hash images before they're altered by cosmetic changes
+        loaded_hash = get_hash_images("browser", "hash")
         apply_cosmetic_colors(settings)
 
         if settings.override_cosmetics:
@@ -245,7 +247,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
         # Apply Hash
         order = 0
-        loaded_hash = get_hash_images("browser", "hash")
         for count in json.loads(extracted_variables["hash"].decode("utf-8")):
             js.document.getElementById("hashdiv").innerHTML = ""
             # clear the innerHTML of the hash element

@@ -246,8 +246,8 @@
 | --- | ---- | ------------ | ----- |
 | Fungi Forest | Giant Mushroom High Ladder Platform |  |  | 
 | Fungi Forest | Front of Beanstalk |  |  | 
-| Fungi Forest | Mill Grass |  |  | 
-| Fungi Forest | Near Well | DirtPatch |  | 
+| Fungi Forest | Mill Grass | Bananaport |  | 
+| Fungi Forest | Near Well | DirtPatch, Bananaport |  | 
 | Fungi Forest | Behind Clock |  |  | 
 | Fungi Forest | In front of Clock |  |  | 
 | Fungi Forest | Near Blue Tunnel |  |  | 
@@ -274,7 +274,7 @@
 | Fungi Forest | Near Beanstalk |  |  | 
 | Fungi Forest | Near Beanstalk Mini Monkey |  |  | 
 | Fungi Forest | Near Giant Mushroom |  |  | 
-| Fungi Forest | Near Yellow Tunnel | DirtPatch |  | 
+| Fungi Forest | Near Yellow Tunnel | DirtPatch, Bananaport |  | 
 | Fungi Forest | Near Cranky |  |  | 
 | Fungi Forest | Near Lower Baboon Blast Ladder |  |  | 
 | Fungi Forest | Near Baboon Blast |  | `l.climbing` | 
@@ -286,7 +286,7 @@
 | Fungi Forest | Under the Owl Tree |  |  | 
 | Fungi Forest | Near Owl Tree |  |  | 
 | Fungi Forest | Near Owl Rocketbarrel (1) |  |  | 
-| Fungi Forest | Near Owl Rocketbarrel (2) | DirtPatch |  | 
+| Fungi Forest | Near Owl Rocketbarrel (2) | DirtPatch, Bananaport |  | 
 | Fungi Forest | Top of Owl Tree |  | `((l.jetpack and l.isdiddy) or l.CanMoonkick())` | 
 | Fungi Forest | On Mill |  |  | 
 | Fungi Forest | Vanilla Clock Warp 1 |  |  | 

@@ -407,6 +407,8 @@ extern void adjustSFXType_Internal(int subtype);
 
 extern void runAnimFrame(actorData* actor, int anim, int unk0, float unk1);
 extern int getTrackChannel(int song);
+extern int getSongWriteSlot(int song);
+extern int cspGetState(int* seqp);
 extern void handleTextScrolling(void* menu_aad, float x1, float y1, float* x2, float* y2, int unk0, int unk1, float unk2);
 
 extern void handlePoleGrabbing(void* actor, int player_index, int allow_vines);
@@ -649,6 +651,7 @@ extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
 extern short songData[SONG_COUNT];
 extern short songVolumes[SONG_COUNT];
+extern int* compactSequencePlayers[4];
 extern unsigned int DKTVData[5];
 
 extern void* ExitPointer;

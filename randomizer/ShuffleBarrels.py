@@ -32,7 +32,7 @@ def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations]
                 BarrelMetaData[loc].minigame = plando_minigame
                 minigame_placed = True
             else:
-                raise Ex.PlandoIncompatibleException(f"Invalid minigame for {loc.name}: {plando_minigame.name}")
+                raise Ex.PlandoIncompatibleException(f"Invalid minigame for {loc.name}: {MinigameRequirements[plando_minigame].name}")
         if minigame_placed:
             preplaced_minigame_locations.append(loc)
     for preplaced in preplaced_minigame_locations:
