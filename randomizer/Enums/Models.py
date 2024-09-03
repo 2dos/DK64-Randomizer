@@ -246,6 +246,7 @@ class Model(IntEnum):
 
 class Sprite(IntEnum):
     """Sprite Enum."""
+
     WaterfallTall = 0x8071FA80
     WaterfallShort = 0x8071FAAC
     Water = 0x8071FAD8
