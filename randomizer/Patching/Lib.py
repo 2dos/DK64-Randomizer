@@ -332,7 +332,7 @@ compatible_background_textures = {
     0xA72: MenuTexture("Banana Hoard Sign", MenuTextDim.size_w64_h32),
     0xA73: MenuTexture("Training Area Sign", MenuTextDim.size_w64_h32),
     0xA74: MenuTexture("Cranky's Lab Sign", MenuTextDim.size_w64_h32),
-    0xA76: MenuTexture("DK's Sign", MenuTextDim.size_w64_h32),
+    # 0xA76: MenuTexture("DK's Sign", MenuTextDim.size_w64_h32),
     0xC14: MenuTexture("No Admittance Sign", MenuTextDim.size_w64_h32),
     0xC47: MenuTexture("Danger Sign", MenuTextDim.size_w64_h32),
     0xC64: MenuTexture("Accept Sign", MenuTextDim.size_w64_h32),

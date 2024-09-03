@@ -2852,6 +2852,28 @@ def writeMiscCosmeticChanges(settings):
         for img_index in (0x10A0, 0x10A2, 0x10A4, 0x10A5):
             hueShiftImageContainer(25, img_index, 1, 1372, TextureFormat.RGBA5551, zinger_shift)
         hueShiftImageContainer(25, 0x10A3, 32, 32, TextureFormat.RGBA32, zinger_shift)
+        # Spider
+        spider_shift = getRandomHueShift()
+        spider_dims = {
+            0x110A: (32, 64),
+            0x110B: (32, 64),
+            0x110C: (32, 64),
+            0x110D: (64, 16),
+            0x110E: (32, 64),
+            0x110F: (32, 64),
+            0x1110: (32, 64),
+            0x1111: (32, 64),
+            0x1112: (32, 64),
+            0x1113: (16, 32),
+            0x1114: (32, 32),
+            0x1115: (32, 32),
+            0x1116: (32, 32),
+            0x1117: (64, 16),
+            0x1118: (64, 32),
+            0x1119: (64, 32),
+        }
+        for img_index in spider_dims:
+            hueShiftImageContainer(25, img_index, spider_dims[img_index][0], spider_dims[img_index][1], TextureFormat.RGBA5551, spider_shift)
 
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
