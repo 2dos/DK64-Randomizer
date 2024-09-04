@@ -82,6 +82,7 @@ ENABLE_ALL_KONG_TRANSFORMS = False
 ENABLE_HITSCAN = False
 DISABLE_BORDERS = False
 ENABLE_MINIGAME_SPRITE_RANDO = False
+ENABLE_HELM_GBS = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -586,8 +587,10 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     expansion = static_expansion + actor_count
     flag_block_size = 0x320 + expansion
     targ_gb_bits = 7  # Max 127
-    GB_LEVEL_COUNT = 9  # 8
-    added_bits = ((targ_gb_bits - 3) * 8) + targ_gb_bits + 7 + 7
+    GB_LEVEL_COUNT = 9 if ENABLE_HELM_GBS else 8
+    added_bits = ((targ_gb_bits - 3) * 8)
+    if ENABLE_HELM_GBS:
+        added_bits += (targ_gb_bits + 7 + 7)
     kong_var_size = 0xA1 + added_bits
     file_info_location = flag_block_size + (5 * kong_var_size)
     file_default_size = file_info_location + 0x72
@@ -1072,8 +1075,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806AC002, Overlay.Static, 0x530, offset_dict)
     writeValue(ROM_COPY, 0x806AC006, Overlay.Static, 0x5B0, offset_dict)
     writeValue(ROM_COPY, 0x8075054D, Overlay.Static, 0xD7, offset_dict, 1)  # Change DK Q Mark to #FFD700
-    writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
-    writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
+    if ENABLE_HELM_GBS:
+        writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
+        writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
     # Guard Animation Fix
     writeValue(ROM_COPY, 0x806AF8C6, Overlay.Static, 0x2C1, offset_dict)
     # Remove flare effect from guards
