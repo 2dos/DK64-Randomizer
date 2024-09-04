@@ -347,6 +347,7 @@ file_dict = [
     File(name="Wrinkly Sprite", pointer_table_index=TableNames.TexturesHUD, file_index=108, source_file="assets/displays/wrinkly_sprite.png", texture_format=TextureFormat.IA8),
     File(name="Galleon K. Rool Ship", pointer_table_index=TableNames.ModelTwoGeometry, file_index=305, source_file="galleon_ship_krool.bin", target_size=0x2500),
     File(name="Banana Medal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x90, source_file="updated_medal.bin", do_not_delete_source=True),
+    File(name="Mushroom Red (Mush Puzzle)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x1BE, source_file="updated_mush_0x1BE.bin", do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()
@@ -494,6 +495,18 @@ file_dict.append(
         target_size=32 * 32 * 2,
     )
 )
+for x in range(2):
+    file_dict.append(
+        File(
+            name="Mush Top Texture (Duplicate)",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.MushTop0 + x),
+            source_file=f"assets/hash/mush_top_{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+            target_size=32 * 64 * 2,
+        )
+    )
 
 for item in range(3):
     file_dict.append(
@@ -633,7 +646,7 @@ for start in [4897, 4903, 4712, 4950, 4925]:
             )
         )
 
-for start in [0xD60, 0x67F, 0xD64, 0xD62, 0xD66, 0xD61, 0x680, 0xD65, 0xD63, 0xD67]:
+for start in [0xD60, 0xD64, 0xD62, 0xD66, 0xD61, 0xD65, 0xD63, 0xD67]:
     file_dict.append(
         File(
             name=f"Mushroom {start}",
@@ -1070,6 +1083,11 @@ colorblind_changes = [
     [0x10A2, 0x10A5],  # Mechazinger
     [0x144B, 0x1452],  # Bouncing Melon (Minigame HUDs)
     [0x110A, 0x1119],  # Spiders
+    [0x11F8, 0x11F8],  # Mush Men
+    [0x11FC, 0x1200],  # Mush Men
+    [0x1205, 0x1205],  # Mush Men
+    [0x1209, 0x120B],  # Mush Men
+    [0x67F, 0x680],  # Bouncy Shrooms
 ]
 
 kremling_dimensions = [
@@ -1983,6 +2001,8 @@ with open(newROMName, "r+b") as fh:
         "k_rool_head_left",
         "k_rool_head_right",
         "medal_rim",
+        "mush_top_0",
+        "mush_top_1",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

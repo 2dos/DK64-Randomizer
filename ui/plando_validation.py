@@ -43,6 +43,7 @@ from randomizer.Lists.Plandomizer import (
     WrinklyVanillaMap,
 )
 from randomizer.Lists.Switches import SwitchData
+from randomizer.Patching.Lib import plando_colors
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -266,7 +267,9 @@ def tns_locations_assigned() -> bool:
 
 def hint_text_validation_fn(hintString: str) -> str:
     """Return an error if the element's hint contains invalid characters."""
-    colors = ["orange", "red", "blue", "purple", "lightgreen", "magenta", "cyan", "rust", "paleblue", "green"]
+    colors = []
+    for key in plando_colors:
+        colors.extend(plando_colors[key])
     # Test the hint string without color tags.
     trimmedHintString = hintString
     for color in colors:
@@ -280,7 +283,7 @@ def hint_text_validation_fn(hintString: str) -> str:
         return errString
 
     # Ensure that the color tags are correctly utilized.
-    tagRegex = r"\[\/?(?:orange|red|blue|purple|lightgreen|magenta|cyan|rust|paleblue|green)\]"
+    tagRegex = rf"\[\/?(?:{'|'.join(colors)})\]"
     tags = re.finditer(tagRegex, hintString)
     currentTag = None
     for tag in tags:

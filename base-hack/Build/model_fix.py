@@ -520,6 +520,26 @@ with open(ROMName, "rb") as rom:
     with open("updated_medal.bin", "r+b") as fh:
         fh.seek(0x204)
         fh.write(SHINE_TEXTURE.to_bytes(4, "big"))
+    # Mushrooms
+    MUSH_TEXTURE_START = getBonusSkinOffset(ExtraTextures.MushTop0)
+    rom.seek(modeltwo_table + (0x1BE << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open(f"updated_mush_0x1BE.bin", "wb") as fh:
+        fh.write(data)
+    with open(f"updated_mush_0x1BE.bin", "r+b") as fh:
+        fh.seek(0x344)
+        fh.write(MUSH_TEXTURE_START.to_bytes(4, "big"))
+        fh.seek(0x3A4)
+        fh.write((MUSH_TEXTURE_START + 1).to_bytes(4, "big"))
+
     # Make inside match outside
     # SHINE_TEXTURE = 0xBAB
     # with open("updated_medal.bin", "r+b") as fh:
