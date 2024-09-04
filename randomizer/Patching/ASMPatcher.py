@@ -584,7 +584,8 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     expansion = static_expansion + actor_count
     flag_block_size = 0x320 + expansion
     targ_gb_bits = 7  # Max 127
-    added_bits = (targ_gb_bits - 3) * 8
+    GB_LEVEL_COUNT = 9  # 8
+    added_bits = ((targ_gb_bits - 3) * 8) + targ_gb_bits + 7 + 7
     kong_var_size = 0xA1 + added_bits
     file_info_location = flag_block_size + (5 * kong_var_size)
     file_default_size = file_info_location + 0x72
@@ -607,12 +608,18 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8060BEC6, Overlay.Static, file_info_location, offset_dict)
     # Increase GB Storage Size
     writeValue(ROM_COPY, 0x8060BE12, Overlay.Static, targ_gb_bits, offset_dict)  # Bit Size
-    writeValue(ROM_COPY, 0x8060BE06, Overlay.Static, targ_gb_bits << 3, offset_dict)  # Allocation for all levels
+    writeValue(ROM_COPY, 0x8060BE06, Overlay.Static, targ_gb_bits * GB_LEVEL_COUNT, offset_dict)  # Allocation for all levels
     writeValue(ROM_COPY, 0x8060BE26, Overlay.Static, 0x40C0, offset_dict)  # SLL 2 -> SLL 3
     writeValue(ROM_COPY, 0x8060BCC0, Overlay.Static, 0x24090000 | kong_var_size, offset_dict, 4)  # ADDIU $t1, $r0, kong_var_size
     writeValue(ROM_COPY, 0x8060BCC4, Overlay.Static, 0x01C90019, offset_dict, 4)  # MULTU $t1, $t6
     writeValue(ROM_COPY, 0x8060BCC8, Overlay.Static, 0x00004812, offset_dict, 4)  # MFLO $t1
     writeValue(ROM_COPY, 0x8060BCCC, Overlay.Static, 0, offset_dict, 4)  # NOP
+    writeValue(ROM_COPY, 0x8060BE3A, Overlay.Static, 7 * GB_LEVEL_COUNT, offset_dict)
+    writeValue(ROM_COPY, 0x8060BE6E, Overlay.Static, 7 * GB_LEVEL_COUNT, offset_dict)
+    writeValue(ROM_COPY, 0x8060DFDE, Overlay.Static, GB_LEVEL_COUNT, offset_dict)
+    writeValue(ROM_COPY, 0x8060DD42, Overlay.Static, GB_LEVEL_COUNT, offset_dict)
+    writeValue(ROM_COPY, 0x806FB42E, Overlay.Static, int(math.ceil(GB_LEVEL_COUNT / 4) * 4), offset_dict)
+    writeValue(ROM_COPY, 0x80029982, Overlay.Menu, int(math.ceil(GB_LEVEL_COUNT / 4) * 4), offset_dict)
     # Model 2 Start
     writeValue(ROM_COPY, 0x8060C2F2, Overlay.Static, flag_block_size, offset_dict)
     writeValue(ROM_COPY, 0x8060BCDE, Overlay.Static, flag_block_size, offset_dict)
@@ -1063,6 +1070,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806AC002, Overlay.Static, 0x530, offset_dict)
     writeValue(ROM_COPY, 0x806AC006, Overlay.Static, 0x5B0, offset_dict)
     writeValue(ROM_COPY, 0x8075054D, Overlay.Static, 0xD7, offset_dict, 1)  # Change DK Q Mark to #FFD700
+    writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
+    writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
     # Guard Animation Fix
     writeValue(ROM_COPY, 0x806AF8C6, Overlay.Static, 0x2C1, offset_dict)
     # Remove flare effect from guards
