@@ -588,9 +588,9 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     flag_block_size = 0x320 + expansion
     targ_gb_bits = 7  # Max 127
     GB_LEVEL_COUNT = 9 if ENABLE_HELM_GBS else 8
-    added_bits = ((targ_gb_bits - 3) * 8)
+    added_bits = (targ_gb_bits - 3) * 8
     if ENABLE_HELM_GBS:
-        added_bits += (targ_gb_bits + 7 + 7)
+        added_bits += targ_gb_bits + 7 + 7
     kong_var_size = 0xA1 + added_bits
     file_info_location = flag_block_size + (5 * kong_var_size)
     file_default_size = file_info_location + 0x72
