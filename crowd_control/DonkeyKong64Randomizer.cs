@@ -119,7 +119,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
 
     public override ROMTable ROMTable => new[]
     {
-        new ROMInfo("DK64 (US)", null, Patching.Ignore, ROMStatus.Ignore, s => Patching.MD5(s).Equals("9ec41abf2519fc386cadd0731f6e868c", StringComparison.InvariantCultureIgnoreCase), "This is the North American Vanilla ROM and is therefore not supported."),
+        new ROMInfo("DK64 (US)", null, Patching.Ignore, ROMStatus.NotSupported, s => Patching.MD5(s).Equals("9ec41abf2519fc386cadd0731f6e868c", StringComparison.InvariantCultureIgnoreCase), "This is the North American Vanilla ROM and is therefore not supported."),
         new ROMInfo("DK64 Randomizer", null, Patching.Ignore, ROMStatus.ValidPatched, s => Patching.Fingerprint(s, 0x3B, new byte[] { 0x4E, 0x44, 0x4F, 0x45 })),
     };
 
