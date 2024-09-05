@@ -292,12 +292,6 @@ void loadHooks(void) {
 	loadSingularHook(0x806198D4, &AlterHeadSize_0);
 }
 
-void skipDKTV(void) {
-	setNextTransitionType(1);
-	initiateTransition(MAP_MAINMENU, 0);
-	Mode = GAMEMODE_MAINMENU;
-}
-
 void initHack(int source) {
 	/**
 	 * @brief Initialize Hack
@@ -319,6 +313,7 @@ void initHack(int source) {
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
+			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			// HUD Re-allocation fixes
 			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
 			*(short*)(0x806FABAA) = ITEMID_TERMINATOR;
@@ -372,6 +367,7 @@ void initHack(int source) {
 			initActor(NEWACTOR_ZINGERFLAMETHROWER, 1, (void*)0x806B4958, ACTORMASTER_3D, 1, 0, 2, 183);
 			initActor(NEWACTOR_SCARAB, 1, &kioskBugCode, ACTORMASTER_3D, 1, 0, 2, 183);
 			setCollisionAddress(NEWACTOR_SCARAB, 1, (void*)0x8074B240, 1);
+			initActor(NEWACTOR_KOPDUMMY, 1, &dummyGuardCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			// Kong Rando
 			initKongRando();
             initQoL(); // Also includes initializing spawn point and HUD realignment

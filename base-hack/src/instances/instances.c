@@ -1411,9 +1411,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -18) {
 		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	}
-	InstanceScriptParams[1] = id;
-	InstanceScriptParams[2] = index;
-	InstanceScriptParams[3] = param2;
 	return 0;
 }
 
