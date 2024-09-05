@@ -815,6 +815,7 @@ class Spoiler:
                 Transitions.IslesMainToForestLobby: Levels.FungiForest,
                 Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
                 Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
+                Transitions.IslesMainToHelmLobby: Levels.HideoutHelm,
             }
             lobby_exit_order = {
                 Transitions.IslesJapesLobbyToMain: Levels.JungleJapes,
@@ -824,6 +825,7 @@ class Spoiler:
                 Transitions.IslesForestLobbyToMain: Levels.FungiForest,
                 Transitions.IslesCavesLobbyToMain: Levels.CrystalCaves,
                 Transitions.IslesCastleLobbyToMain: Levels.CreepyCastle,
+                Transitions.IslesHelmLobbyToMain: Levels.HideoutHelm,
             }
             for transition, vanilla_level in lobby_entrance_order.items():
                 shuffled_level = lobby_exit_order[self.shuffled_exit_data[transition].reverse]
@@ -880,6 +882,7 @@ class Spoiler:
                 "Fungi Forest": self.settings.switch_allocation[Levels.FungiForest],
                 "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
                 "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
+                # "Hideout Helm": self.settings.switch_allocation[Levels.HideoutHelm],
             }
 
         if len(self.microhints) > 0:

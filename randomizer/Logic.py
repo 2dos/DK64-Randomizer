@@ -1009,7 +1009,7 @@ class LogicVarHolder:
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
         if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
-            order_of_level = 7  # Guaranteed to be 1-7 here
+            order_of_level = 8  # Guaranteed to be 1-8 here
             for level_order in self.settings.level_order:
                 if self.settings.level_order[level_order] == level:
                     order_of_level = level_order
@@ -1030,7 +1030,7 @@ class LogicVarHolder:
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
         if level_order_matters:
             # Levels have some special requirements depending on where they fall in the level order
-            order_of_level = 8  # If order_of_level remains unchanged in the coming loop, then the level is Helm which is always 8th
+            order_of_level = 8
             order_of_aztec = 0
             for level_order in self.settings.level_order:
                 if self.settings.level_order[level_order] == level:
@@ -1156,7 +1156,7 @@ class LogicVarHolder:
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
         have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
         # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
-        required_level_order = max(2, min(ceil(self.settings.medal_requirement / 4), 6))  # At least level 2 to give space for medal placements, at most level 6 to allow shenanigans
+        required_level_order = max(2, min(ceil(self.settings.medal_requirement / 4), 7))  # At least level 2 to give space for medal placements, at most level 6 to allow shenanigans
         return have_enough_medals and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 
     def CanGetRarewareGB(self):

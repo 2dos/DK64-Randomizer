@@ -46,20 +46,18 @@
                                    data-toggle="tooltip"
                                    title="You can adjust each individual B Locker amount to any number between 0-200.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your B Locker settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
                         </td>
-                        {% if i < 7 %}
-                            <td>
-                                <input class="form-control"
-                                       min="0"
-                                       max="500"
-                                       name="troff_{{ i }}"
-                                       id="troff_{{ i }}"
-                                       style="width: 100%"
-                                       value="{{ i+1 }}"
-                                       type="number"
-                                       data-toggle="tooltip"
-                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your Troff n Scoff settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
-                            </td>
-                        {% endif %}
+                        <td>
+                            <input class="form-control"
+                                    min="0"
+                                    max="500"
+                                    name="troff_{{ i }}"
+                                    id="troff_{{ i }}"
+                                    style="width: 100%"
+                                    value="{{ i+1 }}"
+                                    type="number"
+                                    data-toggle="tooltip"
+                                    title="You can adjust each individual Troff n Scoff amount to any number between 1-500.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your Troff n Scoff settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>

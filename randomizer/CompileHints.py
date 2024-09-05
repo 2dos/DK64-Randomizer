@@ -136,6 +136,7 @@ class StartingSpoiler:
                 settings.level_order[5],
                 settings.level_order[6],
                 settings.level_order[7],
+                settings.level_order[8],
             ]
 
     def toJSON(self):

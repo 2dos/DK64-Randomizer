@@ -26,6 +26,7 @@ LobbyEntrancePool = [
     Transitions.IslesMainToForestLobby,
     Transitions.IslesMainToCavesLobby,
     Transitions.IslesMainToCastleLobby,
+    Transitions.IslesMainToHelmLobby,
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.
@@ -217,9 +218,10 @@ def ShuffleExits(spoiler):
             new_level_order = GenerateLevelOrderUnrestricted(settings)
         ShuffleLevelExits(settings, newLevelOrder=new_level_order)
         if settings.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3]
-            for x in range(7):
-                settings.switch_allocation[settings.level_order[x + 1]] = allocation[x]
+            allocation = [1, 1, 1, 1, 2, 2, 3, 3]
+            for x in range(8):
+                level = settings.level_order[x + 1]
+                settings.switch_allocation[level] = allocation[x]
     elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
         frontpool = []
         backpool = []
@@ -264,6 +266,7 @@ def UpdateLevelProgression(settings: Settings):
         Regions.FungiForestLobby,
         Regions.CrystalCavesLobby,
         Regions.CreepyCastleLobby,
+        Regions.HideoutHelmLobby,
     ]
     for levelIndex in range(len(lobbies)):
         newIndex = levelIndex
@@ -300,8 +303,9 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
         Transitions.IslesMainToForestLobby: Levels.FungiForest,
         Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
         Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
+        Transitions.IslesMainToHelmLobby: Levels.HideoutHelm,
     }
-    shuffledLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
+    shuffledLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
@@ -352,8 +356,8 @@ def GenerateLevelOrderWithRestrictions(settings: Settings):
 
 def GenerateLevelOrderUnrestricted(settings):
     """Generate a level order without Kong placement restrictions."""
-    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
-    unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
+    unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle, Levels.HideoutHelm]
     if settings.enable_plandomizer:
         for i in range(len(newLevelOrder.keys())):
             if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
@@ -434,6 +438,7 @@ def GenerateLevelOrderForOneStartingKong(settings):
     galleonIndex = remainingLevels.pop()
     forestIndex = remainingLevels.pop()
     castleIndex = remainingLevels.pop()
+    helmIndex = remainingLevels.pop()
     newLevelOrder = {
         japesIndex: Levels.JungleJapes,
         aztecIndex: Levels.AngryAztec,
@@ -442,6 +447,7 @@ def GenerateLevelOrderForOneStartingKong(settings):
         forestIndex: Levels.FungiForest,
         cavesIndex: Levels.CrystalCaves,
         castleIndex: Levels.CreepyCastle,
+        helmIndex: Levels.HideoutHelm,
     }
     settings.level_order = newLevelOrder
     return newLevelOrder
