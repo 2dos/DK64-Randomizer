@@ -10,7 +10,7 @@ import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.ShuffleExits as ShuffleExits
-from randomizer.CompileHints import compileHints, compileMicrohints, compileSpoilerHints
+from randomizer.CompileHints import compileHints, compileMicrohints, compileSpoilerHints, getDoorRestrictionsForItem
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -758,6 +758,10 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
                 location.PlaceItem(spoiler, item)
                 # Make note of what hints are accessible without this WotH candidate in case it gets hinted later
                 AccessibleHintsForLocation[locationId] = spoiler.LogicVariables.Hints.copy()
+                # Some items have inherent door restrictions depending on the settings
+                restrictions = getDoorRestrictionsForItem(spoiler, item)
+                if len(restrictions) > 0:
+                    AccessibleHintsForLocation[locationId] = [hint for hint in AccessibleHintsForLocation[locationId] if hint in restrictions]
     # Record that dictionary of hint access for when we compile hints
     spoiler.accessible_hints_for_location = AccessibleHintsForLocation
     # Check if there are any empty spheres, if so remove them
