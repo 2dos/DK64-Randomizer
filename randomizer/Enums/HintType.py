@@ -28,6 +28,6 @@ class HintType(IntEnum):
     ForeseenPathless = auto()
     Multipath = auto()
     RegionItemCount = auto()
-    ItemRegion = auto()
+    ItemHinting = auto()
     Plando = auto()
     RequiredSlamHint = auto()
