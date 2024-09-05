@@ -1398,7 +1398,7 @@ int applyDamageMask(int player_index, int damage) {
 		// King Kut out death cutscene, force to 0
 		applied_multiplier = 0;
 	} else if (Rando.hard_mode.lava_water) {
-		if (Player->grounded_bitfield & 6) {
+		if (Player->grounded_bitfield & 4) {
 			// Underwater
 			applied_multiplier = 1;
 		}

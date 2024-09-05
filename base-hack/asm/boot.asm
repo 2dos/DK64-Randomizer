@@ -102,6 +102,15 @@ getFloatUpper:
 	JR 		ra
 	andi 	$v0, $v0, 0xFFFF
 
+callFunc:
+	addi $sp, $sp, -8
+	sw $ra, 0x4 ($sp)
+	jalr $a0
+	nop
+	lw $ra, 0x4 ($sp)
+	jr $ra
+	addiu $sp, $sp, 8
+
 	
 .align 0x10
 END:

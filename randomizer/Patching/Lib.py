@@ -255,6 +255,7 @@ class CustomActors(IntEnum):
     ZingerFlamethrower = auto()
     Scarab = auto()
     HintItem = auto()
+    KopDummy = auto()
 
 
 compatible_background_textures = {
