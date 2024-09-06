@@ -30,6 +30,7 @@ class Types(IntEnum):
     JunkItem = auto()
     Hint = auto()
     PreGivenMove = auto()
+    Climbing = auto()
     CrateItem = auto()
     Enemies = auto()
     NintendoCoin = auto()

@@ -347,6 +347,7 @@ file_dict = [
     File(name="Wrinkly Sprite", pointer_table_index=TableNames.TexturesHUD, file_index=108, source_file="assets/displays/wrinkly_sprite.png", texture_format=TextureFormat.IA8),
     File(name="Galleon K. Rool Ship", pointer_table_index=TableNames.ModelTwoGeometry, file_index=305, source_file="galleon_ship_krool.bin", target_size=0x2500),
     File(name="Banana Medal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x90, source_file="updated_medal.bin", do_not_delete_source=True),
+    File(name="Mushroom Red (Mush Puzzle)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x1BE, source_file="updated_mush_0x1BE.bin", do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()
@@ -494,6 +495,18 @@ file_dict.append(
         target_size=32 * 32 * 2,
     )
 )
+for x in range(2):
+    file_dict.append(
+        File(
+            name="Mush Top Texture (Duplicate)",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.MushTop0 + x),
+            source_file=f"assets/hash/mush_top_{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_delete_source=True,
+            target_size=32 * 64 * 2,
+        )
+    )
 
 for item in range(3):
     file_dict.append(
@@ -538,6 +551,9 @@ bloat_actors = [
     {"name": "Candy", "file": 0x12, "size": 0x64A0},
     {"name": "Kasplat", "file": 0x36, "size": 0x42F4},
     {"name": "Fairy", "file": 0x3C, "size": 0x1500},
+    {"name": "Zinger", "file": 0x1B, "size": 0xC00},
+    {"name": "Robo-Zinger", "file": 0x3F, "size": 0x1D00},
+    {"name": "Laser", "file": 0x86, "size": 0x600},
 ]
 
 for actor in bloat_actors:
@@ -630,7 +646,7 @@ for start in [4897, 4903, 4712, 4950, 4925]:
             )
         )
 
-for start in [0xD60, 0x67F, 0xD64, 0xD62, 0xD66, 0xD61, 0x680, 0xD65, 0xD63, 0xD67]:
+for start in [0xD60, 0xD64, 0xD62, 0xD66, 0xD61, 0xD65, 0xD63, 0xD67]:
     file_dict.append(
         File(
             name=f"Mushroom {start}",
@@ -1058,6 +1074,20 @@ colorblind_changes = [
     [0xF78, 0xF8F],  # Troff
     [0xE4D, 0xE4E],  # Banana Hoard
     [0xBAA, 0xBAA],  # Medal Handle Palette
+    [0x13B9, 0x13C3],  # Small Explosion
+    [0x12F4, 0x12F4],  # Boulder Texture
+    [0xDE1, 0xDE2],  # Boulder switch texture
+    [0xC2D, 0xC2E],  # Number Game Side
+    [0xF0A, 0xF0A],  # Zinger
+    [0x10A0, 0x10A0],  # Mechazinger
+    [0x10A2, 0x10A5],  # Mechazinger
+    [0x144B, 0x1452],  # Bouncing Melon (Minigame HUDs)
+    [0x110A, 0x1119],  # Spiders
+    [0x11F8, 0x11F8],  # Mush Men
+    [0x11FC, 0x1200],  # Mush Men
+    [0x1205, 0x1205],  # Mush Men
+    [0x1209, 0x120B],  # Mush Men
+    [0x67F, 0x680],  # Bouncy Shrooms
 ]
 
 kremling_dimensions = [
@@ -1722,6 +1752,11 @@ with open(newROMName, "r+b") as fh:
     fh.seek(ROM_DATA_OFFSET + 0x1E3)
     fh.write((2).to_bytes(1, "big"))
 
+    # Head Size
+    fh.seek(0x1FEE800)
+    for _ in range(0x100):
+        fh.write((0).to_bytes(1, "big"))  # Change to 0
+
     # Item Rando defaults
     # Blueprints
     fh.seek(0x1FF0E00)
@@ -1966,6 +2001,8 @@ with open(newROMName, "r+b") as fh:
         "k_rool_head_left",
         "k_rool_head_right",
         "medal_rim",
+        "mush_top_0",
+        "mush_top_1",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

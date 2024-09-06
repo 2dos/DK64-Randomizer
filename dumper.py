@@ -5,6 +5,7 @@ import json
 import os
 import sys
 import subprocess
+import re
 from copy import deepcopy
 from enum import IntEnum, auto
 
@@ -40,6 +41,7 @@ class Dumpers(IntEnum):
     Fairies = auto()
     Kasplats = auto()
     RandomSettings = auto()
+    PlandoColors = auto()
 
 
 def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_var=None, x_func=None, y_func=None, z_func=None) -> dict:
@@ -552,7 +554,62 @@ def dump_random_settings(format: str):
                 fh.write("\n")
 
 
-all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat", "random_settings"]
+def dump_plando_colors(format: str):
+    """Dump all random settings information."""
+    if format != "md":
+        print("Not dumping to markdown format, cannot dump random settings.")
+        return
+    data = None
+    color_data = {
+        # Light, Dark
+        "4": ["#a36200", "#ffa010"],
+        "5": ["#b00000", "#ff0000"],
+        "6": ["#2828ff", "#0c7ded"],
+        "7": ["#8000ff", "#bb1cff"],
+        "8": ["#008000", "#59ff64"],
+        "9": ["#b00058", "#e84898"],
+        "a": ["#008080", "#3ee1e1"],
+        "b": ["#c04040", "#d25757"],
+        "c": ["#132958", "#b5cdff"],
+        "d": ["#275e1e", "#00ce0e"],
+    }
+    with open("randomizer/Patching/Lib.py", "r") as fh:
+        lines = fh.readlines()
+        text = "{"
+        in_dict = False
+        for line in lines:
+            no_newline = line.replace("\n", "")
+            if no_newline == "}":
+                if in_dict:
+                    text += "}"
+                in_dict = False
+            if in_dict:
+                text += no_newline.strip()
+            if no_newline == "plando_colors = {":
+                in_dict = True
+        chars = list(color_data.keys())
+        for c in chars:
+            text = text.replace(f'"\\x0{c}"', f'"{c}"')
+        data = json.loads(re.sub(r",\s*([\]}])", r"\1", text))
+    with open(f"{LIST_DIRECTORY}/PlandoColors.MD", "w") as fh:
+        fh.write("This article covers the color formatting for plandomizer hints, and how to use it effectively\n")
+        fh.write("# Reference Images\n")
+        fh.write("<flex>\n")
+        fh.write("<imginfo header='Light Mode' subtitle='Lighter background for the vanilla feel' img='../static/img/light_mode.png'></imginfo>\n")
+        fh.write("<imginfo header='Dark Mode' subtitle='Dark background for those sensitive to brightness' img='../static/img/dark_mode.png'></imginfo>\n")
+        fh.write("</flex>\n")
+        fh.write("# Color Tags\n")
+        fh.write("| Primary Tag | Alternative Tags | Hex Colors | Example |\n")
+        fh.write("|-------------|------------------|------------|---------|\n")
+        for key in data:
+            primary_tag = f"[{data[key][0]}][/{data[key][0]}]"
+            alt_tags = [f"[{x}][/{x}]" for x in data[key][1:]]
+            fh.write(
+                f"| {primary_tag} | {'<br>'.join(alt_tags)} | Light Mode: {color_data[key][0].upper()}<br>Dark Mode: {color_data[key][1].upper()} | <span class='p-1' style='color:{color_data[key][0]}; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:{color_data[key][1]}; font-weight:bold'>DARK MODE</span> |\n"
+            )
+
+
+all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat", "random_settings", "plando_colors"]
 valid_args = all_args + ["all"]
 args = sys.argv[2:]
 if "all" in args:

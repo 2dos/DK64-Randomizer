@@ -43,6 +43,7 @@ from randomizer.Lists.Plandomizer import (
     WrinklyVanillaMap,
 )
 from randomizer.Lists.Switches import SwitchData
+from randomizer.Patching.Lib import plando_colors
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -266,7 +267,9 @@ def tns_locations_assigned() -> bool:
 
 def hint_text_validation_fn(hintString: str) -> str:
     """Return an error if the element's hint contains invalid characters."""
-    colors = ["orange", "red", "blue", "purple", "lightgreen", "magenta", "cyan", "rust", "paleblue", "green"]
+    colors = []
+    for key in plando_colors:
+        colors.extend(plando_colors[key])
     # Test the hint string without color tags.
     trimmedHintString = hintString
     for color in colors:
@@ -280,7 +283,7 @@ def hint_text_validation_fn(hintString: str) -> str:
         return errString
 
     # Ensure that the color tags are correctly utilized.
-    tagRegex = r"\[\/?(?:orange|red|blue|purple|lightgreen|magenta|cyan|rust|paleblue|green)\]"
+    tagRegex = rf"\[\/?(?:{'|'.join(colors)})\]"
     tags = re.finditer(tagRegex, hintString)
     currentTag = None
     for tag in tags:
@@ -560,27 +563,27 @@ def validate_level_order_no_duplicates(evt):
 
 @bind("change", "plando_krool_order_", 5)
 def validate_krool_order_no_duplicates(evt):
-    """Raise an error if the same Kong is chosen twice in the K. Rool order."""
-    kongDict = {}
-    # Count the instances of each Kong.
+    """Raise an error if the same boss is chosen twice in the K. Rool order."""
+    battleDict = {}
+    # Count the instances of each boss battle.
     for i in range(0, 5):
         kroolElemName = f"plando_krool_order_{i}"
         kroolOrderElem = js.document.getElementById(kroolElemName)
-        kong = kroolOrderElem.value
-        if kong in kongDict:
-            kongDict[kong].append(kroolElemName)
+        battle = kroolOrderElem.value
+        if battle in battleDict:
+            battleDict[battle].append(kroolElemName)
         else:
-            kongDict[kong] = [kroolElemName]
-    # Invalidate any selects that re-use the same Kong.
-    for kong, selects in kongDict.items():
-        if kong == "" or len(selects) == 1:
+            battleDict[battle] = [kroolElemName]
+    # Invalidate any selects that re-use the same battle.
+    for battle, selects in battleDict.items():
+        if battle == "" or len(selects) == 1:
             for select in selects:
                 selectElem = js.document.getElementById(select)
                 mark_option_valid(selectElem, ValidationError.krool_order_duplicates)
         else:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                errString = "The same Kong cannot be used twice in the K. Rool order."
+                errString = "The same boss battle cannot be used twice in the K. Rool order."
                 mark_option_invalid(selectElem, ValidationError.krool_order_duplicates, errString)
 
 
@@ -884,9 +887,17 @@ def enable_switch_plando(evt):
         switchElem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
         if switchsanity == "all":
             mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
+            # If this switch is currently set to its vanilla value, change it
+            # to "Randomize".
+            if switchElem.value == SwitchVanillaMap[switchEnum.name]:
+                switchElem.value = ""
         elif switchEnum in [Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport]:
             if switchsanity == "helm_access":
                 mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
+                # If this switch is currently set to its vanilla value, change
+                # it to "Randomize".
+                if switchElem.value == SwitchVanillaMap[switchEnum.name]:
+                    switchElem.value = ""
             else:
                 errString = 'To set this switch, Switchsanity must be set to "All" or "Helm Access Only".'
                 mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
@@ -1477,18 +1488,19 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
         else:
             levelOrderSet.add(level)
 
-    # Ensure that no Kong was selected more than once in the K. Rool order.
+    # Ensure that no boss battle was selected more than once in the K. Rool
+    # order.
     kroolOrderSet = set()
     for i in range(0, 5):
-        kong = plando_dict[f"plando_krool_order_{i}"]
-        if kong == PlandoItems.Randomize:
+        battle = plando_dict[f"plando_krool_order_{i}"]
+        if battle == PlandoItems.Randomize:
             continue
-        if kong in kroolOrderSet:
-            errString = "The same Kong cannot be used twice in the K. Rool order."
+        if battle in kroolOrderSet:
+            errString = "The same boss battle cannot be used twice in the K. Rool order."
             errList.append(errString)
             break
         else:
-            kroolOrderSet.add(kong)
+            kroolOrderSet.add(battle)
 
     # Ensure that no Kong was selected more than once in the Helm order.
     helmOrderSet = set()

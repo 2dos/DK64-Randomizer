@@ -361,6 +361,13 @@ void initItemRando(void) {
     *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
     *(short*)(0x806A8646) = screen_count; // Screen increase cap
 
+    // Head Size - It shouldn't be here, but haha funny game crash if placed in base init
+    int load_size = 0xED;
+    unsigned char* head_write = getFile(load_size, 0x1FEE800);
+    for (int i = 0; i < load_size; i++) {
+        HeadSize[i] = head_write[i];
+    }
+
     // BP Table
     int bp_size = 0x28;
     unsigned short* bp_write = getFile(bp_size << 1, 0x1FF0E00);

@@ -87,6 +87,10 @@ async def GenerateSpoiler(spoiler):
         if hint_attr in formatted_spoiler:
             formatted_spoiler["Hints"][hint_attr] = formatted_spoiler[hint_attr]
             formatted_spoiler.pop(hint_attr)
+    if "Hints" in formatted_spoiler:
+        if "Wrinkly Hints" in formatted_spoiler["Hints"]:
+            if "First Time Talk" in formatted_spoiler["Hints"]["Wrinkly Hints"]:
+                del formatted_spoiler["Hints"]["Wrinkly Hints"]["First Time Talk"]
     # Custom Locations
     formatted_spoiler["Misc Custom Locations"] = {}
     location_mapping = {

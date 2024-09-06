@@ -1,7 +1,7 @@
 @echo off
 set test_on=%1
 set python_ver=%2
-set use_compiled=1
+set use_compiled=0
 cls
 setlocal EnableDelayedExpansion
 for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"

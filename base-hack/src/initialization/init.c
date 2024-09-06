@@ -13,8 +13,7 @@
 #include "../../include/common.h"
 
 static char music_storage[MUSIC_SIZE];
-
-unsigned char BigHeadMode = 0;
+unsigned char HeadSize[MODEL_COUNT];
 
 char music_types[SONG_COUNT] = {
 	-1,
@@ -289,16 +288,8 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
-	if (Rando.big_head_mode) {
-		loadSingularHook(0x8061A4C8, &AlterHeadSize);
-		loadSingularHook(0x806198D4, &AlterHeadSize_0);
-	}
-}
-
-void skipDKTV(void) {
-	setNextTransitionType(1);
-	initiateTransition(MAP_MAINMENU, 0);
-	Mode = GAMEMODE_MAINMENU;
+	loadSingularHook(0x8061A4C8, &AlterHeadSize);
+	loadSingularHook(0x806198D4, &AlterHeadSize_0);
 }
 
 void initHack(int source) {
@@ -322,11 +313,7 @@ void initHack(int source) {
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
-			if (Rando.big_head_mode == 1) {
-				BigHeadMode = 0xFF;
-			} else if (Rando.big_head_mode == 2) {
-				BigHeadMode = 0x2F;
-			}
+			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			// HUD Re-allocation fixes
 			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
 			*(short*)(0x806FABAA) = ITEMID_TERMINATOR;
@@ -380,6 +367,7 @@ void initHack(int source) {
 			initActor(NEWACTOR_ZINGERFLAMETHROWER, 1, (void*)0x806B4958, ACTORMASTER_3D, 1, 0, 2, 183);
 			initActor(NEWACTOR_SCARAB, 1, &kioskBugCode, ACTORMASTER_3D, 1, 0, 2, 183);
 			setCollisionAddress(NEWACTOR_SCARAB, 1, (void*)0x8074B240, 1);
+			initActor(NEWACTOR_KOPDUMMY, 1, &dummyGuardCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			// Kong Rando
 			initKongRando();
             initQoL(); // Also includes initializing spawn point and HUD realignment

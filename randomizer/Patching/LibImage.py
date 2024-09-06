@@ -59,6 +59,8 @@ class ExtraTextures(IntEnum):
     Feather7 = auto()
     FoolOverlay = auto()
     MedalRim = auto()
+    MushTop0 = auto()
+    MushTop1 = auto()
 
 
 def getImageFromAddress(rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):

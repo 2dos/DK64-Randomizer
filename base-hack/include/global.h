@@ -65,6 +65,7 @@ extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
 
 extern int correctRefillCap(int index, int player);
+extern void cc_effect_handler(void);
 
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
@@ -145,6 +146,8 @@ extern void updateActorHandStates_gun(actorData* actor, int type);
 extern void clearGunHandler(actorData* actor);
 
 extern void guardCatch(void);
+extern void guardCatchInternal(void);
+extern void dummyGuardCode(void);
 extern void catchWarpHandle(void);
 extern void handleFootProgress(actorData* actor);
 extern void cancelCutscene(int enable_movement);
@@ -157,6 +160,8 @@ extern void adjustGunBone(playerData* player);
 
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
+extern int hasAccessToKong(int kong);
+extern void changeKong(int next_character);
 extern void toggleStandardAmmo(void);
 extern void initTagAnywhere(void);
 extern void initItemDropTable(void);
@@ -473,11 +478,12 @@ extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+extern int force_enable_diving_timer;
 
 extern unsigned int base_text_color;
 extern unsigned int emph_text_colors[10];
-extern unsigned char BigHeadMode;
-extern const actor_bitfield big_head_actors;
+extern unsigned char HeadSize[MODEL_COUNT];
+extern const char big_head_actors[MODEL_COUNT];
 
 // Items we're extern-ing for usage with "ASMPatcher.py"
 // DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING
@@ -486,6 +492,7 @@ extern drop_item drops[DROP_COUNT];
 extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
+extern ICE_TRAP_TYPES ice_trap_queued;
 extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];

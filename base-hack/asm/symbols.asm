@@ -84,6 +84,7 @@
 .definelabel Player, 0x807FBB4C
 .definelabel SwapObject, 0x807FC924
 .definelabel Character, 0x8074E77C
+.definelabel KongIndex, 0x807FD584
 .definelabel Camera, 0x807FB968
 .definelabel ISGActive, 0x80755070
 .definelabel ISGTimestampMajor, 0x807F5CE0
@@ -199,6 +200,7 @@
 .definelabel charspawnerflags, 0x80755DA8
 .definelabel songData, 0x80745658
 .definelabel songVolumes, 0x807454F0
+.definelabel compactSequencePlayers, 0x8076BF20
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8

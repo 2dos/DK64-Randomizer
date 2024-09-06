@@ -42,6 +42,7 @@ from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
+from randomizer.Patching.Lib import plando_colors
 
 if TYPE_CHECKING:
     from randomizer.Lists.WrinklyHints import HintLocation
@@ -445,7 +446,7 @@ hint_distribution_default = {
     HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
     HintType.RegionItemCount: 2,  # Also known as scouring hints
-    HintType.ItemRegion: 0,
+    HintType.ItemHinting: 0,
     HintType.Plando: 0,
     HintType.RequiredSlamHint: 1,  # Essentially the slam microhint placed on a door
 }
@@ -475,7 +476,7 @@ race_hint_distribution = {
     HintType.ForeseenPathless: 0,
     HintType.Multipath: 14,
     HintType.RegionItemCount: 3,
-    HintType.ItemRegion: 0,
+    HintType.ItemHinting: 0,
     HintType.Plando: 0,
     HintType.RequiredSlamHint: 0,
 }
@@ -504,7 +505,7 @@ item_hint_distribution = {
     HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
     HintType.RegionItemCount: 0,
-    HintType.ItemRegion: 35,
+    HintType.ItemHinting: 35,
     HintType.Plando: 0,
     HintType.RequiredSlamHint: 0,
 }
@@ -591,10 +592,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         HintType.RequiredWinConditionHint,
         HintType.RequiredHelmDoorHint,
         HintType.Multipath,
-        HintType.ItemRegion,
+        HintType.ItemHinting,
         HintType.Plando,
         HintType.RequiredSlamHint,
-    ]  # Some hint types cannot have their value changed
+    ]  # Some hint types cannot have their value changed... unless plando gets in the way
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
     # If we're using the racing hints preset, we use the predetermined distribution with no exceptions
@@ -635,11 +636,11 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If we're doing the item-hinting system, use that distribution
     elif spoiler.settings.wrinkly_hints in (WrinklyHints.item_hinting, WrinklyHints.item_hinting_advanced):
         hint_distribution = item_hint_distribution.copy()
-        hint_distribution[HintType.ItemRegion] = HINT_CAP
+        hint_distribution[HintType.ItemHinting] = HINT_CAP
         if spoiler.settings.enable_plandomizer:
             hint_distribution[HintType.Plando] = plando_hints_placed
-            hint_distribution[HintType.ItemRegion] -= plando_hints_placed
-        valid_types = [HintType.ItemRegion, HintType.Joke]
+            hint_distribution[HintType.ItemHinting] -= plando_hints_placed
+        valid_types = [HintType.ItemHinting, HintType.Joke]
         # Build the list of valid hint types
         # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
         if (
@@ -649,22 +650,23 @@ def compileHints(spoiler: Spoiler) -> bool:
         ):
             valid_types.append(HintType.KRoolOrder)
             hint_distribution[HintType.KRoolOrder] = 1
-            hint_distribution[HintType.ItemRegion] -= 1
+            hint_distribution[HintType.ItemHinting] -= 1
         # Helm order hint has been moved to Snide
         # If Helm is live it is guaranteed a hint in this distribution
         # if spoiler.settings.helm_setting != HelmSetting.skip_all and (spoiler.settings.helm_phase_count < 5 or spoiler.settings.helm_random):
         #     valid_types.append(HintType.HelmOrder)
         #     hint_distribution[HintType.HelmOrder] = 1
-        #     hint_distribution[HintType.ItemRegion] -= 1
+        #     hint_distribution[HintType.ItemHinting] -= 1
         # Each random Helm door is also guaranteed a hint
         if spoiler.settings.crown_door_random or spoiler.settings.coin_door_random:
             valid_types.append(HintType.RequiredHelmDoorHint)
             if spoiler.settings.crown_door_random:
                 hint_distribution[HintType.RequiredHelmDoorHint] += 1
-                hint_distribution[HintType.ItemRegion] -= 1
+                hint_distribution[HintType.ItemHinting] -= 1
             if spoiler.settings.coin_door_random:
                 hint_distribution[HintType.RequiredHelmDoorHint] += 1
-                hint_distribution[HintType.ItemRegion] -= 1
+                hint_distribution[HintType.ItemHinting] -= 1
+        hint_distribution[HintType.ItemHinting] = max(0, hint_distribution[HintType.ItemHinting])
         # These filler hint types should never get added if you have enough moves placed in the world.
         # These would only be relevant if you picked this hint system and also started with a ton of moves which might error anyway. (Why would you ever do this?)
         if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
@@ -688,8 +690,17 @@ def compileHints(spoiler: Spoiler) -> bool:
         all_hintable_moves = ItemPool.AllKongMoves() + ItemPool.TrainingBarrelAbilities() + kongs_to_hint
         if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             all_hintable_moves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
-        if spoiler.settings.shuffle_items and Types.Bean in spoiler.settings.shuffled_location_types:
-            all_hintable_moves.append(Items.Bean)
+        if spoiler.settings.shuffle_items:
+            if Types.Bean in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.append(Items.Bean)
+            if Types.Cranky in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.append(Items.Cranky)
+            if Types.Funky in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.append(Items.Funky)
+            if Types.Candy in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.append(Items.Candy)
+            if Types.Snide in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.append(Items.Snide)
         optional_hintable_locations = []
         slam_locations = []
         # Loop through all locations, finding the location of all of these hintable moves
@@ -709,19 +720,21 @@ def compileHints(spoiler: Spoiler) -> bool:
             # To be hintable, it can't be a starting move
             elif location.item in all_hintable_moves:
                 optional_hintable_locations.append(id)
+        # Sort the locations we plan on hinting by the number of doors they have available - this should roughly place hints in order of importance
+        item_region_locations_to_hint.sort(key=lambda loc_id: len(spoiler.accessible_hints_for_location[loc_id]))
         # If there's room, always hint a slam if we haven't hinted one already
         hinted_slam_locations = [loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove)]
-        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(hinted_slam_locations) < 2:
+        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemHinting] and len(hinted_slam_locations) < 2:
             loc_to_hint = random.choice([loc for loc in slam_locations if loc not in hinted_slam_locations])
             item_region_locations_to_hint.append(loc_to_hint)
             optional_hintable_locations.remove(loc_to_hint)
         # Fill with other random move locations as best as we can
         random.shuffle(optional_hintable_locations)
-        while len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(optional_hintable_locations) > 0:
+        while len(item_region_locations_to_hint) < hint_distribution[HintType.ItemHinting] and len(optional_hintable_locations) > 0:
             item_region_locations_to_hint.append(optional_hintable_locations.pop())
         # If there's so many WotH things we can't hint them all, some WotH things will go unhinted. Unlucky.
-        if len(item_region_locations_to_hint) > hint_distribution[HintType.ItemRegion]:
-            too_many_count = len(item_region_locations_to_hint) - hint_distribution[HintType.ItemRegion]
+        if len(item_region_locations_to_hint) > hint_distribution[HintType.ItemHinting]:
+            too_many_count = len(item_region_locations_to_hint) - hint_distribution[HintType.ItemHinting]
             # That said, whatever goes unhinted probably shouldn't be something important
             less_important_location_ids = []
             for loc_id in item_region_locations_to_hint:
@@ -730,11 +743,18 @@ def compileHints(spoiler: Spoiler) -> bool:
                     less_important_location_ids.append(loc_id)
             # Randomly remove some of them so we don't bias towards early/late items - if you miss it, unlucky
             random.shuffle(less_important_location_ids)
-            for i in range(too_many_count):
-                item_region_locations_to_hint.remove(less_important_location_ids[i])
+            while too_many_count > 0:
+                # If we can, remove less important moves first
+                if len(less_important_location_ids) > 0:
+                    item_region_locations_to_hint.remove(less_important_location_ids.pop())
+                # Otherwise, tough luck - this is probably just for plando though
+                else:
+                    removed_hint = random.choice(item_region_locations_to_hint)
+                    item_region_locations_to_hint.remove(removed_hint)
+                too_many_count -= 1
         # If you start with a ton of moves, there may be only a handful of things to hint
-        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion]:
-            hint_distribution[HintType.ItemRegion] = len(item_region_locations_to_hint)
+        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemHinting]:
+            hint_distribution[HintType.ItemHinting] = len(item_region_locations_to_hint)
         # Make sure we still have exactly 35 hints planned
         hint_count = 0
         for type in hint_distribution:
@@ -742,7 +762,18 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_count += hint_distribution[type]
             else:
                 hint_distribution[type] = 0
-        # We'll never be over the cap here, but in some cases we may be under the cap - fill extra hints if we need them
+        # We may be over the cap if plando wills it
+        while hint_count > HINT_CAP:
+            # If we can find an unlocked valid hint type (I think this is impossible?), let's remove that
+            unlocked_valid_hint_types = [typ for typ in valid_types if typ not in locked_hint_types and hint_distribution[typ] > 0]
+            if len(unlocked_valid_hint_types) > 0:
+                removed_type = random.choice(unlocked_valid_hint_types)
+            # Otherwise, remove anything that isn't a Plando hint - hopefully this doesn't brick the hints!
+            else:
+                removed_type = random.choice([typ for typ in valid_types if hint_distribution[typ] > 0 and typ != HintType.Plando])
+            hint_distribution[removed_type] -= 1
+            hint_count -= 1
+        # In some unusual cases we may be under the cap here - fill extra hints if we need them
         while hint_count < HINT_CAP:
             filler_type = random.choice(valid_types)
             if filler_type == HintType.Joke:
@@ -928,14 +959,20 @@ def compileHints(spoiler: Spoiler) -> bool:
         while hint_count > HINT_CAP:
             # In many settings, you may have more required hints than you have doors
             locked_hint_count = sum([hint_distribution[typ] for typ in locked_hint_types]) + sum([hint_distribution[typ] for typ in minned_hint_types])
-            # If this is the case (again, INSANELY rare) then you lose a random key hint
+            # If this is the case (again, INSANELY rare) then you lose a random path hint
             if locked_hint_count > HINT_CAP:
-                if HintType.Multipath in valid_types:
+                # Pull out path hints where possible - unlucky
+                if HintType.Multipath in valid_types and hint_distribution[HintType.Multipath] > 0:
                     hint_distribution[HintType.Multipath] -= 1
-                else:
+                elif hint_distribution[HintType.RequiredKeyHint] > 0:
                     key_to_lose_a_hint = random.choice([key for key in key_hint_dict.keys() if key_hint_dict[key] > 0])
                     key_hint_dict[key_to_lose_a_hint] -= 1
                     hint_distribution[HintType.RequiredKeyHint] -= 1
+                # We may have to remove a random required hint - this is highly unfortunate and hopefully should only happen in plando
+                else:
+                    # typ for typ in valid_types if hint_distribution[typ] > 0 and typ != HintType.Plando
+                    removed_type = random.choice([typ for typ in valid_types if hint_distribution[typ] > 0 and typ != HintType.Plando])
+                    hint_distribution[removed_type] -= 1
                 hint_count -= 1
                 continue
             # In all other cases, remove a random hint that is eligible to be removed
@@ -1014,33 +1051,34 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location = [hint for hint in hints if hint.level == Levels.CreepyCastle and hint.kong == Kongs.chunky][0]
             if hint_location.hint_type == HintType.Plando:
                 hint_location = getRandomHintLocation()
-                if hint_location is None:
-                    raise Exception("Hint Plandomizer leaves no room for RequiredSlamHint")
-        # Loop through locations looking for the slams - from prior calculations we can guarantee there are at least two in non-starting move locations
-        slam_levels = []
-        for id, location in spoiler.LocationList.items():
-            if location.item == Items.ProgressiveSlam and id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
-                if location.level not in slam_levels:
-                    slam_levels.append(location.level)
-        # Assemble a hint that resembles the microhint - only hint the levels the slams are in
-        slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
-        slam_text = " or ".join(slam_text_entries)
-        message = f"Still looking for some \x04super slam strength?\x04 Try looking in {slam_text}."
-        hint_location.hint_type = HintType.RequiredSlamHint
-        UpdateHint(hint_location, message)
+        # If hint_location is none, then there's no room for the slam hint. This is very likely plando's fault and intentionally done.
+        if hint_location is not None:
+            # Loop through locations looking for the slams - from prior calculations we can guarantee there are at least two in non-starting move locations
+            slam_levels = []
+            for id, location in spoiler.LocationList.items():
+                if location.item == Items.ProgressiveSlam and id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
+                    if location.level not in slam_levels:
+                        slam_levels.append(location.level)
+            # Assemble a hint that resembles the microhint - only hint the levels the slams are in
+            slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
+            slam_text = " or ".join(slam_text_entries)
+            message = f"Still looking for some \x04super slam strength?\x04 Try looking in {slam_text}."
+            hint_location.hint_type = HintType.RequiredSlamHint
+            UpdateHint(hint_location, message)
     # Item rando kong hints are required and highly restrictive, only hinted to free kongs before (or as) the location is available
     if hint_distribution[HintType.RequiredKongHint] > 0:
+        placed_requiredkonghints = 0
         # The length of this list should match hint_distribution[HintType.RequiredKongHint]
         kong_location_ids = [id for id, location in spoiler.LocationList.items() if location.item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)]
         for kong_location_id in kong_location_ids:
+            # In some rare circumstances, you may not have enough hints allocated for all kongs - whoever you missed a hint for is sad and you should feel bad
+            if placed_requiredkonghints >= hint_distribution[HintType.RequiredKongHint]:
+                break
             kong_location = spoiler.LocationList[kong_location_id]
             hint_options = []
             # Attempt to find a door that will be accessible before the Kong
             if kong_location_id in spoiler.accessible_hints_for_location.keys():  # This will fail if the Kong is not WotH
                 hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])  # This will return [] if there are no hint doors available
-            # Additionally, if progressive hints are on, make sure that all your kongs are hinted by the 20th hint (Galleon Chunky)
-            if spoiler.settings.enable_progressive_hints:
-                hint_options = [hint for hint in hint_options if hint.level in (Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon)]
             if len(hint_options) > 0:
                 hint_location = random.choice(hint_options)
             # If there are no doors available early (very rare) or the Kong is not WotH (obscenely rare) then just get a random one. Tough luck.
@@ -1080,6 +1118,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.related_location = kong_location_id
             hint_location.hint_type = HintType.RequiredKongHint
             UpdateHint(hint_location, message)
+            placed_requiredkonghints += 1
     # In non-item rando, Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
     hinted_kongs = []
     placed_kong_hints = 0
@@ -1165,16 +1204,13 @@ def compileHints(spoiler: Spoiler) -> bool:
         UpdateHint(hint_location, message)
 
     # Item region hints take up a ton of hint doors, and some hints have restrictions on placement
-    if hint_distribution[HintType.ItemRegion] > 0:
+    if hint_distribution[HintType.ItemHinting] > 0:
         # This array is arranged in such a way as to place the more important items to hint (kongs, keys, woth moves) first
         for loc_id in item_region_locations_to_hint:
             hint_location = None
             # If this hint does have hint door restrictions, attempt to abide by them. Items placed earlier are more likely to have restrictions, hence the rough order of hint placement.
             if loc_id in spoiler.accessible_hints_for_location.keys():
                 hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[loc_id])
-                # Additionally, if progressive hints are on and this is a Kong hint, make sure that all your Kongs are hinted by the 20th hint (Galleon Chunky)
-                if spoiler.settings.enable_progressive_hints and ItemList[spoiler.LocationList[loc_id].item].type == Types.Kong:
-                    hint_options = [hint for hint in hint_options if hint.level in (Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon)]
                 if len(hint_options) > 0:
                     hint_location = random.choice(hint_options)
             # If this location's goals do not restrict hint door location OR all the restricted hint door options are taken (staggeringly unlikely), get a random hint door
@@ -1204,6 +1240,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                     item_color = "\x06"
                 elif item.type == Types.TrainingBarrel:
                     item_name = "training moves"
+                elif item.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+                    item_name = "shopkeepers"
                 elif item.type == Types.Shop:
                     if item.kong == Kongs.any:
                         item_name = "shared kong moves"
@@ -1260,7 +1298,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 else:
                     message += f" Try looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]}."
             hint_location.related_location = loc_id
-            hint_location.hint_type = HintType.ItemRegion
+            hint_location.hint_type = HintType.ItemHinting
             UpdateHint(hint_location, message)
 
     # Multipath hints have some complicated restrictions on placement
@@ -1370,7 +1408,11 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Key location hints should be placed at or before the level they are for (e.g. Key 4 shows up in level 4 lobby or earlier)
     if hint_distribution[HintType.RequiredKeyHint] > 0:
+        placed_requiredkeyhints = 0
         for key_id in key_hint_dict:
+            # In some rare circumstances, you may not have enough hints allocated for all keys - probably not a problem cause these hints aren't real anymore
+            if placed_requiredkeyhints >= hint_distribution[HintType.RequiredKeyHint]:
+                break
             if key_hint_dict[key_id] == 0:
                 continue
             # For early Keys 1-2, place one hint with their required Kong and the level they're in
@@ -1410,6 +1452,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location.related_location = key_location_ids[key_id]
                 hint_location.hint_type = HintType.RequiredKeyHint
                 UpdateHint(hint_location, message)
+                placed_requiredkeyhints += 1
             # For later or complex Keys, place hints that hint the "path" to the key
             else:
                 # Prevent the same hint referring to the same location twice
@@ -1455,8 +1498,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hint_location.related_location = path_location_id
                     hint_location.hint_type = HintType.RequiredKeyHint
                     UpdateHint(hint_location, message)
+                    placed_requiredkeyhints += 1
 
     # Some win conditions need very specific items that we really should hint
+    # Path hints have been obsoleted by Multipath hints - if we ever undo that here's a todo list:
+    # - Prevent 35 plando hints from causing problems here (I don't think it will, but double check it)
     if hint_distribution[HintType.RequiredWinConditionHint] > 0:
         # To aid K. Rool goals create a number of path hints to help find items required specifically for K. Rool
         if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
@@ -1724,9 +1770,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Dictionaries of exceptions for locations and regions that have to be handled with care
         location_exceptions = {
             # Japes Diddy Top of Mountain cares much more about the Mine than the main area
-            Locations.JapesDiddyMountain: (Transitions.JapesMineToMain),
+            Locations.JapesDiddyMountain: [Regions.Mine, Maps.JapesMountain],
             # Forest Diddy Winch naturally needs to find the Winch room very badly
-            Locations.ForestDiddyCagedBanana: (Transitions.ForestWinchToMain),
+            Locations.ForestDiddyCagedBanana: [Regions.WinchRoom, Maps.ForestWinchRoom],
         }
         region_exceptions = {
             # Galleon ships share a map but have segmented sections. We want to be sure we're hinting the specific transition for each check.
@@ -1741,9 +1787,32 @@ def compileHints(spoiler: Spoiler) -> bool:
             Regions.Museum: (Transitions.CastleMuseumToMain),
             Regions.MuseumBehindGlass: (Transitions.CastleMuseumToBallroom, Transitions.CastleMuseumToCarRace),
         }
+        connector_maps = {
+            Maps.TrainingGrounds: [Regions.TrainingGrounds],
+            Maps.JungleJapesLobby: [Regions.JungleJapesLobby],
+            Maps.AngryAztecLobby: [Regions.AngryAztecLobby],
+            Maps.FranticFactoryLobby: [Regions.FranticFactoryLobby],
+            Maps.GloomyGalleonLobby: [Regions.GloomyGalleonLobby, Regions.GloomyGalleonLobbyEntrance],
+            Maps.FungiForestLobby: [Regions.FungiForestLobby],
+            Maps.CrystalCavesLobby: [Regions.CrystalCavesLobby],
+            Maps.CreepyCastleLobby: [Regions.CreepyCastleLobby],
+            Maps.HideoutHelmLobby: [Regions.HideoutHelmLobby],
+            Maps.ForestMillFront: [Regions.GrinderRoom],  # The Mini entrance counts
+            Maps.CastleMuseum: [Regions.MuseumBehindGlass],  # Weird, but technically a connector between MP and Mini entrances
+            Maps.CastleBallroom: [Regions.Ballroom],  # Also weird, as one side is all-kong and the other side is a MP pad
+            Maps.CastleCrypt: [Regions.Crypt],  # Similar to Ballroom, just replace MP pad with a Coconut + Grab locked door
+            Maps.JapesMountain: [Regions.Mine],  # If Diddy Minecart is WotH, we want to hint the way to get into the mountain, not the Minecart entrance
+            # These are not real connectors, as one of their entrances is a one-way ticket to zilch
+            # Maps.CastleGreenhouse: [Regions.Greenhouse],  # Always kicks you out to Castle Main
+            # Maps.CastleTree: [Regions.CastleTree],  # Always kicks you out to Castle Main
+            # These larger connectors have enough entrances it should be somewhat less painful to have to find them for a hinted entrance there
+            # Maps.ForestMillBack: [Regions.MillChunkyTinyArea],
+            # Maps.ForestGiantMushroom: [Regions.MushroomLower, Regions.MushroomLowerMid, Regions.MushroomMiddle, Regions.MushroomUpperMid, Regions.MushroomUpper, Regions.MushroomNightDoor],
+            # Maps.CastleUpperCave: [Regions.UpperCave],
+            # Maps.CastleLowerCave: [Regions.LowerCave],
+        }
         # First identify which maps contain WotH items - some maps are more interesting than others
         isolated_interesting_transitions = []
-        connector_interesting_transitions = []
         # Lists to prevent duplicate entrance hints from existing
         tracked_maps = []
         tracked_regions = []
@@ -1753,26 +1822,32 @@ def compileHints(spoiler: Spoiler) -> bool:
             # If Helm is not shuffled, Helm is not an interesting map - we know where it is
             if location.level == Levels.HideoutHelm and not spoiler.settings.shuffle_helm_location:
                 continue
-            # These types of locations (Helm locations are special) don't have a single map, so they don't really work for what we're trying to go for here
-            if location.level != Levels.HideoutHelm and location.type in (
-                Types.Shop,
-                Types.Medal,
-                Types.Key,
-                Types.RarewareCoin,
-                Types.TrainingBarrel,
-                Types.PreGivenMove,
-                Types.Cranky,
-                Types.Funky,
-                Types.Candy,
-                Types.Constant,
-                Types.IslesMedal,
-            ):
-                continue
-            region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
-            woth_map = GetMapId(region_id)
+            # Some locations are exceptions to their own positioning due to other circumstances - see the dict for details
+            if woth_location_id in location_exceptions.keys():
+                region_id = location_exceptions[woth_location_id][0]
+                woth_map = location_exceptions[woth_location_id][1]
+            # For every other normal location...
+            else:
+                # These types of locations (Helm locations are special) don't have a single map, so they don't really work for what we're trying to go for here
+                if location.level != Levels.HideoutHelm and location.type in (
+                    Types.Shop,  # TODO: Investigate the feasibility of hinting shops if they're outside of the level's main map (while still taking into consideration shop location shuffle)
+                    Types.Medal,
+                    Types.Key,
+                    Types.RarewareCoin,
+                    Types.TrainingBarrel,
+                    Types.PreGivenMove,
+                    Types.Cranky,
+                    Types.Funky,
+                    Types.Candy,
+                    Types.Constant,
+                    Types.IslesMedal,
+                ):
+                    continue
+                region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
+                woth_map = GetMapId(region_id)
             # Ignore the main map of each level, these should be fairly straightforward to find - mind the exceptions!
             main_level_maps = (Maps.Isles, Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
-            if woth_map in main_level_maps or woth_location_id in location_exceptions.keys():
+            if woth_map in main_level_maps:
                 continue
             # Blast maps all happen to be contained in the main map of the respective level
             if woth_map in (Maps.JapesBaboonBlast, Maps.AztecBaboonBlast, Maps.FactoryBaboonBlast, Maps.GalleonBaboonBlast, Maps.ForestBaboonBlast, Maps.CavesBaboonBlast, Maps.CastleBaboonBlast):
@@ -1794,21 +1869,71 @@ def compileHints(spoiler: Spoiler) -> bool:
                     destinationMap = GetMapId(shuffledBack.regionId)
                     destinationTransition = shuffledBack.reverse
                 else:
-                    destinationMap = exit.back.regionId
+                    destinationMap = GetMapId(exit.back.regionId)
                     destinationTransition = exit.back.reverse
+                hintable_transition_id = transitionId
                 # If this transition reaches our target map, it's a relevant entrance
                 if destinationMap == woth_map:
                     # UNLESS it falls afoul of the exceptions
                     # Regions that trigger the exception protocol must instead hit a very specific entrance
                     if region_id in region_exceptions.keys() and destinationTransition != region_exceptions[region_id]:
                         continue
-                    # Locations that trigger the exception protocol should instead hint a very specific entrance
-                    if woth_location_id in location_exceptions.keys() and destinationTransition != location_exceptions[region_id]:
-                        continue
-                    relevant_entrances.append(transitionId)
+                    # In coupled LZR, getting a connector's entrance hinted isn't really helpful, as you still have to find the connector
+                    if not spoiler.settings.decoupled_loading_zones:
+                        # If this location's source is a connector, dig deeper to find a transition to a non-connector map
+                        sourceMap = GetMapId(exit.region)
+                        if sourceMap in connector_maps.keys() and exit.region in connector_maps[sourceMap]:
+                            # Recursively find our way back to a non-connector non-deadend map
+                            source_is_connector_map = True
+                            goalRegion = exit.region
+                            goalMap = sourceMap
+                            seenMaps = [woth_map]
+                            while source_is_connector_map:
+                                found_at_least_one_connection = False
+                                for connectorTransitionId, connectorExit in ShufflableExits.items():
+                                    connectedMap = None
+                                    connectedTransition = None
+                                    # If the exit of this transition is shuffled, check the shuffled data, otherwise check the bases data
+                                    if connectorExit.shuffled:
+                                        shuffledConnectorBack = spoiler.shuffled_exit_data[connectorTransitionId]
+                                        connectedMap = GetMapId(shuffledConnectorBack.regionId)
+                                        connectedTransition = shuffledConnectorBack.reverse
+                                    else:
+                                        connectedMap = connectorExit.back.regionId
+                                        connectedTransition = connectorExit.back.reverse
+                                    # If this transition reaches our goal map AND is not the original goal, then this is the entrance that leads to the connector
+                                    if connectedMap == goalMap:
+                                        # UNLESS it falls afoul of the same exceptions
+                                        # No Locations that trigger the exception protocol are located in connectors (fortunately)
+                                        # Regions that trigger the exception protocol must instead hit a very specific entrance
+                                        if goalRegion in region_exceptions.keys() and connectedTransition != region_exceptions[goalRegion]:
+                                            continue
+                                        sourceMap = GetMapId(connectorExit.region)
+                                        # So long as we're not wrapping back on ourselves - we know this is a connector, so this won't be an issue... right?
+                                        # There *might* be a possibility that we get into some sort of connector loop
+                                        if sourceMap not in seenMaps:
+                                            # Here's the recursion: If the connector's connection is a connector, we have to go deeper
+                                            if sourceMap in connector_maps.keys() and exit.region in connector_maps[sourceMap]:
+                                                # Change the target map and restart the loop
+                                                seenMaps.append(goalMap)
+                                                goalMap = sourceMap
+                                                goalRegion = connectorExit.region
+                                                found_at_least_one_connection = True
+                                                break
+                                            else:
+                                                # We won - this entrance is the last step of getting back to here from a larger area
+                                                hintable_transition_id = connectorTransitionId
+                                                source_is_connector_map = False
+                                                found_at_least_one_connection = True
+                                                break
+                                # If we looked at every transition and didn't find a valid one, I think we found a loop? It's time to go just in case
+                                if not found_at_least_one_connection:
+                                    break
+                    # We now definitively know this transition will lead to our goal location, but is this transition accessible? We'll find out later.
+                    relevant_entrances.append(hintable_transition_id)
             tracked_maps.append(woth_map)
             tracked_regions.append(region_id)
-            # If Helm is eligible to be hinted, we may want to guarantee it gets hinted
+            # If Helm is eligible to be hinted, we may want to guarantee it gets hinted - note that Helm only ever has one entry transition
             if location.level == Levels.HideoutHelm and spoiler.settings.key_8_helm:
                 priority_transition_to_helm = relevant_entrances[0]
                 continue
@@ -1816,28 +1941,26 @@ def compileHints(spoiler: Spoiler) -> bool:
             if len(relevant_entrances) == 1:
                 isolated_interesting_transitions.append(relevant_entrances[0])
             # Every map has at least one entrance (or else you couldn't get to it, duh)
-            elif len(relevant_entrances) == 0:
-                print("No entrances found for map " + woth_map.name)  # This should never happen but it's left as a failsafe
-            else:
-                # For connectors, pick a random entrance. I hope it's good, may revisit this later after some testing.
-                # I can see foresee issues where it picks a crappy entrance from the upper tunnel, lower cave, or training grounds as a hint.
-                connector_interesting_transitions.append(random.choice(relevant_entrances))
+            # If there are no relevant entrances, it's probably a region accessed by unshuffled entrances (e.g. Chunky Minecart in coupled)
+            elif len(relevant_entrances) != 0:
+                # For connectors, pick the entrance that the playthrough finds first
+                for transition_id in spoiler.playthroughTransitionOrder:
+                    if transition_id in relevant_entrances:
+                        isolated_interesting_transitions.append(transition_id)
+                        break
         random.shuffle(isolated_interesting_transitions)
-        random.shuffle(connector_interesting_transitions)
         # If Helm access must be prioritized, force it to be hinted first
         if priority_transition_to_helm is not None:
             isolated_interesting_transitions.append(priority_transition_to_helm)
         # If there are more entrance hints planned than interesting transitions to hint, sounds like we need more WotH hints for the locations on larger maps
-        if len(isolated_interesting_transitions) + len(connector_interesting_transitions) < hint_distribution[HintType.EntranceV2]:
-            diff = hint_distribution[HintType.EntranceV2] - len(isolated_interesting_transitions) + len(connector_interesting_transitions)
+        if len(isolated_interesting_transitions) < hint_distribution[HintType.EntranceV2]:
+            diff = hint_distribution[HintType.EntranceV2] - len(isolated_interesting_transitions)
             hint_distribution[HintType.WothLocation] += diff
             hint_distribution[HintType.EntranceV2] -= diff
         for i in range(hint_distribution[HintType.EntranceV2]):
             transition_id_to_hint = None
             if len(isolated_interesting_transitions) > 0:
                 transition_id_to_hint = isolated_interesting_transitions.pop()
-            else:
-                transition_id_to_hint = connector_interesting_transitions.pop()
             hint_location = getRandomHintLocation()
             entranceName = ShufflableExits[transition_id_to_hint].name
             message = f"The area entered through \x08{entranceName}\x08 should be of great interest to your quest."
@@ -2146,6 +2269,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # If any Helm doors are random, place a hint for each random door somewhere
     if hint_distribution[HintType.RequiredHelmDoorHint] > 0:
+        placed_requiredhelmdoorhints = 0
         helmdoor_vars = {
             BarrierItems.GoldenBanana: "Golden Banana",
             BarrierItems.Blueprint: "Blueprint",
@@ -2169,7 +2293,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             message = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{spoiler.settings.crown_door_item_count} {item_name}\x04."
             hint_location.hint_type = HintType.RequiredHelmDoorHint
             UpdateHint(hint_location, message)
-        if spoiler.settings.coin_door_random:
+            placed_requiredhelmdoorhints += 1
+        if spoiler.settings.coin_door_random and placed_requiredhelmdoorhints < hint_distribution[HintType.RequiredHelmDoorHint]:
             item_name = helmdoor_vars[spoiler.settings.coin_door_item]
             if spoiler.settings.coin_door_item_count > 1:
                 if spoiler.settings.coin_door_item == BarrierItems.Fairy:
@@ -2290,7 +2415,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Evaluate the strength of the hints and attempt to distill it to a score
     spoiler.unhinted_score = -1
-    spoiler.poor_scoring_locations = {"N/A": "these hints do not get scored"}
+    spoiler.poor_scoring_locations = {"N/A": "this hint system does not get scored"}
     # This evaluation only matters with multipath hints
     if hint_distribution[HintType.Multipath] > 0:
         spoiler.unhinted_score = 0
@@ -2405,6 +2530,31 @@ def getHintLocationsForAccessibleHintItems(hint_item_ids: Union[Set[Items], List
         matching_hint = [hint for hint in hints if hint.level == item.level and hint.kong == item.kong][0]  # Should only match one
         accessible_hints.append(matching_hint)
     return [hint for hint in accessible_hints if hint.hint == ""]  # Filter out the occupied ones
+
+
+def getDoorRestrictionsForItem(spoiler: Spoiler, item: Items):
+    """Given the input item, return a list of HintLocation objects that hints for this item must be in."""
+    accessible_hints = []
+    # Progressive hints need additional restrictions to feel good
+    if spoiler.settings.enable_progressive_hints:
+        # If we're not in LZR, Keys that unlock levels are awful to get on the last few hints
+        if spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+            # In SLO, we know what order we'll find keys in, which can put early keys even earlier
+            if not spoiler.settings.hard_level_progression:
+                if item in (Items.JungleJapesKey, Items.AngryAztecKey):  # Key 1/2 hints by pack 5
+                    accessible_hints = [hint for hint in Items if hint >= Items.JapesDonkeyHint and hint <= Items.GalleonChunkyHint]
+                if item in (Items.FranticFactoryKey, Items.GloomyGalleonKey):  # Key 3/4 hints by pack 7
+                    accessible_hints = [hint for hint in Items if hint >= Items.JapesDonkeyHint and hint <= Items.CavesLankyHint]
+                if item == Items.FungiForestKey:  # Key 5 hints by pack 8
+                    accessible_hints = [hint for hint in Items if hint >= Items.JapesDonkeyHint and hint <= Items.CastleDiddyHint]
+            # We don't know what order we'll find these keys in, but level unlocking key hints should at least show up before last three hints
+            else:
+                if item in (Items.JungleJapesKey, Items.AngryAztecKey, Items.GloomyGalleonKey, Items.FungiForestKey):
+                    accessible_hints = [hint for hint in Items if hint >= Items.JapesDonkeyHint and hint <= Items.CastleDiddyHint]
+        # In progressive hints, Kongs hints must be available by or before pack 5
+        if item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky):
+            accessible_hints = [hint for hint in Items if hint >= Items.JapesDonkeyHint and hint <= Items.GalleonChunkyHint]
+    return accessible_hints
 
 
 def pushHintToList(hint: Hint):
@@ -2872,28 +3022,11 @@ def AssociateHintsWithFlags(spoiler):
 def ApplyColorToPlandoHint(hint):
     """Replace plandomizer color tags with the appropriate characters."""
     new_hint = hint
-    color_replace_dict = {
-        "[orange]": "\x04",
-        "[/orange]": "\x04",
-        "[red]": "\x05",
-        "[/red]": "\x05",
-        "[blue]": "\x06",
-        "[/blue]": "\x06",
-        "[purple]": "\x07",
-        "[/purple]": "\x07",
-        "[lightgreen]": "\x08",
-        "[/lightgreen]": "\x08",
-        "[magenta]": "\x09",
-        "[/magenta]": "\x09",
-        "[cyan]": "\x0a",
-        "[/cyan]": "\x0a",
-        "[rust]": "\x0b",
-        "[/rust]": "\x0b",
-        "[paleblue]": "\x0c",
-        "[/paleblue]": "\x0c",
-        "[green]": "\x0d",
-        "[/green]": "\x0d",
-    }
+    color_replace_dict = {}
+    for code in plando_colors:
+        for key in plando_colors[code]:
+            color_replace_dict[f"[{key}]"] = code
+            color_replace_dict[f"[/{key}]"] = code
     for color_tag, color_character in color_replace_dict.items():
         new_hint = new_hint.replace(color_tag, color_character)
     return new_hint

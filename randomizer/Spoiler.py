@@ -547,7 +547,7 @@ class Spoiler:
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
                 level = "Special"
-                if "Isles" in location.name or location.type in (Types.PreGivenMove, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+                if "Isles" in location.name or location.type in (Types.PreGivenMove, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     level = "DK Isles"
                 elif "Japes" in location.name:
                     level = "Jungle Japes"

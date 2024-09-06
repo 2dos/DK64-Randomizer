@@ -121,6 +121,7 @@ class CustomActors(IntEnum):
     ZingerFlamethrower = auto()
     Scarab = auto()
     HintItem = auto()
+    KopDummy = auto()
 
 
 base_potion = InGameItem(scale=0.25, bounce=True)

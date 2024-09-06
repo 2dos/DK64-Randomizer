@@ -28,6 +28,7 @@ LogicRegions = {
         LocationLogic(Locations.ShopOwner_Location03, lambda l: True),
         # Starting Moves
         LocationLogic(Locations.IslesFirstMove, lambda l: l.settings.fast_start_beginning_of_game),
+        LocationLogic(Locations.IslesClimbing, lambda l: True),
         LocationLogic(Locations.PreGiven_Location00, lambda l: True),
         LocationLogic(Locations.PreGiven_Location01, lambda l: True),
         LocationLogic(Locations.PreGiven_Location02, lambda l: True),

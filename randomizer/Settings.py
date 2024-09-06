@@ -23,7 +23,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Models import Model
+from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.SongType import SongType
@@ -499,6 +499,8 @@ class Settings:
         self.candy_cutscene_model = Model.Candy
         self.funky_cutscene_model = Model.Funky
         self.boot_cutscene_model = Model.Boot
+        #
+        self.minigame_melon_sprite = Sprite.BouncingMelon
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"
@@ -1126,6 +1128,7 @@ class Settings:
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
+                    self.shuffled_location_types.append(Types.Climbing)
                 self.shuffled_location_types.append(Types.PreGivenMove)
             if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
                 self.shuffled_location_types.append(Types.IslesMedal)
@@ -1633,6 +1636,9 @@ class Settings:
             for location_id in WrinklyHintLocations:
                 spoiler.LocationList[location_id].inaccessible = True
 
+        if Types.Climbing in self.shuffled_location_types:
+            spoiler.LocationList[Locations.IslesClimbing].inaccessible = True
+
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
             # To evenly distribute the locations blocked, we can use the fact there are 20 shops to our advantage
@@ -1796,7 +1802,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
-                self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
+                self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
             regular_items = (Types.Crown, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Pearl, Types.Bean, Types.Fairy)
             for item in regular_items:
                 if item in self.shuffled_location_types:

@@ -58,11 +58,13 @@ class BigHeadMode(IntEnum):
     off: Normal head size.
     big: Very big heads.
     small: Very small heads.
+    random: Head size will be random on a model-by-model basis
     """
 
     off = 0
     big = 1
     small = 2
+    random = 3
 
 
 class CBRando(IntEnum):

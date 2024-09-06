@@ -78,3 +78,4 @@
 .definelabel regularFrameLoop, 0x805FC2B0
 .definelabel wipeMallocSpace, 0x80611690
 .definelabel inDKTV, 0x807142D8
+.definelabel handleGamemodes, 0x80712BD4

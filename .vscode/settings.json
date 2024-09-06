@@ -8,6 +8,7 @@
     ],
     "python.testing.unittestEnabled": false,
     "files.associations": {
+        "*.code": "c",
         "common.h": "c",
         "xtree": "c",
         "tuple": "c",
@@ -16,6 +17,7 @@
         "xutility": "c",
         "common_enums.h": "c",
         "dynamic_structs.h": "c",
-        "common_structs.h": "c"
+        "common_structs.h": "c",
+        "libaudio.h": "c"
     }
 }
