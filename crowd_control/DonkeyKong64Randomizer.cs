@@ -113,13 +113,14 @@ public class DonkeyKong64Randomizer : N64EffectPack
         // Misc
         new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
         new("Get Out","get_out") { Price = 0, Description = "Gives the player 10 seconds to get into another map, otherwise they die.", Category="Misc" },
-        new("Flip Screen","flip_screen") { Price = 0, Description = "Flips the screen vertically.", Category="Misc" },
-        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 190, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 190 seconds.", Category="Misc" },
+        new("Flip Screen","flip_screen") { Price = 0, Duration = 5, Description = "Flips the screen vertically.", Category="Misc" },
+        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 188, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 188 seconds.", Category="Misc" },
     };
 
     public override ROMTable ROMTable => new[]
     {
-        new ROMInfo("Donkey Kong 64 Randomizer", "DonkeyKong64Randomizer.bps", Patching.BPS, ROMStatus.ValidUnpatched, s => Patching.MD5(s,"9ec41abf2519fc386cadd0731f6e868c"))
+        new ROMInfo("DK64 (US)", null, Patching.Ignore, ROMStatus.NotSupported, s => Patching.MD5(s).Equals("9ec41abf2519fc386cadd0731f6e868c", StringComparison.InvariantCultureIgnoreCase), "This is the North American Vanilla ROM and is therefore not supported."),
+        new ROMInfo("DK64 Randomizer", null, Patching.Ignore, ROMStatus.ValidPatched, s => Patching.Fingerprint(s, 0x3B, new byte[] { 0x4E, 0x44, 0x4F, 0x45 })),
     };
 
     protected override GameState GetGameState()
