@@ -3704,7 +3704,7 @@ crown_heads = (
     "Rabbit",
     "Beetle",
     "Vulture",
-    "Boulder"
+    "Boulder",
 )
 
 crown_tails = (
@@ -3784,7 +3784,7 @@ crown_tails = (
     "Donnybrook",
     "Tangle",
     "Crossfire",
-    "Battle Royale"
+    "Royale",
 )
 
 
