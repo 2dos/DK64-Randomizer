@@ -10,7 +10,7 @@
  */
 #include "../../include/common.h"
 
-static ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
+ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 static const map_bitfield banned_trap_maps = {
     .test_map = 0,
     .funkys_store = 1, // Reason: Shop

@@ -609,7 +609,6 @@ void getItem(int object_type) {
             // Rainbow Coin
             playSong(SONG_RAINBOWCOINGET, pickup_volume);
             hh_item = HHITEM_RAINBOWCOIN;
-            setFlag(FLAG_FIRST_COIN_COLLECTION, 1, FLAGTYPE_PERMANENT);
             forceDance();
             break;
         case 0xDD:

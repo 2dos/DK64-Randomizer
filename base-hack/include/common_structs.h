@@ -200,7 +200,9 @@ typedef struct playerData {
 	/* 0x064 */ char unk_64[0x6A-0x64];
 	/* 0x06A */ short grounded_bitfield;
 	/* 0x06C */ short unk_bitfield;
-	/* 0x06E */ char unk_6E[0x7C-0x6E];
+	/* 0x06E */ char unk_6E[0x78-0x6E];
+	/* 0x078 */ unsigned char sfx_floor;
+	/* 0x079 */ char unk_79[0x7C-0x79];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
@@ -238,14 +240,18 @@ typedef struct playerData {
 	/* 0x148 */ char unk_148[0x154 - 0x148];
 	/* 0x154 */ unsigned char control_state;
 	/* 0x155 */ char control_state_progress;
-	/* 0x156 */ char unk_156[0x168-0x156];
+	/* 0x156 */ char unk_156[0x15E - 0x156];
+	/* 0x15E */ unsigned char height;
+	/* 0x15F */ char unk_15F[0x168 - 0x15F];
 	/* 0x168 */ short updraft_target;
 	/* 0x16A */ unsigned char rgb_components[3];
 	/* 0x16D */ char unk_16D;
 	/* 0x16E */ char unk_16E; // shadow width or something
 	/* 0x16F */ char unk_16F[0x18A-0x16F];
 	/* 0x18A */ short moving_angle;
-	/* 0x18C */ char unk_18C[0x1B0-0x18C];
+	/* 0x18C */ char unk_18C[0x1A6-0x18C];
+	/* 0x1A6 */ short traction;
+	/* 0x1A8 */ char unk_1A8[0x1B0-0x1A8];
 	/* 0x1B0 */ float unk_1B0;
 	/* 0x1B4 */ char unk_1B4[0x1B8-0x1B4];
 	/* 0x1B8 */ float velocity_cap;
@@ -257,7 +263,8 @@ typedef struct playerData {
 	/* 0x1D0 */ short ostand_value;
 	/* 0x1D2 */ char unk_1D2[0x1D4-0x1D2];
 	/* 0x1D4 */ float blast_y_velocity;
-	/* 0x1D8 */ char unk_1D8[0x1E8-0x1D8];
+	/* 0x1D8 */ int unk_1D8;
+	/* 0x1DC */ char unk_1DC[0x1E8-0x1DC];
 	/* 0x1E8 */ float unk_1E8;
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
@@ -267,7 +274,8 @@ typedef struct playerData {
 	/* 0x211 */ char unk_211[0x23C - 0x211];
 	/* 0x23C */ short unk_rocketbarrel_value1;
 	/* 0x23E */ short unk_rocketbarrel_value2;
-	/* 0x240 */ char unk_240[0x248 - 0x240];
+	/* 0x240 */ short balloon_timer;
+	/* 0x242 */ char unk_242[0x248 - 0x242];
 	/* 0x248 */ short shockwave_timer;
 	/* 0x24A */ char unk_24A[0x254 - 0x24A];
 	/* 0x254 */ short invulnerability_timer;

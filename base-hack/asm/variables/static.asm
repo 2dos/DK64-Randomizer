@@ -24,3 +24,5 @@
 .definelabel SurfaceTypeInformation, 0x80748A90
 .definelabel CutsceneModelJumpTable, 0x8075BF08
 .definelabel KongRGBA, 0x8075054C
+.definelabel unkFloatArray, 0x80753250
+.definelabel BackflipVelArray, 0x8075371C

@@ -2563,6 +2563,7 @@ def writeMiscCosmeticChanges(settings):
                         dims = (32, 32)
                     else:
                         dims = (48, 42)
+                    print(table, hex(img))
                     melon_im = getImageFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
                     melon_im = hueShift(melon_im, shift)
                     melon_px = melon_im.load()
