@@ -1802,7 +1802,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
-                self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
+                self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
             regular_items = (Types.Crown, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Pearl, Types.Bean, Types.Fairy)
             for item in regular_items:
                 if item in self.shuffled_location_types:

@@ -845,6 +845,8 @@ class ExtraTextures(IntEnum):
     Feather7 = auto()
     FoolOverlay = auto()
     MedalRim = auto()
+    MushTop0 = auto()
+    MushTop1 = auto()
 
 
 class MoveTypes(IntEnum):

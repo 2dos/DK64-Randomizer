@@ -120,7 +120,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
     public override ROMTable ROMTable => new[]
     {
         new ROMInfo("DK64 (US)", null, Patching.Ignore, ROMStatus.NotSupported, s => Patching.MD5(s).Equals("9ec41abf2519fc386cadd0731f6e868c", StringComparison.InvariantCultureIgnoreCase), "This is the North American Vanilla ROM and is therefore not supported."),
-        new ROMInfo("DK64 Randomizer", null, Patching.Ignore, ROMStatus.ValidPatched, s => Patching.Fingerprint(s, 0x3B, new byte[] { 0x4E, 0x44, 0x4F, 0x45 })),
+        new ROMInfo("DK64 Randomizer", null, Patching.Ignore, ROMStatus.ValidPatched, s => Patching.Fingerprint(s, 0x3B, new byte[] { 0x4E, 0x44, 0x4F, 0x45 }))
     };
 
     protected override GameState GetGameState()
@@ -136,47 +136,58 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if (!Connector.Read8(ADDR_CUTSCENE_ACTIVE, out byte cutscene_state)) return GameState.Unknown;
         if (!Connector.ReadFloat(ADDR_TRANSITION_SPEED, out float transition_speed)) return GameState.Unknown;
         if (!Connector.ReadFloat(ADDR_STATE_POINTER, out float state_pointer)) return GameState.Unknown;
-        if (rando_version != 4) {
+        if (rando_version != 4)
+        {
             // Not randomizer or a currently supported version
             return GameState.Unknown;
         }
-        if (state_pointer == 0) {
+        if (state_pointer == 0)
+        {
             // CC Data not yet loaded
             return GameState.Unknown;
         }
-        if ((current_gamemode != 6) || (next_gamemode != 6)) {
+        if ((current_gamemode != 6) || (next_gamemode != 6))
+        {
             // Not in adventure mode
             return GameState.WrongMode;
         }
-        if (map_timer < 2) {
+        if (map_timer < 2)
+        {
             // Loading
             return GameState.BadPlayerState;
         }
-        if (player_pointer == 0) {
+        if (player_pointer == 0)
+        {
             // No player, also loading
             return GameState.BadPlayerState;
         }
-        if (Connector.IsNonZero8(ADDR_AUTOWALK_STATE)) {
+        if (Connector.IsNonZero8(ADDR_AUTOWALK_STATE))
+        {
             // Player is autowalking
             return GameState.BadPlayerState;
         }
-        if ((tb_void_byte & 3) != 0) {
+        if ((tb_void_byte & 3) != 0)
+        {
             // Player is pausing or is paused
             return GameState.Paused;
         }
-        if ((tb_void_byte & 0x30) == 0) {
+        if ((tb_void_byte & 0x30) == 0)
+        {
             // Player is in tag
             return GameState.BadPlayerState;
         }
-        if ((cutscene_state == 2) || (cutscene_state == 3)) {
+        if ((cutscene_state == 2) || (cutscene_state == 3))
+        {
             // In Arcade/Jetpac
             return GameState.SafeArea;
         }
-        if (cutscene_state != 0) {
+        if (cutscene_state != 0)
+        {
             // Cutscene is playing
             return GameState.Paused;
         }
-        if (transition_speed > 0.0f) {
+        if (transition_speed > 0.0f)
+        {
             // Transitioning to another map
             return GameState.BadPlayerState;
         }
@@ -220,9 +231,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
         result &= Connector.Read8(address + 1, out byte lower);
         short value = (short)((upper << 8) + lower);
         value += change;
-        if (value < lower_bound) {
+        if (value < lower_bound)
+        {
             value = lower_bound;
-        } else if (value > upper_bound) {
+        }
+        else if (value > upper_bound)
+        {
             value = upper_bound;
         }
         result &= Connector.Write8(address + 0, (byte)(value >> 8));
@@ -252,7 +266,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
 
     private bool WriteFloat(uint address, float value)
     {
-        int val_i = floattoint(value);   
+        int val_i = floattoint(value);
         return Write32(address, val_i);
     }
 
@@ -288,7 +302,8 @@ public class DonkeyKong64Randomizer : N64EffectPack
         result &= WriteFloat(0x80753588, (float)(-20 * scale)); // yaccel array
         result &= WriteFloat(0x8075358C, (float)(-20 * scale)); // yaccel array
         result &= WriteFloat(0x80753590, (float)(-30 * scale)); // yaccel array
-        for (byte i = 0; i < 7; i++) {
+        for (byte i = 0; i < 7; i++)
+        {
             result &= WriteFloat((uint)(0x807537A8 + (4 * i)), (float)(-10.66 * scale)); // 807537A8 array
             result &= WriteFloat((uint)(0x80753738 + (4 * i)), (float)(-14 * scale)); // 80753738 array
             result &= WriteFloat((uint)(0x80753024 + (4 * i)), (float)(-20 * scale)); // 80753024 array
@@ -381,10 +396,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
         bool result = true;
         AddressChain ADDR_CONTROL_STATE = AddressChain.Begin(Connector).Move(ADDR_PLAYER_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x154);
         result &= Connector.Read8((uint)(ADDR_CONTROL_STATE.Address), out byte control_state_id);
-        if (!result) {
+        if (!result)
+        {
             return false;
         }
-        if (BANNED_CONTROL_STATES.Contains(control_state_id)) {
+        if (BANNED_CONTROL_STATES.Contains(control_state_id))
+        {
             return false;
         }
         return true;
@@ -400,7 +417,8 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if (!Connector.Read8(ADDR_CURRENT_MAP, out byte map_id)) return false;
         uint level_addr = (uint)(ADDR_LEVEL_TABLE + map_id);
         if (!Connector.Read8(level_addr, out byte level_id)) return false;
-        if ((level_id == 9) || (level_id == 13)) {
+        if ((level_id == 9) || (level_id == 13))
+        {
             return false;
         }
         return true;
@@ -411,22 +429,26 @@ public class DonkeyKong64Randomizer : N64EffectPack
         switch (request.EffectID)
         {
             case "drunky_kong":
-                TryEffect(request,
+                StartTimed(request,
                     () => Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_READY),
-                    () => {
+                    () =>
+                    {
                         bool result = DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} gave you a bottle of rum.");
                         }
-                        return result;    
+                        return result;
                     });
                 return;
             case "disable_ta":
-                TryEffect(request,
+                StartTimed(request,
                     () => Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_READY),
-                    () => {
+                    () =>
+                    {
                         bool result = NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} disabled Tag Anywhere.");
                         }
                         return result;
@@ -434,35 +456,42 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return;
             case "ice_trap":
                 TryEffect(request,
-                    () => {
+                    () =>
+                    {
                         Connector.SendMessage($"State Address: {ICE_STATE}.");
                         return Connector.IsEqual8(ICE_STATE, (byte)CC_STATE.CC_READY);
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = ICE_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} made a fool out of you.");
                         }
                         return result;
                     });
                 return;
             case "rockfall":
-                TryEffect(request,
+                StartTimed(request,
                     () => Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_READY),
-                    () => {
+                    () =>
+                    {
                         bool result = ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} is raining down rocks.");
                         }
-                        return result; 
+                        return result;
                     });
                 return;
             case "play_the_rap":
-                TryEffect(request,
+                StartTimed(request,
                     () => Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_READY),
-                    () => {
+                    () =>
+                    {
                         bool result = RAP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} is appreciating Grant Kirkhope.");
                         }
                         return result;
@@ -470,58 +499,69 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return;
             case "spawn_kop":
                 TryEffect(request,
-                    () => {
+                    () =>
+                    {
                         bool result = Connector.IsEqual8(KOP_STATE, (byte)CC_STATE.CC_READY);
                         result &= isNotBonus();
-                        return result;    
+                        return result;
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = KOP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} recruited the best kop in the force (sorry, Service. 'Force' is too aggressive).");
                         }
-                        return result;    
+                        return result;
                     });
                 return;
             case "balloon":
                 TryEffect(request,
-                    () => {
+                    () =>
+                    {
                         bool result = true;
                         result &= Connector.IsEqual8(BALLOON_STATE, (byte)CC_STATE.CC_READY);
                         result &= isGoodMovementState();
                         return result;
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = BALLOON_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} inflated the balloon, just like a balloon.");
-                        }   
-                        return result; 
+                        }
+                        return result;
                     });
                 return;
             case "player_slip":
                 TryEffect(request,
-                    () => {
+                    () =>
+                    {
                         bool result = true;
                         result &= Connector.IsEqual8(SLIP_STATE, (byte)CC_STATE.CC_READY);
                         result &= isGoodMovementState();
                         return result;
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = SLIP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} placed a banana under your foot.");
 
                         }
-                        return result; 
+                        return result;
                     });
                 return;
             case "tag_kong":
-                TryEffect(request,
+                StartTimed(request,
                     () => Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_READY),
-                    () => {
+                    () =>
+                    {
                         bool result = TAG_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} changed your kong and disabled tag anywhere.");
                         }
                         return result;
@@ -530,68 +570,85 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "backflip":
                 TryEffect(request,
                     () => Connector.IsEqual8(BACKFLIP_STATE, (byte)CC_STATE.CC_READY),
-                    () => {
+                    () =>
+                    {
                         bool result = BACKFLIP_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} made your kong backflip.");
                         }
                         return result;
                     });
                 return;
             case "ice_floor":
-                TryEffect(request,
+                StartTimed(request,
                     () => Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_READY),
-                    () => {
+                    () =>
+                    {
                         bool result = ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} turned the floor into ice.");
                         }
-                        return result;    
+                        return result;
                     });
                 return;
             case "get_out":
                 TryEffect(request,
-                    () => {
+                    () =>
+                    {
                         bool result = true;
                         result &= Connector.IsEqual8(GETOUT_STATE, (byte)CC_STATE.CC_READY);
                         if (!Connector.Read8(ADDR_CURRENT_MAP, out byte map_id)) return false;
-                        if (BANNED_GETOUT_MAPS.Contains(map_id)) {
+                        if (BANNED_GETOUT_MAPS.Contains(map_id))
+                        {
                             result = false;
                         }
                         result &= isNotBonus();
                         return result;
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = GETOUT_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} is making you GET OUT!");
                         }
-                        return result;    
+                        return result;
                     });
                 return;
             case "give_coins":
                 TryEffect(request,
-                    () => {
-                        for (byte kong = 0; kong < 5; kong++) {
+                    () =>
+                    {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
                             if (!Connector.Read8((uint)(ADDR_KONG_BASE + (kong * 0x5E) + 7), out byte coin_count)) return false;
-                            if (coin_count < 255) {
+                            if (coin_count < 255)
+                            {
                                 return true;
                             }
                         }
                         return false;
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = true;
-                        for (byte kong = 0; kong < 5; kong++) {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
                             uint coin_addr = (uint)(ADDR_KONG_BASE + (kong * 0x5E) + 7);
                             result &= Connector.Read8(coin_addr, out byte coin_count);
-                            if (coin_count < (255 - COIN_CHANGE_AMOUNT)) {
+                            if (coin_count < (255 - COIN_CHANGE_AMOUNT))
+                            {
                                 result &= Connector.Write8(coin_addr, (byte)(coin_count + COIN_CHANGE_AMOUNT));
-                            } else {
+                            }
+                            else
+                            {
                                 result &= Connector.Write8(coin_addr, 255);
                             }
                         }
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} gave you coins. How generous.");
                         }
                         return result;
@@ -599,27 +656,36 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return;
             case "remove_coins":
                 TryEffect(request,
-                    () => {
-                        for (byte kong = 0; kong < 5; kong++) {
+                    () =>
+                    {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
                             if (!Connector.Read8((uint)(ADDR_KONG_BASE + (kong * 0x5E) + 7), out byte coin_count)) return false;
-                            if (coin_count > 0) {
+                            if (coin_count > 0)
+                            {
                                 return true;
                             }
                         }
                         return false;
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = true;
-                        for (byte kong = 0; kong < 5; kong++) {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
                             uint coin_addr = (uint)(ADDR_KONG_BASE + (kong * 0x5E) + 7);
                             result &= Connector.Read8(coin_addr, out byte coin_count);
-                            if (coin_count > COIN_CHANGE_AMOUNT) {
+                            if (coin_count > COIN_CHANGE_AMOUNT)
+                            {
                                 result &= Connector.Write8(coin_addr, (byte)(coin_count - COIN_CHANGE_AMOUNT));
-                            } else {
+                            }
+                            else
+                            {
                                 result &= Connector.Write8(coin_addr, 0);
                             }
                         }
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} took some coins away. Scandalous!");
                         }
                         return result;
@@ -628,7 +694,8 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "give_replenishibles":
                 TryEffect(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = true;
                         result &= Add16(ADDR_STANDARD_AMMO, 5, 0, 200);
                         result &= Add16(ADDR_HOMING_AMMO, 5, 0, 200);
@@ -636,10 +703,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         result &= Add16(ADDR_CRYSTALS, 150, 0, 3000);
                         result &= Add16(ADDR_FILM, 1, 0, 20);
                         result &= Add16(ADDR_GLOBAL_INSTRUMENT, 1, 0, 20);
-                        for (byte kong = 0; kong < 5; kong++) {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
                             result &= Add16((uint)(ADDR_KONG_BASE + (kong * 0x5E) + 8), 1, 0, 20);
                         }
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} restocked your inventory.");
                         }
                         return result;
@@ -648,7 +717,8 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "remove_replenishibles":
                 TryEffect(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = true;
                         result &= Write16(ADDR_STANDARD_AMMO, 0);
                         result &= Write16(ADDR_HOMING_AMMO, 0);
@@ -656,10 +726,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         result &= Write16(ADDR_CRYSTALS, 0);
                         result &= Write16(ADDR_FILM, 0);
                         result &= Write16(ADDR_GLOBAL_INSTRUMENT, 0);
-                        for (byte kong = 0; kong < 5; kong++) {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
                             result &= Write16((uint)(ADDR_KONG_BASE + (kong * 0x5E) + 8), 0);
                         }
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} took all your consumables.");
                         }
                         return result;
@@ -668,15 +740,19 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "give_gb":
                 TryEffect(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         byte min_kong = 0;
                         byte min_level = 0;
                         ushort min_gb = 65535;
                         bool result = true;
-                        for (byte kong = 0; kong < 5; kong++) {
-                            for (byte level = 0; level < 8; level++) {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
+                            for (byte level = 0; level < 8; level++)
+                            {
                                 result &= Connector.Read8((uint)(ADDR_KONG_BASE + (kong * 0x5E) + 0x43 + (2 * level)), out byte gb_count);
-                                if (gb_count < min_gb) {
+                                if (gb_count < min_gb)
+                                {
                                     min_gb = gb_count;
                                     min_kong = kong;
                                     min_level = level;
@@ -685,7 +761,8 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         }
                         uint gb_add_address = (uint)(ADDR_KONG_BASE + (min_kong * 0x5E) + 0x43 + (2 * min_level));
                         result &= Connector.Write8(gb_add_address, (byte)(min_gb + 1));
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"OHHHHHH BANANA! {request.DisplayViewer} gave you a banana.");
                         }
                         return result;
@@ -693,31 +770,40 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 return;
             case "remove_gb":
                 TryEffect(request,
-                    () => {
-                        for (byte kong = 0; kong < 5; kong++) {
-                            for (byte level = 0; level < 8; level++) {
+                    () =>
+                    {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
+                            for (byte level = 0; level < 8; level++)
+                            {
                                 uint gb_add_address = (uint)(ADDR_KONG_BASE + (kong * 0x5E) + 0x43 + (2 * level));
                                 if (!Connector.Read8(gb_add_address, out byte gb_count)) return false;
-                                if (gb_count > 0) {
+                                if (gb_count > 0)
+                                {
                                     return true;
                                 }
                             }
                         }
                         return false;
                     },
-                    () => {
+                    () =>
+                    {
                         bool result = true;
-                        for (byte kong = 0; kong < 5; kong++) {
-                            for (byte level = 0; level < 8; level++) {
+                        for (byte kong = 0; kong < 5; kong++)
+                        {
+                            for (byte level = 0; level < 8; level++)
+                            {
                                 uint gb_add_address = (uint)(ADDR_KONG_BASE + (kong * 0x5E) + 0x43 + (2 * level));
                                 result &= Connector.Read8(gb_add_address, out byte gb_count);
-                                if (gb_count > 0) {
+                                if (gb_count > 0)
+                                {
                                     result &= Connector.Write8(gb_add_address, (byte)(gb_count - 1));
                                     return result;
                                 }
                             }
                         }
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} stole one of your bananas.");
                         }
                         return result;
@@ -726,69 +812,81 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "refill_health":
                 TryEffect(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = true;
                         result &= Connector.Read8(ADDR_MELONS, out byte melon_count);
                         result &= Connector.Write8(ADDR_HEALTH, (byte)(melon_count * 4));
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} refilled your health.");
                         }
                         return result;
                     });
                 return;
             case "damage_ohko":
-                TryEffect(request,
+                StartTimed(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(12));
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} enabled One-Hit KO.");
                         }
                         return result;
                     });
                 return;
             case "damage_double":
-                TryEffect(request,
+                StartTimed(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = Connector.Write8(ADDR_APPLIED_DAMAGE_MULTIPLIER, (byte)(2));
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} enabled double damage.");
                         }
                         return result;
                     });
                 return;
             case "gravity_high":
-                TryEffect(request,
+                StartTimed(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = ChangeGravity(4.0f);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} relocated DK Isles to Jupiter.");
                         }
-                        return result;    
+                        return result;
                     });
                 return;
             case "gravity_low":
-                TryEffect(request,
+                StartTimed(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = ChangeGravity(0.25f);
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} relocated DK Isles to the moon.");
                         }
-                        return result;    
+                        return result;
                     });
                 return;
             case "flip_screen":
-                TryEffect(request,
+                StartTimed(request,
                     () => true,
-                    () => {
+                    () =>
+                    {
                         bool result = Connector.Write8(ADDR_BASE_ASPECT, (byte)(0xBF));
-                        if (result) {
+                        if (result)
+                        {
                             Connector.SendMessage($"{request.DisplayViewer} flipped the screen.");
                         }
-                        return result;    
+                        return result;
                     });
                 return;
             default:
@@ -806,22 +904,26 @@ public class DonkeyKong64Randomizer : N64EffectPack
             //(and thus the streamer) be in control of an effect's duration
             //rather than relying on fixed timers
             case "drunky_kong":
-                if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
                     return DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
             case "disable_ta":
-                if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
                     return NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
             case "rockfall":
-                if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
                     return ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
             case "play_the_rap":
-                if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
                     return RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
@@ -836,12 +938,14 @@ public class DonkeyKong64Randomizer : N64EffectPack
             case "flip_screen":
                 return resetScreen();
             case "tag_kong":
-                if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
                     return TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
             case "ice_floor":
-                if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED)) {
+                if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
                     return ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
@@ -853,25 +957,31 @@ public class DonkeyKong64Randomizer : N64EffectPack
     public override bool StopAllEffects()
     {
         bool result = base.StopAllEffects();
-        if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLED)) {
+        if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
             result &= DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
-        if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED)) {
+        if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
             result &= NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
-        if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLED)) {
+        if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
             result &= ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
-        if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED)) {
+        if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
             result &= RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
         result &= ChangeGravity(1);
         result &= resetDamageMultiplier();
         result &= resetScreen();
-        if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLED)) {
+        if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
             result &= TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
-        if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED)) {
+        if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
             result &= ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
         return result;

@@ -1918,8 +1918,8 @@ def recolorMushrooms():
     reference_mushroom_image_side1 = getImageFile(25, 0xD64, True, 64, 32, TextureFormat.RGBA5551)
     reference_mushroom_image_side2 = getImageFile(25, 0xD65, True, 64, 32, TextureFormat.RGBA5551)
     files_table_7 = [296, 295, 297, 299, 298]
-    files_table_25_side_1 = [0xD60, 0x67F, 0xD64, 0xD62, 0xD66]
-    files_table_25_side_2 = [0xD61, 0x680, 0xD65, 0xD63, 0xD67]
+    files_table_25_side_1 = [0xD60, getBonusSkinOffset(ExtraTextures.MushTop0), 0xD64, 0xD62, 0xD66]
+    files_table_25_side_2 = [0xD61, getBonusSkinOffset(ExtraTextures.MushTop1), 0xD65, 0xD63, 0xD67]
     for file in range(5):
         # Mushroom on the ceiling inside Fungi Forest Lobby
         mushroom_image = getImageFile(7, files_table_7[file], False, 32, 32, TextureFormat.RGBA5551)
@@ -2874,6 +2874,14 @@ def writeMiscCosmeticChanges(settings):
         }
         for img_index in spider_dims:
             hueShiftImageContainer(25, img_index, spider_dims[img_index][0], spider_dims[img_index][1], TextureFormat.RGBA5551, spider_shift)
+
+        mush_man_shift = getRandomHueShift()
+        for img_index in (0x11FC, 0x11FD, 0x11FE, 0x11FF, 0x1200, 0x1209, 0x120A, 0x120B):
+            hueShiftImageContainer(25, img_index, 1, 1372, TextureFormat.RGBA5551, mush_man_shift)
+        for img_index in (0x11F8, 0x1205):
+            hueShiftImageContainer(25, img_index, 1, 692, TextureFormat.RGBA5551, mush_man_shift)
+        for img_index in (0x67F, 0x680):
+            hueShiftImageContainer(25, img_index, 32, 64, TextureFormat.RGBA5551, mush_man_shift)
 
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)

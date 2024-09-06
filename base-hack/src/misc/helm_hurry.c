@@ -48,12 +48,9 @@ void checkTotalCache(void) {
     /**
      * @brief Compare variable values to their previously stored values to check for differences
      */
-    int current_gb_total = 0;
+    int current_gb_total = getTotalGBs();
     int current_kong_bitfield = 0;
     for (int kong = 0; kong < 5; kong++) {
-        for (int level = 0; level < 8; level++) {
-            current_gb_total += MovesBase[kong].gb_count[level];
-        }
         if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
             current_kong_bitfield |= (1 << kong);
         }
