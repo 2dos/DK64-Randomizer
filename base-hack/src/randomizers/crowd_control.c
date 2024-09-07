@@ -68,11 +68,14 @@ int cc_allower_generic(void) {
 }
 
 int cc_enabler_icetrap(void) {
-    queueIceTrap(ICETRAP_BUBBLE);
+    queueIceTrap(ICETRAP_SUPERBUBBLE);
     return 1;
 }
 
 int cc_allower_icetrap(void) {
+    if (isBannedTrapMap(CurrentMap, ICETRAP_SUPERBUBBLE)) {
+        return 0;
+    }
     return ice_trap_queued == ICETRAP_OFF;
 }
 
