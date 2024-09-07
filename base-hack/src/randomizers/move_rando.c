@@ -845,7 +845,7 @@ void getNextMoveText(void) {
 		}
 		if (start_hiding == 0) {
 			if (CurrentActorPointer_0->control_state != 0) {
-				addDLToOverlay((int)&displayMoveText, CurrentActorPointer_0, 3);
+				addDLToOverlay(&displayMoveText, CurrentActorPointer_0, 3);
 			}
 			if (CurrentActorPointer_0->actorType == 0x140) {
 				renderActor(CurrentActorPointer_0,0);
