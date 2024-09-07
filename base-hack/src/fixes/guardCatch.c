@@ -96,6 +96,8 @@ void WarpHandle(void) {
             initiateTransition(MAP_HELM,0); // Start
         }
         setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
+    } else if (inBossMap(CurrentMap, 1, 1, 1)) {
+        exitBoss();
     } else {
         voidWarp();
     }

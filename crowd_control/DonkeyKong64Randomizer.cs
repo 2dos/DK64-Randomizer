@@ -88,17 +88,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
     public override EffectList Effects { get; } = new List<Effect>
     {
         // Player
-        new("Drunk Kong","drunky_kong") { Price = 0, Duration = 5, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
-        new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 5, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
+        new("Drunk Kong","drunky_kong") { Price = 0, Duration = 10, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
+        new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 25, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
         new("Ice Trap the Player","ice_trap") { Price = 0, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
-        new("Spawn Rocks","rockfall") { Price = 0, Duration = 5, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
+        new("Spawn Rocks","rockfall") { Price = 0, Duration = 30, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
         new("Instant Balloon","balloon") { Price = 0, Description = "Inflate the balloon (kong) just like a balloon.", Category="Player" },
-        new("High Gravity","gravity_high") { Price = 0, Duration = 5, Description = "Crank(y) that gravity up to 11.", Category="Player" },
-        new("Low Gravity","gravity_low") { Price = 0, Duration = 5, Description = "Make the moonkick not so special anymore.", Category="Player" },
+        new("High Gravity","gravity_high") { Price = 0, Duration = 15, Description = "Crank(y) that gravity up to 11.", Category="Player" },
+        new("Low Gravity","gravity_low") { Price = 0, Duration = 15, Description = "Make the moonkick not so special anymore.", Category="Player" },
         new("Slip","player_slip") { Price = 0, Description = "Who placed a banana under the DK's foot?", Category="Player" },
-        new("Change Kong","tag_kong") { Price = 0, Duration = 5, Description = "Change the player to a different kong and lock tagging", Category="Player" },
+        new("Change Kong","tag_kong") { Price = 0, Duration = 20, Description = "Change the player to a different kong and lock tagging", Category="Player" },
         new("Do a Backflip","backflip") { Price = 0, Description = "Peppy says: 'Do a backflip'.", Category="Player" },
-        new("Ice Floor","ice_floor") { Price = 0, Duration = 5, Description = "Donkey goes weeeeeeee.", Category="Player" },
+        new("Ice Floor","ice_floor") { Price = 0, Duration = 20, Description = "Donkey goes weeeeeeee.", Category="Player" },
         // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
@@ -108,12 +108,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
         // Health
         new("Refill Health","refill_health") { Price = 0, Description = "Refills the player's health to max.", Category="Health" },
-        new("One Hit KO","damage_ohko") { Price = 0, Duration = 5, Description = "The player will be killed for any damage taken.", Category="Health" },
-        new("Double Damage","damage_double") { Price = 0, Duration = 5, Description = "The player will take double damage.", Category="Health" },
+        new("One Hit KO","damage_ohko") { Price = 0, Duration = 20, Description = "The player will be killed for any damage taken.", Category="Health" },
+        new("Double Damage","damage_double") { Price = 0, Duration = 30, Description = "The player will take double damage.", Category="Health" },
         // Misc
         new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
         new("Get Out","get_out") { Price = 0, Description = "Gives the player 10 seconds to get into another map, otherwise they die.", Category="Misc" },
-        new("Flip Screen","flip_screen") { Price = 0, Duration = 5, Description = "Flips the screen vertically.", Category="Misc" },
+        new("Flip Screen","flip_screen") { Price = 0, Duration = 10, Description = "Flips the screen vertically.", Category="Misc" },
         new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 188, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 188 seconds.", Category="Misc" },
     };
 
@@ -599,11 +599,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     {
                         bool result = true;
                         result &= Connector.IsEqual8(GETOUT_STATE, (byte)CC_STATE.CC_READY);
-                        if (!Connector.Read8(ADDR_CURRENT_MAP, out byte map_id)) return false;
-                        if (BANNED_GETOUT_MAPS.Contains(map_id))
-                        {
-                            result = false;
-                        }
+                        // Doesn't seem to break if started in K Rool
+                        // if (!Connector.Read8(ADDR_CURRENT_MAP, out byte map_id)) return false;
+                        // if (BANNED_GETOUT_MAPS.Contains(map_id))
+                        // {
+                        //     result = false;
+                        // }
                         result &= isNotBonus();
                         return result;
                     },
@@ -908,9 +909,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 {
                     return DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
+                if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
                 return true;
             case "disable_ta":
                 if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLING))
                 {
                     return NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
@@ -920,9 +929,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 {
                     return ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
+                if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
                 return true;
             case "play_the_rap":
                 if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLING))
                 {
                     return RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
@@ -942,9 +959,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 {
                     return TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
+                if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
                 return true;
             case "ice_floor":
                 if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLING))
                 {
                     return ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }

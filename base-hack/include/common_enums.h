@@ -1058,6 +1058,7 @@ typedef enum ICE_TRAP_TYPES {
     /* 0x001 */ ICETRAP_BUBBLE,
     /* 0x002 */ ICETRAP_REVERSECONTROLS,
     /* 0x003 */ ICETRAP_SLOWED,
+    /* 0x004 */ ICETRAP_SUPERBUBBLE, // Ignores a lot of map bans (For CC Only!!!!!!)
 } ICE_TRAP_TYPES;
 
 typedef enum PURCHASE_TYPES {

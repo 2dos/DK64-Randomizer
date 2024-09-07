@@ -57,6 +57,7 @@ This gives a golden banana to the player. Due to technical reasons, the golden b
 ### Remove a Golden Banana
 Removes a Golden banana from the player.
 
+## Health
 ### Refill Health
 Resets the player's health to it's fullest capacity
 
@@ -66,6 +67,7 @@ Sets the player's damage multiplier so that any damage will kill the player thro
 ### Double Damage
 Sets the player's damage multiplier to 2x. Any damage inflicted will be twice as much as usual. For example: Touching a beaver will do 2 quarter-melons worth of damage instead of 1. Like `One Hit KO`, this is a timed effect.
 
+## Misc
 ### Get Kaught
 Instantly spawns a kop in front of the player. It is hardcoded for this kop to instantly catch you, so evasion is impossible and you will be warped back to the start of the level upon getting caught.
 

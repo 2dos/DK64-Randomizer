@@ -284,7 +284,7 @@ extern void _guMtxF2L(void* mtx, void* unk0);
 extern void _guMtxXFML(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
 extern void _guMtxXFMF(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
 extern void* getTextPointer(int file, int text_index, int unk0);
-extern void addDLToOverlay(int code, void* actor, int delay);
+extern void addDLToOverlay(void* code, void* actor, int delay);
 extern int groundContactCheck(void);
 extern void groundContactSet(void);
 extern int getRefillCount(int item, int player);

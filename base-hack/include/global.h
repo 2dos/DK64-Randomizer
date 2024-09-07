@@ -339,6 +339,7 @@ extern void warpOutOfTraining(void);
 extern Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift);
 
 extern void initIceTrap(void);
+extern int isBannedTrapMap(maps map, ICE_TRAP_TYPES type);
 extern void queueIceTrap(ICE_TRAP_TYPES trap_type);
 extern void callIceTrap(void);
 extern int getPatchWorld(int index);

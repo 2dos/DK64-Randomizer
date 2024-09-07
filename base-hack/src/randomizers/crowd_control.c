@@ -68,11 +68,14 @@ int cc_allower_generic(void) {
 }
 
 int cc_enabler_icetrap(void) {
-    queueIceTrap(ICETRAP_BUBBLE);
+    queueIceTrap(ICETRAP_SUPERBUBBLE);
     return 1;
 }
 
 int cc_allower_icetrap(void) {
+    if (isBannedTrapMap(CurrentMap, ICETRAP_SUPERBUBBLE)) {
+        return 0;
+    }
     return ice_trap_queued == ICETRAP_OFF;
 }
 
@@ -170,13 +173,16 @@ void fakeGetOut(void) {
                     Player->hSpeed = 0.0f;
                     Player->control_state = 0xC;
                     Player->noclip = 0x3C;
+                    Player->invulnerability_timer = 0;
+                    CollectableBase.StoredDamage = -12;
+                    Player->strong_kong_ostand_bitfield &= ~0x10; // Disable Strong Kong
                     playCutscene((void*)0, 6, 5);
                     adjustProjectileSpawnPosition(Player->xPos, Player->yPos + 1.0f, Player->zPos);
                     spawnProjectile(99, 1, 0.5f, Player->xPos, Player->yPos, Player->zPos, 285.0f, timer);
                 }
                 getout_killed = 1;
             } else {
-                addDLToOverlay((int)&displayGetOutReticle, CurrentActorPointer_0, 3);
+                addDLToOverlay(&displayGetOutReticle, CurrentActorPointer_0, 3);
             }
         }
     }
