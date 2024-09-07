@@ -909,9 +909,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 {
                     return DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
+                if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
                 return true;
             case "disable_ta":
                 if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLING))
                 {
                     return NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
@@ -921,9 +929,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 {
                     return ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
+                if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
                 return true;
             case "play_the_rap":
                 if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLING))
                 {
                     return RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
@@ -943,9 +959,17 @@ public class DonkeyKong64Randomizer : N64EffectPack
                 {
                     return TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
+                if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
                 return true;
             case "ice_floor":
                 if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLING))
                 {
                     return ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
