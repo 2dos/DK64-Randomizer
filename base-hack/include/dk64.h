@@ -276,6 +276,7 @@ extern void save(void);
 extern void* getSpawnerTiedActor(short target_trigger, short props_change);
 
 extern void bananaslip(void);
+extern void setAnimalYAccel(void);
 
 extern void _guScaleF(void* mtx, int x, int y, int z);
 extern void _guTranslateF(void* mtx, float x, float y, float z);

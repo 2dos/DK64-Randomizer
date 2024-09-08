@@ -143,3 +143,4 @@
 .definelabel unkActorHandler, 0x80678CC8
 .definelabel getScreenDist, 0x80700AE4
 .definelabel getDistanceCap, 0x807009F4
+.definelabel setAnimalYAccel, 0x806CFECC

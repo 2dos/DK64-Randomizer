@@ -417,6 +417,9 @@ int canTagAnywhere(void) {
         if (CCEffectData->tag == CC_ENABLED) {
             return 0;
         }
+        if (CCEffectData->mini == CC_ENABLED) {
+            return 0;
+        }
     }
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
