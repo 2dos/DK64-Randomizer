@@ -33,6 +33,9 @@ public class DonkeyKong64Randomizer : N64EffectPack
         BACKFLIP_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x9);
         ICEFLOOR_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xA);
         GETOUT_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xB);
+        MINI_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xC);
+        BOULDER_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xD);
+        ANIMALTRANSFORM_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xE);
     }
 
     private AddressChain DRUNK_STATE;
@@ -47,6 +50,9 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private AddressChain BACKFLIP_STATE;
     private AddressChain ICEFLOOR_STATE;
     private AddressChain GETOUT_STATE;
+    private AddressChain MINI_STATE;
+    private AddressChain BOULDER_STATE;
+    private AddressChain ANIMALTRANSFORM_STATE;
 
     private const uint ADDR_STATE_POINTER = 0x807FFFB4;
     private const uint ADDR_MAP_TIMER = 0x8076A064;
@@ -91,7 +97,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Drunk Kong","drunky_kong") { Price = 0, Duration = 10, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
         new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 25, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
         new("Ice Trap the Player","ice_trap") { Price = 0, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
-        new("Spawn Rocks","rockfall") { Price = 0, Duration = 30, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
+        new("Spawn Stalactites","rockfall") { Price = 0, Duration = 30, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
         new("Instant Balloon","balloon") { Price = 0, Description = "Inflate the balloon (kong) just like a balloon.", Category="Player" },
         new("High Gravity","gravity_high") { Price = 0, Duration = 15, Description = "Crank(y) that gravity up to 11.", Category="Player" },
         new("Low Gravity","gravity_low") { Price = 0, Duration = 15, Description = "Make the moonkick not so special anymore.", Category="Player" },
@@ -99,6 +105,8 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Change Kong","tag_kong") { Price = 0, Duration = 20, Description = "Change the player to a different kong and lock tagging", Category="Player" },
         new("Do a Backflip","backflip") { Price = 0, Description = "Peppy says: 'Do a backflip'.", Category="Player" },
         new("Ice Floor","ice_floor") { Price = 0, Duration = 20, Description = "Donkey goes weeeeeeee.", Category="Player" },
+        new("Mini Monkey","force_mini") { Price = 0, Duration = 20, Description = "Shrink the player's size to suit their mood.", Category="Player" },
+        new("Transform into an Animal","animal_transform") { Price = 0, Duration = 15, Description = "Transforms the player into an animal. If they're in water, they'll be transformed to Enguarde, otherwise they'll be transformed to Rambi.", Category="Player" },
         // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
@@ -113,6 +121,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         // Misc
         new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
         new("Get Out","get_out") { Price = 0, Description = "Gives the player 10 seconds to get into another map, otherwise they die.", Category="Misc" },
+        new("Spawn a Boulder","spawn_boulder") { Price = 0, Description = "Spawns a boulder: Useful for breaking the logic of your favorite monkey game.", Category="Misc" },
         new("Flip Screen","flip_screen") { Price = 0, Duration = 10, Description = "Flips the screen vertically.", Category="Misc" },
         new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 188, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 188 seconds.", Category="Misc" },
     };
@@ -484,6 +493,32 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         return result;
                     });
                 return;
+            case "force_mini":
+                StartTimed(request,
+                    () => Connector.IsEqual8(MINI_STATE, (byte)CC_STATE.CC_READY),
+                    () =>
+                    {
+                        bool result = MINI_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} has shrunk your size.");
+                        }
+                        return result;
+                    });
+                return;
+            case "animal_transform":
+                StartTimed(request,
+                    () => Connector.IsEqual8(ANIMALTRANSFORM_STATE, (byte)CC_STATE.CC_READY),
+                    () =>
+                    {
+                        bool result = ANIMALTRANSFORM_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} has changed you into an animal buddy.");
+                        }
+                        return result;
+                    });
+                return;
             case "play_the_rap":
                 StartTimed(request,
                     () => Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_READY),
@@ -576,6 +611,19 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         if (result)
                         {
                             Connector.SendMessage($"{request.DisplayViewer} made your kong backflip.");
+                        }
+                        return result;
+                    });
+                return;
+            case "spawn_boulder":
+                TryEffect(request,
+                    () => Connector.IsEqual8(BOULDER_STATE, (byte)CC_STATE.CC_READY),
+                    () =>
+                    {
+                        bool result = BOULDER_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} spawned a boulder for you.");
                         }
                         return result;
                     });
@@ -974,6 +1022,26 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     return ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
+            case "force_mini":
+                if (Connector.IsEqual8(MINI_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return MINI_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(MINI_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return MINI_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
+            case "animal_transform":
+                if (Connector.IsEqual8(ANIMALTRANSFORM_STATE, (byte)CC_STATE.CC_ENABLED))
+                {
+                    return ANIMALTRANSFORM_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                if (Connector.IsEqual8(ANIMALTRANSFORM_STATE, (byte)CC_STATE.CC_ENABLING))
+                {
+                    return ANIMALTRANSFORM_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+                }
+                return true;
             default:
                 return base.StopEffect(request);
         }
@@ -986,7 +1054,15 @@ public class DonkeyKong64Randomizer : N64EffectPack
         {
             result &= DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
+        if (Connector.IsEqual8(DRUNK_STATE, (byte)CC_STATE.CC_ENABLING))
+        {
+            result &= DRUNK_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
         if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
+            result &= NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
+        if (Connector.IsEqual8(NO_TA_STATE, (byte)CC_STATE.CC_ENABLING))
         {
             result &= NO_TA_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
@@ -994,7 +1070,15 @@ public class DonkeyKong64Randomizer : N64EffectPack
         {
             result &= ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
+        if (Connector.IsEqual8(ROCKFALL_STATE, (byte)CC_STATE.CC_ENABLING))
+        {
+            result &= ROCKFALL_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
         if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
+            result &= RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
+        if (Connector.IsEqual8(RAP_STATE, (byte)CC_STATE.CC_ENABLING))
         {
             result &= RAP_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
@@ -1005,9 +1089,33 @@ public class DonkeyKong64Randomizer : N64EffectPack
         {
             result &= TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
+        if (Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_ENABLING))
+        {
+            result &= TAG_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
         if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLED))
         {
             result &= ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
+        if (Connector.IsEqual8(ICEFLOOR_STATE, (byte)CC_STATE.CC_ENABLING))
+        {
+            result &= ICEFLOOR_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
+        if (Connector.IsEqual8(MINI_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
+            result &= MINI_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
+        if (Connector.IsEqual8(MINI_STATE, (byte)CC_STATE.CC_ENABLING))
+        {
+            result &= MINI_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
+        if (Connector.IsEqual8(ANIMALTRANSFORM_STATE, (byte)CC_STATE.CC_ENABLED))
+        {
+            result &= ANIMALTRANSFORM_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
+        }
+        if (Connector.IsEqual8(ANIMALTRANSFORM_STATE, (byte)CC_STATE.CC_ENABLING))
+        {
+            result &= ANIMALTRANSFORM_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
         }
         return result;
     }

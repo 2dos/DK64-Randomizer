@@ -345,6 +345,90 @@ int cc_disabler_ice(void) {
     return 1;
 }
 
+int cc_allower_animals(void) {
+    if (Character > 4) {
+        return 0;
+    }
+    if (!getTAState()) {
+        return 0;
+    }
+    return 1;
+}
+
+int cc_enabler_animals(void) {
+    Player->new_kong = Player->characterID;
+    if (Player->grounded_bitfield & 4) {
+        // Enguarde
+        tagKong(9);
+        if (Player->water_floor < Player->yPos) {
+            Player->control_state = 0x82;
+        } else {
+            Player->control_state = 0x7F;
+        }
+        Player->control_state_progress = 0;
+        playActorAnimation(Player, 0x317);
+        Player->hSpeed = 100.0f;
+    } else {
+        // Rambi
+        tagKong(8);
+        Player->control_state = 0xC;
+        Player->control_state_progress = 0;
+        playAnimation(Player, 9);
+        Player->hSpeed = 0.0f;
+    }
+    Player->ostand_value = 4;
+    setAnimalYAccel();
+    LevelStateBitfield |= 0x400;
+    return 1;
+}
+
+int cc_disabler_animals(void) {
+    setAction(0x3B, (void*)0, 0);
+    Player->rambi_enabled = 0;
+    LevelStateBitfield &= ~0x400;
+    return 1;
+}
+
+int cc_allower_mini(void) {
+    if (SwapObject->size != 1) {
+        // Already mini, would provide 0 effect
+        return 0;
+    }
+    if (CollectableBase.Crystals == 0) {
+        // No crystals, would provide 0 effect
+        return 0;
+    }
+    return 1;
+}
+
+int cc_setscale(float value) {
+    renderingParamsData* params = (renderingParamsData*)Player->rendering_param_pointer;
+    if (!params) {
+        return 0;
+    }
+    params->scale_x = value;
+    params->scale_y = value;
+    params->scale_z = value;
+    return 1;
+}
+
+int cc_enabler_mini(void) {
+    return cc_setscale(0.05f);
+}
+
+int cc_disabler_mini(void) {
+    return cc_setscale(0.15f);
+}
+
+int cc_allower_boulder(void) {
+    return LoadedActorCount < 30; // Not safe to add it
+}
+
+int cc_enabler_boulder(void) {
+    actor_init_data unk;
+    return spawnActorSpawnerContainer(61, *(int*)(&Player->xPos), *(int*)(&Player->yPos), *(int*)(&Player->zPos), 0, 0x3F800000, 0, &unk);
+}
+
 static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
@@ -358,6 +442,9 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_doabackflip, .allower=&cc_allower_backflip, .auto_disable = 1}, // Backflip
     {.enabler = &cc_enabler_ice, .disabler = &cc_disabler_ice, .restart_upon_map_entry = 1}, // Ice Floor
     {.enabler = &cc_enable_getout}, // Get out
+    {.enabler = &cc_enabler_mini, .allower=&cc_allower_mini, .disabler=&cc_disabler_mini, .restart_upon_map_entry = 1}, // Mini
+    {.enabler = &cc_enabler_boulder, .allower=&cc_allower_boulder, .auto_disable=1}, // Spawn Boulder
+    {.enabler = &cc_enabler_animals, .allower=&cc_allower_animals, .disabler=&cc_disabler_animals}, // Animal Transform
 };
 
 void cc_effect_handler(void) {

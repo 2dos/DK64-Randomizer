@@ -19,4 +19,7 @@ typedef struct cc_effects {
     /* 0x009 */ unsigned char backflip;
     /* 0x00A */ unsigned char ice_floor;
     /* 0x00B */ unsigned char get_out;
+    /* 0x00C */ unsigned char mini;
+    /* 0x00D */ unsigned char spawn_boulder;
+    /* 0x00E */ unsigned char animal_transform;
 } cc_effects;
