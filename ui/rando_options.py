@@ -514,10 +514,12 @@ def change_level_randomization(evt):
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
     shuffle_helm_location = document.getElementById("shuffle_helm_location")
+    shuffle_helm_location_label = document.getElementById("shuffle_helm_location_label")
 
+    use_level_order_label = level.value in ("level_order", "level_order_complex")
     disable_boss_shuffles = level.value in ("level_order", "level_order_complex") or (level.value == "vanilla" and kong_rando.checked)
     disable_kong_rando = level.value in ("level_order", "level_order_complex")
-    disable_shuffle_helm_location = level.value in ("level_order", "level_order_complex", "vanilla")
+    disable_shuffle_helm = level.value == "vanilla"
 
     if disable_boss_shuffles:
         boss_location.setAttribute("disabled", "disabled")
@@ -532,11 +534,15 @@ def change_level_randomization(evt):
         kong_rando.checked = True
     else:
         kong_rando.removeAttribute("disabled")
-    if disable_shuffle_helm_location:
+    if disable_shuffle_helm:
         shuffle_helm_location.setAttribute("disabled", "disabled")
         shuffle_helm_location.checked = False
     else:
         shuffle_helm_location.removeAttribute("disabled")
+        if use_level_order_label:
+            shuffle_helm_location_label.innerText = "Include Helm"
+        else:
+            shuffle_helm_location_label.innerText = "Shuffle Helm Location"
 
 
 @bind("click", "kong_rando")

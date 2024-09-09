@@ -10,11 +10,26 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
 from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Patching.Lib import IsItemSelected, getIceTrapCount
 
+def getHelmKey(settings) -> Items:
+    """Get the item that will be placed in the final room in Helm."""
+    key_item = Items.HideoutHelmKey
+    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        level_index = None
+        key_items = [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
+        for x in range(8):
+            if settings.level_order[x + 1] == Levels.HideoutHelm:
+                key_item = key_items[x]
+                level_index = x
+                break
+        if level_index is None:
+            raise Exception("Unable to find Helm in the level order to remove Helm Key constant")
+    return key_item
 
 def PlaceConstants(spoiler):
     """Place items which are to be put in a hard-coded location."""
@@ -48,7 +63,7 @@ def PlaceConstants(spoiler):
             spoiler.LocationList[location].tooExpensiveInaccessible = False
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
-        spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, getHelmKey(spoiler.settings))
     # If no CB rando in isles, clear these locations
     if settings.cb_rando != CBRando.on_with_isles:
         for x in range(5):
@@ -325,7 +340,6 @@ def Keys():
     """Return all key items."""
     return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
 
-
 def KeysToPlace(settings):
     """Return all keys that are non-starting keys."""
     keysToPlace = []
@@ -346,8 +360,10 @@ def KeysToPlace(settings):
             keysToPlace.append(Items.CreepyCastleKey)
         elif keyEvent == Events.HelmKeyTurnedIn:
             keysToPlace.append(Items.HideoutHelmKey)
-    if settings.key_8_helm and Items.HideoutHelmKey in keysToPlace:
-        keysToPlace.remove(Items.HideoutHelmKey)
+    if settings.key_8_helm:
+        key_item = getHelmKey(settings)
+        if key_item in keysToPlace:
+            keysToPlace.remove(key_item)
     return keysToPlace
 
 

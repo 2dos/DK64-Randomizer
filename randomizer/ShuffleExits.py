@@ -358,6 +358,9 @@ def GenerateLevelOrderUnrestricted(settings):
     """Generate a level order without Kong placement restrictions."""
     newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
     unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle, Levels.HideoutHelm]
+    if not settings.shuffle_helm_location:
+        newLevelOrder[8] = Levels.HideoutHelm
+        unplacedLevels.remove(Levels.HideoutHelm)
     if settings.enable_plandomizer:
         for i in range(len(newLevelOrder.keys())):
             if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
@@ -372,7 +375,11 @@ def GenerateLevelOrderUnrestricted(settings):
 
 def GenerateLevelOrderForOneStartingKong(settings):
     """Generate a level order given only starting with one kong and the need to find more kongs along the way."""
-    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
+    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7, 8}
+    # Place Helm if helm isn't in the pool
+    if not settings.shuffle_helm_location:
+        helmIndex = 8
+        levelIndexChoices.remove(8)
     # Decide where Aztec will go
     # Diddy can reasonably make progress if Aztec is first level
     if settings.starting_kong == Kongs.diddy:
@@ -431,6 +438,12 @@ def GenerateLevelOrderForOneStartingKong(settings):
     factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
+    # Helm can't be in levels 1 or 2
+    if settings.shuffle_helm_location:
+        helmOptions = list(levelIndexChoices.intersection({3, 4, 5, 6, 7, 8}))
+        helmIndex = random.choice(helmOptions)
+        levelIndexChoices.remove(helmIndex)
+
     # Decide the remaining level order randomly
     remainingLevels = list(levelIndexChoices)
     random.shuffle(remainingLevels)
@@ -438,7 +451,6 @@ def GenerateLevelOrderForOneStartingKong(settings):
     galleonIndex = remainingLevels.pop()
     forestIndex = remainingLevels.pop()
     castleIndex = remainingLevels.pop()
-    helmIndex = remainingLevels.pop()
     newLevelOrder = {
         japesIndex: Levels.JungleJapes,
         aztecIndex: Levels.AngryAztec,
@@ -457,7 +469,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
     """Generate a level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
     # Initialize level order
-    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
     # Sort levels by most to least kongs
     kongsInLevels = {
         Levels.JungleJapes: 1 if Locations.DiddyKong in settings.kong_locations else 0,
@@ -468,9 +480,20 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         Levels.CrystalCaves: 0,
         Levels.CreepyCastle: 0,
     }
+    traverse_limit = 9
+    if not settings.shuffle_helm_location:
+        # Pre-place Helm
+        newLevelOrder[8] = Levels.HideoutHelm
+        traverse_limit = 8
+    else:
+        kongsInLevels[Levels.HideoutHelm] = 0.5  # Make sure Helm is always the first one to be shuffled if you have something of zero index
+        levelIndicesToFill.add(8)
     levelsSortedByKongs = [kongsInLevel[0] for kongsInLevel in sorted(kongsInLevels.items(), key=lambda x: x[1], reverse=True)]
+    if settings.shuffle_helm_location:
+        kongsInLevels[Levels.HideoutHelm] = 0 # Reset helm back to 0 (I hate this whole system more than you do)
     # Iterate over levels to place them in the level order
     kongsUnplaced = sum(kongsInLevels.values())
+
     for levelToPlace in levelsSortedByKongs:
         # Determine the latest this level can appear
         kongsUnplaced = kongsUnplaced - kongsInLevels[levelToPlace]
@@ -479,7 +502,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         kongsAssumed = settings.starting_kongs_count + kongsUnplaced
         levelsReachable = []
         # Traverse through levels in order
-        for level in range(1, 8):
+        for level in range(1, traverse_limit):
             # If don't have 5 kongs yet, stop if don't have enough kongs to reach this level
             if kongsAssumed < 5 and level > kongsAssumed + 1:
                 break
@@ -515,6 +538,9 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
                 kongsAssumed = kongsAssumed + kongsInLevels[newLevelOrder[level]]
         # Choose where levelWithKongs will go in new level order
         levelIndexOptions = list(levelIndicesToFill.intersection(levelsReachable))
+        if levelToPlace == Levels.HideoutHelm:
+            # Don't place Helm earlier than level 3
+            levelIndexOptions = [x for x in levelIndexOptions if x > 2]
         # If we hit one of the `break`s above, it's likely we can't logically access any level past it
         # If this happens, we got unlucky (settings dependending) and restart this process or else we crash
         # The most common instance of this is when Aztec is level 1 and you don't start with Diddy
