@@ -119,6 +119,8 @@ extern void CrownGet(void);
 extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
 
+extern int callFunc(void* func);
+
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);
@@ -207,6 +209,7 @@ extern void unkMultiplayerWarpFunction(void* actor, int player_index);
 extern void renderScreenTransition(int transition_type);
 
 extern int inDKTV(void);
+extern void handleGamemodes(void);
 
 extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);
@@ -259,6 +262,9 @@ extern void setActorModel(void* actor, int index);
 extern void spawn3DActor(spawnerPacket* packet);
 extern int getChunk(float x, float y, float z, int unk0);
 extern void spawnKey(short flag, int x, int y, int z, short unk0, short unk1);
+extern void spawnTimer(int x, int y, int timer);
+extern void initTimer(void* actor);
+extern void mushroomBounce(void);
 
 extern int crystalsUnlocked(int kong);
 extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
@@ -269,6 +275,9 @@ extern void changeCollectableCount(int item, int player_index, int change);
 extern void save(void);
 extern void* getSpawnerTiedActor(short target_trigger, short props_change);
 
+extern void bananaslip(void);
+extern void setAnimalYAccel(void);
+
 extern void _guScaleF(void* mtx, int x, int y, int z);
 extern void _guTranslateF(void* mtx, float x, float y, float z);
 extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
@@ -276,7 +285,7 @@ extern void _guMtxF2L(void* mtx, void* unk0);
 extern void _guMtxXFML(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
 extern void _guMtxXFMF(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
 extern void* getTextPointer(int file, int text_index, int unk0);
-extern void addDLToOverlay(int code, void* actor, int delay);
+extern void addDLToOverlay(void* code, void* actor, int delay);
 extern int groundContactCheck(void);
 extern void groundContactSet(void);
 extern int getRefillCount(int item, int player);
@@ -523,6 +532,7 @@ extern Controller PreviouslyPressedButtons;
 extern playerData* Player;
 extern SwapObjectData* SwapObject;
 extern char Character;
+extern short KongIndex;
 extern cameraData* Camera;
 extern char ISGActive;
 extern unsigned int ISGTimestampMajor;
@@ -773,6 +783,8 @@ extern path_data_struct* PathData[32];
 extern fence_collective_struct* FenceInformation;
 extern rgba KongRGBA[5];
 extern char_spawner_paad* ActorPaad;
+extern float unkFloatArray[7];
+extern float BackflipVelArray[7];
 
 //hack data
 extern int TestVariable;
@@ -786,7 +798,7 @@ extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
-extern short InstanceScriptParams[4];
+extern cc_effects* CCEffectData;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
 extern short style2Mtx[0x10];

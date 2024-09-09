@@ -121,7 +121,7 @@
       255,
       255
    ],
-   "damage_multiplier":0,
+   "damage_multiplier":1,
    "fps_on":1,
    "no_health_refill":0,
    "slam_prices":[

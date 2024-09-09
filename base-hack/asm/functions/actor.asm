@@ -135,7 +135,12 @@
 .definelabel unkActorFunc, 0x8072C918
 .definelabel unkActorFunc_0, 0x8072D714
 .definelabel unkCollisionFunc, 0x80676CB0
+.definelabel bananaslip, 0x806F0930
+.definelabel spawnTimer, 0x806A2A10
+.definelabel initTimer, 0x806A2B08
+.definelabel mushroomBounce, 0x806CBE44
 .definelabel collisionStuff, 0x80678BBC
 .definelabel unkActorHandler, 0x80678CC8
 .definelabel getScreenDist, 0x80700AE4
 .definelabel getDistanceCap, 0x807009F4
+.definelabel setAnimalYAccel, 0x806CFECC

@@ -410,6 +410,17 @@ int canTagAnywhere(void) {
      * 
      * @return Can player perform Tag Anywhere
      */
+    if (CCEffectData) {
+        if (CCEffectData->disable_tag_anywhere == CC_ENABLED) {
+            return 0;
+        }
+        if (CCEffectData->tag == CC_ENABLED) {
+            return 0;
+        }
+        if (CCEffectData->mini == CC_ENABLED) {
+            return 0;
+        }
+    }
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
         return 0;
@@ -498,6 +509,24 @@ int getTAState(void) {
     return can_tag_anywhere;
 }
 
+int hasAccessToKong(int kong) {
+    if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
+        if (Rando.perma_lose_kongs) {
+            if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
+                return 1;
+            }
+            if (curseRemoved()) {
+                return 1;
+            }
+            if (hasPermaLossGrace(CurrentMap)) {
+                return 1;
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+
 int getTagAnywhereKong(int direction) {
     /**
      * @brief Get the next TA Kong in a certain direction
@@ -515,18 +544,7 @@ int getTagAnywhereKong(int direction) {
     int i = 0;
     int reached_limit = 0;
     while (i < TAG_ANYWHERE_KONG_LIMIT) {
-        int pass = 0;
-        if (checkFlag(kong_flags[next_character],FLAGTYPE_PERMANENT)) {
-            pass = 1;
-            if (Rando.perma_lose_kongs) {
-                if (checkFlag(KONG_LOCKED_START + next_character,FLAGTYPE_PERMANENT)) {
-                    if ((!curseRemoved()) && (!hasPermaLossGrace(CurrentMap))) {
-                        pass = 0;
-                    }
-                }
-            }
-        }
-        if (pass) {
+        if (hasAccessToKong(next_character)) {
             break;
         } else {
             if ((i + 1) == TAG_ANYWHERE_KONG_LIMIT) {
@@ -555,6 +573,64 @@ static unsigned char important_huds_changed[] = {0,0};
 
 static char can_tag_left = 0;
 static char can_tag_right = 0;
+
+void changeKong(int next_character) {
+    // Fix hand state
+    if (((MovesBase[next_character].weapon_bitfield & 1) == 0) || (Player->was_gun_out == 0)) {
+        Player->was_gun_out = 0;
+        // Without this, tags to and from Diddy mess up
+        updateActorHandStates((actorData*)Player, next_character + 2);
+    } else {
+        Player->was_gun_out = 1;
+        // Without this, tags to and from Diddy mess up
+        updateActorHandStates_gun((actorData*)Player, next_character + 2);
+    }
+    // Fix HUD memes
+    if (CurrentMap == MAP_TROFFNSCOFF) {
+        if (!hasTurnedInEnoughCBs()) {
+            tag_countdown = 3;
+            HUD->item[0].hud_state_timer = 0x100;
+            HUD->item[0].hud_state = 0;
+        }
+    } else {
+        for (int i = 0; i < sizeof(important_huds); i++) {
+            important_huds_changed[i] = 0;
+            if (HUD) {
+                int hud_st = HUD->item[(int)important_huds[i]].hud_state;
+                if ((hud_st == 1) || (hud_st == 2)) {
+                    tag_countdown = 3;
+                    HUD->item[(int)important_huds[i]].hud_state_timer = 0;
+                    HUD->item[(int)important_huds[i]].hud_state = 0;
+                    important_huds_changed[i] = 1;
+                }
+            }
+        }
+    }
+    // Cancel anything
+    if (Player->strong_kong_ostand_bitfield & 0x40) {
+        // Gorilla Gone
+        cancelMusic(0x6C, 0);
+        Player->obj_props_bitfield |= 0x8000;
+        removeGorillaGone(Player);
+    }
+    // Perform the tag
+    int old_control_state = Player->control_state;
+    grab_lock_timer = 0; // Restart countdown
+    tagKong(next_character + 2);
+    clearTagSlide(Player);
+    if (Player->hSpeed > 140.0f) {
+        Player->hSpeed = 140.0f; // Patch Jacob Rolling
+    }
+    if (old_control_state == 0x4F) {
+        // Fix the underwater tag memes
+        Player->yVelocity = 0.0f;
+        playAnimation(Player, 0x37);
+        handleAnimation(Player);
+        Player->control_state = old_control_state;
+        Player->control_state_progress = 4;
+    }
+    Player->new_kong = next_character + 2;
+}
 
 void tagAnywhere(void) {
     /**
@@ -635,73 +711,7 @@ void tagAnywhere(void) {
 
                     int next_character = getTagAnywhereKong(change);
 					if (next_character != Character) {
-                        // Fix hand state
-						if (((MovesBase[next_character].weapon_bitfield & 1) == 0) || (Player->was_gun_out == 0)) {
-                            // Player->hand_state = 1;
-                            Player->was_gun_out = 0;
-                            // Without this, tags to and from Diddy mess up
-                            updateActorHandStates((actorData*)Player, next_character + 2);
-                            // if (Rando.kong_models[next_character] == KONGMODEL_KRUSHA) {
-                            //     Player->hand_state = 2;
-                            // } else if (next_character == 1) {
-                            //     Player->hand_state = 0;
-                            // }
-                        } else {
-                            // Player->hand_state = 2;
-                            Player->was_gun_out = 1;
-                            updateActorHandStates_gun((actorData*)Player, next_character + 2);
-                            // Without this, tags to and from Diddy mess up
-                            // if (Rando.kong_models[next_character] == KONGMODEL_KRUSHA) {
-                            //     Player->hand_state = 1;
-                            // } else if (next_character == 1) {
-                            //     Player->hand_state = 3;
-                            // }
-                        }
-                        // Fix HUD memes
-                        if (CurrentMap == MAP_TROFFNSCOFF) {
-                            if (!hasTurnedInEnoughCBs()) {
-                                tag_countdown = 3;
-                                HUD->item[0].hud_state_timer = 0x100;
-                                HUD->item[0].hud_state = 0;
-                            }
-                        } else {
-                            for (int i = 0; i < sizeof(important_huds); i++) {
-                                important_huds_changed[i] = 0;
-                                if (HUD) {
-                                    int hud_st = HUD->item[(int)important_huds[i]].hud_state;
-                                    if ((hud_st == 1) || (hud_st == 2)) {
-                                        tag_countdown = 3;
-                                        HUD->item[(int)important_huds[i]].hud_state_timer = 0;
-                                        HUD->item[(int)important_huds[i]].hud_state = 0;
-                                        important_huds_changed[i] = 1;
-                                    }
-                                }
-                            }
-                        }
-                        // Cancel anything
-                        if (Player->strong_kong_ostand_bitfield & 0x40) {
-                            // Gorilla Gone
-                            cancelMusic(0x6C, 0);
-                            Player->obj_props_bitfield |= 0x8000;
-                            removeGorillaGone(Player);
-                        }
-                        // Perform the tag
-                        int old_control_state = Player->control_state;
-                        grab_lock_timer = 0; // Restart countdown
-                        tagKong(next_character + 2);
-						clearTagSlide(Player);
-                        if (Player->hSpeed > 140.0f) {
-                            Player->hSpeed = 140.0f; // Patch Jacob Rolling
-                        }
-                        if (old_control_state == 0x4F) {
-                            // Fix the underwater tag memes
-                            Player->yVelocity = 0.0f;
-                            playAnimation(Player, 0x37);
-                            handleAnimation(Player);
-                            Player->control_state = old_control_state;
-                            Player->control_state_progress = 4;
-                        }
-						Player->new_kong = next_character + 2;
+                        changeKong(next_character);
 					}
 				}
 			}

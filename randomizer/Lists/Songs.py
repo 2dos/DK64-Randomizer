@@ -186,7 +186,7 @@ song_data = {
     Songs.DKRap: Song(
         "DK Rap",
         mem_idx=75,
-        type=SongType.BGM,
+        type=SongType.Protected,  # Needed for CC and complete the rap. Mostly protecting for the former
         memory=0x900,
         location_tags=[SongGroup.Fight, SongGroup.LobbyShop, SongGroup.Interiors, SongGroup.Exteriors, SongGroup.Minigames],
         mood_tags=[SongGroup.Happy],
