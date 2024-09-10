@@ -350,7 +350,7 @@ def GenerateLevelOrderWithRestrictions(settings: Settings):
     else:
         newLevelOrder = GenerateLevelOrderForMultipleStartingKongs(settings)
     if None in newLevelOrder.values():
-        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
+        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 8 required main levels.")
     return newLevelOrder
 
 
@@ -480,11 +480,9 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         Levels.CrystalCaves: 0,
         Levels.CreepyCastle: 0,
     }
-    traverse_limit = 9
     if not settings.shuffle_helm_location:
         # Pre-place Helm
         newLevelOrder[8] = Levels.HideoutHelm
-        traverse_limit = 8
     else:
         kongsInLevels[Levels.HideoutHelm] = 0.5  # Make sure Helm is always the first one to be shuffled if you have something of zero index
         levelIndicesToFill.add(8)
@@ -502,7 +500,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         kongsAssumed = settings.starting_kongs_count + kongsUnplaced
         levelsReachable = []
         # Traverse through levels in order
-        for level in range(1, traverse_limit):
+        for level in range(1, 9):
             # If don't have 5 kongs yet, stop if don't have enough kongs to reach this level
             if kongsAssumed < 5 and level > kongsAssumed + 1:
                 break

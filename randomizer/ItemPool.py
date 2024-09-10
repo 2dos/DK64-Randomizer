@@ -64,6 +64,18 @@ def PlaceConstants(spoiler):
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
         spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, getHelmKey(spoiler.settings))
+        # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset, 
+        # place Key 8 in the 8th level somewhere
+        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+            last_level = settings.level_order[8]
+            if last_level != Levels.HideoutHelm:
+                if not spoiler.settings.hard_level_progression:
+                    potential_locations = [loc for loc in spoiler.LocationList if
+                                           spoiler.LocationList[loc].level == last_level and
+                                           spoiler.LocationList[loc].type in typesOfItemsShuffled and
+                                           not spoiler.LocationList[loc].inaccessible]
+                    selected_location = random.choice(potential_locations)
+                    spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)
     # If no CB rando in isles, clear these locations
     if settings.cb_rando != CBRando.on_with_isles:
         for x in range(5):
@@ -364,6 +376,8 @@ def KeysToPlace(settings):
         key_item = getHelmKey(settings)
         if key_item in keysToPlace:
             keysToPlace.remove(key_item)
+        if Items.HideoutHelmKey in keysToPlace:
+            keysToPlace.remove(Items.HideoutHelmKey)
     return keysToPlace
 
 
