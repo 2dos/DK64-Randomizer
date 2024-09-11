@@ -587,7 +587,7 @@ const char big_head_actors[MODEL_COUNT] = {
 	-3, // Mr. Dice
 	0, // Klump
 	-3, // Puftoss // Inconsequential
-	0, // Dogadon
+	-3, // Dogadon // Makes DDQ super easy
 	0, // Banana Fairy
 	3, // Llama
 	12, // Guard
