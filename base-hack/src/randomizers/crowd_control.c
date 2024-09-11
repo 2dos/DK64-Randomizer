@@ -177,8 +177,20 @@ void fakeGetOut(void) {
                     CollectableBase.StoredDamage = -12;
                     Player->strong_kong_ostand_bitfield &= ~0x10; // Disable Strong Kong
                     playCutscene((void*)0, 6, 5);
-                    adjustProjectileSpawnPosition(Player->xPos, Player->yPos + 1.0f, Player->zPos);
-                    spawnProjectile(99, 1, 0.5f, Player->xPos, Player->yPos, Player->zPos, 285.0f, timer);
+                    if (Character == 7) {
+                        if (applyDamageMask(0, -1)) {
+                            int animation = 0x27;
+                            if (Player->grounded_bitfield & 4) {
+                                animation = 0x29;
+                            }
+                            playAnimation(Player, animation);
+                            Player->control_state = 0x36;
+                            Player->control_state_progress = 0;
+                        }
+                    } else {
+                        adjustProjectileSpawnPosition(Player->xPos, Player->yPos + 1.0f, Player->zPos);
+                        spawnProjectile(99, 1, 0.5f, Player->xPos, Player->yPos, Player->zPos, 285.0f, timer);
+                    }
                 }
                 getout_killed = 1;
             } else {
@@ -413,6 +425,13 @@ int cc_setscale(float value) {
 }
 
 int cc_enabler_mini(void) {
+    renderingParamsData* params = (renderingParamsData*)Player->rendering_param_pointer;
+    if (!params) {
+        return 0;
+    }
+    if (params->scale_y <= 0.05f) {
+        return 1;
+    }
     return cc_setscale(0.05f);
 }
 
@@ -421,6 +440,9 @@ int cc_disabler_mini(void) {
 }
 
 int cc_allower_boulder(void) {
+    if ((CurrentMap == MAP_FACTORYJACK) || (CurrentMap == MAP_GALLEONPUFFTOSS)) {
+        return 0;
+    }
     return LoadedActorCount < 30; // Not safe to add it
 }
 
@@ -442,9 +464,9 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_doabackflip, .allower=&cc_allower_backflip, .auto_disable = 1}, // Backflip
     {.enabler = &cc_enabler_ice, .disabler = &cc_disabler_ice, .restart_upon_map_entry = 1}, // Ice Floor
     {.enabler = &cc_enable_getout}, // Get out
-    {.enabler = &cc_enabler_mini, .allower=&cc_allower_mini, .disabler=&cc_disabler_mini, .restart_upon_map_entry = 1}, // Mini
+    {.enabler = &cc_enabler_mini, .allower=&cc_allower_mini, .disabler=&cc_disabler_mini, .active = 1}, // Mini
     {.enabler = &cc_enabler_boulder, .allower=&cc_allower_boulder, .auto_disable=1}, // Spawn Boulder
-    {.enabler = &cc_enabler_animals, .allower=&cc_allower_animals, .disabler=&cc_disabler_animals}, // Animal Transform
+    {.enabler = &cc_enabler_animals, .allower=&cc_allower_animals, .disabler=&cc_disabler_animals, .restart_upon_map_entry = 1}, // Animal Transform
 };
 
 void cc_effect_handler(void) {
