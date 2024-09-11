@@ -131,6 +131,9 @@
                         }
                         await pyodide.runPythonAsync(ui_script).then(function (result) {
                             var script = document.createElement("script");
+                            script.src = "./static/js/rando_options.js";
+                            document.head.appendChild(script);
+                            var script = document.createElement("script");
                             script.src = "./static/js/initalize.js";
                             document.head.appendChild(script);
 

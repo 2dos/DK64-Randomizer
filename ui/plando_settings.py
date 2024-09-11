@@ -50,19 +50,8 @@ from ui.plando_validation import (
     kong_options,
 )
 from ui.rando_options import (
-    plando_disable_camera_shockwave,
     plando_disable_keys,
     plando_disable_kong_items,
-    plando_hide_helm_options,
-    plando_hide_krool_options,
-    plando_toggle_custom_arena_locations,
-    plando_toggle_custom_crate_locations,
-    plando_toggle_custom_fairy_locations,
-    plando_toggle_custom_kasplat_locations,
-    plando_toggle_custom_locations_tab,
-    plando_toggle_custom_patch_locations,
-    plando_toggle_custom_tns_locations,
-    plando_toggle_custom_wrinkly_locations,
 )
 
 
@@ -234,19 +223,19 @@ async def import_plando_options(jsonString):
         validate_hint_text(hintLocation)
     # for shopLocation in shopCostList:
     #     validate_shop_costs(shopLocation)
-    plando_disable_camera_shockwave(None)
+    js.plando_disable_camera_shockwave(None)
     plando_disable_keys(None)
     plando_disable_kong_items(None)
-    plando_hide_helm_options(None)
-    plando_hide_krool_options(None)
-    plando_toggle_custom_arena_locations(None)
-    plando_toggle_custom_crate_locations(None)
-    plando_toggle_custom_fairy_locations(None)
-    plando_toggle_custom_kasplat_locations(None)
-    plando_toggle_custom_patch_locations(None)
-    plando_toggle_custom_tns_locations(None)
-    plando_toggle_custom_wrinkly_locations(None)
-    plando_toggle_custom_locations_tab(None)
+    js.plando_hide_helm_options(None)
+    js.plando_hide_krool_options(None)
+    js.plando_toggle_custom_arena_locations(None)
+    js.plando_toggle_custom_crate_locations(None)
+    js.plando_toggle_custom_fairy_locations(None)
+    js.plando_toggle_custom_kasplat_locations(None)
+    js.plando_toggle_custom_patch_locations(None)
+    js.plando_toggle_custom_tns_locations(None)
+    js.plando_toggle_custom_wrinkly_locations(None)
+    js.plando_toggle_custom_locations_tab(None)
     lock_key_8_in_helm(None)
     validate_custom_arena_locations(None)
     validate_custom_crate_locations(None)
