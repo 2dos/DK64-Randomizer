@@ -364,7 +364,7 @@ def GenerateLevelOrderUnrestricted(settings):
     if settings.enable_plandomizer:
         for i in range(len(newLevelOrder.keys())):
             if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
-                newLevelOrder[i + 1] = Levels(settings.plandomizer_dict["plando_level_order_" + str(i)])
+                newLevelOrder[i + 1] = Levels[settings.plandomizer_dict["plando_level_order_" + str(i)]]
                 unplacedLevels.remove(newLevelOrder[i + 1])
     for i in range(len(newLevelOrder.keys())):
         if newLevelOrder[i + 1] is None:
