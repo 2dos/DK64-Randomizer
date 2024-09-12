@@ -37,6 +37,7 @@ if (typeof window.RufflePlayer !== "undefined") {
   // Ruffle extension is not loaded
   console.log("Ruffle extension is not loaded");
 }
+
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
   console.log("Loading " + file);
@@ -84,7 +85,6 @@ function plando_import_filebox() {
 
   input.click();
 }
-
 
 async function apply_patch(data, run_async) {
   // load pyodide
@@ -138,4 +138,22 @@ async function apply_patch(data, run_async) {
   } catch (error) {
     console.error("Error unzipping the file:", error);
   }
+}
+function apply_download() {
+  if (
+    document.getElementById("rom").value.trim().length === 0 ||
+    !document.getElementById("rom").classList.contains("is-valid")
+  ) {
+    document.getElementById("rom").select();
+    if (!document.getElementById("rom").classList.contains("is-invalid")) {
+      document.getElementById("rom").classList.add("is-invalid");
+      return;
+    }
+  }
+  console.log("Applying Download");
+  return pyodide.runPythonAsync(`
+      import js
+      from randomizer.Patching.ApplyLocal import patching_response
+      patching_response(str(js.event_response_data), from_patch_gen=True)
+    `);
 }

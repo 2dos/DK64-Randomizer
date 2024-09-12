@@ -1,16 +1,15 @@
-
 // NOTE: pyodide_functions.js is NOT currently loaded, some functions will fail
 $.ajax({
-  url: '/get_selector_info',
-  dataType: 'json',
+  url: "/get_selector_info",
+  dataType: "json",
   async: false,
-  success: function(data) {
-    nunjucks.configure('/templates', { autoescape: true });
+  success: function (data) {
+    nunjucks.configure("/templates", { autoescape: true });
     var renderedHTML = nunjucks.render("base.html.jinja2", data);
     var navRenderedHTML = nunjucks.render("nav-tabs.html.jinja2", {});
     $("#tab-data").html(renderedHTML);
     $("#nav-tab-list").html(navRenderedHTML);
-  }
+  },
 });
 // Initialize arrays for listeners, progression presets, and random settings presets
 const listeners = [];
@@ -20,57 +19,53 @@ const random_settings_presets = [];
 // Determine the correct URL for fetching presets based on the hostname
 let presets_url;
 if (location.hostname === "dev.dk64randomizer.com") {
-    presets_url = "https://dev-generate.dk64rando.com/get_presets?return_blank=true";
+  presets_url =
+    "https://dev-generate.dk64rando.com/get_presets?return_blank=true";
 } else if (location.hostname === "dk64randomizer.com") {
-    presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true";
+  presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true";
 } else {
-    presets_url = `${location.origin}/get_presets?return_blank=true`;
+  presets_url = `${location.origin}/get_presets?return_blank=true`;
 }
 
 // Use fetch to get the presets and populate progression_presets and random_settings_presets
 $.ajax({
   url: presets_url,
-  dataType: 'json',
+  dataType: "json",
   async: false,
-  success: function(data) {
-    data.forEach(file => {
+  success: function (data) {
+    data.forEach((file) => {
       progression_presets.push(file);
     });
-  }
+  },
 });
 $.ajax({
   url: "static/presets/weights/weights_files.json",
   dataType: "json",
   async: false,
-  success: function(data) {
-    data.forEach(file => {
+  success: function (data) {
+    data.forEach((file) => {
       random_settings_presets.push(file);
     });
-  }
+  },
 });
 
 $.ajax({
   url: "./static/patches/pointer_addresses.json",
   dataType: "json",
   async: false,
-  success: function(data) {
+  success: function (data) {
     pointer_addresses = data;
-  }
+  },
 });
 
 $.ajax({
   url: "./static/patches/symbols.json",
   dataType: "json",
   async: false,
-  success: function(data) {
+  success: function (data) {
     rom_symbols = data;
-  }
+  },
 });
-
-
-
-
-
 
 let user_agent = navigator.userAgent;
 if (window.location.protocol != "https:") {
@@ -91,12 +86,12 @@ if (location.hostname != "localhost") {
   document.getElementById("plando_string_section").style.display = "none";
 }
 
-function decrypt_settings_string_enum(settings_string){
+function decrypt_settings_string_enum(settings_string) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
   var response = $.ajax({
     type: "POST",
     url: "/convert_settings_string",
-    data: JSON.stringify({"settings_string": settings_string}),
+    data: JSON.stringify({ settings_string: settings_string }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -105,12 +100,12 @@ function decrypt_settings_string_enum(settings_string){
   return settings;
 }
 
-function encrypt_settings_string_enum(settings){
+function encrypt_settings_string_enum(settings) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
   var response = $.ajax({
     type: "POST",
     url: "/convert_settings_enum",
-    data: JSON.stringify({"settings_json": settings}),
+    data: JSON.stringify({ settings_json: settings }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -125,7 +120,7 @@ async function try_to_load_from_args() {
 
   let args = window.location.search;
   if (args.startsWith("?")) {
-      args = args.substring(1);
+    args = args.substring(1);
   }
 
   // Split arguments by "&"
@@ -133,31 +128,29 @@ async function try_to_load_from_args() {
   let argsDict = {};
 
   // Populate argsDict with key-value pairs
-  argsArray.forEach(arg => {
-      try {
-          let [key, value] = arg.split("=");
-          argsDict[key] = value;
-      } catch (e) {
-          // Continue silently on error
-      }
+  argsArray.forEach((arg) => {
+    try {
+      let [key, value] = arg.split("=");
+      argsDict[key] = value;
+    } catch (e) {
+      // Continue silently on error
+    }
   });
 
   // If "seed_id" is provided in the URL, fetch seed data from the server
   if ("seed_id" in argsDict) {
-      console.log("Getting the seed from the server");
+    console.log("Getting the seed from the server");
 
-      let resp = await getSeedFromServer(argsDict["seed_id"]);
+    let resp = await getSeedFromServer(argsDict["seed_id"]);
 
-      // Assuming patchingResponse is available globally as an async function
-      await patchingResponse(String(resp), false);
+    // Assuming patchingResponse is available globally as an async function
+    await patchingResponse(String(resp), false);
   }
 
   // Update the DOM: hide visual indicator and show tab-data
   document.getElementById("visual_indicator").setAttribute("hidden", "true");
   document.getElementById("tab-data").removeAttribute("hidden");
 }
-
-
 
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
@@ -204,7 +197,7 @@ function getFile(file) {
 
 var valid_extensions = [".bin", ".candy"];
 
-function validFilename(filename, dir, valid_extension=null) {
+function validFilename(filename, dir, valid_extension = null) {
   if (filename.includes(dir)) {
     if (valid_extension == null) {
       for (let v = 0; v < valid_extensions.length; v++) {
@@ -264,7 +257,7 @@ function sortLoadedMusic(musicList) {
     } else {
       return 0;
     }
-  })
+  });
 }
 var current_seed_data;
 var cosmetics;
@@ -274,8 +267,8 @@ var cosmetic_truncated_names = {
   bgm: [],
   majoritems: [],
   minoritems: [],
-  events: []
-}
+  events: [],
+};
 
 function load_music_file_from_db() {
   console.log("Trying to load file from DB");
@@ -330,8 +323,6 @@ function music_filebox() {
   input.click();
 }
 
-
-
 function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
   var fileReader = new FileReader();
   fileReader.onload = function (fileLoadedEvent) {
@@ -344,7 +335,6 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_promises = [];
       let portal_promises = [];
 
-      
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
           bgm_promises.push(createMusicLoadPromise(new_zip, filename));
@@ -355,9 +345,9 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         } else if (validFilename(filename, "events/")) {
           event_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/transitions/", ".png")) {
-          transition_promises.push(createMusicLoadPromise(new_zip, filename))
+          transition_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/tns_portal/", ".png")) {
-          portal_promises.push(createMusicLoadPromise(new_zip, filename))
+          portal_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -371,7 +361,6 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       sortLoadedMusic(event_files);
       let transition_files = await Promise.all(transition_promises);
       let portal_files = await Promise.all(portal_promises);
-
 
       // BGM
       let bgm = bgm_files.map((x) => x.file);
@@ -443,16 +432,16 @@ function get_custom_song_display_name(songName) {
 
 async function update_music_select_options(isInitialLoad) {
   customSongDict = {
-    "BGM": cosmetic_names.bgm,
-    "MajorItem": cosmetic_names.majoritems,
-    "MinorItem": cosmetic_names.minoritems,
-    "Event": cosmetic_names.events,
-  }
+    BGM: cosmetic_names.bgm,
+    MajorItem: cosmetic_names.majoritems,
+    MinorItem: cosmetic_names.minoritems,
+    Event: cosmetic_names.events,
+  };
   cosmetic_truncated_names = {
     bgm: [],
     majoritems: [],
     minoritems: [],
-    events: []
+    events: [],
   };
   for (const [category, songs] of Object.entries(customSongDict)) {
     // Map each song's truncated name to its full string path.
@@ -527,7 +516,9 @@ function savesettings() {
       json[element.name] = values;
     }
   }
-  var starting_move_box_buttons = $(":input[name^='starting_move_box_']:checked");
+  var starting_move_box_buttons = $(
+    ":input[name^='starting_move_box_']:checked"
+  );
   for (element of starting_move_box_buttons) {
     if (element.id.includes("start")) {
       json[element.name] = "start";
@@ -559,8 +550,6 @@ $("#form select").on("change", function (e) {
   savesettings();
   savemusicsettings();
 });
-
-
 
 function filebox() {
   var input = document.createElement("input");
@@ -663,19 +652,21 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
       date: now,
     });
     // Write it to most_recent_seed_id and most_recent_seed_date on the UI page so we can display it
-    document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + seed_id;
-    document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + now.toLocaleDateString(
-      undefined,
-      {
+    document.getElementById("most_recent_seed_id").innerHTML =
+      "<strong>Most Recent Seed ID:</strong> " + seed_id;
+    document.getElementById("most_recent_seed_date").innerHTML =
+      "<strong>Most Recent Seed Date:</strong> " +
+      now.toLocaleDateString(undefined, {
         year: "numeric",
         month: "short",
         day: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-      }
-    );
-  } catch (error) {console.log(error)}
+      });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function load_old_seeds() {
@@ -721,8 +712,18 @@ function load_old_seeds() {
           hook.appendChild(option_el);
         }
         // Write the most recent seed to the UI
-        document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
-        document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + sorted_array[0].date.toLocaleDateString( undefined, {  year: "numeric",  month: "short",  day: "2-digit",  hour: "2-digit",  minute: "2-digit",  second: "2-digit",});
+        document.getElementById("most_recent_seed_id").innerHTML =
+          "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
+        document.getElementById("most_recent_seed_date").innerHTML =
+          "<strong>Most Recent Seed Date:</strong> " +
+          sorted_array[0].date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
       } catch {}
     };
   } catch {}
@@ -751,12 +752,15 @@ function load_file_from_db() {
         $("#rom_2").attr("placeholder", "Using cached ROM");
         $("#rom_3").attr("placeholder", "Using cached ROM");
         $("#rom_3").val("Using cached ROM");
-        
-        try_to_load_from_args()
 
-      } catch {try_to_load_from_args()}
+        try_to_load_from_args();
+      } catch {
+        try_to_load_from_args();
+      }
     };
-  } catch {try_to_load_from_args()}
+  } catch {
+    try_to_load_from_args();
+  }
 }
 var w;
 var CurrentRomHash;
@@ -894,49 +898,38 @@ function generate_seed(url, json, git_branch) {
   });
 }
 
-function apply_download() {
-  if (document.getElementById("rom").value.trim().length === 0 || !document.getElementById("rom").classList.contains("is-valid")) {
-    document.getElementById("rom").select();
-    if (!document.getElementById("rom").classList.contains("is-invalid")) {
-      document.getElementById("rom").classList.add("is-invalid");
-      return
-    }
-  }
-  console.log("Applying Download");
-  return pyodide.runPythonAsync(`
-    import js
-    from randomizer.Patching.ApplyLocal import patching_response
-    patching_response(str(js.event_response_data), from_patch_gen=True)
-  `);
-}
 // if the tab is set to seed info get the generate_seed button and change the text to "Download Seed" we want to check this on every nav tab change
 function check_seed_info_tab() {
-  
-  if (document.getElementById("nav-settings-tab").classList.contains("active")) {
+  if (
+    document.getElementById("nav-settings-tab").classList.contains("active")
+  ) {
     document.getElementById("generate_seed").value = "Download Seed";
     document.getElementById("generate_seed").onclick = null;
-    document.getElementById("generate_seed").onclick = function() {apply_download()};
-  }
-  else {
+    document.getElementById("generate_seed").onclick = function () {
+      apply_download();
+    };
+  } else {
     // if document.getElementById("download_patch_file").checked set it to Generate Patch File
     if (document.getElementById("download_patch_file").checked) {
       document.getElementById("generate_seed").value = "Generate Patch File";
-    }
-    else{
+    } else {
       document.getElementById("generate_seed").value = "Generate Seed";
     }
     // Remove the onclick event
     document.getElementById("generate_seed").onclick = null;
-    document.getElementById("generate_seed").onclick = function() {document.getElementById("trigger_download_event").click()};
+    document.getElementById("generate_seed").onclick = function () {
+      document.getElementById("trigger_download_event").click();
+    };
   }
 }
 function toggleDelayedSpoilerLogInput() {
-  var generateSpoilerLogCheckbox = document.getElementById('delayed_spoilerlog_container');
-  if (!document.getElementById('generate_spoilerlog').checked) {
-      generateSpoilerLogCheckbox.removeAttribute('hidden');
-  }
-  else {
-      generateSpoilerLogCheckbox.setAttribute('hidden', '');
+  var generateSpoilerLogCheckbox = document.getElementById(
+    "delayed_spoilerlog_container"
+  );
+  if (!document.getElementById("generate_spoilerlog").checked) {
+    generateSpoilerLogCheckbox.removeAttribute("hidden");
+  } else {
+    generateSpoilerLogCheckbox.setAttribute("hidden", "");
   }
 }
 
@@ -986,11 +979,9 @@ function unlock_spoiler_log(hash) {
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
     var url = "https://dev-generate.dk64rando.com/get_spoiler_log";
-  }
-  else if (window.location.hostname == "dk64randomizer.com") {
+  } else if (window.location.hostname == "dk64randomizer.com") {
     var url = "https://generate.dk64rando.com/get_spoiler_log";
-  }
-  else {
+  } else {
     var url = "http://localhost:8000/get_spoiler_log";
   }
   $.ajax({
@@ -1002,7 +993,11 @@ function unlock_spoiler_log(hash) {
     success: function (data, textStatus, xhr) {
       if (xhr.status === 200) {
         console.log("Success");
-        save_text_as_file(JSON.stringify(data, null, 2), document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')
+        save_text_as_file(
+          JSON.stringify(data, null, 2),
+          document.getElementById("generated_seed_id").innerHTML +
+            "-spoilerlog.json"
+        );
       } else if (xhr.status === 425) {
         console.log("Not unlocked yet");
         // set the contents of spoiler_log_download_messages to "The spoiler log is not unlocked yet."
@@ -1025,7 +1020,6 @@ function unlock_spoiler_log(hash) {
         setTimeout(function () {
           $("#download_modal").modal("hide");
         }, 5000);
-
       }
     },
     error: function (xhr, textStatus, errorThrown) {
@@ -1039,7 +1033,7 @@ function unlock_spoiler_log(hash) {
       setTimeout(function () {
         $("#download_modal").modal("hide");
       }, 5000);
-    }
+    },
   });
 }
 
@@ -1048,11 +1042,9 @@ function get_seed_from_server(hash) {
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
     var url = "https://dev-generate.dk64rando.com/get_seed";
-  }
-  else if (window.location.hostname == "dk64randomizer.com") {
+  } else if (window.location.hostname == "dk64randomizer.com") {
     var url = "https://generate.dk64rando.com/get_seed";
-  }
-  else {
+  } else {
     var url = "http://localhost:8000/get_seed";
   }
   // Make the ajax call synchronously
@@ -1065,7 +1057,6 @@ function get_seed_from_server(hash) {
     },
     success: function (data, textStatus, xhr) {
       if (xhr.status === 200) {
-
         return data;
       } else {
         document.getElementById("spoiler_log_download_messages").innerHTML =
@@ -1092,7 +1083,7 @@ function get_seed_from_server(hash) {
       }, 5000);
       return_data = "There was an error downloading the seed.";
       return return_data;
-    }
+    },
   });
   // wait for the ajax call to finish
   while (return_data.readyState != 4) {
@@ -1104,20 +1095,20 @@ function get_seed_from_server(hash) {
 function should_reset_select_on_preset(selectElement) {
   /** Return true if the element should be reset when applying a preset. */
   if (document.querySelector("#nav-cosmetics").contains(selectElement)) {
-      return false;
+    return false;
   }
   if (document.querySelector("#nav-music").contains(selectElement) === true) {
-      return false;
+    return false;
   }
   if (selectElement.name.startsWith("plando_")) {
-      return false;
+    return false;
   }
   // This should now be obsolete, because of the #nav-music clause
   if (selectElement.name.startsWith("music_select_")) {
-      return false;
+    return false;
   }
   if (selectElement.id === "random-weights") {
-      return false;
+    return false;
   }
   return true;
 }
@@ -1125,110 +1116,129 @@ function should_reset_select_on_preset(selectElement) {
 // Bind click event for "apply_preset"
 function preset_select_changed(event) {
   /** Trigger a change of the form via the JSON templates. */
-  console.log("PRESET CHANGED")
+  console.log("PRESET CHANGED");
   const element = document.getElementById("presets");
   let presets = null;
 
   for (const val of progression_presets) {
-      if (val.name === element.value) {
-          presets = val;
-      }
+    if (val.name === element.value) {
+      presets = val;
+    }
   }
 
   if (presets && "settings_string" in presets) {
-      // Pass in setting string
-      generateToast(`"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`);
-      const settings = decrypt_settings_string_enum(presets.settings_string);
+    // Pass in setting string
+    generateToast(
+      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+    );
+    const settings = decrypt_settings_string_enum(presets.settings_string);
 
-      for (const select of document.getElementsByTagName("select")) {
-          if (should_reset_select_on_preset(select)) {
-              select.selectedIndex = -1;
-          }
+    for (const select of document.getElementsByTagName("select")) {
+      if (should_reset_select_on_preset(select)) {
+        select.selectedIndex = -1;
       }
+    }
 
-      // Uncheck all starting move radio buttons for the import to then set them correctly
-      for (const starting_move_button of document.querySelectorAll("input[name^='starting_move_box_']")) {
-          starting_move_button.checked = false;
-      }
+    // Uncheck all starting move radio buttons for the import to then set them correctly
+    for (const starting_move_button of document.querySelectorAll(
+      "input[name^='starting_move_box_']"
+    )) {
+      starting_move_button.checked = false;
+    }
 
-      document.getElementById("presets").selectedIndex = 0;
+    document.getElementById("presets").selectedIndex = 0;
 
-      for (const key in settings) {
-          try {
-              if (typeof settings[key] === "boolean") {
-                  const checked = settings[key] ? true : false;
-                  document.querySelector(`#${key}`).checked = checked;
-                  document.getElementsByName(key)[0].checked = checked;
-                  document.querySelector(`#${key}`).removeAttribute("disabled");
-              } else if (Array.isArray(settings[key])) {
-                  if (["starting_move_list_selected", "random_starting_move_list_selected"].includes(key)) {
-                      for (const item of settings[key]) {
-                          const radio_buttons = document.getElementsByName(`starting_move_box_${parseInt(item)}`);
-                          if (key === "starting_move_list_selected") {
-                              radio_buttons.find(button => button.id.startsWith("start")).checked = true;
-                          } else {
-                              radio_buttons.find(button => button.id.startsWith("random")).checked = true;
-                          }
-                      }
-                      continue;
-                  }
-
-                  const selector = document.getElementById(key);
-                  if (selector.tagName === "SELECT") {
-                      for (const item of settings[key]) {
-                          for (const option of selector.options) {
-                              if (option.value === item.name) {
-                                  option.selected = true;
-                              }
-                          }
-                      }
-                  }
+    for (const key in settings) {
+      try {
+        if (typeof settings[key] === "boolean") {
+          const checked = settings[key] ? true : false;
+          document.querySelector(`#${key}`).checked = checked;
+          document.getElementsByName(key)[0].checked = checked;
+          document.querySelector(`#${key}`).removeAttribute("disabled");
+        } else if (Array.isArray(settings[key])) {
+          if (
+            [
+              "starting_move_list_selected",
+              "random_starting_move_list_selected",
+            ].includes(key)
+          ) {
+            for (const item of settings[key]) {
+              const radio_buttons = document.getElementsByName(
+                `starting_move_box_${parseInt(item)}`
+              );
+              if (key === "starting_move_list_selected") {
+                radio_buttons.find((button) =>
+                  button.id.startsWith("start")
+                ).checked = true;
               } else {
-                  const selector = document.getElementById(key);
-                  if (selector.tagName === "SELECT") {
-                      for (const option of selector.options) {
-                          if (option.value === SettingsMap[key](settings[key]).name) {
-                              option.selected = true;
-                              break;
-                          }
-                      }
-                  } else {
-                      document.querySelector(`#${key}`).value = settings[key];
-                  }
-                  document.querySelector(`#${key}`).removeAttribute("disabled");
+                radio_buttons.find((button) =>
+                  button.id.startsWith("random")
+                ).checked = true;
               }
-          } catch (e) {
-              console.error(e);
+            }
+            continue;
           }
+
+          const selector = document.getElementById(key);
+          if (selector.tagName === "SELECT") {
+            for (const item of settings[key]) {
+              for (const option of selector.options) {
+                if (option.value === item.name) {
+                  option.selected = true;
+                }
+              }
+            }
+          }
+        } else {
+          const selector = document.getElementById(key);
+          if (selector.tagName === "SELECT") {
+            for (const option of selector.options) {
+              if (option.value === SettingsMap[key](settings[key]).name) {
+                option.selected = true;
+                break;
+              }
+            }
+          } else {
+            document.querySelector(`#${key}`).value = settings[key];
+          }
+          document.querySelector(`#${key}`).removeAttribute("disabled");
+        }
+      } catch (e) {
+        console.error(e);
       }
+    }
   } else {
-      for (const key in presets) {
-          try {
-              if (typeof presets[key] === "boolean") {
-                  const checked = presets[key] ? true : false;
-                  document.querySelector(`#${key}`).checked = checked;
-                  document.getElementsByName(key)[0].checked = checked;
-                  document.querySelector(`#${key}`).removeAttribute("disabled");
-              } else if (Array.isArray(presets[key])) {
-                  const selector = document.getElementById(key);
-                  for (let i = 0; i < selector.options.length; i++) {
-                      selector.options[i].selected = presets[key].includes(selector.options[i].value);
-                  }
-              } else {
-                  document.querySelector(`#${key}`).value = presets[key];
-                  document.querySelector(`#${key}`).removeAttribute("disabled");
-              }
-          } catch (e) {
-              console.error(e);
+    for (const key in presets) {
+      try {
+        if (typeof presets[key] === "boolean") {
+          const checked = presets[key] ? true : false;
+          document.querySelector(`#${key}`).checked = checked;
+          document.getElementsByName(key)[0].checked = checked;
+          document.querySelector(`#${key}`).removeAttribute("disabled");
+        } else if (Array.isArray(presets[key])) {
+          const selector = document.getElementById(key);
+          for (let i = 0; i < selector.options.length; i++) {
+            selector.options[i].selected = presets[key].includes(
+              selector.options[i].value
+            );
           }
+        } else {
+          document.querySelector(`#${key}`).value = presets[key];
+          document.querySelector(`#${key}`).removeAttribute("disabled");
+        }
+      } catch (e) {
+        console.error(e);
       }
+    }
   }
 
   update_ui_states(null);
   savesettings();
 }
 
-document.getElementById("apply_preset").addEventListener("click", preset_select_changed);
+document
+  .getElementById("apply_preset")
+  .addEventListener("click", preset_select_changed);
 function set_preset_options() {
   // Set the Blocker presets on the page
 
@@ -1238,23 +1248,23 @@ function set_preset_options() {
 
   // Find all the items in the dropdown
   for (let child of element.children) {
-      children.push(child.value);
+    children.push(child.value);
   }
 
   // Find out dropdown item and set our selected item text to it
   for (let val of progression_presets) {
-      if (!children.includes(val.name)) {
-          let opt = document.createElement("option");
-          opt.value = val.name;
-          opt.innerHTML = val.name;
-          opt.title = val.description;
-          element.appendChild(opt);
+    if (!children.includes(val.name)) {
+      let opt = document.createElement("option");
+      opt.value = val.name;
+      opt.innerHTML = val.name;
+      opt.title = val.description;
+      element.appendChild(opt);
 
-          if (val.name === "-- Select a Preset --") {
-              opt.disabled = true;
-              opt.hidden = true;
-          }
+      if (val.name === "-- Select a Preset --") {
+        opt.disabled = true;
+        opt.hidden = true;
       }
+    }
   }
 
   // Set the default value of the dropdown
@@ -1273,8 +1283,7 @@ function set_preset_options() {
   load_data();
 }
 
-
-set_preset_options()
+set_preset_options();
 function set_random_weights_options() {
   // Set the random settings presets on the page
 
@@ -1283,26 +1292,26 @@ function set_random_weights_options() {
 
   // Take note of the items currently in the dropdown
   for (let child of element.children) {
-      children.push(child.value);
+    children.push(child.value);
   }
 
   // Add all of the random weights presets
   for (let val of random_settings_presets) {
-      if (!children.includes(val.name)) {
-          let opt = document.createElement("option");
-          opt.value = val.name;
-          opt.innerHTML = val.name;
-          opt.title = val.description;
-          element.appendChild(opt);
+    if (!children.includes(val.name)) {
+      let opt = document.createElement("option");
+      opt.value = val.name;
+      opt.innerHTML = val.name;
+      opt.title = val.description;
+      element.appendChild(opt);
 
-          // Select the "Standard" preset by default
-          if (val.name === "Standard") {
-              opt.selected = true;
-          }
+      // Select the "Standard" preset by default
+      if (val.name === "Standard") {
+        opt.selected = true;
       }
+    }
   }
 }
-set_random_weights_options()
+set_random_weights_options();
 function load_data() {
   try {
     // make sure all sliders are initialized
@@ -1334,7 +1343,7 @@ function load_data() {
               } else if (json[key] == "False") {
                 element.checked = false;
               } else if (key.includes("starting_move_box")) {
-                var starting_move_buttons = document.getElementsByName(key)
+                var starting_move_buttons = document.getElementsByName(key);
                 for (element of starting_move_buttons) {
                   if (element.id.includes(json[key])) {
                     element.checked = true;
@@ -1361,7 +1370,7 @@ function load_data() {
         }
         // Once all the options and toggles are set, trigger various UI events to set up enable/disable states correctly
         var apply_preset_element = document.getElementById("apply_preset");
-        apply_preset_element.dispatchEvent(new Event('custom-update-ui-event'));
+        apply_preset_element.dispatchEvent(new Event("custom-update-ui-event"));
       } catch {
         preset_select_changed();
       }
