@@ -26,33 +26,12 @@ from randomizer.PlandoUtils import PlandoCustomLocationFilter, PlandoCustomLocat
 
 async def initialize():
     """Shifted code into an async function so we can properly lint await calls."""
-    js.listeners = []
-    js.progression_presets = []
-    js.random_settings_presets = []
-    js.background_worker = None
-
     def ajax_call(file):
         resp = js.getFile(file)
         return resp
 
     def loader_func(template_name):
         return ajax_call("templates/" + f"{template_name}")
-
-    if js.location.hostname == "dev.dk64randomizer.com":
-        presets_url = "https://dev-generate.dk64rando.com/get_presets?return_blank=true"
-    elif js.location.hostname == "dk64randomizer.com":
-        presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true"
-    else:
-        presets_url = js.location.origin + "/get_presets?return_blank=true"
-
-    for file in json.loads(ajax_call(presets_url)):
-        js.progression_presets.append(file)
-    for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json")):
-        js.random_settings_presets.append(file)
-
-    # Load our pointer info from the JSON database
-    js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
-    js.rom_symbols = json.loads(js.getFile("./static/patches/symbols.json"))
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     # Add custom Jinja2 filter functions.

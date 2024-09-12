@@ -16,6 +16,7 @@
         <script type="text/javascript" src="static/js/md5.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
             rel="stylesheet"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.2.4/nunjucks.min.js" integrity="sha512-YvU0oaPCJSOIFni9rIOthOs5GgtU5kNZMKQG/Nt33t/H9g/1+TK7KJuMsCZS6v4O3+x253OZlTzPryrUtxxORw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet"
             type="text/css"
             href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -113,7 +114,8 @@
                         top: 50%;
                         left: 40%;
                         " src="./static/img/loading-icon-black.svg" />
-                    <script>
+
+                    <!-- <script>
                         var pyodide;
                         var jquery = $;
                         async function load_inital() {
@@ -130,12 +132,7 @@
                             await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
                         }
                         await pyodide.runPythonAsync(ui_script).then(function (result) {
-                            var script = document.createElement("script");
-                            script.src = "./static/js/rando_options.js";
-                            document.head.appendChild(script);
-                            var script = document.createElement("script");
-                            script.src = "./static/js/initalize.js";
-                            document.head.appendChild(script);
+
 
                         });
                         }
@@ -161,9 +158,22 @@
                             }, 1000);
                         }, 1000);
                         }
-                    </script>
+                    </script> -->
                     </div>
                     <div class="container" id="tab-data" hidden></div>
+                    <script>
+                        nunjucks.configure('/templates', { autoescape: true });
+                        var renderedHTML = nunjucks.render("base.html.jinja2", {});
+                        var navRenderedHTML = nunjucks.render("nav-tabs.html.jinja2", {});
+                        $("#tab-data").html(renderedHTML);
+                        $("#nav-tab-list").html(navRenderedHTML);
+                        var script = document.createElement("script");
+                        script.src = "./static/js/rando_options.js";
+                        document.head.appendChild(script);
+                        var script = document.createElement("script");
+                        script.src = "./static/js/initalize.js";
+                        document.head.appendChild(script);
+                    </script>
                     <hr />
                     <!-- Toasts -->
                     <div id="toasts">

@@ -172,7 +172,7 @@
          style="display: none;">
     </div>
     <div>
-        {% for categoryName, category in select_song_panel.items() %}
+        {% for categoryName, category in select_song_panel %}
             <div class="flex-container flex-center expandable-toggle"
                  id="{{categoryName}}_collapse_toggle">
                 <h3 class="title">{{category["name"]}}</h3>

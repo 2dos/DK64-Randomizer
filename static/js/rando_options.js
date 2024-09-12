@@ -1,3 +1,23 @@
+function toggle_logic_type(event) {
+    /** Toggle settings based on the presence of logic. */
+    
+    // Call the function to toggle extreme prices based on the event
+    toggle_extreme_prices_option(event);
+
+    // Get the glitch customization modal element
+    let glitchCustomization = document.getElementById("glitches_modal");
+
+    // Check the value of the logic_type element and enable or disable the glitches modal
+    if (document.getElementById("logic_type").value === "glitch") {
+        glitchCustomization.removeAttribute("disabled");
+    } else {
+        glitchCustomization.setAttribute("disabled", "disabled");
+    }
+}
+
+// Attach the function as an event listener to the "change" event on the "logic_type" element
+document.getElementById("logic_type").addEventListener("change", toggle_logic_type);
+
 // Toggle the hint color table
 document.getElementById("plando_toggle_color_table").addEventListener("click", function(evt) {
     const hintColorTable = document.getElementById("plando_hint_color_table");

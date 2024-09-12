@@ -58,7 +58,7 @@ def set_preset_options():
     js.jq("#presets").val("-- Select a Preset --")
     js.toggle_counts_boxes(None)
     js.toggle_b_locker_boxes(None)
-    toggle_logic_type(None)
+    js.toggle_logic_type(None)
     js.toggle_bananaport_selector(None)
     js.updateDoorOneNumAccess(None)
     js.updateDoorTwoNumAccess(None)
@@ -200,7 +200,7 @@ def update_ui_states(event):
     js.disable_helm_hurry(None)
     js.disable_remove_barriers(None)
     js.disable_faster_checks(None)
-    toggle_logic_type(None)
+    js.toggle_logic_type(None)
     js.toggle_key_settings(None)
     js.max_starting_moves_count(None)
     js.updateDoorOneNumAccess(None)
@@ -296,15 +296,7 @@ def plando_disable_starting_moves(evt):
             dropdown.value = ""
 
 
-@bind("change", "logic_type")
-def toggle_logic_type(event):
-    """Toggle settings based on the presence of logic."""
-    js.toggle_extreme_prices_option(event)
-    glitch_customization = document.getElementById("glitches_modal")
-    if document.getElementById("logic_type").value == "glitch":
-        glitch_customization.removeAttribute("disabled")
-    else:
-        glitch_customization.setAttribute("disabled", "disabled")
+
 
 
 @bind("click", "key_8_helm")
