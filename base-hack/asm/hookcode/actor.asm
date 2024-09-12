@@ -666,3 +666,12 @@ blockTreeClimbing:
     blockTreeClimbing_noclimb:
         j 0x8072F474
         or $a0, $s2, $zero
+
+reenable_balloon_z:
+    addiu $t5, $t4, 1
+    sb $t5, 0x155 ($a3)
+    lui $a3, hi(ButtonsEnabledBitfield)
+    lhu $t5, lo(ButtonsEnabledBitfield) ($a3)
+    ori $t5, $t5, 0x2000 ; re-enable z
+    j 0x806DA244
+    sh $t5, lo(ButtonsEnabledBitfield) ($a3)
