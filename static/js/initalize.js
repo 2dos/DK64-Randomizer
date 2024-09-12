@@ -1,5 +1,14 @@
 // NOTE: pyodide_functions.js is NOT currently loaded, some functions will fail
-
+fetch('/get_selector_info')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    nunjucks.configure('/templates', { autoescape: true });
+    var renderedHTML = nunjucks.render("base.html.jinja2", data);
+    var navRenderedHTML = nunjucks.render("nav-tabs.html.jinja2", {});
+    $("#tab-data").html(renderedHTML);
+    $("#nav-tab-list").html(navRenderedHTML);
+});
 async function try_to_load_from_args() {
   /** Get the args from the URL and then load the seed from the server if it exists. */
 
