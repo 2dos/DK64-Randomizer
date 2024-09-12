@@ -37,10 +37,6 @@ if (typeof window.RufflePlayer !== "undefined") {
   // Ruffle extension is not loaded
   console.log("Ruffle extension is not loaded");
 }
-async function load_presets() {
-    await pyodide.runPythonAsync(`from ui.rando_options import preset_select_changed
-    preset_select_changed(None)`);
-  }
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
   console.log("Loading " + file);

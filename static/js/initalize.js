@@ -1,14 +1,125 @@
+
 // NOTE: pyodide_functions.js is NOT currently loaded, some functions will fail
-fetch('/get_selector_info')
-  .then(response => response.json())
-  .then(data => {
-    console.log(data)
+$.ajax({
+  url: '/get_selector_info',
+  dataType: 'json',
+  async: false,
+  success: function(data) {
     nunjucks.configure('/templates', { autoescape: true });
     var renderedHTML = nunjucks.render("base.html.jinja2", data);
     var navRenderedHTML = nunjucks.render("nav-tabs.html.jinja2", {});
     $("#tab-data").html(renderedHTML);
     $("#nav-tab-list").html(navRenderedHTML);
+  }
 });
+// Initialize arrays for listeners, progression presets, and random settings presets
+const listeners = [];
+const progression_presets = [];
+const random_settings_presets = [];
+
+// Determine the correct URL for fetching presets based on the hostname
+let presets_url;
+if (location.hostname === "dev.dk64randomizer.com") {
+    presets_url = "https://dev-generate.dk64rando.com/get_presets?return_blank=true";
+} else if (location.hostname === "dk64randomizer.com") {
+    presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true";
+} else {
+    presets_url = `${location.origin}/get_presets?return_blank=true`;
+}
+
+// Use fetch to get the presets and populate progression_presets and random_settings_presets
+$.ajax({
+  url: presets_url,
+  dataType: 'json',
+  async: false,
+  success: function(data) {
+    data.forEach(file => {
+      progression_presets.push(file);
+    });
+  }
+});
+$.ajax({
+  url: "static/presets/weights/weights_files.json",
+  dataType: "json",
+  async: false,
+  success: function(data) {
+    data.forEach(file => {
+      random_settings_presets.push(file);
+    });
+  }
+});
+
+$.ajax({
+  url: "./static/patches/pointer_addresses.json",
+  dataType: "json",
+  async: false,
+  success: function(data) {
+    pointer_addresses = data;
+  }
+});
+
+$.ajax({
+  url: "./static/patches/symbols.json",
+  dataType: "json",
+  async: false,
+  success: function(data) {
+    rom_symbols = data;
+  }
+});
+
+
+
+
+
+
+let user_agent = navigator.userAgent;
+if (window.location.protocol != "https:") {
+  if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
+    location.href = location.href.replace("http://", "https://");
+  }
+}
+
+// if the domain is not the main domain, hide dev site warnings and features
+if (location.hostname == "dk64randomizer.com") {
+  document.getElementById("spoiler_warning_1").style.display = "none";
+  document.getElementById("spoiler_warning_2").style.background = "";
+  document.getElementById("spoiler_warning_3").style.display = "none";
+  document.getElementById("spoiler_warning_4").style.display = "none";
+  document.getElementById("plandomizer_container").style.display = "none";
+}
+if (location.hostname != "localhost") {
+  document.getElementById("plando_string_section").style.display = "none";
+}
+
+function decrypt_settings_string_enum(settings_string){
+  // fetch the web endpoint /convert_settings_string using ajax syncronously
+  var response = $.ajax({
+    type: "POST",
+    url: "/convert_settings_string",
+    data: JSON.stringify({"settings_string": settings_string}),
+    contentType: "application/json",
+    async: false,
+  }).responseText;
+  // Convert the json response to a string
+  var settings = JSON.parse(response);
+  return settings;
+}
+
+function encrypt_settings_string_enum(settings){
+  // fetch the web endpoint /convert_settings_string using ajax syncronously
+  var response = $.ajax({
+    type: "POST",
+    url: "/convert_settings_enum",
+    data: JSON.stringify({"settings_json": settings}),
+    contentType: "application/json",
+    async: false,
+  }).responseText;
+  // Convert the json response to a string
+  var set = JSON.parse(response);
+  var settings_string = set["settings_string"];
+  return settings_string;
+}
+
 async function try_to_load_from_args() {
   /** Get the args from the URL and then load the seed from the server if it exists. */
 
@@ -46,76 +157,7 @@ async function try_to_load_from_args() {
   document.getElementById("tab-data").removeAttribute("hidden");
 }
 
-// Initialize arrays for listeners, progression presets, and random settings presets
-const listeners = [];
-const progression_presets = [];
-const random_settings_presets = [];
 
-// Determine the correct URL for fetching presets based on the hostname
-let presets_url;
-if (location.hostname === "dev.dk64randomizer.com") {
-    presets_url = "https://dev-generate.dk64rando.com/get_presets?return_blank=true";
-} else if (location.hostname === "dk64randomizer.com") {
-    presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true";
-} else {
-    presets_url = `${location.origin}/get_presets?return_blank=true`;
-}
-
-// Use fetch to get the presets and populate progression_presets and random_settings_presets
-fetch(presets_url)
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(file => {
-            progression_presets.push(file);
-        });
-    });
-
-fetch("static/presets/weights/weights_files.json")
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(file => {
-            random_settings_presets.push(file);
-        });
-    });
-
-// Load pointer info and ROM symbols from the JSON database
-let pointer_addresses, rom_symbols;
-fetch("./static/patches/pointer_addresses.json")
-    .then(response => response.json())
-    .then(data => {
-        pointer_addresses = data;
-    });
-
-fetch("./static/patches/symbols.json")
-    .then(response => response.json())
-    .then(data => {
-        rom_symbols = data;
-    });
-
-
-
-
-
-
-
-let user_agent = navigator.userAgent;
-if (window.location.protocol != "https:") {
-  if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
-    location.href = location.href.replace("http://", "https://");
-  }
-}
-
-// if the domain is not the main domain, hide dev site warnings and features
-if (location.hostname == "dk64randomizer.com") {
-  document.getElementById("spoiler_warning_1").style.display = "none";
-  document.getElementById("spoiler_warning_2").style.background = "";
-  document.getElementById("spoiler_warning_3").style.display = "none";
-  document.getElementById("spoiler_warning_4").style.display = "none";
-  document.getElementById("plandomizer_container").style.display = "none";
-}
-if (location.hostname != "localhost") {
-  document.getElementById("plando_string_section").style.display = "none";
-}
 
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
@@ -1059,6 +1101,208 @@ function get_seed_from_server(hash) {
   return return_data.responseText;
 }
 
+function should_reset_select_on_preset(selectElement) {
+  /** Return true if the element should be reset when applying a preset. */
+  if (document.querySelector("#nav-cosmetics").contains(selectElement)) {
+      return false;
+  }
+  if (document.querySelector("#nav-music").contains(selectElement) === true) {
+      return false;
+  }
+  if (selectElement.name.startsWith("plando_")) {
+      return false;
+  }
+  // This should now be obsolete, because of the #nav-music clause
+  if (selectElement.name.startsWith("music_select_")) {
+      return false;
+  }
+  if (selectElement.id === "random-weights") {
+      return false;
+  }
+  return true;
+}
+
+// Bind click event for "apply_preset"
+function preset_select_changed(event) {
+  /** Trigger a change of the form via the JSON templates. */
+  console.log("PRESET CHANGED")
+  const element = document.getElementById("presets");
+  let presets = null;
+
+  for (const val of progression_presets) {
+      if (val.name === element.value) {
+          presets = val;
+      }
+  }
+
+  if (presets && "settings_string" in presets) {
+      // Pass in setting string
+      generateToast(`"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`);
+      const settings = decrypt_settings_string_enum(presets.settings_string);
+
+      for (const select of document.getElementsByTagName("select")) {
+          if (should_reset_select_on_preset(select)) {
+              select.selectedIndex = -1;
+          }
+      }
+
+      // Uncheck all starting move radio buttons for the import to then set them correctly
+      for (const starting_move_button of document.querySelectorAll("input[name^='starting_move_box_']")) {
+          starting_move_button.checked = false;
+      }
+
+      document.getElementById("presets").selectedIndex = 0;
+
+      for (const key in settings) {
+          try {
+              if (typeof settings[key] === "boolean") {
+                  const checked = settings[key] ? true : false;
+                  document.querySelector(`#${key}`).checked = checked;
+                  document.getElementsByName(key)[0].checked = checked;
+                  document.querySelector(`#${key}`).removeAttribute("disabled");
+              } else if (Array.isArray(settings[key])) {
+                  if (["starting_move_list_selected", "random_starting_move_list_selected"].includes(key)) {
+                      for (const item of settings[key]) {
+                          const radio_buttons = document.getElementsByName(`starting_move_box_${parseInt(item)}`);
+                          if (key === "starting_move_list_selected") {
+                              radio_buttons.find(button => button.id.startsWith("start")).checked = true;
+                          } else {
+                              radio_buttons.find(button => button.id.startsWith("random")).checked = true;
+                          }
+                      }
+                      continue;
+                  }
+
+                  const selector = document.getElementById(key);
+                  if (selector.tagName === "SELECT") {
+                      for (const item of settings[key]) {
+                          for (const option of selector.options) {
+                              if (option.value === item.name) {
+                                  option.selected = true;
+                              }
+                          }
+                      }
+                  }
+              } else {
+                  const selector = document.getElementById(key);
+                  if (selector.tagName === "SELECT") {
+                      for (const option of selector.options) {
+                          if (option.value === SettingsMap[key](settings[key]).name) {
+                              option.selected = true;
+                              break;
+                          }
+                      }
+                  } else {
+                      document.querySelector(`#${key}`).value = settings[key];
+                  }
+                  document.querySelector(`#${key}`).removeAttribute("disabled");
+              }
+          } catch (e) {
+              console.error(e);
+          }
+      }
+  } else {
+      for (const key in presets) {
+          try {
+              if (typeof presets[key] === "boolean") {
+                  const checked = presets[key] ? true : false;
+                  document.querySelector(`#${key}`).checked = checked;
+                  document.getElementsByName(key)[0].checked = checked;
+                  document.querySelector(`#${key}`).removeAttribute("disabled");
+              } else if (Array.isArray(presets[key])) {
+                  const selector = document.getElementById(key);
+                  for (let i = 0; i < selector.options.length; i++) {
+                      selector.options[i].selected = presets[key].includes(selector.options[i].value);
+                  }
+              } else {
+                  document.querySelector(`#${key}`).value = presets[key];
+                  document.querySelector(`#${key}`).removeAttribute("disabled");
+              }
+          } catch (e) {
+              console.error(e);
+          }
+      }
+  }
+
+  update_ui_states(null);
+  savesettings();
+}
+
+document.getElementById("apply_preset").addEventListener("click", preset_select_changed);
+function set_preset_options() {
+  // Set the Blocker presets on the page
+
+  // Check what the selected dropdown item is
+  let element = document.getElementById("presets");
+  let children = [];
+
+  // Find all the items in the dropdown
+  for (let child of element.children) {
+      children.push(child.value);
+  }
+
+  // Find out dropdown item and set our selected item text to it
+  for (let val of progression_presets) {
+      if (!children.includes(val.name)) {
+          let opt = document.createElement("option");
+          opt.value = val.name;
+          opt.innerHTML = val.name;
+          opt.title = val.description;
+          element.appendChild(opt);
+
+          if (val.name === "-- Select a Preset --") {
+              opt.disabled = true;
+              opt.hidden = true;
+          }
+      }
+  }
+
+  // Set the default value of the dropdown
+  $("#presets").val("-- Select a Preset --");
+
+  // Toggle elements and update the page according to the preset
+  toggle_counts_boxes(null);
+  toggle_b_locker_boxes(null);
+  toggle_logic_type(null);
+  toggle_bananaport_selector(null);
+  update_door_one_num_access(null);
+  update_door_two_num_access(null);
+  update_win_con_num_access(null);
+
+  // Load the data
+  load_data();
+}
+
+
+set_preset_options()
+function set_random_weights_options() {
+  // Set the random settings presets on the page
+
+  let element = document.getElementById("random-weights");
+  let children = [];
+
+  // Take note of the items currently in the dropdown
+  for (let child of element.children) {
+      children.push(child.value);
+  }
+
+  // Add all of the random weights presets
+  for (let val of random_settings_presets) {
+      if (!children.includes(val.name)) {
+          let opt = document.createElement("option");
+          opt.value = val.name;
+          opt.innerHTML = val.name;
+          opt.title = val.description;
+          element.appendChild(opt);
+
+          // Select the "Standard" preset by default
+          if (val.name === "Standard") {
+              opt.selected = true;
+          }
+      }
+  }
+}
+set_random_weights_options()
 function load_data() {
   try {
     // make sure all sliders are initialized
@@ -1113,17 +1357,17 @@ function load_data() {
           }
           savesettings();
         } else {
-          load_presets();
+          preset_select_changed();
         }
         // Once all the options and toggles are set, trigger various UI events to set up enable/disable states correctly
         var apply_preset_element = document.getElementById("apply_preset");
         apply_preset_element.dispatchEvent(new Event('custom-update-ui-event'));
       } catch {
-        load_presets();
+        preset_select_changed();
       }
     };
   } catch {
-    load_presets();
+    preset_select_changed();
   }
 }
 load_data();

@@ -15,6 +15,15 @@ function toggle_logic_type(event) {
     }
 }
 
+const DISABLED_HELM_DOOR_VALUES = ["easy_random", "medium_random", "hard_random", "opened"];
+
+
+
+
+
+
+
+
 // Attach the function as an event listener to the "change" event on the "logic_type" element
 document.getElementById("logic_type").addEventListener("change", toggle_logic_type);
 
@@ -727,8 +736,11 @@ function disable_colors() {
                 color.setAttribute("disabled", "disabled");
                 picker.setAttribute("disabled", "disabled");
             } else {
-                color.removeAttribute("disabled");
-                picker.removeAttribute("disabled");
+                try{
+                    color.removeAttribute("disabled");
+                    picker.removeAttribute("disabled");
+                }
+                catch{}
             }
         });
     }
@@ -1289,10 +1301,9 @@ document.getElementById("shuffle_items").addEventListener("click", max_starting_
 document.getElementById("move_rando").addEventListener("change", max_starting_moves_count);
 document.getElementById("starting_moves_count").addEventListener("focusout", max_starting_moves_count);
 
-const DISABLED_HELM_DOOR_VALUES = ["easy_random", "medium_random", "hard_random", "opened"];
 
 // Update Door 1 Number Access
-function updateDoorOneNumAccess() {
+function update_door_one_num_access() {
     const doorOneSelection = document.getElementById("crown_door_item");
     const doorOneContainer = document.getElementById("door_1_container");
     const doorOneReq = document.getElementById("crown_door_item_count");
@@ -1327,10 +1338,10 @@ function updateDoorOneNumAccess() {
     }
 }
 
-document.getElementById("crown_door_item").addEventListener("change", updateDoorOneNumAccess);
+document.getElementById("crown_door_item").addEventListener("change", update_door_one_num_access);
 
 // Update Door 2 Number Access
-function updateDoorTwoNumAccess() {
+function update_door_two_num_access() {
     const doorTwoSelection = document.getElementById("coin_door_item");
     const doorTwoContainer = document.getElementById("door_2_container");
     const doorTwoReq = document.getElementById("coin_door_item_count");
@@ -1367,12 +1378,12 @@ function updateDoorTwoNumAccess() {
     }
 }
 
-document.getElementById("coin_door_item").addEventListener("change", updateDoorTwoNumAccess);
-
-const DISABLED_WIN_VALUES = ["easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture", "dk_rap_items"];
+document.getElementById("coin_door_item").addEventListener("change", update_door_two_num_access);
 
 // Update Win Condition Number Access
-function updateWinConNumAccess() {
+function update_win_con_num_access() {
+    const DISABLED_WIN_VALUES = ["easy_random", "medium_random", "hard_random", "beat_krool", "get_key8", "krem_kapture", "dk_rap_items"];
+
     const winConSelection = document.getElementById("win_condition_item");
     const winConContainer = document.getElementById("win_condition_container");
     const winConReq = document.getElementById("win_condition_count");
@@ -1407,7 +1418,7 @@ function updateWinConNumAccess() {
     }
 }
 
-document.getElementById("win_condition_item").addEventListener("change", updateWinConNumAccess);
+document.getElementById("win_condition_item").addEventListener("change", update_win_con_num_access);
 
 // Validate Door 1 input on loss of focus
 document.getElementById("crown_door_item_count").addEventListener("focusout", function(event) {
@@ -1498,3 +1509,54 @@ document.querySelectorAll("[id^=blocker_], [id^=troff_], #blocker_text, #troff_t
         }
     });
 });
+// Bind custom update UI event for "apply_preset"
+function update_ui_states() {
+    /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
+    toggle_counts_boxes(null);
+    toggle_b_locker_boxes(null);
+    change_level_randomization(null);
+    disable_colors(null);
+    disable_music(null);
+    disable_move_shuffles(null);
+    max_randomized_blocker(null);
+    handle_progressive_hint_text(null);
+    handle_chaos_ratio_text(null);
+    max_randomized_troff(null);
+    max_music(null);
+    max_music_proportion(null);
+    max_sfx(null);
+    disable_barrel_modal(null);
+    item_rando_list_changed(null);
+    toggle_item_rando(null);
+    disable_enemy_modal(null);
+    disable_hard_mode_modal(null);
+    disable_hard_bosses_modal(null);
+    disable_excluded_songs_modal(null);
+    disable_music_filtering_modal(null);
+    toggle_bananaport_selector(null);
+    disable_helm_hurry(null);
+    disable_remove_barriers(null);
+    disable_faster_checks(null);
+    toggle_logic_type(null);
+    toggle_key_settings(null);
+    max_starting_moves_count(null);
+    update_door_one_num_access(null);
+    update_door_two_num_access(null);
+    update_win_con_num_access(null);
+    disable_tag_spawn(null);
+    disable_krool_phases(null);
+    disable_helm_phases(null);
+    enable_plandomizer(null);
+    toggle_medals_box(null);
+    toggle_extreme_prices_option(null);
+    toggle_vanilla_door_rando(null);
+    validate_fast_start_status(null);
+
+    const sliders = document.getElementsByClassName("pretty-slider");
+    for (let s = 0; s < sliders.length; s++) {
+        const event = new Event("change", { bubbles: true, cancelable: false });
+        sliders[s].dispatchEvent(event);
+    }
+}
+
+document.getElementById("apply_preset").addEventListener("custom-update-ui-event", update_ui_states);

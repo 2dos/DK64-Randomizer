@@ -631,6 +631,14 @@ def convert_settings_string():
     # Return the json
     return make_response(json.dumps(decrypted), 200)
 
+@app.route("/convert_settings_json", methods=["POST"])
+def convert_settings_json():
+    """Convert a settings json to a settings string."""
+    # Get the settings string from the request body
+    settings_json = request.get_json().get("settings_json")
+    encrypted = encrypt_settings_string_enum(settings_json)
+    # Return the json
+    return make_response(json.dumps({"settings_string": encrypted}), 200)
 
 def update_total():
     """Update the total seeds generated."""
