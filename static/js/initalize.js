@@ -1,4 +1,21 @@
 // NOTE: pyodide_functions.js is NOT currently loaded, some functions will fail
+var GlitchSelector = [];
+fetch('randomizer/Lists/Logic.json')
+  .then(response => response.json())
+  .then(data => {
+    data.GlitchLogicItems.forEach(item => {
+      if (item.name != "No Group") {
+        GlitchSelector.push({"name": item.name, "tooltip": item.tooltip, "value": item.shorthand});
+      }
+    });
+    nunjucks.configure('/templates', { autoescape: true });
+    var renderedHTML = nunjucks.render("base.html.jinja2", {"glitches": GlitchSelector});
+    var navRenderedHTML = nunjucks.render("nav-tabs.html.jinja2", {});
+    $("#tab-data").html(renderedHTML);
+    $("#nav-tab-list").html(navRenderedHTML);
+
+
+});
 
 async function try_to_load_from_args() {
   /** Get the args from the URL and then load the seed from the server if it exists. */

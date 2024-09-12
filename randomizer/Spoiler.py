@@ -37,7 +37,6 @@ from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
-from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements, TrainingMinigameLocations, MinigameSelector
@@ -53,6 +52,10 @@ from randomizer.ShuffleKasplats import constants, shufflable
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
     from randomizer.LogicClasses import Sphere
+
+# Load Glitch Logic Items from Lists/Logic.json
+with open("randomizer/Lists/Logic.json", "r") as f:
+    GlitchLogicItems = json.load(f)["GlitchLogicItems"]
 
 boss_map_names = {
     Maps.JapesBoss: "Army Dillo 1",
@@ -248,7 +251,7 @@ class Spoiler:
             settings["Logic Type"] = self.settings.logic_type
         if self.settings.logic_type == LogicType.glitch:
             settings["Glitches Enabled"] = ", ".join(
-                [x.name for x in GlitchLogicItems if GlitchesSelected[x.shorthand] in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0]
+                [x["name"] for x in GlitchLogicItems if GlitchesSelected[x.shorthand] in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0]
             )
         settings["Shuffle Enemies"] = self.settings.enemy_rando
         settings["Move Randomization type"] = self.settings.move_rando.name

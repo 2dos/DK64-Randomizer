@@ -1,0 +1,70 @@
+{
+    "GlitchLogicItems": [
+      {
+        "name": "Advanced Platforming",
+        "value": "advanced_platforming",
+        "tooltip": "Platforming techniques that don't require any glitches but might be too tough for some players."
+      },
+      {
+        "name": "B Locker Skips",
+        "value": "b_locker_skips",
+        "tooltip": "Any skip that allows you to bypass the B. Locker's requirements."
+      },
+      {
+        "name": "General Clips",
+        "value": "general_clips",
+        "tooltip": "Any trick that doesn't fall into a general category. Includes object clips, bush push, terminal 2 clip and Crypt jump clip."
+      },
+      {
+        "name": "Ledge Clips",
+        "value": "ledge_clips",
+        "tooltip": "A trick that allows the player to fall through gaps between walls and floors."
+      },
+      {
+        "name": "Moonkicks",
+        "value": "moonkicks",
+        "tooltip": "A trick that allows Donkey to ascend by interrupting his aerial attack with a kick."
+      },
+      {
+        "name": "Moontail",
+        "value": "moontail",
+        "tooltip": "A trick that allows the player to gain extra height with Diddy."
+      },
+      {
+        "name": "Phase Swimming",
+        "value": "phase_swimming",
+        "tooltip": "Formerly known as STVW, a trick to go through a significant amount of walls in the game whilst underwater."
+      },
+      {
+        "name": "Phase Walking",
+        "value": "phase_walking",
+        "tooltip": "A triple-frame perfect technique to go through a significant amount of walls in the game. This option also includes Phase Falling."
+      },
+      {
+        "name": "Skew",
+        "value": "skew",
+        "tooltip": "A trick that enables you to rotate the kong's collision and model, enabling the player to go through most walls in the game."
+      },
+      {
+        "name": "Spawn Snags",
+        "value": "spawn_snags",
+        "tooltip": "A trick that allows you to collect items earlier than intended by keeping them unloaded. Only accounts for spawn snags that have been done by humans."
+      },
+      {
+        "name": "Swim through Shores",
+        "value": "swim_through_shores",
+        "tooltip": "A trick that allows you to swim into a sloped shoreline to get out of bounds."
+      },
+      {
+        "name": "Tag Barrel Storage",
+        "value": "tag_barrel_storage",
+        "tooltip": "A trick that allows you to store a tag barrel being entered and abuse that storage. Includes telegrabs and Orangstand TBS Noclips."
+      },
+      {
+        "name": "Troff n Scoff Skips",
+        "value": "troff_n_scoff_skips",
+        "tooltip": "Any skip that allows you to bypass the kong and small banana requirement in order to fight a boss."
+      }
+    ]
+  }
+  
