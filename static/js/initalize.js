@@ -287,6 +287,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let event_promises = [];
       let transition_promises = [];
       let portal_promises = [];
+      let painting_promises = [];
 
       
       for (var filename of Object.keys(new_zip.files)) {
@@ -302,6 +303,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           transition_promises.push(createMusicLoadPromise(new_zip, filename))
         } else if (validFilename(filename, "textures/tns_portal/", ".png")) {
           portal_promises.push(createMusicLoadPromise(new_zip, filename))
+        } else if (validFilename(filename, "textures/paintings/", ".png")) {
+          painting_promises.push(createMusicLoadPromise(new_zip, filename))
         }
       }
 
@@ -315,6 +318,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       sortLoadedMusic(event_files);
       let transition_files = await Promise.all(transition_promises);
       let portal_files = await Promise.all(portal_promises);
+      let painting_files = await Promise.all(painting_promises);
 
 
       // BGM
@@ -344,6 +348,10 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       // T&S Portals
       let tns_portals = portal_files.map((x) => x.file);
       let tns_portal_names = portal_files.map((x) => x.name);
+      
+      // Paintings
+      let paintings = painting_files.map((x) => x.file);
+      let painting_names = painting_files.map((x) => x.name);
 
       cosmetics = {
         bgm: bgm,
@@ -352,6 +360,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         events: events,
         transitions: transitions,
         tns_portals: tns_portals,
+        paintings: paintings,
       };
       cosmetic_names = {
         bgm: bgm_names,
@@ -360,6 +369,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         events: event_names,
         transitions: transition_names,
         tns_portals: tns_portal_names,
+        paintings: painting_names,
       };
       cosmetic_extensions = {
         bgm: bgm_ext,
