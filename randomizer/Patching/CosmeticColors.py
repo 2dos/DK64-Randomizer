@@ -5,6 +5,7 @@ from __future__ import annotations
 import gzip
 import random
 import zlib
+import math
 from random import randint
 from typing import TYPE_CHECKING, List, Tuple
 from enum import IntEnum, auto
@@ -693,6 +694,7 @@ def apply_cosmetic_colors(settings: Settings):
     if js.document.getElementById("override_cosmetics").checked or True:
         writeTransition(settings)
         writeCustomPortal(settings)
+        writeCustomPaintings(settings)
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -2538,6 +2540,49 @@ def convertColorIntToTuple(color: int) -> tuple:
     return ((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF)
 
 
+def getLuma(color: tuple) -> float:
+    """Get the luma value of a color."""
+    return (0.299 * color[0]) + (0.587 * color[1]) + (0.114 * color[2])
+
+
+def adjustFungiMushVertexColor(shift: int):
+    """Adjust the special vertex coloring on Fungi Giant Mushroom."""
+    fungi_geo = bytearray(getRawFile(TableNames.MapGeometry, Maps.FungiForest, True))
+    DEFAULT_MUSHROOM_COLOR = (255, 90, 82)
+    NEW_MUSHROOM_COLOR = hueShiftColor(DEFAULT_MUSHROOM_COLOR, shift)
+    for x in range(0x27DA, 0x2839):
+        start = 0x25140 + (x * 0x10) + 0xC
+        channels = []
+        is_zero = True
+        for y in range(3):
+            val = fungi_geo[start + y]
+            if val != 0:
+                is_zero = False
+            channels.append(val)
+        if is_zero:
+            continue
+        visual_color = [int((x / 255) * DEFAULT_MUSHROOM_COLOR[xi]) for xi, x in enumerate(channels)]
+        luma = int(getLuma(visual_color))
+        # Diversify shading
+        luma -= 128
+        luma = int(luma * 1.2)
+        luma += 128
+        # Brighten
+        luma += 60
+        # Clamp
+        if luma < 0:
+            luma = 0
+        elif luma > 255:
+            luma = 255
+        # Apply shading
+        for y in range(3):
+            fungi_geo[start + y] = luma
+        fungi_geo[start + 3] = 0xFF
+    file_data = gzip.compress(fungi_geo, compresslevel=9)
+    ROM().seek(js.pointer_addresses[TableNames.MapGeometry]["entries"][Maps.FungiForest]["pointing_to"])
+    ROM().writeBytes(file_data)
+
+
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
     if settings.override_cosmetics:
@@ -2563,7 +2608,6 @@ def writeMiscCosmeticChanges(settings):
                         dims = (32, 32)
                     else:
                         dims = (48, 42)
-                    print(table, hex(img))
                     melon_im = getImageFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
                     melon_im = hueShift(melon_im, shift)
                     melon_px = melon_im.load()
@@ -2882,6 +2926,8 @@ def writeMiscCosmeticChanges(settings):
             hueShiftImageContainer(25, img_index, 1, 692, TextureFormat.RGBA5551, mush_man_shift)
         for img_index in (0x67F, 0x680):
             hueShiftImageContainer(25, img_index, 32, 64, TextureFormat.RGBA5551, mush_man_shift)
+        hueShiftImageContainer(25, 0x6F3, 4, 4, TextureFormat.RGBA5551, mush_man_shift)
+        adjustFungiMushVertexColor(mush_man_shift)
 
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
@@ -3846,6 +3892,31 @@ def writeTransition(settings: Settings) -> None:
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)
 
 
+def getImageChunk(im_f, width: int, height: int):
+    """Get an image chunk based on a width and height."""
+    width_height_ratio = width / height
+    im_w, im_h = im_f.size
+    im_wh_ratio = im_w / im_h
+    if im_wh_ratio != width_height_ratio:
+        # Ratio doesn't match, we have to do some rejigging
+        scale = 1
+        if width_height_ratio > im_wh_ratio:
+            # Scale based on width
+            scale = width / im_w
+        else:
+            # Height needs growing
+            scale = height / im_h
+        im_f = im_f.resize((int(im_w * scale), int(im_h * scale)))
+        im_w, im_h = im_f.size
+        middle_w = im_w / 2
+        middle_h = im_h / 2
+        middle_targ_w = width / 2
+        middle_targ_h = height / 2
+        return im_f.crop((int(middle_w - middle_targ_w), int(middle_h - middle_targ_h), int(middle_w + middle_targ_w), int(middle_h + middle_targ_h)))
+    # Ratio matches, just scale up
+    return im_f.resize((width, height))
+
+
 def writeCustomPortal(settings: Settings) -> None:
     """Write custom portal file to ROM."""
     if js.cosmetics is None:
@@ -3861,7 +3932,8 @@ def writeCustomPortal(settings: Settings) -> None:
     selected_portal = random.choice(file_data)
     settings.custom_troff_portal = selected_portal[1].split("/")[-1]  # File Name
     im_f = Image.open(BytesIO(bytes(selected_portal[0])))
-    im_f = im_f.resize((63, 63)).transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+    im_f = getImageChunk(im_f, 63, 63)
+    im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
     portal_data = {
         "NW": {
             "x_min": 0,
@@ -3890,3 +3962,99 @@ def writeCustomPortal(settings: Settings) -> None:
         local_img = im_f.crop((x_min, y_min, x_min + 32, y_min + 32))
         for idx in portal_data[sub]["writes"]:
             writeColorImageToROM(local_img, 7, idx, 32, 32, False, TextureFormat.RGBA5551)
+
+
+class PaintingData:
+    """Class to store information regarding a painting."""
+
+    def __init__(self, width: int, height: int, x_split: int, y_split: int, is_bordered: bool, texture_order: list):
+        """Initialize with given parameters."""
+        self.width = width
+        self.height = height
+        self.x_split = x_split
+        self.y_split = y_split
+        self.is_bordered = is_bordered
+        self.texture_order = texture_order.copy()
+        self.name = None
+
+
+def writeCustomPaintings(settings: Settings) -> None:
+    """Write custom painting files to ROM."""
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.tns_portals is None:
+        return
+    if js.cosmetic_names.tns_portals is None:
+        return
+    PAINTING_INFO = [
+        PaintingData(64, 64, 2, 1, False, [0x1EA, 0x1E9]),  # DK Isles
+        PaintingData(128, 128, 2, 4, True, [0x90A, 0x909, 0x903, 0x908, 0x904, 0x907, 0x905, 0x906]),  # K Rool
+        PaintingData(128, 128, 2, 4, True, [0x9B4, 0x9AD, 0x9B3, 0x9AE, 0x9B2, 0x9AF, 0x9B1, 0x9B0]),  # Knight
+        PaintingData(128, 128, 2, 4, True, [0x9A5, 0x9AC, 0x9A6, 0x9AB, 0x9A7, 0x9AA, 0x9A8, 0x9A9]),  # Sword
+        PaintingData(64, 32, 1, 1, False, [0xA53]),  # Dolphin
+        PaintingData(32, 64, 1, 1, False, [0xA46]),  # Candy
+    ]
+    file_data = list(zip(js.cosmetics.paintings, js.cosmetic_names.paintings))
+    settings.painting_isles = None
+    settings.painting_museum_krool = None
+    settings.painting_museum_knight = None
+    settings.painting_museum_swords = None
+    settings.painting_treehouse_dolphin = None
+    settings.painting_treehouse_candy = None
+    if len(file_data) == 0:
+        return
+    list_pool = file_data.copy()
+    PAINTING_COUNT = len(PAINTING_INFO)
+    if len(list_pool) < PAINTING_COUNT:
+        mult = math.ceil(PAINTING_COUNT / len(list_pool)) - 1
+        for _ in range(mult):
+            list_pool.extend(file_data.copy())
+    random.shuffle(list_pool)
+    for painting in PAINTING_INFO:
+        painting.name = None
+        selected_painting = list_pool.pop(0)
+        painting.name = selected_painting[1].split("/")[-1]  # File Name
+        im_f = Image.open(BytesIO(bytes(selected_painting[0])))
+        im_f = getImageChunk(im_f, painting.width, painting.height)
+        im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+        chunks = []
+        chunk_w = int(painting.width / painting.x_split)
+        chunk_h = int(painting.height / painting.y_split)
+        for y in range(painting.y_split):
+            for x in range(painting.x_split):
+                left = x * chunk_w
+                top = y * chunk_h
+                chunk_im = im_f.crop((int(left), int(top), int(left + chunk_w), int(top + chunk_h)))
+                chunks.append(chunk_im)
+        border_imgs = []
+        for x in range(8):
+            border_tex = PAINTING_INFO[1].texture_order[x]
+            border_img = getImageFile(25, border_tex, True, 64, 32, TextureFormat.RGBA5551)
+            border_imgs.append(border_img)
+        for chunk_index, chunk in enumerate(chunks):
+            if painting.is_bordered:
+                border_img = border_imgs[chunk_index]
+                if chunk_index in (0, 1):
+                    # Top
+                    border_seg_img = border_img.crop((0, 0, 64, 14))
+                    chunk.paste(border_seg_img, (0, 0), border_seg_img)
+                if chunk_index in (0, 2, 4, 6):
+                    # Left
+                    border_seg_img = border_img.crop((0, 0, 14, 32))
+                    chunk.paste(border_seg_img, (0, 0), border_seg_img)
+                if chunk_index in (1, 3, 5, 7):
+                    # Right
+                    border_seg_img = border_img.crop((50, 0, 64, 32))
+                    chunk.paste(border_seg_img, (50, 0), border_seg_img)
+                if chunk_index in (6, 7):
+                    # Bottom
+                    border_seg_img = border_img.crop((0, 20, 64, 32))
+                    chunk.paste(border_seg_img, (0, 20), border_seg_img)
+            img_index = painting.texture_order[chunk_index]
+            writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, False, TextureFormat.RGBA5551)
+    settings.painting_isles = PAINTING_INFO[0].name
+    settings.painting_museum_krool = PAINTING_INFO[1].name
+    settings.painting_museum_knight = PAINTING_INFO[2].name
+    settings.painting_museum_swords = PAINTING_INFO[3].name
+    settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
+    settings.painting_treehouse_candy = PAINTING_INFO[5].name

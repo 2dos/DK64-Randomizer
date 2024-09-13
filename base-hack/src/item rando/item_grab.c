@@ -448,7 +448,7 @@ int canDanceSkip(void) {
      * 
      * @return Dance Skip enabled
      */
-    if (CurrentMap == MAP_GALLEONPUFFTOSS) {
+    if ((CurrentMap == MAP_GALLEONPUFFTOSS) || (CurrentMap == MAP_KROOLDIDDY)) {
         return 0;
     }
     if ((Player->yPos - Player->floor) >= 100.0f) {

@@ -562,8 +562,16 @@ class Settings:
         self.custom_music_proportion = 100
         self.fill_with_custom_music = False
         self.show_song_name = False
+
+        # Custom Textures
         self.custom_transition = None
         self.custom_troff_portal = None
+        self.painting_isles = None
+        self.painting_museum_krool = None
+        self.painting_museum_knight = None
+        self.painting_museum_swords = None
+        self.painting_treehouse_dolphin = None
+        self.painting_treehouse_candy = None
 
         #  Misc
         self.generate_spoilerlog = None
