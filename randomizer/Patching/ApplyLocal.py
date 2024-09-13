@@ -385,4 +385,16 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
         humanspoiler["Cosmetics"]["Textures"]["Transition"] = settings.custom_transition
     if settings.custom_troff_portal is not None:
         humanspoiler["Cosmetics"]["Textures"]["Troff 'n' Scoff Portal"] = settings.custom_troff_portal
+    paintings = {
+        "DK Isles Painting": settings.painting_isles,
+        "Museum K. Rool Painting": settings.painting_museum_krool,
+        "Museum Knight Painting": settings.painting_museum_knight,
+        "Museum Swords Painting": settings.painting_museum_swords,
+        "Treehouse Dolphin Painting": settings.painting_treehouse_dolphin,
+        "Treehouse Candy Painting": settings.painting_treehouse_candy,
+    }
+    for painting_name in paintings:
+        painting_setting = paintings[painting_name]
+        if painting_setting is not None:
+            humanspoiler["Cosmetics"]["Textures"][painting_name] = painting_setting
     return humanspoiler

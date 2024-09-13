@@ -1290,16 +1290,28 @@ function toggle_b_locker_boxes(evt) {
   const blockerText = document.getElementById("blocker_text");
   const maximizeHelmBlocker = document.getElementById("maximize_helm_blocker");
 
-  blockerText.setAttribute("disabled", disabled ? "disabled" : "");
-  maximizeHelmBlocker.setAttribute("disabled", disabled ? "disabled" : "");
+    if (disabled) {
+        blockerText.disabled = true;
+        maximizeHelmBlocker.disabled = true;
 
-  for (let i = 0; i < 10; i++) {
-    var blocker = document.getElementById(`blocker_${i}`);
-    if (blocker) {
-      blocker.setAttribute("disabled", disabled ? "disabled" : "");
+        for (let i = 0; i < 10; i++) {
+            var blocker = document.getElementById(`blocker_${i}`);
+            if (blocker){ 
+                blocker.removeAttribute("disabled");
+            }
+        }
+    } else {
+        blockerText.removeAttribute("disabled");
+        maximizeHelmBlocker.removeAttribute("disabled");
+
+        for (let i = 0; i < 10; i++) {
+            var blocker = document.getElementById(`blocker_${i}`);
+            if (blocker){ 
+                blocker.disabled = true;
+            }
+        }
     }
   }
-}
 
 // Toggle the textboxes for Troff
 document
@@ -1311,15 +1323,27 @@ function toggle_counts_boxes(evt) {
     .checked;
   const troffText = document.getElementById("troff_text");
 
-  troffText.setAttribute("disabled", disabled ? "disabled" : "");
+    if (disabled) {
+        troffText.disabled = true;
 
-  for (let i = 0; i < 10; i++) {
-    var troff = document.getElementById(`troff_${i}`);
-    if (troff) {
-      troff.setAttribute("disabled", disabled ? "disabled" : "");
+        for (let i = 0; i < 10; i++) {
+            var troff = document.getElementById(`troff_${i}`);
+            if (troff) {
+                troff.removeAttribute("disabled");
+            }
+        }
+    } else {
+        troffText.removeAttribute("disabled");
+
+        for (let i = 0; i < 10; i++) {
+            var troff = document.getElementById(`troff_${i}`);
+            if (troff) {
+                troff.disabled = true;
+            }
+        }
     }
   }
-}
+
 
 // Change level randomization
 document

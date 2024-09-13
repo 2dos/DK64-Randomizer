@@ -757,13 +757,13 @@
 | ---- | ------ | ----- |
 | Mushroom near DK portal | 5 |  | 
 | Mushroom by pink tunnel | 5 |  | 
-| Mushroom with vines leading to other mushroom | 5 |  | 
-| Other mushroom whose vines lead to | 5 |  | 
-| Mushroom with vines leading to minecart | 5 |  | 
+| Mushroom with vines leading to other mushroom | 5 | `l.climbing` | 
+| Other mushroom whose vines lead to | 5 | `l.climbing` | 
+| Mushroom with vines leading to minecart | 5 | `l.climbing` | 
 | On vines between two shrooms | 10 | `l.can_use_vines and l.climbing` | 
 | Vines to minecart | 5 | `l.can_use_vines and l.climbing` | 
 | Around the roof of minecart | 10 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
-| Mushroom by blue tunnel | 5 |  | 
+| Mushroom by blue tunnel | 5 | `l.climbing` | 
 | Stumps leading to pendulum | 15 |  | 
 | Up the pendulum | 5 |  | 
 | Behind clock | 5 |  | 

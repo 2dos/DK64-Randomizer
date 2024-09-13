@@ -844,6 +844,7 @@ for x in range(6):
             target_compressed_size=0x718,
         )
     )
+file_dict.append(File(name="Fungi Geometry", pointer_table_index=TableNames.MapGeometry, file_index=Maps.Fungi, source_file="geo_fungi.bin", target_compressed_size=0x1A558))
 for x in range(221):
     file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
 # Setup
@@ -1088,7 +1089,23 @@ colorblind_changes = [
     [0x1205, 0x1205],  # Mush Men
     [0x1209, 0x120B],  # Mush Men
     [0x67F, 0x680],  # Bouncy Shrooms
+    [0x1E9, 0x1EA],  # DK Isles Painting
+    [0x903, 0x90A],  # K Rool DKC3 Painting (Museum + Cabins)
+    [0x9A5, 0x9B4],  # Knight/Swords Paintings
+    [0xA53, 0xA53],  # Dolphin Painting
+    [0xA46, 0xA46],  # Candy Poster
 ]
+
+file_dict.append(
+    # Giant Mushroom Cap
+    File(
+        name="Colorblind Expansion 1779",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0x6F3,
+        source_file="colorblind_exp_1779.bin",
+        target_size=0x40,
+    )
+)
 
 kremling_dimensions = [
     [32, 64],  # FCE
@@ -1448,8 +1465,10 @@ with open(ROMName, "rb") as fh:
     unc_table = 0x101C50 + int.from_bytes(fh.read(4), "big")
     fh.seek(unc_table + (TableNames.TexturesGeometry << 2))
     unc_table_25 = 0x101C50 + int.from_bytes(fh.read(4), "big")
+    print("Pushing Colorblind Changes")
     for change in colorblind_changes:
         for file_index in range(change[0], change[1] + 1):
+            print(hex(file_index))
             fh.seek(unc_table_25 + (file_index << 2))
             file_size = int.from_bytes(fh.read(4), "big")
             file_dict.append(

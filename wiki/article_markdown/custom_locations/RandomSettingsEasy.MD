@@ -236,8 +236,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Off: 100%
 - Troff n' Scoff Max: Between 100 and 300, usually close to 200
 - Win Condition: 
-	- Beat Krool: 20%
-	- Get Key8: 10%
-	- Easy Random: 70%
+	- Easy Random: 100%
 - Wrinkly Hints: 
 	- Standard: 100%

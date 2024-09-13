@@ -526,8 +526,10 @@ static const char overlay_indexes[] = {
 	OVERLAY_NONE, // K. Rool's Arena
 };
 
+#define UNAFFECTED_HEAD_MODEL -3
+
 const char big_head_actors[MODEL_COUNT] = {
-	-3, // No Model
+	UNAFFECTED_HEAD_MODEL, // No Model
 	0, // Diddy
 	0, // Diddy (Instrument)
 	0, // Diddy (Low Poly)
@@ -556,214 +558,214 @@ const char big_head_actors[MODEL_COUNT] = {
 	0, // Beaver
 	0, // Beaver (Gold)
 	21, // Zinger // Big ass, 0 for eyes. Polled the easiest person to amuse
-	-1, // Squawks
+	UNAFFECTED_HEAD_MODEL, // Squawks // -1 causes crashes
 	0, // Klobber // Might not work properly
 	3, // Snide // 0 for hench snide
 	0, // Kaboom // might not work properly
 	0, // Klaptrap (Green)
 	0, // Klaptrap (Purple)
 	0, // Klaptrap (Red)
-	-3, // Klaptrap (Teeth)
-	-3, // Mad Jack // Causes him to jump into the ceiling
+	UNAFFECTED_HEAD_MODEL, // Klaptrap (Teeth)
+	UNAFFECTED_HEAD_MODEL, // Mad Jack // Causes him to jump into the ceiling
 	1, // Krash
 	0, // Troff
-	-3, // Bad Hit Detection Man
+	UNAFFECTED_HEAD_MODEL, // Bad Hit Detection Man
 	8, // Sir Domino // Right eye
-	-3, // Mr. Dice
-	-3, // Ruler
+	UNAFFECTED_HEAD_MODEL, // Mr. Dice
+	UNAFFECTED_HEAD_MODEL, // Ruler
 	0, // Robo-Kremling
 	0, // Scoff
 	0, // Beetle
-	-3, // Klaptrap (Teeth?)
-	-3, // Nintendo Logo
+	UNAFFECTED_HEAD_MODEL, // Klaptrap (Teeth?)
+	UNAFFECTED_HEAD_MODEL, // Nintendo Logo
 	0, // Kremling
 	0, // Kremling (Red - Kosh)
 	0, // Kremling (Green - Kosh)
 	5, // Mechanical Fish // Tail Fin
-	-3, // Toy Car
-	-3, // Giant Clam
+	UNAFFECTED_HEAD_MODEL, // Toy Car
+	UNAFFECTED_HEAD_MODEL, // Giant Clam
 	0, // Kasplat
-	-3, // Army Dillo // Causes collision issues with the TNT Barrel
-	-3, // Mr. Dice
+	UNAFFECTED_HEAD_MODEL, // Army Dillo // Causes collision issues with the TNT Barrel
+	UNAFFECTED_HEAD_MODEL, // Mr. Dice
 	0, // Klump
-	-3, // Puftoss // Inconsequential
-	-3, // Dogadon // Makes DDQ super easy
+	UNAFFECTED_HEAD_MODEL, // Puftoss // Inconsequential
+	UNAFFECTED_HEAD_MODEL, // Dogadon // Makes DDQ super easy
 	0, // Banana Fairy
 	3, // Llama
 	12, // Guard
 	2, // Robo-Zinger
-	-3, // Turntable
+	UNAFFECTED_HEAD_MODEL, // Turntable
 	0, // Krossbones
-	-3, // Shuri
-	-3, // Gimpfish
+	UNAFFECTED_HEAD_MODEL, // Shuri
+	UNAFFECTED_HEAD_MODEL, // Gimpfish
 	0, // K. Lumsy
-	-1, // Spider // -1 actually works somehow???
+	0, // Spider // Technically -1, but causes crashes
 	0, // Rabbit
-	-3, // Beanstalk
+	UNAFFECTED_HEAD_MODEL, // Beanstalk
 	0, // K. Rool (Cutscene)
-	-3, // Fireball (With Glasses)
-	-3, // Skeleton Head // 0 for jaw
-	-3, // Skeleton Hand
+	UNAFFECTED_HEAD_MODEL, // Fireball (With Glasses)
+	UNAFFECTED_HEAD_MODEL, // Skeleton Head // 0 for jaw
+	UNAFFECTED_HEAD_MODEL, // Skeleton Hand
 	0, // Vulture (Race)
 	0, // Vulture (Shooting)
 	0, // Bat // Jaw
-	-3, // Skull
+	UNAFFECTED_HEAD_MODEL, // Skull
 	18, // Tomato // Jaw
-	-3, // Kritter-in-a-Sheet
-	-1, // Fly
-	-3, // Fly Swatter
-	-3, // Fly Swatter
+	UNAFFECTED_HEAD_MODEL, // Kritter-in-a-Sheet
+	UNAFFECTED_HEAD_MODEL, // Fly
+	UNAFFECTED_HEAD_MODEL, // Fly Swatter
+	UNAFFECTED_HEAD_MODEL, // Fly Swatter
 	0, // Owl
 	17, // Book
-	-3, // Ship's Wheel
-	-1, // Spotlight Fish
+	UNAFFECTED_HEAD_MODEL, // Ship's Wheel
+	UNAFFECTED_HEAD_MODEL, // Spotlight Fish // -1, causes crashes
 	0, // Puftup // Jaw
 	0, // Mermaid
 	15, // Mushroom
-	-3, // Shockwave (Mad Jack)
-	-1, // Squawks
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Mad Jack)
+	UNAFFECTED_HEAD_MODEL, // Squawks // -1, causes crashes
 	0, // Worm (apple)
-	-3, // Cuckoo Bird
+	UNAFFECTED_HEAD_MODEL, // Cuckoo Bird
 	0, // Kosha
 	18, // Ice Tomato // Jaw
-	-3, // Army Dillo (No Shell)
-	-3, // Boombox
+	UNAFFECTED_HEAD_MODEL, // Army Dillo (No Shell)
+	UNAFFECTED_HEAD_MODEL, // Boombox
 	23, // B. Locker // Right eye
-	-3, // Escape Ship
-	-3, // Army Dillo's Cannon
+	UNAFFECTED_HEAD_MODEL, // Escape Ship
+	UNAFFECTED_HEAD_MODEL, // Army Dillo's Cannon
 	0, // K. Rool (Fight)
-	-3, // Golden Banana
-	-3, // Shockwave
-	-3, // K. Rool's Glove
-	-3, // K. Rool's Foot
-	-3, // K. Rool's Toe
-	-3, // K. Rool's Toe
-	-3, // K. Rool's Toe
-	-1, // Microphone
+	UNAFFECTED_HEAD_MODEL, // Golden Banana
+	UNAFFECTED_HEAD_MODEL, // Shockwave
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Glove
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Foot
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
+	UNAFFECTED_HEAD_MODEL, // Microphone // -1, causes crashes
 	3, // Desk (K. Rool)
-	-3, // Bell
-	-3, // Clapper Board
-	-3, // Cannon
-	-3, // Barrel?
-	-3, // Bonus Barrel
-	-3, // Hunky Chunky Barrel
-	-3, // Mini Monkey Barrel
-	-3, // Barrel
-	-3, // Pushable Box
-	-3, // TNT Barrel Spawner
-	-3, // Cannon
-	-3, // TNT Barrel
-	-3, // Rambi Crate
-	-3, // Enguarde Crate
-	-3, // Chain
-	-3, // Swinging Light
-	-3, // Minecart
-	-3, // Barrel
-	-3, // Bridge (Castle)
-	-3, // Large Brown Bridge
-	-3, // Feather
-	-3, // Laser
-	-3, // Golden Banana (Item Drop)
-	-3, // Rocketbarrel
-	-3, // Strong Kong Barrel
-	-3, // Orangstand Sprint Barrel
-	-3, // Diddy's Jetpack
-	-3, // Photo
-	-3, // Minecart (TNT)
-	-3, // Weird glitch texture (computer screen?)
-	-3, // BBB Slot
-	-3, // BBB Slot
-	-3, // BBB Slot
-	-3, // BBB Slot
-	-3, // BBB Lever
-	-3, // Tiny's Car
-	-3, // Missile
-	-3, // Swinging light
-	-3, // Bananaporter Zipper
-	-3, // Boulder
-	-3, // Vase (O)
-	-3, // Vase (:)
-	-3, // Vase (Triangle)
-	-3, // Vase (+)
-	-3, // Toy Box
-	-3, // Boat
-	-3, // Padlock
-	-3, // Cannon Ball
-	-3, // Vine
-	-3, // Vine
-	-3, // Counter
-	-3, // Key
-	-3, // Bongos
-	-3, // DK Star
-	-3, // Spotlight
-	-3, // Cannon (Seasick Chunky)
-	-3, // Boulder Debris
-	-3, // Spider Web
-	-3, // Steel Keg
-	-3, // Shockwave
-	-3, // Shockwave
-	-3, // Battle Crown
-	-3, // Buoy
-	-3, // Buoy (Green)
-	-3, // Nothing?
-	-3, // DK Banana Counter
-	-3, // Diddy Banana Counter
-	-3, // Tiny Banana Counter
-	-3, // Lanky Banana Counter
-	-3, // Chunky Banana Counter
-	-3, // Shockwave (Green)
-	-3, // Potion
-	-3, // Missile (Army Dillo)
-	-3, // Shockwave (Red)
-	-3, // Ice wall? 
-	-3, // Rareware Logo
-	-3, // Stalactite
-	-3, // Rock Debris
-	-3, // Spotlight (BONUS)
-	-3, // Tag Barrel
-	-3, // Krossbones Head
-	-3, // Lever", -- Gorilla Grab
-	-3, // K. Lumsy's Cage
-	-3, // Freeze Attack
-	-3, // 1 Pad (Diddy 5DI)
-	-3, // 2 Pad (Diddy 5DI)
-	-3, // 3 Pad (Diddy 5DI)
-	-3, // 4 Pad (Diddy 5DI)
-	-3, // 5 Pad (Diddy 5DI)
-	-3, // 6 Pad (Diddy 5DI)
-	-3, // Race Checkpoint
-	-3, // Padlock & Key
-	-3, // Finish Line
-	-3, // Shockwave (Green)
-	-3, // Shockwave (Blue)
-	-3, // Shockwave (Purple)
-	-3, // Question Mark
-	-3, // Flower (Instrument)
-	-3, // DK Logo (Instrument)
-	-3, // Golden Banana
-	-3, // Apple
-	-3, // Barrel
-	-3, // Flag
-	-3, // Flag
-	-3, // Boat
+	UNAFFECTED_HEAD_MODEL, // Bell
+	UNAFFECTED_HEAD_MODEL, // Clapper Board
+	UNAFFECTED_HEAD_MODEL, // Cannon
+	UNAFFECTED_HEAD_MODEL, // Barrel?
+	UNAFFECTED_HEAD_MODEL, // Bonus Barrel
+	UNAFFECTED_HEAD_MODEL, // Hunky Chunky Barrel
+	UNAFFECTED_HEAD_MODEL, // Mini Monkey Barrel
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Pushable Box
+	UNAFFECTED_HEAD_MODEL, // TNT Barrel Spawner
+	UNAFFECTED_HEAD_MODEL, // Cannon
+	UNAFFECTED_HEAD_MODEL, // TNT Barrel
+	UNAFFECTED_HEAD_MODEL, // Rambi Crate
+	UNAFFECTED_HEAD_MODEL, // Enguarde Crate
+	UNAFFECTED_HEAD_MODEL, // Chain
+	UNAFFECTED_HEAD_MODEL, // Swinging Light
+	UNAFFECTED_HEAD_MODEL, // Minecart
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Bridge (Castle)
+	UNAFFECTED_HEAD_MODEL, // Large Brown Bridge
+	UNAFFECTED_HEAD_MODEL, // Feather
+	UNAFFECTED_HEAD_MODEL, // Laser
+	UNAFFECTED_HEAD_MODEL, // Golden Banana (Item Drop)
+	UNAFFECTED_HEAD_MODEL, // Rocketbarrel
+	UNAFFECTED_HEAD_MODEL, // Strong Kong Barrel
+	UNAFFECTED_HEAD_MODEL, // Orangstand Sprint Barrel
+	UNAFFECTED_HEAD_MODEL, // Diddy's Jetpack
+	UNAFFECTED_HEAD_MODEL, // Photo
+	UNAFFECTED_HEAD_MODEL, // Minecart (TNT)
+	UNAFFECTED_HEAD_MODEL, // Weird glitch texture (computer screen?)
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Lever
+	UNAFFECTED_HEAD_MODEL, // Tiny's Car
+	UNAFFECTED_HEAD_MODEL, // Missile
+	UNAFFECTED_HEAD_MODEL, // Swinging light
+	UNAFFECTED_HEAD_MODEL, // Bananaporter Zipper
+	UNAFFECTED_HEAD_MODEL, // Boulder
+	UNAFFECTED_HEAD_MODEL, // Vase (O)
+	UNAFFECTED_HEAD_MODEL, // Vase (:)
+	UNAFFECTED_HEAD_MODEL, // Vase (Triangle)
+	UNAFFECTED_HEAD_MODEL, // Vase (+)
+	UNAFFECTED_HEAD_MODEL, // Toy Box
+	UNAFFECTED_HEAD_MODEL, // Boat
+	UNAFFECTED_HEAD_MODEL, // Padlock
+	UNAFFECTED_HEAD_MODEL, // Cannon Ball
+	UNAFFECTED_HEAD_MODEL, // Vine
+	UNAFFECTED_HEAD_MODEL, // Vine
+	UNAFFECTED_HEAD_MODEL, // Counter
+	UNAFFECTED_HEAD_MODEL, // Key
+	UNAFFECTED_HEAD_MODEL, // Bongos
+	UNAFFECTED_HEAD_MODEL, // DK Star
+	UNAFFECTED_HEAD_MODEL, // Spotlight
+	UNAFFECTED_HEAD_MODEL, // Cannon (Seasick Chunky)
+	UNAFFECTED_HEAD_MODEL, // Boulder Debris
+	UNAFFECTED_HEAD_MODEL, // Spider Web
+	UNAFFECTED_HEAD_MODEL, // Steel Keg
+	UNAFFECTED_HEAD_MODEL, // Shockwave
+	UNAFFECTED_HEAD_MODEL, // Shockwave
+	UNAFFECTED_HEAD_MODEL, // Battle Crown
+	UNAFFECTED_HEAD_MODEL, // Buoy
+	UNAFFECTED_HEAD_MODEL, // Buoy (Green)
+	UNAFFECTED_HEAD_MODEL, // Nothing?
+	UNAFFECTED_HEAD_MODEL, // DK Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Diddy Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Tiny Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Lanky Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Chunky Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Green)
+	UNAFFECTED_HEAD_MODEL, // Potion
+	UNAFFECTED_HEAD_MODEL, // Missile (Army Dillo)
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Red)
+	UNAFFECTED_HEAD_MODEL, // Ice wall? 
+	UNAFFECTED_HEAD_MODEL, // Rareware Logo
+	UNAFFECTED_HEAD_MODEL, // Stalactite
+	UNAFFECTED_HEAD_MODEL, // Rock Debris
+	UNAFFECTED_HEAD_MODEL, // Spotlight (BONUS)
+	UNAFFECTED_HEAD_MODEL, // Tag Barrel
+	UNAFFECTED_HEAD_MODEL, // Krossbones Head
+	UNAFFECTED_HEAD_MODEL, // Lever", -- Gorilla Grab
+	UNAFFECTED_HEAD_MODEL, // K. Lumsy's Cage
+	UNAFFECTED_HEAD_MODEL, // Freeze Attack
+	UNAFFECTED_HEAD_MODEL, // 1 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 2 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 3 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 4 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 5 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 6 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // Race Checkpoint
+	UNAFFECTED_HEAD_MODEL, // Padlock & Key
+	UNAFFECTED_HEAD_MODEL, // Finish Line
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Green)
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Blue)
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Purple)
+	UNAFFECTED_HEAD_MODEL, // Question Mark
+	UNAFFECTED_HEAD_MODEL, // Flower (Instrument)
+	UNAFFECTED_HEAD_MODEL, // DK Logo (Instrument)
+	UNAFFECTED_HEAD_MODEL, // Golden Banana
+	UNAFFECTED_HEAD_MODEL, // Apple
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Flag
+	UNAFFECTED_HEAD_MODEL, // Flag
+	UNAFFECTED_HEAD_MODEL, // Boat
 	0, // Krusha (Gun)
-	-3, // King Kut Out Body
-	-3, // King Kut Out Head
-	-3, // King Kut Out Arm
-	-3, // King Kut Out Arm
-	-3, // Rainbow Coin Patch
-	-3, // Rope
-	-3, // DK Smoke Trail
-	-3, // Light (K. Rool fight)
-	-3, // Bonus Barrel (Hideout Helm)
-	-3, // Banana
-	-3, // Banana Barrel
-	-3, // Training Barrel
-	-3, // Pirate Photo
-	-3, // Butterfly
-	-3, // Barrel
-	-3, // Funky's Gun
-	-3, // Boot
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Body
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Head
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Arm
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Arm
+	UNAFFECTED_HEAD_MODEL, // Rainbow Coin Patch
+	UNAFFECTED_HEAD_MODEL, // Rope
+	UNAFFECTED_HEAD_MODEL, // DK Smoke Trail
+	UNAFFECTED_HEAD_MODEL, // Light (K. Rool fight)
+	UNAFFECTED_HEAD_MODEL, // Bonus Barrel (Hideout Helm)
+	UNAFFECTED_HEAD_MODEL, // Banana
+	UNAFFECTED_HEAD_MODEL, // Banana Barrel
+	UNAFFECTED_HEAD_MODEL, // Training Barrel
+	UNAFFECTED_HEAD_MODEL, // Pirate Photo
+	UNAFFECTED_HEAD_MODEL, // Butterfly
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Funky's Gun
+	UNAFFECTED_HEAD_MODEL, // Boot
 };
 
 
