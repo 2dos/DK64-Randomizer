@@ -3893,7 +3893,7 @@ def writeTransition(settings: Settings) -> None:
 
 
 def getImageChunk(im_f, width: int, height: int):
-    """Gets an image chunk based on a width and height."""
+    """Get an image chunk based on a width and height."""
     width_height_ratio = width / height
     im_w, im_h = im_f.size
     im_wh_ratio = im_w / im_h
