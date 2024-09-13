@@ -758,7 +758,7 @@
 | Mushroom near DK portal | 5 |  | 
 | Mushroom by pink tunnel | 5 |  | 
 | Mushroom with vines leading to other mushroom | 5 |  | 
-| Other mushroom whose vines lead to | 5 |  | 
+| Other mushroom whose vines lead to | 5 | `l.climbing` | 
 | Mushroom with vines leading to minecart | 5 |  | 
 | On vines between two shrooms | 10 | `l.can_use_vines and l.climbing` | 
 | Vines to minecart | 5 | `l.can_use_vines and l.climbing` | 
