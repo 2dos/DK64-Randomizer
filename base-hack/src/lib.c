@@ -558,7 +558,7 @@ const char big_head_actors[MODEL_COUNT] = {
 	0, // Beaver
 	0, // Beaver (Gold)
 	21, // Zinger // Big ass, 0 for eyes. Polled the easiest person to amuse
-	-1, // Squawks
+	UNAFFECTED_HEAD_MODEL, // Squawks // -1 causes crashes
 	0, // Klobber // Might not work properly
 	3, // Snide // 0 for hench snide
 	0, // Kaboom // might not work properly
@@ -599,7 +599,7 @@ const char big_head_actors[MODEL_COUNT] = {
 	UNAFFECTED_HEAD_MODEL, // Shuri
 	UNAFFECTED_HEAD_MODEL, // Gimpfish
 	0, // K. Lumsy
-	-1, // Spider // -1 actually works somehow???
+	0, // Spider // Technically -1, but causes crashes
 	0, // Rabbit
 	UNAFFECTED_HEAD_MODEL, // Beanstalk
 	0, // K. Rool (Cutscene)
@@ -612,18 +612,18 @@ const char big_head_actors[MODEL_COUNT] = {
 	UNAFFECTED_HEAD_MODEL, // Skull
 	18, // Tomato // Jaw
 	UNAFFECTED_HEAD_MODEL, // Kritter-in-a-Sheet
-	-1, // Fly
+	UNAFFECTED_HEAD_MODEL, // Fly
 	UNAFFECTED_HEAD_MODEL, // Fly Swatter
 	UNAFFECTED_HEAD_MODEL, // Fly Swatter
 	0, // Owl
 	17, // Book
 	UNAFFECTED_HEAD_MODEL, // Ship's Wheel
-	-1, // Spotlight Fish
+	UNAFFECTED_HEAD_MODEL, // Spotlight Fish // -1, causes crashes
 	0, // Puftup // Jaw
 	0, // Mermaid
 	15, // Mushroom
 	UNAFFECTED_HEAD_MODEL, // Shockwave (Mad Jack)
-	-1, // Squawks
+	UNAFFECTED_HEAD_MODEL, // Squawks // -1, causes crashes
 	0, // Worm (apple)
 	UNAFFECTED_HEAD_MODEL, // Cuckoo Bird
 	0, // Kosha
@@ -641,7 +641,7 @@ const char big_head_actors[MODEL_COUNT] = {
 	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
 	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
 	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
-	-1, // Microphone
+	UNAFFECTED_HEAD_MODEL, // Microphone // -1, causes crashes
 	3, // Desk (K. Rool)
 	UNAFFECTED_HEAD_MODEL, // Bell
 	UNAFFECTED_HEAD_MODEL, // Clapper Board

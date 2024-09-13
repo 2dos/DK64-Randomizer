@@ -379,9 +379,7 @@
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
     "win_condition_item": {
-      "beat_krool": 0.2,
-      "get_key8": 0.1,
-      "easy_random": 0.7
+      "easy_random": 1
     },
     "wrinkly_available": 1,
     "wrinkly_hints": {
@@ -788,10 +786,7 @@
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
     "win_condition_item": {
-      "beat_krool": 0.25,
-      "easy_random": 0.2,
-      "medium_random": 0.5,
-      "krem_kapture": 0.05
+      "medium_random": 1
     },
     "wrinkly_available": 0.9,
     "wrinkly_hints": {
@@ -1245,10 +1240,7 @@
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
     "win_condition_item": {
-      "beat_krool": 0.2,
-      "medium_random": 0.3,
-      "hard_random": 0.45,
-      "krem_kapture": 0.05
+      "hard_random": 1
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {
@@ -1702,10 +1694,7 @@
     "warp_level_list_selected": {},
     "warp_to_isles": 0.9,
     "win_condition_item": {
-      "beat_krool": 0.2,
-      "medium_random": 0.3,
-      "hard_random": 0.45,
-      "krem_kapture": 0.05
+      "hard_random": 1
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {
