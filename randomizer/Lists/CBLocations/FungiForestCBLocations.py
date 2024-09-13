@@ -39,6 +39,7 @@ ColoredBananaGroupList = [
         name="Other mushroom whose vines lead to",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.climbing,
         locations=[[5, 1.0, 2178, 390, 2718]],
     ),
     ColoredBananaGroup(
