@@ -795,7 +795,7 @@ door_locations = {
             group=2,
             moveless=False,
             logic=lambda l: l.isdonkey and l.strongKong,
-            door_type=[DoorType.wrinkly, DoorType.dk_portal],
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Near Tag Barrel near Snides - strong kong",

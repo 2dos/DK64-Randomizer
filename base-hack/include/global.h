@@ -424,6 +424,7 @@ extern void displayMedalOverlay(int flag, int item_type);
 extern void handleCrownTimerInternal(void);
 
 extern void initSongDisplay(int song);
+extern void newSongIsLoading(int write_slot, int song, float volume);
 extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
 
