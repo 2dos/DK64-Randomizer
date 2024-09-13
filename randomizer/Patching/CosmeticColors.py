@@ -2547,7 +2547,6 @@ def getLuma(color: tuple) -> float:
 
 def adjustFungiMushVertexColor(shift: int):
     """Adjust the special vertex coloring on Fungi Giant Mushroom."""
-    print(shift)
     fungi_geo = bytearray(getRawFile(TableNames.MapGeometry, Maps.FungiForest, True))
     DEFAULT_MUSHROOM_COLOR = (255, 90, 82)
     NEW_MUSHROOM_COLOR = hueShiftColor(DEFAULT_MUSHROOM_COLOR, shift)
