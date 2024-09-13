@@ -2544,13 +2544,14 @@ def getLuma(color: tuple) -> float:
     """Get the luma value of a color."""
     return (0.299 * color[0]) + (0.587 * color[1]) + (0.114 * color[2])
 
+
 def adjustFungiMushVertexColor(shift: int):
     """Adjust the special vertex coloring on Fungi Giant Mushroom."""
     print(shift)
     fungi_geo = bytearray(getRawFile(TableNames.MapGeometry, Maps.FungiForest, True))
     DEFAULT_MUSHROOM_COLOR = (255, 90, 82)
     NEW_MUSHROOM_COLOR = hueShiftColor(DEFAULT_MUSHROOM_COLOR, shift)
-    for x in range(0X27DA, 0x2839):
+    for x in range(0x27DA, 0x2839):
         start = 0x25140 + (x * 0x10) + 0xC
         channels = []
         is_zero = True
@@ -2581,7 +2582,7 @@ def adjustFungiMushVertexColor(shift: int):
     file_data = gzip.compress(fungi_geo, compresslevel=9)
     ROM().seek(js.pointer_addresses[TableNames.MapGeometry]["entries"][Maps.FungiForest]["pointing_to"])
     ROM().writeBytes(file_data)
-    
+
 
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
@@ -3891,6 +3892,7 @@ def writeTransition(settings: Settings) -> None:
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)
 
+
 def getImageChunk(im_f, width: int, height: int):
     """Gets an image chunk based on a width and height."""
     width_height_ratio = width / height
@@ -3914,6 +3916,7 @@ def getImageChunk(im_f, width: int, height: int):
         return im_f.crop((int(middle_w - middle_targ_w), int(middle_h - middle_targ_h), int(middle_w + middle_targ_w), int(middle_h + middle_targ_h)))
     # Ratio matches, just scale up
     return im_f.resize((width, height))
+
 
 def writeCustomPortal(settings: Settings) -> None:
     """Write custom portal file to ROM."""
@@ -3961,6 +3964,7 @@ def writeCustomPortal(settings: Settings) -> None:
         for idx in portal_data[sub]["writes"]:
             writeColorImageToROM(local_img, 7, idx, 32, 32, False, TextureFormat.RGBA5551)
 
+
 class PaintingData:
     """Class to store information regarding a painting."""
 
@@ -3974,6 +3978,7 @@ class PaintingData:
         self.texture_order = texture_order.copy()
         self.name = None
 
+
 def writeCustomPaintings(settings: Settings) -> None:
     """Write custom painting files to ROM."""
     if js.cosmetics is None:
@@ -3983,7 +3988,7 @@ def writeCustomPaintings(settings: Settings) -> None:
     if js.cosmetic_names.tns_portals is None:
         return
     PAINTING_INFO = [
-        PaintingData(64, 64, 2, 1, False, [0x1EA, 0x1E9]), # DK Isles
+        PaintingData(64, 64, 2, 1, False, [0x1EA, 0x1E9]),  # DK Isles
         PaintingData(128, 128, 2, 4, True, [0x90A, 0x909, 0x903, 0x908, 0x904, 0x907, 0x905, 0x906]),  # K Rool
         PaintingData(128, 128, 2, 4, True, [0x9B4, 0x9AD, 0x9B3, 0x9AE, 0x9B2, 0x9AF, 0x9B1, 0x9B0]),  # Knight
         PaintingData(128, 128, 2, 4, True, [0x9A5, 0x9AC, 0x9A6, 0x9AB, 0x9A7, 0x9AA, 0x9A8, 0x9A9]),  # Sword

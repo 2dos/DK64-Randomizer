@@ -396,5 +396,5 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
     for painting_name in paintings:
         painting_setting = paintings[painting_name]
         if painting_setting is not None:
-           humanspoiler["Cosmetics"]["Textures"][painting_name] = painting_setting
+            humanspoiler["Cosmetics"]["Textures"][painting_name] = painting_setting
     return humanspoiler

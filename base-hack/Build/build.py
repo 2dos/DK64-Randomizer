@@ -844,15 +844,7 @@ for x in range(6):
             target_compressed_size=0x718,
         )
     )
-file_dict.append(
-    File(
-        name="Fungi Geometry",
-        pointer_table_index=TableNames.MapGeometry,
-        file_index=Maps.Fungi,
-        source_file="geo_fungi.bin",
-        target_compressed_size=0x1a558
-    )
-)
+file_dict.append(File(name="Fungi Geometry", pointer_table_index=TableNames.MapGeometry, file_index=Maps.Fungi, source_file="geo_fungi.bin", target_compressed_size=0x1A558))
 for x in range(221):
     file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
 # Setup
