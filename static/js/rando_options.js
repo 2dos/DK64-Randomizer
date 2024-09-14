@@ -1279,16 +1279,12 @@ function validate_fast_start_status(evt) {
 }
 
 // Toggle the textboxes for BLockers
-document
-  .getElementById("randomize_blocker_required_amounts")
-  .addEventListener("click", toggle_b_locker_boxes);
+document.getElementById("randomize_blocker_required_amounts").addEventListener("click", toggle_b_locker_boxes);
 
 function toggle_b_locker_boxes(evt) {
-  const disabled = !document.getElementById(
-    "randomize_blocker_required_amounts"
-  ).checked;
-  const blockerText = document.getElementById("blocker_text");
-  const maximizeHelmBlocker = document.getElementById("maximize_helm_blocker");
+    const disabled = !document.getElementById("randomize_blocker_required_amounts").checked;
+    const blockerText = document.getElementById("blocker_text");
+    const maximizeHelmBlocker = document.getElementById("maximize_helm_blocker");
 
     if (disabled) {
         blockerText.disabled = true;
@@ -1311,17 +1307,14 @@ function toggle_b_locker_boxes(evt) {
             }
         }
     }
-  }
+}
 
 // Toggle the textboxes for Troff
-document
-  .getElementById("randomize_cb_required_amounts")
-  .addEventListener("click", toggle_counts_boxes);
+document.getElementById("randomize_cb_required_amounts").addEventListener("click", toggle_counts_boxes);
 
 function toggle_counts_boxes(evt) {
-  const disabled = !document.getElementById("randomize_cb_required_amounts")
-    .checked;
-  const troffText = document.getElementById("troff_text");
+    const disabled = !document.getElementById("randomize_cb_required_amounts").checked;
+    const troffText = document.getElementById("troff_text");
 
     if (disabled) {
         troffText.disabled = true;
@@ -1342,7 +1335,7 @@ function toggle_counts_boxes(evt) {
             }
         }
     }
-  }
+}
 
 
 // Change level randomization

@@ -167,13 +167,13 @@
                         var navRenderedHTML = nunjucks.render("nav-tabs.html.jinja2", {});
                         $("#tab-data").html(renderedHTML);
                         $("#nav-tab-list").html(navRenderedHTML);
-                        var script = document.createElement("script");
-                        script.src = "./static/js/rando_options.js";
-                        document.head.appendChild(script);
-                        var script = document.createElement("script");
-                        script.src = "./static/js/initalize.js";
-                        document.head.appendChild(script);
                     </script>
+                    <script src="./static/js/pyodide/pyodide.js"></script>
+                    <script src="./static/js/utils.js" defer></script>
+                    <script src="./static/js/spoiler.js" defer></script>
+                    <script src="./static/js/generate_buttons.js" defer></script>
+                    <script src="./static/js/rando_options.js" defer></script>
+                    <script src="./static/js/initalize.js" defer></script>
                     <hr />
                     <!-- Toasts -->
                     <div id="toasts">

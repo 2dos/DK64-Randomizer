@@ -4,16 +4,14 @@ import asyncio
 import json
 import random
 
-from pyodide.ffi import create_proxy
-
+import time
+import uuid
 import js
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
-from randomizer.Worker import background
 from ui.bindings import bind
 from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
-from ui.rando_options import update_ui_states
 from ui.serialize_settings import serialize_settings
 
 
@@ -105,55 +103,12 @@ def import_settings_string(event):
         except Exception as e:
             print(e)
             pass
-    update_ui_states(None)
+    js.update_ui_states(None)
     js.savesettings()
     js.generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.")
 
 
-@bind("change", "patchfileloader")
-def lanky_file_changed(event):
-    """On the event of a lanky file being loaded.
 
-    Args:
-        event (event): Javascript event.
-    """
-
-    def onload(e):
-        # Load the text of the patch
-        loaded_patch = str(e.target.result)
-        # TODO: Don't just assume the file is valid first
-        js.document.getElementById("patchfileloader").classList.add("is-valid")
-        js.loaded_patch = loaded_patch
-
-    # Attempt to find what file was loaded
-    file = None
-    for uploaded_file in js.document.getElementById("patchfileloader").files:
-        file = uploaded_file
-        break
-    reader = js.FileReader.new()
-    # If we loaded a file, set up the event listener to wait for it to be loaded
-    if file is not None:
-        reader.readAsText(file)
-        function = create_proxy(onload)
-        reader.addEventListener("load", function)
-
-
-@bind("click", "generate_pastgen_seed")
-async def generate_previous_seed(event):
-    """Generate a seed from a previous seed file."""
-    # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
-        js.document.getElementById("rom").select()
-        if "is-invalid" not in list(js.document.getElementById("rom").classList):
-            js.document.getElementById("rom").classList.add("is-invalid")
-    else:
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
-        js.apply_conversion()
-        lanky_from_history = js.document.getElementById("load_patch_file").checked
-        from randomizer.Patching.ApplyLocal import patching_response
-
-        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history, True)
 
 
 @bind("click", "generate_lanky_seed")
@@ -209,19 +164,37 @@ def generate_seed(event):
                 return
 
         # Start the progressbar
-        from randomizer.Patching.Hash import get_hash_images
+        # TODO: Restore the progress bar when we can read get_hash_images
+        # from randomizer.Patching.Hash import get_hash_images
 
-        gif_fairy = get_hash_images("browser", "loading-fairy")
-        gif_dead = get_hash_images("browser", "loading-dead")
-        js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
-        js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
+        # gif_fairy = get_hash_images("browser", "loading-fairy")
+        # gif_dead = get_hash_images("browser", "loading-dead")
+        # js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
+        # js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
 
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
+        js.jquery("#progressmodal").show()
+        js.jquery("#patchprogress").width(0)
+        js.jquery("#progress-text").text("Initalizing")
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_conversion()
-        background(form_data)
+        if js.location.hostname == "dev.dk64randomizer.com" or js.location.hostname == "dk64randomizer.com":
+            branch = "dev"
+            if "dev" not in str(js.location.hostname).lower():
+                branch = "master"
+                url = "https://generate.dk64rando.com/generate"
+            else:
+                url = "https://dev-generate.dk64rando.com/generate"
+        else:
+            url = "http://" + str(js.window.location.hostname) + ":8000/generate"
+            branch = "dev"
+        # Get the current time in milliseconds so we can use it as a key for the future.
+        current_time = str(time.time()) + str(uuid.uuid1())
+        url = url + "?gen_key=" + current_time
+        js.wipeToastHistory()
+        js.postToastMessage("Initializing", False, 0)
+        js.generate_seed(url, json.dumps(form_data), branch)
+
 
 
 @bind("click", "load_patch_file")

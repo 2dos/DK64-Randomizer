@@ -88,10 +88,7 @@ function plando_import_filebox() {
 
 async function apply_patch(data, run_async) {
   // load pyodide
-  try {
-    pyodide = await loadPyodide();
-  } catch {}
-
+  setup_pyodide()
   // Base64 decode the response
   event_response_data = data;
   var decodedData = base64ToArrayBuffer(data);
@@ -120,7 +117,8 @@ async function apply_patch(data, run_async) {
 
               if (run_async == true) {
                 // Return the promise for pyodide.runPythonAsync
-                return pyodide.runPythonAsync(`
+                return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
+                  register_hook("/")  # type: ignore  # noqa
                   import js
                   from randomizer.Patching.ApplyLocal import patching_response
                   patching_response(str(js.event_response_data), from_patch_gen=True)
@@ -151,7 +149,9 @@ function apply_download() {
     }
   }
   console.log("Applying Download");
-  return pyodide.runPythonAsync(`
+  setup_pyodide()
+  return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
+      register_hook("/")  # type: ignore  # noqa
       import js
       from randomizer.Patching.ApplyLocal import patching_response
       patching_response(str(js.event_response_data), from_patch_gen=True)

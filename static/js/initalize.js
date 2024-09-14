@@ -1,4 +1,5 @@
 // NOTE: pyodide_functions.js is NOT currently loaded, some functions will fail
+var jquery = $;
 $.ajax({
   url: "/get_selector_info",
   dataType: "json",

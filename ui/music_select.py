@@ -8,8 +8,6 @@ import re
 from randomizer.Enums.Songs import Songs
 from randomizer.Lists.Songs import SongLocationList
 from ui.bindings import bind
-from ui.download import download_json_file
-
 
 def get_music_category(songLocation: str) -> str:
     """Return the music category for this song location."""
@@ -267,7 +265,7 @@ def export_music_selections(evt):
     """Save the current music selections to a JSON file."""
     form = js.jquery("#form").serializeArray()
     musicSelectData = serialize_music_selections(form, True)
-    download_json_file(musicSelectData, "music_selections.json")
+    js.download_json_file(musicSelectData, "music_selections.json")
 
 
 @bind("click", "reset_music_selections")
