@@ -1376,17 +1376,6 @@ int filterSong(int* song_write) {
 			}
 		}
 	}
-	initSongDisplay(song);
-	return getTrackChannel(song);
-}
-
-int filterSong_Cancelled(songs song) {
-	for (int i = 0; i < 12; i++) {
-		if ((MusicTrackChannels[i] != SONG_SILENCE) && (MusicTrackChannels[i] != song)) {
-			initSongDisplay(MusicTrackChannels[i]);
-			break;
-		}
-	}
 	return getTrackChannel(song);
 }
 

@@ -1941,7 +1941,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8060D01E, Overlay.Static, getLoSym("InvertedControls"), offset_dict)  # Change language store to inverted controls store
 
     writeFunction(ROM_COPY, 0x80602AB0, Overlay.Static, "filterSong", offset_dict)
-    writeFunction(ROM_COPY, 0x80602B80, Overlay.Static, "filterSong_Cancelled", offset_dict)
+    writeFunction(ROM_COPY, 0x80733758, Overlay.Static, "initSongDisplay", offset_dict)
+    writeValue(ROM_COPY, 0x8073375C, Overlay.Static, 0x8FA40074, offset_dict, 4)  # LW $a1, 0x74 ($sp) // vanilla code, overwritten by writeFunction, that we want to keep
+    writeFunction(ROM_COPY, 0x8060A688, Overlay.Static, "newSongIsLoading", offset_dict)
+    writeValue(ROM_COPY, 0x8060A68C, Overlay.Static, 0x8CC60588, offset_dict, 4)  # LW $a2, 0x588 (a$2) // vanilla code, overwritten by writeFunction, that we want to keep
+    writeFunction(ROM_COPY, 0x8060A6C0, Overlay.Static, "newSongIsLoading", offset_dict)
+    writeValue(ROM_COPY, 0x8060A6C4, Overlay.Static, 0x00808025, offset_dict, 4)  # OR $s0, $a2, #r0 // vanilla code, overwritten by writeFunction, that we want to keep
     # Decompressed Overlays
     overlays_being_decompressed = [
         0x08,  # Cutscenes

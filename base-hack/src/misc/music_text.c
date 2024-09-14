@@ -12,54 +12,63 @@
 #include "../../include/common.h"
 
 static unsigned char display_timer = 0;
+static int currently_stored_song[4] = {0, 0, 0, 0}; // Which song is each compact sequence player storing (as they don't keep track of the song ID in vanilla)
 static short displayed_text_offset = -1;
 
 void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
 }
 
-void initSongDisplay(int song) {
+void initSongDisplay(int seq_player) {
+    char display = 1;
+    int write_slot = 0;
+    for(int i = 0; i < 4; i++){
+        if(compactSequencePlayers[i] == seq_player){
+            write_slot = i;
+            break;
+        }
+    }
+    int song = currently_stored_song[write_slot];
     if (song == 0) {
-        return;
+        display = 0;
     }
     if (song == 34) {
         // Block it from occurring in the pause menu, cause text overload
-        return;
+        display = 0;
     }
     if (music_types[song] != SONGTYPE_BGM) {
-        return;
+        display = 0;
     }
     if ((CurrentMap == MAP_ISLES) && (CutsceneActive == 1) && (CutsceneIndex == 29)) {
         // In K Rool gets launched cutscene
-        return;
+        display = 0;
     }
-    int channel = getTrackChannel(song);
-    int writeSlot = getSongWriteSlot(song);
-    if ((MusicTrackChannels[channel] == song) && ((songData[song] & 0x200) == 0)) {
-        if(cspGetState(compactSequencePlayers[writeSlot]) == 1){
-            // If CompactSequence Player is already playing this song
-            // Not gonna bother looking through the event queue whether or not
-            // the CompactSequence Player is being stopped and started on the same audio frame
-            // because that's hard to trigger and very expensive, if even reliable.
-            return;
+
+    if(display){
+        if (DisplayedSongNamePointer) {
+            complex_free(DisplayedSongNamePointer);
+        }
+        DisplayedSongNamePointer = getTextPointer(46, song, 0);
+        displayed_text_offset = -1;
+        int text_length = cstring_strlen(DisplayedSongNamePointer);
+        display_timer = 60;
+        if (ObjectModel2Timer < 31) {
+            display_timer += 31;
+        }
+        for (int i = 0; i < text_length; i++) {
+            if (DisplayedSongNamePointer[i] == 0xA) {
+                DisplayedSongNamePointer[i] = 0;
+                displayed_text_offset = i + 1;
+            }
         }
     }
-    if (DisplayedSongNamePointer) {
-        complex_free(DisplayedSongNamePointer);
-    }
-    DisplayedSongNamePointer = getTextPointer(46, song, 0);
-    displayed_text_offset = -1;
-    int text_length = cstring_strlen(DisplayedSongNamePointer);
-    display_timer = 60;
-    if (ObjectModel2Timer < 31) {
-        display_timer += 31;
-    }
-    for (int i = 0; i < text_length; i++) {
-        if (DisplayedSongNamePointer[i] == 0xA) {
-            DisplayedSongNamePointer[i] = 0;
-            displayed_text_offset = i + 1;
-        }
-    }
+
+    cseqpScheduleMetaEventCheck(seq_player);
+}
+
+void newSongIsLoading(int write_slot, int song, float volume){
+    currently_stored_song[write_slot] = song;
+    loadSongIntoMemory(write_slot, song, volume);
 }
 
 Gfx* displaySongNameHandler(Gfx* dl) {
