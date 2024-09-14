@@ -220,6 +220,7 @@ door_locations = {
             logicregion=Regions.JapesHillTop,
             location=[896.0, 852.0, 2427.0, 90.75],
             group=5,
+            moveless=False,
         ),
         DoorData(
             name="Alcove Above Diddy Tunnel - right",
@@ -339,6 +340,7 @@ door_locations = {
             logicregion=Regions.JapesHill,
             location=[1928.0, 520.0, 2283.4, 140.0],
             group=5,
+            moveless=False,
         ),
         DoorData(
             name="Next to Lanky's Painting Room - left",
@@ -795,7 +797,7 @@ door_locations = {
             group=2,
             moveless=False,
             logic=lambda l: l.isdonkey and l.strongKong,
-            door_type=[DoorType.wrinkly, DoorType.dk_portal],
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Near Tag Barrel near Snides - strong kong",
@@ -1047,6 +1049,7 @@ door_locations = {
             logicregion=Regions.FactoryArcadeTunnel,
             location=[1778.702, 1106.667, 1220.515, 357.0],
             group=2,
+            moveless=False,
             placed=DoorType.boss,
         ),  # TnS Portal in Arcade Room
         DoorData(
@@ -1268,6 +1271,7 @@ door_locations = {
             location=[1652.5, 1106.0, 1253.75, 43.0],
             scale=0.8669,
             group=2,
+            moveless=False,
         ),
         DoorData(
             name="Block Tower Room - Next to Tiny Barrel",
@@ -2013,6 +2017,7 @@ door_locations = {
             logicregion=Regions.MillArea,
             location=[3240.033, 268.5, 3718.017, 178.0],
             group=4,
+            moveless=False,
             logic=lambda l: Events.Day in l.Events,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
@@ -2048,6 +2053,7 @@ door_locations = {
             logicregion=Regions.ForestTopOfMill,
             location=[4312.0, 224.0, 3493.0, 134.82],
             group=4,
+            moveless=False,
         ),
         DoorData(
             name="Watermill - front - right",

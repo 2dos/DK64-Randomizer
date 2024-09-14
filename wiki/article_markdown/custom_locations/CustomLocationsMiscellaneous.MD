@@ -146,7 +146,7 @@
 | Frantic Factory | Past Tiny Production Bonus |  | `l.twirl and l.tiny, group=1)` | 
 | Frantic Factory | On Production outside box |  |  | 
 | Frantic Factory | Storage Room Corner |  |  | 
-| Frantic Factory | Cranky and Candy Room |  |  | 
+| Frantic Factory | Cranky and Candy Room | MelonCrate |  | 
 | Frantic Factory | Near Candy |  |  | 
 | Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk, group=4` | 
 | Frantic Factory | Arcade Room Bench |  |  | 

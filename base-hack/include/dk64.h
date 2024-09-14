@@ -416,6 +416,8 @@ extern void adjustSFXType_Internal(int subtype);
 extern void runAnimFrame(actorData* actor, int anim, int unk0, float unk1);
 extern int getTrackChannel(int song);
 extern int getSongWriteSlot(int song);
+extern void loadSongIntoMemory(int write_slot, int song, float volume);
+extern void cseqpScheduleMetaEventCheck(int seq_player);
 extern int cspGetState(int* seqp);
 extern void handleTextScrolling(void* menu_aad, float x1, float y1, float* x2, float* y2, int unk0, int unk1, float unk2);
 
