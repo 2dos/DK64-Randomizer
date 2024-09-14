@@ -1516,7 +1516,7 @@
 | Rear tunnel | 5 |  | 
 | Around rear dirt patch | 10 |  | 
 | Exit tunnel | 10 |  | 
-| Tree in training area | 5 | `(l.istiny and l.twirl)` | 
+| Tree in training area | 5 | `l.climbing and (l.istiny and l.twirl)` | 
 | Around treehouse tree | 10 |  | 
 | Training area | 5 |  | 
 | Above the lake | Balloon |  | 

@@ -80,7 +80,7 @@
 | Angry Aztec | 5Door Temple Staircase - back | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Entrance Tunnel - next to Coconut Switch | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Entrance Tunnel - left (near the oasis end) | Boss, Dk_Portal, Wrinkly |  | 
-| Angry Aztec | in the sealed quicksand tunnel | Wrinkly, Dk_Portal | `l.isdonkey and l.strongKong` | 
+| Angry Aztec | in the sealed quicksand tunnel | Wrinkly | `l.isdonkey and l.strongKong` | 
 | Angry Aztec | Near Tag Barrel near Snides - strong kong | Wrinkly | `l.isdonkey and l.strongKong` | 
 | Aztec Llama Temple | In Face Matching Game - right | Wrinkly | `(l.islanky and l.grape) or l.phasewalk` | 
 | Aztec Llama Temple | In Face Matching Game - left | Wrinkly | `(l.islanky and l.grape) or l.phasewalk` | 
