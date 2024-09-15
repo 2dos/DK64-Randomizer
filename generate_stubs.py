@@ -14,7 +14,7 @@ def generate_pyi_stubs():
         os.makedirs(DEST_DIR)
 
     # Iterate over all JSON files in the source directory
-    for json_file in SOURCE_DIR.glob("*.json"):
+    for json_file in SOURCE_DIR.glob("*.jsonc"):
         create_stub(json_file)
 
 

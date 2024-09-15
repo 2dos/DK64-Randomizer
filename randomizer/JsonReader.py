@@ -40,7 +40,7 @@ def generate_globals(path):
     # Convert JSON string to a Python dictionary
     path = path.replace(str(pathlib.Path().resolve()), "")
     # Replace the .py extension with .json
-    path = path.replace(".py", ".json")
+    path = path.replace(".py", ".jsonc")
     with open(path) as f:
         enums_data = load_jsonc(f)
     new_globals = {}

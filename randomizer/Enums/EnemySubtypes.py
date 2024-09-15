@@ -1,13 +1,9 @@
 """Enemy Subtypes enum."""
 
-from enum import IntEnum, auto
+from randomizer.JsonReader import generate_globals
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from randomizer.Enums.EnemySubtypes import EnemySubtypes
 
-class EnemySubtype(IntEnum):
-    """Enemy Subtype enum."""
-
-    GroundSimple = auto()
-    GroundBeefy = auto()
-    Air = auto()
-    Water = auto()
-    NoType = auto()
+globals().update(generate_globals(__file__))
