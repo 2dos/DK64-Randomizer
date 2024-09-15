@@ -7,6 +7,10 @@
         "${workspaceFolder}/tests"
     ],
     "python.testing.unittestEnabled": false,
+    "python.analysis.typeshedPaths": [
+        ".venv/Lib/site-packages",
+        "typings"
+    ],
     "files.associations": {
         "*.code": "c",
         "common.h": "c",
@@ -19,5 +23,6 @@
         "dynamic_structs.h": "c",
         "common_structs.h": "c",
         "libaudio.h": "c"
-    }
+    },
+    "python.analysis.typeCheckingMode": "basic"
 }

@@ -10,7 +10,6 @@ from ui.bindings import bind, bindList
 from ui.randomize_settings import randomize_settings
 
 
-
 @bind("click", "randomize_settings")
 def shuffle_settings(evt):
     """Randomize all non-cosmetic settings."""

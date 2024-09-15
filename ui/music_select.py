@@ -9,6 +9,7 @@ from randomizer.Enums.Songs import Songs
 from randomizer.Lists.Songs import SongLocationList
 from ui.bindings import bind
 
+
 def get_music_category(songLocation: str) -> str:
     """Return the music category for this song location."""
     locationSelect = js.document.getElementById(f"music_select_{songLocation}")

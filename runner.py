@@ -40,6 +40,7 @@ from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector,
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
+
 local_repo = Repo(path="./")
 local_branch = local_repo.active_branch.name
 
@@ -460,6 +461,7 @@ def get_selector_info():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 @app.route("/get_seed", methods=["GET"])
 def get_seed():
     """Get the lanky for a seed."""
@@ -631,6 +633,7 @@ def convert_settings_string():
     # Return the json
     return make_response(json.dumps(decrypted), 200)
 
+
 @app.route("/convert_settings_json", methods=["POST"])
 def convert_settings_json():
     """Convert a settings json to a settings string."""
@@ -639,6 +642,7 @@ def convert_settings_json():
     encrypted = encrypt_settings_string_enum(settings_json)
     # Return the json
     return make_response(json.dumps({"settings_string": encrypted}), 200)
+
 
 def update_total():
     """Update the total seeds generated."""

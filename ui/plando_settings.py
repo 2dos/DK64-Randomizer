@@ -583,9 +583,6 @@ def plando_disable_starting_moves(evt):
             dropdown.value = ""
 
 
-
-
-
 @bind("click", "key_8_helm")
 @bind("click", "select_keys")
 @bind("click", "starting_keys_list_selected")
@@ -621,6 +618,7 @@ def plando_disable_keys(evt):
             for option in key_options:
                 option.removeAttribute("disabled")
 
+
 @bind("click", "starting_moves_reset")
 def reset_starting_moves(evt):
     """Reset the starting move selector to have nothing selected."""
@@ -637,4 +635,3 @@ def start_all_starting_moves(evt):
         starting_move_button.checked = starting_move_button.id.startswith("start")
     # Update the plandomizer dropdowns.
     plando_disable_starting_moves(evt)
-

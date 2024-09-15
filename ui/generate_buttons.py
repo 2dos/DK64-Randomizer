@@ -108,9 +108,6 @@ def import_settings_string(event):
     js.generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.")
 
 
-
-
-
 @bind("click", "generate_lanky_seed")
 async def generate_seed_from_patch(event):
     """Generate a seed from a patch file."""
@@ -196,7 +193,6 @@ def generate_seed(event):
         js.generate_seed(url, json.dumps(form_data), branch)
 
 
-
 @bind("click", "load_patch_file")
 def update_patch_file(event):
     """Set historical seed text based on the load_patch_file click event.
@@ -209,6 +205,3 @@ def update_patch_file(event):
         js.document.getElementById("generate_pastgen_seed").value = "Generate Patch File from History"
     else:
         js.document.getElementById("generate_pastgen_seed").value = "Generate Seed from History"
-
-
-

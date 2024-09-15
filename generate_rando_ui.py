@@ -26,6 +26,7 @@ from randomizer.PlandoUtils import PlandoCustomLocationFilter, PlandoCustomLocat
 
 async def initialize():
     """Shifted code into an async function so we can properly lint await calls."""
+
     def ajax_call(file):
         resp = js.getFile(file)
         return resp
