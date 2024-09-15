@@ -488,7 +488,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         levelIndicesToFill.add(8)
     levelsSortedByKongs = [kongsInLevel[0] for kongsInLevel in sorted(kongsInLevels.items(), key=lambda x: x[1], reverse=True)]
     if settings.shuffle_helm_location:
-        kongsInLevels[Levels.HideoutHelm] = 0 # Reset helm back to 0 (I hate this whole system more than you do)
+        kongsInLevels[Levels.HideoutHelm] = 0  # Reset helm back to 0 (I hate this whole system more than you do)
     # Iterate over levels to place them in the level order
     kongsUnplaced = sum(kongsInLevels.values())
 

@@ -16,12 +16,22 @@ from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Patching.Lib import IsItemSelected, getIceTrapCount
 
+
 def getHelmKey(settings) -> Items:
     """Get the item that will be placed in the final room in Helm."""
     key_item = Items.HideoutHelmKey
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         level_index = None
-        key_items = [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
+        key_items = [
+            Items.JungleJapesKey,
+            Items.AngryAztecKey,
+            Items.FranticFactoryKey,
+            Items.GloomyGalleonKey,
+            Items.FungiForestKey,
+            Items.CrystalCavesKey,
+            Items.CreepyCastleKey,
+            Items.HideoutHelmKey,
+        ]
         for x in range(8):
             if settings.level_order[x + 1] == Levels.HideoutHelm:
                 key_item = key_items[x]
@@ -30,6 +40,7 @@ def getHelmKey(settings) -> Items:
         if level_index is None:
             raise Exception("Unable to find Helm in the level order to remove Helm Key constant")
     return key_item
+
 
 def PlaceConstants(spoiler):
     """Place items which are to be put in a hard-coded location."""
@@ -64,16 +75,17 @@ def PlaceConstants(spoiler):
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
         spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, getHelmKey(spoiler.settings))
-        # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset, 
+        # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset,
         # place Key 8 in the 8th level somewhere
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             last_level = settings.level_order[8]
             if last_level != Levels.HideoutHelm:
                 if not spoiler.settings.hard_level_progression:
-                    potential_locations = [loc for loc in spoiler.LocationList if
-                                           spoiler.LocationList[loc].level == last_level and
-                                           spoiler.LocationList[loc].type in typesOfItemsShuffled and
-                                           not spoiler.LocationList[loc].inaccessible]
+                    potential_locations = [
+                        loc
+                        for loc in spoiler.LocationList
+                        if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type in typesOfItemsShuffled and not spoiler.LocationList[loc].inaccessible
+                    ]
                     selected_location = random.choice(potential_locations)
                     spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)
     # If no CB rando in isles, clear these locations
@@ -351,6 +363,7 @@ def Blueprints():
 def Keys():
     """Return all key items."""
     return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
+
 
 def KeysToPlace(settings):
     """Return all keys that are non-starting keys."""

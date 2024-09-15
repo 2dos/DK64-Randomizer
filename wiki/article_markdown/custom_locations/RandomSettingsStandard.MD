@@ -238,7 +238,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Shuffled: 20%
 	- Shuffled Decoupled: 20%
 	- Start With: 40%
-- Shuffle Helm Location: 50%
+- Shuffle Helm Location / Include Helm: 50%
 - Shuffle Shop Locations: 50%
 - Smaller Shops: 50%
 - Starting Kong: 
