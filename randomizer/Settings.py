@@ -99,16 +99,25 @@ class Settings:
             self.troff_max = int(self.troff_text)
         else:
             self.troff_max = 270
-        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
+        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.60]  # Weights for the minimum value of troff
         if self.hard_troff_n_scoff:
-            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
+            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8]  # Add 20% to the minimum for hard T&S
         # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
         if self.hard_level_progression:
             self.troff_min = [self.troff_min[-1] for x in self.troff_min]
 
         CompleteVanillaPrices()
         self.prices = VanillaPrices.copy()
-        self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
+        self.level_order = {
+            1: Levels.JungleJapes,
+            2: Levels.AngryAztec,
+            3: Levels.FranticFactory,
+            4: Levels.GloomyGalleon,
+            5: Levels.FungiForest,
+            6: Levels.CrystalCaves,
+            7: Levels.CreepyCastle,
+            8: Levels.HideoutHelm,
+        }
 
         # Used by hints in level order rando
         # By default (and in LZR) assume you have access to everything everywhere so hints are unrestricted
@@ -223,6 +232,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
+        self.troff_weight_7 = 1.0
         if self.level_randomization in (LevelRandomization.loadingzone, LevelRandomization.loadingzonesdecoupled) or self.hard_level_progression:
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
@@ -231,6 +241,7 @@ class Settings:
             self.troff_weight_4 = 1
             self.troff_weight_5 = 1
             self.troff_weight_6 = 1
+            self.troff_weight_7 = 1
 
         if self.randomize_cb_required_amounts:
             randomlist = []
@@ -244,7 +255,8 @@ class Settings:
             self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
-        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
+            self.troff_7 = round(min(cbs[7] * self.troff_weight_7, 500))
+        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6, self.troff_7]
 
         self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
         self.BLockerEntryCount = [0] * 8
@@ -366,6 +378,7 @@ class Settings:
         self.troff_4 = None
         self.troff_5 = None
         self.troff_6 = None
+        self.troff_7 = None
         self.troff_min = None
         self.troff_max = None
         self.blocker_text = ""
@@ -674,7 +687,7 @@ class Settings:
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
         self.alter_switch_allocation = False
-        self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
+        self.switch_allocation = [1, 1, 1, 1, 2, 2, 3, 3]
         self.item_reward_previews = False
         self.microhints_enabled = MicrohintsEnabled.off
         self.more_cutscene_skips = ExtraCutsceneSkips.off
@@ -1277,7 +1290,7 @@ class Settings:
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
+            allocation = [1, 1, 1, 1, 2, 2, 3, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
             random.shuffle(allocation)
             self.switch_allocation = allocation.copy()
 

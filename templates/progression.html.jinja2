@@ -46,20 +46,18 @@
                                    data-toggle="tooltip"
                                    title="You can adjust each individual B Locker amount to any number between 0-200.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your B Locker settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
                         </td>
-                        {% if i < 7 %}
-                            <td>
-                                <input class="form-control"
-                                       min="0"
-                                       max="500"
-                                       name="troff_{{ i }}"
-                                       id="troff_{{ i }}"
-                                       style="width: 100%"
-                                       value="{{ i+1 }}"
-                                       type="number"
-                                       data-toggle="tooltip"
-                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your Troff n Scoff settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
-                            </td>
-                        {% endif %}
+                        <td>
+                            <input class="form-control"
+                                    min="0"
+                                    max="500"
+                                    name="troff_{{ i }}"
+                                    id="troff_{{ i }}"
+                                    style="width: 100%"
+                                    value="{{ i+1 }}"
+                                    type="number"
+                                    data-toggle="tooltip"
+                                    title="You can adjust each individual Troff n Scoff amount to any number between 1-500.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your Troff n Scoff settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -352,14 +350,14 @@
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                                title="If Key 8 were to be shuffled, force Key 8 to be in its vanilla location in Helm.">
+                                title="If Key 8 were to be shuffled, force key 8 to be in the eighth level or in the vanilla Helm location if Helm is not shuffled. If Helm is shuffled, this will also make the key associated to that level in the back of Helm.">
                             <input class="form-check-input"
                                     type="checkbox"
                                     name="key_8_helm"
                                     id="key_8_helm"
-                                    display_name="Lock Key 8 in Helm"
+                                    display_name="Lock Key 8 in Level 8"
                                     value="True"/>
-                            Lock Key 8 in Helm
+                            Lock Key 8 in Level 8
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">

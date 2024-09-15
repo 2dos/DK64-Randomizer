@@ -281,7 +281,7 @@ spotlight_fish_models = [
     Model.BananaFairy,
     Model.Guard,
     Model.Gimpfish,
-    Model.Shuri,
+    # Model.Shuri,  # Lighting issue
     Model.Spider,
     Model.Rabbit,
     Model.KRoolCutscene,
