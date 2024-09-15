@@ -573,7 +573,7 @@ def patching_response(spoiler):
     if spoiler.settings.alter_switch_allocation:
         ROM_COPY.seek(sav + 0x103)
         ROM_COPY.write(1)
-        for x in range(7):  # TODO: Change to 8
+        for x in range(7):  # Shouldn't need index 8 since Helm has no slam switches in it
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
 
