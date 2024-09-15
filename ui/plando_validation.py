@@ -47,16 +47,6 @@ from randomizer.Patching.Lib import plando_colors
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
-from ui.rando_options import (
-    plando_toggle_custom_arena_locations,
-    plando_toggle_custom_crate_locations,
-    plando_toggle_custom_fairy_locations,
-    plando_toggle_custom_kasplat_locations,
-    plando_toggle_custom_locations_tab,
-    plando_toggle_custom_patch_locations,
-    plando_toggle_custom_tns_locations,
-    plando_toggle_custom_wrinkly_locations,
-)
 
 
 class ValidationError(IntEnum):
@@ -947,14 +937,14 @@ def perform_setting_conflict_validation(evt):
     validate_custom_locations_no_duplicates(evt)
     validate_custom_doors_no_duplicate_locations(evt)
     full_validate_no_reward_with_random_location()
-    plando_toggle_custom_arena_locations(evt)
-    plando_toggle_custom_crate_locations(evt)
-    plando_toggle_custom_fairy_locations(evt)
-    plando_toggle_custom_kasplat_locations(evt)
-    plando_toggle_custom_patch_locations(evt)
-    plando_toggle_custom_tns_locations(evt)
-    plando_toggle_custom_wrinkly_locations(evt)
-    plando_toggle_custom_locations_tab(evt)
+    js.plando_toggle_custom_arena_locations(evt)
+    js.plando_toggle_custom_crate_locations(evt)
+    js.plando_toggle_custom_fairy_locations(evt)
+    js.plando_toggle_custom_kasplat_locations(evt)
+    js.plando_toggle_custom_patch_locations(evt)
+    js.plando_toggle_custom_tns_locations(evt)
+    js.plando_toggle_custom_wrinkly_locations(evt)
+    js.plando_toggle_custom_locations_tab(evt)
     enable_switch_plando(evt)
     # This is a fallback for errors with Bootstrap sliders.
     validate_starting_kong_count(evt)

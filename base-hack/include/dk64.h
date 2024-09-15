@@ -464,6 +464,8 @@ extern void unkActorHandler(void* actor);
 extern short getScreenDist(short x, short y);
 extern int getDistanceCap(short input_dist);
 
+extern void customDamageCode(void);
+
 //vanilla data
 extern OSThread* __osActiveQueue;
 extern float TransitionSpeed;

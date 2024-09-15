@@ -298,10 +298,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Vanilla Door Rando: 60%
 - Warp to Isles menu option: 90%
 - Win Condition: 
-	- Beat Krool: 20%
-	- Medium Random: 30%
-	- Hard Random: 45%
-	- Krem Kapture: 5%
+	- Hard Random: 100%
 - Kongless Hint Doors: 75%
 - Wrinkly Hints: 
 	- Off: 10%

@@ -252,10 +252,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Troff n' Scoff Max: Between 150 and 400, usually close to 300
 - Vanilla Door Rando: 40%
 - Win Condition: 
-	- Beat Krool: 25%
-	- Easy Random: 20%
-	- Medium Random: 50%
-	- Krem Kapture: 5%
+	- Medium Random: 100%
 - Kongless Hint Doors: 90%
 - Wrinkly Hints: 
 	- Standard: 50%
