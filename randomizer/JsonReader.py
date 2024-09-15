@@ -2,12 +2,15 @@ import json
 import re
 from enum import IntEnum, auto
 import pathlib
+
+
 def remove_comments(jsonc_str):
     # Remove single-line comments (//)
-    jsonc_str = re.sub(r'//.*', '', jsonc_str)
+    jsonc_str = re.sub(r"//.*", "", jsonc_str)
     # Remove multi-line comments (/* ... */)
-    jsonc_str = re.sub(r'/\*.*?\*/', '', jsonc_str, flags=re.DOTALL)
+    jsonc_str = re.sub(r"/\*.*?\*/", "", jsonc_str, flags=re.DOTALL)
     return jsonc_str
+
 
 def load_jsonc(filename):
     jsonc_str = filename.read()
@@ -17,9 +20,6 @@ def load_jsonc(filename):
 
     # Parse JSON
     return json.loads(json_str)
-
-
-
 
 
 def create_enum_class(name, values):
@@ -34,6 +34,7 @@ def create_enum_class(name, values):
 
     # Check if any of the members use "auto". If so, use Enum, otherwise use IntEnum.
     return IntEnum(name, enum_members)
+
 
 def generate_globals(path):
     # Convert JSON string to a Python dictionary
