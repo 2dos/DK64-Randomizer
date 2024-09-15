@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from enum import IntEnum, auto, Enum
 from typing import TYPE_CHECKING
-import json
+from randomizer.JsonReader import generate_globals
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Items import Items
@@ -67,31 +67,10 @@ if TYPE_CHECKING:
 # values should exactly match the input values in the HTML (not the IDs).
 # Do not change the values of any enums in this file, or settings strings will
 # break.
+# Get the current file name, but replace the extension with ".json" to get the
+# associated JSON file.
 
-
-# Convert JSON string to a Python dictionary
-with open("randomizer/Enums/Settings.json") as f:
-    enums_data = json.load(f)
-
-
-def create_enum_class(name, values):
-    """
-    Dynamically creates an Enum or IntEnum class based on the JSON data.
-    :param name: Name of the enum class
-    :param values: Dictionary of enum members
-    :return: Enum class
-    """
-    # Prepare the enum members as a dictionary of key=value pairs
-    enum_members = {key: auto() if value == "auto" else value for key, value in values.items()}
-
-    # Check if any of the members use "auto". If so, use Enum, otherwise use IntEnum.
-    return IntEnum(name, enum_members)
-
-
-# Create enums dynamically and store them in the globals dictionary to make them importable
-for enum_name, enum_values in enums_data.items():
-    globals()[enum_name] = create_enum_class(enum_name, enum_values)
-
+globals().update(generate_globals(__file__))
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
 # A dictionary that maps setting names to the associated enum for that specific setting.
