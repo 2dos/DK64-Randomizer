@@ -8,7 +8,7 @@ SOURCE_DIR = Path("randomizer/Enums")
 DEST_DIR = Path("typings/randomizer/Enums")
 
 
-def generate_pyi_stubs():
+def generate_stubs():
     # Ensure the destination directory exists
     if not DEST_DIR.exists():
         os.makedirs(DEST_DIR)
@@ -19,9 +19,10 @@ def generate_pyi_stubs():
 
 
 def create_stub(json_file):
-    # Get the filename and construct the output .pyi file path
+    # Get the filename and construct the output .pyi and .d.ts file paths
     json_file_name = json_file.stem
     pyi_file_path = DEST_DIR / f"{json_file_name}.pyi"
+    dts_file_path = DEST_DIR / f"{json_file_name}.d.ts"
 
     # Read JSON content
     with open(json_file, "r") as file:
@@ -33,11 +34,18 @@ def create_stub(json_file):
 
     # Generate .pyi content
     pyi_content = create_pyi_content(data)
+    # Generate .d.ts content
+    dts_content = create_dts_content(data)
 
     # Write the .pyi file
     with open(pyi_file_path, "w") as pyi_file:
         pyi_file.write(pyi_content)
     print(f"Generated {pyi_file_path}")
+
+    # Write the .d.ts file
+    with open(dts_file_path, "w") as dts_file:
+        dts_file.write(dts_content)
+    print(f"Generated {dts_file_path}")
 
 
 def create_pyi_content(data: dict) -> str:
@@ -65,5 +73,21 @@ def create_pyi_content(data: dict) -> str:
         return "\n".join(pyi_lines)
 
 
+def create_dts_content(data: dict) -> str:
+    dts_lines = []
+
+    # Iterate through each key-value pair in the JSON
+    for key, value in data.items():
+        if isinstance(value, dict):
+            # Create a TypeScript enum for each dictionary entry
+            dts_lines.append(f"export enum {key} {{")
+            for sub_key, sub_value in value.items():
+                dts_lines.append(f"    {sub_key} = {sub_value},")
+            dts_lines.append("}")  # Close the enum
+            dts_lines.append("")  # Newline after each enum definition
+
+    return "\n".join(dts_lines)
+
+
 if __name__ == "__main__":
-    generate_pyi_stubs()
+    generate_stubs()
