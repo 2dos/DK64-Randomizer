@@ -21,7 +21,6 @@ from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
-from randomizer.Lists.Songs import getSongIndexFromName
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays, KongModels
