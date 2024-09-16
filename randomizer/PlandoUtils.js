@@ -85,6 +85,31 @@ BananaFairyRestrictedItems = new Set([
 ]);
 
 
+// A map of custom locations, mapped to a set of new locations that are invalid
+// assignments. This will be used to filter the dropdowns used in the
+// plandomizer.
+LocationRestrictionsPerCustomLocation = new Map([
+    ["isles_battle_arena_1", new Set(["Fungi Lobby: Gorilla Gone Box"])],
+    ["isles_battle_arena_2", new Set(["Snide's Room: Under Rock"])],
+]);
+
+
+/**
+ * Return a filtered list of plando locations that are permitted for the given
+ * custom location.
+ * @param {obj[]} locationList 
+ * @param {str} locationId 
+ * @returns 
+ */
+function PlandoCustomLocationFilter(locationList, locationId) {
+    var locationName = locationId.match(/^plando_(.+)_location$/g)[0];
+    if (!LocationRestrictionsPerCustomLocation.has(locationName)) {
+        return locationList;
+    }
+    return locationList.filter((loc) => !LocationRestrictionsPerCustomLocation[locationName].has(loc["value"]));
+}
+
+
 // A map of custom location types, mapped to a set of which items may not
 // appear in that location type. This will be used to filter the dropdowns used
 // in the plandomizer.

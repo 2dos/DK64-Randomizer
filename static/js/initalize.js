@@ -9,9 +9,7 @@ $.ajax({
     env.addFilter("music_select_restrict", function(songList, location) {
         return songList;
     });
-    env.addFilter("plando_custom_loc_restrict", function(locationList, locationId) {
-        return locationList;
-    });
+    env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
     env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
     env.addFilter("plando_item_restrict", function(itemList, location) {
         return itemList;
