@@ -680,6 +680,7 @@ PlannableSongs = {
 SongLocationList = []
 
 # Process possible song locations.
+# TODO: IMPORTANT: This block of code is used in music_select.js its manually coded there, so if you change this, you need to change that too till we migrate this to a better solution.
 for songEnum, song in song_data.items():
     if song.type in [SongType.Ambient, SongType.Protected, SongType.System]:
         continue

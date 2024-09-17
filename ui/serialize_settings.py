@@ -4,7 +4,6 @@ import json
 import js
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Settings import SettingsMap
-from ui.music_select import serialize_music_selections
 from ui.plando_validation import populate_plando_options
 
 
@@ -40,7 +39,7 @@ def serialize_settings(include_plando: bool = False) -> dict:
             form_data["plandomizer_data"] = json.dumps(plando_form_data)
 
     # Custom music data is also processed separately.
-    music_selection_data = serialize_music_selections(form)
+    music_selection_data = js.serialize_music_selections(form)
     form_data["music_selections"] = json.dumps(music_selection_data)
 
     def is_number(s) -> bool:
