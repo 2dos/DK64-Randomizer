@@ -161,32 +161,69 @@
                     </script> -->
                     </div>
                     <div class="container" id="tab-data" hidden></div>
-                    <script src="./static/js/PlandoUtils.js"></script>
-                    <script>
-                        var env = nunjucks.configure('/templates', { autoescape: true });
-                        env.addFilter("music_select_restrict", function(songList, location) {
-                            return songList;
-                        });
-                        env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
-                        env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
-                        env.addFilter("plando_item_restrict", function(itemList, location) {
-                            return itemList;
-                        });
-                        env.addFilter("plando_minigame_restrict", PlandoMinigameFilter);
-                        env.addFilter("plando_shop_sort", PlandoShopSortFilter);
-                        env.addGlobal("plando_option_class_annotation", PlandoOptionClassAnnotation);
-                        var renderedHTML = env.render("base.html.jinja2", {});
-                        var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
-                        $("#tab-data").html(renderedHTML);
-                        $("#nav-tab-list").html(navRenderedHTML);
+                    <script type="module">
+                        // Create an async function to handle the script loading process
+                        async function loadScripts() {
+                            try {
+                                // Dynamically import init_variables.js first
+                                await import('./static/js/init_variables.js');
+                    
+                                // Now load PlandoUtils.js
+                                const module = await import('./static/js/PlandoUtils.js');
+                    
+                                // Nunjucks configuration after PlandoUtils.js is loaded
+                                var env = nunjucks.configure('/templates', { autoescape: true });
+                    
+                                // Use the imported functions from PlandoUtils
+                                env.addFilter("plando_custom_loc_restrict", module.PlandoCustomLocationFilter);
+                                env.addFilter("plando_custom_loc_item_restrict", module.PlandoCustomLocationItemFilter);
+                                env.addFilter("plando_minigame_restrict", module.PlandoMinigameFilter);
+                                env.addFilter("plando_shop_sort", module.PlandoShopSortFilter);
+                                env.addFilter("music_select_restrict", function(songList, location) {
+                                    return songList;
+                                });
+                                env.addGlobal("plando_option_class_annotation", module.PlandoOptionClassAnnotation);
+                    
+                                // Render templates
+                                var renderedHTML = env.render("base.html.jinja2", {});
+                                var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
+                    
+                                // Inject into the DOM
+                                $("#tab-data").html(renderedHTML);
+                                $("#nav-tab-list").html(navRenderedHTML);
+                    
+                                // After rendering the HTML, dynamically load the other scripts
+                                loadAdditionalScripts();
+                            } catch (error) {
+                                console.error("Failed to load required modules:", error);
+                            }
+                        }
+                    
+                        // Function to dynamically load additional scripts after HTML is updated
+                        function loadAdditionalScripts() {
+                            const scripts = [
+                                './static/js/utils.js',
+                                './static/js/spoiler.js',
+                                './static/js/generate_buttons.js',
+                                './static/js/rando_options.js',
+                                './static/js/initalize.js',
+                                './static/js/music_select.js'
+                            ];
+                    
+                            scripts.forEach(src => {
+                                const script = document.createElement('script');
+                                script.src = src;
+                                script.defer = true;
+                                document.body.appendChild(script);
+                            });
+                        }
+                    
+                        // Call the async function to start the process
+                        loadScripts();
                     </script>
+                    
                     <script src="./static/js/pyodide/pyodide.js"></script>
-                    <script src="./static/js/utils.js" defer></script>
-                    <script src="./static/js/spoiler.js" defer></script>
-                    <script src="./static/js/generate_buttons.js" defer></script>
-                    <script src="./static/js/rando_options.js" defer></script>
-                    <script src="./static/js/initalize.js" defer></script>
-                    <script src="./static/js/music_select.js" defer></script>
+
                     <hr />
                     <!-- Toasts -->
                     <div id="toasts">
