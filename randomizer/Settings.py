@@ -1176,6 +1176,7 @@ class Settings:
         phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
         if self.krool_in_boss_pool:
             phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])
+        possible_phases = phases.copy()
         if self.krool_phase_order_rando:
             random.shuffle(phases)
         if self.krool_random:
@@ -1197,9 +1198,7 @@ class Settings:
             # Fill cleared out phases with available phases
             for i in range(len(phases)):
                 if phases[i] is None:
-                    available_phases = [
-                        map_id for map_id in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase] if map_id not in planned_phases
-                    ]
+                    available_phases = [map_id for map_id in possible_phases if map_id not in planned_phases]
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
             for i in range(len(phases)):
