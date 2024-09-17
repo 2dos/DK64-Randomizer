@@ -90,7 +90,6 @@ void cFuncLoop(void) {
 				preventSongPlaying = 0;
 			}
 		}
-		initSongDisplay();
 	}
 	if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
 		if ((CurrentMap == MAP_HELM_INTROSTORY) || (CurrentMap == MAP_ISLES_INTROSTORYROCK) || ((CurrentMap == MAP_ISLES_DKTHEATRE) && (CutsceneIndex < 8))) { // Intro Story Map
