@@ -302,23 +302,20 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
      * @return Collectable Offset
      */
     if (Rando.item_rando) {
+        int is_acceptable_item = inShortList(obj_type, &acceptable_items, sizeof(acceptable_items) >> 1);
         if (obj_type == 0x13C) {
             collectKey();
         } else {
             if (inBossMap(CurrentMap, 1, 1, 0)) {
-                for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
-                    if (obj_type == acceptable_items[j]) {
-                        setAction(0x41, 0, 0);
-                    }
+                if (is_acceptable_item) {
+                    setAction(0x41, 0, 0);
                 }
             }
         }
         if (obj_type != 0x18D) {
             if (inBattleCrown(CurrentMap)) {
-                for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
-                    if (obj_type == acceptable_items[j]) {
-                        setAction(0x42, 0, 0);
-                    }
+                if (is_acceptable_item) {
+                    setAction(0x42, 0, 0);
                 }
             }
         }

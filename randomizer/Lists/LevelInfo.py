@@ -29,4 +29,5 @@ LevelInfoList = {
     Levels.FungiForest: LevelInfo(Transitions.IslesMainToForestLobby, Transitions.IslesForestLobbyToMain, Locations.ForestKey, Items.FungiForestKey),
     Levels.CrystalCaves: LevelInfo(Transitions.IslesMainToCavesLobby, Transitions.IslesCavesLobbyToMain, Locations.CavesKey, Items.CrystalCavesKey),
     Levels.CreepyCastle: LevelInfo(Transitions.IslesMainToCastleLobby, Transitions.IslesCastleLobbyToMain, Locations.CastleKey, Items.CreepyCastleKey),
+    Levels.HideoutHelm: LevelInfo(Transitions.IslesMainToHelmLobby, Transitions.IslesHelmLobbyToMain, Locations.HelmKey, Items.HideoutHelmKey),
 }

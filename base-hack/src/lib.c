@@ -642,7 +642,7 @@ const char big_head_actors[MODEL_COUNT] = {
 	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
 	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
 	UNAFFECTED_HEAD_MODEL, // Microphone // -1, causes crashes
-	3, // Desk (K. Rool)
+	UNAFFECTED_HEAD_MODEL, // Desk (K. Rool)
 	UNAFFECTED_HEAD_MODEL, // Bell
 	UNAFFECTED_HEAD_MODEL, // Clapper Board
 	UNAFFECTED_HEAD_MODEL, // Cannon

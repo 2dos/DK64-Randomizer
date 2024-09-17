@@ -49,7 +49,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random Patches
 - Random Starting Location
 - Guaranteed Starting Keys
-- Shuffle Helm Location
+- Shuffle Helm Location / Include Helm
 - Tns Location Rando
 - Vanilla Door Rando
 - Wrinkly Location Rando
@@ -167,7 +167,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random Kasplat Locations: 
 	- Off: 30%
 	- Vanilla Locations: 70%
-- Lock Key 8 in Helm: 50%
+- Lock Key 8 in Level 8: 50%
 - Kong Model Chunky: 
 	- Default: 100%
 - Kong Model Diddy: 
