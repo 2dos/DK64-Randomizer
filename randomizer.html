@@ -161,6 +161,7 @@
                     </script> -->
                     </div>
                     <div class="container" id="tab-data" hidden></div>
+                    <script src="./static/js/PlandoUtils.js"></script>
                     <script>
                         var env = nunjucks.configure('/templates', { autoescape: true });
                         env.addFilter("music_select_restrict", function(songList, location) {
