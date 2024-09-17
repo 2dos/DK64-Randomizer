@@ -467,7 +467,11 @@ def randomize_setup(spoiler):
                 if not actor_type == 139:
                     byte_list = []
                     ROM_COPY.seek(actor_start + 0x34)
+                    id = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     used_actor_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                    if spoiler.settings.fix_lanky_tiny_prod and cont_map_id == Maps.FranticFactory and id == 16:
+                        ROM_COPY.seek(actor_start + 0x14)
+                        ROM_COPY.writeMultipleBytes(1, 4)
                     ROM_COPY.seek(actor_start)
                     for x in range(int(0x38 / 4)):
                         byte_list.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
