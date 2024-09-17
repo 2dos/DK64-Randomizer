@@ -652,8 +652,8 @@ w, h = bubble_im.size
 for y in range(h):
     for x in range(w):
         base = list(bubble_px[x, y])
-        bubble_px[x, y] = (0, 0, 0, base[3])
-bubble_im.save(f"{disp_dir}text_bubble_dark.png")
+        bubble_px[x, y] = (255, 255, 255, base[3])
+bubble_im.save(f"{disp_dir}text_bubble_light.png")
 
 # Warp pad stuff
 warp_top_im_total = Image.new(mode="RGBA", size=(64, 64))
