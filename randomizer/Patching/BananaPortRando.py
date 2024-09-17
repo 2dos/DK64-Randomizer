@@ -98,7 +98,7 @@ def move_bananaports(spoiler):
                         header_end = 0x30
                         for x in range(0x18):
                             count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                            header_end += (0x12 * count)
+                            header_end += 0x12 * count
                         ROM_COPY.seek(cutscene_table + header_end)
                         count = int.from_bytes(ROM_COPY.readBytes(2), "big")
                         if cam_lock_id >= count:
