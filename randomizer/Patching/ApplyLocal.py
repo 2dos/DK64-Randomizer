@@ -114,15 +114,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.document.getElementById("patch_warning_message").innerHTML = (
             f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
         )
-        ROM_COPY = ROM()
-        boolean_props = [
-            BooleanProperties(True, 0x44),  # Dark Mode Text bubble
-        ]
-        sav = settings.rom_data
-        for prop in boolean_props:
-            if prop.check:
-                ROM_COPY.seek(sav + prop.offset)
-                ROM_COPY.write(prop.target)
     elif from_patch_gen is True:
         sav = settings.rom_data
         if from_patch_gen:
