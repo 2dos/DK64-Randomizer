@@ -41,6 +41,9 @@ def generate_globals(path):
     path = path.replace(str(pathlib.Path().resolve()), "")
     # Replace the .py extension with .json
     path = path.replace(".py", ".jsonc")
+    # If the path starts with a slash, remove it
+    if path.startswith("/"):
+        path = path[1:]
     with open(path) as f:
         enums_data = load_jsonc(f)
     new_globals = {}
