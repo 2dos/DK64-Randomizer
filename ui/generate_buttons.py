@@ -28,19 +28,6 @@ def export_settings_string(event):
     js.generateToast("Exported settings string to the setting string input field.")
 
 
-def should_clear_setting(select):
-    """Return true if the select should be cleared when importing settings."""
-    if js.document.querySelector("#nav-cosmetics").contains(select) is True:
-        return False
-    if js.document.querySelector("#nav-music").contains(select) is True:
-        return False
-    if select.name.startswith("plando_"):
-        return False
-    # This should now be obsolete, because of the #nav-music clause, but I really don't feel like trying my luck
-    # TODO: change the plando_ clause into a #nav-plando clause and remove the music_select_clause
-    if select.name.startswith("music_select_"):
-        return False
-    return True
 
 
 @bind("click", "import_settings")
@@ -55,7 +42,7 @@ def import_settings_string(event):
     settings = decrypt_settings_string_enum(settings_string)
     # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
     for select in js.document.getElementsByTagName("select"):
-        if should_clear_setting(select):
+        if js.should_clear_setting(select):
             select.selectedIndex = -1
     # Uncheck all starting move radio buttons for the import to then set them correctly
     for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
@@ -107,24 +94,6 @@ def import_settings_string(event):
     js.savesettings()
     js.generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.")
 
-
-@bind("click", "generate_lanky_seed")
-async def generate_seed_from_patch(event):
-    """Generate a seed from a patch file."""
-    # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
-        js.document.getElementById("rom").select()
-        if "is-invalid" not in list(js.document.getElementById("rom").classList):
-            js.document.getElementById("rom").classList.add("is-invalid")
-    elif len(str(js.document.getElementById("patchfileloader").value).strip()) == 0:
-        js.document.getElementById("patchfileloader").select()
-        if "is-invalid" not in list(js.document.getElementById("patchfileloader").classList):
-            js.document.getElementById("patchfileloader").classList.add("is-invalid")
-    else:
-        js.apply_conversion()
-        from randomizer.Patching.ApplyLocal import patching_response
-
-        await patching_response(str(js.loaded_patch), True)
 
 
 @bind("click", "trigger_download_event")
@@ -192,16 +161,3 @@ def generate_seed(event):
         js.postToastMessage("Initializing", False, 0)
         js.generate_seed(url, json.dumps(form_data), branch)
 
-
-@bind("click", "load_patch_file")
-def update_patch_file(event):
-    """Set historical seed text based on the load_patch_file click event.
-
-    Args:
-        event (DOMEvent): Javascript dom click event.
-    """
-    # When we click the download json event just change the button text
-    if js.document.getElementById("load_patch_file").checked:
-        js.document.getElementById("generate_pastgen_seed").value = "Generate Patch File from History"
-    else:
-        js.document.getElementById("generate_pastgen_seed").value = "Generate Seed from History"
