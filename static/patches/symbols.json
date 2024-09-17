@@ -754,7 +754,7 @@
         "isgoodtextbox": 2153696148,
         "getmovehint": 2153696260,
         "resetdisplayedmusic": 2153696372,
-        "initsongdisplay": 2153696384,
+        "newSongPlays": 2153696384,
         "displaysongnamehandler": 2153696816,
         "curseremoved": 2153697368,
         "haspermalossgrace": 2153697380,

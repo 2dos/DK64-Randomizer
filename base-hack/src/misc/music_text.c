@@ -13,12 +13,36 @@
 
 static unsigned char display_timer = 0;
 static short displayed_text_offset = -1;
+static int currently_stored_sequence[4] = {0, 0, 0, 0};
+static int last_known_cseqp_state[4] = {0, 0, 0, 0};  // Only storing 1 for playing and 0 for not playing.
 
 void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
 }
 
-void initSongDisplay(int song) {
+void initSongDisplay(){
+    int seq_player = 0;
+    int sequence = 0;
+    int state = 0;
+
+    for(int i = 0; i < 4; i++){
+        seq_player = compactSequencePlayers[i];
+        sequence = cspGetSequence(seq_player);
+        
+        if(sequence != currently_stored_sequence[i]){
+            currently_stored_sequence[i] = sequence;
+            last_known_cseqp_state[i] = 0;  // In case it stopped and started within a videoFrame
+        }
+        if(last_known_cseqp_state[i] == 0){
+            state = cspGetState(seq_player);
+            if(state == 1){
+                newSongPlays(sequenceToSongIndex(sequence));
+            }
+        }
+    }
+}
+
+void newSongPlays(int song) {
     if (song == 0) {
         return;
     }
@@ -32,17 +56,6 @@ void initSongDisplay(int song) {
     if ((CurrentMap == MAP_ISLES) && (CutsceneActive == 1) && (CutsceneIndex == 29)) {
         // In K Rool gets launched cutscene
         return;
-    }
-    int channel = getTrackChannel(song);
-    int writeSlot = getSongWriteSlot(song);
-    if ((MusicTrackChannels[channel] == song) && ((songData[song] & 0x200) == 0)) {
-        if(cspGetState(compactSequencePlayers[writeSlot]) == 1){
-            // If CompactSequence Player is already playing this song
-            // Not gonna bother looking through the event queue whether or not
-            // the CompactSequence Player is being stopped and started on the same audio frame
-            // because that's hard to trigger and very expensive, if even reliable.
-            return;
-        }
     }
     if (DisplayedSongNamePointer) {
         complex_free(DisplayedSongNamePointer);
@@ -60,6 +73,14 @@ void initSongDisplay(int song) {
             displayed_text_offset = i + 1;
         }
     }
+}
+
+int cspGetSequence(int seqp){
+
+}
+
+int sequenceToSongIndex(int sequence){
+//This function is impossible
 }
 
 Gfx* displaySongNameHandler(Gfx* dl) {
