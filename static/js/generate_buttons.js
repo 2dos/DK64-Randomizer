@@ -111,3 +111,41 @@ async function setup_pyodide(){
     }
 }
 
+document.getElementById("load_patch_file").addEventListener("click", function(event) {
+    /**
+     * Set historical seed text based on the load_patch_file click event.
+     *
+     * @param {Event} event - JavaScript DOM click event.
+     */
+    let loadPatchFileElem = document.getElementById("load_patch_file");
+    let generatePastgenSeedElem = document.getElementById("generate_pastgen_seed");
+
+    if (loadPatchFileElem.checked) {
+        generatePastgenSeedElem.value = "Generate Patch File from History";
+    } else {
+        generatePastgenSeedElem.value = "Generate Seed from History";
+    }
+});
+function should_clear_setting(select) {
+    /**
+     * Return true if the select should be cleared when importing settings.
+     *
+     * @param {HTMLSelectElement} select - The select element to evaluate.
+     * @returns {boolean} - Whether the select should be cleared.
+     */
+    if (document.querySelector("#nav-cosmetics").contains(select)) {
+        return false;
+    }
+    if (document.querySelector("#nav-music").contains(select)) {
+        return false;
+    }
+    if (select.name.startsWith("plando_")) {
+        return false;
+    }
+    // This should now be obsolete, because of the #nav-music clause, but leaving it as-is for safety
+    // TODO: change the plando_ clause into a #nav-plando clause and remove the music_select_ clause
+    if (select.name.startsWith("music_select_")) {
+        return false;
+    }
+    return true;
+}
