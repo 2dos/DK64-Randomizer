@@ -429,9 +429,10 @@ class Settings:
         self.training_barrels_minigames = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
 
-        # Not making this a setting that can be toggled by the user yet.
+        # Not making these a series of settings that can be toggled by the user yet.
         # If people want to be able to toggle this, we can make a simple UI switch and the back-end has already been handled appropriately
         self.sprint_barrel_requires_sprint = True
+        self.fix_lanky_tiny_prod = False
 
         self.chaos_blockers = False
 

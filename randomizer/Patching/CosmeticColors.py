@@ -3469,15 +3469,15 @@ def updateCryptLeverTexture(settings: Settings) -> None:
         writeColorImageToROM(texture_1, 25, 0x999, 32, 64, False, TextureFormat.RGBA5551)
 
 
-def lightenPauseBubble(settings: Settings):
-    """Change the brightness of the text bubble used for the pause menu for light mode."""
-    if settings.dark_mode_textboxes:
+def darkenPauseBubble(settings: Settings):
+    """Change the brightness of the text bubble used for the pause menu for dark mode."""
+    if not settings.dark_mode_textboxes:
         return
     img = getImageFile(14, 107, True, 48, 32, TextureFormat.RGBA5551)
     px = img.load()
     canary_px = list(px[24, 16])
-    if canary_px[0] > 128 and canary_px[1] > 128 and canary_px[2] > 128:
-        # Already brightened, cancel
+    if canary_px[0] < 128 and canary_px[1] < 128 and canary_px[2] < 128:
+        # Already darkened, cancel
         return
     bytes_array = []
     for y in range(32):
