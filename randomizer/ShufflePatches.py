@@ -127,7 +127,7 @@ def ShufflePatches(spoiler, human_spoiler):
 
     for key in total_dirt_patch_list.keys():
         for SingleDirtPatchLocation in CustomLocations[key]:
-            if (SingleDirtPatchLocation.vanilla_patch or not SingleDirtPatchLocation.selected) and LocationTypes.DirtPatch not in SingleDirtPatchLocation.banned_types:
+            if SingleDirtPatchLocation.is_fungi_hidden_patch or SingleDirtPatchLocation.isValidLocation(LocationTypes.DirtPatch):
                 SingleDirtPatchLocation.setCustomLocation(False)
                 if not spoiler.settings.enable_plandomizer or (SingleDirtPatchLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]):
                     total_dirt_patch_list[key].append(SingleDirtPatchLocation)
