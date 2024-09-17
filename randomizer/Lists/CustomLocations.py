@@ -1278,7 +1278,7 @@ CustomLocations = {
         CustomLocation(map=Maps.FranticFactory, name="Past Tiny Production Bonus", x=400, y=858.5, z=1615, max_size=32, logic_region=Regions.UpperCore, logic=lambda l: l.twirl and l.tiny, group=1),
         CustomLocation(map=Maps.FranticFactory, name="On Production outside box", x=988, y=322, z=1175, max_size=40, logic_region=Regions.UpperCore, group=1),
         CustomLocation(map=Maps.FranticFactory, name="Storage Room Corner", x=974, y=66.5, z=908, max_size=32, logic_region=Regions.BeyondHatch, group=4),
-        CustomLocation(map=Maps.FranticFactory, name="Cranky and Candy Room", x=316, y=165, z=805, max_size=64, logic_region=Regions.BeyondHatch, group=4),
+        CustomLocation(map=Maps.FranticFactory, name="Cranky and Candy Room", x=316, y=165, z=805, max_size=64, logic_region=Regions.BeyondHatch, group=4, banned_types=[LocationTypes.MelonCrate]),
         CustomLocation(
             map=Maps.FranticFactory, name="Near Candy", x=319.03137207031, y=165.5, z=596.36285400391, rot_y=359, max_size=64, logic_region=Regions.BeyondHatch, vanilla_crate=True, group=4
         ),
