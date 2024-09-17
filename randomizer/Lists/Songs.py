@@ -705,18 +705,6 @@ for songEnum, song in song_data.items():
         MusicSelectionPanel["ItemsEvents"]["subcategories"][song.type.name]["songs"].append(songJson)
 
 
-def MusicSelectFilter(songList: list[dict], location: str) -> list[dict]:
-    """Return a filtered list of songs that can be placed in this location.
-
-    Args:
-        songList (dict[]): The list of possible songs. Each item contains
-            "name" and "value" string fields.
-        location (str): The location where we are trying to place a song.
-            Equal to the string name of the Song enum.
-    """
-    return [song for song in songList if song_data[Songs[song["value"]]].type != SongType.BGM or song_data[Songs[song["value"]]].channel == song_data[Songs[location]].channel]
-
-
 def getSongIndexFromName(name: str) -> Songs:
     """Obtain the song index from the name of the vanilla song."""
     for song_idx in song_data:

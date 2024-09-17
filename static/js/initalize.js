@@ -5,9 +5,20 @@ $.ajax({
   dataType: "json",
   async: false,
   success: function (data) {
-    nunjucks.configure("/templates", { autoescape: true });
-    var renderedHTML = nunjucks.render("base.html.jinja2", data);
-    var navRenderedHTML = nunjucks.render("nav-tabs.html.jinja2", {});
+    var env = nunjucks.configure('/templates', { autoescape: true });
+    env.addFilter("music_select_restrict", function(songList, location) {
+        return songList;
+    });
+    env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
+    env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
+    env.addFilter("plando_item_restrict", function(itemList, location) {
+        return itemList;
+    });
+    env.addFilter("plando_minigame_restrict", PlandoMinigameFilter);
+    env.addFilter("plando_shop_sort", PlandoShopSortFilter);
+    env.addGlobal("plando_option_class_annotation", PlandoOptionClassAnnotation);
+    var renderedHTML = env.render("base.html.jinja2", data);
+    var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
     $("#tab-data").html(renderedHTML);
     $("#nav-tab-list").html(navRenderedHTML);
   },
