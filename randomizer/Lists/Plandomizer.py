@@ -756,7 +756,9 @@ for level, locations in CustomLocations.items():
                 PlandomizerPanels["Locations"]["categories"]["DirtPatch"]["locations"][currentVanillaDirtIndex]["vanilla_value"] = jsonValue
                 DirtPatchVanillaLocationMap[f"patch_{currentVanillaDirtIndex}"] = jsonValue
                 currentVanillaDirtIndex += 1
-            plannableDirt.append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": jsonValue})
+            # Do not allow dirt to be placed in Hideout Helm.
+            if level != Levels.HideoutHelm:
+                plannableDirt.append({"name": f"{GetLevelString(level)}: {customLocation.name}", "value": jsonValue})
         if LocationTypes.MelonCrate not in customLocation.banned_types:
             if customLocation.vanilla_crate:
                 PlandomizerPanels["Locations"]["categories"]["MelonCrate"]["locations"][currentVanillaCrateIndex]["vanilla_value"] = jsonValue
