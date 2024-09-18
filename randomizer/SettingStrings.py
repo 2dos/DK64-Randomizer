@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, Dict, Tuple
 
 from randomizer.Enums.Settings import (
     BananaportRando,
-    DeprecatedSettings,
     LogicType,
     SettingsStringDataType,
     SettingsStringEnum,
@@ -149,7 +148,6 @@ def prune_settings(settings_dict: dict):
         if settings_dict[keySetting] in exclusions:
             settings_to_remove.extend(exclusions[settings_dict[keySetting]])
     # Remove any deprecated settings.
-    settings_to_remove.extend(setting.name for setting in DeprecatedSettings)
     for pop in settings_to_remove:
         if pop in settings_dict:
             settings_dict.pop(pop)
