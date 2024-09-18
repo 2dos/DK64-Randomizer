@@ -146,7 +146,7 @@
 | Frantic Factory | Past Tiny Production Bonus |  | `l.twirl and l.tiny, group=1)` | 
 | Frantic Factory | On Production outside box |  |  | 
 | Frantic Factory | Storage Room Corner |  |  | 
-| Frantic Factory | Cranky and Candy Room |  |  | 
+| Frantic Factory | Cranky and Candy Room | MelonCrate |  | 
 | Frantic Factory | Near Candy |  |  | 
 | Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk, group=4` | 
 | Frantic Factory | Arcade Room Bench |  |  | 
@@ -290,15 +290,15 @@
 | Fungi Forest | Top of Owl Tree |  | `((l.jetpack and l.isdiddy) or l.CanMoonkick())` | 
 | Fungi Forest | On Mill |  |  | 
 | Fungi Forest | Vanilla Clock Warp 1 |  |  | 
-| Fungi Forest | Vanilla Mill Warp 1 |  |  | 
+| Fungi Forest | Vanilla Mill Warp 1 | MelonCrate |  | 
 | Fungi Forest | Vanilla Clock Warp 2 |  |  | 
-| Fungi Forest | Vanilla Beanstalk Warp 2 |  |  | 
+| Fungi Forest | Vanilla Beanstalk Warp 2 | MelonCrate |  | 
 | Fungi Forest | Vanilla Clock Warp 3 |  |  | 
 | Fungi Forest | Vanilla Clock Warp 4 |  |  | 
 | Fungi Forest | Vanilla Tree Warp 4 |  |  | 
 | Fungi Forest | Vanilla Lower Warp 5 |  |  | 
-| Fungi Forest | Vanilla Upper Warp 5 |  |  | 
-| Fungi Forest | Vanilla Mushroom Warp 3 |  |  | 
+| Fungi Forest | Vanilla Upper Warp 5 | MelonCrate |  | 
+| Fungi Forest | Vanilla Mushroom Warp 3 | MelonCrate |  | 
 | Forest Anthill | Anthill: Orange Platform |  |  | 
 | Forest Winch Room | Winch Room: Opposite Entrance |  |  | 
 | Fungi Forest | Near Thornvine Barn |  |  | 

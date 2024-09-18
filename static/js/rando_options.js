@@ -1346,23 +1346,17 @@ document
 function change_level_randomization(evt) {
   validate_fast_start_status(evt);
 
-  const level = document.getElementById("level_randomization");
-  const bossLocation = document.getElementById("boss_location_rando");
-  const bossKong = document.getElementById("boss_kong_rando");
-  const kongRando = document.getElementById("kong_rando");
-  const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
+    const level = document.getElementById("level_randomization");
+    const bossLocation = document.getElementById("boss_location_rando");
+    const bossKong = document.getElementById("boss_kong_rando");
+    const kongRando = document.getElementById("kong_rando");
+    const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
+    const helmLabel = document.getElementById("shuffle_helm_location_label");
 
-  const disableBossShuffles =
-    ["level_order", "level_order_complex"].includes(level.value) ||
-    (level.value === "vanilla" && kongRando.checked);
-  const disableKongRando = ["level_order", "level_order_complex"].includes(
-    level.value
-  );
-  const disableShuffleHelmLocation = [
-    "level_order",
-    "level_order_complex",
-    "vanilla",
-  ].includes(level.value);
+    const isLevelOrder = ["level_order", "level_order_complex"].includes(level.value);
+    const disableBossShuffles = ["level_order", "level_order_complex"].includes(level.value) || (level.value === "vanilla" && kongRando.checked);
+    const disableKongRando = ["level_order", "level_order_complex"].includes(level.value);
+    const disableShuffleHelmLocation = level.value === "vanilla";
 
   if (disableBossShuffles) {
     bossLocation.setAttribute("disabled", "disabled");
@@ -1381,12 +1375,13 @@ function change_level_randomization(evt) {
     kongRando.removeAttribute("disabled");
   }
 
-  if (disableShuffleHelmLocation) {
-    shuffleHelmLocation.setAttribute("disabled", "disabled");
-    shuffleHelmLocation.checked = false;
-  } else {
-    shuffleHelmLocation.removeAttribute("disabled");
-  }
+    if (disableShuffleHelmLocation) {
+        shuffleHelmLocation.setAttribute("disabled", "disabled");
+        shuffleHelmLocation.checked = false;
+    } else {
+        shuffleHelmLocation.removeAttribute("disabled");
+        helmLabel.innerText = isLevelOrder ? "Include Helm" : "Shuffle Helm Location";
+    }
 }
 
 // Randomly generate a seed ID

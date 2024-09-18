@@ -315,7 +315,7 @@ ColoredBananaGroupList = [
         name="Tree in training area",
         konglist=[Kongs.tiny],
         region=Regions.TrainingGrounds,
-        logic=lambda l: (l.istiny and l.twirl),
+        logic=lambda l: l.climbing and (l.istiny and l.twirl),
         locations=[
             [5, 1.0, 810, 244, 710],
         ],

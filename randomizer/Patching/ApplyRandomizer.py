@@ -127,6 +127,7 @@ def patching_response(spoiler):
             Transitions.IslesMainToForestLobby,
             Transitions.IslesMainToCavesLobby,
             Transitions.IslesMainToCastleLobby,
+            Transitions.IslesMainToHelmLobby,
         ]
         vanilla_lobby_exit_order = [
             Transitions.IslesJapesLobbyToMain,
@@ -136,6 +137,7 @@ def patching_response(spoiler):
             Transitions.IslesForestLobbyToMain,
             Transitions.IslesCavesLobbyToMain,
             Transitions.IslesCastleLobbyToMain,
+            Transitions.IslesHelmLobbyToMain,
         ]
         level_order = []
         for level in vanilla_lobby_entrance_order:
@@ -201,6 +203,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
         BooleanProperties(spoiler.settings.sprint_barrel_requires_sprint, 0x2F),  # Sprint Barrel requires OSprint
+        BooleanProperties(spoiler.settings.fix_lanky_tiny_prod, 0x114),  # Fix Lanky Tiny Prod
         BooleanProperties(spoiler.settings.enemy_kill_crown_timer, 0x35),  # Enemy crown timer reduction
     ]
 
@@ -571,7 +574,7 @@ def patching_response(spoiler):
     if spoiler.settings.alter_switch_allocation:
         ROM_COPY.seek(sav + 0x103)
         ROM_COPY.write(1)
-        for x in range(7):
+        for x in range(7):  # Shouldn't need index 8 since Helm has no slam switches in it
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
 

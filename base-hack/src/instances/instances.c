@@ -32,6 +32,8 @@
 #define JAPES_MOUNTAIN_CHARGE_CONTROLLER 0x37
 #define FACTORY_DIDDYPRODGB 0x2C
 #define FACTORY_DIDDYPRODSWITCH 0x31
+#define FACTORY_LANKYPRODGB 0x2A
+#define FACTORY_LANKYPRODSWITCH 0x30
 #define MILL_WARNINGLIGHTS 0xC
 #define MILL_CRUSHER 0x8
 #define MILL_TRIANGLEPAD 0x0
@@ -70,7 +72,7 @@
 #define JAPES_GATE2 0x2F
 #define JAPES_GUNSWITCH0 0x30
 #define JAPES_GUNSWITCH1 0x31
-#define JAPES_GUNSWITCH2 0x32
+#define JAPES_GUNSWITCH2 0x31
 #define JAPES_DIDDYFREEGB 0x48
 #define LLAMA_BAMBOOGATE 0x11
 #define LLAMA_GUNSWITCH 0x12
@@ -770,6 +772,20 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_DIDDYPRODSWITCH) {
 					if (checkFlag(FACTORYDIDDYPRODSPAWNED,0)) {
+						behaviour_pointer->current_state = 20;
+						behaviour_pointer->next_state = 20;
+					}
+				} else if (param2 == FACTORY_LANKYPRODGB) {
+					if (index == 0) {
+						if (checkFlag(FLAG_LANKYPROD_SPAWNED, FLAGTYPE_PERMANENT) || (!Rando.fix_lanky_tiny_prod)) {
+							behaviour_pointer->current_state = 11;
+							behaviour_pointer->next_state = 11;
+						}
+					} else if (index == 1) {
+						setPermFlag(FLAG_LANKYPROD_SPAWNED);
+					}
+				} else if (param2 == FACTORY_LANKYPRODSWITCH) {
+					if (checkFlag(FLAG_LANKYPROD_SPAWNED, 0)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}

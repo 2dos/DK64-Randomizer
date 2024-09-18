@@ -74,8 +74,8 @@ LogicRegions = {
         Event(Events.FactoryKeyTurnedIn, lambda l: l.settings.auto_keys and l.FactoryKey),
         Event(Events.GalleonKeyTurnedIn, lambda l: l.settings.auto_keys and l.GalleonKey and l.HasFillRequirementsForLevel(l.settings.level_order[5])),
         Event(Events.ForestKeyTurnedIn, lambda l: l.settings.auto_keys and l.ForestKey and l.HasFillRequirementsForLevel(l.settings.level_order[6])),
-        Event(Events.CavesKeyTurnedIn, lambda l: l.settings.auto_keys and l.CavesKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
-        Event(Events.CastleKeyTurnedIn, lambda l: l.settings.auto_keys and l.CastleKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
+        Event(Events.CavesKeyTurnedIn, lambda l: l.settings.auto_keys and l.CavesKey and l.HasFillRequirementsForLevel(l.settings.level_order[7])),
+        Event(Events.CastleKeyTurnedIn, lambda l: l.settings.auto_keys and l.CastleKey and l.HasFillRequirementsForLevel(l.settings.level_order[7])),
         Event(Events.HelmKeyTurnedIn, lambda l: l.settings.auto_keys and l.HelmKey),
         Event(Events.Night, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.Day, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
@@ -215,8 +215,8 @@ LogicRegions = {
         Event(Events.FactoryKeyTurnedIn, lambda l: l.FactoryKey),
         Event(Events.GalleonKeyTurnedIn, lambda l: l.GalleonKey and l.HasFillRequirementsForLevel(l.settings.level_order[5])),  # This helps prevent weird fill issues in simple level order
         Event(Events.ForestKeyTurnedIn, lambda l: l.ForestKey and l.HasFillRequirementsForLevel(l.settings.level_order[6])),  # For example, if a Kong were in lobby 7, this could wreak havoc on key placement
-        Event(Events.CavesKeyTurnedIn, lambda l: l.CavesKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
-        Event(Events.CastleKeyTurnedIn, lambda l: l.CastleKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
+        Event(Events.CavesKeyTurnedIn, lambda l: l.CavesKey and l.HasFillRequirementsForLevel(l.settings.level_order[6])),
+        Event(Events.CastleKeyTurnedIn, lambda l: l.CastleKey and l.HasFillRequirementsForLevel(l.settings.level_order[6])),
         Event(Events.HelmKeyTurnedIn, lambda l: l.HelmKey),
     ], [
         TransitionFront(Regions.KremIsle, lambda l: True, Transitions.IslesPrisonToMain),

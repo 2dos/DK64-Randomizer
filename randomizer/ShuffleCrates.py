@@ -127,7 +127,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
 
     for key in total_MelonCrate_list.keys():
         for SingleMelonCrateLocation in CustomLocations[key]:
-            if (SingleMelonCrateLocation.vanilla_crate or not SingleMelonCrateLocation.selected) and LocationTypes.MelonCrate not in SingleMelonCrateLocation.banned_types:
+            if SingleMelonCrateLocation.is_galleon_floating_crate or SingleMelonCrateLocation.isValidLocation(LocationTypes.MelonCrate):
                 SingleMelonCrateLocation.setCustomLocation(False)
                 if not spoiler.settings.enable_plandomizer or (SingleMelonCrateLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]):
                     total_MelonCrate_list[key].append(SingleMelonCrateLocation)

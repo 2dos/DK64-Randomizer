@@ -169,13 +169,13 @@ def resetCustomLocations(spoiler) -> None:
     for key in CustomLocations.keys():
         for location in CustomLocations[key]:
             location.selected = location.vanilla_crown or location.vanilla_crate or location.vanilla_patch or location.vanilla_port
-            if spoiler.settings.crown_placement_rando and location.vanilla_crown:
+            if spoiler.settings.crown_placement_rando and location.vanilla_crown and not location.is_rotating_room:
                 location.selected = False
-            if spoiler.settings.random_patches and location.vanilla_patch:
+            if spoiler.settings.random_patches and location.vanilla_patch and not location.is_fungi_hidden_patch:
                 location.selected = False
-            if spoiler.settings.random_crates and location.vanilla_crate:
+            if spoiler.settings.random_crates and location.vanilla_crate and not location.is_galleon_floating_crate:
                 location.selected = False
-            if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off and location.vanilla_port:
+            if spoiler.settings.bananaport_placement_rando not in [ShufflePortLocations.off, ShufflePortLocations.vanilla_only] and location.vanilla_port:
                 location.selected = False
             if location.tied_warp_event in BANNED_WARPS:
                 # Make sure these warps cannot be selected by anything
@@ -1278,7 +1278,7 @@ CustomLocations = {
         CustomLocation(map=Maps.FranticFactory, name="Past Tiny Production Bonus", x=400, y=858.5, z=1615, max_size=32, logic_region=Regions.UpperCore, logic=lambda l: l.twirl and l.tiny, group=1),
         CustomLocation(map=Maps.FranticFactory, name="On Production outside box", x=988, y=322, z=1175, max_size=40, logic_region=Regions.UpperCore, group=1),
         CustomLocation(map=Maps.FranticFactory, name="Storage Room Corner", x=974, y=66.5, z=908, max_size=32, logic_region=Regions.BeyondHatch, group=4),
-        CustomLocation(map=Maps.FranticFactory, name="Cranky and Candy Room", x=316, y=165, z=805, max_size=64, logic_region=Regions.BeyondHatch, group=4),
+        CustomLocation(map=Maps.FranticFactory, name="Cranky and Candy Room", x=316, y=165, z=805, max_size=64, logic_region=Regions.BeyondHatch, group=4, banned_types=[LocationTypes.MelonCrate]),
         CustomLocation(
             map=Maps.FranticFactory, name="Near Candy", x=319.03137207031, y=165.5, z=596.36285400391, rot_y=359, max_size=64, logic_region=Regions.BeyondHatch, vanilla_crate=True, group=4
         ),
@@ -2381,6 +2381,7 @@ CustomLocations = {
             logic_region=Regions.MillArea,
             group=5,
             vanilla_port=True,
+            banned_types=[LocationTypes.MelonCrate],
             tied_warp_event=Events.ForestW1bTagged,
         ),
         CustomLocation(
@@ -2409,6 +2410,7 @@ CustomLocations = {
             logic_region=Regions.WormArea,
             group=1,
             vanilla_port=True,
+            banned_types=[LocationTypes.MelonCrate],
             tied_warp_event=Events.ForestW2bTagged,
         ),
         CustomLocation(
@@ -2476,6 +2478,7 @@ CustomLocations = {
             logic_region=Regions.MushroomUpperExterior,
             group=4,
             vanilla_port=True,
+            banned_types=[LocationTypes.MelonCrate],
             tied_warp_event=Events.ForestW5aTagged,
         ),
         CustomLocation(
@@ -2489,6 +2492,7 @@ CustomLocations = {
             logic_region=Regions.GiantMushroomArea,
             group=4,
             vanilla_port=True,
+            banned_types=[LocationTypes.MelonCrate],
             tied_warp_event=Events.ForestW3bTagged,
         ),
         CustomLocation(map=Maps.ForestAnthill, name="Anthill: Orange Platform", x=768, y=205, z=421, max_size=56, logic_region=Regions.Anthill, group=5),

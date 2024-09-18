@@ -525,12 +525,12 @@ def validate_starting_kong_count(evt):
         mark_option_valid(startingKongs, ValidationError.invalid_starting_kong_count)
 
 
-@bind("change", "plando_level_order_", 7)
+@bind("change", "plando_level_order_", 8)
 def validate_level_order_no_duplicates(evt):
     """Raise an error if the same level is chosen twice in the level order."""
     levelDict = {}
     # Count the instances of each level.
-    for i in range(0, 7):
+    for i in range(0, 8):
         levelElemName = f"plando_level_order_{i}"
         levelOrderElem = js.document.getElementById(levelElemName)
         level = levelOrderElem.value

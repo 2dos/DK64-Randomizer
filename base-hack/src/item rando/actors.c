@@ -343,15 +343,7 @@ void CheckKasplatSpawnBitfield(void) {
         while (1 == 1) {
             if (referenced_spawner) {
                 int actor_type = referenced_spawner->actor_type + 0x10;
-                int is_drop = 0;
-                int i = 0;
-                while (i < (int)(sizeof(actor_drops)/2)) {
-                    if (actor_type == actor_drops[i]) {
-                        is_drop = 1;
-                        break;
-                    }
-                    i++;
-                }
+                int is_drop = inShortList(actor_type, &actor_drops, sizeof(actor_drops) >> 1);
                 if (is_drop) {
                     int flag = referenced_spawner->flag;
                     if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {

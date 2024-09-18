@@ -225,7 +225,7 @@ def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
         Maps.CreepyCastleLobby,
         Maps.HideoutHelmLobby,
     ]
-    lobby_exits = [2, 3, 4, 5, 6, 10, 11]
+    lobby_exits = [2, 3, 4, 5, 6, 10, 11, 7]
     altered_maps = {
         Maps.Isles: [],
         Maps.JungleJapesLobby: [],

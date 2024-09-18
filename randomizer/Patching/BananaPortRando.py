@@ -102,11 +102,16 @@ def move_bananaports(spoiler):
                         ROM_COPY.seek(cutscene_table + header_end)
                         count = int.from_bytes(ROM_COPY.readBytes(2), "big")
                         if cam_lock_id >= count:
-                            raise Exception(f"Invalid ID for camera lock. Map {cont_map_id}. Cam Lock ID {cam_lock_id}. Cap {count}. Header End {hex(header_end)}")
+                            continue
+                            # raise Exception(f"Invalid ID for camera lock. Map {cont_map_id}. Cam Lock ID {cam_lock_id}. Cap {count}. Header End {hex(header_end)}")
                         # Update Prox Trigger Coordinates
                         ROM_COPY.seek(cutscene_table + header_end + 2 + (0x1C * cam_lock_id) + 0x10)
                         ROM_COPY.writeMultipleBytes(int(new_coords[0]), 2)
                         ROM_COPY.writeMultipleBytes(int(new_coords[1] + 4.25), 2)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[2]), 2)
+                        # Focal X Z
+                        ROM_COPY.seek(cutscene_table + header_end + 2 + (0x1C * cam_lock_id) + 0x06)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[0]), 2)
                         ROM_COPY.writeMultipleBytes(int(new_coords[2]), 2)
                         # Update Distance
                         ROM_COPY.seek(cutscene_table + header_end + 2 + (0x1C * cam_lock_id) + 0x19)
@@ -123,7 +128,7 @@ def move_bananaports(spoiler):
                         ROM_COPY.seek(cutscene_table + header_end + 2 + (0x1C * cam_lock_id) + 0x0)
                         ROM_COPY.writeMultipleBytes(int(new_coords[0] + dx), 2)
                         ROM_COPY.writeMultipleBytes(int(new_coords[1] + 30), 2)
-                        ROM_COPY.writeMultipleBytes(int(new_coords[2] + dz), 2)
+                        ROM_COPY.writeMultipleBytes(int(new_coords[2] - dz), 2)
             # Modify setup table
             obj_id_list = [x["obj_id"] for x in modification_table]
             ROM_COPY.seek(setup_table)

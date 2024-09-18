@@ -935,10 +935,10 @@ for x in range(221):
         )
 file_dict.append(
     File(
-        name="Dark Cloud",
+        name="Text Cloud",
         pointer_table_index=TableNames.TexturesHUD,
         file_index=107,
-        source_file=f"assets/displays/text_bubble_dark.png",
+        source_file=f"assets/displays/text_bubble_light.png",
         texture_format=TextureFormat.RGBA5551,
         target_compressed_size=0xC00,
     )
@@ -1921,7 +1921,7 @@ with open(newROMName, "r+b") as fh:
         "gb_shine",
         "melon_surface",
         "melon_resized",
-        "text_bubble_dark",
+        "text_bubble_light",
         "warp_left",
         "warp_right",
         "warp_rim_0",

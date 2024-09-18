@@ -352,6 +352,7 @@ class SettingsStringEnum(IntEnum):
     win_condition_item = 190
     win_condition_count = 191
     bananaport_placement_rando = 192
+    troff_7 = 193
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -536,6 +537,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.troff_4: SettingsStringDataType.var_int,
     SettingsStringEnum.troff_5: SettingsStringDataType.var_int,
     SettingsStringEnum.troff_6: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_7: SettingsStringDataType.var_int,
     SettingsStringEnum.troff_text: SettingsStringDataType.var_int,
     SettingsStringEnum.vanilla_door_rando: SettingsStringDataType.bool,
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
@@ -648,6 +650,7 @@ addSettingIntRange(SettingsStringEnum.troff_3, 500)
 addSettingIntRange(SettingsStringEnum.troff_4, 500)
 addSettingIntRange(SettingsStringEnum.troff_5, 500)
 addSettingIntRange(SettingsStringEnum.troff_6, 500)
+addSettingIntRange(SettingsStringEnum.troff_7, 500)
 addSettingIntRange(SettingsStringEnum.troff_text, 500)
 addSettingIntRange(SettingsStringEnum.progressive_hint_text, 201)
 addSettingIntRange(SettingsStringEnum.win_condition_count, 201)
