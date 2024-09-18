@@ -869,31 +869,42 @@ def validate_custom_crate_locations(evt):
             mark_option_enabled(locElem, ValidationError.only_available_as_custom_location)
 
 
-@bind("change", "switchsanity")
-def enable_switch_plando(evt):
+def enable_switch_plando():
     """Enable or disable placing switches based on the Switchsanity setting."""
     switchsanity = js.document.getElementById("switchsanity").value
     for switchEnum in SwitchData.keys():
         switchElem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
         if switchsanity == "all":
             mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
-            # If this switch is currently set to its vanilla value, change it
-            # to "Randomize".
-            if switchElem.value == SwitchVanillaMap[switchEnum.name]:
-                switchElem.value = ""
         elif switchEnum in [Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport]:
             if switchsanity == "helm_access":
                 mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
-                # If this switch is currently set to its vanilla value, change
-                # it to "Randomize".
-                if switchElem.value == SwitchVanillaMap[switchEnum.name]:
-                    switchElem.value = ""
             else:
                 errString = 'To set this switch, Switchsanity must be set to "All" or "Helm Access Only".'
                 mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
         else:
             errString = 'To set this Switch, Switchsanity must be set to "All".'
             mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
+
+
+@bind("change", "switchsanity")
+def set_plando_switches(evt):
+    """Set values and enable switches based on the Switchsanity setting."""
+    enable_switch_plando()
+    switchsanity = js.document.getElementById("switchsanity").value
+    for switchEnum in SwitchData.keys():
+        switchElem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
+        if switchsanity == "all":
+            # If this switch is currently set to its vanilla value, change it
+            # to "Randomize".
+            if switchElem.value == SwitchVanillaMap[switchEnum.name]:
+                switchElem.value = ""
+        elif switchEnum in [Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport]:
+            if switchsanity == "helm_access":
+                # If this switch is currently set to its vanilla value, change
+                # it to "Randomize".
+                if switchElem.value == SwitchVanillaMap[switchEnum.name]:
+                    switchElem.value = ""
 
 
 @bind("click", "key_8_helm")
@@ -945,7 +956,7 @@ def perform_setting_conflict_validation(evt):
     js.plando_toggle_custom_tns_locations(evt)
     js.plando_toggle_custom_wrinkly_locations(evt)
     js.plando_toggle_custom_locations_tab(evt)
-    enable_switch_plando(evt)
+    enable_switch_plando()
     # This is a fallback for errors with Bootstrap sliders.
     validate_starting_kong_count(evt)
 
