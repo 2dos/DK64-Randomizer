@@ -261,9 +261,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0xC3)
             ROM_COPY.writeMultipleBytes(int(settings.crosshair_outline), 1)
 
-            ROM_COPY.seek(sav + 0x114)
-            ROM_COPY.writeMultipleBytes(int(settings.troff_brighten), 1)
-
             patchAssemblyCosmetic(ROM_COPY, settings)
             music_data, music_names = randomize_music(settings)
             music_text = []
