@@ -722,7 +722,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             elif location.item in all_hintable_moves:
                 optional_hintable_locations.append(id)
         # Sort the locations we plan on hinting by the number of doors they have available - this should roughly place hints in order of importance
-        item_region_locations_to_hint.sort(key=lambda loc_id: len(spoiler.accessible_hints_for_location[loc_id]))
+        item_region_locations_to_hint.sort(key=lambda loc_id: len(spoiler.accessible_hints_for_location[loc_id]) if loc_id in spoiler.accessible_hints_for_location.keys() else 10000)
         # If there's room, always hint a slam if we haven't hinted one already
         hinted_slam_locations = [loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove)]
         if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemHinting] and len(hinted_slam_locations) < 2:
