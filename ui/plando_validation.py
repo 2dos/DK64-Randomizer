@@ -973,7 +973,16 @@ def reset_plando_options(evt):
 
 
 # Plando options where the value is of type Levels.
-level_options = ["plando_level_order_0", "plando_level_order_1", "plando_level_order_2", "plando_level_order_3", "plando_level_order_4", "plando_level_order_5", "plando_level_order_6", "plando_level_order_7"]
+level_options = [
+    "plando_level_order_0",
+    "plando_level_order_1",
+    "plando_level_order_2",
+    "plando_level_order_3",
+    "plando_level_order_4",
+    "plando_level_order_5",
+    "plando_level_order_6",
+    "plando_level_order_7",
+]
 # Plando options where the value is of type Kongs.
 kong_options = [
     "plando_kong_rescue_diddy",
