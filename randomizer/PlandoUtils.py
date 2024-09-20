@@ -678,6 +678,7 @@ PlandoEnumMap = {
     "plando_level_order_4": Levels,
     "plando_level_order_5": Levels,
     "plando_level_order_6": Levels,
+    "plando_level_order_7": Levels,
     "plando_krool_order_0": Maps,
     "plando_krool_order_1": Maps,
     "plando_krool_order_2": Maps,

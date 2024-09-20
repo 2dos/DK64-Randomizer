@@ -973,7 +973,16 @@ def reset_plando_options(evt):
 
 
 # Plando options where the value is of type Levels.
-level_options = ["plando_level_order_0", "plando_level_order_1", "plando_level_order_2", "plando_level_order_3", "plando_level_order_4", "plando_level_order_5", "plando_level_order_6"]
+level_options = [
+    "plando_level_order_0",
+    "plando_level_order_1",
+    "plando_level_order_2",
+    "plando_level_order_3",
+    "plando_level_order_4",
+    "plando_level_order_5",
+    "plando_level_order_6",
+    "plando_level_order_7",
+]
 # Plando options where the value is of type Kongs.
 kong_options = [
     "plando_kong_rescue_diddy",
@@ -1478,7 +1487,7 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
 
     # Ensure that no level was selected more than once in the level order.
     levelOrderSet = set()
-    for i in range(0, 7):
+    for i in range(0, 8):
         level = plando_dict[f"plando_level_order_{i}"]
         if level == PlandoItems.Randomize:
             continue
