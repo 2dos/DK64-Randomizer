@@ -358,14 +358,16 @@ def GenerateLevelOrderUnrestricted(settings):
     """Generate a level order without Kong placement restrictions."""
     newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
     unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle, Levels.HideoutHelm]
-    if not settings.shuffle_helm_location:
-        newLevelOrder[8] = Levels.HideoutHelm
-        unplacedLevels.remove(Levels.HideoutHelm)
     if settings.enable_plandomizer:
         for i in range(len(newLevelOrder.keys())):
             if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
-                newLevelOrder[i + 1] = Levels[settings.plandomizer_dict["plando_level_order_" + str(i)]]
+                newLevelOrder[i + 1] = Levels(settings.plandomizer_dict["plando_level_order_" + str(i)])
                 unplacedLevels.remove(newLevelOrder[i + 1])
+    # If HideoutHelm is not in unplacedLevels, it was already assigned by the
+    # plandomizer.
+    if not settings.shuffle_helm_location and Levels.HideoutHelm in unplacedLevels:
+        newLevelOrder[8] = Levels.HideoutHelm
+        unplacedLevels.remove(Levels.HideoutHelm)
     for i in range(len(newLevelOrder.keys())):
         if newLevelOrder[i + 1] is None:
             newLevelOrder[i + 1] = random.choice(unplacedLevels)
