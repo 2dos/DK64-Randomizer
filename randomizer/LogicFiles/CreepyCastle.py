@@ -213,7 +213,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleLowCaveEnemy_NearFunky, lambda l: True),
         LocationLogic(Locations.CastleLowCaveEnemy_NearTag, lambda l: True),
     ], [], [
-        TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLowerToMain),
+        TransitionFront(Regions.CastleVeryBottom, lambda l: True, Transitions.CastleLowerToMain),
         TransitionFront(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky) or l.phasewalk or l.ledgeclip or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors), Transitions.CastleLowerToCrypt),
         TransitionFront(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors), Transitions.CastleLowerToMausoleum),
         TransitionFront(Regions.FunkyCastle, lambda l: l.funkyAccess),
