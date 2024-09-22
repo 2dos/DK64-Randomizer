@@ -32,6 +32,9 @@ def create_stub(json_file):
             print(f"Error decoding JSON in {json_file}: {e}")
             return
 
+    # Process the data to replace "obj" key values and handle class keys
+    data = resolve_obj_references(data)
+
     # Generate .pyi content
     pyi_content = create_pyi_content(data)
     # Generate .d.ts content
@@ -46,6 +49,24 @@ def create_stub(json_file):
     with open(dts_file_path, "w") as dts_file:
         dts_file.write(dts_content)
     print(f"Generated {dts_file_path}")
+
+
+def resolve_obj_references(data: dict) -> dict:
+    """Recursively resolve dictionaries with 'obj' keys and handle class keys."""
+    for key, value in data.items():
+        if isinstance(value, dict):
+            # Check if the dictionary contains the "obj" key
+            if "obj" in value:
+                # Replace the current dict with the value of "obj"
+                data[key] = value["obj"]
+            else:
+                # Recurse into nested dictionaries
+                data[key] = resolve_obj_references(value)
+        elif '.' in key:
+            # If the key contains a period, treat it as a class, not a string
+            class_name = key.split('.')[0]
+            data[class_name] = resolve_obj_references(value) if isinstance(value, dict) else value
+    return data
 
 
 def create_pyi_content(data: dict) -> str:

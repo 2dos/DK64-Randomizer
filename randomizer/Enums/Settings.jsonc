@@ -1032,5 +1032,566 @@
     "list": 6,
     // Can represent up to 65,536 values (0 to 65535)
     "u16": 7
+  },
+  "SettingsMap": {
+    "activate_all_bananaports": { "obj": "ActivateAllBananaports" },
+    "bananaport_placement_rando": { "obj": "ShufflePortLocations" },
+    "bananaport_rando": { "obj": "BananaportRando" },
+    "big_head_mode": { "obj": "BigHeadMode" },
+    "bonus_barrels": { "obj": "MinigameBarrels" },
+    "cb_rando": { "obj": "CBRando" },
+    "chunky_colors": { "obj": "CharacterColors" },
+    "coin_door_item": { "obj": "HelmDoorItem" },
+    "colorblind_mode": { "obj": "ColorblindMode" },
+    "crown_door_item": { "obj": "HelmDoorItem" },
+    "crown_enemy_rando": { "obj": "CrownEnemyRando" },
+    "damage_amount": { "obj": "DamageAmount" },
+    "diddy_colors": { "obj": "CharacterColors" },
+    "dk_colors": { "obj": "CharacterColors" },
+    "dpad_display": { "obj": "DPadDisplays" },
+    "enemies_selected": { "obj": "Enemies" },
+    "enguarde_colors": { "obj": "CharacterColors" },
+    "excluded_songs_selected": { "obj": "ExcludedSongs" },
+    "free_trade_setting": { "obj": "FreeTradeSetting" },
+    "fungi_time": { "obj": "FungiTimeSetting" },
+    "galleon_water": { "obj": "GalleonWaterSetting" },
+    "gb_colors": { "obj": "CharacterColors" },
+    "glitches_selected": { "obj": "GlitchesSelected" },
+    "hard_bosses_selected": { "obj": "HardBossesSelected" },
+    "hard_mode_selected": { "obj": "HardModeSelected" },
+    "helm_barrels": { "obj": "MinigameBarrels" },
+    "helm_room_bonus_count": { "obj": "HelmBonuses" },
+    "helm_setting": { "obj": "HelmSetting" },
+    "ice_trap_frequency": { "obj": "IceTrapFrequency" },
+    "item_rando_list_selected": { "obj": "ItemRandoListSelected" },
+    "kasplat_rando_setting": { "obj": "KasplatRandoSetting" },
+    "krusha_ui": { "obj": "KrushaUi" },
+    "lanky_colors": { "obj": "CharacterColors" },
+    "level_randomization": { "obj": "LevelRandomization" },
+    "logic_type": { "obj": "LogicType" },
+    "microhints_enabled": { "obj": "MicrohintsEnabled" },
+    "minigames_list_selected": { "obj": "MinigamesListSelected" },
+    "misc_changes_selected": { "obj": "MiscChangesSelected" },
+    "more_cutscene_skips": { "obj": "ExtraCutsceneSkips" },
+    "move_rando": { "obj": "MoveRando" },
+    "music_filtering_selected": { "obj": "MusicFilters" },
+    "rambi_colors": { "obj": "CharacterColors" },
+    "random_models": { "obj": "RandomModels" },
+    "random_prices": { "obj": "RandomPrices" },
+    "shockwave_status": { "obj": "ShockwaveStatus" },
+    "shuffle_loading_zones": { "obj": "ShuffleLoadingZones" },
+    "sound_type": { "obj": "SoundType" },
+    "starting_keys_list_selected": { "obj": "Items" },
+    "starting_move_list_selected": { "obj": "Items" },
+    "switchsanity": { "obj": "SwitchsanityLevel" },
+    "random_starting_move_list_selected": { "obj": "Items" },
+    "tiny_colors": { "obj": "CharacterColors" },
+    "training_barrels": { "obj": "TrainingBarrels" },
+    "warp_level_list_selected": { "obj": "Maps" },
+    "win_condition": { "obj": "WinCondition" },
+    "win_condition_item": { "obj": "WinConditionComplex" },
+    "wrinkly_hints": { "obj": "WrinklyHints" },
+    "spoiler_hints": { "obj": "SpoilerHints" },
+    "starting_kong": { "obj": "Kongs" },
+    "remove_barriers_selected": { "obj": "RemovedBarriersSelected" },
+    "faster_checks_selected": { "obj": "FasterChecksSelected" },
+    "kong_model_dk": { "obj": "KongModels" },
+    "kong_model_diddy": { "obj": "KongModels" },
+    "kong_model_lanky": { "obj": "KongModels" },
+    "kong_model_tiny": { "obj": "KongModels" },
+    "kong_model_chunky": { "obj": "KongModels" },
+    "chunky_phase_slam_req": { "obj": "SlamRequirement" },
+    "puzzle_rando_difficulty": { "obj": "PuzzleRando" }
+  },
+  // ALL SETTINGS NEED AN ENTRY HERE!
+  // This maps settings to the data types that will be used to encode them in the
+  // settings string. Any enum-based settings should use that enum as their data
+  // type, to shrink the payload as much as possible.
+  //
+  // When adding an int setting, make sure to use the smallest int possible.
+  // This will reduce the characters added to the settings string. See the above
+  // enum for valid int values.
+  //
+  // If you are using the var_int type, you must use the addSettingIntRange()
+  // function below to specify the valid int range.
+  "SettingsStringTypeMap": {
+    "SettingsStringEnum.activate_all_bananaports": {
+      "obj": "ActivateAllBananaports"
+    },
+    "SettingsStringEnum.alter_switch_allocation": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.auto_keys": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.bananaport_placement_rando": {
+      "obj": "ShufflePortLocations"
+    },
+    "SettingsStringEnum.bananaport_rando": { "obj": "BananaportRando" },
+    "SettingsStringEnum.blocker_0": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_1": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_2": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_3": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_4": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_5": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_6": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_7": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_text": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.bonus_barrel_auto_complete": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.bonus_barrel_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.boss_kong_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.boss_location_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.cb_rando": { "obj": "CBRando" },
+    "SettingsStringEnum.coin_door_item": { "obj": "HelmDoorItem" },
+    "SettingsStringEnum.coin_door_item_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.random_crates": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.crown_placement_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.crown_door_item": { "obj": "HelmDoorItem" },
+    "SettingsStringEnum.crown_door_item_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.crown_enemy_rando": { "obj": "CrownEnemyRando" },
+    "SettingsStringEnum.coin_rando": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.damage_amount": { "obj": "DamageAmount" },
+    "SettingsStringEnum.disable_tag_barrels": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.dk_portal_location_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.enable_plandomizer": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.enable_shop_hints": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.enable_tag_anywhere": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.enemies_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.enemy_rando": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.enemy_speed_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.faster_checks_enabled": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.fast_start_beginning_of_game": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.fast_warps": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.fps_display": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.free_trade_setting": { "obj": "FreeTradeSetting" },
+    "SettingsStringEnum.generate_spoilerlog": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.glitches_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.hard_mode": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.hard_mode_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.hard_blockers": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.hard_bosses": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.hard_bosses_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.hard_shooting": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.hard_troff_n_scoff": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.helm_hurry": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.helm_phase_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.helm_phase_order_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.helm_random": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.helm_room_bonus_count": { "obj": "HelmBonuses" },
+    "SettingsStringEnum.helm_setting": { "obj": "HelmSetting" },
+    "SettingsStringEnum.helmhurry_list_banana_medal": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_battle_crown": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_bean": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_blueprint": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_boss_key": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_colored_bananas": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_company_coins": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_fairies": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_golden_banana": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_ice_traps": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_kongs": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_move": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_pearl": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_rainbow_coin": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.helmhurry_list_starting_time": {
+      "obj": "SettingsStringDataType.u16"
+    },
+    "SettingsStringEnum.item_rando_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.item_reward_previews": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.kasplat_rando_setting": {
+      "obj": "KasplatRandoSetting"
+    },
+    "SettingsStringEnum.key_8_helm": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.keys_random": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.kong_model_dk": { "obj": "KongModels" },
+    "SettingsStringEnum.kong_model_diddy": { "obj": "KongModels" },
+    "SettingsStringEnum.kong_model_lanky": { "obj": "KongModels" },
+    "SettingsStringEnum.kong_model_tiny": { "obj": "KongModels" },
+    "SettingsStringEnum.kong_model_chunky": { "obj": "KongModels" },
+    "SettingsStringEnum.kong_rando": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.krool_access": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.krool_key_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.krool_phase_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.krool_phase_order_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.krool_random": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.level_randomization": { "obj": "LevelRandomization" },
+    "SettingsStringEnum.logic_type": { "obj": "LogicType" },
+    "SettingsStringEnum.maximize_helm_blocker": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.medal_cb_req": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.medal_requirement": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.microhints_enabled": { "obj": "MicrohintsEnabled" },
+    "SettingsStringEnum.minigames_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.misc_changes_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.more_cutscene_skips": { "obj": "ExtraCutsceneSkips" },
+    "SettingsStringEnum.move_rando": { "obj": "MoveRando" },
+    "SettingsStringEnum.no_healing": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.no_melons": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.open_lobbies": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.perma_death": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.portal_numbers": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.quality_of_life": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.random_fairies": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.random_medal_requirement": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.random_patches": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.random_prices": { "obj": "RandomPrices" },
+    "SettingsStringEnum.random_starting_region": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.randomize_blocker_required_amounts": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.randomize_cb_required_amounts": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.randomize_pickups": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.rareware_gb_fairies": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.select_keys": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.shockwave_status": { "obj": "ShockwaveStatus" },
+    "SettingsStringEnum.shop_indicator": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.shorten_boss": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.shuffle_items": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.shuffle_shops": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.smaller_shops": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.starting_keys_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.starting_kongs_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.starting_moves_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.starting_random": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.tns_location_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.training_barrels": { "obj": "TrainingBarrels" },
+    "SettingsStringEnum.troff_0": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_1": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_2": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_3": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_4": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_5": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_6": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_7": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.troff_text": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.vanilla_door_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.warp_level_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.warp_to_isles": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.win_condition_item": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.win_condition_count": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.wrinkly_available": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.wrinkly_hints": { "obj": "WrinklyHints" },
+    "SettingsStringEnum.wrinkly_location_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.spoiler_hints": { "obj": "SpoilerHints" },
+    "SettingsStringEnum.spoiler_include_woth_count": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.points_list_kongs": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_keys": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_guns": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_instruments": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_training_moves": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_important_shared": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_pad_moves": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_barrel_moves": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_active_moves": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_bean": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.starting_move_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.start_with_slam": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.spoiler_include_level_order": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.enable_progressive_hints": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.progressive_hint_text": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.random_starting_move_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.enemy_drop_rando": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.dim_solved_hints": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.starting_kong": { "obj": "Kongs" },
+    "SettingsStringEnum.switchsanity": { "obj": "SwitchsanityLevel" },
+    "SettingsStringEnum.fungi_time": { "obj": "FungiTimeSetting" },
+    "SettingsStringEnum.galleon_water": { "obj": "GalleonWaterSetting" },
+    "SettingsStringEnum.remove_barriers_enabled": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.remove_barriers_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.faster_checks_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.k_rool_vanilla_requirement": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.disable_hard_minigames": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.serious_hints": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.cannons_require_blast": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.chaos_blockers": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.mermaid_gb_pearls": {
+      "obj": "SettingsStringDataType.var_int"
+    },
+    "SettingsStringEnum.chunky_phase_slam_req": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.shuffle_helm_location": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.points_list_fairy_moves": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.points_list_shopkeepers": {
+      "obj": "SettingsStringDataType.int16"
+    },
+    "SettingsStringEnum.chaos_ratio": { "obj": "SettingsStringDataType.int16" },
+    "SettingsStringEnum.krool_in_boss_pool": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.enemy_kill_crown_timer": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.ice_trap_frequency": { "obj": "IceTrapFrequency" },
+    "SettingsStringEnum.ice_traps_damage": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.puzzle_rando_difficulty": { "obj": "PuzzleRando" }
+  },
+  // ALL LIST SETTINGS NEED AN ENTRY HERE!
+  // Another map for list settings, for the underlying data type of the list.
+  "SettingsStringListTypeMap": {
+    "SettingsStringEnum.enemies_selected": { "obj": "Enemies" },
+    "SettingsStringEnum.glitches_selected": { "obj": "GlitchesSelected" },
+    "SettingsStringEnum.item_rando_list_selected": {
+      "obj": "ItemRandoListSelected"
+    },
+    "SettingsStringEnum.minigames_list_selected": {
+      "obj": "MinigamesListSelected"
+    },
+    "SettingsStringEnum.misc_changes_selected": {
+      "obj": "MiscChangesSelected"
+    },
+    "SettingsStringEnum.starting_keys_list_selected": { "obj": "Items" },
+    "SettingsStringEnum.warp_level_list_selected": { "obj": "Maps" },
+    "SettingsStringEnum.hard_mode_selected": { "obj": "HardModeSelected" },
+    "SettingsStringEnum.starting_move_list_selected": { "obj": "Items" },
+    "SettingsStringEnum.random_starting_move_list_selected": { "obj": "Items" },
+    "SettingsStringEnum.remove_barriers_selected": {
+      "obj": "RemovedBarriersSelected"
+    },
+    "SettingsStringEnum.faster_checks_selected": {
+      "obj": "FasterChecksSelected"
+    },
+    "SettingsStringEnum.hard_bosses_selected": { "obj": "HardBossesSelected" }
+  },
+  // This map specifies the minimum and maximum values for numeric settings.
+  "SettingsStringIntRangeMap": {
+    "SettingsStringEnum.blocker_0": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_1": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_2": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_3": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_4": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_5": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_6": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_7": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_text": { "max": 201, "min": 0 },
+    "SettingsStringEnum.coin_door_item_count": { "max": 201, "min": 0 },
+    "SettingsStringEnum.crown_door_item_count": { "max": 201, "min": 0 },
+    "SettingsStringEnum.helm_phase_count": { "max": 5, "min": 0 },
+    "SettingsStringEnum.krool_key_count": { "max": 8, "min": 0 },
+    "SettingsStringEnum.krool_phase_count": { "max": 5, "min": 0 },
+    "SettingsStringEnum.medal_cb_req": { "max": 100, "min": 0 },
+    "SettingsStringEnum.medal_requirement": { "max": 40, "min": 0 },
+    "SettingsStringEnum.mermaid_gb_pearls": { "max": 5, "min": 0 },
+    "SettingsStringEnum.rareware_gb_fairies": { "max": 20, "min": 0 },
+    "SettingsStringEnum.starting_kongs_count": { "max": 5, "min": 0 },
+    "SettingsStringEnum.starting_moves_count": { "max": 40, "min": 0 },
+    "SettingsStringEnum.troff_0": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_1": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_2": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_3": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_4": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_5": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_6": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_7": { "max": 500, "min": 0 },
+    "SettingsStringEnum.troff_text": { "max": 500, "min": 0 },
+    "SettingsStringEnum.progressive_hint_text": { "max": 201, "min": 0 },
+    "SettingsStringEnum.win_condition_count": { "max": 201, "min": 0 }
   }
 }
