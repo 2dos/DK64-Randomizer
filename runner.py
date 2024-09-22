@@ -639,6 +639,8 @@ def convert_settings_json():
     """Convert a settings json to a settings string."""
     # Get the settings string from the request body
     settings_json = request.get_json().get("settings_json")
+    settings_json = json.loads(settings_json)
+    print(settings_json)
     encrypted = encrypt_settings_string_enum(settings_json)
     # Return the json
     return make_response(json.dumps({"settings_string": encrypted}), 200)

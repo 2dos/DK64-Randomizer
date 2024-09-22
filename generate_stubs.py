@@ -63,7 +63,7 @@ def resolve_obj_references(data: dict) -> dict:
                 # Recurse into nested dictionaries
                 data[key] = resolve_obj_references(value)
         elif '.' in key:
-            # If the key contains a period, treat it as a class, not a string
+            # If the key contains a period, treat it as an object reference
             class_name = key.split('.')[0]
             data[class_name] = resolve_obj_references(value) if isinstance(value, dict) else value
     return data
@@ -76,12 +76,27 @@ def create_pyi_content(data: dict) -> str:
     # Iterate through each key-value pair in the JSON
     for key, value in data.items():
         if isinstance(value, dict):
-            # Create an IntEnum for each dictionary entry
-            pyi_lines.append(f"class {key}(IntEnum):")
-            for sub_key, sub_value in value.items():
-                pyi_lines.append(f"    {sub_key} = {sub_value}")
-            pyi_lines.append("")  # Newline after each enum definition
-            use_intenum = True  # We need to import IntEnum
+            # Handle cases where the key contains a period (object reference)
+            if all(isinstance(sub_value, int) for sub_value in value.values()):
+                pyi_lines.append(f"class {key}(IntEnum):")
+                for sub_key, sub_value in value.items():
+                    if '.' in sub_key:
+                        pyi_lines.append(f"    {sub_key} = {sub_value}")
+                    else:
+                        pyi_lines.append(f"    {sub_key} = {sub_value}")
+                pyi_lines.append("")  # Newline after each enum definition
+                use_intenum = True
+            else:
+                # Handle dictionary-like structures and object references
+                pyi_lines.append(f"{key}: dict = {{")
+                for sub_key, sub_value in value.items():
+                    # Handle cases where the key contains a period (no quotes)
+                    if '.' in sub_key:
+                        pyi_lines.append(f"    {sub_key}: {sub_value},")
+                    else:
+                        pyi_lines.append(f"    '{sub_key}': {sub_value},")
+                pyi_lines.append("}")
+                pyi_lines.append("")  # Newline after each dictionary
 
     # Add necessary imports
     imports = []
@@ -100,12 +115,26 @@ def create_dts_content(data: dict) -> str:
     # Iterate through each key-value pair in the JSON
     for key, value in data.items():
         if isinstance(value, dict):
-            # Create a TypeScript enum for each dictionary entry
-            dts_lines.append(f"export enum {key} {{")
-            for sub_key, sub_value in value.items():
-                dts_lines.append(f"    {sub_key} = {sub_value},")
-            dts_lines.append("}")  # Close the enum
-            dts_lines.append("")  # Newline after each enum definition
+            # Handle cases where the key contains a period (object reference)
+            if all(isinstance(sub_value, int) for sub_value in value.values()):
+                dts_lines.append(f"export enum {key} {{")
+                for sub_key, sub_value in value.items():
+                    if '.' in sub_key:
+                        dts_lines.append(f"    {sub_key} = {sub_value},")
+                    else:
+                        dts_lines.append(f"    {sub_key} = {sub_value},")
+                dts_lines.append("}")  # Close the enum
+            else:
+                # Handle dictionary-like structures and object references
+                dts_lines.append(f"export const {key} = {{")
+                for sub_key, sub_value in value.items():
+                    # Handle cases where the key contains a period (no quotes)
+                    if '.' in sub_key:
+                        dts_lines.append(f"    {sub_key}: {sub_value},")
+                    else:
+                        dts_lines.append(f"    '{sub_key}': {sub_value},")
+                dts_lines.append("}")  # Close the object
+            dts_lines.append("")  # Newline after each enum or object
 
     return "\n".join(dts_lines)
 

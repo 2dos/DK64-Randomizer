@@ -12,21 +12,6 @@ from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_sett
 from ui.bindings import bind
 from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
-from ui.serialize_settings import serialize_settings
-
-
-@bind("click", "export_settings")
-def export_settings_string(event):
-    """Click event for exporting settings to a string.
-
-    Args:
-        event (event): Javascript event object.
-    """
-    setting_data = serialize_settings()
-    settings_string = encrypt_settings_string_enum(setting_data)
-    js.settings_string.value = settings_string
-    js.generateToast("Exported settings string to the setting string input field.")
-
 
 
 
@@ -94,70 +79,4 @@ def import_settings_string(event):
     js.savesettings()
     js.generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.")
 
-
-
-@bind("click", "trigger_download_event")
-def generate_seed(event):
-    """Generate a seed based off the current settings.
-
-    Args:
-        event (event): Javascript click event.
-    """
-    # Hide the div for settings errors.
-    settings_errors_element = js.document.getElementById("settings_errors")
-    settings_errors_element.style.display = "none"
-    # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
-        js.document.getElementById("rom").select()
-        if "is-invalid" not in list(js.document.getElementById("rom").classList):
-            js.document.getElementById("rom").classList.add("is-invalid")
-    else:
-        # The data is serialized outside of the loop, because validation occurs
-        # here and we might stop before attempting to generate a seed.
-        plando_enabled = js.document.getElementById("enable_plandomizer").checked
-        form_data = serialize_settings(include_plando=plando_enabled)
-
-        if form_data["enable_plandomizer"]:
-            plando_errors = validate_plando_options(form_data)
-            # If errors are returned, the plandomizer options are invalid.
-            # Do not attempt to generate a seed.
-            if len(plando_errors) > 0:
-                joined_errors = "<br>".join(plando_errors)
-                error_html = f"ERROR:<br>{joined_errors}"
-                # Show and populate the div for settings errors.
-                settings_errors_element.innerHTML = error_html
-                settings_errors_element.style = ""
-                return
-
-        # Start the progressbar
-        # TODO: Restore the progress bar when we can read get_hash_images
-        # from randomizer.Patching.Hash import get_hash_images
-
-        # gif_fairy = get_hash_images("browser", "loading-fairy")
-        # gif_dead = get_hash_images("browser", "loading-dead")
-        # js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
-        # js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
-
-        js.jquery("#progressmodal").show()
-        js.jquery("#patchprogress").width(0)
-        js.jquery("#progress-text").text("Initalizing")
-        if not form_data.get("seed"):
-            form_data["seed"] = str(random.randint(100000, 999999))
-        js.apply_conversion()
-        if js.location.hostname == "dev.dk64randomizer.com" or js.location.hostname == "dk64randomizer.com":
-            branch = "dev"
-            if "dev" not in str(js.location.hostname).lower():
-                branch = "master"
-                url = "https://generate.dk64rando.com/generate"
-            else:
-                url = "https://dev-generate.dk64rando.com/generate"
-        else:
-            url = "http://" + str(js.window.location.hostname) + ":8000/generate"
-            branch = "dev"
-        # Get the current time in milliseconds so we can use it as a key for the future.
-        current_time = str(time.time()) + str(uuid.uuid1())
-        url = url + "?gen_key=" + current_time
-        js.wipeToastHistory()
-        js.postToastMessage("Initializing", False, 0)
-        js.generate_seed(url, json.dumps(form_data), branch)
 

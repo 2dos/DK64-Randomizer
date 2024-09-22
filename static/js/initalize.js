@@ -116,8 +116,8 @@ function encrypt_settings_string_enum(settings) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
   var response = $.ajax({
     type: "POST",
-    url: "/convert_settings_enum",
-    data: JSON.stringify({ settings_json: settings }),
+    url: "/convert_settings_json",
+    data: JSON.stringify({ settings_json: JSON.stringify(settings) }),
     contentType: "application/json",
     async: false,
   }).responseText;

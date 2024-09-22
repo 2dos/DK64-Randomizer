@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Dict, Tuple
 
 from randomizer.Enums.Settings import (
-    BananaportRando,
     LogicType,
     SettingsStringDataType,
     SettingsStringEnum,
@@ -244,6 +243,9 @@ def encrypt_settings_string_enum(dict_data: dict):
         if isinstance(value, str):
             value = int(value)
         key_enum = SettingsStringEnum[key]
+        print("")
+        print("------------------")
+        print(SettingsStringTypeMap)
         key_data_type = SettingsStringTypeMap[key_enum]
         # Encode the key.
         key_size = max([member.value for member in SettingsStringEnum]).bit_length()

@@ -149,3 +149,259 @@ function should_clear_setting(select) {
     }
     return true;
 }
+// Assuming Items and SettingsMap objects are already defined
+
+function serialize_settings(include_plando = false) {
+    /**
+     * Serialize form settings into an enum-focused JSON object.
+     *
+     * @returns {object} Dictionary of form settings.
+     */
+    
+    // Remove all the disabled attributes and store them for later
+    let disabled_options = [];
+    
+    let inputElements = document.getElementsByTagName("input");
+    for (let element of inputElements) {
+        if (element.disabled) {
+            disabled_options.push(element);
+            element.removeAttribute("disabled");
+        }
+    }
+
+    let selectElements = document.getElementsByTagName("select");
+    for (let element of selectElements) {
+        if (element.disabled) {
+            disabled_options.push(element);
+            element.removeAttribute("disabled");
+        }
+    }
+
+    let optionElements = document.getElementsByTagName("option");
+    for (let element of optionElements) {
+        if (element.disabled) {
+            disabled_options.push(element);
+            element.removeAttribute("disabled");
+        }
+    }
+
+    // Serialize the form into json
+    let form = $("#form").serializeArray();
+    let form_data = {};
+
+    // Plandomizer data is processed separately and uses a separate setting string, so it needs to be optionally serializable
+    /*
+    // TODO: We need to re-enable the plando options
+    if (include_plando) {
+        let plando_form_data = populate_plando_options(form);
+        if (plando_form_data !== null) {
+            form_data["enable_plandomizer"] = true;
+            form_data["plandomizer_data"] = JSON.stringify(plando_form_data);
+        }
+    }
+    */
+
+    // Custom music data is also processed separately.
+    let music_selection_data = serialize_music_selections(form);
+    form_data["music_selections"] = JSON.stringify(music_selection_data);
+
+    function is_number(s) {
+        /** Check if a string is a number or not. */
+        try {
+            let parsed = parseInt(s);
+            return !isNaN(parsed);
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function is_plando_input(inputName) {
+        /** Determine if an input is a plando input. */
+        return inputName && inputName.startsWith("plando_");
+    }
+
+    function is_starting_move_radio_button(inputName) {
+        /** Determine if an input is a starting move checkbox. */
+        return inputName && inputName.startsWith("starting_move_box_");
+    }
+
+    function is_music_select_input(inputName) {
+        /** Determine if an input is a song selection input. */
+        return inputName && inputName.startsWith("music_select_");
+    }
+
+    function get_enum_or_string_value(valueString, settingName) {
+        /** Obtain the enum or string value for the provided setting.
+         *
+         * @param {string} valueString - The value from the HTML input.
+         * @param {string} settingName - The name of the HTML input.
+         */
+        if (SettingsMap[settingName]) {
+            return SettingsMap[settingName][valueString];
+        } else {
+            return valueString;
+        }
+    }
+
+    let required_starting_moves = [];
+    let random_starting_moves = [];
+
+    for (let obj of form) {
+        if (is_plando_input(obj.name)) continue;
+        if (is_starting_move_radio_button(obj.name)) continue;
+        if (is_music_select_input(obj.name)) continue;
+
+        // Verify each object if its value is a string convert it to a bool
+        if (["true", "false"].includes(obj.value.toLowerCase())) {
+            form_data[obj.name] = obj.value.toLowerCase() === "true";
+        } else if (is_number(obj.value)) {
+            form_data[obj.name] = parseInt(obj.value);
+        } else {
+            console.log(obj.name, obj.value);
+            form_data[obj.name] = get_enum_or_string_value(obj.value, obj.name);
+        }
+    }
+
+    // find all input boxes and verify their checked status
+    for (let element of inputElements) {
+        if (is_plando_input(element.name)) continue;
+        if (is_starting_move_radio_button(element.name) && element.checked) {
+            if (element.id.startsWith("start")) {
+                required_starting_moves.push(Items(parseInt(element.name.slice(18))));
+            } else if (element.id.startsWith("random")) {
+                random_starting_moves.push(Items(parseInt(element.name.slice(18))));
+            }
+            continue;
+        }
+        if (element.type === "checkbox" && !element.checked) {
+            if (!form_data[element.name]) {
+                form_data[element.name] = false;
+            }
+        }
+    }
+
+    // Re-disable all previously disabled options
+    for (let element of disabled_options) {
+        element.setAttribute("disabled", "disabled");
+    }
+
+    // Create value lists for multi-select options
+    for (let element of selectElements) {
+        if (element.className.includes("selected")) {
+            if (is_plando_input(element.getAttribute("name"))) continue;
+
+            let length = element.options.length;
+            let values = [];
+            for (let i = 0; i < length; i++) {
+                if (element.options[i].selected) {
+                    values.push(get_enum_or_string_value(element.options[i].value, element.getAttribute("name")));
+                }
+            }
+            form_data[element.getAttribute("name")] = values;
+        }
+    }
+
+    form_data["starting_move_list_selected"] = required_starting_moves;
+    form_data["random_starting_move_list_selected"] = random_starting_moves;
+    return form_data;
+}
+// Event binding for exporting settings to a string
+document.getElementById("export_settings").addEventListener("click", export_settings_string);
+
+function export_settings_string(event) {
+    /**
+     * Click event for exporting settings to a string.
+     *
+     * @param {object} event - Javascript event object.
+     */
+    let setting_data = serialize_settings();
+    let settings_string = encrypt_settings_string_enum(setting_data);
+    document.getElementById("settings_string").value = settings_string;
+    generateToast("Exported settings string to the setting string input field.");
+}
+
+// Event binding for generating a seed
+document.getElementById("trigger_download_event").addEventListener("click", generate_seed);
+
+function generate_seed(event) {
+    /**
+     * Generate a seed based off the current settings.
+     *
+     * @param {object} event - Javascript click event.
+     */
+    // Hide the div for settings errors.
+    let settings_errors_element = document.getElementById("settings_errors");
+    settings_errors_element.style.display = "none";
+
+    // Check if the rom filebox has a file loaded in it.
+    if (document.getElementById("rom").value.trim().length === 0 || 
+        !document.getElementById("rom").classList.contains("is-valid")) {
+        document.getElementById("rom").select();
+        if (!document.getElementById("rom").classList.contains("is-invalid")) {
+            document.getElementById("rom").classList.add("is-invalid");
+        }
+    } else {
+        // The data is serialized outside of the loop, because validation occurs
+        // here and we might stop before attempting to generate a seed.
+        let plando_enabled = document.getElementById("enable_plandomizer").checked;
+        let form_data = serialize_settings(plando_enabled);
+
+        if (form_data["enable_plandomizer"]) {
+            let plando_errors = validate_plando_options(form_data);
+            // If errors are returned, the plandomizer options are invalid.
+            // Do not attempt to generate a seed.
+            if (plando_errors.length > 0) {
+                let joined_errors = plando_errors.join("<br>");
+                let error_html = `ERROR:<br>${joined_errors}`;
+                // Show and populate the div for settings errors.
+                settings_errors_element.innerHTML = error_html;
+                settings_errors_element.style.display = "";
+                return;
+            }
+        }
+
+        // Start the progress bar
+        // TODO: Restore the progress bar when we can read get_hash_images
+        // from randomizer.Patching.Hash
+
+        // document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0];
+        // document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0];
+
+        $("#progressmodal").show();
+        $("#patchprogress").width(0);
+        $("#progress-text").text("Initializing");
+
+        if (!form_data["seed"]) {
+            form_data["seed"] = Math.floor(Math.random() * 900000 + 100000).toString();
+        }
+
+        apply_conversion();
+
+        let branch, url;
+        if (window.location.hostname === "dev.dk64randomizer.com" || window.location.hostname === "dk64randomizer.com") {
+            branch = "dev";
+            if (!window.location.hostname.toLowerCase().includes("dev")) {
+                branch = "master";
+                url = "https://generate.dk64rando.com/generate";
+            } else {
+                url = "https://dev-generate.dk64rando.com/generate";
+            }
+        } else {
+            url = `http://${window.location.hostname}:8000/generate`;
+            branch = "dev";
+        }
+
+        // Get the current time in milliseconds so we can use it as a key for the future.
+        let current_time = Date.now().toString() + uuidv4();
+        url = `${url}?gen_key=${current_time}`;
+
+        wipeToastHistory();
+        postToastMessage("Initializing", false, 0);
+        generate_seed(url, JSON.stringify(form_data), branch);
+    }
+}
+function uuidv4() {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+      (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    );
+  }
