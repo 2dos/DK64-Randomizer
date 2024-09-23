@@ -243,6 +243,17 @@ function serialize_settings(include_plando = false) {
         }
     }
 
+    function get_value_or_default(element) {
+        /** Get the value or the default if empty.
+         *
+         * @param {HTMLInputElement} element - The input element.
+         */
+        if (element.value === "" && element.hasAttribute("default")) {
+            return element.getAttribute("default");
+        }
+        return element.value;
+    }
+
     let required_starting_moves = [];
     let random_starting_moves = [];
 
@@ -252,13 +263,15 @@ function serialize_settings(include_plando = false) {
         if (is_music_select_input(obj.name)) continue;
 
         // Verify each object if its value is a string convert it to a bool
-        if (["true", "false"].includes(obj.value.toLowerCase())) {
-            form_data[obj.name] = obj.value.toLowerCase() === "true";
-        } else if (is_number(obj.value)) {
-            form_data[obj.name] = parseInt(obj.value);
+        let value = get_value_or_default(document.querySelector(`[name="${obj.name}"]`));
+
+        if (["true", "false"].includes(value.toLowerCase())) {
+            form_data[obj.name] = value.toLowerCase() === "true";
+        } else if (is_number(value)) {
+            form_data[obj.name] = parseInt(value);
         } else {
-            console.log(obj.name, obj.value);
-            form_data[obj.name] = get_enum_or_string_value(obj.value, obj.name);
+            console.log(obj.name, value);
+            form_data[obj.name] = get_enum_or_string_value(value, obj.name);
         }
     }
 
@@ -305,6 +318,7 @@ function serialize_settings(include_plando = false) {
     form_data["random_starting_move_list_selected"] = random_starting_moves;
     return form_data;
 }
+
 // Event binding for exporting settings to a string
 document.getElementById("export_settings").addEventListener("click", export_settings_string);
 

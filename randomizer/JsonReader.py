@@ -5,6 +5,9 @@ import pathlib
 
 
 def remove_comments(jsonc_str):
+    """
+    Remove single-line and multi-line comments from a JSONC string.
+    """
     # Remove single-line comments (//)
     jsonc_str = re.sub(r"//.*", "", jsonc_str)
     # Remove multi-line comments (/* ... */)
@@ -13,6 +16,9 @@ def remove_comments(jsonc_str):
 
 
 def load_jsonc(filename):
+    """
+    Load a JSONC file, remove comments, and parse it into a dictionary.
+    """
     jsonc_str = filename.read()
 
     # Remove comments
@@ -24,10 +30,11 @@ def load_jsonc(filename):
 
 def create_enum_class(name, values):
     """
-    Dynamically creates an Enum or IntEnum class based on the JSON data.
+    Dynamically create an Enum or IntEnum class based on the JSON data.
+    If values are integers, an IntEnum is created, otherwise we process strings as objects.
     :param name: Name of the enum class
     :param values: Dictionary of enum members
-    :return: Enum class
+    :return: Enum class or dict
     """
     enum_members = {key: auto() if value == "auto" else value for key, value in values.items()}
 
@@ -36,7 +43,7 @@ def create_enum_class(name, values):
         return IntEnum(name, enum_members)
     else:
         for key, value in enum_members.items():
-            # Evaluate the string directly into an object
+            # Evaluate the string directly into an object reference
             if isinstance(value, str):
                 enum_members[key] = eval(value, globals(), locals())
         return enum_members
@@ -44,11 +51,11 @@ def create_enum_class(name, values):
 
 def process_value(value):
     """
-    Process the value to check if it's a dictionary containing the 'obj' key.
-    If so, return the value associated with 'obj', otherwise return the original value.
+    Process a value that might contain a dictionary with an 'obj' key.
+    If so, evaluate the 'obj' value into an object reference.
     """
     if isinstance(value, dict) and 'obj' in value:
-        return value['obj']
+        return eval(value['obj'], globals(), locals())
     return value
 
 
@@ -63,32 +70,54 @@ def set_nested_dict(d, keys, value):
         d = d.setdefault(key, {})
     d[keys[-1]] = value
 
-
 def process_keys_with_period(data):
     """
-    Recursively processes a dictionary and handles keys with periods by creating nested dictionaries.
+    Recursively process a dictionary and handle keys with periods by creating nested dictionaries.
+    Additionally, evaluate keys that are object references like SettingsStringEnum.blocker_0.
     :param data: The dictionary with keys to process
     :return: Processed dictionary with nested structures for keys containing periods
     """
     processed_data = {}
+    
     for key, value in data.items():
-        if '.' in key:
+        # Check if the key is an object reference, and evaluate it if so
+        if is_object_reference(key):
+            # Evaluate the key to turn it into an actual object reference
+            evaluated_key = eval(key, globals(), locals())
+            processed_data[evaluated_key] = value
+        elif '.' in key:
             keys = key.split('.')
             set_nested_dict(processed_data, keys, value)
         else:
             processed_data[key] = value
+    
     return processed_data
 
+def is_object_reference(key):
+    """
+    Determine if the key is an object reference (contains an enum or similar object reference).
+    For simplicity, assume keys starting with 'SettingsStringEnum' are object references.
+    :param key: Key to evaluate
+    :return: True if the key should be treated as an object reference, False otherwise
+    """
+    # This can be extended with more logic to detect object references
+    return key.startswith('SettingsStringEnum')
 
 def generate_globals(path):
-    # Convert JSON string to a Python dictionary
+    """
+    Load a JSONC file, process the data, and dynamically create classes or dictionaries.
+    Handles nested keys and object references.
+    :param path: Path to the JSONC file
+    """
+    # Replace the current path to find the JSONC file
     path = path.replace(str(pathlib.Path().resolve()), "")
-    # Replace the .py extension with .json
     path = path.replace(".py", ".jsonc")
+    
     # If the path starts with a slash, remove it
     if path.startswith("/"):
         path = path[1:]
-    
+
+    # Open and load the JSONC file
     with open(path) as f:
         enums_data = load_jsonc(f)
 
@@ -101,8 +130,13 @@ def generate_globals(path):
         # Handle period in keys to convert them to nested objects
         processed_values = process_keys_with_period(processed_values)
         
+        # Dynamically create the enum class or dictionary
         new_globals[enum_name] = create_enum_class(enum_name, processed_values)
-        # Add new_globals to the globals() dictionary for just this file
+
+        # Update globals with the new classes or objects
         globals().update(new_globals)
     
     return new_globals
+
+
+# Example usage: generate_globals("path_to_your_jsonc_file.jsonc")

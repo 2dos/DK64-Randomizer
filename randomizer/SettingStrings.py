@@ -243,9 +243,6 @@ def encrypt_settings_string_enum(dict_data: dict):
         if isinstance(value, str):
             value = int(value)
         key_enum = SettingsStringEnum[key]
-        print("")
-        print("------------------")
-        print(SettingsStringTypeMap)
         key_data_type = SettingsStringTypeMap[key_enum]
         # Encode the key.
         key_size = max([member.value for member in SettingsStringEnum]).bit_length()
@@ -283,7 +280,11 @@ def encrypt_settings_string_enum(dict_data: dict):
         else:
             # The value is an enum.
             max_value = max([member.value for member in key_data_type])
-            bitstring += format(value.value, f"0{max_value.bit_length()}b")
+            # If value is an int
+            if isinstance(value, int):
+                bitstring += format(value, f"0{max_value.bit_length()}b")
+            else:
+                bitstring += format(value.value, f"0{max_value.bit_length()}b")
 
     # Pad the bitstring with zeroes until the length is divisible by 6.
     remainder = len(bitstring) % 6
@@ -389,6 +390,6 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
             bit_index += max_value.bit_length()
         # If this setting is not deprecated, add it.
         # The plando setting needs to be encoded in settings strings but not applied when decoding for logging purposes.
-        if key_enum not in DeprecatedSettings and key_enum != SettingsStringEnum.enable_plandomizer:
+        if key_enum != SettingsStringEnum.enable_plandomizer:
             settings_dict[key_name] = val
     return settings_dict
