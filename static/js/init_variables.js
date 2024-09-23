@@ -481,11 +481,17 @@ function loadFiles(fileList) {
               // Check if 'obj' field exists and is valid
               if (entry && entry.obj) {
                 const objName = entry.obj;
-
+                // split at the period for everything before the period
+                const objNameSplit = objName.split(".");
                 // Check if the object is defined in the global `window`
-                if (window[objName]) {
+                if (window[objName] || window[objNameSplit[0]]) {
+                  // If there is a period map it to the object + attribute
+                  if (objNameSplit.length > 1) {
+                    topLevelObject[key] = window[objNameSplit[0]][objNameSplit[1]];
+                  } else {
                   // Map the key to the actual object from `window`
-                  topLevelObject[key] = window[objName];
+                    topLevelObject[key] = window[objName];
+                  }
                 } else {
                   // Object not found, provide more meaningful info only if needed
                   console.warn(`Object ${objName} not found for key: ${key}`);
