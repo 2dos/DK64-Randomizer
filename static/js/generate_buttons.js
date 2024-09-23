@@ -270,7 +270,6 @@ function serialize_settings(include_plando = false) {
         } else if (is_number(value)) {
             form_data[obj.name] = parseInt(value);
         } else {
-            console.log(obj.name, value);
             form_data[obj.name] = get_enum_or_string_value(value, obj.name);
         }
     }
@@ -359,7 +358,6 @@ function generate_seed(event) {
         // here and we might stop before attempting to generate a seed.
         let plando_enabled = document.getElementById("enable_plandomizer").checked;
         let form_data = serialize_settings(plando_enabled);
-
         if (form_data["enable_plandomizer"]) {
             let plando_errors = validate_plando_options(form_data);
             // If errors are returned, the plandomizer options are invalid.
@@ -411,7 +409,7 @@ function generate_seed(event) {
 
         wipeToastHistory();
         postToastMessage("Initializing", false, 0);
-        generate_seed(url, JSON.stringify(form_data), branch);
+        query_seed_generation(url, JSON.stringify(form_data), branch);
     }
 }
 function uuidv4() {
@@ -419,3 +417,89 @@ function uuidv4() {
       (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
     );
   }
+
+
+  document.getElementById("import_settings").addEventListener("click", function(event) {
+    // Click event for importing settings from a string.
+
+    event.preventDefault();
+    
+    document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
+    const settingsString = document.getElementById("settings_string").value;
+    const settings = decrypt_settings_string_enum(settingsString);
+
+    // Clear all select boxes on the page except those in the nav-cosmetics div
+    const selects = document.getElementsByTagName("select");
+    for (let select of selects) {
+        if (should_clear_setting(select)) {
+            select.selectedIndex = -1;
+        }
+    }
+
+    // Uncheck all starting move radio buttons to reset before importing settings
+    const startingMoveButtons = Array.from(document.getElementsByTagName("input"))
+        .filter(element => element.name.startsWith("starting_move_box_"));
+    
+    startingMoveButtons.forEach(button => button.checked = false);
+
+    document.getElementById("presets").selectedIndex = 0;
+
+    for (let key in settings) {
+        try {
+            if (typeof settings[key] === "boolean") {
+                if (settings[key] === false) {
+                    document.getElementById(key).checked = false;
+                    document.getElementsByName(key)[0].checked = false;
+                } else {
+                    document.getElementById(key).checked = true;
+                    document.getElementsByName(key)[0].checked = true;
+                }
+                document.getElementById(key).removeAttribute("disabled");
+            } else if (Array.isArray(settings[key])) {
+                if (key === "starting_move_list_selected" || key === "random_starting_move_list_selected") {
+                    settings[key].forEach(item => {
+                        const radioButtons = document.getElementsByName("starting_move_box_" + String(item));
+                        if (key === "starting_move_list_selected") {
+                            const startButton = Array.from(radioButtons).find(button => button.id.startsWith("start"));
+                            startButton.checked = true;
+                        } else {
+                            const randomButton = Array.from(radioButtons).find(button => button.id.startsWith("random"));
+                            randomButton.checked = true;
+                        }
+                    });
+                    continue;
+                }
+
+                const selector = document.getElementById(key);
+                if (selector.tagName === "SELECT") {
+                    settings[key].forEach(item => {
+                        for (let option of selector.options) {
+                            if (option.value === item.name) {
+                                option.selected = true;
+                            }
+                        }
+                    });
+                }
+            } else {
+                const selector = document.getElementById(key);
+                if (selector.tagName === "SELECT" && key !== "random-weights") {
+                    for (let option of selector.options) {
+                        if (option.value === SettingsMap[key](settings[key]).name) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                } else {
+                    document.getElementById(key).value = settings[key];
+                }
+                document.getElementById(key).removeAttribute("disabled");
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    update_ui_states(null);
+    savesettings();
+    generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
+});

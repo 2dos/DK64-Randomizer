@@ -873,7 +873,7 @@ function wipeToastHistory() {
   previous_queue_position = null;
 }
 
-function generate_seed(url, json, git_branch) {
+function query_seed_generation(url, json, git_branch) {
   $.ajax(url, {
     data: JSON.stringify({
       branch: git_branch,
@@ -894,13 +894,13 @@ function generate_seed(url, json, git_branch) {
         }
         previous_queue_position = position;
         setTimeout(function () {
-          generate_seed(url, json, git_branch);
+          query_seed_generation(url, json, git_branch);
         }, 5000);
       } else if (xhr.status == 201) {
         console.log("seed gen queued");
         postToastMessage("Seed Generation Queued", false, 0.3);
         setTimeout(function () {
-          generate_seed(url, json, git_branch);
+          query_seed_generation(url, json, git_branch);
         }, 5000);
       } else if (xhr.status == 208) {
         console.log(data);
