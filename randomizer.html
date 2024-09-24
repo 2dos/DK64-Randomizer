@@ -183,9 +183,18 @@
                                     return songList;
                                 });
                                 env.addGlobal("plando_option_class_annotation", module.PlandoOptionClassAnnotation);
-                    
+                                env.addFilter("plando_item_restrict", function(itemList, location) {
+                                    return itemList;
+                                });
+                                // Get /get_selector_info using ajax async false
+                                var selector_info = $.ajax({
+                                    type: "GET",
+                                    url: "/get_selector_info",
+                                    async: false
+                                }).responseJSON;
+
                                 // Render templates
-                                var renderedHTML = env.render("base.html.jinja2", {});
+                                var renderedHTML = env.render("base.html.jinja2", selector_info);
                                 var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
                     
                                 // Inject into the DOM

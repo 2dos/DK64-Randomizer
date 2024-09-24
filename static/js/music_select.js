@@ -4,6 +4,7 @@ let musicToggles = Object.keys(MusicSelectionPanel).map(category => category.rep
 
 // Add event listeners to the elements based on the musicToggles array
 musicToggles.forEach(toggle => {
+  console.log(toggle)
     document.getElementById(`${toggle}_collapse_toggle`).addEventListener("click", toggle_collapsible_container);
 });
 

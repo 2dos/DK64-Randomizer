@@ -1171,12 +1171,11 @@ function preset_select_changed(event) {
     document.getElementById("presets").selectedIndex = 0;
 
     for (const key in settings) {
-      try {
         if (typeof settings[key] === "boolean") {
           const checked = settings[key] ? true : false;
-          document.querySelector(`#${key}`).checked = checked;
+          document.getElementsByName(key).checked = checked;
           document.getElementsByName(key)[0].checked = checked;
-          document.querySelector(`#${key}`).removeAttribute("disabled");
+          document.getElementsByName(key)[0].removeAttribute("disabled");
         } else if (Array.isArray(settings[key])) {
           if (
             [
@@ -1216,7 +1215,7 @@ function preset_select_changed(event) {
           if (selector.tagName === "SELECT") {
             for (const option of selector.options) {
               // TODO: SETTINGSMAP DOSEN'T FRICKING EXIST YET
-              if (option.value === SettingsMap[key](settings[key]).name) {
+              if (option.value === Object.keys(SettingsMap[key])[settings[key]]) {
                 option.selected = true;
                 break;
               }
@@ -1226,32 +1225,6 @@ function preset_select_changed(event) {
           }
           document.querySelector(`#${key}`).removeAttribute("disabled");
         }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  } else {
-    for (const key in presets) {
-      try {
-        if (typeof presets[key] === "boolean") {
-          const checked = presets[key] ? true : false;
-          document.querySelector(`#${key}`).checked = checked;
-          document.getElementsByName(key)[0].checked = checked;
-          document.querySelector(`#${key}`).removeAttribute("disabled");
-        } else if (Array.isArray(presets[key])) {
-          const selector = document.getElementById(key);
-          for (let i = 0; i < selector.options.length; i++) {
-            selector.options[i].selected = presets[key].includes(
-              selector.options[i].value
-            );
-          }
-        } else {
-          document.querySelector(`#${key}`).value = presets[key];
-          document.querySelector(`#${key}`).removeAttribute("disabled");
-        }
-      } catch (e) {
-        console.error(e);
-      }
     }
   }
 
