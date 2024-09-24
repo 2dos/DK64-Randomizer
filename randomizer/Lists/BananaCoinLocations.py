@@ -5679,6 +5679,7 @@ BananaCoinGroupList = {
             name="On Mushroom near Mill far tag",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MillArea,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 4624.845703125, 369.134765625, 4055.068115234375],
                 [1.0, 4616.716796875, 369.8291015625, 4052.482666015625],
@@ -5720,6 +5721,7 @@ BananaCoinGroupList = {
             name="On Mushroom near Dark Rafters Barn",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MillArea,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 3714.3486328125, 412.55731201171875, 3885.161376953125],
                 [1.0, 3717.993408203125, 411.7261962890625, 3893.161376953125],
@@ -5815,6 +5817,7 @@ BananaCoinGroupList = {
             name="On Mushroom near Mill Well Exit",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MillArea,
+            logic=lambda l: l.climbing,
             locations=[
                 [1.0, 5004.7548828125, 403.14697265625, 3646.861083984375],
                 [1.0, 5003.1103515625, 403.10003662109375, 3650.563720703125],
