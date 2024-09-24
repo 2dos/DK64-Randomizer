@@ -34,7 +34,7 @@ with open("static/presets/preset_files.json", "r") as file:
 # Add a custom preset for testing
 # If we're not running on github actions, add the custom preset
 if not os.environ.get("GITHUB_ACTIONS"):
-    valid_presets.append(("Custom", "bKEHhEMhTHSpbGufFWUIGiA9HSLGAQ3EGWsQgvXz+AbPHwwmjnd1K9lZmcU2dWxfCnA+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBCgKPSA6K01fAUgt1PX4EkAyaKE0SMgusllgoA6AEGAHUBA4A7AMIAHcCBIA8AUKAHkDBYA9AcMAFCGnj2yFI9RUM5alpTLm0W8DODo9Rbgp+iuiwCJ6KAK9a45G7Vf77IoHMWIoAzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqVBgJgwIxIUxxTSeRSZEalAFUAlwEMnAA"))
+    valid_presets.append(("Custom", "bKEIhEMhTHRBKlsa58VZXZhBEQEnAI9D6oGhEMiEqWxrnwH4jR6XL4huKcrSxO9TTghQAdo9IFBiMhjoStwFILdT2+BfgJJANQyiaoVYrBWiuAyC6ywUAdACDADqAgcAdgGEADuBAkAeAKFADyBgsAegOGAGCCFCGoD2ALcAGVIhRUM5KkpSstmS5JKN4EcnaLSLgp+ipixQJiKAK9a45G7Vf77IoHIdzMWvIigDNZsyiSLAAuMAAuNAAmOAAmPAAe1AAeQAAWRAAOSAAeTAAWUAAO2AAtTlyhyXCp0woIvoE5LBBhhKqczG0xloWlcsLwVocUFsNGRUCcWGAmDAjGhTHFPLFFJkRnwAHQClALoAVQCXAgwNnAA"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)
@@ -43,7 +43,7 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined from the preset_files.json file
-        self.settings_string = "bKEIhEMhTHRBKlsa58Z2rK7MIEw4Kv3LYRjK0SEvAI9HRDHuIQXr5/ADCaLinVCnA+PxGj0uXxDcWa206MSvY04IUFR6QHCQx4OUBSCnt8C/ASSAahlE1QqxWCtFcBkF5kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgRgggNMnsyVG3ACZSAUVDOKpSU7LZouaS6RcFPgVsWARMBQCXrXHI3ar/fZFA5DuZi19EUAZrNnk9scSRYAFxgAFxoAExwAEx4AD2oADyAACyIAByQADyYACygAB2wAFqcuUOS4VAoNTmNaA4tC03FcsLwVocUFsNFATiwwEwYEY0EVTHFFJkRnwAVAClALoAbwBVAJcFCgwNIyycAA"
+        # self.settings_string = "bKEIhEMhTHRBKlsa58Z2rK7MIEw4Kv3LYRjK0SEvAI9HRDHuIQXr5/ADCaLinVCnA+PxGj0uXxDcWa206MSvY04IUFR6QHCQx4OUBSCnt8C/ASSAahlE1QqxWCtFcBkF5kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgRgggNMnsyVG3ACZSAUVDOKpSU7LZouaS6RcFPgVsWARMBQCXrXHI3ar/fZFA5DuZi19EUAZrNnk9scSRYAFxgAFxoAExwAEx4AD2oADyAACyIAByQADyYACygAB2wAFqcuUOS4VAoNTmNaA4tC03FcsLwVocUFsNFATiwwEwYEY0EVTHFFJkRnwAVAClALoAbwBVAJcFCgwNIyycAA"
         settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
