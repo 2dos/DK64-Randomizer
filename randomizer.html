@@ -161,6 +161,9 @@
                     </script> -->
                     </div>
                     <div class="container" id="tab-data" hidden></div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.3.0/base64.min.js" integrity="sha512-IFxgh3q1bUsg/sL6qotMkJZTOvPyYSS6mRSSIVnJndN5j9vWcQ+oJyHkelIkRAOaKgdU1ibHJOs4HX15sPtZKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js" integrity="sha512-g2TeAWw5GPnX7z0Kn8nFbYfeHcvAu/tx6d6mrLe/90mkCxO+RcptyYpksUz35EO337F83bZwcmUyHiHamspkfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
                     <script type="module">
                         // Create an async function to handle the script loading process
                         async function loadScripts() {
@@ -217,7 +220,8 @@
                                 './static/js/generate_buttons.js',
                                 './static/js/rando_options.js',
                                 './static/js/initalize.js',
-                                './static/js/music_select.js'
+                                './static/js/music_select.js',
+                                "./static/js/hash.js"
                             ];
                     
                             scripts.forEach(src => {

@@ -106,6 +106,7 @@ def apply_kongrando_cosmetic(spoiler):
             cont_map_id = int(cont_map["map_index"])
             # Setup
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            print(cont_map_setup_address)
             ROM_COPY.seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             for x in range(model2_count):
