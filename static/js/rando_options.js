@@ -411,6 +411,7 @@ document
   .getElementById("enable_progressive_hints")
   .addEventListener("click", plando_disable_wrinkly_custom_locations);
 
+
 // Enable or disable custom locations for Troff 'n' Scoff portals
 function plando_disable_tns_custom_locations() {
   const randomPortals = document.getElementById("tns_location_rando").checked;

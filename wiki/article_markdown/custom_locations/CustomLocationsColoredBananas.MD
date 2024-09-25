@@ -755,8 +755,8 @@
 ## Fungi Forest
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Mushroom near DK portal | 5 |  | 
-| Mushroom by pink tunnel | 5 |  | 
+| Mushroom near DK portal | 5 | `l.climbing` | 
+| Mushroom by pink tunnel | 5 | `l.climbing` | 
 | Mushroom with vines leading to other mushroom | 5 | `l.climbing` | 
 | Other mushroom whose vines lead to | 5 | `l.climbing` | 
 | Mushroom with vines leading to minecart | 5 | `l.climbing` | 
@@ -776,13 +776,13 @@
 | W3 to pink tunnel | 5 |  | 
 | W4 to Minecart | 10 |  | 
 | Stump to Minecart | 5 |  | 
-| Mill area - Mushroom by blue tunnel | 5 |  | 
-| Mushroom by Snide's | 5 |  | 
-| Mushroom by Diddy's barn | 5 |  | 
-| Mushroom by back tag barrel | 5 |  | 
-| Mushroom by Minecart exit | 5 |  | 
-| Top of Minecart exit | 10 | `l.istiny and l.twirl` | 
-| Top of Mill (8 custom, 7 Lanky) | 1 |  | 
+| Mill area - Mushroom by blue tunnel | 5 | `l.climbing` | 
+| Mushroom by Snide's | 5 | `l.climbing` | 
+| Mushroom by Diddy's barn | 5 | `l.climbing` | 
+| Mushroom by back tag barrel | 5 | `l.climbing` | 
+| Mushroom by Minecart exit | 5 | `l.climbing` | 
+| Top of Minecart exit | 10 | `l.istiny and l.twirl and l.climbing` | 
+| Top of Mill (8 custom, 7 Lanky) | 1 | `l.climbing` | 
 | Top of Mill (8 custom, 7 Lanky) | 10 |  | 
 | Top of Mill (8 custom, 7 Lanky) | 4 |  | 
 | Outside of conveyor belt (behind night gate) | 5 | `Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip` | 
@@ -801,9 +801,9 @@
 | Inside fence around beanstalk | 10 |  | 
 | Around the outside of the fence around beanstalk | 15 |  | 
 | Below tag barrel on bouncy shroom around giant mushroom | 5 |  | 
-| On mushroom near Cranky | 5 |  | 
-| Mushroom near rocketbarrel | 5 |  | 
-| Mushroom near yellow tunnel | 5 |  | 
+| On mushroom near Cranky | 5 | `l.climbing` | 
+| Mushroom near rocketbarrel | 5 | `l.climbing` | 
+| Mushroom near yellow tunnel | 5 | `l.climbing` | 
 | In patch of grass near yellow tunnel | 10 |  | 
 | In moat around giant mushroom | 10 | `l.swim` | 
 | By middle exit of giant mushroom | 5 |  | 
@@ -820,7 +820,7 @@
 | Behind night ladder on top of giant mushroom | 5 |  | 
 | By battle arena on little outcrop | 5 |  | 
 | Around battle crown platform | 10 |  | 
-| Around Lanky switch on top of giant mushroom | 10 |  | 
+| Around Lanky switch on top of giant mushroom | 10 | `(l.handstand and l.islanky) or (l.jetpack and l.isdiddy)` | 
 | Path to Rabbit race (2 custom, 3 Lanky) | 5 |  | 
 | On Rabbit's home | 5 |  | 
 | On Guitar pad in W4 area | 5 |  | 
@@ -862,7 +862,7 @@
 | Green tunnel (Tiny) | 1 |  | 
 | Green tunnel (Tiny) | 4 | `l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.phasewalk or l.CanPhaseswim()` | 
 | On riverbed around mill (3 custom, 17 Tiny) | 20 | `l.swim` | 
-| On mushrooms in beanstalk area (Tiny) | 15 |  | 
+| On mushrooms in beanstalk area (Tiny) | 15 | `l.climbing` | 
 | On anthill (Tiny) | 5 | `(l.jetpack and l.isdiddy) or (l.istiny and (l.mini and l.saxophone))` | 
 | W2 (Chunky) | 5 |  | 
 | W2 (Chunky) | 5 |  | 
