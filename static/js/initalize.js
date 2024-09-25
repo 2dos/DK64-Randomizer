@@ -1138,13 +1138,12 @@ function should_reset_select_on_preset(selectElement) {
 // Bind click event for "apply_preset"
 function preset_select_changed(event) {
   /** Trigger a change of the form via the JSON templates. */
-  console.log("PRESET CHANGED");
   const element = document.getElementById("presets");
   let presets = null;
 
   for (const val of progression_presets) {
     if (val.name === element.value) {
-      presets = val;
+      presets = val; 
     }
   }
 
