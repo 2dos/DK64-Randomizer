@@ -169,20 +169,20 @@
                                 await import('./static/js/init_variables.js');
                     
                                 // Now load PlandoUtils.js
-                                const module = await import('./static/js/PlandoUtils.js');
+                                await import('./static/js/PlandoUtils.js');
                     
                                 // Nunjucks configuration after PlandoUtils.js is loaded
                                 var env = nunjucks.configure('/templates', { autoescape: true });
                     
                                 // Use the imported functions from PlandoUtils
-                                env.addFilter("plando_custom_loc_restrict", module.PlandoCustomLocationFilter);
-                                env.addFilter("plando_custom_loc_item_restrict", module.PlandoCustomLocationItemFilter);
-                                env.addFilter("plando_minigame_restrict", module.PlandoMinigameFilter);
-                                env.addFilter("plando_shop_sort", module.PlandoShopSortFilter);
+                                env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
+                                env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
+                                env.addFilter("plando_minigame_restrict", PlandoMinigameFilter);
+                                env.addFilter("plando_shop_sort", PlandoShopSortFilter);
                                 env.addFilter("music_select_restrict", function(songList, location) {
                                     return songList;
                                 });
-                                env.addGlobal("plando_option_class_annotation", module.PlandoOptionClassAnnotation);
+                                env.addGlobal("plando_option_class_annotation", PlandoOptionClassAnnotation);
                                 env.addFilter("plando_item_restrict", function(itemList, location) {
                                     return itemList;
                                 });

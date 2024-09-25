@@ -269,7 +269,7 @@ function PlandoCustomLocationFilter(locationList, locationId) {
     if (!LocationRestrictionsPerCustomLocation.has(locationName)) {
         return locationList;
     }
-    return locationList.filter((loc) => !LocationRestrictionsPerCustomLocation[locationName].has(loc["value"]));
+    return locationList.filter((loc) => !LocationRestrictionsPerCustomLocation.get(locationName).has(loc["value"]));
 }
 
 
@@ -277,11 +277,11 @@ function PlandoCustomLocationFilter(locationList, locationId) {
 // appear in that location type. This will be used to filter the dropdowns used
 // in the plandomizer.
 var ItemRestrictionsPerLocationType = new Map([
-    ["crown_pad", BlueprintItemSet.union(new Set(["junk_item"]))],
-    ["dirt_patch", BlueprintItemSet],
+    ["crownpad", BlueprintItemSet.union(new Set(["junk_item"]))],
+    ["dirtpatch", BlueprintItemSet],
     ["fairy", BananaFairyRestrictedItems],
     ["kasplat", new Set()],
-    ["memlon_crate", new Set(["junk_item"])],
+    ["meloncrate", new Set(["junk_item"])],
 ]);
 
 
@@ -293,7 +293,9 @@ var ItemRestrictionsPerLocationType = new Map([
  * @returns The filtered list.
  */
 function PlandoCustomLocationItemFilter(itemList, locType) {
-    return itemList.filter((item) => !ItemRestrictionsPerLocationType[locType].has(item["value"]));
+    // lower the case of the locType
+    locType = locType.toLowerCase();
+    return itemList.filter((item) => !ItemRestrictionsPerLocationType.get(locType).has(item["value"]));
 }
 
 
@@ -308,7 +310,7 @@ function PlandoMinigameFilter(minigameList, kong) {
     if (kong == "All Kongs") {
         return minigameList;
     }
-    return minigameList.filter((game) => !kongMinigameRestrictions[kong].has(game["value"]));
+    return minigameList.filter((game) => !kongMinigameRestrictions.get(kong).has(game["value"]));
 }
 
 
@@ -319,7 +321,7 @@ function PlandoMinigameFilter(minigameList, kong) {
  * @returns 
  */
 function PlandoShopSortFilter(shopLocationList) {
-    return shopLocationList.toSorted((a, b) => shopLocationOrderingMap[a] - shopLocationOrderingMap[b]);
+    return shopLocationList.toSorted((a, b) => shopLocationOrderingMap.get(a) - shopLocationOrderingMap.get(b));
 }
 
 
@@ -335,7 +337,7 @@ function PlandoShopSortFilter(shopLocationList) {
  * @returns 
  */
 function PlandoOptionClassAnnotation(panel, kong, location, item) {
-    classSet = new Set()
+    var classSet = new Set()
 
     // Each key gets its own class.
     if (KeySet.has(item)) {
@@ -363,3 +365,10 @@ function PlandoOptionClassAnnotation(panel, kong, location, item) {
         return "";
     }
 }
+
+// Set all the functions to window scope.
+window.PlandoCustomLocationFilter = PlandoCustomLocationFilter;
+window.PlandoCustomLocationItemFilter = PlandoCustomLocationItemFilter;
+window.PlandoMinigameFilter = PlandoMinigameFilter;
+window.PlandoShopSortFilter = PlandoShopSortFilter;
+window.PlandoOptionClassAnnotation = PlandoOptionClassAnnotation;
