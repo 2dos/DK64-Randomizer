@@ -15,7 +15,7 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Types import BarrierItems
+from randomizer.Enums.Types import BarrierItems, Types
 from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency
 
 if TYPE_CHECKING:
@@ -847,6 +847,46 @@ def camelCaseToWords(string: str):
             words[-1].append(c)
 
     return " ".join(["".join(word) for word in words])
+
+def getItemNumberString(count: int, item_type: Types) -> str:
+    """Get a string which displays the number of items and the item name."""
+    names = {
+        Types.Banana: "Golden Banana",
+        Types.BlueprintBanana: "Golden Banana",
+        Types.Shop: "Move",
+        Types.Blueprint: "Blueprint",
+        Types.Fairy: "Fairy",
+        Types.Key: "Key",
+        Types.Crown: "Crown",
+        Types.Coin: "Company Coin",
+        Types.TrainingBarrel: "Move",
+        Types.Kong: "Kong",
+        Types.Medal: "Medal",
+        Types.Shockwave: "Move",
+        Types.Bean: "Bean",
+        Types.Pearl: "Pearl",
+        Types.RainbowCoin: "Rainbow Coin",
+        Types.FakeItem: "Ice Trap",
+        Types.ToughBanana: "Golden Banana",
+        Types.JunkItem: "Junk Item",
+        Types.Hint: "Hint",
+        Types.PreGivenMove: "Move",
+        Types.Climbing: "Move",
+        Types.NintendoCoin: "Nintendo Coin",
+        Types.RarewareCoin: "Rareware Coin",
+        Types.Cranky: "Cranky",
+        Types.Funky: "Funky",
+        Types.Candy: "Candy",
+        Types.Snide: "Snide",
+        Types.IslesMedal: "Medal",
+        Types.ProgressiveHint: "Hint",
+    }
+    name = names.get(item_type, item_type.name)
+    if count != 1:
+        name = f"{name}s"
+        if item_type == Types.Fairy:
+            name = "Fairies"
+    return f"{count} {name}"
 
 
 class TableNames(IntEnum):
