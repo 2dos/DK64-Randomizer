@@ -3280,9 +3280,14 @@ def changeBarrelColor(color: tuple):
     barrel_right = barrel_right.crop((16, 0, 32, 64))
     writeColorImageToROM(barrel_left, 25, 0x12B3, 16, 64, False, TextureFormat.RGBA5551)
     writeColorImageToROM(barrel_right, 25, 0x12B4, 16, 64, False, TextureFormat.RGBA5551)
-    for img in (0x12B5, 0x12B8):
-        dim_x = 48 if img == 0x12B5 else 44
-        dim_y = 32 if img == 0x12B5 else 44
+    tex_data = {
+        getBonusSkinOffset(ExtraTextures.RocketTop): (1, 1372),
+        0x12B5: (48, 32),
+        0x12B8: (44, 44),
+    }
+    for img in tex_data:
+        dim_x = tex_data[img][0]
+        dim_y = tex_data[img][1]
         img_output = getImageFile(25, img, True, dim_x, dim_y, TextureFormat.RGBA5551)
         img_output = maskImageWithColor(img_output, color)
         writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)

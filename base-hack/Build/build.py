@@ -1061,7 +1061,18 @@ for x in range(5):
                 target_compressed_size=64*32*2,
             )
         )
-
+for barrel_dupe in (ExtraTextures.RocketTop, ExtraTextures.BlastTop):
+    tex_name = "hash/barrel_bottom" if barrel_dupe == ExtraTextures.BlastTop else "tagbarrel/barrel_base"
+    file_dict.append(
+        File(
+            name=f"Barrel Bottom duplicate {barrel_dupe.name}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(barrel_dupe),
+            source_file=f"assets/{tex_name}.png",
+            texture_format=TextureFormat.RGBA5551,
+            target_compressed_size=0xAB8,
+        )
+    )
 
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
@@ -1333,6 +1344,9 @@ model_changes = [
     ModelChange(0x117, "funky_model.bin"),
     ModelChange(0x118, "scarab_actor.bin"),
     ModelChange(0x119, "shrink_qmark.bin"),
+    ModelChange(0x73, "blast_barrel.bin"),
+    ModelChange(0x8B, "rocketbarrel_attachment.bin"),
+    ModelChange(0x7B, "cannon.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
@@ -2086,8 +2100,9 @@ with open(newROMName, "r+b") as fh:
         "mush_top_1",
         "cannon_base",
         "cannon_support",
+        "barrel_bottom",
     ]
-    tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base"]
+    tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:
         tagbarrel_removals.extend([f"{face} barrel 0a", f"{face} barrel 1a"])
     for item in tagbarrel_removals:
@@ -2098,6 +2113,9 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/tagbarrel/cannon_{seg}.png"
         if os.path.exists(pth):
             os.remove(pth)
+    pth = f"assets/tagbarrel/barrel_base.png"
+    if os.path.exists(pth):
+        os.remove(pth)
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]
     for folder in script_files:

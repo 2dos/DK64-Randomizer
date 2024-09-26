@@ -110,6 +110,7 @@ images = [
     ImageData("mush_top_1", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x680, 64, 32, False, False),
     ImageData("cannon_support", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12B5, 48, 32, False, False),
     ImageData("cannon_base", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12B8, 44, 44, False, False),
+    ImageData("barrel_bottom", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xF14, 1, 1372, False, False),
 ]
 
 shop_owners = {

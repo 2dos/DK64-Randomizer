@@ -776,8 +776,10 @@ barrel_left.save(f"{tag_dir}cannon_left.png")
 barrel_right.save(f"{tag_dir}cannon_right.png")
 support_im = Image.open(f"{hash_dir}cannon_support.png")
 base_im = Image.open(f"{hash_dir}cannon_base.png")
+barrel_base_im = Image.open(f"{hash_dir}barrel_bottom.png")
 alterWood(support_im).save(f"{tag_dir}cannon_support.png")
 alterWood(base_im).save(f"{tag_dir}cannon_base.png")
+alterWood(barrel_base_im).save(f"{tag_dir}barrel_base.png")
 
 
 rmve = [

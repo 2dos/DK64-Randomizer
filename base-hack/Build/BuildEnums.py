@@ -850,6 +850,8 @@ class ExtraTextures(IntEnum):
     ShellWood = auto()
     ShellMetal = auto()
     ShellQMark = auto()
+    RocketTop = auto()
+    BlastTop = auto()
 
 
 class MoveTypes(IntEnum):
