@@ -1026,6 +1026,25 @@ def getIceTrapCount(settings) -> int:
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
 
+class Holidays(IntEnum):
+    """Holiday Enum."""
+    no_holiday = 0
+    Christmas = auto()
+    Halloween = auto()
+
+def getHolidaySetting(settings):
+    """Get the holiday setting."""
+    is_offseason = False
+    if is_offseason:
+        return settings.holiday_setting_offseason
+    return settings.holiday_setting
+
+def getHoliday(settings):
+    """Get the holiday experienced."""
+    if getHolidaySetting(settings):
+        return Holidays.Halloween
+    return Holidays.no_holiday
+
 plando_colors = {
     "\x04": [
         "orange",

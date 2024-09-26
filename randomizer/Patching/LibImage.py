@@ -61,6 +61,9 @@ class ExtraTextures(IntEnum):
     MedalRim = auto()
     MushTop0 = auto()
     MushTop1 = auto()
+    ShellWood = auto()
+    ShellMetal = auto()
+    ShellQMark = auto()
 
 
 def getImageFromAddress(rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):
