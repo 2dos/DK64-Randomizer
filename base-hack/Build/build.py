@@ -277,6 +277,42 @@ file_dict = [
         target_compressed_size=64*32*2,
     ),
     File(
+        name="Cannon Barrel Shell (Left)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0x12B3,
+        source_file="assets/tagbarrel/cannon_left.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_compressed_size=64*16*2,
+    ),
+    File(
+        name="Cannon Barrel Shell (Right)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0x12B4,
+        source_file="assets/tagbarrel/cannon_right.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_compressed_size=64*16*2,
+    ),
+    File(
+        name="Cannon Barrel Base",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0x12B8,
+        source_file="assets/tagbarrel/cannon_base.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_compressed_size=44*44*2,
+    ),
+    File(
+        name="Cannon Barrel Support",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0x12B5,
+        source_file="assets/tagbarrel/cannon_support.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_compressed_size=48*32*2,
+    ),
+    File(
         name="B Locker Item: Move",
         pointer_table_index=TableNames.TexturesGeometry,
         file_index=getBonusSkinOffset(ExtraTextures.BLockerItemMove),
@@ -2048,12 +2084,18 @@ with open(newROMName, "r+b") as fh:
         "medal_rim",
         "mush_top_0",
         "mush_top_1",
+        "cannon_base",
+        "cannon_support",
     ]
-    tagbarrel_removals = ["plain_shell", "shell"]
+    tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base"]
     for face in barrel_faces:
         tagbarrel_removals.extend([f"{face} barrel 0a", f"{face} barrel 1a"])
     for item in tagbarrel_removals:
         pth = f"assets/tagbarrel/{item}.rgba5551"
+        if os.path.exists(pth):
+            os.remove(pth)
+    for seg in ("support", "base", "left", "right"):
+        pth = f"assets/tagbarrel/cannon_{seg}.png"
         if os.path.exists(pth):
             os.remove(pth)
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]

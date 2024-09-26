@@ -3271,6 +3271,21 @@ def changeBarrelColor(color: tuple):
         bar_right.paste(face_right, (0, top_h_offset), face_right)
         writeColorImageToROM(bar_left, 25, kong["barrel_tex_start"], 32, 64, False, TextureFormat.RGBA5551)
         writeColorImageToROM(bar_right, 25, kong["barrel_tex_start"] + 1, 32, 64, False, TextureFormat.RGBA5551)
+    # Cannons
+    barrel_left = Image.new(mode="RGBA", size=(32, 64))
+    barrel_right = Image.new(mode="RGBA", size=(32, 64))
+    barrel_left.paste(wood_img, (0, 0), wood_img)
+    barrel_right.paste(wood_img, (0, 0), wood_img)
+    barrel_left = barrel_left.crop((0, 0, 16, 64))
+    barrel_right = barrel_right.crop((16, 0, 32, 64))
+    writeColorImageToROM(barrel_left, 25, 0x12B3, 16, 64, False, TextureFormat.RGBA5551)
+    writeColorImageToROM(barrel_right, 25, 0x12B4, 16, 64, False, TextureFormat.RGBA5551)
+    for img in (0x12B5, 0x12B8):
+        dim_x = 48 if img == 0x12B5 else 44
+        dim_y = 32 if img == 0x12B5 else 44
+        img_output = getImageFile(25, img, True, dim_x, dim_y, TextureFormat.RGBA5551)
+        img_output = maskImageWithColor(img_output, color)
+        writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)
 
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
