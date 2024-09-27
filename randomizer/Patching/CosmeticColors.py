@@ -3411,6 +3411,22 @@ def applyHolidayMode(settings):
             ROM().writeBytes(px_data)
         # Tag Barrel, Bonus Barrel & Transform Barrels
         changeBarrelColor((0x00, 0xC0, 0x00))
+        # Turn Ice Tomato Orange
+        sizes = {
+            0x1237: 700,
+            0x1238: 1404,
+            0x1239: 1372,
+            0x123A: 1372,
+            0x123B: 1384,
+            0x123C: 1372,
+            0x123D: 1372,
+            0x123E: 1372,
+            0x123F: 1372,
+            0x1240: 1372,
+            0x1241: 1404,
+        }
+        for img in range(0x1237, 0x1241 + 1):
+            hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
 
 
 def updateMillLeverTexture(settings: Settings) -> None:

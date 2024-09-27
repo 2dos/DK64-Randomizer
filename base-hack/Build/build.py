@@ -1167,6 +1167,7 @@ colorblind_changes = [
     [0x9A5, 0x9B4],  # Knight/Swords Paintings
     [0xA53, 0xA53],  # Dolphin Painting
     [0xA46, 0xA46],  # Candy Poster
+    [0x1237, 0x1241],  # Ice Tomato
 ]
 
 file_dict.append(
