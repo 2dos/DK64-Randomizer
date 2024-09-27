@@ -1,18 +1,22 @@
+"""Library functions for pointer tables (Heavily WIP)."""
+
 import js
 import zlib
 import gzip
-import TableNames from randomizer.Patching.Lib
+from randomizer.Patching.Lib import TableNames
 from randomizer.Patching.Patcher import ROM, LocalROM
+
 
 class TableData:
     """Class to store information regarding a pointer table."""
 
-    def __init__(self, vanilla_compressed: bool, rando_compressed:bool, decode_function: function = None, encode_function: function = None):
+    def __init__(self, vanilla_compressed: bool, rando_compressed: bool, decode_function: function = None, encode_function: function = None):
         """Initialize with given variables."""
         self.vanilla_compressed = vanilla_compressed
         self.rando_compressed = rando_compressed
         self.decode_function = decode_function
         self.encode_function = encode_function
+
 
 def decoder_exits(data: bytes) -> dict:
     """Decode the exit data."""
@@ -22,6 +26,7 @@ def decoder_exits(data: bytes) -> dict:
         exit_data = {}
         ret["exits"].append(exit_data)
     return ret
+
 
 table_functions = {
     TableNames.MusicMIDI: TableData(False, False, None, None),
@@ -58,6 +63,7 @@ table_functions = {
     TableNames.Unknown31: TableData(False, False, None, None),
 }
 
+
 class PointerTableFile:
     """Class to store information about a pointer table file."""
 
@@ -70,13 +76,15 @@ class PointerTableFile:
         if is_compressed is None:
             self.is_compressed = table_functions[table].rando_compressed
 
+
 def getPointerFile(table: TableNames, file_index: int, is_compressed: bool = None) -> PointerTableFile:
     """Get pointer table file information."""
     start = js.pointer_addresses[table]["entries"][file_index]["pointing_to"]
     end = js.pointer_addresses[table]["entries"][file_index + 1]["pointing_to"]
     return PointerTableFile(table, start, end, is_compressed)
 
-def getPointerData(ROM_COPY: LocalROM|ROM, table: TableNames, file_index: int) -> bytes:
+
+def getPointerData(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int) -> bytes:
     """Get the data inside a pointer table file."""
     ref_data = getPointerFile(table, file_index)
     ROM_COPY.seek(ref_data.start)
@@ -85,7 +93,8 @@ def getPointerData(ROM_COPY: LocalROM|ROM, table: TableNames, file_index: int) -
         return zlib.decompress(data, (15 + 32))
     return data
 
-def writePointerFile(ROM_COPY: LocalROM|ROM, table: TableNames, file_index: int, data: bytes, is_compressed: bool = False):
+
+def writePointerFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int, data: bytes, is_compressed: bool = False):
     """Write data to a pointer file."""
     ref_file = getPointerFile(table, file_index)
     if is_compressed:
@@ -95,7 +104,8 @@ def writePointerFile(ROM_COPY: LocalROM|ROM, table: TableNames, file_index: int,
     ROM_COPY.seek(ref_file.start)
     ROM_COPY.writeBytes(data)
 
-def decodeFile(ROM_COPY: LocalROM|ROM, table: TableNames, file_index: int) -> dict:
+
+def decodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int) -> dict:
     """Decodes a pointer table file."""
     function_data = table_functions.get(table, (None, None))
     file_data = getPointerData(ROM_COPY, table, file_index)
@@ -105,7 +115,8 @@ def decodeFile(ROM_COPY: LocalROM|ROM, table: TableNames, file_index: int) -> di
         }
     return function_data.decode_function(file_data)
 
-def decodeFile(ROM_COPY: LocalROM|ROM, table: TableNames, file_index: int, data: dict):
+
+def decodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int, data: dict):
     """Encodes a pointer table file."""
     function_data = table_functions.get(table, (None, None))
     ref_data = getPointerFile(table, file_index)

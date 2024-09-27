@@ -764,6 +764,7 @@ fool_im.save(f"{disp_dir}fool_overlay.png")
 
 
 def alterWood(image):
+    """Alter the wood color to our dark red color."""
     output = hueShift(image, 315)
     enhancer = ImageEnhance.Brightness(output)
     output = enhancer.enhance(0.4)
