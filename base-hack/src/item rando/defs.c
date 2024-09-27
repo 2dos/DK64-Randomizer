@@ -347,3 +347,22 @@ void initActorExpansion(void) {
     *(short*)(0x8067805E) = getHi(&actor_extra_data_sizes[0]);
     *(short*)(0x80678062) = getLo(&actor_extra_data_sizes[0]);
 }
+
+static short kremling_krossbone_maps[] = {
+    MAP_BARRAGE_EASY,
+    MAP_BARRAGE_NORMAL,
+    MAP_BARRAGE_HARD,
+    MAP_HELMBARREL_RANDOMKREMLING,
+    MAP_HELMBARREL_HIDDENKREMLING,
+};
+
+void swapKremlingModel(void) {
+    if (Rando.seasonal_changes != SEASON_HALLOWEEN) {
+        return;
+    }
+    int kremling_model = 0x31;
+    if (inShortList(CurrentMap, &kremling_krossbone_maps, sizeof(kremling_krossbone_maps) >> 1)) {
+        kremling_model = 0x42;
+    }
+    CharSpawnerActorData[59].model = kremling_model;
+}

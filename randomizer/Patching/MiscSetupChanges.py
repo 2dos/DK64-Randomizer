@@ -389,7 +389,7 @@ def randomize_setup(spoiler):
                 ROM_COPY.seek(item_start + 8)
                 ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                 chunky_5dc_pads["index"] += 1
-            elif cont_map_id == Maps.GloomyGalleon and item_id == 0xC and spoiler.settings.puzzle_rando_difficulty not in (PuzzleRando.off, PuzzleRando.easy):
+            elif cont_map_id == Maps.GloomyGalleon and item_id == 0xC and spoiler.settings.puzzle_rando_difficulty in (PuzzleRando.hard, PuzzleRando.chaos):
                 coords = list(getRandomGalleonStarLocation())
                 ROM_COPY.seek(item_start)
                 for x in coords:
@@ -467,11 +467,7 @@ def randomize_setup(spoiler):
                 if not actor_type == 139:
                     byte_list = []
                     ROM_COPY.seek(actor_start + 0x34)
-                    id = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     used_actor_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
-                    if spoiler.settings.fix_lanky_tiny_prod and cont_map_id == Maps.FranticFactory and id == 16:
-                        ROM_COPY.seek(actor_start + 0x14)
-                        ROM_COPY.writeMultipleBytes(1, 4)
                     ROM_COPY.seek(actor_start)
                     for x in range(int(0x38 / 4)):
                         byte_list.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
@@ -529,6 +525,9 @@ def randomize_setup(spoiler):
                 for coord in range(3):
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                 vase_puzzle_rando_progress += 1
+            elif actor_type == 0x1C and actor_id == 16 and spoiler.settings.fix_lanky_tiny_prod and cont_map_id == Maps.FranticFactory:
+                ROM_COPY.seek(actor_start + 0x14)
+                ROM_COPY.writeMultipleBytes(1, 4)
             elif actor_type == 139 and raise_patch and not spoiler.settings.random_patches:
                 if cont_map_id == Maps.FungiForest and actor_id == 47:
                     ROM_COPY.seek(actor_start + 4)

@@ -197,9 +197,9 @@ void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_ind
      * @param player_index Player Index
      */
     int permit = 0;
-    if ((MovesBase[4].special_moves & 2) && (isKrushaAdjacentModel(KONG_CHUNKY))) {
+    if ((MovesBase[KONG_CHUNKY].special_moves & 2) && (isKrushaAdjacentModel(KONG_CHUNKY)) && (Character == KONG_CHUNKY)) {
         permit = 1;
-    } else if ((MovesBase[2].special_moves & 1) && (isKrushaAdjacentModel(KONG_LANKY))) {
+    } else if ((MovesBase[KONG_LANKY].special_moves & 1) && (isKrushaAdjacentModel(KONG_LANKY)) && (Character == KONG_LANKY)) {
         permit = 1;
     }
     if (permit) {
@@ -225,7 +225,7 @@ void adaptKrushaZBAnimation_Charge(actorData* actor, int anim) {
      * @param actor Player
      * @param anim Charge Animation
      */
-    if (MovesBase[1].special_moves & 1) {
+    if (MovesBase[KONG_DIDDY].special_moves & 1) {
         if (Player->hSpeed < 70) {
             Player->turn_speed = 100;
             actor->control_state = 0x2E;
