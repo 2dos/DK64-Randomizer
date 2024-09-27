@@ -132,9 +132,9 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.swim, None, 17),  # Underwater
 
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In patch of grass
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # On mushroom near back Tag Barrel
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # On mushroom near rafters attic
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On mushroom near Chunky minecart exit
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.climbing, None, 3),  # On mushroom near back Tag Barrel
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.climbing, None, 3),  # On mushroom near rafters attic
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.climbing, None, 3),  # On mushroom near Chunky minecart exit
     ],
     Regions.MillChunkyTinyArea: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),
@@ -178,7 +178,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In trough
     ],
     Regions.WormArea: [
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 3),
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.climbing, None, 3),  # On top of Mushrooms around The Apple
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 1),  # Last one behind Pineapple gate
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 9),

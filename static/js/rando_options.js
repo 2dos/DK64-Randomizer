@@ -254,23 +254,21 @@ document.getElementById("random_patches").addEventListener("click", plando_disab
 // Enable or disable custom locations for Wrinkly doors
 function plando_disable_wrinkly_custom_locations() {
     const randomDoors = document.getElementById("wrinkly_location_rando").checked;
-    const progressiveHints = document.getElementById("enable_progressive_hints").checked;
     const customWrinklyElem = document.getElementById("plando_place_wrinkly");
     let tooltip = "Allows the user to specify locations for each Wrinkly door.";
 
-    if (randomDoors && !progressiveHints) {
+    if (randomDoors) {
         customWrinklyElem.removeAttribute("disabled");
     } else {
         customWrinklyElem.setAttribute("disabled", "disabled");
         customWrinklyElem.checked = false;
-        tooltip = "To use this feature, Wrinkly door locations must be shuffled, and progressive hints must be turned off.";
+        tooltip = "To use this feature, Wrinkly door locations must be shuffled.";
     }
 
     customWrinklyElem.parentElement.setAttribute("data-bs-original-title", tooltip);
 }
 
 document.getElementById("wrinkly_location_rando").addEventListener("click", plando_disable_wrinkly_custom_locations);
-document.getElementById("enable_progressive_hints").addEventListener("click", plando_disable_wrinkly_custom_locations);
 
 // Enable or disable custom locations for Troff 'n' Scoff portals
 function plando_disable_tns_custom_locations() {

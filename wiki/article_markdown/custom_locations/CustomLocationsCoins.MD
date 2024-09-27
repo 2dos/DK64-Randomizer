@@ -571,17 +571,17 @@
 | On Thorny Hedge | 3 | `l.isdonkey and l.strongKong` | 
 | Around BBlast Pad | 3 | `l.climbing` | 
 | Behind Clock | 3 |  | 
-| On Mushroom near Mill far tag | 3 |  | 
+| On Mushroom near Mill far tag | 3 | `l.climbing` | 
 | Around Crown Pad | 3 |  | 
 | Around Tiny Kasplat | 5 |  | 
-| On Mushroom near Dark Rafters Barn | 3 |  | 
+| On Mushroom near Dark Rafters Barn | 3 | `l.climbing` | 
 | Behind Giant Mushroom | 3 |  | 
 | Under Hollow Tree | 3 |  | 
 | On Well | 3 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | On Archway to Giant Mushroom Area | 3 | `(l.twirl and l.istiny) or l.advanced_platforming` | 
 | Inside Hollow Tree night fence | 4 | `l.jetpack and l.isdiddy and l.TimeAccess(Regions.HollowTreeArea, Time.Night)` | 
 | Near Beanstalk Mini Monkey Barrel | 3 |  | 
-| On Mushroom near Mill Well Exit | 3 |  | 
+| On Mushroom near Mill Well Exit | 3 | `l.climbing` | 
 | Behind Night Door in the Apple Area | 3 | `l.TimeAccess(Regions.WormArea, Time.Night)` | 
 | On switch to face puzzle | 3 |  | 
 | Behind Well Entrance | 3 |  | 
