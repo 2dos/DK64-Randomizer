@@ -3234,6 +3234,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                 writeColorImageToROM(base, 25, door.item_image, 44, 44, True, TextureFormat.RGBA5551)
                 writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, TextureFormat.RGBA5551)
 
+
 def changeBarrelColor(color: tuple):
     """Change the colors of the various barrels."""
     wood_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellWood), True, 32, 64, TextureFormat.RGBA5551)
@@ -3241,18 +3242,18 @@ def changeBarrelColor(color: tuple):
     qmark_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellQMark), True, 32, 64, TextureFormat.RGBA5551)
     wood_img = maskImageWithColor(wood_img, color)
     wood_img.paste(metal_img, (0, 0), metal_img)
-    writeColorImageToROM(wood_img, 25, getBonusSkinOffset(ExtraTextures.BonusShell), 32, 64, False, TextureFormat.RGBA5551) # Bonus Barrel
+    writeColorImageToROM(wood_img, 25, getBonusSkinOffset(ExtraTextures.BonusShell), 32, 64, False, TextureFormat.RGBA5551)  # Bonus Barrel
     tag_img = Image.new(mode="RGBA", size=(32, 64))
     tag_img.paste(wood_img, (0, 0), wood_img)
     tag_img.paste(qmark_img, (0, 0), qmark_img)
-    writeColorImageToROM(tag_img, 25, 4938, 32, 64, False, TextureFormat.RGBA5551) # Tag Barrel
+    writeColorImageToROM(tag_img, 25, 4938, 32, 64, False, TextureFormat.RGBA5551)  # Tag Barrel
     # Compose Transform Barrels
     kongs = [
-        {"face_left": 0x27C, "face_right": 0x27B, "barrel_tex_start": 4817, "targ_width": 24}, # DK
-        {"face_left": 0x279, "face_right": 0x27A, "barrel_tex_start": 4815, "targ_width": 24}, # Diddy
-        {"face_left": 0x277, "face_right": 0x278, "barrel_tex_start": 4819, "targ_width": 24}, # Lanky
-        {"face_left": 0x276, "face_right": 0x275, "barrel_tex_start": 4769, "targ_width": 24}, # Tiny
-        {"face_left": 0x273, "face_right": 0x274, "barrel_tex_start": 4747, "targ_width": 24}, # Chunky
+        {"face_left": 0x27C, "face_right": 0x27B, "barrel_tex_start": 4817, "targ_width": 24},  # DK
+        {"face_left": 0x279, "face_right": 0x27A, "barrel_tex_start": 4815, "targ_width": 24},  # Diddy
+        {"face_left": 0x277, "face_right": 0x278, "barrel_tex_start": 4819, "targ_width": 24},  # Lanky
+        {"face_left": 0x276, "face_right": 0x275, "barrel_tex_start": 4769, "targ_width": 24},  # Tiny
+        {"face_left": 0x273, "face_right": 0x274, "barrel_tex_start": 4747, "targ_width": 24},  # Chunky
     ]
     for kong in kongs:
         bar_left = Image.new(mode="RGBA", size=(32, 64))
@@ -3291,6 +3292,7 @@ def changeBarrelColor(color: tuple):
         img_output = getImageFile(25, img, True, dim_x, dim_y, TextureFormat.RGBA5551)
         img_output = maskImageWithColor(img_output, color)
         writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)
+
 
 def applyHolidayMode(settings):
     """Change grass texture to snow."""

@@ -81,7 +81,14 @@ file_dict = [
         target_compressed_size=0x800,
     ),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Tag Barrel Shell Texture", pointer_table_index=TableNames.TexturesGeometry, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551, target_compressed_size=64*32*2),
+    File(
+        name="Tag Barrel Shell Texture",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=4938,
+        source_file="assets/tagbarrel/shell.png",
+        texture_format=TextureFormat.RGBA5551,
+        target_compressed_size=64 * 32 * 2,
+    ),
     File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
     File(name="End Sequence Credits", pointer_table_index=TableNames.Unknown19, file_index=7, source_file="assets/credits/credits.bin", do_not_delete_source=True),
     File(
@@ -274,7 +281,7 @@ file_dict = [
         source_file="assets/tagbarrel/plain_shell.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_compressed_size=64*32*2,
+        target_compressed_size=64 * 32 * 2,
     ),
     File(
         name="Cannon Barrel Shell (Left)",
@@ -283,7 +290,7 @@ file_dict = [
         source_file="assets/tagbarrel/cannon_left.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_compressed_size=64*16*2,
+        target_compressed_size=64 * 16 * 2,
     ),
     File(
         name="Cannon Barrel Shell (Right)",
@@ -292,7 +299,7 @@ file_dict = [
         source_file="assets/tagbarrel/cannon_right.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_compressed_size=64*16*2,
+        target_compressed_size=64 * 16 * 2,
     ),
     File(
         name="Cannon Barrel Base",
@@ -301,7 +308,7 @@ file_dict = [
         source_file="assets/tagbarrel/cannon_base.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_compressed_size=44*44*2,
+        target_compressed_size=44 * 44 * 2,
     ),
     File(
         name="Cannon Barrel Support",
@@ -310,7 +317,7 @@ file_dict = [
         source_file="assets/tagbarrel/cannon_support.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_compressed_size=48*32*2,
+        target_compressed_size=48 * 32 * 2,
     ),
     File(
         name="B Locker Item: Move",
@@ -1058,7 +1065,7 @@ for x in range(5):
                 file_index=barrel_offsets[x] + y,
                 source_file=f"assets/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
                 texture_format=TextureFormat.RGBA5551,
-                target_compressed_size=64*32*2,
+                target_compressed_size=64 * 32 * 2,
             )
         )
 for barrel_dupe in (ExtraTextures.RocketTop, ExtraTextures.BlastTop):

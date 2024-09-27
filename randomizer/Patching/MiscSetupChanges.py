@@ -389,7 +389,7 @@ def randomize_setup(spoiler):
                 ROM_COPY.seek(item_start + 8)
                 ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                 chunky_5dc_pads["index"] += 1
-            elif cont_map_id == Maps.GloomyGalleon and item_id == 0xC and spoiler.settings.puzzle_rando_difficulty not in (PuzzleRando.off, PuzzleRando.easy):
+            elif cont_map_id == Maps.GloomyGalleon and item_id == 0xC and spoiler.settings.puzzle_rando_difficulty in (PuzzleRando.hard, PuzzleRando.chaos):
                 coords = list(getRandomGalleonStarLocation())
                 ROM_COPY.seek(item_start)
                 for x in coords:

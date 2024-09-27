@@ -848,6 +848,7 @@ def camelCaseToWords(string: str):
 
     return " ".join(["".join(word) for word in words])
 
+
 def getItemNumberString(count: int, item_type: Types) -> str:
     """Get a string which displays the number of items and the item name."""
     names = {
@@ -1028,9 +1029,11 @@ def getIceTrapCount(settings) -> int:
 
 class Holidays(IntEnum):
     """Holiday Enum."""
+
     no_holiday = 0
     Christmas = auto()
     Halloween = auto()
+
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
@@ -1039,11 +1042,13 @@ def getHolidaySetting(settings):
         return settings.holiday_setting_offseason
     return settings.holiday_setting
 
+
 def getHoliday(settings):
     """Get the holiday experienced."""
     if getHolidaySetting(settings):
         return Holidays.Halloween
     return Holidays.no_holiday
+
 
 plando_colors = {
     "\x04": [

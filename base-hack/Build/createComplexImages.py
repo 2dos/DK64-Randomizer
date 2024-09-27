@@ -762,11 +762,13 @@ fool_im.paste(ex_im, (34, 0), ex_im)
 fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 fool_im.save(f"{disp_dir}fool_overlay.png")
 
+
 def alterWood(image):
     output = hueShift(image, 315)
     enhancer = ImageEnhance.Brightness(output)
     output = enhancer.enhance(0.4)
     return output
+
 
 # Cannons
 tag_dir = getDir("assets/tagbarrel/")
