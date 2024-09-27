@@ -106,7 +106,7 @@ def writePointerFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: in
 
 
 def decodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int) -> dict:
-    """Decodes a pointer table file."""
+    """Decode a pointer table file."""
     function_data = table_functions.get(table, (None, None))
     file_data = getPointerData(ROM_COPY, table, file_index)
     if function_data.decode_function is None:
@@ -116,8 +116,8 @@ def decodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int) -> 
     return function_data.decode_function(file_data)
 
 
-def decodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int, data: dict):
-    """Encodes a pointer table file."""
+def encodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int, data: dict):
+    """Encode a pointer table file."""
     function_data = table_functions.get(table, (None, None))
     ref_data = getPointerFile(table, file_index)
     if function_data.encode_function is None:
