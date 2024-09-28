@@ -194,6 +194,8 @@ extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
 extern int getTotalCBCount(void);
 
+extern void swapKremlingModel(void);
+
 extern void setLocationStatus(location_list location_index);
 extern int getLocationStatus(location_list location_index);
 extern void getNextMoveText(void);

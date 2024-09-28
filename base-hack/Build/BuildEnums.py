@@ -847,6 +847,11 @@ class ExtraTextures(IntEnum):
     MedalRim = auto()
     MushTop0 = auto()
     MushTop1 = auto()
+    ShellWood = auto()
+    ShellMetal = auto()
+    ShellQMark = auto()
+    RocketTop = auto()
+    BlastTop = auto()
 
 
 class MoveTypes(IntEnum):

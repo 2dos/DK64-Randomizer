@@ -5,7 +5,7 @@ import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
-from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim
+from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
 from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
@@ -456,7 +456,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     random_skybox = False
     if settings.colorblind_mode != ColorblindMode.off:
         skybox_rgba = [0x31, 0x33, 0x38]
-    elif settings.holiday_setting_offseason:
+    elif getHolidaySetting(settings):
         skybox_rgba = [0, 0, 0]
     elif settings.misc_cosmetics:
         random_skybox = True
@@ -515,6 +515,12 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     writeValue(ROM_COPY, 0x806FFAFE, Overlay.Static, crosshair_img, offset_dict)
     writeValue(ROM_COPY, 0x806FF116, Overlay.Static, crosshair_img, offset_dict)
     writeValue(ROM_COPY, 0x806B78DA, Overlay.Static, crosshair_img, offset_dict)
+
+    # Holiday Mode Stuff
+    holiday = getHoliday(settings)
+    if holiday == Holidays.Halloween:
+        writeValue(ROM_COPY, 0x800271F2, Overlay.Bonus, Model.Krossbones + 1, offset_dict)  # Green
+        writeValue(ROM_COPY, 0x80027216, Overlay.Bonus, Model.RoboKremling + 1, offset_dict)  # Red
 
     if settings.override_cosmetics:
         enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]

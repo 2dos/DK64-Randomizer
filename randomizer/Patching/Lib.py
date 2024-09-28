@@ -15,7 +15,7 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Types import BarrierItems
+from randomizer.Enums.Types import BarrierItems, Types
 from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency
 
 if TYPE_CHECKING:
@@ -849,6 +849,47 @@ def camelCaseToWords(string: str):
     return " ".join(["".join(word) for word in words])
 
 
+def getItemNumberString(count: int, item_type: Types) -> str:
+    """Get a string which displays the number of items and the item name."""
+    names = {
+        Types.Banana: "Golden Banana",
+        Types.BlueprintBanana: "Golden Banana",
+        Types.Shop: "Move",
+        Types.Blueprint: "Blueprint",
+        Types.Fairy: "Fairy",
+        Types.Key: "Key",
+        Types.Crown: "Crown",
+        Types.Coin: "Company Coin",
+        Types.TrainingBarrel: "Move",
+        Types.Kong: "Kong",
+        Types.Medal: "Medal",
+        Types.Shockwave: "Move",
+        Types.Bean: "Bean",
+        Types.Pearl: "Pearl",
+        Types.RainbowCoin: "Rainbow Coin",
+        Types.FakeItem: "Ice Trap",
+        Types.ToughBanana: "Golden Banana",
+        Types.JunkItem: "Junk Item",
+        Types.Hint: "Hint",
+        Types.PreGivenMove: "Move",
+        Types.Climbing: "Move",
+        Types.NintendoCoin: "Nintendo Coin",
+        Types.RarewareCoin: "Rareware Coin",
+        Types.Cranky: "Cranky",
+        Types.Funky: "Funky",
+        Types.Candy: "Candy",
+        Types.Snide: "Snide",
+        Types.IslesMedal: "Medal",
+        Types.ProgressiveHint: "Hint",
+    }
+    name = names.get(item_type, item_type.name)
+    if count != 1:
+        name = f"{name}s"
+        if item_type == Types.Fairy:
+            name = "Fairies"
+    return f"{count} {name}"
+
+
 class TableNames(IntEnum):
     """Pointer Table Enum."""
 
@@ -984,6 +1025,29 @@ def getIceTrapCount(settings) -> int:
         IceTrapFrequency.pain: 100,
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
+
+
+class Holidays(IntEnum):
+    """Holiday Enum."""
+
+    no_holiday = 0
+    Christmas = auto()
+    Halloween = auto()
+
+
+def getHolidaySetting(settings):
+    """Get the holiday setting."""
+    is_offseason = False
+    if is_offseason:
+        return settings.holiday_setting_offseason
+    return settings.holiday_setting
+
+
+def getHoliday(settings):
+    """Get the holiday experienced."""
+    if getHolidaySetting(settings):
+        return Holidays.Halloween
+    return Holidays.no_holiday
 
 
 plando_colors = {

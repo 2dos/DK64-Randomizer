@@ -762,6 +762,29 @@ fool_im.paste(ex_im, (34, 0), ex_im)
 fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 fool_im.save(f"{disp_dir}fool_overlay.png")
 
+
+def alterWood(image):
+    """Alter the wood color to our dark red color."""
+    output = hueShift(image, 315)
+    enhancer = ImageEnhance.Brightness(output)
+    output = enhancer.enhance(0.4)
+    return output
+
+
+# Cannons
+tag_dir = getDir("assets/tagbarrel/")
+barrel_left = Image.open(f"{tag_dir}plain_shell.png").crop((0, 0, 16, 64))
+barrel_right = Image.open(f"{tag_dir}plain_shell.png").crop((16, 0, 32, 64))
+barrel_left.save(f"{tag_dir}cannon_left.png")
+barrel_right.save(f"{tag_dir}cannon_right.png")
+support_im = Image.open(f"{hash_dir}cannon_support.png")
+base_im = Image.open(f"{hash_dir}cannon_base.png")
+barrel_base_im = Image.open(f"{hash_dir}barrel_bottom.png")
+alterWood(support_im).save(f"{tag_dir}cannon_support.png")
+alterWood(base_im).save(f"{tag_dir}cannon_base.png")
+alterWood(barrel_base_im).save(f"{tag_dir}barrel_base.png")
+
+
 rmve = [
     "01234.png",
     "56789.png",
