@@ -3438,6 +3438,8 @@ def applyHolidayMode(settings):
         }
         for img in range(0x1237, 0x1241 + 1):
             hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
+    elif HOLIDAY == Holidays.Anniv25:
+        changeBarrelColor((0xC0, 0xC0, 0x00))
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
