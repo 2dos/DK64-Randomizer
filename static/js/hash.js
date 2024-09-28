@@ -83,23 +83,28 @@ async function get_hash_images(type = "local", mode = "hash") {
 
   // Set romType to the provided romFile (direct access)
   let romType = romFile;
-
+  
   // Filter images based on the mode ('hash', 'loading-fairy', or 'loading-dead')
-  const filteredList = images.filter((image) => image.mode === mode);
+  let filteredList = images.filter((image) => image.mode === mode);
 
   // Loop through filtered images and load data from the ROM
   for (let imageInfo of filteredList) {
     // Seek to the pointer table entry for the current image
     romType.seek(ptrOffset + imageInfo.table * 4);
-    const ptrTable = ptrOffset + romType.readBytes(4);
+    let ptrTable = ptrOffset + romType.readBytes(4);
 
     // Seek to the start and end of the image data
     romType.seek(ptrTable + imageInfo.index * 4);
-    const imgStart = ptrOffset + romType.readBytes(4);
+    let imgStart = ptrOffset + romType.readBytes(4);
+    // get rid of all the commas in the image start
+    imgStart = imgStart.replace(/,/g, '');
+    console.log(imgStart)
     romType.seek(ptrTable + (imageInfo.index + 1) * 4);
-    const imgEnd = ptrOffset + romType.readBytes(4);
-    const imgSize = imgEnd - imgStart;
-
+    let imgEnd = ptrOffset + romType.readBytes(4);
+    imgEnd = imgEnd.replace(/,/g, '');
+    console.log(imgEnd)
+    let imgSize = imgEnd - imgStart;
+    console.log(imgSize)
     // Read the image data from the ROM
     romType.seek(imgStart);
     let imgData = romType.readBytes(imgSize);

@@ -114,9 +114,13 @@ def generate_globals(path):
     path = path.replace(".py", ".jsonc")
     
     # If the path starts with a slash, remove it
+    if "\\" in path:
+        path = path.replace("\\", "/")
     if path.startswith("/"):
         path = path[1:]
-
+        # Verify the first character is not a slash
+        if path.startswith("/"):
+            path = path[1:]
     # Open and load the JSONC file
     with open(path) as f:
         enums_data = load_jsonc(f)

@@ -212,29 +212,29 @@
                             }
                         }
                     
-                        // Function to dynamically load additional scripts after HTML is updated
-                        function loadAdditionalScripts() {
-                            const scripts = [
-                                './static/js/utils.js',
-                                './static/js/spoiler.js',
-                                './static/js/generate_buttons.js',
-                                './static/js/rando_options.js',
-                                './static/js/initalize.js',
-                                './static/js/music_select.js',
-                                "./static/js/hash.js"
-                            ];
-                    
-                            scripts.forEach(src => {
-                                const script = document.createElement('script');
-                                script.src = src;
-                                script.defer = true;
-                                document.body.appendChild(script);
-                            });
-                        }
-                    
-                        // Call the async function to start the process
-                        loadScripts();
-                    </script>
+                            // Function to dynamically load additional scripts after HTML is updated
+                            function loadAdditionalScripts() {
+                                const scripts = [
+                                    { src: './static/js/utils.js', defer: true },
+                                    { src: './static/js/spoiler.js', defer: true },
+                                    { src: './static/js/generate_buttons.js', defer: true },
+                                    { src: './static/js/rando_options.js', defer: true },
+                                    { src: './static/js/initalize.js', defer: true },
+                                    { src: './static/js/music_select.js', defer: true },
+                                    { src: "./static/js/hash.js", defer: true }
+                                ];
+                        
+                                scripts.forEach(({ src, defer }) => {
+                                    const script = document.createElement('script');
+                                    script.src = src;
+                                    script.defer = defer;
+                                    document.body.appendChild(script);
+                                });
+                            }
+                        
+                            // Call the async function to start the process
+                            loadScripts();
+                        </script>
                     
                     <script src="./static/js/pyodide/pyodide.js"></script>
 
