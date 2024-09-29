@@ -315,8 +315,9 @@ function serialize_settings(include_plando = false) {
 
     form_data["starting_move_list_selected"] = required_starting_moves;
     form_data["random_starting_move_list_selected"] = random_starting_moves;
-    return form_data;
+    return JSON.stringify(form_data);
 }
+
 
 // Event binding for exporting settings to a string
 document.getElementById("export_settings").addEventListener("click", export_settings_string);
@@ -328,6 +329,8 @@ function export_settings_string(event) {
      * @param {object} event - Javascript event object.
      */
     let setting_data = serialize_settings();
+    // Convert settings_data back into json from the string
+    setting_data = JSON.parse(setting_data);
     let settings_string = encrypt_settings_string_enum(setting_data);
     document.getElementById("settings_string").value = settings_string;
     generateToast("Exported settings string to the setting string input field.");
@@ -358,6 +361,7 @@ function generate_seed(event) {
         // here and we might stop before attempting to generate a seed.
         let plando_enabled = document.getElementById("enable_plandomizer").checked;
         let form_data = serialize_settings(plando_enabled);
+        form_data = JSON.parse(form_data);
         if (form_data["enable_plandomizer"]) {
             let plando_errors = validate_plando_options(form_data);
             // If errors are returned, the plandomizer options are invalid.
@@ -503,3 +507,4 @@ function uuidv4() {
     savesettings();
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
 });
+window["setup_pyodide"] = setup_pyodide;

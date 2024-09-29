@@ -137,13 +137,7 @@
                         });
                         }
                         
-                        function getFile(file) {
-                        return $.ajax({
-                            type: "GET",
-                            url: file,
-                            async: false
-                        }).responseText;
-                        }
+                       
                         window.onload = load_delay;
                         function load_delay() {
                         // Delay a section so the page scripts can load
@@ -196,7 +190,8 @@
                                     url: "/get_selector_info",
                                     async: false
                                 }).responseJSON;
-
+                                // Append the KongZones to the selector_info
+                                selector_info["kong_zones"] = KongZones;
                                 // Render templates
                                 var renderedHTML = env.render("base.html.jinja2", selector_info);
                                 var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
@@ -221,7 +216,8 @@
                                     { src: './static/js/rando_options.js', defer: true },
                                     { src: './static/js/initalize.js', defer: true },
                                     { src: './static/js/music_select.js', defer: true },
-                                    { src: "./static/js/hash.js", defer: true }
+                                    { src: "./static/js/hash.js", defer: true },
+                                    { src: "./static/js/pyodide_functions.js", defer: true}
                                 ];
                         
                                 scripts.forEach(({ src, defer }) => {

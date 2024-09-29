@@ -162,6 +162,15 @@ window["SongLocationList"] = [
   "BBlastFinalStar",
   "FinalCBGet",
 ];
+window["KongZones"] = {
+  DK: ["Fur", "Tie"],
+  Diddy: ["Clothes"],
+  Lanky: ["Clothes", "Fur"],
+  Tiny: ["Clothes", "Hair"],
+  Chunky: ["Main", "Other"],
+  Rambi: ["Skin"],
+  Enguarde: ["Skin"],
+};
 window["MusicSelectionPanel"] = {
   BGM: {
     name: "BGM",
@@ -468,14 +477,16 @@ function loadFiles(fileList) {
       success: function (data) {
         try {
           // Clean up and parse the JSONC file (removing comments)
-          const parsedData = JSON.parse(data.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, ''));
+          const parsedData = JSON.parse(
+            data.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "")
+          );
 
           // Iterate over the top-level keys of the parsed data
-          Object.keys(parsedData).forEach(topLevelKey => {
+          Object.keys(parsedData).forEach((topLevelKey) => {
             const topLevelObject = parsedData[topLevelKey];
 
             // Iterate over the keys inside this top-level object
-            Object.keys(topLevelObject).forEach(key => {
+            Object.keys(topLevelObject).forEach((key) => {
               const entry = topLevelObject[key];
 
               // Check if 'obj' field exists and is valid
@@ -487,9 +498,10 @@ function loadFiles(fileList) {
                 if (window[objName] || window[objNameSplit[0]]) {
                   // If there is a period map it to the object + attribute
                   if (objNameSplit.length > 1) {
-                    topLevelObject[key] = window[objNameSplit[0]][objNameSplit[1]];
+                    topLevelObject[key] =
+                      window[objNameSplit[0]][objNameSplit[1]];
                   } else {
-                  // Map the key to the actual object from `window`
+                    // Map the key to the actual object from `window`
                     topLevelObject[key] = window[objName];
                   }
                 } else {
@@ -502,7 +514,6 @@ function loadFiles(fileList) {
             // Assign the parsed top-level object (e.g., SettingsMap) dynamically to the global scope
             window[topLevelKey] = topLevelObject;
           });
-
         } catch (error) {
           console.error(`Failed to parse ${file}.jsonc: ${error}`);
         }

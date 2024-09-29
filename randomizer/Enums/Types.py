@@ -2,6 +2,7 @@
 
 
 from randomizer.JsonReader import generate_globals
+from js import getStringFile
 from typing import TYPE_CHECKING
 import json
 
@@ -10,7 +11,7 @@ if TYPE_CHECKING:
 
 globals().update(generate_globals(__file__))
 
-with open("randomizer/Enums/Types.json", "r") as f:
-    _data = json.load(f)
-    KeySelector = _data["KeySelector"]
-    ItemRandoSelector = _data["ItemRandoSelector"]
+f = getStringFile("randomizer/Enums/Types.json")
+_data = json.loads(f)
+KeySelector = _data["KeySelector"]
+ItemRandoSelector = _data["ItemRandoSelector"]

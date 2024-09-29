@@ -1,5 +1,6 @@
 import json
 import re
+from js import getStringFile
 from enum import IntEnum, auto
 import pathlib
 
@@ -19,7 +20,7 @@ def load_jsonc(filename):
     """
     Load a JSONC file, remove comments, and parse it into a dictionary.
     """
-    jsonc_str = filename.read()
+    jsonc_str = filename
 
     # Remove comments
     json_str = remove_comments(jsonc_str)
@@ -122,8 +123,8 @@ def generate_globals(path):
         if path.startswith("/"):
             path = path[1:]
     # Open and load the JSONC file
-    with open(path) as f:
-        enums_data = load_jsonc(f)
+    f = getStringFile(path)
+    enums_data = load_jsonc(f)
 
     new_globals = {}
     

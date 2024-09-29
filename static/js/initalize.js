@@ -911,7 +911,7 @@ function query_seed_generation(url, json, git_branch) {
           false,
           0.8
         );
-        apply_patch(data, true);
+        window.apply_patch(data, true);
       }
     },
     error: function (data, textStatus, xhr) {
@@ -919,7 +919,13 @@ function query_seed_generation(url, json, git_branch) {
     },
   });
 }
-
+function getStringFile(file) {
+  return $.ajax({
+      type: "GET",
+      url: file,
+      async: false
+  }).responseText;
+}
 // if the tab is set to seed info get the generate_seed button and change the text to "Download Seed" we want to check this on every nav tab change
 function check_seed_info_tab() {
   if (

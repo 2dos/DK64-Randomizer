@@ -1,52 +1,14 @@
-if (typeof window.RufflePlayer !== "undefined") {
-  // Ruffle extension is loaded
-  var modal = document.createElement("div");
-  modal.style.position = "fixed";
-  modal.style.top = "0";
-  modal.style.left = "0";
-  modal.style.width = "100%";
-  modal.style.height = "100%";
-  modal.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  modal.style.display = "flex";
-  modal.style.justifyContent = "center";
-  modal.style.alignItems = "center";
-  modal.style.zIndex = "9999";
-
-  var modalContent = document.createElement("div");
-  modalContent.style.backgroundColor = "#333";
-  modalContent.style.padding = "20px";
-  modalContent.style.borderRadius = "5px";
-  modalContent.style.textAlign = "center";
-
-  var message = document.createElement("p");
-  message.textContent =
-    "The Ruffle extension causes issues with this site (and we're not really sure why). Please disable it for this site.";
-  message.style.color = "#fff";
-  message.style.fontFamily = "Arial, sans-serif";
-  message.style.fontSize = "16px";
-
-  modalContent.appendChild(message);
-  modal.appendChild(modalContent);
-  document.body.appendChild(modal);
-
-  // Prevent scrolling while the modal is open
-  document.body.style.overflow = "hidden";
-
-  console.log("Ruffle extension is loaded");
-} else {
-  // Ruffle extension is not loaded
-  console.log("Ruffle extension is not loaded");
-}
-
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
   console.log("Loading " + file);
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
-run_python_file("ui/__init__.py");
+// run_python_file("ui/__init__.py");
 var imported_music_json = "";
 
-function music_selection_filebox() {
+async function music_selection_filebox() {
+  // load pyodide
+  await setup_pyodide()
   let input = document.createElement("input");
   input.type = "file";
   input.accept = ".json";
@@ -67,7 +29,9 @@ function music_selection_filebox() {
 
 var imported_plando_json = "";
 
-function plando_import_filebox() {
+async function plando_import_filebox() {
+  // load pyodide
+  await setup_pyodide()
   let input = document.createElement("input");
   input.type = "file";
   input.accept = ".json";
@@ -88,7 +52,7 @@ function plando_import_filebox() {
 
 async function apply_patch(data, run_async) {
   // load pyodide
-  setup_pyodide()
+  await setup_pyodide()
   // Base64 decode the response
   event_response_data = data;
   var decodedData = base64ToArrayBuffer(data);
@@ -118,10 +82,10 @@ async function apply_patch(data, run_async) {
               if (run_async == true) {
                 // Return the promise for pyodide.runPythonAsync
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-                  register_hook("/")  # type: ignore  # noqa
-                  import js
-                  from randomizer.Patching.ApplyLocal import patching_response
-                  patching_response(str(js.event_response_data), from_patch_gen=True)
+register_hook("/")  # type: ignore  # noqa
+import js
+from randomizer.Patching.ApplyLocal import patching_response
+patching_response(str(js.event_response_data), from_patch_gen=True)
                 `);
               }
             });
@@ -137,7 +101,7 @@ async function apply_patch(data, run_async) {
     console.error("Error unzipping the file:", error);
   }
 }
-function apply_download() {
+async function apply_download() {
   if (
     document.getElementById("rom").value.trim().length === 0 ||
     !document.getElementById("rom").classList.contains("is-valid")
@@ -149,11 +113,19 @@ function apply_download() {
     }
   }
   console.log("Applying Download");
-  setup_pyodide()
+  await setup_pyodide()
   return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-      register_hook("/")  # type: ignore  # noqa
-      import js
-      from randomizer.Patching.ApplyLocal import patching_response
-      patching_response(str(js.event_response_data), from_patch_gen=True)
+register_hook("/")  # type: ignore  # noqa
+import js
+from randomizer.Patching.ApplyLocal import patching_response
+patching_response(str(js.event_response_data), from_patch_gen=True)
     `);
 }
+
+window["apply_download"] = apply_download;
+window["apply_patch"] = apply_patch;
+window["music_selection_filebox"] = music_selection_filebox;
+window["plando_import_filebox"] = plando_import_filebox;
+window["imported_music_json"] = imported_music_json;
+window["imported_plando_json"] = imported_plando_json;
+window["apply_xdelta"] = apply_xdelta;

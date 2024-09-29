@@ -47,7 +47,8 @@ const TIED_POOL_ITEMS = {
 
 async function generateSpoiler(spoiler) {
     /** Pass spoiler to the template and modify DOM with rendered content. */
-    const templateEnv = new nunjucks.Environment();
+    //const templateEnv = new nunjucks.Environment();
+    var templateEnv = nunjucks.configure('/templates', { autoescape: true });
     templateEnv.addFilter("timeconvert", timectime);
     templateEnv.addFilter("filterId", filterId);
     templateEnv.addFilter("wothpathindex", getWotHPathIndex);
@@ -137,3 +138,4 @@ async function generateSpoiler(spoiler) {
     document.getElementById("spoiler_log_text").value = JSON.stringify(spoiler, null, 4);
     document.getElementById("spoiler_log_text").innerHTML = rendered;
 }
+window["GenerateSpoiler"] = generateSpoiler;

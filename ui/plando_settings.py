@@ -17,12 +17,10 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Lists.Item import StartingMoveOptions
-from randomizer.PlandoUtils import MoveSet
 
 import js
 import json
 from ui.bindings import bind, bindList
-from ui.generate_buttons import export_settings_string, import_settings_string
 from ui.plando_validation import (
     full_validate_no_reward_with_random_location,
     lock_key_8_in_helm,
@@ -112,7 +110,7 @@ async def import_plando_options(jsonString):
 
     if "Settings String" in fileContents.keys():
         js.settings_string.value = fileContents["Settings String"]
-        import_settings_string(None)
+        js.import_settings_string(None)
 
     # Set all of the options specified in the plando file.
     for option, value in fileContents.items():
@@ -503,7 +501,7 @@ def export_plando_options(evt):
     """Export the current plando settings to a JSON file."""
     form = js.jquery("#form").serializeArray()
     plandoData = populate_plando_options(form, True)
-    export_settings_string(None)
+    js.export_settings_string(None)
     plandoData["Settings String"] = js.settings_string.value
     js.download_json_file(plandoData, "plando_settings.json")
 
@@ -559,7 +557,7 @@ def plando_disable_starting_moves(evt):
         selectedPlandoMoves.add(PlandoItems.ProgressiveInstrumentUpgrade)
 
     # Disable all the plando moves across the dropdowns.
-    for moveName in MoveSet:
+    for moveName in js.MoveSet:
         moveEnum = PlandoItems[moveName]
         # Ignore these moves.
         if moveEnum in {PlandoItems.Camera, PlandoItems.Shockwave}:

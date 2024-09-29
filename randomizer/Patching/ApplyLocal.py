@@ -62,7 +62,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 # Store the extracted variable
                 variable_name = file_name.split(".")[0]
                 extracted_variables[variable_name] = variable_value
-    settings = Settings(js.serialize_settings(include_plando=True))
+    settings = Settings(json.loads(js.serialize_settings(include_plando=True)))
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
     if extracted_variables.get("version") is None:
