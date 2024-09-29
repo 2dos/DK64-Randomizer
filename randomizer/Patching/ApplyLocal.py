@@ -290,7 +290,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
     js.document.getElementById("spoiler_log_block").style.display = ""
-    loop.run_until_complete(js.GenerateSpoiler(spoiler))
+    loop.run_until_complete(js.GenerateSpoiler(json.dumps(spoiler)))
     js.document.getElementById("generated_seed_id").innerHTML = seed_id
     # Set the current URL to the seed ID so that it can be shared without reloading the page
     js.window.history.pushState("generated_seed", hash_id, f"/randomizer?seed_id={hash_id}")

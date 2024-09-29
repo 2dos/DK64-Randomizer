@@ -54,7 +54,7 @@ async function generateSpoiler(spoiler) {
     env.addFilter("wothpathindex", getWotHPathIndex);
 
     // Prepare spoiler data
-    let trimmed_spoiler = JSON.stringify(spoiler).replace(/\n\s*/g, "");
+    let trimmed_spoiler = spoiler.replace(/\n\s*/g, "");
     let formatted_spoiler = JSON.parse(trimmed_spoiler);
 
     // Spoiler hints data cleanup
@@ -134,7 +134,7 @@ async function generateSpoiler(spoiler) {
     }
 
     // Render template and update the DOM
-    const rendered = await env.render("spoiler_new.html.jinja2", { spoiler: formatted_spoiler, lzr_type: lzr_type });
+    const rendered = await env.render("spoiler_new.html.jinja2", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
     document.getElementById("spoiler_log_text").value = JSON.stringify(spoiler, null, 4);
     document.getElementById("spoiler_log_text").innerHTML = rendered;
 }
