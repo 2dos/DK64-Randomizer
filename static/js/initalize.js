@@ -153,10 +153,11 @@ async function try_to_load_from_args() {
   if ("seed_id" in argsDict) {
     console.log("Getting the seed from the server");
 
-    let resp = await getSeedFromServer(argsDict["seed_id"]);
+    let resp = await get_seed_from_server(argsDict["seed_id"]);
 
     // Assuming patchingResponse is available globally as an async function
-    await patchingResponse(String(resp), false);
+    // TODO: Swap to pyodide
+    //await patching_response(String(resp), false);
   }
 
   // Update the DOM: hide visual indicator and show tab-data

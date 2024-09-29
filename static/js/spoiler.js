@@ -48,10 +48,10 @@ const TIED_POOL_ITEMS = {
 async function generateSpoiler(spoiler) {
     /** Pass spoiler to the template and modify DOM with rendered content. */
     //const templateEnv = new nunjucks.Environment();
-    var templateEnv = nunjucks.configure('/templates', { autoescape: true });
-    templateEnv.addFilter("timeconvert", timectime);
-    templateEnv.addFilter("filterId", filterId);
-    templateEnv.addFilter("wothpathindex", getWotHPathIndex);
+    var env = nunjucks.configure('/templates', { autoescape: true });
+    env.addFilter("timeconvert", timectime);
+    env.addFilter("filterId", filterId);
+    env.addFilter("wothpathindex", getWotHPathIndex);
 
     // Prepare spoiler data
     let trimmed_spoiler = JSON.stringify(spoiler).replace(/\n\s*/g, "");
@@ -134,7 +134,7 @@ async function generateSpoiler(spoiler) {
     }
 
     // Render template and update the DOM
-    const rendered = await templateEnv.render("spoiler_new.html.jinja2", { spoiler: formatted_spoiler, lzr_type: lzr_type });
+    const rendered = await env.render("spoiler_new.html.jinja2", { spoiler: formatted_spoiler, lzr_type: lzr_type });
     document.getElementById("spoiler_log_text").value = JSON.stringify(spoiler, null, 4);
     document.getElementById("spoiler_log_text").innerHTML = rendered;
 }
