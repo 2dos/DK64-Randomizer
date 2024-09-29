@@ -283,7 +283,7 @@ var cosmetic_truncated_names = {
   events: [],
 };
 
-function load_music_file_from_db() {
+async function load_music_file_from_db() {
   console.log("Trying to load file from DB");
   try {
     // If we actually have a file in the DB load it
@@ -622,7 +622,7 @@ musicdatabase.onupgradeneeded = function () {
     musicdb.createObjectStore("MusicStorage", { keyPath: "music" });
   } catch {}
 };
-musicdatabase.onsuccess = function () {
+musicdatabase.onsuccess = async function () {
   load_music_file_from_db();
 };
 settingsdatabase.onupgradeneeded = function () {
@@ -651,11 +651,11 @@ seeddatabase.onupgradeneeded = function () {
   } catch {}
 };
 
-seeddatabase.onsuccess = function () {
+seeddatabase.onsuccess = async function () {
   load_old_seeds();
 };
 
-romdatabase.onsuccess = function () {
+romdatabase.onsuccess = async function () {
   load_file_from_db();
 };
 
