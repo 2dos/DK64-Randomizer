@@ -1355,29 +1355,48 @@ function initialize_sliders() {
 }
 
 function load_settings(json) {
-  for (const [key, value] of Object.entries(json)) {
-    const element = document.getElementsByName(key)[0];
-    if (!element) continue;
+  // Pre-cache all DOM elements based on the keys in json
+  const elementsCache = {};
+  for (const key in json) {
+    elementsCache[key] = document.getElementsByName(key);
+  }
 
-    if (value === "True") {
-      element.checked = true;
-    } else if (value === "False") {
-      element.checked = false;
-    } else if (key.includes("starting_move_box")) {
-      const starting_move_buttons = document.getElementsByName(key);
-      starting_move_buttons.forEach(button => {
+  for (const [key, value] of Object.entries(json)) {
+    const elements = elementsCache[key];
+    if (!elements || elements.length === 0) continue;
+    
+    const element = elements[0];
+
+    // Handle checkboxes with boolean values
+    if (value === "True" || value === "False") {
+      element.checked = value === "True";
+      continue;
+    }
+
+    // Handle radio buttons for starting_move_box
+    if (key.includes("starting_move_box")) {
+      elements.forEach(button => {
         if (button.id.includes(value)) {
           button.checked = true;
         }
       });
+      continue;
     }
 
+    // Set element value
     try {
       element.value = value;
+
+      // Replace jQuery slider handling if applicable
       if (element.hasAttribute("data-slider-value")) {
-        $("#" + key).slider("setValue", value); // Replace jQuery if possible
+        const sliderElement = document.getElementById(key);
+        if (sliderElement && typeof sliderElement.noUiSlider !== "undefined") {
+          sliderElement.noUiSlider.set(value);
+        }
       }
-      if (element.className.includes("selected")) {
+
+      // Handle select elements with class "selected"
+      if (element.classList.contains("selected")) {
         Array.from(element.options).forEach(option => {
           option.selected = value.includes(option.value);
         });
@@ -1387,6 +1406,7 @@ function load_settings(json) {
     }
   }
 }
+
 
 function trigger_ui_update() {
   const apply_preset_element = document.getElementById("apply_preset");
