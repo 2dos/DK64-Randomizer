@@ -9,7 +9,6 @@ function lanky_file_changed(event) {
         // Load the text of the patch
         const loaded_patch = e.target.result;
 
-        // TODO: Don't just assume the file is valid first
         document.getElementById("patchfileloader").classList.add("is-valid");
         window.loaded_patch = loaded_patch;
     }

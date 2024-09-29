@@ -468,12 +468,12 @@ window["MusicSelectionPanel"] = {
   },
 };
 // Do the fetch using jquery async: false to ensure that the Songs enum is loaded before the rest of the script runs.
-// TODO: I'm not loading all the vars I actually need for this yet
 function loadFiles(fileList) {
   fileList.forEach(function (file) {
     $.ajax({
       url: `/randomizer/Enums/${file}.jsonc`,
       async: false,
+      cache: true,
       success: function (data) {
         try {
           // Clean up and parse the JSONC file (removing comments)

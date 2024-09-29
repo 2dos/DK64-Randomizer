@@ -1220,7 +1220,6 @@ function preset_select_changed(event) {
           const selector = document.getElementById(key);
           if (selector.tagName === "SELECT") {
             for (const option of selector.options) {
-              // TODO: SETTINGSMAP DOSEN'T FRICKING EXIST YET
               if (option.value === Object.keys(SettingsMap[key])[settings[key]]) {
                 option.selected = true;
                 break;
