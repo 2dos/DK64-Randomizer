@@ -631,7 +631,7 @@ settingsdatabase.onupgradeneeded = function () {
     settingsdb.createObjectStore("saved_settings");
   } catch {}
 };
-settingsdatabase.onsuccess = function () {
+settingsdatabase.onsuccess = async function () {
   load_data();
 };
 // Create the schema
@@ -1280,8 +1280,8 @@ function set_preset_options() {
   update_door_two_num_access(null);
   update_win_con_num_access(null);
 
-  // Load the data
-  load_data();
+  // // Load the data
+  // load_data();
 }
 
 set_preset_options();
@@ -1313,65 +1313,28 @@ function set_random_weights_options() {
   }
 }
 set_random_weights_options();
-function load_data() {
+async function load_data() {
   try {
-    // make sure all sliders are initialized
-    for (element of document.getElementsByTagName("input")) {
-      if (element.hasAttribute("data-slider-value")) {
-        // check if the slider has already been initialized
-        if (!element.hasAttribute("data-slider-initialized")) {
-          element.setAttribute("data-slider-initialized", "true");
-          $("#" + element.name).slider();
-        }
-      }
-    }
-    var settingsdb = settingsdatabase.result;
-    transaction = settingsdb.transaction("saved_settings", "readonly");
-    objectStore = transaction.objectStore("saved_settings");
-    getRequest = objectStore.get("saved_settings");
-    getRequest.onerror = function (event) {
-      console.error("Failed to retrieve saved settings");
-    };
-    getRequest.onsuccess = function (event) {
+    initialize_sliders();
+    const settingsdb = settingsdatabase.result;
+    const transaction = settingsdb.transaction("saved_settings", "readonly");
+    const objectStore = transaction.objectStore("saved_settings");
+    const getRequest = objectStore.get("saved_settings");
+
+    getRequest.onerror = () => console.error("Failed to retrieve saved settings");
+
+    getRequest.onsuccess = () => {
       try {
         if (getRequest.result) {
-          json = JSON.parse(getRequest.result);
-          if (json !== null) {
-            for (var key in json) {
-              element = document.getElementsByName(key)[0];
-              if (json[key] == "True") {
-                element.checked = true;
-              } else if (json[key] == "False") {
-                element.checked = false;
-              } else if (key.includes("starting_move_box")) {
-                var starting_move_buttons = document.getElementsByName(key);
-                for (element of starting_move_buttons) {
-                  if (element.id.includes(json[key])) {
-                    element.checked = true;
-                  }
-                }
-              }
-              try {
-                element.value = json[key];
-                if (element.hasAttribute("data-slider-value")) {
-                  $("#" + key).slider("setValue", json[key]);
-                }
-                if (element.className.includes("selected")) {
-                  for (var i = 0; i < element.options.length; i++) {
-                    element.options[i].selected =
-                      json[key].indexOf(element.options[i].value) >= 0;
-                  }
-                }
-              } catch {}
-            }
+          const json = JSON.parse(getRequest.result);
+          if (json) {
+            load_settings(json);
           }
           savesettings();
         } else {
           preset_select_changed();
         }
-        // Once all the options and toggles are set, trigger various UI events to set up enable/disable states correctly
-        var apply_preset_element = document.getElementById("apply_preset");
-        apply_preset_element.dispatchEvent(new Event("custom-update-ui-event"));
+        trigger_ui_update();
       } catch {
         preset_select_changed();
       }
@@ -1380,4 +1343,56 @@ function load_data() {
     preset_select_changed();
   }
 }
-load_data();
+
+function initialize_sliders() {
+  const inputs = document.querySelectorAll('input[data-slider-value]');
+  inputs.forEach(input => {
+    if (!input.hasAttribute('data-slider-initialized')) {
+      input.setAttribute('data-slider-initialized', 'true');
+      $("#" + input.name).slider(); // Replace jQuery if possible with vanilla JS slider initialization
+    }
+  });
+}
+
+function load_settings(json) {
+  for (const [key, value] of Object.entries(json)) {
+    const element = document.getElementsByName(key)[0];
+    if (!element) continue;
+
+    if (value === "True") {
+      element.checked = true;
+    } else if (value === "False") {
+      element.checked = false;
+    } else if (key.includes("starting_move_box")) {
+      const starting_move_buttons = document.getElementsByName(key);
+      starting_move_buttons.forEach(button => {
+        if (button.id.includes(value)) {
+          button.checked = true;
+        }
+      });
+    }
+
+    try {
+      element.value = value;
+      if (element.hasAttribute("data-slider-value")) {
+        $("#" + key).slider("setValue", value); // Replace jQuery if possible
+      }
+      if (element.className.includes("selected")) {
+        Array.from(element.options).forEach(option => {
+          option.selected = value.includes(option.value);
+        });
+      }
+    } catch (e) {
+      console.error(`Error setting value for ${key}:`, e);
+    }
+  }
+}
+
+function trigger_ui_update() {
+  const apply_preset_element = document.getElementById("apply_preset");
+  if (apply_preset_element) {
+    apply_preset_element.dispatchEvent(new Event("custom-update-ui-event"));
+  }
+}
+
+//load_data();
