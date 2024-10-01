@@ -260,7 +260,7 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                 order = [
                     "plando",
                     "spoiler",
-                    "unk2",
+                    "pass_locked",
                     "unk3",
                     "unk4",
                     "unk5",

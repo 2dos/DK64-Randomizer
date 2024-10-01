@@ -77,7 +77,6 @@ NORMAL_KEY_FLAGS = [
     0x13D,  # Key 7
     0x17C,  # Key 8
 ]
-ENABLE_FILENAME = False
 ENABLE_ALL_KONG_TRANSFORMS = False
 ENABLE_HITSCAN = False
 DISABLE_BORDERS = False
@@ -255,6 +254,15 @@ def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_di
     passed_value = int(float_to_hex(value), 16)
     ROM_COPY.writeMultipleBytes(passed_value, 4)
 
+def writeFloatUpper(ROM_COPY, address: int, overlay: Overlay, value: float, offset_dict: dict):
+    """Write upper 16 bit portion of floating point variable to ROM."""
+    rom_start = getROMAddress(address, overlay, offset_dict)
+    if rom_start is None:
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
+    ROM_COPY.seek(rom_start)
+    passed_value = int(float_to_hex(value), 16)
+    passed_value = (passed_value >> 16) & 0xFFFF
+    ROM_COPY.writeMultipleBytes(passed_value, 2)
 
 def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offset_dict: dict):
     """Write function JAL to ROM."""
@@ -381,6 +389,28 @@ def hueShiftImageFromAddress(address: int, width: int, height: int, format: Text
     ROM().seek(address)
     ROM().writeBytes(px_data)
 
+class ColorBlindCrosshair:
+    """Store all information regarding a colorblind crosshair color data."""
+
+    def __init__(self, regular: int, homing: int, sniper: int):
+        """Initialize with given parameters."""
+        self.regular = regular
+        self.homing = homing
+        self.sniper = sniper
+
+    def writeRGBColors(self, ROM_COPY, offset_dict: dict, value: int, upper_address: int, lower_address: int):
+        """Write the RGB colors to ROM"""
+        hi = value >> 8
+        lo = ((value & 0xFF) << 8) | 0xFF
+        writeValue(ROM_COPY, upper_address, Overlay.Static, hi, offset_dict)
+        writeValue(ROM_COPY, lower_address, Overlay.Static, lo, offset_dict)
+
+CROSSHAIRS = {
+    ColorblindMode.off: ColorBlindCrosshair(0xC80000, 0x00C800, 0xFFD700),
+    ColorblindMode.prot: ColorBlindCrosshair(0x0072FF, 0xFFFFFF, 0xFDE400),
+    ColorblindMode.deut: ColorBlindCrosshair(0x318DFF, 0xFFFFFF, 0xE3A900),
+    ColorblindMode.trit: ColorBlindCrosshair(0xC72020, 0xFFFFFF, 0x13C4D8),
+}
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
@@ -521,6 +551,35 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     if holiday == Holidays.Halloween:
         writeValue(ROM_COPY, 0x800271F2, Overlay.Bonus, Model.Krossbones + 1, offset_dict)  # Green
         writeValue(ROM_COPY, 0x80027216, Overlay.Bonus, Model.RoboKremling + 1, offset_dict)  # Red
+        writeValue(ROM_COPY, 0x8075E0B8, Overlay.Static, 0x807080E0, offset_dict, 4)  # Makes isles reference Castle skybox data
+        # Chains
+        writeValue(ROM_COPY, 0x8069901A, Overlay.Static, 0xE, offset_dict) # Vine param
+        writeValue(ROM_COPY, 0x8069903A, Overlay.Static, 0xE, offset_dict) # Vine param
+        writeValue(ROM_COPY, 0x80698754, Overlay.Static, 0, offset_dict, 4) # Cancel branch
+        writeValue(ROM_COPY, 0x80698B6C, Overlay.Static, 0, offset_dict, 4) # Cancel branch
+        writeValue(ROM_COPY, 0x80698B74, Overlay.Static, 0x1000, offset_dict) # Force branch
+    elif holiday == Holidays.Christmas:
+        # Make santa visit Isles
+        writeValue(ROM_COPY, 0x8070637E, Overlay.Static, 115, offset_dict) # Moon Image
+        writeValue(ROM_COPY, 0x8075E0B8, Overlay.Static, 0x807080E0, offset_dict, 4) # Makes isles reference Castle skybox data
+        writeValue(ROM_COPY, 0x806682C8, Overlay.Static, 0x240E0004, offset_dict, 4) # Set ground sfx to snow
+        writeValue(ROM_COPY, 0x806682CC, Overlay.Static, 0x240C0004, offset_dict, 4) # Set ground sfx to snow
+        writeValue(ROM_COPY, 0x806682DC, Overlay.Static, 0x240E0004, offset_dict, 4) # Set ground sfx to snow
+
+    if settings.colorblind_mode != ColorblindMode.off:
+        writeFunction(ROM_COPY, 0x8069E968, Overlay.Static, "determineShockwaveColor", offset_dict) # Shockwave handler
+        writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict) # Force first option
+        writeValue(ROM_COPY, 0x8069E9B0, Overlay.Static, 0, offset_dict, 4) # Prevent write
+        writeValue(ROM_COPY, 0x8069E9B4, Overlay.Static, 0, offset_dict, 4) # Prevent write
+        writeValue(ROM_COPY, 0x8069E9BC, Overlay.Static, 0, offset_dict, 4) # Prevent write
+    ref_crosshair = CROSSHAIRS[settings.colorblind_mode]
+    ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.sniper, 0x806FFA92, 0x806FFA96)
+    ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FFA76, 0x806FFA7A)
+    ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.regular, 0x806FF0C6, 0x806FF0CA)
+    ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FF0AA, 0x806FF0AE)
+    if settings.remove_water_oscillation:
+        writeFunction(ROM_COPY, 0x80660994, Overlay.Static, "getOscillationDelta", offset_dict)
+        writeFunction(ROM_COPY, 0x806609BC, Overlay.Static, "getOscillationDelta", offset_dict)
 
     if settings.override_cosmetics:
         enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
@@ -1108,12 +1167,6 @@ def patchAssembly(ROM_COPY, spoiler):
     # Deathwarp Handle
     writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "WarpHandle", offset_dict)  # Check if in Helm, in which case, apply transition
     writeFunction(ROM_COPY, 0x806AD750, Overlay.Static, "beaverExtraHitHandle", offset_dict)  # Remove buff until we think of something better
-
-    if ENABLE_FILENAME:
-        writeFunction(ROM_COPY, 0x8070E1BC, Overlay.Static, "handleFilename", offset_dict)  # Handle Filename
-        writeFunction(ROM_COPY, 0x800306EC, Overlay.Menu, "filename_displaylist", offset_dict)
-        writeFunction(ROM_COPY, 0x80030704, Overlay.Menu, "filename_code", offset_dict)
-        writeFunction(ROM_COPY, 0x80030714, Overlay.Menu, "filename_init", offset_dict)
 
     if ENABLE_ALL_KONG_TRANSFORMS:
         transform_barrel_collisions = [
@@ -2381,6 +2434,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806BA5A8, Overlay.Static, 0x1D800003, offset_dict, 4)  # Fix some health oversights by making death if health <= 0 instead of == 0
     writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict)  # Change BHDM Cooldown
 
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
+        writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict) # Change fall too far threshold
+        writeFunction(ROM_COPY, 0x806D36B4, Overlay.Static, "fallDamageWrapper", offset_dict)
+        writeFunction(ROM_COPY, 0x8067F540, Overlay.Static, "transformBarrelImmunity", offset_dict)
+        writeFunction(ROM_COPY, 0x8068B178, Overlay.Static, "factoryShedFallImmunity", offset_dict)
+        
     # Increase Arcade Lives
     writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5 - Set Arcade Lives
     writeValue(ROM_COPY, 0x80024F2A, Overlay.Arcade, 0xC71B, offset_dict)

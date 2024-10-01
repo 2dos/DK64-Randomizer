@@ -106,7 +106,6 @@ extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
 extern void saveHelmHurryTime(void);
-extern void writeDefaultFilename(void);
 extern void wipeFileStats(void);
 
 extern int getHelmExit(void);
@@ -316,7 +315,6 @@ extern void handleCShifting(char* value, char limit);
 extern void initHints(void);
 extern void initHintFlags(void);
 
-extern void handleFilename(char* location, char* format, char* new_name);
 extern void initItemDictionary(void);
 extern void initActorExpansion(void);
 extern void initTextChanges(void);
@@ -438,7 +436,6 @@ extern void snideCodeHandler(void);
 extern int canPlayerClimb(void);
 
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
-extern void playBalloonWhoosh(int path_index, float* x, float* y, float* z);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
@@ -477,7 +474,6 @@ extern mtx_item static_mtx[22];
 extern int hint_pointers[35];
 extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
 extern char music_types[SONG_COUNT];
-extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;

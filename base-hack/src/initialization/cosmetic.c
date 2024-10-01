@@ -345,41 +345,6 @@ void initModelChanges(void) {
     }
 }
 
-void initSeasonalChanges(void) {
-    if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
-        *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
-
-        // Chains
-        *(short*)(0x8069901A) = 0xE; // Vine param
-        *(short*)(0x8069903A) = 0xE; // Vine param
-        *(int*)(0x80698754) = 0; // Cancel branch
-        *(int*)(0x80698B6C) = 0; // Cancel branch
-        *(short*)(0x80698B74) = 0x1000; // Force branch
-    } else if (Rando.seasonal_changes == SEASON_CHRISTMAS) {
-        // Make santa visit Isles
-        *(short*)(0x8070637E) = 115; // Moon Image
-        *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
-        *(int*)(0x806682C8) = 0x240E0004; // Set ground sfx to snow
-        *(int*)(0x806682CC) = 0x240C0004; // Set ground sfx to snow
-        *(int*)(0x806682DC) = 0x240E0004; // Set ground sfx to snow
-
-        // for (int i = 0; i < 6; i++) {
-        //     *WeatherData[i].texture_pointer = 0x173B;
-        //     WeatherData[i].width = 0x40;
-        //     WeatherData[i].height = 0x40;
-        //     WeatherData[i].codec_info = 0x0301;
-        //     WeatherData[i].frame_count = 1;
-        // }
-        // int addr = 0x80759EC4;
-        // for (int i = 0; i < 6; i++) {
-        //     *(int*)(addr + (4 * i)) = 0x8068B5D8;
-        // }
-        // *(int*)(0x80711A64) = 0x24140010;
-        // *(int*)(0x80711A5C) = 0x24140010;
-        // *(int*)(0x80711A70) = 0x24140010;
-    }
-}
-
 typedef struct shockwave_paad {
     /* 0x000 */ char unk_00[0x10];
     /* 0x010 */ rgb light_rgb;
@@ -404,53 +369,10 @@ int determineShockwaveColor(actorData* shockwave) {
     return model;
 }
 
-void writeRGBColor(int value, short* upper_address, short* lower_address) {
-    int upper = value >> 8;
-    int lower = ((value & 0xFF) << 8) | 0xFF;
-    *upper_address = upper;
-    *lower_address = lower;
-}
-
-typedef struct crosshair_colors {
-    /* 0x000 */ int regular;
-    /* 0x004 */ int homing;
-    /* 0x008 */ int sniper;
-} crosshair_colors;
-
-static const crosshair_colors crosshairs[4] = {
-    {.regular=0xC80000, .homing=0x00C800, .sniper=0xFFD700},
-    {.regular=0x0072FF, .homing=0xFFFFFF, .sniper=0xFDE400},
-    {.regular=0x318DFF, .homing=0xFFFFFF, .sniper=0xE3A900},
-    {.regular=0xC72020, .homing=0xFFFFFF, .sniper=0x13C4D8},
-};
-
-void initColorblindChanges(void) {
-    if (Rando.colorblind_mode != COLORBLIND_OFF) {
-        writeFunction(0x8069E968, &determineShockwaveColor); // Shockwave handler
-        *(short*)(0x8069E974) = 0x1000; // Force first option
-        *(int*)(0x8069E9B0) = 0; // Prevent write
-        *(int*)(0x8069E9B4) = 0; // Prevent write
-        *(int*)(0x8069E9BC) = 0; // Prevent write
-    }
-    crosshair_colors* hair = (crosshair_colors*)&crosshairs[(int)Rando.colorblind_mode];
-    if (hair) {
-        // Gun (Sniper) function
-        writeRGBColor(hair->sniper, (short*)0x806FFA92, (short*)0x806FFA96);
-        writeRGBColor(hair->homing, (short*)0x806FFA76, (short*)0x806FFA7A);
-        // Gun (No Sniper) function
-        writeRGBColor(hair->regular, (short*)0x806FF0C6, (short*)0x806FF0CA);
-        writeRGBColor(hair->homing, (short*)0x806FF0AA, (short*)0x806FF0AE);
-    }
-}
-
 void initCosmetic(void) {
     /**
      * @brief Initialize all cosmetic functionality
      * 
      */
-    // initDiscoChunky();
-    // initKrusha();
     initModelChanges();
-    initSeasonalChanges();
-    initColorblindChanges();
 }
