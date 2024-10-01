@@ -1773,8 +1773,8 @@ def Fill(spoiler: Spoiler) -> None:
     #     or Types.Key in spoiler.settings.shuffled_location_types
     # ):
     #     preplaced_items.extend(FillHelmLocations(spoiler, placed_types.copy(), preplaced_items))
-    if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
+    # if spoiler.settings.extreme_debugging:
+    #     DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
 
     # If keys are shuffled in the pool we want to ensure an item is on every boss
     # This is to support broader settings that rely on boss kills and to enable reads on the boss fill algorithm
