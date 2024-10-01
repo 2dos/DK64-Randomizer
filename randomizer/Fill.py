@@ -1763,18 +1763,18 @@ def Fill(spoiler: Spoiler) -> None:
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Miscellaneous Items")
 
-    # Now we place the (generally) filler items
-    # If Helm is having locations shuffled and we're shuffling GBs, we have to fill Helm now.
-    # This is because GBs can't be in Helm, so we might run out of locations to place them if these spots aren't filled
-    if Types.Banana in spoiler.settings.shuffled_location_types and (
-        Types.Medal in spoiler.settings.shuffled_location_types
-        or Types.Crown in spoiler.settings.shuffled_location_types
-        or Types.Fairy in spoiler.settings.shuffled_location_types
-        or Types.Key in spoiler.settings.shuffled_location_types
-    ):
-        preplaced_items.extend(FillHelmLocations(spoiler, placed_types.copy(), preplaced_items))
-    if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
+    # # Now we place the (generally) filler items
+    # # If Helm is having locations shuffled and we're shuffling GBs, we have to fill Helm now.
+    # # This is because GBs can't be in Helm, so we might run out of locations to place them if these spots aren't filled
+    # if Types.Banana in spoiler.settings.shuffled_location_types and (
+    #     Types.Medal in spoiler.settings.shuffled_location_types
+    #     or Types.Crown in spoiler.settings.shuffled_location_types
+    #     or Types.Fairy in spoiler.settings.shuffled_location_types
+    #     or Types.Key in spoiler.settings.shuffled_location_types
+    # ):
+    #     preplaced_items.extend(FillHelmLocations(spoiler, placed_types.copy(), preplaced_items))
+    # if spoiler.settings.extreme_debugging:
+    #     DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
 
     # If keys are shuffled in the pool we want to ensure an item is on every boss
     # This is to support broader settings that rely on boss kills and to enable reads on the boss fill algorithm
