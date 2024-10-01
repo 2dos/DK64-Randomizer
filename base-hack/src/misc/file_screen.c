@@ -765,9 +765,6 @@ void wipeFileStats(void) {
 	for (int i = 0; i < 5; i++) {
 		ResetExtraData(EGD_KONGIGT, i);
 	}
-	for (int i = 0; i < 8; i++) {
-		ResetExtraData(EGD_FILENAME, i);
-	}
 	ResetExtraData(EGD_HELMHURRYIGT, 0);
 	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
 }

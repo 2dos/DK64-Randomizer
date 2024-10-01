@@ -768,55 +768,47 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
     return 0;
 }
 
+typedef struct collectable_render {
+    /* 0x000 */ short cb_single; // Make sure these 3 are consecutive
+    /* 0x002 */ short coin;
+    /* 0x004 */ short cb_bunch;
+    /* 0x006 */ short kong;
+} collectable_render;
+
+static collectable_render CollectableRenderData[] = {
+    {.cb_single = 0x000D, .cb_bunch = 0x002B, .coin = 0x001D, .kong = KONG_DK},
+    {.cb_single = 0x000A, .cb_bunch = 0x0208, .coin = 0x0024, .kong = KONG_DIDDY},
+    {.cb_single = 0x001E, .cb_bunch = 0x0205, .coin = 0x0023, .kong = KONG_LANKY},
+    {.cb_single = 0x0016, .cb_bunch = 0x0207, .coin = 0x001C, .kong = KONG_TINY},
+    {.cb_single = 0x001F, .cb_bunch = 0x0206, .coin = 0x0027, .kong = KONG_CHUNKY},
+};
+
 int isCollectable(int type) {
     int player_index = FocusedPlayerIndex;
-    int kong = -1;
-    switch(type) {
-        case 0xD: // DK Single
-        case 0x1D: // DK Coin
-        case 0x2B: // DK Bunch
-            kong = KONG_DK;
-        case 0xA: // Diddy Single
-        case 0x24: // Diddy Coin
-        case 0x208: // Diddy Bunch
-            if (kong == -1) {
-                kong = KONG_DIDDY;
+    for (int i = 0; i < 5; i++) {
+        if (inShortList(type, &CollectableRenderData[i].cb_single, 3)) {
+            int kong = CollectableRenderData[i].kong;
+            if (Rando.quality_of_life.rambi_enguarde_pickup) {
+                return SwapObject[player_index].player->new_kong == kong + 2;
             }
-        case 0x1E: // Lanky Single
-        case 0x23: // Lanky Coin
-        case 0x205: // Lanky Bunch
-            if (kong == -1) {
-                kong = KONG_LANKY;
-            }
-        case 0x16: // Tiny Single
-        case 0x1C: // Tiny Coin
-        case 0x207: // Tiny Bunch
-            if (kong == -1) {
-                kong = KONG_TINY;
-            }
-        case 0x1F: // Chunky Single
-        case 0x27: // Chunky Coin
-        case 0x206: // Chunky Bunch
-            if (kong == -1) {
-                kong = KONG_CHUNKY;
-            }
-            if (kong > -1) {
-                if (Rando.quality_of_life.rambi_enguarde_pickup) {
-                    return SwapObject[player_index].player->new_kong == kong + 2;
-                }
-                return SwapObject[player_index].player->characterID == kong + 2;
-            }
-            return 1;
-        case 0x11: // Homing Crate
-            return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
-        case 0x8E: // Crystal
-            return SwapObject[player_index].player->unk_fairycam_bitfield & 2;
-        case 0x8F: // Ammo Crate
-            return MovesBase[(int)Character].weapon_bitfield & 1;
-        case 0x98: // Film
-            return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
-        case 0x56: // Oranges
-            return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+            return SwapObject[player_index].player->characterID == kong + 2;
+        }
+    }
+    if (type == 0x11) {
+        // Homing Crate
+        return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
+    } else if (type == 0x8E) {
+        // Crystal
+        return SwapObject[player_index].player->unk_fairycam_bitfield & 2;
+    } else if (type == 0x8F) {
+        // Ammo Crate
+        return MovesBase[(int)Character].weapon_bitfield & 1;
+    } else if (type == 0x98) {
+        // Film
+        return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+    } else if (type == 0x56) {
+        // Oranges
+        return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
     }
     return 1;
 }
