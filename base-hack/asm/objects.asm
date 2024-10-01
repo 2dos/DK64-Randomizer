@@ -39,7 +39,6 @@
 .importobj "obj/src_item rando_spawning.o"
 .importobj "obj/src_item rando_text.o"
 .importobj "obj/src_misc_bonus.o"
-.importobj "obj/src_misc_cutscene_database.o"
 .importobj "obj/src_misc_cutscene_remove.o"
 .importobj "obj/src_misc_enemies.o"
 .importobj "obj/src_misc_enemy_drop_table.o"

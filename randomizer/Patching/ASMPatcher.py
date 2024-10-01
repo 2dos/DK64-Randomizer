@@ -24,6 +24,7 @@ from randomizer.Enums.Settings import (
     RandomModels,
     PuzzleRando,
     WinConditionComplex,
+    ExtraCutsceneSkips,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -2013,6 +2014,75 @@ def patchAssembly(ROM_COPY, spoiler):
     ]
     for ovl in overlays_being_decompressed:
         writeValue(ROM_COPY, 0x80748E18 + ovl, Overlay.Static, 0, offset_dict, 1)
+
+    if settings.more_cutscene_skips == ExtraCutsceneSkips.off:
+        # Wipe all CS Data
+        ROM_COPY.seek(0x1FF3800)
+        for x in range(432):
+            ROM_COPY.writeMultipleBytes(0, 4)
+    else:
+        if settings.shuffle_items:
+            CUTSCENE_UNSKIPS = [
+                {
+                    # Diddy Prod Spawn
+                    "map_id":Maps.FranticFactory,
+                    "cutscene": 2
+                },
+                {
+                    # Tiny Prod Peek
+                    "map_id":Maps.FranticFactory,
+                    "cutscene": 3
+                },
+                {
+                    # Lanky Prod Peek
+                    "map_id":Maps.FranticFactory,
+                    "cutscene": 4
+                },
+                {
+                    # Chunky Prod Spawn
+                    "map_id":Maps.FranticFactory,
+                    "cutscene": 5
+                },
+                {
+                    # Free Llama
+                    "map_id":Maps.AngryAztec,
+                    "cutscene": 14
+                },
+                {
+                    # Tiny Barrel Spawn
+                    "map_id":Maps.ForestGiantMushroom,
+                    "cutscene": 0
+                },
+                {
+                    # Cannon GB Spawn
+                    "map_id":Maps.ForestGiantMushroom,
+                    "cutscene": 1
+                },
+                {
+                    # Greenhouse Intro
+                    "map_id":Maps.CastleGreenhouse,
+                    "cutscene": 0
+                },
+                {
+                    # Dungeon Lanky Trombone Bonus
+                    "map_id":Maps.CastleDungeon,
+                    "cutscene": 0
+                },
+            ]
+            for data in CUTSCENE_UNSKIPS:
+                map_id = data["map_id"]
+                cutscene = data["cutscene"]
+                shift = cutscene & 0x1F
+                offset = 0 if cutscene < 32 else 1
+                comp = 0xFFFFFFFF - (1 << shift)
+                addr = 0x1FF3800 + (8 * map_id) + (4 * offset)
+                ROM_COPY.seek(addr)
+                original = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                ROM_COPY.seek(addr)
+                ROM_COPY.writeMultipleBytes(original & comp, 4)
+        writeFunction(ROM_COPY, 0x80628508, Overlay.Static, "renderScreenTransitionCheck", offset_dict) # Remove transition effects if skipped cutscene
+        if settings.more_cutscene_skips == ExtraCutsceneSkips.press:
+            writeFunction(ROM_COPY, 0x8061DD80, Overlay.Static, "pressSkipHandler", offset_dict) # Handler for press start to skip
 
     # Music Fix
     writeValue(ROM_COPY, 0x807452B0, Overlay.Static, 0xD00, offset_dict, 4)

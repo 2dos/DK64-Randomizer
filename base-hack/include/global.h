@@ -436,8 +436,9 @@ extern void snideCodeHandler(void);
 extern int canPlayerClimb(void);
 
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
+extern void initQoL_Cutscenes(void);
 
-extern unsigned int cs_skip_db[432];
+extern unsigned int cs_skip_db[2];
 extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
