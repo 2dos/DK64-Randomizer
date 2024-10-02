@@ -111,7 +111,7 @@ int countFlagsDuplicate(int start, int count, flagtypes type) {
 
 static short flut_cache[40] = {};
 static unsigned char cache_spot = 0;
-static int flut_size = -1;
+int flut_size = -1;
 
 void cacheFlag(int input, int output) {
     /**

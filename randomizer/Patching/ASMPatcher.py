@@ -1422,6 +1422,13 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806E9C50, Overlay.Static, "updateFairyStat", offset_dict)
     writeFunction(ROM_COPY, 0x806C7298, Overlay.Static, "createEndSeqCreditsFile", offset_dict)
 
+    if isQoLEnabled(spoiler, MiscChangesSelected.remove_extraneous_cutscenes):
+        writeValue(ROM_COPY, 0x80024174, Overlay.Boss, 0, offset_dict, 4)  # Japes Dillo Long Intro
+        writeValue(ROM_COPY, 0x80025CAC, Overlay.Boss, 0, offset_dict, 4)  # Japes Dillo Long Intro
+        writeValue(ROM_COPY, 0x800291E8, Overlay.Boss, 0, offset_dict, 4)  # Generic Boss Intros
+        writeValue(ROM_COPY, 0x8002B480, Overlay.Boss, 0, offset_dict, 4)  # Fungi Dogadon Long Intro
+        writeValue(ROM_COPY, 0x80033BB4, Overlay.Boss, 0, offset_dict, 4)  # Mad Jack Long Intro
+
     writeHook(ROM_COPY, 0x8072F3DC, Overlay.Static, "blockTreeClimbing", offset_dict)
     if settings.enable_tag_anywhere:
         # Reduce TA Cooldown

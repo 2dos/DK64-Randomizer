@@ -26,23 +26,6 @@ void disableAntiAliasing(void) {
     }
 }
 
-typedef struct skipped_cutscene {
-    /* 0x000 */ unsigned char map;
-    /* 0x001 */ unsigned char cutscene;
-} skipped_cutscene;
-
-static skipped_cutscene cs_unskip[] = {
-    {.map=MAP_FACTORY, .cutscene=2}, // Diddy Prod Spawn
-    {.map=MAP_FACTORY, .cutscene=3}, // Tiny Prod Peek
-    {.map=MAP_FACTORY, .cutscene=4}, // Lanky Prod Peek
-    {.map=MAP_FACTORY, .cutscene=5}, // Chunky Prod Spawn
-    {.map=MAP_AZTEC, .cutscene=14}, // Free Llama
-    {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=0}, // Tiny Barrel Spawn
-    {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=1}, // Cannon GB Spawn
-    {.map=MAP_CASTLEGREENHOUSE, .cutscene=0}, // Greenhouse Intro
-    {.map=MAP_CASTLEDUNGEON, .cutscene=0}, // Dungeon Lanky Trombone Bonus
-};
-
 void initQoL_Cutscenes(void) {
     /**
      * @brief Initialize any quality of life features which aim to reduce the amount of cutscenes inside DK64

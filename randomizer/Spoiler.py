@@ -874,15 +874,16 @@ class Spoiler:
             humanspoiler["Shuffled Exits"] = shuffled_exits
             humanspoiler["Shuffled Exits (Sorted by destination)"] = level_data
         if self.settings.alter_switch_allocation:
+            SLAM_NAMES = ["No Slam", "Simian Slam", "Super Simian Slam", "Super Duper Simian Slam"]
             humanspoiler["Level Switch Strength"] = {
-                "Jungle Japes": self.settings.switch_allocation[Levels.JungleJapes],
-                "Angry Aztec": self.settings.switch_allocation[Levels.AngryAztec],
-                "Frantic Factory": self.settings.switch_allocation[Levels.FranticFactory],
-                "Gloomy Galleon": self.settings.switch_allocation[Levels.GloomyGalleon],
-                "Fungi Forest": self.settings.switch_allocation[Levels.FungiForest],
-                "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
-                "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
-                # "Hideout Helm": self.settings.switch_allocation[Levels.HideoutHelm],
+                "Jungle Japes": SLAM_NAMES[self.settings.switch_allocation[Levels.JungleJapes]],
+                "Angry Aztec": SLAM_NAMES[self.settings.switch_allocation[Levels.AngryAztec]],
+                "Frantic Factory": SLAM_NAMES[self.settings.switch_allocation[Levels.FranticFactory]],
+                "Gloomy Galleon": SLAM_NAMES[self.settings.switch_allocation[Levels.GloomyGalleon]],
+                "Fungi Forest": SLAM_NAMES[self.settings.switch_allocation[Levels.FungiForest]],
+                "Crystal Caves": SLAM_NAMES[self.settings.switch_allocation[Levels.CrystalCaves]],
+                "Creepy Castle": SLAM_NAMES[self.settings.switch_allocation[Levels.CreepyCastle]],
+                # "Hideout Helm": SLAM_NAMES[self.settings.switch_allocation[Levels.HideoutHelm]],
             }
 
         if len(self.microhints) > 0:

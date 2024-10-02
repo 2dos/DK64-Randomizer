@@ -455,6 +455,7 @@ extern const unsigned char crown_maps[10];
 extern const unsigned char regular_boss_maps[7];
 extern char* levels[10];
 extern unsigned int dark_mode_colors[10];
+extern int flut_size;
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;

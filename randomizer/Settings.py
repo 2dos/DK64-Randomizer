@@ -1290,8 +1290,15 @@ class Settings:
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
-            random.shuffle(allocation)
+            allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
+            if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
+                # Add an extra 3 into the calculation
+                allocation.append(3)
+                random.shuffle(allocation)
+            else:
+                # If LZR, always make Helm SDSS
+                random.shuffle(allocation)
+                allocation.append(3)
             self.switch_allocation = allocation.copy()
 
         # Mill Levers
