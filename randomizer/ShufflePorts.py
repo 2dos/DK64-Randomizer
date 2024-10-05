@@ -136,6 +136,8 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
     if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.vanilla_only:
         if not location.vanilla_port:
             return False
+        else:
+            return True
     if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.half_vanilla or (
         spoiler.settings.bananaport_placement_rando == ShufflePortLocations.on and not spoiler.settings.useful_bananaport_placement
     ):
