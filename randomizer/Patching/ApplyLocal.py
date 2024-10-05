@@ -351,7 +351,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
         {"name": "Funky's Boot (Chunky Phase)", "setting": settings.boot_cutscene_model},
     ]
 
-    if settings.colors != {} or settings.random_models != RandomModels.off:
+    if settings.colors != {} or settings.random_models != RandomModels.off or settings.misc_cosmetics:
         humanspoiler["Cosmetics"]["Colors"] = {}
         humanspoiler["Cosmetics"]["Models"] = {}
         humanspoiler["Cosmetics"]["Sprites"] = {}

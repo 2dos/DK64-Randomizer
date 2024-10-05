@@ -144,7 +144,7 @@ def patching_response(spoiler):
             level_order.append(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
         placeLevelOrder(spoiler, level_order, ROM_COPY)
 
-        vanilla_key_order = [0x1A, 0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D]
+        vanilla_key_order = [0x1A, 0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x17C]
         if Types.Key not in spoiler.settings.shuffled_location_types:
             # Append to FLUT
             for index, vanilla_key in enumerate(vanilla_key_order):
