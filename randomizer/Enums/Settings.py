@@ -808,6 +808,17 @@ class TrainingBarrels(IntEnum):
     shuffled = 1
 
 
+class ClimbingStatus(IntEnum):
+    """Determins if and how climbing is randomized.
+
+    normal: Climbing is a starting move.
+    shuffled: Climbing is an item that can be found in the world.
+    """
+
+    normal = 0
+    shuffled = 1
+
+
 class WinCondition(IntEnum):
     """The condition needed to complete the game.
 
