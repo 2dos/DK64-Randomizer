@@ -466,6 +466,11 @@ class Settings:
         # shuffled
         self.training_barrels = TrainingBarrels.normal
 
+        # climbing_status: ClimbingStatus
+        # normal
+        # shuffled
+        self.climbing_status = ClimbingStatus.normal
+
         # The status of camera & shockwave: ShockwaveStatus
         # vanilla - both located at Banana Fairy Isle
         # shuffled - located in a random valid location
@@ -777,7 +782,6 @@ class Settings:
             and Items.Barrels in self.starting_move_list_selected
             and Items.Oranges in self.starting_move_list_selected
             and Items.Swim in self.starting_move_list_selected
-            and Items.Climbing in self.starting_move_list_selected
         ):
             self.training_barrels = TrainingBarrels.normal
             if Items.Vines in self.starting_move_list_selected:
@@ -788,10 +792,13 @@ class Settings:
                 self.starting_move_list_selected.remove(Items.Oranges)
             if Items.Swim in self.starting_move_list_selected:
                 self.starting_move_list_selected.remove(Items.Swim)
-            if Items.Climbing in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Climbing)
         else:
             self.training_barrels = TrainingBarrels.shuffled
+        if not self.shuffle_items or Items.Climbing in self.starting_move_list_selected:
+            self.climbing_status = ClimbingStatus.normal
+            self.starting_move_list_selected.remove(Items.Climbing)
+        else:
+            self.climbing_status = ClimbingStatus.shuffled
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
 
         # Switchsanity handling
@@ -864,6 +871,7 @@ class Settings:
         if self.move_rando == MoveRando.start_with:
             self.starting_moves_count = 41
             self.training_barrels = TrainingBarrels.normal
+            self.climbing_status = ClimbingStatus.normal
             self.shockwave_status = ShockwaveStatus.start_with
 
         # Krusha Kong
@@ -1150,6 +1158,7 @@ class Settings:
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
+                if self.climbing_status != ClimbingStatus.normal:
                     self.shuffled_location_types.append(Types.Climbing)
                 self.shuffled_location_types.append(Types.PreGivenMove)
             if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
@@ -1657,7 +1666,7 @@ class Settings:
             for location_id in WrinklyHintLocations:
                 spoiler.LocationList[location_id].inaccessible = True
 
-        if Types.Climbing in self.shuffled_location_types:
+        if self.climbing_status == ClimbingStatus.shuffled:
             spoiler.LocationList[Locations.IslesClimbing].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
@@ -1764,6 +1773,7 @@ class Settings:
                     self.valid_locations[Types.Shop][kong].update(PreGivenLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
+            self.valid_locations[Types.Climbing] = self.valid_locations[Types.Shop][Kongs.any]
 
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
@@ -1775,7 +1785,7 @@ class Settings:
             shuffledLocationsShopOwner = [
                 location
                 for location in shuffledLocations  # Placing a shop owner in a shop owner location is boring and we don't want to do it ever
-                if spoiler.LocationList[location].type not in (Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.NintendoCoin, Types.RarewareCoin)
+                if spoiler.LocationList[location].type not in (Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.Climbing, Types.NintendoCoin, Types.RarewareCoin)
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]
@@ -1795,6 +1805,8 @@ class Settings:
                     self.valid_locations[Types.Shockwave] = locations_excluding_kong_shops.copy()
                 if Types.TrainingBarrel in self.shuffled_location_types:
                     self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops.copy()
+                if Types.Climbing in self.shuffled_location_types:
+                    self.valid_locations[Types.Climbing] = locations_excluding_kong_shops.copy()
                 self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops.copy()
                 # Kong-specific moves can go in any non-shared shop location
                 locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
@@ -1841,7 +1853,7 @@ class Settings:
                 self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner.copy() if spoiler.LocationList[x].level != Levels.HideoutHelm]
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
-                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)
+                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
                 ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (

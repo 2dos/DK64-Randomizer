@@ -24,6 +24,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
     CBRando,
+    ClimbingStatus,
     FasterChecksSelected,
     FillAlgorithm,
     FungiTimeSetting,
@@ -365,7 +366,7 @@ def GetAccessibleLocations(
                         if searchType == SearchMode.GeneratePlaythrough:
                             levelExitTransitionId = GetLevelExitTransition(region)
                             if levelExitTransitionId not in spoiler.playthroughTransitionOrder:
-                                spoiler.playthroughTransitionOrder.append(exit.exitShuffleId)
+                                spoiler.playthroughTransitionOrder.append(levelExitTransitionId)
                 # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
                 elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops:
                     levelLobby = GetLobbyOfRegion(region)
@@ -849,6 +850,8 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.extend(ItemPool.SnideItems())
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.climbing_status != ClimbingStatus.normal:
+        majorItems.extend(ItemPool.ClimbingAbilities())
     if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
         majorItems.append(Items.CameraAndShockwave)
     if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
@@ -1046,6 +1049,8 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     regionCountHintableItems.extend(ItemPool.JunkSharedMoves)
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         regionCountHintableItems.extend(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.climbing_status != ClimbingStatus.normal:
+        regionCountHintableItems.extend(ItemPool.ClimbingAbilities())
     if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
         regionCountHintableItems.append(Items.CameraAndShockwave)
     if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
@@ -1064,7 +1069,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     for id, region in spoiler.RegionList.items():
         locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys() and not loc.isAuxiliaryLocation]
         # If this region's valid locations (exclude starting moves) DO contain a major item, add it the name to the set of non-hintable hint regions
-        if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in MajorItems]):
+        if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in MajorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
         elif region.isMedalRegion() and region.level not in (Levels.DKIsles, Levels.HideoutHelm):
@@ -1074,7 +1079,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
         if not region.isShopRegion() and region.hint_name not in neverHintableNames:
             # Count the number of region count hintable items in the region (again, ignore training moves)
-            regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in regionCountHintableItems)
+            regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in regionCountHintableItems)
             if regionItemCount > 0:
                 # If we need to create a new entry due to this region, do so
                 if region.hint_name not in spoiler.region_hintable_count.keys():
@@ -1092,6 +1097,8 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     shuffledPotionItems = set(ItemPool.AllKongMoves())
     if spoiler.settings.training_barrels != TrainingBarrels.normal:  # If the training barrels aren't shuffled, they don't end up in the WotH so watch out
         shuffledPotionItems.update(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.climbing_status != ClimbingStatus.normal:
+        shuffledPotionItems.update(ItemPool.ClimbingAbilities())
     if spoiler.settings.shockwave_status not in (ShockwaveStatus.start_with, ShockwaveStatus.shuffled_decoupled):
         shuffledPotionItems.add(Items.CameraAndShockwave)
     elif spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
@@ -1344,7 +1351,7 @@ def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
                 startKongList.append(x.name.capitalize())
             for i, kong in enumerate(startKongList):
                 currentKongsFreed.insert(i, kong)
-            currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)]
+            currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing)]
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
@@ -1464,6 +1471,8 @@ def GetUnplacedItemPrerequisites(spoiler: Spoiler, targetItemId, placedMoves, ow
     # Often moves require training barrels as prerequisites
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         moveList.extend(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.climbing_status != ClimbingStatus.normal:
+        moveList.extend(ItemPool.ClimbingAbilities())
     # We only want *unplaced* prerequisites, cull all placed moves from the move list
     for move in placedMoves:
         if move in moveList:
@@ -1696,6 +1705,7 @@ def Fill(spoiler: Spoiler) -> None:
         preplaced_items.extend(FillTrainingMoves(spoiler, preplaced_items))
         placed_types.append(Types.Shop)
         placed_types.append(Types.TrainingBarrel)
+        placed_types.append(Types.Climbing)
         placed_types.append(Types.Shockwave)
         placed_types.append(Types.Key)
         bigListOfItemsToPlace = []
@@ -1709,6 +1719,8 @@ def Fill(spoiler: Spoiler) -> None:
             bigListOfItemsToPlace.extend(ItemPool.ChunkyMoves)
             if spoiler.settings.training_barrels != TrainingBarrels.normal:
                 bigListOfItemsToPlace.extend(ItemPool.TrainingBarrelAbilities())
+            if spoiler.settings.climbing_status != ClimbingStatus.normal:
+                bigListOfItemsToPlace.extend(ItemPool.ClimbingAbilities())
             if spoiler.settings.shockwave_status not in (ShockwaveStatus.start_with, ShockwaveStatus.vanilla):
                 bigListOfItemsToPlace.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         if Types.Key in spoiler.settings.shuffled_location_types:
@@ -1982,6 +1994,8 @@ def FillTrainingMoves(spoiler: Spoiler, placedMoves: List[Items]):
             possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
         if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
             possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
+        if spoiler.settings.climbing_status == ClimbingStatus.shuffled:
+            possibleStartingMoves.extend(ItemPool.ClimbingAbilities())
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         # Any placed items placed before this method can't be random starting items
@@ -2044,13 +2058,15 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         # First place training moves that are not placed. These should be the first moves placed outside of starting moves. Placement order is in relative importance.
-        training = [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges, Items.Climbing]
-        trainingMovesToPlace = [move for move in training if move not in placedMoves]
-        assumedItems = [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves) if x not in trainingMovesToPlace]
-        trainingMovesUnplaced = PlaceItems(spoiler, FillAlgorithm.assumed, trainingMovesToPlace, assumedItems, inOrder=True)
-        if trainingMovesUnplaced > 0:
-            raise Ex.ItemPlacementException("Failed to place training barrel moves.")
-        placedMoves.extend(ItemPool.TrainingBarrelAbilities())
+        training = [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges]
+    if spoiler.settings.climbing_status != ClimbingStatus.normal:
+        training.append(Items.Climbing)
+    trainingMovesToPlace = [move for move in training if move not in placedMoves]
+    assumedItems = [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves) if x not in trainingMovesToPlace]
+    trainingMovesUnplaced = PlaceItems(spoiler, FillAlgorithm.assumed, trainingMovesToPlace, assumedItems, inOrder=True)
+    if trainingMovesUnplaced > 0:
+        raise Ex.ItemPlacementException("Failed to place training barrel moves.")
+    placedMoves.extend(training)
     importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
     # Next place any fairy moves that need placing, settings dependent
     if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled and Items.CameraAndShockwave not in placedMoves:
@@ -2402,6 +2418,7 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
     # Handle remaining moves/items
     placedTypes.append(Types.Shop)
     placedTypes.append(Types.TrainingBarrel)
+    placedTypes.append(Types.Climbing)
     placedTypes.append(Types.Shockwave)
     spoiler.Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in placedMoves]
@@ -2618,7 +2635,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
             for x in accessible
             if spoiler.LocationList[x].item != Items.NoItem
             and spoiler.LocationList[x].item is not None
-            and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+            and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Climbing)
         ]
         ownedMoves[thisLevel] = accessibleMoves
     settings.BLockerEntryCount = blocker_value_projection
@@ -2673,6 +2690,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     allMoves.extend(ItemPool.ChunkyMoves)
     allMoves.extend(ItemPool.ImportantSharedMoves)
     allMoves.extend(ItemPool.TrainingBarrelAbilities())
+    allMoves.extend(ItemPool.ClimbingAbilities())
     KeyEvents = [
         Events.JapesKeyTurnedIn,
         Events.AztecKeyTurnedIn,
@@ -2918,7 +2936,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                     for x in accessible
                     if spoiler.LocationList[x].item != Items.NoItem
                     and spoiler.LocationList[x].item is not None
-                    and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+                    and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Climbing)
                 ]
                 ownedMoves[bossCompletedLevel] = accessibleMoves
                 # After unblocking this level's T&S, the next loop needs the logic variables to know new lobbies are accessible

@@ -261,7 +261,7 @@ def getTextRewardIndex(item) -> int:
         return 5
     elif item.new_item == Types.NintendoCoin:
         return 6
-    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing):
         return 8
     elif item.new_item in (Types.Snide, Types.Cranky, Types.Candy, Types.Funky):
         return 15
@@ -325,7 +325,7 @@ def getActorIndex(item):
             Items.IceTrapSlow: CustomActors.IceTrapSlow,
         }
         return trap_types.get(item.new_subitem, CustomActors.IceTrapBubble)
-    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing):
         if (item.new_flag & 0x8000) == 0:
             slot = 5
         else:
@@ -513,7 +513,7 @@ def place_randomized_items(spoiler, original_flut: list):
                         if item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
                                 arcade_reward_index = kong_flags.index(item.new_flag) + 15
-                        elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
+                        elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
                             if (item.new_flag & 0x8000) == 0:
                                 slot = 5
                             else:
@@ -544,7 +544,7 @@ def place_randomized_items(spoiler, original_flut: list):
                             Types.JunkItem,
                         )
                         jetpac_reward_index = 0
-                        if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
+                        if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
                             jetpac_reward_index = 9
                         elif item.new_item in jetpac_rewards:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)
@@ -692,6 +692,8 @@ def place_randomized_items(spoiler, original_flut: list):
                             ROM_COPY.write(medal_index)
                         elif item.new_item == Types.RarewareCoin:
                             ROM_COPY.write(slots.index(Types.NintendoCoin))
+                        elif item.new_item == Types.Climbing:
+                            ROM_COPY.write(slots.index(Types.TrainingBarrel))
                         elif item.new_item == Types.FakeItem:
                             trap_types = {
                                 Items.IceTrapBubble: 16,
