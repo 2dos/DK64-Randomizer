@@ -194,6 +194,7 @@ class Spoiler:
             Types.Shop: "Moves",
             Types.Shockwave: "Moves",
             Types.TrainingBarrel: "Moves",
+            Types.Climbing: "Moves",
             Types.Banana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
             Types.Fairy: "Fairies",

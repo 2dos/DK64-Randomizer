@@ -29,6 +29,7 @@ model_two_indexes = {
     Types.Medal: 0x90,
     Types.Shop: [0x5B, 0x1F2, 0x59, 0x1F3, 0x1F5, 0x1F6],
     Types.TrainingBarrel: 0x1F6,
+    Types.Climbing: 0x1F6,
     Types.Shockwave: 0x1F6,
     Types.NoItem: 0,  # No Item
     Types.Kong: [0x257, 0x258, 0x259, 0x25A, 0x25B],
@@ -55,6 +56,7 @@ model_two_scales = {
     Types.Medal: 0.22,
     Types.Shop: 0.25,
     Types.TrainingBarrel: 0.25,
+    Types.Climbing: 0.25,
     Types.Shockwave: 0.25,
     Types.NoItem: 0.25,  # No Item
     Types.Kong: 0.25,
@@ -104,6 +106,7 @@ model_indexes = {
     Types.Shop: [0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB],
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
+    Types.Climbing: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
     Types.FakeItem: [-4, -3, -2],  # -4 for bubble trap, -3 for reverse trap, -2 for slow trap
     Types.Bean: 0x104,
@@ -196,6 +199,7 @@ text_rewards = {
     Types.Shop: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
     Types.Shockwave: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
     Types.TrainingBarrel: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
+    Types.Climbing: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
     Types.Kong: ("\x04KONG\x04", "\x04WEIRD MONKEY\x04"),
     Types.Bean: ("\x04BEAN\x04", "\x04QUESTIONABLE VEGETABLE\x04"),
     Types.Pearl: ("\x04PEARL\x04", "\x04BLACK PEARL\x04"),
@@ -261,7 +265,7 @@ def getTextRewardIndex(item) -> int:
         return 5
     elif item.new_item == Types.NintendoCoin:
         return 6
-    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing):
         return 8
     elif item.new_item in (Types.Snide, Types.Cranky, Types.Candy, Types.Funky):
         return 15
@@ -325,7 +329,7 @@ def getActorIndex(item):
             Items.IceTrapSlow: CustomActors.IceTrapSlow,
         }
         return trap_types.get(item.new_subitem, CustomActors.IceTrapBubble)
-    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing):
         if (item.new_flag & 0x8000) == 0:
             slot = 5
         else:
@@ -513,7 +517,7 @@ def place_randomized_items(spoiler, original_flut: list):
                         if item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
                                 arcade_reward_index = kong_flags.index(item.new_flag) + 15
-                        elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
+                        elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
                             if (item.new_flag & 0x8000) == 0:
                                 slot = 5
                             else:
@@ -537,14 +541,14 @@ def place_randomized_items(spoiler, original_flut: list):
                             Types.Key,
                             Types.Medal,
                             Types.Pearl,
-                            Types.Shop,  # Shockwave/Training handled separately
+                            Types.Shop,  # Shockwave/Training/Climbing handled separately
                             Types.Kong,
                             Types.RainbowCoin,
                             Types.NintendoCoin,  # Flag check handled separately
                             Types.JunkItem,
                         )
                         jetpac_reward_index = 0
-                        if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
+                        if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
                             jetpac_reward_index = 9
                         elif item.new_item in jetpac_rewards:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)
@@ -692,6 +696,8 @@ def place_randomized_items(spoiler, original_flut: list):
                             ROM_COPY.write(medal_index)
                         elif item.new_item == Types.RarewareCoin:
                             ROM_COPY.write(slots.index(Types.NintendoCoin))
+                        elif item.new_item == Types.Climbing:
+                            ROM_COPY.write(slots.index(Types.TrainingBarrel))
                         elif item.new_item == Types.FakeItem:
                             trap_types = {
                                 Items.IceTrapBubble: 16,

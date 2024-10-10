@@ -1176,7 +1176,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.JapesBeyondFeatherGate,
         vanilla=True,
-        logic=lambda l: l.hunkyChunky,
+        logic=lambda l: l.climbing and l.hunkyChunky,
         locations=[
             [5, 2.5199995040893555, 2255.0244140625, 721.3333129882812, 3265.194091796875],
             [5, 2.5199995040893555, 2441.914794921875, 721.3333129882812, 3198.7529296875],

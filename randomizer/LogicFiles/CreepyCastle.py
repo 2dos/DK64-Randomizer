@@ -105,7 +105,7 @@ LogicRegions = {
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleWaterfallToUpper),
     ]),
 
-    Regions.CastleTree: Region("Castle Tree", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
+    Regions.CastleTree: Region("Castle Tree", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, -1, [  # Deathwarp as long as Main to CastleTreeDrain doesn't become a thing
         LocationLogic(Locations.CastleDonkeyTree, lambda l: ((l.scope and l.coconut) or l.generalclips or l.phasewalk) and l.isdonkey),
         LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.settings.hard_shooting) and l.pineapple and l.punch and l.ischunky) or l.phasewalk) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatTree, lambda l: not l.settings.kasplat_rando and (l.coconut or l.phasewalk or l.generalclips) and l.isdonkey),

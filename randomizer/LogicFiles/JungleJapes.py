@@ -149,7 +149,7 @@ LogicRegions = {
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", HintRegion.HiveTunnel, Levels.JungleJapes, True, None, [
         LocationLogic(Locations.JapesTinyStump, lambda l: (((l.mini and l.istiny) or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)) and l.istiny)),
-        LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.climbing and l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.JapesMainEnemy_Hive0, lambda l: True),
         LocationLogic(Locations.JapesMainEnemy_Hive1, lambda l: True),
         LocationLogic(Locations.JapesMainEnemy_Hive2, lambda l: True),

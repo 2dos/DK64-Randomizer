@@ -76,7 +76,7 @@
 | In Rambi hut (Tiny) | 5 | `Events.Rambi in l.Events` | 
 | On treetops (Tag barrel side) (Diddy) | 10 | `l.climbing` | 
 | Inside cage with Rambi Box (Donkey) | 5 | `l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk` | 
-| On 4 trees in Beehive area (Chunky) | 20 | `l.hunkyChunky` | 
+| On 4 trees in Beehive area (Chunky) | 20 | `l.climbing and l.hunkyChunky` | 
 | On treetop by Funky (Donkey) | 5 | `l.climbing` | 
 | On treetop by cannon (Donkey) | 5 | `l.climbing` | 
 | Underwater bunches (Diddy) | 10 | `l.swim` | 
