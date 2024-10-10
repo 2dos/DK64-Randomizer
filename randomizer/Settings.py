@@ -796,7 +796,8 @@ class Settings:
             self.training_barrels = TrainingBarrels.shuffled
         if not self.shuffle_items or Items.Climbing in self.starting_move_list_selected:
             self.climbing_status = ClimbingStatus.normal
-            self.starting_move_list_selected.remove(Items.Climbing)
+            if Items.Climbing in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.Climbing)
         else:
             self.climbing_status = ClimbingStatus.shuffled
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
