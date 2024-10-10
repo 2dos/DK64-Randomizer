@@ -1048,7 +1048,7 @@ def getHolidaySetting(settings):
 def getHoliday(settings):
     """Get the holiday experienced."""
     if getHolidaySetting(settings):
-        return Holidays.Anniv25
+        return Holidays.Halloween
     return Holidays.no_holiday
 
 
