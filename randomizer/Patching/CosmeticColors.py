@@ -4066,6 +4066,7 @@ class PaintingData:
         self.texture_order = texture_order.copy()
         self.name = None
 
+
 def writeCustomPaintings(settings: Settings) -> None:
     """Write custom painting files to ROM."""
     if js.cosmetics is None:

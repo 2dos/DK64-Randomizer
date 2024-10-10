@@ -1,4 +1,5 @@
 """Builds Cutscene Database from CSV."""
+
 from BuildLib import newROMName
 
 csv_file = "assets/cutscenes/cutscenes_skipped.csv"

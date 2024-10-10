@@ -134,6 +134,7 @@ def hueShift(im, amount):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+
 def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int):
     """Change image to a CI texture."""
 
@@ -146,7 +147,7 @@ def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int
         im_f = im_f.convert("P", palette=Image.ADAPTIVE, colors=color_count)
     palette_indexes = list(im_f.getdata())
     palette = im_f.getpalette()
-    palette_colors = [tuple(palette[i:i+3]) for i in range(0, len(palette), 3)]
+    palette_colors = [tuple(palette[i : i + 3]) for i in range(0, len(palette), 3)]
     rgba5551_values = []
     for color in palette_colors:
         colv = 0
@@ -165,7 +166,7 @@ def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int
             if (index & 1) == 0:
                 output_value = (value & 0xF) << 4
             else:
-                output_value |= (value & 0xF)
+                output_value |= value & 0xF
                 tex_bin.append(output_value)
     pal_bin = []
     for half in rgba5551_values:

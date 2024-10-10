@@ -255,6 +255,7 @@ def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_di
     passed_value = int(float_to_hex(value), 16)
     ROM_COPY.writeMultipleBytes(passed_value, 4)
 
+
 def writeFloatUpper(ROM_COPY, address: int, overlay: Overlay, value: float, offset_dict: dict):
     """Write upper 16 bit portion of floating point variable to ROM."""
     rom_start = getROMAddress(address, overlay, offset_dict)
@@ -264,6 +265,7 @@ def writeFloatUpper(ROM_COPY, address: int, overlay: Overlay, value: float, offs
     passed_value = int(float_to_hex(value), 16)
     passed_value = (passed_value >> 16) & 0xFFFF
     ROM_COPY.writeMultipleBytes(passed_value, 2)
+
 
 def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offset_dict: dict):
     """Write function JAL to ROM."""
@@ -390,6 +392,7 @@ def hueShiftImageFromAddress(address: int, width: int, height: int, format: Text
     ROM().seek(address)
     ROM().writeBytes(px_data)
 
+
 class ColorBlindCrosshair:
     """Store all information regarding a colorblind crosshair color data."""
 
@@ -406,12 +409,14 @@ class ColorBlindCrosshair:
         writeValue(ROM_COPY, upper_address, Overlay.Static, hi, offset_dict)
         writeValue(ROM_COPY, lower_address, Overlay.Static, lo, offset_dict)
 
+
 CROSSHAIRS = {
     ColorblindMode.off: ColorBlindCrosshair(0xC80000, 0x00C800, 0xFFD700),
     ColorblindMode.prot: ColorBlindCrosshair(0x0072FF, 0xFFFFFF, 0xFDE400),
     ColorblindMode.deut: ColorBlindCrosshair(0x318DFF, 0xFFFFFF, 0xE3A900),
     ColorblindMode.trit: ColorBlindCrosshair(0xC72020, 0xFFFFFF, 0x13C4D8),
 }
+
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     """Patch assembly instructions that pertain to cosmetic changes."""
@@ -554,25 +559,25 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         writeValue(ROM_COPY, 0x80027216, Overlay.Bonus, Model.RoboKremling + 1, offset_dict)  # Red
         writeValue(ROM_COPY, 0x8075E0B8, Overlay.Static, 0x807080E0, offset_dict, 4)  # Makes isles reference Castle skybox data
         # Chains
-        writeValue(ROM_COPY, 0x8069901A, Overlay.Static, 0xE, offset_dict) # Vine param
-        writeValue(ROM_COPY, 0x8069903A, Overlay.Static, 0xE, offset_dict) # Vine param
-        writeValue(ROM_COPY, 0x80698754, Overlay.Static, 0, offset_dict, 4) # Cancel branch
-        writeValue(ROM_COPY, 0x80698B6C, Overlay.Static, 0, offset_dict, 4) # Cancel branch
-        writeValue(ROM_COPY, 0x80698B74, Overlay.Static, 0x1000, offset_dict) # Force branch
+        writeValue(ROM_COPY, 0x8069901A, Overlay.Static, 0xE, offset_dict)  # Vine param
+        writeValue(ROM_COPY, 0x8069903A, Overlay.Static, 0xE, offset_dict)  # Vine param
+        writeValue(ROM_COPY, 0x80698754, Overlay.Static, 0, offset_dict, 4)  # Cancel branch
+        writeValue(ROM_COPY, 0x80698B6C, Overlay.Static, 0, offset_dict, 4)  # Cancel branch
+        writeValue(ROM_COPY, 0x80698B74, Overlay.Static, 0x1000, offset_dict)  # Force branch
     elif holiday == Holidays.Christmas:
         # Make santa visit Isles
-        writeValue(ROM_COPY, 0x8070637E, Overlay.Static, 115, offset_dict) # Moon Image
-        writeValue(ROM_COPY, 0x8075E0B8, Overlay.Static, 0x807080E0, offset_dict, 4) # Makes isles reference Castle skybox data
-        writeValue(ROM_COPY, 0x806682C8, Overlay.Static, 0x240E0004, offset_dict, 4) # Set ground sfx to snow
-        writeValue(ROM_COPY, 0x806682CC, Overlay.Static, 0x240C0004, offset_dict, 4) # Set ground sfx to snow
-        writeValue(ROM_COPY, 0x806682DC, Overlay.Static, 0x240E0004, offset_dict, 4) # Set ground sfx to snow
+        writeValue(ROM_COPY, 0x8070637E, Overlay.Static, 115, offset_dict)  # Moon Image
+        writeValue(ROM_COPY, 0x8075E0B8, Overlay.Static, 0x807080E0, offset_dict, 4)  # Makes isles reference Castle skybox data
+        writeValue(ROM_COPY, 0x806682C8, Overlay.Static, 0x240E0004, offset_dict, 4)  # Set ground sfx to snow
+        writeValue(ROM_COPY, 0x806682CC, Overlay.Static, 0x240C0004, offset_dict, 4)  # Set ground sfx to snow
+        writeValue(ROM_COPY, 0x806682DC, Overlay.Static, 0x240E0004, offset_dict, 4)  # Set ground sfx to snow
 
     if settings.colorblind_mode != ColorblindMode.off:
-        writeFunction(ROM_COPY, 0x8069E968, Overlay.Static, "determineShockwaveColor", offset_dict) # Shockwave handler
-        writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict) # Force first option
-        writeValue(ROM_COPY, 0x8069E9B0, Overlay.Static, 0, offset_dict, 4) # Prevent write
-        writeValue(ROM_COPY, 0x8069E9B4, Overlay.Static, 0, offset_dict, 4) # Prevent write
-        writeValue(ROM_COPY, 0x8069E9BC, Overlay.Static, 0, offset_dict, 4) # Prevent write
+        writeFunction(ROM_COPY, 0x8069E968, Overlay.Static, "determineShockwaveColor", offset_dict)  # Shockwave handler
+        writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict)  # Force first option
+        writeValue(ROM_COPY, 0x8069E9B0, Overlay.Static, 0, offset_dict, 4)  # Prevent write
+        writeValue(ROM_COPY, 0x8069E9B4, Overlay.Static, 0, offset_dict, 4)  # Prevent write
+        writeValue(ROM_COPY, 0x8069E9BC, Overlay.Static, 0, offset_dict, 4)  # Prevent write
     ref_crosshair = CROSSHAIRS[settings.colorblind_mode]
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.sniper, 0x806FFA92, 0x806FFA96)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FFA76, 0x806FFA7A)
@@ -2034,48 +2039,48 @@ def patchAssembly(ROM_COPY, spoiler):
             CUTSCENE_UNSKIPS = [
                 {
                     # Diddy Prod Spawn
-                    "map_id":Maps.FranticFactory,
-                    "cutscene": 2
+                    "map_id": Maps.FranticFactory,
+                    "cutscene": 2,
                 },
                 {
                     # Tiny Prod Peek
-                    "map_id":Maps.FranticFactory,
-                    "cutscene": 3
+                    "map_id": Maps.FranticFactory,
+                    "cutscene": 3,
                 },
                 {
                     # Lanky Prod Peek
-                    "map_id":Maps.FranticFactory,
-                    "cutscene": 4
+                    "map_id": Maps.FranticFactory,
+                    "cutscene": 4,
                 },
                 {
                     # Chunky Prod Spawn
-                    "map_id":Maps.FranticFactory,
-                    "cutscene": 5
+                    "map_id": Maps.FranticFactory,
+                    "cutscene": 5,
                 },
                 {
                     # Free Llama
-                    "map_id":Maps.AngryAztec,
-                    "cutscene": 14
+                    "map_id": Maps.AngryAztec,
+                    "cutscene": 14,
                 },
                 {
                     # Tiny Barrel Spawn
-                    "map_id":Maps.ForestGiantMushroom,
-                    "cutscene": 0
+                    "map_id": Maps.ForestGiantMushroom,
+                    "cutscene": 0,
                 },
                 {
                     # Cannon GB Spawn
-                    "map_id":Maps.ForestGiantMushroom,
-                    "cutscene": 1
+                    "map_id": Maps.ForestGiantMushroom,
+                    "cutscene": 1,
                 },
                 {
                     # Greenhouse Intro
-                    "map_id":Maps.CastleGreenhouse,
-                    "cutscene": 0
+                    "map_id": Maps.CastleGreenhouse,
+                    "cutscene": 0,
                 },
                 {
                     # Dungeon Lanky Trombone Bonus
-                    "map_id":Maps.CastleDungeon,
-                    "cutscene": 0
+                    "map_id": Maps.CastleDungeon,
+                    "cutscene": 0,
                 },
             ]
             for data in CUTSCENE_UNSKIPS:
@@ -2089,9 +2094,9 @@ def patchAssembly(ROM_COPY, spoiler):
                 original = int.from_bytes(ROM_COPY.readBytes(4), "big")
                 ROM_COPY.seek(addr)
                 ROM_COPY.writeMultipleBytes(original & comp, 4)
-        writeFunction(ROM_COPY, 0x80628508, Overlay.Static, "renderScreenTransitionCheck", offset_dict) # Remove transition effects if skipped cutscene
+        writeFunction(ROM_COPY, 0x80628508, Overlay.Static, "renderScreenTransitionCheck", offset_dict)  # Remove transition effects if skipped cutscene
         if settings.more_cutscene_skips == ExtraCutsceneSkips.press:
-            writeFunction(ROM_COPY, 0x8061DD80, Overlay.Static, "pressSkipHandler", offset_dict) # Handler for press start to skip
+            writeFunction(ROM_COPY, 0x8061DD80, Overlay.Static, "pressSkipHandler", offset_dict)  # Handler for press start to skip
 
     # Music Fix
     writeValue(ROM_COPY, 0x807452B0, Overlay.Static, 0xD00, offset_dict, 4)
@@ -2331,16 +2336,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x800331AA, Overlay.Boss, 0x4220, offset_dict)  # Random Square
     writeValue(ROM_COPY, 0x800339EE, Overlay.Boss, 0x4220, offset_dict)  # Stationary
 
-    MJ_FAST_SPEED = 3
     if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack):
         # MJ Fast Jumps
-        writeFloat(ROM_COPY, 0x80036C40, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # Phase 1 Jump speed
-        writeFloat(ROM_COPY, 0x80036C44, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # Phase 2
-        writeFloat(ROM_COPY, 0x80036C48, Overlay.Boss, MJ_FAST_SPEED, offset_dict)  # ...
-        writeFloat(ROM_COPY, 0x80036C4C, Overlay.Boss, MJ_FAST_SPEED, offset_dict)
-        writeFloat(ROM_COPY, 0x80036C50, Overlay.Boss, MJ_FAST_SPEED, offset_dict)
+        for x in range(5):
+            speed = 2 if x == 0 else 3
+            writeFloat(ROM_COPY, 0x80036C40 + (4 * x), Overlay.Boss, speed, offset_dict)  # Phase x Jump speed
         writeValue(ROM_COPY, 0x8003343A, Overlay.Boss, 0x224, offset_dict)  # Force fast jumps
 
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.k_rool_toes_rando):
         # Random Toes
         for x in range(5):
             writeValue(ROM_COPY, 0x80036950 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x], offset_dict, 1)
@@ -2514,11 +2517,11 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict)  # Change BHDM Cooldown
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
-        writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict) # Change fall too far threshold
+        writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold
         writeFunction(ROM_COPY, 0x806D36B4, Overlay.Static, "fallDamageWrapper", offset_dict)
         writeFunction(ROM_COPY, 0x8067F540, Overlay.Static, "transformBarrelImmunity", offset_dict)
         writeFunction(ROM_COPY, 0x8068B178, Overlay.Static, "factoryShedFallImmunity", offset_dict)
-        
+
     # Increase Arcade Lives
     writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5 - Set Arcade Lives
     writeValue(ROM_COPY, 0x80024F2A, Overlay.Arcade, 0xC71B, offset_dict)
