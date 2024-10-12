@@ -32,6 +32,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
+    ClimbingStatus,
     DamageAmount,
     FasterChecksSelected,
     GlitchesSelected,
@@ -125,7 +126,7 @@ class LogicVarHolder:
         self.swim = self.settings.training_barrels == TrainingBarrels.normal
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
-        self.climbing = self.settings.training_barrels == TrainingBarrels.normal
+        self.climbing = self.settings.climbing_status == ClimbingStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         self.progDonkey = 0

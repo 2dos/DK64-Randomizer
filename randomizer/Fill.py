@@ -1694,7 +1694,7 @@ def Fill(spoiler: Spoiler) -> None:
                 rainbowCoinsToPlace.remove(item)
         rcoinUnplaced = PlaceItems(spoiler, FillAlgorithm.random, rainbowCoinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if rcoinUnplaced > 0:
-            raise Ex.ItemPlacementException(str(rcoinUnplaced) + " unplaced Rainbow Coins.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(rcoinUnplaced) + " Rainbow Coins.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Rainbow Coins")
 
@@ -1742,7 +1742,7 @@ def Fill(spoiler: Spoiler) -> None:
                 bigListOfItemsToPlace.remove(item)
         unplaced = PlaceItems(spoiler, FillAlgorithm.assumed, bigListOfItemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if unplaced > 0:
-            raise Ex.ItemPlacementException(str(unplaced) + " unplaced items from the fill.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(unplaced) + " items from the fill.")
         if spoiler.settings.extreme_debugging:
             DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "The Fill")
 
@@ -1771,7 +1771,7 @@ def Fill(spoiler: Spoiler) -> None:
                 miscItemsToPlace.remove(item)
         miscUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, miscItemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if miscUnplaced > 0:
-            raise Ex.ItemPlacementException(str(miscUnplaced) + " unplaced Miscellaneous Items.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(miscUnplaced) + " Miscellaneous Items.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Miscellaneous Items")
 
@@ -1806,7 +1806,7 @@ def Fill(spoiler: Spoiler) -> None:
         # Blueprints can be placed largely randomly - there's no location (yet) that can cause blueprints to lock themselves
         blueprintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, blueprintsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if blueprintsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(blueprintsUnplaced) + " blueprints.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Blueprints")
     # Then place Nintendo & Rareware Coins
@@ -1820,7 +1820,7 @@ def Fill(spoiler: Spoiler) -> None:
                     coinsToPlace.remove(item)
             coinsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, coinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
             if coinsUnplaced > 0:
-                raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
+                raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(coinsUnplaced) + " company coins.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Company Coins")
     # Then place Battle Crowns
@@ -1837,7 +1837,7 @@ def Fill(spoiler: Spoiler) -> None:
             algo = spoiler.settings.algorithm
         crownsUnplaced = PlaceItems(spoiler, algo, crownsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), doubleTime=True)
         if crownsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(crownsUnplaced) + " unplaced crowns.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(crownsUnplaced) + " crowns.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Crowns")
     # Then place Banana Medals
@@ -1853,11 +1853,11 @@ def Fill(spoiler: Spoiler) -> None:
         jetpacRequiredMedals = medalsToBePlaced[: spoiler.settings.logical_medal_requirement]
         medalsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems)
         if medalsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced logical medals.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(medalsUnplaced) + " logical medals.")
         # The remaining medals can be placed randomly
         medalsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, medalsToBePlaced[spoiler.settings.logical_medal_requirement :], medalAssumedItems)
         if medalsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced random medals.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(medalsUnplaced) + " random medals.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Banana Medals")
     # Then place Fairies
@@ -1873,11 +1873,11 @@ def Fill(spoiler: Spoiler) -> None:
         rarewareRequiredFairies = fairiesToBePlaced[: spoiler.settings.logical_fairy_requirement]
         fairyUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems)
         if fairyUnplaced > 0:
-            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced logical fairies.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(fairyUnplaced) + " logical fairies.")
         # The remaining fairies can be placed randomly
         fairyUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, fairiesToBePlaced[spoiler.settings.logical_fairy_requirement :], fairyAssumedItems)
         if fairyUnplaced > 0:
-            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(fairyUnplaced) + " random Fairies.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Fairies")
     # Then fill remaining locations with GBs
@@ -1897,7 +1897,7 @@ def Fill(spoiler: Spoiler) -> None:
             preplaced_items.remove(item)
         gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, gbsToBePlaced, [])
         if gbsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(gbsUnplaced) + " GBs.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "GBs")
     if Types.ToughBanana in spoiler.settings.shuffled_location_types:
@@ -1909,7 +1909,7 @@ def Fill(spoiler: Spoiler) -> None:
                 toughGbsToBePlaced.remove(item)
         gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, toughGbsToBePlaced, [])
         if gbsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(gbsUnplaced) + " tough GBs.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Place Hints
@@ -1922,7 +1922,7 @@ def Fill(spoiler: Spoiler) -> None:
                 hintItemsToBePlaced.remove(item)
         hintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, hintItemsToBePlaced, [])
         if hintsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(hintsUnplaced) + " unplaced Hints.")
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(hintsUnplaced) + " Hints.")
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Fill in fake items
@@ -2065,7 +2065,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     assumedItems = [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves) if x not in trainingMovesToPlace]
     trainingMovesUnplaced = PlaceItems(spoiler, FillAlgorithm.assumed, trainingMovesToPlace, assumedItems, inOrder=True)
     if trainingMovesUnplaced > 0:
-        raise Ex.ItemPlacementException("Failed to place training barrel moves.")
+        raise Ex.ItemPlacementException("Unable to find enough locations to place training barrel moves.")
     placedMoves.extend(training)
     importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
     # Next place any fairy moves that need placing, settings dependent
@@ -2085,7 +2085,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
         ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedMoves),
     )
     if importantSharedUnplaced > 0:
-        raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
+        raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(importantSharedUnplaced) + " shared important items.")
     junkSharedToPlace = ItemPool.JunkSharedMoves.copy()
     for item in placedMoves:
         if item in junkSharedToPlace:
@@ -2093,7 +2093,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     placedMoves.extend(junkSharedToPlace)
     junkSharedUnplaced = PlaceItems(spoiler, FillAlgorithm.random, junkSharedToPlace, [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
-        raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
+        raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(junkSharedUnplaced) + " shared junk items.")
 
 
 def GeneratePlaythrough(spoiler: Spoiler) -> None:
@@ -2402,7 +2402,7 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
                     shopOwnerItemsToBePlaced.remove(item)
             unplacedShopOwners = PlaceItems(spoiler, FillAlgorithm.random, shopOwnerItemsToBePlaced, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes, placedItems))
             if unplacedShopOwners > 0:
-                raise Ex.ItemPlacementException(str(unplacedShopOwners) + " unplaced shop owners.")
+                raise Ex.ItemPlacementException("Unable to find locations to place " + str(unplacedShopOwners) + " shop owners.")
 
     # Handle shared moves before other moves in move rando
     if spoiler.settings.move_rando != MoveRando.off:
@@ -2522,6 +2522,9 @@ def WipeBLockerRequirements(settings: Settings) -> None:
     for i in range(0, 7):
         # Assume B.Locker amounts will be attainable for now
         settings.BLockerEntryCount[i] = 0
+    # Iff Helm is shuffled amongst other levels, also wipe the Helm B. Locker
+    if settings.shuffle_helm_location:
+        settings.BLockerEntryCount[7] = 0
 
 
 def WipeBossRequirements(settings: Settings) -> None:
@@ -2714,6 +2717,9 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     settings.BossBananas = [settings.troff_0, settings.troff_1, settings.troff_2, settings.troff_3, settings.troff_4, settings.troff_5, settings.troff_6, settings.troff_7]
     if settings.randomize_blocker_required_amounts or settings.chaos_blockers:  # If amounts are random, they need to be maxed out to properly generate random values
         settings.BLockerEntryCount = [1000, 1000, 1000, 1000, 1000, 1000, 1000, settings.blocker_7]
+        # If Helm is shuffled with the rest of the levels, this algorithm should settle its value
+        if settings.shuffle_helm_location:
+            settings.BLockerEntryCount[7] = 1000
         # Chaos B. Lockers will be determined as we arrive at them - blank all of them out except for Helm for now
         if settings.chaos_blockers:
             settings.BLockerEntryItems[0] = BarrierItems.GoldenBanana
@@ -2723,8 +2729,11 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             settings.BLockerEntryItems[4] = BarrierItems.GoldenBanana
             settings.BLockerEntryItems[5] = BarrierItems.GoldenBanana
             settings.BLockerEntryItems[6] = BarrierItems.GoldenBanana
-            # Helm will be a max roll of a random item
-            settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.chaos_ratio)
+            if settings.shuffle_helm_location:
+                settings.BLockerEntryItems[7] = BarrierItems.GoldenBanana
+            else:
+                # If guaranteed to be 8, Helm will be a max roll of a random item
+                settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.chaos_ratio)
     # We also need to remember T&S values in an array as we'll overwrite the settings value in the process of determining location availability
     initialTNS = [settings.troff_0, settings.troff_1, settings.troff_2, settings.troff_3, settings.troff_4, settings.troff_5, settings.troff_6, settings.troff_7]
 
@@ -2739,8 +2748,9 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     levelsProgressed = []
     foundProgressionKeyEvents = []
 
+    number_of_progressable_levels = 8 if settings.shuffle_helm_location else 7
     # Until we've completed every level...
-    while len(levelsProgressed) < 7:
+    while len(levelsProgressed) < number_of_progressable_levels:
         openLevels = GetAccessibleOpenLevels(spoiler)
         if not settings.chaos_blockers:
             # Pick a random accessible B. Locker
@@ -2790,11 +2800,11 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             else:
                 settings.BLockerEntryItems[nextLevelToBeat] = choice(eligibleTypes)
                 progression_roll = max(1, round(uniform(BLOCKER_MIN, BLOCKER_MAX) * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]]))
-            # Roll 7 random values and take the nth one to get an approximation of what the nth most expensive random B. Locker might be if all of them were of this item
+            # Roll 8 random values and take the nth one to get an approximation of what the nth most expensive random B. Locker might be if all of them were of this item
             # n in this scenario is the nth level to be entered
             # This also prevents the item availability-based values from overtaking the maximum value
             assorted_random_values = []
-            for i in range(8):
+            for i in range(9):
                 assorted_random_values.append(randint(1, ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio)))
             assorted_random_values.sort()
             settings.BLockerEntryCount[nextLevelToBeat] = min(progression_roll, assorted_random_values[len(levelsProgressed)])
@@ -2901,46 +2911,59 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                         break
                 foundKeyEvent = KeyEvents[lobbyIndex]
                 # If we need this key to open new lobbies, it's a progression key
-                if foundKeyEvent in settings.krool_keys_required and foundKeyEvent not in [Events.FactoryKeyTurnedIn, Events.CavesKeyTurnedIn, Events.CastleKeyTurnedIn]:
-                    foundProgressionKeyEvents.append(foundKeyEvent)
-
+                if foundKeyEvent in settings.krool_keys_required and foundKeyEvent != Events.FactoryKeyTurnedIn:
+                    # If Helm is shuffled among other levels, Keys 6 and 7 become progression keys
+                    if settings.shuffle_helm_location or foundKeyEvent not in [Events.CavesKeyTurnedIn, Events.CastleKeyTurnedIn]:
+                        foundProgressionKeyEvents.append(foundKeyEvent)
+            eligibleProgressionKeyEvents = [event for event in foundProgressionKeyEvents]
+            # Keys 6 and 7 are useless in isolation - they aren't progression unless you have both
+            if Events.CavesKeyTurnedIn in eligibleProgressionKeyEvents and Events.CastleKeyTurnedIn not in eligibleProgressionKeyEvents:
+                eligibleProgressionKeyEvents.remove(Events.CavesKeyTurnedIn)
+            if Events.CastleKeyTurnedIn in eligibleProgressionKeyEvents and Events.CavesKeyTurnedIn not in eligibleProgressionKeyEvents:
+                eligibleProgressionKeyEvents.remove(Events.CastleKeyTurnedIn)
             # If we've progressed through all open levels, then we need to pick a progression key we've found to acquire and set that level's Troff n Scoff
-            if len(openLevels) == len(levelsProgressed) and any(foundProgressionKeyEvents):
-                chosenKeyEvent = choice(foundProgressionKeyEvents)
+            if len(openLevels) == len(levelsProgressed) and any(eligibleProgressionKeyEvents):
+                chosenKeyEvent = choice(eligibleProgressionKeyEvents)
                 foundProgressionKeyEvents.remove(chosenKeyEvent)
-                # Determine what level needs to be completed
-                # Assume levels that could be locked by moves are locked - this will be fixed at the end of this loop
+                # Determine what levels need to be completed
+                levelsToCompleteBoss = []
                 if chosenKeyEvent == Events.JapesKeyTurnedIn:
                     spoiler.LogicVariables.Events.append(Events.JapesKeyTurnedIn)
-                    bossCompletedLevel = settings.level_order[1]
+                    levelsToCompleteBoss.append(settings.level_order[1])
                 elif chosenKeyEvent == Events.AztecKeyTurnedIn:
                     spoiler.LogicVariables.Events.append(Events.AztecKeyTurnedIn)
-                    bossCompletedLevel = settings.level_order[2]
+                    levelsToCompleteBoss.append(settings.level_order[2])
                 elif chosenKeyEvent == Events.GalleonKeyTurnedIn:
                     spoiler.LogicVariables.Events.append(Events.GalleonKeyTurnedIn)
-                    bossCompletedLevel = settings.level_order[4]
+                    levelsToCompleteBoss.append(settings.level_order[4])
                 elif chosenKeyEvent == Events.ForestKeyTurnedIn:
                     spoiler.LogicVariables.Events.append(Events.ForestKeyTurnedIn)
-                    bossCompletedLevel = settings.level_order[5]
-                availableCBs = sum(spoiler.LogicVariables.ColoredBananas[bossCompletedLevel])
-                # If we don't have enough CBs to beat the boss per the settings-determined value
-                if availableCBs < initialTNS[bossCompletedLevel]:
-                    # Reduce the requirement to an amount guaranteed to be available, based on the ratio of the initial T&S roll
-                    randomlyRolledRatio = initialTNS[bossCompletedLevel] / settings.troff_max
-                    settings.BossBananas[bossCompletedLevel] = round(availableCBs * randomlyRolledRatio)
-                else:
-                    settings.BossBananas[bossCompletedLevel] = initialTNS[bossCompletedLevel]
-                ownedKongs[bossCompletedLevel] = spoiler.LogicVariables.GetKongs()
-                accessibleMoves = [
-                    spoiler.LocationList[x].item
-                    for x in accessible
-                    if spoiler.LocationList[x].item != Items.NoItem
-                    and spoiler.LocationList[x].item is not None
-                    and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Climbing)
-                ]
-                ownedMoves[bossCompletedLevel] = accessibleMoves
-                # After unblocking this level's T&S, the next loop needs the logic variables to know new lobbies are accessible
-                # We've now made the key on this boss accessible, so this iteration should be identical plus 1 key
+                    levelsToCompleteBoss.append(settings.level_order[5])
+                elif chosenKeyEvent in [Events.CavesKeyTurnedIn, Events.CastleKeyTurnedIn]:
+                    spoiler.LogicVariables.Events.append(Events.CavesKeyTurnedIn)
+                    spoiler.LogicVariables.Events.append(Events.CastleKeyTurnedIn)
+                    levelsToCompleteBoss.append(settings.level_order[6])
+                    levelsToCompleteBoss.append(settings.level_order[7])
+                for bossCompletedLevel in levelsToCompleteBoss:
+                    availableCBs = sum(spoiler.LogicVariables.ColoredBananas[bossCompletedLevel])
+                    # If we don't have enough CBs to beat the boss per the settings-determined value
+                    if availableCBs < initialTNS[bossCompletedLevel]:
+                        # Reduce the requirement to an amount guaranteed to be available, based on the ratio of the initial T&S roll
+                        randomlyRolledRatio = initialTNS[bossCompletedLevel] / settings.troff_max
+                        settings.BossBananas[bossCompletedLevel] = round(availableCBs * randomlyRolledRatio)
+                    else:
+                        settings.BossBananas[bossCompletedLevel] = initialTNS[bossCompletedLevel]
+                    ownedKongs[bossCompletedLevel] = spoiler.LogicVariables.GetKongs()
+                    accessibleMoves = [
+                        spoiler.LocationList[x].item
+                        for x in accessible
+                        if spoiler.LocationList[x].item != Items.NoItem
+                        and spoiler.LocationList[x].item is not None
+                        and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Climbing)
+                    ]
+                    ownedMoves[bossCompletedLevel] = accessibleMoves
+                # After unblocking at least one T&S, the next loop needs the logic variables to know new lobbies are accessible
+                # We've now made the key on this boss accessible, so this iteration should be identical plus keys from the unblocked bosses
                 spoiler.Reset()
                 GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
 
@@ -2948,7 +2971,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     bossLocations = [
         location
         for id, location in spoiler.LocationList.items()
-        if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] >= initialTNS[location.level]
+        if location.type == Types.Key and location.level in levelsProgressed and location.level != Levels.HideoutHelm and settings.BossBananas[location.level] >= initialTNS[location.level]
     ]
     for bossLocation in bossLocations:
         # For any level we explicitly blocked, undo the blocking
@@ -2992,15 +3015,16 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         #         ownedKongs[bossLocation.level] = spoiler.LogicVariables.GetKongs()
         #     # Put it back so we don't accidentally an item
         #     bossLocation.PlaceItem(spoiler, bossReward)
-
-    mostExpensiveBLocker = max(settings.BLockerEntryCount[0:7])
-    # Chaos B. Lockers needs to also update the Helm B. Locker - max roll whatever the item there is
-    if settings.chaos_blockers:
-        settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.chaos_ratio)
-    # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
-    elif settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < mostExpensiveBLocker:
-        # Ensure that Helm is the most expensive B. Locker
-        settings.BLockerEntryCount[7] = randint(mostExpensiveBLocker, settings.blocker_max)
+    # If we're not shuffling Helm with the rest of the levels, we need to sort out its B. Locker value here
+    if not settings.shuffle_helm_location:
+        mostExpensiveBLocker = max(settings.BLockerEntryCount[0:7])
+        # Chaos B. Lockers needs to also update the Helm B. Locker - max roll whatever the item there is
+        if settings.chaos_blockers:
+            settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.chaos_ratio)
+        # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
+        elif settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < mostExpensiveBLocker:
+            # Ensure that Helm is the most expensive B. Locker
+            settings.BLockerEntryCount[7] = randint(mostExpensiveBLocker, settings.blocker_max)
     # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
     if not isKeyItemRando:
         # Place boss locations based on kongs and moves found for each level
@@ -3017,13 +3041,13 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
 
 def GetAccessibleOpenLevels(spoiler: Spoiler) -> List[int]:
     """Return the list of levels (not lobbies) you have access to after running GetAccessibleLocations()."""
-    lobbyAccessEvents = [event for event in spoiler.LogicVariables.Events if event >= Events.JapesLobbyAccessed and event <= Events.CastleLobbyAccessed]
+    lobbyAccessEvents = [event for event in spoiler.LogicVariables.Events if event >= Events.JapesLobbyAccessed and event <= Events.HelmLobbyTraversable]
     accessibleOpenLevels = []
     if Events.JapesLobbyAccessed in lobbyAccessEvents:
         accessibleOpenLevels.append(Levels.JungleJapes)
     if Events.AztecLobbyAccessed in lobbyAccessEvents:
-        # Also make sure we can do anything in Aztec
-        if spoiler.LogicVariables.vines or (spoiler.LogicVariables.tiny and spoiler.LogicVariables.twirl) or spoiler.LogicVariables.phasewalk:
+        # Also make sure we can do anything in Aztec. BONUS: if your DK portal is random the odds are very high it's not behind the vines, so this will suffice.
+        if spoiler.LogicVariables.vines or (spoiler.LogicVariables.tiny and spoiler.LogicVariables.twirl) or spoiler.LogicVariables.phasewalk or spoiler.settings.dk_portal_location_rando:
             accessibleOpenLevels.append(Levels.AngryAztec)
     if Events.FactoryLobbyAccessed in lobbyAccessEvents:
         accessibleOpenLevels.append(Levels.FranticFactory)
@@ -3035,6 +3059,9 @@ def GetAccessibleOpenLevels(spoiler: Spoiler) -> List[int]:
         accessibleOpenLevels.append(Levels.CrystalCaves)
     if Events.CastleLobbyAccessed in lobbyAccessEvents:
         accessibleOpenLevels.append(Levels.CreepyCastle)
+    # Not only do we need Helm Lobby access, we also need to make sure we can traverse it to logically enter it
+    if spoiler.settings.shuffle_helm_location and Events.HelmLobbyAccessed in lobbyAccessEvents and Events.HelmLobbyTraversable in lobbyAccessEvents:
+        accessibleOpenLevels.append(Levels.HideoutHelm)
     return accessibleOpenLevels
 
 
@@ -3059,7 +3086,7 @@ def BlockCompletionOfLevelSet(settings: Settings, lockedLevels):
     """Prevent acquiring the keys of the levels provided."""
     for i in range(0, 7):
         if i in lockedLevels:
-            # This level is incompletable
+            # This level's boss is incompletable
             settings.BossBananas[i] = 1000
 
 

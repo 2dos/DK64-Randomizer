@@ -79,7 +79,7 @@ def PlaceConstants(spoiler):
         spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, getHelmKey(spoiler.settings))
         # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset,
         # place Key 8 in the 8th level somewhere
-        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels and not spoiler.settings.hard_level_progression:
             last_level = settings.level_order[8]
             if last_level != Levels.HideoutHelm:
                 potential_locations = [
@@ -107,7 +107,7 @@ def PlaceConstants(spoiler):
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
                 spoiler.LocationList[shuffledTo.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
         # The key in Helm is always Key 8 in these settings
-        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, getHelmKey(spoiler.settings))
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:

@@ -188,7 +188,10 @@ class Settings:
         self.resolve_settings()
 
         # Generate the settings string - DO THIS LAST because the encryption method alters the form data
-        self.settings_string = encrypt_settings_string_enum(form_data)
+        try:
+            self.settings_string = encrypt_settings_string_enum(form_data)
+        except Exception as ex:
+            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -796,7 +799,8 @@ class Settings:
             self.training_barrels = TrainingBarrels.shuffled
         if not self.shuffle_items or Items.Climbing in self.starting_move_list_selected:
             self.climbing_status = ClimbingStatus.normal
-            self.starting_move_list_selected.remove(Items.Climbing)
+            if Items.Climbing in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.Climbing)
         else:
             self.climbing_status = ClimbingStatus.shuffled
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
