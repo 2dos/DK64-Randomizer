@@ -326,10 +326,12 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
     placedBossMaps = []
     placedBossKongs = []
     while len(placedBossMaps) < 7:
-        # The number of options are the boss options for each level not already placed and not an endgame boss
+        # The number of options are the boss options for each level not already placed
         levelsSortedByNumberOfOptions = [level for level in bossOptions.keys() if level not in placedLevels]
+        # This can include endgame phases, and this is intentional. If you have to squeeze in every boss/phase into this, you need every inch of leeway you can get.
+        # By sorting by the raw amount of available boss space, you won't ever place bosses in a bad order (outside of utterly egregious circumstances).
         levelsSortedByNumberOfOptions.sort(
-            key=lambda x: len([map for map in bossOptions[x] if map not in placedBossMaps and map not in spoiler.settings.krool_order]) + random.random()
+            key=lambda x: len([map for map in bossOptions[x] if map not in placedBossMaps]) + random.random()
         )  # The random factor here is so there's randomness among tied counts (but never greater than 1)
         # Always pick the level with the least options - this guarantees we never orphan a level with no options (unless it was forced anyway)
         mostRestrictiveLevel = levelsSortedByNumberOfOptions[0]
@@ -362,7 +364,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
         ]
         # This should be impossible, as bossOptions is populated referencing the ownedKongs dict
         # This could become possible if a boss becomes beatable with unique combinations of Kong + move (e.g. a boss is beatable with (Kong A + Move B) OR (Kong C + Move D))
-        if not any(kongOptions):
+        if len(kongOptions) == 0:
             # I'll just hedge my bets anyway - remove this boss from eligiblility for this level and try again
             bossOptions[mostRestrictiveLevel].remove(chosenBoss)
             continue
