@@ -2364,6 +2364,13 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x800278EC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
     writeFunction(ROM_COPY, 0x800275AC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
 
+    if settings.has_password:
+        writeHook(ROM_COPY, 0x80028CC8, Overlay.Menu, "GoToPassword", offset_dict)  # Enables handler of whether to go to the password screen or not
+        # Overwrite screen 6 with password data. Used to be multiplayer, but we've jettisoned that
+        writeFunction(ROM_COPY, 0x800306AC, Overlay.Menu, "password_screen_gfx", offset_dict)
+        writeFunction(ROM_COPY, 0x800306D4, Overlay.Menu, "password_screen_init", offset_dict)
+        writeFunction(ROM_COPY, 0x800306C4, Overlay.Menu, "password_screen_code", offset_dict)
+
     # Menu/Shop Stuff
     # Menu/Shop: Force enable cheats
     writeValue(ROM_COPY, 0x800280DC, Overlay.Menu, 0x1000, offset_dict)  # Force access to mystery menu

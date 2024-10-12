@@ -67,3 +67,14 @@ KongUnlockCorrectCode:
     addiu $s2, $s2, 0x5B2
     j 0x800298DC
     nop
+
+GoToPassword:
+    jal isFileEmpty
+    or $a0, $zero, $zero
+    bnez $v0, GoToPassword_write
+    addiu $a1, $zero, 6 ; multiplayer root (will be password screen)
+    addiu $a1, $zero, 3 ; file progress
+
+    GoToPassword_write:
+        j 0x80028D0C
+        sb $a1, 0x13 ($s0)

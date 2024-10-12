@@ -140,7 +140,6 @@ typedef enum passEnum {
 #define C_Left 0x0002
 #define C_Right 0x0001
 
-static char showPassword = 0;
 static char passwordProgress = 0;
 static char acceptPassInput = 0;
 static char inputtedPass[8];
@@ -576,19 +575,6 @@ int getTrackerYOffset(void) {
 	return y_temp;
 }
 
-Gfx* displayPasswordScreen(Gfx* dl) {
-	if (!showPassword) {
-		return dl;
-	}
-	dl = drawScreenRect(dl, 250, 750, 1000, 950, 3, 3, 3, 1);
-	dl = drawPixelText(dl, 100, *(int*)(0x807FF704), "ENTER PASSWORD", 0xFF, 0xFF, 0xFF, 0xFF);
-	if (passwordProgress < 8) {
-		passTextDisplay[passwordProgress] = '?';
-	}
-	dl = drawPixelText(dl, 126, *(int*)(0x807FF70C), &passTextDisplay, 0xFF, 0xFF, 0xFF, 0xFF);
-	return dl;
-}
-
 Gfx* display_file_images(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display images on the file screen
@@ -607,7 +593,6 @@ Gfx* display_file_images(Gfx* dl, int y_offset) {
 			opacity = 0xFF;
 		}
 		dl = drawImage(dl, 195, RGBA16, 32, 32, 1110, y_offset + 690, 4.0f, 4.0f, opacity);
-		dl = displayPasswordScreen(dl);
 	}
 	return dl;
 }
@@ -725,8 +710,6 @@ void enterFileProgress(int sfx) {
 	 */
 	resetTracker();
 	playSFX(sfx);
-	showPassword = 0;
-	wipePassword();
 }
 
 void giveCollectables(void) {
@@ -844,23 +827,6 @@ void handlePassword(void) {
 	if (button_btf == 0) {
 		acceptPassInput = 1;
 	} else if (acceptPassInput) {
-		if ((button_btf & 0x8000) && (passwordProgress == 8)) {
-			// A, entered in an 8-button combo
-			if (testPasswordSequence()) {
-				playSFX(459); // Success
-				startFile();
-				wipePassword();
-				showPassword = 0;
-			} else {
-				playSFX(83); // Grunt
-				wipePassword();
-			}
-			return;
-		} else if (button_btf & 0x4000) {
-			// B
-			wipePassword();
-			showPassword = 0;
-		}
 		if (passwordProgress >= 8) {
 			return;
 		}
@@ -876,6 +842,58 @@ void handlePassword(void) {
 			}
 		}
 	}
+}
+
+void password_screen_code(actorData* actor, int buttons) {
+	menu_controller_paad* paad = actor->paad;
+	if (paad->screen_transition_progress == 0.0f) {
+		if (paad->unk_4 == 0.0f) {
+			if (buttons & 1) {
+				// A
+				if (passwordProgress == 8) {
+					if (testPasswordSequence()) {
+						playSFX(459); // Success
+						paad->prevent_action = 0;
+						paad->next_screen = 3; // file progress
+					} else {
+						playSFX(83); // Grunt
+						wipePassword();
+					}
+				}
+			} else if (buttons & 2) {
+				// B
+				playSFX(0x2C9);
+				paad->prevent_action = 0;
+				paad->next_screen = 2; // file select
+			} else {
+				// Inputting sequence
+				handlePassword();
+			}
+		}
+		initMenuBackground(paad,4);
+	}
+	updateMenuController(actor,paad,1);
+}
+
+void password_screen_init(actorData* actor) {
+	menu_controller_paad* paad = actor->paad;
+	displayMenuSprite(paad, (void*)0x80720CF0, 0x122, 0xD2, 0.75f, 2, 0); // A
+	displayMenuSprite(paad, (void*)0x80720D14, 0x23, 0xD2, 0.75f, 2, 0); // B
+	passwordProgress = 0;
+	wipePassword();
+}
+
+Gfx* password_screen_gfx(actorData* actor, Gfx* dl) {
+	float x2, y2;
+	menu_controller_paad* paad = actor->paad;
+	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+	handleTextScrolling(paad, 160.0f, 25.0f, &x2, &y2, 5, 0, *(float*)(0x80033CB4));
+	dl = printText(dl, x2 * 4.0f, y2 * 4.0f, 0.6f, "ENTER PASSWORD");
+	handleTextScrolling(paad, 160.0f, 80.0f, &x2, &y2, 5, 0, 2.0f);
+	if (passwordProgress < 8) {
+		passTextDisplay[passwordProgress] = '?';
+	}
+	return printText(dl, x2 * 4.0f, y2 * 4.0f, 1.0f, &passTextDisplay);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -900,17 +918,8 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 	menu_controller_paad* paad = actor->paad;
 	if (paad->screen_transition_progress == 0.0f) {
 		if (paad->unk_4 == 0.0f) {
-			if (showPassword) {
-				handlePassword();
-				return;
-			}
 			if (buttons & 1) { // A
-				if (Rando.rom_flags.pass_locked && isFileEmpty(0)) {
-					// Has password and is new file
-					showPassword = 1;
-				} else {
-					startFile();
-				}
+				startFile();
 			} else if (buttons & 2) { // B
 				playSFX(0x2C9);
 				paad->prevent_action = 0;
