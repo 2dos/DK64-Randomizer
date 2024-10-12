@@ -233,7 +233,16 @@
     "raised": 1,
     "random": 2
   },
-
+  /* 
+    ClimbingStatus:
+    - Determines if and how climbing is randomized.
+    - normal: Climbing is a starting move.
+    - shuffled: Climbing is an item that can be found in the world.
+  */
+  "ClimbingStatus": {
+    "normal": 0,
+    "shuffled": 1
+  },
   /*
     GlitchesSelected:
     - Glitch categories that can be selected for the seed logic.
