@@ -644,6 +644,30 @@ function plando_hide_krool_options(evt) {
 document.getElementById("krool_random").addEventListener("click", plando_hide_krool_options);
 document.getElementById("krool_phase_count").addEventListener("change", plando_hide_krool_options);
 
+// Hide plando options for Isles medal locations if medal CBs aren't shuffled
+function plando_disable_isles_medals(evt) {
+  const cbShuffle = document.getElementById("cb_rando").value;
+  const kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"];
+
+  if (cbShuffle !== "on_with_isles") {
+    for (const kong of kongs) {
+      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+      kongIsleElem.setAttribute("disabled", "disabled");
+      kongIsleElem.value = "";
+      tooltip = "To assign a reward here, Isles CBs must be shuffled.";
+      kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
+    }
+  } else {
+    for (const kong of kongs) {
+      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+      kongIsleElem.removeAttribute("disabled");
+      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
+    }
+  }
+}
+
+document.getElementById("cb_rando").addEventListener("change", plando_disable_isles_medals);
+
 // Make changes to the plando tab based on other settings
 document.getElementById("nav-plando-tab").addEventListener("click", function(evt) {
     disable_krool_phases(evt);
@@ -664,6 +688,7 @@ document.getElementById("nav-plando-tab").addEventListener("click", function(evt
     plando_disable_patch_custom_locations(evt);
     plando_disable_wrinkly_custom_locations(evt);
     plando_disable_tns_custom_locations(evt);
+    plando_disable_isles_medals(evt);
 });
 
 // Disable Boss Kong and Boss Location Rando if Vanilla levels and Kong Rando
