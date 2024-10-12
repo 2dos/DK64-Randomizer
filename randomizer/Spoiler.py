@@ -883,8 +883,9 @@ class Spoiler:
                 "Fungi Forest": self.settings.switch_allocation[Levels.FungiForest],
                 "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
                 "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
-                # "Hideout Helm": self.settings.switch_allocation[Levels.HideoutHelm],
             }
+            if self.settings.shuffle_helm_location:
+                humanspoiler["Level Switch Strength"]["Hideout Helm"] = self.settings.switch_allocation[Levels.HideoutHelm]
 
         if len(self.microhints) > 0:
             human_microhints = {}
