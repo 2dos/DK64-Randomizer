@@ -34,7 +34,7 @@ function genGIFFrame(image, cap = 128) {
 }
 
 // Main function to load hash images
-async function get_hash_images(type = "local", mode = "hash") {
+function get_hash_images(type = "local", mode = "hash") {
   // List of images with properties like format, size, etc.
   const images = [
     new ImageInfo("bongos", "rgba16", 25, 5548, 40, 40, "hash"),
@@ -76,7 +76,6 @@ async function get_hash_images(type = "local", mode = "hash") {
       )
     );
   }
-  apply_conversion();
   const ptrOffset = 0x101c50; // Pointer offset for ROM access
   let loadedImages = [];
   let gifFrames = [];
@@ -86,7 +85,7 @@ async function get_hash_images(type = "local", mode = "hash") {
   
   // Filter images based on the mode ('hash', 'loading-fairy', or 'loading-dead')
   let filteredList = images.filter((image) => image.mode === mode);
-
+  console.log(filteredList)
   // Loop through filtered images and load data from the ROM
   for (let imageInfo of filteredList) {
     // Seek to the pointer table entry for the current image
@@ -94,7 +93,6 @@ async function get_hash_images(type = "local", mode = "hash") {
     let ptrTable = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
     // Read Bytes comes back as comma seperated bytes, merge them together
     // Seek to the start and end of the image data
-    let pos = ptrTable + imageInfo.index * 4
     romType.seek(ptrTable + imageInfo.index * 4);
     let imgStart = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
     romType.seek(ptrTable + (imageInfo.index + 1) * 4);
@@ -105,14 +103,9 @@ async function get_hash_images(type = "local", mode = "hash") {
     let imgData = Uint8Array.from(romType.readBytes(imgSize));
     // Decompress image data if necessary
     let dec = imgData;
-    console.log(dec);
     if (imageInfo.table === 25) {
-      dec = pako.inflate(imgData, { windowBits: 15 + 32 }); // Use pako for zlib decompression
-      console.log(dec);
-
+      dec = new pako.inflate(imgData); // Use pako for zlib decompression
     }
-    console.log(dec);
-    console.log("Image Info: ", imageInfo);
     // Create canvas and draw image based on format (rgba16/rgba32)
     let canvas = document.createElement("canvas");
     canvas.width = imageInfo.width;
