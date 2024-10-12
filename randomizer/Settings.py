@@ -188,7 +188,10 @@ class Settings:
         self.resolve_settings()
 
         # Generate the settings string - DO THIS LAST because the encryption method alters the form data
-        self.settings_string = encrypt_settings_string_enum(form_data)
+        try:
+            self.settings_string = encrypt_settings_string_enum(form_data)
+        except Exception as ex:
+            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""

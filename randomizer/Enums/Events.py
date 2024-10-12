@@ -227,3 +227,4 @@ class Events(IntEnum):
     CavesLobbyAccessed = auto()
     CastleLobbyAccessed = auto()
     HelmLobbyAccessed = auto()
+    HelmLobbyTraversable = auto()  # Yes, keep this in order too!
