@@ -1015,6 +1015,10 @@ class Settings:
         self.coin_door_item = DoorItemToBarrierItem(self.coin_door_item, True)
         self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
+        if self.has_password:
+            for x in range(8):
+                self.password[x] = random.randint(1, 6)
+
         # Win Condition
         wincon_items = {
             WinConditionComplex.beat_krool: HelmDoorInfo(

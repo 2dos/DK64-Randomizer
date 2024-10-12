@@ -91,6 +91,21 @@ def writeMultiselector(enabled: bool, enabled_selections: list, selector: list[d
         for byte_data in write_data:
             ROM_COPY.writeMultipleBytes(byte_data, 1)
 
+def encPass(spoiler) -> list:
+    """Encrypt the password."""
+    raw_pass = spoiler.settings.password
+    key = spoiler.settings.seed_hash
+    print(raw_pass)  # TODO: Remove this
+    result = [0] * 8
+    for x in range(8):
+        key_v = 0
+        if x < 5:
+            key_v = key[x]
+        result[x] = (raw_pass[x] << 3) ^ (key_v >> 2)
+        result[x] += (raw_pass[x] ^ key_v)
+        result[x] ^= (result[x] << 5) | (result[x] >> 3)
+        result[x] &= 0xFF
+    return result
 
 def patching_response(spoiler):
     """Apply the patch data to the ROM in the local server to be returned to the client."""
@@ -498,8 +513,9 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0xC4)
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
     if spoiler.settings.has_password:
+        pass_lst = encPass(spoiler)
         ROM_COPY.seek(sav + 0x1AD)
-        for x in spoiler.settings.password:
+        for x in pass_lst:
             ROM_COPY.writeMultipleBytes(x, 1)
 
     # Ice Trap Count

@@ -874,6 +874,9 @@ class Spoiler:
                 level_data[level_name][ShufflableExits[exit].name] = dest.spoilerName
             humanspoiler["Shuffled Exits"] = shuffled_exits
             humanspoiler["Shuffled Exits (Sorted by destination)"] = level_data
+        if self.settings.has_password:
+            PASS_NAMES = ["ERROR", "Up", "Down", "Left", "Right", "Z", "Start"]
+            humanspoiler["Password"] = " ".join([PASS_NAMES[x] for x in self.settings.password])
         if self.settings.alter_switch_allocation:
             SLAM_NAMES = ["No Slam", "Simian Slam", "Super Simian Slam", "Super Duper Simian Slam"]
             humanspoiler["Level Switch Strength"] = {

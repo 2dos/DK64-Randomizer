@@ -806,8 +806,16 @@ void startFile(void) {
 }
 
 int testPasswordSequence(void) {
+	int key_v, pass_enc;
 	for (int i = 0; i < 8; i++) {
-		if (inputtedPass[i] != Rando.password[i]) {
+		key_v = 0;
+		if (i < 5) {
+			key_v = Rando.hash[i];
+		}
+		pass_enc = (inputtedPass[i] << 3) ^ (key_v >> 2);
+        pass_enc += (inputtedPass[i] ^ key_v);
+        pass_enc ^= (pass_enc << 5) | (pass_enc >> 3);
+		if ((pass_enc & 0xFF) != Rando.password[i]) {
 			return 0;
 		}
 	}
@@ -890,8 +898,8 @@ Gfx* password_screen_gfx(actorData* actor, Gfx* dl) {
 	handleTextScrolling(paad, 160.0f, 25.0f, &x2, &y2, 5, 0, *(float*)(0x80033CB4));
 	dl = printText(dl, x2 * 4.0f, y2 * 4.0f, 0.6f, "ENTER PASSWORD");
 	handleTextScrolling(paad, 160.0f, 80.0f, &x2, &y2, 5, 0, 2.0f);
-	if (passwordProgress < 8) {
-		passTextDisplay[passwordProgress] = '?';
+	for (int i = passwordProgress; i < 8; i++) {
+		passTextDisplay[i] = '?';
 	}
 	return printText(dl, x2 * 4.0f, y2 * 4.0f, 1.0f, &passTextDisplay);
 }
