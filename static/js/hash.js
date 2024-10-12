@@ -76,7 +76,7 @@ async function get_hash_images(type = "local", mode = "hash") {
       )
     );
   }
-
+  apply_conversion();
   const ptrOffset = 0x101c50; // Pointer offset for ROM access
   let loadedImages = [];
   let gifFrames = [];
@@ -91,37 +91,28 @@ async function get_hash_images(type = "local", mode = "hash") {
   for (let imageInfo of filteredList) {
     // Seek to the pointer table entry for the current image
     romType.seek(ptrOffset + imageInfo.table * 4);
-    position = ptrOffset + imageInfo.table * 4
-    console.log("Seeking to " + position)
-    console.log("Pointer Offset: " + ptrOffset)
-    read_bytes = parseInt(romType.readBytes(4).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16)
-    console.log("Read Bytes: " + read_bytes)
-    let ptrTable = ptrOffset + read_bytes;
+    let ptrTable = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
     // Read Bytes comes back as comma seperated bytes, merge them together
-    console.log("ptrTable: " + ptrTable)
     // Seek to the start and end of the image data
     let pos = ptrTable + imageInfo.index * 4
-    console.log("Seeking to " + pos)
     romType.seek(ptrTable + imageInfo.index * 4);
-    let imgStart = ptrOffset + parseInt(romType.readBytes(4).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16);
-    console.log(imgStart)
+    let imgStart = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
     romType.seek(ptrTable + (imageInfo.index + 1) * 4);
-    let imgEnd = ptrOffset + parseInt(romType.readBytes(4).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16);
-    console.log(imgEnd)
+    let imgEnd = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
     let imgSize = imgEnd - imgStart;
-    console.log(imgSize)
     // Read the image data from the ROM
     romType.seek(imgStart);
-    let imgData = parseInt(romType.readBytes(imgSize).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16);
-    console.log(imgData)
+    let imgData = Uint8Array.from(romType.readBytes(imgSize));
     // Decompress image data if necessary
-    let dec;
+    let dec = imgData;
+    console.log(dec);
     if (imageInfo.table === 25) {
-      dec = pako.inflate(imgData); // Use pako for zlib decompression
-    } else {
-      dec = imgData;
-    }
+      dec = pako.inflate(imgData, { windowBits: 15 + 32 }); // Use pako for zlib decompression
+      console.log(dec);
 
+    }
+    console.log(dec);
+    console.log("Image Info: ", imageInfo);
     // Create canvas and draw image based on format (rgba16/rgba32)
     let canvas = document.createElement("canvas");
     canvas.width = imageInfo.width;
