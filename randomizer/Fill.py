@@ -1701,6 +1701,8 @@ def Fill(spoiler: Spoiler) -> None:
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
         if spoiler.settings.kong_rando:
             FillKongs(spoiler, placed_types, preplaced_items)
+        if spoiler.settings.extreme_debugging:
+            DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Kongs")
         preplaced_items.extend([Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky])
         preplaced_items.extend(FillTrainingMoves(spoiler, preplaced_items))
         placed_types.append(Types.Shop)
