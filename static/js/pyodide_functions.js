@@ -8,7 +8,7 @@ var imported_music_json = "";
 
 async function music_selection_filebox() {
   // load pyodide
-  await setup_pyodide()
+  await setup_pyodide();
   let input = document.createElement("input");
   input.type = "file";
   input.accept = ".json";
@@ -31,7 +31,7 @@ var imported_plando_json = "";
 
 async function plando_import_filebox() {
   // load pyodide
-  await setup_pyodide()
+  await setup_pyodide();
   let input = document.createElement("input");
   input.type = "file";
   input.accept = ".json";
@@ -52,7 +52,7 @@ async function plando_import_filebox() {
 
 async function apply_patch(data, run_async) {
   // load pyodide
-  await setup_pyodide()
+  await setup_pyodide();
   // Base64 decode the response
   event_response_data = data;
   var decodedData = base64ToArrayBuffer(data);
@@ -77,15 +77,32 @@ async function apply_patch(data, run_async) {
             .async("uint8array")
             .then(function (fileContent) {
               console.log("Applying Xdelta Patch");
+              apply_conversion();
               apply_xdelta(fileContent);
 
               if (run_async == true) {
+                
                 // Return the promise for pyodide.runPythonAsync
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-register_hook("/")  # type: ignore  # noqa
+try:
+  register_hook("/")  # type: ignore  # noqa
+except Exception:
+  pass
 import js
 from randomizer.Patching.ApplyLocal import patching_response
 patching_response(str(js.event_response_data), from_patch_gen=True)
+                `);
+              }
+              else{
+                // Return the promise for pyodide.runPythonAsync
+                return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
+try:
+  register_hook("/")  # type: ignore  # noqa
+except Exception:
+  pass
+import js
+from randomizer.Patching.ApplyLocal import patching_response
+patching_response(str(js.event_response_data), from_patch_gen=False)
                 `);
               }
             });
@@ -113,9 +130,12 @@ async function apply_download() {
     }
   }
   console.log("Applying Download");
-  await setup_pyodide()
+  await setup_pyodide();
   return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-register_hook("/")  # type: ignore  # noqa
+try:
+  register_hook("/")  # type: ignore  # noqa
+except Exception:
+  pass
 import js
 from randomizer.Patching.ApplyLocal import patching_response
 patching_response(str(js.event_response_data), from_patch_gen=True)

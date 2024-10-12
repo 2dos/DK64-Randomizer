@@ -49,7 +49,10 @@ async function generate_previous_seed(event) {
         // Additional logic for lanky_from_history can be added here
         await setup_pyodide();
         await pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-register_hook("/")  # type: ignore  # noqa
+try:
+    register_hook("/")  # type: ignore  # noqa
+except Exception:
+    pass
 from randomizer.Patching.ApplyLocal import patching_response
 import js
 await patching_response(str(js.get_previous_seed_data()), True, js.document.getElementById("load_patch_file").checked, True)`)
@@ -84,7 +87,10 @@ async function generate_seed_from_patch(event) {
             window.apply_conversion();
             await setup_pyodide();
             await pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-register_hook("/")  # type: ignore  # noqa
+try:
+    register_hook("/")  # type: ignore  # noqa
+except Exception:
+    pass
 import js
 from randomizer.Patching.ApplyLocal import patching_response
 await patching_response(str(js.get_previous_seed_data()), True, js.loaded_patch, True)`)
@@ -98,16 +104,21 @@ document.getElementById("generate_lanky_seed").addEventListener("click", generat
 
 async function setup_pyodide(){
     try {
-        pyodide = await loadPyodide();
+        // Check if pyodide is already loaded
+        if (!window.pyodide)
+        {
+            pyodide = await loadPyodide();
+            url = window.location.origin;
+            await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
+            await pyodide.loadPackage("pillow")
+            if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
+                await pyodide.loadPackage("micropip");
+                const micropip = pyodide.pyimport("micropip");
+                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
+            }
+        }
     } catch { }
-    url = window.location.origin;
-    await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
-    await pyodide.loadPackage("pillow")
-    if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
-        await pyodide.loadPackage("micropip");
-        const micropip = pyodide.pyimport("micropip");
-        await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
-    }
+
 }
 
 document.getElementById("load_patch_file").addEventListener("click", function(event) {

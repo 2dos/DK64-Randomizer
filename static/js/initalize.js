@@ -156,8 +156,7 @@ async function try_to_load_from_args() {
     let resp = await get_seed_from_server(argsDict["seed_id"]);
 
     // Assuming patchingResponse is available globally as an async function
-    // TODO: Swap to pyodide
-    //await patching_response(String(resp), false);
+    window.apply_patch(resp, false);
   }
 
   // Update the DOM: hide visual indicator and show tab-data
