@@ -1199,6 +1199,7 @@ class SettingsStringEnum(IntEnum):
     win_condition_count = 191
     bananaport_placement_rando = 192
     troff_7 = 193
+    has_password = 194
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1438,6 +1439,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
+    SettingsStringEnum.has_password: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

@@ -418,7 +418,7 @@ class Settings:
         self.starting_kongs_count = 5
         self.starting_random = False
 
-        self.has_password = True
+        self.has_password = False
         self.password = [1] * 8
 
         # bonus_barrels: MinigameBarrels

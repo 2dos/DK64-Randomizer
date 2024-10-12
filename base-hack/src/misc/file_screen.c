@@ -806,20 +806,7 @@ void startFile(void) {
 }
 
 int testPasswordSequence(void) {
-	int key_v, pass_enc;
-	for (int i = 0; i < 8; i++) {
-		key_v = 0;
-		if (i < 5) {
-			key_v = Rando.hash[i];
-		}
-		pass_enc = (inputtedPass[i] << 3) ^ (key_v >> 2);
-        pass_enc += (inputtedPass[i] ^ key_v);
-        pass_enc ^= (pass_enc << 5) | (pass_enc >> 3);
-		if ((pass_enc & 0xFF) != Rando.password[i]) {
-			return 0;
-		}
-	}
-	return 1;
+	return encPass(&inputtedPass, &Rando.hash) == Rando.password;
 }
 
 void wipePassword(void) {

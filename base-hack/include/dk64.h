@@ -335,6 +335,8 @@ extern void unkBonusFunction(actorData* actor);
 extern void internalKasplatCode(int has_bp);
 extern void drawRetroSprite(void* unk0, int x, int y);
 
+extern int encPass(unsigned char* pass, unsigned char* key);
+
 extern void spriteActorGenericCode(float unk0);
 extern void assignGIFToActor(void* paad, void* sprite, float scale);
 extern int loadSetupNew(int map);
