@@ -8,7 +8,7 @@ import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
-from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
+from randomizer.Enums.Settings import ClimbingStatus, HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Item import ItemFromKong
@@ -54,6 +54,8 @@ def PlaceConstants(spoiler):
         typesOfItemsShuffled.append(Types.Shop)
         if settings.training_barrels == TrainingBarrels.shuffled:
             typesOfItemsShuffled.append(Types.TrainingBarrel)
+        if settings.climbing_status == ClimbingStatus.shuffled:
+            typesOfItemsShuffled.append(Types.Climbing)
         if settings.shockwave_status != ShockwaveStatus.vanilla:
             typesOfItemsShuffled.append(Types.Shockwave)
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
@@ -153,6 +155,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(ImportantSharedMoves)
     allItems.extend(JunkSharedMoves)
     allItems.extend(TrainingBarrelAbilities().copy())
+    allItems.extend(ClimbingAbilities().copy())
     if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
         allItems.append(Items.Camera)
         allItems.append(Items.Shockwave)
@@ -219,6 +222,8 @@ def AllItems(settings):
 
         if settings.training_barrels == TrainingBarrels.shuffled:
             allItems.extend(TrainingBarrelAbilities().copy())
+        if settings.climbing_status == ClimbingStatus.shuffled:
+            allItems.extend(ClimbingAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
             allItems.append(Items.Camera)
             allItems.append(Items.Shockwave)
@@ -428,8 +433,13 @@ def Instruments(settings):
 
 def TrainingBarrelAbilities():
     """Return all training barrel abilities."""
-    barrelAbilities = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels, Items.Climbing]
+    barrelAbilities = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
     return barrelAbilities
+
+
+def ClimbingAbilities():
+    """Return all climbing abilities."""
+    return [Items.Climbing]
 
 
 def Upgrades(settings):
@@ -438,6 +448,9 @@ def Upgrades(settings):
     # Add training barrel items to item pool if shuffled
     if settings.training_barrels == TrainingBarrels.shuffled:
         upgrades.extend(TrainingBarrelAbilities())
+    # Add climbing to item pool if shuffled
+    if settings.climbing_status == ClimbingStatus.shuffled:
+        upgrades.extend(ClimbingAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
     slam_count = 3
     if settings.start_with_slam:
@@ -675,6 +688,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(RarewareCoinItems())
     if Types.TrainingBarrel in unplacedTypes:
         itemPool.extend(TrainingBarrelAbilities())
+    if Types.Climbing in unplacedTypes:
+        itemPool.extend(ClimbingAbilities())
     if Types.Kong in unplacedTypes:
         itemPool.extend(Kongs(settings))
     if Types.Medal in unplacedTypes:
@@ -712,6 +727,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(AllKongMoves())
         if settings.training_barrels == TrainingBarrels.shuffled:
             itemPool.extend(TrainingBarrelAbilities().copy())
+        if settings.climbing_status == ClimbingStatus.shuffled:
+            itemPool.extend(ClimbingAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
             itemPool.extend(ShockwaveTypeItems(settings))
     # With a list of specifically placed items, we can't assume those

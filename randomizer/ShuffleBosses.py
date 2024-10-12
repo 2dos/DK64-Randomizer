@@ -351,6 +351,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
                 chosenBoss = random.choice(expandedBossOptions)
                 if chosenBoss in possibleEndgameBossSwaps:
                     spoiler.settings.krool_order.remove(chosenBoss)
+                    updateKRoolSettings(spoiler, chosenBoss)
             else:
                 # This is likely limited to lava water shenanigans
                 raise BossOutOfLocationsException("Fill has no valid boss placement combinations.")
@@ -375,6 +376,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
         possibleBosses = [map for map in getBosses(spoiler.settings) if map not in placedBossMaps and map not in spoiler.settings.krool_order]
         newEndgameBoss = random.choice(possibleBosses)
         spoiler.settings.krool_order.append(newEndgameBoss)
+        updateKRoolSettings(spoiler, newEndgameBoss)
         random.shuffle(spoiler.settings.krool_order)
         # UHHHH does this fuck with kongs assigned to phases? SURE HOPE NOT!
     newBossMaps = [None, None, None, None, None, None, None]
@@ -465,3 +467,31 @@ def CorrectBossKongLocations(spoiler):
     spoiler.LocationList[Locations.ForestKey].kong = spoiler.settings.boss_kongs[4]
     spoiler.LocationList[Locations.CavesKey].kong = spoiler.settings.boss_kongs[5]
     spoiler.LocationList[Locations.CastleKey].kong = spoiler.settings.boss_kongs[6]
+
+
+def updateKRoolSettings(spoiler, phase):
+    """Make sure the settings match the phases in the K. Rool order."""
+    if phase == Maps.KroolDonkeyPhase:
+        spoiler.settings.krool_donkey = not spoiler.settings.krool_donkey
+    elif phase == Maps.KroolDiddyPhase:
+        spoiler.settings.krool_diddy = not spoiler.settings.krool_diddy
+    elif phase == Maps.KroolLankyPhase:
+        spoiler.settings.krool_lanky = not spoiler.settings.krool_lanky
+    elif phase == Maps.KroolTinyPhase:
+        spoiler.settings.krool_tiny = not spoiler.settings.krool_tiny
+    elif phase == Maps.KroolChunkyPhase:
+        spoiler.settings.krool_chunky = not spoiler.settings.krool_chunky
+    elif phase == Maps.JapesBoss:
+        spoiler.settings.krool_dillo1 = not spoiler.settings.krool_dillo1
+    elif phase == Maps.AztecBoss:
+        spoiler.settings.krool_dog1 = not spoiler.settings.krool_dog1
+    elif phase == Maps.FactoryBoss:
+        spoiler.settings.krool_madjack = not spoiler.settings.krool_madjack
+    elif phase == Maps.GalleonBoss:
+        spoiler.settings.krool_pufftoss = not spoiler.settings.krool_pufftoss
+    elif phase == Maps.FungiBoss:
+        spoiler.settings.krool_dog2 = not spoiler.settings.krool_dog2
+    elif phase == Maps.CavesBoss:
+        spoiler.settings.krool_dillo2 = not spoiler.settings.krool_dillo2
+    elif phase == Maps.CastleBoss:
+        spoiler.settings.krool_kutout = not spoiler.settings.krool_kutout

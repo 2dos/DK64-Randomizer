@@ -215,7 +215,7 @@ for locationEnum, locationObj in LocationList.items():
         continue
     # Do not include training barrels or pre-given move locations. We will fill
     # those automatically based on the user's selected starting moves.
-    if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove]:
+    if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing]:
         continue
     # Do not include the shopkeepers.
     if locationObj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:

@@ -285,7 +285,7 @@ def ShuffleVanillaDoors(spoiler):
                 vanilla_door_indexes.append(door_index)
         random.shuffle(vanilla_door_indexes)
         # One random vanilla T&S per level is locked to being a T&S
-        locked_tns_options = [idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed == DoorType.boss and door_locations[level][idx].door_type != "wrinkly"]
+        locked_tns_options = [idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed == DoorType.boss and DoorType.boss in door_locations[level][idx].door_type]
         locked_tns_index = random.choice(locked_tns_options)
         locked_tns = door_locations[level][locked_tns_index]
         locked_tns.assignPortal(spoiler)

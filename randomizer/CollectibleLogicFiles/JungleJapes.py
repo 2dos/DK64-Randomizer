@@ -94,7 +94,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.phasewalk, None, 3),  # In hollow trunk to the left
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.phasewalk, None, 3),  # In hollow trunk to the right
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # By beehive
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.hunkyChunky, None, 4),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.climbing and l.hunkyChunky, None, 4),
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Behind stump
     ],

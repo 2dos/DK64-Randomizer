@@ -21,4 +21,3 @@ from randomizer.Enums.Maps import Maps
 # associated JSON file.
 
 globals().update(generate_globals(__file__))
-

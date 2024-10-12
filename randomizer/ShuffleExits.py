@@ -370,7 +370,12 @@ def GenerateLevelOrderUnrestricted(settings):
         unplacedLevels.remove(Levels.HideoutHelm)
     for i in range(len(newLevelOrder.keys())):
         if newLevelOrder[i + 1] is None:
-            newLevelOrder[i + 1] = random.choice(unplacedLevels)
+            # Helm can't be in levels 1 or 2 in Simple Level Order
+            if not settings.hard_level_progression and i < 2:
+                validLevels = [x for x in unplacedLevels if x != Levels.HideoutHelm]
+            else:
+                validLevels = unplacedLevels
+            newLevelOrder[i + 1] = random.choice(validLevels)
             unplacedLevels.remove(newLevelOrder[i + 1])
     return newLevelOrder
 
