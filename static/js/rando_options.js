@@ -718,9 +718,14 @@ document
   .addEventListener("change", plando_disable_camera_shockwave);
 
 // Enable and disable the Plandomizer tab
-function enable_plandomizer() {
+async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
+    try {
+      await setup_pyodide();
+    } catch (error) {
+      console.log("Error setting up Pyodide:", error);
+    }
     plandoTab.style.display = "";
   } else {
     plandoTab.style.display = "none";

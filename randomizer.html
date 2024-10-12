@@ -184,7 +184,12 @@
                                     return itemList;
                                 });
                                 // Get /get_selector_info using ajax async false
-                                // TODO: Do this direct via javascript
+                                // TODO REWRITE: Do this direct via javascript
+                                // TODO REWRITE: After generating a seed, the first UI progress box is not displaying.
+                                // TODO REWRITE: Tasks are not working in vscode, just do python3 ./runner.py
+
+                                // TODO REWRITE: Need to Repoint the default URLs
+
                                 var selector_info = $.ajax({
                                     type: "GET",
                                     url: "/get_selector_info",

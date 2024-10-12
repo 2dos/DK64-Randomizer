@@ -200,16 +200,24 @@ function serialize_settings(include_plando = false) {
     let form_data = {};
 
     // Plandomizer data is processed separately and uses a separate setting string, so it needs to be optionally serializable
-    /*
-    // TODO: We need to re-enable the plando options
     if (include_plando) {
-        let plando_form_data = populate_plando_options(form);
+        pyodide.runPython(`from pyodide_importer import register_hook  # type: ignore  # noqa
+try:
+  register_hook("/")  # type: ignore  # noqa
+except Exception:
+  pass
+import js
+from ui.plando_settings import populate_plando_options
+plando_form_data = populate_plando_options(js.form)
+js.plando_form_data = plando_form_data
+                `);
+        let plando_form_data = window.plando_form_data;
         if (plando_form_data !== null) {
             form_data["enable_plandomizer"] = true;
             form_data["plandomizer_data"] = JSON.stringify(plando_form_data);
         }
     }
-    */
+    
 
     // Custom music data is also processed separately.
     let music_selection_data = serialize_music_selections(form);
@@ -373,7 +381,18 @@ function generate_seed(event) {
         let form_data = serialize_settings(plando_enabled);
         form_data = JSON.parse(form_data);
         if (form_data["enable_plandomizer"]) {
-            let plando_errors = validate_plando_options(form_data);
+            //let plando_errors = validate_plando_options(form_data);
+            pyodide.runPython(`from pyodide_importer import register_hook  # type: ignore  # noqa
+try:
+    register_hook("/")  # type: ignore  # noqa
+except Exception:
+    pass
+import js
+from ui.plando_validation import validate_plando_options
+plando_errors = validate_plando_options(js.form)
+js.plando_errors = plando_errors
+                            `);
+            let plando_errors = window.plando_errors;
             // If errors are returned, the plandomizer options are invalid.
             // Do not attempt to generate a seed.
             if (plando_errors.length > 0) {
@@ -387,7 +406,7 @@ function generate_seed(event) {
         }
 
         // Start the progress bar
-        // TODO: Restore the progress bar when we can read get_hash_images
+        // TODO REWRITE: Restore the progress bar when we can read get_hash_images
         // from randomizer.Patching.Hash
 
         // document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0];
