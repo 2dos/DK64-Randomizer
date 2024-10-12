@@ -7,7 +7,7 @@ from randomizer.Enums.Events import Events
 import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
+from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem, PlandoItems
 from randomizer.Enums.Settings import ClimbingStatus, HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Levels import Levels
@@ -123,8 +123,13 @@ def PlaceConstants(spoiler):
     # Plando items are placed with constants but should not change locations to Constant type
     settings.plandomizer_items_placed = []
     if settings.enable_plandomizer:
+        blueprints_planned = []
         for location_id, plando_item in settings.plandomizer_dict["locations"].items():
-            item = random.choice(GetItemsFromPlandoItem(plando_item))
+            if plando_item in [PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint]:
+                item = random.choice([x for x in GetItemsFromPlandoItem(plando_item) if x not in blueprints_planned])
+                blueprints_planned.append(item)
+            else:
+                item = random.choice(GetItemsFromPlandoItem(plando_item))
             spoiler.LocationList[int(location_id)].PlaceItem(spoiler, item)
             settings.plandomizer_items_placed.append(item)
 
