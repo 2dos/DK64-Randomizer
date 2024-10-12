@@ -398,8 +398,6 @@ def KeysToPlace(settings):
         key_item = getHelmKey(settings)
         if key_item in keysToPlace:
             keysToPlace.remove(key_item)
-        if Items.HideoutHelmKey in keysToPlace:
-            keysToPlace.remove(Items.HideoutHelmKey)
     return keysToPlace
 
 
@@ -501,6 +499,10 @@ def HighPriorityItems(settings):
     itemPool.extend(Guns(settings))
     itemPool.extend(Instruments(settings))
     itemPool.extend(Upgrades(settings))
+    itemPool.extend(CrankyItems())
+    itemPool.extend(CandyItems())
+    itemPool.extend(FunkyItems())
+    itemPool.extend(SnideItems())
     return itemPool
 
 
@@ -740,6 +742,11 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     for item in placed_items:
         if item in itemPool:
             itemPool.remove(item)  # Remove one instance of the item (do not filter!)
+    # If there is a Key forced into Helm, be sure it's not being assumed
+    if settings.key_8_helm or Types.Key not in settings.shuffled_location_types:
+        key_forced_into_helm = getHelmKey(settings)
+        if key_forced_into_helm in itemPool:
+            itemPool.remove(key_forced_into_helm)
     return itemPool
 
 
