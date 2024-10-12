@@ -237,6 +237,7 @@ async def import_plando_options(jsonString):
     js.plando_toggle_custom_wrinkly_locations(None)
     js.plando_toggle_custom_locations_tab(None)
     js.plando_disable_isles_medals(None)
+    js.plando_disable_krool_phases_as_bosses(None)
     lock_key_8_in_helm(None)
     validate_custom_arena_locations(None)
     validate_custom_crate_locations(None)

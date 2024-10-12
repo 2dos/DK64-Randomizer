@@ -668,6 +668,30 @@ function plando_disable_isles_medals(evt) {
 
 document.getElementById("cb_rando").addEventListener("change", plando_disable_isles_medals);
 
+// Disable K. Rool phases as bosses if they are not in the boss pool.
+function plando_disable_krool_phases_as_bosses(evt) {
+  const kroolInBossPool = document.getElementById("krool_in_boss_pool").checked;
+  const tnsBossOptions = document.getElementsByClassName("plando-tns-boss");
+
+  if (kroolInBossPool) {
+    for (let option of tnsBossOptions) {
+      option.removeAttribute("disabled");
+    }
+  } else {
+    for (let option of tnsBossOptions) {
+      option.setAttribute("disabled", "disabled");
+    }
+    for (let i = 0; i < 5; i++) {
+      const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
+      if (kroolPhase.value.includes("Boss")) {
+        kroolPhase.value = "";
+      }
+    }
+  }
+}
+
+document.getElementById("krool_in_boss_pool").addEventListener("click", plando_disable_krool_phases_as_bosses);
+
 // Make changes to the plando tab based on other settings
 document.getElementById("nav-plando-tab").addEventListener("click", function(evt) {
     disable_krool_phases(evt);
@@ -689,6 +713,7 @@ document.getElementById("nav-plando-tab").addEventListener("click", function(evt
     plando_disable_wrinkly_custom_locations(evt);
     plando_disable_tns_custom_locations(evt);
     plando_disable_isles_medals(evt);
+    plando_disable_krool_phases_as_bosses(evt);
 });
 
 // Disable Boss Kong and Boss Location Rando if Vanilla levels and Kong Rando
