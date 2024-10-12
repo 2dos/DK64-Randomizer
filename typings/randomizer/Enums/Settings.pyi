@@ -101,6 +101,10 @@ class GalleonWaterSetting(IntEnum):
     raised = 1
     random = 2
 
+class ClimbingStatus(IntEnum):
+    normal = 0
+    shuffled = 1
+
 class GlitchesSelected(IntEnum):
     advanced_platforming = 1
     b_locker_skips = 2

@@ -27,7 +27,7 @@ def create_stub(json_file):
     # Read JSON content
     with open(json_file, "r") as file:
         try:
-            data = load_jsonc(file)
+            data = load_jsonc(file.read())
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON in {json_file}: {e}")
             return

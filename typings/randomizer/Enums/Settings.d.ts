@@ -115,6 +115,11 @@ export enum GalleonWaterSetting {
     random = 2,
 }
 
+export enum ClimbingStatus {
+    normal = 0,
+    shuffled = 1,
+}
+
 export enum GlitchesSelected {
     advanced_platforming = 1,
     b_locker_skips = 2,
