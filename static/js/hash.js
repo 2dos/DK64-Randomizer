@@ -91,24 +91,29 @@ async function get_hash_images(type = "local", mode = "hash") {
   for (let imageInfo of filteredList) {
     // Seek to the pointer table entry for the current image
     romType.seek(ptrOffset + imageInfo.table * 4);
-    let ptrTable = ptrOffset + romType.readBytes(4);
-
+    position = ptrOffset + imageInfo.table * 4
+    console.log("Seeking to " + position)
+    console.log("Pointer Offset: " + ptrOffset)
+    read_bytes = parseInt(romType.readBytes(4).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16)
+    console.log("Read Bytes: " + read_bytes)
+    let ptrTable = ptrOffset + read_bytes;
+    // Read Bytes comes back as comma seperated bytes, merge them together
+    console.log("ptrTable: " + ptrTable)
     // Seek to the start and end of the image data
+    let pos = ptrTable + imageInfo.index * 4
+    console.log("Seeking to " + pos)
     romType.seek(ptrTable + imageInfo.index * 4);
-    let imgStart = ptrOffset + romType.readBytes(4);
-    // get rid of all the commas in the image start
-    imgStart = imgStart.replace(/,/g, '');
+    let imgStart = ptrOffset + parseInt(romType.readBytes(4).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16);
     console.log(imgStart)
     romType.seek(ptrTable + (imageInfo.index + 1) * 4);
-    let imgEnd = ptrOffset + romType.readBytes(4);
-    imgEnd = imgEnd.replace(/,/g, '');
+    let imgEnd = ptrOffset + parseInt(romType.readBytes(4).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16);
     console.log(imgEnd)
     let imgSize = imgEnd - imgStart;
     console.log(imgSize)
     // Read the image data from the ROM
     romType.seek(imgStart);
-    let imgData = romType.readBytes(imgSize);
-
+    let imgData = parseInt(romType.readBytes(imgSize).map(byte => byte.toString(16).padStart(2, '0')).join(''), 16);
+    console.log(imgData)
     // Decompress image data if necessary
     let dec;
     if (imageInfo.table === 25) {
