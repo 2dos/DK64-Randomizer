@@ -502,6 +502,7 @@ def HighPriorityItems(settings):
     itemPool.extend(CrankyItems())
     itemPool.extend(CandyItems())
     itemPool.extend(FunkyItems())
+    itemPool.extend(SnideItems())
     return itemPool
 
 
