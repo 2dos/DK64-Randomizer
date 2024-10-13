@@ -310,7 +310,13 @@
                                     -- Randomize --
                                 </option>
                                 {% for phase in plando_phases %}
-                                  <option value="{{phase["value"]}}">
+                                  <option value="{{phase["value"]}}"
+                                  {% if "Boss" in phase["value"] %}
+                                    class="plando-tns-boss"
+                                  {% else %}
+                                    class="plando-krool-phase"
+                                  {% endif %}
+                                  >
                                     {{phase["name"]}}
                                   </option>
                                 {% endfor %}

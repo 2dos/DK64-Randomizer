@@ -7,7 +7,7 @@ from randomizer.Enums.Events import Events
 import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
+from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem, PlandoItems
 from randomizer.Enums.Settings import ClimbingStatus, HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Levels import Levels
@@ -79,7 +79,7 @@ def PlaceConstants(spoiler):
         spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, getHelmKey(spoiler.settings))
         # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset,
         # place Key 8 in the 8th level somewhere
-        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels and not spoiler.settings.hard_level_progression:
             last_level = settings.level_order[8]
             if last_level != Levels.HideoutHelm:
                 potential_locations = [
@@ -107,7 +107,7 @@ def PlaceConstants(spoiler):
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
                 spoiler.LocationList[shuffledTo.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
         # The key in Helm is always Key 8 in these settings
-        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, getHelmKey(spoiler.settings))
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:
@@ -123,8 +123,13 @@ def PlaceConstants(spoiler):
     # Plando items are placed with constants but should not change locations to Constant type
     settings.plandomizer_items_placed = []
     if settings.enable_plandomizer:
+        blueprints_planned = []
         for location_id, plando_item in settings.plandomizer_dict["locations"].items():
-            item = random.choice(GetItemsFromPlandoItem(plando_item))
+            if plando_item in [PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint]:
+                item = random.choice([x for x in GetItemsFromPlandoItem(plando_item) if x not in blueprints_planned])
+                blueprints_planned.append(item)
+            else:
+                item = random.choice(GetItemsFromPlandoItem(plando_item))
             spoiler.LocationList[int(location_id)].PlaceItem(spoiler, item)
             settings.plandomizer_items_placed.append(item)
 
@@ -393,8 +398,6 @@ def KeysToPlace(settings):
         key_item = getHelmKey(settings)
         if key_item in keysToPlace:
             keysToPlace.remove(key_item)
-        if Items.HideoutHelmKey in keysToPlace:
-            keysToPlace.remove(Items.HideoutHelmKey)
     return keysToPlace
 
 
@@ -496,6 +499,10 @@ def HighPriorityItems(settings):
     itemPool.extend(Guns(settings))
     itemPool.extend(Instruments(settings))
     itemPool.extend(Upgrades(settings))
+    itemPool.extend(CrankyItems())
+    itemPool.extend(CandyItems())
+    itemPool.extend(FunkyItems())
+    itemPool.extend(SnideItems())
     return itemPool
 
 
@@ -735,6 +742,11 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     for item in placed_items:
         if item in itemPool:
             itemPool.remove(item)  # Remove one instance of the item (do not filter!)
+    # If there is a Key forced into Helm, be sure it's not being assumed
+    if settings.key_8_helm or Types.Key not in settings.shuffled_location_types:
+        key_forced_into_helm = getHelmKey(settings)
+        if key_forced_into_helm in itemPool:
+            itemPool.remove(key_forced_into_helm)
     return itemPool
 
 

@@ -881,6 +881,54 @@ document
   .getElementById("krool_phase_count")
   .addEventListener("change", plando_hide_krool_options);
 
+// Hide plando options for Isles medal locations if medal CBs aren't shuffled
+function plando_disable_isles_medals(evt) {
+  const cbShuffle = document.getElementById("cb_rando").value;
+  const kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"];
+
+  if (cbShuffle !== "on_with_isles") {
+    for (const kong of kongs) {
+      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+      kongIsleElem.setAttribute("disabled", "disabled");
+      kongIsleElem.value = "";
+      tooltip = "To assign a reward here, Isles CBs must be shuffled.";
+      kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
+    }
+  } else {
+    for (const kong of kongs) {
+      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+      kongIsleElem.removeAttribute("disabled");
+      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
+    }
+  }
+}
+
+document.getElementById("cb_rando").addEventListener("change", plando_disable_isles_medals);
+
+// Disable K. Rool phases as bosses if they are not in the boss pool.
+function plando_disable_krool_phases_as_bosses(evt) {
+  const kroolInBossPool = document.getElementById("krool_in_boss_pool").checked;
+  const tnsBossOptions = document.getElementsByClassName("plando-tns-boss");
+
+  if (kroolInBossPool) {
+    for (let option of tnsBossOptions) {
+      option.removeAttribute("disabled");
+    }
+  } else {
+    for (let option of tnsBossOptions) {
+      option.setAttribute("disabled", "disabled");
+    }
+    for (let i = 0; i < 5; i++) {
+      const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
+      if (kroolPhase.value.includes("Boss")) {
+        kroolPhase.value = "";
+      }
+    }
+  }
+}
+
+document.getElementById("krool_in_boss_pool").addEventListener("click", plando_disable_krool_phases_as_bosses);
+
 // Make changes to the plando tab based on other settings
 document
   .getElementById("nav-plando-tab")
@@ -903,7 +951,9 @@ document
     plando_disable_patch_custom_locations(evt);
     plando_disable_wrinkly_custom_locations(evt);
     plando_disable_tns_custom_locations(evt);
-  });
+    plando_disable_isles_medals(evt);
+    plando_disable_krool_phases_as_bosses(evt);
+});
 
 // Disable Boss Kong and Boss Location Rando if Vanilla levels and Kong Rando
 document.getElementById("kong_rando").addEventListener("click", function (evt) {
