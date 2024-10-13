@@ -108,7 +108,7 @@
                 {% for kong in ["diddy", "lanky", "tiny", "chunky"] %}
                     <label id="plando_kong_rescue_div_{{kong}}"
                         class="flex-container select-order">
-                        <span class="rescue-label">{{kong.capitalize()}} cage opener:&nbsp;</span>
+                        <span class="rescue-label">{{kong | capitalize }} cage opener:&nbsp;</span>
                         <div id="plando_kong_rescue_{{kong}}_wrapper"
                              data-toggle="tooltip"
                              title>

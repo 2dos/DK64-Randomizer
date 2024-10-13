@@ -1,34 +1,9 @@
 """Exit Categories enum."""
 
-from enum import IntEnum, auto
+from randomizer.JsonReader import generate_globals
 
+from typing import TYPE_CHECKING
 
-class ExitCategories(IntEnum):
-    """These categories are used to categorize maps with multiple entrances."""
-
-    IslesExterior = auto()
-    IslesTrainingGrounds = auto()
-    JapesLobby = auto()
-    AztecLobby = auto()
-    FactoryLobby = auto()
-    GalleonLobby = auto()
-    ForestLobby = auto()
-    CavesLobby = auto()
-    CastleLobby = auto()
-    HelmLobby = auto()
-    JapesExterior = auto()
-    AztecExterior = auto()
-    FactoryExterior = auto()
-    GalleonExterior = auto()
-    ForestExterior = auto()
-    ForestMushroom = auto()
-    ForestMill = auto()
-    ForestGrinder = auto()
-    CavesExterior = auto()
-    CastleExterior = auto()
-    CastleLower = auto()
-    CastleUpper = auto()
-    CastleBallroom = auto()
-    CastleCarRaceExterior = auto()
-    CastleCrypt = auto()
-    HideoutHelm = auto()
+if TYPE_CHECKING:
+    from randomizer.Enums.ExitCategories import ExitCategories
+globals().update(generate_globals(__file__))

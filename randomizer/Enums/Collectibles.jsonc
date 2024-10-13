@@ -1,0 +1,9 @@
+{
+    "Collectibles": {
+        // Collectible enum
+        "banana": 0,
+        "bunch": 1,
+        "balloon": 2,
+        "coin": 3
+    }
+}

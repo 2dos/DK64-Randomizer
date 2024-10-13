@@ -1,12 +1,9 @@
 """Door Types enum."""
 
-from enum import IntEnum, auto
+from randomizer.JsonReader import generate_globals
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from randomizer.Enums.DoorType import DoorType
 
-class DoorType(IntEnum):
-    """Door Type enum."""
-
-    null = auto()
-    wrinkly = auto()
-    boss = auto()
-    dk_portal = auto()
+globals().update(generate_globals(__file__))

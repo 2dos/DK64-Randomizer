@@ -172,7 +172,7 @@
          style="display: none;">
     </div>
     <div>
-        {% for categoryName, category in select_song_panel.items() %}
+        {% for categoryName, category in select_song_panel %}
             <div class="flex-container flex-center expandable-toggle"
                  id="{{categoryName}}_collapse_toggle">
                 <h3 class="title">{{category["name"]}}</h3>
@@ -181,7 +181,7 @@
             </div>
             <div class="flex-container flex-center expandable-container collapsed"
                  id="{{categoryName}}">
-                {% for subCategory in category["subcategories"].values() %}
+                {% for subCategory in category["subcategories"] %}
                     <h3 class="title">{{subCategory["name"]}}</h3>
                     <div class="flex-container flex-center">
                         {% for song in subCategory["songs"] %}

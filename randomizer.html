@@ -16,6 +16,7 @@
         <script type="text/javascript" src="static/js/md5.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
             rel="stylesheet"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.2.4/nunjucks.min.js" integrity="sha512-YvU0oaPCJSOIFni9rIOthOs5GgtU5kNZMKQG/Nt33t/H9g/1+TK7KJuMsCZS6v4O3+x253OZlTzPryrUtxxORw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet"
             type="text/css"
             href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -113,7 +114,8 @@
                         top: 50%;
                         left: 40%;
                         " src="./static/img/loading-icon-black.svg" />
-                    <script>
+
+                    <!-- <script>
                         var pyodide;
                         var jquery = $;
                         async function load_inital() {
@@ -130,23 +132,12 @@
                             await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
                         }
                         await pyodide.runPythonAsync(ui_script).then(function (result) {
-                            var script = document.createElement("script");
-                            script.src = "./static/js/rando_options.js";
-                            document.head.appendChild(script);
-                            var script = document.createElement("script");
-                            script.src = "./static/js/initalize.js";
-                            document.head.appendChild(script);
+
 
                         });
                         }
                         
-                        function getFile(file) {
-                        return $.ajax({
-                            type: "GET",
-                            url: file,
-                            async: false
-                        }).responseText;
-                        }
+                       
                         window.onload = load_delay;
                         function load_delay() {
                         // Delay a section so the page scripts can load
@@ -161,9 +152,93 @@
                             }, 1000);
                         }, 1000);
                         }
-                    </script>
+                    </script> -->
                     </div>
                     <div class="container" id="tab-data" hidden></div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.3.0/base64.min.js" integrity="sha512-IFxgh3q1bUsg/sL6qotMkJZTOvPyYSS6mRSSIVnJndN5j9vWcQ+oJyHkelIkRAOaKgdU1ibHJOs4HX15sPtZKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js" integrity="sha512-g2TeAWw5GPnX7z0Kn8nFbYfeHcvAu/tx6d6mrLe/90mkCxO+RcptyYpksUz35EO337F83bZwcmUyHiHamspkfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+                    <script type="module">
+                        // Create an async function to handle the script loading process
+                        async function loadScripts() {
+                            try {
+                                // Dynamically import init_variables.js first
+                                await import('./static/js/init_variables.js');
+                    
+                                // Now load PlandoUtils.js
+                                await import('./static/js/PlandoUtils.js');
+                    
+                                // Nunjucks configuration after PlandoUtils.js is loaded
+                                var env = nunjucks.configure('/templates', { autoescape: true, web: { useCache: true } });
+                    
+                                // Use the imported functions from PlandoUtils
+                                env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
+                                env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
+                                env.addFilter("plando_minigame_restrict", PlandoMinigameFilter);
+                                env.addFilter("plando_shop_sort", PlandoShopSortFilter);
+                                env.addFilter("music_select_restrict", function(songList, location) {
+                                    return songList;
+                                });
+                                env.addGlobal("plando_option_class_annotation", PlandoOptionClassAnnotation);
+                                env.addFilter("plando_item_restrict", function(itemList, location) {
+                                    return itemList;
+                                });
+                                // Get /get_selector_info using ajax async false
+                                // TODO REWRITE: Do this direct via javascript
+                                // TODO REWRITE: After generating a seed, the first UI progress box is not displaying.
+                                // TODO REWRITE: Tasks are not working in vscode, just do python3 ./runner.py
+
+                                // TODO REWRITE: Need to Repoint the default URLs
+
+                                var selector_info = $.ajax({
+                                    type: "GET",
+                                    url: "/get_selector_info",
+                                    async: false
+                                }).responseJSON;
+                                // Append the KongZones to the selector_info
+                                selector_info["kong_zones"] = KongZones;
+                                // Render templates
+                                var renderedHTML = env.render("base.html.jinja2", selector_info);
+                                var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
+                    
+                                // Inject into the DOM
+                                $("#tab-data").html(renderedHTML);
+                                $("#nav-tab-list").html(navRenderedHTML);
+                    
+                                // After rendering the HTML, dynamically load the other scripts
+                                loadAdditionalScripts();
+                            } catch (error) {
+                                console.error("Failed to load required modules:", error);
+                            }
+                        }
+                    
+                            // Function to dynamically load additional scripts after HTML is updated
+                            function loadAdditionalScripts() {
+                                const scripts = [
+                                    { src: './static/js/utils.js', defer: true },
+                                    { src: './static/js/spoiler.js', defer: true },
+                                    { src: './static/js/generate_buttons.js', defer: true },
+                                    { src: './static/js/rando_options.js', defer: true },
+                                    { src: './static/js/initalize.js', defer: true },
+                                    { src: './static/js/music_select.js', defer: true },
+                                    { src: "./static/js/hash.js", defer: true },
+                                    { src: "./static/js/pyodide_functions.js", defer: true}
+                                ];
+                        
+                                scripts.forEach(({ src, defer }) => {
+                                    const script = document.createElement('script');
+                                    script.src = src;
+                                    script.defer = defer;
+                                    document.body.appendChild(script);
+                                });
+                            }
+                        
+                            // Call the async function to start the process
+                            loadScripts();
+                        </script>
+                    
+                    <script src="./static/js/pyodide/pyodide.js"></script>
+
                     <hr />
                     <!-- Toasts -->
                     <div id="toasts">

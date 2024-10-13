@@ -79,7 +79,7 @@
             </tr>
         </table>
     </div>
-    {% for _, levelObj in panel["levels"].items() %}
+    {% for _, levelObj in panel["levels"] %}
         <h3 class="title">{{levelObj["name"]}}</h3>
         <div class="flex-container flex-center">
             {% for location in levelObj["locations"] %}
