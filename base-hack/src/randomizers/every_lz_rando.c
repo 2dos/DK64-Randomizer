@@ -61,3 +61,26 @@ void replace_zones(int init_flag) {
 		}
 	}
 }
+
+static const unsigned char vanilla_blast_maps[] = {
+	MAP_JAPESBBLAST,
+	MAP_AZTECBBLAST,
+	MAP_FACTORYBBLAST,
+	MAP_GALLEONBBLAST,
+	MAP_FUNGIBBLAST,
+	MAP_CAVESBBLAST,
+	MAP_CASTLEBBLAST,
+};
+
+void blastWarpHandler(maps map, int wrong_cs_enabled) {
+	for (int i = 0; i < 7; i++) {
+		if (map == vanilla_blast_maps[i]) {
+			if (wrong_cs_enabled) {
+				setIntroStoryPlaying(2);
+				setNextTransitionType(0);
+			}
+			initiateTransition_0(Rando.blast_entrances[i].map, Rando.blast_entrances[i].exit, 0, 0);
+			return;
+		}
+	}
+}

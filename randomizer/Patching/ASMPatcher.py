@@ -83,6 +83,7 @@ ENABLE_HITSCAN = False
 DISABLE_BORDERS = False
 ENABLE_MINIGAME_SPRITE_RANDO = False
 ENABLE_HELM_GBS = True
+ENABLE_BLAST_LZR = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -2260,6 +2261,11 @@ def patchAssembly(ROM_COPY, spoiler):
                 writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(shuffled_back.regionId), offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
+        if ENABLE_BLAST_LZR:
+            addr_hi = getHiSym("blastWarpHandler")
+            addr_lo = getLoSym("blastWarpHandler")
+            writeValue(ROM_COPY, 0x806E5A4A, Overlay.Static, addr_hi, offset_dict)
+            writeValue(ROM_COPY, 0x806E5A4E, Overlay.Static, addr_lo, offset_dict)
 
     # Boss Mapping
     for i in range(7):
