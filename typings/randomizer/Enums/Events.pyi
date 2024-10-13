@@ -197,3 +197,4 @@ class Events(IntEnum):
     CavesLobbyAccessed = 193
     CastleLobbyAccessed = 194
     HelmLobbyAccessed = 195
+    HelmLobbyTraversable = 196

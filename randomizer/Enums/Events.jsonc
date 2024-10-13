@@ -220,6 +220,7 @@
         "ForestLobbyAccessed": 192,
         "CavesLobbyAccessed": 193,
         "CastleLobbyAccessed": 194,
-        "HelmLobbyAccessed": 195
+        "HelmLobbyAccessed": 195,
+        "HelmLobbyTraversable": 196
     }
 }
