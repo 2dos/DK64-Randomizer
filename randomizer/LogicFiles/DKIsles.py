@@ -87,6 +87,12 @@ LogicRegions = {
         Event(Events.ShipyardTreasureRoomOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
         Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel)),
         Event(Events.HollowTreeGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel)),
+        Event(Events.DonkeyVerse, lambda l: l.coconut and l.strongKong),
+        Event(Events.DiddyVerse, lambda l: l.jetpack and l.peanut and l.guitar),
+        Event(Events.LankyVerse, lambda l: l.handstand and l.balloon and l.trombone),
+        Event(Events.TinyVerse, lambda l: l.mini and l.twirl and l.climbing),
+        Event(Events.ChunkyVerse, lambda l: l.barrels),
+        Event(Events.FridgeVerse, lambda l: l.crankyAccess and l.peanut and l.pineapple and l.grape and l.oranges and l.coconut),
     ], [
         # These first 3 Transitions NEED to be in this order, due to Random Starting Location!
         TransitionFront(Regions.Credits, lambda l: True),

@@ -117,6 +117,14 @@ class Events(IntEnum):
     KRoolKKO = auto()
     KRoolDefeated = auto()
 
+    # Rap Verses (DK Rap Win Con Only)
+    DonkeyVerse = auto()
+    DiddyVerse = auto()
+    LankyVerse = auto()
+    TinyVerse = auto()
+    ChunkyVerse = auto()
+    FridgeVerse = auto()
+
     # Level entered events for shops
     JapesEntered = auto()
     AztecEntered = auto()

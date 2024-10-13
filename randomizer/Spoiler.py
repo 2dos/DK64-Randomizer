@@ -81,6 +81,7 @@ class Spoiler:
         self.woth_locations = {}
         self.woth_paths = {}
         self.krool_paths = {}
+        self.rap_win_con_paths = {}
         self.other_paths = {}
         self.shuffled_door_data = {}
         self.shuffled_barrel_data = {}
@@ -788,6 +789,15 @@ class Spoiler:
                 path_dict[path_location.name] = path_item.name
             phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
+        if self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            print(self.rap_win_con_paths)
+            for verse_name, path in self.rap_win_con_paths.items():
+                path_dict = {}
+                for path_loc_id in path:
+                    path_location = self.LocationList[path_loc_id]
+                    path_item = ItemList[path_location.item]
+                    path_dict[path_location.name] = path_item.name
+                humanspoiler["WotH Paths"][verse_name] = path_dict
         humanspoiler["Other Paths"] = {}
         for loc, path in self.other_paths.items():
             destination_item = ItemList[self.LocationList[loc].item]
