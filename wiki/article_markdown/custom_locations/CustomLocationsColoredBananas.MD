@@ -54,11 +54,11 @@
 | Next to Snide | 10 |  | 
 | Diddy cave around exterior | 10 |  | 
 | On the edge of Diddy's cage platform | 5 |  | 
-| Tiny's caged GB | 10 | `((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)` | 
+| Tiny's caged GB | 10 | `((Events.JapesTinySwitch in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)` | 
 | Lanky's caged GB | 10 | `((Events.JapesLankySwitch in l.Events or l.CanSkew(False)) and l.lanky) or (l.CanSkew(False) and l.settings.free_trade_items)` | 
 | T&S above diddy BP (2 custom, 1 Donkey bunch) | 15 |  | 
-| Diddy's Caged GB | 10 | `((Events.JapesDiddySwitch1 in l.Events or l.phasewalk or l.generalclips or l.CanSkew(False)) and l.diddy)` | 
-| Chunky's Caged GB | 10 | `((Events.JapesChunkySwitch in l.Events or l.phasewalk or l.CanSkew(False)) and l.chunky) or ((l.phasewalk or l.CanSkew(False)) and l.settings.free_trade_items)` | 
+| Diddy's Caged GB | 10 | `((Events.JapesDiddySwitch1 in l.Events or l.CanPhase() or l.generalclips or l.CanSkew(False)) and l.diddy)` | 
+| Chunky's Caged GB | 10 | `((Events.JapesChunkySwitch in l.Events or l.CanPhase() or l.CanSkew(False)) and l.chunky) or ((l.CanPhase() or l.CanSkew(False)) and l.settings.free_trade_items)` | 
 | between vines from funky to cannon | 10 | `l.can_use_vines` | 
 | Behind stump in beehive area | 10 |  | 
 | Above Melon Crate behind mountain | 5 |  | 
@@ -69,23 +69,23 @@
 | W3 bunches (Donkey) | 10 |  | 
 | Starting area (Diddy) | 5 |  | 
 | On Funky's shop (Chunky) | 10 |  | 
-| Under Lanky's bonus barrel in first cave (Lanky) | 5 | `l.grape or l.phasewalk or l.generalclips` | 
+| Under Lanky's bonus barrel in first cave (Lanky) | 5 | `l.grape or l.CanPhase() or l.generalclips` | 
 | In Rambi hut (Lanky) | 5 | `Events.Rambi in l.Events` | 
 | In Rambi hut (Donkey) | 5 | `Events.Rambi in l.Events` | 
 | In Rambi hut (Diddy) | 5 | `Events.Rambi in l.Events` | 
 | In Rambi hut (Tiny) | 5 | `Events.Rambi in l.Events` | 
 | On treetops (Tag barrel side) (Diddy) | 10 | `l.climbing` | 
-| Inside cage with Rambi Box (Donkey) | 5 | `l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk` | 
+| Inside cage with Rambi Box (Donkey) | 5 | `l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.CanPhase()` | 
 | On 4 trees in Beehive area (Chunky) | 20 | `l.climbing and l.hunkyChunky` | 
 | On treetop by Funky (Donkey) | 5 | `l.climbing` | 
 | On treetop by cannon (Donkey) | 5 | `l.climbing` | 
 | Underwater bunches (Diddy) | 10 | `l.swim` | 
 | On treetops (Painting room side) (Diddy) | 10 | `l.climbing` | 
-| Beehive area, left stump (Tiny) | 15 | `l.mini or l.phasewalk` | 
-| Beehive area, right stump (Tiny) | 15 | `l.mini or l.phasewalk` | 
+| Beehive area, left stump (Tiny) | 15 | `l.mini or l.CanPhase()` | 
+| Beehive area, right stump (Tiny) | 15 | `l.mini or l.CanPhase()` | 
 | Diddy's cage treetop (Donkey) | 5 | `l.climbing` | 
 | In front of beehive entrance (Tiny) | 5 |  | 
-| Under Tiny's bonus barrel in first cave (Tiny) | 5 | `l.feather or l.phasewalk` | 
+| Under Tiny's bonus barrel in first cave (Tiny) | 5 | `l.feather or l.CanPhase()` | 
 | Around boulder past rambi gate (Lanky) | 5 |  | 
 | Treetop by Snide's (Lanky) | 5 | `l.climbing` | 
 | Around underground entrance (Chunky) | 5 |  | 
@@ -149,15 +149,15 @@
 | 2 bunches on big barrel (with ammo) | 10 |  | 
 | Bunches on piles of coal | 10 |  | 
 | 2 bunches on steel kegs (2nd room) | 10 |  | 
-| Dynamite box in chimpy charge switch room | 5 | `l.charge or l.phasewalk` | 
-| Bunches on staircase-shaped boxes | 10 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk` | 
-| Conveyors | 10 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk` | 
-| On box in corner of conveyor room (Diddy) | 5 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk` | 
+| Dynamite box in chimpy charge switch room | 5 | `l.charge or l.CanPhase()` | 
+| Bunches on staircase-shaped boxes | 10 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
+| Conveyors | 10 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
+| On box in corner of conveyor room (Diddy) | 5 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
 | In river (Diddy) | 5 |  | 
 | On box by conveyors (Diddy) | 5 | `l.CanSlamSwitch(Levels.JungleJapes, 1)` | 
 | In front of peanut switch (Diddy) | 5 |  | 
 | First room above river | Balloon |  | 
-| In conveyor room (Diddy) | Balloon | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk` | 
+| In conveyor room (Diddy) | Balloon | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
 ## Japes Under Ground
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -247,7 +247,7 @@
 | On oasis treetops (Donkey) | 5 | `l.climbing` | 
 | On oasis treetops (Donkey) | 5 | `l.climbing` | 
 | DK Sealed Quicksand Tunnel (Donkey) | 20 | `l.strongKong` | 
-| DK Blueprint cave (Donkey) | 10 | `(l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and l.strongKong` | 
+| DK Blueprint cave (Donkey) | 10 | `(l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.CanPhase()) and l.strongKong` | 
 | On Melon crate on Llama Temple roof (Diddy) | 5 | `l.jetpack` | 
 | In sun (Diddy) | 5 | `l.jetpack` | 
 | On trees around Beetle race tower (Diddy) | 15 | `l.climbing` | 
@@ -256,7 +256,7 @@
 | Trees around front of 5DT (Tiny) | 15 | `l.climbing` | 
 | Trees between Llama Temple and 5DT (Lanky) | 15 | `l.climbing` | 
 | Around the outside of Llama Temple | 15 |  | 
-| Vase room (Chunky) | 20 | `l.pineapple or l.phasewalk` | 
+| Vase room (Chunky) | 20 | `l.pineapple or l.CanPhase()` | 
 | On Tiny Temple Staircase | 5 |  | 
 | Chunky vase room back wall | Balloon | `l.pineapple` | 
 | Chunky vase room right wall | Balloon | `l.pineapple` | 
@@ -293,7 +293,7 @@
 | Path to GB | 16 | `l.peanut` | 
 | Path to GB | 4 |  | 
 | Second dead end | 10 | `l.peanut` | 
-| First dead end | 10 | `l.peanut or l.phasewalk` | 
+| First dead end | 10 | `l.peanut or l.CanPhase()` | 
 | Right side (Diddy) | Balloon |  | 
 ## Aztec Lanky5DTemple
 | Name | Amount | Logic |
@@ -309,7 +309,7 @@
 | Path to GB | 21 | `l.feather` | 
 | Path to GB | 4 |  | 
 | Dead end | 5 | `l.feather, locations=[[5, 1.0, 330, 128, 1400]])` | 
-| Right side Mini Monkey room (scale 0.6) | 10 | `l.mini or l.phasewalk` | 
+| Right side Mini Monkey room (scale 0.6) | 10 | `l.mini or l.CanPhase()` | 
 | Dead end | Balloon |  | 
 ## Aztec Chunky5DTemple
 | Name | Amount | Logic |
@@ -335,13 +335,13 @@
 | To lava room (Tiny) | 3 |  | 
 | To lava room (Tiny) | 2 |  | 
 | On Tiny switches in lava room (Tiny) | 10 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny` | 
-| On vines in Matching game room (Lanky) | 5 | `(l.grape or l.phasewalk) and l.can_use_vines` | 
+| On vines in Matching game room (Lanky) | 5 | `(l.grape or l.CanPhase()) and l.can_use_vines` | 
 | Matching game room right side | Balloon |  | 
 | Above Llama | Balloon |  | 
 | Lava room | Balloon |  | 
 | Above lava/water (Tiny) | Balloon |  | 
-| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.phasewalk)` | 
-| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.phasewalk)` | 
+| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
+| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
 ## Aztec Tiny Temple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -393,13 +393,13 @@
 | R&D pole - upper room | 10 |  | 
 | Tunnel from pole to R&D room | 5 |  | 
 | Lower R&D pathway (10 custom, 5 Lanky) | 15 |  | 
-| R&D in grate with 4 Chunky coins | 5 | `(l.grab and l.donkey) or l.phasewalk` | 
+| R&D in grate with 4 Chunky coins | 5 | `(l.grab and l.donkey) or l.CanPhase()` | 
 | Tunnel from R&D room to above Power shed | 5 |  | 
 | R&D corners of room with lever | 10 |  | 
-| Corners of Car race room (right) | 10 | `l.mini or l.phasewalk` | 
-| Corners of Car race room (left) | 10 | `l.mini or l.phasewalk` | 
-| Diddy R&D room | 10 | `l.guitar or l.phasewalk` | 
-| Diddy R&D room in front of 4 buttons | 20 | `l.guitar or l.phasewalk` | 
+| Corners of Car race room (right) | 10 | `l.mini or l.CanPhase()` | 
+| Corners of Car race room (left) | 10 | `l.mini or l.CanPhase()` | 
+| Diddy R&D room | 10 | `l.guitar or l.CanPhase()` | 
+| Diddy R&D room in front of 4 buttons | 20 | `l.guitar or l.CanPhase()` | 
 | Leading to Chunky R&D room | 2 | `l.punch and l.chunky and l.climbing` | 
 | Leading to Chunky R&D room | 3 |  | 
 | Chunky R&D room behind chest | 10 | `l.CanAccessRNDRoom() or (l.punch and l.triangle and l.climbing)` | 
@@ -408,8 +408,8 @@
 | On F Key | 5 | `l.CanAccessRNDRoom() or l.trombone, locations=[[5, 1.0, 3460, 1285, 424]]` | 
 | Side walls of Lanky R&D room | 10 | `l.CanAccessRNDRoom() or l.trombone` | 
 | In fall from the hatch to power shed | 5 |  | 
-| In Dark room on box | 5 | `l.punch or l.phasewalk` | 
-| On Simian Spring ledge with coins | 10 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.phasewalk` | 
+| In Dark room on box | 5 | `l.punch or l.CanPhase()` | 
+| On Simian Spring ledge with coins | 10 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase()` | 
 | On box in stack of boxes to Candy/Cranky - left | 5 |  | 
 | On box in stack of boxes to Candy/Cranky - right | 5 |  | 
 | From BBlast pad to Tiny BP pole | 5 |  | 
@@ -459,7 +459,7 @@
 | Path from stack of boxes to Candy & Cranky (Lanky) | 5 |  | 
 | Pipe in corner of Chunky's room (Lanky) | 4 | `l.handstand` | 
 | Pipe in corner of Chunky's room (Lanky) | 1 |  | 
-| Pipe at the top of Prod room (Lanky) | 20 | `l.handstand or l.phasewalk` | 
+| Pipe at the top of Prod room (Lanky) | 20 | `l.handstand or l.CanPhase()` | 
 | Pipe at the top of Prod room (Lanky) | 5 |  | 
 | Prod room on the middle steps between rotating cylinders and the spinning arms (Lanky) | 15 |  | 
 | W2 (Lanky) | 5 |  | 
@@ -471,7 +471,7 @@
 | Prod room on conveyors to bonus barrel (Tiny) | 20 |  | 
 | Prod room on far platform past Bonus Barrel (Tiny) | 5 | `l.twirl` | 
 | Arcade room, by Mini Monkey tunnel (Tiny) | 5 |  | 
-| In Spinning wheel room (Tiny) | 5 | `l.mini or l.phasewalk` | 
+| In Spinning wheel room (Tiny) | 5 | `l.mini or l.CanPhase()` | 
 | By middle window outside of production room (Tiny) | 10 |  | 
 | On pole down hatch (Chunky) | 10 |  | 
 | Chunky R&D room left side (Chunky) | 5 | `(l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
@@ -493,7 +493,7 @@
 | Block tower room by Mini Monkey barrel | Balloon |  | 
 | Block tower room by tag barrel | Balloon |  | 
 | Funky's room high and around room | Balloon |  | 
-| In spinning wheel room | Balloon | `l.mini or l.phasewalk` | 
+| In spinning wheel room | Balloon | `l.mini or l.CanPhase()` | 
 | Pole to R&D lower room | Balloon |  | 
 | Pole to R&D upper room | Balloon |  | 
 | All around R&D room | Balloon |  | 
@@ -504,7 +504,7 @@
 | Cranky/Candy room | Balloon |  | 
 | Chunky room above blue switch | Balloon |  | 
 | Chunky room above dark room entrance | Balloon |  | 
-| Dark room | Balloon | `l.punch or l.phasewalk` | 
+| Dark room | Balloon | `l.punch or l.CanPhase()` | 
 | Arcade room | Balloon |  | 
 | Production room very top | Balloon |  | 
 | Production room near wall under Lanky pipe | Balloon |  | 
@@ -556,7 +556,7 @@
 | On left side of ship to chests room | 5 |  | 
 | On each side of Cranky's Lab ship at the bottom | 10 |  | 
 | On wooden box (5DS side) | 10 |  | 
-| Around battle arena pad | 5 | `l.punch or l.phasewalk` | 
+| Around battle arena pad | 5 | `l.punch or l.CanPhase()` | 
 | Back wall of Cranky area at the bottom | 15 |  | 
 | Between the two cannons in Cranky room | 5 |  | 
 | Cranky room inside wall | 10 |  | 
@@ -660,8 +660,8 @@
 | High in gold tower room | Balloon |  | 
 | Around cactus (Diddy) | Balloon |  | 
 | By Diddy BP (Tiny) | Balloon | `Events.WaterLowered in l.Events` | 
-| Above battle crown pad 1 (Lanky) | Balloon | `(l.punch and l.chunky) or l.phasewalk` | 
-| Above battle crown pad 2 (Lanky) | Balloon | `((l.punch and l.chunky) or l.phasewalk)` | 
+| Above battle crown pad 1 (Lanky) | Balloon | `(l.punch and l.chunky) or l.CanPhase()` | 
+| Above battle crown pad 2 (Lanky) | Balloon | `((l.punch and l.chunky) or l.CanPhase())` | 
 | Around cactus (Chunky) | Balloon |  | 
 | Above seal cage (Diddy) | Balloon |  | 
 | Around lighthouse (Donkey) | Balloon |  | 
@@ -677,7 +677,7 @@
 | ---- | ------ | ----- |
 | Each side of cannon | 10 |  | 
 | In main hallway (Chunky) | 20 |  | 
-| In barrels room (Chunky) | 5 | `l.punch or l.phasewalk` | 
+| In barrels room (Chunky) | 5 | `l.punch or l.CanPhase()` | 
 | Corner | Balloon |  | 
 ## Galleon Lighthouse
 | Name | Amount | Logic |
@@ -785,7 +785,7 @@
 | Top of Mill (8 custom, 7 Lanky) | 1 | `l.climbing` | 
 | Top of Mill (8 custom, 7 Lanky) | 10 |  | 
 | Top of Mill (8 custom, 7 Lanky) | 4 |  | 
-| Outside of conveyor belt (behind night gate) | 5 | `Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip` | 
+| Outside of conveyor belt (behind night gate) | 5 | `Events.Night in l.Events or l.CanPhase() or l.CanPhaseswim() or l.ledgeclip` | 
 | W1 (1 custom, 1 Lanky bunch) | 5 |  | 
 | W1 (1 custom, 1 Lanky bunch) | 5 |  | 
 | Behind Diddy's Barn | 5 |  | 
@@ -795,7 +795,7 @@
 | Around the inside of DK's barn | 15 |  | 
 | On thorns hedge | 15 | `l.strongKong` | 
 | Behind leaf wall by DK BP | 10 |  | 
-| Apple GB T&S behind night gate | 5 | `Events.Night in l.Events or l.phasewalk` | 
+| Apple GB T&S behind night gate | 5 | `Events.Night in l.Events or l.CanPhase()` | 
 | Around apple (1 custom, 9 Chunky) | 10 |  | 
 | Below Mini Monkey barrel | 5 |  | 
 | Inside fence around beanstalk | 10 |  | 
@@ -860,7 +860,7 @@
 | On Giant mushroom top switch (Lanky) | 5 | `(l.jetpack and l.isdiddy) or (l.handstand and l.islanky)` | 
 | On Rabbit Race instrument pad (Lanky) | 5 |  | 
 | Green tunnel (Tiny) | 1 |  | 
-| Green tunnel (Tiny) | 4 | `l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.phasewalk or l.CanPhaseswim()` | 
+| Green tunnel (Tiny) | 4 | `l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim()` | 
 | On riverbed around mill (3 custom, 17 Tiny) | 20 | `l.swim` | 
 | On mushrooms in beanstalk area (Tiny) | 15 | `l.climbing` | 
 | On anthill (Tiny) | 5 | `(l.jetpack and l.isdiddy) or (l.istiny and (l.mini and l.saxophone))` | 
@@ -927,7 +927,7 @@
 | On conveyor belt | 5 |  | 
 | On DK switch (Donkey) | 5 | `l.Slam` | 
 | Middle of the room | Balloon |  | 
-| In DK's lever room (Donkey) | Balloon | `(l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk)` | 
+| In DK's lever room (Donkey) | Balloon | `(l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.CanPhase())` | 
 ## Forest Giant Mushroom
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1001,8 +1001,8 @@
 | ---- | ------ | ----- |
 | Around DK portal | 10 |  | 
 | Around room by ice wall to Gorilla Gone GB | 5 |  | 
-| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
-| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Gorilla Gone Tunnel (2 custom, 3 Chunky) | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Around Gorilla Gone room | 10 | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Left side of first warps up the path | 10 |  | 
 | On crystals on each side of W4 Mini Monkey room | 10 |  | 
 | On Mini Monkey barrel ledge | 10 |  | 
@@ -1078,7 +1078,7 @@
 | Crystal platform by 5DC | 5 |  | 
 | 2 ends of the Giant Kosha area | 10 |  | 
 | 2 other ends of the Giant Kosha area | 10 |  | 
-| In Boulder igloo (4 custom, 6 Chunky) | 10 | `(l.chunky and l.barrels) or l.phasewalk` | 
+| In Boulder igloo (4 custom, 6 Chunky) | 10 | `(l.chunky and l.barrels) or l.CanPhase()` | 
 | In star above 5DI (Diddy) | 5 | `l.jetpack` | 
 | In waterfall under bonus barrel (Diddy) | 5 | `l.jetpack` | 
 | W2 (Chunky) | 10 |  | 
@@ -1089,7 +1089,7 @@
 | On pillar by 5DI tag (Diddy) | 5 | `l.jetpack and l.isdiddy` | 
 | Above baboon blast pad by Cranky (Lanky) | 15 | `(l.jetpack and l.isdiddy) or (l.balloon and l.islanky)` | 
 | Inside tower to beetle race (Lanky) | 5 | `(l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2)` | 
-| On trombone pad on Lanky cabin (Lanky) | 5 | `(l.jetpack and l.isdiddy) or (l.balloon and l.islanky) or l.phasewalk` | 
+| On trombone pad on Lanky cabin (Lanky) | 5 | `(l.jetpack and l.isdiddy) or (l.balloon and l.islanky) or l.CanPhase()` | 
 | First path to warps (Lanky) | 5 |  | 
 | Path from Funky to rocketbarrel (Diddy) | 5 |  | 
 | W4 (Diddy) | 5 |  | 
@@ -1097,7 +1097,7 @@
 | Above Tiny and Chunky igloos (Diddy) | 10 | `l.jetpack` | 
 | Around Diddy blueprint (Diddy) | 5 |  | 
 | Chunky igloo (Chunky) | 5 | `Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim()` | 
-| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| On Gorilla Gone pad (Chunky) | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | On small boulder switch (Chunky) | 5 |  | 
 | Inside giant boulder (Chunky) | 5 | `Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels` | 
 | W3 (Tiny) | 5 |  | 
@@ -1137,7 +1137,7 @@
 | In front of Snide (Chunky) | Balloon |  | 
 | Around Tiny blueprint (Tiny) | Balloon |  | 
 | Waterfall (Lanky) | Balloon |  | 
-| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| In gorilla gone room (Donkey) | Balloon | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Above 5DC (Diddy) | Balloon |  | 
 | In bonus barrel cave (Chunky) | Balloon |  | 
 | In Diddy BP room (Tiny) | Balloon |  | 
@@ -1358,20 +1358,20 @@
 | On Lanky switch | 5 |  | 
 | On Diddy switch | 5 |  | 
 | Path between Diddy and Lanky switches | 10 |  | 
-| In DK's room behind puzzle | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk` | 
-| In Diddy's room between chains | 10 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk` | 
-| On BB pads | 15 | `(l.balloon and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3)) or l.phasewalk)` | 
-| On face puzzle (Donkey) | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk` | 
-| In cages DK side (Diddy) | 10 | `l.punch or l.phasewalk` | 
-| In cages Lanky side (Diddy) | 10 | `l.punch or l.phasewalk` | 
+| In DK's room behind puzzle | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
+| In Diddy's room between chains | 10 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
+| On BB pads | 15 | `(l.balloon and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3)) or l.CanPhase())` | 
+| On face puzzle (Donkey) | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
+| In cages DK side (Diddy) | 10 | `l.punch or l.CanPhase()` | 
+| In cages Lanky side (Diddy) | 10 | `l.punch or l.CanPhase()` | 
 | In Lanky's section | Balloon |  | 
 | In Diddy's section | Balloon |  | 
-| In DK's room | Balloon | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk` | 
-| In Diddy's dungeon room (Diddy) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk)` | 
-| Far in Lanky's dungeon room (Lanky) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon` | 
-| In cage left side (Chunky) | Balloon | `(l.punch or l.phasewalk or l.generalclips)` | 
-| Close in Lanky's dungeon room (Lanky) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk)` | 
-| In cage right side (Chunky) | Balloon | `(l.punch or l.phasewalk or l.generalclips)` | 
+| In DK's room | Balloon | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
+| In Diddy's dungeon room (Diddy) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase())` | 
+| Far in Lanky's dungeon room (Lanky) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon` | 
+| In cage left side (Chunky) | Balloon | `(l.punch or l.CanPhase() or l.generalclips)` | 
+| Close in Lanky's dungeon room (Lanky) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase())` | 
+| In cage right side (Chunky) | Balloon | `(l.punch or l.CanPhase() or l.generalclips)` | 
 ## Castle Shed
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1403,13 +1403,13 @@
 | Crypt - Path to W2 | 10 |  | 
 | Crypt - Path to W1 | 15 |  | 
 | Crypt - Path to W3 | 10 |  | 
-| Back corners of DK's room | 10 | `l.coconut or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
-| Bunch on coffin with pentagon of singles around it | 10 | `l.peanut or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
-| In coffins (Chunky) | 10 | `(l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.phasewalk or l.generalclips` | 
+| Back corners of DK's room | 10 | `l.coconut or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Bunch on coffin with pentagon of singles around it | 10 | `l.peanut or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| In coffins (Chunky) | 10 | `(l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.CanPhase() or l.generalclips` | 
 | Above warps | Balloon |  | 
 | Around coffin in Chunky's room | Balloon |  | 
 | Around coffin in Diddy's room | Balloon |  | 
-| In coffin in Diddy's room (Diddy) | Balloon | `(l.charge or l.generalclips or l.phasewalk) and (l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))` | 
+| In coffin in Diddy's room (Diddy) | Balloon | `(l.charge or l.generalclips or l.CanPhase()) and (l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))` | 
 | In DK's room (Donkey) | Balloon |  | 
 ## Castle Mausoleum
 | Name | Amount | Logic |
@@ -1421,11 +1421,11 @@
 | In green goo gap (Tiny) | 5 | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In and out of green goo pit | Balloon |  | 
 | Above green goo room | Balloon | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
-| In Lanky's green goo room (Lanky) | Balloon | `l.sprint or l.generalclips or l.phasewalk` | 
+| In Lanky's green goo room (Lanky) | Balloon | `l.sprint or l.generalclips or l.CanPhase()` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Behind Tiny's bonus barrel | 10 | `l.twirl or l.phasewalk` | 
+| Behind Tiny's bonus barrel | 10 | `l.twirl or l.CanPhase()` | 
 | Path from moat entrance to Candy (Chunky) | 10 |  | 
 | Path from tag barrel to Candy (Chunky) | 15 |  | 
 | Path from W1 entrance to tag barrel (Chunky) | 5 |  | 
@@ -1458,11 +1458,11 @@
 | Pentagon around pedestal | 5 | `l.monkeyport` | 
 | On chimneys of car race building | 10 |  | 
 | On monkeyport pads on car race side (Tiny) | 10 |  | 
-| On monkeyport pad on monument side (Tiny) | 5 | `l.monkeyport or l.phasewalk` | 
+| On monkeyport pad on monument side (Tiny) | 5 | `l.monkeyport or l.CanPhase()` | 
 | Inside boulder (Chunky) | 5 | `l.punch and l.barrels` | 
 | In hallway to main room | Balloon |  | 
 | Around car race | Balloon |  | 
-| In monument room (Tiny) | Balloon | `l.feather and (l.monkeyport or l.phasewalk)` | 
+| In monument room (Tiny) | Balloon | `l.feather and (l.monkeyport or l.CanPhase())` | 
 | Around middle (Chunky) | Balloon |  | 
 ## Castle Tower
 | Name | Amount | Logic |
@@ -1479,13 +1479,13 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Big Tree - Middle of first room | 5 |  | 
-| Around hole on DK's side | 10 | `l.coconut or l.phasewalk` | 
-| Path to Chunky's cage | 10 | `l.punch or l.phasewalk` | 
+| Around hole on DK's side | 10 | `l.coconut or l.CanPhase()` | 
+| Path to Chunky's cage | 10 | `l.punch or l.CanPhase()` | 
 | On plank in water (Donkey) | 5 | `l.coconut` | 
 | By punchable wall (Chunky) | 5 |  | 
 | First room | Balloon |  | 
 | Above hole (Donkey) | Balloon |  | 
-| In Chunky's room (Chunky) | Balloon | `l.punch or l.phasewalk` | 
+| In Chunky's room (Chunky) | Balloon | `l.punch or l.CanPhase()` | 
 
 # DK Isles
 ## Treehouse
@@ -1549,7 +1549,7 @@
 | Behind cannon to Forest | 5 |  | 
 | Waterfall pond | 15 | `l.swim` | 
 | Seafloor around the X platform | 10 | `l.swim` | 
-| In the pineapple cage | 10 | `l.pineapple or l.CanSTS() or l.phasewalk` | 
+| In the pineapple cage | 10 | `l.pineapple or l.CanSTS() or l.CanPhase()` | 
 | Beach below Caves | 5 |  | 
 | Tree below Caves | 5 |  | 
 | Path below Caves | 5 |  | 
@@ -1563,7 +1563,7 @@
 | Above Caves lobby | 15 |  | 
 | Forest lobby roof | 10 |  | 
 | Flower sniffing near Forest | 5 |  | 
-| In the peanut cage | 10 | `l.peanut or l.phasewalk` | 
+| In the peanut cage | 10 | `l.peanut or l.CanPhase()` | 
 | Waterfall upstream | 5 |  | 
 | Flower next to peanut cage | 5 |  | 
 | Waterfall freefall | 10 |  | 
@@ -1578,7 +1578,7 @@
 | On Fairy Isle's wings | 10 |  | 
 | On the fairy tree | 5 |  | 
 | Around the fairy tree | 5 |  | 
-| In the feather cage | 10 | `l.feather or l.CanSTS() or l.phasewalk` | 
+| In the feather cage | 10 | `l.feather or l.CanSTS() or l.CanPhase()` | 
 | Fairy Isle entrance | 5 |  | 
 | In the Pound the X rock | 10 | `Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky` | 
 | Tag barrel shore | 10 |  | 
@@ -1601,7 +1601,7 @@
 | Back of Krem Isle | 10 |  | 
 | Snide ledge | 5 |  | 
 | In the coconut cage | 10 | `l.coconut` | 
-| In the grape cage | 10 | `l.grape or l.CanPhaseswim() or l.phasewalk` | 
+| In the grape cage | 10 | `l.grape or l.CanPhaseswim() or l.CanPhase()` | 
 | Waterfall lower | Balloon |  | 
 | Waterfall upper | Balloon |  | 
 | Above bananaports | Balloon |  | 
@@ -1658,22 +1658,22 @@
 | Between the Columns | 5 |  | 
 | Around the barrel hole | 10 |  | 
 | Also around the barrel hole | 10 |  | 
-| Tunnel | 5 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
-| Back room | 15 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Tunnel | 5 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
+| Back room | 15 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 | Left post | 5 |  | 
 | Right post | 5 |  | 
 | Donkey door | 5 |  | 
 | Diddy door | 5 |  | 
 | Tiny door | 5 |  | 
 | Lanky door | 5 |  | 
-| Chunky door (back room wall) | 5 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Chunky door (back room wall) | 5 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 | On the gongs | 10 |  | 
 | Entrance | 10 |  | 
 | Torch above Donkey door | 5 |  | 
-| Back room torches | 10 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Back room torches | 10 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 | Between columns | Balloon |  | 
 | Above B.Locker | Balloon |  | 
-| Back room | Balloon | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Back room | Balloon | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 ## Frantic Factory Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1726,7 +1726,7 @@
 | Where the lever used to be | 5 |  | 
 | Entrance | 10 |  | 
 | Center line | 5 |  | 
-| Gorilla Gone pad | 5 | `((l.coconut and l.donkey) and (l.peanut and l.diddy) and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) or l.phasewalk)` | 
+| Gorilla Gone pad | 5 | `((l.coconut and l.donkey) and (l.peanut and l.diddy) and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) or l.CanPhase())` | 
 | Crazy fairy balloon | Balloon |  | 
 | Wrinkly wheel (back wall) | Balloon |  | 
 ## Crystal Caves Lobby
@@ -1735,24 +1735,24 @@
 | Left path | 5 |  | 
 | Right path | 5 |  | 
 | Bridge | 10 |  | 
-| Around the boulder | 10 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
-| Path to boulder | 5 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Around the boulder | 10 | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
+| Path to boulder | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 | Left side crystals | 15 |  | 
 | Right side crystals | 10 |  | 
 | Entrance | 10 |  | 
-| On the boulder | 5 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| On the boulder | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 | Lanky door | 5 |  | 
 | Chunky door | 5 |  | 
 | Tiny door | 5 |  | 
 | Donkey door | 5 |  | 
 | Diddy door | 5 | `l.jetpack` | 
 | Guitar pad | 5 | `l.jetpack` | 
-| Behind the lava ice wall | 5 | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
-| Lava room | 20 | `((l.punch and l.chunky) or l.phasewalk or l.ledgeclip) and l.strongKong` | 
+| Behind the lava ice wall | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
+| Lava room | 20 | `((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip) and l.strongKong` | 
 | In the air | 10 | `l.jetpack` | 
-| In the lava | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| In the lava | Balloon | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 | Around the bridge | Balloon |  | 
-| Boulder room | Balloon | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Boulder room | Balloon | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 ## Creepy Castle Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1763,7 +1763,7 @@
 | Tiny door | 5 |  | 
 | On the boulder | 5 |  | 
 | Around the boulder | 5 |  | 
-| Kasplat cage | 5 | `(l.coconut and l.donkey) or l.phasewalk` | 
+| Kasplat cage | 5 | `(l.coconut and l.donkey) or l.CanPhase()` | 
 | Around the lobby | 15 |  | 
 | Right torch | 5 | `l.chunky and l.barrels` | 
 | Left torch | 5 | `l.chunky and l.barrels` | 

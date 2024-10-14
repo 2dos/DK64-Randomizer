@@ -896,7 +896,7 @@ ColoredBananaGroupList = [
         name="First dead end",
         konglist=[Kongs.diddy],
         region=Regions.DiddyTemple,
-        logic=lambda l: l.peanut or l.phasewalk,
+        logic=lambda l: l.peanut or l.CanPhase(),
         locations=[[5, 1.0, 1015, 25, 500], [5, 1.0, 1097, 25, 500]],
     ),
     ColoredBananaGroup(
@@ -1211,7 +1211,7 @@ ColoredBananaGroupList = [
         name="Right side Mini Monkey room (scale 0.6)",
         konglist=[Kongs.tiny],
         region=Regions.TinyTemple,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[
             [1, 0.6, 195, 48, 600],
             [1, 0.6, 145, 48, 600],
@@ -1357,7 +1357,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.LlamaTemple,
         vanilla=True,
-        logic=lambda l: (l.grape or l.phasewalk) and l.can_use_vines,
+        logic=lambda l: (l.grape or l.CanPhase()) and l.can_use_vines,
         locations=[[5, 1.0, 792.3839721679688, 686.5, 2613.002685546875]],
     ),
     ColoredBananaGroup(
@@ -1421,7 +1421,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.AngryAztecOasis,
         vanilla=True,
-        logic=lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and l.strongKong,
+        logic=lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.CanPhase()) and l.strongKong,
         locations=[[5, 1.0, 1464.7799072265625, 132.91937255859375, 610.3526000976562], [5, 1.0, 1294.2562255859375, 132.93927001953125, 609.1015014648438]],
     ),
     ColoredBananaGroup(
@@ -1534,7 +1534,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BetweenVinesByPortal,
         vanilla=True,
-        logic=lambda l: l.pineapple or l.phasewalk,
+        logic=lambda l: l.pineapple or l.CanPhase(),
         locations=[
             [5, 1.0, 232.0945587158203, 128.694091796875, 852.361083984375],
             [5, 1.0, 188.08251953125, 126.59268188476562, 574.8196411132812],
@@ -1801,7 +1801,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
         vanilla=True,
-        logic=lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.phasewalk),
+        logic=lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase()),
         points=[[2308, 337, 1930], [2141, 330, 1906]],
     ),
     Balloon(
@@ -1812,7 +1812,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
         vanilla=True,
-        logic=lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.phasewalk),
+        logic=lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase()),
         points=[[2281, 347, 1826], [2298, 328, 1928], [2093, 322, 1926], [2065, 332, 1837]],
     ),
     Balloon(

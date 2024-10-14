@@ -173,7 +173,7 @@ fairy_locations = {
             region=Regions.TinyTemple,
             is_vanilla=True,
             spawn_xyz=[1178, 95, 704],
-            logic=lambda l: l.camera and ((l.feather and l.mini and l.istiny) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.feather and l.mini and l.istiny) or l.CanPhase()),
             natural_index=1,
         ),
         FairyData(
@@ -190,7 +190,7 @@ fairy_locations = {
             region=Regions.BetweenVinesByPortal,
             fence=Fence(127, 626, 463, 902),
             spawn_y=151,
-            logic=lambda l: l.camera and ((l.pineapple and l.chunky) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.pineapple and l.chunky) or l.CanPhase()),
         ),
         FairyData(
             name="Oasis",
@@ -240,7 +240,7 @@ fairy_locations = {
             region=Regions.DonkeyTemple,
             fence=Fence(699, 259, 755, 870),
             spawn_y=67,
-            logic=lambda l: l.camera and ((l.coconut and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase()),
         ),
         FairyData(
             name="Chunky 5DT",
@@ -248,7 +248,7 @@ fairy_locations = {
             region=Regions.ChunkyTemple,
             fence=Fence(600, 601, 678, 1222),
             spawn_y=94,
-            logic=lambda l: l.camera and ((l.pineapple and l.ischunky) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.pineapple and l.ischunky) or l.CanPhase()),
         ),
         FairyData(
             name="Diddy 5DT",
@@ -263,7 +263,7 @@ fairy_locations = {
             region=Regions.LankyTemple,
             fence=Fence(426, 621, 496, 1209),
             spawn_y=94,
-            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase()),
         ),
         FairyData(
             name="Start of Llama Temple",
@@ -278,7 +278,7 @@ fairy_locations = {
             region=Regions.LlamaTemple,
             fence=Fence(952, 2101, 1153, 2667),
             spawn_y=769,
-            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip()),
+            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase() or l.CanOStandTBSNoclip()),
         ),
         FairyData(
             name="Tiny Temple Start",
@@ -435,7 +435,7 @@ fairy_locations = {
             region=Regions.BeyondHatch,
             fence=Fence(1820, 526, 2079, 874),
             spawn_y=60,
-            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.CanPhase()),
         ),
         FairyData(
             name="Crusher Room",
@@ -757,7 +757,7 @@ fairy_locations = {
             region=Regions.CrystalCavesMain,
             fence=Fence(2461, 402, 2684, 542),
             spawn_y=76,
-            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         ),
         FairyData(
             name="Ice Castle Roof",
@@ -886,7 +886,7 @@ fairy_locations = {
             region=Regions.CastleTree,
             is_vanilla=True,
             spawn_xyz=[1696, 400, 1054],
-            logic=lambda l: l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.CanPhase()),
             natural_index=1,
         ),
         FairyData(
@@ -953,7 +953,7 @@ fairy_locations = {
             region=Regions.Dungeon,
             fence=Fence(424, 175, 664, 1123),
             spawn_y=230,
-            logic=lambda l: l.camera and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon and l.islanky,
+            logic=lambda l: l.camera and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon and l.islanky,
         ),
         FairyData(
             name="Donkey Dungeon",
@@ -961,7 +961,7 @@ fairy_locations = {
             region=Regions.Dungeon,
             fence=Fence(1175, 1878, 1575, 2109),
             spawn_y=235,
-            logic=lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase()),
         ),
         FairyData(
             name="Above entrance to Mausoleum",
@@ -1090,7 +1090,7 @@ fairy_locations = {
             region=Regions.AngryAztecLobby,
             fence=Fence(945, 487, 1090, 746),
             spawn_y=72,
-            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk),
+            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()),
         ),
         FairyData(
             name="Creepy Castle Lobby",
@@ -1105,7 +1105,7 @@ fairy_locations = {
             region=Regions.CrystalCavesLobby,
             fence=Fence(160, 328, 342, 442),
             spawn_y=44,
-            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip),
+            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip),
         ),
         FairyData(
             name="Snide Room",

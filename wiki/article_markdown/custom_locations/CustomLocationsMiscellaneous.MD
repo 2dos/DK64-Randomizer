@@ -3,21 +3,21 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Jungle Japes | Near Funky |  |  | 
-| Jungle Japes | On Painting Hill |  | `((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)))` | 
+| Jungle Japes | On Painting Hill |  | `((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy)))` | 
 | Jungle Japes | Next to level entrance |  |  | 
 | Jungle Japes | On Tree (Starting Area) |  | `l.climbing` | 
 | Jungle Japes | Next to first tunnel entrance |  |  | 
 | Jungle Japes | Diddy Cavern |  |  | 
 | Jungle Japes | Inside Diddy's Cavern |  |  | 
 | Jungle Japes | Inside the first tunnel - later half |  |  | 
-| Jungle Japes | Painting Hill |  | `(l.handstand and l.islanky) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy))` | 
+| Jungle Japes | Painting Hill |  | `(l.handstand and l.islanky) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy))` | 
 | Jungle Japes | Shellhive Island |  |  | 
 | Jungle Japes | Near Stump |  |  | 
 | Jungle Japes | Near Log |  |  | 
 | Jungle Japes | Near the Vine Pit |  |  | 
 | Jungle Japes | Vine Pit |  |  | 
-| Jungle Japes | Lanky Alcove Hill |  | `(l.handstand and l.lanky) or (l.phasewalk and (l.isdiddy or l.istiny))` | 
-| Jungle Japes | On the useless Lanky ramp |  | `(l.handstand and l.islanky) or l.phasewalk` | 
+| Jungle Japes | Lanky Alcove Hill |  | `(l.handstand and l.lanky) or (l.CanPhase() and (l.isdiddy or l.istiny))` | 
+| Jungle Japes | On the useless Lanky ramp |  | `(l.handstand and l.islanky) or l.CanPhase()` | 
 | Jungle Japes | Cranky-tunnel Crossing |  |  | 
 | Jungle Japes | In the Rambi Cave | CrownPad, Bananaport |  | 
 | Jungle Japes | Fairy Pool |  |  | 
@@ -52,25 +52,25 @@
 | Japes Mountain | Mountain: Near Entrance (Ground) |  |  | 
 | Japes Mountain | Mountain: Near Entrance (High) |  |  | 
 | Japes Mountain | Mountain: On Barrel |  |  | 
-| Japes Mountain | Mountain: Near HiLo Machine |  | `(l.charge and l.isdiddy) or l.phasewalk, group=5` | 
-| Japes Mountain | Mountain: Under Conveyor | CrownPad, Bananaport | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.phasewalk` | 
+| Japes Mountain | Mountain: Near HiLo Machine |  | `(l.charge and l.isdiddy) or l.CanPhase(), group=5` | 
+| Japes Mountain | Mountain: Under Conveyor | CrownPad, Bananaport | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.CanPhase()` | 
 | Japes Tiny Hive | Shell: Main Room |  |  | 
 | Japes Tiny Hive | Shell: 1st Room |  |  | 
-| Japes Tiny Hive | Shell: 3rd Room |  | `(l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.tiny` | 
+| Japes Tiny Hive | Shell: 3rd Room |  | `(l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and l.tiny` | 
 
 # Angry Aztec
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Aztec Tiny Temple | Tiny Temple: Vulture Room |  | `l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.islanky` | 
 | Angry Aztec | Oasis |  |  | 
-| Aztec Chunky5DTemple | Chunky 5DT |  | `((l.pineapple and l.ischunky) or l.phasewalk)` | 
+| Aztec Chunky5DTemple | Chunky 5DT |  | `((l.pineapple and l.ischunky) or l.CanPhase())` | 
 | Aztec Tiny Temple | Tiny Temple: Main room back-left |  |  | 
 | Aztec Tiny Temple | Tiny Temple: Starting Room (Low) |  |  | 
 | Aztec Tiny Temple | Tiny Temple: Starting Room (High) |  | `l.CanSlamSwitch(Levels.AngryAztec, 1) and l.diddy` | 
 | Aztec Tiny Temple | Tiny Temple: Kong Free Room |  |  | 
 | Aztec Tiny Temple | Tiny Temple: Next to Tiny cage |  |  | 
 | Angry Aztec | Entrance tunnel - near DK door |  |  | 
-| Angry Aztec | Blueprint Room | Bananaport | `l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
+| Angry Aztec | Blueprint Room | Bananaport | `l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
 | Angry Aztec | Near Oasis Sand |  |  | 
 | Angry Aztec | Behind Tiny Temple |  |  | 
 | Angry Aztec | Next to Tiny Temple - left |  |  | 
@@ -107,19 +107,19 @@
 | Angry Aztec | Vanilla Tunnel Warp 3 |  |  | 
 | Angry Aztec | Vanilla Funky Warp 4 |  |  | 
 | Angry Aztec | Vanilla Tunnel Warp 5 |  |  | 
-| Aztec Donkey5DTemple | DK 5DT: Dead End |  | `(l.coconut and l.isdonkey) or l.phasewalk, group=7` | 
-| Aztec Diddy5DTemple | Diddy 5DT: Dead End |  | `(l.peanut and l.isdiddy) or l.phasewalk` | 
-| Aztec Lanky5DTemple | Lanky 5DT: Dead End |  | `(l.grape and l.islanky) or l.phasewalk, group=7` | 
-| Aztec Lanky5DTemple | Lanky 5DT: Near Vanilla Balloon |  | `(l.grape and l.islanky) or l.phasewalk` | 
-| Aztec Tiny5DTemple | Tiny 5DT: Dead End |  | `(l.feather and l.istiny) or l.phasewalk, group=7` | 
-| Aztec Chunky5DTemple | Chunky 5DT: Path Split (1) |  | `(l.pineapple and l.ischunky) or l.phasewalk` | 
-| Aztec Chunky5DTemple | Chunky 5DT: Path Split (2) |  | `(l.pineapple and l.ischunky) or l.phasewalk` | 
+| Aztec Donkey5DTemple | DK 5DT: Dead End |  | `(l.coconut and l.isdonkey) or l.CanPhase()` | 
+| Aztec Diddy5DTemple | Diddy 5DT: Dead End |  | `(l.peanut and l.isdiddy) or l.CanPhase()` | 
+| Aztec Lanky5DTemple | Lanky 5DT: Dead End |  | `(l.grape and l.islanky) or l.CanPhase()` | 
+| Aztec Lanky5DTemple | Lanky 5DT: Near Vanilla Balloon |  | `(l.grape and l.islanky) or l.CanPhase()` | 
+| Aztec Tiny5DTemple | Tiny 5DT: Dead End |  | `(l.feather and l.istiny) or l.CanPhase(), group=7` | 
+| Aztec Chunky5DTemple | Chunky 5DT: Path Split (1) |  | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
+| Aztec Chunky5DTemple | Chunky 5DT: Path Split (2) |  | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
 | Aztec Llama Temple | Llama Temple: Llama Right |  |  | 
 | Aztec Llama Temple | Llama Temple Entrance |  |  | 
 | Aztec Llama Temple | Llama Temple: Next to Llama Right |  |  | 
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  |  | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  |  | 
-| Aztec Llama Temple | Llama Temple: Matching Room |  | `(l.grape and l.lanky) or l.phasewalk` | 
+| Aztec Llama Temple | Llama Temple: Matching Room |  | `(l.grape and l.lanky) or l.CanPhase()` | 
 | Aztec Llama Temple | Llama Temple: Vanilla Close Warp 1 |  |  | 
 | Aztec Llama Temple | Llama Temple: Vanilla Matching Warp 1 |  |  | 
 | Aztec Llama Temple | Llama Temple: Vanilla Lava Warp 2 |  |  | 
@@ -132,7 +132,7 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Frantic Factory | Under R and D Grate (1) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | Dark Room |  | `((l.punch and l.chunky) or l.phasewalk)` | 
+| Frantic Factory | Dark Room |  | `((l.punch and l.chunky) or l.CanPhase())` | 
 | Frantic Factory | Foyer Carpet |  |  | 
 | Frantic Factory | Middle of Entrance Room |  |  | 
 | Frantic Factory | Clock-in room left |  |  | 
@@ -148,7 +148,7 @@
 | Frantic Factory | Storage Room Corner |  |  | 
 | Frantic Factory | Cranky and Candy Room | MelonCrate |  | 
 | Frantic Factory | Near Candy |  |  | 
-| Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk, group=4` | 
+| Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.CanPhase(), group=4` | 
 | Frantic Factory | Arcade Room Bench |  |  | 
 | Frantic Factory | Next to DK Arcade |  |  | 
 | Frantic Factory | Near Snide (1) |  |  | 
@@ -168,10 +168,10 @@
 | Frantic Factory | In Diddy's Pincode enemies room | CrownPad, Bananaport | `((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Chunky R and D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In front of Chunky's toy boss room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.phasewalk)` | 
-| Frantic Factory | Tiny race entry area |  | `((l.mini and l.istiny) or l.phasewalk)` | 
+| Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.CanPhase())` | 
+| Frantic Factory | Tiny race entry area |  | `((l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | R and D lever room - by Tiny's barrel |  |  | 
-| Frantic Factory | Under R and D Grate (2) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.phasewalk or l.generalclips` | 
+| Frantic Factory | Under R and D Grate (2) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanPhase() or l.generalclips` | 
 | Frantic Factory | Vanilla Close Warp 2 |  |  | 
 | Frantic Factory | Vanilla Close Warp 3 |  |  | 
 | Frantic Factory | Vanilla Far Warp 2 |  |  | 
@@ -182,13 +182,13 @@
 | Frantic Factory | Vanilla Near Warp 1 |  |  | 
 | Frantic Factory | Vanilla Storage Warp 1 |  |  | 
 | Frantic Factory | Vanilla Arcade Warp 5 |  |  | 
-| Factory Crusher | Crusher: Central Safehaven |  | `(l.strongKong and l.isdonkey) or l.phasewalk or l.generalclips` | 
+| Factory Crusher | Crusher: Central Safehaven |  | `(l.strongKong and l.isdonkey) or l.CanPhase() or l.generalclips` | 
 | Factory Power Hut | Power Shed: Corner |  |  | 
 
 # Gloomy Galleon
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Gloomy Galleon | Under Cranky |  | `(l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)` | 
+| Gloomy Galleon | Under Cranky |  | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False)` | 
 | Galleon Lighthouse | Lighthouse: Interior Rear |  |  | 
 | Gloomy Galleon | Near Cactus | DirtPatch, CrownPad, Bananaport |  | 
 | Gloomy Galleon | Next to Cannonball - in front |  | `l.CanGetOnCannonGamePlatform()` | 
@@ -234,8 +234,8 @@
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  |  | 
 | Galleon Sick Bay | Seasick Ship: Right of Cannon |  |  | 
 | Galleon Sick Bay | Sick Bay: Chunky ship - back left corner |  |  | 
-| Galleon Sick Bay | Sick Bay: Chunky ship - behind the non-alcoholic tower |  | `((l.punch and l.ischunky) or l.phasewalk)` | 
-| Galleon Sick Bay | Seasick Ship: Behind Spinning Barrels |  | `(l.punch and l.ischunky) or l.phasewalk` | 
+| Galleon Sick Bay | Sick Bay: Chunky ship - behind the non-alcoholic tower |  | `((l.punch and l.ischunky) or l.CanPhase())` | 
+| Galleon Sick Bay | Seasick Ship: Behind Spinning Barrels |  | `(l.punch and l.ischunky) or l.CanPhase()` | 
 | Galleon Lighthouse | Lighthouse: Bottom Left |  |  | 
 | Galleon Lighthouse | Lighthouse: Back Right |  |  | 
 | Galleon Lighthouse | Lighthouse: Behind Whomp's Fortress floor 2 |  | `l.climbing` | 
@@ -267,7 +267,7 @@
 | Fungi Forest | Behind DK Barn |  |  | 
 | Fungi Forest | Far Left of DK Barn |  |  | 
 | Fungi Forest | Near DK Barn |  |  | 
-| Fungi Forest | Near Funky with the fenced in Chunky coins |  | `(l.TimeAccess(Regions.WormArea, Time.Night) or l.phasewalk)` | 
+| Fungi Forest | Near Funky with the fenced in Chunky coins |  | `(l.TimeAccess(Regions.WormArea, Time.Night) or l.CanPhase())` | 
 | Fungi Forest | On the Tomato Field |  |  | 
 | Fungi Forest | Near Funky's |  |  | 
 | Fungi Forest | Near Beanstalk Area Entrance |  |  | 
@@ -350,7 +350,7 @@
 | Crystal Caves | Under Small Boulder | DirtPatch, MelonCrate |  | 
 | Crystal Caves | Near Primate Punch wall near entrance |  |  | 
 | Crystal Caves | Near Gorilla Gone Room |  |  | 
-| Crystal Caves | In Gorilla Gone Room |  | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Crystal Caves | In Gorilla Gone Room |  | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Crystal Caves | Near Kasplat Spire |  |  | 
 | Crystal Caves | Near Funky's |  |  | 
 | Crystal Caves | Near Funky under Diddy's barrel |  |  | 
@@ -433,16 +433,16 @@
 | Castle Ballroom | Ballroom - Back Left |  |  | 
 | Castle Ballroom | Ballroom - Back Right |  |  | 
 | Castle Dungeon | Dungeon: Near Diddy Room Entrance |  |  | 
-| Castle Dungeon | Dungeon: DK Dungeon Room |  | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.donkey) or l.phasewalk` | 
-| Castle Dungeon | Dungeon: Under the chunky balloon without coins |  | `((l.punch and l.ischunky) or l.phasewalk)` | 
+| Castle Dungeon | Dungeon: DK Dungeon Room |  | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.donkey) or l.CanPhase()` | 
+| Castle Dungeon | Dungeon: Under the chunky balloon without coins |  | `((l.punch and l.ischunky) or l.CanPhase())` | 
 | Castle Shed | Shed: Near Entrance |  |  | 
 | Castle Lower Cave | Crypt Hub: Lower Portion |  |  | 
 | Castle Lower Cave | Crypt Hub: Behind Lanky Crypt |  |  | 
 | Castle Lower Cave | Crypt Hub: Near Funky's |  |  | 
 | Castle Lower Cave | Behind Mausoleum Entrance |  |  | 
 | Castle Crypt | 3Kong crypt entrance |  |  | 
-| Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
-| Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.phasewalk or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
 | Castle Crypt | Crypt: Vanilla Far Warp 1 |  |  | 
 | Castle Crypt | Crypt: Vanilla Close Warp 1 |  |  | 
 | Castle Crypt | Crypt: Vanilla Close Warp 2 |  |  | 
@@ -456,10 +456,10 @@
 | Castle Library | Library: Enemy Gauntlet Room | CrownPad |  | 
 | Castle Library | Library: Flying Book Room |  |  | 
 | Castle Museum | Museum: Near Race |  |  | 
-| Castle Museum | Museum - Pillar Front |  | `((l.monkeyport and l.istiny) or l.phasewalk)` | 
-| Castle Museum | Museum - Pillar Back Right |  | `((l.monkeyport and l.istiny) or l.phasewalk)` | 
-| Castle Museum | Museum: Behind Pillar |  | `(l.monkeyport and l.istiny) or l.phasewalk` | 
-| Castle Museum | Museum - Pillar Back Left |  | `((l.monkeyport and l.istiny) or l.phasewalk)` | 
+| Castle Museum | Museum - Pillar Front |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
+| Castle Museum | Museum - Pillar Back Right |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
+| Castle Museum | Museum: Behind Pillar |  | `(l.monkeyport and l.istiny) or l.CanPhase()` | 
+| Castle Museum | Museum - Pillar Back Left |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
 | Castle Museum | Museum: Main Room |  |  | 
 | Castle Trash Can | Trash Can: Near Cheese |  |  | 
 | Castle Tree | Tree: Starting Room |  |  | 
@@ -468,7 +468,7 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Isles Snide Room | Snide's Room: Under Rock |  | `l.chunky and l.barrels` | 
-| Fungi Forest Lobby | Fungi Lobby: Gorilla Gone Box |  | `((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.phasewalk) and l.chunky and l.gorillaGone` | 
+| Fungi Forest Lobby | Fungi Lobby: Gorilla Gone Box |  | `((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.CanPhase()) and l.chunky and l.gorillaGone` | 
 | Isles | Front of Fungi Building |  |  | 
 | Isles | On Aztec Building |  |  | 
 | Isles | Under Caves Lobby Entrance |  |  | 
@@ -482,7 +482,7 @@
 | Isles | Near Caves Lobby Tree (1) |  |  | 
 | Isles | Near K. Rool |  |  | 
 | Isles | Near Fungi Cannon |  |  | 
-| Isles | In Fungi Boulder |  | `(l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.phasewalk)` | 
+| Isles | In Fungi Boulder |  | `(l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.CanPhase())` | 
 | Isles | Near Caves Lobby Tree (2) |  |  | 
 | Isles | Isles Boulders |  |  | 
 | Isles | Front of Aztec Building |  |  | 
@@ -515,8 +515,8 @@
 | Jungle Japes Lobby | Jungle Japes Lobby: Near Tag Barrel |  |  | 
 | Jungle Japes Lobby | Japes Lobby: Near Portal |  |  | 
 | Angry Aztec Lobby | Aztec Lobby: In Front of Feather Door |  |  | 
-| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) |  | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
-| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) |  | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) |  | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
+| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) |  | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 | Frantic Factory Lobby | Factory Lobby: Near Lever |  |  | 
 | Frantic Factory Lobby | Factory Lobby: High Platform |  | `((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
 | Frantic Factory Lobby | Factory Lobby: Above Portal |  | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
@@ -524,10 +524,10 @@
 | Gloomy Galleon Lobby | Galleon Lobby: Left of Portal |  |  | 
 | Gloomy Galleon Lobby | Galleon Lobby: Behind Mini Monkey Gate | CrownPad | `((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
 | Fungi Forest Lobby | Forest Lobby: On Tag Crate | MelonCrate |  | 
-| Crystal Caves Lobby | Caves Lobby: On the Lava | CrownPad | `((l.punch and l.strongKong and l.isdonkey) or l.phasewalk or l.ledgeclip)` | 
+| Crystal Caves Lobby | Caves Lobby: On the Lava | CrownPad | `((l.punch and l.strongKong and l.isdonkey) or l.CanPhase() or l.ledgeclip)` | 
 | Crystal Caves Lobby | Caves Lobby: Right of Portal |  |  | 
 | Crystal Caves Lobby | Caves Lobby: High Platform |  | `(l.jetpack and l.isdiddy) or l.CanMoonkick()` | 
-| Crystal Caves Lobby | Caves Lobby: Blueprint Room |  | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Crystal Caves Lobby | Caves Lobby: Blueprint Room |  | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 | Creepy Castle Lobby | Castle Lobby: Behind the entrance |  |  | 
 | Creepy Castle Lobby | Castle Lobby: Right of Entrance |  |  | 
 | Creepy Castle Lobby | Castle Lobby: Left of Portal |  |  | 
@@ -551,7 +551,7 @@
 | Isles Snide Room | Next to Snides |  |  | 
 | KLumsy | K. Lumsy: Back Right |  |  | 
 | KLumsy | K. Lumsy: Near Left |  |  | 
-| KLumsy | Under K. Lumsy |  | `(l.IsKLumsyFree() or l.phasewalk)` | 
+| KLumsy | Under K. Lumsy |  | `(l.IsKLumsyFree() or l.CanPhase())` | 
 
 # Hideout Helm
 | Map | Name | Banned Types | Logic |

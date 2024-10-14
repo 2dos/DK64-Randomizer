@@ -103,6 +103,7 @@ class LogicVarHolder:
         self.boulder_clip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.boulder_clips) and False  # Temporarily disabled
         self.skew = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.skew)
         self.moontail = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.moontail)
+        self.phasefall = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phasefall)
         # Reset
         self.Reset()
 
@@ -561,6 +562,10 @@ class LogicVarHolder:
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""
         return self.moontail and self.isdiddy and self.settings.kong_model_diddy == KongModels.default  # Krusha doesnt have the jump height that Diddy has
+
+    def CanPhase(self):
+        """Determine whether the player can phase."""
+        return self.phasewalk or (self.phasefall and (self.ischunky and self.camera))
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""

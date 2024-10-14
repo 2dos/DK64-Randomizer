@@ -208,7 +208,7 @@ MinigameRequirements = {
         group="Helm Minigames",
         map_id=Maps.HelmBarrelDiddyRocketbarrel,
         can_repeat=True,
-        logic=lambda l: l.Slam and (l.jetpack and l.peanut and l.isdiddy) or l.phasewalk,
+        logic=lambda l: l.Slam and (l.jetpack and l.peanut and l.isdiddy) or l.CanPhase(),
         kong_list=[Kongs.diddy],
     ),
     Minigames.LankyMaze: Minigame(

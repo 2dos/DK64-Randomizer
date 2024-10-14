@@ -166,7 +166,7 @@ ColoredBananaGroupList = [
         name="Around battle arena pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch or l.CanPhase(),
         locations=[[1, 1.0, 3384, 1670, 2459], [1, 1.0, 3343, 1670, 2350], [1, 1.0, 3228, 1670, 2383], [1, 1.0, 3247, 1670, 2502], [1, 1.0, 3329, 1670, 2546]],
     ),
     ColoredBananaGroup(
@@ -1356,7 +1356,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.SickBay,
         vanilla=True,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch or l.CanPhase(),
         locations=[[5, 1.0, 330.61083984375, 25.0, 919.9414672851562]],
     ),
     ColoredBananaGroup(
@@ -1625,7 +1625,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
         vanilla=True,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
+        logic=lambda l: (l.punch and l.chunky) or l.CanPhase(),
         points=[[3278, 1706, 2500], [3252, 1704, 2418]],
     ),
     Balloon(
@@ -1636,7 +1636,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
         vanilla=True,
-        logic=lambda l: ((l.punch and l.chunky) or l.phasewalk),
+        logic=lambda l: ((l.punch and l.chunky) or l.CanPhase()),
         points=[[3245, 1720, 2405], [3304, 1718, 2382]],
     ),
     Balloon(
