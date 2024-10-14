@@ -137,7 +137,6 @@ def hueShift(im, amount):
 
 def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int):
     """Change image to a CI texture."""
-
     if ci_index not in (4, 8):
         return
     color_count = 1 << ci_index
