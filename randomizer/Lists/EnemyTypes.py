@@ -376,6 +376,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False),
         default_size=100,
+        size_cap=100,  # Too big causes the game to crash, so just gonna limit it to size 100. Size 127 seems to be fine
     ),  #
     Enemies.Gimpfish: EnemyData(
         name="Gimpfish",
@@ -385,6 +386,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False),
         default_size=110,
+        size_cap=110,  # Runs the same code as the shuri, lets not tempt fate
     ),
     Enemies.MrDice0: EnemyData(
         name="Mr Dice (Green)",
