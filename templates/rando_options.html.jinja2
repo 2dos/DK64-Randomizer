@@ -225,6 +225,7 @@
                     {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, True) }}
                 {# Remove end </div> as it's included in the macro for formatting #}
                 {{ toggle_input("enemy_speed_rando", "Shuffle Enemy Speed", "Enemy speeds are randomized.") }}
+                {{ toggle_input("randomize_enemy_sizes", "Random Enemy Size", "The size of enemies is randomized.") }}
                 {{ toggle_input("boss_location_rando", "Shuffle Boss Location", "The boss you can get in a level is different than normal.") }}
                 {{ toggle_input("kong_rando", "Shuffle Kongs", "Starting kong and kong locations have been randomized.") }}
                 <div class="form-check form-switch item-switch">

@@ -37,9 +37,8 @@ static bonus_stat_info sub_counts[] = {
     {.index = EGD_HELMHURRYDISABLE, .count=1, .required_bits=1},
     {.index = EGD_BONUSSTAT, .count=STAT_TERMINATOR, .required_bits=16},
     {.index = EGD_KONGIGT, .count=5, .required_bits=20},
-    {.index = EGD_FILENAME, .count=8, .required_bits=8},
 };
-#define BONUS_COUNT 6
+#define BONUS_COUNT 5
 
 unsigned char* getBonusBlockStart(void) {
     int bits_total = 0;

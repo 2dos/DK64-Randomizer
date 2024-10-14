@@ -986,6 +986,20 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             for map_id in final_boss_associated_event:
                 if map_id in spoiler.settings.krool_order and final_boss_associated_event[map_id] not in spoiler.LogicVariables.Events:
                     spoiler.krool_paths[map_id].append(locationId)
+        elif spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            rap_assoc_name = {
+                "Donkey Verse": Events.DonkeyVerse,
+                "Diddy Verse": Events.DiddyVerse,
+                "Lanky Verse": Events.LankyVerse,
+                "Tiny Verse": Events.TinyVerse,
+                "Chunky Verse": Events.ChunkyVerse,
+                "The Fridge": Events.FridgeVerse,
+            }
+            for verse_name in rap_assoc_name:
+                if verse_name not in spoiler.rap_win_con_paths:
+                    spoiler.rap_win_con_paths[verse_name] = []
+                if rap_assoc_name[verse_name] not in spoiler.LogicVariables.Events:
+                    spoiler.rap_win_con_paths[verse_name].append(locationId)
         # Put the item back for future calculations
         location.PlaceItem(spoiler, item_id)
     # After everything is calculated, get rid of paths for false WotH locations

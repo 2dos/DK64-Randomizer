@@ -418,6 +418,9 @@ class Settings:
         self.starting_kongs_count = 5
         self.starting_random = False
 
+        self.has_password = False
+        self.password = [1] * 8
+
         # bonus_barrels: MinigameBarrels
         # skip (auto-completed)
         # normal
@@ -645,6 +648,8 @@ class Settings:
         self.enemy_rando = False
         self.crown_enemy_rando = CrownEnemyRando.off
         self.enemy_speed_rando = False
+        self.normalize_enemy_sizes = True
+        self.randomize_enemy_sizes = False
         self.cb_rando = CBRando.off
         self.coin_rando = False
         self.crown_placement_rando = False
@@ -1012,6 +1017,10 @@ class Settings:
         self.coin_door_item = DoorItemToBarrierItem(self.coin_door_item, True)
         self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
+        if self.has_password:
+            for x in range(8):
+                self.password[x] = random.randint(1, 6)
+
         # Win Condition
         wincon_items = {
             WinConditionComplex.beat_krool: HelmDoorInfo(
@@ -1303,8 +1312,15 @@ class Settings:
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
-            random.shuffle(allocation)
+            allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
+            if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
+                # Add an extra 3 into the calculation
+                allocation.append(3)
+                random.shuffle(allocation)
+            else:
+                # If LZR, always make Helm SDSS
+                random.shuffle(allocation)
+                allocation.append(3)
             self.switch_allocation = allocation.copy()
 
         # Mill Levers

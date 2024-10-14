@@ -81,6 +81,7 @@ class Spoiler:
         self.woth_locations = {}
         self.woth_paths = {}
         self.krool_paths = {}
+        self.rap_win_con_paths = {}
         self.other_paths = {}
         self.shuffled_door_data = {}
         self.shuffled_barrel_data = {}
@@ -788,6 +789,15 @@ class Spoiler:
                 path_dict[path_location.name] = path_item.name
             phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
+        if self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            print(self.rap_win_con_paths)
+            for verse_name, path in self.rap_win_con_paths.items():
+                path_dict = {}
+                for path_loc_id in path:
+                    path_location = self.LocationList[path_loc_id]
+                    path_item = ItemList[path_location.item]
+                    path_dict[path_location.name] = path_item.name
+                humanspoiler["WotH Paths"][verse_name] = path_dict
         humanspoiler["Other Paths"] = {}
         for loc, path in self.other_paths.items():
             destination_item = ItemList[self.LocationList[loc].item]
@@ -874,18 +884,22 @@ class Spoiler:
                 level_data[level_name][ShufflableExits[exit].name] = dest.spoilerName
             humanspoiler["Shuffled Exits"] = shuffled_exits
             humanspoiler["Shuffled Exits (Sorted by destination)"] = level_data
+        if self.settings.has_password:
+            PASS_NAMES = ["ERROR", "Up", "Down", "Left", "Right", "Z", "Start"]
+            humanspoiler["Password"] = " ".join([PASS_NAMES[x] for x in self.settings.password])
         if self.settings.alter_switch_allocation:
+            SLAM_NAMES = ["No Slam", "Simian Slam", "Super Simian Slam", "Super Duper Simian Slam"]
             humanspoiler["Level Switch Strength"] = {
-                "Jungle Japes": self.settings.switch_allocation[Levels.JungleJapes],
-                "Angry Aztec": self.settings.switch_allocation[Levels.AngryAztec],
-                "Frantic Factory": self.settings.switch_allocation[Levels.FranticFactory],
-                "Gloomy Galleon": self.settings.switch_allocation[Levels.GloomyGalleon],
-                "Fungi Forest": self.settings.switch_allocation[Levels.FungiForest],
-                "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
-                "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
+                "Jungle Japes": SLAM_NAMES[self.settings.switch_allocation[Levels.JungleJapes]],
+                "Angry Aztec": SLAM_NAMES[self.settings.switch_allocation[Levels.AngryAztec]],
+                "Frantic Factory": SLAM_NAMES[self.settings.switch_allocation[Levels.FranticFactory]],
+                "Gloomy Galleon": SLAM_NAMES[self.settings.switch_allocation[Levels.GloomyGalleon]],
+                "Fungi Forest": SLAM_NAMES[self.settings.switch_allocation[Levels.FungiForest]],
+                "Crystal Caves": SLAM_NAMES[self.settings.switch_allocation[Levels.CrystalCaves]],
+                "Creepy Castle": SLAM_NAMES[self.settings.switch_allocation[Levels.CreepyCastle]],
             }
             if self.settings.shuffle_helm_location:
-                humanspoiler["Level Switch Strength"]["Hideout Helm"] = self.settings.switch_allocation[Levels.HideoutHelm]
+                humanspoiler["Level Switch Strength"]["Hideout Helm"] = SLAM_NAMES[self.settings.switch_allocation[Levels.HideoutHelm]]
 
         if len(self.microhints) > 0:
             human_microhints = {}

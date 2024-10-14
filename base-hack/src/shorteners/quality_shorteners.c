@@ -1,11 +1,6 @@
 #include "../../include/common.h"
 
 void qualityOfLife_shorteners(void) {
-	if (Rando.quality_of_life.remove_cutscenes) {
-        // Shorter Boss Cutscenes
-		TempFlagBlock[0xC] |= 0x80;
-		TempFlagBlock[0xD] |= 0x3F;
-    }
 	if (Rando.quality_of_life.reduce_lag) {
         if (CurrentMap == MAP_CASTLE) {
             if (ObjectModel2Timer <= 5) {

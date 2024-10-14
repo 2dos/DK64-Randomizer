@@ -59,20 +59,20 @@ static const item_info item_detection_data[] = {
     {.song = SONG_BLUEPRINTGET, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // BP
     {.song = SONG_GBGET, .sprite = 0x8A, .helm_hurry_item = HHITEM_KEY, .fairy_model = 0xF5}, // Key
     {.song = SONG_BANANAMEDALGET, .sprite = 0x8B, .helm_hurry_item = HHITEM_CROWN, .fairy_model = 0xF4}, // Crown
-    {.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN, .fairy_model = -1}, // Company Coin
-    {.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL, .fairy_model = -1}, // Medal
+    {.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN, .fairy_model = 0x10A}, // Company Coin
+    {.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL, .fairy_model = 0x108}, // Medal
     {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Cranky Move
     {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Funky Move
     {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Candy Move
     {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Training Move
     {.song = SONG_GUNGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // BFI Move
     {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = MODEL_GENERIC_KONG}, // Kong
-    {.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN, .fairy_model = -1}, // Bean
-    {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL, .fairy_model = -1}, // Pearl
+    {.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN, .fairy_model = 0x104}, // Bean
+    {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL, .fairy_model = 0x106}, // Pearl
     {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY, .fairy_model = 0x3D}, // Fairy
     {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN, .fairy_model = -1}, // Rainbow Coin
     {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Bubble)
-    {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
+    {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x10E}, // Junk Item (Melon)
     {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x11}, // Cranky
     {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x12}, // Funky
     {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x13}, // Candy
@@ -368,6 +368,9 @@ void giveFairyItem(int flag, int state, flagtypes type) {
         model_key = MODEL_GENERIC_POTION;
     } else if (inShortList(model_key, &kong_models[0], 5)) {
         model_key = MODEL_GENERIC_KONG;
+    } else if (model_key == 0x10C) {
+        // Company Coin
+        model_key = 0x10A;
     }
     ICE_TRAP_TYPES ice_trap_type = ICETRAP_OFF;
     if ((model_key >= -4) && (model_key <= -2)) {
@@ -768,55 +771,47 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
     return 0;
 }
 
+typedef struct collectable_render {
+    /* 0x000 */ short cb_single; // Make sure these 3 are consecutive
+    /* 0x002 */ short coin;
+    /* 0x004 */ short cb_bunch;
+    /* 0x006 */ short kong;
+} collectable_render;
+
+static collectable_render CollectableRenderData[] = {
+    {.cb_single = 0x000D, .cb_bunch = 0x002B, .coin = 0x001D, .kong = KONG_DK},
+    {.cb_single = 0x000A, .cb_bunch = 0x0208, .coin = 0x0024, .kong = KONG_DIDDY},
+    {.cb_single = 0x001E, .cb_bunch = 0x0205, .coin = 0x0023, .kong = KONG_LANKY},
+    {.cb_single = 0x0016, .cb_bunch = 0x0207, .coin = 0x001C, .kong = KONG_TINY},
+    {.cb_single = 0x001F, .cb_bunch = 0x0206, .coin = 0x0027, .kong = KONG_CHUNKY},
+};
+
 int isCollectable(int type) {
     int player_index = FocusedPlayerIndex;
-    int kong = -1;
-    switch(type) {
-        case 0xD: // DK Single
-        case 0x1D: // DK Coin
-        case 0x2B: // DK Bunch
-            kong = KONG_DK;
-        case 0xA: // Diddy Single
-        case 0x24: // Diddy Coin
-        case 0x208: // Diddy Bunch
-            if (kong == -1) {
-                kong = KONG_DIDDY;
+    for (int i = 0; i < 5; i++) {
+        if (inShortList(type, &CollectableRenderData[i].cb_single, 3)) {
+            int kong = CollectableRenderData[i].kong;
+            if (Rando.quality_of_life.rambi_enguarde_pickup) {
+                return SwapObject[player_index].player->new_kong == kong + 2;
             }
-        case 0x1E: // Lanky Single
-        case 0x23: // Lanky Coin
-        case 0x205: // Lanky Bunch
-            if (kong == -1) {
-                kong = KONG_LANKY;
-            }
-        case 0x16: // Tiny Single
-        case 0x1C: // Tiny Coin
-        case 0x207: // Tiny Bunch
-            if (kong == -1) {
-                kong = KONG_TINY;
-            }
-        case 0x1F: // Chunky Single
-        case 0x27: // Chunky Coin
-        case 0x206: // Chunky Bunch
-            if (kong == -1) {
-                kong = KONG_CHUNKY;
-            }
-            if (kong > -1) {
-                if (Rando.quality_of_life.rambi_enguarde_pickup) {
-                    return SwapObject[player_index].player->new_kong == kong + 2;
-                }
-                return SwapObject[player_index].player->characterID == kong + 2;
-            }
-            return 1;
-        case 0x11: // Homing Crate
-            return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
-        case 0x8E: // Crystal
-            return SwapObject[player_index].player->unk_fairycam_bitfield & 2;
-        case 0x8F: // Ammo Crate
-            return MovesBase[(int)Character].weapon_bitfield & 1;
-        case 0x98: // Film
-            return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
-        case 0x56: // Oranges
-            return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+            return SwapObject[player_index].player->characterID == kong + 2;
+        }
+    }
+    if (type == 0x11) {
+        // Homing Crate
+        return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
+    } else if (type == 0x8E) {
+        // Crystal
+        return SwapObject[player_index].player->unk_fairycam_bitfield & 2;
+    } else if (type == 0x8F) {
+        // Ammo Crate
+        return MovesBase[(int)Character].weapon_bitfield & 1;
+    } else if (type == 0x98) {
+        // Film
+        return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+    } else if (type == 0x56) {
+        // Oranges
+        return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
     }
     return 1;
 }

@@ -42,6 +42,7 @@ void overlay_changes(void) {
 		default:
 			break;
 	}
+	initQoL_Cutscenes();
 	if (CurrentMap == MAP_HELM) {
 		// Initialize Helm
 		HelmInit(0);

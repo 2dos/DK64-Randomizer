@@ -212,8 +212,19 @@
    "starting_kong":0,
    "rom_flags":{
       "plando":true,
-      "spoiler":true
+      "spoiler":true,
+      "pass_locked":true
    },
+   "password": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+   ],
    "test_zone":[
       48,
       0

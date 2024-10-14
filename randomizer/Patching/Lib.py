@@ -1034,6 +1034,7 @@ class Holidays(IntEnum):
     no_holiday = 0
     Christmas = auto()
     Halloween = auto()
+    Anniv25 = auto()
 
 
 def getHolidaySetting(settings):

@@ -37,7 +37,7 @@ from randomizer.Patching.Lib import (
     Holidays,
     getHoliday,
 )
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures, imageToCI
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -3235,12 +3235,15 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                 writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, TextureFormat.RGBA5551)
 
 
-def changeBarrelColor(color: tuple):
+def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None):
     """Change the colors of the various barrels."""
     wood_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellWood), True, 32, 64, TextureFormat.RGBA5551)
     metal_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellMetal), True, 32, 64, TextureFormat.RGBA5551)
     qmark_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellQMark), True, 32, 64, TextureFormat.RGBA5551)
-    wood_img = maskImageWithColor(wood_img, color)
+    if barrel_color is not None:
+        wood_img = maskImageWithColor(wood_img, barrel_color)
+    if metal_color is not None:
+        metal_img = maskImageWithColor(metal_img, metal_color)
     wood_img.paste(metal_img, (0, 0), metal_img)
     writeColorImageToROM(wood_img, 25, getBonusSkinOffset(ExtraTextures.BonusShell), 32, 64, False, TextureFormat.RGBA5551)  # Bonus Barrel
     tag_img = Image.new(mode="RGBA", size=(32, 64))
@@ -3281,22 +3284,26 @@ def changeBarrelColor(color: tuple):
     barrel_right = barrel_right.crop((16, 0, 32, 64))
     writeColorImageToROM(barrel_left, 25, 0x12B3, 16, 64, False, TextureFormat.RGBA5551)
     writeColorImageToROM(barrel_right, 25, 0x12B4, 16, 64, False, TextureFormat.RGBA5551)
-    tex_data = {
-        getBonusSkinOffset(ExtraTextures.RocketTop): (1, 1372),
-        0x12B5: (48, 32),
-        0x12B8: (44, 44),
-    }
-    for img in tex_data:
-        dim_x = tex_data[img][0]
-        dim_y = tex_data[img][1]
-        img_output = getImageFile(25, img, True, dim_x, dim_y, TextureFormat.RGBA5551)
-        img_output = maskImageWithColor(img_output, color)
-        writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)
+    if barrel_color is not None:
+        tex_data = {
+            getBonusSkinOffset(ExtraTextures.RocketTop): (1, 1372),
+            0x12B5: (48, 32),
+            0x12B8: (44, 44),
+        }
+        for img in tex_data:
+            dim_x = tex_data[img][0]
+            dim_y = tex_data[img][1]
+            img_output = getImageFile(25, img, True, dim_x, dim_y, TextureFormat.RGBA5551)
+            img_output = maskImageWithColor(img_output, barrel_color)
+            writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)
 
 
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = getHoliday(settings)
+    if HOLIDAY == Holidays.no_holiday:
+        changeBarrelColor()  # Fixes some Krusha stuff
+        return
     if HOLIDAY == Holidays.Christmas:
         # Set season to Christmas
         ROM().seek(settings.rom_data + 0xDB)
@@ -3390,6 +3397,8 @@ def applyHolidayMode(settings):
             tiny_hair_data = gzip.compress(bytearray(tiny_hair), compresslevel=9)
             ROM().seek(js.pointer_addresses[25]["entries"][0xE68]["pointing_to"])
             ROM().writeBytes(tiny_hair_data)
+        # Tag Barrel, Bonus Barrel & Transform Barrels
+        changeBarrelColor(None, (0x00, 0xC0, 0x00))
     elif HOLIDAY == Holidays.Halloween:
         ROM().seek(settings.rom_data + 0xDB)
         ROM().writeMultipleBytes(1, 1)
@@ -3429,6 +3438,8 @@ def applyHolidayMode(settings):
         }
         for img in range(0x1237, 0x1241 + 1):
             hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
+    elif HOLIDAY == Holidays.Anniv25:
+        changeBarrelColor((0xC0, 0xC0, 0x00))
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
@@ -4045,7 +4056,7 @@ def writeCustomPortal(settings: Settings) -> None:
 class PaintingData:
     """Class to store information regarding a painting."""
 
-    def __init__(self, width: int, height: int, x_split: int, y_split: int, is_bordered: bool, texture_order: list):
+    def __init__(self, width: int, height: int, x_split: int, y_split: int, is_bordered: bool, texture_order: list, is_ci: bool = False):
         """Initialize with given parameters."""
         self.width = width
         self.height = height
@@ -4071,6 +4082,9 @@ def writeCustomPaintings(settings: Settings) -> None:
         PaintingData(128, 128, 2, 4, True, [0x9A5, 0x9AC, 0x9A6, 0x9AB, 0x9A7, 0x9AA, 0x9A8, 0x9A9]),  # Sword
         PaintingData(64, 32, 1, 1, False, [0xA53]),  # Dolphin
         PaintingData(32, 64, 1, 1, False, [0xA46]),  # Candy
+        # PaintingData(64, 64, 1, 1, False, [0x614, 0x615], True),  # K Rool Run
+        # PaintingData(64, 64, 1, 1, False, [0x625, 0x626], True),  # K Rool Blunderbuss
+        # PaintingData(64, 64, 1, 1, False, [0x627, 0x628], True),  # K Rool Head
     ]
     file_data = list(zip(js.cosmetics.paintings, js.cosmetic_names.paintings))
     settings.painting_isles = None
