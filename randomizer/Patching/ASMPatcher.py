@@ -404,7 +404,7 @@ class ColorBlindCrosshair:
         self.sniper = sniper
 
     def writeRGBColors(self, ROM_COPY, offset_dict: dict, value: int, upper_address: int, lower_address: int):
-        """Write the RGB colors to ROM"""
+        """Write the RGB colors to ROM."""
         hi = value >> 8
         lo = ((value & 0xFF) << 8) | 0xFF
         writeValue(ROM_COPY, upper_address, Overlay.Static, hi, offset_dict)

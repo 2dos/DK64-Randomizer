@@ -418,6 +418,19 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
             ROM_COPY.writeMultipleBytes(get_out_timer, 1)
             ROM_COPY.writeMultipleBytes(get_out_timer, 1)
         # Scale Adjustment
+        if EnemyMetaData[new_enemy_id].default_size is not None:
+            scale = EnemyMetaData[new_enemy_id].default_size
+            ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
+            if cont_map_id == Maps.JapesTinyHive:
+                # Is a mini monkey map, where we'd expect to see enemy sizes to be bigger to fit thematically
+                scale = min(255, int(2.5 * scale))
+            if spoiler.settings.randomize_enemy_sizes:
+                lower_b = int(scale * 0.3)
+                upper_b = min(255, int(1.5 * scale))
+                chosen_scale = random.randint(lower_b, upper_b)
+                ROM_COPY.writeMultipleBytes(chosen_scale, 1)
+            elif spoiler.settings.normalize_enemy_sizes:
+                ROM_COPY.writeMultipleBytes(scale, 1)
         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
         default_scale = int.from_bytes(ROM_COPY.readBytes(1), "big")
         if EnemyMetaData[new_enemy_id].size_cap > 0:

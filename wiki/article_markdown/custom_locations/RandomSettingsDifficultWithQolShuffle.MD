@@ -81,6 +81,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Enable Tag Anywhere: 90%
 - Dropsanity: 60%
 - Enemy Speed Rando: 70%
+- Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
 	- Factory Toy Monster Fight: 70%
 	- Factory Piano Game: 70%

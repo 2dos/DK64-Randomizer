@@ -85,6 +85,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
 - Enemy Speed Rando: 50%
+- Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
 	- Factory Toy Monster Fight: 70%
 	- Factory Piano Game: 70%
