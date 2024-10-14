@@ -376,6 +376,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False),
         default_size=100,
+        size_cap=100,  # Too big causes the game to crash, so just gonna limit it to size 100. Size 127 seems to be fine
     ),  #
     Enemies.Gimpfish: EnemyData(
         name="Gimpfish",
