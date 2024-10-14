@@ -386,6 +386,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False),
         default_size=110,
+        size_cap=110,  # Runs the same code as the shuri, lets not tempt fate
     ),
     Enemies.MrDice0: EnemyData(
         name="Mr Dice (Green)",
