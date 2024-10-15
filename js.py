@@ -16,6 +16,7 @@ def getFile(filename):
     with open(filename, "rb") as file:
         return file.read()
 
+
 def getStringFile(filename):
     """Fake function for loading files with Javascript."""
     with open(filename, "r") as file:

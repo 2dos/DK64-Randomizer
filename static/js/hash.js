@@ -10,27 +10,127 @@ class ImageInfo {
     this.mode = mode;
   }
 }
+// Helper function to create a 16-bit integer in little-endian format
+function uint16LE(value) {
+  return [value & 0xff, (value >> 8) & 0xff];
+}
 
-// Function to generate a GIF frame from the image with transparency applied
-function genGIFFrame(image, cap = 128) {
-  const canvas = document.createElement("canvas"); // Create a canvas element for rendering the image
+// Helper function to create a 32-bit integer in little-endian format
+function uint32LE(value) {
+  return [value & 0xff, (value >> 8) & 0xff, (value >> 16) & 0xff, (value >> 24) & 0xff];
+}
+
+// Helper function to convert canvas to RGB pixel data
+function canvasToRGBData(canvas) {
   const ctx = canvas.getContext("2d");
-  canvas.width = image.width;
-  canvas.height = image.height;
-  ctx.drawImage(image, 0, 0); // Draw image on canvas
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  return imgData.data;
+}
 
-  // Get image data (RGBA) for manipulation
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const alpha = imageData.data; // Alpha channel manipulation
+// Function to create the GIF from frames
+function createGIF(frames, width, height, delay = 100) {
+  const GIF_HEADER = [
+    // GIF Signature
+    0x47, 0x49, 0x46, 0x38, 0x39, 0x61, // "GIF89a" signature
 
-  // Apply transparency cap (255 where alpha is below the cap)
-  for (let i = 0; i < alpha.length; i += 4) {
-    if (alpha[i + 3] <= cap) {
-      alpha[i + 3] = 255;
+    // Logical Screen Descriptor (Screen width, height, GCT flag, color resolution, sort flag, size of GCT)
+    ...uint16LE(width), ...uint16LE(height), 0xf7, 0x00, 0x00,
+
+    // Global Color Table (256 colors RGB)
+    // This is a simple grayscale color table for demonstration, you can change it to a custom palette
+    ...Array.from({ length: 256 * 3 }, (_, i) => i % 256),
+
+    // Application Extension Block for animation
+    0x21, 0xff, 0x0b, // Extension Introducer, Application Label
+    0x4e, 0x45, 0x54, 0x53, 0x43, 0x41, 0x50, 0x45, 0x32, 0x2e, 0x30, // "NETSCAPE2.0"
+    0x03, 0x01, 0x00, 0x00, 0x00 // Data Sub-blocks, Loop count (0 means infinite)
+  ];
+
+  const GIF_FOOTER = [0x3b]; // GIF trailer
+
+  let gifData = [...GIF_HEADER]; // Initialize with header data
+
+  for (let frame of frames) {
+    // Graphic Control Extension (for frame delay and transparency)
+    gifData.push(
+      0x21, 0xf9, 0x04, 0x08, ...uint16LE(delay), 0x00, 0x00 // Delay and other GCE params
+    );
+
+    // Image Descriptor (frame position and size)
+    gifData.push(
+      0x2c, // Image Separator
+      0x00, 0x00, 0x00, 0x00, // Image Position X, Y (0,0)
+      ...uint16LE(width), ...uint16LE(height), // Image width and height
+      0x00 // No local color table, no interlace
+    );
+
+    // Image Data (compressed LZW data)
+    const imageData = canvasToRGBData(frame); // Convert the canvas frame to RGB data
+    const lzwData = encodeLZW(imageData, width * height); // LZW encoding of the image
+
+    gifData.push(0x08); // LZW minimum code size
+    gifData.push(...lzwData); // Add the LZW-encoded image data
+    gifData.push(0x00); // Block terminator
+  }
+
+  gifData.push(...GIF_FOOTER); // Add the GIF footer
+
+  // Convert the binary array to a base64 string and return the result
+  const binaryData = new Uint8Array(gifData);
+  const gifBase64 = btoa(String.fromCharCode(...binaryData));
+  return `data:image/gif;base64,${gifBase64}`;
+}
+
+// Helper function to encode image data using LZW compression (GIF requirement)
+function encodeLZW(imageData, pixelCount) {
+  // Basic LZW encoding implementation for GIFs
+  // This will compress the image data, but LZW is a bit complex.
+  // You could use a library or a simple implementation, but here’s a basic idea:
+
+  const clearCode = 256;
+  const endOfInformation = 257;
+
+  let dictionary = [];
+  for (let i = 0; i < 256; i++) {
+    dictionary[[i]] = i;
+  }
+
+  let codeStream = [];
+  let currentCode = [];
+
+  for (let i = 0; i < pixelCount; i++) {
+    const pixel = imageData[i];
+
+    if (dictionary[currentCode.concat([pixel])] !== undefined) {
+      currentCode.push(pixel);
+    } else {
+      codeStream.push(dictionary[currentCode]);
+      dictionary[currentCode.concat([pixel])] = Object.keys(dictionary).length;
+      currentCode = [pixel];
     }
   }
-  ctx.putImageData(imageData, 0, 0);
-  return canvas; // Return the updated canvas
+
+  if (currentCode.length) {
+    codeStream.push(dictionary[currentCode]);
+  }
+
+  codeStream.push(endOfInformation);
+
+  // Convert codes to bytes
+  let byteStream = [];
+  for (let code of codeStream) {
+    byteStream.push(code & 0xff, (code >> 8) & 0xff);
+  }
+
+  return byteStream;
+}
+
+// Usage example with canvases:
+function generateGifFromFrames(canvasFrames) {
+  const width = canvasFrames[0].width;
+  const height = canvasFrames[0].height;
+  const gifDataURL = createGIF(canvasFrames, width, height, 100); // 100ms delay per frame
+  return gifDataURL;
 }
 
 // Main function to load hash images
@@ -145,11 +245,12 @@ function get_hash_images(type = "local", mode = "hash") {
       const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
       loadedImages.push(imgBase64); // Add image to the list of loaded images
     } else {
-      gifFrames.push(genGIFFrame(canvas, mode === "loading-dead" ? 10 : 128)); // Handle GIF frames
+      gifFrames.push(canvas); // Handle GIF frames
     }
   }
-
   // TODO: Handle GIF creation logic if necessary
-
+  if (mode !== "hash") {
+    return generateGifFromFrames(gifFrames);; // Return GIF data URL
+  }
   return loadedImages; // Return base64-encoded images
 }

@@ -409,8 +409,8 @@ js.plando_errors = plando_errors
         let gif_fairy = get_hash_images("browser", "loading-fairy")
         console.log(gif_fairy)
         let gif_dead = get_hash_images("browser", "loading-dead")
-        document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0];
-        document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0];
+        document.getElementById("progress-fairy").src = gif_fairy[0];
+        document.getElementById("progress-dead").src = gif_dead[0];
 
         $("#progressmodal").modal("show");
         $("#patchprogress").width(0);

@@ -62,9 +62,9 @@ def resolve_obj_references(data: dict) -> dict:
             else:
                 # Recurse into nested dictionaries
                 data[key] = resolve_obj_references(value)
-        elif '.' in key:
+        elif "." in key:
             # If the key contains a period, treat it as an object reference
-            class_name = key.split('.')[0]
+            class_name = key.split(".")[0]
             data[class_name] = resolve_obj_references(value) if isinstance(value, dict) else value
     return data
 
@@ -80,7 +80,7 @@ def create_pyi_content(data: dict) -> str:
             if all(isinstance(sub_value, int) for sub_value in value.values()):
                 pyi_lines.append(f"class {key}(IntEnum):")
                 for sub_key, sub_value in value.items():
-                    if '.' in sub_key:
+                    if "." in sub_key:
                         pyi_lines.append(f"    {sub_key} = {sub_value}")
                     else:
                         pyi_lines.append(f"    {sub_key} = {sub_value}")
@@ -91,7 +91,7 @@ def create_pyi_content(data: dict) -> str:
                 pyi_lines.append(f"{key}: dict = {{")
                 for sub_key, sub_value in value.items():
                     # Handle cases where the key contains a period (no quotes)
-                    if '.' in sub_key:
+                    if "." in sub_key:
                         pyi_lines.append(f"    {sub_key}: {sub_value},")
                     else:
                         pyi_lines.append(f"    '{sub_key}': {sub_value},")
@@ -119,7 +119,7 @@ def create_dts_content(data: dict) -> str:
             if all(isinstance(sub_value, int) for sub_value in value.values()):
                 dts_lines.append(f"export enum {key} {{")
                 for sub_key, sub_value in value.items():
-                    if '.' in sub_key:
+                    if "." in sub_key:
                         dts_lines.append(f"    {sub_key} = {sub_value},")
                     else:
                         dts_lines.append(f"    {sub_key} = {sub_value},")
@@ -129,7 +129,7 @@ def create_dts_content(data: dict) -> str:
                 dts_lines.append(f"export const {key} = {{")
                 for sub_key, sub_value in value.items():
                     # Handle cases where the key contains a period (no quotes)
-                    if '.' in sub_key:
+                    if "." in sub_key:
                         dts_lines.append(f"    {sub_key}: {sub_value},")
                     else:
                         dts_lines.append(f"    '{sub_key}': {sub_value},")

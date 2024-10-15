@@ -14,7 +14,15 @@ from randomizer.Lists.HardMode import HardSelector, HardBossSelector
 from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
 from randomizer.Lists.Logic import GlitchSelector
 from randomizer.Lists.Minigame import MinigameSelector
-from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns, PlannableSwitches
+from randomizer.Lists.Plandomizer import (
+    PlandomizerPanels,
+    PlannableCustomLocations,
+    PlannableItems,
+    PlannableKroolPhases,
+    PlannableMinigames,
+    PlannableSpawns,
+    PlannableSwitches,
+)
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector

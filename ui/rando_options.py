@@ -1,4 +1,5 @@
 """Options for the main rando tab."""
+
 import js
 
 from ui.bindings import bind
@@ -13,4 +14,3 @@ def shuffle_settings(evt):
 
     # Run additional functions to ensure there are no conflicts.
     js.update_ui_states(evt)
-

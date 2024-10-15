@@ -4,7 +4,14 @@ import math
 import random
 
 import js
-from randomizer.Enums.Settings import ShufflePortLocations, LogicType, SettingsStringDataType, SettingsStringEnum, SettingsStringListTypeMap, SettingsStringTypeMap
+from randomizer.Enums.Settings import (
+    ShufflePortLocations,
+    LogicType,
+    SettingsStringDataType,
+    SettingsStringEnum,
+    SettingsStringListTypeMap,
+    SettingsStringTypeMap,
+)
 
 
 def random_bool_setting(weight: float) -> bool:
@@ -129,7 +136,15 @@ def randomize_settings():
     if weightData is None:
         return
 
-    numTypes = set([SettingsStringDataType.int16, SettingsStringDataType.u16, SettingsStringDataType.int4, SettingsStringDataType.int8, SettingsStringDataType.var_int])
+    numTypes = set(
+        [
+            SettingsStringDataType.int16,
+            SettingsStringDataType.u16,
+            SettingsStringDataType.int4,
+            SettingsStringDataType.int8,
+            SettingsStringDataType.var_int,
+        ]
+    )
     randSettings = dict()
 
     # Start by generating random values and placing them in the dictionary.

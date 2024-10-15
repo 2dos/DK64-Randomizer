@@ -1,6 +1,5 @@
 """Location/item type enum."""
 
-
 from randomizer.JsonReader import generate_globals
 from js import getStringFile
 from typing import TYPE_CHECKING

@@ -1255,7 +1255,10 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
         for switch in switch_objects:
             # Extract the switch location name.
             location_name = re.search("^plando_(.+)_switch$", switch.name)[1]
-            if switchsanity == "helm_access" and location_name not in [Switches.IslesHelmLobbyGone.name, Switches.IslesMonkeyport.name]:
+            if switchsanity == "helm_access" and location_name not in [
+                Switches.IslesHelmLobbyGone.name,
+                Switches.IslesMonkeyport.name,
+            ]:
                 continue
             location = get_plando_value(Switches[location_name])
             if switch.value != "":

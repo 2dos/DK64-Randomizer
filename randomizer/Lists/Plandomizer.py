@@ -90,7 +90,11 @@ MelonCratePlandoLocationList = []
 
 def createShopLocationKongMapObj() -> dict:
     """Initialize an entry in the ShopLocationKongMap."""
-    return {VendorType.Candy.name: {"shared": None, "individual": []}, VendorType.Cranky.name: {"shared": None, "individual": []}, VendorType.Funky.name: {"shared": None, "individual": []}}
+    return {
+        VendorType.Candy.name: {"shared": None, "individual": []},
+        VendorType.Cranky.name: {"shared": None, "individual": []},
+        VendorType.Funky.name: {"shared": None, "individual": []},
+    }
 
 
 # A map of shop locations, grouped by level and broken into shared/individual.
@@ -288,7 +292,18 @@ PlandomizerPanels["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
     {"name": "Helm Chunky 1", "value": "HelmChunky1", "kong": "Chunky"},
     {"name": "Helm Chunky 2", "value": "HelmChunky2", "kong": "Chunky"},
 ]
-MinigameLocationList += ["HelmDonkey1", "HelmDonkey2", "HelmDiddy1", "HelmDiddy2", "HelmLanky1", "HelmLanky2", "HelmTiny1", "HelmTiny2", "HelmChunky1", "HelmChunky2"]
+MinigameLocationList += [
+    "HelmDonkey1",
+    "HelmDonkey2",
+    "HelmDiddy1",
+    "HelmDiddy2",
+    "HelmLanky1",
+    "HelmLanky2",
+    "HelmTiny1",
+    "HelmTiny2",
+    "HelmChunky1",
+    "HelmChunky2",
+]
 
 #########
 # ITEMS #
@@ -297,10 +312,23 @@ MinigameLocationList += ["HelmDonkey1", "HelmDonkey2", "HelmDiddy1", "HelmDiddy2
 # These PlandoItems enums have multiple Items enums that map to each of them,
 # and so they should not be automatically added to the list of PlannableItems.
 # Handle these manually.
-doNotAutoAddPlandoItemSet = {PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint, PlandoItems.JunkItem}
+doNotAutoAddPlandoItemSet = {
+    PlandoItems.DonkeyBlueprint,
+    PlandoItems.DiddyBlueprint,
+    PlandoItems.LankyBlueprint,
+    PlandoItems.TinyBlueprint,
+    PlandoItems.ChunkyBlueprint,
+    PlandoItems.JunkItem,
+}
 # These items are extras that map to PlandoItems already covered by other
 # Items. Do not add these.
-doNotAutoAddItemSet = {Items.ProgressiveSlam2, Items.ProgressiveSlam3, Items.ProgressiveAmmoBelt2, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3}
+doNotAutoAddItemSet = {
+    Items.ProgressiveSlam2,
+    Items.ProgressiveSlam3,
+    Items.ProgressiveAmmoBelt2,
+    Items.ProgressiveInstrumentUpgrade2,
+    Items.ProgressiveInstrumentUpgrade3,
+}
 
 PlannableItems = []  # Used to select rewards for locations.
 
@@ -902,7 +930,15 @@ WrinklyDoorEnumList = [
 # This list holds all of the location IDs for TnS portal elements. It exists
 # mainly for convenience when binding.
 TnsPortalLocationList = []
-for level in [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]:
+for level in [
+    Levels.JungleJapes,
+    Levels.AngryAztec,
+    Levels.FranticFactory,
+    Levels.GloomyGalleon,
+    Levels.FungiForest,
+    Levels.CrystalCaves,
+    Levels.CreepyCastle,
+]:
     for i in range(0, 5):
         TnsPortalLocationList.append(f"{level.name}_{i}")
 
@@ -965,7 +1001,15 @@ for level, vanillaDoors in TnsVanillaMap.items():
 # An object that will hold all possible Wrinkly door locations for each
 # level/Kong combination.
 WrinklyDoorLocationOptions = {}
-for level in [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]:
+for level in [
+    Levels.JungleJapes,
+    Levels.AngryAztec,
+    Levels.FranticFactory,
+    Levels.GloomyGalleon,
+    Levels.FungiForest,
+    Levels.CrystalCaves,
+    Levels.CreepyCastle,
+]:
     WrinklyDoorLocationOptions[level.name] = {}
     for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
         WrinklyDoorLocationOptions[level.name][kong.name] = []
@@ -1026,7 +1070,13 @@ for switchEnum, switchInfo in SwitchData.items():
     SwitchVanillaMap[switchEnum.name] = jsonValue["vanilla_value"]
     PlandomizerPanels["Switches"]["locations"].append(jsonValue)
 
-for switchType in [SwitchType.GunSwitch, SwitchType.InstrumentPad, SwitchType.MiscActivator, SwitchType.PadMove, SwitchType.SlamSwitch]:
+for switchType in [
+    SwitchType.GunSwitch,
+    SwitchType.InstrumentPad,
+    SwitchType.MiscActivator,
+    SwitchType.PadMove,
+    SwitchType.SlamSwitch,
+]:
     for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
         switchName = GetSwitchName(switchType, kong)
         PlannableSwitches[switchType.name].append(

@@ -1,4 +1,5 @@
 """Song enum."""
+
 from randomizer.JsonReader import generate_globals
 from typing import TYPE_CHECKING
 

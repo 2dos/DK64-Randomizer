@@ -142,7 +142,15 @@ async def import_plando_options(jsonString):
             for location, minigame in value.items():
                 js.document.getElementById(f"plando_{location}_minigame").value = minigame
         # Process custom locations.
-        elif option in ["plando_place_arenas", "plando_place_crates", "plando_place_fairies", "plando_place_kasplats", "plando_place_patches", "plando_place_tns", "plando_place_wrinkly"]:
+        elif option in [
+            "plando_place_arenas",
+            "plando_place_crates",
+            "plando_place_fairies",
+            "plando_place_kasplats",
+            "plando_place_patches",
+            "plando_place_tns",
+            "plando_place_wrinkly",
+        ]:
             js.document.getElementById(option).checked = value
         elif option == "plando_battle_arenas":
             for enumLocation, customLocation in value.items():
@@ -547,7 +555,11 @@ def plando_disable_starting_moves(evt):
             selectedStartingMoves.add(Items(int(startingMove)))
 
     # Obtain the list of PlandoItems moves to disable.
-    progressiveMoves = [PlandoItems.ProgressiveAmmoBelt, PlandoItems.ProgressiveInstrumentUpgrade, PlandoItems.ProgressiveSlam]
+    progressiveMoves = [
+        PlandoItems.ProgressiveAmmoBelt,
+        PlandoItems.ProgressiveInstrumentUpgrade,
+        PlandoItems.ProgressiveSlam,
+    ]
     selectedPlandoMoves = set([ItemToPlandoItemMap[move] for move in selectedStartingMoves if ItemToPlandoItemMap[move] not in progressiveMoves])
     # Progressive moves are handled differently. Only disable these if all
     # instances are included as starting moves.
@@ -589,7 +601,16 @@ def plando_disable_starting_moves(evt):
 def plando_disable_keys(evt):
     """Disable keys from being selected for locations in the plandomizer, depending on the current settings."""
     # This dict will map our key strings to enum values.
-    keyDict = {1: "JungleJapesKey", 2: "AngryAztecKey", 3: "FranticFactoryKey", 4: "GloomyGalleonKey", 5: "FungiForestKey", 6: "CrystalCavesKey", 7: "CreepyCastleKey", 8: "HideoutHelmKey"}
+    keyDict = {
+        1: "JungleJapesKey",
+        2: "AngryAztecKey",
+        3: "FranticFactoryKey",
+        4: "GloomyGalleonKey",
+        5: "FungiForestKey",
+        6: "CrystalCavesKey",
+        7: "CreepyCastleKey",
+        8: "HideoutHelmKey",
+    }
     # Determine which keys are enabled and which are disabled.
     disabled_keys = set()
     if js.document.getElementById("select_keys").checked:

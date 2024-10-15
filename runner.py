@@ -35,7 +35,15 @@ from randomizer.Lists.HardMode import HardSelector, HardBossSelector
 from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
 from randomizer.Lists.Logic import GlitchSelector
 from randomizer.Lists.Minigame import MinigameSelector
-from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns, PlannableSwitches
+from randomizer.Lists.Plandomizer import (
+    PlandomizerPanels,
+    PlannableCustomLocations,
+    PlannableItems,
+    PlannableKroolPhases,
+    PlannableMinigames,
+    PlannableSpawns,
+    PlannableSwitches,
+)
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
@@ -51,7 +59,12 @@ else:
 app.config["EXECUTOR_MAX_WORKERS"] = environ.get("EXECUTOR_MAX_WORKERS", 2)
 app.config["EXECUTOR_TYPE"] = environ.get("EXECUTOR_TYPE", "process")
 app.config["SECRET_KEY"] = secrets.token_hex(256)
-discord = DiscordAuth(environ.get("CLIENT_ID"), environ.get("CLIENT_SECRET"), environ.get("REDIRECT", "http://localhost:8000/admin"), "463917049782075395")
+discord = DiscordAuth(
+    environ.get("CLIENT_ID"),
+    environ.get("CLIENT_SECRET"),
+    environ.get("REDIRECT", "http://localhost:8000/admin"),
+    "463917049782075395",
+)
 admin_roles = ["550784070188138508"]
 executor = Executor(app)
 CORS(app)
@@ -224,7 +237,13 @@ def write_error(error, settings_string):
         converted_settings_string = "Settings String failed to convert"
     error_table = dynamodb.Table("dk64_error_db")
     error_table.put_item(
-        Item={"time": str(time.time()), "error_data": str(error), "settings": str(converted_settings_string), "branch": local_branch, "plando": str(settings_string.get("enable_plandomizer", False))}
+        Item={
+            "time": str(time.time()),
+            "error_data": str(error),
+            "settings": str(converted_settings_string),
+            "branch": local_branch,
+            "plando": str(settings_string.get("enable_plandomizer", False)),
+        }
     )
 
 
@@ -280,7 +299,14 @@ def lambda_function():
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
-            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time", "Item Pool"]
+            sections_to_retain = [
+                "Settings",
+                "Cosmetics",
+                "Spoiler Hints",
+                "Spoiler Hints Data",
+                "Generated Time",
+                "Item Pool",
+            ]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
             else:
@@ -309,6 +335,8 @@ def lambda_function():
                 f.write(zip_conv)
             # Return it as a text file
             response = make_response(zip_conv, 200)
+            response.mimetype = "application/zip"
+            response.headers["Content-Type"] = "application/zip; charset=utf-8"
             return response
         else:
             # We don't have a future for this key, so we need to start generating.
@@ -329,7 +357,10 @@ def lambda_function():
 @app.route("/current_total", methods=["GET"])
 def get_current_total():
     """Get the current total seeds generated."""
-    response = make_response(json.dumps({"total_seeds": current_total, "last_generated_time": last_generated_time.strftime("%Y-%m-%d %H:%M:%S.%f")}), 200)
+    response = make_response(
+        json.dumps({"total_seeds": current_total, "last_generated_time": last_generated_time.strftime("%Y-%m-%d %H:%M:%S.%f")}),
+        200,
+    )
     response.mimetype = "application/json"
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -357,7 +388,11 @@ def get_spoiler_log():
             # if the unlock time is less than the current time, return the spoiler log
             file_contents = json.load(f)
             if file_contents.get("Unlock Time", 0) < current_time:
-                return make_response(file_contents, 200)
+                resp = make_response(file_contents, 200)
+                # Create the proper headers for the response
+                resp.mimetype = "application/json"
+                resp.headers["Content-Type"] = "application/json; charset=utf-8"
+                return resp
             else:
                 # Return an error
                 return make_response(json.dumps({"error": "error"}), 425)
@@ -489,11 +524,18 @@ def get_seed():
             with open(fullpath, "r") as lanky_file:
                 # Return the lanky file
                 zip_conv = lanky_file.read()
-                return make_response(zip_conv, 200)
+                resp = make_response(zip_conv, 200)
+                # Create the proper headers for the response
+                resp.mimetype = "application/zip"
+                resp.headers["Content-Type"] = "application/zip; charset=utf-8"
+                return resp
 
     else:
         # Return an error
-        return make_response(json.dumps({"error": "error"}), 205)
+        response = make_response(json.dumps({"error": "error"}), 205)
+        response.mimetype = "application/json"
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
 
 
 @app.route("/status", methods=["GET"])
@@ -581,7 +623,14 @@ def get_seed_data():
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
-            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time", "Item Pool"]
+            sections_to_retain = [
+                "Settings",
+                "Cosmetics",
+                "Spoiler Hints",
+                "Spoiler Hints Data",
+                "Generated Time",
+                "Item Pool",
+            ]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
             else:
@@ -627,22 +676,43 @@ def get_seed_data():
 @app.route("/convert_settings_string", methods=["POST"])
 def convert_settings_string():
     """Convert a settings string to a post body json."""
+    # Ensure the request content type is application/json
+    if request.content_type != "application/json":
+        resp = make_response(json.dumps({"error": "Invalid content type"}), 400)
+        resp.mimetype = "application/json"
+        resp.headers["Content-Type"] = "application/json; charset=utf-8"
+        return resp
+
     # Get the settings string from the request body
     settings_string = request.get_json().get("settings_string")
     decrypted = decrypt_settings_string_enum(settings_string)
+
     # Return the json
-    return make_response(json.dumps(decrypted), 200)
+    resp = make_response(json.dumps(decrypted), 200)
+    resp.mimetype = "application/json"
+    resp.headers["Content-Type"] = "application/json; charset=utf-8"
+    return resp
 
 
 @app.route("/convert_settings_json", methods=["POST"])
 def convert_settings_json():
     """Convert a settings json to a settings string."""
+    # Ensure the request content type is application/json
+    if request.content_type != "application/json":
+        resp = make_response(json.dumps({"error": "Invalid content type"}), 400)
+        resp.mimetype = "application/json"
+        resp.headers["Content-Type"] = "application/json; charset=utf-8"
+        return resp
+
     # Get the settings string from the request body
     settings_json = request.get_json().get("settings_json")
     settings_json = json.loads(settings_json)
     encrypted = encrypt_settings_string_enum(settings_json)
     # Return the json
-    return make_response(json.dumps({"settings_string": encrypted}), 200)
+    resp = make_response(json.dumps({"settings_string": encrypted}), 200)
+    resp.mimetype = "application/json"
+    resp.headers["Content-Type"] = "application/json; charset=utf-8"
+    return resp
 
 
 def update_total():
@@ -696,13 +766,25 @@ def admin_portal():
         except Exception:
             guilds = {}
         if not any(role in admin_roles for role in guilds.get("roles", [])):
-            return make_response('You do not have permission to access this page. <script>history.pushState(null, "", location.href.split("?")[0]);</script>', 403)
+            resp = make_response(
+                'You do not have permission to access this page. <script>history.pushState(null, "", location.href.split("?")[0]);</script>',
+                403,
+            )
+            resp.mimetype = "text/html"
+            resp.headers["Content-Type"] = "text/html; charset=utf-8"
+            return resp
         else:
             session["admin"] = True
     else:
         if not session.get("admin", False):
             session.pop("admin")
-            return make_response('You do not have permission to access this page. <script>history.pushState(null, "", location.href.split("?")[0]);</script>', 403)
+            resp = make_response(
+                'You do not have permission to access this page. <script>history.pushState(null, "", location.href.split("?")[0]);</script>',
+                403,
+            )
+            resp.mimetype = "text/html"
+            resp.headers["Content-Type"] = "text/html; charset=utf-8"
+            return resp
     # Get if the user guilds
     return render_template("admin.html.jinja2", local_presets=local_presets)
 
@@ -710,8 +792,17 @@ def admin_portal():
 @app.route("/admin/presets", methods=["PUT", "DELETE"])
 def admin_presets():
     """Update the local presets file."""
+    if request.content_type != "application/json":
+        resp = make_response(json.dumps({"error": "Invalid content type"}), 400)
+        resp.mimetype = "application/json"
+        resp.headers["Content-Type"] = "application/json; charset=utf-8"
+        return resp
+
     if not session.get("admin", False):
-        return make_response('{"message": "You do not have permission to access this page."}', 403)
+        response = make_response('{"message": "You do not have permission to access this page."}', 403)
+        response.mimetype = "application/json"
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
     content = request.json
     if request.method == "PUT":
         # Get the name of the preset
@@ -729,7 +820,10 @@ def admin_presets():
         with open("local_presets.json", "w") as f:
             f.write(json.dumps(local_presets))
         update_presets()
-        return make_response("Local presets updated", 200)
+        response = make_response('{"message": "Local presets updated"}', 200)
+        response.mimetype = "application/json"
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
     elif request.method == "DELETE":
         # attempt to find the preset by name case insensitive and remove it
         preset_name = content.get("name")
@@ -740,12 +834,18 @@ def admin_presets():
                 found = True
                 break
         if not found:
-            return make_response("Preset not found", 404)
+            response = make_response('{"message": "Preset not found"}', 404)
+            response.mimetype = "application/json"
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response
         else:
             with open("local_presets.json", "w") as f:
                 f.write(json.dumps(local_presets))
             update_presets()
-            return make_response("Local presets deleted", 200)
+            response = make_response('{"message": "Local presets deleted"}', 200)
+            response.mimetype = "application/json"
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response
 
 
 # Setup the scheduler
