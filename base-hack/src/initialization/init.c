@@ -463,6 +463,13 @@ void initHack(int source) {
 				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[6].texture_loader;
 				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
 			}
+			if (Rando.colorblind_mode != COLORBLIND_OFF) {
+				writeFunction(0x8069E968, &determineShockwaveColor);
+			}
+			if (Rando.remove_oscillation_effects) {
+				writeFunction(0x80660994, &getOscillationDelta);
+        		writeFunction(0x806609BC, &getOscillationDelta);
+			}
 			initSwitchsanityChanges();
 
 			SFXVolume = Rando.default_sfx_volume;
