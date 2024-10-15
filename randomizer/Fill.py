@@ -3063,7 +3063,7 @@ def GetAccessibleOpenLevels(spoiler: Spoiler) -> List[int]:
         accessibleOpenLevels.append(Levels.JungleJapes)
     if Events.AztecLobbyAccessed in lobbyAccessEvents:
         # Also make sure we can do anything in Aztec. BONUS: if your DK portal is random the odds are very high it's not behind the vines, so this will suffice.
-        if spoiler.LogicVariables.vines or (spoiler.LogicVariables.tiny and spoiler.LogicVariables.twirl) or spoiler.LogicVariables.phasewalk or spoiler.settings.dk_portal_location_rando:
+        if spoiler.LogicVariables.vines or (spoiler.LogicVariables.tiny and spoiler.LogicVariables.twirl) or spoiler.LogicVariables.CanPhase() or spoiler.settings.dk_portal_location_rando:
             accessibleOpenLevels.append(Levels.AngryAztec)
     if Events.FactoryLobbyAccessed in lobbyAccessEvents:
         accessibleOpenLevels.append(Levels.FranticFactory)

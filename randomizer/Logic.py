@@ -547,7 +547,7 @@ class LogicVarHolder:
 
     def CanAccessRNDRoom(self):
         """Determine whether the player can enter an R&D Room with glitches."""
-        return self.phasewalk or self.generalclips or self.CanOStandTBSNoclip()
+        return self.CanPhase() or self.generalclips or self.CanOStandTBSNoclip()
 
     def CanGetOnCannonGamePlatform(self):
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
@@ -805,7 +805,7 @@ class LogicVarHolder:
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
         return (self.HasGun(self.settings.lanky_freeing_kong) or self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem) and (
-            (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.phasewalk or self.CanPhaseswim()
+            (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.CanPhase() or self.CanPhaseswim()
         )
 
     def CanFreeChunky(self):
