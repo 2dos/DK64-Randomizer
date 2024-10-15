@@ -171,6 +171,7 @@ class EnemyLoc:
                 return interaction.can_bypass
         return False
 
+
 BEAVER_DEFAULT_SIZE = 80
 KLAPTRAP_DEFAULT_SIZE = 65
 ZINGER_DEFAULT_SIZE = 70
