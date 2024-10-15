@@ -171,6 +171,10 @@ class EnemyLoc:
                 return interaction.can_bypass
         return False
 
+BEAVER_DEFAULT_SIZE = 80
+KLAPTRAP_DEFAULT_SIZE = 65
+ZINGER_DEFAULT_SIZE = 70
+BARREL_ENEMY_DEFAULT_SIZE = 50
 
 EnemyMetaData = {
     Enemies.BeaverBlue: EnemyData(
@@ -181,7 +185,7 @@ EnemyMetaData = {
         bbbarrage_min_scale=70,
         beaver=True,
         interaction=InteractionMethods(),
-        default_size=80,
+        default_size=BEAVER_DEFAULT_SIZE,
     ),  #
     Enemies.Book: EnemyData(
         name="Book",
@@ -201,7 +205,7 @@ EnemyMetaData = {
         crown_weight=7,
         disruptive=1,
         interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
-        default_size=70,
+        default_size=ZINGER_DEFAULT_SIZE,
     ),  #
     Enemies.Klobber: EnemyData(
         name="Klobber",
@@ -211,7 +215,7 @@ EnemyMetaData = {
         killable=False,
         disruptive=2,
         interaction=InteractionMethods(kill_gun=False, kill_melee=False),
-        default_size=100,
+        default_size=BARREL_ENEMY_DEFAULT_SIZE,
     ),
     Enemies.Klump: EnemyData(
         name="Klump",
@@ -230,7 +234,7 @@ EnemyMetaData = {
         killable=False,
         disruptive=2,
         interaction=InteractionMethods(kill_gun=False, kill_melee=False),
-        default_size=100,
+        default_size=BARREL_ENEMY_DEFAULT_SIZE,
     ),
     Enemies.KlaptrapGreen: EnemyData(
         name="Klaptrap (Green)",
@@ -239,7 +243,7 @@ EnemyMetaData = {
         simple=True,
         bbbarrage_min_scale=100,
         interaction=InteractionMethods(),
-        default_size=65,
+        default_size=KLAPTRAP_DEFAULT_SIZE,
     ),  #
     Enemies.ZingerLime: EnemyData(
         name="Zinger (Lime Thrower)",
@@ -248,7 +252,7 @@ EnemyMetaData = {
         crown_weight=5,
         disruptive=1,
         interaction=InteractionMethods(kill_orange=False, kill_melee=False, kill_shockwave=False),
-        default_size=70,
+        default_size=ZINGER_DEFAULT_SIZE,
     ),  #
     Enemies.KlaptrapPurple: EnemyData(
         name="Klaptrap (Purple)",
@@ -257,7 +261,7 @@ EnemyMetaData = {
         killable=False,
         disruptive=1,
         interaction=InteractionMethods(kill_gun=False, kill_melee=False, kill_shockwave=False),
-        default_size=65,
+        default_size=KLAPTRAP_DEFAULT_SIZE,
     ),  #
     Enemies.KlaptrapRed: EnemyData(
         name="Klaptrap (Red)",
@@ -266,7 +270,7 @@ EnemyMetaData = {
         killable=False,
         disruptive=1,
         interaction=InteractionMethods(kill_melee=False, kill_shockwave=False),
-        default_size=65,
+        default_size=KLAPTRAP_DEFAULT_SIZE,
     ),  #
     Enemies.BeaverGold: EnemyData(
         name="Beaver (Gold)",
@@ -276,7 +280,7 @@ EnemyMetaData = {
         bbbarrage_min_scale=70,
         beaver=True,
         interaction=InteractionMethods(),
-        default_size=80,
+        default_size=BEAVER_DEFAULT_SIZE,
     ),  #
     Enemies.MushroomMan: EnemyData(
         name="Mushroom Man",
@@ -517,7 +521,7 @@ EnemyMetaData = {
         disruptive=1,
         interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
         selector_enabled=False,
-        default_size=70,
+        default_size=ZINGER_DEFAULT_SIZE,
     ),
     Enemies.Scarab: EnemyData(
         name="Scarab",

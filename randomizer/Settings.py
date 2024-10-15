@@ -648,7 +648,7 @@ class Settings:
         self.enemy_rando = False
         self.crown_enemy_rando = CrownEnemyRando.off
         self.enemy_speed_rando = False
-        self.normalize_enemy_sizes = True
+        self.normalize_enemy_sizes = False
         self.randomize_enemy_sizes = False
         self.cb_rando = CBRando.off
         self.coin_rando = False
