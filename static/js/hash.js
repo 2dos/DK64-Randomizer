@@ -245,7 +245,8 @@ function get_hash_images(type = "local", mode = "hash") {
       const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
       loadedImages.push(imgBase64); // Add image to the list of loaded images
     } else {
-      gifFrames.push(canvas); // Handle GIF frames
+      const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
+      gifFrames.push(imgBase64); // Handle GIF frames
     }
   }
   // TODO: Handle GIF creation logic if necessary
