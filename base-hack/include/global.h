@@ -42,6 +42,8 @@ extern void populateEnemyMapData(void);
 extern int getLo(void* addr);
 extern int getHi(void* addr);
 
+extern int determineShockwaveColor(actorData* shockwave);
+
 extern int hasChunkyPhaseSlam(void);
 extern void fixKRoolKong(void);
 

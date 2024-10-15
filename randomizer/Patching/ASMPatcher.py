@@ -574,7 +574,6 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         writeValue(ROM_COPY, 0x806682DC, Overlay.Static, 0x240E0004, offset_dict, 4)  # Set ground sfx to snow
 
     if settings.colorblind_mode != ColorblindMode.off:
-        writeFunction(ROM_COPY, 0x8069E968, Overlay.Static, "determineShockwaveColor", offset_dict)  # Shockwave handler
         writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict)  # Force first option
         writeValue(ROM_COPY, 0x8069E9B0, Overlay.Static, 0, offset_dict, 4)  # Prevent write
         writeValue(ROM_COPY, 0x8069E9B4, Overlay.Static, 0, offset_dict, 4)  # Prevent write
@@ -584,10 +583,6 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FFA76, 0x806FFA7A)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.regular, 0x806FF0C6, 0x806FF0CA)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FF0AA, 0x806FF0AE)
-    if settings.remove_water_oscillation:
-        writeFunction(ROM_COPY, 0x80660994, Overlay.Static, "getOscillationDelta", offset_dict)
-        writeFunction(ROM_COPY, 0x806609BC, Overlay.Static, "getOscillationDelta", offset_dict)
-
     if settings.override_cosmetics:
         enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
     else:
