@@ -325,7 +325,7 @@ ColoredBananaGroupList = [
         name="R&D in grate with 4 Chunky coins",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: (l.grab and l.donkey) or l.phasewalk,
+        logic=lambda l: (l.grab and l.donkey) or l.CanPhase(),
         locations=[[5, 1.0, 4053, 1313, 784]],
     ),
     ColoredBananaGroup(
@@ -350,7 +350,7 @@ ColoredBananaGroupList = [
         name="Corners of Car race room (right)",
         konglist=[Kongs.tiny],
         region=Regions.FactoryTinyRaceLobby,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[[5, 1.0, 3442, 1269, 1314], [5, 1.0, 3515, 1269, 1220]],
     ),
     ColoredBananaGroup(
@@ -359,7 +359,7 @@ ColoredBananaGroupList = [
         name="Corners of Car race room (left)",
         konglist=[Kongs.tiny],
         region=Regions.FactoryTinyRaceLobby,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[[5, 1.0, 3632, 1269, 1310], [5, 1.0, 3555, 1269, 1410]],
     ),
     ColoredBananaGroup(
@@ -368,7 +368,7 @@ ColoredBananaGroupList = [
         name="Diddy R&D room",
         konglist=[Kongs.diddy],
         region=Regions.RandDUpper,
-        logic=lambda l: l.guitar or l.phasewalk,
+        logic=lambda l: l.guitar or l.CanPhase(),
         locations=[
             [1, 1.0, 4340, 1336, 680],
             [1, 1.0, 4380, 1336, 740],
@@ -388,7 +388,7 @@ ColoredBananaGroupList = [
         name="Diddy R&D room in front of 4 buttons",
         konglist=[Kongs.diddy],
         region=Regions.RandDUpper,
-        logic=lambda l: l.guitar or l.phasewalk,
+        logic=lambda l: l.guitar or l.CanPhase(),
         locations=[[5, 1.0, 4565, 1341, 273], [5, 1.0, 4593, 1341, 316], [5, 1.0, 4709, 1341, 485], [5, 1.0, 4735, 1341, 526]],
     ),
     ColoredBananaGroup(
@@ -482,7 +482,7 @@ ColoredBananaGroupList = [
         name="In Dark room on box",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch or l.CanPhase(),
         locations=[[5, 1.0, 2130, 52, 528]],
     ),
     ColoredBananaGroup(
@@ -491,7 +491,7 @@ ColoredBananaGroupList = [
         name="On Simian Spring ledge with coins",
         konglist=[Kongs.diddy],
         region=Regions.BeyondHatch,
-        logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or l.phasewalk,
+        logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase(),
         locations=[[5, 1.0, 1072, 182, 478], [5, 1.0, 1092, 182, 478]],
     ),
     ColoredBananaGroup(
@@ -1082,7 +1082,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.UpperCore,
         vanilla=True,
-        logic=lambda l: l.handstand or l.phasewalk,
+        logic=lambda l: l.handstand or l.CanPhase(),
         locations=[
             [5, 1.0, 948.8671875, 818.39599609375, 1477.1390380859375],
             [5, 1.0, 847.3552856445312, 770.4682006835938, 1490.0218505859375],
@@ -1235,7 +1235,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.Testing,
         vanilla=True,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[[5, 1.0, 2479.365234375, 1106.81640625, 850.234130859375]],
     ),
     ColoredBananaGroup(
@@ -1504,7 +1504,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.tiny],
         region=Regions.Testing,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         points=[[2450, 1160, 944], [2444, 1160, 860], [2583, 1160, 860], [2444, 1160, 860]],
     ),
     Balloon(
@@ -1614,7 +1614,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch or l.CanPhase(),
         points=[[2078, 150, 510], [2078, 150, 810]],
     ),
     Balloon(

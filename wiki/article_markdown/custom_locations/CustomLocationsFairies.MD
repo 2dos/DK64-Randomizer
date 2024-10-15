@@ -17,21 +17,21 @@
 # Angry Aztec
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Aztec Tiny5DTemple | Tiny 5-Door Temple | `l.camera and ((l.feather and l.mini and l.istiny) or l.phasewalk)` | 
+| Aztec Tiny5DTemple | Tiny 5-Door Temple | `l.camera and ((l.feather and l.mini and l.istiny) or l.CanPhase())` | 
 | Aztec Llama Temple | Llama Temple | `l.camera` | 
-| Angry Aztec | Vase Room | `l.camera and ((l.pineapple and l.chunky) or l.phasewalk)` | 
+| Angry Aztec | Vase Room | `l.camera and ((l.pineapple and l.chunky) or l.CanPhase())` | 
 | Angry Aztec | Oasis | `l.camera` | 
 | Angry Aztec | Behind Tiny Temple | `l.camera` | 
 | Angry Aztec | Near Snake Road | `l.camera` | 
 | Angry Aztec | Bonus Cage | `l.camera` | 
 | Angry Aztec | Around Totem | `l.camera` | 
 | Angry Aztec | Gong Tower | `l.camera` | 
-| Aztec Donkey5DTemple | Donkey 5DT | `l.camera and ((l.coconut and l.isdonkey) or l.phasewalk)` | 
-| Aztec Chunky5DTemple | Chunky 5DT | `l.camera and ((l.pineapple and l.ischunky) or l.phasewalk)` | 
+| Aztec Donkey5DTemple | Donkey 5DT | `l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())` | 
+| Aztec Chunky5DTemple | Chunky 5DT | `l.camera and ((l.pineapple and l.ischunky) or l.CanPhase())` | 
 | Aztec Diddy5DTemple | Diddy 5DT | `l.camera` | 
-| Aztec Lanky5DTemple | Lanky 5DT | `l.camera and ((l.grape and l.islanky) or l.phasewalk)` | 
+| Aztec Lanky5DTemple | Lanky 5DT | `l.camera and ((l.grape and l.islanky) or l.CanPhase())` | 
 | Aztec Llama Temple | Start of Llama Temple | `l.camera` | 
-| Aztec Llama Temple | Matching Room | `l.camera and ((l.grape and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip())` | 
+| Aztec Llama Temple | Matching Room | `l.camera and ((l.grape and l.islanky) or l.CanPhase() or l.CanOStandTBSNoclip())` | 
 | Aztec Tiny Temple | Tiny Temple Start | `l.camera` | 
 | Aztec Tiny Temple | Tiny Temple Kong Cage Room | `l.camera` | 
 
@@ -56,7 +56,7 @@
 | Frantic Factory | Toy Monster Room | `l.camera and ((l.triangle and l.punch and l.ischunky and l.climbing) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Diddy Research and Development Room | `l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Chute to Storage Room | `l.camera` | 
-| Frantic Factory | Dark Room | `l.camera and ((l.punch and l.chunky) or l.phasewalk)` | 
+| Frantic Factory | Dark Room | `l.camera and ((l.punch and l.chunky) or l.CanPhase())` | 
 | Factory Crusher | Crusher Room | `l.camera` | 
 
 # Gloomy Galleon
@@ -112,7 +112,7 @@
 | Caves Diddy Upper Cabin | Diddy Candles Cabin | `l.camera and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) and l.jetpack and l.isdiddy` | 
 | Caves Tiny Igloo | Tiny Igloo | `l.Slam and l.istiny and l.camera` | 
 | Crystal Caves | Level Start | `l.camera` | 
-| Crystal Caves | Gorilla Gone Room | `l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))` | 
+| Crystal Caves | Gorilla Gone Room | `l.camera and ((l.chunky and l.punch) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))` | 
 | Crystal Caves | Ice Castle Roof | `l.camera` | 
 | Crystal Caves | Near Small Boulder | `l.camera` | 
 | Crystal Caves | Bananaport Pillar | `l.camera` | 
@@ -134,7 +134,7 @@
 # Creepy Castle
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Castle Tree | Tree Sniper Room | `l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk)` | 
+| Castle Tree | Tree Sniper Room | `l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.CanPhase())` | 
 | Castle Museum | Near Car Race | `l.camera` | 
 | Creepy Castle | Start | `l.camera` | 
 | Creepy Castle | On Castle Tree | `l.camera` | 
@@ -143,8 +143,8 @@
 | Creepy Castle | Above Snide's | `l.camera` | 
 | Creepy Castle | Near Wind Tower | `l.camera` | 
 | Castle Ballroom | Ballroom | `l.camera and l.jetpack and l.isdiddy` | 
-| Castle Dungeon | Lanky Dungeon | `l.camera and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon and l.islanky` | 
-| Castle Dungeon | Donkey Dungeon | `l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.phasewalk)` | 
+| Castle Dungeon | Lanky Dungeon | `l.camera and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon and l.islanky` | 
+| Castle Dungeon | Donkey Dungeon | `l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase())` | 
 | Castle Lower Cave | Above entrance to Mausoleum | `l.camera` | 
 | Castle Lower Cave | Near Funky's | `l.camera` | 
 | Castle Lower Cave | Above Donkey Diddy Chunky Crypt Entrance | `l.camera` | 
@@ -165,9 +165,9 @@
 | Isles | On K. Lumsy | `l.camera` | 
 | Isles | In Front of Krem Isles | `l.camera` | 
 | Banana Fairy Room | Inside Fairy Island | `l.camera` | 
-| Angry Aztec Lobby | Angry Aztec Lobby | `l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk)` | 
+| Angry Aztec Lobby | Angry Aztec Lobby | `l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase())` | 
 | Creepy Castle Lobby | Creepy Castle Lobby | `l.camera` | 
-| Crystal Caves Lobby | Crystal Caves Lobby | `l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip)` | 
+| Crystal Caves Lobby | Crystal Caves Lobby | `l.camera and ((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip)` | 
 | Isles Snide Room | Snide Room | `l.camera` | 
 | Training Grounds | Training Grounds Entrance | `l.camera` | 
 | Training Grounds | Training Grounds Hidden Mountain | `l.climbing` | 

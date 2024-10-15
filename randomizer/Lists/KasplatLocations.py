@@ -92,7 +92,7 @@ KasplatLocationList = {
             region=Regions.JapesCatacomb,
             additional_logic=lambda l: (l.can_use_vines and l.pineapple and l.ischunky)
             or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items)
-            or l.phasewalk,
+            or l.CanPhase(),
             vanilla=True,
         ),
         KasplatLocation(
@@ -121,8 +121,8 @@ KasplatLocationList = {
             zmin=1910,
             zmax=1960,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
-            or ((l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
+            additional_logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
+            or ((l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
         ),
         KasplatLocation(
             name="Japes Kasplat: Starting Area",
@@ -208,7 +208,7 @@ KasplatLocationList = {
             zmin=1778,
             zmax=1927,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: (l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
+            additional_logic=lambda l: (l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy)),
         ),
         KasplatLocation(
             name="Japes Kasplat: Minecart Exit",
@@ -274,7 +274,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.tiny],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
+            additional_logic=lambda l: l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             vanilla=True,
         ),
         KasplatLocation(
@@ -324,7 +324,7 @@ KasplatLocationList = {
             zmin=650,
             zmax=750,
             region=Regions.BetweenVinesByPortal,
-            additional_logic=lambda l: (l.chunky and l.pineapple) or l.phasewalk,
+            additional_logic=lambda l: (l.chunky and l.pineapple) or l.CanPhase(),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Behind 5-Door Temple",
@@ -376,7 +376,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[936, 122, 2027],
             region=Regions.ChunkyTemple,
-            additional_logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk,
+            additional_logic=lambda l: (l.pineapple and l.ischunky) or l.CanPhase(),
             vanilla=True,
         ),
         KasplatLocation(
@@ -400,7 +400,7 @@ KasplatLocationList = {
             zmin=2130,
             zmax=2332,
             region=Regions.LlamaTemple,
-            additional_logic=lambda l: l.grape or l.phasewalk,
+            additional_logic=lambda l: l.grape or l.CanPhase(),
         ),
         # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
         # KasplatLocation(
@@ -436,7 +436,7 @@ KasplatLocationList = {
             zmin=555,
             zmax=800,
             region=Regions.DonkeyTemple,
-            additional_logic=lambda l: (l.coconut or l.phasewalk) and l.isdonkey,
+            additional_logic=lambda l: (l.coconut or l.CanPhase()) and l.isdonkey,
         ),
     ],
     Levels.FranticFactory: [
@@ -483,7 +483,7 @@ KasplatLocationList = {
             zmin=500,
             zmax=850,
             region=Regions.BeyondHatch,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase(),
         ),
         KasplatLocation(
             name="Factory Kasplat: Lowest Production Platform",
@@ -582,7 +582,7 @@ KasplatLocationList = {
             zmin=859,
             zmax=942,
             region=Regions.Testing,
-            additional_logic=lambda l: l.mini or l.phasewalk,
+            additional_logic=lambda l: l.mini or l.CanPhase(),
         ),
         KasplatLocation(
             name="Factory Kasplat: Crusher Room",
@@ -695,7 +695,7 @@ KasplatLocationList = {
             zmin=2370,
             zmax=2500,
             region=Regions.GloomyGalleonStart,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanSkew(False),
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False),
         ),
         # Problematic - insanely hard to kill and get blueprint, maybe move to entrance and reduce wander?
         # KasplatLocation(
@@ -1182,7 +1182,7 @@ KasplatLocationList = {
             zmin=391,
             zmax=543,
             region=Regions.CrystalCavesMain,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         ),
         KasplatLocation(
             name="Caves Kasplat: Starting Area",
@@ -1258,7 +1258,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey],
             coords=[937, 400, 1424],
             region=Regions.CastleTree,
-            additional_logic=lambda l: (l.coconut or l.phasewalk or l.generalclips) and l.isdonkey,
+            additional_logic=lambda l: (l.coconut or l.CanPhase() or l.generalclips) and l.isdonkey,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1348,7 +1348,7 @@ KasplatLocationList = {
             zmin=1430,
             zmax=1568,
             region=Regions.MuseumBehindGlass,
-            additional_logic=lambda l: l.monkeyport or l.phasewalk,
+            additional_logic=lambda l: l.monkeyport or l.CanPhase(),
         ),
         KasplatLocation(
             name="Castle Kasplat: Caged in the Dungeon",
@@ -1360,7 +1360,7 @@ KasplatLocationList = {
             zmin=2208,
             zmax=2232,
             region=Regions.Dungeon,
-            additional_logic=lambda l: l.punch or l.phasewalk,
+            additional_logic=lambda l: l.punch or l.CanPhase(),
         ),
         KasplatLocation(
             name="Castle Kasplat: Entrance to Minecart",
@@ -1372,7 +1372,7 @@ KasplatLocationList = {
             zmin=2265,
             zmax=2406,
             region=Regions.Crypt,
-            additional_logic=lambda l: l.coconut or l.phasewalk or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors),
+            additional_logic=lambda l: l.coconut or l.CanPhase() or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors),
         ),
         KasplatLocation(name="Castle Kasplat: Library", map_id=Maps.CastleLibrary, kong_lst=[Kongs.donkey], coords=[354, 191, 495], xmin=257, xmax=430, zmin=456, zmax=573, region=Regions.Library),
         KasplatLocation(
@@ -1427,7 +1427,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[577, 71, 766],
             region=Regions.CreepyCastleLobby,
-            additional_logic=lambda l: (l.coconut and l.donkey) or l.phasewalk,
+            additional_logic=lambda l: (l.coconut and l.donkey) or l.CanPhase(),
             vanilla=True,
         ),
         KasplatLocation(
@@ -1436,7 +1436,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1674, 13, 685],
             region=Regions.CrystalCavesLobby,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1536,7 +1536,7 @@ KasplatLocationList = {
             zmin=653,
             zmax=708,
             region=Regions.AngryAztecLobby,
-            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
         ),
         # Problematic - Can't tag anywhere in here in LZR which makes it super feels bad.
         # KasplatLocation(
@@ -1552,7 +1552,7 @@ KasplatLocationList = {
             zmin=372,
             zmax=374,
             region=Regions.Prison,
-            additional_logic=lambda l: (l.sprint and l.lanky) or l.phasewalk,
+            additional_logic=lambda l: (l.sprint and l.lanky) or l.CanPhase(),
         ),
         KasplatLocation(
             name="Isles Kasplat: Japes Lobby",

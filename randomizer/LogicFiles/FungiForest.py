@@ -49,7 +49,7 @@ LogicRegions = {
         TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True),
-        TransitionFront(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events or l.phasewalk or l.CanPhaseswim()),
+        TransitionFront(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events or l.CanPhase() or l.CanPhaseswim()),
     ]),
 
     Regions.ForestMinecarts: Region("Forest Minecarts", HintRegion.ForestCenterAndBeanstalk, Levels.FungiForest, False, None, [
@@ -81,7 +81,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomNightExterior, lambda l: l.jetpack and l.isdiddy),
-        TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip() or l.CanSkew(True)),
+        TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.CanPhase() or l.CanOStandTBSNoclip() or l.CanSkew(True)),
         TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill, isGlitchTransition=True),
         TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
     ]),
@@ -176,9 +176,9 @@ LogicRegions = {
         TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestUpperExteriorToUpperMushroom),
         TransitionFront(Regions.MushroomNightExterior, lambda l: (l.istiny and l.twirl) or not l.IsHardFallDamage()),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
-        TransitionFront(Regions.MushroomChunkyRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToChunky),
+        TransitionFront(Regions.MushroomChunkyRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky) or l.CanPhase() or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToChunky),
         TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
-        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
+        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.CanPhase() or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
@@ -220,7 +220,7 @@ LogicRegions = {
     ], [
         Event(Events.ForestW4bTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.GiantMushroomArea, lambda l: Events.HollowTreeGateOpened in l.Events or l.phasewalk),
+        TransitionFront(Regions.GiantMushroomArea, lambda l: Events.HollowTreeGateOpened in l.Events or l.CanPhase()),
         TransitionFront(Regions.Anthill, lambda l: l.mini and l.saxophone and l.istiny, Transitions.ForestTreeToAnthill),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -248,7 +248,7 @@ LogicRegions = {
     ]),
 
     Regions.MillArea: Region("Mill Area", HintRegion.Mills, Levels.FungiForest, True, None, [
-        LocationLogic(Locations.ForestDonkeyMill, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip) and Events.ConveyorActivated in l.Events and l.donkey),
+        LocationLogic(Locations.ForestDonkeyMill, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) or l.CanPhase() or l.CanPhaseswim() or l.ledgeclip) and Events.ConveyorActivated in l.Events and l.donkey),
         LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy) or ((l.CanPhaseswim() or l.ledgeclip) and (l.isdiddy or l.settings.free_trade_items))),
         LocationLogic(Locations.RainbowCoin_Location07, lambda l: True),
         LocationLogic(Locations.MelonCrate_Location10, lambda l: True),
@@ -261,8 +261,8 @@ LogicRegions = {
         Event(Events.ForestW1bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FungiForestStart, lambda l: True),
-        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.punch and l.ischunky) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToChunkyMill, time=Time.Day),
-        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToTinyMill),
+        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.punch and l.ischunky) or l.CanPhase() or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToChunkyMill, time=Time.Day),
+        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.CanPhase() or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToTinyMill),
         TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder, time=Time.Day),
         TransitionFront(Regions.MillRafters, lambda l: (l.spring or l.CanMoontail()) and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
@@ -280,9 +280,9 @@ LogicRegions = {
         Event(Events.MillBoxBroken, lambda l: l.punch and l.ischunky),
     ], [
         TransitionFront(Regions.MillArea, lambda l: l.ischunky, Transitions.ForestChunkyMillToMain, time=Time.Day),
-        TransitionFront(Regions.MillArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.ledgeclip, Transitions.ForestTinyMillToMain),
+        TransitionFront(Regions.MillArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.CanPhase() or l.ledgeclip, Transitions.ForestTinyMillToMain),
         TransitionFront(Regions.SpiderRoom, lambda l: True, Transitions.ForestTinyMillToSpider, time=Time.Night),
-        TransitionFront(Regions.GrinderRoom, lambda l: (l.mini and l.istiny) or l.phasewalk or l.ledgeclip, Transitions.ForestTinyMillToGrinder),
+        TransitionFront(Regions.GrinderRoom, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.ledgeclip, Transitions.ForestTinyMillToGrinder),
     ]),
 
     Regions.SpiderRoom: Region("Spider Room", HintRegion.Mills, Levels.FungiForest, False, Regions.MillChunkyTinyArea, [
@@ -295,10 +295,10 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyKegs, lambda l: Events.GrinderActivated in l.Events and Events.ConveyorActivated in l.Events and l.chunky and l.barrels),
         LocationLogic(Locations.ForestMillFrontEnemy_Enemy, lambda l: True),
     ], [
-        Event(Events.ConveyorActivated, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.phasewalk or l.generalclips) and l.grab and l.donkey),
+        Event(Events.ConveyorActivated, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.CanPhase() or l.generalclips) and l.grab and l.donkey),
     ], [
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestGrinderToMain, time=Time.Day),
-        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.mini and l.istiny) or l.phasewalk or l.generalclips, Transitions.ForestGrinderToTinyMill),
+        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.generalclips, Transitions.ForestGrinderToTinyMill),
     ]),
 
     Regions.MillRafters: Region("Mill Rafters", HintRegion.Mills, Levels.FungiForest, False, None, [
@@ -331,7 +331,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_ThornvineEntrance, lambda l: True),
     ], [], [
         TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
-        TransitionFront(Regions.ThornvineBarn, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdonkey and l.strongKong) or l.phasewalk, Transitions.ForestMainToBarn),
+        TransitionFront(Regions.ThornvineBarn, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdonkey and l.strongKong) or l.CanPhase(), Transitions.ForestMainToBarn),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 

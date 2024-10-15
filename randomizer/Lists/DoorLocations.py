@@ -303,7 +303,7 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
-            logic=lambda l: (l.islanky and l.handstand) or l.phasewalk,
+            logic=lambda l: (l.islanky and l.handstand) or l.CanPhase(),
         ),
         DoorData(
             name="Top of Lanky's Useless Slope - right",
@@ -314,7 +314,7 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
-            logic=lambda l: (l.islanky and l.handstand) or l.phasewalk,
+            logic=lambda l: (l.islanky and l.handstand) or l.CanPhase(),
         ),
         DoorData(
             name="Underwater by Warp 2",
@@ -491,7 +491,7 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=8,
             moveless=False,
-            logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips,
+            logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -505,7 +505,7 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=8,
             moveless=False,
-            logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips,
+            logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -525,7 +525,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=10,
             moveless=False,
-            logic=lambda l: (l.charge and l.isdiddy) or l.phasewalk,
+            logic=lambda l: (l.charge and l.isdiddy) or l.CanPhase(),
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -605,7 +605,7 @@ door_locations = {
             location=[1070.018, 0.0, 738.609, 190.0],
             group=1,
             moveless=False,
-            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
@@ -818,7 +818,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=9,
             moveless=False,
-            logic=lambda l: (l.islanky and l.grape) or l.phasewalk,
+            logic=lambda l: (l.islanky and l.grape) or l.CanPhase(),
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
@@ -829,7 +829,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=9,
             moveless=False,
-            logic=lambda l: (l.islanky and l.grape) or l.phasewalk,
+            logic=lambda l: (l.islanky and l.grape) or l.CanPhase(),
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
         ),
         DoorData(
@@ -1375,7 +1375,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=6,
             moveless=False,
-            logic=lambda l: (l.chunky and l.punch) or l.phasewalk or l.generalclips,
+            logic=lambda l: (l.chunky and l.punch) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
@@ -1710,7 +1710,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=2,
             moveless=False,
-            logic=lambda l: (l.chunky and l.punch) or l.phasewalk,
+            logic=lambda l: (l.chunky and l.punch) or l.CanPhase(),
             door_type=[DoorType.boss, DoorType.wrinkly],
         ),
         DoorData(
@@ -2336,7 +2336,7 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
-            logic=lambda l: (l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.phasewalk or l.generalclips,
+            logic=lambda l: (l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -2448,7 +2448,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.phasewalk,
+            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.CanPhase(),
             placed=DoorType.boss,
         ),  # TnS Portal on Rotating Room | Lanky can backflip onto the building from the window sill
         DoorData(
@@ -2477,7 +2477,7 @@ door_locations = {
             kong_lst=[Kongs.diddy, Kongs.lanky],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk,
+            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.CanPhase(),
             placed=DoorType.boss,
         ),  # TnS Portal on Sprint Cabin
         DoorData(

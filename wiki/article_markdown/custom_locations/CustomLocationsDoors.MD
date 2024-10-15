@@ -20,8 +20,8 @@
 | Jungle Japes | Beehive Area - Next to Beehive - left | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Behind Rambi Door - watery room - left | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Behind Rambi Door - watery room - right | Boss, Dk_Portal, Wrinkly |  | 
-| Jungle Japes | Top of Lanky's Useless Slope - left | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.phasewalk` | 
-| Jungle Japes | Top of Lanky's Useless Slope - right | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.phasewalk` | 
+| Jungle Japes | Top of Lanky's Useless Slope - left | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.CanPhase()` | 
+| Jungle Japes | Top of Lanky's Useless Slope - right | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.CanPhase()` | 
 | Jungle Japes | Underwater by Warp 2 | Boss, Dk_Portal, Wrinkly | `l.swim` | 
 | Jungle Japes | Underwater by Chunky's underground | Boss, Dk_Portal, Wrinkly | `l.swim` | 
 | Jungle Japes | Next to Funky - right | Boss, Dk_Portal, Wrinkly |  | 
@@ -42,10 +42,10 @@
 | Jungle Japes | Cranky Area - center right | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Cranky Area - back left | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Cranky Area - back right | Boss, Dk_Portal, Wrinkly |  | 
-| Japes Tiny Hive | Beehive Room 2 - left | Wrinkly | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips` | 
-| Japes Tiny Hive | Beehive Room 2 - right | Wrinkly | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips` | 
+| Japes Tiny Hive | Beehive Room 2 - left | Wrinkly | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase() or l.generalclips` | 
+| Japes Tiny Hive | Beehive Room 2 - right | Wrinkly | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase() or l.generalclips` | 
 | Japes Lanky Cave | Painting Room - Next to the Entrance | Boss, Wrinkly |  | 
-| Japes Mountain | Diddy Mountain - Next to Conveyor Controls | Wrinkly | `(l.charge and l.isdiddy) or l.phasewalk` | 
+| Japes Mountain | Diddy Mountain - Next to Conveyor Controls | Wrinkly | `(l.charge and l.isdiddy) or l.CanPhase()` | 
 | Japes Mountain | Diddy Mountain - between River and GB switch | Wrinkly |  | 
 | Japes Mountain | Diddy Mountain - between River and Peanut Switch | Wrinkly |  | 
 | Jungle Japes | Japes Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
@@ -57,7 +57,7 @@
 | Angry Aztec Lobby | Aztec Lobby - Lower Right | Wrinkly |  | 
 | Angry Aztec Lobby | Aztec Lobby - Left of Portal | Wrinkly |  | 
 | Angry Aztec Lobby | Aztec Lobby - Right of Portal | Wrinkly |  | 
-| Angry Aztec Lobby | Aztec Lobby - Behind Feather Door | Wrinkly | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
+| Angry Aztec Lobby | Aztec Lobby - Behind Feather Door | Wrinkly | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 | Angry Aztec | Near Funky's | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Near Cranky's | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Near Candy's | Boss, Dk_Portal, Wrinkly |  | 
@@ -82,8 +82,8 @@
 | Angry Aztec | Entrance Tunnel - left (near the oasis end) | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | in the sealed quicksand tunnel | Wrinkly | `l.isdonkey and l.strongKong` | 
 | Angry Aztec | Near Tag Barrel near Snides - strong kong | Wrinkly | `l.isdonkey and l.strongKong` | 
-| Aztec Llama Temple | In Face Matching Game - right | Wrinkly | `(l.islanky and l.grape) or l.phasewalk` | 
-| Aztec Llama Temple | In Face Matching Game - left | Wrinkly | `(l.islanky and l.grape) or l.phasewalk` | 
+| Aztec Llama Temple | In Face Matching Game - right | Wrinkly | `(l.islanky and l.grape) or l.CanPhase()` | 
+| Aztec Llama Temple | In Face Matching Game - left | Wrinkly | `(l.islanky and l.grape) or l.CanPhase()` | 
 | Angry Aztec | Next to Tiny Temple - front left | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Next to Tiny Temple - back left | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Oasis - Next to Tunnel - far left | Boss, Dk_Portal, Wrinkly |  | 
@@ -150,7 +150,7 @@
 | Frantic Factory | Pin Code Room - front-right | Wrinkly | `(l.isdiddy and l.guitar) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky's Piano Room - right | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky's Piano Room - left | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | Chunky's Dark Room | Wrinkly, Boss | `(l.chunky and l.punch) or l.phasewalk or l.generalclips` | 
+| Frantic Factory | Chunky's Dark Room | Wrinkly, Boss | `(l.chunky and l.punch) or l.CanPhase() or l.generalclips` | 
 | Factory Crusher | Crusher Room - start | Boss, Wrinkly |  | 
 | Frantic Factory | Factory Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
 
@@ -184,7 +184,7 @@
 | Gloomy Galleon | Treasure Chest Exterior | Wrinkly |  | 
 | Gloomy Galleon | Next to Warp 3 in Cranky's Area | Boss, Dk_Portal, Wrinkly |  | 
 | Gloomy Galleon | In Primate Punch Chest Room - right | Boss, Dk_Portal, Wrinkly |  | 
-| Gloomy Galleon | Behind Chunky punch gate in Cranky Area | Boss, Wrinkly | `(l.chunky and l.punch) or l.phasewalk` | 
+| Gloomy Galleon | Behind Chunky punch gate in Cranky Area | Boss, Wrinkly | `(l.chunky and l.punch) or l.CanPhase()` | 
 | Gloomy Galleon | Low water alcove in lighthouse area | Boss, Wrinkly |  | 
 | Gloomy Galleon | Behind boxes in Cranky Area | Boss, Dk_Portal, Wrinkly |  | 
 | Gloomy Galleon | Mech Fish Gate - far left | Boss, Wrinkly |  | 
@@ -246,7 +246,7 @@
 | Forest Giant Mushroom | Inside the Mushroom - Along the Wall near Klump and Oranges | Boss, Wrinkly |  | 
 | Forest Chunky Face Room | Chunky's Face Puzzle | Wrinkly |  | 
 | Forest Lanky Zingers Room | Lanky's 2-Mushroom Room | Boss, Wrinkly |  | 
-| Forest Mill Front | DK Lever puzzle Area | Wrinkly | `(l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.phasewalk or l.generalclips` | 
+| Forest Mill Front | DK Lever puzzle Area | Wrinkly | `(l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.CanPhase() or l.generalclips` | 
 | Forest Mill Back | Mill - back side - Near Chunky Coins | Boss, Wrinkly |  | 
 | Forest Winch Room | Winch Room - on the Winch | Boss, Wrinkly |  | 
 | Forest Mill Attic | Lanky's Attic | Boss, Wrinkly |  | 
@@ -261,10 +261,10 @@
 | Crystal Caves Lobby | Caves Lobby - Near Left | Wrinkly |  | 
 | Crystal Caves Lobby | Caves Lobby - Far Right | Wrinkly |  | 
 | Crystal Caves Lobby | Caves Lobby - Near Right | Wrinkly |  | 
-| Crystal Caves | On Rotating Room | Boss, Dk_Portal, Wrinkly | `(l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.phasewalk` | 
+| Crystal Caves | On Rotating Room | Boss, Dk_Portal, Wrinkly | `(l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.CanPhase()` | 
 | Crystal Caves | Near Snide's | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Giant Boulder Room | Boss, Dk_Portal, Wrinkly |  | 
-| Crystal Caves | On Sprint Cabin | Boss, Dk_Portal, Wrinkly | `(l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk` | 
+| Crystal Caves | On Sprint Cabin | Boss, Dk_Portal, Wrinkly | `(l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.CanPhase()` | 
 | Crystal Caves | Near 5DI | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Outside Lanky's Cabin | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Outside Chunky's Cabin | Boss, Dk_Portal, Wrinkly |  | 

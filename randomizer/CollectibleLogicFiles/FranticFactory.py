@@ -23,7 +23,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring or l.CanMoontail(), None, 5),  # Block Tower
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # Path to testing room
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Block tower side of Mini Monkey tunnel
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.phasewalk, None, 1),  # Spinning wheel
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.CanPhase(), None, 1),  # Spinning wheel
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # By Snide's HQ
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # By Funky's
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # W3
@@ -71,7 +71,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # W5
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # In arcade room
 
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 3),  # Behind Stash Snatch barrel
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.CanPhase(), None, 3),  # Behind Stash Snatch barrel
     ],
     Regions.BeyondHatch: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 6),  # Tunnel to production room
@@ -86,7 +86,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),  # Dark Room
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Bottom of pole
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.phasewalk or l.CanMoontail(), None, 3),  # High ledge in Chunky's room
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.CanPhase() or l.CanMoontail(), None, 3),  # High ledge in Chunky's room
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # On boxes in Chunky's room
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # Around Tiny BP
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 5),  # W1
@@ -118,7 +118,7 @@ LogicRegions = {
     Regions.UpperCore: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 3),  # On cylinders and Simian Spring pad
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # On pipe to production room GB (bottom bunch)
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand or l.phasewalk, None, 4),  # On pipe to production room GB
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand or l.CanPhase(), None, 4),  # On pipe to production room GB
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # By T&S portal
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 4),  # On conveyors to Bonus Barrel
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl, None, 1),  # On platform past Bonus Barrel

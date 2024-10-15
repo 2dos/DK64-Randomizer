@@ -19,7 +19,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Warp 4
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Warp 3
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.phasewalk or l.CanPhaseswim(), None, 4),  # Behind feather gate only
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim(), None, 4),  # Behind feather gate only
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Minecart Entry
 
@@ -148,7 +148,7 @@ LogicRegions = {
     ],
     Regions.GrinderRoom: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam, None, 1),  # In slam box
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk) and l.coconut, None, 1),  # Behind gate
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.CanPhase()) and l.coconut, None, 1),  # Behind gate
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
@@ -185,6 +185,6 @@ LogicRegions = {
 
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In front of beanstalk
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By Mini Monkey barrel
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.TimeAccess(Regions.WormArea, Time.Night) or l.phasewalk, None, 3),  # By T&S portal
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.TimeAccess(Regions.WormArea, Time.Night) or l.CanPhase(), None, 3),  # By T&S portal
     ],
 }

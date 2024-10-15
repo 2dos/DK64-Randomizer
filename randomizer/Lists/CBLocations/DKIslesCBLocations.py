@@ -589,7 +589,7 @@ ColoredBananaGroupList = [
         name="In the pineapple cage",
         konglist=[Kongs.chunky],
         region=Regions.IslesMain,
-        logic=lambda l: l.pineapple or l.CanSTS() or l.phasewalk,
+        logic=lambda l: l.pineapple or l.CanSTS() or l.CanPhase(),
         locations=[
             [5, 1.0, 2670, 505, 1182],
             [5, 1.0, 2616, 505, 1196],
@@ -766,7 +766,7 @@ ColoredBananaGroupList = [
         name="In the peanut cage",
         konglist=[Kongs.diddy],
         region=Regions.IslesAboveWaterfall,
-        logic=lambda l: l.peanut or l.phasewalk,
+        logic=lambda l: l.peanut or l.CanPhase(),
         locations=[
             [5, 1.0, 2954, 1483, 1357],
             [5, 1.0, 2909, 1483, 1349],
@@ -955,7 +955,7 @@ ColoredBananaGroupList = [
         name="In the feather cage",
         konglist=[Kongs.tiny],
         region=Regions.OuterIsles,
-        logic=lambda l: l.feather or l.CanSTS() or l.phasewalk,
+        logic=lambda l: l.feather or l.CanSTS() or l.CanPhase(),
         locations=[
             [5, 1.0, 877, 505, 2420],
             [5, 1.0, 865, 505, 2444],
@@ -1337,7 +1337,7 @@ ColoredBananaGroupList = [
         name="In the grape cage",
         konglist=[Kongs.lanky],
         region=Regions.KremIsle,
-        logic=lambda l: l.grape or l.CanPhaseswim() or l.phasewalk,
+        logic=lambda l: l.grape or l.CanPhaseswim() or l.CanPhase(),
         locations=[
             [5, 1.0, 3281, 505, 3536],
             [5, 1.0, 3307, 505, 3548],
@@ -1588,7 +1588,7 @@ ColoredBananaGroupList = [
         name="Tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
         locations=[
             [1, 1.0, 946, 0, 309],
             [1, 1.0, 958, 0, 344],
@@ -1603,7 +1603,7 @@ ColoredBananaGroupList = [
         name="Back room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
         locations=[
             [1, 1.0, 1063, 0, 677],
             [1, 1.0, 1096, 0, 653],
@@ -1688,7 +1688,7 @@ ColoredBananaGroupList = [
         name="Chunky door (back room wall)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
         locations=[
             [5, 1.0, 1050, 5, 725],
         ],
@@ -1731,7 +1731,7 @@ ColoredBananaGroupList = [
         name="Back room torches",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
         locations=[
             [5, 1.0, 1048, 60, 457],
             [5, 1.0, 946, 60, 483],
@@ -2182,7 +2182,7 @@ ColoredBananaGroupList = [
         name="Gorilla Gone pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestLobby,
-        logic=lambda l: ((l.coconut and l.donkey) and (l.peanut and l.diddy) and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) or l.phasewalk),
+        logic=lambda l: ((l.coconut and l.donkey) and (l.peanut and l.diddy) and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) or l.CanPhase()),
         locations=[
             [5, 1.0, 94, 14, 536],
         ],
@@ -2241,7 +2241,7 @@ ColoredBananaGroupList = [
         name="Around the boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
         locations=[
             [1, 1.0, 1685, 13, 697],
             [1, 1.0, 1721, 13, 647],
@@ -2261,7 +2261,7 @@ ColoredBananaGroupList = [
         name="Path to boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
         locations=[
             [1, 1.0, 1476, 13, 252],
             [1, 1.0, 1540, 13, 241],
@@ -2310,7 +2310,7 @@ ColoredBananaGroupList = [
         name="On the boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
         locations=[
             [5, 1.0, 1626, 50, 616],
         ],
@@ -2383,7 +2383,7 @@ ColoredBananaGroupList = [
         name="Behind the lava ice wall",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
         locations=[
             [5, 1.0, 532, 18, 345],
         ],
@@ -2394,7 +2394,7 @@ ColoredBananaGroupList = [
         name="Lava room",
         konglist=[Kongs.donkey],
         region=Regions.CrystalCavesLobby,
-        logic=lambda l: ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip) and l.strongKong,
+        logic=lambda l: ((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip) and l.strongKong,
         locations=[
             [5, 1.0, 178, 10, 436],
             [5, 1.0, 135, 10, 306],
@@ -2495,7 +2495,7 @@ ColoredBananaGroupList = [
         name="Kasplat cage",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
-        logic=lambda l: (l.coconut and l.donkey) or l.phasewalk,
+        logic=lambda l: (l.coconut and l.donkey) or l.CanPhase(),
         locations=[
             [1, 1.0, 599, 71, 783],
             [1, 1.0, 590, 71, 755],
@@ -3107,7 +3107,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
         points=[[1120, 100, 585], [1057, 100, 716], [939, 100, 623], [1003, 125, 501]],
     ),
     Balloon(
@@ -3202,7 +3202,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
         points=[[305, 100, 305], [305, -80, 305]],
     ),
     Balloon(
@@ -3221,7 +3221,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
-        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
         points=[[1724, 70, 657], [1519, 70, 654]],
     ),
     Balloon(

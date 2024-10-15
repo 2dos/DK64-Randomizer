@@ -324,7 +324,7 @@ ColoredBananaGroupList = [
         name="Outside of conveyor belt (behind night gate)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
-        logic=lambda l: Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip,
+        logic=lambda l: Events.Night in l.Events or l.CanPhase() or l.CanPhaseswim() or l.ledgeclip,
         locations=[[5, 1.0, 4331, 170, 3472]],
     ),
     ColoredBananaGroup(
@@ -465,7 +465,7 @@ ColoredBananaGroupList = [
         name="Apple GB T&S behind night gate",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.WormArea,
-        logic=lambda l: Events.Night in l.Events or l.phasewalk,
+        logic=lambda l: Events.Night in l.Events or l.CanPhase(),
         locations=[[5, 1.0, 3643, 192, 913]],
     ),
     ColoredBananaGroup(
@@ -1446,7 +1446,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
         vanilla=True,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.phasewalk or l.CanPhaseswim(),
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim(),
         locations=[
             [1, 1.0, 2745.662841796875, 201.1666717529297, 1544.6708984375],
             [1, 1.0, 2807.278076171875, 201.1666717529297, 1464.7086181640625],
@@ -2166,7 +2166,7 @@ BalloonList = [
         konglist=[Kongs.donkey],
         region=Regions.GrinderRoom,
         vanilla=True,
-        logic=lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk),
+        logic=lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.CanPhase()),
         points=[[399, 94, 117], [606, 90, 115]],
     ),
     Balloon(

@@ -32,7 +32,7 @@ LogicRegions = {
 
     Regions.CrystalCavesMain: Region("Crystal Caves Main", HintRegion.MainCaves, Levels.CrystalCaves, True, None, [
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: ((l.jetpack and l.isdiddy) or ((not l.settings.shuffle_shops) and l.advanced_platforming and ((l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))) or (l.istiny and l.twirl)) and l.settings.free_trade_items)), MinigameType.BonusBarrel),
-        LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)) and l.gorillaGone and l.ischunky),
+        LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: (l.punch or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)) and l.gorillaGone and l.ischunky),
         LocationLogic(Locations.CavesKasplatNearLab, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CavesMainEnemy_Start, lambda l: True),
         LocationLogic(Locations.CavesMainEnemy_NearIceCastle, lambda l: True),
@@ -44,19 +44,19 @@ LogicRegions = {
         Event(Events.CavesW1aTagged, lambda l: True),
         Event(Events.CavesW2aTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.CavesBlueprintCave, lambda l: (l.mini and l.twirl and l.istiny) or l.phasewalk or l.CanSkew(True)),
-        TransitionFront(Regions.CavesBonusCave, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True)),
+        TransitionFront(Regions.CavesBlueprintCave, lambda l: (l.mini and l.twirl and l.istiny) or l.CanPhase() or l.CanSkew(True)),
+        TransitionFront(Regions.CavesBonusCave, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.CanSkew(True)),
         TransitionFront(Regions.CavesBlueprintPillar, lambda l: (l.jetpack and l.diddy) or (l.advanced_platforming and ((l.balloon and l.lanky) or ((not l.settings.shuffle_shops) and l.twirl and l.tiny)))),
         TransitionFront(Regions.CavesBananaportSpire, lambda l: (l.jetpack and l.diddy) or l.advanced_platforming),
         TransitionFront(Regions.BoulderCave, lambda l: (l.punch and l.chunky) or l.CanSkew(True) or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
-        TransitionFront(Regions.CavesLankyRace, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and (l.balloon or l.advanced_platforming) and l.islanky) or l.phasewalk or l.CanSkew(True), Transitions.CavesMainToRace),
+        TransitionFront(Regions.CavesLankyRace, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and (l.balloon or l.advanced_platforming) and l.islanky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and l.islanky) or l.CanSkew(True), Transitions.CavesMainToCastle),
         TransitionFront(Regions.IglooArea, lambda l: True),
         TransitionFront(Regions.CabinArea, lambda l: True),
         TransitionFront(Regions.FunkyCaves, lambda l: l.funkyAccess),
         TransitionFront(Regions.CrankyCaves, lambda l: l.crankyAccess),
-        TransitionFront(Regions.CavesSnideArea, lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
-        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
+        TransitionFront(Regions.CavesSnideArea, lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
     ]),
 
@@ -72,7 +72,7 @@ LogicRegions = {
         Event(Events.CavesMonkeyportAccess, lambda l: l.istiny and l.monkeyport),
         Event(Events.CavesW4bTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.CrystalCavesMain, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True))
+        TransitionFront(Regions.CrystalCavesMain, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.CanSkew(True))
     ]),
 
     Regions.CavesBonusCave: Region("Caves Bonus Cave", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
@@ -80,7 +80,7 @@ LogicRegions = {
     ], [
         Event(Events.CavesW3bTagged, lambda l: Locations.CavesTinyCaveBarrel in l.SpecialLocationsReached),
     ], [
-        TransitionFront(Regions.CrystalCavesMain, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True))
+        TransitionFront(Regions.CrystalCavesMain, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.CanSkew(True))
     ]),
 
     Regions.CavesBlueprintPillar: Region("Caves Blueprint Pillar", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
@@ -133,11 +133,11 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
-        TransitionFront(Regions.DonkeyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.bongos and l.isdonkey)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToDonkey),
-        TransitionFront(Regions.DiddyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.guitar and l.isdiddy)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToDiddy),
-        TransitionFront(Regions.LankyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.trombone and l.islanky)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToLanky),
-        TransitionFront(Regions.TinyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.saxophone and l.istiny)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToTiny),
-        TransitionFront(Regions.ChunkyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.triangle and l.ischunky)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToChunky),
+        TransitionFront(Regions.DonkeyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.bongos and l.isdonkey)) or l.CanPhaseswim() or l.CanPhase(), Transitions.CavesIglooToDonkey),
+        TransitionFront(Regions.DiddyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.guitar and l.isdiddy)) or l.CanPhaseswim() or l.CanPhase(), Transitions.CavesIglooToDiddy),
+        TransitionFront(Regions.LankyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.trombone and l.islanky)) or l.CanPhaseswim() or l.CanPhase(), Transitions.CavesIglooToLanky),
+        TransitionFront(Regions.TinyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.saxophone and l.istiny)) or l.CanPhaseswim() or l.CanPhase(), Transitions.CavesIglooToTiny),
+        TransitionFront(Regions.ChunkyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads) or (l.jetpack and l.diddy)) and (l.triangle and l.ischunky)) or l.CanPhaseswim() or l.CanPhase(), Transitions.CavesIglooToChunky),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
@@ -193,15 +193,15 @@ LogicRegions = {
         Event(Events.CavesW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
-        TransitionFront(Regions.RotatingCabin, lambda l: (l.bongos and l.isdonkey) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToRotating),
-        TransitionFront(Regions.DonkeyCabin, lambda l: (l.bongos and l.isdonkey) or l.phasewalk or l.CanSkew(True) or l.generalclips, Transitions.CavesCabinToDonkey),
-        TransitionFront(Regions.DiddyLowerCabin, lambda l: (l.guitar and l.isdiddy) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToDiddyLower),
-        TransitionFront(Regions.DiddyUpperCabin, lambda l: (l.guitar and l.isdiddy) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToDiddyUpper),
-        TransitionFront(Regions.LankyCabin, lambda l: (l.trombone and l.balloon and l.islanky) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToLanky),
-        TransitionFront(Regions.TinyCabin, lambda l: (l.saxophone and l.istiny) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToTiny),
-        TransitionFront(Regions.ChunkyCabin, lambda l: (l.triangle and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToChunky),
+        TransitionFront(Regions.RotatingCabin, lambda l: (l.bongos and l.isdonkey) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToRotating),
+        TransitionFront(Regions.DonkeyCabin, lambda l: (l.bongos and l.isdonkey) or l.CanPhase() or l.CanSkew(True) or l.generalclips, Transitions.CavesCabinToDonkey),
+        TransitionFront(Regions.DiddyLowerCabin, lambda l: (l.guitar and l.isdiddy) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToDiddyLower),
+        TransitionFront(Regions.DiddyUpperCabin, lambda l: (l.guitar and l.isdiddy) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToDiddyUpper),
+        TransitionFront(Regions.LankyCabin, lambda l: (l.trombone and l.balloon and l.islanky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToLanky),
+        TransitionFront(Regions.TinyCabin, lambda l: (l.saxophone and l.istiny) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToTiny),
+        TransitionFront(Regions.ChunkyCabin, lambda l: (l.triangle and l.ischunky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToChunky),
         TransitionFront(Regions.CandyCaves, lambda l: l.candyAccess),
-        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.jetpack and l.isdiddy) or (l.balloon or l.islanky) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.phasewalk)),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.jetpack and l.isdiddy) or (l.balloon or l.islanky) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.CanPhase())),
     ]),
 
     Regions.RotatingCabin: Region("Rotating Cabin", HintRegion.Cabins, Levels.CrystalCaves, False, None, [
