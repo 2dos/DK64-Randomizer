@@ -181,7 +181,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 15%
 	- Vanilla Locations: 55%
 	- Location Shuffle: 30%
-- Lock Key 8 in Level 8: 50%
+- Helm Key Lock: 50%
 - Kong Model Chunky: 
 	- Default: 100%
 - Kong Model Diddy: 
