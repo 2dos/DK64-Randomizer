@@ -901,8 +901,6 @@ class LogicVarHolder:
 
     def HintAccess(self, location, region_id):
         """Check if we are the right kong for this hint door."""
-        if location.item is None:
-            return False
         # The only weird exception: vanilla Fungi Lobby hint doors only check for Chunky, not the current Kong, and all besides Chunky's needs grab
         if not self.settings.wrinkly_location_rando and not self.settings.remove_wrinkly_puzzles and region_id == RegionEnum.FungiForestLobby:
             return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))

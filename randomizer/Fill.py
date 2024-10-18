@@ -320,7 +320,7 @@ def GetAccessibleLocations(
                         ) and (not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(spoiler.LogicVariables)):
                             continue
                         # If this location is a hint door, then make sure we're the right Kong
-                        elif location_obj.item is not None and location_obj.type == Types.Hint and not spoiler.LogicVariables.HintAccess(location_obj, region.id):
+                        elif location_obj.type == Types.Hint and not spoiler.LogicVariables.HintAccess(location_obj, region.id):
                             continue
                         # If this location has a blueprint, then make sure this is the correct kong
                         elif (location_obj.item is not None and ItemList[location_obj.item].type == Types.Blueprint) and (not spoiler.LogicVariables.BlueprintAccess(ItemList[location_obj.item])):
