@@ -42,7 +42,6 @@ void overlay_changes(void) {
 		default:
 			break;
 	}
-	initQoL_Cutscenes();
 	if (CurrentMap == MAP_HELM) {
 		// Initialize Helm
 		HelmInit(0);
@@ -59,6 +58,7 @@ void parseCutsceneData(void) {
 	 */
 	resetDisplayedMusic();
 	wipeCounterImageCache();
+	initQoL_Cutscenes();
 	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}
