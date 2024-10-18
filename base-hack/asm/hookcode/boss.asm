@@ -1,152 +1,3 @@
-Jump_KRoolLankyPhaseFix:
-    j KRoolLankyPhaseFix
-    nop
-Jump_KKOPhaseHandler:
-    j KKOPhaseHandler
-    nop
-Jump_KKOInitPhase:
-    j KKOInitPhase
-    nop
-Jump_MadJackShort:
-    j MadJackShort
-    nop
-Jump_PufftossShort:
-    j PufftossShort
-    nop
-Jump_DogadonRematchShort:
-    j DogadonRematchShort
-    nop
-Jump_DilloRematchShort:
-    j DilloRematchShort
-    nop
-Jump_DKPhaseShort:
-    j DKPhaseShort
-    nop
-Jump_ChunkyPhaseShort:
-    j ChunkyPhaseShort
-    nop
-Jump_TinyPhaseShort:
-    j TinyPhaseShort
-    nop
-Jump_ChunkyPhaseAddedSave:
-    j ChunkyPhaseAddedSave
-    nop
-    
-
-PatchKRoolCode:
-    lui $t3, hi(Jump_KRoolLankyPhaseFix)
-    lw $t3, lo(Jump_KRoolLankyPhaseFix) ($t3)
-    lui $t4, 0x8003
-    sw $t3, 0x8CCC ($t4)
-    sw $zero, 0x8CD0 ($t4)
-
-    lui $t3, hi(KKOPhaseRandoOn)
-    lbu $t3, lo(KKOPhaseRandoOn) ($t3)
-    beqz $t3, PatchKRoolCode_0
-    nop
-
-    lui $t3, hi(Jump_KKOPhaseHandler)
-    lw $t3, lo(Jump_KKOPhaseHandler) ($t3)
-    lui $t4, 0x8003
-    sw $t3, 0x2570 ($t4)
-    sw $zero, 0x2574 ($t4)
-
-    lui $t3, hi(Jump_KKOInitPhase)
-    lw $t3, lo(Jump_KKOInitPhase) ($t3)
-    lui $t4, 0x8003
-    sw $t3, 0x1B2C ($t4)
-    sw $zero, 0x1B30 ($t4)
-
-    ; KKO Last Phase Check
-    lui $t3, 0x8003
-    addiu $t4, $zero, 4
-    sh $t4, 0x259A ($t3)
-
-    ; KKO Enemy Check
-    lui $t3, hi(KKOPhaseOrder + 1)
-    lbu $t3, lo(KKOPhaseOrder + 1) ($t3)
-    lui $t4, 0x8003
-    sh $t3, 0x2566 ($t4)
-
-    PatchKRoolCode_0:
-        lui $t3, hi(ShorterBosses)
-        lbu $t3, lo(ShorterBosses) ($t3)
-        beqz $t3, PatchKRoolCode_1
-        nop
-
-        lui $t3, hi(Jump_MadJackShort)
-        lw $t3, lo(Jump_MadJackShort) ($t3)
-        lui $t4, 0x8003
-        sw $t3, 0x5120 ($t4)
-        sw $zero, 0x5124 ($t4)
-
-        ; Mad Jack Cutscene Memery
-        lui $t3, 0x8003
-        addiu $t4, $zero, 2
-        sh $t4, 0x50D2 ($t3)
-
-        lui $t3, hi(Jump_PufftossShort)
-        lw $t3, lo(Jump_PufftossShort) ($t3)
-        lui $t4, 0x8003
-        sw $t3, 0x9AAC ($t4)
-        sw $zero, 0x9AB0 ($t4)
-
-        lui $t3, hi(Jump_DogadonRematchShort)
-        lw $t3, lo(Jump_DogadonRematchShort) ($t3)
-        lui $t4, 0x8003
-        sw $t3, 0xACB0 ($t4)
-        sw $zero, 0xACB4 ($t4)
-
-        lui $t3, hi(Jump_DilloRematchShort)
-        lw $t3, lo(Jump_DilloRematchShort) ($t3)
-        lui $t4, 0x8002
-        sw $t3, 0x57CC ($t4)
-        sw $zero, 0x57D0 ($t4)
-
-        ; KKO Phase Hit Limit
-        lui $t3, 0x8003
-        addiu $t4, $zero, 2
-        sh $t4, 0x22BA ($t3)
-
-        lui $t3, hi(Jump_DKPhaseShort)
-        lw $t3, lo(Jump_DKPhaseShort) ($t3)
-        lui $t4, 0x8003
-        sw $t3, 0xDB10 ($t4)
-        sw $zero, 0xDB14 ($t4)
-
-        ; Diddy Phase Hit Count
-        lui $t3, 0x8003
-        addiu $t4, $zero, 2
-        sh $t4, 0xE52A ($t3)
-
-        ; Lanky Phase Hit Count
-        lui $t3, 0x8003
-        addiu $t4, $zero, 2
-        sh $t4, 0xEF02 ($t3)
-
-        lui $t3, hi(Jump_TinyPhaseShort)
-        lw $t3, lo(Jump_TinyPhaseShort) ($t3)
-        lui $t4, 0x8003
-        sw $t3, 0x0370 ($t4)
-        sw $zero, 0x0374 ($t4)
-
-        lui $t3, hi(Jump_ChunkyPhaseShort)
-        lw $t3, lo(Jump_ChunkyPhaseShort) ($t3)
-        lui $t4, 0x8003
-        sw $t3, 0x14B4 ($t4)
-        sw $zero, 0x14B8 ($t4)
-
-    PatchKRoolCode_1:
-        lui $t3, hi(Jump_ChunkyPhaseAddedSave)
-        lw $t3, lo(Jump_ChunkyPhaseAddedSave) ($t3)
-        lui $t4, 0x8003
-        sw $t3, 0x1378 ($t4)
-        sw $zero, 0x137C ($t4)
-
-
-        jr ra
-        nop
-
 KRoolLankyPhaseFix:
     lui $a1, 0x8003
     lbu $a2, 0x43 ($sp)
@@ -156,23 +7,23 @@ KRoolLankyPhaseFix:
     lh $a1, 0x59A0 ($a1)
 
 KKOPhaseHandler:
-    lui v0, hi(KKOPhaseOrder)
-    addiu v0, v0, lo(KKOPhaseOrder)
-    lb $a0, 0x0 (v0)
+    lui $v0, hi(KKOPhaseOrder)
+    addiu $v0, $v0, lo(KKOPhaseOrder)
+    lb $a0, 0x0 ($v0)
     bne $t7, $a0, KKOPhaseHandler_Slot2
     nop
     b KKOPhaseHandler_Finish
-    lb $t8, 0x1 (v0)
+    lb $t8, 0x1 ($v0)
 
     KKOPhaseHandler_Slot2:
-        lb $a0, 0x1 (v0)
+        lb $a0, 0x1 ($v0)
         bne $t7, $a0, KKOPhaseHandler_Slot3
         nop
         b KKOPhaseHandler_Finish
-        lb $t8, 0x2 (v0)
+        lb $t8, 0x2 ($v0)
 
     KKOPhaseHandler_Slot3:
-        lb $a0, 0x2 (v0)
+        lb $a0, 0x2 ($v0)
         bne $t7, $a0, KKOPhaseHandler_Finish
         nop
         b KKOPhaseHandler_Finish
@@ -181,7 +32,7 @@ KKOPhaseHandler:
     KKOPhaseHandler_Finish:
         sb $t8, 0x12 ($s0)
         j 0x80032578
-        lb v0, 0x12 ($s0)
+        lb $v0, 0x12 ($s0)
 
 KKOInitPhase:
     lui $at, hi(KKOPhaseOrder)

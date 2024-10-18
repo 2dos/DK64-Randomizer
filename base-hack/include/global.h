@@ -42,6 +42,8 @@ extern void populateEnemyMapData(void);
 extern int getLo(void* addr);
 extern int getHi(void* addr);
 
+extern int determineShockwaveColor(actorData* shockwave);
+
 extern int hasChunkyPhaseSlam(void);
 extern void fixKRoolKong(void);
 
@@ -68,7 +70,6 @@ extern int correctRefillCap(int index, int player);
 extern void cc_effect_handler(void);
 
 extern void PatchCrankyCode(void);
-extern void PatchKRoolCode(void);
 extern void PatchBonusCode(void);
 extern void kioskBugCode(void);
 extern void FileScreenDLCode_Write(void);

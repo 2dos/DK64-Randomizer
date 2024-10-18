@@ -89,3 +89,15 @@ extern void capScreenShake(void);
 extern void blockTreeClimbing(void);
 extern void reenable_balloon_z(void);
 extern void GoToPassword(void);
+
+extern void KRoolLankyPhaseFix(void);
+extern void KKOPhaseHandler(void);
+extern void KKOInitPhase(void);
+extern void MadJackShort(void);
+extern void PufftossShort(void);
+extern void DogadonRematchShort(void);
+extern void DilloRematchShort(void);
+extern void DKPhaseShort(void);
+extern void TinyPhaseShort(void);
+extern void ChunkyPhaseShort(void);
+extern void ChunkyPhaseAddedSave(void);
