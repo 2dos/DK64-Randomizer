@@ -25,6 +25,7 @@ from randomizer.Enums.Settings import (
     PuzzleRando,
     WinConditionComplex,
     ExtraCutsceneSkips,
+    ExcludedSongs,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -553,6 +554,32 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     writeValue(ROM_COPY, 0x806FF116, Overlay.Static, crosshair_img, offset_dict)
     writeValue(ROM_COPY, 0x806B78DA, Overlay.Static, crosshair_img, offset_dict)
 
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.pause_music):
+        writeValue(ROM_COPY, 0x805FC890, Overlay.Static, 0, offset_dict, 4)  # Pause Theme
+        writeValue(ROM_COPY, 0x805FC89C, Overlay.Static, 0, offset_dict, 4)  # Pause Start Theme
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.wrinkly):
+        writeValue(ROM_COPY, 0x8064F180, Overlay.Static, 0, offset_dict, 4)  # Wrinkly Theme
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.transformation):
+        writeValue(ROM_COPY, 0x8067E9E4, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
+        writeValue(ROM_COPY, 0x8067F7C0, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
+    writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.sub_areas):
+        #writeValue(ROM_COPY, 0x806025BC, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic` - Map Load
+        writeValue(ROM_COPY, 0x8061DF74, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic`
+        writeValue(ROM_COPY, 0x806DB98C, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic`
+        writeValue(ROM_COPY, 0x806034F2, Overlay.Static, 0, offset_dict) # Set Japes count to 0
+        writeValue(ROM_COPY, 0x80603556, Overlay.Static, 0, offset_dict) # Set Az Beetle count to 0
+        writeValue(ROM_COPY, 0x80603542, Overlay.Static, 0, offset_dict) # Set Factory count to 0
+        writeValue(ROM_COPY, 0x8060356A, Overlay.Static, 0, offset_dict) # Set Factory Car count to 0
+        writeValue(ROM_COPY, 0x8060351A, Overlay.Static, 0, offset_dict) # Set Galleon count to 0
+        #writeValue(ROM_COPY, 0x80603592, Overlay.Static, 0, offset_dict) # Set Isles count to 0
+        writeValue(ROM_COPY, 0x80603506, Overlay.Static, 0, offset_dict) # Set Aztec count to 0
+        writeValue(ROM_COPY, 0x8060352E, Overlay.Static, 0, offset_dict) # Set Galleon Seal count to 0
+        writeValue(ROM_COPY, 0x806035C6, Overlay.Static, 0, offset_dict) # Set Fungi count to 0
+        writeValue(ROM_COPY, 0x8060357E, Overlay.Static, 0, offset_dict) # Set Fungi Cart count to 0
+        writeValue(ROM_COPY, 0x806035BA, Overlay.Static, 0, offset_dict) # Set TGrounds count to 0
+    
+
     # Holiday Mode Stuff
     holiday = getHoliday(settings)
     if holiday == Holidays.Halloween:
@@ -962,6 +989,30 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)
     writeHook(ROM_COPY, 0x80600674, Overlay.Static, "updateLag", offset_dict)
     writeHook(ROM_COPY, 0x806FC990, Overlay.Static, "ApplyTextRecolorHints", offset_dict)
+
+    # Boss stuff
+    writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
+        writeHook(ROM_COPY, 0x80032570, Overlay.Boss, "KKOPhaseHandler", offset_dict)
+        writeHook(ROM_COPY, 0x80031B2C, Overlay.Boss, "KKOInitPhase", offset_dict)
+        writeValue(ROM_COPY, 0x8003259A, Overlay.Boss, 4, offset_dict, 2)  # KKO Last Phase Check
+        writeValue(ROM_COPY, 0x80032566, Overlay.Boss, settings.kko_phase_order[1], offset_dict, 2)  # KKO Last Phase Check
+    if settings.shorten_boss:
+        writeValue(ROM_COPY, 0x8074D3A8, Overlay.Static, 3, offset_dict)  # Dillo Health 4 -> 3
+        writeValue(ROM_COPY, 0x8074D474, Overlay.Static, int(3 + (62 * (2 / 3))), offset_dict)  # Dogadon Health 65 -> 44
+        writeValue(ROM_COPY, 0x8074D4B0, Overlay.Static, 3, offset_dict)  # Spider Boss Health 6 -> 3
+        writeHook(ROM_COPY, 0x80035120, Overlay.Boss, "MadJackShort", offset_dict)
+        writeValue(ROM_COPY, 0x800350D2, Overlay.Boss, 2, offset_dict, 2)  # Mad Jack Cutscene Memery
+        writeHook(ROM_COPY, 0x80029AAC, Overlay.Boss, "PufftossShort", offset_dict)
+        writeHook(ROM_COPY, 0x8002ACB0, Overlay.Boss, "DogadonRematchShort", offset_dict)
+        writeHook(ROM_COPY, 0x800257CC, Overlay.Boss, "DilloRematchShort", offset_dict)
+        writeValue(ROM_COPY, 0x800322BA, Overlay.Boss, 2, offset_dict, 2)  # Kut Out hit limit
+        writeHook(ROM_COPY, 0x8002DB10, Overlay.Boss, "DKPhaseShort", offset_dict)
+        writeValue(ROM_COPY, 0x8002E52A, Overlay.Boss, 2, offset_dict, 2)  # Diddy Phase Hit Count
+        writeValue(ROM_COPY, 0x8002EF02, Overlay.Boss, 2, offset_dict, 2)  # Lanky Phase Hit Count
+        writeHook(ROM_COPY, 0x80030370, Overlay.Boss, "TinyPhaseShort", offset_dict)
+        writeHook(ROM_COPY, 0x800314B4, Overlay.Boss, "ChunkyPhaseShort", offset_dict)
+    writeHook(ROM_COPY, 0x80031378, Overlay.Boss, "ChunkyPhaseAddedSave", offset_dict)
 
     # Change pause menu background design
     writeValue(ROM_COPY, 0x806A84F4, Overlay.Static, 0, offset_dict, 4)  # Enable framebuffer clear on pause menu
@@ -1446,11 +1497,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict)  # Ledge Grabbing
         writeFunction(ROM_COPY, 0x806E5418, Overlay.Static, "handleActionSet", offset_dict)  # Instrument Play
         writeFunction(ROM_COPY, 0x806E6064, Overlay.Static, "handleActionSet", offset_dict)  # Gun Pull
-
-    if settings.shorten_boss:
-        writeValue(ROM_COPY, 0x8074D3A8, Overlay.Static, 3, offset_dict)  # Dillo Health 4 -> 3
-        writeValue(ROM_COPY, 0x8074D474, Overlay.Static, int(3 + (62 * (2 / 3))), offset_dict)  # Dogadon Health 65 -> 44
-        writeValue(ROM_COPY, 0x8074D4B0, Overlay.Static, 3, offset_dict)  # Spider Boss Health 6 -> 3
 
     if settings.bonus_barrel_auto_complete:
         writeValue(ROM_COPY, 0x806818DE, Overlay.Static, 0x4248, offset_dict)  # Make Aztec Lobby GB spawn above the trapdoor)

@@ -422,34 +422,6 @@ void initHack(int source) {
 				KongModelData[KONG_DIDDY].props_or = 0;
 			}
 			fixCutsceneModels();
-			if (Rando.disabled_music.pause) {
-				*(int*)(0x805FC890) = 0; // Pause theme
-				*(int*)(0x805FC89C) = 0; // Pause Start theme
-			}
-			if (Rando.disabled_music.wrinkly) {
-				*(int*)(0x8064F180) = 0; // Wrinkly Theme
-			}
-			if (Rando.disabled_music.transform) {
-				*(int*)(0x8067E9E4) = 0; // Transform Theme
-				*(int*)(0x8067F7C0) = 0; // Transform Theme
-			}
-			*(int*)(0x80602AAC) = 0x27A40018; // addiu $a0, $sp, 0x18
-			if (Rando.disabled_music.chunk_songs) {
-				// *(int*)(0x806025BC) = 0; // Disable `playLevelMusic` - Map Load
-				*(int*)(0x8061DF74) = 0; // Disable `playLevelMusic`
-				*(int*)(0x806DB98C) = 0; // Disable `playLevelMusic`
-				*(short*)(0x806034F2) = 0; // Set Japes count to 0
-				*(short*)(0x80603556) = 0; // Set Az Beetle count to 0
-				*(short*)(0x80603542) = 0; // Set Factory count to 0
-				*(short*)(0x8060356A) = 0; // Set Factory Car count to 0
-				*(short*)(0x8060351A) = 0; // Set Galleon count to 0
-				//*(short*)(0x80603592) = 0; // Set Isles count to 0
-				*(short*)(0x80603506) = 0; // Set Aztec count to 0
-				*(short*)(0x8060352E) = 0; // Set Galleon Seal count to 0
-				*(short*)(0x806035C6) = 0; // Set Fungi count to 0
-				*(short*)(0x8060357E) = 0; // Set Fungi Cart count to 0
-				*(short*)(0x806035BA) = 0; // Set TGrounds count to 0
-			}
 			if (Rando.hard_mode.lava_water) {
 				// Dynamic Textures
 				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[7].texture_loader;
