@@ -892,6 +892,7 @@ door_locations = {
             location=[1571.0, 289.0, 610.9, 0.0],
             group=11,
             moveless=False,
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Tiny Temple - Main Room - back",
@@ -901,6 +902,7 @@ door_locations = {
             group=11,
             moveless=False,
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Tiny Temple - Across from Slope to Tiny Cage - left",
@@ -909,6 +911,7 @@ door_locations = {
             location=[1672.5, 122.0, 1359.0, 270.0],
             group=11,
             moveless=False,
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Tiny Temple - Across from Slope to Tiny Cage - right",
@@ -917,6 +920,7 @@ door_locations = {
             location=[1672.5, 122.0, 1571.0, 270.0],
             group=11,
             moveless=False,
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Tiny Temple - Next to Opening to Underwater Room",
@@ -925,6 +929,7 @@ door_locations = {
             location=[1375.0, 145.0, 949.5, 180.0],
             group=11,
             moveless=False,
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Tiny Temple - Across from Opening to Underwater Room",
@@ -933,6 +938,7 @@ door_locations = {
             location=[1450.0, 145.0, 751.1, 0.0],
             group=11,
             moveless=False,
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Llama Temple Stairs - left",
