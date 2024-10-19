@@ -495,6 +495,7 @@ extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
 extern ICE_TRAP_TYPES ice_trap_queued;
+extern GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT];
 extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];

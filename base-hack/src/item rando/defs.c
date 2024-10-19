@@ -216,8 +216,7 @@ void setActorDamage(int actor, int new_damage) {
     actor_health_damage[actor].damage_applied = new_damage;
 }
 
-#define GB_DICTIONARY_COUNT 120
-static GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT] = {};
+GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT];
 
 int addDictionaryItem(int index, maps map, int id, int flag, int kong) {
     /**
@@ -290,16 +289,6 @@ void initItemDictionary(void) {
         Will look into at a future date
         size = addDictionaryItem(size, 0x3D, 0xA, FLAG_COLLECTABLE_FUNGI_DK_MILLGB, -2); // Mill GB fix
     */
-    // Initialize addresses
-    *(short*)(0x8073150A) = getHi(&NewGBDictionary[0].map);
-    *(short*)(0x8073151E) = getLo(&NewGBDictionary[0].map);
-    *(short*)(0x8073151A) = GB_DICTIONARY_COUNT;
-    *(short*)(0x807315EA) = getHi(&NewGBDictionary[0].map);
-    *(short*)(0x807315FE) = getLo(&NewGBDictionary[0].map);
-    *(short*)(0x807315FA) = GB_DICTIONARY_COUNT;
-    *(short*)(0x80731666) = getHi(&NewGBDictionary[0].map);
-    *(short*)(0x80731676) = getLo(&NewGBDictionary[0].map);
-    *(short*)(0x80731672) = GB_DICTIONARY_COUNT;
 }
 
 void initActorExpansion(void) {

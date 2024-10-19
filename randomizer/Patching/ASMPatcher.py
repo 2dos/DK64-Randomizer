@@ -420,7 +420,7 @@ CROSSHAIRS = {
 }
 
 
-def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
+def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = True):
     """Patch assembly instructions that pertain to cosmetic changes."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
 
@@ -610,57 +610,58 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FFA76, 0x806FFA7A)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.regular, 0x806FF0C6, 0x806FF0CA)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FF0AA, 0x806FF0AE)
-    if settings.override_cosmetics:
-        enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
-    else:
-        enemy_setting = settings.random_enemy_colors
-    if enemy_setting != RandomModels.off:
-        # Jumpman and DK
-        jumpman_addresses = [
-            0x8003B180,
-            0x8003B3C8,
-            0x8003B858,
-            0x8003BAA0,
-            0x8003BCE8,
-            0x8003BF30,
-            0x8003C178,
-            0x8003C3C0,
-            0x8003C608,
-            0x8003C850,
-            0x8003CA98,
-            0x8003CCE0,
-            0x8003B610,
-            0x8003CF28,
-            0x8003D170,
-            0x8003D3B8,
-            0x8003D600,
-            0x8003D848,
-            0x8003DA90,  # 8px version
-        ]
-        dk_addresses = [
-            0x8003E9F0,
-            0x800424D0,
-            0x800463F0,
-            0x800473B8,
-            0x80048380,
-            0x80049348,
-            0x80040540,
-            0x80041508,
-            0x80043498,
-            0x80044460,
-            0x80045428,
-        ]
-        jumpman_shift = getRandomHueShift()  # 16x16 except for 1 image
-        dk_shift = getRandomHueShift()  # 48x48
-        for addr in jumpman_addresses:
-            width = 16
-            if addr == 0x8003DA90:
-                width = 8
-            rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
-            hueShiftImageFromAddress(rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
-        for addr in dk_addresses:
-            rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
-            hueShiftImageFromAddress(rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
+    if has_dom:
+        if settings.override_cosmetics:
+            enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
+        else:
+            enemy_setting = settings.random_enemy_colors
+        if enemy_setting != RandomModels.off:
+            # Jumpman and DK
+            jumpman_addresses = [
+                0x8003B180,
+                0x8003B3C8,
+                0x8003B858,
+                0x8003BAA0,
+                0x8003BCE8,
+                0x8003BF30,
+                0x8003C178,
+                0x8003C3C0,
+                0x8003C608,
+                0x8003C850,
+                0x8003CA98,
+                0x8003CCE0,
+                0x8003B610,
+                0x8003CF28,
+                0x8003D170,
+                0x8003D3B8,
+                0x8003D600,
+                0x8003D848,
+                0x8003DA90,  # 8px version
+            ]
+            dk_addresses = [
+                0x8003E9F0,
+                0x800424D0,
+                0x800463F0,
+                0x800473B8,
+                0x80048380,
+                0x80049348,
+                0x80040540,
+                0x80041508,
+                0x80043498,
+                0x80044460,
+                0x80045428,
+            ]
+            jumpman_shift = getRandomHueShift()  # 16x16 except for 1 image
+            dk_shift = getRandomHueShift()  # 48x48
+            for addr in jumpman_addresses:
+                width = 16
+                if addr == 0x8003DA90:
+                    width = 8
+                rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
+                hueShiftImageFromAddress(rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
+            for addr in dk_addresses:
+                rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
+                hueShiftImageFromAddress(rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
 
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
@@ -1482,6 +1483,21 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x800291E8, Overlay.Boss, 0, offset_dict, 4)  # Generic Boss Intros
         writeValue(ROM_COPY, 0x8002B480, Overlay.Boss, 0, offset_dict, 4)  # Fungi Dogadon Long Intro
         writeValue(ROM_COPY, 0x80033BB4, Overlay.Boss, 0, offset_dict, 4)  # Mad Jack Long Intro
+        writeValue(ROM_COPY, 0x8074452C, Overlay.Static, 1, offset_dict, 1)  # Story Skip starts with on
+
+    # Flag Mapping
+    flag_map_hi = getHiSym("NewGBDictionary")
+    flag_map_lo = getLoSym("NewGBDictionary")
+    flag_map_count = getVar("gb_dictionary_count")
+    writeValue(ROM_COPY, 0x8073150A, Overlay.Static, flag_map_hi, offset_dict)
+    writeValue(ROM_COPY, 0x8073151E, Overlay.Static, flag_map_lo, offset_dict)
+    writeValue(ROM_COPY, 0x8073151A, Overlay.Static, flag_map_count, offset_dict)
+    writeValue(ROM_COPY, 0x807315EA, Overlay.Static, flag_map_hi, offset_dict)
+    writeValue(ROM_COPY, 0x807315FE, Overlay.Static, flag_map_lo, offset_dict)
+    writeValue(ROM_COPY, 0x807315FA, Overlay.Static, flag_map_count, offset_dict)
+    writeValue(ROM_COPY, 0x80731666, Overlay.Static, flag_map_hi, offset_dict)
+    writeValue(ROM_COPY, 0x80731676, Overlay.Static, flag_map_lo, offset_dict)
+    writeValue(ROM_COPY, 0x80731672, Overlay.Static, flag_map_count, offset_dict)
 
     writeHook(ROM_COPY, 0x8072F3DC, Overlay.Static, "blockTreeClimbing", offset_dict)
     if settings.enable_tag_anywhere:

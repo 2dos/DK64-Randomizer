@@ -16,18 +16,7 @@ void qualityOfLife_fixes(void) {
 	/**
 	 * @brief Quality of life fixes to the game
 	 */
-	if (Rando.quality_of_life.remove_cutscenes) {
-		// Upon ROM Boot, set "Story Skip" to on
-		if (Gamemode == GAMEMODE_NINTENDOLOGO) {
-			StorySkip = 1;
-		}
-	}
 	if (Rando.quality_of_life.vanilla_fixes) {
-		// Set some flags in-game
-		fixkey8();
-		if (ENABLE_SAVE_LOCK_REMOVAL) {
-			*(short*)(0x8060D60A) = 0; // Enable poll input during saving
-		}
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == MAP_JAPES) {
 			if (Player) {

@@ -293,4 +293,4 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
 with open(ROM_FILE, "r+b") as rom:
     ROM_COPY = TestROM(rom)
     patchAssembly(ROM_COPY, spoiler)
-    patchAssemblyCosmetic(ROM_COPY, settings)
+    patchAssemblyCosmetic(ROM_COPY, settings, False)

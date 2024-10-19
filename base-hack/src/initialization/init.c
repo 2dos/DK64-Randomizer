@@ -476,7 +476,6 @@ void quickInit(void) {
 		CutsceneWillPlay = 0;
 		Gamemode = GAMEMODE_MAINMENU;
 		Mode = GAMEMODE_MAINMENU;
-		StorySkip = 1;
 	}
 }
 
