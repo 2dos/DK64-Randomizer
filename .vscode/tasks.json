@@ -6,55 +6,55 @@
     {
       "label": "Install requirements",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} -m pip install -r ${workspaceFolder}/requirements-dev.txt'",
+      "command": "${command:python.interpreterPath} -m pip install -r ${workspaceFolder}/requirements-dev.txt",
       "problemMatcher": []
     },
     {
       "label": "Format Repo",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} -m black -l 200 ${workspaceFolder}'",
+      "command": "${command:python.interpreterPath} -m black -l 200 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
       "label": "Validate Styles",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203,E741 ${workspaceFolder}'",
+      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203,E741 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
       "label": "Validate Docstrings",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} -m pydocstyle ${workspaceFolder}'",
+      "command": "${command:python.interpreterPath} -m pydocstyle ${workspaceFolder}",
       "problemMatcher": []
     },
     {
       "label": "Validate Jinja2",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} -m djlint ./templates/* --profile=jinja --reformat --format-css --format-js'",
+      "command": "${command:python.interpreterPath} -m djlint ./templates/* --profile=jinja --reformat --format-css --format-js",
       "problemMatcher": []
     },
     {
       "label": "Validate C",
       "type": "shell",
-      "command": "'Get-ChildItem -Path \"./base-hack/src\" -Recurse -Filter *.c | Foreach-Object { ${command:python.interpreterPath} -m cpplint --quiet --filter=-whitespace,-legal/copyright,-readability/casting,-runtime/int,-readability/fn_size $_.FullName }'",
+      "command": "Get-ChildItem -Path \"./base-hack/src\" -Recurse -Filter *.c | Foreach-Object { ${command:python.interpreterPath} -m cpplint --quiet --filter=-whitespace,-legal/copyright,-readability/casting,-runtime/int,-readability/fn_size $_.FullName }",
       "problemMatcher": []
     },
     {
       "label": "Update Custom Location Lists",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} ./dumper.py md all'",
+      "command": "${command:python.interpreterPath} ./dumper.py md all",
       "problemMatcher": []
     },
     {
       "label": "Update Wiki",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} ./update_wiki.py'",
+      "command": "${command:python.interpreterPath} ./update_wiki.py",
       "problemMatcher": []
     },
     {
       "label": "Build base hack builder",
       "type": "shell",
-      "command": "'cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./pyinstaller_handler.py'",
+      "command": "cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./pyinstaller_handler.py",
       "problemMatcher": []
     },
     {
@@ -72,13 +72,13 @@
     {
       "label": "Run Tests",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} -m pytest -n 4 -s -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests'",
+      "command": "${command:python.interpreterPath} -m pytest -n 4 -s -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
       "problemMatcher": []
     },
     {
       "label": "Build BPS",
       "type": "shell",
-      "command": "'cd ${workspaceFolder}/base-hack/ ; ./build.bat'",
+      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -88,7 +88,7 @@
     {
       "label": "Build Test Hack",
       "type": "shell",
-      "command": "'cd ${workspaceFolder}/base-hack/ ; ./build.bat --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py'",
+      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -98,13 +98,13 @@
     {
       "label": "Run Server",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} ./runner.py'",
+      "command": "${command:python.interpreterPath} ./runner.py",
       "problemMatcher": []
     },
     {
       "label": "Generate PyI Stubs",
       "type": "shell",
-      "command": "'${command:python.interpreterPath} ./generate_stubs.py ${workspaceFolder}'",
+      "command": "${command:python.interpreterPath} ./generate_stubs.py ${workspaceFolder}",
       "problemMatcher": [],
       "group": {
         "kind": "build",
