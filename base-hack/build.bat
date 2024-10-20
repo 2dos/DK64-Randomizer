@@ -24,6 +24,7 @@ if %test_on% == --test (
 ) else (
 	echo 1 > Build/BuildingBPS.txt
 )
+call :runscript "Pulling actor data from ROM", "build\getDefaultData.py"
 call :runscript "Define Heap", "build\heap.py"
 call :runscript "Installing Packages", "build\install_packages.py"
 call :runscript "Pulling Images from ROM", "build\pull_images_from_rom.py"

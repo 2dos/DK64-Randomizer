@@ -323,7 +323,6 @@ void initHack(int source) {
 			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
 			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
 			RandomizerVersion = 4;
-			initActorExpansion();
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
@@ -340,34 +339,6 @@ void initHack(int source) {
 					}
 				}
 			}
-			// New Actors
-			// 0x11 = 45
-			// 0x0 =
-			initActor(NEWACTOR_NINTENDOCOIN, 1, &ninCoinCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_RAREWARECOIN, 1, &rwCoinCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_NULL, 1, &NothingCode, ACTORMASTER_SPRITE, 0, 1, 8, 0);
-			initActor(NEWACTOR_MEDAL, 1, &medalCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			for (int i = 0; i < 6; i++) {
-				initActor(NEWACTOR_POTIONDK + i, 1, &PotionCode, ACTORMASTER_3D, 0, 1, 8, 45);
-				if (i < 5) {
-					initActor(NEWACTOR_KONGDK + i, 1, &KongDropCode, ACTORMASTER_3D, 0, 1, 8, 45);
-					if (i < 4) {
-						initActor(NEWACTOR_CRANKYITEM + i, 1, &shopOwnerItemCode, ACTORMASTER_3D, 0, 1, 8, 45);
-					}
-				}
-			}
-			initActor(NEWACTOR_BEAN, 1, &beanCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_PEARL, 1, &pearlCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_FAIRY, 1, &fairyDuplicateCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_ICETRAPBUBBLE, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_ICETRAPREVERSE, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_ICETRAPSLOW, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_HINTITEM, 1, &GoldenBananaCode, ACTORMASTER_3D, 0, 1, 8, 45);
-			initActor(NEWACTOR_JETPACITEMOVERLAY, 1, &getNextMoveText, ACTORMASTER_CONTROLLER, 0, 0, 0x10, 324);
-			initActor(NEWACTOR_ZINGERFLAMETHROWER, 1, (void*)0x806B4958, ACTORMASTER_3D, 1, 0, 2, 183);
-			initActor(NEWACTOR_SCARAB, 1, &kioskBugCode, ACTORMASTER_3D, 1, 0, 2, 183);
-			setCollisionAddress(NEWACTOR_SCARAB, 1, (void*)0x8074B240, 1);
-			initActor(NEWACTOR_KOPDUMMY, 1, &dummyGuardCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			// Kong Rando
 			initKongRando();
             initQoL(); // Also includes initializing spawn point and HUD realignment
