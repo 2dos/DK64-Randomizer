@@ -726,6 +726,8 @@ async function enable_plandomizer() {
     } catch (error) {
       console.log("Error setting up Pyodide:", error);
     }
+    // Load ui.__init__.py
+    await run_python_file("ui/__init__.py");
     plandoTab.style.display = "";
   } else {
     plandoTab.style.display = "none";
