@@ -276,7 +276,7 @@ def encrypt_settings_string_enum(dict_data: dict):
                 else:
                     # The value is an enum.
                     max_value = max([member.value for member in key_list_data_type])
-                    bitstring += format(item.value, f"0{max_value.bit_length()}b")
+                    bitstring += format(item, f"0{max_value.bit_length()}b")
         else:
             # The value is an enum.
             max_value = max([member.value for member in key_data_type])

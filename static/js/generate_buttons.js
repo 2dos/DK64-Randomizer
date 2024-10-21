@@ -301,9 +301,19 @@ js.plando_form_data = plando_form_data
         if (is_plando_input(element.name)) continue;
         if (is_starting_move_radio_button(element.name) && element.checked) {
             if (element.id.startsWith("start")) {
-                required_starting_moves.push(Items(parseInt(element.name.slice(18))));
+
+                for (let item in Items) {
+                    if (Items[item] === parseInt(element.name.slice(18))) {
+                        required_starting_moves.push(Items[item]);
+                    }
+                }
             } else if (element.id.startsWith("random")) {
-                random_starting_moves.push(Items(parseInt(element.name.slice(18))));
+                // Items key is a string, we want to check based off the int, its an enum
+                for (let item in Items) {
+                    if (Items[item] === parseInt(element.name.slice(18))) {
+                        random_starting_moves.push(Items[item]);
+                    }
+                }
             }
             continue;
         }
@@ -485,13 +495,11 @@ function uuidv4() {
         try {
             if (typeof settings[key] === "boolean") {
                 if (settings[key] === false) {
-                    document.getElementById(key).checked = false;
                     document.getElementsByName(key)[0].checked = false;
                 } else {
-                    document.getElementById(key).checked = true;
                     document.getElementsByName(key)[0].checked = true;
                 }
-                document.getElementById(key).removeAttribute("disabled");
+                document.getElementsByName(key)[0].removeAttribute("disabled");
             } else if (Array.isArray(settings[key])) {
                 if (key === "starting_move_list_selected" || key === "random_starting_move_list_selected") {
                     settings[key].forEach(item => {
@@ -510,6 +518,7 @@ function uuidv4() {
                 const selector = document.getElementById(key);
                 if (selector.tagName === "SELECT") {
                     settings[key].forEach(item => {
+
                         for (let option of selector.options) {
                             if (option.value === item.name) {
                                 option.selected = true;
@@ -520,12 +529,7 @@ function uuidv4() {
             } else {
                 const selector = document.getElementById(key);
                 if (selector.tagName === "SELECT" && key !== "random-weights") {
-                    for (let option of selector.options) {
-                        if (option.value === SettingsMap[key](settings[key]).name) {
-                            option.selected = true;
-                            break;
-                        }
-                    }
+                    selector.selectedIndex = settings[key];
                 } else {
                     document.getElementById(key).value = settings[key];
                 }
