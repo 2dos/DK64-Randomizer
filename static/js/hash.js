@@ -115,8 +115,18 @@ function get_hash_images(type = "local", mode = "hash") {
       pixels[pixIndex + 2] = blue;
       pixels[pixIndex + 3] = alpha;
     }
-
     ctx.putImageData(imgImageData, 0, 0); // Put image data back to the canvas
+    // Rotate the canvas 180 degrees if necessary
+    let tempCanvas = document.createElement("canvas");
+    tempCanvas.width = imageInfo.width;
+    tempCanvas.height = imageInfo.height;
+    let tempCtx = tempCanvas.getContext("2d");
+    tempCtx.translate(imageInfo.width, imageInfo.height);
+    tempCtx.rotate(Math.PI);
+    tempCtx.drawImage(canvas, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(tempCanvas, 0, 0);
+    
 
     // Save as base64-encoded PNG if in hash mode
     if (mode === "hash") {

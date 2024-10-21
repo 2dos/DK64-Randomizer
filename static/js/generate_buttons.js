@@ -217,6 +217,10 @@ js.plando_form_data = plando_form_data
             form_data["plandomizer_data"] = JSON.stringify(plando_form_data);
         }
     }
+    // if plandomizer_data is not present, the plandomizer is disabled so lets just fill in the form_data with that
+    if (!form_data["plandomizer_data"]) {
+        form_data["enable_plandomizer"] = false;
+    }
     
 
     // Custom music data is also processed separately.
