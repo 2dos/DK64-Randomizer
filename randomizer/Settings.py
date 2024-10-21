@@ -22,6 +22,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Regions import Regions
