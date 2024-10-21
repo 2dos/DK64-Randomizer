@@ -545,9 +545,15 @@ startingMoveValues = [str(item.value) for item in StartingMoveOptions]
 @bindList("click", startingMoveValues, prefix="none-")
 @bindList("click", startingMoveValues, prefix="start-")
 @bindList("click", startingMoveValues, prefix="random-")
+@bind("click", "starting_moves_start_all")
+@bind("click", "starting_moves_reset")
 def plando_disable_starting_moves(evt):
     """Do not allow starting moves to be placed as items."""
     # Create a list of selected starting moves.
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("start")
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("none")
     selectedStartingMoves = set()
     for startingMove in startingMoveValues:
         selectedElem = js.document.getElementById(f"start-{startingMove}")
@@ -639,20 +645,3 @@ def plando_disable_keys(evt):
             for option in key_options:
                 option.removeAttribute("disabled")
 
-
-@bind("click", "starting_moves_reset")
-def reset_starting_moves(evt):
-    """Reset the starting move selector to have nothing selected."""
-    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
-        starting_move_button.checked = starting_move_button.id.startswith("none")
-    # Update the plandomizer dropdowns.
-    plando_disable_starting_moves(evt)
-
-
-@bind("click", "starting_moves_start_all")
-def start_all_starting_moves(evt):
-    """Update the starting move selector to start with all items."""
-    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
-        starting_move_button.checked = starting_move_button.id.startswith("start")
-    # Update the plandomizer dropdowns.
-    plando_disable_starting_moves(evt)

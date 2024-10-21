@@ -772,6 +772,21 @@ function disable_hard_mode_modal() {
     selector.setAttribute("disabled", "disabled");
   }
 }
+document.getElementById("starting_moves_reset").addEventListener("click", function(evt) {
+  // Reset the starting move selector to have nothing selected
+  const startingMoveButtons = Array.from(document.getElementsByTagName("input")).filter(element => element.name.startsWith("starting_move_box_"));
+  startingMoveButtons.forEach(button => {
+      button.checked = button.id.startsWith("none");
+  });
+});
+
+document.getElementById("starting_moves_start_all").addEventListener("click", function(evt) {
+  // Update the starting move selector to start with all items
+  const startingMoveButtons = Array.from(document.getElementsByTagName("input")).filter(element => element.name.startsWith("starting_move_box_"));
+  startingMoveButtons.forEach(button => {
+      button.checked = button.id.startsWith("start");
+  });
+});
 
 document
   .getElementById("hard_mode")
