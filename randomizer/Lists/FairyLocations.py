@@ -525,7 +525,7 @@ fairy_locations = {
             region=Regions.Lighthouse,
             fence=Fence(421, 386, 452, 594),
             spawn_y=779,
-            logic=lambda l: l.climbing,
+            logic=lambda l: l.camera and l.climbing,
         ),
         FairyData(
             name="Mermaid Window",
@@ -1127,7 +1127,7 @@ fairy_locations = {
             region=Regions.TrainingGrounds,
             fence=Fence(756, 1111, 857, 1339),
             spawn_y=453,
-            logic=lambda l: l.climbing,
+            logic=lambda l: l.camera and l.climbing,
         ),
         FairyData(
             name="Treehouse Windows",
