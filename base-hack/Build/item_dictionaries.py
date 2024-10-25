@@ -592,8 +592,23 @@ with open("src/lib_items.c", "w") as fh:
             "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
         }, # Hint Item
     ])
-    for exp_prop in ("actor_master_types", "actor_interactions", "actor_health_damage", "actor_collisions", "actor_functions", "actor_extra_data_sizes"):
-        exp_lst = [0] * len(CustomActors)
+    default_values = {
+        "actor_master_types": 0,
+        "actor_interactions": 0,
+        "actor_health_damage": {
+            "init_health": 0,
+            "damage_applied": 0,
+        },
+        "actor_collisions": {
+            "collision_info": 0,
+            "unk_4": 0,
+        },
+        "actor_functions": 0,
+        "actor_extra_data_sizes": 0,
+    }
+    for exp_prop in default_values:
+        val = default_values[exp_prop]
+        exp_lst = [val] * len(CustomActors)
         actor_data[exp_prop].extend(exp_lst)
     print(len(actor_data["actor_functions"]))
     actor_data["actor_functions"][70] = "&newCounterCode"
