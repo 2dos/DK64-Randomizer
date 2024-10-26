@@ -207,14 +207,18 @@ try:
 except Exception:
   pass
 import js
+import json
 from ui.plando_settings import populate_plando_options
 plando_form_data = populate_plando_options(js.form)
-js.plando_form_data = plando_form_data
+if plando_form_data:
+    js.plando_form_data = json.dumps(plando_form_data)
+else:
+    js.plando_form_data = None
                 `);
         let plando_form_data = window.plando_form_data;
         if (plando_form_data !== null) {
             form_data["enable_plandomizer"] = true;
-            form_data["plandomizer_data"] = JSON.stringify(plando_form_data);
+            form_data["plandomizer_data"] = JSON.parse(plando_form_data)
         }
     }
     // if plandomizer_data is not present, the plandomizer is disabled so lets just fill in the form_data with that

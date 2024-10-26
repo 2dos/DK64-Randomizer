@@ -2121,7 +2121,7 @@ class Settings:
 
     def ApplyPlandomizerSettings(self):
         """Apply settings specified by the plandomizer."""
-        self.plandomizer_dict = json.loads(self.plandomizer_data)
+        self.plandomizer_dict = self.plandomizer_data
         # Leaving space here to handle things as needed, might be unnecessary
 
     def ApplyMusicSelections(self):
