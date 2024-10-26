@@ -192,6 +192,7 @@ minigame_maps_total.extend(minigame_maps_nolimit)
 minigame_maps_total.extend(minigame_maps_beavers)
 bbbarrage_maps = (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
 banned_speed_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy()
+banned_size_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy()
 replacement_priority = {
     EnemySubtype.GroundSimple: [EnemySubtype.GroundBeefy, EnemySubtype.Water, EnemySubtype.Air],
     EnemySubtype.GroundBeefy: [EnemySubtype.GroundSimple, EnemySubtype.Water, EnemySubtype.Air],
@@ -418,7 +419,7 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
             ROM_COPY.writeMultipleBytes(get_out_timer, 1)
             ROM_COPY.writeMultipleBytes(get_out_timer, 1)
         # Scale Adjustment
-        if EnemyMetaData[new_enemy_id].default_size is not None:
+        if (EnemyMetaData[new_enemy_id].default_size is not None) and (cont_map_id not in banned_size_maps):
             scale = EnemyMetaData[new_enemy_id].default_size
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
             if cont_map_id == Maps.JapesTinyHive:

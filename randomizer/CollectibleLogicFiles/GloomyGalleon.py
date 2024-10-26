@@ -12,7 +12,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and ((l.punch and l.chunky) or l.phasewalk), None, 2),
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and ((l.punch and l.chunky) or l.CanPhase()), None, 2),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 5),  # tunnel side 1
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 4),  # tunnel side 2
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 2),  # Near Warp 1
@@ -77,8 +77,8 @@ LogicRegions = {
     ],
     Regions.SickBay: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 1),  # One bunch behind gate
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 3),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.CanPhase(), None, 1),  # One bunch behind gate
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.CanPhase(), None, 3),
     ],
     Regions.Shipyard: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Cactus

@@ -76,7 +76,11 @@ def PlaceConstants(spoiler):
             spoiler.LocationList[location].tooExpensiveInaccessible = False
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
-        spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, getHelmKey(spoiler.settings))
+        helm_key = getHelmKey(spoiler.settings)
+        if helm_key in KeysToPlace(spoiler.settings, excludeHelmKey=False):
+            spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, getHelmKey(spoiler.settings))
+        else:
+            spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.NoItem)
         # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset,
         # place Key 8 in the 8th level somewhere
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels and not spoiler.settings.hard_level_progression:
@@ -106,8 +110,12 @@ def PlaceConstants(spoiler):
                 dest = ShufflableExits[level.TransitionTo].shuffledId
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
                 spoiler.LocationList[shuffledTo.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
-        # The key in Helm is always Key 8 in these settings
-        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, getHelmKey(spoiler.settings))
+        # The End of Helm is always a Key in these settings (unless you start with it)
+        helm_key = getHelmKey(spoiler.settings)
+        if helm_key in KeysToPlace(spoiler.settings, excludeHelmKey=False):
+            spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, getHelmKey(spoiler.settings))
+        else:
+            spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.NoItem)
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:
@@ -374,7 +382,7 @@ def Keys():
     return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
 
 
-def KeysToPlace(settings):
+def KeysToPlace(settings, excludeHelmKey=True):
     """Return all keys that are non-starting keys."""
     keysToPlace = []
     for keyEvent in settings.krool_keys_required:
@@ -394,7 +402,7 @@ def KeysToPlace(settings):
             keysToPlace.append(Items.CreepyCastleKey)
         elif keyEvent == Events.HelmKeyTurnedIn:
             keysToPlace.append(Items.HideoutHelmKey)
-    if settings.key_8_helm:
+    if settings.key_8_helm and excludeHelmKey:
         key_item = getHelmKey(settings)
         if key_item in keysToPlace:
             keysToPlace.remove(key_item)

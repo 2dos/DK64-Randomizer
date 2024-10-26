@@ -593,7 +593,7 @@ ColoredBananaGroupList = [
         name="Dynamite box in chimpy charge switch room",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.charge or l.phasewalk,
+        logic=lambda l: l.charge or l.CanPhase(),
         locations=[[5, 1.0, 325, 138, 1511]],
     ),
     ColoredBananaGroup(
@@ -602,7 +602,7 @@ ColoredBananaGroupList = [
         name="Bunches on staircase-shaped boxes",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase(),
         locations=[[5, 1.0, 93, 145, 962], [5, 1.0, 40, 225, 1057]],
     ),
     ColoredBananaGroup(
@@ -611,7 +611,7 @@ ColoredBananaGroupList = [
         name="Conveyors",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase(),
         locations=[
             [1, 1.0, 157, 208, 840],
             [1, 1.0, 125, 246, 898],
@@ -914,8 +914,8 @@ ColoredBananaGroupList = [
         name="Tiny's caged GB",
         konglist=[Kongs.tiny],
         region=Regions.JungleJapesMain,
-        logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
-        or ((l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
+        logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
+        or ((l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
         locations=[[5, 1.0, 1335, 285, 1974], [5, 1.0, 1300, 285, 1946]],
     ),
     ColoredBananaGroup(
@@ -941,8 +941,8 @@ ColoredBananaGroupList = [
         name="Diddy's Caged GB",
         konglist=[Kongs.diddy],
         region=Regions.JapesHill,
-        logic=lambda l: ((Events.JapesDiddySwitch1 in l.Events or l.phasewalk or l.generalclips or l.CanSkew(False)) and l.diddy)
-        or ((l.phasewalk or l.generalclips or l.CanSkew(False)) and l.settings.free_trade_items),
+        logic=lambda l: ((Events.JapesDiddySwitch1 in l.Events or l.CanPhase() or l.generalclips or l.CanSkew(False)) and l.diddy)
+        or ((l.CanPhase() or l.generalclips or l.CanSkew(False)) and l.settings.free_trade_items),
         locations=[[5, 1.0, 2305, 525, 2101], [5, 1.0, 2310, 525, 2142]],
     ),
     ColoredBananaGroup(
@@ -951,7 +951,7 @@ ColoredBananaGroupList = [
         name="Chunky's Caged GB",
         konglist=[Kongs.chunky],
         region=Regions.JapesHillTop,
-        logic=lambda l: ((Events.JapesChunkySwitch in l.Events or l.phasewalk or l.CanSkew(False)) and l.chunky) or ((l.phasewalk or l.CanSkew(False)) and l.settings.free_trade_items),
+        logic=lambda l: ((Events.JapesChunkySwitch in l.Events or l.CanPhase() or l.CanSkew(False)) and l.chunky) or ((l.CanPhase() or l.CanSkew(False)) and l.settings.free_trade_items),
         locations=[[5, 1.0, 2335, 685, 2207], [5, 1.0, 2362, 685, 2253]],
     ),
     ColoredBananaGroup(
@@ -1003,7 +1003,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase(),
         locations=[[5, 1.0, 508.2171936035156, 223.6666717529297, 1352.9554443359375]],
     ),
     ColoredBananaGroup(
@@ -1106,7 +1106,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.JapesBeyondPeanutGate,
         vanilla=True,
-        logic=lambda l: l.grape or l.phasewalk or l.generalclips,
+        logic=lambda l: l.grape or l.CanPhase() or l.generalclips,
         locations=[[5, 1.0, 2781.1533203125, 279.5493469238281, 505.9464416503906]],
     ),
     ColoredBananaGroup(
@@ -1166,7 +1166,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.CanPhase(),
         locations=[[5, 1.0, 1703.5697021484375, 280.0, 4392.17626953125]],
     ),
     ColoredBananaGroup(
@@ -1231,7 +1231,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.JapesBeyondFeatherGate,
         vanilla=True,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[
             [5, 0.820000171661377, 2627.54931640625, 539.3333129882812, 3379.966064453125],
             [5, 0.8400001525878906, 2613.385009765625, 539.3333129882812, 3436.143798828125],
@@ -1245,7 +1245,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.JapesBeyondFeatherGate,
         vanilla=True,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[
             [5, 0.940000057220459, 2449.49365234375, 539.3333129882812, 2743.213134765625],
             [5, 0.8000001907348633, 2400.892822265625, 539.6721801757812, 2742.846435546875],
@@ -1278,7 +1278,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.JapesBeyondPeanutGate,
         vanilla=True,
-        logic=lambda l: l.feather or l.phasewalk,
+        logic=lambda l: l.feather or l.CanPhase(),
         locations=[[5, 1.0, 2491.140380859375, 282.0, 234.42022705078125]],
     ),
     ColoredBananaGroup(
@@ -1689,7 +1689,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase(),
         points=[[174, 226, 1124], [193, 224, 991], [298, 228, 875]],
     ),
     Balloon(

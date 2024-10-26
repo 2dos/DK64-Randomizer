@@ -54,7 +54,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.HideoutHelmStart, lambda l: True),
         TransitionFront(Regions.HideoutHelmMiniRoom, lambda l: l.pineapple and l.chunky and l.can_use_vines),
-        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanMoonkick() or l.phasewalk or l.CanOStandTBSNoclip())
+        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanMoonkick() or l.CanPhase() or l.CanOStandTBSNoclip())
     ]),
 
     Regions.HideoutHelmMiniRoom: Region("Hideout Helm Start", HintRegion.Helm, Levels.HideoutHelm, True, -1, [
@@ -64,7 +64,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_MiniRoom3, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: l.istiny and l.mini),
-        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: (l.generalclips and l.ischunky) or l.phasewalk or l.CanOStandTBSNoclip()),
+        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: (l.generalclips and l.ischunky) or l.CanPhase() or l.CanOStandTBSNoclip()),
     ]),
 
     Regions.HideoutHelmMain: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, True, -1, [
@@ -85,8 +85,8 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmLankyRoom, lambda l: l.trombone and l.islanky and l.isPriorHelmComplete(Kongs.lanky) and Events.HelmGatesPunched in l.Events),
         TransitionFront(Regions.HideoutHelmDiddyRoom, lambda l: l.guitar and l.jetpack and l.isdiddy and l.isPriorHelmComplete(Kongs.diddy) and Events.HelmDoorsOpened in l.Events),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: Events.HelmFinished in l.Events),
-        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk or l.CanOStandTBSNoclip()),
-        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanPhase() or l.CanOStandTBSNoclip()),
+        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.CanPhase()),
     ]),
 
     Regions.HideoutHelmDonkeyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
@@ -96,7 +96,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_DKRoom, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
-        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk or (l.isdonkey and l.generalclips)),
+        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanPhase() or (l.isdonkey and l.generalclips)),
     ]),
 
     Regions.HideoutHelmChunkyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
@@ -107,7 +107,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_ChunkyRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
-        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanPhase()),
     ]),
 
     Regions.HideoutHelmTinyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
@@ -117,7 +117,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_TinyRoom, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
-        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanPhase()),
     ]),
 
     Regions.HideoutHelmLankyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
@@ -128,7 +128,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_LankyRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
-        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.CanPhase()),
     ]),
 
     Regions.HideoutHelmDiddyRoom: Region("Hideout Helm Main", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
@@ -139,7 +139,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_DiddyRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
-        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.CanPhase()),
     ]),
 
     Regions.HideoutHelmAfterBoM: Region("Hideout Helm Navigation Room", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
@@ -149,13 +149,13 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmStart, lambda l: True),  # W1 is always pre-activated
         TransitionFront(Regions.HideoutHelmMain, lambda l: Events.HelmFinished in l.Events),
         TransitionFront(Regions.HideoutHelmThroneRoom, lambda l: l.CrownDoorOpened()),
-        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.generalclips or l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.generalclips or l.CanPhase()),
     ]),
 
     Regions.HideoutHelmThroneRoom: Region("Hideout Helm Throne Room", HintRegion.Helm, Levels.HideoutHelm, False, None, [], [], [
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.CrownDoorOpened()),
         TransitionFront(Regions.HideoutHelmKeyRoom, lambda l: l.CoinDoorOpened()),
-        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.CanPhase()),
     ]),
 
     Regions.HideoutHelmKeyRoom: Region("Hideout Helm Key Room", HintRegion.Helm, Levels.HideoutHelm, False, None, [
@@ -163,7 +163,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmBananaFairy1, lambda l: l.camera),
         LocationLogic(Locations.HelmBananaFairy2, lambda l: l.camera),
     ], [], [
-        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.phasewalk),
+        TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.CanPhase()),
     ]),
 
     Regions.HideoutHelmOOBChunky: Region("Hideout Helm OOB (Chunky Room Elevation)", HintRegion.Helm, Levels.HideoutHelm, False, -1, [], [], [
