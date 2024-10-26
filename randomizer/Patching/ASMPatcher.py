@@ -227,21 +227,28 @@ def populateOverlayOffsets(ROM_COPY) -> dict:
 def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
     """Get ROM Address corresponding to a specific RDRAM Address in an overlay."""
     if overlay == Overlay.Custom:
-        custom_code_start = 0x805FAE00 - 0x39DC0
-        return 0x2000000 + (address - custom_code_start)
-    if overlay not in list(offset_dict.keys()):
-        return None
-    overlay_start = offset_dict[overlay]
-    rdram_start = 0x80024000
-    if overlay == Overlay.Static:
-        rdram_start = 0x805FB300
-    elif overlay == Overlay.Boot:
-        rdram_start = 0x80000450
+        rdram_start = 0x805FAE00 - 0x39DC0
+        overlay_start = 0x2000000
+        if address > 0x805FAE00:
+            raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
+    else:
+        if overlay not in list(offset_dict.keys()):
+            return None
+        overlay_start = offset_dict[overlay]
+        rdram_start = 0x80024000
+        if overlay == Overlay.Static:
+            rdram_start = 0x805FB300
+        elif overlay == Overlay.Boot:
+            rdram_start = 0x80000450
+    if address < rdram_start:
+        raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     return overlay_start + (address - rdram_start)
 
 
 def writeValue(ROM_COPY, address: int, overlay: Overlay, value: int, offset_dict: dict, size: int = 2, signed: bool = False):
     """Write value to ROM based on overlay."""
+    if isinstance(ROM_COPY, ROM) and overlay == Overlay.Custom:
+        raise Exception("Cosmetics write to the custom code overlay.")
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
@@ -254,6 +261,8 @@ def writeValue(ROM_COPY, address: int, overlay: Overlay, value: int, offset_dict
 
 def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_dict: dict):
     """Write floating point variable to ROM."""
+    if isinstance(ROM_COPY, ROM) and overlay == Overlay.Custom:
+        raise Exception("Cosmetics write to the custom code overlay.")
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
@@ -264,6 +273,8 @@ def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_di
 
 def writeFloatUpper(ROM_COPY, address: int, overlay: Overlay, value: float, offset_dict: dict):
     """Write upper 16 bit portion of floating point variable to ROM."""
+    if isinstance(ROM_COPY, ROM) and overlay == Overlay.Custom:
+        raise Exception("Cosmetics write to the custom code overlay.")
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
@@ -876,7 +887,7 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
 
 
 def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
-    """Writes actor health value."""
+    """Write actor health value."""
     start = getSym("actor_defs") + (4 * actor_index)
     writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
 
@@ -931,11 +942,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     ACTOR_DEF_START = getSym("actor_defs")
     ACTOR_MASTER_TYPE_START = getSym("actor_master_types")
-    ACTOR_INTERACTIONS_START = getSym("actor_interactions")
-    ACTOR_HEALTH_START = getSym("actor_health_damage")
     ACTOR_COLLISION_START = getSym("actor_collisions")
-    ACTOR_FUNCTION_START = getSym("actor_functions")
-    ACTOR_PAAD_SIZES_START = getSym("actor_extra_data_sizes")
 
     alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
 
@@ -1997,8 +2004,8 @@ def patchAssembly(ROM_COPY, spoiler):
         # Squawks w/ Spotlight Behavior
         writeValue(ROM_COPY, 0x806C6BAE, Overlay.Static, 0, offset_dict)
         # Feathers are sprites
-        writeValue(ROM_COPY, ACTOR_DEF_START + (24 * 0x30) + 2, Overlay.Static, 0, offset_dict)  # Model
-        writeValue(ROM_COPY, ACTOR_MASTER_TYPE_START + 43, Overlay.Static, 4, offset_dict, 1)  # Master Type
+        writeValue(ROM_COPY, ACTOR_DEF_START + (24 * 0x30) + 2, Overlay.Custom, 0, offset_dict)  # Model
+        writeValue(ROM_COPY, ACTOR_MASTER_TYPE_START + 43, Overlay.Custom, 4, offset_dict, 1)  # Master Type
         writeFloat(ROM_COPY, 0x80753E38, Overlay.Static, 350, offset_dict)  # Speed
         updateActorFunction(ROM_COPY, 43, "OrangeGunCode")
         # Fix gun slide (kinda)
