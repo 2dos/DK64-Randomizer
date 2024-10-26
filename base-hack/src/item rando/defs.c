@@ -127,14 +127,6 @@ void initActorDefs(void) {
         actor_defs[12].model = MODEL_CHAIN;
         actor_defs[49].model = MODEL_CHAIN;
     }
-    *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
-    *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
-    *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
-    *(unsigned short*)(0x806892D6) = getLo(&actor_defs[0].actor_type);
-    *(unsigned short*)(0x8068945A) = getHi(&actor_defs[0].actor_type);
-    *(unsigned short*)(0x80689466) = getLo(&actor_defs[0].actor_type);
-    *(unsigned short*)(0x8068928A) = DEFS_LIMIT;
-    *(unsigned short*)(0x80689452) = DEFS_LIMIT;
 }
 
 void changeFeatherToSprite(void) {

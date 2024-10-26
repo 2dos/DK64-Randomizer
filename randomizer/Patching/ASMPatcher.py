@@ -2065,6 +2065,18 @@ def patchAssembly(ROM_COPY, spoiler):
         )
 
     # Actor Expansion
+    # Definitions
+    actor_def_hi = getHiSym("actor_defs")
+    actor_def_lo = getLoSym("actor_defs")
+    writeValue(ROM_COPY, 0x8068926A, Overlay.Static, actor_def_hi, offset_dict)
+    writeValue(ROM_COPY, 0x8068927A, Overlay.Static, actor_def_lo, offset_dict)
+    writeValue(ROM_COPY, 0x806892D2, Overlay.Static, actor_def_hi, offset_dict)
+    writeValue(ROM_COPY, 0x806892D6, Overlay.Static, actor_def_lo, offset_dict)
+    writeValue(ROM_COPY, 0x8068945A, Overlay.Static, actor_def_hi, offset_dict)
+    writeValue(ROM_COPY, 0x80689466, Overlay.Static, actor_def_lo, offset_dict)
+    def_limit = getVar("DEFS_LIMIT")
+    writeValue(ROM_COPY, 0x8068928A, Overlay.Static, def_limit, offset_dict)
+    writeValue(ROM_COPY, 0x80689452, Overlay.Static, def_limit, offset_dict)
     # Functions
     actor_function_hi = getHiSym("actor_functions")
     actor_function_lo = getLoSym("actor_functions")

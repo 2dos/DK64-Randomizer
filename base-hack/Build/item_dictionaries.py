@@ -400,6 +400,7 @@ with open("src/lib_items.c", "w") as fh:
         "actor_collisions": "collision_data_struct",
         "actor_functions": "void*",
         "actor_extra_data_sizes": "short*",
+        "new_flag_mapping": "GBDictItem",
     }
     actor_data = {}
     with open("actor_data.json", "r") as fg:
@@ -644,6 +645,7 @@ with open("src/lib_items.c", "w") as fh:
         "unk_4": 1,
     }
     actor_data = initActor(actor_data, 345 + CustomActors.KopDummy, "&dummyGuardCode", 2, 0, 1, 8, 45)
+    # Flag Mapping
     for sym in data_types:
         fh.write(
             f"\n{data_types[sym]} {sym}[] = {{\n\t"

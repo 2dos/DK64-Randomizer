@@ -15,7 +15,7 @@ def seekFileOffset(fh: BinaryIO, address: int):
     """Seek to the correct file offset based on the RAM address."""
     fh.seek(getFileOffset(address))
 
-PULL_VERSION = 1
+PULL_VERSION = 2
 ACTOR_DUMP = "actor_data.json"
 FORCE_REBUILD = False
 if os.path.exists(ACTOR_DUMP):
@@ -40,6 +40,7 @@ with open(DATA_DUMP, "rb") as fh:
     actor_collision = []
     actor_functions = []
     actor_paad_ptrs = []
+    flag_mapping = []
     for x in range(128):
         seekFileOffset(fh, 0x74E8B0 + (x * 0x30))
         actor_type = int.from_bytes(fh.read(2), "big")
@@ -80,6 +81,22 @@ with open(DATA_DUMP, "rb") as fh:
         actor_functions.append(int.from_bytes(fh.read(4), "big"))
         seekFileOffset(fh, 0x74E218 + (4 * x))
         actor_paad_ptrs.append(int.from_bytes(fh.read(4), "big"))
+    for x in range(113):
+        seekFileOffset(fh, 0x755A20 + (8 * x))
+        map_id = int.from_bytes(fh.read(1), "big")
+        unk_01 = int.from_bytes(fh.read(1), "big")
+        model_2_id = int.from_bytes(fh.read(2), "big")
+        flag_index = int.from_bytes(fh.read(2), "big")
+        kong = int.from_bytes(fh.read(1), "big")
+        unk_07 = int.from_bytes(fh.read(1), "big")
+        flag_mapping.append({
+            "map": map_id,
+            "unk_01": unk_01,
+            "model2_id": model_2_id,
+            "flag_index": flag_index,
+            "intended_kong_actor": kong,
+            "unk_07": unk_07
+        })
     init_data = {
         "pull_version": PULL_VERSION,
         "actor_defs": actor_spawner_defs,
@@ -89,6 +106,7 @@ with open(DATA_DUMP, "rb") as fh:
         "actor_collisions": actor_collision,
         "actor_functions": actor_functions,
         "actor_extra_data_sizes": actor_paad_ptrs,
+        "new_flag_mapping": flag_mapping,
     }
     with open(ACTOR_DUMP, "w") as fg:
         json.dump(init_data, fg, indent=4)
