@@ -2790,6 +2790,10 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 accessibleIncompleteLevels = [nextLevelToBeat]
             else:
                 nextLevelToBeat = choice(accessibleIncompleteLevels)
+            # If this is the last level in a world where Helm is shuffled into the order and we need to maximize the last B. Locker...
+            if settings.maximize_helm_blocker and settings.shuffle_helm_location and len(levelsProgressed) == (number_of_progressable_levels - 1):
+                # Set the B. Locker value equal to the cap. If we aren't shuffling Helm, we'll sort it out at the end.
+                settings.BLockerEntryCount[nextLevelToBeat] = min(settings.blocker_max, maxEnterableBlocker)
         # Chaos B. Lockers will always have to update the B. Locker
         else:
             accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed]
@@ -2816,14 +2820,22 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             else:
                 settings.BLockerEntryItems[nextLevelToBeat] = choice(eligibleTypes)
                 progression_roll = max(1, round(uniform(BLOCKER_MIN, BLOCKER_MAX) * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]]))
-            # Roll 8 random values and take the nth one to get an approximation of what the nth most expensive random B. Locker might be if all of them were of this item
-            # n in this scenario is the nth level to be entered
-            # This also prevents the item availability-based values from overtaking the maximum value
-            assorted_random_values = []
-            for i in range(9):
-                assorted_random_values.append(randint(1, ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio)))
-            assorted_random_values.sort()
-            settings.BLockerEntryCount[nextLevelToBeat] = min(progression_roll, assorted_random_values[len(levelsProgressed)])
+            # If this is the last level in a world where Helm is shuffled into the order, set the B. Locker value equal to the cap. If we aren't shuffling Helm, we'll sort it out at the end.
+            if settings.shuffle_helm_location and len(levelsProgressed) == (number_of_progressable_levels - 1):
+                # This will likely be a max roll but in some rare circumstances it may not be due to needing something out of your last progression level extremely early
+                settings.BLockerEntryCount[nextLevelToBeat] = min(
+                    ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio), round(BLOCKER_MAX * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]])
+                )
+            # Otherwise, generate a random value
+            else:
+                # Roll 8 random values and take the nth one to get an approximation of what the nth most expensive random B. Locker might be if all of them were of this item
+                # n in this scenario is the nth level to be entered
+                # This also prevents the item availability-based values from overtaking the maximum value
+                assorted_random_values = []
+                for i in range(9):
+                    assorted_random_values.append(randint(1, ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio)))
+                assorted_random_values.sort()
+                settings.BLockerEntryCount[nextLevelToBeat] = min(progression_roll, assorted_random_values[len(levelsProgressed)])
         levelsProgressed.append(nextLevelToBeat)
 
         # Determine the Kong, GB, and Move accessibility from this level
