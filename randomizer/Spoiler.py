@@ -933,8 +933,11 @@ class Spoiler:
                 human_hint_list[name] = filtered_hint
             humanspoiler["Wrinkly Hints"] = human_hint_list
             humanspoiler["Unhinted Score"] = self.unhinted_score
-            humanspoiler["Potentially Awful Locations"] = self.poor_scoring_locations
-
+            humanspoiler["Potentially Awful Locations"] = {}
+            for location_description in self.poor_scoring_locations:
+                humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
+            if hasattr(self, "hint_swap_advisory"):
+                humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:

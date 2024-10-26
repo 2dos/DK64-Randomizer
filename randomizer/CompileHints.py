@@ -1384,31 +1384,12 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location = getRandomHintLocation()
 
             globally_hinted_location_ids.append(loc)
-            region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc)]
-            hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
-            if loc in TrainingBarrelLocations or loc in PreGivenLocations:
-                # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
-                hinted_item_name = ItemList[spoiler.LocationList[loc].item].name
-                message = f"\x0b{hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
-                hinted_location_text = f"\x0b{hinted_item_name}\x0b"
-            elif region.isCBRegion():
-                # Medal rewards and bosses are treated as "collecting colored bananas" for their region
-                hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
-                message = f"Something about collecting {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
-            else:
-                message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
+            message = GenerateMultipathHintMessageForLocation(spoiler, loc, multipath_dict_hints)
             hint_location.related_location = loc
             hint_location.hint_type = HintType.Multipath
             UpdateHint(hint_location, message)
-            measure_message_size = message
-            measure_message_size_nospace = message
-            for character in ["\x04", "\x05", "\x06", "\x07", "\x08", "\x09", "\x0a", "\x0b", "\x0c", "\x0d"]:
-                if character in measure_message_size:
-                    measure_message_size = measure_message_size.replace(character, "")
-            measure_message_size_nospace = measure_message_size_nospace.replace(" ", "")
-            if len(message) > 255 or len(measure_message_size) > 150 or len(measure_message_size_nospace) > 125:
-                # In an attempt to avoid the dreaded '...' in the pause menu, remove more of the fluff for short_hint
-                hint_location.short_hint = f"{hinted_location_text}: Path to {multipath_dict_hints[loc]}"
+            if IsMultipathHintTooLong(message):
+                hint_location.short_hint = GenerateMultipathHintMessageForLocation(spoiler, loc, multipath_dict_hints, shortenText=True)
 
     # Key location hints should be placed at or before the level they are for (e.g. Key 4 shows up in level 4 lobby or earlier)
     if hint_distribution[HintType.RequiredKeyHint] > 0:
@@ -1920,36 +1901,32 @@ def compileHints(spoiler: Spoiler) -> bool:
                 continue
             # If this map has only one entrance, it's an isolated entrance that would be among the most helpful to hint
             if len(hint_candidate_entrances) == 1:
-                isolated_interesting_transitions.append(hint_candidate_entrances[0])
+                isolated_interesting_transitions.append([hint_candidate_entrances[0], woth_location_id])
             # Every map has at least one entrance (or else you couldn't get to it, duh)
             # If there are no relevant entrances, it's probably a region accessed by unshuffled entrances (e.g. Chunky Minecart in coupled)
             elif len(hint_candidate_entrances) != 0:
                 # For connectors, pick the entrance that the playthrough finds first
                 for transition_id in spoiler.playthroughTransitionOrder:
                     if transition_id in hint_candidate_entrances:
-                        isolated_interesting_transitions.append(transition_id)
+                        isolated_interesting_transitions.append([transition_id, woth_location_id])
                         break
         random.shuffle(isolated_interesting_transitions)
         # If Helm access must be prioritized, force it to be hinted first
         if priority_transition_to_helm is not None:
-            # Because we are guaranteeing a Helm hint here, we don't want it to be eligible to be hinted again.
-            # If it remained, there exist worlds where one could see one entrance hinted twice.
-            if priority_transition_to_helm in isolated_interesting_transitions:
-                isolated_interesting_transitions.remove(priority_transition_to_helm)
-            isolated_interesting_transitions.append(priority_transition_to_helm)
+            isolated_interesting_transitions.insert(0, [priority_transition_to_helm, Locations.HelmKey])
         # If there are more entrance hints planned than interesting transitions to hint, sounds like we need more WotH hints for the locations on larger maps
         if len(isolated_interesting_transitions) < hint_distribution[HintType.EntranceV2]:
             diff = hint_distribution[HintType.EntranceV2] - len(isolated_interesting_transitions)
             hint_distribution[HintType.WothLocation] += diff
             hint_distribution[HintType.EntranceV2] -= diff
         for i in range(hint_distribution[HintType.EntranceV2]):
-            transition_id_to_hint = None
-            if len(isolated_interesting_transitions) > 0:
-                transition_id_to_hint = isolated_interesting_transitions.pop()
+            pair_to_hint = isolated_interesting_transitions[i]
             hint_location = getRandomHintLocation()
-            entranceName = ShufflableExits[transition_id_to_hint].name
-            message = f"The area entered through \x08{entranceName}\x08 should be of great interest to your quest."
+            entranceName = ShufflableExits[pair_to_hint[0]].name
+            message = f"Entering \x08{entranceName}\x08 should be of great interest to your quest."
             hint_location.hint_type = HintType.EntranceV2
+            hint_location.related_location = pair_to_hint[1]
+            globally_hinted_location_ids.append(pair_to_hint[1])
             UpdateHint(hint_location, message)
 
     # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
@@ -2398,82 +2375,40 @@ def compileHints(spoiler: Spoiler) -> bool:
     #     if hint.hint == "":
     #         print("RED ALERT")
 
-    # Evaluate the strength of the hints and attempt to distill it to a score
-    spoiler.unhinted_score = -1
-    spoiler.poor_scoring_locations = {"N/A": "this hint system does not get scored"}
-    # This evaluation only matters with multipath hints
-    if hint_distribution[HintType.Multipath] > 0:
-        spoiler.unhinted_score = 0
-        spoiler.poor_scoring_locations = {}
-        hint_tree = BuildPathHintTree(spoiler.woth_paths)
-        # Some locations are known quantities and can be pruned from the tree
-        del hint_tree[Locations.BananaHoard]
-        if spoiler.settings.key_8_helm:
-            if Locations.HelmKey in hint_tree:
-                del hint_tree[Locations.HelmKey]
-        # Decorate the tree with information from our placed hints
-        for hint in hints:
-            if hint.related_location is not None and hint.related_location in hint_tree.keys() and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?
-                if hint.hint_type == HintType.Multipath:
-                    hint_tree[hint.related_location].path_hinted = True
-                else:
-                    hint_tree[hint.related_location].woth_hinted = True
-        for loc in hint_tree.keys():
-            if loc in multipath_dict_goals.keys():
-                hint_tree[loc].goals = multipath_dict_goals[loc]
-            # I'm pretty sure this can only happen to training moves
-            else:
-                hint_tree[loc].goals = []
-        # Loop through nodes, front-to-back, earliest items to latest items, applying unhinted_score based on the connections
-        for node in hint_tree.values():
-            node_location = spoiler.LocationList[node.node_location_id]
-            # Medal locations and Bosses get an automatic x2 unhinted multiplier because they are awful to orphan
-            if node_location.type in (Types.Medal, Types.Key):
-                node.score_multiplier *= 2
-            # Training barrel locations don't matter if they're hinted or not because you start with them
-            if node.node_location_id in TrainingBarrelLocations or node.node_location_id in PreGivenLocations:
-                node.score_multiplier *= 0
-            # If this location is hinted or isn't on the path to any goals, there's no further unhinted score changes required here
-            if node.path_hinted or node.woth_hinted or len(node.goals) == 0:
-                continue
-            # The baseline unhinted score for a node is inversely proportional to the number of goals this location is on the path to
-            # If something is on the path to a lot of goals, it's often found early and usually less disastrous to be missed
-            node.unhinted_score += sqrt(1.0 / len(node.goals))
-            for parent_loc_id in node.parents:
-                parent_node = hint_tree[parent_loc_id]
-                # If this is the only child of this parent and the parent is directly hinted, this is the only location that can resolve that hint.
-                if len(parent_node.children) == 1 and (parent_node.path_hinted or parent_node.woth_hinted):
-                    # Halve the unhinted contribution of this node per hinted solo-parent
-                    node.score_multiplier *= 0.5
-                # A woth-hinted location with multiple children means it could resolve in many ways, which could possibly leave this item effectively unhinted
-                # If the parents are path hinted, we need to analyze siblings' goals to determine if this location uniquely solves some portion of the parent's path
-                elif len(parent_node.children) > 1 and parent_node.path_hinted:
-                    # Compile a list of all goals that the siblings are on the path to - this is always a subset of the parent's goals!
-                    sibling_nodes = [hint_tree[loc_id] for loc_id in parent_node.children if loc_id != node.node_location_id and loc_id in hint_tree.keys()]
-                    sibling_goals = set([goal for node in sibling_nodes for goal in node.goals])
-                    # If this node has *any* goals that are unique to this location, then this is the only location that can resolve that portion of the parent's path hint.
-                    if any(set(node.goals).difference(sibling_goals)):
-                        # Because of that, it makes this less unhinted
-                        node.score_multiplier *= 0.4
-                    # Identify any particularly problematic siblings more directly
-                    for child_loc_id in parent_node.children:
-                        if child_loc_id != node.node_location_id and child_loc_id in hint_tree.keys():
-                            child_node = hint_tree[child_loc_id]
-                            # If a parent is path hinted and this sibling could resolve this node's goals, one of the two would be effectively unhinted
-                            if set(node.goals).issubset(set(child_node.goals)):
-                                # Split the difference - the current node being evaluated gets half the value
-                                node.unhinted_score += 0.5
-                                # If the goals *exactly* match, then the current node could mask their sibling, even if the sibling is hinted!
-                                if node.goals == child_node.goals:
-                                    child_node.unhinted_score += 0.5
-                                # Note that if both are unhinted you'll double the score, which is appropriate for two unhinted items that could resolve the same path hint
-        # Now that we've completed tree decoration, we can assess the damage - we have to do this at the end because sibling calculations can affect nodes that were previously calculated
-        for node in hint_tree.values():
-            total_score = node.unhinted_score * node.score_multiplier
-            spoiler.unhinted_score += total_score
-            # Arbitrary threshold of .5 unhinted to be a suspected ugly location
-            if total_score > 0.5:
-                spoiler.poor_scoring_locations[spoiler.LocationList[node.node_location_id].name] = total_score
+    ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals)
+    # Commented out for now: a system to forcibly hint your most-unhinted location with a sufficiently low unhinted score
+    # This may be implemented once I have a better idea of how effective the unhinted score is
+    # If we have a seed with sufficient unhintedness
+    # if spoiler.unhinted_score >= 1:
+    #     # Find the ugliest unhinted location
+    #     ugliest_location = None
+    #     for location, score in spoiler.poor_scoring_locations.items():
+    #         # Min score threshold to be "ugly" is set at 1.0
+    #         if score >= 1 and (ugliest_location is None or spoiler.poor_scoring_locations[ugliest_location] < score):
+    #             ugliest_location = location
+    #     # If we have an ugly location worth making a new WotH hint for...
+    #     if ugliest_location is not None:
+    #         # And we have a lesser hint door to actually put the hint on...
+    #         swappable_hint_count = hint_distribution[HintType.Joke] + hint_distribution[HintType.FoolishRegion] + hint_distribution[HintType.RegionItemCount]
+    #         if swappable_hint_count > 0:
+    #             # Pick one of those hint doors, ideally respecting hint location accessibility, but needs must
+    #             eligible_hint_doors = [hint for hint in hints if hint.hint_type in (HintType.Joke, HintType.FoolishRegion, HintType.RegionItemCount)]
+    #             if ugliest_location in spoiler.accessible_hints_for_location.keys():
+    #                 eligible_hint_doors = [
+    #                     hint for hint in eligible_hint_doors if hint in getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[ugliest_location], include_occupied=True)
+    #                 ]
+    #             door_to_swap = random.choice(eligible_hint_doors)
+    #             # Swap this door's hint type to WotHLocation and update the hint's message
+    #             hint_distribution[door_to_swap.hint_type] -= 1
+    #             hint_distribution[HintType.WothLocation] += 1
+    #             door_to_swap.hint_type = HintType.WothLocation
+    #             door_to_swap.related_location = ugliest_location
+    #             globally_hinted_location_ids.append(ugliest_location)
+    #             hint_color = level_colors[spoiler.LocationList[ugliest_location].level]
+    #             message = f"{hint_color}{spoiler.LocationList[ugliest_location].name}{hint_color} is on the \x04Way of the Hoard\x04."
+    #             UpdateHint(door_to_swap, message)
+    #             ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals)
+    #             spoiler.hint_swap_advisory = spoiler.LocationList[ugliest_location].name + " was deemed too unhinted and given a hint."
 
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
@@ -2507,13 +2442,15 @@ def getRandomHintLocation(location_list=None, kongs=None, levels=None, move_name
     return None
 
 
-def getHintLocationsForAccessibleHintItems(hint_item_ids: Union[Set[Items], List[Items]]) -> List[Union[HintLocation, Any]]:
+def getHintLocationsForAccessibleHintItems(hint_item_ids: Union[Set[Items], List[Items]], include_occupied=False) -> List[Union[HintLocation, Any]]:
     """Given a list of hint item ids, return unoccupied HintLocation objects they correspond to, possibly returning an empty list."""
     accessible_hints = []
     for item_id in hint_item_ids:
         item = ItemList[item_id]
         matching_hint = [hint for hint in hints if hint.level == item.level and hint.kong == item.kong][0]  # Should only match one
         accessible_hints.append(matching_hint)
+    if include_occupied:
+        return accessible_hints
     return [hint for hint in accessible_hints if hint.hint == ""]  # Filter out the occupied ones
 
 
@@ -3016,6 +2953,38 @@ def join_words(words: List[str]) -> str:
         return " and ".join(words)
 
 
+def GenerateMultipathHintMessageForLocation(spoiler, loc, multipath_dict_hints, shortenText=False):
+    """Generate a multipath hint message for the desired location, assuming it is a valid location."""
+    region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc)]
+    hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
+    if loc in TrainingBarrelLocations or loc in PreGivenLocations:
+        # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
+        hinted_item_name = ItemList[spoiler.LocationList[loc].item].name
+        message = f"\x0b{hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
+        hinted_location_text = f"\x0b{hinted_item_name}\x0b"
+    elif region.isCBRegion():
+        # Medal rewards and bosses are treated as "collecting colored bananas" for their region
+        hinted_location_text = f"{level_colors[region.level]}{short_level_list[region.level]} Colored Bananas{level_colors[region.level]}"
+        message = f"Something about collecting {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
+    else:
+        message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
+    if shortenText:
+        # In an attempt to avoid the dreaded '...' in the pause menu, remove more of the fluff for short_hint
+        message = f"{hinted_location_text}: Path to {multipath_dict_hints[loc]}"
+    return message
+
+
+def IsMultipathHintTooLong(message):
+    """Determine if the input multipath hint needs shortening."""
+    measure_message_size = message
+    measure_message_size_nospace = message
+    for character in ["\x04", "\x05", "\x06", "\x07", "\x08", "\x09", "\x0a", "\x0b", "\x0c", "\x0d"]:
+        if character in measure_message_size:
+            measure_message_size = measure_message_size.replace(character, "")
+    measure_message_size_nospace = measure_message_size.replace(" ", "")
+    return len(message) > 255 or len(measure_message_size) > 150 or len(measure_message_size_nospace) > 125
+
+
 def AssociateHintsWithFlags(spoiler):
     """Associate hints with the related flag at their related location as applicable."""
     for hint in hints:
@@ -3120,3 +3089,103 @@ def getHelmOrderHint(spoiler):
             spoiler.text_changes[file_index].append(data)
         else:
             spoiler.text_changes[file_index] = [data]
+
+
+def ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals):
+    """Evaluate the strength of the hints and attempt to distill it into a score."""
+    spoiler.unhinted_score = -1
+    spoiler.poor_scoring_locations = {"N/A": "this hint system does not get scored"}
+    # This evaluation only matters with multipath hints
+    if hint_distribution[HintType.Multipath] > 0:
+        spoiler.unhinted_score = 0
+        spoiler.poor_scoring_locations = {}
+        hint_tree = BuildPathHintTree(spoiler.woth_paths)
+        # Some locations are known quantities and can be pruned from the tree
+        del hint_tree[Locations.BananaHoard]
+        if spoiler.settings.key_8_helm:
+            if Locations.HelmKey in hint_tree:
+                del hint_tree[Locations.HelmKey]
+        # Decorate the tree with information from our placed hints
+        for hint in hints:
+            if hint.related_location is not None and hint.related_location in hint_tree.keys() and hint.hint_type != HintType.Joke:  # The WotB hint is a real jokester, eh?
+                if hint.hint_type == HintType.Multipath:
+                    hint_tree[hint.related_location].path_hinted = True
+                else:
+                    hint_tree[hint.related_location].woth_hinted = True
+        for loc in hint_tree.keys():
+            if loc in multipath_dict_goals.keys():
+                hint_tree[loc].goals = multipath_dict_goals[loc]
+            # I'm pretty sure this can only happen to training moves
+            else:
+                hint_tree[loc].goals = []
+        # Loop through nodes, front-to-back, earliest items to latest items, applying unhinted_score based on the connections
+        for node in hint_tree.values():
+            node_location = spoiler.LocationList[node.node_location_id]
+            location_item = ItemList[node_location.item]
+            # If the item here is a Kong, it both can't be on the path to anything and is already given a required Kong hint
+            if location_item.type == Types.Kong:
+                continue
+            # Medal locations and Bosses get an automatic x1.5 unhinted multiplier because they are awful to orphan
+            if node_location.type in (Types.Medal, Types.Key):
+                node.score_multiplier *= 1.5
+            # Scores get a multplier boost if the location is not in the main map of a level. This is to simulate having to go out of your way to find this unhinted item.
+            # This isn't a foolproof metric, but you are generally more likely to peek or check locations in the main map of each level.
+            elif node_location.level != Levels.DKIsles and node_location.type != Types.Shop and node.node_location_id != Locations.RarewareCoin:
+                # The exceptions:
+                # 1. No Isles checks get this boost - all Isles checks are relatively accessible compared to a check deeper in a level.
+                # 2. Shops do not get this boost. You're reasonably likely to look at shops, as most of them fall in the main map. This includes Jetpac.
+                # 3. Boss and Medal locations are already getting a *hefty* multiplier and don't need any more.
+                node_map = GetMapId(GetRegionIdOfLocation(spoiler, node.node_location_id))
+                if node_map not in (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle):
+                    node.score_multiplier *= 1.1
+            # Shop locations are much easier (or at least predictable) to find and peek their contents
+            if node_location.type == Types.Shop:
+                node.score_multiplier *= 0.4
+            # Keys are always an endpoint of a path (unless it's DK Rap win con). These items should be the culmination of other hints and therefore highly unlikely to be unhinted.
+            if spoiler.settings.win_condition_item != WinConditionComplex.dk_rap_items and location_item.type == Types.Key:
+                node.score_multiplier *= 0.7
+            # Training barrel locations don't matter if they're hinted or not because you start with them
+            if node.node_location_id in TrainingBarrelLocations or node.node_location_id in PreGivenLocations:
+                node.score_multiplier *= 0
+            # If this location is hinted or isn't on the path to any goals, there's no further unhinted score changes required here
+            if node.path_hinted or node.woth_hinted or len(node.goals) == 0:
+                continue
+            # The baseline unhinted score for a node is inversely proportional to the number of goals this location is on the path to
+            # If something is on the path to a lot of goals, it's often found early and usually less disastrous to be missed
+            node.unhinted_score += sqrt(1.0 / len(node.goals))
+            for parent_loc_id in node.parents:
+                parent_node = hint_tree[parent_loc_id]
+                # If this is the only child of this parent and the parent is directly hinted, this is the only location that can resolve that hint.
+                if len(parent_node.children) == 1 and (parent_node.path_hinted or parent_node.woth_hinted):
+                    # Halve the unhinted contribution of this node per hinted solo-parent
+                    node.score_multiplier *= 0.5
+                # A woth-hinted location with multiple children means it could resolve in many ways, which could possibly leave this item effectively unhinted
+                # If the parents are path hinted, we need to analyze siblings' goals to determine if this location uniquely solves some portion of the parent's path
+                elif len(parent_node.children) > 1 and parent_node.path_hinted:
+                    # Compile a list of all goals that the siblings are on the path to - this is always a subset of the parent's goals!
+                    sibling_nodes = [hint_tree[loc_id] for loc_id in parent_node.children if loc_id != node.node_location_id and loc_id in hint_tree.keys()]
+                    sibling_goals = set([goal for node in sibling_nodes for goal in node.goals])
+                    # If this node has *any* goals that are unique to this location, then this is the only location that can resolve that portion of the parent's path hint.
+                    if any(set(node.goals).difference(sibling_goals)):
+                        # Because of that, it makes this less unhinted
+                        node.score_multiplier *= 0.6
+                    # Identify any particularly problematic siblings more directly
+                    for child_loc_id in parent_node.children:
+                        if child_loc_id != node.node_location_id and child_loc_id in hint_tree.keys():
+                            child_node = hint_tree[child_loc_id]
+                            # If a parent is path hinted and this sibling could resolve this node's goals, one of the two would be effectively unhinted
+                            if set(node.goals).issubset(set(child_node.goals)):
+                                # Split the difference - the current node being evaluated gets half the value
+                                node.unhinted_score += 0.5
+                                # If the goals *exactly* match, then the current node could mask their sibling, even if the sibling is hinted!
+                                if node.goals == child_node.goals:
+                                    child_node.unhinted_score += 0.5
+                                # Note that if both are unhinted you'll double the score, which is appropriate for two unhinted items that could resolve the same path hint
+        # Now that we've completed tree decoration, we can assess the damage - we have to do this at the end because sibling calculations can affect nodes that were previously calculated
+        for node in hint_tree.values():
+            node_score = node.unhinted_score * node.score_multiplier
+            spoiler.unhinted_score += node_score
+            # Arbitrary threshold of .25 to be worth mentioning in the spoiler
+            if node_score > 0.25:
+                node_location = spoiler.LocationList[node.node_location_id]
+                spoiler.poor_scoring_locations[node_location.name + " (" + ItemList[node_location.item].name + ")"] = node_score

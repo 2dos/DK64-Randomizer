@@ -73,7 +73,7 @@
 | Gloomy Galleon | Around Cactus | `l.camera` | 
 | Gloomy Galleon | Around Lighthouse | `l.camera` | 
 | Galleon Sick Bay | Seasick Ship | `l.camera` | 
-| Galleon Lighthouse | Top of Lighthouse | `l.climbing` | 
+| Galleon Lighthouse | Top of Lighthouse | `l.camera and l.climbing` | 
 | Galleon Mermaid Room | Mermaid Window | `l.camera` | 
 | Galleon5DShip Diddy Lanky Chunky | Lanky's 5-Door Ship | `l.camera` | 
 | Galleon2DShip | Tiny's 2-Door Ship | `l.camera` | 
@@ -170,7 +170,7 @@
 | Crystal Caves Lobby | Crystal Caves Lobby | `l.camera and ((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip)` | 
 | Isles Snide Room | Snide Room | `l.camera` | 
 | Training Grounds | Training Grounds Entrance | `l.camera` | 
-| Training Grounds | Training Grounds Hidden Mountain | `l.climbing` | 
+| Training Grounds | Training Grounds Hidden Mountain | `l.camera and l.climbing` | 
 | Treehouse | Treehouse Windows | `l.camera` | 
 
 # Hideout Helm
