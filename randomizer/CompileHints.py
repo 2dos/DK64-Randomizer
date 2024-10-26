@@ -1920,9 +1920,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_distribution[HintType.WothLocation] += diff
             hint_distribution[HintType.EntranceV2] -= diff
         for i in range(hint_distribution[HintType.EntranceV2]):
-            pair_to_hint = None
-            if len(isolated_interesting_transitions) > 0:
-                pair_to_hint = isolated_interesting_transitions[i]
+            pair_to_hint = isolated_interesting_transitions[i]
             hint_location = getRandomHintLocation()
             entranceName = ShufflableExits[pair_to_hint[0]].name
             message = f"Entering \x08{entranceName}\x08 should be of great interest to your quest."
