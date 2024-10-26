@@ -314,7 +314,6 @@ extern void handleCShifting(char* value, char limit);
 extern void initHints(void);
 extern void initHintFlags(void);
 
-extern void initItemDictionary(void);
 extern void initTextChanges(void);
 extern void giveGB(int kong, int level);
 extern void giveRainbowCoin(void);
@@ -493,7 +492,6 @@ extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
 extern ICE_TRAP_TYPES ice_trap_queued;
-extern GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT];
 extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];

@@ -35,6 +35,7 @@ from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 from PIL import Image
 
 HANDLED_OVERLAYS = (
@@ -882,6 +883,32 @@ def updateActorFunction(ROM_COPY, actor_index: int, new_function_sym: str):
     start = getSym("actor_functions") + (4 * actor_index)
     writeLabelValue(ROM_COPY, start, Overlay.Custom, new_function_sym, {})
 
+def writeSingleOwnership(ROM_COPY, index, kong):
+    """Write the ownership of a particular item to a kong."""
+    start = getSym("new_flag_mapping") + (index * 8) + 6
+    writeValue(ROM_COPY, start, Overlay.Custom, kong + 2, {}, 1)
+
+def writeKongItemOwnership(ROM_COPY, settings: Settings):
+    """Write the item ownership for kong rando."""
+    starting_kong = settings.starting_kong
+    diddy_freer = settings.diddy_freeing_kong
+    lanky_freer = settings.lanky_freeing_kong
+    tiny_freer = settings.tiny_freeing_kong
+    chunky_freer = settings.chunky_freeing_kong
+    no_arcade_r1 = IsItemSelected(settings.faster_checks_enabled, settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
+    writeSingleOwnership(ROM_COPY, 1, diddy_freer)
+    writeSingleOwnership(ROM_COPY, 2, diddy_freer)
+    writeSingleOwnership(ROM_COPY, 22, tiny_freer)
+    writeSingleOwnership(ROM_COPY, 27, lanky_freer)
+    writeSingleOwnership(ROM_COPY, 39, chunky_freer)
+    writeSingleOwnership(ROM_COPY, 97, starting_kong)
+    if no_arcade_r1:
+        start = getSym("new_flag_mapping") + (41 * 8)
+        writeValue(ROM_COPY, start, Overlay.Custom, Maps.FactoryBaboonBlast, {}, 1)
+        writeValue(ROM_COPY, start + 2, Overlay.Custom, 0, {})
+    
+
+
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -1512,9 +1539,10 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8074452C, Overlay.Static, 1, offset_dict, 1)  # Story Skip starts with on
 
     # Flag Mapping
-    flag_map_hi = getHiSym("NewGBDictionary")
-    flag_map_lo = getLoSym("NewGBDictionary")
+    flag_map_hi = getHiSym("new_flag_mapping")
+    flag_map_lo = getLoSym("new_flag_mapping")
     flag_map_count = getVar("gb_dictionary_count")
+    writeKongItemOwnership(ROM_COPY, settings)
     writeValue(ROM_COPY, 0x8073150A, Overlay.Static, flag_map_hi, offset_dict)
     writeValue(ROM_COPY, 0x8073151E, Overlay.Static, flag_map_lo, offset_dict)
     writeValue(ROM_COPY, 0x8073151A, Overlay.Static, flag_map_count, offset_dict)

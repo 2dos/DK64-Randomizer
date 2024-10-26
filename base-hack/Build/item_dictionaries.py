@@ -2,7 +2,7 @@
 
 import json
 from enum import IntEnum, auto
-from BuildEnums import Kong, Song
+from BuildEnums import Kong, Song, Maps
 
 
 class InGameItem:
@@ -646,6 +646,36 @@ with open("src/lib_items.c", "w") as fh:
     }
     actor_data = initActor(actor_data, 345 + CustomActors.KopDummy, "&dummyGuardCode", 2, 0, 1, 8, 45)
     # Flag Mapping
+    for item in actor_data["new_flag_mapping"]:
+        if item["map"] == Maps.Helm:
+            if item["model2_id"] == 0x5E:
+                item["flag_index"] = 0x24C
+            elif item["model2_id"] == 0x61:
+                item["flag_index"] = 0x249
+    # Add new flag mappings
+    pearl_lst = []
+    for x in range(5):
+        pearl_lst.append({
+            "map": Maps.GalleonTreasureChest,
+            "model2_id": x,
+            "flag_index": 0xBA + x,
+            "intended_kong_actor": 0,
+        })
+    actor_data["new_flag_mapping"].extend(pearl_lst)
+    actor_data["new_flag_mapping"].extend([
+        {
+            "map": Maps.FungiAntHill,
+            "model2_id": 5,
+            "flag_index": 0x300,
+            "intended_kong_actor": 0,
+        },
+        {
+            "map": Maps.Helm,
+            "model2_id": 0x5A,
+            "flag_index": 0x17C,
+            "intended_kong_actor": 0,
+        },
+    ])
     for sym in data_types:
         fh.write(
             f"\n{data_types[sym]} {sym}[] = {{\n\t"

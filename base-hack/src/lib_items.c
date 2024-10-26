@@ -2738,8 +2738,15 @@ GBDictItem new_flag_mapping[] = {
 	{.map = 34, .unk_01 = 0, .model2_id = 86, .flag_index = 431, .intended_kong_actor = 6, .unk_07 = 0},
 	{.map = 189, .unk_01 = 0, .model2_id = 30, .flag_index = 301, .intended_kong_actor = 5, .unk_07 = 0},
 	{.map = 17, .unk_01 = 0, .model2_id = 93, .flag_index = 584, .intended_kong_actor = 2, .unk_07 = 0},
-	{.map = 17, .unk_01 = 0, .model2_id = 94, .flag_index = 585, .intended_kong_actor = 6, .unk_07 = 0},
+	{.map = 17, .unk_01 = 0, .model2_id = 94, .flag_index = 588, .intended_kong_actor = 6, .unk_07 = 0},
 	{.map = 17, .unk_01 = 0, .model2_id = 95, .flag_index = 586, .intended_kong_actor = 4, .unk_07 = 0},
 	{.map = 17, .unk_01 = 0, .model2_id = 96, .flag_index = 587, .intended_kong_actor = 5, .unk_07 = 0},
-	{.map = 17, .unk_01 = 0, .model2_id = 97, .flag_index = 588, .intended_kong_actor = 3, .unk_07 = 0}
+	{.map = 17, .unk_01 = 0, .model2_id = 97, .flag_index = 585, .intended_kong_actor = 3, .unk_07 = 0},
+	{.map = 44, .model2_id = 0, .flag_index = 186, .intended_kong_actor = 0},
+	{.map = 44, .model2_id = 1, .flag_index = 187, .intended_kong_actor = 0},
+	{.map = 44, .model2_id = 2, .flag_index = 188, .intended_kong_actor = 0},
+	{.map = 44, .model2_id = 3, .flag_index = 189, .intended_kong_actor = 0},
+	{.map = 44, .model2_id = 4, .flag_index = 190, .intended_kong_actor = 0},
+	{.map = 52, .model2_id = 5, .flag_index = 768, .intended_kong_actor = 0},
+	{.map = 17, .model2_id = 90, .flag_index = 380, .intended_kong_actor = 0}
 };
