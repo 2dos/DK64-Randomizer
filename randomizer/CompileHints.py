@@ -2983,7 +2983,7 @@ def IsMultipathHintTooLong(message):
     for character in ["\x04", "\x05", "\x06", "\x07", "\x08", "\x09", "\x0a", "\x0b", "\x0c", "\x0d"]:
         if character in measure_message_size:
             measure_message_size = measure_message_size.replace(character, "")
-    measure_message_size_nospace = measure_message_size_nospace.replace(" ", "")
+    measure_message_size_nospace = measure_message_size.replace(" ", "")
     return len(message) > 255 or len(measure_message_size) > 150 or len(measure_message_size_nospace) > 125
 
 
