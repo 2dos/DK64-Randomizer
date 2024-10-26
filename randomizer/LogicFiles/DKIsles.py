@@ -473,7 +473,7 @@ LogicRegions = {
         Event(Events.KRoolPufftoss, lambda l: not l.settings.krool_pufftoss or True),
         Event(Events.KRoolDog2, lambda l: not l.settings.krool_dog2 or (l.barrels and l.hunkyChunky and l.chunky)),
         Event(Events.KRoolDillo2, lambda l: not l.settings.krool_dillo2 or l.barrels),
-        Event(Events.KRoolKKO, lambda l: not l.settings.krool_kutout or True),
+        Event(Events.KRoolKKO, lambda l: not l.settings.krool_kutout or ((not l.IsLavaWater()) or l.Melons >= 3)),
         Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events and Events.KRoolDillo1 in l.Events and Events.KRoolDillo2 in l.Events and Events.KRoolDog1 in l.Events and Events.KRoolDog2 in l.Events and Events.KRoolJack in l.Events and Events.KRoolPufftoss in l.Events and Events.KRoolKKO in l.Events)
     ], []),
 }

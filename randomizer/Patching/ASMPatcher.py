@@ -227,7 +227,7 @@ def populateOverlayOffsets(ROM_COPY) -> dict:
 def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
     """Get ROM Address corresponding to a specific RDRAM Address in an overlay."""
     if overlay == Overlay.Custom:
-        custom_code_start = 0x805FAE00 - 0x39dc0
+        custom_code_start = 0x805FAE00 - 0x39DC0
         return 0x2000000 + (address - custom_code_start)
     if overlay not in list(offset_dict.keys()):
         return None
@@ -350,12 +350,14 @@ def getLoSym(ref: str) -> int:
         raise Exception(f"Couldn't find symbol {ref}.")
     return getLo(label_address)
 
+
 def getSym(ref: str) -> int:
     """Get symbol value."""
     sym_value = js.rom_symbols["symbols"].get(ref.lower(), None)
     if sym_value is None:
         raise Exception(f"Couldn't find symbol {ref}.")
     return sym_value
+
 
 def getVar(ref: str) -> int:
     """Get variable value."""
@@ -574,21 +576,20 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x8067F7C0, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
     writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18
     if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.sub_areas):
-        #writeValue(ROM_COPY, 0x806025BC, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic` - Map Load
-        writeValue(ROM_COPY, 0x8061DF74, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic`
-        writeValue(ROM_COPY, 0x806DB98C, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic`
-        writeValue(ROM_COPY, 0x806034F2, Overlay.Static, 0, offset_dict) # Set Japes count to 0
-        writeValue(ROM_COPY, 0x80603556, Overlay.Static, 0, offset_dict) # Set Az Beetle count to 0
-        writeValue(ROM_COPY, 0x80603542, Overlay.Static, 0, offset_dict) # Set Factory count to 0
-        writeValue(ROM_COPY, 0x8060356A, Overlay.Static, 0, offset_dict) # Set Factory Car count to 0
-        writeValue(ROM_COPY, 0x8060351A, Overlay.Static, 0, offset_dict) # Set Galleon count to 0
-        #writeValue(ROM_COPY, 0x80603592, Overlay.Static, 0, offset_dict) # Set Isles count to 0
-        writeValue(ROM_COPY, 0x80603506, Overlay.Static, 0, offset_dict) # Set Aztec count to 0
-        writeValue(ROM_COPY, 0x8060352E, Overlay.Static, 0, offset_dict) # Set Galleon Seal count to 0
-        writeValue(ROM_COPY, 0x806035C6, Overlay.Static, 0, offset_dict) # Set Fungi count to 0
-        writeValue(ROM_COPY, 0x8060357E, Overlay.Static, 0, offset_dict) # Set Fungi Cart count to 0
-        writeValue(ROM_COPY, 0x806035BA, Overlay.Static, 0, offset_dict) # Set TGrounds count to 0
-    
+        # writeValue(ROM_COPY, 0x806025BC, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic` - Map Load
+        writeValue(ROM_COPY, 0x8061DF74, Overlay.Static, 0, offset_dict, 4)  # Disable `playLevelMusic`
+        writeValue(ROM_COPY, 0x806DB98C, Overlay.Static, 0, offset_dict, 4)  # Disable `playLevelMusic`
+        writeValue(ROM_COPY, 0x806034F2, Overlay.Static, 0, offset_dict)  # Set Japes count to 0
+        writeValue(ROM_COPY, 0x80603556, Overlay.Static, 0, offset_dict)  # Set Az Beetle count to 0
+        writeValue(ROM_COPY, 0x80603542, Overlay.Static, 0, offset_dict)  # Set Factory count to 0
+        writeValue(ROM_COPY, 0x8060356A, Overlay.Static, 0, offset_dict)  # Set Factory Car count to 0
+        writeValue(ROM_COPY, 0x8060351A, Overlay.Static, 0, offset_dict)  # Set Galleon count to 0
+        # writeValue(ROM_COPY, 0x80603592, Overlay.Static, 0, offset_dict) # Set Isles count to 0
+        writeValue(ROM_COPY, 0x80603506, Overlay.Static, 0, offset_dict)  # Set Aztec count to 0
+        writeValue(ROM_COPY, 0x8060352E, Overlay.Static, 0, offset_dict)  # Set Galleon Seal count to 0
+        writeValue(ROM_COPY, 0x806035C6, Overlay.Static, 0, offset_dict)  # Set Fungi count to 0
+        writeValue(ROM_COPY, 0x8060357E, Overlay.Static, 0, offset_dict)  # Set Fungi Cart count to 0
+        writeValue(ROM_COPY, 0x806035BA, Overlay.Static, 0, offset_dict)  # Set TGrounds count to 0
 
     # Holiday Mode Stuff
     holiday = getHoliday(settings)
@@ -873,20 +874,24 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         ROM_COPY.seek(output_addr)
         ROM_COPY.writeBytes(write)
 
+
 def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
     """Writes actor health value."""
     start = getSym("actor_defs") + (4 * actor_index)
     writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
+
 
 def updateActorFunction(ROM_COPY, actor_index: int, new_function_sym: str):
     """Update the actor function in the table."""
     start = getSym("actor_functions") + (4 * actor_index)
     writeLabelValue(ROM_COPY, start, Overlay.Custom, new_function_sym, {})
 
+
 def writeSingleOwnership(ROM_COPY, index, kong):
     """Write the ownership of a particular item to a kong."""
     start = getSym("new_flag_mapping") + (index * 8) + 6
     writeValue(ROM_COPY, start, Overlay.Custom, kong + 2, {}, 1)
+
 
 def writeKongItemOwnership(ROM_COPY, settings: Settings):
     """Write the item ownership for kong rando."""
@@ -906,7 +911,6 @@ def writeKongItemOwnership(ROM_COPY, settings: Settings):
         start = getSym("new_flag_mapping") + (41 * 8)
         writeValue(ROM_COPY, start, Overlay.Custom, Maps.FactoryBaboonBlast, {}, 1)
         writeValue(ROM_COPY, start + 2, Overlay.Custom, 0, {})
-    
 
 
 def patchAssembly(ROM_COPY, spoiler):

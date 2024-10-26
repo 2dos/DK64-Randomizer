@@ -7,13 +7,16 @@ import sys
 from BuildLib import ROMName
 from typing import BinaryIO
 
+
 def getFileOffset(addr: int) -> int:
     """Get the static file offset."""
     return addr - 0x744460
 
+
 def seekFileOffset(fh: BinaryIO, address: int):
     """Seek to the correct file offset based on the RAM address."""
     fh.seek(getFileOffset(address))
+
 
 PULL_VERSION = 2
 ACTOR_DUMP = "actor_data.json"
@@ -51,13 +54,15 @@ with open(DATA_DUMP, "rb") as fh:
         code = int.from_bytes(fh.read(4), "big")
         unk10 = int.from_bytes(fh.read(4), "big")
         # We don't care about the debug name string lol
-        actor_spawner_defs.append({
-            "actor_type": actor_type,
-            "model": model,
-            "unk4": unk_vars,
-            "code": code,
-            "unk10": unk10,
-        })
+        actor_spawner_defs.append(
+            {
+                "actor_type": actor_type,
+                "model": model,
+                "unk4": unk_vars,
+                "code": code,
+                "unk10": unk10,
+            }
+        )
     for x in range(345):
         seekFileOffset(fh, 0x74D8D4 + x)
         actor_master_types.append(int.from_bytes(fh.read(1), "big"))
@@ -66,17 +71,21 @@ with open(DATA_DUMP, "rb") as fh:
         seekFileOffset(fh, 0x74D0C4 + (4 * x))
         init_health = int.from_bytes(fh.read(2), "big")
         dmg_applied = int.from_bytes(fh.read(2), "big")
-        actor_health_stats.append({
-            "init_health": init_health,
-            "damage_applied": dmg_applied,
-        })
+        actor_health_stats.append(
+            {
+                "init_health": init_health,
+                "damage_applied": dmg_applied,
+            }
+        )
         seekFileOffset(fh, 0x74C604 + (8 * x))
         collision_info = int.from_bytes(fh.read(4), "big")
         unk_4 = int.from_bytes(fh.read(1), "big")
-        actor_collision.append({
-            "collision_info": collision_info,
-            "unk_4": unk_4,
-        })
+        actor_collision.append(
+            {
+                "collision_info": collision_info,
+                "unk_4": unk_4,
+            }
+        )
         seekFileOffset(fh, 0x74C0A0 + (4 * x))
         actor_functions.append(int.from_bytes(fh.read(4), "big"))
         seekFileOffset(fh, 0x74E218 + (4 * x))
@@ -89,14 +98,7 @@ with open(DATA_DUMP, "rb") as fh:
         flag_index = int.from_bytes(fh.read(2), "big")
         kong = int.from_bytes(fh.read(1), "big")
         unk_07 = int.from_bytes(fh.read(1), "big")
-        flag_mapping.append({
-            "map": map_id,
-            "unk_01": unk_01,
-            "model2_id": model_2_id,
-            "flag_index": flag_index,
-            "intended_kong_actor": kong,
-            "unk_07": unk_07
-        })
+        flag_mapping.append({"map": map_id, "unk_01": unk_01, "model2_id": model_2_id, "flag_index": flag_index, "intended_kong_actor": kong, "unk_07": unk_07})
     init_data = {
         "pull_version": PULL_VERSION,
         "actor_defs": actor_spawner_defs,

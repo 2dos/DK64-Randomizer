@@ -288,7 +288,7 @@ spotlight_fish_models = [
     Model.Rabbit,
     Model.KRoolCutscene,
     Model.KRoolFight,
-    Model.SkeletonHead,
+    # Model.SkeletonHead, # Lighting bug
     # Model.Vulture_76, # Lighting bug
     # Model.Vulture_77, # Lighting bug
     # Model.Bat, # Lighting bug

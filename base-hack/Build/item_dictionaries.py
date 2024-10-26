@@ -124,6 +124,7 @@ class CustomActors(IntEnum):
     HintItem = auto()
     KopDummy = auto()
 
+
 POTIONS = (
     CustomActors.PotionDK,
     CustomActors.PotionDiddy,
@@ -151,6 +152,7 @@ TRAPS = (
     CustomActors.IceTrapSlow,
 )
 
+
 def getActorDefaultString(input) -> str:
     """Get the C attribute string for an actor definition."""
     dict_str = []
@@ -164,17 +166,17 @@ def getActorDefaultString(input) -> str:
     complete_internals = ", ".join(dict_str)
     return "{" + complete_internals + "}"
 
+
 def initActor(actor_data: dict, actor_type: int, func: str, master_type: int, health: int, damage_given: int, init_interactions: int, base_actor: int) -> dict:
+    """Initialize actor."""
     actor_data["actor_functions"][actor_type] = func
     actor_data["actor_master_types"][actor_type] = master_type
-    actor_data["actor_health_damage"][actor_type] = {
-        "init_health": health,
-        "damage_applied": damage_given
-    }
+    actor_data["actor_health_damage"][actor_type] = {"init_health": health, "damage_applied": damage_given}
     actor_data["actor_interactions"][actor_type] = init_interactions
     actor_data["actor_extra_data_sizes"][actor_type] = actor_data["actor_extra_data_sizes"][base_actor]
     actor_data["actor_collisions"][actor_type] = actor_data["actor_collisions"][base_actor].copy()
     return actor_data
+
 
 base_potion = InGameItem(scale=0.25, bounce=True)
 base_kong = InGameItem(scale=0.25, bounce=True)
@@ -405,194 +407,196 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = {}
     with open("actor_data.json", "r") as fg:
         actor_data = json.load(fg)
-    actor_data["actor_defs"].extend([
-        {
-            "actor_type": 345 + CustomActors.NintendoCoin,
-            "model": 0x10B,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Nintendo Coin
-        {
-            "actor_type": 345 + CustomActors.RarewareCoin,
-            "model": 0x10D,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Rareware Coin
-        # Potions
-        {
-            "actor_type": 345 + CustomActors.PotionDK,
-            "model": 0xEE,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # DK Potion
-        {
-            "actor_type": 345 + CustomActors.PotionDiddy,
-            "model": 0xEF,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Diddy Potion
-        {
-            "actor_type": 345 + CustomActors.PotionLanky,
-            "model": 0xF0,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Lanky Potion
-        {
-            "actor_type": 345 + CustomActors.PotionTiny,
-            "model": 0xF1,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Tiny Potion
-        {
-            "actor_type": 345 + CustomActors.PotionChunky,
-            "model": 0xF2,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Chunky Potion
-        {
-            "actor_type": 345 + CustomActors.PotionAny,
-            "model": 0xF3,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Any Potion
-        # Kongs
-        {
-            "actor_type": 345 + CustomActors.KongDK,
-            "model": 0xFE,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # DK
-        {
-            "actor_type": 345 + CustomActors.KongDiddy,
-            "model": 0xFF,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Diddy
-        {
-            "actor_type": 345 + CustomActors.KongLanky,
-            "model": 0x100,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Lanky
-        {
-            "actor_type": 345 + CustomActors.KongTiny,
-            "model": 0x101,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Tiny
-        {
-            "actor_type": 345 + CustomActors.KongChunky,
-            "model": 0x102,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Chunky
-        # Shop Owners
-        {
-            "actor_type": 345 + CustomActors.CrankyItem,
-            "model": 0x10F,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Cranky
-        {
-            "actor_type": 345 + CustomActors.FunkyItem,
-            "model": 0x110,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Funky
-        {
-            "actor_type": 345 + CustomActors.CandyItem,
-            "model": 0x111,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Candy
-        {
-            "actor_type": 345 + CustomActors.SnideItem,
-            "model": 0x112,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Snide
-        # Misc
-        {
-            "actor_type": 345 + CustomActors.Bean,
-            "model": 0x105,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Bean
-        {
-            "actor_type": 345 + CustomActors.Pearl,
-            "model": 0x107,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Pearl
-        {
-            "actor_type": 345 + CustomActors.Fairy,
-            "model": 0xFC,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Fairy
-        {
-            "actor_type": 345 + CustomActors.Null,
-            "model": 0,
-            "code": 0x80689F80,
-            "unk10": 0x8068A10C,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Nothing
-        {
-            "actor_type": 345 + CustomActors.Medal,
-            "model": 0x109,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Medal
-        {
-            "actor_type": 345 + CustomActors.IceTrapBubble,
-            "model": 0xFD,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Fake Item
-        {
-            "actor_type": 345 + CustomActors.IceTrapReverse,
-            "model": 0xFD,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Fake Item
-        {
-            "actor_type": 345 + CustomActors.IceTrapSlow,
-            "model": 0xFD,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Fake Item
-        {
-            "actor_type": 345 + CustomActors.HintItem,
-            "model": 0x11A,
-            "code": 0x80689F80,
-            "unk10": 0x80689FEC,
-            "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-        }, # Hint Item
-    ])
+    actor_data["actor_defs"].extend(
+        [
+            {
+                "actor_type": 345 + CustomActors.NintendoCoin,
+                "model": 0x10B,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Nintendo Coin
+            {
+                "actor_type": 345 + CustomActors.RarewareCoin,
+                "model": 0x10D,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Rareware Coin
+            # Potions
+            {
+                "actor_type": 345 + CustomActors.PotionDK,
+                "model": 0xEE,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # DK Potion
+            {
+                "actor_type": 345 + CustomActors.PotionDiddy,
+                "model": 0xEF,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Diddy Potion
+            {
+                "actor_type": 345 + CustomActors.PotionLanky,
+                "model": 0xF0,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Lanky Potion
+            {
+                "actor_type": 345 + CustomActors.PotionTiny,
+                "model": 0xF1,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Tiny Potion
+            {
+                "actor_type": 345 + CustomActors.PotionChunky,
+                "model": 0xF2,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Chunky Potion
+            {
+                "actor_type": 345 + CustomActors.PotionAny,
+                "model": 0xF3,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Any Potion
+            # Kongs
+            {
+                "actor_type": 345 + CustomActors.KongDK,
+                "model": 0xFE,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # DK
+            {
+                "actor_type": 345 + CustomActors.KongDiddy,
+                "model": 0xFF,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Diddy
+            {
+                "actor_type": 345 + CustomActors.KongLanky,
+                "model": 0x100,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Lanky
+            {
+                "actor_type": 345 + CustomActors.KongTiny,
+                "model": 0x101,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Tiny
+            {
+                "actor_type": 345 + CustomActors.KongChunky,
+                "model": 0x102,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Chunky
+            # Shop Owners
+            {
+                "actor_type": 345 + CustomActors.CrankyItem,
+                "model": 0x10F,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Cranky
+            {
+                "actor_type": 345 + CustomActors.FunkyItem,
+                "model": 0x110,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Funky
+            {
+                "actor_type": 345 + CustomActors.CandyItem,
+                "model": 0x111,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Candy
+            {
+                "actor_type": 345 + CustomActors.SnideItem,
+                "model": 0x112,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Snide
+            # Misc
+            {
+                "actor_type": 345 + CustomActors.Bean,
+                "model": 0x105,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Bean
+            {
+                "actor_type": 345 + CustomActors.Pearl,
+                "model": 0x107,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Pearl
+            {
+                "actor_type": 345 + CustomActors.Fairy,
+                "model": 0xFC,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fairy
+            {
+                "actor_type": 345 + CustomActors.Null,
+                "model": 0,
+                "code": 0x80689F80,
+                "unk10": 0x8068A10C,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Nothing
+            {
+                "actor_type": 345 + CustomActors.Medal,
+                "model": 0x109,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Medal
+            {
+                "actor_type": 345 + CustomActors.IceTrapBubble,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapReverse,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapSlow,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.HintItem,
+                "model": 0x11A,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Hint Item
+        ]
+    )
     default_values = {
         "actor_master_types": 0,
         "actor_interactions": 0,
@@ -632,7 +636,7 @@ with open("src/lib_items.c", "w") as fh:
         actor_data = initActor(actor_data, 345 + shopkeeper, "&shopOwnerItemCode", 2, 0, 1, 8, 45)
     for trap in TRAPS:
         actor_data = initActor(actor_data, 345 + trap, "&FakeGBCode", 2, 0, 1, 8, 45)
-                
+
     actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&beanCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&pearlCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Fairy, "&fairyDuplicateCode", 2, 0, 1, 8, 45)
@@ -655,30 +659,30 @@ with open("src/lib_items.c", "w") as fh:
     # Add new flag mappings
     pearl_lst = []
     for x in range(5):
-        pearl_lst.append({
-            "map": Maps.GalleonTreasureChest,
-            "model2_id": x,
-            "flag_index": 0xBA + x,
-            "intended_kong_actor": 0,
-        })
-    actor_data["new_flag_mapping"].extend(pearl_lst)
-    actor_data["new_flag_mapping"].extend([
-        {
-            "map": Maps.FungiAntHill,
-            "model2_id": 5,
-            "flag_index": 0x300,
-            "intended_kong_actor": 0,
-        },
-        {
-            "map": Maps.Helm,
-            "model2_id": 0x5A,
-            "flag_index": 0x17C,
-            "intended_kong_actor": 0,
-        },
-    ])
-    for sym in data_types:
-        fh.write(
-            f"\n{data_types[sym]} {sym}[] = {{\n\t"
-            + ",\n\t".join([getActorDefaultString(x) for x in actor_data[sym]])
-            + "\n};"
+        pearl_lst.append(
+            {
+                "map": Maps.GalleonTreasureChest,
+                "model2_id": x,
+                "flag_index": 0xBA + x,
+                "intended_kong_actor": 0,
+            }
         )
+    actor_data["new_flag_mapping"].extend(pearl_lst)
+    actor_data["new_flag_mapping"].extend(
+        [
+            {
+                "map": Maps.FungiAntHill,
+                "model2_id": 5,
+                "flag_index": 0x300,
+                "intended_kong_actor": 0,
+            },
+            {
+                "map": Maps.Helm,
+                "model2_id": 0x5A,
+                "flag_index": 0x17C,
+                "intended_kong_actor": 0,
+            },
+        ]
+    )
+    for sym in data_types:
+        fh.write(f"\n{data_types[sym]} {sym}[] = {{\n\t" + ",\n\t".join([getActorDefaultString(x) for x in actor_data[sym]]) + "\n};")

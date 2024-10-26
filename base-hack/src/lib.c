@@ -550,7 +550,7 @@ const char big_head_actors[MODEL_COUNT] = {
 	0, // Funky
 	0, // Candy
 	0, // Rambi
-	11, // Snake
+	UNAFFECTED_HEAD_MODEL, // Snake
 	0, // Turtle
 	8, // Seal // 0 for butt
 	0, // Enguarde
