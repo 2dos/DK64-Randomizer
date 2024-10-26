@@ -436,5 +436,4 @@ void initItemRando(void) {
     initItemDropTable();
     initCollectableCollision();
     initActorDefs();
-    initItemDictionary();
 }

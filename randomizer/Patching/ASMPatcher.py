@@ -35,6 +35,7 @@ from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 from PIL import Image
 
 HANDLED_OVERLAYS = (
@@ -225,6 +226,9 @@ def populateOverlayOffsets(ROM_COPY) -> dict:
 
 def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
     """Get ROM Address corresponding to a specific RDRAM Address in an overlay."""
+    if overlay == Overlay.Custom:
+        custom_code_start = 0x805FAE00 - 0x39dc0
+        return 0x2000000 + (address - custom_code_start)
     if overlay not in list(offset_dict.keys()):
         return None
     overlay_start = offset_dict[overlay]
@@ -335,7 +339,7 @@ def getHiSym(ref: str) -> int:
     """Run getHi, but relative to a symbol rather than a value."""
     label_address = js.rom_symbols["symbols"].get(ref.lower(), None)
     if label_address is None:
-        raise Exception(f"Couldn't find hook {ref}.")
+        raise Exception(f"Couldn't find symbol {ref}.")
     return getHi(label_address)
 
 
@@ -343,9 +347,15 @@ def getLoSym(ref: str) -> int:
     """Run getLo, but relative to a symbol rather than a value."""
     label_address = js.rom_symbols["symbols"].get(ref.lower(), None)
     if label_address is None:
-        raise Exception(f"Couldn't find hook {ref}.")
+        raise Exception(f"Couldn't find symbol {ref}.")
     return getLo(label_address)
 
+def getSym(ref: str) -> int:
+    """Get symbol value."""
+    sym_value = js.rom_symbols["symbols"].get(ref.lower(), None)
+    if sym_value is None:
+        raise Exception(f"Couldn't find symbol {ref}.")
+    return sym_value
 
 def getVar(ref: str) -> int:
     """Get variable value."""
@@ -863,6 +873,41 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         ROM_COPY.seek(output_addr)
         ROM_COPY.writeBytes(write)
 
+def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
+    """Writes actor health value."""
+    start = getSym("actor_defs") + (4 * actor_index)
+    writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
+
+def updateActorFunction(ROM_COPY, actor_index: int, new_function_sym: str):
+    """Update the actor function in the table."""
+    start = getSym("actor_functions") + (4 * actor_index)
+    writeLabelValue(ROM_COPY, start, Overlay.Custom, new_function_sym, {})
+
+def writeSingleOwnership(ROM_COPY, index, kong):
+    """Write the ownership of a particular item to a kong."""
+    start = getSym("new_flag_mapping") + (index * 8) + 6
+    writeValue(ROM_COPY, start, Overlay.Custom, kong + 2, {}, 1)
+
+def writeKongItemOwnership(ROM_COPY, settings: Settings):
+    """Write the item ownership for kong rando."""
+    starting_kong = settings.starting_kong
+    diddy_freer = settings.diddy_freeing_kong
+    lanky_freer = settings.lanky_freeing_kong
+    tiny_freer = settings.tiny_freeing_kong
+    chunky_freer = settings.chunky_freeing_kong
+    no_arcade_r1 = IsItemSelected(settings.faster_checks_enabled, settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
+    writeSingleOwnership(ROM_COPY, 1, diddy_freer)
+    writeSingleOwnership(ROM_COPY, 2, diddy_freer)
+    writeSingleOwnership(ROM_COPY, 22, tiny_freer)
+    writeSingleOwnership(ROM_COPY, 27, lanky_freer)
+    writeSingleOwnership(ROM_COPY, 39, chunky_freer)
+    writeSingleOwnership(ROM_COPY, 97, starting_kong)
+    if no_arcade_r1:
+        start = getSym("new_flag_mapping") + (41 * 8)
+        writeValue(ROM_COPY, start, Overlay.Custom, Maps.FactoryBaboonBlast, {}, 1)
+        writeValue(ROM_COPY, start + 2, Overlay.Custom, 0, {})
+    
+
 
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
@@ -879,6 +924,14 @@ def patchAssembly(ROM_COPY, spoiler):
         0x17E,  # FLAG_FTT_BLOCKER,
         0x18C,  # FLAG_FIRST_COIN_COLLECTION
     ]
+
+    ACTOR_DEF_START = getSym("actor_defs")
+    ACTOR_MASTER_TYPE_START = getSym("actor_master_types")
+    ACTOR_INTERACTIONS_START = getSym("actor_interactions")
+    ACTOR_HEALTH_START = getSym("actor_health_damage")
+    ACTOR_COLLISION_START = getSym("actor_collisions")
+    ACTOR_FUNCTION_START = getSym("actor_functions")
+    ACTOR_PAAD_SIZES_START = getSym("actor_extra_data_sizes")
 
     alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
 
@@ -999,9 +1052,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8003259A, Overlay.Boss, 4, offset_dict, 2)  # KKO Last Phase Check
         writeValue(ROM_COPY, 0x80032566, Overlay.Boss, settings.kko_phase_order[1], offset_dict, 2)  # KKO Last Phase Check
     if settings.shorten_boss:
-        writeValue(ROM_COPY, 0x8074D3A8, Overlay.Static, 3, offset_dict)  # Dillo Health 4 -> 3
-        writeValue(ROM_COPY, 0x8074D474, Overlay.Static, int(3 + (62 * (2 / 3))), offset_dict)  # Dogadon Health 65 -> 44
-        writeValue(ROM_COPY, 0x8074D4B0, Overlay.Static, 3, offset_dict)  # Spider Boss Health 6 -> 3
+        writeActorHealth(ROM_COPY, 185, 3)  # Dillo Health 4 -> 3
+        writeActorHealth(ROM_COPY, 236, int(3 + (62 * (2 / 3))))  # Dogadon Health 65 -> 44
+        writeActorHealth(ROM_COPY, 251, 3)  # Spider Boss Health 6 -> 3
         writeHook(ROM_COPY, 0x80035120, Overlay.Boss, "MadJackShort", offset_dict)
         writeValue(ROM_COPY, 0x800350D2, Overlay.Boss, 2, offset_dict, 2)  # Mad Jack Cutscene Memery
         writeHook(ROM_COPY, 0x80029AAC, Overlay.Boss, "PufftossShort", offset_dict)
@@ -1440,7 +1493,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806A901C, Overlay.Static, 4, offset_dict, 4)  # NOP - Remove thud
     writeFunction(ROM_COPY, 0x806A84C8, Overlay.Static, "updateFileVariables", offset_dict)  # Update file variables to transfer old locations to current
 
-    writeLabelValue(ROM_COPY, 0x8074C5F0, Overlay.Static, "handleBugEnemy", offset_dict)
+    updateActorFunction(ROM_COPY, 340, "handleBugEnemy")
 
     if Types.Hint in spoiler.settings.shuffled_location_types:
         writeValue(ROM_COPY, 0x8069E18C, Overlay.Static, 0x00003025, offset_dict, 4)  # or a2, zero, zero
@@ -1486,9 +1539,10 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8074452C, Overlay.Static, 1, offset_dict, 1)  # Story Skip starts with on
 
     # Flag Mapping
-    flag_map_hi = getHiSym("NewGBDictionary")
-    flag_map_lo = getLoSym("NewGBDictionary")
+    flag_map_hi = getHiSym("new_flag_mapping")
+    flag_map_lo = getLoSym("new_flag_mapping")
     flag_map_count = getVar("gb_dictionary_count")
+    writeKongItemOwnership(ROM_COPY, settings)
     writeValue(ROM_COPY, 0x8073150A, Overlay.Static, flag_map_hi, offset_dict)
     writeValue(ROM_COPY, 0x8073151E, Overlay.Static, flag_map_lo, offset_dict)
     writeValue(ROM_COPY, 0x8073151A, Overlay.Static, flag_map_count, offset_dict)
@@ -1585,7 +1639,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.factory_toy_monster_fight):
         writeValue(ROM_COPY, 0x806BBB22, Overlay.Static, 5, offset_dict)  # Chunky toy box speedup
-        writeValue(ROM_COPY, 0x8074D454, Overlay.Static, 12, offset_dict)  # Change BHDM Health (16 -> 12)
+        writeActorHealth(ROM_COPY, 228, 12)  # Change BHDM Health (16 -> 12)
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.jetpac):
         writeValue(ROM_COPY, 0x80027DCA, Overlay.Jetpac, 2500, offset_dict)  # Jetpac score requirement
@@ -1688,7 +1742,7 @@ def patchAssembly(ROM_COPY, spoiler):
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_enemies):
         writeValue(ROM_COPY, 0x806B12DA, Overlay.Static, 0x3A9, offset_dict)  # Kasplat Shockwave Chance
         writeValue(ROM_COPY, 0x806B12FE, Overlay.Static, 0x3B3, offset_dict)  # Kasplat Shockwave Chance
-        writeValue(ROM_COPY, 0x8074D4D0, Overlay.Static, 9, offset_dict)
+        writeActorHealth(ROM_COPY, 259, 9)  # Increase kop health
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.lower_max_refill_amounts):
         writeValue(ROM_COPY, 0x806F8F68, Overlay.Static, 0x24090000, offset_dict, 4)  # Standard Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
@@ -1922,7 +1976,7 @@ def patchAssembly(ROM_COPY, spoiler):
     if isQoLEnabled(spoiler, MiscChangesSelected.vanilla_bug_fixes):
         # Race Hoop 3D
         writeValue(ROM_COPY, 0x806C4DB4, Overlay.Static, 0x24050113, offset_dict, 4)  # Change model of race hoop
-        writeValue(ROM_COPY, 0x8074D8EC, Overlay.Static, 2, offset_dict, 1)  # Change race hoop to interpret as 3D Model
+        writeValue(ROM_COPY, ACTOR_MASTER_TYPE_START + 24, Overlay.Custom, 2, offset_dict, 1)  # Change race hoop to interpret as 3D Model
         race_hoop_addresses = [0x8069B060, 0x8069B08C, 0x8069B0AC, 0x8069B0B4, 0x8069B0BC, 0x8069B0C8, 0x8069B050, 0x8069B05C]
         for addr in race_hoop_addresses:
             writeValue(ROM_COPY, addr, Overlay.Static, 0, offset_dict, 4)
@@ -1938,24 +1992,17 @@ def patchAssembly(ROM_COPY, spoiler):
         # Squawks w/ Spotlight Behavior
         writeValue(ROM_COPY, 0x806C6BAE, Overlay.Static, 0, offset_dict)
         # Feathers are sprites
-        writeValue(ROM_COPY, 0x8074ED32, Overlay.Static, 0, offset_dict)  # Model
-        writeValue(ROM_COPY, 0x8074D8FF, Overlay.Static, 4, offset_dict, 1)  # Master Type
+        writeValue(ROM_COPY, ACTOR_DEF_START + (24 * 0x30) + 2, Overlay.Static, 0, offset_dict)  # Model
+        writeValue(ROM_COPY, ACTOR_MASTER_TYPE_START + 43, Overlay.Static, 4, offset_dict, 1)  # Master Type
         writeFloat(ROM_COPY, 0x80753E38, Overlay.Static, 350, offset_dict)  # Speed
-        writeLabelValue(ROM_COPY, 0x8074C14C, Overlay.Static, "OrangeGunCode", offset_dict)
+        updateActorFunction(ROM_COPY, 43, "OrangeGunCode")
         # Fix gun slide (kinda)
         writeValue(ROM_COPY, 0x80751A2C, Overlay.Static, 0x806E2F3C, offset_dict, 4)  # Make it so that you can use Z to enter aim
         # Flags
         file_init_flags.append(0x309)  # Cranky FTT
 
-    writeLabelValue(ROM_COPY, 0x8074C1B8, Overlay.Static, "newCounterCode", offset_dict)  # Shop Indicator Code
     writeLabelValue(ROM_COPY, 0x80748014, Overlay.Static, "spawnWrinklyWrapper", offset_dict)  # Change function to include setFlag call
-    writeLabelValue(ROM_COPY, 0x8074C380, Overlay.Static, "snideCodeHandler", offset_dict)  # 184
-    writeLabelValue(ROM_COPY, 0x8074C394, Overlay.Static, "crankyCodeHandler", offset_dict)  # 189
-    writeLabelValue(ROM_COPY, 0x8074C398, Overlay.Static, "funkyCodeHandler", offset_dict)  # 190
-    writeLabelValue(ROM_COPY, 0x8074C39C, Overlay.Static, "candyCodeHandler", offset_dict)  # 191
     writeValue(ROM_COPY, 0x8074C3F0, Overlay.Static, 0x806AD54C, offset_dict, 4)  # Set Gold Beaver as Blue Beaver Code
-    writeLabelValue(ROM_COPY, 0x8074C5B0, Overlay.Static, "getNextMoveText", offset_dict)  # 324 # Move Text Code
-    writeLabelValue(ROM_COPY, 0x8074C5A0, Overlay.Static, "getNextMoveText", offset_dict)  # 320 # Move Text Code
     writeLabelValue(ROM_COPY, 0x80748064, Overlay.Static, "change_object_scripts", offset_dict)  # Object Instance Scripts
 
     writeFunction(ROM_COPY, 0x806A8844, Overlay.Static, "helmTime_restart", offset_dict)  # Modify Function Call
@@ -1977,7 +2024,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x806A7DD4, Overlay.Static, "getInstrumentRefillCount", offset_dict)  # Correct refill instruction - Headphones
         writeFunction(ROM_COPY, 0x806F92B8, Overlay.Static, "correctRefillCap", offset_dict)  # Correct refill instruction - changeCollectable
         writeValue(ROM_COPY, 0x806A7C04, Overlay.Static, 0x00A0C025, offset_dict, 4)  # or $t8, $a1, $zero
-        writeLabelValue(ROM_COPY, 0x8074C2A0, Overlay.Static, "HeadphonesCodeContainer", offset_dict)
+        updateActorFunction(ROM_COPY, 128, "HeadphonesCodeContainer")
     if isQoLEnabled(spoiler, MiscChangesSelected.remove_extraneous_cutscenes):
         # K. Lumsy
         writeValue(ROM_COPY, 0x80750680, Overlay.Static, 0x22, offset_dict)
@@ -2045,6 +2092,68 @@ def patchAssembly(ROM_COPY, spoiler):
             ]
         )
 
+    # Actor Expansion
+    # Definitions
+    actor_def_hi = getHiSym("actor_defs")
+    actor_def_lo = getLoSym("actor_defs")
+    writeValue(ROM_COPY, 0x8068926A, Overlay.Static, actor_def_hi, offset_dict)
+    writeValue(ROM_COPY, 0x8068927A, Overlay.Static, actor_def_lo, offset_dict)
+    writeValue(ROM_COPY, 0x806892D2, Overlay.Static, actor_def_hi, offset_dict)
+    writeValue(ROM_COPY, 0x806892D6, Overlay.Static, actor_def_lo, offset_dict)
+    writeValue(ROM_COPY, 0x8068945A, Overlay.Static, actor_def_hi, offset_dict)
+    writeValue(ROM_COPY, 0x80689466, Overlay.Static, actor_def_lo, offset_dict)
+    def_limit = getVar("DEFS_LIMIT")
+    writeValue(ROM_COPY, 0x8068928A, Overlay.Static, def_limit, offset_dict)
+    writeValue(ROM_COPY, 0x80689452, Overlay.Static, def_limit, offset_dict)
+    # Functions
+    actor_function_hi = getHiSym("actor_functions")
+    actor_function_lo = getLoSym("actor_functions")
+    writeValue(ROM_COPY, 0x806788F2, Overlay.Static, actor_function_hi, offset_dict)
+    writeValue(ROM_COPY, 0x8067890E, Overlay.Static, actor_function_lo, offset_dict)
+    writeValue(ROM_COPY, 0x80678A3E, Overlay.Static, actor_function_hi, offset_dict)
+    writeValue(ROM_COPY, 0x80678A52, Overlay.Static, actor_function_lo, offset_dict)
+    writeLabelValue(ROM_COPY, 0x8076152C, Overlay.Static, "actor_functions", offset_dict)
+    writeLabelValue(ROM_COPY, 0x80764768, Overlay.Static, "actor_functions", offset_dict)
+    # Collision
+    actor_col_hi_info = getHi(ACTOR_COLLISION_START + 0)
+    actor_col_lo_info = getLo(ACTOR_COLLISION_START + 0)
+    actor_col_hi_unk4 = getHi(ACTOR_COLLISION_START + 4)
+    actor_col_lo_unk4 = getLo(ACTOR_COLLISION_START + 4)
+    writeValue(ROM_COPY, 0x8067586A, Overlay.Static, actor_col_hi_info, offset_dict)
+    writeValue(ROM_COPY, 0x80675876, Overlay.Static, actor_col_lo_info, offset_dict)
+    writeValue(ROM_COPY, 0x806759F2, Overlay.Static, actor_col_hi_unk4, offset_dict)
+    writeValue(ROM_COPY, 0x80675A02, Overlay.Static, actor_col_lo_unk4, offset_dict)
+    writeValue(ROM_COPY, 0x8067620E, Overlay.Static, actor_col_hi_unk4, offset_dict)
+    writeValue(ROM_COPY, 0x8067621E, Overlay.Static, actor_col_lo_unk4, offset_dict)
+    # Health
+    actor_health_hi_health = getHi(ACTOR_COLLISION_START + 0)
+    actor_health_lo_health = getLo(ACTOR_COLLISION_START + 0)
+    actor_health_hi_dmg = getHi(ACTOR_COLLISION_START + 2)
+    actor_health_lo_dmg = getLo(ACTOR_COLLISION_START + 2)
+    writeValue(ROM_COPY, 0x806761D6, Overlay.Static, actor_health_hi_health, offset_dict)
+    writeValue(ROM_COPY, 0x806761E2, Overlay.Static, actor_health_lo_health, offset_dict)
+    writeValue(ROM_COPY, 0x806761F2, Overlay.Static, actor_health_hi_dmg, offset_dict)
+    writeValue(ROM_COPY, 0x806761FE, Overlay.Static, actor_health_lo_dmg, offset_dict)
+    # Interactions
+    actor_interaction_hi = getHiSym("actor_interactions")
+    actor_interaction_lo = getLoSym("actor_interactions")
+    writeValue(ROM_COPY, 0x806781BA, Overlay.Static, actor_interaction_hi, offset_dict)
+    writeValue(ROM_COPY, 0x8067820A, Overlay.Static, actor_interaction_lo, offset_dict)
+    writeValue(ROM_COPY, 0x8067ACCA, Overlay.Static, actor_interaction_hi, offset_dict)
+    writeValue(ROM_COPY, 0x8067ACDA, Overlay.Static, actor_interaction_lo, offset_dict)
+    # Master Type
+    actor_mtype_hi = getHiSym("actor_master_types")
+    actor_mtype_lo = getLoSym("actor_master_types")
+    writeValue(ROM_COPY, 0x80677EF6, Overlay.Static, actor_mtype_hi, offset_dict)
+    writeValue(ROM_COPY, 0x80677F02, Overlay.Static, actor_mtype_lo, offset_dict)
+    writeValue(ROM_COPY, 0x80677FCA, Overlay.Static, actor_mtype_hi, offset_dict)
+    writeValue(ROM_COPY, 0x80677FD2, Overlay.Static, actor_mtype_lo, offset_dict)
+    writeValue(ROM_COPY, 0x80678CDA, Overlay.Static, actor_mtype_hi, offset_dict)
+    writeValue(ROM_COPY, 0x80678CE6, Overlay.Static, actor_mtype_lo, offset_dict)
+    # Paad
+    writeValue(ROM_COPY, 0x8067805E, Overlay.Static, getHiSym("actor_extra_data_sizes"), offset_dict)
+    writeValue(ROM_COPY, 0x80678062, Overlay.Static, getLoSym("actor_extra_data_sizes"), offset_dict)
+
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character
     writeFunction(ROM_COPY, 0x806F9374, Overlay.Static, "getFlagIndex_MedalCorrected", offset_dict)  # Medal Acquisition - Correct for character
@@ -2064,8 +2173,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806DEFDC, Overlay.Static, "dropWrapper", offset_dict)
     # Prevent Japes Dillo Cutscene for the key acquisition
     writeValue(ROM_COPY, 0x806EFCEC, Overlay.Static, 0x1000, offset_dict)
-    # New Helm Barrel Code
-    writeLabelValue(ROM_COPY, 0x8074C24C, Overlay.Static, "HelmBarrelCode", offset_dict)
     # Make getting out of spider traps easier on controllers
     writeLabelValue(ROM_COPY, 0x80752ADC, Overlay.Static, "exitTrapBubbleController", offset_dict)
     # Inverted Controls Option

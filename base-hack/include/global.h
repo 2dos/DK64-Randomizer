@@ -289,8 +289,6 @@ extern int getMoveProgressiveFlagType(int flag);
 extern void getItem(int object_type);
 extern void checkModelTwoItemCollision(item_collision* obj_collision, int player_index, player_collision_info* player_collision);
 extern void CheckKasplatSpawnBitfield(void);
-extern void initActor(int actor_index, int is_custom, void* func, int master_type, int health, int damage_given, int initial_interactions, int base);
-extern void setCollisionAddress(int actor_index, int is_custom, void* collision_info, int subdata);
 extern void refreshPads(pad_refresh_signals signal);
 
 extern int stompHandler(void* unk0, playerData* player, int unk1);
@@ -316,8 +314,6 @@ extern void handleCShifting(char* value, char limit);
 extern void initHints(void);
 extern void initHintFlags(void);
 
-extern void initItemDictionary(void);
-extern void initActorExpansion(void);
 extern void initTextChanges(void);
 extern void giveGB(int kong, int level);
 extern void giveRainbowCoin(void);
@@ -464,6 +460,7 @@ extern sprite_data_struct krool_sprite;
 extern sprite_data_struct feather_gun_sprite;
 extern sprite_data_struct fool_overlay_sprite;
 
+extern actor_behaviour_def actor_defs[DEFS_LIMIT];
 extern void* actor_functions[ACTOR_LIMIT];
 extern health_damage_struct actor_health_damage[ACTOR_LIMIT];
 extern short actor_interactions[ACTOR_LIMIT];
@@ -495,7 +492,6 @@ extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
 extern ICE_TRAP_TYPES ice_trap_queued;
-extern GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT];
 extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];
