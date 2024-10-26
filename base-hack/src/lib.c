@@ -1565,6 +1565,8 @@ dynamic_flag_icetrap_junk isIceTrapFlag(int flag) {
 	return DYNFLAG_NEITHER;
 }
 
+unsigned int cs_skip_db[2] = {0, 0};
+
 int getItemCountReq(requirement_item item) {
 	int enabled_state = flag_counters[item].enabled;
 	int item_count = flag_counters[item].item_count;

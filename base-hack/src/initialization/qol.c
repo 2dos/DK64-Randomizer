@@ -26,23 +26,6 @@ void disableAntiAliasing(void) {
     }
 }
 
-typedef struct skipped_cutscene {
-    /* 0x000 */ unsigned char map;
-    /* 0x001 */ unsigned char cutscene;
-} skipped_cutscene;
-
-static skipped_cutscene cs_unskip[] = {
-    {.map=MAP_FACTORY, .cutscene=2}, // Diddy Prod Spawn
-    {.map=MAP_FACTORY, .cutscene=3}, // Tiny Prod Peek
-    {.map=MAP_FACTORY, .cutscene=4}, // Lanky Prod Peek
-    {.map=MAP_FACTORY, .cutscene=5}, // Chunky Prod Spawn
-    {.map=MAP_AZTEC, .cutscene=14}, // Free Llama
-    {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=0}, // Tiny Barrel Spawn
-    {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=1}, // Cannon GB Spawn
-    {.map=MAP_CASTLEGREENHOUSE, .cutscene=0}, // Greenhouse Intro
-    {.map=MAP_CASTLEDUNGEON, .cutscene=0}, // Dungeon Lanky Trombone Bonus
-};
-
 void initQoL_Cutscenes(void) {
     /**
      * @brief Initialize any quality of life features which aim to reduce the amount of cutscenes inside DK64
@@ -51,30 +34,10 @@ void initQoL_Cutscenes(void) {
      * - Removing the 30s cutscene for freeing the Vulture in Angry Aztec
      * - Adding cutscenes for Item Rando back in if deemed important enough
      */
-    if (Rando.cutscene_skip_setting == CSSKIP_OFF) {
-        // Clear the cutscene skip database
-        for (int i = 0; i < 432; i++) {
-            cs_skip_db[i] = 0;
-        }
-    } else {
-        if (Rando.item_rando) {
-            for (int i = 0; i < (sizeof(cs_unskip) / sizeof(skipped_cutscene)); i++) {
-                int cs_offset = 0;
-                int cs_val = cs_unskip[i].cutscene;
-                int cs_map = cs_unskip[i].map;
-                int shift = cs_val % 31;
-                if (cs_val > 31) {
-                    cs_offset = 1;
-                }
-                int comp = 0xFFFFFFFF - (1 << shift);
-                cs_skip_db[(2 * cs_map) + cs_offset] &= comp;
-            }
-        }
-        writeFunction(0x80628508, &renderScreenTransitionCheck); // Remove transition effects if skipped cutscene
-        if (Rando.cutscene_skip_setting == CSSKIP_PRESS) {
-            writeFunction(0x8061DD80, &pressSkipHandler); // Handler for press start to skip
-        }
-    }
+    int write_size = 4 * sizeof(int);
+    int* temp_data = getFile(write_size, 0x1FF3800 + (CurrentMap * 8));
+    cs_skip_db[0] = temp_data[0];
+    cs_skip_db[1] = temp_data[1];
 }
 
 void fixRaceHoopCode(void) {
@@ -256,7 +219,6 @@ void initQoL(void) {
      * @brief Initialize all quality of life functionality
      */
     writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
-    initQoL_Cutscenes();
     initSpawn();
     initQoL_FastWarp();
 }

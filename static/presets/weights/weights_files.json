@@ -84,6 +84,7 @@
     "enemy_drop_rando": 0,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 1,
@@ -476,6 +477,7 @@
     "enemy_drop_rando": 0.25,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 0.7,
@@ -888,6 +890,7 @@
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.7,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 0.7,
@@ -1342,6 +1345,7 @@
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.7,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 0.7,

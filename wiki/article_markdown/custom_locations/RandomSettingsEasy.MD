@@ -96,6 +96,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Tag Barrels Disabled: 50%
 - Progressive Hints: 50%
 - Enemy Speed Rando: 50%
+- Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
 	- Factory Toy Monster Fight: 100%
 	- Factory Piano Game: 100%
@@ -167,7 +168,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random Kasplat Locations: 
 	- Off: 30%
 	- Vanilla Locations: 70%
-- Lock Key 8 in Level 8: 50%
+- Helm Key Lock: 50%
 - Kong Model Chunky: 
 	- Default: 100%
 - Kong Model Diddy: 

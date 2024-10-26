@@ -28,7 +28,6 @@ call :runscript "Define Heap", "build\heap.py"
 call :runscript "Installing Packages", "build\install_packages.py"
 call :runscript "Pulling Images from ROM", "build\pull_images_from_rom.py"
 call :runscript "Modifying images from ROM", "build\createComplexImages.py"
-call :runscript "Building Cutscene Database", "build\build_cutscene_dict.py"
 call :runscript "Building Item Database", "build\item_dictionaries.py"
 call :runscript "Adjusting Pause Menu Variables", "build\adjust_pause_rotation.py"
 call :runscript "Building Hint Regions", "build\build_hint_regions.py"
@@ -53,6 +52,7 @@ if %use_compiled% == 0 (
 	call :setfinish runtime
 	echo Running Cranky's Lab [32mDONE[0m (%runtime%)
 )
+call :runscript "Building Cutscene Database", "build\build_cutscene_dict.py"
 
 <nul set /p=Building Symbols File!CR!
 call :setstart

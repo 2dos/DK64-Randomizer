@@ -10,7 +10,7 @@
 | Japes Under Ground | Japes Kasplat: Underground | `(l.can_use_vines and l.pineapple and l.ischunky)` | 
 | Jungle Japes | Japes Kasplat: By Lanky Slope Bonus |  | 
 | Jungle Japes | Japes Kasplat: Near Painting Room |  | 
-| Jungle Japes | Japes Kasplat: Inside Tiny's Cage | `((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)` | 
+| Jungle Japes | Japes Kasplat: Inside Tiny's Cage | `((Events.JapesTinySwitch in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)` | 
 | Jungle Japes | Japes Kasplat: Starting Area |  | 
 | Jungle Japes | Japes Kasplat: Diddy Peanut Cave |  | 
 | Jungle Japes | Japes Kasplat: In the river | `l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any))` | 
@@ -19,7 +19,7 @@
 | Jungle Japes | Japes Kasplat: Hillside Alcove |  | 
 | Japes Mountain | Japes Kasplat: Inside the Mountain |  | 
 | Japes Tiny Hive | Japes Kasplat: Inside the Shell |  | 
-| Jungle Japes | Japes Kasplat: Painting Room Hill | `(l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy))` | 
+| Jungle Japes | Japes Kasplat: Painting Room Hill | `(l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy))` | 
 | Jungle Japes | Japes Kasplat: Minecart Exit |  | 
 
 # Angry Aztec
@@ -29,20 +29,20 @@
 | Angry Aztec | Aztec Kasplat: On the Oasis |  | 
 | Angry Aztec | Aztec Kasplat: On Llama Cage | `((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick()` | 
 | Angry Aztec | Aztec Kasplat: Near giant boulder |  | 
-| Angry Aztec | Aztec Kasplat: Behind DK Stone Door | `l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
+| Angry Aztec | Aztec Kasplat: Behind DK Stone Door | `l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
 | Aztec Llama Temple | Aztec Kasplat: Llama Temple Lava |  | 
 | Angry Aztec | Aztec Kasplat: Hunky Chunky Barrel |  | 
 | Angry Aztec | Aztec Kasplat: On Tiny Temple | `l.jetpack and l.isdiddy and l.climbing` | 
-| Angry Aztec | Aztec Kasplat: In Vase Room | `(l.chunky and l.pineapple) or l.phasewalk` | 
+| Angry Aztec | Aztec Kasplat: In Vase Room | `(l.chunky and l.pineapple) or l.CanPhase()` | 
 | Angry Aztec | Aztec Kasplat: Behind 5-Door Temple |  | 
 | Angry Aztec | Aztec Kasplat: Near Snide's |  | 
 | Aztec Llama Temple | Aztec Kasplat: By the Llama in his Temple |  | 
 | Aztec Tiny Temple | Aztec Kasplat: Free Tiny Room |  | 
-| Aztec Chunky5DTemple | Aztec Kasplat: Chunky 5-Door Temple | `(l.pineapple and l.ischunky) or l.phasewalk` | 
+| Aztec Chunky5DTemple | Aztec Kasplat: Chunky 5-Door Temple | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
 | Angry Aztec | Aztec Kasplat: Behind the Beetle Race |  | 
-| Aztec Llama Temple | Aztec Kasplat: Lanky Matching Game | `l.grape or l.phasewalk` | 
+| Aztec Llama Temple | Aztec Kasplat: Lanky Matching Game | `l.grape or l.CanPhase()` | 
 | Aztec Tiny Temple | Aztec Kasplat: Tiny Temple Mini Monkey |  | 
-| Aztec Donkey5DTemple | Aztec Kasplat: Donkey 5-Door Temple | `(l.coconut or l.phasewalk) and l.isdonkey` | 
+| Aztec Donkey5DTemple | Aztec Kasplat: Donkey 5-Door Temple | `(l.coconut or l.CanPhase()) and l.isdonkey` | 
 
 # Frantic Factory
 | Map | Name | Logic |
@@ -50,7 +50,7 @@
 | Frantic Factory | Factory Kasplat: Starting Area |  | 
 | Frantic Factory | Factory Kasplat: Near Power Hut |  | 
 | Frantic Factory | Factory Kasplat: Down the Hatch Pole |  | 
-| Frantic Factory | Factory Kasplat: Dark Room | `(l.punch and l.chunky) or l.phasewalk` | 
+| Frantic Factory | Factory Kasplat: Dark Room | `(l.punch and l.chunky) or l.CanPhase()` | 
 | Frantic Factory | Factory Kasplat: Lowest Production Platform |  | 
 | Frantic Factory | Factory Kasplat: Upper Production Pipe |  | 
 | Frantic Factory | Factory Kasplat: Base of Production |  | 
@@ -60,7 +60,7 @@
 | Frantic Factory | Factory Kasplat: Near Snide's |  | 
 | Factory Power Hut | Factory Kasplat: Power Hut |  | 
 | Frantic Factory | Factory Kasplat: By Car Race |  | 
-| Frantic Factory | Factory Kasplat: Tiny Shooting Game | `l.mini or l.phasewalk` | 
+| Frantic Factory | Factory Kasplat: Tiny Shooting Game | `l.mini or l.CanPhase()` | 
 | Factory Crusher | Factory Kasplat: Crusher Room |  | 
 | Frantic Factory | Factory Kasplat: Upper Production Twirl | `l.twirl` | 
 | Frantic Factory | Factory Kasplat: Lanky Piano Game | `l.trombone or l.CanAccessRNDRoom()` | 
@@ -74,7 +74,7 @@
 | Gloomy Galleon | Galleon Kasplat: Cannon Game Room | `l.CanGetOnCannonGamePlatform()` | 
 | Gloomy Galleon | Galleon Kasplat: Past Vines |  | 
 | Gloomy Galleon | Galleon Kasplat: Musical Cactus |  | 
-| Gloomy Galleon | Galleon Kasplat: On the Crown Pad | `(l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)` | 
+| Gloomy Galleon | Galleon Kasplat: On the Crown Pad | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False)` | 
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's |  | 
 | Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `l.climbing` | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish |  | 
@@ -131,7 +131,7 @@
 | Crystal Caves | Caves Kasplat: With the Giant Kosha |  | 
 | Caves Diddy Igloo | Caves Kasplat: In Diddy Igloo |  | 
 | Caves Donkey Cabin | Caves Kasplat: DK Shooting Cabin |  | 
-| Crystal Caves | Caves Kasplat: Gorilla Gone Cave | `(l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Crystal Caves | Caves Kasplat: Gorilla Gone Cave | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
 | Crystal Caves | Caves Kasplat: Starting Area |  | 
 
 # Creepy Castle
@@ -142,7 +142,7 @@
 | Creepy Castle | Castle Kasplat: Back of Castle Troff |  | 
 | Castle Ballroom | Castle Kasplat: Ballroom |  | 
 | Creepy Castle | Castle Kasplat: Castle Top Level |  | 
-| Castle Tree | Castle Kasplat: Inside the Tree | `(l.coconut or l.phasewalk or l.generalclips) and l.isdonkey` | 
+| Castle Tree | Castle Kasplat: Inside the Tree | `(l.coconut or l.CanPhase() or l.generalclips) and l.isdonkey` | 
 | Castle Lower Cave | Castle Kasplat: Lower Cave Center |  | 
 | Creepy Castle | Castle Kasplat: Near Upper Warp 2 |  | 
 | Creepy Castle | Castle Kasplat: On a lone platform |  | 
@@ -151,9 +151,9 @@
 | Creepy Castle | Castle Kasplat: Near Cranky's Hut |  | 
 | Creepy Castle | Castle Kasplat: Lower Rocketbarrel |  | 
 | Castle Greenhouse | Castle Kasplat: Greenhouse |  | 
-| Castle Museum | Castle Kasplat: Museum Mysterious Pedestal | `l.monkeyport or l.phasewalk` | 
-| Castle Dungeon | Castle Kasplat: Caged in the Dungeon | `l.punch or l.phasewalk` | 
-| Castle Crypt | Castle Kasplat: Entrance to Minecart | `l.coconut or l.phasewalk or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Castle Museum | Castle Kasplat: Museum Mysterious Pedestal | `l.monkeyport or l.CanPhase()` | 
+| Castle Dungeon | Castle Kasplat: Caged in the Dungeon | `l.punch or l.CanPhase()` | 
+| Castle Crypt | Castle Kasplat: Entrance to Minecart | `l.coconut or l.CanPhase() or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
 | Castle Library | Castle Kasplat: Library |  | 
 | Creepy Castle | Castle Kasplat: In the Clouds | `l.jetpack` | 
 
@@ -163,8 +163,8 @@
 | Isles | Isles Kasplat: Beaver Beach |  | 
 | Frantic Factory Lobby | Isles Kasplat: Factory Lobby above Portal | `(l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy))` | 
 | Hideout Helm Lobby | Isles Kasplat: Helm Lobby | `(l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming)` | 
-| Creepy Castle Lobby | Isles Kasplat: Castle Lobby | `(l.coconut and l.donkey) or l.phasewalk` | 
-| Crystal Caves Lobby | Isles Kasplat: Caves Lobby Punch | `(l.punch and l.chunky) or l.phasewalk or l.ledgeclip` | 
+| Creepy Castle Lobby | Isles Kasplat: Castle Lobby | `(l.coconut and l.donkey) or l.CanPhase()` | 
+| Crystal Caves Lobby | Isles Kasplat: Caves Lobby Punch | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 | Frantic Factory Lobby | Isles Kasplat: Factory Lobby Box | `l.punch and l.chunky` | 
 | Gloomy Galleon Lobby | Isles Kasplat: Galleon Lobby |  | 
 | Isles | Isles Kasplat: Inside Big Rock | `Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky` | 
@@ -172,8 +172,8 @@
 | Isles | Isles Kasplat: Big X Platform |  | 
 | Isles | Isles Kasplat: Back of Cabin Isle |  | 
 | Crystal Caves Lobby | Isles Kasplat: Caves Lobby Platform | `l.jetpack` | 
-| Angry Aztec Lobby | Isles Kasplat: Aztec Lobby Feather Gate | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk` | 
-| KLumsy | Isles Kasplat: Prison Sprint Cage | `(l.sprint and l.lanky) or l.phasewalk` | 
+| Angry Aztec Lobby | Isles Kasplat: Aztec Lobby Feather Gate | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
+| KLumsy | Isles Kasplat: Prison Sprint Cage | `(l.sprint and l.lanky) or l.CanPhase()` | 
 | Jungle Japes Lobby | Isles Kasplat: Japes Lobby |  | 
 | Isles | Isles Kasplat: Upper Monkeyport |  | 
 | Isles Snide Room | Isles Kasplat: Near Snide's |  | 

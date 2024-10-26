@@ -1,5 +1,7 @@
 """Builds Cutscene Database from CSV."""
 
+from BuildLib import newROMName
+
 csv_file = "assets/cutscenes/cutscenes_skipped.csv"
 write_file = "src/misc/cutscene_database.c"
 
@@ -30,24 +32,7 @@ with open(csv_file, "r") as csv:
                 else:
                     cs_hi |= 1 << (cs_index - 32)
         map_data.extend([cs_lo, cs_hi])
-    with open(write_file, "w") as c_f:
-        warning = [
-            "/*",
-            "\tThis file is automatically written to by build_cutscene_dict.py",
-            "\tDon't directly modify this file, instead modify the script",
-            "\tOtherwise your changes will be overwritten on next build",
-            "",
-            "\tThanks,",
-            "\t\tBallaam",
-            "*/",
-            "",
-            '#include "../../include/common.h"',
-            "",
-        ]
-        for w in warning:
-            c_f.write(f"{w}\n")
-        c_f.write("unsigned int cs_skip_db[] = {\n")
+    with open(newROMName, "r+b") as fh:
+        fh.seek(0x1FF3800)
         for m in map_data:
-            hx = "{0:#0{1}X}".format(m, 10)
-            c_f.write(f"\t{hx.replace('0X','0x')}, \n")
-        c_f.write("};")
+            fh.write(m.to_bytes(4, "big"))

@@ -109,6 +109,50 @@ static unsigned char slam_screen_level = 0;
 static unsigned char belt_screen_level = 0;
 static unsigned char ins_screen_level = 0;
 
+typedef struct passMapping {
+	short button_required;
+	unsigned char btf_val;
+	char text_char;
+} passMapping;
+
+typedef enum passEnum {
+	PASSKEY_NULL,
+	PASSKEY_DU,
+	PASSKEY_DD,
+	PASSKEY_DL,
+	PASSKEY_DR,
+	PASSKEY_Z,
+	PASSKEY_S,
+} passEnum;
+
+#define L_Button 0x0020
+#define D_Up 0x0800
+#define D_Down 0x0400
+#define D_Left 0x0200
+#define D_Right 0x0100
+#define B_Button 0x4000
+#define A_Button 0x8000
+#define Z_Button 0x2000
+#define R_Button 0x0010
+#define Start_Button 0x1000
+#define C_Up 0x0008
+#define C_Down 0x0004
+#define C_Left 0x0002
+#define C_Right 0x0001
+
+static char passwordProgress = 0;
+static char acceptPassInput = 0;
+static char inputtedPass[8];
+static passMapping button_mapping_password[] = {
+	{.button_required = D_Up | C_Up, .btf_val = PASSKEY_DU, .text_char='U'},
+	{.button_required = D_Down | C_Down, .btf_val = PASSKEY_DD, .text_char='D'},
+	{.button_required = D_Left | C_Left, .btf_val = PASSKEY_DL, .text_char='L'},
+	{.button_required = D_Right | C_Right, .btf_val = PASSKEY_DR, .text_char='R'},
+	{.button_required = Z_Button, .btf_val = PASSKEY_Z, .text_char='Z'},
+	{.button_required = Start_Button, .btf_val = PASSKEY_S, .text_char='S'},
+};
+static char passTextDisplay[9];
+
 int isMovePregiven(int index) {
 	/**
 	 * @brief Get the tracker move initial state (Empty File)
@@ -610,6 +654,10 @@ Gfx* displayHash(Gfx* dl, int y_offset) {
 		dl = displayCenteredText(dl, info_y / 4, "SPOILER GENNED", 1);
 		info_y += INFO_Y_DIFF;
 	}
+	if (Rando.rom_flags.pass_locked) {
+		dl = displayCenteredText(dl, info_y / 4, "LOCKED", 1);
+		info_y += INFO_Y_DIFF;
+	}
 	return dl;
 }
 
@@ -700,9 +748,6 @@ void wipeFileStats(void) {
 	for (int i = 0; i < 5; i++) {
 		ResetExtraData(EGD_KONGIGT, i);
 	}
-	for (int i = 0; i < 8; i++) {
-		ResetExtraData(EGD_FILENAME, i);
-	}
 	ResetExtraData(EGD_HELMHURRYIGT, 0);
 	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
 }
@@ -717,6 +762,136 @@ void setAllDefaultFlags(void) {
 			setPermFlag(flag);
 		}
 	}
+}
+
+void startFile(void) {
+	lockInput(1);
+	int file_empty = isFileEmpty(0);
+	fileStart(0);
+	if (file_empty) {
+		// New File
+		setAllDefaultFlags();
+		unlockMoves();
+		applyFastStart();
+		openCrownDoor();
+		giveCollectables();
+		if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
+			setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
+		}
+		pre_turn_keys();
+		Character = Rando.starting_kong;
+		wipeFileStats();
+		if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
+			setPermFlag(FLAG_ARCADE_LEVER);
+		}
+		SaveToGlobal();
+		for (int i = 0; i < 4; i++) {
+			if (Rando.check_shop_flags & (0x80 >> i)) {
+				setPermFlag(FLAG_ITEM_CRANKY + i);
+			}
+		}
+		handleTimeOfDay(TODCALL_INITFILE);
+	} else {
+		// Dirty File
+		Character = Rando.starting_kong;
+		determineStartKong_PermaLossMode();
+		giveCollectables();
+	}
+	updateBarrierCounts();
+	if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
+		QueueHelmTimer = 1;
+	}
+	setKongIgt();
+	ForceStandardAmmo = 0;
+}
+
+int testPasswordSequence(void) {
+	if (Rando.password == 0) {
+		return 1; // Any password will work, we'll remove this once we get some stuff working
+	}
+	return encPass(&inputtedPass, &Rando.hash) == Rando.password;
+}
+
+void wipePassword(void) {
+	passwordProgress = 0;
+	for (int i = 0; i < 8; i++) {
+		inputtedPass[i] == PASSKEY_NULL;
+		passTextDisplay[i] = 0;
+	}
+}
+
+void handlePassword(void) {
+	short button_btf = *(short*)(&NewlyPressedControllerInput.Buttons);
+	if (button_btf == 0) {
+		acceptPassInput = 1;
+	} else if (acceptPassInput) {
+		if (passwordProgress >= 8) {
+			return;
+		}
+		int has_button = 0;
+		int button_sent = 0;
+		for (int i = 0; i < sizeof(button_mapping_password) >> 2; i++) {
+			if (button_mapping_password[i].button_required & button_btf) {
+				inputtedPass[passwordProgress] = button_mapping_password[i].btf_val;
+				passTextDisplay[passwordProgress++] = button_mapping_password[i].text_char;
+				acceptPassInput = 0;
+				playSFX(64); // Arcade walk
+				return;
+			}
+		}
+	}
+}
+
+void password_screen_code(actorData* actor, int buttons) {
+	menu_controller_paad* paad = actor->paad;
+	if (paad->screen_transition_progress == 0.0f) {
+		if (paad->unk_4 == 0.0f) {
+			if (buttons & 1) {
+				// A
+				if (passwordProgress == 8) {
+					if (testPasswordSequence()) {
+						playSFX(459); // Success
+						paad->prevent_action = 0;
+						paad->next_screen = 3; // file progress
+					} else {
+						playSFX(83); // Grunt
+						wipePassword();
+					}
+				}
+			} else if (buttons & 2) {
+				// B
+				playSFX(0x2C9);
+				paad->prevent_action = 0;
+				paad->next_screen = 2; // file select
+			} else {
+				// Inputting sequence
+				handlePassword();
+			}
+		}
+		initMenuBackground(paad,4);
+	}
+	updateMenuController(actor,paad,1);
+}
+
+void password_screen_init(actorData* actor) {
+	menu_controller_paad* paad = actor->paad;
+	displayMenuSprite(paad, (void*)0x80720CF0, 0x122, 0xD2, 0.75f, 2, 0); // A
+	displayMenuSprite(paad, (void*)0x80720D14, 0x23, 0xD2, 0.75f, 2, 0); // B
+	passwordProgress = 0;
+	wipePassword();
+}
+
+Gfx* password_screen_gfx(actorData* actor, Gfx* dl) {
+	float x2, y2;
+	menu_controller_paad* paad = actor->paad;
+	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+	handleTextScrolling(paad, 160.0f, 25.0f, &x2, &y2, 5, 0, *(float*)(0x80033CB4));
+	dl = printText(dl, x2 * 4.0f, y2 * 4.0f, 0.6f, "ENTER PASSWORD");
+	handleTextScrolling(paad, 160.0f, 80.0f, &x2, &y2, 5, 0, 2.0f);
+	for (int i = passwordProgress; i < 8; i++) {
+		passTextDisplay[i] = '?';
+	}
+	return printText(dl, x2 * 4.0f, y2 * 4.0f, 1.0f, &passTextDisplay);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -742,47 +917,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 	if (paad->screen_transition_progress == 0.0f) {
 		if (paad->unk_4 == 0.0f) {
 			if (buttons & 1) { // A
-				lockInput(1);
-				int file_empty = isFileEmpty(0);
-				fileStart(0);
-				if (file_empty) {
-					// New File
-					setAllDefaultFlags();
-					unlockMoves();
-					applyFastStart();
-					openCrownDoor();
-					giveCollectables();
-					if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
-						setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
-					}
-					pre_turn_keys();
-					Character = Rando.starting_kong;
-					wipeFileStats();
-					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
-						setPermFlag(FLAG_ARCADE_LEVER);
-					}
-					SaveToGlobal();
-					for (int i = 0; i < 4; i++) {
-						if (Rando.check_shop_flags & (0x80 >> i)) {
-							setPermFlag(FLAG_ITEM_CRANKY + i);
-						}
-					}
-					handleTimeOfDay(TODCALL_INITFILE);
-				} else {
-					// Dirty File
-					Character = Rando.starting_kong;
-					determineStartKong_PermaLossMode();
-					giveCollectables();
-				}
-				updateBarrierCounts();
-				if (ENABLE_FILENAME) {
-					writeDefaultFilename();
-				}
-				if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
-					QueueHelmTimer = 1;
-				}
-				setKongIgt();
-				ForceStandardAmmo = 0;
+				startFile();
 			} else if (buttons & 2) { // B
 				playSFX(0x2C9);
 				paad->prevent_action = 0;
@@ -794,13 +929,6 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					paad->next_screen = 5;
 				} else {
 					playSFX(Wrong);
-				}
-			} else if (buttons & 0x80) { // CD
-				// Go to filename editing
-				if (ENABLE_FILENAME) {
-					playSFX(0x2C9);
-					paad->prevent_action = 0;
-					paad->next_screen = 7;
 				}
 			}
 		}

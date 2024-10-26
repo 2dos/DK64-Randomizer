@@ -84,11 +84,6 @@ SkipCutscenePans:
     sltiu v0, $t1, 64
     beqz v0, SkipCutscenePans_Persist
     nop
-    lui $t1, hi(CurrentMap)
-    lw $t1, lo(CurrentMap) ($t1)
-    sltiu v0, $t1, 216
-    beqz v0, SkipCutscenePans_Persist
-    nop
     lui $t1, hi(CutsceneIndex)
     lhu $t1, lo(CutsceneIndex) ($t1)
     addiu $t6, $zero, 32
@@ -102,11 +97,7 @@ SkipCutscenePans:
 
     SkipCutscenePans_PostShiftDetect:
         ; t1 = offset, v0 = shift
-        lui $t6, hi(CurrentMap)
-        lw $t6, lo(CurrentMap) ($t6)
-        sll $t6, $t6, 1
-        addu $t6, $t6, $t1
-        sll $t6, $t6, 2
+        sll $t6, $t1, 2
         lui $t1, hi(cs_skip_db)
         addiu $t1, $t1, lo(cs_skip_db)
         addu $t6, $t6, $t1
@@ -156,25 +147,18 @@ PlayCutsceneVelocity:
 
     PlayCutsceneVelocity_CheckSlot:
         ; t3 = offset, t4 = shift
-        lui v0, hi(CurrentMap)
-        lw v0, lo(CurrentMap) (v0)
-        sltiu $at, v0, 216
-        beqz $at, PlayCutsceneVelocity_Finish
-        nop
         lui $t1, hi(cs_skip_db)
         addiu $t1, $t1, lo(cs_skip_db)
-        sll v0, v0, 1
-        addu v0, v0, $t3
-        sll v0, v0, 2
-        addu $t1, $t1, v0
+        sll $v0, $t3, 2
+        addu $t1, $t1, $v0
         lw $t1, 0x0 ($t1)
-        addiu v0, $zero, 1
-        sllv v0, v0, $t4
-        and $t1, $t1, v0
+        addiu $v0, $zero, 1
+        sllv $v0, $v0, $t4
+        and $t1, $t1, $v0
         beqz $t1, PlayCutsceneVelocity_Finish
         nop
         j 0x8061CE5C
-        lw v0, 0x0 ($a1)
+        lw $v0, 0x0 ($a1)
 
     PlayCutsceneVelocity_Finish:
         lui $t9, 0x8075

@@ -58,6 +58,7 @@ void parseCutsceneData(void) {
 	 */
 	resetDisplayedMusic();
 	wipeCounterImageCache();
+	initQoL_Cutscenes();
 	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}

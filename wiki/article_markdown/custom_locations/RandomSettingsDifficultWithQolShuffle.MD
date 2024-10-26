@@ -81,6 +81,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Enable Tag Anywhere: 90%
 - Dropsanity: 60%
 - Enemy Speed Rando: 70%
+- Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
 	- Factory Toy Monster Fight: 70%
 	- Factory Piano Game: 70%
@@ -180,7 +181,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 15%
 	- Vanilla Locations: 55%
 	- Location Shuffle: 30%
-- Lock Key 8 in Level 8: 50%
+- Helm Key Lock: 50%
 - Kong Model Chunky: 
 	- Default: 100%
 - Kong Model Diddy: 

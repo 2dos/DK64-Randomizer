@@ -422,11 +422,6 @@ void initHack(int source) {
 				KongModelData[KONG_DIDDY].props_or = 0;
 			}
 			fixCutsceneModels();
-			// Oscillation Effects
-			if (Rando.remove_oscillation_effects) {
-				writeFunction(0x80660994, &getOscillationDelta);
-				writeFunction(0x806609BC, &getOscillationDelta);
-			}
 			if (Rando.disabled_music.pause) {
 				*(int*)(0x805FC890) = 0; // Pause theme
 				*(int*)(0x805FC89C) = 0; // Pause Start theme
@@ -455,13 +450,6 @@ void initHack(int source) {
 				*(short*)(0x8060357E) = 0; // Set Fungi Cart count to 0
 				*(short*)(0x806035BA) = 0; // Set TGrounds count to 0
 			}
-			if (Rando.hard_mode.easy_fall) {
-				float fall_threshold = 100.0f;
-				*(short*)(0x806D3682) = getFloatUpper(fall_threshold); // Change fall too far threshold
-				writeFunction(0x806D36B4, &fallDamageWrapper);
-				writeFunction(0x8067F540, &transformBarrelImmunity);
-				writeFunction(0x8068B178, &factoryShedFallImmunity);
-			}
 			if (Rando.hard_mode.lava_water) {
 				// Dynamic Textures
 				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[7].texture_loader;
@@ -474,9 +462,6 @@ void initHack(int source) {
 				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
 				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[6].texture_loader;
 				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
-			}
-			if (Rando.balloon_sound) {
-				writeFunction(0x806A77D8, &playBalloonWhoosh);
 			}
 			initSwitchsanityChanges();
 

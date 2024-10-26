@@ -3,6 +3,7 @@
 import js
 import zlib
 import random
+import gzip
 from enum import IntEnum, auto
 from PIL import Image
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -132,3 +133,56 @@ def hueShift(im, amount):
             new.append(list(im_px[x, y])[3])
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
+
+
+def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int):
+    """Change image to a CI texture."""
+    if ci_index not in (4, 8):
+        return
+    color_count = 1 << ci_index
+    if color_count < 32:
+        im_f = im_f.quantize(colors=color_count, method=Image.MAXCOVERAGE)
+    else:
+        im_f = im_f.convert("P", palette=Image.ADAPTIVE, colors=color_count)
+    palette_indexes = list(im_f.getdata())
+    palette = im_f.getpalette()
+    palette_colors = [tuple(palette[i : i + 3]) for i in range(0, len(palette), 3)]
+    rgba5551_values = []
+    for color in palette_colors:
+        colv = 0
+        for channel_value in color:
+            val = channel_value & 0x1F
+            colv <<= 5
+            colv |= val
+        colv |= 1
+        rgba5551_values.append(colv)
+    tex_bin = []
+    if ci_index == 8:
+        tex_bin = palette_indexes.copy()
+    else:
+        output_value = 0
+        for index, value in enumerate(palette_indexes):
+            if (index & 1) == 0:
+                output_value = (value & 0xF) << 4
+            else:
+                output_value |= value & 0xF
+                tex_bin.append(output_value)
+    pal_bin = []
+    for half in rgba5551_values:
+        upper = (half >> 8) & 0xFF
+        lower = half & 0xFF
+        pal_bin.extend([upper, lower])
+    tex_bin_file = gzip.compress(bytearray(tex_bin), compresslevel=9)
+    pal_bin_file = gzip.compress(bytearray(pal_bin), compresslevel=9)
+    tex_start = js.pointer_addresses[25]["entries"][tex_index]["pointing_to"]
+    tex_end = js.pointer_addresses[25]["entries"][tex_index + 1]["pointing_to"]
+    pal_start = js.pointer_addresses[25]["entries"][pal_index]["pointing_to"]
+    pal_end = js.pointer_addresses[25]["entries"][pal_index + 1]["pointing_to"]
+    if (tex_end - tex_start) < len(tex_bin_file):
+        return
+    if (pal_end - pal_start) < len(pal_bin_file):
+        return
+    ROM_COPY.seek(tex_start)
+    ROM_COPY.write(tex_bin_file)
+    ROM_COPY.seek(pal_start)
+    ROM_COPY.write(pal_bin_file)
