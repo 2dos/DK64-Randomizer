@@ -1,3 +1,4 @@
+"""Generate Python and TypeScript stub files for the randomizer Enums."""
 import json
 import os
 from pathlib import Path
@@ -9,6 +10,7 @@ DEST_DIR = Path("typings/randomizer/Enums")
 
 
 def generate_stubs():
+    """Generate Python and TypeScript stub files for the randomizer Enums."""
     # Ensure the destination directory exists
     if not DEST_DIR.exists():
         os.makedirs(DEST_DIR)
@@ -19,6 +21,7 @@ def generate_stubs():
 
 
 def create_stub(json_file):
+    """Create a .pyi and .d.ts file based on the JSON content."""
     # Get the filename and construct the output .pyi and .d.ts file paths
     json_file_name = json_file.stem
     pyi_file_path = DEST_DIR / f"{json_file_name}.pyi"
@@ -70,6 +73,7 @@ def resolve_obj_references(data: dict) -> dict:
 
 
 def create_pyi_content(data: dict) -> str:
+    """Generate Python stub file content based on the JSON data."""
     pyi_lines = []
     use_intenum = False  # Track if we need to import IntEnum
 
@@ -110,6 +114,7 @@ def create_pyi_content(data: dict) -> str:
 
 
 def create_dts_content(data: dict) -> str:
+    """Generate TypeScript stub file content based on the JSON data."""
     dts_lines = []
 
     # Iterate through each key-value pair in the JSON
