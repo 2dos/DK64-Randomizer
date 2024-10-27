@@ -56,6 +56,8 @@ async function generateSpoiler(spoiler) {
     // Prepare spoiler data
     let trimmed_spoiler = spoiler.replace(/\n\s*/g, "");
     let formatted_spoiler = JSON.parse(trimmed_spoiler);
+    // Clone formatted_spoiler to avoid modifying the original object
+    let cloned_spoiler = JSON.parse(JSON.stringify(formatted_spoiler));
 
     // Spoiler hints data cleanup
     if (formatted_spoiler["Spoiler Hints Data"]) {
@@ -144,7 +146,7 @@ async function generateSpoiler(spoiler) {
             return isIterable && !isString && !isMapping;
           });
         const rendered = await env.render("spoiler_new.html.jinja2", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
-        document.getElementById("spoiler_log_text").value = JSON.stringify(spoiler, null, 4);
+        document.getElementById("spoiler_log_text").value = JSON.stringify(cloned_spoiler, null, 4);
         document.getElementById("spoiler_log_text").innerHTML = rendered;
     } catch (error) {
         console.error("Error rendering spoiler template:", error);
