@@ -273,10 +273,24 @@ kongSpecificMoveItemSet = {
 }
 
 # Kong-specific shops have a handful of banned items.
-kongSpecificShopRestrictedItemSet = {PlandoItems.Vines.name, PlandoItems.Climbing.name, PlandoItems.Swim.name, PlandoItems.Oranges.name, PlandoItems.Barrels.name, PlandoItems.Shockwave.name}
+kongSpecificShopRestrictedItemSet = {
+    PlandoItems.Vines.name,
+    PlandoItems.Climbing.name,
+    PlandoItems.Swim.name,
+    PlandoItems.Oranges.name,
+    PlandoItems.Barrels.name,
+    PlandoItems.Shockwave.name,
+}
 
 # General shops have few restrictions.
-shopRestrictedItemSet = {PlandoItems.RainbowCoin.name, PlandoItems.JunkItem.name}
+shopRestrictedItemSet = {
+    PlandoItems.RainbowCoin.name,
+    PlandoItems.JunkItem.name,
+    PlandoItems.Cranky.name,
+    PlandoItems.Funky.name,
+    PlandoItems.Candy.name,
+    PlandoItems.Snide.name,
+}
 
 # Add the restricted items for each shop location. (This will also cover the
 # blueprint redemptions, which is fine.)
@@ -322,9 +336,6 @@ for locEnum, locObj in LocationList.items():
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.HunkyChunky.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.PonyTailTwirl.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Barrels.name)
-
-# This one rock can't have Kongs as a reward.
-ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(KongSet)
 
 # These specific locations cannot have fake items on them.
 badFakeItemLocationList = [
