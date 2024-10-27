@@ -446,7 +446,7 @@ static const krool_head helm_heads[] = {
 
 static const short float_ids[] = {0x1F4, 0x36};
 static const short shop_obj_types[] = {0x73, 0x7A, 0x124};
-static const float float_offsets[] = {51.0f, 51.0f, 45.0f};
+static const float float_offsets[] = {51.0f, 45.0f, 45.0f};
 
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
