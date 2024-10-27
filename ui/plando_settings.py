@@ -644,4 +644,3 @@ def plando_disable_keys(evt):
             # Re-enable this key as a dropdown option.
             for option in key_options:
                 option.removeAttribute("disabled")
-

@@ -1722,7 +1722,6 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.Crypt,
         vanilla=True,
-
         logic=lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.CanPhase() or l.generalclips,
         locations=[[5, 1.0, 1405.1158447265625, 190.46810913085938, 2753.63671875], [5, 1.0, 1404.5225830078125, 190.34698486328125, 2951.347412109375]],
     ),
