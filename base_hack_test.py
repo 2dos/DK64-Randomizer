@@ -14,7 +14,6 @@ from randomizer.Enums.Items import Items
 APPLY_VARIABLES = True
 ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
 DEBUG_PRINT = False
-IO_LOGGING = False
 
 if not APPLY_VARIABLES:
     sys.exit()
@@ -50,9 +49,6 @@ def debugPrint(string: str):
         print(string)
 
 
-io_logs = []
-
-
 class TestROM:
     """Store information regarding a test rom."""
 
@@ -60,27 +56,16 @@ class TestROM:
         """Initialize with given parameters."""
         self.stream = stream
 
-    def seek(self, offset: int, comment: str = ""):
+    def seek(self, offset: int):
         """Binary IO seek."""
-        if IO_LOGGING:
-            io_logs.append({"action": "seek", "offset": offset, "comment": comment})
         self.stream.seek(offset)
 
     def readBytes(self, count: int) -> bytes:
         """Binary IO read."""
-        if IO_LOGGING:
-            io_logs.append(
-                {
-                    "action": "read",
-                    "count": count,
-                }
-            )
         return self.stream.read(count)
 
     def writeMultipleBytes(self, value: int, size: int):
         """Binary IO write."""
-        if IO_LOGGING:
-            io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
 
 
@@ -308,25 +293,4 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
 with open(ROM_FILE, "r+b") as rom:
     ROM_COPY = TestROM(rom)
     patchAssembly(ROM_COPY, spoiler)
-    patchAssemblyCosmetic(ROM_COPY, settings, False)
-
-if IO_LOGGING:
-    with open("io.log", "w") as fh:
-        seek_pointer = 0
-        for x in io_logs:
-            action = x["action"]
-            if action == "seek":
-                seek_pointer = x["offset"]
-                fh.write(f"- Seeked to: {hex(seek_pointer)}")
-                if x["comment"] != "":
-                    fh.write(f" (Comment: {x['comment']})")
-                fh.write("\n")
-            elif action == "read":
-                size = x["count"]
-                fh.write(f"- Read {size} bytes from {hex(seek_pointer)} - {hex(seek_pointer + size)}\n")
-                seek_pointer += size
-            elif action == "write":
-                size = x["size"]
-                value = x["value"]
-                fh.write(f"- Wrote {value} ({size} bytes) to {hex(seek_pointer)}\n")
-                seek_pointer += size
+    patchAssemblyCosmetic(ROM_COPY, settings)
