@@ -888,7 +888,7 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
 
 def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
     """Write actor health value."""
-    start = getSym("actor_defs") + (4 * actor_index)
+    start = getSym("actor_health_damage") + (4 * actor_index)
     writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
 
 
