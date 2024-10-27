@@ -1,4 +1,5 @@
 """Generate Python and TypeScript stub files for the randomizer Enums."""
+
 import json
 import os
 from pathlib import Path

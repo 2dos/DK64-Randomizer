@@ -1,4 +1,5 @@
 """Reads a JSONC file and generates classes or dictionaries based on the data."""
+
 import json
 import re
 from js import getStringFile
@@ -28,7 +29,7 @@ def load_jsonc(filename):
 
 def create_enum_class(name, values):
     """Dynamically create an Enum or IntEnum class based on the JSON data.
-    
+
     If values are integers, an IntEnum is created, otherwise we process strings as objects.
     :param name: Name of the enum class
     :param values: Dictionary of enum members
@@ -49,7 +50,7 @@ def create_enum_class(name, values):
 
 def process_value(value):
     """Process a value that might contain a dictionary with an 'obj' key.
-    
+
     If so, evaluate the 'obj' value into an object reference.
     """
     if isinstance(value, dict) and "obj" in value:
@@ -59,7 +60,7 @@ def process_value(value):
 
 def set_nested_dict(d, keys, value):
     """Recursively create nested dictionaries for keys containing periods.
-    
+
     :param d: Dictionary to update
     :param keys: List of keys after splitting on period
     :param value: The value to set at the final nested key
@@ -71,7 +72,7 @@ def set_nested_dict(d, keys, value):
 
 def process_keys_with_period(data):
     """Recursively process a dictionary and handle keys with periods by creating nested dictionaries.
-    
+
     Additionally, evaluate keys that are object references like SettingsStringEnum.blocker_0.
     :param data: The dictionary with keys to process
     :return: Processed dictionary with nested structures for keys containing periods
@@ -95,7 +96,7 @@ def process_keys_with_period(data):
 
 def is_object_reference(key):
     """Determine if the key is an object reference (contains an enum or similar object reference).
-    
+
     For simplicity, assume keys starting with 'SettingsStringEnum' are object references.
     :param key: Key to evaluate
     :return: True if the key should be treated as an object reference, False otherwise
@@ -106,7 +107,7 @@ def is_object_reference(key):
 
 def generate_globals(path):
     """Load a JSONC file, process the data, and dynamically create classes or dictionaries.
-    
+
     Handles nested keys and object references.
     :param path: Path to the JSONC file
     """
@@ -142,4 +143,3 @@ def generate_globals(path):
         globals().update(new_globals)
 
     return new_globals
-
