@@ -79,7 +79,8 @@ async function apply_patch(data, run_async) {
                 await setup_pyodide();
                 console.log("Applying Xdelta Patch");
                 apply_conversion();
-                apply_xdelta(fileContent);     
+                apply_xdelta(fileContent);   
+                window["event_response_data"] = data;  
                 // Return the promise for pyodide.runPythonAsync
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
 try:
@@ -92,7 +93,7 @@ patching_response(str(js.event_response_data), from_patch_gen=True)
                 `);
               }
               else{
-                shared_url_ui(decodedData);
+                shared_url_ui(data);
               }
             });
 
@@ -107,10 +108,10 @@ patching_response(str(js.event_response_data), from_patch_gen=True)
     console.error("Error unzipping the file:", error);
   }
 }
-async function shared_url_ui(decodedData) {
+async function shared_url_ui(data) {
   // Dictionary to store the extracted variables
   let extracted_variables = {};
-
+  var decodedData = base64ToArrayBuffer(data);
 
   // Extract the contents of the zip file
   let zip = await JSZip.loadAsync(decodedData);
@@ -203,16 +204,7 @@ async function apply_download() {
     }
   }
   console.log("Applying Download");
-  await setup_pyodide();
-  return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-try:
-  register_hook("/")  # type: ignore  # noqa
-except Exception:
-  pass
-import js
-from randomizer.Patching.ApplyLocal import patching_response
-patching_response(str(js.event_response_data), from_patch_gen=True)
-    `);
+  apply_patch(window.event_response_data, true);
 }
 
 window["apply_download"] = apply_download;

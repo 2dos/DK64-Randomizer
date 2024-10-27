@@ -102,26 +102,26 @@ await patching_response(str(js.get_previous_seed_data()), True, js.loaded_patch,
 // Bind the function to the click event of the element with ID "generate_lanky_seed"
 document.getElementById("generate_lanky_seed").addEventListener("click", generate_seed_from_patch);
 
-async function setup_pyodide(){
+async function setup_pyodide() {
     try {
         // Check if pyodide is already loaded
-        if (!window.pyodide)
-        {
+        if (!window.pyodide) {
             pyodide = await loadPyodide();
-            url = window.location.origin;
-            await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
-            await pyodide.loadPackage("pillow")
+            const url = window.location.origin;
+            await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl");
+            await pyodide.loadPackage("pillow");
             if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
                 await pyodide.loadPackage("micropip");
                 const micropip = pyodide.pyimport("micropip");
-                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
+                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl");
             }
         }
-    } catch { }
-
+    } catch (error) {
+        console.error("Error setting up Pyodide:", error);
+    }
 }
 
-document.getElementById("load_patch_file").addEventListener("click", function(event) {
+document.getElementById("load_patch_file").addEventListener("click", async function(event) {
     /**
      * Set historical seed text based on the load_patch_file click event.
      *
@@ -136,6 +136,7 @@ document.getElementById("load_patch_file").addEventListener("click", function(ev
         generatePastgenSeedElem.value = "Generate Seed from History";
     }
 });
+
 function should_clear_setting(select) {
     /**
      * Return true if the select should be cleared when importing settings.
@@ -159,6 +160,7 @@ function should_clear_setting(select) {
     }
     return true;
 }
+
 // Assuming Items and SettingsMap objects are already defined
 
 function serialize_settings(include_plando = false) {
@@ -354,7 +356,6 @@ else:
     return JSON.stringify(form_data);
 }
 
-
 // Event binding for exporting settings to a string
 document.getElementById("export_settings").addEventListener("click", export_settings_string);
 
@@ -463,14 +464,14 @@ js.plando_errors = plando_errors
         query_seed_generation(url, JSON.stringify(form_data), branch);
     }
 }
+
 function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
       (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
     );
   }
 
-
-  document.getElementById("import_settings").addEventListener("click", function(event) {
+document.getElementById("import_settings").addEventListener("click", async function(event) {
     // Click event for importing settings from a string.
 
     event.preventDefault();
@@ -548,4 +549,5 @@ function uuidv4() {
     savesettings();
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
 });
+
 window["setup_pyodide"] = setup_pyodide;
