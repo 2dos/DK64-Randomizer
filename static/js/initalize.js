@@ -1,47 +1,23 @@
-// NOTE: pyodide_functions.js is NOT currently loaded, some functions will fail
 var jquery = $;
-// $.ajax({
-//   url: "/get_selector_info",
-//   dataType: "json",
-//   async: false,
-//   success: function (data) {
-//     var env = nunjucks.configure('/templates', { autoescape: true });
-//     env.addFilter("music_select_restrict", function(songList, location) {
-//         return songList;
-//     });
-//     env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
-//     env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
-//     env.addFilter("plando_item_restrict", function(itemList, location) {
-//         return itemList;
-//     });
-//     env.addFilter("plando_minigame_restrict", PlandoMinigameFilter);
-//     env.addFilter("plando_shop_sort", PlandoShopSortFilter);
-//     env.addGlobal("plando_option_class_annotation", PlandoOptionClassAnnotation);
-//     var renderedHTML = env.render("base.html.jinja2", data);
-//     var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
-//     $("#tab-data").html(renderedHTML);
-//     $("#nav-tab-list").html(navRenderedHTML);
-//   },
-// });
 // Initialize arrays for listeners, progression presets, and random settings presets
 const listeners = [];
 const progression_presets = [];
 const random_settings_presets = [];
 
 // Determine the correct URL for fetching presets based on the hostname
-let presets_url;
+let base_url;
 if (location.hostname === "dev.dk64randomizer.com") {
-  presets_url =
-    "https://dev-generate.dk64rando.com/get_presets?return_blank=true";
+  base_url =
+    "https://dev-generate.dk64rando.com";
 } else if (location.hostname === "dk64randomizer.com") {
-  presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true";
+  base_url = "https://generate.dk64rando.com";
 } else {
-  presets_url = `${location.origin}/get_presets?return_blank=true`;
+  base_url = `${location.origin}`;
 }
 
 // Use fetch to get the presets and populate progression_presets and random_settings_presets
 $.ajax({
-  url: presets_url,
+  url: base_url + "/get_presets?return_blank=true",
   dataType: "json",
   async: false,
   success: function (data) {
@@ -102,7 +78,7 @@ function decrypt_settings_string_enum(settings_string) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
   var response = $.ajax({
     type: "POST",
-    url: "/convert_settings_string",
+    url: base_url + "/convert_settings_string",
     data: JSON.stringify({ settings_string: settings_string }),
     contentType: "application/json",
     async: false,
@@ -116,7 +92,7 @@ function encrypt_settings_string_enum(settings) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
   var response = $.ajax({
     type: "POST",
-    url: "/convert_settings_json",
+    url: base_url + "/convert_settings_json",
     data: JSON.stringify({ settings_json: JSON.stringify(settings) }),
     contentType: "application/json",
     async: false,
