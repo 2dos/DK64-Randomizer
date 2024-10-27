@@ -213,10 +213,10 @@ plando_form_data = populate_plando_options(js.form)
 if plando_form_data:
     js.plando_form_data = json.dumps(plando_form_data)
 else:
-    js.plando_form_data = None
+    js.plando_form_data = "None"
                 `);
         let plando_form_data = window.plando_form_data;
-        if (plando_form_data !== null) {
+        if (plando_form_data !== null && plando_form_data !== undefined && plando_form_data !== "None") {
             form_data["enable_plandomizer"] = true;
             form_data["plandomizer_data"] = JSON.parse(plando_form_data)
         }

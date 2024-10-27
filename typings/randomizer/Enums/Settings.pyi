@@ -155,6 +155,7 @@ class HardBossesSelected(IntEnum):
     pufftoss_star_rando = 3
     pufftoss_star_raised = 4
     kut_out_phase_rando = 5
+    k_rool_toes_rando = 6
 
 class HardModeSelected(IntEnum):
     null_option_0 = 1
