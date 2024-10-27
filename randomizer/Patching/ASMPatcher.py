@@ -212,6 +212,19 @@ WARPS_TOTAL = [
     WARPS_ISLES,
 ]
 
+OVERLAY_ENDS = {
+    Overlay.Static: 0x80761050,
+    Overlay.Menu: 0x80033f10,
+    Overlay.Multiplayer: 0x80027100,
+    Overlay.Minecart: 0x80028e10,
+    Overlay.Bonus: 0x8002def0,
+    Overlay.Race: 0x80030160,
+    Overlay.Critter: 0x8002a1b0,
+    Overlay.Boss: 0x80036dc0,
+    Overlay.Arcade: 0x8004ac00,
+    Overlay.Jetpac: 0x8002ec30,
+    Overlay.Custom: 0x805FAE00,
+}
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
     """Populate the overlay offset database."""
@@ -229,8 +242,6 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
     if overlay == Overlay.Custom:
         rdram_start = 0x805FAE00 - 0x39DC0
         overlay_start = 0x2000000
-        if address > 0x805FAE00:
-            raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     else:
         if overlay not in list(offset_dict.keys()):
             return None
@@ -240,6 +251,9 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
             rdram_start = 0x805FB300
         elif overlay == Overlay.Boot:
             rdram_start = 0x80000450
+    if overlay in OVERLAY_ENDS:
+        if address >= OVERLAY_ENDS[overlay]:
+            raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     if address < rdram_start:
         raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     return overlay_start + (address - rdram_start)
@@ -943,6 +957,7 @@ def patchAssembly(ROM_COPY, spoiler):
     ACTOR_DEF_START = getSym("actor_defs")
     ACTOR_MASTER_TYPE_START = getSym("actor_master_types")
     ACTOR_COLLISION_START = getSym("actor_collisions")
+    ACTOR_HEALTH_START = getSym("actor_health_damage")
 
     alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
 
@@ -2124,8 +2139,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8067890E, Overlay.Static, actor_function_lo, offset_dict)
     writeValue(ROM_COPY, 0x80678A3E, Overlay.Static, actor_function_hi, offset_dict)
     writeValue(ROM_COPY, 0x80678A52, Overlay.Static, actor_function_lo, offset_dict)
-    writeLabelValue(ROM_COPY, 0x8076152C, Overlay.Static, "actor_functions", offset_dict)
-    writeLabelValue(ROM_COPY, 0x80764768, Overlay.Static, "actor_functions", offset_dict)
+    # writeLabelValue(ROM_COPY, 0x8076152C, Overlay.Static, "actor_functions", offset_dict)
+    # writeLabelValue(ROM_COPY, 0x80764768, Overlay.Static, "actor_functions", offset_dict)
     # Collision
     actor_col_hi_info = getHi(ACTOR_COLLISION_START + 0)
     actor_col_lo_info = getLo(ACTOR_COLLISION_START + 0)
@@ -2138,10 +2153,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8067620E, Overlay.Static, actor_col_hi_unk4, offset_dict)
     writeValue(ROM_COPY, 0x8067621E, Overlay.Static, actor_col_lo_unk4, offset_dict)
     # Health
-    actor_health_hi_health = getHi(ACTOR_COLLISION_START + 0)
-    actor_health_lo_health = getLo(ACTOR_COLLISION_START + 0)
-    actor_health_hi_dmg = getHi(ACTOR_COLLISION_START + 2)
-    actor_health_lo_dmg = getLo(ACTOR_COLLISION_START + 2)
+    actor_health_hi_health = getHi(ACTOR_HEALTH_START + 0)
+    actor_health_lo_health = getLo(ACTOR_HEALTH_START + 0)
+    actor_health_hi_dmg = getHi(ACTOR_HEALTH_START + 2)
+    actor_health_lo_dmg = getLo(ACTOR_HEALTH_START + 2)
     writeValue(ROM_COPY, 0x806761D6, Overlay.Static, actor_health_hi_health, offset_dict)
     writeValue(ROM_COPY, 0x806761E2, Overlay.Static, actor_health_lo_health, offset_dict)
     writeValue(ROM_COPY, 0x806761F2, Overlay.Static, actor_health_hi_dmg, offset_dict)
