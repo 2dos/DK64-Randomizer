@@ -451,7 +451,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             if (!checkFlag(vanilla_flag, FLAGTYPE_PERMANENT)) {
                 if (give_gb) {
                     int world = getWorld(CurrentMap, 1);
-                    if (world < 8) {
+                    if (world < 9) {
                         giveGB(Character, world);
                     }
                 } else if (give_rainbow) {

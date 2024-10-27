@@ -105,9 +105,9 @@ HINT_REGION_PAIRING = {
     # Isles
     HintRegion.GameStart: "Game Start",
     HintRegion.Credits: "Credits",
-    HintRegion.MainIsles: "Main Isles",
+    HintRegion.MainIsles: "Main Isle",
     HintRegion.OuterIsles: "Outer Isles",
-    HintRegion.KremIsles: "Krem Isles",
+    HintRegion.KremIsles: "Krem Isle",
     HintRegion.RarewareRoom: "Rareware Room",
     HintRegion.EarlyLobbies: "Japes - Forest Lobbies",
     HintRegion.LateLobbies: "Caves - Helm Lobbies",
