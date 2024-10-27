@@ -294,7 +294,7 @@ spotlight_fish_models = [
     Model.Rabbit,
     Model.KRoolCutscene,
     Model.KRoolFight,
-    Model.SkeletonHead,
+    # Model.SkeletonHead, # Lighting bug
     # Model.Vulture_76, # Lighting bug
     # Model.Vulture_77, # Lighting bug
     # Model.Bat, # Lighting bug
@@ -1997,6 +1997,9 @@ def recolorPotions(colorblind_mode):
             data = bytearray(num_data)  # convert num_data back to binary string
             if indicator == 0x1F8B:
                 data = gzip.compress(data, compresslevel=9)
+            if len(data) > potion_actor_size:
+                print(f"Attempted size bigger {hex(len(data))} than slot {hex(potion_actor_size)}")
+                continue
             ROM().seek(potion_actor_start)
             ROM().writeBytes(data)
 
@@ -2072,6 +2075,7 @@ def recolorPotions(colorblind_mode):
         ROM().seek(potion_model2_start)
         ROM().writeBytes(data)
 
+    return
     # DK Arcade sprites
     for file in range(8, 14):
         index = file - 8

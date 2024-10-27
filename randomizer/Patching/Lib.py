@@ -425,6 +425,7 @@ class Overlay(IntEnum):
     Bonus = 8
     Arcade = 9
     Jetpac = 10
+    Custom = 11  # Fake overlay used for patching
 
 
 def float_to_hex(f: Union[float, int]) -> str:

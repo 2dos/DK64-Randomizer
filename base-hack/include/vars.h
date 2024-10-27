@@ -32,6 +32,7 @@
 // Other
 #define static_expansion_size 0x100
 
+#define GB_DICTIONARY_COUNT 120
 #define ACTOR_VANILLA_LIMIT 345
 #define COLLISION_LIMIT 67
 #define DEFS_LIMIT 154
