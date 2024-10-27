@@ -464,6 +464,7 @@ def delete_old_files():
 
 @app.route("/get_selector_info", methods=["GET"])
 def get_selector_info():
+    """Get the selector data for the randomizer."""
     selector_data = {
         "minigames": MinigameSelector,
         "misc_changes": QoLSelector,
