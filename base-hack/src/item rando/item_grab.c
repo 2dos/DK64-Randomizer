@@ -396,7 +396,7 @@ void giveFairyItem(int flag, int state, flagtypes type) {
     if (model == 0x69) {
         // GB
         int world = getWorld(CurrentMap, 1);
-        if (world < 9) {
+        if (world < 8) {
             giveGB(Character, world);
         }
     } else if (model == 0xF5) {
