@@ -34,7 +34,7 @@ from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
 from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays, KongModels
 from ui.progress_bar import ProgressBar
 
-from version import major, minor, patch
+from version import version as rando_version
 
 
 class BooleanProperties:
@@ -113,6 +113,11 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     patch_major = split_version[0]
     patch_minor = split_version[1]
     patch_patch = split_version[2]
+    split_data = rando_version.split(".")
+    major = split_data[0]
+    minor = split_data[1]
+    patch = split_data[2]
+
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False
         js.document.getElementById("patch_warning_message").innerHTML = (
