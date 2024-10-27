@@ -372,3 +372,4 @@ window.PlandoCustomLocationItemFilter = PlandoCustomLocationItemFilter;
 window.PlandoMinigameFilter = PlandoMinigameFilter;
 window.PlandoShopSortFilter = PlandoShopSortFilter;
 window.PlandoOptionClassAnnotation = PlandoOptionClassAnnotation;
+window.MoveSet = MoveSet;

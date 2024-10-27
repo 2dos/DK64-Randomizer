@@ -1164,16 +1164,16 @@ function preset_select_changed(event) {
               "random_starting_move_list_selected",
             ].includes(key)
           ) {
-            for (const item of settings[key]) {
-              const radio_buttons = document.getElementsByName(
+            for (let item of settings[key]) {
+              let radio_buttons = document.getElementsByName(
                 `starting_move_box_${parseInt(item)}`
               );
               if (key === "starting_move_list_selected") {
-                radio_buttons.find((button) =>
+                Array.from(radio_buttons).find((button) =>
                   button.id.startsWith("start")
                 ).checked = true;
               } else {
-                radio_buttons.find((button) =>
+                Array.from(radio_buttons).find((button) =>
                   button.id.startsWith("random")
                 ).checked = true;
               }
