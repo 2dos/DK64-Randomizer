@@ -134,8 +134,25 @@ async function generateSpoiler(spoiler) {
     }
 
     // Render template and update the DOM
-    const rendered = await env.render("spoiler_new.html.jinja2", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
-    document.getElementById("spoiler_log_text").value = JSON.stringify(spoiler, null, 4);
-    document.getElementById("spoiler_log_text").innerHTML = rendered;
+    try {
+        env.addFilter('isIterable', function(value) {
+            // Check if value is not null and has the Symbol.iterator property
+            const isIterable = value != null && typeof value[Symbol.iterator] === 'function';
+            const isString = typeof value === 'string';
+            const isMapping = value != null && typeof value === 'object' && !Array.isArray(value);
+          
+            return isIterable && !isString && !isMapping;
+          });
+        const rendered = await env.render("spoiler_new.html.jinja2", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
+        document.getElementById("spoiler_log_text").value = JSON.stringify(spoiler, null, 4);
+        document.getElementById("spoiler_log_text").innerHTML = rendered;
+    } catch (error) {
+        console.error("Error rendering spoiler template:", error);
+        console.error("Error details:", {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
+    }
 }
 window["GenerateSpoiler"] = generateSpoiler;

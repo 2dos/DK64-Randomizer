@@ -76,12 +76,10 @@ async function apply_patch(data, run_async) {
           const promise = zipEntry
             .async("uint8array")
             .then(function (fileContent) {
-              console.log("Applying Xdelta Patch");
-              apply_conversion();
-              apply_xdelta(fileContent);
-
               if (run_async == true) {
-                
+                console.log("Applying Xdelta Patch");
+                apply_conversion();
+                apply_xdelta(fileContent);     
                 // Return the promise for pyodide.runPythonAsync
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
 try:

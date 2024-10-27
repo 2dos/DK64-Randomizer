@@ -104,8 +104,8 @@
                                                 </div>
                                             </div>
                                         {% endfor %}
-                                    {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","Shuffled Bananaport Locations","T&S Portal Locations","Enemy Placement","Paths", "WotH Paths", "Other Paths","End Game", "Hints", "Misc Custom Locations") %}
-                                        {# Attributes with sub-dicts #}
+                                    {% elif item == "Cosmetics" or item == "Requirements" or item == "Bosses" or item == "Items" or item == "Items (Sorted by Item)" or item == "Shuffled Exits (Sorted by destination)" or item == "Colored Banana Locations" or item == "Wrinkly Door Locations" or item == "Shuffled Bananaport Locations" or item == "T&S Portal Locations" or item == "Enemy Placement" or item == "Paths" or item == "WotH Paths" or item == "Other Paths" or item == "End Game" or item == "Hints" or item == "Misc Custom Locations" %}
+                                    {# Attributes with sub-dicts #}
                                         {% set local_loop = loop.index %}
                                         {% for sub_group, obj in spoiler[item] %}
                                             {% if spoiler[item][sub_group] != {} %}
@@ -150,7 +150,7 @@
                                                                         {% else %}
                                                                             <td>{{ item2 }}</td>
                                                                         {% endif %}
-                                                                        {% if spoiler[item][sub_group][item2] is iterable and (spoiler[item][sub_group][item2] is not string and spoiler[item][sub_group][item2] is not mapping) %}
+                                                                        {% if spoiler[item][sub_group][item2] | isIterable %}
                                                                             <td>{{ spoiler[item][sub_group][item2]|join("<br>") }}</td>
                                                                         {% else %}
                                                                             <td>
