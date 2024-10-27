@@ -135,6 +135,7 @@ export enum GlitchesSelected {
     tag_barrel_storage = 12,
     troff_n_scoff_skips = 13,
     moontail = 14,
+    phasefall = 15,
 }
 
 export enum HelmDoorItem {
