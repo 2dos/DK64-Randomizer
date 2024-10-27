@@ -929,6 +929,8 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
+    SettingsStringEnum.has_password: SettingsStringDataType.bool,
+    SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
 }
 
 export const SettingsStringListTypeMap = {
