@@ -657,6 +657,8 @@ export enum SettingsStringEnum {
     win_condition_count = 183,
     bananaport_placement_rando = 184,
     troff_7 = 185,
+    has_password = 186,
+    randomize_enemy_sizes = 187,
 }
 
 export enum SettingsStringDataType {

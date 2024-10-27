@@ -608,6 +608,8 @@ class SettingsStringEnum(IntEnum):
     win_condition_count = 183
     bananaport_placement_rando = 184
     troff_7 = 185
+    has_password = 186
+    randomize_enemy_sizes = 187
 
 class SettingsStringDataType(IntEnum):
     bool = 0
