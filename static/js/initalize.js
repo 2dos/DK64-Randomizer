@@ -259,7 +259,6 @@ var cosmetic_truncated_names = {
 };
 
 async function load_music_file_from_db() {
-  console.log("Trying to load file from DB");
   try {
     // If we actually have a file in the DB load it
     var db = musicdatabase.result;
@@ -269,7 +268,6 @@ async function load_music_file_from_db() {
     // Get our music file
     var getMusicFile = store.get("music");
     getMusicFile.onsuccess = function () {
-      console.log("Successfully loaded file from DB");
       // When we pull it from the DB load it in as a global var
       try {
         cosmetic_pack_event(getMusicFile.result.value, true);
