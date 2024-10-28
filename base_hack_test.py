@@ -328,5 +328,5 @@ if IO_LOGGING:
             elif action == "write":
                 size = x["size"]
                 value = x["value"]
-                fh.write(f"- Wrote {value} ({size} bytes) to {hex(seek_pointer)}\n")
+                fh.write(f"- Wrote {hex(value)} ({size} bytes) to {hex(seek_pointer)}\n")
                 seek_pointer += size
