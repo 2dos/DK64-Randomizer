@@ -523,9 +523,9 @@ document.getElementById("import_settings").addEventListener("click", async funct
                 const selector = document.getElementById(key);
                 if (selector.tagName === "SELECT") {
                     settings[key].forEach(item => {
-
+                        let val = item - 1;
                         for (let option of selector.options) {
-                            if (option.value === Object.keys(SettingsMap[key])[item]) {
+                            if (option.value === Object.keys(SettingsMap[key])[val]) {
                                 option.selected = true;
                             }
                         }
