@@ -1295,26 +1295,37 @@ async function load_data() {
 
     getRequest.onerror = () => console.error("Failed to retrieve saved settings");
 
-    getRequest.onsuccess = () => {
+    getRequest.onsuccess = async () => {
       try {
         if (getRequest.result) {
           const json = JSON.parse(getRequest.result);
           if (json) {
-            load_settings(json);
+            new Promise((resolve) => {
+              setTimeout(() => {
+                load_settings(json);
+                savesettings();
+                trigger_ui_update();
+              }, 0); // Deferred load_settings to avoid blocking
+            });
           }
-          savesettings();
+          else{
+            savesettings();
+          }
         } else {
           preset_select_changed();
+          trigger_ui_update();
         }
-        trigger_ui_update();
-      } catch {
+      } catch (error) {
+        console.error("Error parsing settings:", error);
         preset_select_changed();
       }
     };
-  } catch {
+  } catch (error) {
+    console.error("Error initializing settings:", error);
     preset_select_changed();
   }
 }
+
 
 function initialize_sliders() {
   const inputs = document.querySelectorAll('input[data-slider-value]');
@@ -1327,47 +1338,38 @@ function initialize_sliders() {
 }
 
 function load_settings(json) {
-  // Pre-cache all DOM elements based on the keys in json
-  const elementsCache = {};
-  for (const key in json) {
-    elementsCache[key] = document.getElementsByName(key);
-  }
+  const elementsCache = Object.fromEntries(
+    Object.keys(json).map(key => [key, document.getElementsByName(key)])
+  );
 
   for (const [key, value] of Object.entries(json)) {
     const elements = elementsCache[key];
-    if (!elements || elements.length === 0) continue;
-    
+    if (!elements?.length) continue;
+
     const element = elements[0];
 
-    // Handle checkboxes with boolean values
+    // Boolean values for checkboxes
     if (value === "True" || value === "False") {
       element.checked = value === "True";
       continue;
     }
 
-    // Handle radio buttons for starting_move_box
+    // Radio button handling for "starting_move_box"
     if (key.includes("starting_move_box")) {
-      elements.forEach(button => {
-        if (button.id.includes(value)) {
-          button.checked = true;
-        }
-      });
+      elements.forEach(button => (button.checked = button.id.includes(value)));
       continue;
     }
 
-    // Set element value
     try {
       element.value = value;
 
-      // Replace jQuery slider handling if applicable
+      // Handle noUiSlider if applicable
       if (element.hasAttribute("data-slider-value")) {
-        const sliderElement = document.getElementById(key);
-        if (sliderElement && typeof sliderElement.noUiSlider !== "undefined") {
-          sliderElement.noUiSlider.set(value);
-        }
+        const slider = document.getElementById(key);
+        slider?.noUiSlider?.set(value);
       }
 
-      // Handle select elements with class "selected"
+      // Multiple selection for elements with "selected" class
       if (element.classList.contains("selected")) {
         Array.from(element.options).forEach(option => {
           option.selected = value.includes(option.value);
