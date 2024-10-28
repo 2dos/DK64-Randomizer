@@ -100,6 +100,11 @@ class PlandoItems(IntEnum):
 
     # Hints are not used as plando items.
 
+    Cranky = auto()
+    Funky = auto()
+    Candy = auto()
+    Snide = auto()
+
     # Five generic blueprint items to represent all specific blueprints.
     DonkeyBlueprint = auto()
     DiddyBlueprint = auto()
@@ -181,6 +186,10 @@ ItemToPlandoItemMap = {
     Items.JunkAmmo: PlandoItems.JunkItem,
     Items.JunkFilm: PlandoItems.JunkItem,
     Items.JunkOrange: PlandoItems.JunkItem,
+    Items.Cranky: PlandoItems.Cranky,
+    Items.Funky: PlandoItems.Funky,
+    Items.Candy: PlandoItems.Candy,
+    Items.Snide: PlandoItems.Snide,
     # All of the individual blueprints map to the same five plando items.
     Items.JungleJapesDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
     Items.JungleJapesDiddyBlueprint: PlandoItems.DiddyBlueprint,
@@ -286,6 +295,10 @@ PlandoItemToItemMap = {
     PlandoItems.ProgressiveSlam: Items.ProgressiveSlam,
     PlandoItems.ProgressiveAmmoBelt: Items.ProgressiveAmmoBelt,
     PlandoItems.ProgressiveInstrumentUpgrade: Items.ProgressiveInstrumentUpgrade,
+    PlandoItems.Cranky: Items.Cranky,
+    PlandoItems.Funky: Items.Funky,
+    PlandoItems.Candy: Items.Candy,
+    PlandoItems.Snide: Items.Snide,
 }
 
 PlandoItemToItemListMap = {

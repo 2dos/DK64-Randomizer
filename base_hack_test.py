@@ -14,7 +14,6 @@ from randomizer.Enums.Items import Items
 APPLY_VARIABLES = True
 ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
 DEBUG_PRINT = False
-IO_LOGGING = False
 
 if not APPLY_VARIABLES:
     sys.exit()
@@ -50,9 +49,6 @@ def debugPrint(string: str):
         print(string)
 
 
-io_logs = []
-
-
 class TestROM:
     """Store information regarding a test rom."""
 
@@ -60,27 +56,16 @@ class TestROM:
         """Initialize with given parameters."""
         self.stream = stream
 
-    def seek(self, offset: int, comment: str = ""):
+    def seek(self, offset: int):
         """Binary IO seek."""
-        if IO_LOGGING:
-            io_logs.append({"action": "seek", "offset": offset, "comment": comment})
         self.stream.seek(offset)
 
     def readBytes(self, count: int) -> bytes:
         """Binary IO read."""
-        if IO_LOGGING:
-            io_logs.append(
-                {
-                    "action": "read",
-                    "count": count,
-                }
-            )
         return self.stream.read(count)
 
     def writeMultipleBytes(self, value: int, size: int):
         """Binary IO write."""
-        if IO_LOGGING:
-            io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
 
 
