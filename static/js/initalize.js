@@ -84,6 +84,7 @@ function decrypt_settings_string_enum(settings_string) {
   }).responseText;
   // Convert the json response to a string
   var settings = JSON.parse(response);
+  console.log(settings)
   return settings;
 }
 
@@ -99,6 +100,7 @@ function encrypt_settings_string_enum(settings) {
   // Convert the json response to a string
   var set = JSON.parse(response);
   var settings_string = set["settings_string"];
+  console.log(settings_string)
   return settings_string;
 }
 
