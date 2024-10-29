@@ -7,8 +7,7 @@ const random_settings_presets = [];
 // Determine the correct URL for fetching presets based on the hostname
 let base_url;
 if (location.hostname === "dev.dk64randomizer.com") {
-  base_url =
-    "https://dev-generate.dk64rando.com";
+  base_url = "https://dev-generate.dk64rando.com";
 } else if (location.hostname === "dk64randomizer.com") {
   base_url = "https://generate.dk64rando.com";
 } else {
@@ -273,7 +272,7 @@ async function load_music_file_from_db() {
         cosmetic_pack_event(getMusicFile.result.value, true);
         $("#music_file_text").attr("placeholder", "Using cached music file");
         $("#music_file_text").val("Using cached music file");
-      } catch (error) { }
+      } catch (error) {}
     };
   } catch (error) {
     console.log("Error accessing the music database:", error);
@@ -332,9 +331,9 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         } else if (validFilename(filename, "textures/transitions/", ".png")) {
           transition_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/tns_portal/", ".png")) {
-          portal_promises.push(createMusicLoadPromise(new_zip, filename))
+          portal_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/paintings/", ".png")) {
-          painting_promises.push(createMusicLoadPromise(new_zip, filename))
+          painting_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -377,7 +376,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       // T&S Portals
       let tns_portals = portal_files.map((x) => x.file);
       let tns_portal_names = portal_files.map((x) => x.name);
-      
+
       // Paintings
       let paintings = painting_files.map((x) => x.file);
       let painting_names = painting_files.map((x) => x.name);
@@ -574,61 +573,68 @@ function filebox() {
 }
 
 // This works on all devices/browsers, and uses IndexedDBShim as a final fallback
-var indexedDB =
-  window.indexedDB ||
-  window.mozIndexedDB ||
-  window.webkitIndexedDB ||
-  window.msIndexedDB ||
-  window.shimIndexedDB;
 
-// Open (or create) the database
-var seeddatabase = indexedDB.open("SeedStorage", 1);
-var settingsdatabase = indexedDB.open("SettingsDB", 1);
-var musicdatabase = indexedDB.open("MusicStorage", 1);
-var romdatabase = indexedDB.open("ROMStorage", 1);
+var seeddatabase;
+var settingsdatabase;
+var musicdatabase;
+var romdatabase;
 
-musicdatabase.onupgradeneeded = function () {
-  try {
-    var musicdb = musicdatabase.result;
-    musicdb.createObjectStore("MusicStorage", { keyPath: "music" });
-  } catch {}
-};
-musicdatabase.onsuccess = async function () {
-  load_music_file_from_db();
-};
-settingsdatabase.onupgradeneeded = function () {
-  try {
-    var settingsdb = settingsdatabase.result;
-    settingsdb.createObjectStore("saved_settings");
-  } catch {}
-};
-settingsdatabase.onsuccess = async function () {
-  load_data();
-};
-// Create the schema
-romdatabase.onupgradeneeded = function () {
-  try {
-    var db = romdatabase.result;
-    db.createObjectStore("ROMStorage", { keyPath: "ROM" });
-  } catch {}
-};
+function load_databases() {
+  var indexedDB =
+    window.indexedDB ||
+    window.mozIndexedDB ||
+    window.webkitIndexedDB ||
+    window.msIndexedDB ||
+    window.shimIndexedDB;
+  // Open (or create) the database
+  seeddatabase = indexedDB.open("SeedStorage", 1);
+  settingsdatabase = indexedDB.open("SettingsDB", 1);
+  musicdatabase = indexedDB.open("MusicStorage", 1);
+  romdatabase = indexedDB.open("ROMStorage", 1);
 
-seeddatabase.onupgradeneeded = function () {
-  try {
-    var seed_db = seeddatabase.result;
-    seed_db.createObjectStore("SeedStorage", {
-      keyPath: "id",
-    });
-  } catch {}
-};
+  musicdatabase.onupgradeneeded = function () {
+    try {
+      var musicdb = musicdatabase.result;
+      musicdb.createObjectStore("MusicStorage", { keyPath: "music" });
+    } catch {}
+  };
+  musicdatabase.onsuccess = async function () {
+    load_music_file_from_db();
+  };
+  settingsdatabase.onupgradeneeded = function () {
+    try {
+      var settingsdb = settingsdatabase.result;
+      settingsdb.createObjectStore("saved_settings");
+    } catch {}
+  };
+  settingsdatabase.onsuccess = async function () {
+    load_data();
+  };
+  // Create the schema
+  romdatabase.onupgradeneeded = function () {
+    try {
+      var db = romdatabase.result;
+      db.createObjectStore("ROMStorage", { keyPath: "ROM" });
+    } catch {}
+  };
 
-seeddatabase.onsuccess = async function () {
-  load_old_seeds();
-};
+  seeddatabase.onupgradeneeded = function () {
+    try {
+      var seed_db = seeddatabase.result;
+      seed_db.createObjectStore("SeedStorage", {
+        keyPath: "id",
+      });
+    } catch {}
+  };
 
-romdatabase.onsuccess = async function () {
-  load_file_from_db();
-};
+  seeddatabase.onsuccess = async function () {
+    load_old_seeds();
+  };
+
+  romdatabase.onsuccess = async function () {
+    load_file_from_db();
+  };
+}
 
 function write_seed_history(seed_id, seed_data, seed_hash) {
   // Get the original fiile
@@ -759,8 +765,6 @@ function load_file_from_db() {
 var w;
 var CurrentRomHash;
 
-243;
-
 function base64ToArrayBuffer(base64) {
   var binaryString = atob(base64);
   var bytes = new Uint8Array(binaryString.length);
@@ -777,8 +781,8 @@ function to2Digit(value) {
   return `0${value}`;
 }
 
-gen_error_count = 0;
-previous_queue_position = null;
+let gen_error_count = 0;
+let previous_queue_position = null;
 
 function pushToHistory(message, emphasize = false) {
   let prog_hist = document.getElementById("progress-history");
@@ -893,9 +897,9 @@ function query_seed_generation(url, json, git_branch) {
 }
 function getStringFile(file) {
   return $.ajax({
-      type: "GET",
-      url: file,
-      async: false
+    type: "GET",
+    url: file,
+    async: false,
   }).responseText;
 }
 // if the tab is set to seed info get the generate_seed button and change the text to "Download Seed" we want to check this on every nav tab change
@@ -932,16 +936,6 @@ function toggleDelayedSpoilerLogInput() {
     generateSpoilerLogCheckbox.setAttribute("hidden", "");
   }
 }
-
-// Call the function on page load to set the initial state
-toggleDelayedSpoilerLogInput();
-// check on any button with the nav-item class is clicked
-document.querySelectorAll(".nav-item").forEach((item) => {
-  item.addEventListener("click", () => {
-    check_seed_info_tab();
-  });
-});
-check_seed_info_tab();
 
 function saveDataToIndexedDB(key, value) {
   try {
@@ -1121,7 +1115,7 @@ function preset_select_changed(event) {
 
   for (const val of progression_presets) {
     if (val.name === element.value) {
-      presets = val; 
+      presets = val;
     }
   }
 
@@ -1148,60 +1142,60 @@ function preset_select_changed(event) {
     document.getElementById("presets").selectedIndex = 0;
 
     for (const key in settings) {
-        if (typeof settings[key] === "boolean") {
-          const checked = settings[key] ? true : false;
-          document.getElementsByName(key).checked = checked;
-          document.getElementsByName(key)[0].checked = checked;
-          document.getElementsByName(key)[0].removeAttribute("disabled");
-        } else if (Array.isArray(settings[key])) {
-          if (
-            [
-              "starting_move_list_selected",
-              "random_starting_move_list_selected",
-            ].includes(key)
-          ) {
-            for (let item of settings[key]) {
-              let radio_buttons = document.getElementsByName(
-                `starting_move_box_${parseInt(item)}`
-              );
-              if (key === "starting_move_list_selected") {
-                Array.from(radio_buttons).find((button) =>
-                  button.id.startsWith("start")
-                ).checked = true;
-              } else {
-                Array.from(radio_buttons).find((button) =>
-                  button.id.startsWith("random")
-                ).checked = true;
+      if (typeof settings[key] === "boolean") {
+        const checked = settings[key] ? true : false;
+        document.getElementsByName(key).checked = checked;
+        document.getElementsByName(key)[0].checked = checked;
+        document.getElementsByName(key)[0].removeAttribute("disabled");
+      } else if (Array.isArray(settings[key])) {
+        if (
+          [
+            "starting_move_list_selected",
+            "random_starting_move_list_selected",
+          ].includes(key)
+        ) {
+          for (let item of settings[key]) {
+            let radio_buttons = document.getElementsByName(
+              `starting_move_box_${parseInt(item)}`
+            );
+            if (key === "starting_move_list_selected") {
+              Array.from(radio_buttons).find((button) =>
+                button.id.startsWith("start")
+              ).checked = true;
+            } else {
+              Array.from(radio_buttons).find((button) =>
+                button.id.startsWith("random")
+              ).checked = true;
+            }
+          }
+          continue;
+        }
+
+        const selector = document.getElementById(key);
+        if (selector.tagName === "SELECT") {
+          for (const item of settings[key]) {
+            let val = item - 1;
+            for (const option of selector.options) {
+              if (option.value === Object.keys(SettingsMap[key])[val]) {
+                option.selected = true;
               }
             }
-            continue;
           }
-
-          const selector = document.getElementById(key);
-          if (selector.tagName === "SELECT") {
-            for (const item of settings[key]) {
-              let val = item - 1;
-              for (const option of selector.options) {
-                if (option.value === Object.keys(SettingsMap[key])[val]) {
-                  option.selected = true;
-                }
-              }
+        }
+      } else {
+        const selector = document.getElementById(key);
+        if (selector.tagName === "SELECT") {
+          for (const option of selector.options) {
+            if (option.value === Object.keys(SettingsMap[key])[settings[key]]) {
+              option.selected = true;
+              break;
             }
           }
         } else {
-          const selector = document.getElementById(key);
-          if (selector.tagName === "SELECT") {
-            for (const option of selector.options) {
-              if (option.value === Object.keys(SettingsMap[key])[settings[key]]) {
-                option.selected = true;
-                break;
-              }
-            }
-          } else {
-            document.querySelector(`#${key}`).value = settings[key];
-          }
-          document.querySelector(`#${key}`).removeAttribute("disabled");
+          document.querySelector(`#${key}`).value = settings[key];
         }
+        document.querySelector(`#${key}`).removeAttribute("disabled");
+      }
     }
   }
 
@@ -1256,7 +1250,6 @@ function set_preset_options() {
   // load_data();
 }
 
-set_preset_options();
 function set_random_weights_options() {
   // Set the random settings presets on the page
 
@@ -1284,7 +1277,7 @@ function set_random_weights_options() {
     }
   }
 }
-set_random_weights_options();
+
 async function load_data() {
   try {
     initialize_sliders();
@@ -1293,7 +1286,8 @@ async function load_data() {
     const objectStore = transaction.objectStore("saved_settings");
     const getRequest = objectStore.get("saved_settings");
 
-    getRequest.onerror = () => console.error("Failed to retrieve saved settings");
+    getRequest.onerror = () =>
+      console.error("Failed to retrieve saved settings");
 
     getRequest.onsuccess = async () => {
       try {
@@ -1307,8 +1301,7 @@ async function load_data() {
                 trigger_ui_update();
               }, 0); // Deferred load_settings to avoid blocking
             });
-          }
-          else{
+          } else {
             savesettings();
           }
         } else {
@@ -1326,12 +1319,11 @@ async function load_data() {
   }
 }
 
-
 function initialize_sliders() {
-  const inputs = document.querySelectorAll('input[data-slider-value]');
-  inputs.forEach(input => {
-    if (!input.hasAttribute('data-slider-initialized')) {
-      input.setAttribute('data-slider-initialized', 'true');
+  const inputs = document.querySelectorAll("input[data-slider-value]");
+  inputs.forEach((input) => {
+    if (!input.hasAttribute("data-slider-initialized")) {
+      input.setAttribute("data-slider-initialized", "true");
       $("#" + input.name).slider(); // Replace jQuery if possible with vanilla JS slider initialization
     }
   });
@@ -1339,7 +1331,7 @@ function initialize_sliders() {
 
 function load_settings(json) {
   const elementsCache = Object.fromEntries(
-    Object.keys(json).map(key => [key, document.getElementsByName(key)])
+    Object.keys(json).map((key) => [key, document.getElementsByName(key)])
   );
 
   for (const [key, value] of Object.entries(json)) {
@@ -1356,7 +1348,9 @@ function load_settings(json) {
 
     // Radio button handling for "starting_move_box"
     if (key.includes("starting_move_box")) {
-      elements.forEach(button => (button.checked = button.id.includes(value)));
+      elements.forEach(
+        (button) => (button.checked = button.id.includes(value))
+      );
       continue;
     }
 
@@ -1371,7 +1365,7 @@ function load_settings(json) {
 
       // Multiple selection for elements with "selected" class
       if (element.classList.contains("selected")) {
-        Array.from(element.options).forEach(option => {
+        Array.from(element.options).forEach((option) => {
           option.selected = value.includes(option.value);
         });
       }
@@ -1381,7 +1375,6 @@ function load_settings(json) {
   }
 }
 
-
 function trigger_ui_update() {
   const apply_preset_element = document.getElementById("apply_preset");
   if (apply_preset_element) {
@@ -1389,4 +1382,20 @@ function trigger_ui_update() {
   }
 }
 
-//load_data();
+// Ensure all functions are defined before calling them
+function initialize() {
+  // Call the function on page load to set the initial state
+  load_databases();
+  toggleDelayedSpoilerLogInput();
+  check_seed_info_tab();
+  // check on any button with the nav-item class is clicked
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      check_seed_info_tab();
+    });
+  });
+  set_preset_options();
+  set_random_weights_options();
+}
+// Initialize after ensuring all functions are loaded
+initialize();
