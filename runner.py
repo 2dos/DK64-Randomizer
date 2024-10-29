@@ -875,4 +875,4 @@ if __name__ == "__main__":
                 if path.isfile(filename):
                     extra_files.append(filename)
 
-    app.run(debug=True, port=8000, threaded=True, extra_files=extra_files)
+    app.run(host="0.0.0.0", debug=True, port=8000, threaded=True, extra_files=extra_files)
