@@ -231,6 +231,7 @@ int cc_enabler_rockfall(void) {
 void dummyGuardCode(void) {
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         guardCatchInternal(); // Catch the player
+        updateKopStat();
         playActorAnimation(CurrentActorPointer_0, 0x2C0);
     }
     // Render Light
