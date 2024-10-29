@@ -10,20 +10,6 @@
  */
 #include "../../include/common.h"
 
-void fixkey8(void) {
-	/**
-	 * @brief Fixes Fake Key at the end of Hideout Helm
-	 * 
-	 */
-	if (CurrentMap == MAP_HELM) { // Hideout Helm
-		if (checkFlag(FLAG_KEYHAVE_KEY8,FLAGTYPE_PERMANENT) == 0) { // Doesn't have Key 8
-			if (touchingModel2Object(0x5A)) {
-				setPermFlag(FLAG_KEYHAVE_KEY8); // Give Key 8
-			}
-		}
-	}
-}
-
 void fixHelmTimerCorrection(void) {
 	/**
 	 * @brief Fix a bug where pausing and then doing something other than unpausing that takes you out of the pause menu will not perform the helm timer correction

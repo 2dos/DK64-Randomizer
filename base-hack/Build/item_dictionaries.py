@@ -1,7 +1,8 @@
 """Database of items, which will create some C code to reduce code maintainence issues when adding new item types to item rando."""
 
+import json
 from enum import IntEnum, auto
-from BuildEnums import Kong, Song
+from BuildEnums import Kong, Song, Maps
 
 
 class InGameItem:
@@ -122,6 +123,59 @@ class CustomActors(IntEnum):
     Scarab = auto()
     HintItem = auto()
     KopDummy = auto()
+
+
+POTIONS = (
+    CustomActors.PotionDK,
+    CustomActors.PotionDiddy,
+    CustomActors.PotionLanky,
+    CustomActors.PotionTiny,
+    CustomActors.PotionChunky,
+    CustomActors.PotionAny,
+)
+KONGS = (
+    CustomActors.KongDK,
+    CustomActors.KongDiddy,
+    CustomActors.KongLanky,
+    CustomActors.KongTiny,
+    CustomActors.KongChunky,
+)
+SHOPKEEPERS = (
+    CustomActors.CrankyItem,
+    CustomActors.FunkyItem,
+    CustomActors.CandyItem,
+    CustomActors.SnideItem,
+)
+TRAPS = (
+    CustomActors.IceTrapBubble,
+    CustomActors.IceTrapReverse,
+    CustomActors.IceTrapSlow,
+)
+
+
+def getActorDefaultString(input) -> str:
+    """Get the C attribute string for an actor definition."""
+    dict_str = []
+    if not isinstance(input, dict):
+        return str(input)
+    for k in input:
+        val = input[k]
+        if isinstance(val, list):
+            val = "{" + ", ".join([str(x) for x in val]) + "}"
+        dict_str.append(f".{k} = {val}")
+    complete_internals = ", ".join(dict_str)
+    return "{" + complete_internals + "}"
+
+
+def initActor(actor_data: dict, actor_type: int, func: str, master_type: int, health: int, damage_given: int, init_interactions: int, base_actor: int) -> dict:
+    """Initialize actor."""
+    actor_data["actor_functions"][actor_type] = func
+    actor_data["actor_master_types"][actor_type] = master_type
+    actor_data["actor_health_damage"][actor_type] = {"init_health": health, "damage_applied": damage_given}
+    actor_data["actor_interactions"][actor_type] = init_interactions
+    actor_data["actor_extra_data_sizes"][actor_type] = actor_data["actor_extra_data_sizes"][base_actor]
+    actor_data["actor_collisions"][actor_type] = actor_data["actor_collisions"][base_actor].copy()
+    return actor_data
 
 
 base_potion = InGameItem(scale=0.25, bounce=True)
@@ -340,3 +394,295 @@ with open("src/lib_items.c", "w") as fh:
         + ",\n\t".join([f"{{.source_object={x.source_object}, .dropped_object={x.dropped_object}, .drop_music={x.drop_music}, .drop_count={x.drop_count}}}" for x in item_drops])
         + ",\n\t{.source_object=0, .dropped_object=0, .drop_music=0, .drop_count=0}, // Terminator\n};"
     )
+    data_types = {
+        "actor_defs": "actor_behaviour_def",
+        "actor_master_types": "unsigned char",
+        "actor_interactions": "short",
+        "actor_health_damage": "health_damage_struct",
+        "actor_collisions": "collision_data_struct",
+        "actor_functions": "void*",
+        "actor_extra_data_sizes": "short*",
+        "new_flag_mapping": "GBDictItem",
+    }
+    actor_data = {}
+    with open("actor_data.json", "r") as fg:
+        actor_data = json.load(fg)
+    actor_data["actor_defs"].extend(
+        [
+            {
+                "actor_type": 345 + CustomActors.NintendoCoin,
+                "model": 0x10B,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Nintendo Coin
+            {
+                "actor_type": 345 + CustomActors.RarewareCoin,
+                "model": 0x10D,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Rareware Coin
+            # Potions
+            {
+                "actor_type": 345 + CustomActors.PotionDK,
+                "model": 0xEE,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # DK Potion
+            {
+                "actor_type": 345 + CustomActors.PotionDiddy,
+                "model": 0xEF,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Diddy Potion
+            {
+                "actor_type": 345 + CustomActors.PotionLanky,
+                "model": 0xF0,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Lanky Potion
+            {
+                "actor_type": 345 + CustomActors.PotionTiny,
+                "model": 0xF1,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Tiny Potion
+            {
+                "actor_type": 345 + CustomActors.PotionChunky,
+                "model": 0xF2,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Chunky Potion
+            {
+                "actor_type": 345 + CustomActors.PotionAny,
+                "model": 0xF3,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Any Potion
+            # Kongs
+            {
+                "actor_type": 345 + CustomActors.KongDK,
+                "model": 0xFE,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # DK
+            {
+                "actor_type": 345 + CustomActors.KongDiddy,
+                "model": 0xFF,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Diddy
+            {
+                "actor_type": 345 + CustomActors.KongLanky,
+                "model": 0x100,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Lanky
+            {
+                "actor_type": 345 + CustomActors.KongTiny,
+                "model": 0x101,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Tiny
+            {
+                "actor_type": 345 + CustomActors.KongChunky,
+                "model": 0x102,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Chunky
+            # Shop Owners
+            {
+                "actor_type": 345 + CustomActors.CrankyItem,
+                "model": 0x10F,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Cranky
+            {
+                "actor_type": 345 + CustomActors.FunkyItem,
+                "model": 0x110,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Funky
+            {
+                "actor_type": 345 + CustomActors.CandyItem,
+                "model": 0x111,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Candy
+            {
+                "actor_type": 345 + CustomActors.SnideItem,
+                "model": 0x112,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Snide
+            # Misc
+            {
+                "actor_type": 345 + CustomActors.Bean,
+                "model": 0x105,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Bean
+            {
+                "actor_type": 345 + CustomActors.Pearl,
+                "model": 0x107,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Pearl
+            {
+                "actor_type": 345 + CustomActors.Fairy,
+                "model": 0xFC,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fairy
+            {
+                "actor_type": 345 + CustomActors.Null,
+                "model": 0,
+                "code": 0x80689F80,
+                "unk10": 0x8068A10C,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Nothing
+            {
+                "actor_type": 345 + CustomActors.Medal,
+                "model": 0x109,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Medal
+            {
+                "actor_type": 345 + CustomActors.IceTrapBubble,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapReverse,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapSlow,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.HintItem,
+                "model": 0x11A,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Hint Item
+        ]
+    )
+    default_values = {
+        "actor_master_types": 0,
+        "actor_interactions": 0,
+        "actor_health_damage": {
+            "init_health": 0,
+            "damage_applied": 0,
+        },
+        "actor_collisions": {
+            "collision_info": 0,
+            "unk_4": 0,
+        },
+        "actor_functions": 0,
+        "actor_extra_data_sizes": 0,
+    }
+    for exp_prop in default_values:
+        val = default_values[exp_prop]
+        exp_lst = [val] * len(CustomActors)
+        actor_data[exp_prop].extend(exp_lst)
+    print(len(actor_data["actor_functions"]))
+    actor_data["actor_functions"][70] = "&newCounterCode"
+    actor_data["actor_functions"][184] = "&snideCodeHandler"
+    actor_data["actor_functions"][189] = "&crankyCodeHandler"
+    actor_data["actor_functions"][190] = "&funkyCodeHandler"
+    actor_data["actor_functions"][191] = "&candyCodeHandler"
+    actor_data["actor_functions"][324] = "&getNextMoveText"
+    actor_data["actor_functions"][320] = "&getNextMoveText"
+    actor_data["actor_functions"][107] = "&HelmBarrelCode"
+    actor_data = initActor(actor_data, 345 + CustomActors.NintendoCoin, "&ninCoinCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.RarewareCoin, "&rwCoinCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Null, "&NothingCode", 4, 0, 1, 8, 0)
+    actor_data = initActor(actor_data, 345 + CustomActors.Medal, "&medalCode", 2, 0, 1, 8, 45)
+    for potion in POTIONS:
+        actor_data = initActor(actor_data, 345 + potion, "&PotionCode", 2, 0, 1, 8, 45)
+    for kong in KONGS:
+        actor_data = initActor(actor_data, 345 + kong, "&KongDropCode", 2, 0, 1, 8, 45)
+    for shopkeeper in SHOPKEEPERS:
+        actor_data = initActor(actor_data, 345 + shopkeeper, "&shopOwnerItemCode", 2, 0, 1, 8, 45)
+    for trap in TRAPS:
+        actor_data = initActor(actor_data, 345 + trap, "&FakeGBCode", 2, 0, 1, 8, 45)
+
+    actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&beanCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&pearlCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Fairy, "&fairyDuplicateCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.HintItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
+    actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
+    actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
+    actor_data["actor_collisions"][345 + CustomActors.Scarab] = {
+        "collision_info": 0x8074B240,
+        "unk_4": 1,
+    }
+    actor_data = initActor(actor_data, 345 + CustomActors.KopDummy, "&dummyGuardCode", 2, 0, 1, 8, 45)
+    # Flag Mapping
+    for item in actor_data["new_flag_mapping"]:
+        if item["map"] == Maps.Helm:
+            if item["model2_id"] == 0x5E:
+                item["flag_index"] = 0x24C
+            elif item["model2_id"] == 0x61:
+                item["flag_index"] = 0x249
+    # Add new flag mappings
+    pearl_lst = []
+    for x in range(5):
+        pearl_lst.append(
+            {
+                "map": Maps.GalleonTreasureChest,
+                "model2_id": x,
+                "flag_index": 0xBA + x,
+                "intended_kong_actor": 0,
+            }
+        )
+    actor_data["new_flag_mapping"].extend(pearl_lst)
+    actor_data["new_flag_mapping"].extend(
+        [
+            {
+                "map": Maps.FungiAntHill,
+                "model2_id": 5,
+                "flag_index": 0x300,
+                "intended_kong_actor": 0,
+            },
+            {
+                "map": Maps.Helm,
+                "model2_id": 0x5A,
+                "flag_index": 0x17C,
+                "intended_kong_actor": 0,
+            },
+        ]
+    )
+    for sym in data_types:
+        fh.write(f"\n{data_types[sym]} {sym}[] = {{\n\t" + ",\n\t".join([getActorDefaultString(x) for x in actor_data[sym]]) + "\n};")
