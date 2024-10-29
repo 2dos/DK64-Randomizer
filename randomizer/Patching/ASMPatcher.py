@@ -214,17 +214,18 @@ WARPS_TOTAL = [
 
 OVERLAY_ENDS = {
     Overlay.Static: 0x80761050,
-    Overlay.Menu: 0x80033f10,
+    Overlay.Menu: 0x80033F10,
     Overlay.Multiplayer: 0x80027100,
-    Overlay.Minecart: 0x80028e10,
-    Overlay.Bonus: 0x8002def0,
+    Overlay.Minecart: 0x80028E10,
+    Overlay.Bonus: 0x8002DEF0,
     Overlay.Race: 0x80030160,
-    Overlay.Critter: 0x8002a1b0,
-    Overlay.Boss: 0x80036dc0,
-    Overlay.Arcade: 0x8004ac00,
-    Overlay.Jetpac: 0x8002ec30,
+    Overlay.Critter: 0x8002A1B0,
+    Overlay.Boss: 0x80036DC0,
+    Overlay.Arcade: 0x8004AC00,
+    Overlay.Jetpac: 0x8002EC30,
     Overlay.Custom: 0x805FAE00,
 }
+
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
     """Populate the overlay offset database."""
