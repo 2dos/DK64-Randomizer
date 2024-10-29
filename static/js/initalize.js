@@ -75,6 +75,7 @@ if (location.hostname != "localhost") {
 
 function decrypt_settings_string_enum(settings_string) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
+  console.log(settings_string)
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings_string",
@@ -90,6 +91,7 @@ function decrypt_settings_string_enum(settings_string) {
 
 function encrypt_settings_string_enum(settings) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
+  console.log(settings)
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings_json",
