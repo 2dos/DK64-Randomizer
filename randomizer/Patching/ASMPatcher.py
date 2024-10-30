@@ -907,8 +907,14 @@ def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
     writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
 
 
+def updateActorFunctionInt(ROM_COPY, actor_index: int, new_function: int):
+    """Update the actor function in the table based on a int value."""
+    start = getSym("actor_functions") + (4 * actor_index)
+    writeValue(ROM_COPY, start, Overlay.Custom, new_function, {}, 4)
+
+
 def updateActorFunction(ROM_COPY, actor_index: int, new_function_sym: str):
-    """Update the actor function in the table."""
+    """Update the actor function in the table based on a sym value."""
     start = getSym("actor_functions") + (4 * actor_index)
     writeLabelValue(ROM_COPY, start, Overlay.Custom, new_function_sym, {})
 
@@ -2030,7 +2036,7 @@ def patchAssembly(ROM_COPY, spoiler):
         file_init_flags.append(0x309)  # Cranky FTT
 
     writeLabelValue(ROM_COPY, 0x80748014, Overlay.Static, "spawnWrinklyWrapper", offset_dict)  # Change function to include setFlag call
-    writeValue(ROM_COPY, 0x8074C3F0, Overlay.Static, 0x806AD54C, offset_dict, 4)  # Set Gold Beaver as Blue Beaver Code
+    updateActorFunctionInt(ROM_COPY, 212, 0x806AD54C)  # Set Gold Beaver as Blue Beaver Code
     writeLabelValue(ROM_COPY, 0x80748064, Overlay.Static, "change_object_scripts", offset_dict)  # Object Instance Scripts
 
     writeFunction(ROM_COPY, 0x806A8844, Overlay.Static, "helmTime_restart", offset_dict)  # Modify Function Call
