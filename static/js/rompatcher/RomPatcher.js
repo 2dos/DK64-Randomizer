@@ -55,7 +55,7 @@ function addEvent(e, ev, f) {
 /* initialize app */
 addEvent(window, "load", function () {
   try {
-    addEvent(document.getElementById("input-file-rom"), "change", function () {
+    addEvent(document.getElementById("input-file-rom"), "change", async function () {
       romFile = new MarcFile(this, _parseROM);
     });
   } catch {}
@@ -63,7 +63,7 @@ addEvent(window, "load", function () {
     addEvent(
       document.getElementById("input-file-rom_1"),
       "change",
-      function () {
+      async function () {
         romFile = new MarcFile(this, _parseROM);
       }
     );
@@ -72,7 +72,7 @@ addEvent(window, "load", function () {
     addEvent(
       document.getElementById("input-file-rom_2"),
       "change",
-      function () {
+      async function () {
         romFile = new MarcFile(this, _parseROM);
       }
     );

@@ -598,7 +598,7 @@ function load_databases() {
   musicdatabase = indexedDB.open("MusicStorage", 1);
   romdatabase = indexedDB.open("ROMStorage", 1);
 
-  musicdatabase.onupgradeneeded = function () {
+  musicdatabase.onupgradeneeded = async function () {
     try {
       var musicdb = musicdatabase.result;
       musicdb.createObjectStore("MusicStorage", { keyPath: "music" });
@@ -607,7 +607,7 @@ function load_databases() {
   musicdatabase.onsuccess = async function () {
     load_music_file_from_db();
   };
-  settingsdatabase.onupgradeneeded = function () {
+  settingsdatabase.onupgradeneeded = async function () {
     try {
       var settingsdb = settingsdatabase.result;
       settingsdb.createObjectStore("saved_settings");
@@ -617,14 +617,14 @@ function load_databases() {
     load_data();
   };
   // Create the schema
-  romdatabase.onupgradeneeded = function () {
+  romdatabase.onupgradeneeded = async function () {
     try {
       var db = romdatabase.result;
       db.createObjectStore("ROMStorage", { keyPath: "ROM" });
     } catch {}
   };
 
-  seeddatabase.onupgradeneeded = function () {
+  seeddatabase.onupgradeneeded = async function () {
     try {
       var seed_db = seeddatabase.result;
       seed_db.createObjectStore("SeedStorage", {
@@ -675,7 +675,7 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
   }
 }
 
-function load_old_seeds() {
+async function load_old_seeds() {
   try {
     // If we actually have a file in the DB load it
     var seed_db = seeddatabase.result;
@@ -740,7 +740,7 @@ function get_previous_seed_data() {
   var text = sel.options[sel.selectedIndex].lanky_data;
   return text;
 }
-function load_file_from_db() {
+async function load_file_from_db() {
   try {
     // If we actually have a file in the DB load it
     var db = romdatabase.result;
@@ -1336,9 +1336,20 @@ function initialize_sliders() {
 }
 
 function load_settings(json) {
+  // if enable_plandomizer is not checked, remove every setting from the json that starts with plando_
+  if (!json["enable_plandomizer"]) {
+    for (const key in json) {
+      if (key.startsWith("plando_")) {
+        delete json[key];
+      }
+    }
+  }
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [key, document.getElementsByName(key)])
   );
+
+  // Define a queue to batch DOM updates
+  const updateQueue = [];
 
   for (const [key, value] of Object.entries(json)) {
     const elements = elementsCache[key];
@@ -1346,39 +1357,56 @@ function load_settings(json) {
 
     const element = elements[0];
 
-    // Boolean values for checkboxes
-    if (value === "True" || value === "False") {
-      element.checked = value === "True";
-      continue;
-    }
-
-    // Radio button handling for "starting_move_box"
-    if (key.includes("starting_move_box")) {
-      elements.forEach(
-        (button) => (button.checked = button.id.includes(value))
-      );
-      continue;
-    }
-
-    try {
-      element.value = value;
-
-      // Handle noUiSlider if applicable
-      if (element.hasAttribute("data-slider-value")) {
-        const slider = document.getElementById(key);
-        slider?.noUiSlider?.set(value);
+    updateQueue.push(() => {
+      // Boolean values for checkboxes
+      if (value === "True" || value === "False") {
+        element.checked = value === "True";
+        return;
       }
 
-      // Multiple selection for elements with "selected" class
-      if (element.classList.contains("selected")) {
-        Array.from(element.options).forEach((option) => {
-          option.selected = value.includes(option.value);
+      // Radio button handling for "starting_move_box"
+      if (key.includes("starting_move_box")) {
+        elements.forEach((button) => {
+          button.checked = button.id.includes(value);
         });
+        return;
       }
-    } catch (e) {
-      console.error(`Error setting value for ${key}:`, e);
+
+      try {
+        element.value = value;
+
+        // Handle noUiSlider if applicable
+        if (element.hasAttribute("data-slider-value")) {
+          const slider = document.getElementById(key);
+          slider?.noUiSlider?.set(value);
+        }
+
+        // Multiple selection for elements with "selected" class
+        if (element.classList.contains("selected")) {
+          Array.from(element.options).forEach((option) => {
+            option.selected = value.includes(option.value);
+          });
+        }
+      } catch (e) {
+        console.error(`Error setting value for ${key}:`, e);
+      }
+    });
+  }
+
+  // Process the update queue in batches to avoid blocking
+  function processQueue() {
+    const batchSize = 10; // Adjust batch size based on performance needs
+    for (let i = 0; i < batchSize && updateQueue.length; i++) {
+      const updateFn = updateQueue.shift();
+      updateFn();
+    }
+
+    if (updateQueue.length > 0) {
+      requestAnimationFrame(processQueue);
     }
   }
+
+  requestAnimationFrame(processQueue);
 }
 
 function trigger_ui_update() {
@@ -1389,7 +1417,7 @@ function trigger_ui_update() {
 }
 
 // Ensure all functions are defined before calling them
-function initialize() {
+async function initialize() {
   // Call the function on page load to set the initial state
   load_databases();
   toggleDelayedSpoilerLogInput();
