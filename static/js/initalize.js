@@ -1181,7 +1181,7 @@ function preset_select_changed(event) {
         if (selector.tagName === "SELECT") {
           for (const item of settings[key]) {
             for (const option of selector.options) {
-              if (option.value === Object.keys(SettingsMap[key])[val]) {
+              if (option.value === Object.keys(SettingsMap[key])[item]) {
                 option.selected = true;
               }
             }
