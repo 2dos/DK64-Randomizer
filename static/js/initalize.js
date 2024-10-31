@@ -1180,8 +1180,9 @@ function preset_select_changed(event) {
         const selector = document.getElementById(key);
         if (selector.tagName === "SELECT") {
           for (const item of settings[key]) {
+            let val = item - 1;
             for (const option of selector.options) {
-              if (option.value === Object.keys(SettingsMap[key])[item]) {
+              if (option.value === Object.keys(SettingsMap[key])[val]) {
                 option.selected = true;
               }
             }
