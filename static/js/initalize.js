@@ -1284,7 +1284,7 @@ function set_random_weights_options() {
   }
 }
 
-async function load_data() {
+function load_data() {
   try {
     initialize_sliders();
     const settingsdb = settingsdatabase.result;
