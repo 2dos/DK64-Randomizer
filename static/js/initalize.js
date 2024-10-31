@@ -555,7 +555,7 @@ function filebox() {
   input.type = "file";
   input.accept = ".z64,.n64,.v64";
 
-  input.onchange = (e) => {
+  input.onchange = async (e) => {
     var file = e.target.files[0];
     $("#rom").attr("placeholder", file.name);
     $("#rom").val(file.name);
@@ -563,14 +563,17 @@ function filebox() {
     $("#rom_2").attr("placeholder", file.name);
     $("#rom_3").val(file.name);
     $("#rom_3").attr("placeholder", file.name);
-    // Get the original fiile
+    // Get the original file
     try {
       var db = romdatabase.result;
       var tx = db.transaction("ROMStorage", "readwrite");
       var store = tx.objectStore("ROMStorage");
       // Store it in the database
-      store.put({ ROM: "N64", value: file });
-    } catch {}
+      await store.put({ ROM: "N64", value: file });
+      console.log("Successfully stored file in the database.");
+    } catch (error) {
+      console.log("Error storing file in the database:", error);
+    }
     // Make sure we load the file into the rompatcher
     romFile = new MarcFile(file, _parseROM);
   };
@@ -749,7 +752,7 @@ async function load_file_from_db() {
 
     // Get our ROM file
     var getROM = store.get("N64");
-    getROM.onsuccess = function () {
+    getROM.onsuccess = async function () {
       // When we pull it from the DB load it in as a global var
       try {
         romFile = new MarcFile(getROM.result.value, _parseROM);
