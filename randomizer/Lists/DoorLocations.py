@@ -1162,7 +1162,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R&D Room - Next to Tunnel to Car Race",
+            name="R and D Room - Next to Tunnel to Car Race",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[4006.7, 1264.0, 1454.0, 253.7],
@@ -1178,7 +1178,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R&D Room - Dead End",
+            name="R and D Room - Dead End",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3824.0, 1264.0, 528.8, 340.5],
@@ -1186,7 +1186,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R&D Room - Blind Corner Next to Tunnel to Car Race",
+            name="R and D Room - Blind Corner Next to Tunnel to Car Race",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3790.0, 1264.0, 1476.0, 52.5],
@@ -1227,7 +1227,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R&D Room - Next to Diddy's Pincode Room",
+            name="R and D Room - Next to Diddy's Pincode Room",
             map=Maps.FranticFactory,
             logicregion=Regions.RandDUpper,
             location=[4046.0, 1336.0, 608.0, 340.0],
