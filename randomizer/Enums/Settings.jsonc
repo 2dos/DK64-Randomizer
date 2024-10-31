@@ -50,9 +50,9 @@
     - on_with_isles: Expanded to include isles.
   */
   "CBRando": {
-    "off": 0,
-    "on": 1,
-    "on_with_isles": 2
+    "off": 1,
+    "on": 2,
+    "on_with_isles": 3
   },
 
   /*
@@ -63,9 +63,9 @@
     - custom: The character uses a user-provided color.
   */
   "CharacterColors": {
-    "vanilla": 0,
-    "randomized": 1,
-    "custom": 2
+    "vanilla": 1,
+    "randomized": 2,
+    "custom": 3
   },
 
   /*
@@ -185,10 +185,10 @@
     - careful_random: Places items with no regard for anything except coin logic.
   */
   "FillAlgorithm": {
-    "forward": 0,
-    "assumed": 1,
-    "random": 2,
-    "careful_random": 3
+    "forward": 1,
+    "assumed": 2,
+    "random": 3,
+    "careful_random": 4
   },
 
   /*
@@ -214,11 +214,11 @@
     - progressive: Time of day progresses naturally in Fungi Forest.
   */
   "FungiTimeSetting": {
-    "day": 0,
-    "night": 1,
-    "random": 2,
-    "dusk": 3,
-    "progressive": 4
+    "day": 1,
+    "night": 2,
+    "random": 3,
+    "dusk": 4,
+    "progressive": 5
   },
 
   /*
@@ -229,9 +229,9 @@
     - random: Random water level.
   */
   "GalleonWaterSetting": {
-    "lowered": 0,
-    "raised": 1,
-    "random": 2
+    "lowered": 1,
+    "raised": 2,
+    "random": 3
   },
   /* 
     ClimbingStatus:
@@ -419,9 +419,9 @@
     - Determines the random model level.
   */
   "RandomModels": {
-    "off": 0,
-    "random": 1,
-    "extreme": 2
+    "off": 1,
+    "random": 2,
+    "extreme": 3
   },
 
   /*
@@ -505,10 +505,10 @@
     - selected: Minigames are shuffled among user-selected ones.
   */
   "MinigameBarrels": {
-    "normal": 0,
-    "skip": 1,
-    "random": 2,
-    "selected": 3
+    "normal": 1,
+    "skip": 2,
+    "random": 3,
+    "selected": 4
   },
 
   /*
@@ -695,10 +695,10 @@
     - on: Full shuffle.
   */
   "ShufflePortLocations": {
-    "off": 0,
-    "vanilla_only": 1,
-    "half_vanilla": 2,
-    "on": 3
+    "off": 1,
+    "vanilla_only": 2,
+    "half_vanilla": 3,
+    "on": 4
   },
 
   /*
@@ -710,10 +710,10 @@
     - random: Random slam color from the above.
   */
   "SlamRequirement": {
-    "green": 0,
-    "blue": 1,
-    "red": 2,
-    "random": 3
+    "green": 1,
+    "blue": 2,
+    "red": 3,
+    "random": 4
   },
 
   /*
@@ -1032,19 +1032,19 @@
     Enum for mapping settings to data types for encryption/decryption
   */
   "SettingsStringDataType": {
-    "bool": 0,
+    "bool": 1,
     // Can represent up to 16 values (-8 to 7).
-    "int4": 1,
+    "int4": 2,
     // Can represent up to 256 values (-128 to 127).
-    "int8": 2,
+    "int8": 3,
     // Can represent up to 65,536 values (-32,768 to 32,767).
-    "int16": 3,
+    "int16": 4,
     // Will be shrunk down to the smallest possible size.
-    "var_int": 4,
-    "str": 5,
-    "list": 6,
+    "var_int": 5,
+    "str": 6,
+    "list": 7,
     // Can represent up to 65,536 values (0 to 65535)
-    "u16": 7
+    "u16": 8
   },
   "SettingsMap": {
     "activate_all_bananaports": { "obj": "ActivateAllBananaports" },
