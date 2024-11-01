@@ -534,7 +534,17 @@ document.getElementById("import_settings").addEventListener("click", async funct
             } else {
                 const selector = document.getElementById(key);
                 if (selector.tagName === "SELECT" && key !== "random-weights") {
-                    selector.selectedIndex = settings[key];
+                    let MapName = SettingsMap[key];
+                    let map_keys = Object.keys(MapName)
+                    let index = 0;
+                    for (let i = 0; i < map_keys.length; i++) {
+                        if (MapName[map_keys[i]] === settings[key]) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    // Get the index position of the value in the map_keys array
+                    selector.selectedIndex = index;
                 } else {
                     document.getElementById(key).value = settings[key];
                 }

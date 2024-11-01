@@ -75,7 +75,6 @@ if (location.hostname != "localhost") {
 
 function decrypt_settings_string_enum(settings_string) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
-  console.log(settings_string)
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings_string",
@@ -84,16 +83,12 @@ function decrypt_settings_string_enum(settings_string) {
     async: false,
   }).responseText;
   // Convert the json response to a string
-  console.log(response)
   var settings = JSON.parse(response);
-  console.log(settings)
   return settings;
 }
 
 function encrypt_settings_string_enum(settings) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
-  console.log(settings)
-  console.log(JSON.stringify(settings))
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings_json",
@@ -104,7 +99,6 @@ function encrypt_settings_string_enum(settings) {
   // Convert the json response to a string
   var set = JSON.parse(response);
   var settings_string = set["settings_string"];
-  console.log(settings_string)
   return settings_string;
 }
 
