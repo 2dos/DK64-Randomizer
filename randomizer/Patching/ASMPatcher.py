@@ -461,6 +461,7 @@ CROSSHAIRS = {
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = True):
     """Patch assembly instructions that pertain to cosmetic changes."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
+    holiday = getHoliday(settings)
 
     troff_light = 1 if settings.troff_brighten else 0.15
     writeFloat(ROM_COPY, 0x8075B8B0, Overlay.Static, troff_light, offset_dict)
@@ -560,6 +561,35 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
                         writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + ((y + 1) * 3) + zi, Overlay.Static, z, offset_dict, 1)
         writeValue(ROM_COPY, 0x8075E1EC, Overlay.Static, 0x80708234, offset_dict, 4)
 
+    # Haze Color
+    addrs = [0x8065912E, 0x8065913E, 0x8065914A]
+    color = []
+    enabled = False
+    force_fog_color = False
+    if holiday == Holidays.Anniv25:
+        enabled = True
+        force_fog_color = True
+        color = [0xFF, 0xFF, 0x00]
+    elif holiday == Holidays.Halloween:
+        enabled = True
+        force_fog_color = True
+        color = [0xFF, 0x00, 0x00]
+    elif holiday == Holidays.Christmas:
+        enabled = True
+        force_fog_color = True
+        color = [0x00, 0xFF, 0xFF]
+    else:
+        # Non-Holiday
+        enabled = settings.misc_cosmetics
+        for x in range(3):
+            color.append(random.randint(0, 0xFF))
+
+    if enabled:
+        for addr_i, addr in enumerate(addrs):
+            writeValue(ROM_COPY, addr, Overlay.Static, color[addr_i], offset_dict)
+        if force_fog_color:
+            writeValue(ROM_COPY, 0x80659124, Overlay.Static, 0, offset_dict, 4)
+
     writeValue(ROM_COPY, 0x8064F052, Overlay.Static, settings.wrinkly_rgb[0], offset_dict)
     writeValue(ROM_COPY, 0x8064F04A, Overlay.Static, settings.wrinkly_rgb[1], offset_dict)
     writeValue(ROM_COPY, 0x8064F046, Overlay.Static, settings.wrinkly_rgb[2], offset_dict)
@@ -618,7 +648,6 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806035BA, Overlay.Static, 0, offset_dict)  # Set TGrounds count to 0
 
     # Holiday Mode Stuff
-    holiday = getHoliday(settings)
     if holiday == Holidays.Halloween:
         writeValue(ROM_COPY, 0x800271F2, Overlay.Bonus, Model.Krossbones + 1, offset_dict)  # Green
         writeValue(ROM_COPY, 0x80027216, Overlay.Bonus, Model.RoboKremling + 1, offset_dict)  # Red

@@ -3239,12 +3239,15 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                 writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, TextureFormat.RGBA5551)
 
 
-def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None):
+def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None, brighten_barrel: bool = False):
     """Change the colors of the various barrels."""
     wood_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellWood), True, 32, 64, TextureFormat.RGBA5551)
     metal_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellMetal), True, 32, 64, TextureFormat.RGBA5551)
     qmark_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellQMark), True, 32, 64, TextureFormat.RGBA5551)
     if barrel_color is not None:
+        if brighten_barrel:
+            enhancer = ImageEnhance.Brightness(wood_img)
+            wood_img = enhancer.enhance(2)
         wood_img = maskImageWithColor(wood_img, barrel_color)
     if metal_color is not None:
         metal_img = maskImageWithColor(metal_img, metal_color)
@@ -3443,7 +3446,7 @@ def applyHolidayMode(settings):
         for img in range(0x1237, 0x1241 + 1):
             hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
     elif HOLIDAY == Holidays.Anniv25:
-        changeBarrelColor((0xC0, 0xC0, 0x00))
+        changeBarrelColor((0xFF, 0xFF, 0x00), None, True)
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
