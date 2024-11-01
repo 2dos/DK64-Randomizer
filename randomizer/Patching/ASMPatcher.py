@@ -577,7 +577,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     elif holiday == Holidays.Christmas:
         enabled = True
         force_fog_color = True
-        color = [0x00, 0XFF, 0xFF]
+        color = [0x00, 0xFF, 0xFF]
     else:
         # Non-Holiday
         enabled = settings.misc_cosmetics
