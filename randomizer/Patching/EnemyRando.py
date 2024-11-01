@@ -192,7 +192,7 @@ minigame_maps_total.extend(minigame_maps_nolimit)
 minigame_maps_total.extend(minigame_maps_beavers)
 bbbarrage_maps = (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
 banned_speed_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy()
-banned_size_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy()
+banned_size_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy() + [Maps.ForestAnthill, Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin]
 replacement_priority = {
     EnemySubtype.GroundSimple: [EnemySubtype.GroundBeefy, EnemySubtype.Water, EnemySubtype.Air],
     EnemySubtype.GroundBeefy: [EnemySubtype.GroundSimple, EnemySubtype.Water, EnemySubtype.Air],
