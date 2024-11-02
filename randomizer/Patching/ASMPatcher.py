@@ -6,7 +6,7 @@ import math
 import io
 import randomizer.ItemPool as ItemPool
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress, ExtraTextures, getBonusSkinOffset
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     FasterChecksSelected,
@@ -665,6 +665,9 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806682C8, Overlay.Static, 0x240E0004, offset_dict, 4)  # Set ground sfx to snow
         writeValue(ROM_COPY, 0x806682CC, Overlay.Static, 0x240C0004, offset_dict, 4)  # Set ground sfx to snow
         writeValue(ROM_COPY, 0x806682DC, Overlay.Static, 0x240E0004, offset_dict, 4)  # Set ground sfx to snow
+    elif holiday == Holidays.Anniv25:
+        # Change barrel base sprite
+        writeValue(ROM_COPY, 0x80721458, Overlay.Static, getBonusSkinOffset(ExtraTextures.Anniv25Barrel), offset_dict)
 
     if settings.colorblind_mode != ColorblindMode.off:
         writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict)  # Force first option

@@ -852,6 +852,8 @@ class ExtraTextures(IntEnum):
     ShellQMark = auto()
     RocketTop = auto()
     BlastTop = auto()
+    Anniv25Sticker = auto()
+    Anniv25Barrel = auto()
 
 
 class MoveTypes(IntEnum):

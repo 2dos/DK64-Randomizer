@@ -37,7 +37,7 @@ from randomizer.Patching.Lib import (
     Holidays,
     getHoliday,
 )
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures, imageToCI
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures, imageToCI, getBonusSkinOffset
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -697,6 +697,7 @@ def apply_cosmetic_colors(settings: Settings):
         writeTransition(settings)
         writeCustomPortal(settings)
         writeCustomPaintings(settings)
+        # randomizePlants(ROM_COPY, settings)  # Not sure how much I like how this feels
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -2396,40 +2397,6 @@ def placeKrushaHead(slot):
     ROM_COPY.seek(rgba16_addr32)
     ROM_COPY.writeBytes(bytearray(data32))
 
-
-barrel_skins = (
-    "gb",
-    "dk",
-    "diddy",
-    "lanky",
-    "tiny",
-    "chunky",
-    "bp",
-    "nin_coin",
-    "rw_coin",
-    "key",
-    "crown",
-    "medal",
-    "potion",
-    "bean",
-    "pearl",
-    "fairy",
-    "rainbow",
-    "fakegb",
-    "melon",
-    "cranky",
-    "funky",
-    "candy",
-    "snide",
-    "hint",
-)
-
-
-def getBonusSkinOffset(offset: int):
-    """Get texture index after the barrel skins."""
-    return 6026 + (3 * len(barrel_skins)) + offset
-
-
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
     """Get value from byte array given an offset and size."""
     value = 0
@@ -3447,6 +3414,10 @@ def applyHolidayMode(settings):
             hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
     elif HOLIDAY == Holidays.Anniv25:
         changeBarrelColor((0xFF, 0xFF, 0x00), None, True)
+        sticker_im = getImageFile(25, getBonusSkinOffset(ExtraTextures.Anniv25Sticker), True, 1, 1372, TextureFormat.RGBA5551)
+        writeColorImageToROM(sticker_im, 25, 0x1266, 1, 1372, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(sticker_im, 25, 0xB7D, 1, 1360, False, TextureFormat.RGBA5551)
+        
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
@@ -4157,3 +4128,32 @@ def writeCustomPaintings(settings: Settings) -> None:
     settings.painting_museum_swords = PAINTING_INFO[3].name
     settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
     settings.painting_treehouse_candy = PAINTING_INFO[5].name
+
+def randomizePlants(ROM_COPY: ROM, settings: Settings):
+    """Randomize the plants in the setup file."""
+    if not settings.misc_cosmetics:
+        return
+    
+    flowers = [0x05, 0x08, 0x43]
+    for x in range(0x1F1 - 0x1DE):
+        flowers.append(0x1DE + x)
+    maps_that_contain_flowers = [
+        Maps.JungleJapes,
+        Maps.JungleJapesLobby,
+        Maps.TrainingGrounds,
+        Maps.JapesTinyHive,
+        Maps.AngryAztec,
+        Maps.Isles,
+        Maps.BananaFairyRoom,
+    ]
+    for map_id in maps_that_contain_flowers:
+        setup_file = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
+        ROM_COPY.seek(setup_file)
+        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        for model2_item in range(model2_count):
+            item_start = setup_file + 4 + (model2_item * 0x30)
+            ROM_COPY.seek(item_start + 0x28)
+            item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if item_type in flowers:
+                ROM_COPY.seek(item_start + 0x28)
+                ROM_COPY.writeMultipleBytes(random.choice(flowers), 2)
