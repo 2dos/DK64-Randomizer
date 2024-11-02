@@ -126,15 +126,15 @@
 | Frantic Factory | Under Cranky's Lab | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Under Candy's Store | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Next to DK's Count to 16 Puzzle | Boss, Dk_Portal, Wrinkly |  | 
-| Frantic Factory | R&D Room - Next to Tunnel to Car Race | Boss, Dk_Portal, Wrinkly |  | 
+| Frantic Factory | R and D Room - Next to Tunnel to Car Race | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Block Tower Room - Under Tunnel to Funky's | Boss, Dk_Portal, Wrinkly |  | 
-| Frantic Factory | R&D Room - Dead End | Boss, Dk_Portal, Wrinkly |  | 
-| Frantic Factory | R&D Room - Blind Corner Next to Tunnel to Car Race | Wrinkly |  | 
+| Frantic Factory | R and D Room - Dead End | Boss, Dk_Portal, Wrinkly |  | 
+| Frantic Factory | R and D Room - Blind Corner Next to Tunnel to Car Race | Wrinkly |  | 
 | Frantic Factory | Funky's Room - Across from Melon Crate | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Block Tower Room - Air Vent Under Arcade Window | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Block Tower Room - Under Arcade Window - left | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Block Tower Room - Behind Tag Barrel | Boss, Dk_Portal, Wrinkly |  | 
-| Frantic Factory | R&D Room - Next to Diddy's Pincode Room | Boss, Dk_Portal, Wrinkly |  | 
+| Frantic Factory | R and D Room - Next to Diddy's Pincode Room | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Tiny's Race Entry Area | Wrinkly |  | 
 | Frantic Factory | Kong Cage Room - Next to Tag Barrel | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Production Room - in Alcove Next to Tiny's Barrel | Wrinkly | `l.istiny and l.twirl` | 

@@ -28,7 +28,6 @@ def GetNameFromPlandoItem(plandoItem: PlandoItems) -> str:
     mappedItem = PlandoItemToItemMap[plandoItem]
     return ItemList[mappedItem].name
 
-
 # A dictionary that maps plando options to enum classes. The key for each enum
 # must exactly match that of the associated HTML input.
 PlandoEnumMap = {

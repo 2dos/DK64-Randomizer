@@ -217,7 +217,7 @@ minigame_maps_total.extend(minigame_maps_nolimit)
 minigame_maps_total.extend(minigame_maps_beavers)
 bbbarrage_maps = (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
 banned_speed_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy()
-banned_size_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy()
+banned_size_maps = list(bbbarrage_maps).copy() + minigame_maps_beavers.copy() + [Maps.ForestAnthill, Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin]
 replacement_priority = {
     EnemySubtype.GroundSimple: [EnemySubtype.GroundBeefy, EnemySubtype.Water, EnemySubtype.Air],
     EnemySubtype.GroundBeefy: [EnemySubtype.GroundSimple, EnemySubtype.Water, EnemySubtype.Air],
@@ -500,6 +500,12 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
                     new_speed = 255
                 ROM_COPY.seek(cont_map_spawner_address + spawner.offset + speed_offset)
                 ROM_COPY.writeMultipleBytes(new_speed, 1)
+    # Fix Tiny 5DI enemy to not respawn
+    ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x13)
+    id = int.from_bytes(ROM_COPY.readBytes(1), "big")
+    if cont_map_id == Maps.CavesTinyIgloo and id == 2:
+        ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x14)
+        ROM_COPY.writeMultipleBytes(0, 1)  # Disable respawning
 
 
 def randomize_enemies_0(spoiler):

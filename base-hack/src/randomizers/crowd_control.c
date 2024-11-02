@@ -231,6 +231,7 @@ int cc_enabler_rockfall(void) {
 void dummyGuardCode(void) {
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         guardCatchInternal(); // Catch the player
+        updateKopStat();
         playActorAnimation(CurrentActorPointer_0, 0x2C0);
     }
     // Render Light
@@ -291,7 +292,6 @@ int cc_enabler_balloon(void) {
         Player->yAccel = 2.0f + (*(double*)(0x8075D308) * 10.0f);
         Player->balloon_timer = 10;
         playActorAnimation(Player, 0x169);
-        ButtonsEnabledBitfield &= ~0x2000; // Disable Z
     }
     return 1;
 }
