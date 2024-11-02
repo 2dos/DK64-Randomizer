@@ -86,6 +86,7 @@ DISABLE_BORDERS = False
 ENABLE_MINIGAME_SPRITE_RANDO = False
 ENABLE_HELM_GBS = True
 ENABLE_BLAST_LZR = False
+POP_TARGETTING = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -2584,6 +2585,29 @@ def patchAssembly(ROM_COPY, spoiler):
             writeValue(ROM_COPY, 0x80036950 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x], offset_dict, 1)
             writeValue(ROM_COPY, 0x80036968 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x + 5], offset_dict, 1)
 
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase):
+        # Spawn a K Rool balloon into the fight to trigger K Rool
+        writeFunction(ROM_COPY, 0x806A7AA8, Overlay.Static, "popExistingBalloon", offset_dict)
+        writeFunction(ROM_COPY, 0x8002EB64, Overlay.Boss, "spawnKRoolLankyBalloon", offset_dict)
+        addr = 0x8074482C + (12 * Maps.KroolLankyPhase) + 0
+        rom_addr = getROMAddress(addr, Overlay.Static, offset_dict)
+        ROM_COPY.seek(rom_addr)
+        val = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        val &= ~0x200  # Re-enables guns
+        writeValue(ROM_COPY, addr, Overlay.Static, val, offset_dict, 4)
+        if settings.more_cutscene_skips == ExtraCutsceneSkips.auto:
+            writeValue(ROM_COPY, 0x8002EC50, Overlay.Boss, 0, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8002EC64, Overlay.Boss, 0, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8002EC70, Overlay.Boss, 0, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8002EC82, Overlay.Boss, 2, offset_dict)
+        if POP_TARGETTING:
+            PEEL_DURATION = 35  # In seconds. Vanilla is 20
+            writeFunction(ROM_COPY, 0x8002ED28, Overlay.Boss, "handleKRoolDirecting", offset_dict)
+            writeValue(ROM_COPY, 0x8002E866, Overlay.Boss, PEEL_DURATION * 30, offset_dict)
+        # Fixes a bug if someone pops a balloon whilst K Rool has slipped where the hit doesn't count
+        writeFunction(ROM_COPY, 0x8002EF40, Overlay.Boss, "incHitCounter", offset_dict)
+        writeValue(ROM_COPY, 0x8002EFAC, Overlay.Boss, 0, offset_dict, 4)
+
     # Training
     writeValue(ROM_COPY, 0x80029610, Overlay.Critter, 0, offset_dict, 4)  # Disable set flag
     writeFunction(ROM_COPY, 0x80029638, Overlay.Critter, "warpOutOfTraining", offset_dict)
@@ -2904,6 +2928,7 @@ def patchAssembly(ROM_COPY, spoiler):
     for flag in file_init_flags:
         ROM_COPY.writeMultipleBytes(flag, 2)
     ROM_COPY.writeMultipleBytes(0xFFFF, 2)
+
 
     # Settings to check usage
     # faster_checks.rabbit_race

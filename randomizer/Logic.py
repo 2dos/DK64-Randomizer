@@ -1070,6 +1070,12 @@ class LogicVarHolder:
                 return False
         # If we have the moves, ensure we have enough kongs as well
         return self.HasEnoughKongs(level, forPreviousLevel=True)
+    
+    def CanBeatLankyPhase(self):
+        """Check whether the player can beat Lanky phase of K Rool."""        
+        if self.HardBossesSettingEnabled(HardBossesSelected.beta_lanky_phase):
+            return self.lanky and self.grape and self.barrels
+        return self.lanky and self.trombone and self.barrels
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""

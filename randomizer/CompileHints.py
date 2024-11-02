@@ -31,6 +31,7 @@ from randomizer.Enums.Settings import (
     WrinklyHints,
     KongModels,
     SlamRequirement,
+    HardBossesSelected,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -43,7 +44,7 @@ from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
-from randomizer.Patching.Lib import plando_colors
+from randomizer.Patching.Lib import plando_colors, IsItemSelected
 
 if TYPE_CHECKING:
     from randomizer.Lists.WrinklyHints import HintLocation
@@ -580,6 +581,8 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.KroolTinyPhase: [Items.Feather, Items.MiniMonkey],
         Maps.KroolChunkyPhase: chunky_phase_requirement,
     }
+    if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase):
+        required_moves[Maps.KroolLankyPhase] = [Items.Barrels, Items.Grape]
     for map_id in required_moves:
         if map_id in spoiler.settings.krool_order and map_id in spoiler.krool_paths.keys():
             useless_locations[map_id] = [

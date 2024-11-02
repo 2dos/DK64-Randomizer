@@ -286,7 +286,9 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
             if Kongs.chunky in ownedKongs[level] and Items.HunkyChunky in ownedMoves[level]:
                 bossOptions[level].append(Maps.FungiBoss)
             # Lanky Phase also needs Lanky and Trombone
-            if spoiler.settings.krool_in_boss_pool and Kongs.lanky in ownedKongs[level] and Items.Trombone in ownedMoves[level]:
+            is_beta_lanky = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase)
+            required_additional_item_lankyphase = Items.Grape if is_beta_lanky else Items.Trombone
+            if spoiler.settings.krool_in_boss_pool and Kongs.lanky in ownedKongs[level] and required_additional_item_lankyphase in ownedMoves[level]:
                 bossOptions[level].append(Maps.KroolLankyPhase)
         # Mad Jack always requires a slam
         if Items.ProgressiveSlam in ownedMoves[level]:
