@@ -3272,6 +3272,52 @@ def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None, bri
             writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)
 
 
+def applyCelebrationRims(hue_shift: int, enabled_bananas: list[bool] = [False, False, False, False, False]):
+    """Retexture the warp pad rims to have a more celebratory tone."""
+    banana_textures = []
+    vanilla_banana_textures = [0xA8, 0x98, 0xE8, 0xD0, 0xF0]
+    for kong_index, ban in enumerate(enabled_bananas):
+        if ban:
+            banana_textures.append(vanilla_banana_textures[kong_index])
+    place_bananas = False
+    if len(banana_textures) > 0:
+        place_bananas = True
+        if len(banana_textures) < 4:
+            banana_textures = (banana_textures * 4)[:4]
+    if place_bananas:
+        bananas = [getImageFile(7, x, False, 44, 44, TextureFormat.RGBA5551).resize((14, 14)) for x in banana_textures]
+    banana_placement = [
+        # File, x, y
+        [0xBB3, 15, 1],  # 3
+        [0xBB2, 2, 1],  # 2
+        [0xBB3, 0, 1],  # 4
+        [0xBB2, 17, 1],  # 1
+    ]
+    for img in (0xBB2, 0xBB3):
+        side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
+        hueShift(side_im, hue_shift)
+        if place_bananas:
+            for bi, banana in enumerate(bananas):
+                if banana_placement[bi][0] == img:
+                    b_x = banana_placement[bi][1]
+                    b_y = banana_placement[bi][2]
+                    side_im.paste(banana, (b_x, b_y), banana)
+        side_by = []
+        side_px = side_im.load()
+        for y in range(16):
+            for x in range(32):
+                red_short = (side_px[x, y][0] >> 3) & 31
+                green_short = (side_px[x, y][1] >> 3) & 31
+                blue_short = (side_px[x, y][2] >> 3) & 31
+                alpha_short = 1 if side_px[x, y][3] > 128 else 0
+                value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
+                side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
+        px_data = bytearray(side_by)
+        px_data = gzip.compress(px_data, compresslevel=9)
+        ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
+        ROM().writeBytes(px_data)
+
+
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = getHoliday(settings)
@@ -3324,36 +3370,7 @@ def applyHolidayMode(settings):
         ROM().seek(start)
         ROM().writeBytes(byte_data)
         # Alter rims
-        bananas = [getImageFile(7, x, False, 44, 44, TextureFormat.RGBA5551).resize((14, 14)) for x in [0xD0, 0xE8, 0xA8, 0x98]]
-        banana_placement = [
-            # File, x, y
-            [0xBB3, 15, 1],  # 3
-            [0xBB2, 2, 1],  # 2
-            [0xBB3, 0, 1],  # 4
-            [0xBB2, 17, 1],  # 1
-        ]
-        for img in (0xBB2, 0xBB3):
-            side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
-            hueShift(side_im, 50)
-            for bi, banana in enumerate(bananas):
-                if banana_placement[bi][0] == img:
-                    b_x = banana_placement[bi][1]
-                    b_y = banana_placement[bi][2]
-                    side_im.paste(banana, (b_x, b_y), banana)
-            side_by = []
-            side_px = side_im.load()
-            for y in range(16):
-                for x in range(32):
-                    red_short = (side_px[x, y][0] >> 3) & 31
-                    green_short = (side_px[x, y][1] >> 3) & 31
-                    blue_short = (side_px[x, y][2] >> 3) & 31
-                    alpha_short = 1 if side_px[x, y][3] > 128 else 0
-                    value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
-                    side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
-            px_data = bytearray(side_by)
-            px_data = gzip.compress(px_data, compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
-            ROM().writeBytes(px_data)
+        applyCelebrationRims(50, [True, True, True, True, False])
         # Change DK's Tie and Tiny's Hair
         if settings.dk_tie_colors != CharacterColors.custom and settings.kong_model_dk == KongModels.default:
             tie_hang = [0xFF] * 0xAB8
@@ -3377,23 +3394,7 @@ def applyHolidayMode(settings):
         ROM().seek(settings.rom_data + 0xDB)
         ROM().writeMultipleBytes(1, 1)
         # Pad Rim
-        for img in (0xBB2, 0xBB3):
-            side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
-            hueShift(side_im, -12)
-            side_by = []
-            side_px = side_im.load()
-            for y in range(16):
-                for x in range(32):
-                    red_short = (side_px[x, y][0] >> 3) & 31
-                    green_short = (side_px[x, y][1] >> 3) & 31
-                    blue_short = (side_px[x, y][2] >> 3) & 31
-                    alpha_short = 1 if side_px[x, y][3] > 128 else 0
-                    value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
-                    side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
-            px_data = bytearray(side_by)
-            px_data = gzip.compress(px_data, compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
-            ROM().writeBytes(px_data)
+        applyCelebrationRims(-12)
         # Tag Barrel, Bonus Barrel & Transform Barrels
         changeBarrelColor((0x00, 0xC0, 0x00))
         # Turn Ice Tomato Orange
@@ -3417,6 +3418,7 @@ def applyHolidayMode(settings):
         sticker_im = getImageFile(25, getBonusSkinOffset(ExtraTextures.Anniv25Sticker), True, 1, 1372, TextureFormat.RGBA5551)
         writeColorImageToROM(sticker_im, 25, 0x1266, 1, 1372, False, TextureFormat.RGBA5551)
         writeColorImageToROM(sticker_im, 25, 0xB7D, 1, 1360, False, TextureFormat.RGBA5551)
+        applyCelebrationRims(0, [False, True, True, True, True])
         
 
 
