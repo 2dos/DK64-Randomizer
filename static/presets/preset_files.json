@@ -6,7 +6,7 @@
   {
     "name": "Beginner Settings",
     "description": "Settings tailored to beginner players learning the game. Ideal for first-time players. Check out the wiki for tips and tricks!",
-    "settings_string": "!fjNPwoIiFMdK2OUlZl9DQQSLgHofUA8IhkQlS2Nc+EZT8RolIlsQpRXHaljwQmCbzgPEhTJW4CkFLbYFuAkkA0yJoohRikFKKYDILq9X4KAtwBBgJvAQOBuADCARxAgSCuQFCgZzAwWDugHDAi5BCZDTJ1lleADKcemnmElCUdVaWJGVitIGcHR6hUW1KXoqIsAiYigCsWWORuyXi7yKByHYy9p6BXmSWTN5bBEIABcKABcMABMOABMQAA9aAA8SAAsUAAcWAA8YAAsaAAdcABafK9AkuVLZ7LJ6NioPgYRwfXawMBnLqsBxVFZoKZUWgpQAoKwaUAnFRaJKqFxDTxrVKDSIjXR2AB0AnQCyAFEAjwILDJQA"
+    "settings_string": "fjNPwoIiFMdK2OUlZl9DQQSbgj0PqAeEQyISpbGufCMp+I0SkS2IUorjtSx4ITBN5wGiQpkrApBS22BbgJJANMmaaIUYpBSimAyC6vV+CgLcAQYCbwEDgbgAwgEcQIEgrkBQoGcwMFg7oBwwIuQQmQ0ydWRXgAynHpp5hJQlHVWixIysVpAzk7PkKi2pS9FRFgETEUAViyxyN2S8XeRQOQ7GXtPQK8ySyZvLYIhAALhQALhgAJhwAJiAAHrQAHiQAFigADiwAHjAAFjQADrgALT5XoElypbPZZPRsVB8DCOD67WBgM5dVgOKorNBTKi0FKAFBWDSgE4qLRJVQuIaeNapQaREa6OwAOgE6AWQAogEeBBgbKAA"
   },
   {
     "name": "Season 3 Race Settings",
@@ -16,17 +16,17 @@
   {
     "name": "Sandbox Mode",
     "description": "Preset focused on making DK64 as close to a sandbox game as possible.",
-    "settings_string": "!fjNPw4IhkKY6IJWxz1JWZfR3ugwkXAPQ+oBoRDIhKlsa58J+P7uI0SkS2IWelRclqmPBCYJvOA8SFMlbgKQWiltsa3CCSAaZE0UQoxSClFMBkF1er8FAW4AgwE3gIHA3ABhAI4gQJBXIChQM5gYLB3QDhgRcggNCHVkV4AMpx6aoYS0JR3VpY0ZmK0gR6fIVFtSl6KmLHgmwoDrFRHQiGQpjoSpbGufCMp0ra+M63zrLHI3ZLxd5FA5DsZe09AzyZMygiEAAuFAAuGAAmHAAmIAAetAAeJAAWKAAOLAAeMAAWNAAOuAAtPlegSXKlssno2Kg+BhHLAwF1WA4qisplRaClACgrBomKATiotElVC4hp41pJLKlBpERro7AA6AToBZAEeCBYYVGMoAA"
+    "settings_string": "fjNPw4IhkKY6IJWxz1JWZfR3ugwk3BHofUA0IhkQlS2Nc+A/u4jRKRLYhZ6VFyWqY8EJgm84DRIUyVgUgtFLbY1uEEkA0yZpohRikFKKYDILq9X4KAtwBBgJvAQOBuADCARxAgSCuQFCgZzAwWDugHDAi5BAaEOrIrwAZTj01QwloSjurRY0ZmK0gR8foVFtSl6KmLHgmwoDrFljkbsl4u8igch2MvaegZ5MmZQRCAAXCgAXDAATDgATEAAPWgAPEgALFAAHFgAPGAALGgAHXAAWnyvQJLlS2WT0bFQfAwjk+sDAXVYDiqKymVFoKUAKCsGiYoBOKi0SVULiGnjWkksqUGkRGujsADoBOgFkAKIBHggYGlRjKAA"
   },
   {
     "name": "Balanced LZR",
     "description": "Preset focused on making loading zone randomizer seeds with reduced (but far from zero) chaos.",
-    "settings_string": "!fjNPxEQyFMdEEqWxrnxkpKzL6IggkXAPQ+oBohkKlS2Nc+EZ+P7uI0SkS2IbClKsrjtUx4ITAHZvOBIiFOhLHqApBS62BbhBJALMuaKIUYpBSimAyC6vwUAbgCDADeAgcAcAGEADiBAkAcgKFADmBgsAdAOGAFyCA0IdQBXgAynEJqhhJQlHdVqwsSMjSBHp8hUW1KXgqQsUCYigOsVEcEMhTHQlS2Nc+EZTpW18Z1vnWWORuyXi7yKByHYy9p6BnlSWTMoIhAALhQALhgAJhwAJiAAHrQAHiQAFigADiwAHjAAFjQADrgALT5XoElypbPZZPRsVB8DCOMBnLpVFZoKZUWgpQAoKwaLxMUAnFRaJIuIZiTxrSypQaREa6OwAOgE6AEwBZAEeBBYZKAA"
+    "settings_string": "fjNPxEIhkKY6IJUtjXPipKzL6Iggk3BHofUA0IhkQlS2Nc+A/u4jRKRLYhsKUqyuO1THghMAdm84EBiQpkrcBSC0UttgW4QSQDTMmmiFGKQUopgMgur8FAW4AgwE3gIHA3ABhAI4gQJBXIChQM5gYLB3QDhgRcghMhqA6gCvABlOITVDCShKOqrVksSMjSBHx+hUW1KXoqYsUCYigOsWWORuyXi7yKByHYy9pyBnkyWTMoIhAALhQALhgAJhwAJiAAHrQAHiQAFigADiwAHjAAFjQADrgALTxXoElypbPZZPRsVB8DCOT5gM5dKorKZUWgpQAoKwaLygE4qLRJFxDMSeNaWVKDSIjXR2AB0AnQCyAFEAjwIMDZQA"
   },
   {
     "name": "No Style, All Keys",
     "description": "Alternative consistent settings focused on getting all of the keys with seed completion time under 3 hours for experienced players.",
-    "settings_string": "!fjNPxAIhkKY6IJUtjXPUlZx9De6zQYSbgHofUA8IhkQlS2Nc+EZT8f3cRolIlsQsFnpUXHatjwQmIOzecB4jIY6HAUgtFLbY1uEEkA0y5pohRikFKKYDILq9X4KANwBBgBvAQOAOADCABxAgSAOQFCgBzAwWAOgHDAC5BCZDUV1PFeADKcSmqGEtCUd1WrCxozsVpATtCotqUvRUhYoEyFAdYqI6EQyFMdCVLY1z4RlOlbXxnW+dZY5G7JeLvIoHIdjL2noGeTJZM7qcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5Utno2Kg+BhHLAuqwqisplRaClACgrBpQCcVFoki4hp41pZBpERro7AA6AToBZAEeCg4WGFJhKAA"
+    "settings_string": "fjNPxAIhkKY6IJUtjXPUlZx9De6zQUSrgj0PqAeEQyISpbGufCMh/dxGiUiWxCwWelRcdq2PBCYg7N5wHiMhjocBSC0UttjW4QSQDTMmqiFGKQUopgMgur1fgoC3AEGAm8BA4G4AMIBHECBIK5AUKBnMDBYO6AcMCLkEJkNRXU8V4AMpxCaoYSUJR3VasljRnYrSAniFRbUpeipCxQJkKA6xZY5G7JeLvIoHIdjL2noGeTJZM7giEAAuFAAuGAAmHAAmIAAetAAeJAAWKAAOLAAeMAAWNAAOuAAtPlegSXKls9GxUHwMI5PrAuqwqisplRaClACgrBpQCcVFoki4hp41pZUoNIiNdHYAHQCdALIAUQCPBQgMDSoxlAA"
   },
   {
     "name": "Another Day",
