@@ -97,91 +97,26 @@ def BarrelShuffle(settings: Settings) -> None:
         or (settings.training_barrels_minigames == MinigameBarrels.random and settings.minigames_list_selected)
     ):
         minigame_dict = {
-            MinigamesListSelected.batty_barrel_bandit: [
-                Minigames.BattyBarrelBanditVEasy,
-                Minigames.BattyBarrelBanditEasy,
-                Minigames.BattyBarrelBanditNormal,
-                Minigames.BattyBarrelBanditHard,
-            ],
-            MinigamesListSelected.big_bug_bash: [
-                Minigames.BigBugBashVEasy,
-                Minigames.BigBugBashEasy,
-                Minigames.BigBugBashNormal,
-                Minigames.BigBugBashHard,
-            ],
-            MinigamesListSelected.busy_barrel_barrage: [
-                Minigames.BusyBarrelBarrageEasy,
-                Minigames.BusyBarrelBarrageNormal,
-                Minigames.BusyBarrelBarrageHard,
-            ],
-            MinigamesListSelected.mad_maze_maul: [
-                Minigames.MadMazeMaulEasy,
-                Minigames.MadMazeMaulNormal,
-                Minigames.MadMazeMaulHard,
-                Minigames.MadMazeMaulInsane,
-            ],
-            MinigamesListSelected.minecart_mayhem: [
-                Minigames.MinecartMayhemEasy,
-                Minigames.MinecartMayhemNormal,
-                Minigames.MinecartMayhemHard,
-            ],
-            MinigamesListSelected.beaver_bother: [
-                Minigames.BeaverBotherEasy,
-                Minigames.BeaverBotherNormal,
-                Minigames.BeaverBotherHard,
-            ],
+            MinigamesListSelected.batty_barrel_bandit: [Minigames.BattyBarrelBanditVEasy, Minigames.BattyBarrelBanditEasy, Minigames.BattyBarrelBanditNormal, Minigames.BattyBarrelBanditHard],
+            MinigamesListSelected.big_bug_bash: [Minigames.BigBugBashVEasy, Minigames.BigBugBashEasy, Minigames.BigBugBashNormal, Minigames.BigBugBashHard],
+            MinigamesListSelected.busy_barrel_barrage: [Minigames.BusyBarrelBarrageEasy, Minigames.BusyBarrelBarrageNormal, Minigames.BusyBarrelBarrageHard],
+            MinigamesListSelected.mad_maze_maul: [Minigames.MadMazeMaulEasy, Minigames.MadMazeMaulNormal, Minigames.MadMazeMaulHard, Minigames.MadMazeMaulInsane],
+            MinigamesListSelected.minecart_mayhem: [Minigames.MinecartMayhemEasy, Minigames.MinecartMayhemNormal, Minigames.MinecartMayhemHard],
+            MinigamesListSelected.beaver_bother: [Minigames.BeaverBotherEasy, Minigames.BeaverBotherNormal, Minigames.BeaverBotherHard],
             MinigamesListSelected.teetering_turtle_trouble: [
                 Minigames.TeeteringTurtleTroubleVEasy,
                 Minigames.TeeteringTurtleTroubleEasy,
                 Minigames.TeeteringTurtleTroubleNormal,
                 Minigames.TeeteringTurtleTroubleHard,
             ],
-            MinigamesListSelected.stealthy_snoop: [
-                Minigames.StealthySnoopVEasy,
-                Minigames.StealthySnoopEasy,
-                Minigames.StealthySnoopNormal,
-                Minigames.StealthySnoopHard,
-            ],
-            MinigamesListSelected.stash_snatch: [
-                Minigames.StashSnatchEasy,
-                Minigames.StashSnatchNormal,
-                Minigames.StashSnatchHard,
-                Minigames.StashSnatchInsane,
-            ],
-            MinigamesListSelected.splish_splash_salvage: [
-                Minigames.SplishSplashSalvageEasy,
-                Minigames.SplishSplashSalvageNormal,
-                Minigames.SplishSplashSalvageHard,
-            ],
-            MinigamesListSelected.speedy_swing_sortie: [
-                Minigames.SpeedySwingSortieEasy,
-                Minigames.SpeedySwingSortieNormal,
-                Minigames.SpeedySwingSortieHard,
-            ],
-            MinigamesListSelected.krazy_kong_klamour: [
-                Minigames.KrazyKongKlamourEasy,
-                Minigames.KrazyKongKlamourNormal,
-                Minigames.KrazyKongKlamourHard,
-                Minigames.KrazyKongKlamourInsane,
-            ],
-            MinigamesListSelected.searchlight_seek: [
-                Minigames.SearchlightSeekVEasy,
-                Minigames.SearchlightSeekEasy,
-                Minigames.SearchlightSeekNormal,
-                Minigames.SearchlightSeekHard,
-            ],
-            MinigamesListSelected.kremling_kosh: [
-                Minigames.KremlingKoshVEasy,
-                Minigames.KremlingKoshEasy,
-                Minigames.KremlingKoshNormal,
-                Minigames.KremlingKoshHard,
-            ],
-            MinigamesListSelected.peril_path_panic: [
-                Minigames.PerilPathPanicVEasy,
-                Minigames.PerilPathPanicEasy,
-                Minigames.PerilPathPanicNormal,
-                Minigames.PerilPathPanicHard,
-            ],
+            MinigamesListSelected.stealthy_snoop: [Minigames.StealthySnoopVEasy, Minigames.StealthySnoopEasy, Minigames.StealthySnoopNormal, Minigames.StealthySnoopHard],
+            MinigamesListSelected.stash_snatch: [Minigames.StashSnatchEasy, Minigames.StashSnatchNormal, Minigames.StashSnatchHard, Minigames.StashSnatchInsane],
+            MinigamesListSelected.splish_splash_salvage: [Minigames.SplishSplashSalvageEasy, Minigames.SplishSplashSalvageNormal, Minigames.SplishSplashSalvageHard],
+            MinigamesListSelected.speedy_swing_sortie: [Minigames.SpeedySwingSortieEasy, Minigames.SpeedySwingSortieNormal, Minigames.SpeedySwingSortieHard],
+            MinigamesListSelected.krazy_kong_klamour: [Minigames.KrazyKongKlamourEasy, Minigames.KrazyKongKlamourNormal, Minigames.KrazyKongKlamourHard, Minigames.KrazyKongKlamourInsane],
+            MinigamesListSelected.searchlight_seek: [Minigames.SearchlightSeekVEasy, Minigames.SearchlightSeekEasy, Minigames.SearchlightSeekNormal, Minigames.SearchlightSeekHard],
+            MinigamesListSelected.kremling_kosh: [Minigames.KremlingKoshVEasy, Minigames.KremlingKoshEasy, Minigames.KremlingKoshNormal, Minigames.KremlingKoshHard],
+            MinigamesListSelected.peril_path_panic: [Minigames.PerilPathPanicVEasy, Minigames.PerilPathPanicEasy, Minigames.PerilPathPanicNormal, Minigames.PerilPathPanicHard],
             MinigamesListSelected.helm_minigames: [
                 Minigames.DonkeyRambi,
                 Minigames.DonkeyTarget,
@@ -195,12 +130,7 @@ def BarrelShuffle(settings: Settings) -> None:
                 Minigames.ChunkyShooting,
             ],
             MinigamesListSelected.arenas: [Minigames.RambiArena, Minigames.EnguardeArena],
-            MinigamesListSelected.training_minigames: [
-                Minigames.OrangeBarrel,
-                Minigames.BarrelBarrel,
-                Minigames.VineBarrel,
-                Minigames.DiveBarrel,
-            ],
+            MinigamesListSelected.training_minigames: [Minigames.OrangeBarrel, Minigames.BarrelBarrel, Minigames.VineBarrel, Minigames.DiveBarrel],
         }
         # If Stealthy Snoop is not selected, don't include the Stash Snatch variant with Kops
         if MinigamesListSelected.stealthy_snoop not in settings.minigames_list_selected:

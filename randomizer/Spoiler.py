@@ -40,13 +40,7 @@ from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Lists.Minigame import (
-    BarrelMetaData,
-    HelmMinigameLocations,
-    MinigameRequirements,
-    TrainingMinigameLocations,
-    MinigameSelector,
-)
+from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements, TrainingMinigameLocations, MinigameSelector
 from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
 from randomizer.Lists.EnemyTypes import EnemySelector
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
@@ -249,11 +243,7 @@ class Spoiler:
         settings["Settings String"] = self.settings.settings_string
         settings["Seed"] = self.settings.seed_id
         # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
-        logic_types = {
-            LogicType.nologic: "No Logic",
-            LogicType.glitch: "Glitched Logic",
-            LogicType.glitchless: "Glitchless Logic",
-        }
+        logic_types = {LogicType.nologic: "No Logic", LogicType.glitch: "Glitched Logic", LogicType.glitchless: "Glitchless Logic"}
         if self.settings.logic_type in logic_types:
             settings["Logic Type"] = logic_types[self.settings.logic_type]
         else:
@@ -402,16 +392,7 @@ class Spoiler:
             humanspoiler["Game Start"]["Starting Exit"] = self.settings.starting_region["exit_name"]
         # GB Counts
         gb_counts = {}
-        level_list = [
-            "Jungle Japes",
-            "Angry Aztec",
-            "Frantic Factory",
-            "Gloomy Galleon",
-            "Fungi Forest",
-            "Crystal Caves",
-            "Creepy Castle",
-            "Hideout Helm",
-        ]
+        level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
         for level_index, amount in enumerate(self.settings.BLockerEntryCount):
             item = self.settings.BLockerEntryItems[level_index].name
             item_total = f" {item}s"
@@ -538,13 +519,7 @@ class Spoiler:
             else:
                 item = ItemList[location.item]
             # Empty PreGiven locations don't really exist and shouldn't show up in the spoiler log
-            if location.type in (
-                Types.PreGivenMove,
-                Types.Cranky,
-                Types.Candy,
-                Types.Funky,
-                Types.Snide,
-            ) and location.item in (None, Items.NoItem):
+            if location.type in (Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location.item in (None, Items.NoItem):
                 continue
             # Separate Kong locations
             if location.type == Types.Kong:
@@ -574,14 +549,7 @@ class Spoiler:
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
                 level = "Special"
-                if "Isles" in location.name or location.type in (
-                    Types.PreGivenMove,
-                    Types.Climbing,
-                    Types.Cranky,
-                    Types.Funky,
-                    Types.Candy,
-                    Types.Snide,
-                ):
+                if "Isles" in location.name or location.type in (Types.PreGivenMove, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     level = "DK Isles"
                 elif "Japes" in location.name:
                     level = "Jungle Japes"
@@ -705,24 +673,9 @@ class Spoiler:
                     SwitchType.PadMove: "Simian Spring Pad",
                     SwitchType.MiscActivator: "Gong",
                 },
-                Kongs.lanky: {
-                    SwitchType.SlamSwitch: "Lanky Slam Switch",
-                    SwitchType.GunSwitch: "Grape Switch",
-                    SwitchType.InstrumentPad: "Trombone Pad",
-                    SwitchType.PadMove: "Baboon Balloon Pad",
-                },
-                Kongs.tiny: {
-                    SwitchType.SlamSwitch: "Tiny Slam Switch",
-                    SwitchType.GunSwitch: "Feather Switch",
-                    SwitchType.InstrumentPad: "Saxophone Pad",
-                    SwitchType.PadMove: "Monkeyport Pad",
-                },
-                Kongs.chunky: {
-                    SwitchType.SlamSwitch: "Chunky Slam Switch",
-                    SwitchType.GunSwitch: "Pineapple Switch",
-                    SwitchType.InstrumentPad: "Triangle Pad",
-                    SwitchType.PadMove: "Gorilla Gone Pad",
-                },
+                Kongs.lanky: {SwitchType.SlamSwitch: "Lanky Slam Switch", SwitchType.GunSwitch: "Grape Switch", SwitchType.InstrumentPad: "Trombone Pad", SwitchType.PadMove: "Baboon Balloon Pad"},
+                Kongs.tiny: {SwitchType.SlamSwitch: "Tiny Slam Switch", SwitchType.GunSwitch: "Feather Switch", SwitchType.InstrumentPad: "Saxophone Pad", SwitchType.PadMove: "Monkeyport Pad"},
+                Kongs.chunky: {SwitchType.SlamSwitch: "Chunky Slam Switch", SwitchType.GunSwitch: "Pineapple Switch", SwitchType.InstrumentPad: "Triangle Pad", SwitchType.PadMove: "Gorilla Gone Pad"},
             }
             for slot in self.settings.switchsanity_data.values():
                 ss_data[slot.name] = ss_name_data[slot.kong][slot.switch_type]
@@ -742,12 +695,7 @@ class Spoiler:
             for level in self.shuffled_shop_locations:
                 level_name = "Unknown Level"
 
-                shop_dict = {
-                    Regions.CrankyGeneric: "Cranky",
-                    Regions.CandyGeneric: "Candy",
-                    Regions.FunkyGeneric: "Funky",
-                    Regions.Snide: "Snide",
-                }
+                shop_dict = {Regions.CrankyGeneric: "Cranky", Regions.CandyGeneric: "Candy", Regions.FunkyGeneric: "Funky", Regions.Snide: "Snide"}
                 if level in level_dict:
                     level_name = level_dict[level]
                 for shop in self.shuffled_shop_locations[level]:
@@ -1093,11 +1041,7 @@ class Spoiler:
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:
-                            self.move_data[0][shop_index][kong_index][level_index] = {
-                                "move_type": "flag",
-                                "flag": updated_item.flag,
-                                "price": price,
-                            }
+                            self.move_data[0][shop_index][kong_index][level_index] = {"move_type": "flag", "flag": updated_item.flag, "price": price}
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1

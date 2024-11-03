@@ -41,50 +41,25 @@ from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
-from randomizer.Patching.CosmeticColors import (
-    applyHelmDoorCosmetics,
-    applyKongModelSwaps,
-    updateCryptLeverTexture,
-    updateMillLeverTexture,
-    writeBootMessages,
-    updateDiddyDoors,
-    showWinCondition,
-)
+from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKongModelSwaps, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors, showWinCondition
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import (
-    enableTriggerText,
-    filterEntranceType,
-    randomize_entrances,
-    placeLevelOrder,
-)
+from randomizer.Patching.EntranceRando import enableTriggerText, filterEntranceType, randomize_entrances, placeLevelOrder
 from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount
-from randomizer.Patching.MiscSetupChanges import (
-    randomize_setup,
-    updateKrushaMoveNames,
-    updateRandomSwitches,
-    updateSwitchsanity,
-)
+from randomizer.Patching.MiscSetupChanges import randomize_setup, updateKrushaMoveNames, updateRandomSwitches, updateSwitchsanity
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves, parseMoveBlock
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.UpdateHints import (
-    PushHints,
-    replaceIngameText,
-    wipeHints,
-    PushItemLocations,
-    PushHelpfulHints,
-    PushHintTiedRegions,
-)
+from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints, PushHintTiedRegions
 from randomizer.Patching.ASMPatcher import patchAssembly
 from randomizer.CompileHints import getHelmOrderHint
 
@@ -101,15 +76,7 @@ class BooleanProperties:
         self.target = target
 
 
-def writeMultiselector(
-    enabled: bool,
-    enabled_selections: list,
-    selector: list[dict],
-    selection_enum,
-    data_length: int,
-    ROM_COPY: LocalROM,
-    write_start: int,
-):
+def writeMultiselector(enabled: bool, enabled_selections: list, selector: list[dict], selection_enum, data_length: int, ROM_COPY: LocalROM, write_start: int):
     """Write multiselector choices to ROM."""
     if enabled:
         force = len(enabled_selections) == 0
@@ -235,10 +202,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.cb_rando == CBRando.on_with_isles, 0x10B),  # 5 extra medal handling
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
-        BooleanProperties(
-            spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled),
-            0x47,
-        ),  # Parent Map Filter
+        BooleanProperties(spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled), 0x47),  # Parent Map Filter
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
@@ -322,42 +286,10 @@ def patching_response(spoiler):
         old = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(sav + 0x113)
         ROM_COPY.write(old | 0x40)
-    writeMultiselector(
-        spoiler.settings.quality_of_life,
-        spoiler.settings.misc_changes_selected,
-        QoLSelector,
-        MiscChangesSelected,
-        4,
-        ROM_COPY,
-        sav + 0x0B0,
-    )
-    writeMultiselector(
-        spoiler.settings.remove_barriers_enabled,
-        spoiler.settings.remove_barriers_selected,
-        RemovedBarrierSelector,
-        RemovedBarriersSelected,
-        2,
-        ROM_COPY,
-        sav + 0x1DE,
-    )
-    writeMultiselector(
-        spoiler.settings.faster_checks_enabled,
-        spoiler.settings.faster_checks_selected,
-        FasterCheckSelector,
-        FasterChecksSelected,
-        2,
-        ROM_COPY,
-        sav + 0x1E0,
-    )
-    writeMultiselector(
-        spoiler.settings.hard_mode,
-        spoiler.settings.hard_mode_selected,
-        HardSelector,
-        HardModeSelected,
-        1,
-        ROM_COPY,
-        sav + 0x0C6,
-    )
+    writeMultiselector(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, QoLSelector, MiscChangesSelected, 4, ROM_COPY, sav + 0x0B0)
+    writeMultiselector(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarrierSelector, RemovedBarriersSelected, 2, ROM_COPY, sav + 0x1DE)
+    writeMultiselector(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterCheckSelector, FasterChecksSelected, 2, ROM_COPY, sav + 0x1E0)
+    writeMultiselector(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardSelector, HardModeSelected, 1, ROM_COPY, sav + 0x0C6)
 
     is_dw = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
     is_sky = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
@@ -588,11 +520,7 @@ def patching_response(spoiler):
         # Change default wrinkly hint
         if spoiler.settings.wrinkly_hints == WrinklyHints.off:
             if (
-                IsItemSelected(
-                    spoiler.settings.faster_checks_enabled,
-                    spoiler.settings.faster_checks_selected,
-                    FasterChecksSelected.forest_mill_conveyor,
-                )
+                IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
                 or spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off
             ):
                 wrinkly_index = 41

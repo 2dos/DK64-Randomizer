@@ -152,7 +152,7 @@ base-hack/build-cs/obj
 # Randomizer specific
 spoilerlog*.txt
 settings*.asm
-/settings*.json
+settings*.json
 *.z64
 *.n64
 *.v64

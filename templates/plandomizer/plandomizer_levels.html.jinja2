@@ -4,7 +4,7 @@
      role="tabpanel"
      aria-labelledby="nav-plando-{{panelName}}-tab">
     <h2 class="title">{{panel["name"]}}</h2>
-    {% for kong, locations in panel["locations"] %}
+    {% for kong, locations in panel["locations"].items() %}
         <h3 class="title">{{kong}}</h3>
         <div class="flex-container flex-center">
             {% for location in locations %}

@@ -10,8 +10,4 @@ setup(
     # Copying the file in prepare_live.py
     version="1.0.0",
     packages=packages,
-    package_data={
-        "": ["*.json", "*.jsonc"],
-    },
-    include_package_data=True,
 )

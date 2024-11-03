@@ -376,13 +376,7 @@ class HelmDoorRandomInfo:
 class HelmDoorInfo:
     """Store information about helm door requirements."""
 
-    def __init__(
-        self,
-        absolute_max: int,
-        hard: HelmDoorRandomInfo = None,
-        medium: HelmDoorRandomInfo = None,
-        easy: HelmDoorRandomInfo = None,
-    ):
+    def __init__(self, absolute_max: int, hard: HelmDoorRandomInfo = None, medium: HelmDoorRandomInfo = None, easy: HelmDoorRandomInfo = None):
         """Initialize with given parameters."""
         self.absolute_max = absolute_max
         self.hard = hard
@@ -600,14 +594,7 @@ def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, Lis
                         _pos = int.from_bytes(ROM_COPY.readBytes(2), "big")
                         ROM_COPY.seek(file_start + data_start + _block)
                         _dat = int.from_bytes(ROM_COPY.readBytes(4), "big")
-                        text_blocks.append(
-                            {
-                                "type": "sprite",
-                                "position": _pos,
-                                "data": hex(_dat),
-                                "sprite": icon_db[(_dat >> 8) & 0xFF],
-                            }
-                        )
+                        text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": icon_db[(_dat >> 8) & 0xFF]})
                     added = block_start + 2 + offset + (4 * sec3ct) + 4
             else:
                 ROM_COPY.seek(file_start + data_start + block_start + offset + 1)
@@ -621,31 +608,14 @@ def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, Lis
                     text_blocks.append({"type": "normal", "start": _start, "size": _size})
                 added = block_start + 2 + offset + (8 * sec3ct) + 4
             # print(f"File {file_index}, Textbox {i}, section {k}")
-            blocks.append(
-                {
-                    "block_start": hex(block_start + data_start),
-                    "section2count": sec2ct,
-                    "section3count": sec3ct,
-                    "offset": offset,
-                    "text": text_blocks,
-                }
-            )
+            blocks.append({"block_start": hex(block_start + data_start), "section2count": sec2ct, "section3count": sec3ct, "offset": offset, "text": text_blocks})
             block_start = added
         ROM_COPY.seek(file_start + data_start)
         if added < data_start:
             info = b""
         else:
             info = ROM_COPY.readBytes(added - data_start)
-        text_data.append(
-            {
-                "arr": info,
-                "text": blocks,
-                "section1count": section_1_count,
-                "section2count": section_2_count,
-                "section3count": section_3_count,
-                "data_start": hex(data_start),
-            }
-        )
+        text_data.append({"arr": info, "text": blocks, "section1count": section_1_count, "section2count": section_2_count, "section3count": section_3_count, "data_start": hex(data_start)})
         text_start += added - data_start
         data_start += block_start
     for item in text_data:
@@ -775,11 +745,7 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
     return None
 
 
-def IsItemSelected(
-    bool_setting: bool,
-    multiselector_setting: List[Union[MiscChangesSelected, Any]],
-    check: Union[HardModeSelected, MiscChangesSelected],
-) -> bool:
+def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscChangesSelected, Any]], check: Union[HardModeSelected, MiscChangesSelected]) -> bool:
     """Determine whether a multiselector setting is enabled."""
     if not bool_setting:
         return False

@@ -52,11 +52,7 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
                 if (100 < (target_color[0] << 3) < 150) and (100 < (target_color[1] << 3) < 150) and (100 < (target_color[2] << 3) < 150):
                     ir, ig, ib = 255, 255, 255
                 else:
-                    ir, ig, ib = (
-                        (255 - (target_color[0] << 3)),
-                        (255 - (target_color[1] << 3)),
-                        (255 - (target_color[2] << 3)),
-                    )
+                    ir, ig, ib = (255 - (target_color[0] << 3)), (255 - (target_color[1] << 3)), (255 - (target_color[2] << 3))
 
                 return (
                     clampRGBA(unyellowness * (target_color[0] << 3) + (1 - unyellowness) * ir) >> 3,
@@ -253,17 +249,7 @@ def convertColors(color_palettes):
                                     if pix_channel > 31:
                                         pix_channel = 31
                                 pix_rgba.append(pix_channel)
-                        sparkle_px = [
-                            [28, 5],
-                            [27, 10],
-                            [21, 11],
-                            [25, 14],
-                            [23, 15],
-                            [23, 16],
-                            [26, 18],
-                            [20, 19],
-                            [25, 25],
-                        ]
+                        sparkle_px = [[28, 5], [27, 10], [21, 11], [25, 14], [23, 15], [23, 16], [26, 18], [20, 19], [25, 25]]
                         for px in sparkle_px:
                             if px[0] == x and px[1] == y:
                                 pix_rgba = [0xFF, 0xFF, 0xFF, 1]

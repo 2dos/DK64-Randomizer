@@ -1,9 +1,13 @@
 """Minigames enum."""
 
-from randomizer.JsonReader import generate_globals
-from typing import TYPE_CHECKING
+from enum import IntEnum, auto
 
-if TYPE_CHECKING:
-    from randomizer.Enums.MinigameType import MinigameType
 
-globals().update(generate_globals(__file__))
+class MinigameType(IntEnum):
+    """Bonus minigame type enum."""
+
+    NoGame = auto()
+    BonusBarrel = auto()
+    HelmBarrelFirst = auto()
+    HelmBarrelSecond = auto()
+    TrainingBarrel = auto()

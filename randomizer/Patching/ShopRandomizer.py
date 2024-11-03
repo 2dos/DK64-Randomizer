@@ -12,13 +12,7 @@ from randomizer.ShuffleShopLocations import available_shops
 class FunctionData:
     """Function Data Class."""
 
-    def __init__(
-        self,
-        function: int,
-        parameters: list,
-        inverted: bool = False,
-        exist_vendors: list = [VendorType.Candy, VendorType.Cranky, VendorType.Funky, VendorType.Snide],
-    ):
+    def __init__(self, function: int, parameters: list, inverted: bool = False, exist_vendors: list = [VendorType.Candy, VendorType.Cranky, VendorType.Funky, VendorType.Snide]):
         """Initialize with given parameters."""
         self.function = function
         self.parameters = parameters.copy()
@@ -29,12 +23,7 @@ class FunctionData:
 class ScriptBlock:
     """Script Block Class."""
 
-    def __init__(
-        self,
-        conditions: list,
-        executions: list,
-        exist_vendors: list = [VendorType.Candy, VendorType.Cranky, VendorType.Funky, VendorType.Snide],
-    ):
+    def __init__(self, conditions: list, executions: list, exist_vendors: list = [VendorType.Candy, VendorType.Cranky, VendorType.Funky, VendorType.Snide]):
         """Initialize with given parameters."""
         self.conditions = conditions.copy()
         self.executions = executions.copy()

@@ -229,37 +229,18 @@ def randomize_setup(spoiler):
         for _ in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
-    arcade_r1_shortened = IsItemSelected(
-        spoiler.settings.faster_checks_enabled,
-        spoiler.settings.faster_checks_selected,
-        FasterChecksSelected.factory_arcade_round_1,
-    )
-    lighthouse_on = IsItemSelected(
-        spoiler.settings.remove_barriers_enabled,
-        spoiler.settings.remove_barriers_selected,
-        RemovedBarriersSelected.galleon_seasick_ship,
-    )
+    arcade_r1_shortened = IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
+    lighthouse_on = IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.galleon_seasick_ship)
     swap_list = [
         {"map": Maps.AztecLlamaTemple, "item_list": [0xBC, 0x22B, 0x229, 0x22A]},
         {"map": Maps.AztecTinyTemple, "item_list": [0xA7, 0xA6, 0xA5, 0xA4]},
         {"map": Maps.FranticFactory, "item_list": [0x14D, 0x14C, 0x14B, 0x14A]},
         {"map": Maps.CastleCrypt, "item_list": [0x247, 0x248, 0x249, 0x24A]},
     ]
-    if not spoiler.settings.perma_death and spoiler.settings.damage_amount not in (
-        DamageAmount.quad,
-        DamageAmount.ohko,
-    ):
+    if not spoiler.settings.perma_death and spoiler.settings.damage_amount not in (DamageAmount.quad, DamageAmount.ohko):
         swap_list.append({"map": Maps.CastleMuseum, "item_list": [0x17]})
     number_gb_data = [
-        {
-            "subtype": "corner",
-            "numbers": [
-                {"number": 12, "rot": 0},
-                {"number": 3, "rot": 1},
-                {"number": 5, "rot": 2},
-                {"number": 6, "rot": 3},
-            ],
-        },
+        {"subtype": "corner", "numbers": [{"number": 12, "rot": 0}, {"number": 3, "rot": 1}, {"number": 5, "rot": 2}, {"number": 6, "rot": 3}]},
         {
             "subtype": "edge",
             "numbers": [
@@ -273,15 +254,7 @@ def randomize_setup(spoiler):
                 {"number": 1, "rot": 3},
             ],
         },
-        {
-            "subtype": "center",
-            "numbers": [
-                {"number": 13, "rot": 0},
-                {"number": 15, "rot": 0},
-                {"number": 11, "rot": 0},
-                {"number": 2, "rot": 0},
-            ],
-        },
+        {"subtype": "center", "numbers": [{"number": 13, "rot": 0}, {"number": 15, "rot": 0}, {"number": 11, "rot": 0}, {"number": 2, "rot": 0}]},
     ]
     vase_puzzle_positions = [
         # [365.533, 138.167, 717.282], # Exclude center to force it to be a vase
@@ -300,18 +273,10 @@ def randomize_setup(spoiler):
     chunky_5dc_pads = pickChunkyCabinPadPositions()
     random.shuffle(vase_puzzle_positions)
     vase_puzzle_rando_progress = 0
-    raise_patch = IsItemSelected(
-        spoiler.settings.quality_of_life,
-        spoiler.settings.misc_changes_selected,
-        MiscChangesSelected.raise_fungi_dirt_patch,
-    )
+    raise_patch = IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.raise_fungi_dirt_patch)
     random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardBossesSelected.pufftoss_star_rando)
     higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardBossesSelected.pufftoss_star_raised)
-    removed_crypt_doors = IsItemSelected(
-        spoiler.settings.remove_barriers_enabled,
-        spoiler.settings.remove_barriers_selected,
-        RemovedBarriersSelected.castle_crypt_doors,
-    )
+    removed_crypt_doors = IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.castle_crypt_doors)
     for cont_map_id in range(216):
         cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
         ROM_COPY.seek(cont_map_setup_address)
@@ -320,11 +285,7 @@ def randomize_setup(spoiler):
         offsets = []
         positions = []
         if cont_map_id == Maps.FranticFactory:
-            number_replacement_data = {
-                "corner": {"offsets": [], "positions": []},
-                "edge": {"offsets": [], "positions": []},
-                "center": {"offsets": [], "positions": []},
-            }
+            number_replacement_data = {"corner": {"offsets": [], "positions": []}, "edge": {"offsets": [], "positions": []}, "center": {"offsets": [], "positions": []}}
         for model2_item in range(model2_count):
             item_start = cont_map_setup_address + 4 + (model2_item * 0x30)
             ROM_COPY.seek(item_start + 0x28)

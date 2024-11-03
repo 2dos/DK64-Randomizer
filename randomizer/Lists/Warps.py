@@ -14,21 +14,7 @@ from randomizer.Enums.Maps import Maps
 class BananaportData:
     """Information about the bananaport."""
 
-    def __init__(
-        self,
-        *,
-        name="",
-        map_id=0,
-        region_id=0,
-        obj_id_vanilla=0,
-        locked=False,
-        vanilla_warp=0,
-        swap_index=None,
-        event=None,
-        restricted=False,
-        camera=None,
-        tied_exit=None,
-    ) -> None:
+    def __init__(self, *, name="", map_id=0, region_id=0, obj_id_vanilla=0, locked=False, vanilla_warp=0, swap_index=None, event=None, restricted=False, camera=None, tied_exit=None) -> None:
         """Initialize with given parameters."""
         self.name = name
         self.map_id = map_id
@@ -1079,16 +1065,6 @@ for warp in BananaportVanilla.values():
     if warp.map_id not in result:
         # this regex is used to turn 'CamelCaseNames' into 'Camel Case Names' for the purpose of being displayed on the site's selector
         VanillaBananaportSelector.append(
-            {
-                "name": " ".join(
-                    sub(
-                        "([A-Z][a-z]+)",
-                        r" \1",
-                        sub("([A-Z]+)", r" \1", (str(warp.map_id.name).split(".")[-1]).split(".")[-1]),
-                    ).split()
-                ),
-                "value": warp.map_id.name,
-                "tooltip": "",
-            }
+            {"name": " ".join(sub("([A-Z][a-z]+)", r" \1", sub("([A-Z]+)", r" \1", (str(warp.map_id.name).split(".")[-1]).split(".")[-1])).split()), "value": warp.map_id.name, "tooltip": ""}
         )
         result.append(warp.map_id)

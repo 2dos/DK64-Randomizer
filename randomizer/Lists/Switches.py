@@ -9,16 +9,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 class SwitchInfo:
     """Store information regarding a switch."""
 
-    def __init__(
-        self,
-        name: str,
-        kong: Kongs,
-        switch_type: SwitchType,
-        rom_offset: int,
-        map_id: int,
-        ids: list,
-        tied_settings: list = [],
-    ):
+    def __init__(self, name: str, kong: Kongs, switch_type: SwitchType, rom_offset: int, map_id: int, ids: list, tied_settings: list = []):
         """Initialize with given parameters."""
         self.name = name
         self.kong = kong
@@ -41,24 +32,8 @@ SwitchData = {
     Switches.JapesDiddyCave: SwitchInfo("Japes Diddy Cave Switches", Kongs.diddy, SwitchType.GunSwitch, 0x1CE, Maps.JungleJapes, [0x29, 0x2A]),
     Switches.AztecBlueprintDoor: SwitchInfo("Aztec Blueprint Door Switches", Kongs.donkey, SwitchType.GunSwitch, 0x1CF, Maps.AngryAztec, [0x9D, 0x9E]),
     Switches.AztecLlamaCoconut: SwitchInfo("Aztec Llama Switch (1)", Kongs.donkey, SwitchType.GunSwitch, 0x1D0, Maps.AngryAztec, [13]),
-    Switches.AztecLlamaGrape: SwitchInfo(
-        "Aztec Llama Switch (2)",
-        Kongs.lanky,
-        SwitchType.GunSwitch,
-        0x1D1,
-        Maps.AngryAztec,
-        [14],
-        [Switches.AztecLlamaCoconut],
-    ),
-    Switches.AztecLlamaFeather: SwitchInfo(
-        "Aztec Llama Switch (3)",
-        Kongs.tiny,
-        SwitchType.GunSwitch,
-        0x1D2,
-        Maps.AngryAztec,
-        [15],
-        [Switches.AztecLlamaCoconut, Switches.AztecLlamaGrape],
-    ),
+    Switches.AztecLlamaGrape: SwitchInfo("Aztec Llama Switch (2)", Kongs.lanky, SwitchType.GunSwitch, 0x1D1, Maps.AngryAztec, [14], [Switches.AztecLlamaCoconut]),
+    Switches.AztecLlamaFeather: SwitchInfo("Aztec Llama Switch (3)", Kongs.tiny, SwitchType.GunSwitch, 0x1D2, Maps.AngryAztec, [15], [Switches.AztecLlamaCoconut, Switches.AztecLlamaGrape]),
     Switches.AztecQuicksandSwitch: SwitchInfo("Aztec Quicksand Tunnel Switch", Kongs.donkey, SwitchType.SlamSwitch, 0x1D3, Maps.AztecLlamaTemple, [0x69]),
     Switches.AztecGuitar: SwitchInfo("Aztec Guitar Pad", Kongs.diddy, SwitchType.InstrumentPad, 0x1D4, Maps.AngryAztec, [0x44]),
     Switches.GalleonLighthouse: SwitchInfo("Galleon Lighthouse Switches", Kongs.donkey, SwitchType.GunSwitch, 0x1D5, Maps.GloomyGalleon, [0xA, 0xB]),
@@ -66,15 +41,7 @@ SwitchData = {
     Switches.GalleonCannonGame: SwitchInfo("Galleon Cannon Game Switches", Kongs.chunky, SwitchType.GunSwitch, 0x1D7, Maps.GloomyGalleon, [6, 7]),
     Switches.FungiYellow: SwitchInfo("Forest Yellow Tunnel Switch", Kongs.lanky, SwitchType.GunSwitch, 0x1D8, Maps.FungiForest, [30]),
     Switches.FungiGreenFeather: SwitchInfo("Forest Green Tunnel Switches (1)", Kongs.tiny, SwitchType.GunSwitch, 0x1D9, Maps.FungiForest, [0x18, 0x19]),
-    Switches.FungiGreenPineapple: SwitchInfo(
-        "Forest Green Tunnel Switches (2)",
-        Kongs.chunky,
-        SwitchType.GunSwitch,
-        0x1DA,
-        Maps.FungiForest,
-        [0x1A, 0x1B],
-        [Switches.FungiGreenFeather],
-    ),
+    Switches.FungiGreenPineapple: SwitchInfo("Forest Green Tunnel Switches (2)", Kongs.chunky, SwitchType.GunSwitch, 0x1DA, Maps.FungiForest, [0x1A, 0x1B], [Switches.FungiGreenFeather]),
 }
 
 SwitchNameDict = {

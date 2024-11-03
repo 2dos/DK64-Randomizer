@@ -9,8 +9,8 @@
      role="tabpanel"
      aria-labelledby="nav-plando-{{panelName}}-tab">
     <h2 class="title">{{panel["name"]}}</h2>
-    {% for categoryName, categoryObj in panel["categories"] %}
-        <div id="plando_custom_location_panel_{{categoryObj["singular"] | lower}}"
+    {% for categoryName, categoryObj in panel["categories"].items() %}
+        <div id="plando_custom_location_panel_{{categoryObj["singular"].lower()}}"
              style="display: none;">
             <h3 class="title">{{categoryObj["name"]}}</h3>
             <div class="flex-container flex-center">
