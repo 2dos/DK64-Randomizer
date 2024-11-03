@@ -47,5 +47,15 @@
     "name": "Vanilla Game But Better",
     "description": "Just the quality of life changes from the randomizer.",
     "settings_string": "UhZh9pQQSbgpQXBahjAQmCcB4jIY6HJfbAtwgkAEmTNNEKMUgpRTAZBcBQFuHgMCt54Bw9wZAQPOL6CTJylgUgudeC1B0yAYyXIITIaiup4rwAZTj02Ww0oaj2rRZUaGkBPEK1GXAqAsCCYCgEsRyN2S8XeRQOXlPQK8iTO4IhAALhQALhgAJhwAJiAAHrQAHiQAFigADiwAHjAAFjQADrgALTxXoElsyVLZ7LJ6NioPgYRweB4fXYRIhIFoQWBgM5dVgOKqbAQgFZoKZUWgpQAoKwaLxfUAnFRaJKqFxDMRFTxrMohWKSSypQaREa6OwBOgFkAKIBHgQYGygA"
+  },
+  {
+    "name": "Treasure Hurry",
+    "description": "Helm Hurry-Based preset where you have to get the timer to reach zero as quickly as possible through collection of items.",
+    "settings_string": "fjNPxEIhkKY6IJUtjXPipKzL6G91mgwl3EHo6GY0O5BAPhhLvNfCh9QDwiGQyEqWxrnwiP7uI0SkS2IbClRcdqmPBCYpvOA4YjMdDgKQSufVGAcf+IZ/8QbePgdgAAYf2oe//Oafj4Y/agZdXQefHwdAAAb/tQa//8cgDw0UttgW5QSQCTMmqiFGKQUophAX8BYZBeXq/BQFuAIMBN4CBwNwAYQCOIECQVyAoUDOYGCwd0A4YEXIITIaeOp4rwAZTik1QwloSjuq1ZLGjKxWkCOz5CotqUvRURYBExFAFYqI6EQyFMdCVLY1z4RlOlbXxnW+dZY5G7JeLvIoHIdjL2noGebJnkEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5Utno2Kg+BhHJ8wGcuqwHFUplRaCkUFYNKATiotEkXENPGtJJZUoNIiNdHYAnQCyAI8ICAkKCwwNKjGUAA"
+  },
+  {
+    "name": "KEVIN 4.0",
+    "description": "Requires usage of Track-o-matic: https://dev.dk64randomizer.com/wiki/Trackers.html#kevintrackers",
+    "settings_string": "fjNPw8IhkKY6IJUtjnqSsy+htmooIJNwR6OhmNDuQQD4YS7zXwofUA8IhkMhKlsa58Ij+7iNEpEtiGwpUrK47VMeCEwzecCgxGQx0JW4CkFopbbAtygkgGmZNVEKMUgpRTAZBeXq/BQFuAIMBN4CBwNwAYQCOIECQVyAoUDOYGCwd0A4YEXIITIaZOqWrwAZTiE1QwkoUjuq1ZLGjMxWkCOT9FtSl6KiLAImIoArFRHQiGQpjoSpbGufCMp0ra+M63zrLHI3ZLxd5FA5DsZe07AzyZLJmUFQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFyNPFegSXKls9lk9HwMI5PmAzl0HFUVlMqLQUoAUFYNKATiotEkXEMhJ41pZUoMRro7AE6AWQBHgoaVFZiZSgA"
   }
 ]
