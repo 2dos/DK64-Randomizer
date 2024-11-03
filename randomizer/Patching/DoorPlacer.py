@@ -11,15 +11,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
-LEVEL_MAIN_MAPS = (
-    Maps.JungleJapes,
-    Maps.AngryAztec,
-    Maps.FranticFactory,
-    Maps.GloomyGalleon,
-    Maps.FungiForest,
-    Maps.CrystalCaves,
-    Maps.CreepyCastle,
-)
+LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
 
 MAP_LEVEL_PAIRING = {
     Maps.JungleJapes: Levels.JungleJapes,
@@ -74,13 +66,7 @@ class InstanceInstruction:
 DK_PORTAL_NEW_PICKUP_RADIUS = 60
 DK_PORTAL_SCRIPT = [
     FunctionData(
-        [InstanceInstruction(1, [0, 0, 0])],
-        [
-            InstanceInstruction(22, [1, 0, 0]),
-            InstanceInstruction(22, [2, 0, 0]),
-            InstanceInstruction(20, [1, 160, 0]),
-            InstanceInstruction(20, [2, 115, 0]),
-        ],
+        [InstanceInstruction(1, [0, 0, 0])], [InstanceInstruction(22, [1, 0, 0]), InstanceInstruction(22, [2, 0, 0]), InstanceInstruction(20, [1, 160, 0]), InstanceInstruction(20, [2, 115, 0])]
     ),
     FunctionData(
         [
@@ -395,11 +381,7 @@ def place_door_locations(spoiler):
                     if door.map == cont_map_id:
                         if door_type == "wrinkly" and (
                             spoiler.settings.wrinkly_location_rando
-                            or IsItemSelected(
-                                spoiler.settings.quality_of_life,
-                                spoiler.settings.misc_changes_selected,
-                                MiscChangesSelected.remove_wrinkly_puzzles,
-                            )
+                            or IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles)
                         ):
                             if (not spoiler.settings.enable_progressive_hints) or Types.Hint in spoiler.settings.shuffled_location_types:
                                 kong = data[2]

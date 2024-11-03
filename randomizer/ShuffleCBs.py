@@ -96,13 +96,7 @@ def ShuffleCBs(spoiler):
                     continue
                 level_placement = []
                 global_divisor = (levels_to_populate - 1) - level_index
-                kong_specific_left = {
-                    Kongs.donkey: 100,
-                    Kongs.diddy: 100,
-                    Kongs.lanky: 100,
-                    Kongs.tiny: 100,
-                    Kongs.chunky: 100,
-                }
+                kong_specific_left = {Kongs.donkey: 100, Kongs.diddy: 100, Kongs.lanky: 100, Kongs.tiny: 100, Kongs.chunky: 100}
                 # Balloons
                 # Pick random amount of balloons assigned to level
                 balloons_left = MAX_BALLOONS - total_balloons
@@ -115,10 +109,7 @@ def ShuffleCBs(spoiler):
                 else:
                     balloon_upper = min(int(balloons_left / (levels_to_populate - level_index)) + 3, int(balloons_left / global_divisor))
                 balloon_lst = level_data[level]["balloons"].copy()
-                selected_balloon_count = min(
-                    random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)),
-                    len(balloon_lst),
-                )
+                selected_balloon_count = min(random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)), len(balloon_lst))
                 # selected_balloon_count = 22 # Test all balloon locations
                 random.shuffle(balloon_lst)  # TODO: Maybe make this more advanced?
                 # selects all balloons
@@ -132,16 +123,7 @@ def ShuffleCBs(spoiler):
                         if len(balloon_kongs) > 0:  # Has a kong who can be assigned to this balloon
                             selected_kong = random.choice(balloon_kongs)
                             kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
-                            level_placement.append(
-                                {
-                                    "id": balloon.id,
-                                    "name": balloon.name,
-                                    "kong": selected_kong,
-                                    "level": level,
-                                    "type": "balloons",
-                                    "map": balloon.map,
-                                }
-                            )
+                            level_placement.append({"id": balloon.id, "name": balloon.name, "kong": selected_kong, "level": level, "type": "balloons", "map": balloon.map})
                             placed_balloons += 1
                             if balloon.region not in spoiler.CollectibleRegions:
                                 spoiler.CollectibleRegions[balloon.region] = []
@@ -154,8 +136,7 @@ def ShuffleCBs(spoiler):
                 if global_divisor == 0:
                     bunches_upper = bunches_left
                     singles_upper = min(
-                        singles_left,
-                        int((5 * (PLACEMENT_LIMIT - total_bunches - total_singles) - sum(kong_specific_left)) / 4),
+                        singles_left, int((5 * (PLACEMENT_LIMIT - total_bunches - total_singles) - sum(kong_specific_left)) / 4)
                     )  # Places a hard cap of PLACEMENT_LIMIT total singles+bunches
                 else:
                     bunches_upper = min(int(bunches_left / (levels_to_populate - level_index)) + 15, int(bunches_left / global_divisor))
@@ -199,38 +180,10 @@ def ShuffleCBs(spoiler):
                             if group.region not in spoiler.CollectibleRegions:
                                 spoiler.CollectibleRegions[group.region] = []
                             if bunches_in_lesser_group > 0:
-                                spoiler.CollectibleRegions[group.region].append(
-                                    Collectible(
-                                        Collectibles.bunch,
-                                        selected_kong,
-                                        group.logic,
-                                        None,
-                                        bunches_in_lesser_group,
-                                        name=group.name,
-                                    )
-                                )
+                                spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group, name=group.name))
                             if singles_in_lesser_group > 0:
-                                spoiler.CollectibleRegions[group.region].append(
-                                    Collectible(
-                                        Collectibles.banana,
-                                        selected_kong,
-                                        group.logic,
-                                        None,
-                                        singles_in_lesser_group,
-                                        name=group.name,
-                                    )
-                                )
-                            level_placement.append(
-                                {
-                                    "group": group.group,
-                                    "name": group.name,
-                                    "kong": selected_kong,
-                                    "level": level,
-                                    "type": "cb",
-                                    "map": group.map,
-                                    "locations": group.locations,
-                                }
-                            )
+                                spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group, name=group.name))
+                            level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map, "locations": group.locations})
                         placed_bunches += bunches_in_group
                         placed_singles += singles_in_group
                     # If all kongs have 0 unplaced, we're done here

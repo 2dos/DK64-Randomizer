@@ -1,9 +1,18 @@
 """Level enum."""
 
-from randomizer.JsonReader import generate_globals
-from typing import TYPE_CHECKING
+from enum import IntEnum, auto
 
-if TYPE_CHECKING:
-    from randomizer.Enums.Levels import Levels
 
-globals().update(generate_globals(__file__))
+class Levels(IntEnum):
+    """Level enum."""
+
+    JungleJapes = 0
+    AngryAztec = auto()
+    FranticFactory = auto()
+    GloomyGalleon = auto()
+    FungiForest = auto()
+    CrystalCaves = auto()
+    CreepyCastle = auto()
+    HideoutHelm = auto()
+    DKIsles = auto()
+    Shops = auto()

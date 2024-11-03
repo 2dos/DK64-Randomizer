@@ -22,7 +22,6 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Regions import Regions
@@ -52,13 +51,7 @@ from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.Lib import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
-from randomizer.ShuffleBosses import (
-    ShuffleBosses,
-    ShuffleBossKongs,
-    ShuffleKKOPhaseOrder,
-    ShuffleKutoutKongs,
-    ShuffleTinyPhaseToes,
-)
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 from version import version as randomizer_version
 
 
@@ -266,16 +259,7 @@ class Settings:
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
             self.troff_7 = round(min(cbs[7] * self.troff_weight_7, 500))
-        self.BossBananas = [
-            self.troff_0,
-            self.troff_1,
-            self.troff_2,
-            self.troff_3,
-            self.troff_4,
-            self.troff_5,
-            self.troff_6,
-            self.troff_7,
-        ]
+        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6, self.troff_7]
 
         self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
         self.BLockerEntryCount = [0] * 8
@@ -338,16 +322,7 @@ class Settings:
             else:
                 self.blocker_7 = b_lockers[7]
             # Store banana values in array
-            self.BLockerEntryCount = [
-                self.blocker_0,
-                self.blocker_1,
-                self.blocker_2,
-                self.blocker_3,
-                self.blocker_4,
-                self.blocker_5,
-                self.blocker_6,
-                self.blocker_7,
-            ]
+            self.BLockerEntryCount = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -836,11 +811,7 @@ class Settings:
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
 
         # Switchsanity handling
-        ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {
-            Kongs.donkey,
-            Kongs.lanky,
-            Kongs.tiny,
-        }  # This might get changed here, reset this to the default now
+        ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {Kongs.donkey, Kongs.lanky, Kongs.tiny}  # This might get changed here, reset this to the default now
         self.switchsanity_data = deepcopy(SwitchData)
         if self.switchsanity != SwitchsanityLevel.off:
             kongs = GetKongs()
@@ -1128,11 +1099,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 3, 0.13),
             ),
         }
-        random_win_con_settings = (
-            WinConditionComplex.easy_random,
-            WinConditionComplex.medium_random,
-            WinConditionComplex.hard_random,
-        )
+        random_win_con_settings = (WinConditionComplex.easy_random, WinConditionComplex.medium_random, WinConditionComplex.hard_random)
         self.win_condition_random = self.win_condition_item in random_win_con_settings
         win_con_pool = {}
         wc_diff = random_win_con_settings.index(self.win_condition_item) if self.win_condition_item in random_win_con_settings else None
@@ -1228,25 +1195,9 @@ class Settings:
         self.krool_pufftoss = False
         self.krool_kutout = False
 
-        phases = [
-            Maps.KroolDonkeyPhase,
-            Maps.KroolDiddyPhase,
-            Maps.KroolLankyPhase,
-            Maps.KroolTinyPhase,
-            Maps.KroolChunkyPhase,
-        ]
+        phases = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
         if self.krool_in_boss_pool:
-            phases.extend(
-                [
-                    Maps.JapesBoss,
-                    Maps.AztecBoss,
-                    Maps.FactoryBoss,
-                    Maps.GalleonBoss,
-                    Maps.FungiBoss,
-                    Maps.CavesBoss,
-                    Maps.CastleBoss,
-                ]
-            )
+            phases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss])
         possible_phases = phases.copy()
         if self.krool_phase_order_rando:
             random.shuffle(phases)
@@ -1568,12 +1519,7 @@ class Settings:
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
             if self.shuffle_items and Types.Kong in self.shuffled_location_types:
-                self.kong_locations = [
-                    Locations.DiddyKong,
-                    Locations.LankyKong,
-                    Locations.TinyKong,
-                    Locations.ChunkyKong,
-                ]
+                self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
             else:
                 self.kong_locations = self.SelectKongLocations()
         else:
@@ -1716,12 +1662,9 @@ class Settings:
         # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
         if locations_to_add < 0:
             first_empty_location = first_pregiven_location
-            invalid_training_barrels = [
-                Locations.IslesVinesTrainingBarrel,
-                Locations.IslesSwimTrainingBarrel,
-                Locations.IslesOrangesTrainingBarrel,
-                Locations.IslesBarrelsTrainingBarrel,
-            ][self.starting_moves_count :]
+            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
+                self.starting_moves_count :
+            ]
             for locationId in invalid_training_barrels:
                 spoiler.LocationList[locationId].default = Items.NoItem
                 spoiler.LocationList[locationId].type = Types.Constant
@@ -1780,10 +1723,7 @@ class Settings:
                     # For each shop, get a pair of kongs
                     kongsToBeRemoved = kongPairs.pop()
                     # Determine which shop locations are accessible and inaccessible
-                    inaccessible_shops = [
-                        ShopLocationReference[level][vendor][kongsToBeRemoved[0]],
-                        ShopLocationReference[level][vendor][kongsToBeRemoved[1]],
-                    ]
+                    inaccessible_shops = [ShopLocationReference[level][vendor][kongsToBeRemoved[0]], ShopLocationReference[level][vendor][kongsToBeRemoved[1]]]
                     accessible_shops = [location_id for location_id in ShopLocationReference[level][vendor] if location_id not in inaccessible_shops]
                     for location_id in inaccessible_shops:
                         spoiler.LocationList[location_id].inaccessible = True
@@ -1865,16 +1805,7 @@ class Settings:
             shuffledLocationsShopOwner = [
                 location
                 for location in shuffledLocations  # Placing a shop owner in a shop owner location is boring and we don't want to do it ever
-                if spoiler.LocationList[location].type
-                not in (
-                    Types.Shop,
-                    Types.Shockwave,
-                    Types.PreGivenMove,
-                    Types.TrainingBarrel,
-                    Types.Climbing,
-                    Types.NintendoCoin,
-                    Types.RarewareCoin,
-                )
+                if spoiler.LocationList[location].type not in (Types.Shop, Types.Shockwave, Types.PreGivenMove, Types.TrainingBarrel, Types.Climbing, Types.NintendoCoin, Types.RarewareCoin)
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]
@@ -1925,15 +1856,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
-            regular_items = (
-                Types.Crown,
-                Types.Key,
-                Types.NintendoCoin,
-                Types.RarewareCoin,
-                Types.Pearl,
-                Types.Bean,
-                Types.Fairy,
-            )
+            regular_items = (Types.Crown, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Pearl, Types.Bean, Types.Fairy)
             for item in regular_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledNonMoveLocations.copy()
@@ -1981,15 +1904,7 @@ class Settings:
                 self.valid_locations[Types.JunkItem] = [
                     x
                     for x in shuffledNonMoveLocations
-                    if spoiler.LocationList[x].type
-                    not in (
-                        Types.Shop,
-                        Types.Shockwave,
-                        Types.Crown,
-                        Types.PreGivenMove,
-                        Types.CrateItem,
-                        Types.Enemies,
-                    )
+                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies)
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
                 ]
             if Types.Kong in self.shuffled_location_types:
@@ -2097,15 +2012,7 @@ class Settings:
             if region in RegionMapList:
                 tied_map = GetMapId(region)
                 tied_exit = GetExitId(planned_back_transition)
-                valid_starting_regions.append(
-                    {
-                        "region": region,
-                        "map": tied_map,
-                        "exit": tied_exit,
-                        "region_name": region_name,
-                        "exit_name": ShufflableExits[planned_transition].back.name,
-                    }
-                )
+                valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_name, "exit_name": ShufflableExits[planned_transition].back.name})
             else:
                 raise Ex.PlandoIncompatibleException(f"Starting position {planned_transition} has no map")
         else:
@@ -2123,13 +2030,7 @@ class Settings:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
                         valid_starting_regions.append(
-                            {
-                                "region": region,
-                                "map": tied_map,
-                                "exit": tied_exit,
-                                "region_name": region_data.name,
-                                "exit_name": ShufflableExits[relevant_transition].back.name,
-                            }
+                            {"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name}
                         )
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
@@ -2137,7 +2038,7 @@ class Settings:
 
     def ApplyPlandomizerSettings(self):
         """Apply settings specified by the plandomizer."""
-        self.plandomizer_dict = self.plandomizer_data
+        self.plandomizer_dict = json.loads(self.plandomizer_data)
         # Leaving space here to handle things as needed, might be unnecessary
 
     def ApplyMusicSelections(self):

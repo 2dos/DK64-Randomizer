@@ -88,7 +88,7 @@
                 aria-selected="false">
             <p class="select-title">General</p>
         </button>
-        {% for panelName, panel in plando_panels %}
+        {% for panelName, panel in plando_panels.items() %}
             <button class="nav-link nav-item plando-pill"
                     id="nav-plando-{{panelName}}-tab"
                     data-bs-toggle="tab"
@@ -108,7 +108,7 @@
     <div class="tab-content" id="nav-tabContent">
         {% include 'plandomizer/plandomizer_introduction.html.jinja2' %}
         {% include 'plandomizer/plandomizer_general.html.jinja2' %}
-        {% for panelName, panel in plando_panels %}
+        {% for panelName, panel in plando_panels.items() %}
             {% if panelName == "Shops" %}
                 {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
             {% elif panelName == "Switches" %}

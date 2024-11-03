@@ -1,8 +1,0 @@
-export enum Kongs {
-    donkey = 0,
-    diddy = 1,
-    lanky = 2,
-    tiny = 3,
-    chunky = 4,
-    any = 5,
-}

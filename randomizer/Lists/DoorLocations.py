@@ -7,26 +7,12 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import (
-    BananaportRando,
-    RemovedBarriersSelected,
-    ActivateAllBananaports,
-    FungiTimeSetting,
-    ShufflePortLocations,
-)
+from randomizer.Enums.Settings import BananaportRando, RemovedBarriersSelected, ActivateAllBananaports, FungiTimeSetting, ShufflePortLocations
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Patching.Lib import IsItemSelected
 
-LEVEL_MAIN_MAPS = (
-    Maps.JungleJapes,
-    Maps.AngryAztec,
-    Maps.FranticFactory,
-    Maps.GloomyGalleon,
-    Maps.FungiForest,
-    Maps.CrystalCaves,
-    Maps.CreepyCastle,
-)
+LEVEL_MAIN_MAPS = (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
 
 LEVEL_ENTRY_HANDLER_REGIONS = (
     Regions.JungleJapesEntryHandler,

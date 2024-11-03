@@ -6,6 +6,7 @@ black==24.3.0
 pycodestyle==2.10.0
 pydocstyle==6.3.0
 css-html-js-minify==2.5.5
+python-minifier==2.9.0
 requests==2.32.0
 bs4==0.0.1
 beautifulsoup4==4.12.2
@@ -16,7 +17,7 @@ flask-cors==4.0.1
 waitress==2.1.2
 flask-executor==1.0.0
 vidua==0.4.5
-pyxdelta==0.2.0
+pyxdelta==0.1.2
 pillow==10.3.0
 boto3==1.28.43
 GitPython==3.1.41

@@ -63,14 +63,7 @@ def randomize_coins(spoiler):
                     # Model Two Coins
                     for loc in new_coin["locations"]:
                         item_data = []
-                        item_data.extend(
-                            [
-                                int(float_to_hex(loc[1]), 16),
-                                int(float_to_hex(loc[2]), 16),
-                                int(float_to_hex(loc[3]), 16),
-                                int(float_to_hex(loc[0]), 16),
-                            ]
-                        )
+                        item_data.extend([int(float_to_hex(loc[1]), 16), int(float_to_hex(loc[2]), 16), int(float_to_hex(loc[3]), 16), int(float_to_hex(loc[0]), 16)])
                         item_data.append(2)
                         item_data.append(0x01C7FFFF)
                         for x in range(int((0x24 - 0x18) / 4)):

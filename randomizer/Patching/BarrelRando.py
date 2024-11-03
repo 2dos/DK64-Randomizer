@@ -13,10 +13,7 @@ def randomize_barrels(spoiler):
         barrel_replacements = []
         for location, minigame in spoiler.shuffled_barrel_data.items():
             container_map = int(BarrelMetaData[location].map)
-            barrel_data = {
-                "instance_id": int(BarrelMetaData[location].barrel_id),
-                "new_map": int(MinigameRequirements[minigame].map),
-            }
+            barrel_data = {"instance_id": int(BarrelMetaData[location].barrel_id), "new_map": int(MinigameRequirements[minigame].map)}
             new_map = True
             if len(barrel_replacements) > 0:
                 for x in barrel_replacements:

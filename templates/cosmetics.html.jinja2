@@ -210,24 +210,25 @@
                     <label for="random_colors"></label>
                 </label>
             </h2>
+            {% set kong_zones = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]} %}
             <div class="flex-container">
-                {% for kong, object_data in kong_zones %}
+                {% for kong in kong_zones %}
                     <div class="flex-container" style="flex-direction:column">
                         <div class="item-color-select">
                             <div class="color-selector">
                                 <p class="select-title">{{ kong }}</p>
                                 {% for zone in kong_zones[kong] %}
-                                    <div id="{{ kong | lower }}_{{ zone | lower }}_custom">
-                                        <div class="input-group mb-3 {{ kong | lower }}{{ zone | lower }}ColorPicker" style="display:flex">
-                                            <select name="{{ kong | lower }}_{{ zone | lower }}_colors" id="{{ kong | lower }}_{{ zone | lower }}_colors" class="form-select" aria-label="{{ kong }} {{ zone }}">
+                                    <div id="{{ kong.lower() }}_{{ zone.lower() }}_custom">
+                                        <div class="input-group mb-3 {{ kong.lower() }}{{ zone.lower() }}ColorPicker" style="display:flex">
+                                            <select name="{{ kong.lower() }}_{{ zone.lower() }}_colors" id="{{ kong.lower() }}_{{ zone.lower() }}_colors" class="form-select" aria-label="{{ kong }} {{ zone }}">
                                                 <option selected value="vanilla">{{ zone }}: Vanilla</option>
                                                 <option value="randomized">{{ zone }}: Randomized</option>
                                                 <option value="custom">{{ zone }}: Custom</option>
                                             </select>
                                             <div class="color-input-container">
                                                 <input type="color"
-                                                    name="{{ kong | lower }}_{{ zone | lower }}_custom_color"
-                                                    id="{{ kong | lower }}_{{ zone | lower }}_custom_color"
+                                                    name="{{ kong.lower() }}_{{ zone.lower() }}_custom_color"
+                                                    id="{{ kong.lower() }}_{{ zone.lower() }}_custom_color"
                                                     default="#000000"
                                                     class="color-input">
                                             </div>

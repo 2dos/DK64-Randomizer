@@ -8,15 +8,7 @@ import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem, PlandoItems
-from randomizer.Enums.Settings import (
-    ClimbingStatus,
-    HardModeSelected,
-    MoveRando,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    TrainingBarrels,
-    CBRando,
-)
+from randomizer.Enums.Settings import ClimbingStatus, HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, CBRando
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Item import ItemFromKong
@@ -141,13 +133,7 @@ def PlaceConstants(spoiler):
     if settings.enable_plandomizer:
         blueprints_planned = []
         for location_id, plando_item in settings.plandomizer_dict["locations"].items():
-            if plando_item in [
-                PlandoItems.DonkeyBlueprint,
-                PlandoItems.DiddyBlueprint,
-                PlandoItems.LankyBlueprint,
-                PlandoItems.TinyBlueprint,
-                PlandoItems.ChunkyBlueprint,
-            ]:
+            if plando_item in [PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint]:
                 item = random.choice([x for x in GetItemsFromPlandoItem(plando_item) if x not in blueprints_planned])
                 blueprints_planned.append(item)
             else:
@@ -393,16 +379,7 @@ def Blueprints():
 
 def Keys():
     """Return all key items."""
-    return [
-        Items.JungleJapesKey,
-        Items.AngryAztecKey,
-        Items.FranticFactoryKey,
-        Items.GloomyGalleonKey,
-        Items.FungiForestKey,
-        Items.CrystalCavesKey,
-        Items.CreepyCastleKey,
-        Items.HideoutHelmKey,
-    ]
+    return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
 
 
 def KeysToPlace(settings, excludeHelmKey=True):
@@ -786,18 +763,6 @@ DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.Rocketbarrel
 LankyMoves = [Items.Grape, Items.Trombone, Items.Orangstand, Items.BaboonBalloon, Items.OrangstandSprint]
 TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwirl, Items.Monkeyport]
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
-ImportantSharedMoves = [
-    Items.ProgressiveSlam,
-    Items.ProgressiveSlam,
-    Items.ProgressiveSlam,
-    Items.SniperSight,
-    Items.HomingAmmo,
-]
-JunkSharedMoves = [
-    Items.ProgressiveAmmoBelt,
-    Items.ProgressiveAmmoBelt,
-    Items.ProgressiveInstrumentUpgrade,
-    Items.ProgressiveInstrumentUpgrade,
-    Items.ProgressiveInstrumentUpgrade,
-]
+ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
+JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
 ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}

@@ -62,16 +62,7 @@ class CarRaceArea(IntEnum):
 class RaceBound:
     """Class to store information regarding a race bound."""
 
-    def __init__(
-        self,
-        start_x: int,
-        start_z: int,
-        end_x: int,
-        end_z: int,
-        direction_is_x: bool,
-        checkpoint_count: int,
-        area: CarRaceArea = CarRaceArea.null,
-    ):
+    def __init__(self, start_x: int, start_z: int, end_x: int, end_z: int, direction_is_x: bool, checkpoint_count: int, area: CarRaceArea = CarRaceArea.null):
         """Initialize with given parameters."""
         self.start_x = start_x
         self.end_x = end_x
@@ -220,36 +211,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         enemy_car_checkpoints = temp_checkpoints.copy()
         checkpoint_bytes_order = temp_check_bytes.copy()
     # Write Enemy Car AI
-    checkpoint_ai_mapping = [
-        0xF,
-        0x0,
-        0x01,
-        0x1D,
-        0x02,
-        0x19,
-        0x03,
-        0x18,
-        0x04,
-        0x06,
-        0x07,
-        0x08,
-        0x09,
-        0x15,
-        0x1C,
-        0x12,
-        0x10,
-        0x05,
-        0x0A,
-        0x0B,
-        0x0C,
-        0x0D,
-        0x13,
-        0x0E,
-        0x14,
-        0x1B,
-        0x1A,
-        0x11,
-    ]
+    checkpoint_ai_mapping = [0xF, 0x0, 0x01, 0x1D, 0x02, 0x19, 0x03, 0x18, 0x04, 0x06, 0x07, 0x08, 0x09, 0x15, 0x1C, 0x12, 0x10, 0x05, 0x0A, 0x0B, 0x0C, 0x0D, 0x13, 0x0E, 0x14, 0x1B, 0x1A, 0x11]
     map_spawners = js.pointer_addresses[16]["entries"][Maps.CastleTinyRace]["pointing_to"]
     for point in range(len(checkpoint_ai_mapping)):
         slot = checkpoint_ai_mapping[point]
@@ -279,11 +241,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
 
 def shortenCastleMinecart(spoiler):
     """Shorten Castle Minecart to end at the u-turn point."""
-    if not IsItemSelected(
-        spoiler.settings.faster_checks_enabled,
-        spoiler.settings.faster_checks_selected,
-        FasterChecksSelected.castle_minecart,
-    ):
+    if not IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.castle_minecart):
         return
     shiftCastleMinecartRewardZones()
     new_squawks_coords = (3232, 482, 693)
@@ -438,15 +396,7 @@ class PuzzleRandoBound:
 class PuzzleItem:
     """Class to store information regarding a puzzle requirement."""
 
-    def __init__(
-        self,
-        name: str,
-        tied_map: Maps,
-        offset: int,
-        normal_bound: PuzzleRandoBound,
-        fast_bound: PuzzleRandoBound = None,
-        fast_check_setting: FasterChecksSelected = None,
-    ):
+    def __init__(self, name: str, tied_map: Maps, offset: int, normal_bound: PuzzleRandoBound, fast_bound: PuzzleRandoBound = None, fast_check_setting: FasterChecksSelected = None):
         """Initialize with given parameters."""
         self.name = name
         self.tied_map = tied_map
@@ -473,40 +423,12 @@ def randomize_puzzles(spoiler):
         coin_req_info = [
             PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 60)),
             PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13D, PuzzleRandoBound(20, 60)),
-            PuzzleItem(
-                "Factory Car Race",
-                Maps.FactoryTinyRace,
-                0x13E,
-                PuzzleRandoBound(5, 18),
-                PuzzleRandoBound(3, 12),
-                FasterChecksSelected.factory_car_race,
-            ),
-            PuzzleItem(
-                "Galleon Seal Race",
-                Maps.GalleonSealRace,
-                0x13F,
-                PuzzleRandoBound(5, 12),
-                PuzzleRandoBound(5, 10),
-                FasterChecksSelected.galleon_seal_race,
-            ),
-            PuzzleItem(
-                "Castle Car Race",
-                Maps.CastleTinyRace,
-                0x140,
-                PuzzleRandoBound(5, 15),
-                PuzzleRandoBound(5, 12),
-                FasterChecksSelected.castle_car_race,
-            ),
+            PuzzleItem("Factory Car Race", Maps.FactoryTinyRace, 0x13E, PuzzleRandoBound(5, 18), PuzzleRandoBound(3, 12), FasterChecksSelected.factory_car_race),
+            PuzzleItem("Galleon Seal Race", Maps.GalleonSealRace, 0x13F, PuzzleRandoBound(5, 12), PuzzleRandoBound(5, 10), FasterChecksSelected.galleon_seal_race),
+            PuzzleItem("Castle Car Race", Maps.CastleTinyRace, 0x140, PuzzleRandoBound(5, 15), PuzzleRandoBound(5, 12), FasterChecksSelected.castle_car_race),
             PuzzleItem("Japes Minecart", Maps.JapesMinecarts, 0x141, PuzzleRandoBound(40, 70)),
             PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 0x142, PuzzleRandoBound(25, 60)),
-            PuzzleItem(
-                "Castle Minecart",
-                Maps.CastleMinecarts,
-                0x143,
-                PuzzleRandoBound(10, 45),
-                PuzzleRandoBound(5, 30),
-                FasterChecksSelected.castle_minecart,
-            ),
+            PuzzleItem("Castle Minecart", Maps.CastleMinecarts, 0x143, PuzzleRandoBound(10, 45), PuzzleRandoBound(5, 30), FasterChecksSelected.castle_minecart),
         ]
         for coinreq in coin_req_info:
             coinreq.updateBoundSetting(spoiler)

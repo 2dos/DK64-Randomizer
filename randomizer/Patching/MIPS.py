@@ -619,47 +619,31 @@ instructions = {
     Symbol.BREAK: Instruction(
         "Breakpoint",
         1,
-        [
-            InstructionBit(31, 26, InstructionSegment.special),
-            InstructionBit(25, 6, InstructionSegment.code),
-            InstructionBit(5, 0, InstructionSegment.static, "001101"),
-        ],
+        [InstructionBit(31, 26, InstructionSegment.special), InstructionBit(25, 6, InstructionSegment.code), InstructionBit(5, 0, InstructionSegment.static, "001101")],
         InstructionFormat("BREAK", []),
     ),
     Symbol.COP0: Instruction(
         "Coprocessor Operation",
         1,
-        [
-            InstructionBit(31, 26, InstructionSegment.static, "010000"),
-            InstructionBit(25, 0, InstructionSegment.cop_fun),
-        ],
+        [InstructionBit(31, 26, InstructionSegment.static, "010000"), InstructionBit(25, 0, InstructionSegment.cop_fun)],
         InstructionFormat("COP0", [InstructionSegment.cop_fun]),
     ),
     Symbol.COP1: Instruction(
         "Coprocessor Operation",
         1,
-        [
-            InstructionBit(31, 26, InstructionSegment.static, "010001"),
-            InstructionBit(25, 0, InstructionSegment.cop_fun),
-        ],
+        [InstructionBit(31, 26, InstructionSegment.static, "010001"), InstructionBit(25, 0, InstructionSegment.cop_fun)],
         InstructionFormat("COP1", [InstructionSegment.cop_fun]),
     ),
     Symbol.COP2: Instruction(
         "Coprocessor Operation",
         1,
-        [
-            InstructionBit(31, 26, InstructionSegment.static, "010010"),
-            InstructionBit(25, 0, InstructionSegment.cop_fun),
-        ],
+        [InstructionBit(31, 26, InstructionSegment.static, "010010"), InstructionBit(25, 0, InstructionSegment.cop_fun)],
         InstructionFormat("COP2", [InstructionSegment.cop_fun]),
     ),
     Symbol.COP3: Instruction(
         "Coprocessor Operation",
         1,
-        [
-            InstructionBit(31, 26, InstructionSegment.static, "010011"),
-            InstructionBit(25, 0, InstructionSegment.cop_fun),
-        ],
+        [InstructionBit(31, 26, InstructionSegment.static, "010011"), InstructionBit(25, 0, InstructionSegment.cop_fun)],
         InstructionFormat("COP3", [InstructionSegment.cop_fun]),
     ),
     Symbol.DADD: Instruction(
@@ -1645,11 +1629,7 @@ instructions = {
     Symbol.SYSCALL: Instruction(
         "System Call",
         1,
-        [
-            InstructionBit(31, 26, InstructionSegment.special),
-            InstructionBit(25, 6, InstructionSegment.code),
-            InstructionBit(5, 0, InstructionSegment.static, "001100"),
-        ],
+        [InstructionBit(31, 26, InstructionSegment.special), InstructionBit(25, 6, InstructionSegment.code), InstructionBit(5, 0, InstructionSegment.static, "001100")],
         InstructionFormat("SYSCALL", []),
     ),
     Symbol.TEQ: Instruction(
