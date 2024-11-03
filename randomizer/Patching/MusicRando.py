@@ -273,7 +273,15 @@ def getAssignedCustomSongData(file_data_array: list, song_name: str, length_filt
     raise ValueError(f'Requested non-existent custom song "{song_name}".')
 
 
-def requestNewSong(file_data_array: list, location_tags: list, location_length: int, song_type: SongType, check_unused: bool, location_filter: bool, length_filter: bool) -> UploadInfo:
+def requestNewSong(
+    file_data_array: list,
+    location_tags: list,
+    location_length: int,
+    song_type: SongType,
+    check_unused: bool,
+    location_filter: bool,
+    length_filter: bool,
+) -> UploadInfo:
     """Request new song from list."""
     global GLOBAL_SEARCH_INDEX, USED_INDEXES, UNPLACED_SONGS
 
@@ -337,7 +345,13 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
     return None
 
 
-def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names: list, uploaded_song_extensions: list, target_type: SongType):
+def insertUploaded(
+    settings: Settings,
+    uploaded_songs: list,
+    uploaded_song_names: list,
+    uploaded_song_extensions: list,
+    target_type: SongType,
+):
     """Insert uploaded songs into ROM."""
     global UNPLACED_SONGS, GLOBAL_SEARCH_INDEX, USED_INDEXES
 
@@ -415,7 +429,15 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
             new_song = getAssignedCustomSongData(file_data, assigned_song_name, length_filter, location_filter, target_type)
             satisfied = new_song.acceptable
         if not satisfied:
-            new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music, location_filter, length_filter)
+            new_song = requestNewSong(
+                file_data,
+                song.location_tags,
+                song.song_length,
+                target_type,
+                not settings.fill_with_custom_music,
+                location_filter,
+                length_filter,
+            )
         selected_cap = 0xFFFFFF
         if new_song is not None:
             new_song_data = bytes(new_song.song_file)
@@ -490,11 +512,32 @@ def randomize_music(settings: Settings):
     if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
         NON_BGM_DATA = [
             # Minor Items
-            GroupData("Minor Items", settings.music_minoritems_randomized, js.cosmetics.minoritems, js.cosmetic_names.minoritems, js.cosmetic_extensions.minoritems, SongType.MinorItem),
+            GroupData(
+                "Minor Items",
+                settings.music_minoritems_randomized,
+                js.cosmetics.minoritems,
+                js.cosmetic_names.minoritems,
+                js.cosmetic_extensions.minoritems,
+                SongType.MinorItem,
+            ),
             # Major Items
-            GroupData("Major Items", settings.music_majoritems_randomized, js.cosmetics.majoritems, js.cosmetic_names.majoritems, js.cosmetic_extensions.majoritems, SongType.MajorItem),
+            GroupData(
+                "Major Items",
+                settings.music_majoritems_randomized,
+                js.cosmetics.majoritems,
+                js.cosmetic_names.majoritems,
+                js.cosmetic_extensions.majoritems,
+                SongType.MajorItem,
+            ),
             # Events
-            GroupData("Events", settings.music_events_randomized, js.cosmetics.events, js.cosmetic_names.events, js.cosmetic_extensions.events, SongType.Event),
+            GroupData(
+                "Events",
+                settings.music_events_randomized,
+                js.cosmetics.events,
+                js.cosmetic_names.events,
+                js.cosmetic_extensions.events,
+                SongType.Event,
+            ),
         ]
 
     if (
@@ -536,7 +579,13 @@ def randomize_music(settings: Settings):
                 # If uploaded, replace some songs with the uploaded songs
                 if settings.music_bgm_randomized:
                     # Insert all of the custom songs.
-                    insertUploaded(settings, list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), list(js.cosmetic_extensions.bgm), SongType.BGM)
+                    insertUploaded(
+                        settings,
+                        list(js.cosmetics.bgm),
+                        list(js.cosmetic_names.bgm),
+                        list(js.cosmetic_extensions.bgm),
+                        SongType.BGM,
+                    )
                 else:
                     # Only insert the assigned songs.
                     assigned_songs = []
@@ -633,7 +682,13 @@ def randomize_music(settings: Settings):
                 # If uploaded, replace some songs with the uploaded songs
                 if type_data.setting:
                     # Insert all of the custom songs.
-                    insertUploaded(settings, list(type_data.files), list(type_data.names), list(type_data.extensions), type_data.song_type)
+                    insertUploaded(
+                        settings,
+                        list(type_data.files),
+                        list(type_data.names),
+                        list(type_data.extensions),
+                        type_data.song_type,
+                    )
                 else:
                     # Only insert the assigned songs.
                     assigned_songs = []

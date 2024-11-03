@@ -57,7 +57,14 @@ level_names = [
     "DK Isles",
 ]
 
-kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
+kong_names = {
+    Kongs.donkey: "Donkey Kong",
+    Kongs.diddy: "Diddy",
+    Kongs.lanky: "Lanky",
+    Kongs.tiny: "Tiny",
+    Kongs.chunky: "Chunky",
+    Kongs.any: "Any Kong",
+}
 
 
 class MoveMicrohintItemData:
@@ -138,7 +145,11 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
                     if spoiler.settings.microhints_enabled in list(item_data.enabled_hint_settings):
                         move = item_data
             if move is not None:
-                data = {"textbox_index": move.file, "mode": "replace_whole", "target": spoiler.microhints[ItemList[move.item].name]}
+                data = {
+                    "textbox_index": move.file,
+                    "mode": "replace_whole",
+                    "target": spoiler.microhints[ItemList[move.item].name],
+                }
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
@@ -150,7 +161,15 @@ def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, k
     ROM_COPY = LocalROM()
     for xi, x in enumerate(arr):
         if x["move_type"] == "flag":
-            flag_dict = {"dive": 0x182, "orange": 0x184, "barrel": 0x185, "vine": 0x183, "camera": 0x2FD, "shockwave": 0x179, "camera_shockwave": 0xFFFE}
+            flag_dict = {
+                "dive": 0x182,
+                "orange": 0x184,
+                "barrel": 0x185,
+                "vine": 0x183,
+                "camera": 0x2FD,
+                "shockwave": 0x179,
+                "camera_shockwave": 0xFFFE,
+            }
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
@@ -461,7 +480,16 @@ def filterMoveType(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection,
     return move_type
 
 
-def filterMoveIndex(ROM_COPY: LocalROM, move_data: int, section: MoveDataSection, kong: Kongs, level: int, slam_flag: int, belt_flag: int, ins_flag: int) -> tuple:
+def filterMoveIndex(
+    ROM_COPY: LocalROM,
+    move_data: int,
+    section: MoveDataSection,
+    kong: Kongs,
+    level: int,
+    slam_flag: int,
+    belt_flag: int,
+    ins_flag: int,
+) -> tuple:
     """Filter move index for the purpose of writing to ROM."""
     filtered_type = filterMoveType(ROM_COPY, move_data, section, kong, level)
     index = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.move_level) + 1
