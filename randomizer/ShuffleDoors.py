@@ -21,7 +21,15 @@ import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
 
-level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
+level_list = [
+    "Jungle Japes",
+    "Angry Aztec",
+    "Frantic Factory",
+    "Gloomy Galleon",
+    "Fungi Forest",
+    "Crystal Caves",
+    "Creepy Castle",
+]
 level_to_name = {
     Levels.DKIsles: "Isles",
     Levels.JungleJapes: "Japes",

@@ -43,7 +43,17 @@ def randomize_melon_crate(spoiler):
         for crate_item in spoiler.meloncrate_placement:
             for crate in CustomLocations[crate_item["level"]]:
                 if crate.name == crate_item["name"]:
-                    placements.append(MelonCrateShortData(crate.map, crate.coords, crate.max_size, crate.rot_x, crate.rot_y, crate.rot_z, crate.is_galleon_floating_crate))
+                    placements.append(
+                        MelonCrateShortData(
+                            crate.map,
+                            crate.coords,
+                            crate.max_size,
+                            crate.rot_x,
+                            crate.rot_y,
+                            crate.rot_z,
+                            crate.is_galleon_floating_crate,
+                        )
+                    )
                     if crate.map not in action_maps:
                         action_maps.append(crate.map)
                     if crate.is_galleon_floating_crate:

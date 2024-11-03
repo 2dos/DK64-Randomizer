@@ -1,12 +1,9 @@
 """Collectible enum."""
 
-from enum import IntEnum, auto
+from randomizer.JsonReader import generate_globals
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from randomizer.Enums.Collectibles import Collectibles
 
-class Collectibles(IntEnum):
-    """Collectible enum."""
-
-    banana = auto()
-    bunch = auto()
-    balloon = auto()
-    coin = auto()
+globals().update(generate_globals(__file__))

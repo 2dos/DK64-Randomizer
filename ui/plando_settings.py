@@ -14,12 +14,13 @@ from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.Plandomizer import KasplatLocationEnumList
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
+from randomizer.Lists.Item import StartingMoveOptions
 
 import js
 import json
-from ui.bindings import bind
-from ui.download import download_json_file
-from ui.generate_buttons import export_settings_string, import_settings_string
+from ui.bindings import bind, bindList
 from ui.plando_validation import (
     full_validate_no_reward_with_random_location,
     lock_key_8_in_helm,
@@ -48,10 +49,6 @@ from ui.plando_validation import (
     validate_starting_kong_count,
     level_options,
     kong_options,
-)
-from ui.rando_options import (
-    plando_disable_keys,
-    plando_disable_kong_items,
 )
 
 
@@ -113,7 +110,7 @@ async def import_plando_options(jsonString):
 
     if "Settings String" in fileContents.keys():
         js.settings_string.value = fileContents["Settings String"]
-        import_settings_string(None)
+        js.import_settings_string(None)
 
     # Set all of the options specified in the plando file.
     for option, value in fileContents.items():
@@ -145,7 +142,15 @@ async def import_plando_options(jsonString):
             for location, minigame in value.items():
                 js.document.getElementById(f"plando_{location}_minigame").value = minigame
         # Process custom locations.
-        elif option in ["plando_place_arenas", "plando_place_crates", "plando_place_fairies", "plando_place_kasplats", "plando_place_patches", "plando_place_tns", "plando_place_wrinkly"]:
+        elif option in [
+            "plando_place_arenas",
+            "plando_place_crates",
+            "plando_place_fairies",
+            "plando_place_kasplats",
+            "plando_place_patches",
+            "plando_place_tns",
+            "plando_place_wrinkly",
+        ]:
             js.document.getElementById(option).checked = value
         elif option == "plando_battle_arenas":
             for enumLocation, customLocation in value.items():
@@ -506,6 +511,136 @@ def export_plando_options(evt):
     """Export the current plando settings to a JSON file."""
     form = js.jquery("#form").serializeArray()
     plandoData = populate_plando_options(form, True)
-    export_settings_string(None)
+    js.export_settings_string(None)
     plandoData["Settings String"] = js.settings_string.value
-    download_json_file(plandoData, "plando_settings.json")
+    js.download_json_file(plandoData, "plando_settings.json")
+
+
+@bind("change", "plando_starting_kongs_selected")
+def plando_disable_kong_items(evt):
+    """Do not allow starting Kongs to be placed as items."""
+    starting_kongs = js.document.getElementById("plando_starting_kongs_selected")
+    selected_kongs = {x.value for x in starting_kongs.selectedOptions}
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    for kong in ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]:
+        if kong.lower() in selected_kongs:
+            kong_options = js.document.getElementsByClassName(f"plando-{kong}-option")
+            # Disable this Kong as a dropdown option.
+            for option in kong_options:
+                option.setAttribute("disabled", "disabled")
+            # De-select this Kong everywhere they are selected.
+            for dropdown in item_dropdowns:
+                if dropdown.value == kong:
+                    dropdown.value = ""
+        else:
+            kong_options = js.document.getElementsByClassName(f"plando-{kong}-option")
+            # Re-enable this Kong as a dropdown option.
+            for option in kong_options:
+                option.removeAttribute("disabled")
+
+
+startingMoveValues = [str(item.value) for item in StartingMoveOptions]
+
+
+@bindList("click", startingMoveValues, prefix="none-")
+@bindList("click", startingMoveValues, prefix="start-")
+@bindList("click", startingMoveValues, prefix="random-")
+@bind("click", "starting_moves_start_all")
+@bind("click", "starting_moves_reset")
+def plando_disable_starting_moves(evt):
+    """Do not allow starting moves to be placed as items."""
+    # Create a list of selected starting moves.
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("start")
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("none")
+    selectedStartingMoves = set()
+    for startingMove in startingMoveValues:
+        selectedElem = js.document.getElementById(f"start-{startingMove}")
+        if selectedElem.checked:
+            selectedStartingMoves.add(Items(int(startingMove)))
+
+    # Obtain the list of PlandoItems moves to disable.
+    progressiveMoves = [
+        PlandoItems.ProgressiveAmmoBelt,
+        PlandoItems.ProgressiveInstrumentUpgrade,
+        PlandoItems.ProgressiveSlam,
+    ]
+    selectedPlandoMoves = set([ItemToPlandoItemMap[move] for move in selectedStartingMoves if ItemToPlandoItemMap[move] not in progressiveMoves])
+    # Progressive moves are handled differently. Only disable these if all
+    # instances are included as starting moves.
+    if set([Items.ProgressiveSlam, Items.ProgressiveSlam2, Items.ProgressiveSlam3]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveSlam)
+    if set([Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt2]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveAmmoBelt)
+    if set([Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveInstrumentUpgrade)
+
+    # Disable all the plando moves across the dropdowns.
+    for moveName in js.MoveSet:
+        moveEnum = PlandoItems[moveName]
+        # Ignore these moves.
+        if moveEnum in {PlandoItems.Camera, PlandoItems.Shockwave}:
+            continue
+        move_options = js.document.getElementsByClassName(f"plando-{moveName}-option")
+        if moveEnum in selectedPlandoMoves:
+            # Disable this move as a dropdown option.
+            for option in move_options:
+                option.setAttribute("disabled", "disabled")
+        else:
+            # Re-enable this move as a dropdown option.
+            for option in move_options:
+                option.removeAttribute("disabled")
+    # Deselect all the plando moves across the dropdowns.
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    for dropdown in item_dropdowns:
+        if dropdown.value == "":
+            continue
+        move = PlandoItems[dropdown.value]
+        if move in selectedPlandoMoves:
+            dropdown.value = ""
+
+
+@bind("click", "key_8_helm")
+@bind("click", "select_keys")
+@bind("click", "starting_keys_list_selected")
+def plando_disable_keys(evt):
+    """Disable keys from being selected for locations in the plandomizer, depending on the current settings."""
+    # This dict will map our key strings to enum values.
+    keyDict = {
+        1: "JungleJapesKey",
+        2: "AngryAztecKey",
+        3: "FranticFactoryKey",
+        4: "GloomyGalleonKey",
+        5: "FungiForestKey",
+        6: "CrystalCavesKey",
+        7: "CreepyCastleKey",
+        8: "HideoutHelmKey",
+    }
+    # Determine which keys are enabled and which are disabled.
+    disabled_keys = set()
+    if js.document.getElementById("select_keys").checked:
+        starting_keys_list_selected = js.document.getElementById("starting_keys_list_selected")
+        # All keys the user starts with are disabled.
+        disabled_keys.update({x.value for x in starting_keys_list_selected.selectedOptions})
+    # If Key 8 is locked in Helm, it gets disabled.
+    if js.document.getElementById("key_8_helm").checked:
+        disabled_keys.add("HideoutHelmKey")
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    # Look at every key and react if it's enabled or disabled.
+    for i in range(1, 9):
+        key_string = keyDict[i]
+        if key_string in disabled_keys:
+            key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
+            # Disable this key as a dropdown option.
+            for option in key_options:
+                option.setAttribute("disabled", "disabled")
+            # De-select this key everywhere it is selected.
+            for dropdown in item_dropdowns:
+                if dropdown.value == key_string:
+                    dropdown.value = ""
+        else:
+            key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
+            # Re-enable this key as a dropdown option.
+            for option in key_options:
+                option.removeAttribute("disabled")

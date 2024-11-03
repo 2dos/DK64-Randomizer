@@ -131,9 +131,24 @@ def get_hash_images(type="local", mode="hash"):
         if mode == "loading-dead":
             null_frame = Image.new(mode="RGBA", size=(32, 32))
             gif_frames.append(genGIFFrame(im, 10))
-            gif_frames[0].save(in_mem_file, save_all=True, append_images=gif_frames[1:], duration=2 * len(gif_frames), disposal=2, format="GIF")
+            gif_frames[0].save(
+                in_mem_file,
+                save_all=True,
+                append_images=gif_frames[1:],
+                duration=2 * len(gif_frames),
+                disposal=2,
+                format="GIF",
+            )
         else:
-            gif_frames[0].save(in_mem_file, save_all=True, append_images=gif_frames[1:], loop=0, duration=12 * len(gif_frames), disposal=2, format="GIF")
+            gif_frames[0].save(
+                in_mem_file,
+                save_all=True,
+                append_images=gif_frames[1:],
+                loop=0,
+                duration=12 * len(gif_frames),
+                disposal=2,
+                format="GIF",
+            )
 
         in_mem_file.seek(0)
         img_bytes = in_mem_file.read()
