@@ -521,6 +521,10 @@ document.getElementById("import_settings").addEventListener("click", async funct
                 }
 
                 const selector = document.getElementById(key);
+                // Pre clear all selections
+                for (let option of selector.options) {
+                    option.selected = false;
+                }
                 if (selector.tagName === "SELECT") {
                     settings[key].forEach(item => {
                         let val = item - 1;
@@ -535,16 +539,24 @@ document.getElementById("import_settings").addEventListener("click", async funct
                 const selector = document.getElementById(key);
                 if (selector.tagName === "SELECT" && key !== "random-weights") {
                     let MapName = SettingsMap[key];
-                    let map_keys = Object.keys(MapName)
-                    let index = 0;
-                    for (let i = 0; i < map_keys.length; i++) {
-                        if (MapName[map_keys[i]] === settings[key]) {
-                            index = i;
-                            break;
+                    // Flip the attributes so the value is the key and the key is the value
+                    let flipped = {};
+                    for (let key in MapName) {
+                        flipped[MapName[key]] = key;
+                    }
+                    // Clear all selections
+                    for (let option of selector.options) {
+                        option.selected = false;
+                    }
+                    // Set the value of the select box to the value in the settings
+                    selector.value = flipped[settings[key]];
+                    // Set the selected attribute to true for the selected option we need to search by the name of the option
+                    for (let option of selector.options) {
+                        if (option.value === flipped[settings[key]]) {
+                            option.selected = true;
                         }
                     }
-                    // Get the index position of the value in the map_keys array
-                    selector.selectedIndex = index;
+
                 } else {
                     document.getElementById(key).value = settings[key];
                 }

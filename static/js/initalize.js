@@ -1144,62 +1144,77 @@ function preset_select_changed(event) {
 
     document.getElementById("presets").selectedIndex = 0;
 
-    for (const key in settings) {
-      if (typeof settings[key] === "boolean") {
-        const checked = settings[key] ? true : false;
-        document.getElementsByName(key).checked = checked;
-        document.getElementsByName(key)[0].checked = checked;
-        document.getElementsByName(key)[0].removeAttribute("disabled");
-      } else if (Array.isArray(settings[key])) {
-        if (
-          [
-            "starting_move_list_selected",
-            "random_starting_move_list_selected",
-          ].includes(key)
-        ) {
-          for (let item of settings[key]) {
-            let radio_buttons = document.getElementsByName(
-              `starting_move_box_${parseInt(item)}`
-            );
-            if (key === "starting_move_list_selected") {
-              Array.from(radio_buttons).find((button) =>
-                button.id.startsWith("start")
-              ).checked = true;
-            } else {
-              Array.from(radio_buttons).find((button) =>
-                button.id.startsWith("random")
-              ).checked = true;
-            }
-          }
-          continue;
-        }
-
-        const selector = document.getElementById(key);
-        if (selector.tagName === "SELECT") {
-          for (const item of settings[key]) {
-            let val = item - 1;
-            for (const option of selector.options) {
-              if (option.value === Object.keys(SettingsMap[key])[val]) {
-                option.selected = true;
+    for (let key in settings) {
+      try {
+          if (typeof settings[key] === "boolean") {
+              if (settings[key] === false) {
+                  document.getElementsByName(key)[0].checked = false;
+              } else {
+                  document.getElementsByName(key)[0].checked = true;
               }
-            }
+              document.getElementsByName(key)[0].removeAttribute("disabled");
+          } else if (Array.isArray(settings[key])) {
+              if (key === "starting_move_list_selected" || key === "random_starting_move_list_selected") {
+                  settings[key].forEach(item => {
+                      const radioButtons = document.getElementsByName("starting_move_box_" + String(item));
+                      if (key === "starting_move_list_selected") {
+                          const startButton = Array.from(radioButtons).find(button => button.id.startsWith("start"));
+                          startButton.checked = true;
+                      } else {
+                          const randomButton = Array.from(radioButtons).find(button => button.id.startsWith("random"));
+                          randomButton.checked = true;
+                      }
+                  });
+                  continue;
+              }
+
+              const selector = document.getElementById(key);
+              // Pre clear all selections
+              for (let option of selector.options) {
+                  option.selected = false;
+              }
+              if (selector.tagName === "SELECT") {
+                  settings[key].forEach(item => {
+                      let val = item - 1;
+                      for (let option of selector.options) {
+                          if (option.value === Object.keys(SettingsMap[key])[val]) {
+                              option.selected = true;
+                          }
+                      }
+                  });
+              }
+          } else {
+              const selector = document.getElementById(key);
+              if (selector.tagName === "SELECT" && key !== "random-weights") {
+                  let MapName = SettingsMap[key];
+                  let map_keys = MapName
+                  // Flip the attributes so the value is the key and the key is the value
+                  let flipped = {};
+                  for (let key in MapName) {
+                      flipped[MapName[key]] = key;
+                  }
+                  // Clear all selections
+                  for (let option of selector.options) {
+                      option.selected = false;
+                  }
+                  // Set the value of the select box to the value in the settings
+                  selector.value = flipped[settings[key]];
+                  // Set the selected attribute to true for the selected option we need to search by the name of the option
+                  for (let option of selector.options) {
+                      if (option.value === flipped[settings[key]]) {
+                          option.selected = true;
+                      }
+                  }
+
+              } else {
+                  document.getElementById(key).value = settings[key];
+              }
+              document.getElementById(key).removeAttribute("disabled");
           }
-        }
-      } else {
-        const selector = document.getElementById(key);
-        if (selector.tagName === "SELECT") {
-          for (const option of selector.options) {
-            if (option.value === Object.keys(SettingsMap[key])[settings[key]]) {
-              option.selected = true;
-              break;
-            }
-          }
-        } else {
-          document.querySelector(`#${key}`).value = settings[key];
-        }
-        document.querySelector(`#${key}`).removeAttribute("disabled");
+      } catch (e) {
+          console.log(e);
       }
-    }
+  }
   }
 
   update_ui_states(null);
