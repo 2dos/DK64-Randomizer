@@ -64,15 +64,7 @@ class Hint:
         repeats=1,
         base=False,
         keywords=[],
-        permitted_levels=[
-            Levels.JungleJapes,
-            Levels.AngryAztec,
-            Levels.FranticFactory,
-            Levels.GloomyGalleon,
-            Levels.FungiForest,
-            Levels.CrystalCaves,
-            Levels.CreepyCastle,
-        ],
+        permitted_levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle],
         subtype="joke",
         joke=False,
         joke_defined=False,
@@ -170,48 +162,16 @@ class LevelSpoiler:
 
 hint_list = [
     Hint(hint="Did you know - Donkey Kong officially features in Donkey Kong 64.", important=False, base=True),
-    Hint(
-        hint="Fungi Forest was originally intended to be in the other N64 Rareware title, Banjo Kazooie.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="Holding up-left when trapped inside of a trap bubble will break you out of it without spinning your stick.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="Fungi Forest was originally intended to be in the other N64 Rareware title, Banjo Kazooie.", important=False, base=True),
+    Hint(hint="Holding up-left when trapped inside of a trap bubble will break you out of it without spinning your stick.", important=False, base=True),
     Hint(hint="Tiny Kong is the youngest sister of Dixie Kong.", important=False, base=True),
     Hint(hint="Mornin.", important=False, base=True),
-    Hint(
-        hint="Lanky Kong is the only kong with no canonical relation to the main Kong family tree.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="Despite the line in the DK Rap stating otherwise, Chunky is the kong who can jump highest in DK64.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="Despite the line in the DK Rap stating otherwise, Tiny is one of the two slowest kongs in DK64.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="If you fail the twelfth round of K. Rool, the game will dictate that K. Rool is victorious and end the fight.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="Donkey Kong 64 Randomizer started as a LUA Script in early 2019, evolving into a ROM Hack in 2021.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="The maximum in-game time that the vanilla file screen time can display is 1165 hours and 5 minutes.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="Lanky Kong is the only kong with no canonical relation to the main Kong family tree.", important=False, base=True),
+    Hint(hint="Despite the line in the DK Rap stating otherwise, Chunky is the kong who can jump highest in DK64.", important=False, base=True),
+    Hint(hint="Despite the line in the DK Rap stating otherwise, Tiny is one of the two slowest kongs in DK64.", important=False, base=True),
+    Hint(hint="If you fail the twelfth round of K. Rool, the game will dictate that K. Rool is victorious and end the fight.", important=False, base=True),
+    Hint(hint="Donkey Kong 64 Randomizer started as a LUA Script in early 2019, evolving into a ROM Hack in 2021.", important=False, base=True),
+    Hint(hint="The maximum in-game time that the vanilla file screen time can display is 1165 hours and 5 minutes.", important=False, base=True),
     Hint(hint="Chunky Kong is the brother of Kiddy Kong.", important=False, base=True),
     Hint(hint="Fungi Forest contains mushrooms.", important=False, base=True),
     Hint(hint="Igloos can be found in Crystal Caves.", important=False, base=True),
@@ -223,21 +183,9 @@ hint_list = [
     Hint(hint="You can find an owl in Fungi Forest.", important=False, base=True),
     Hint(hint="You can find two boulders in Jungle Japes", important=False, base=True),
     Hint(hint="To buy moves, you will need coins.", important=False, base=True),
-    Hint(
-        hint="You can change the music and sound effects volume in the sound settings on the main menu.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="Coin Hoard is a Monkey Smash game mode where players compete to collect the most coins.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="Capture Pad is a Monkey Smash game mode where players attempt to capture pads in different corners of the arena.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="You can change the music and sound effects volume in the sound settings on the main menu.", important=False, base=True),
+    Hint(hint="Coin Hoard is a Monkey Smash game mode where players compete to collect the most coins.", important=False, base=True),
+    Hint(hint="Capture Pad is a Monkey Smash game mode where players attempt to capture pads in different corners of the arena.", important=False, base=True),
     Hint(hint="I have nothing to say to you.", important=False, base=True),
     Hint(hint="I had something to tell you, but I forgot what it is.", important=False, base=True),
     Hint(hint="I don't know anything.", important=False, base=True),
@@ -248,35 +196,15 @@ hint_list = [
         important=False,
         base=True,
     ),
-    Hint(
-        hint="Why do they call it oven when you of in the cold food of out hot eat the food?",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="Wanna become famous? Buy followers, coconuts and donks at DK64Randomizer (DK64Randomizer . com)!",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="Why do they call it oven when you of in the cold food of out hot eat the food?", important=False, base=True),
+    Hint(hint="Wanna become famous? Buy followers, coconuts and donks at DK64Randomizer (DK64Randomizer . com)!", important=False, base=True),
     Hint(hint="What you gonna do, SpikeVegeta?", important=False, base=True),
     Hint(hint="You don't care? Just give it to me? Okay, here it is.", important=False, base=True),
     Hint(hint="Rumor has it this game was developed in a cave with only a box of scraps!", important=False, base=True),
     Hint(hint="BOINNG! BOINNG! The current time is: 8:01!", important=False, base=True),
-    Hint(
-        hint="If you backflip right before Chunky punches K. Rool, you must go into first person camera to face him before the punch.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="The barrier to \x08Hideout Helm\x08 can be cleared by obtaining \x04801 Golden Bananas\x04. It can also be cleared with fewer than that.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="It would be \x05foolish\x05 to \x04not save your spoiler logs\x04 from the dev site.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="If you backflip right before Chunky punches K. Rool, you must go into first person camera to face him before the punch.", important=False, base=True),
+    Hint(hint="The barrier to \x08Hideout Helm\x08 can be cleared by obtaining \x04801 Golden Bananas\x04. It can also be cleared with fewer than that.", important=False, base=True),
+    Hint(hint="It would be \x05foolish\x05 to \x04not save your spoiler logs\x04 from the dev site.", important=False, base=True),
     Hint(
         hint="\x04W\x04\x05O\x05\x06A\x06\x07H\x07\x08,\x08 \x04I\x04 \x05D\x05\x06R\x06\x07O\x07\x08P\x08\x04P\x04\x05E\x05\x06D\x06 \x07A\x07\x08L\x08\x04L\x04 \x05M\x05\x06Y\x06 \x07C\x07\x08R\x08\x04A\x04\x05Y\x05\x06O\x06\x07N\x07\x08S\x08\x04!\x04",
         important=False,
@@ -288,27 +216,15 @@ hint_list = [
         important=False,
         base=True,
     ),
-    Hint(
-        hint="Bothered? I was bothered once. They put me in a barrel, a bonus barrel. A bonus barrel with beavers, and beavers make me bothered.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="Bothered? I was bothered once. They put me in a barrel, a bonus barrel. A bonus barrel with beavers, and beavers make me bothered.", important=False, base=True),
     Hint(hint="Looking for useful information? Try looking at another hint.", important=False, base=True),
-    Hint(
-        hint="Can I interest you in some casino chips? They're tastefully decorated with Hunky Chunky.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="Can I interest you in some casino chips? They're tastefully decorated with Hunky Chunky.", important=False, base=True),
     Hint(hint="Have faith, beanlievers. Your time will come.", important=False, base=True),
     Hint(hint="I have horrible news. Your seed just got \x0510 percent worse.\x05", important=False, base=True),
     Hint(hint="Great news! Your seed just got \x0810 percent better!\x08", important=False, base=True),
     Hint(hint="This is not a joke hint.", important=False, base=True),
     Hint(hint="I'll get back to you after this colossal dump of blueprints.", important=False, base=True),
-    Hint(
-        hint="Something in the \x0dHalt! The remainder of this hint has been confiscated by the top Kop on the force.\x0d",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="Something in the \x0dHalt! The remainder of this hint has been confiscated by the top Kop on the force.\x0d", important=False, base=True),
     Hint(hint="When I finish Pizza Tower, this hint will update.", important=False, base=True),
     Hint(
         hint="Will we see a sub hour seasonal seed? Not a chance. The movement is too optimized at this point. I expect at most 10-20 more seconds can be saved, maybe a minute with TAS.",
@@ -316,23 +232,11 @@ hint_list = [
         base=True,
     ),
     Hint(hint="The dk64randomizer.com wiki has lots of helpful information about hints.", important=False, base=True),
-    Hint(
-        hint="If you're watching on YouTube, be sure to like, comment, subscribe, and smash that bell.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="If you're watching on YouTube, be sure to like, comment, subscribe, and smash that bell.", important=False, base=True),
     Hint(hint="I could really go for a hot dog right now.", important=False, base=True),
     Hint(hint="You can find statues of dinosnakes in Angry Aztec.", important=False, base=True),
-    Hint(
-        hint="If this seed was a channel point redemption, you have my condolences. If it wasn't, you have many options for victims.",
-        important=False,
-        base=True,
-    ),
-    Hint(
-        hint="You wouldn't steal a coin. You wouldn't steal a banana. You wouldn't fail to report a bug to the devs.",
-        important=False,
-        base=True,
-    ),
+    Hint(hint="If this seed was a channel point redemption, you have my condolences. If it wasn't, you have many options for victims.", important=False, base=True),
+    Hint(hint="You wouldn't steal a coin. You wouldn't steal a banana. You wouldn't fail to report a bug to the devs.", important=False, base=True),
     Hint(hint="It's time to get your counting practice in: 1, 2, 3, 4, 5, 6, 9...", important=False, base=True),
 ]
 
@@ -341,48 +245,20 @@ colorless_kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
 kong_colors = ["\x04", "\x05", "\x06", "\x07", "\x08", "\x0c"]
 
 kong_cryptic = [
-    [
-        "The kong who is bigger, faster and potentially stronger too",
-        "The kong who fires in spurts",
-        "The kong with a tie",
-        "The kong who slaps their instrument to the jungle beat",
-    ],
-    [
-        "The kong who can fly real high",
-        "The kong who features in the first two Donkey Kong Country games",
-        "The kong who wants to see red",
-        "The kong who frees the only female playable kong",
-    ],
+    ["The kong who is bigger, faster and potentially stronger too", "The kong who fires in spurts", "The kong with a tie", "The kong who slaps their instrument to the jungle beat"],
+    ["The kong who can fly real high", "The kong who features in the first two Donkey Kong Country games", "The kong who wants to see red", "The kong who frees the only female playable kong"],
     [
         "The kong who inflates like a balloon, just like a balloon",
         "The kong who waddles in his overalls",
         "The kong who has a cold race with an insect",
         "The kong who lacks style, grace but not a funny face",
     ],
-    [
-        "The kong who likes jazz",
-        "The kong who shoots K. Rool's tiny toes",
-        "The kong who has ammo that is light as a feather",
-        "The kong who can shrink in size",
-    ],
-    [
-        "The kong who is one hell of a guy",
-        "The kong who can pick up boulders",
-        "The kong who fights a blocky boss",
-        "The kong who bows down to a dragonfly",
-    ],
+    ["The kong who likes jazz", "The kong who shoots K. Rool's tiny toes", "The kong who has ammo that is light as a feather", "The kong who can shrink in size"],
+    ["The kong who is one hell of a guy", "The kong who can pick up boulders", "The kong who fights a blocky boss", "The kong who bows down to a dragonfly"],
     ["Members of the DK Crew", "A specific set of relatives", "A number of playable characters"],
 ]
 
-all_levels = [
-    Levels.JungleJapes,
-    Levels.AngryAztec,
-    Levels.FranticFactory,
-    Levels.GloomyGalleon,
-    Levels.FungiForest,
-    Levels.CrystalCaves,
-    Levels.CreepyCastle,
-]
+all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
 level_colors = ["\x08", "\x04", "\x0c", "\x06", "\x07", "\x0a", "\x09", "\x05", "\x0b", "\x0d"]
 level_list = [
     "Jungle Japes",
@@ -422,30 +298,13 @@ vacation_levels_properties = [
 ]
 
 level_cryptic = [
-    [
-        "The level with a localized storm",
-        "The level with a dirt mountain",
-        "The level which has two retailers and no race",
-    ],
+    ["The level with a localized storm", "The level with a dirt mountain", "The level which has two retailers and no race"],
     ["The level with four vases", "The level with two kongs cages", "The level with a spinning totem"],
-    [
-        "The level with a toy production facility",
-        "The level with a tower of blocks",
-        "The level with a game from 1981",
-        "The level where you need two quarters to play",
-    ],
+    ["The level with a toy production facility", "The level with a tower of blocks", "The level with a game from 1981", "The level where you need two quarters to play"],
     ["The level with the most water", "The level where you free a water dweller", "The level with stacks of gold"],
-    [
-        "The level with only two retailers and two races",
-        "The level where night can be acquired at will",
-        "The level with a nocturnal tree dweller",
-    ],
+    ["The level with only two retailers and two races", "The level where night can be acquired at will", "The level with a nocturnal tree dweller"],
     ["The level with two inches of water", "The level with two ice shields", "The level with an Ice Tomato"],
-    [
-        "The level with battlements",
-        "The level with a dungeon, ballroom and a library",
-        "The level with drawbridge and a moat",
-    ],
+    ["The level with battlements", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
     ["The timed level", "The level with no boss", "The level with no small bananas"],
 ]
 level_cryptic_isles = level_cryptic.copy()
@@ -457,24 +316,9 @@ level_cryptic_helm_isles.append(level_cryptic_isles[-1])
 
 shop_owners = ["\x04Cranky\x04", "\x04Funky\x04", "\x04Candy\x04"]
 shop_cryptic = [
-    [
-        "The shop owner with a walking stick",
-        "The shop owner who is old",
-        "The shop owner who is persistently grumpy",
-        "The shop owner who resides near your Treehouse",
-    ],
-    [
-        "The shop owner who has an armory",
-        "The shop owner who has a banana on his shop",
-        "The shop owner with sunglasses",
-        "The shop owner who calls everyone Dude",
-    ],
-    [
-        "The shop owner who is flirtatious",
-        "The shop owner who is not present in Fungi Forest",
-        "The shop owner who is not present in Jungle Japes",
-        "The shop owner with blonde hair",
-    ],
+    ["The shop owner with a walking stick", "The shop owner who is old", "The shop owner who is persistently grumpy", "The shop owner who resides near your Treehouse"],
+    ["The shop owner who has an armory", "The shop owner who has a banana on his shop", "The shop owner with sunglasses", "The shop owner who calls everyone Dude"],
+    ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
 ]
 
 crankys_cryptic = ["a location out of this world", "a location 5000 points deep", "a mad scientist's laboratory"]
@@ -548,12 +392,7 @@ moves_data = [
     MoveInfo(name="Instrument Upgrade", move_level=4, move_type="instrument", kong=Kongs.any),
 ]
 
-kong_placement_levels = [
-    {"name": "Jungle Japes", "level": 0},
-    {"name": "Llama Temple", "level": 1},
-    {"name": "Tiny Temple", "level": 1},
-    {"name": "Frantic Factory", "level": 2},
-]
+kong_placement_levels = [{"name": "Jungle Japes", "level": 0}, {"name": "Llama Temple", "level": 1}, {"name": "Tiny Temple", "level": 1}, {"name": "Frantic Factory", "level": 2}]
 
 boss_names = {
     Maps.JapesBoss: "Army Dillo 1",
@@ -710,14 +549,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             key_location_ids[location.item] = location_id
 
     # Some locations are particularly useless to hint
-    useless_locations = {
-        Items.HideoutHelmKey: [],
-        Maps.KroolDonkeyPhase: [],
-        Maps.KroolDiddyPhase: [],
-        Maps.KroolLankyPhase: [],
-        Maps.KroolTinyPhase: [],
-        Maps.KroolChunkyPhase: [],
-    }
+    useless_locations = {Items.HideoutHelmKey: [], Maps.KroolDonkeyPhase: [], Maps.KroolDiddyPhase: [], Maps.KroolLankyPhase: [], Maps.KroolTinyPhase: [], Maps.KroolChunkyPhase: []}
     # Your training in Gorilla Gone, Monkeyport, Climbing and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
         useless_moves = [Items.Vines, Items.Climbing]
@@ -893,7 +725,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             elif location.item in all_hintable_moves:
                 optional_hintable_locations.append(id)
         # Sort the locations we plan on hinting by the number of doors they have available - this should roughly place hints in order of importance
-        item_region_locations_to_hint.sort(key=lambda loc_id: (len(spoiler.accessible_hints_for_location[loc_id]) if loc_id in spoiler.accessible_hints_for_location.keys() else 10000))
+        item_region_locations_to_hint.sort(key=lambda loc_id: len(spoiler.accessible_hints_for_location[loc_id]) if loc_id in spoiler.accessible_hints_for_location.keys() else 10000)
         # If there's room, always hint a slam if we haven't hinted one already
         hinted_slam_locations = [loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove)]
         if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemHinting] and len(hinted_slam_locations) < 2:
@@ -1430,29 +1262,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                                 item_name = "guns"
                             elif item.movetype == MoveTypes.Instruments:
                                 item_name = "instruments"
-                            elif location.item in (
-                                Items.GorillaGrab,
-                                Items.ChimpyCharge,
-                                Items.Orangstand,
-                                Items.PonyTailTwirl,
-                                Items.PrimatePunch,
-                            ):
+                            elif location.item in (Items.GorillaGrab, Items.ChimpyCharge, Items.Orangstand, Items.PonyTailTwirl, Items.PrimatePunch):
                                 item_name = "active kong moves"
-                            elif location.item in (
-                                Items.StrongKong,
-                                Items.RocketbarrelBoost,
-                                Items.OrangstandSprint,
-                                Items.MiniMonkey,
-                                Items.HunkyChunky,
-                            ):
+                            elif location.item in (Items.StrongKong, Items.RocketbarrelBoost, Items.OrangstandSprint, Items.MiniMonkey, Items.HunkyChunky):
                                 item_name = "kong barrel moves"
-                            elif location.item in (
-                                Items.BaboonBlast,
-                                Items.SimianSpring,
-                                Items.BaboonBalloon,
-                                Items.Monkeyport,
-                                Items.GorillaGone,
-                            ):
+                            elif location.item in (Items.BaboonBlast, Items.SimianSpring, Items.BaboonBalloon, Items.Monkeyport, Items.GorillaGone):
                                 item_name = "kong pad moves"
             message = f"Looking for {item_color}{item_name}{item_color}?"
             # If this hint tries to offer help finding Krusha, make sure to get his name right
@@ -2018,28 +1832,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                 region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
                 woth_map = GetMapId(region_id)
             # Ignore the main map of each level, these should be fairly straightforward to find - mind the exceptions!
-            main_level_maps = (
-                Maps.Isles,
-                Maps.JungleJapes,
-                Maps.AngryAztec,
-                Maps.FranticFactory,
-                Maps.GloomyGalleon,
-                Maps.FungiForest,
-                Maps.CrystalCaves,
-                Maps.CreepyCastle,
-            )
+            main_level_maps = (Maps.Isles, Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle)
             if woth_map in main_level_maps:
                 continue
             # Blast maps all happen to be contained in the main map of the respective level
-            if woth_map in (
-                Maps.JapesBaboonBlast,
-                Maps.AztecBaboonBlast,
-                Maps.FactoryBaboonBlast,
-                Maps.GalleonBaboonBlast,
-                Maps.ForestBaboonBlast,
-                Maps.CavesBaboonBlast,
-                Maps.CastleBaboonBlast,
-            ):
+            if woth_map in (Maps.JapesBaboonBlast, Maps.AztecBaboonBlast, Maps.FactoryBaboonBlast, Maps.GalleonBaboonBlast, Maps.ForestBaboonBlast, Maps.CavesBaboonBlast, Maps.CastleBaboonBlast):
                 continue
             # The Mechfish is its own map but is still not shuffled
             if woth_map == Maps.GalleonMechafish:
@@ -2348,14 +2145,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             criticalFactoryRegions,
             [Regions.BananaFairyRoom],
             [Regions.TrainingGrounds],
-            [
-                Regions.GloomyGalleonEntryHandler,
-                Regions.GloomyGalleonStart,
-                Regions.LighthousePlatform,
-                Regions.LighthouseUnderwater,
-                Regions.ShipyardUnderwater,
-                Regions.Shipyard,
-            ],
+            [Regions.GloomyGalleonEntryHandler, Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.ShipyardUnderwater, Regions.Shipyard],
             [
                 Regions.FungiForestEntryHandler,
                 Regions.FungiForestStart,
@@ -2711,13 +2501,7 @@ def getHelmProgItems(spoiler: Spoiler) -> list:
     base_list = [Items.Monkeyport, Items.GorillaGone]
     if spoiler.settings.switchsanity:
         switch_item_data = {
-            SwitchType.PadMove: [
-                Items.BaboonBlast,
-                Items.SimianSpring,
-                Items.BaboonBalloon,
-                Items.Monkeyport,
-                Items.GorillaGone,
-            ],
+            SwitchType.PadMove: [Items.BaboonBlast, Items.SimianSpring, Items.BaboonBalloon, Items.Monkeyport, Items.GorillaGone],
             SwitchType.InstrumentPad: [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
             SwitchType.MiscActivator: [Items.GorillaGrab, Items.ChimpyCharge],
         }
@@ -2936,13 +2720,7 @@ def PointValueOfItem(settings, item_id):
         return settings.points_list_active_moves
     elif item_id in [Items.BaboonBlast, Items.SimianSpring, Items.BaboonBalloon, Items.Monkeyport, Items.GorillaGone]:
         return settings.points_list_pad_moves
-    elif item_id in [
-        Items.StrongKong,
-        Items.RocketbarrelBoost,
-        Items.OrangstandSprint,
-        Items.MiniMonkey,
-        Items.HunkyChunky,
-    ]:
+    elif item_id in [Items.StrongKong, Items.RocketbarrelBoost, Items.OrangstandSprint, Items.MiniMonkey, Items.HunkyChunky]:
         return settings.points_list_barrel_moves
     elif item_id in ItemPool.TrainingBarrelAbilities():
         return settings.points_list_training_moves

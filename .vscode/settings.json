@@ -7,10 +7,6 @@
         "${workspaceFolder}/tests"
     ],
     "python.testing.unittestEnabled": false,
-    "python.analysis.typeshedPaths": [
-        ".venv/Lib/site-packages",
-        "typings"
-    ],
     "files.associations": {
         "*.code": "c",
         "common.h": "c",

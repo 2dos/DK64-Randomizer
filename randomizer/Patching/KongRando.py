@@ -31,13 +31,7 @@ def apply_kongrando_cosmetic(spoiler):
         greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0xB8]
         instrumentpads = [0xA8, 0xA9, 0xAC, 0xAA, 0xAB]
         forceSwitches = [0xE3, 0xE3, 0xE3, 0xE3, 0x70]
-        actors = [
-            Enemies.CutsceneDK,
-            Enemies.CutsceneDiddy,
-            Enemies.CutsceneLanky,
-            Enemies.CutsceneTiny,
-            Enemies.CutsceneChunky,
-        ]
+        actors = [Enemies.CutsceneDK, Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky]
 
         japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
         japesLockedKong = spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]
@@ -76,10 +70,7 @@ def apply_kongrando_cosmetic(spoiler):
             {"map_index": 0x26, "model2_changes": llama_entrance_switch, "charspawner_changes": []},
             {
                 "map_index": 0x14,
-                "model2_changes": [
-                    {"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]},
-                    {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]},
-                ],
+                "model2_changes": [{"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]}, {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]}],
                 "charspawner_changes": [{"type": Enemies.CutsceneLanky, "new_type": actors[llamaLockedKong]}],
             },
             {

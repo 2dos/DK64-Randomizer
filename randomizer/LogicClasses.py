@@ -24,13 +24,7 @@ if TYPE_CHECKING:
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(
-        self,
-        id: Union[int, Locations],
-        logic: Callable,
-        bonusBarrel: Optional[MinigameType] = None,
-        isAuxiliary: bool = False,
-    ) -> None:
+    def __init__(self, id: Union[int, Locations], logic: Callable, bonusBarrel: Optional[MinigameType] = None, isAuxiliary: bool = False) -> None:
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
@@ -232,18 +226,7 @@ class Sphere:
 class ColoredBananaGroup:
     """Stores data for each group of colored bananas."""
 
-    def __init__(
-        self,
-        *,
-        group=0,
-        name="No Location",
-        map_id=0,
-        konglist=[],
-        region=None,
-        logic=None,
-        vanilla=False,
-        locations=[],
-    ) -> None:
+    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]) -> None:
         """Initialize with given parameters."""
         self.group = group
         self.name = name
@@ -261,19 +244,7 @@ class ColoredBananaGroup:
 class Balloon:
     """Stores data for each balloon."""
 
-    def __init__(
-        self,
-        *,
-        id=0,
-        name="No Location",
-        map_id=0,
-        speed=0,
-        konglist=[],
-        region=None,
-        logic=None,
-        vanilla=False,
-        points=[],
-    ) -> None:
+    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]) -> None:
         """Initialize with given parameters."""
         self.id = id
         self.name = name

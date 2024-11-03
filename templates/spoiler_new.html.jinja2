@@ -21,7 +21,7 @@
             <nav class="navbar">
                 <div class="container">
                     <div class="nav nav-underline" id="spoiler-nav-group">
-                        {% for item, obj in spoiler %}
+                        {% for item in spoiler %}
                             {% if spoiler[item] != {} and item not in ignored_attrs %}
                                 <li class="nav-item">
                                     {% if loop.index == "0" %}
@@ -46,7 +46,7 @@
             </div>
             {# Content #}
             <div class="tab-content pb-2">
-                {% for item, obj in spoiler %}
+                {% for item in spoiler %}
                     {% if spoiler[item] != {} and item not in ignored_attrs %}
                         {% set tab_cls = "" %}
                         {% if loop.index == "0" %}
@@ -61,7 +61,7 @@
                                         </div>
                                     {% endif %}
                                     {% if item == "Playthrough" %}
-                                        {% for sphere_index, obj in spoiler[item] %}
+                                        {% for sphere_index in spoiler[item] %}
                                             <div class="spoiler-group">
                                                 <div class="spoiler-subsection-head d-flex collapsed"
                                                     data-bs-toggle="collapse"
@@ -87,7 +87,7 @@
                                                 <div class="collapse mb-5" id="spoilerContent{{ loop.index }}_{{ sphere_index }}">
                                                     <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                                                         <tbody>
-                                                            {% for item2, obj in spoiler[item][sphere_index] %}
+                                                            {% for item2 in spoiler[item][sphere_index] %}
                                                                 {% if item2 != "Available GBs" %}
                                                                     <tr>
                                                                         <td>{{ item2 }}</td>
@@ -104,10 +104,10 @@
                                                 </div>
                                             </div>
                                         {% endfor %}
-                                    {% elif item == "Cosmetics" or item == "Requirements" or item == "Bosses" or item == "Items" or item == "Items (Sorted by Item)" or item == "Shuffled Exits (Sorted by destination)" or item == "Colored Banana Locations" or item == "Wrinkly Door Locations" or item == "Shuffled Bananaport Locations" or item == "T&S Portal Locations" or item == "Enemy Placement" or item == "Paths" or item == "WotH Paths" or item == "Other Paths" or item == "End Game" or item == "Hints" or item == "Misc Custom Locations" %}
-                                    {# Attributes with sub-dicts #}
+                                    {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","Shuffled Bananaport Locations","T&S Portal Locations","Enemy Placement","Paths", "WotH Paths", "Other Paths","End Game", "Hints", "Misc Custom Locations") %}
+                                        {# Attributes with sub-dicts #}
                                         {% set local_loop = loop.index %}
-                                        {% for sub_group, obj in spoiler[item] %}
+                                        {% for sub_group in spoiler[item] %}
                                             {% if spoiler[item][sub_group] != {} %}
                                                 <div class="spoiler-group">
                                                     <div class="spoiler-subsection-head d-flex collapsed"
@@ -133,7 +133,7 @@
                                                     <div class="collapse mb-5" id="spoilerContent{{ local_loop }}_{{ sub_group | filterId }}">
                                                         <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                                                             <tbody>
-                                                                {% for item2, obj in spoiler[item][sub_group] %}
+                                                                {% for item2 in spoiler[item][sub_group] %}
                                                                     <tr>
                                                                         {% if item in ("Items", "Items (Sorted by Item)") %}
                                                                             {% if item2 == "Diddy Kong" %}
@@ -150,8 +150,8 @@
                                                                         {% else %}
                                                                             <td>{{ item2 }}</td>
                                                                         {% endif %}
-                                                                        {% if spoiler[item][sub_group][item2] | isIterable %}
-                                                                            <td>{{ spoiler[item][sub_group][item2]|join("<br>")|safe }}</td>
+                                                                        {% if spoiler[item][sub_group][item2] is iterable and (spoiler[item][sub_group][item2] is not string and spoiler[item][sub_group][item2] is not mapping) %}
+                                                                            <td>{{ spoiler[item][sub_group][item2]|join("<br>") }}</td>
                                                                         {% else %}
                                                                             <td>
                                                                                 {{ spoiler[item][sub_group][item2] }}
@@ -173,7 +173,7 @@
                                         <div class="spoiler-group">
                                             <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
                                                 <tbody>
-                                                    {% for item2, obj in spoiler[item] %}
+                                                    {% for item2 in spoiler[item] %}
                                                         <tr>
                                                             <td>{{ item2 }}</td>
                                                             {% if item == "Shuffled Exits" %}
@@ -184,7 +184,7 @@
                                                                 {% endif %}
                                                             {% endif %}
                                                             {% if spoiler[item][item2] is iterable and (spoiler[item][item2] is not string and spoiler[item][item2] is not mapping) %}
-                                                                <td>{{ spoiler[item][item2]|join("<br>")|safe }}</td>
+                                                                <td>{{ spoiler[item][item2]|join("<br>") }}</td>
                                                             {% else %}
                                                                 <td>{{ spoiler[item][item2] }}</td>
                                                             {% endif %}
@@ -266,7 +266,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item, obj in spoiler["Settings"] %}
+                        {% for item in spoiler["Settings"] %}
                             {% if item not in ("Generation Timestamp", "Settings String", "Seed", "algorithm", "Unlock Time")%}
                                 <tr>
                                     <td>{{ item }}</td>

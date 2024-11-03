@@ -1,13 +1,20 @@
 """Kong enum."""
 
 from __future__ import annotations
-from randomizer.JsonReader import generate_globals
 
+from enum import IntEnum, auto
 from typing import TYPE_CHECKING, List
 
-if TYPE_CHECKING:
-    from randomizer.Enums.Kongs import Kongs
-globals().update(generate_globals(__file__))
+
+class Kongs(IntEnum):
+    """Kong enum."""
+
+    donkey = 0
+    diddy = auto()
+    lanky = auto()
+    tiny = auto()
+    chunky = auto()
+    any = auto()
 
 
 def GetKongs() -> List[Kongs]:

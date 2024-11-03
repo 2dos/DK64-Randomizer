@@ -10,13 +10,7 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 class TableData:
     """Class to store information regarding a pointer table."""
 
-    def __init__(
-        self,
-        vanilla_compressed: bool,
-        rando_compressed: bool,
-        decode_function: function = None,
-        encode_function: function = None,
-    ):
+    def __init__(self, vanilla_compressed: bool, rando_compressed: bool, decode_function: function = None, encode_function: function = None):
         """Initialize with given variables."""
         self.vanilla_compressed = vanilla_compressed
         self.rando_compressed = rando_compressed

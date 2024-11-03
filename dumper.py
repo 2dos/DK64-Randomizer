@@ -325,16 +325,7 @@ def dump_custom_location(format: str):
         custom_location_data = []
         for custom_location in CustomLocations[level]:
             custom_location_data.append(
-                dump_to_dict(
-                    custom_location,
-                    ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"],
-                    ["map"],
-                    ["region"],
-                    "logic",
-                    getCustomX,
-                    getCustomY,
-                    getCustomZ,
-                )
+                dump_to_dict(custom_location, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCustomX, getCustomY, getCustomZ)
             )
         if format == "md":
             dumps[level] = custom_location_data
@@ -366,16 +357,7 @@ def dump_door(format: str):
         door_data = []
         for door in door_locations[level]:
             door_data.append(
-                dump_to_dict(
-                    door,
-                    ["rx", "rz", "group", "placed", "default_kong", "default_placed", "assigned_kong"],
-                    ["map", "kongs"],
-                    ["logicregion"],
-                    "logic",
-                    getDoorX,
-                    getDoorY,
-                    getDoorZ,
-                )
+                dump_to_dict(door, ["rx", "rz", "group", "placed", "default_kong", "default_placed", "assigned_kong"], ["map", "kongs"], ["logicregion"], "logic", getDoorX, getDoorY, getDoorZ)
             )
         if format == "md":
             dumps[level] = door_data
@@ -436,18 +418,7 @@ def dump_kasplat(format: str):
     for level in KasplatLocationList:
         kasplat_data = []
         for kasplat in KasplatLocationList[level]:
-            kasplat_data.append(
-                dump_to_dict(
-                    kasplat,
-                    ["selected", "vanilla"],
-                    ["map", "kong_lst"],
-                    ["region_id"],
-                    "additional_logic",
-                    getKasplatX,
-                    getKasplatY,
-                    getKasplatZ,
-                )
-            )
+            kasplat_data.append(dump_to_dict(kasplat, ["selected", "vanilla"], ["map", "kong_lst"], ["region_id"], "additional_logic", getKasplatX, getKasplatY, getKasplatZ))
         if format == "md":
             dumps[level] = kasplat_data
         else:

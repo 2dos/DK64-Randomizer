@@ -5,6 +5,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Dict, Tuple
 
 from randomizer.Enums.Settings import (
+    BananaportRando,
+    DeprecatedSettings,
     LogicType,
     SettingsStringDataType,
     SettingsStringEnum,
@@ -147,6 +149,7 @@ def prune_settings(settings_dict: dict):
         if settings_dict[keySetting] in exclusions:
             settings_to_remove.extend(exclusions[settings_dict[keySetting]])
     # Remove any deprecated settings.
+    settings_to_remove.extend(setting.name for setting in DeprecatedSettings)
     for pop in settings_to_remove:
         if pop in settings_dict:
             settings_dict.pop(pop)
@@ -276,15 +279,11 @@ def encrypt_settings_string_enum(dict_data: dict):
                 else:
                     # The value is an enum.
                     max_value = max([member.value for member in key_list_data_type])
-                    bitstring += format(item, f"0{max_value.bit_length()}b")
+                    bitstring += format(item.value, f"0{max_value.bit_length()}b")
         else:
             # The value is an enum.
             max_value = max([member.value for member in key_data_type])
-            # If value is an int
-            if isinstance(value, int):
-                bitstring += format(value, f"0{max_value.bit_length()}b")
-            else:
-                bitstring += format(value.value, f"0{max_value.bit_length()}b")
+            bitstring += format(value.value, f"0{max_value.bit_length()}b")
 
     # Pad the bitstring with zeroes until the length is divisible by 6.
     remainder = len(bitstring) % 6
@@ -390,6 +389,6 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
             bit_index += max_value.bit_length()
         # If this setting is not deprecated, add it.
         # The plando setting needs to be encoded in settings strings but not applied when decoding for logging purposes.
-        if key_enum != SettingsStringEnum.enable_plandomizer:
+        if key_enum not in DeprecatedSettings and key_enum != SettingsStringEnum.enable_plandomizer:
             settings_dict[key_name] = val
     return settings_dict
