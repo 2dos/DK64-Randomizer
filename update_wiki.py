@@ -83,7 +83,10 @@ def createHTML(markdown_data: dict, template_text: str):
         html_text = html_text.replace('<meta content="" property="og:title" />', f'<meta content="{pretty_name}" property="og:title" />')
         html_text = html_text.replace('<h1 id="page-title"></h1>', f'<h1 id="page-title">{pretty_name}</h1>')
         if "github" in markdown_data:
-            html_text = html_text.replace('<script id="redirect_handler"></script>', f'<script id="redirect_handler">window.location.href="{file}";</script>')
+            html_text = html_text.replace(
+                '<script id="redirect_handler"></script>',
+                f'<script id="redirect_handler">window.location.href="{file}";</script>',
+            )
         else:
             html_text = html_text.replace('<div id="markdown_content"></div>', f'<div id="markdown_content" ref="{file}"></div>')
             html_text = html_text.replace('<script id="redirect_handler"></script>', "")

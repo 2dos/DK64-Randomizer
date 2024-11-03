@@ -298,7 +298,13 @@ class LogicVarHolder:
         if self.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in self.Events:
             return True
         room_seq = (Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy)
-        kong_evt = (Events.HelmDonkeyDone, Events.HelmDiddyDone, Events.HelmLankyDone, Events.HelmTinyDone, Events.HelmChunkyDone)
+        kong_evt = (
+            Events.HelmDonkeyDone,
+            Events.HelmDiddyDone,
+            Events.HelmLankyDone,
+            Events.HelmTinyDone,
+            Events.HelmChunkyDone,
+        )
         desired_index = room_seq.index(kong)
         helm_order = self.settings.helm_order
         if desired_index in helm_order:
@@ -401,7 +407,12 @@ class LogicVarHolder:
 
         has_all = True
         if not self.settings.fast_start_beginning_of_game:
-            for loc in (Locations.IslesSwimTrainingBarrel, Locations.IslesVinesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel, Locations.IslesOrangesTrainingBarrel):
+            for loc in (
+                Locations.IslesSwimTrainingBarrel,
+                Locations.IslesVinesTrainingBarrel,
+                Locations.IslesBarrelsTrainingBarrel,
+                Locations.IslesOrangesTrainingBarrel,
+            ):
                 if self.spoiler.LocationList[loc].item not in ownedItems:
                     has_all = False
         self.allTrainingChecks = self.allTrainingChecks or has_all
@@ -491,7 +502,11 @@ class LogicVarHolder:
 
     def galleonGatesStayOpen(self) -> bool:
         """Determine whether the galleon gates stay open once the instrument is played."""
-        return IsItemSelected(self.settings.quality_of_life, self.settings.misc_changes_selected, MiscChangesSelected.remove_galleon_ship_timers)
+        return IsItemSelected(
+            self.settings.quality_of_life,
+            self.settings.misc_changes_selected,
+            MiscChangesSelected.remove_galleon_ship_timers,
+        )
 
     def canOpenLlamaTemple(self):
         """Determine whether the switches on the Llama Temple can be shot."""
@@ -507,7 +522,13 @@ class LogicVarHolder:
         shipyard_gate = self.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or self.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
         return self.swim and lighthouse_gate and shipyard_gate
 
-    def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
+    def hasMoveSwitchsanity(
+        self,
+        switchsanity_setting: Switches,
+        kong_needs_current: bool = True,
+        level: Levels = Levels.JungleJapes,
+        default_slam_level: int = 0,
+    ) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
         data = self.settings.switchsanity_data[switchsanity_setting]
         kong_data = self.IsKong(data.kong)
@@ -708,7 +729,18 @@ class LogicVarHolder:
             self.homing,
         ]
         # Calculate game percentage
-        keys = sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey])
+        keys = sum(
+            [
+                self.JapesKey,
+                self.AztecKey,
+                self.FactoryKey,
+                self.GalleonKey,
+                self.ForestKey,
+                self.CavesKey,
+                self.CastleKey,
+                self.HelmKey,
+            ]
+        )
         company_coins = sum([self.nintendoCoin, self.rarewareCoin])
         game_percentage = 0.4 * self.GoldenBananas
         game_percentage += 0.5 * self.BattleCrowns
@@ -1011,7 +1043,10 @@ class LogicVarHolder:
         elif bossFight == Maps.KroolChunkyPhase:
             hasRequiredMoves = self.punch and self.CanSlamChunkyPhaseSwitch() and self.hunkyChunky and self.gorillaGone
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
-        level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
+        level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (
+            ShuffleLoadingZones.none,
+            ShuffleLoadingZones.levels,
+        )
         if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
             order_of_level = 8  # Guaranteed to be 1-8 here
             for level_order in self.settings.level_order:
@@ -1031,7 +1066,10 @@ class LogicVarHolder:
         if self.assumeFillSuccess:
             return True
         # Additionally, these restrictions only apply to simple level order, as these are the only seeds progressing levels in 1-7 order
-        level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
+        level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (
+            ShuffleLoadingZones.none,
+            ShuffleLoadingZones.levels,
+        )
         if level_order_matters:
             # Levels have some special requirements depending on where they fall in the level order
             order_of_level = 8
@@ -1077,7 +1115,13 @@ class LogicVarHolder:
         if not self.HasFillRequirementsForLevel(level):
             return False
         # Calculate what levels we can glitch into
-        dk_skip_levels = [Levels.AngryAztec, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+        dk_skip_levels = [
+            Levels.AngryAztec,
+            Levels.GloomyGalleon,
+            Levels.FungiForest,
+            Levels.CrystalCaves,
+            Levels.CreepyCastle,
+        ]
         if self.CanMoonkick():
             dk_skip_levels.append(Levels.HideoutHelm)
         can_dk_skip = self.isdonkey and self.dk_blocker_skip and level in dk_skip_levels

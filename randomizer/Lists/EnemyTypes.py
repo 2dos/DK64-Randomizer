@@ -105,7 +105,15 @@ def getEnemyPermitted(enemy_type: EnemySubtype, banned_enemies: list):
 class EnemyLoc:
     """Information about an enemy."""
 
-    def __init__(self, map: Maps, default_enemy: Enemies, id: int, banned_enemies: List[Union[Any, Enemies]], enable_randomization: bool, respawns: bool = True) -> None:
+    def __init__(
+        self,
+        map: Maps,
+        default_enemy: Enemies,
+        id: int,
+        banned_enemies: List[Union[Any, Enemies]],
+        enable_randomization: bool,
+        respawns: bool = True,
+    ) -> None:
         """Initialize with given parameters."""
         self.map = map
         self.default_enemy = default_enemy

@@ -15,22 +15,26 @@ import js
 from randomizer.Enums.Models import Model, ModelNames, HeadResizeImmune
 from randomizer.Enums.Settings import RandomModels, BigHeadMode
 from randomizer.Lists.Songs import ExcludedSongsSelector
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges, writeCrownNames, darkenDPad, darkenPauseBubble
+from randomizer.Patching.CosmeticColors import (
+    apply_cosmetic_colors,
+    applyHolidayMode,
+    overwrite_object_colors,
+    writeMiscCosmeticChanges,
+    writeCrownNames,
+    darkenDPad,
+    darkenPauseBubble,
+)
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
-from randomizer.Lists.Songs import getSongIndexFromName
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays, KongModels
-from ui.GenSpoiler import GenerateSpoiler
-from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
-from ui.serialize_settings import serialize_settings
 
-from version import major, minor, patch
+from version import version as rando_version
 
 
 class BooleanProperties:
@@ -66,7 +70,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 # Store the extracted variable
                 variable_name = file_name.split(".")[0]
                 extracted_variables[variable_name] = variable_value
-    settings = Settings(serialize_settings(include_plando=True))
+    settings = Settings(json.loads(js.serialize_settings(include_plando=True)))
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
     if extracted_variables.get("version") is None:
@@ -109,6 +113,11 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     patch_major = split_version[0]
     patch_minor = split_version[1]
     patch_patch = split_version[2]
+    split_data = rando_version.split(".")
+    major = split_data[0]
+    minor = split_data[1]
+    patch = split_data[2]
+
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False
         js.document.getElementById("patch_warning_message").innerHTML = (
@@ -294,7 +303,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
     js.document.getElementById("spoiler_log_block").style.display = ""
-    loop.run_until_complete(GenerateSpoiler(spoiler))
+    loop.run_until_complete(js.GenerateSpoiler(json.dumps(spoiler)))
     js.document.getElementById("generated_seed_id").innerHTML = seed_id
     # Set the current URL to the seed ID so that it can be shared without reloading the page
     js.window.history.pushState("generated_seed", hash_id, f"/randomizer?seed_id={hash_id}")

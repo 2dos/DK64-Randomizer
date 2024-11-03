@@ -15,7 +15,8 @@ try {
   webWorkerCrc.onmessage = (event) => {
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
-    apply_conversion();
+    // We're disabling this here now so we speed up page load
+    //apply_conversion();
     boxes = ["input-file-rom", "input-file-rom_1", "input-file-rom_2", "rom", "rom_2", "rom_3"];
     for (var input_box in boxes) {
       try {
@@ -54,7 +55,7 @@ function addEvent(e, ev, f) {
 /* initialize app */
 addEvent(window, "load", function () {
   try {
-    addEvent(document.getElementById("input-file-rom"), "change", function () {
+    addEvent(document.getElementById("input-file-rom"), "change", async function () {
       romFile = new MarcFile(this, _parseROM);
     });
   } catch {}
@@ -62,7 +63,7 @@ addEvent(window, "load", function () {
     addEvent(
       document.getElementById("input-file-rom_1"),
       "change",
-      function () {
+      async function () {
         romFile = new MarcFile(this, _parseROM);
       }
     );
@@ -71,7 +72,7 @@ addEvent(window, "load", function () {
     addEvent(
       document.getElementById("input-file-rom_2"),
       "change",
-      function () {
+      async function () {
         romFile = new MarcFile(this, _parseROM);
       }
     );

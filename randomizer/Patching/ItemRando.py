@@ -80,12 +80,25 @@ actor_indexes = {
     Types.Crown: 86,
     Types.NintendoCoin: CustomActors.NintendoCoin,
     Types.RarewareCoin: CustomActors.RarewareCoin,
-    Types.Shop: [CustomActors.PotionDK, CustomActors.PotionDiddy, CustomActors.PotionLanky, CustomActors.PotionTiny, CustomActors.PotionChunky, CustomActors.PotionAny],
+    Types.Shop: [
+        CustomActors.PotionDK,
+        CustomActors.PotionDiddy,
+        CustomActors.PotionLanky,
+        CustomActors.PotionTiny,
+        CustomActors.PotionChunky,
+        CustomActors.PotionAny,
+    ],
     Types.TrainingBarrel: CustomActors.PotionAny,
     Types.Shockwave: CustomActors.PotionAny,
     Types.NoItem: CustomActors.Null,
     Types.Medal: CustomActors.Medal,
-    Types.Kong: [CustomActors.KongDK, CustomActors.KongDiddy, CustomActors.KongLanky, CustomActors.KongTiny, CustomActors.KongChunky],
+    Types.Kong: [
+        CustomActors.KongDK,
+        CustomActors.KongDiddy,
+        CustomActors.KongLanky,
+        CustomActors.KongTiny,
+        CustomActors.KongChunky,
+    ],
     Types.Bean: CustomActors.Bean,
     Types.Pearl: CustomActors.Pearl,
     Types.Fairy: CustomActors.Fairy,
@@ -138,7 +151,16 @@ shop_owner_types = (Types.Cranky, Types.Funky, Types.Snide, Types.Candy)
 class TextboxChange:
     """Class to store information which pertains to a change of textbox information."""
 
-    def __init__(self, location, file_index, textbox_index, text_replace, default_type: Types, replacement_text="|", force_pipe=False):
+    def __init__(
+        self,
+        location,
+        file_index,
+        textbox_index,
+        text_replace,
+        default_type: Types,
+        replacement_text="|",
+        force_pipe=False,
+    ):
         """Initialize with given paremeters."""
         self.location = location
         self.file_index = file_index
@@ -165,9 +187,23 @@ textboxes = [
     TextboxChange(Locations.IslesTinyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, "SOMETHING"),
     TextboxChange(Locations.IslesChunkyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, "SOMETHING"),
     TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA", Types.Banana),
-    TextboxChange(Locations.GalleonTinyPearls, 23, 0, "PLEASE TRY AND GET THEM BACK", Types.Banana, "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
+    TextboxChange(
+        Locations.GalleonTinyPearls,
+        23,
+        0,
+        "PLEASE TRY AND GET THEM BACK",
+        Types.Banana,
+        "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |",
+    ),
     TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA", Types.Banana),
-    TextboxChange(Locations.GalleonTinyPearls, 23, 2, "ALTOGETHER.", Types.Banana, "ALTOGETHER. IF YOU FIND THEM ALL, YOU WILL RECEIVE A |"),
+    TextboxChange(
+        Locations.GalleonTinyPearls,
+        23,
+        2,
+        "ALTOGETHER.",
+        Types.Banana,
+        "ALTOGETHER. IF YOU FIND THEM ALL, YOU WILL RECEIVE A |",
+    ),
     TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE", Types.Banana),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", Types.Banana, "THIS |"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA", Types.Banana),
@@ -183,7 +219,14 @@ textboxes = [
     TextboxChange(Locations.RarewareBanana, 30, 0, "REWARD ANYONE", Types.Banana, "REWARD ANYONE WITH A |"),
     TextboxChange(Locations.CavesLankyCastle, 33, 0, "HOW ABOUT IT", Types.Banana, "HOW ABOUT A |"),
     TextboxChange(Locations.CastleTinyCarRace, 34, 4, "BANANA", Types.Banana),
-    TextboxChange(Locations.ForestDiddyOwlRace, 21, 0, "WHEN YOU CAN FLY", Types.Banana, "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |"),
+    TextboxChange(
+        Locations.ForestDiddyOwlRace,
+        21,
+        0,
+        "WHEN YOU CAN FLY",
+        Types.Banana,
+        "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |",
+    ),
     TextboxChange(Locations.ForestTinySpiderBoss, 19, 32, "\x04GOLDEN BANANA\x04", Types.Banana),
     TextboxChange(Locations.CavesChunky5DoorIgloo, 19, 34, "\x04GOLDEN BANANA\x04", Types.Banana),
 ]
@@ -228,7 +271,14 @@ level_names = {
     Levels.HideoutHelm: "Hideout Helm",
 }
 
-kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
+kong_names = {
+    Kongs.donkey: "Donkey Kong",
+    Kongs.diddy: "Diddy",
+    Kongs.lanky: "Lanky",
+    Kongs.tiny: "Tiny",
+    Kongs.chunky: "Chunky",
+    Kongs.any: "Any Kong",
+}
 
 
 def pushItemMicrohints(spoiler):
@@ -252,7 +302,11 @@ def pushItemMicrohints(spoiler):
     for item_hint, item_data in enumerate(hinted_items):
         if spoiler.settings.microhints_enabled in list(item_data[2]):
             if ItemList[item_data[0]].name in spoiler.microhints:
-                data = {"textbox_index": item_data[1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_data[0]].name]}
+                data = {
+                    "textbox_index": item_data[1],
+                    "mode": "replace_whole",
+                    "target": spoiler.microhints[ItemList[item_data[0]].name],
+                }
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
@@ -470,7 +524,17 @@ def place_randomized_items(spoiler, original_flut: list):
                         if map_id not in map_items:
                             map_items[map_id] = []
                         if item.new_item is None:
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False, "subitem": 0})
+                            map_items[map_id].append(
+                                {
+                                    "id": item.placement_data[map_id],
+                                    "obj": Types.NoItem,
+                                    "kong": 0,
+                                    "flag": 0,
+                                    "upscale": 1,
+                                    "shared": False,
+                                    "subitem": 0,
+                                }
+                            )
                         else:
                             numerator = model_two_scales[item.new_item]
                             denominator = model_two_scales[item.old_item]
@@ -812,7 +876,12 @@ def place_randomized_items(spoiler, original_flut: list):
                             # Use pirate text
                             reward_text = reference[1]
                     replacement = replacement.replace("|", reward_text)
-                data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
+                data = {
+                    "textbox_index": textbox.textbox_index,
+                    "mode": "replace",
+                    "search": textbox.text_replace,
+                    "target": replacement,
+                }
                 if textbox.file_index in spoiler.text_changes:
                     spoiler.text_changes[textbox.file_index].append(data)
                 else:
