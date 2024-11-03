@@ -112,8 +112,10 @@ def generate_globals(path):
     :param path: Path to the JSONC file
     """
     # Replace the current path to find the JSONC file
-    path = path.replace(str(pathlib.Path().resolve()), "")
+    path = pathlib.Path(path).name
+    path = "randomizer/Enums/" + path
     path = path.replace(".py", ".jsonc")
+    print(path)
 
     # If the path starts with a slash, remove it
     if "\\" in path:
