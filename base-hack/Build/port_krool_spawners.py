@@ -357,6 +357,7 @@ LANKY_BALLOON_POINTS = [
     [828, 150, 637],
 ]
 
+
 def updatePathFiles(pre: str = ""):
     """Update path files so that the boot follows the correct path."""
     with open(f"{pre}{ROMName}", "rb") as fh:

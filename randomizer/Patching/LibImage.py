@@ -170,9 +170,11 @@ def hueShift(im, amount):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+
 def clampRGBA(n):
     """Restricts input to integer value between 0 and 255."""
     return math.floor(max(0, min(n, 255)))
+
 
 def convertRGBAToBytearray(rgba_lst):
     """Convert RGBA list with 4 items (r,g,b,a) to a two-byte array in RGBA5551 format."""
@@ -180,6 +182,7 @@ def convertRGBAToBytearray(rgba_lst):
     lower = twobyte % 256
     upper = int(twobyte / 256) % 256
     return [upper, lower]
+
 
 def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int):
     """Change image to a CI texture."""

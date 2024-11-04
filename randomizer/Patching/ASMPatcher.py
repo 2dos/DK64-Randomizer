@@ -2937,7 +2937,6 @@ def patchAssembly(ROM_COPY, spoiler):
         ROM_COPY.writeMultipleBytes(flag, 2)
     ROM_COPY.writeMultipleBytes(0xFFFF, 2)
 
-
     # Settings to check usage
     # faster_checks.rabbit_race
     # quality_of_life.caves_kosha_dead

@@ -2397,6 +2397,7 @@ def placeKrushaHead(slot):
     ROM_COPY.seek(rgba16_addr32)
     ROM_COPY.writeBytes(bytearray(data32))
 
+
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
     """Get value from byte array given an offset and size."""
     value = 0
@@ -3419,7 +3420,6 @@ def applyHolidayMode(settings):
         writeColorImageToROM(sticker_im, 25, 0x1266, 1, 1372, False, TextureFormat.RGBA5551)
         writeColorImageToROM(sticker_im, 25, 0xB7D, 1, 1360, False, TextureFormat.RGBA5551)
         applyCelebrationRims(0, [False, True, True, True, True])
-        
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
@@ -4131,11 +4131,12 @@ def writeCustomPaintings(settings: Settings) -> None:
     settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
     settings.painting_treehouse_candy = PAINTING_INFO[5].name
 
+
 def randomizePlants(ROM_COPY: ROM, settings: Settings):
     """Randomize the plants in the setup file."""
     if not settings.misc_cosmetics:
         return
-    
+
     flowers = [0x05, 0x08, 0x43]
     for x in range(0x1F1 - 0x1DE):
         flowers.append(0x1DE + x)

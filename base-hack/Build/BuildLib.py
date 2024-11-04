@@ -106,10 +106,11 @@ def convertToRGBA32(png_file):
                 fh.write((b & 0xFF).to_bytes(1, "big"))
                 fh.write((a & 0xFF).to_bytes(1, "big"))
 
+
 def imageToMinMap(img_path: str):
     """Convert an image to a min map rgba5551 texture."""
     mode = 3
-    out_name = img_path.replace(".png","_mipped.png")
+    out_name = img_path.replace(".png", "_mipped.png")
 
     with open(img_path, "rb") as file:
         pi = Image.open(file)
@@ -128,44 +129,45 @@ def imageToMinMap(img_path: str):
                     for x in range(dims[0]):
                         curpx = pi.getpixel((x, y))
                         newX = x
-                        if y%2 == 1:
-                            if (x% pixelsPerBlock > (pixelsPerBlock/2) - 1):
+                        if y % 2 == 1:
+                            if x % pixelsPerBlock > (pixelsPerBlock / 2) - 1:
                                 newX = x - floor(pixelsPerBlock / 2)
                             else:
                                 newX = x + floor(pixelsPerBlock / 2)
-                        out.putpixel((newX,y), curpx)
-                out.save(f'unmipped_{file.name}')
+                        out.putpixel((newX, y), curpx)
+                out.save(f"unmipped_{file.name}")
             case 1:
                 # break mipmapped textures into parts (parts are also unscrambled for good measure)
                 targetWidth = dims[0]
                 pixelsWrittenSoFar = 0
                 timesResized = 0
                 safe = True
-                out = Image.new(mode="RGBA", size=(targetWidth,targetWidth))
+                out = Image.new(mode="RGBA", size=(targetWidth, targetWidth))
                 for y in range(dims[1]):
                     for x in range(dims[0]):
                         if pixelsWrittenSoFar == targetWidth**2:
-                            #print(f"finished {targetWidth}^2")
-                            out.save(f'{targetWidth}_{file.name}')
-                            timesResized +=1
+                            # print(f"finished {targetWidth}^2")
+                            out.save(f"{targetWidth}_{file.name}")
+                            timesResized += 1
                             if timesResized == 4:
                                 safe = False
                                 break
-                            targetWidth = int(targetWidth/2)
-                            out = Image.new(mode="RGBA", size=(targetWidth,targetWidth))
+                            targetWidth = int(targetWidth / 2)
+                            out = Image.new(mode="RGBA", size=(targetWidth, targetWidth))
                             pixelsWrittenSoFar = 0
                         curpx = pi.getpixel((x, y))
-                        newX = x%targetWidth
-                        newY = int(pixelsWrittenSoFar/targetWidth)
-                        if newY%2 == 1:
-                            if (x% pixelsPerBlock > (pixelsPerBlock/2) - 1):
+                        newX = x % targetWidth
+                        newY = int(pixelsWrittenSoFar / targetWidth)
+                        if newY % 2 == 1:
+                            if x % pixelsPerBlock > (pixelsPerBlock / 2) - 1:
                                 newX = newX - floor(pixelsPerBlock / 2)
                             else:
                                 newX = newX + floor(pixelsPerBlock / 2)
-                        #print(f"{x}:{newX}  -  {y}:{newY}")
-                        out.putpixel((newX,newY), curpx)
+                        # print(f"{x}:{newX}  -  {y}:{newY}")
+                        out.putpixel((newX, newY), curpx)
                         pixelsWrittenSoFar += 1
-                    if not safe: break
+                    if not safe:
+                        break
             case 2:
                 # assembles mipped texture from a series of images, READY TO PLACE INTO ROM
                 # if in.png is the input file at 32x32, it stitches 32_in.png, 16_in.png, 8_in.png and 4_in.png together
@@ -173,35 +175,36 @@ def imageToMinMap(img_path: str):
                 pixelsWrittenSoFar = 0
                 timesResized = 0
                 # also theres like a 99 percent chance that this formula breaks with images that arent 32x32
-                outY = int(targetWidth + targetWidth/4 + targetWidth/8)
+                outY = int(targetWidth + targetWidth / 4 + targetWidth / 8)
                 safe = True
-                out = Image.new(mode="RGBA", size=(targetWidth,outY))
-                current_in = Image.open(open(f'{targetWidth}_in.png', "rb"))
+                out = Image.new(mode="RGBA", size=(targetWidth, outY))
+                current_in = Image.open(open(f"{targetWidth}_in.png", "rb"))
                 for y in range(out.size[1]):
                     for x in range(out.size[0]):
                         if pixelsWrittenSoFar == targetWidth**2:
-                            #print(f"finished {targetWidth}^2 image")
-                            timesResized +=1
+                            # print(f"finished {targetWidth}^2 image")
+                            timesResized += 1
                             if timesResized == 4:
                                 safe = False
                                 break
-                            targetWidth = int(targetWidth/2)
-                            current_in = Image.open(open(f'{targetWidth}_in.png', "rb"))
+                            targetWidth = int(targetWidth / 2)
+                            current_in = Image.open(open(f"{targetWidth}_in.png", "rb"))
                             pixelsWrittenSoFar = 0
-                        newX = x%targetWidth
-                        newY = int(pixelsWrittenSoFar/targetWidth)
+                        newX = x % targetWidth
+                        newY = int(pixelsWrittenSoFar / targetWidth)
                         curpx = current_in.getpixel((newX, newY))
                         newerX = x
-                        if newY%2 == 1:
-                            if (x% pixelsPerBlock > (pixelsPerBlock/2) - 1):
+                        if newY % 2 == 1:
+                            if x % pixelsPerBlock > (pixelsPerBlock / 2) - 1:
                                 newerX = x - floor(pixelsPerBlock / 2)
                             else:
                                 newerX = x + floor(pixelsPerBlock / 2)
-                        #print(f"{x}:{newX}  -  {y}:{newY}")
-                        out.putpixel((newerX,y), curpx)
+                        # print(f"{x}:{newX}  -  {y}:{newY}")
+                        out.putpixel((newerX, y), curpx)
                         pixelsWrittenSoFar += 1
-                    if not safe: break
-                out.save(f'assembled_{file.name}')
+                    if not safe:
+                        break
+                out.save(f"assembled_{file.name}")
             case 3:
                 # take a 32x32 and mipmap it 4 times, READY TO PLACE INTO ROM
                 # might work with other dimensions, not sure yet tbh
@@ -209,33 +212,34 @@ def imageToMinMap(img_path: str):
                 pixelsWrittenSoFar = 0
                 timesResized = 0
                 # also theres like a 99 percent chance that this formula breaks with images that arent 32x32
-                outY = int(targetWidth + targetWidth/4 + targetWidth/8)
+                outY = int(targetWidth + targetWidth / 4 + targetWidth / 8)
                 safe = True
-                out = Image.new(mode="RGBA", size=(targetWidth,outY))
+                out = Image.new(mode="RGBA", size=(targetWidth, outY))
                 for y in range(out.size[1]):
                     for x in range(out.size[0]):
                         if pixelsWrittenSoFar == targetWidth**2:
-                            #print(f"finished {tar}^2, shrinking")
-                            timesResized +=1
+                            # print(f"finished {tar}^2, shrinking")
+                            timesResized += 1
                             if timesResized == 4:
                                 safe = False
                                 break
-                            targetWidth = int(targetWidth/2)
-                            pi.thumbnail((targetWidth,targetWidth))
+                            targetWidth = int(targetWidth / 2)
+                            pi.thumbnail((targetWidth, targetWidth))
                             pixelsWrittenSoFar = 0
-                        newX = x%targetWidth
-                        newY = int(pixelsWrittenSoFar/targetWidth)
-                        #print(f"{x}:{newX}  -  {y}:{newY}")
+                        newX = x % targetWidth
+                        newY = int(pixelsWrittenSoFar / targetWidth)
+                        # print(f"{x}:{newX}  -  {y}:{newY}")
                         curpx = pi.getpixel((newX, newY))
                         newerX = x
-                        if newY%2 == 1:
-                            if (x% pixelsPerBlock > (pixelsPerBlock/2) - 1):
+                        if newY % 2 == 1:
+                            if x % pixelsPerBlock > (pixelsPerBlock / 2) - 1:
                                 newerX = x - math.floor(pixelsPerBlock / 2)
                             else:
                                 newerX = x + math.floor(pixelsPerBlock / 2)
-                        out.putpixel((newerX,y), curpx)
+                        out.putpixel((newerX, y), curpx)
                         pixelsWrittenSoFar += 1
-                    if not safe: break
+                    if not safe:
+                        break
 
                 out.save(out_name)
             case _:

@@ -1083,22 +1083,24 @@ for barrel_dupe in (ExtraTextures.RocketTop, ExtraTextures.BlastTop):
         )
     )
 
-file_dict.extend([
-    File(
-        name="25 year GB Sticker",
-        pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(ExtraTextures.Anniv25Sticker),
-        source_file="assets/displays/25y_mipped.png",
-        texture_format=TextureFormat.RGBA5551,
-    ),
-    File(
-        name="25 year Barrel",
-        pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(ExtraTextures.Anniv25Barrel),
-        source_file="assets/displays/y25_small.png",
-        texture_format=TextureFormat.RGBA32,
-    ),
-])
+file_dict.extend(
+    [
+        File(
+            name="25 year GB Sticker",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.Anniv25Sticker),
+            source_file="assets/displays/25y_mipped.png",
+            texture_format=TextureFormat.RGBA5551,
+        ),
+        File(
+            name="25 year Barrel",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.Anniv25Barrel),
+            source_file="assets/displays/y25_small.png",
+            texture_format=TextureFormat.RGBA32,
+        ),
+    ]
+)
 
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
