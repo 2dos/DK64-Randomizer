@@ -48,7 +48,7 @@ from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import enableTriggerText, filterEntranceType, randomize_entrances, placeLevelOrder
 from randomizer.Patching.FairyPlacer import PlaceFairies
-from randomizer.Patching.ItemRando import place_randomized_items
+from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount
@@ -610,6 +610,7 @@ def patching_response(spoiler):
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
     showWinCondition(spoiler.settings)
+    alterTextboxRequirements(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
     place_randomized_items(spoiler, flut_items.copy())  # Has to be after kong rando cosmetic and moves
