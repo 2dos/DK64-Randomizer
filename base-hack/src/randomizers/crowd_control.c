@@ -225,7 +225,7 @@ int cc_enabler_rockfall(void) {
     float y = Player->yPos + 200.0f;
     float z = Player->zPos + z_offset;
     actor_init_data unk; // 0x48 -> 0x67
-    return spawnActorSpawnerContainer(0x5C, *(int*)(&x), *(int*)(&y), *(int*)(&z), 0, 0x3F000000, 0, &unk);
+    return spawnActorSpawnerContainer(0x5C, x, y, z, 0, 0x3F000000, 0, &unk);
 }
 
 void dummyGuardCode(void) {
@@ -449,7 +449,7 @@ int cc_allower_boulder(void) {
 
 int cc_enabler_boulder(void) {
     actor_init_data unk;
-    return spawnActorSpawnerContainer(61, *(int*)(&Player->xPos), *(int*)(&Player->yPos), *(int*)(&Player->zPos), 0, 0x3F800000, 0, &unk);
+    return spawnActorSpawnerContainer(61, Player->xPos, Player->yPos, Player->zPos, 0, 0x3F800000, 0, &unk);
 }
 
 static const cc_effect_data cc_funcs[] = {

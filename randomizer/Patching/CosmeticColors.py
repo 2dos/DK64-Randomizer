@@ -37,7 +37,7 @@ from randomizer.Patching.Lib import (
     Holidays,
     getHoliday,
 )
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures, imageToCI
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures, imageToCI, getBonusSkinOffset
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -697,6 +697,7 @@ def apply_cosmetic_colors(settings: Settings):
         writeTransition(settings)
         writeCustomPortal(settings)
         writeCustomPaintings(settings)
+        # randomizePlants(ROM_COPY, settings)  # Not sure how much I like how this feels
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -2397,39 +2398,6 @@ def placeKrushaHead(slot):
     ROM_COPY.writeBytes(bytearray(data32))
 
 
-barrel_skins = (
-    "gb",
-    "dk",
-    "diddy",
-    "lanky",
-    "tiny",
-    "chunky",
-    "bp",
-    "nin_coin",
-    "rw_coin",
-    "key",
-    "crown",
-    "medal",
-    "potion",
-    "bean",
-    "pearl",
-    "fairy",
-    "rainbow",
-    "fakegb",
-    "melon",
-    "cranky",
-    "funky",
-    "candy",
-    "snide",
-    "hint",
-)
-
-
-def getBonusSkinOffset(offset: int):
-    """Get texture index after the barrel skins."""
-    return 6026 + (3 * len(barrel_skins)) + offset
-
-
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
     """Get value from byte array given an offset and size."""
     value = 0
@@ -3305,6 +3273,52 @@ def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None, bri
             writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)
 
 
+def applyCelebrationRims(hue_shift: int, enabled_bananas: list[bool] = [False, False, False, False, False]):
+    """Retexture the warp pad rims to have a more celebratory tone."""
+    banana_textures = []
+    vanilla_banana_textures = [0xA8, 0x98, 0xE8, 0xD0, 0xF0]
+    for kong_index, ban in enumerate(enabled_bananas):
+        if ban:
+            banana_textures.append(vanilla_banana_textures[kong_index])
+    place_bananas = False
+    if len(banana_textures) > 0:
+        place_bananas = True
+        if len(banana_textures) < 4:
+            banana_textures = (banana_textures * 4)[:4]
+    if place_bananas:
+        bananas = [getImageFile(7, x, False, 44, 44, TextureFormat.RGBA5551).resize((14, 14)) for x in banana_textures]
+    banana_placement = [
+        # File, x, y
+        [0xBB3, 15, 1],  # 3
+        [0xBB2, 2, 1],  # 2
+        [0xBB3, 0, 1],  # 4
+        [0xBB2, 17, 1],  # 1
+    ]
+    for img in (0xBB2, 0xBB3):
+        side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
+        hueShift(side_im, hue_shift)
+        if place_bananas:
+            for bi, banana in enumerate(bananas):
+                if banana_placement[bi][0] == img:
+                    b_x = banana_placement[bi][1]
+                    b_y = banana_placement[bi][2]
+                    side_im.paste(banana, (b_x, b_y), banana)
+        side_by = []
+        side_px = side_im.load()
+        for y in range(16):
+            for x in range(32):
+                red_short = (side_px[x, y][0] >> 3) & 31
+                green_short = (side_px[x, y][1] >> 3) & 31
+                blue_short = (side_px[x, y][2] >> 3) & 31
+                alpha_short = 1 if side_px[x, y][3] > 128 else 0
+                value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
+                side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
+        px_data = bytearray(side_by)
+        px_data = gzip.compress(px_data, compresslevel=9)
+        ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
+        ROM().writeBytes(px_data)
+
+
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = getHoliday(settings)
@@ -3357,36 +3371,7 @@ def applyHolidayMode(settings):
         ROM().seek(start)
         ROM().writeBytes(byte_data)
         # Alter rims
-        bananas = [getImageFile(7, x, False, 44, 44, TextureFormat.RGBA5551).resize((14, 14)) for x in [0xD0, 0xE8, 0xA8, 0x98]]
-        banana_placement = [
-            # File, x, y
-            [0xBB3, 15, 1],  # 3
-            [0xBB2, 2, 1],  # 2
-            [0xBB3, 0, 1],  # 4
-            [0xBB2, 17, 1],  # 1
-        ]
-        for img in (0xBB2, 0xBB3):
-            side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
-            hueShift(side_im, 50)
-            for bi, banana in enumerate(bananas):
-                if banana_placement[bi][0] == img:
-                    b_x = banana_placement[bi][1]
-                    b_y = banana_placement[bi][2]
-                    side_im.paste(banana, (b_x, b_y), banana)
-            side_by = []
-            side_px = side_im.load()
-            for y in range(16):
-                for x in range(32):
-                    red_short = (side_px[x, y][0] >> 3) & 31
-                    green_short = (side_px[x, y][1] >> 3) & 31
-                    blue_short = (side_px[x, y][2] >> 3) & 31
-                    alpha_short = 1 if side_px[x, y][3] > 128 else 0
-                    value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
-                    side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
-            px_data = bytearray(side_by)
-            px_data = gzip.compress(px_data, compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
-            ROM().writeBytes(px_data)
+        applyCelebrationRims(50, [True, True, True, True, False])
         # Change DK's Tie and Tiny's Hair
         if settings.dk_tie_colors != CharacterColors.custom and settings.kong_model_dk == KongModels.default:
             tie_hang = [0xFF] * 0xAB8
@@ -3410,23 +3395,7 @@ def applyHolidayMode(settings):
         ROM().seek(settings.rom_data + 0xDB)
         ROM().writeMultipleBytes(1, 1)
         # Pad Rim
-        for img in (0xBB2, 0xBB3):
-            side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
-            hueShift(side_im, -12)
-            side_by = []
-            side_px = side_im.load()
-            for y in range(16):
-                for x in range(32):
-                    red_short = (side_px[x, y][0] >> 3) & 31
-                    green_short = (side_px[x, y][1] >> 3) & 31
-                    blue_short = (side_px[x, y][2] >> 3) & 31
-                    alpha_short = 1 if side_px[x, y][3] > 128 else 0
-                    value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
-                    side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
-            px_data = bytearray(side_by)
-            px_data = gzip.compress(px_data, compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
-            ROM().writeBytes(px_data)
+        applyCelebrationRims(-12)
         # Tag Barrel, Bonus Barrel & Transform Barrels
         changeBarrelColor((0x00, 0xC0, 0x00))
         # Turn Ice Tomato Orange
@@ -3447,6 +3416,10 @@ def applyHolidayMode(settings):
             hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
     elif HOLIDAY == Holidays.Anniv25:
         changeBarrelColor((0xFF, 0xFF, 0x00), None, True)
+        sticker_im = getImageFile(25, getBonusSkinOffset(ExtraTextures.Anniv25Sticker), True, 1, 1372, TextureFormat.RGBA5551)
+        writeColorImageToROM(sticker_im, 25, 0x1266, 1, 1372, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(sticker_im, 25, 0xB7D, 1, 1360, False, TextureFormat.RGBA5551)
+        applyCelebrationRims(0, [False, True, True, True, True])
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
@@ -4157,3 +4130,33 @@ def writeCustomPaintings(settings: Settings) -> None:
     settings.painting_museum_swords = PAINTING_INFO[3].name
     settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
     settings.painting_treehouse_candy = PAINTING_INFO[5].name
+
+
+def randomizePlants(ROM_COPY: ROM, settings: Settings):
+    """Randomize the plants in the setup file."""
+    if not settings.misc_cosmetics:
+        return
+
+    flowers = [0x05, 0x08, 0x43]
+    for x in range(0x1F1 - 0x1DE):
+        flowers.append(0x1DE + x)
+    maps_that_contain_flowers = [
+        Maps.JungleJapes,
+        Maps.JungleJapesLobby,
+        Maps.TrainingGrounds,
+        Maps.JapesTinyHive,
+        Maps.AngryAztec,
+        Maps.Isles,
+        Maps.BananaFairyRoom,
+    ]
+    for map_id in maps_that_contain_flowers:
+        setup_file = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
+        ROM_COPY.seek(setup_file)
+        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        for model2_item in range(model2_count):
+            item_start = setup_file + 4 + (model2_item * 0x30)
+            ROM_COPY.seek(item_start + 0x28)
+            item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if item_type in flowers:
+                ROM_COPY.seek(item_start + 0x28)
+                ROM_COPY.writeMultipleBytes(random.choice(flowers), 2)

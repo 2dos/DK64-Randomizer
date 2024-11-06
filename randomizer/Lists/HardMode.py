@@ -37,6 +37,7 @@ HardBossItems = [
     HardModeItem("Pufftoss Star Raised", -1, "Star locations in Pufftoss are raised slightly."),
     HardModeItem("Kut Out Phase Rando", -1, "Kut Out Phases have been randomized in order, including the unused 4th phase."),
     HardModeItem("K Rool Toes Rando", -1, "The toe sequence in Tiny Phase is randomized."),
+    HardModeItem("Beta Lanky Phase", -1, "K. Rool is distracted by shooting a balloon rather than playing an instrument."),
 ]
 for item in HardItems:
     if item.name != "No Group":

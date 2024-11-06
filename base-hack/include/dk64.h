@@ -17,8 +17,10 @@ extern unsigned long long getTimestamp(void);
 extern void dmaFileTransfer(int romStart, int romEnd, int ramStart);
 extern void deleteActor(void* actor);
 extern int spawnActor(int actorID, int actorBehaviour);
-extern void* spawnActorSpawnerContainer(short actor, int x, int y, int z, int unk0, int unk1, int unk2, void* unk3);
+extern void* spawnActorSpawnerContainer(short actor, float x, float y, float z, int unk0, int unk1, int unk2, void* unk3);
 extern void spawnTextOverlay(int style, int x, int y, char* string, int timer1, int timer2, unsigned char effect, unsigned char speed);
+extern void sendActorSignal(int unk0, int unk1, int unk2, int unk3, int unk4);
+extern void disappearPeel(void* actor);
 extern float dk_sqrt(float __x);
 extern float dk_cos(float __x);
 extern float dk_sin(float __x);
@@ -231,7 +233,7 @@ extern void PlayCutsceneFromModelTwoScript(void* behavior_pointer, int cutscene,
 extern void handleGuardDetection(float offset, float radius);
 extern int guardShouldMove(void);
 extern void guardUnkFunction(int unk0);
-extern void generalActorHandle(int control_state, int x, int z, int unk0, float unk1);
+extern void generalActorHandle(int control_state, float x, float z, int unk0, float unk1);
 extern void handleGuardDefaultAnimation(int unk0);
 extern void setActorSpeed(void* actor, short speed);
 extern void playActorAnimation(void* actor, int animation);
@@ -303,6 +305,8 @@ extern void bunchHandle(int player_index, int id, void* player);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
 extern int getCollectableOffset(int item, int obj, int homing);
 extern void GoldenBananaCode(void);
+
+extern void resetLankyKR(void);
 
 extern void unkSpriteRenderFunc(int unk0);
 extern void unkSpriteRenderFunc_0(void);

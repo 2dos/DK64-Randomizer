@@ -4,6 +4,7 @@ import js
 import zlib
 import random
 import gzip
+import math
 from enum import IntEnum, auto
 from PIL import Image
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -67,6 +68,41 @@ class ExtraTextures(IntEnum):
     ShellQMark = auto()
     RocketTop = auto()
     BlastTop = auto()
+    Anniv25Sticker = auto()
+    Anniv25Barrel = auto()
+
+
+barrel_skins = (
+    "gb",
+    "dk",
+    "diddy",
+    "lanky",
+    "tiny",
+    "chunky",
+    "bp",
+    "nin_coin",
+    "rw_coin",
+    "key",
+    "crown",
+    "medal",
+    "potion",
+    "bean",
+    "pearl",
+    "fairy",
+    "rainbow",
+    "fakegb",
+    "melon",
+    "cranky",
+    "funky",
+    "candy",
+    "snide",
+    "hint",
+)
+
+
+def getBonusSkinOffset(offset: int):
+    """Get texture index after the barrel skins."""
+    return 6026 + (3 * len(barrel_skins)) + offset
 
 
 def getImageFromAddress(rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):
@@ -133,6 +169,19 @@ def hueShift(im, amount):
             new.append(list(im_px[x, y])[3])
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
+
+
+def clampRGBA(n):
+    """Restricts input to integer value between 0 and 255."""
+    return math.floor(max(0, min(n, 255)))
+
+
+def convertRGBAToBytearray(rgba_lst):
+    """Convert RGBA list with 4 items (r,g,b,a) to a two-byte array in RGBA5551 format."""
+    twobyte = (rgba_lst[0] << 11) | (rgba_lst[1] << 6) | (rgba_lst[2] << 1) | (rgba_lst[3] & 1)
+    lower = twobyte % 256
+    upper = int(twobyte / 256) % 256
+    return [upper, lower]
 
 
 def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int):

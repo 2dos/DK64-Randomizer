@@ -116,6 +116,11 @@ snide_head_im = Image.open(f"{hash_dir}snide_face.png")
 im.paste(snide_head_im, (0, 16), snide_head_im)
 im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}snide_head.png")
 
+# Small 25y logo
+y25_im = Image.open(f"{disp_dir}25y.png")
+y25_im = y25_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+y25_im.save(f"{disp_dir}y25_small.png")
+
 # Others
 other_shop_owners = ("candy", "cranky", "funky")
 for owner in other_shop_owners:

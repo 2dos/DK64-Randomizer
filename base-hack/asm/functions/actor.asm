@@ -144,3 +144,6 @@
 .definelabel getScreenDist, 0x80700AE4
 .definelabel getDistanceCap, 0x807009F4
 .definelabel setAnimalYAccel, 0x806CFECC
+.definelabel sendActorSignal, 0x80724994
+.definelabel disappearPeel, 0x8002E7A0
+.definelabel resetLankyKR, 0x8002EA14

@@ -6,7 +6,7 @@ import math
 import io
 import randomizer.ItemPool as ItemPool
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress, ExtraTextures, getBonusSkinOffset
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     FasterChecksSelected,
@@ -86,6 +86,7 @@ DISABLE_BORDERS = False
 ENABLE_MINIGAME_SPRITE_RANDO = False
 ENABLE_HELM_GBS = True
 ENABLE_BLAST_LZR = False
+POP_TARGETTING = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -665,6 +666,9 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806682C8, Overlay.Static, 0x240E0004, offset_dict, 4)  # Set ground sfx to snow
         writeValue(ROM_COPY, 0x806682CC, Overlay.Static, 0x240C0004, offset_dict, 4)  # Set ground sfx to snow
         writeValue(ROM_COPY, 0x806682DC, Overlay.Static, 0x240E0004, offset_dict, 4)  # Set ground sfx to snow
+    elif holiday == Holidays.Anniv25:
+        # Change barrel base sprite
+        writeValue(ROM_COPY, 0x80721458, Overlay.Static, getBonusSkinOffset(ExtraTextures.Anniv25Barrel), offset_dict)
 
     if settings.colorblind_mode != ColorblindMode.off:
         writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict)  # Force first option
@@ -1399,6 +1403,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806A94CC, Overlay.Static, 0x2C610003, offset_dict, 4)  # SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
     writeValue(ROM_COPY, 0x806A94D0, Overlay.Static, 0x10200298, offset_dict, 4)  # BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
     writeValue(ROM_COPY, 0x806A932A, Overlay.Static, 12500, offset_dict)  # Increase memory allocated for displaying the Pause menu (fixes hints corrupting the heap)
+    # Restore unused events
+    writeValue(ROM_COPY, 0x800336A4, Overlay.Menu, 7, offset_dict)  # Play cutscene 7 (Overwrites one of the leg shakes)
+    writeValue(ROM_COPY, 0x800336A6, Overlay.Menu, 150, offset_dict)  # Set duration as 150
+    writeValue(ROM_COPY, 0x8003371A, Overlay.Menu, 8, offset_dict)  # Play cutscene 8
+    writeValue(ROM_COPY, 0x8003371C, Overlay.Menu, 150, offset_dict)  # Set duration as 150
+    writeFloatUpper(ROM_COPY, 0x800283D2, Overlay.Menu, 11, offset_dict)  # Set randomization function to use 11 values
+    writeValue(ROM_COPY, 0x80028412, Overlay.Menu, 11 + 1, offset_dict)  # Set cap to 12
+    writeValue(ROM_COPY, 0x8002845A, Overlay.Menu, 11 + 1, offset_dict)  # Set cap to 12
     if settings.shuffle_items:
         writeHook(ROM_COPY, 0x806A6708, Overlay.Static, "SpriteFix", offset_dict)
         writeFunction(ROM_COPY, 0x806A78A8, Overlay.Static, "checkFlagDuplicate", offset_dict)  # Balloon: Kong Check
@@ -1445,7 +1457,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806C46AA, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (X)
         writeValue(ROM_COPY, 0x806C46E2, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (Z)
         writeValue(ROM_COPY, 0x806C45C2, Overlay.Static, 0x0013, offset_dict)  # Y Offset squawks reward
-        writeFunction(ROM_COPY, 0x80681910, Overlay.Static, "spawnBonusReward", offset_dict)  # Spawn Bonus Reward
         writeFunction(ROM_COPY, 0x806C63BC, Overlay.Static, "spawnRewardAtActor", offset_dict)  # Spawn Squawks Reward
         writeFunction(ROM_COPY, 0x806C4654, Overlay.Static, "spawnMinecartReward", offset_dict)  # Spawn Squawks Reward - Minecart
         writeFunction(ROM_COPY, 0x8002501C, Overlay.Bonus, "spawnCrownReward", offset_dict)  # Crown Spawn
@@ -1477,6 +1488,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8069C266, Overlay.Static, getActorIndex(spoiler.japes_rock_actor), offset_dict)
         # Melon Crates
         writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x80681910, Overlay.Static, "spawnBonusReward", offset_dict)  # Spawn Bonus Reward
 
     if settings.fast_warps:
         writeValue(ROM_COPY, 0x806EE692, Overlay.Static, 0x54, offset_dict)
@@ -2580,6 +2592,29 @@ def patchAssembly(ROM_COPY, spoiler):
         for x in range(5):
             writeValue(ROM_COPY, 0x80036950 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x], offset_dict, 1)
             writeValue(ROM_COPY, 0x80036968 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x + 5], offset_dict, 1)
+
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase):
+        # Spawn a K Rool balloon into the fight to trigger K Rool
+        writeFunction(ROM_COPY, 0x806A7AA8, Overlay.Static, "popExistingBalloon", offset_dict)
+        writeFunction(ROM_COPY, 0x8002EB64, Overlay.Boss, "spawnKRoolLankyBalloon", offset_dict)
+        addr = 0x8074482C + (12 * Maps.KroolLankyPhase) + 0
+        rom_addr = getROMAddress(addr, Overlay.Static, offset_dict)
+        ROM_COPY.seek(rom_addr)
+        val = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        val &= ~0x200  # Re-enables guns
+        writeValue(ROM_COPY, addr, Overlay.Static, val, offset_dict, 4)
+        if settings.more_cutscene_skips == ExtraCutsceneSkips.auto:
+            writeValue(ROM_COPY, 0x8002EC50, Overlay.Boss, 0, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8002EC64, Overlay.Boss, 0, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8002EC70, Overlay.Boss, 0, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8002EC82, Overlay.Boss, 2, offset_dict)
+        if POP_TARGETTING:
+            PEEL_DURATION = 35  # In seconds. Vanilla is 20
+            writeFunction(ROM_COPY, 0x8002ED28, Overlay.Boss, "handleKRoolDirecting", offset_dict)
+            writeValue(ROM_COPY, 0x8002E866, Overlay.Boss, PEEL_DURATION * 30, offset_dict)
+        # Fixes a bug if someone pops a balloon whilst K Rool has slipped where the hit doesn't count
+        writeFunction(ROM_COPY, 0x8002EF40, Overlay.Boss, "incHitCounter", offset_dict)
+        writeValue(ROM_COPY, 0x8002EFAC, Overlay.Boss, 0, offset_dict, 4)
 
     # Training
     writeValue(ROM_COPY, 0x80029610, Overlay.Critter, 0, offset_dict, 4)  # Disable set flag
