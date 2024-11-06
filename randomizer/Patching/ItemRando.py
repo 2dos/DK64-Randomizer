@@ -230,6 +230,7 @@ level_names = {
 
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
+
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
     """Alter a specific textbox."""
     data = {"textbox_index": textbox_index, "mode": "replace", "search": search, "target": target}
@@ -238,7 +239,9 @@ def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: st
     else:
         spoiler.text_changes[file_index] = [data]
 
+
 NUMBERS_AS_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE"]
+
 
 def alterTextboxRequirements(spoiler):
     """Alters various textboxes based on the requirement count changing."""
@@ -246,13 +249,14 @@ def alterTextboxRequirements(spoiler):
     appendTextboxChange(spoiler, 23, 2, "FIVE MISSING PEARLS", f"{NUMBERS_AS_WORDS[pearl_req]} MISSING PEARL{'S' if pearl_req != 1 else ''}")
     all_text = ""
     if pearl_req == 5:
-        all_text = "ALL " 
+        all_text = "ALL "
     appendTextboxChange(spoiler, 23, 0, "PLEASE TRY AND GET THEM BACK", f"PLEASE TRY AND GET {all_text}{NUMBERS_AS_WORDS[pearl_req]} OF THEM BACK")
     fairy_req = spoiler.settings.rareware_gb_fairies
     if fairy_req != 20:
         appendTextboxChange(spoiler, 30, 0, "FIND THEM ALL", f"FIND {fairy_req} OF THEM")
         appendTextboxChange(spoiler, 40, 0, "RESCUED ALL THE BANANA FAIRIES", "RESCUED THE BANANA FAIRIES")
     appendTextboxChange(spoiler, 40, 4, "MUST GET FAIRIES", f"MUST GET {fairy_req} FAIRIES")
+
 
 def pushItemMicrohints(spoiler):
     """Push hint for the micro-hints system."""
