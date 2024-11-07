@@ -182,6 +182,13 @@ im1.save(f"{disp_dir}wxys.png")
 
 Image.open(f"{hash_dir}specialchars.png").crop((2, 0, 34, 32)).resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}perc44.png")
 
+# Bean Spin Images
+bean_dir = getDir("assets/bean_spin/")
+for x in range(12):
+    im = Image.open(f"{bean_dir}f{x + 1}a.png")
+    im = im.resize((64, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    im.save(f"{bean_dir}f{x + 1}a_64_32.png")
+
 # Generate Yellow Q Mark
 for idx in range(2):
     im = Image.open(f"{hash_dir}red_qmark_{idx}.png")
