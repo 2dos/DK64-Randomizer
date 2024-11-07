@@ -1102,6 +1102,17 @@ file_dict.extend(
     ]
 )
 
+for x in range(12):
+    file_dict.append(
+        File(
+            name=f"Bean Spin Frame {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.BeanSpin01 + x),
+            source_file=f"assets/bean_spin/f{x + 1}a_64_32.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
+
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
     0xE8D: [(43, 32), "checkered"],  # DK Tie Hang
@@ -1529,7 +1540,7 @@ text_files = (
     TextChange("Main Menu", 0, "menu_text.bin"),
     TextChange("Race Positions", 0, ""),
     TextChange("Move Names", 0x2000, "move_names.bin"),  # Expanded for the Krusha move names feature
-    TextChange("Fairy Queen Rareware Door", 0, "fairy_rw_text.bin"),
+    TextChange("Fairy Queen Rareware Door", 0x800, "fairy_rw_text.bin"),
     TextChange("Wrinkly", 0x2800, ""),
     TextChange("Snide's Bonus Games", 0, ""),
     TextChange("Hint Regions", 0, "hint_region_text.bin"),
@@ -2072,6 +2083,8 @@ with open(newROMName, "r+b") as fh:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
+    for x in range(12):
+        other_remove.append(f"bean_spin/f{x + 1}a_64_32.png")
     other_remove.append("file_screen/tracker.png")
     for x in other_remove:
         pth = f"assets/{x}"
