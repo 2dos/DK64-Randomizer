@@ -1982,8 +1982,8 @@ def patchAssembly(ROM_COPY, spoiler):
         # Remove DKTV - End Seq
         writeValue(ROM_COPY, 0x8071401E, Overlay.Static, 0x50, offset_dict)
         writeValue(ROM_COPY, 0x8071404E, Overlay.Static, 5, offset_dict)
-        # Set NFR song to unused coin pickup, which is replaced by the windows 95 theme
-        writeValue(ROM_COPY, 0x80745D20, Overlay.Static, 7, offset_dict, 1)
+    # Set NFR song to unused coin pickup, which is replaced by the windows 95 theme
+    writeValue(ROM_COPY, 0x80745D20, Overlay.Static, 7, offset_dict, 1)
     for index, kong in enumerate(settings.kutout_kongs):
         writeValue(ROM_COPY, 0x80035B44 + index, Overlay.Boss, kong, offset_dict, 1)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_transform_animation):

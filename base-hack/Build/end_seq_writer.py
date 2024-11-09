@@ -88,7 +88,7 @@ assistant_devs = [
 
 additional_thanks = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Additional Thanks"]),
-    CreditItem(CreditsDirection.left, CreditsType.normal, ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Game Developers", " ", "Rareware Ltd", "Nintendo", "L. Godfrey"]),
     CreditItem(CreditsDirection.bottom, CreditsType.normal, ["Crankys Lab Developer", "Isotarge"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["SpikeVegeta", "KeiperDontCare", "NintendoSara", "Flargrah"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Beta Testers", "Dev Branch Testers"]),
