@@ -3417,8 +3417,14 @@ def applyHolidayMode(settings):
     elif HOLIDAY == Holidays.Anniv25:
         changeBarrelColor((0xFF, 0xFF, 0x00), None, True)
         sticker_im = getImageFile(25, getBonusSkinOffset(ExtraTextures.Anniv25Sticker), True, 1, 1372, TextureFormat.RGBA5551)
-        writeColorImageToROM(sticker_im, 25, 0x1266, 1, 1372, False, TextureFormat.RGBA5551)
-        writeColorImageToROM(sticker_im, 25, 0xB7D, 1, 1360, False, TextureFormat.RGBA5551)
+        vanilla_sticker_im = getImageFile(25, 0xB7D, True, 1, 1372, TextureFormat.RGBA5551)
+        sticker_im_snipped = sticker_im.crop((0, 0, 1, 1360))
+        writeColorImageToROM(sticker_im_snipped, 25, 0xB7D, 1, 1360, False, TextureFormat.RGBA5551)
+        vanilla_sticker_portion = vanilla_sticker_im.crop((0, 1360, 1, 1372))
+        new_im = Image.new(mode="RGBA", size=(1, 1372))
+        new_im.paste(sticker_im_snipped, (0, 0), sticker_im_snipped)
+        new_im.paste(vanilla_sticker_portion, (0, 1360), vanilla_sticker_portion)
+        writeColorImageToROM(new_im, 25, 0x1266, 1, 1372, False, TextureFormat.RGBA5551)
         applyCelebrationRims(0, [False, True, True, True, True])
 
 
