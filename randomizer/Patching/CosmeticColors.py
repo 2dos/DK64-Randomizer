@@ -3318,6 +3318,7 @@ def applyCelebrationRims(hue_shift: int, enabled_bananas: list[bool] = [False, F
         ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
         ROM().writeBytes(px_data)
 
+
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = getHoliday(settings)
