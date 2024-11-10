@@ -82,6 +82,7 @@ class LogicVarHolder:
         self.assumeInfiniteCoins = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
+        self.assumeLevel8Entry = False  # Extra important to never assume this in LZR!
         self.assumeUpperIslesAccess = False
         self.assumeKRoolAccess = False
 
