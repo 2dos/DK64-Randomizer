@@ -115,7 +115,6 @@ def generate_globals(path):
     path = pathlib.Path(path).name
     path = "randomizer/Enums/" + path
     path = path.replace(".py", ".jsonc")
-    print(path)
 
     # If the path starts with a slash, remove it
     if "\\" in path:

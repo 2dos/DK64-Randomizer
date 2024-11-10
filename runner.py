@@ -278,6 +278,7 @@ def lambda_function():
             response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 202)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
         elif executor.futures._futures.get(gen_key):
             # We're done generating, return the data.
@@ -337,6 +338,7 @@ def lambda_function():
             response = make_response(zip_conv, 200)
             response.mimetype = "application/zip"
             response.headers["Content-Type"] = "application/zip; charset=utf-8"
+            response.headers["Version"] = version
             return response
         else:
             # We don't have a future for this key, so we need to start generating.
@@ -346,11 +348,13 @@ def lambda_function():
             response = make_response(json.dumps({"start_time": gen_key}), 201)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
     else:
         response = make_response(json.dumps({"error": "error"}), 205)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
+        response.headers["Version"] = version
         return response
 
 
@@ -363,6 +367,7 @@ def get_current_total():
     )
     response.mimetype = "application/json"
     response.headers["Content-Type"] = "application/json; charset=utf-8"
+    response.headers["Version"] = version
     return response
 
 
@@ -392,6 +397,7 @@ def get_spoiler_log():
                 # Create the proper headers for the response
                 resp.mimetype = "application/json"
                 resp.headers["Content-Type"] = "application/json; charset=utf-8"
+                resp.headers["Version"] = version
                 return resp
             else:
                 # Return an error
@@ -408,6 +414,7 @@ def get_version():
     response = make_response(json.dumps({"version": version}), 200)
     response.mimetype = "application/json"
     response.headers["Content-Type"] = "application/json; charset=utf-8"
+    response.headers["Version"] = version
     return response
 
 
@@ -439,6 +446,7 @@ def get_presets():
     response = make_response(json.dumps(presets_to_return), 200)
     response.mimetype = "application/json"
     response.headers["Content-Type"] = "application/json; charset=utf-8"
+    response.headers["Version"] = version
     return response
 
 
@@ -495,6 +503,7 @@ def get_selector_info():
     response = make_response(json.dumps(selector_data), 200)
     response.mimetype = "application/json"
     response.headers["Content-Type"] = "application/json; charset=utf-8"
+    response.headers["Version"] = version
     return response
 
 
@@ -529,6 +538,7 @@ def get_seed():
                 # Create the proper headers for the response
                 resp.mimetype = "application/zip"
                 resp.headers["Content-Type"] = "application/zip; charset=utf-8"
+                resp.headers["Version"] = version
                 return resp
 
     else:
@@ -536,6 +546,7 @@ def get_seed():
         response = make_response(json.dumps({"error": "error"}), 205)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
+        response.headers["Version"] = version
         return response
 
 
@@ -567,6 +578,7 @@ def get_status():
             response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
         elif executor.futures._futures.get(gen_key):
             future = executor.futures._futures.get(gen_key)
@@ -577,16 +589,19 @@ def get_status():
                 response = make_response(json.dumps({"status": "ready"}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
         else:
             response = make_response(json.dumps({"status": "stopped"}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
     else:
         response = make_response(json.dumps({"status": "error"}), 200)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
+        response.headers["Version"] = version
         return response
 
 
@@ -609,6 +624,7 @@ def get_seed_data():
                 response = make_response(json.dumps({"status": "failure", "data": resp_data}), 200)
                 response.mimetype = "application/json"
                 response.headers["Content-Type"] = "application/json; charset=utf-8"
+                response.headers["Version"] = version
                 return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
@@ -661,16 +677,19 @@ def get_seed_data():
             response = make_response(json.dumps({"status": "complete", "hash": hash, "seed_number": current_seed_number}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
         else:
             response = make_response(json.dumps({"status": "stopped"}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
     else:
         response = make_response(json.dumps({"status": "error"}), 200)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
+        response.headers["Version"] = version
         return response
 
 
@@ -682,6 +701,7 @@ def convert_settings_string():
         resp = make_response(json.dumps({"error": "Invalid content type"}), 400)
         resp.mimetype = "application/json"
         resp.headers["Content-Type"] = "application/json; charset=utf-8"
+        resp.headers["Version"] = version
         return resp
 
     # Get the settings string from the request body
@@ -692,6 +712,7 @@ def convert_settings_string():
     resp = make_response(json.dumps(decrypted), 200)
     resp.mimetype = "application/json"
     resp.headers["Content-Type"] = "application/json; charset=utf-8"
+    resp.headers["Version"] = version
     return resp
 
 
@@ -703,6 +724,7 @@ def convert_settings_json():
         resp = make_response(json.dumps({"error": "Invalid content type"}), 400)
         resp.mimetype = "application/json"
         resp.headers["Content-Type"] = "application/json; charset=utf-8"
+        resp.headers["Version"] = version
         return resp
 
     # Get the settings string from the request body
@@ -713,6 +735,7 @@ def convert_settings_json():
     resp = make_response(json.dumps({"settings_string": encrypted}), 200)
     resp.mimetype = "application/json"
     resp.headers["Content-Type"] = "application/json; charset=utf-8"
+    resp.headers["Version"] = version
     return resp
 
 
@@ -773,6 +796,7 @@ def admin_portal():
             )
             resp.mimetype = "text/html"
             resp.headers["Content-Type"] = "text/html; charset=utf-8"
+            resp.headers["Version"] = version
             return resp
         else:
             session["admin"] = True
@@ -785,6 +809,7 @@ def admin_portal():
             )
             resp.mimetype = "text/html"
             resp.headers["Content-Type"] = "text/html; charset=utf-8"
+            resp.headers["Version"] = version
             return resp
     # Get if the user guilds
     return render_template("admin.html.jinja2", local_presets=local_presets)
@@ -797,12 +822,14 @@ def admin_presets():
         resp = make_response(json.dumps({"error": "Invalid content type"}), 400)
         resp.mimetype = "application/json"
         resp.headers["Content-Type"] = "application/json; charset=utf-8"
+        resp.headers["Version"] = version
         return resp
 
     if not session.get("admin", False):
         response = make_response('{"message": "You do not have permission to access this page."}', 403)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
+        response.headers["Version"] = version
         return response
     content = request.json
     if request.method == "PUT":
@@ -824,6 +851,7 @@ def admin_presets():
         response = make_response('{"message": "Local presets updated"}', 200)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
+        response.headers["Version"] = version
         return response
     elif request.method == "DELETE":
         # attempt to find the preset by name case insensitive and remove it
@@ -838,6 +866,7 @@ def admin_presets():
             response = make_response('{"message": "Preset not found"}', 404)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
         else:
             with open("local_presets.json", "w") as f:
@@ -846,6 +875,7 @@ def admin_presets():
             response = make_response('{"message": "Local presets deleted"}', 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+            response.headers["Version"] = version
             return response
 
 

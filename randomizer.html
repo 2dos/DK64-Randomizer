@@ -503,12 +503,22 @@
             else {
                 current_total_url = "http://" + window.location.hostname + ":8000/current_total";
             }
+            let site_version = "";
             function query_stats(){
                 $.ajax({
                     url: current_total_url,
                     type: "GET",
                     dataType: "json",
-                    success: function (data) {
+                    success: function (data, status, xhr) {
+                        // We respond with a Version header, lets store that and if it changes after the first time we reload the page throw up an alert to the user
+                        if (site_version == "") {
+                            site_version = xhr.getResponseHeader("Version");
+                        }
+                        else if (site_version != xhr.getResponseHeader("Version")) {
+                            alert("A new version of the site is available, please refresh the page to get the latest version.");
+                            // force a reload of the page
+                            location.reload();
+                        }
                         // we want to parse the last_generated_time to just how long its been since then the format is "2023-12-20 10:40:42.962004"
                         // We want to tell them X Minutes/Seconds/Days ago
                         var last_generated_time = data.last_generated_time;
