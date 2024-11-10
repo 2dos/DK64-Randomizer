@@ -4,28 +4,6 @@ async function run_python_file(file) {
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
 // run_python_file("ui/__init__.py");
-var imported_music_json = "";
-
-async function music_selection_filebox() {
-  // load pyodide
-  await setup_pyodide();
-  let input = document.createElement("input");
-  input.type = "file";
-  input.accept = ".json";
-
-  input.onchange = async (e) => {
-    let file = e.target.files[0];
-    let json_text = await file.text();
-    imported_music_json = json_text;
-    pyodide.runPythonAsync(`
-        import js
-        from ui.music_select import import_music_selections
-        import_music_selections(js.imported_music_json)
-      `);
-  };
-
-  input.click();
-}
 
 var imported_plando_json = "";
 
@@ -209,8 +187,6 @@ async function apply_download() {
 
 window["apply_download"] = apply_download;
 window["apply_patch"] = apply_patch;
-window["music_selection_filebox"] = music_selection_filebox;
 window["plando_import_filebox"] = plando_import_filebox;
-window["imported_music_json"] = imported_music_json;
 window["imported_plando_json"] = imported_plando_json;
 window["apply_xdelta"] = apply_xdelta;

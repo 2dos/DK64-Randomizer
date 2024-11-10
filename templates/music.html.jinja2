@@ -181,7 +181,7 @@
             </div>
             <div class="flex-container flex-center expandable-container collapsed"
                  id="{{categoryName}}">
-                {% for subCategory in category["subcategories"] %}
+                {% for subCatName, subCategory in category["subcategories"] %}
                     <h3 class="title">{{subCategory["name"]}}</h3>
                     <div class="flex-container flex-center">
                         {% for song in subCategory["songs"] %}

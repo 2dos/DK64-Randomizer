@@ -34,10 +34,14 @@ function toggle_collapsible_container(evt) {
 
 function serialize_music_selections(form, for_file = false) {
   // Serialize music selections into an enum-focused JSON object.
-
+  // Flip the Songs Object to be {value: key} instead of {key: value}.
+  let MapSongs = Object.keys(Songs).reduce((obj, key) => {
+    obj[Songs[key]] = key;
+    return obj;
+  }, {});
   function get_value(enum_val) {
     // Return either the value of a given enum or the display name.
-    return for_file ? enum_val.name : enum_val;
+    return MapSongs[enum_val] || enum_val;
   }
 
   function is_music_select_input(inputName) {
@@ -61,7 +65,6 @@ function serialize_music_selections(form, for_file = false) {
     if (!location_name) continue;
 
     let location = get_value(Songs[location_name]);
-
     if (obj.value !== "") {
       let chosen_song = obj.value;
 
@@ -80,9 +83,10 @@ function serialize_music_selections(form, for_file = false) {
       }
 
       // If this is an in-game song, use the enum value.
-      try {
-        songs_map["vanilla"][location] = get_value(Songs[chosen_song]);
-      } catch (error) {
+      let chosen_val = Songs[chosen_song];
+      if (chosen_val) {
+        songs_map["vanilla"][location] = get_value(chosen_val);
+      } else{
         // If this is a custom song, find and use the full string path.
         let bgm_map = zip(cosmetic_truncated_names.bgm, cosmetic_names.bgm);
         let major_map = zip(
@@ -115,6 +119,64 @@ function serialize_music_selections(form, for_file = false) {
 
   return songs_map;
 }
+
+async function import_music_selections(jsonString) {
+  // Import music selections from a JSON string.
+  const fileContents = JSON.parse(jsonString);
+
+  // Inform the user their current settings will be erased.
+  if (!window.confirm("This will replace your current music selections. Continue?")) {
+      return;
+  }
+
+  // Ensure this is an actual valid music selections file.
+  validate_music_file(fileContents);
+
+  // Update the names of all custom songs to match the currently loaded pack.
+  const musicData = update_custom_song_names(fileContents);
+
+  // Reset all of the music selections to their defaults.
+  reset_music_selections_no_prompt();
+
+  // Set all of the options specified in the music file.
+  for (const [location, songName] of Object.entries(musicData["vanilla"])) {
+      const locationElem = document.getElementById(`music_select_${location}`);
+      locationElem.value = songName;
+  }
+  for (const [location, songName] of Object.entries(musicData["custom"])) {
+      const locationElem = document.getElementById(`music_select_${location}`);
+      // Find the matching select value.
+      const category = songName.split("/")[0];
+      const customSongList = get_custom_song_map()[category];
+      for (const [customSongName, customTruncatedName] of customSongList) {
+          if (songName === customSongName) {
+              locationElem.value = customTruncatedName;
+              break;
+          }
+      }
+  }
+
+  savesettings();
+  savemusicsettings();
+}
+
+function validate_music_file(fileContents) {
+  // Ensure that the provided music file is valid and not malformed.
+  const musicErrorsElement = document.getElementById("music_import_errors");
+  musicErrorsElement.style.display = "none";
+
+  for (const [location, song] of Object.entries(fileContents["vanilla"])) {
+      validate_music_location(location);
+      validate_vanilla_song(song);
+  }
+  for (const [location, song] of Object.entries(fileContents["custom"])) {
+      validate_music_location(location);
+      validate_custom_song(song);
+  }
+}
+
+
+
 
 // Utility function to zip two arrays together.
 function zip(arr1, arr2) {
@@ -380,7 +442,21 @@ function validate_custom_song(songPath) {
     raise_music_validation_error(errString);
   }
 }
+async function music_selection_filebox() {
+  // load pyodide
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
 
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    let imported_music_json = json_text;
+    import_music_selections(imported_music_json);
+  };
+
+  input.click();
+}
 function validate_vanilla_song(songName) {
   /**
    * Ensure that a given song represents a valid song from the base game.
