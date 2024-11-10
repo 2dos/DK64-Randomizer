@@ -452,30 +452,29 @@ async function update_music_select_options(isInitialLoad) {
 
     const dropdowns = document.getElementsByClassName(`${category}-select`);
     for (const dropdown of dropdowns) {
-      // Remove any existing custom music options from this dropdown.
-      for (let i = dropdown.options.length - 1; i >= 0; i--) {
-        const option = dropdown.options.item(i);
-        if (option.classList.contains("custom-song")) {
-          if (dropdown.value == option.value) {
-            dropdown.value = "";
-          }
-          dropdown.remove(i);
-        } else {
-          // We can safely break here, because all of the custom songs are
-          // guaranteed to be at the end of each dropdown. This speeds the
-          // process up considerably.
-          break;
+      // Only remove the custom-song options by setting innerHTML directly if needed
+      let customOptionsExist = dropdown.querySelector(".custom-song");
+      if (customOptionsExist) {
+        dropdown.querySelectorAll(".custom-song").forEach(option => option.remove());
+        // Clear the dropdown value if it was set to a custom song
+        if (dropdown.value && dropdown.querySelector(`[value="${dropdown.value}"].custom-song`)) {
+          dropdown.value = "";
         }
       }
-      // Add new custom music options to this dropdown.
+    
+      // Create a document fragment to hold the new custom options
+      const fragment = document.createDocumentFragment();
       for (const song of songs) {
         const opt = document.createElement("option");
         opt.value = get_truncated_song_name(song);
         opt.innerHTML = get_custom_song_display_name(song);
         opt.classList.add("custom-song");
-        dropdown.appendChild(opt);
+        fragment.appendChild(opt);
       }
+      // Append all custom options at once to the dropdown
+      dropdown.appendChild(fragment);
     }
+    
   }
 
   // If this is the initial load, we want to read from the database and restore
