@@ -83,19 +83,9 @@ async function generate_seed_from_patch(event) {
                 patchElement.classList.add("is-invalid");
             }
         } else {
-            // Apply the conversion
-            window.apply_conversion();
-            await setup_pyodide();
-            await pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-try:
-    register_hook("/")  # type: ignore  # noqa
-except Exception:
-    pass
-import js
-from randomizer.Patching.ApplyLocal import patching_response
-await patching_response(str(js.get_previous_seed_data()), True, js.loaded_patch, True)`)
-    
-        }
+            // Apply the patch
+            await apply_patch(loaded_patch, true)
+         }
     }
 }
 
