@@ -910,9 +910,12 @@ def set_plando_switches(evt):
 @bind("click", "key_8_helm")
 def lock_key_8_in_helm(evt):
     """If key 8 is locked in Helm, force that location to hold key 8."""
-    key_8_locked_in_helm = js.document.getElementById("key_8_helm").checked
+    helm_is_shuffled = js.document.getElementById("shuffle_helm_location").checked
+    is_level_order = js.document.getElementById("level_randomization").value in ["level_order", "level_order_complex"]
+    helm_key_lock = js.document.getElementById("key_8_helm").checked
     end_of_helm = js.document.getElementById("plando_HelmKey_item")
-    if key_8_locked_in_helm:
+    # If the settings require Key 8 to be at the End of Helm...
+    if helm_key_lock and not (is_level_order and helm_is_shuffled):
         # Forcibly select Key 8 for the End of Helm dropdown and disable it.
         errString = 'The "Lock Key 8 in Helm" setting has been chosen.'
         mark_option_disabled(end_of_helm, ValidationError.key_8_locked_in_helm, errString, Items.HideoutHelmKey.name)
