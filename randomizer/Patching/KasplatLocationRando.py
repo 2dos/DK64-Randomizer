@@ -9,7 +9,13 @@ from randomizer.Patching.Patcher import LocalROM
 
 def randomize_kasplat_locations(spoiler):
     """Write replaced enemies to ROM."""
-    kasplat_types = [Enemies.KasplatDK, Enemies.KasplatDiddy, Enemies.KasplatLanky, Enemies.KasplatTiny, Enemies.KasplatChunky]
+    kasplat_types = [
+        Enemies.KasplatDK,
+        Enemies.KasplatDiddy,
+        Enemies.KasplatLanky,
+        Enemies.KasplatTiny,
+        Enemies.KasplatChunky,
+    ]
     vanilla_kasplat_maps = [
         Maps.JungleJapes,
         Maps.JapesUnderGround,

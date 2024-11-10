@@ -10,7 +10,11 @@ def randomize_prices(spoiler):
     if spoiler.settings.random_prices != RandomPrices.vanilla:
         ROM_COPY = LocalROM()
         varspaceOffset = spoiler.settings.rom_data
-        progressive_items = {Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3, Items.ProgressiveSlam: 2}
+        progressive_items = {
+            Items.ProgressiveAmmoBelt: 2,
+            Items.ProgressiveInstrumentUpgrade: 3,
+            Items.ProgressiveSlam: 2,
+        }
         for item in progressive_items:
             if item not in spoiler.settings.prices:
                 spoiler.settings.prices[item] = []

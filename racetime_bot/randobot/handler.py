@@ -251,7 +251,11 @@ class RandoHandler(RaceHandler):
                         {"name": "Description", "value": self.data.get("info_user", "No description"), "inline": True},
                         {"name": "‎", "value": "‎", "inline": True},
                         {"name": "Preset Used", "value": self.state["preset"], "inline": True},
-                        {"name": "Race Opened By", "value": self.data.get("opened_by", {}).get("full_name", "Unknown User"), "inline": True},
+                        {
+                            "name": "Race Opened By",
+                            "value": self.data.get("opened_by", {}).get("full_name", "Unknown User"),
+                            "inline": True,
+                        },
                         {"name": "‎", "value": "‎", "inline": True},
                         {"name": "---------------------------------------------------------", "value": url % public_id},
                     ],

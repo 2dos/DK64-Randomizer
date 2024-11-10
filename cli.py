@@ -21,7 +21,12 @@ from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
 
 load_base_rom()
-dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
+dynamodb = boto3.resource(
+    "dynamodb",
+    aws_access_key_id=os.environ.get("AWS_ID"),
+    aws_secret_access_key=os.environ.get("AWS_KEY"),
+    region_name="us-west-2",
+)
 
 
 def generate(generate_settings, file_name):

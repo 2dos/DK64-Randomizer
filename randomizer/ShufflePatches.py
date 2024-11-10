@@ -189,7 +189,15 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
                 patch.setCustomLocation(True)
                 human_spoiler[level.name].append(patch.name)
                 local_map_index = len([x for x in spoiler.dirt_patch_placement if x["map"] == patch.map])
-                spoiler.dirt_patch_placement.append({"name": patch.name, "map": patch.map, "patch": patch, "level": level, "score": (patch.map * 100) + local_map_index})
+                spoiler.dirt_patch_placement.append(
+                    {
+                        "name": patch.name,
+                        "map": patch.map,
+                        "patch": patch,
+                        "level": level,
+                        "score": (patch.map * 100) + local_map_index,
+                    }
+                )
                 area_dirt.remove(selected_patch)
                 break
         if amount > 1 and not allow_same_group_dirt:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
