@@ -917,6 +917,9 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
         spoiler.LogicVariables.assumeLevel4Entry = True
         spoiler.LogicVariables.assumeUpperIslesAccess = True
         spoiler.settings.open_lobbies = True
+        # If it's not Helm in upper Krem Isle, then assume you have access to this level as soon as you have the keys, bypassing the move needed to get up there.
+        if spoiler.settings.shuffle_helm_location:
+            spoiler.LogicVariables.assumeLevel8Entry = True  # Do not ever assume this in LZR! It makes a specific entrance one-way to work.
 
     # Identify important locations we might want to find the paths to
     # Filter out the items that are never WotH
@@ -1051,6 +1054,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
     spoiler.LogicVariables.assumeInfiniteCoins = False
     spoiler.LogicVariables.assumeAztecEntry = False
     spoiler.LogicVariables.assumeLevel4Entry = False
+    spoiler.LogicVariables.assumeLevel8Entry = False
     spoiler.LogicVariables.assumeUpperIslesAccess = False
     spoiler.LogicVariables.assumeKRoolAccess = False
     spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change as needed
@@ -1667,7 +1671,7 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
     while len(placed_on_bosses) < len(empty_boss_locations):
         if len(possible_items) == 0:
             spoiler.settings.update_valid_locations(spoiler)
-            raise Ex.FillException("Unable to fill Bosses.")
+            raise Ex.FillException("Unable to find all locations during the fill. Error code: BS-1")
         # Grab the next one from the pile and attempt to place it
         item_to_attempt_placement = possible_items.pop()
         unplaced_items.remove(item_to_attempt_placement)
@@ -1708,7 +1712,7 @@ def Fill(spoiler: Spoiler) -> None:
                 rainbowCoinsToPlace.remove(item)
         rcoinUnplaced = PlaceItems(spoiler, FillAlgorithm.random, rainbowCoinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if rcoinUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(rcoinUnplaced) + " Rainbow Coins.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: RC-" + str(rcoinUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Rainbow Coins")
 
@@ -1758,7 +1762,7 @@ def Fill(spoiler: Spoiler) -> None:
                 bigListOfItemsToPlace.remove(item)
         unplaced = PlaceItems(spoiler, FillAlgorithm.assumed, bigListOfItemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if unplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(unplaced) + " items from the fill.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: BIG-" + str(unplaced))
         if spoiler.settings.extreme_debugging:
             DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "The Fill")
 
@@ -1787,7 +1791,7 @@ def Fill(spoiler: Spoiler) -> None:
                 miscItemsToPlace.remove(item)
         miscUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, miscItemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if miscUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(miscUnplaced) + " Miscellaneous Items.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: MI-" + str(miscUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Miscellaneous Items")
 
@@ -1822,7 +1826,7 @@ def Fill(spoiler: Spoiler) -> None:
         # Blueprints can be placed largely randomly - there's no location (yet) that can cause blueprints to lock themselves
         blueprintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, blueprintsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if blueprintsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(blueprintsUnplaced) + " blueprints.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: BP-" + str(blueprintsUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Blueprints")
     # Then place Nintendo & Rareware Coins
@@ -1836,7 +1840,7 @@ def Fill(spoiler: Spoiler) -> None:
                     coinsToPlace.remove(item)
             coinsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, coinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
             if coinsUnplaced > 0:
-                raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(coinsUnplaced) + " company coins.")
+                raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: CC-" + str(coinsUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Company Coins")
     # Then place Battle Crowns
@@ -1853,7 +1857,7 @@ def Fill(spoiler: Spoiler) -> None:
             algo = spoiler.settings.algorithm
         crownsUnplaced = PlaceItems(spoiler, algo, crownsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), doubleTime=True)
         if crownsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(crownsUnplaced) + " crowns.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: CR-" + str(crownsUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Crowns")
     # Then place Banana Medals
@@ -1869,11 +1873,11 @@ def Fill(spoiler: Spoiler) -> None:
         jetpacRequiredMedals = medalsToBePlaced[: spoiler.settings.logical_medal_requirement]
         medalsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems)
         if medalsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(medalsUnplaced) + " logical medals.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: LM-" + str(medalsUnplaced))
         # The remaining medals can be placed randomly
         medalsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, medalsToBePlaced[spoiler.settings.logical_medal_requirement :], medalAssumedItems)
         if medalsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(medalsUnplaced) + " random medals.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: RM-" + str(medalsUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Banana Medals")
     # Then place Fairies
@@ -1889,11 +1893,11 @@ def Fill(spoiler: Spoiler) -> None:
         rarewareRequiredFairies = fairiesToBePlaced[: spoiler.settings.logical_fairy_requirement]
         fairyUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems)
         if fairyUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(fairyUnplaced) + " logical fairies.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: LF-" + str(fairyUnplaced))
         # The remaining fairies can be placed randomly
         fairyUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, fairiesToBePlaced[spoiler.settings.logical_fairy_requirement :], fairyAssumedItems)
         if fairyUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(fairyUnplaced) + " random Fairies.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: RF-" + str(fairyUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Fairies")
     # Then fill remaining locations with GBs
@@ -1913,7 +1917,7 @@ def Fill(spoiler: Spoiler) -> None:
             preplaced_items.remove(item)
         gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, gbsToBePlaced, [])
         if gbsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(gbsUnplaced) + " GBs.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: GB-" + str(gbsUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "GBs")
     if Types.ToughBanana in spoiler.settings.shuffled_location_types:
@@ -1925,7 +1929,7 @@ def Fill(spoiler: Spoiler) -> None:
                 toughGbsToBePlaced.remove(item)
         gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, toughGbsToBePlaced, [])
         if gbsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(gbsUnplaced) + " tough GBs.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: TB-" + str(gbsUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Place Hints
@@ -1938,7 +1942,7 @@ def Fill(spoiler: Spoiler) -> None:
                 hintItemsToBePlaced.remove(item)
         hintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, hintItemsToBePlaced, [])
         if hintsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(hintsUnplaced) + " Hints.")
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: HN-" + str(hintsUnplaced))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Fill in fake items
@@ -2617,6 +2621,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         coloredBananaCounts.append(spoiler.LogicVariables.ColoredBananas[thisLevel])
         # Calculate the available quantity of items for the B. Locker
         accessibleItems = spoiler.LogicVariables.ItemCounts()
+        # Calculate the next level's B. Locker value based on what's available (if there is a next level)
         if level < 8:
             # In Chaos B. Lockers, we should try our best to avoid a 0
             if settings.chaos_blockers and accessibleItems[blocker_item_projection[level]] == 0:
@@ -2658,12 +2663,12 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         ]
         ownedMoves[thisLevel] = accessibleMoves
     settings.BLockerEntryCount = blocker_value_projection
-    # Without Chaos B. Lockers, Helm is unchanged from what was generated earlier
+    # Without Chaos B. Lockers, the last B. Locker is unchanged from what was generated earlier
     if not settings.chaos_blockers:
-        settings.BLockerEntryCount[GetLevelShuffledToIndex(7)] = settings.blocker_7
-    # With Chaos B. Lockers, we give Helm a the maximum value for that item proportional to the chaos ratio input
+        settings.BLockerEntryCount[7] = settings.blocker_7
+    # With Chaos B. Lockers, we give the last level a the maximum value for that item proportional to the chaos ratio input
     else:
-        settings.BLockerEntryCount[GetLevelShuffledToIndex(7)] = ceil(settings.chaos_ratio * settings.blocker_limits[blocker_item_projection[7]])
+        settings.BLockerEntryCount[7] = ceil(settings.chaos_ratio * settings.blocker_limits[blocker_item_projection[7]])
         settings.BLockerEntryItems = blocker_item_projection
     # Prevent scenario where B. Lockers randomize to not-always-increasing values
     if settings.randomize_blocker_required_amounts:

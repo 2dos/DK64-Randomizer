@@ -78,7 +78,7 @@ def PlaceConstants(spoiler):
     if settings.key_8_helm:
         helm_key = getHelmKey(spoiler.settings)
         if helm_key in KeysToPlace(spoiler.settings, excludeHelmKey=False):
-            spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, getHelmKey(spoiler.settings))
+            spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, helm_key)
         else:
             spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.NoItem)
         # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset,
