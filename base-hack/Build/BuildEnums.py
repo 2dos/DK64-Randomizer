@@ -852,6 +852,20 @@ class ExtraTextures(IntEnum):
     ShellQMark = auto()
     RocketTop = auto()
     BlastTop = auto()
+    Anniv25Sticker = auto()
+    Anniv25Barrel = auto()
+    BeanSpin01 = auto()
+    BeanSpin02 = auto()
+    BeanSpin03 = auto()
+    BeanSpin04 = auto()
+    BeanSpin05 = auto()
+    BeanSpin06 = auto()
+    BeanSpin07 = auto()
+    BeanSpin08 = auto()
+    BeanSpin09 = auto()
+    BeanSpin10 = auto()
+    BeanSpin11 = auto()
+    BeanSpin12 = auto()
 
 
 class MoveTypes(IntEnum):

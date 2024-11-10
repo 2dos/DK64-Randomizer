@@ -2559,6 +2559,7 @@ CustomLocations = {
             max_size=48,
             logic_region=Regions.LighthouseSnideAlcove,
             group=1,
+            banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,

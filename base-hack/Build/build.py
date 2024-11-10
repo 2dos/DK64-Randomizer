@@ -23,7 +23,7 @@ from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, imageToMinMap
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
@@ -65,6 +65,8 @@ generateSprintSwitch()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
+
+imageToMinMap("assets/displays/25y.png")
 
 ROM_DATA_OFFSET = 0x1FED020
 
@@ -1081,6 +1083,36 @@ for barrel_dupe in (ExtraTextures.RocketTop, ExtraTextures.BlastTop):
         )
     )
 
+file_dict.extend(
+    [
+        File(
+            name="25 year GB Sticker",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.Anniv25Sticker),
+            source_file="assets/displays/25y_mipped.png",
+            texture_format=TextureFormat.RGBA5551,
+        ),
+        File(
+            name="25 year Barrel",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.Anniv25Barrel),
+            source_file="assets/displays/y25_small.png",
+            texture_format=TextureFormat.RGBA32,
+        ),
+    ]
+)
+
+for x in range(12):
+    file_dict.append(
+        File(
+            name=f"Bean Spin Frame {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.BeanSpin01 + x),
+            source_file=f"assets/bean_spin/f{x + 1}a_64_32.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
+
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
     0xE8D: [(43, 32), "checkered"],  # DK Tie Hang
@@ -1175,6 +1207,8 @@ colorblind_changes = [
     [0xA53, 0xA53],  # Dolphin Painting
     [0xA46, 0xA46],  # Candy Poster
     [0x1237, 0x1241],  # Ice Tomato
+    [0x1266, 0x1266],  # GB Sticker (Actor - Size 0xAB8)
+    [0xB7D, 0xB7D],  # GB Sticker (OM2 - Size 0xAA0)
 ]
 
 file_dict.append(
@@ -1506,7 +1540,7 @@ text_files = (
     TextChange("Main Menu", 0, "menu_text.bin"),
     TextChange("Race Positions", 0, ""),
     TextChange("Move Names", 0x2000, "move_names.bin"),  # Expanded for the Krusha move names feature
-    TextChange("Fairy Queen Rareware Door", 0, "fairy_rw_text.bin"),
+    TextChange("Fairy Queen Rareware Door", 0x800, "fairy_rw_text.bin"),
     TextChange("Wrinkly", 0x2800, ""),
     TextChange("Snide's Bonus Games", 0, ""),
     TextChange("Hint Regions", 0, "hint_region_text.bin"),
@@ -2039,6 +2073,8 @@ with open(newROMName, "r+b") as fh:
         "fool_overlay",
         "qmark32",
         "win_con_logo",
+        "25y_mipped",
+        "y25_small",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -2047,6 +2083,8 @@ with open(newROMName, "r+b") as fh:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
+    for x in range(12):
+        other_remove.append(f"bean_spin/f{x + 1}a_64_32.png")
     other_remove.append("file_screen/tracker.png")
     for x in other_remove:
         pth = f"assets/{x}"

@@ -351,6 +351,13 @@ def updateSpawnerFiles(pre: str = ""):
         os.remove("temp.bin")
 
 
+LANKY_BALLOON_POINTS = [
+    [771, 105, 902],
+    [698, 197, 774],
+    [828, 150, 637],
+]
+
+
 def updatePathFiles(pre: str = ""):
     """Update path files so that the boot follows the correct path."""
     with open(f"{pre}{ROMName}", "rb") as fh:
@@ -387,6 +394,8 @@ def updatePathFiles(pre: str = ""):
                 fg.seek(path_start + path_size)
         with open(f"path_{m.folder}.bin", "wb") as fg:
             new_path_count = path_count + 1
+            if m.map_index == Maps.KRoolLanky:
+                new_path_count += 1
             fg.write(new_path_count.to_bytes(2, "big"))
             for k in local_paths:
                 fg.write(k)
@@ -395,5 +404,16 @@ def updatePathFiles(pre: str = ""):
                 new_path_index += 1
             fg.write(new_path_index.to_bytes(2, "big"))
             fg.write(boot_path[2:])
+            if m.map_index == Maps.KRoolLanky:
+                new_path_index += 1
+                fg.write(new_path_index.to_bytes(2, "big"))
+                fg.write(len(LANKY_BALLOON_POINTS).to_bytes(2, "big"))
+                fg.write((0).to_bytes(2, "big"))
+                for k in LANKY_BALLOON_POINTS:
+                    fg.write((20).to_bytes(2, "big"))
+                    fg.write(k[0].to_bytes(2, "big"))
+                    fg.write(k[1].to_bytes(2, "big"))
+                    fg.write(k[2].to_bytes(2, "big"))
+                    fg.write((0x0100).to_bytes(2, "big"))
     if os.path.exists("temp.bin"):
         os.remove("temp.bin")

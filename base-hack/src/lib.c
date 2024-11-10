@@ -1083,8 +1083,21 @@ sprite_data_struct bean_sprite = {
 	.table = 1,
 	.width = 64,
 	.height = 32,
-	.image_count = 1,
-	.images = {6020},
+	.image_count = 12,
+	.images = {
+		BEANSPIN_SPRITE_START + 0,
+		BEANSPIN_SPRITE_START + 1,
+		BEANSPIN_SPRITE_START + 2,
+		BEANSPIN_SPRITE_START + 3,
+		BEANSPIN_SPRITE_START + 4,
+		BEANSPIN_SPRITE_START + 5,
+		BEANSPIN_SPRITE_START + 6,
+		BEANSPIN_SPRITE_START + 7,
+		BEANSPIN_SPRITE_START + 8,
+		BEANSPIN_SPRITE_START + 9,
+		BEANSPIN_SPRITE_START + 10,
+		BEANSPIN_SPRITE_START + 11,
+	},
 };
 
 sprite_data_struct pearl_sprite = {

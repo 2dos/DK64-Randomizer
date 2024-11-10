@@ -432,7 +432,7 @@ static short stalactite_spawn_bans[] = {
     0x88, // Exiting Portal
 };
 
-void* spawnStalactite(short actor, int x, int y, int z, int unk0, int unk1, int unk2, void* unk3) {
+void* spawnStalactite(short actor, float x, float y, float z, int unk0, int unk1, int unk2, void* unk3) {
     if (ObjectModel2Timer < 90) { // Prevent 
         return (void*)0;
     }
@@ -442,4 +442,57 @@ void* spawnStalactite(short actor, int x, int y, int z, int unk0, int unk1, int 
         }
     }
     return spawnActorSpawnerContainer(actor, x, y, z, unk0, unk1, unk2, unk3);
+}
+
+typedef struct balloon_data {
+    /* 0x000 */ int path;
+    /* 0x004 */ int speed;
+} balloon_data;
+
+static float pop_x;
+static float pop_z;
+static int pop_timer;
+
+void spawnKRoolLankyBalloon(void) {
+    balloon_data data = {.path = 1, .speed = 5};
+    spawnActorSpawnerContainer(147, 796.0f, 106.0f, 745.0f, 0, 0x3F000000, 0, &data);
+}
+
+void popExistingBalloon(void) {
+    pop_x = CurrentActorPointer_0->xPos;
+    pop_z = CurrentActorPointer_0->zPos;
+    pop_timer = 150;
+    sendActorSignal(3, 1, 0x2B, 0, 0);
+    spawnKRoolLankyBalloon();
+}
+
+void handleKRoolDirecting(void) {
+    int control_state = CurrentActorPointer_0->control_state;
+    if (control_state == 0x2B) {
+        float dx = CurrentActorPointer_0->xPos - pop_x;
+        float dz = CurrentActorPointer_0->zPos - pop_z;
+        float dxz = (dx * dx) + (dz * dz);
+        if (pop_timer > 0) {
+            pop_timer--;
+        }
+        if ((dxz < 400) || (pop_timer == 1)) {
+            // Within 20 units, or enough time has passed that we need to do an escape
+            disappearPeel(0);
+            CurrentActorPointer_0->control_state = 0x42;
+            CurrentActorPointer_0->control_state_progress = 0;
+            resetLankyKR();
+        }
+    }
+    generalActorHandle(0x23, pop_x, pop_z, 0, 0.0f);
+}
+
+typedef struct KRoolLanky178 {
+    /* 0x000 */ char pad_00[0x14];
+    /* 0x014 */ char hits;
+} KRoolLanky178;
+
+void incHitCounter(void* actor, int val) {
+    setActorSpeed(actor, val);
+    KRoolLanky178* aad178 = CurrentActorPointer_0->paad2;
+    aad178->hits++; 
 }

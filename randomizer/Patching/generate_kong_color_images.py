@@ -6,20 +6,7 @@ import math
 import js
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import PaletteFillType
-from randomizer.Patching.LibImage import TextureFormat
-
-
-def convertRGBAToBytearray(rgba_lst):
-    """Convert RGBA list with 4 items (r,g,b,a) to a two-byte array in RGBA5551 format."""
-    twobyte = (rgba_lst[0] << 11) | (rgba_lst[1] << 6) | (rgba_lst[2] << 1) | (rgba_lst[3] & 1)
-    lower = twobyte % 256
-    upper = int(twobyte / 256) % 256
-    return [upper, lower]
-
-
-def clampRGBA(n):
-    """Restricts input to integer value between 0 and 255."""
-    return math.floor(max(0, min(n, 255)))
+from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA
 
 
 def patchColorTranspose(name, x, y, patch_img, target_color):
