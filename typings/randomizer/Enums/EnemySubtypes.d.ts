@@ -1,7 +1,7 @@
 export enum EnemySubtype {
-    GroundSimple = 0,
-    GroundBeefy = 1,
-    Air = 2,
-    Water = 3,
-    NoType = 4,
+    GroundSimple = 1,
+    GroundBeefy = 2,
+    Air = 3,
+    Water = 4,
+    NoType = 5,
 }

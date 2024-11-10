@@ -18,14 +18,14 @@ class BigHeadMode(IntEnum):
     random = 3
 
 class CBRando(IntEnum):
-    off = 0
-    on = 1
-    on_with_isles = 2
+    off = 1
+    on = 2
+    on_with_isles = 3
 
 class CharacterColors(IntEnum):
-    vanilla = 0
-    randomized = 1
-    custom = 2
+    vanilla = 1
+    randomized = 2
+    custom = 3
 
 class ColorblindMode(IntEnum):
     off = 0
@@ -79,10 +79,10 @@ class FasterChecksSelected(IntEnum):
     arcade = 15
 
 class FillAlgorithm(IntEnum):
-    forward = 0
-    assumed = 1
-    random = 2
-    careful_random = 3
+    forward = 1
+    assumed = 2
+    random = 3
+    careful_random = 4
 
 class FreeTradeSetting(IntEnum):
     none = 0
@@ -90,16 +90,16 @@ class FreeTradeSetting(IntEnum):
     major_collectibles = 2
 
 class FungiTimeSetting(IntEnum):
-    day = 0
-    night = 1
-    random = 2
-    dusk = 3
-    progressive = 4
+    day = 1
+    night = 2
+    random = 3
+    dusk = 4
+    progressive = 5
 
 class GalleonWaterSetting(IntEnum):
-    lowered = 0
-    raised = 1
-    random = 2
+    lowered = 1
+    raised = 2
+    random = 3
 
 class ClimbingStatus(IntEnum):
     normal = 0
@@ -156,6 +156,7 @@ class HardBossesSelected(IntEnum):
     pufftoss_star_raised = 4
     kut_out_phase_rando = 5
     k_rool_toes_rando = 6
+    beta_lanky_phase = 7
 
 class HardModeSelected(IntEnum):
     null_option_0 = 1
@@ -203,9 +204,9 @@ class KasplatRandoSetting(IntEnum):
     location_shuffle = 2
 
 class RandomModels(IntEnum):
-    off = 0
-    random = 1
-    extreme = 2
+    off = 1
+    random = 2
+    extreme = 3
 
 class KrushaUi(IntEnum):
     no_slot = 0
@@ -244,10 +245,10 @@ class MicrohintsEnabled(IntEnum):
     all = 2
 
 class MinigameBarrels(IntEnum):
-    normal = 0
-    skip = 1
-    random = 2
-    selected = 3
+    normal = 1
+    skip = 2
+    random = 3
+    selected = 4
 
 class MinigamesListSelected(IntEnum):
     batty_barrel_bandit = 1
@@ -357,16 +358,16 @@ class ShuffleLoadingZones(IntEnum):
     all = 2
 
 class ShufflePortLocations(IntEnum):
-    off = 0
-    vanilla_only = 1
-    half_vanilla = 2
-    on = 3
+    off = 1
+    vanilla_only = 2
+    half_vanilla = 3
+    on = 4
 
 class SlamRequirement(IntEnum):
-    green = 0
-    blue = 1
-    red = 2
-    random = 3
+    green = 1
+    blue = 2
+    red = 3
+    random = 4
 
 class SoundType(IntEnum):
     stereo = 0
@@ -613,84 +614,84 @@ class SettingsStringEnum(IntEnum):
     randomize_enemy_sizes = 187
 
 class SettingsStringDataType(IntEnum):
-    bool = 0
-    int4 = 1
-    int8 = 2
-    int16 = 3
-    var_int = 4
-    str = 5
-    list = 6
-    u16 = 7
+    bool = 1
+    int4 = 2
+    int8 = 3
+    int16 = 4
+    var_int = 5
+    str = 6
+    list = 7
+    u16 = 8
 
 SettingsMap: dict = {
-    "activate_all_bananaports": ActivateAllBananaports,
-    "bananaport_placement_rando": ShufflePortLocations,
-    "bananaport_rando": BananaportRando,
-    "big_head_mode": BigHeadMode,
-    "bonus_barrels": MinigameBarrels,
-    "cb_rando": CBRando,
-    "chunky_colors": CharacterColors,
-    "coin_door_item": HelmDoorItem,
-    "colorblind_mode": ColorblindMode,
-    "crown_door_item": HelmDoorItem,
-    "crown_enemy_rando": CrownEnemyRando,
-    "damage_amount": DamageAmount,
-    "diddy_colors": CharacterColors,
-    "dk_colors": CharacterColors,
-    "dpad_display": DPadDisplays,
-    "enemies_selected": Enemies,
-    "enguarde_colors": CharacterColors,
-    "excluded_songs_selected": ExcludedSongs,
-    "free_trade_setting": FreeTradeSetting,
-    "fungi_time": FungiTimeSetting,
-    "galleon_water": GalleonWaterSetting,
-    "gb_colors": CharacterColors,
-    "glitches_selected": GlitchesSelected,
-    "hard_bosses_selected": HardBossesSelected,
-    "hard_mode_selected": HardModeSelected,
-    "helm_barrels": MinigameBarrels,
-    "helm_room_bonus_count": HelmBonuses,
-    "helm_setting": HelmSetting,
-    "ice_trap_frequency": IceTrapFrequency,
-    "item_rando_list_selected": ItemRandoListSelected,
-    "kasplat_rando_setting": KasplatRandoSetting,
-    "krusha_ui": KrushaUi,
-    "lanky_colors": CharacterColors,
-    "level_randomization": LevelRandomization,
-    "logic_type": LogicType,
-    "microhints_enabled": MicrohintsEnabled,
-    "minigames_list_selected": MinigamesListSelected,
-    "misc_changes_selected": MiscChangesSelected,
-    "more_cutscene_skips": ExtraCutsceneSkips,
-    "move_rando": MoveRando,
-    "music_filtering_selected": MusicFilters,
-    "rambi_colors": CharacterColors,
-    "random_models": RandomModels,
-    "random_prices": RandomPrices,
-    "shockwave_status": ShockwaveStatus,
-    "shuffle_loading_zones": ShuffleLoadingZones,
-    "sound_type": SoundType,
-    "starting_keys_list_selected": Items,
-    "starting_move_list_selected": Items,
-    "switchsanity": SwitchsanityLevel,
-    "random_starting_move_list_selected": Items,
-    "tiny_colors": CharacterColors,
-    "training_barrels": TrainingBarrels,
-    "warp_level_list_selected": Maps,
-    "win_condition": WinCondition,
-    "win_condition_item": WinConditionComplex,
-    "wrinkly_hints": WrinklyHints,
-    "spoiler_hints": SpoilerHints,
-    "starting_kong": Kongs,
-    "remove_barriers_selected": RemovedBarriersSelected,
-    "faster_checks_selected": FasterChecksSelected,
-    "kong_model_dk": KongModels,
-    "kong_model_diddy": KongModels,
-    "kong_model_lanky": KongModels,
-    "kong_model_tiny": KongModels,
-    "kong_model_chunky": KongModels,
-    "chunky_phase_slam_req": SlamRequirement,
-    "puzzle_rando_difficulty": PuzzleRando,
+    'activate_all_bananaports': ActivateAllBananaports,
+    'bananaport_placement_rando': ShufflePortLocations,
+    'bananaport_rando': BananaportRando,
+    'big_head_mode': BigHeadMode,
+    'bonus_barrels': MinigameBarrels,
+    'cb_rando': CBRando,
+    'chunky_colors': CharacterColors,
+    'coin_door_item': HelmDoorItem,
+    'colorblind_mode': ColorblindMode,
+    'crown_door_item': HelmDoorItem,
+    'crown_enemy_rando': CrownEnemyRando,
+    'damage_amount': DamageAmount,
+    'diddy_colors': CharacterColors,
+    'dk_colors': CharacterColors,
+    'dpad_display': DPadDisplays,
+    'enemies_selected': Enemies,
+    'enguarde_colors': CharacterColors,
+    'excluded_songs_selected': ExcludedSongs,
+    'free_trade_setting': FreeTradeSetting,
+    'fungi_time': FungiTimeSetting,
+    'galleon_water': GalleonWaterSetting,
+    'gb_colors': CharacterColors,
+    'glitches_selected': GlitchesSelected,
+    'hard_bosses_selected': HardBossesSelected,
+    'hard_mode_selected': HardModeSelected,
+    'helm_barrels': MinigameBarrels,
+    'helm_room_bonus_count': HelmBonuses,
+    'helm_setting': HelmSetting,
+    'ice_trap_frequency': IceTrapFrequency,
+    'item_rando_list_selected': ItemRandoListSelected,
+    'kasplat_rando_setting': KasplatRandoSetting,
+    'krusha_ui': KrushaUi,
+    'lanky_colors': CharacterColors,
+    'level_randomization': LevelRandomization,
+    'logic_type': LogicType,
+    'microhints_enabled': MicrohintsEnabled,
+    'minigames_list_selected': MinigamesListSelected,
+    'misc_changes_selected': MiscChangesSelected,
+    'more_cutscene_skips': ExtraCutsceneSkips,
+    'move_rando': MoveRando,
+    'music_filtering_selected': MusicFilters,
+    'rambi_colors': CharacterColors,
+    'random_models': RandomModels,
+    'random_prices': RandomPrices,
+    'shockwave_status': ShockwaveStatus,
+    'shuffle_loading_zones': ShuffleLoadingZones,
+    'sound_type': SoundType,
+    'starting_keys_list_selected': Items,
+    'starting_move_list_selected': Items,
+    'switchsanity': SwitchsanityLevel,
+    'random_starting_move_list_selected': Items,
+    'tiny_colors': CharacterColors,
+    'training_barrels': TrainingBarrels,
+    'warp_level_list_selected': Maps,
+    'win_condition': WinCondition,
+    'win_condition_item': WinConditionComplex,
+    'wrinkly_hints': WrinklyHints,
+    'spoiler_hints': SpoilerHints,
+    'starting_kong': Kongs,
+    'remove_barriers_selected': RemovedBarriersSelected,
+    'faster_checks_selected': FasterChecksSelected,
+    'kong_model_dk': KongModels,
+    'kong_model_diddy': KongModels,
+    'kong_model_lanky': KongModels,
+    'kong_model_tiny': KongModels,
+    'kong_model_chunky': KongModels,
+    'chunky_phase_slam_req': SlamRequirement,
+    'puzzle_rando_difficulty': PuzzleRando,
 }
 
 SettingsStringTypeMap: dict = {
@@ -900,35 +901,35 @@ SettingsStringListTypeMap: dict = {
 }
 
 SettingsStringIntRangeMap: dict = {
-    SettingsStringEnum.blocker_0: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_1: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_2: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_3: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_4: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_5: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_6: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_7: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_text: {"max": 201, "min": 0},
-    SettingsStringEnum.coin_door_item_count: {"max": 201, "min": 0},
-    SettingsStringEnum.crown_door_item_count: {"max": 201, "min": 0},
-    SettingsStringEnum.helm_phase_count: {"max": 5, "min": 0},
-    SettingsStringEnum.krool_key_count: {"max": 8, "min": 0},
-    SettingsStringEnum.krool_phase_count: {"max": 5, "min": 0},
-    SettingsStringEnum.medal_cb_req: {"max": 100, "min": 0},
-    SettingsStringEnum.medal_requirement: {"max": 40, "min": 0},
-    SettingsStringEnum.mermaid_gb_pearls: {"max": 5, "min": 0},
-    SettingsStringEnum.rareware_gb_fairies: {"max": 20, "min": 0},
-    SettingsStringEnum.starting_kongs_count: {"max": 5, "min": 0},
-    SettingsStringEnum.starting_moves_count: {"max": 40, "min": 0},
-    SettingsStringEnum.troff_0: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_1: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_2: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_3: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_4: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_5: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_6: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_7: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_text: {"max": 500, "min": 0},
-    SettingsStringEnum.progressive_hint_text: {"max": 201, "min": 0},
-    SettingsStringEnum.win_condition_count: {"max": 201, "min": 0},
+    SettingsStringEnum.blocker_0: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_1: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_2: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_3: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_4: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_5: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_6: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_7: {'max': 201, 'min': 0},
+    SettingsStringEnum.blocker_text: {'max': 201, 'min': 0},
+    SettingsStringEnum.coin_door_item_count: {'max': 201, 'min': 0},
+    SettingsStringEnum.crown_door_item_count: {'max': 201, 'min': 0},
+    SettingsStringEnum.helm_phase_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.krool_key_count: {'max': 8, 'min': 0},
+    SettingsStringEnum.krool_phase_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.medal_cb_req: {'max': 100, 'min': 0},
+    SettingsStringEnum.medal_requirement: {'max': 40, 'min': 0},
+    SettingsStringEnum.mermaid_gb_pearls: {'max': 5, 'min': 0},
+    SettingsStringEnum.rareware_gb_fairies: {'max': 20, 'min': 0},
+    SettingsStringEnum.starting_kongs_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.starting_moves_count: {'max': 40, 'min': 0},
+    SettingsStringEnum.troff_0: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_1: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_2: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_3: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_4: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_5: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_6: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_7: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_text: {'max': 500, 'min': 0},
+    SettingsStringEnum.progressive_hint_text: {'max': 201, 'min': 0},
+    SettingsStringEnum.win_condition_count: {'max': 201, 'min': 0},
 }

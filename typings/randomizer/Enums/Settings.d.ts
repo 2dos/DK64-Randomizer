@@ -19,15 +19,15 @@ export enum BigHeadMode {
 }
 
 export enum CBRando {
-    off = 0,
-    on = 1,
-    on_with_isles = 2,
+    off = 1,
+    on = 2,
+    on_with_isles = 3,
 }
 
 export enum CharacterColors {
-    vanilla = 0,
-    randomized = 1,
-    custom = 2,
+    vanilla = 1,
+    randomized = 2,
+    custom = 3,
 }
 
 export enum ColorblindMode {
@@ -89,10 +89,10 @@ export enum FasterChecksSelected {
 }
 
 export enum FillAlgorithm {
-    forward = 0,
-    assumed = 1,
-    random = 2,
-    careful_random = 3,
+    forward = 1,
+    assumed = 2,
+    random = 3,
+    careful_random = 4,
 }
 
 export enum FreeTradeSetting {
@@ -102,17 +102,17 @@ export enum FreeTradeSetting {
 }
 
 export enum FungiTimeSetting {
-    day = 0,
-    night = 1,
-    random = 2,
-    dusk = 3,
-    progressive = 4,
+    day = 1,
+    night = 2,
+    random = 3,
+    dusk = 4,
+    progressive = 5,
 }
 
 export enum GalleonWaterSetting {
-    lowered = 0,
-    raised = 1,
-    random = 2,
+    lowered = 1,
+    raised = 2,
+    random = 3,
 }
 
 export enum ClimbingStatus {
@@ -175,6 +175,7 @@ export enum HardBossesSelected {
     pufftoss_star_raised = 4,
     kut_out_phase_rando = 5,
     k_rool_toes_rando = 6,
+    beta_lanky_phase = 7,
 }
 
 export enum HardModeSelected {
@@ -227,9 +228,9 @@ export enum KasplatRandoSetting {
 }
 
 export enum RandomModels {
-    off = 0,
-    random = 1,
-    extreme = 2,
+    off = 1,
+    random = 2,
+    extreme = 3,
 }
 
 export enum KrushaUi {
@@ -274,10 +275,10 @@ export enum MicrohintsEnabled {
 }
 
 export enum MinigameBarrels {
-    normal = 0,
-    skip = 1,
-    random = 2,
-    selected = 3,
+    normal = 1,
+    skip = 2,
+    random = 3,
+    selected = 4,
 }
 
 export enum MinigamesListSelected {
@@ -397,17 +398,17 @@ export enum ShuffleLoadingZones {
 }
 
 export enum ShufflePortLocations {
-    off = 0,
-    vanilla_only = 1,
-    half_vanilla = 2,
-    on = 3,
+    off = 1,
+    vanilla_only = 2,
+    half_vanilla = 3,
+    on = 4,
 }
 
 export enum SlamRequirement {
-    green = 0,
-    blue = 1,
-    red = 2,
-    random = 3,
+    green = 1,
+    blue = 2,
+    red = 3,
+    random = 4,
 }
 
 export enum SoundType {
@@ -663,14 +664,14 @@ export enum SettingsStringEnum {
 }
 
 export enum SettingsStringDataType {
-    bool = 0,
-    int4 = 1,
-    int8 = 2,
-    int16 = 3,
-    var_int = 4,
-    str = 5,
-    list = 6,
-    u16 = 7,
+    bool = 1,
+    int4 = 2,
+    int8 = 3,
+    int16 = 4,
+    var_int = 5,
+    str = 6,
+    list = 7,
+    u16 = 8,
 }
 
 export const SettingsMap = {

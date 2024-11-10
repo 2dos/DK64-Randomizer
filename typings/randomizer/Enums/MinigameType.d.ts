@@ -1,7 +1,7 @@
 export enum MinigameType {
-    NoGame = 0,
-    BonusBarrel = 1,
-    HelmBarrelFirst = 2,
-    HelmBarrelSecond = 3,
-    TrainingBarrel = 4,
+    NoGame = 1,
+    BonusBarrel = 2,
+    HelmBarrelFirst = 3,
+    HelmBarrelSecond = 4,
+    TrainingBarrel = 5,
 }

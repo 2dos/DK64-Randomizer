@@ -1,6 +1,6 @@
 export enum DoorType {
-    null = 0,
-    wrinkly = 1,
-    boss = 2,
-    dk_portal = 3,
+    null = 1,
+    wrinkly = 2,
+    boss = 3,
+    dk_portal = 4,
 }

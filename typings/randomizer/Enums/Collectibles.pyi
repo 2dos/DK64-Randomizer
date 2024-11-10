@@ -1,7 +1,7 @@
 from enum import IntEnum
 
 class Collectibles(IntEnum):
-    banana = 0
-    bunch = 1
-    balloon = 2
-    coin = 3
+    banana = 1
+    bunch = 2
+    balloon = 3
+    coin = 4
