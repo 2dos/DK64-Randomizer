@@ -6,7 +6,10 @@ let musicToggles = Object.keys(MusicSelectionPanel).map(category => category.rep
 musicToggles.forEach(toggle => {
     document.getElementById(`${toggle}_collapse_toggle`).addEventListener("click", toggle_collapsible_container);
 });
-
+// Utility function to zip two arrays together.
+function zipArr(arr1, arr2) {
+  return arr1.map((value, index) => [value, arr2[index]]);
+}
 function toggle_collapsible_container(evt) {
     /**
      * Show or hide a collapsible container.
@@ -175,13 +178,6 @@ function validate_music_file(fileContents) {
   }
 }
 
-
-
-
-// Utility function to zip two arrays together.
-function zipArr(arr1, arr2) {
-  return arr1.map((value, index) => [value, arr2[index]]);
-}
 
 function is_song_category_randomized(category) {
   /**
