@@ -40,22 +40,7 @@ async function generate_previous_seed(event) {
             romElement.classList.add("is-invalid");
         }
     } else {
-        // Show progress update
-        await ProgressBar().update_progress(0, "Loading Previous seed and applying data.");
-        
-        // Apply the conversion
-        window.apply_conversion();
-
-        // Additional logic for lanky_from_history can be added here
-        await setup_pyodide();
-        await pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
-try:
-    register_hook("/")  # type: ignore  # noqa
-except Exception:
-    pass
-from randomizer.Patching.ApplyLocal import patching_response
-import js
-await patching_response(str(js.get_previous_seed_data()), True, js.document.getElementById("load_patch_file").checked, True)`)
+        await apply_patch(get_previous_seed_data(), true)
     }
 }
 
