@@ -63,7 +63,7 @@ def getAllAssignedVanillaSongs(settings: Settings) -> dict:
 
     The keys and values are both of type Songs.
     """
-    return {Songs(int(k)): Songs(v) for k, v in settings.music_selection_dict["vanilla"].items()}
+    return {Songs[k]: Songs[v] for k, v in settings.music_selection_dict["vanilla"].items()}
 
 
 def getAllAssignedCustomSongs(settings: Settings) -> dict:
@@ -71,7 +71,7 @@ def getAllAssignedCustomSongs(settings: Settings) -> dict:
 
     The keys are of type Songs, and the values are strings.
     """
-    return {Songs(int(k)): v for k, v in settings.music_selection_dict["custom"].items()}
+    return {Songs[k]: v for k, v in settings.music_selection_dict["custom"].items()}
 
 
 def getVanillaSongAssignedToLocation(settings: Settings, location: Songs) -> Songs:
