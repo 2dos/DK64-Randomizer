@@ -6,7 +6,10 @@ let musicToggles = Object.keys(MusicSelectionPanel).map(category => category.rep
 musicToggles.forEach(toggle => {
     document.getElementById(`${toggle}_collapse_toggle`).addEventListener("click", toggle_collapsible_container);
 });
-
+// Utility function to zip two arrays together.
+function zipArr(arr1, arr2) {
+  return arr1.map((value, index) => [value, arr2[index]]);
+}
 function toggle_collapsible_container(evt) {
     /**
      * Show or hide a collapsible container.
@@ -88,16 +91,16 @@ function serialize_music_selections(form, for_file = false) {
         songs_map["vanilla"][location] = get_value(chosen_val);
       } else{
         // If this is a custom song, find and use the full string path.
-        let bgm_map = zip(cosmetic_truncated_names.bgm, cosmetic_names.bgm);
-        let major_map = zip(
+        let bgm_map = zipArr(cosmetic_truncated_names.bgm, cosmetic_names.bgm);
+        let major_map = zipArr(
           cosmetic_truncated_names.majoritems,
           cosmetic_names.majoritems
         );
-        let minor_map = zip(
+        let minor_map = zipArr(
           cosmetic_truncated_names.minoritems,
           cosmetic_names.minoritems
         );
-        let event_map = zip(
+        let event_map = zipArr(
           cosmetic_truncated_names.events,
           cosmetic_names.events
         );
@@ -175,13 +178,6 @@ function validate_music_file(fileContents) {
   }
 }
 
-
-
-
-// Utility function to zip two arrays together.
-function zip(arr1, arr2) {
-  return arr1.map((value, index) => [value, arr2[index]]);
-}
 
 function is_song_category_randomized(category) {
   /**
@@ -280,16 +276,16 @@ function get_custom_song_map() {
    * Return a map between song categories and their relevant lists.
    */
   return {
-    bgm: zip(cosmetic_names.bgm, cosmetic_truncated_names.bgm),
-    majoritems: zip(
+    bgm: zipArr(cosmetic_names.bgm, cosmetic_truncated_names.bgm),
+    majoritems: zipArr(
       cosmetic_names.majoritems,
       cosmetic_truncated_names.majoritems
     ),
-    minoritems: zip(
+    minoritems: zipArr(
       cosmetic_names.minoritems,
       cosmetic_truncated_names.minoritems
     ),
-    events: zip(cosmetic_names.events, cosmetic_truncated_names.events),
+    events: zipArr(cosmetic_names.events, cosmetic_truncated_names.events),
   };
 }
 
