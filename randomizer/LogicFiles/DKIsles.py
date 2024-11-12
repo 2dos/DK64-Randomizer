@@ -281,7 +281,8 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs or l.CanMoontail()),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.hasMoveSwitchsanity(Switches.IslesMonkeyport)),
-        TransitionFront(Regions.HideoutHelmLobby, lambda l: l.assumeLevel8Entry and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)), Transitions.IslesMainToHelmLobby, isGlitchTransition=True),
+        # This transition is to make the MP pad not on the path to everything in level 8 - the key requirement is covered in the KremIsleMouth region
+        TransitionFront(Regions.KremIsleMouth, lambda l: l.assumeLevel8Entry),
     ]),
 
     Regions.KremIsleBeyondLift: Region("Krem Isle Beyond Lift", HintRegion.KremIsles, Levels.DKIsles, False, None, [
@@ -311,7 +312,8 @@ LogicRegions = {
     Regions.KremIsleMouth: Region("Krem Isle Mouth", HintRegion.KremIsles, Levels.DKIsles, False, None, [], [], [
         # You fall through the mouth if the lobby hasn't been opened (if you used a glitch to get in or LZR)
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events), Transitions.IslesMainToHelmLobby),
-        TransitionFront(Regions.KremIsleTopLevel, lambda l: not l.assumeLevel8Entry and l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
+        # These next two transitions are only necessary in LZR, so the assumption of level entry necessary for level 8 (that is never applied in LZR) is safe here
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: not l.assumeLevel8Entry and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events))),
         # This fall could be a logical point of progression, but you have to surive the drop
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: not l.assumeLevel8Entry and l.CanSurviveFallDamage()),
         # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration.
