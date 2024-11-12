@@ -50,7 +50,7 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
         image_src = find_list_resources("img", "src", soup)
         script_src = find_list_resources("script", "src", soup)
         css_link = find_list_resources("link", "href", soup)
-        
+
         # Update HTML file links
         for link in [*css_link, *script_src, *image_src]:
             if "http://" in link or "https://" in link:
@@ -66,11 +66,11 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
             elif link.endswith(".js"):
                 # Local JavaScript file - append version query parameter
                 html = html.replace(link, f"{link}?v={version}")
-        
+
         # Update JavaScript blocks
         pattern = r'(\{ src: [\'"])(\.\/static\/js\/.*?\.js)([\'"], defer: true \})'
-        updated_html = re.sub(pattern, rf'\1\2?v={version}\3', html)
-        
+        updated_html = re.sub(pattern, rf"\1\2?v={version}\3", html)
+
         # Write the modified HTML content back to the file
         with open(f, "w") as writer:
             writer.write(updated_html)
