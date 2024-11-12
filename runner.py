@@ -517,8 +517,9 @@ def get_seed():
         file_name = hash
     else:
         return make_response(json.dumps({"error": "error"}), 205)
-    fullpath = path.normpath(path.join("generated_seeds/", str(file_name) + ".json"))
-    if not fullpath.startswith("generated_seeds/") and not fullpath.startswith("generated_seeds\\"):
+    base_path = path.abspath("generated_seeds/")
+    fullpath = path.normpath(path.join(base_path, str(file_name) + ".json"))
+    if not fullpath.startswith(base_path):
         raise Exception("not allowed")
     # Check if the file exists
     if path.isfile(fullpath):
