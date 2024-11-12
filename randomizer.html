@@ -712,7 +712,7 @@
                     await import('./static/js/PlandoUtils.js');
         
                     // Nunjucks configuration after PlandoUtils.js is loaded
-                    var env = nunjucks.configure('/templates', { autoescape: true, web: { useCache: true } });
+                    var env = nunjucks.configure('/templates', { autoescape: false, web: { useCache: true } });
         
                     // Use the imported functions from PlandoUtils
                     env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
