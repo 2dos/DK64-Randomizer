@@ -607,6 +607,7 @@ function load_databases() {
     try {
       var settingsdb = settingsdatabase.result;
       settingsdb.createObjectStore("saved_settings");
+      preset_select_changed("default")
     } catch {}
   };
   settingsdatabase.onsuccess = async function () {
@@ -1115,9 +1116,21 @@ function preset_select_changed(event) {
   const element = document.getElementById("presets");
   let presets = null;
 
-  for (const val of progression_presets) {
-    if (val.name === element.value) {
-      presets = val;
+  // if event is a string lets select the second option in the progressions_presets
+  if (typeof event === "string") {
+    for (const val of progression_presets) {
+      if (val.name === "Beginner Settings") {
+        presets = val;
+        break;
+      }
+    }
+  }
+  else{
+    for (const val of progression_presets) {
+      if (val.name === element.value) {
+        presets = val;
+        break;
+      }
     }
   }
 
