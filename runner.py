@@ -12,6 +12,7 @@ from datetime import datetime as Datetime
 from io import BytesIO
 from multiprocessing import Process, Queue
 from os import environ, listdir, makedirs, path, remove, walk
+from werkzeug.utils import secure_filename
 from queue import Empty
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -512,13 +513,10 @@ def get_seed():
     """Get the lanky for a seed."""
     # Get the hash from the query string.
     hash = request.args.get("hash")
-    # check if hash contains special characters not in an approved list.
-    if all(c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_=" for c in hash):
-        file_name = hash
-    else:
-        return make_response(json.dumps({"error": "error"}), 205)
+    # Sanitize the hash parameter
+    file_name = secure_filename(hash)
     fullpath = path.normpath(path.join("generated_seeds/", str(file_name) + ".json"))
-    if not fullpath.startswith("generated_seeds/") and not fullpath.startswith("generated_seeds\\"):
+    if not fullpath.startswith(path.normpath("generated_seeds/")):
         raise Exception("not allowed")
     # Check if the file exists
     if path.isfile(fullpath):
