@@ -496,15 +496,22 @@ document.getElementById("import_settings").addEventListener("click", async funct
                 }
 
                 const selector = document.getElementById(key);
-                // Pre clear all selections
-                for (let option of selector.options) {
-                    option.selected = false;
-                }
+
                 if (selector.tagName === "SELECT") {
+                    let MapName = SettingsMap[key];
+                    // Flip the attributes so the value is the key and the key is the value
+                    let flipped = {};
+                    for (let key in MapName) {
+                        flipped[MapName[key]] = key;
+                    }
+                    // Pre clear all selections
+                    for (let option of selector.options) {
+                        option.selected = false;
+                    }
                     settings[key].forEach(item => {
-                        let val = item - 1;
+                        // Find the selected option by the value of the option
                         for (let option of selector.options) {
-                            if (option.value === Object.keys(SettingsMap[key])[val]) {
+                            if (option.value === flipped[item]) {
                                 option.selected = true;
                             }
                         }
