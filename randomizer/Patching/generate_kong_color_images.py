@@ -6,20 +6,7 @@ import math
 import js
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import PaletteFillType
-from randomizer.Patching.LibImage import TextureFormat
-
-
-def convertRGBAToBytearray(rgba_lst):
-    """Convert RGBA list with 4 items (r,g,b,a) to a two-byte array in RGBA5551 format."""
-    twobyte = (rgba_lst[0] << 11) | (rgba_lst[1] << 6) | (rgba_lst[2] << 1) | (rgba_lst[3] & 1)
-    lower = twobyte % 256
-    upper = int(twobyte / 256) % 256
-    return [upper, lower]
-
-
-def clampRGBA(n):
-    """Restricts input to integer value between 0 and 255."""
-    return math.floor(max(0, min(n, 255)))
+from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA
 
 
 def patchColorTranspose(name, x, y, patch_img, target_color):
@@ -52,7 +39,11 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
                 if (100 < (target_color[0] << 3) < 150) and (100 < (target_color[1] << 3) < 150) and (100 < (target_color[2] << 3) < 150):
                     ir, ig, ib = 255, 255, 255
                 else:
-                    ir, ig, ib = (255 - (target_color[0] << 3)), (255 - (target_color[1] << 3)), (255 - (target_color[2] << 3))
+                    ir, ig, ib = (
+                        (255 - (target_color[0] << 3)),
+                        (255 - (target_color[1] << 3)),
+                        (255 - (target_color[2] << 3)),
+                    )
 
                 return (
                     clampRGBA(unyellowness * (target_color[0] << 3) + (1 - unyellowness) * ir) >> 3,
@@ -249,7 +240,17 @@ def convertColors(color_palettes):
                                     if pix_channel > 31:
                                         pix_channel = 31
                                 pix_rgba.append(pix_channel)
-                        sparkle_px = [[28, 5], [27, 10], [21, 11], [25, 14], [23, 15], [23, 16], [26, 18], [20, 19], [25, 25]]
+                        sparkle_px = [
+                            [28, 5],
+                            [27, 10],
+                            [21, 11],
+                            [25, 14],
+                            [23, 15],
+                            [23, 16],
+                            [26, 18],
+                            [20, 19],
+                            [25, 25],
+                        ]
                         for px in sparkle_px:
                             if px[0] == x and px[1] == y:
                                 pix_rgba = [0xFF, 0xFF, 0xFF, 1]

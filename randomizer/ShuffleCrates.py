@@ -187,7 +187,13 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, 
                 human_spoiler[level.name].append(meloncrate.name)
                 local_map_index = len([x for x in spoiler.meloncrate_placement if x["map"] == meloncrate.map])
                 spoiler.meloncrate_placement.append(
-                    {"name": meloncrate.name, "map": meloncrate.map, "MelonCrate": meloncrate, "level": level, "score": (meloncrate.map * 100) + local_map_index},
+                    {
+                        "name": meloncrate.name,
+                        "map": meloncrate.map,
+                        "MelonCrate": meloncrate,
+                        "level": level,
+                        "score": (meloncrate.map * 100) + local_map_index,
+                    },
                 )
                 area_meloncrate.remove(selected_crate)
                 break

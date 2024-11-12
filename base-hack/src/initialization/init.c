@@ -442,12 +442,10 @@ void quickInit(void) {
 	 * @brief Quick Initialization Process. Initializes Hack and, if fast boot is on, transitions to Win95 Screen
 	 */
 	initHack(1);
-	if (Rando.quality_of_life.fast_boot) {
-		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
-		CutsceneWillPlay = 0;
-		Gamemode = GAMEMODE_MAINMENU;
-		Mode = GAMEMODE_MAINMENU;
-	}
+	initiateTransitionFade(MAP_NFRTITLESCREEN, 0, GAMEMODE_MAINMENU);
+	CutsceneWillPlay = 0;
+	Gamemode = GAMEMODE_MAINMENU;
+	Mode = GAMEMODE_MAINMENU;
 }
 
 int balloon_path_pointers[PATH_CAP];

@@ -142,13 +142,6 @@ void cFuncLoop(void) {
 	}
 	handleSFXCache();
 	handleDPadFunctionality();
-	if (Rando.quality_of_life.fast_boot) {
-		if (Gamemode == GAMEMODE_DKTV) {
-			if (TransitionSpeed < 0) {
-				TransitionType = 1;
-			}
-		}
-	}
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
 	}
@@ -314,7 +307,13 @@ void earlyFrame(void) {
 		int loaded = *(char*)(0x807F01A6);
 		if ((loaded) || (ObjectModel2Timer > 800)) {
 			if (has_loaded == 0) {
-				initiateTransitionFade(MAP_MAINMENU, 0, 5);
+				maps map = MAP_DKRAP;
+				gamemodes mode = GAMEMODE_RAP;
+				if (Rando.quality_of_life.fast_boot) {
+					map = MAP_MAINMENU;
+					mode = GAMEMODE_MAINMENU;
+				}
+				initiateTransitionFade(map, 0, mode);
 				has_loaded = 1;
 			}
 		}

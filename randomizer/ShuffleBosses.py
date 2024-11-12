@@ -12,8 +12,22 @@ from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillExcepti
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected
 
-BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
-KRoolMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
+BossMapList = [
+    Maps.JapesBoss,
+    Maps.AztecBoss,
+    Maps.FactoryBoss,
+    Maps.GalleonBoss,
+    Maps.FungiBoss,
+    Maps.CavesBoss,
+    Maps.CastleBoss,
+]
+KRoolMaps = [
+    Maps.KroolDonkeyPhase,
+    Maps.KroolDiddyPhase,
+    Maps.KroolLankyPhase,
+    Maps.KroolTinyPhase,
+    Maps.KroolChunkyPhase,
+]
 
 
 def getBosses(settings) -> list:
@@ -86,7 +100,13 @@ def GetKongOptionsForBoss(boss_map: Maps, alt_mj_kongs: bool):
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.CastleBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-    elif boss_map in (Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase):
+    elif boss_map in (
+        Maps.KroolDonkeyPhase,
+        Maps.KroolDiddyPhase,
+        Maps.KroolLankyPhase,
+        Maps.KroolTinyPhase,
+        Maps.KroolChunkyPhase,
+    ):
         # Not possible right now to make any other kong beat another's phase, however, if we were to do so:
         # DK Phase - Make all kongs enter cannon barrels
         # Other phases - ????????
@@ -286,7 +306,9 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
             if Kongs.chunky in ownedKongs[level] and Items.HunkyChunky in ownedMoves[level]:
                 bossOptions[level].append(Maps.FungiBoss)
             # Lanky Phase also needs Lanky and Trombone
-            if spoiler.settings.krool_in_boss_pool and Kongs.lanky in ownedKongs[level] and Items.Trombone in ownedMoves[level]:
+            is_beta_lanky = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase)
+            required_additional_item_lankyphase = Items.Grape if is_beta_lanky else Items.Trombone
+            if spoiler.settings.krool_in_boss_pool and Kongs.lanky in ownedKongs[level] and required_additional_item_lankyphase in ownedMoves[level]:
                 bossOptions[level].append(Maps.KroolLankyPhase)
         # Mad Jack always requires a slam
         if Items.ProgressiveSlam in ownedMoves[level]:
@@ -404,7 +426,10 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
                 random.choice(
                     [
                         kong
-                        for kong in GetKongOptionsForBoss(Maps.FactoryBoss, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs))
+                        for kong in GetKongOptionsForBoss(
+                            Maps.FactoryBoss,
+                            HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs),
+                        )
                         if kong in bossOptions[Levels.FranticFactory]
                     ]
                 ),

@@ -213,7 +213,7 @@
 | Gloomy Galleon | In Front of Mermaid Palace | CrownPad, DirtPatch, Bananaport | `Events.LighthouseEnguarde in l.Events` | 
 | Gloomy Galleon | On Rocketbarrel platform |  |  | 
 | Gloomy Galleon | Blueprint Alcove | MelonCrate | `Events.WaterLowered in l.Events` | 
-| Gloomy Galleon | Behind Snide's |  |  | 
+| Gloomy Galleon | Behind Snide's | CrownPad, Bananaport |  | 
 | Gloomy Galleon | Shipyard: On top of Tiny Submarine | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | In the Shipwreck with Replenishables | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | Behind Musical Cactus | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 

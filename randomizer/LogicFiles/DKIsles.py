@@ -281,6 +281,7 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs or l.CanMoontail()),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.hasMoveSwitchsanity(Switches.IslesMonkeyport)),
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: l.assumeLevel8Entry and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)), Transitions.IslesMainToHelmLobby, isGlitchTransition=True),
     ]),
 
     Regions.KremIsleBeyondLift: Region("Krem Isle Beyond Lift", HintRegion.KremIsles, Levels.DKIsles, False, None, [
@@ -310,9 +311,9 @@ LogicRegions = {
     Regions.KremIsleMouth: Region("Krem Isle Mouth", HintRegion.KremIsles, Levels.DKIsles, False, None, [], [], [
         # You fall through the mouth if the lobby hasn't been opened (if you used a glitch to get in or LZR)
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events), Transitions.IslesMainToHelmLobby),
-        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: not l.assumeLevel8Entry and l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
         # This fall could be a logical point of progression, but you have to surive the drop
-        TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.CanSurviveFallDamage()),
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: not l.assumeLevel8Entry and l.CanSurviveFallDamage()),
         # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration.
         TransitionFront(Regions.IslesMain, lambda l: True),
     ]),
@@ -464,7 +465,7 @@ LogicRegions = {
     Regions.KRool: Region("K. Rool", HintRegion.KRool, Levels.DKIsles, True, None, [], [
         Event(Events.KRoolDonkey, lambda l: not l.settings.krool_donkey or ((l.blast or not l.settings.cannons_require_blast) and l.donkey and l.climbing)),
         Event(Events.KRoolDiddy, lambda l: not l.settings.krool_diddy or (l.jetpack and l.peanut and l.diddy)),
-        Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky and l.barrels)),
+        Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or l.CanBeatLankyPhase()),
         Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny and (l.climbing or l.twirl))),
         Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.CanSlamChunkyPhaseSwitch() and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
         Event(Events.KRoolDillo1, lambda l: not l.settings.krool_dillo1 or l.barrels),

@@ -37,7 +37,7 @@ from randomizer.Patching.Lib import (
     Holidays,
     getHoliday,
 )
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures, imageToCI
+from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, ExtraTextures, imageToCI, getBonusSkinOffset
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -60,7 +60,13 @@ class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
     def __init__(
-        self, setting: BarrierItems, image_indexes: List[int], flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551
+        self,
+        setting: BarrierItems,
+        image_indexes: List[int],
+        flip: bool = False,
+        table: int = 25,
+        dimensions: Tuple[int, int] = (44, 44),
+        format: TextureFormat = TextureFormat.RGBA5551,
     ) -> None:
         """Initialize with given parameters."""
         self.setting = setting
@@ -427,7 +433,29 @@ model_texture_sections = {
         "kong": [0x3126, 0x354E, 0x37FE, 0x41E6],
     },
     KongModels.krool_fight: {
-        "skin": [0x61D6, 0x63FE, 0x6786, 0x7DD6, 0x7E8E, 0x7F3E, 0x7FEE, 0x5626, 0x56E6, 0x5A86, 0x5BAE, 0x5D46, 0x5E2E, 0x5FAE, 0x69BE, 0x735E, 0x7C5E, 0x7E4E, 0x7EF6, 0x7FA6, 0x8056],
+        "skin": [
+            0x61D6,
+            0x63FE,
+            0x6786,
+            0x7DD6,
+            0x7E8E,
+            0x7F3E,
+            0x7FEE,
+            0x5626,
+            0x56E6,
+            0x5A86,
+            0x5BAE,
+            0x5D46,
+            0x5E2E,
+            0x5FAE,
+            0x69BE,
+            0x735E,
+            0x7C5E,
+            0x7E4E,
+            0x7EF6,
+            0x7FA6,
+            0x8056,
+        ],
         "kong": [0x607E, 0x7446, 0x7D46, 0x80FE],
     },
     # KongModels.krool_cutscene: {
@@ -691,12 +719,21 @@ def apply_cosmetic_colors(settings: Settings):
         ),
     ]
 
-    KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
+    KONG_ZONES = {
+        "DK": ["Fur", "Tie"],
+        "Diddy": ["Clothes"],
+        "Lanky": ["Clothes", "Fur"],
+        "Tiny": ["Clothes", "Hair"],
+        "Chunky": ["Main", "Other"],
+        "Rambi": ["Skin"],
+        "Enguarde": ["Skin"],
+    }
 
     if js.document.getElementById("override_cosmetics").checked or True:
         writeTransition(settings)
         writeCustomPortal(settings)
         writeCustomPaintings(settings)
+        # randomizePlants(ROM_COPY, settings)  # Not sure how much I like how this feels
         if js.document.getElementById("random_colors").checked:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
@@ -704,8 +741,14 @@ def apply_cosmetic_colors(settings: Settings):
         else:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
-                    settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors[js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors").value])
-                    settings.__setattr__(f"{kong.lower()}_{zone.lower()}_custom_color", js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color").value)
+                    settings.__setattr__(
+                        f"{kong.lower()}_{zone.lower()}_colors",
+                        CharacterColors[js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors").value],
+                    )
+                    settings.__setattr__(
+                        f"{kong.lower()}_{zone.lower()}_custom_color",
+                        js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color").value,
+                    )
         settings.gb_colors = CharacterColors[js.document.getElementById("gb_colors").value]
         settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
     else:
@@ -838,7 +881,15 @@ def apply_cosmetic_colors(settings: Settings):
                 else:
                     new_color = hueShiftColor(tuple(channels), 60, 1750)
                     fakegb_shine_img = maskImageWithColor(shine_img, new_color)
-                writeColorImageToROM(fakegb_shine_img, 25, getBonusSkinOffset(ExtraTextures.FakeGBShine), width, height, False, TextureFormat.RGBA5551)
+                writeColorImageToROM(
+                    fakegb_shine_img,
+                    25,
+                    getBonusSkinOffset(ExtraTextures.FakeGBShine),
+                    width,
+                    height,
+                    False,
+                    TextureFormat.RGBA5551,
+                )
             writeColorImageToROM(gb_shine_img, 25, tex, width, height, False, TextureFormat.RGBA5551)
 
 
@@ -934,7 +985,32 @@ def maskMushroomImage(im_f, reference_image, color, side_2=False):
 def recolorRotatingRoomTiles():
     """Determine how to recolor the tiles rom the memory game in Donkey's Rotating Room in Caves."""
     question_mark_tiles = [900, 901, 892, 893, 896, 897, 890, 891, 898, 899, 894, 895]
-    face_tiles = [874, 878, 875, 879, 876, 886, 877, 885, 880, 887, 881, 888, 870, 872, 871, 873, 866, 882, 867, 883, 868, 889, 869, 884]
+    face_tiles = [
+        874,
+        878,
+        875,
+        879,
+        876,
+        886,
+        877,
+        885,
+        880,
+        887,
+        881,
+        888,
+        870,
+        872,
+        871,
+        873,
+        866,
+        882,
+        867,
+        883,
+        868,
+        889,
+        869,
+        884,
+    ]
     question_mark_tile_masks = [508, 509]
     face_tile_masks = [636, 635, 633, 634, 631, 632, 630, 629, 627, 628, 5478, 5478]
     question_mark_resize = [17, 37]
@@ -1217,7 +1293,15 @@ def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     return im_f
 
 
-def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat) -> None:
+def writeColorImageToROM(
+    im_f: PIL.Image.Image,
+    table_index: int,
+    file_index: int,
+    width: int,
+    height: int,
+    transparent_border: bool,
+    format: TextureFormat,
+) -> None:
     """Write texture to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -1556,11 +1640,96 @@ def recolorWrinklyDoors():
         for d in data:
             num_data.append(d)
         # Figure out which colors to use and where to put them (list extensions to mitigate the linter's "artistic freedom" putting 1 value per line)
-        color1_offsets = [1548, 1580, 1612, 1644, 1676, 1708, 1756, 1788, 1804, 1820, 1836, 1852, 1868, 1884, 1900, 1916]
-        color1_offsets = color1_offsets + [1932, 1948, 1964, 1980, 1996, 2012, 2028, 2044, 2076, 2108, 2124, 2156, 2188, 2220, 2252, 2284]
-        color1_offsets = color1_offsets + [2316, 2348, 2380, 2396, 2412, 2428, 2444, 2476, 2508, 2540, 2572, 2604, 2636, 2652, 2668, 2684]
-        color1_offsets = color1_offsets + [2700, 2716, 2732, 2748, 2764, 2780, 2796, 2812, 2828, 2860, 2892, 2924, 2956, 2988, 3020, 3052]
-        color2_offsets = [1564, 1596, 1628, 1660, 1692, 1724, 1740, 1772, 2332, 2364, 2460, 2492, 2524, 2556, 2588, 2620]
+        color1_offsets = [
+            1548,
+            1580,
+            1612,
+            1644,
+            1676,
+            1708,
+            1756,
+            1788,
+            1804,
+            1820,
+            1836,
+            1852,
+            1868,
+            1884,
+            1900,
+            1916,
+        ]
+        color1_offsets = color1_offsets + [
+            1932,
+            1948,
+            1964,
+            1980,
+            1996,
+            2012,
+            2028,
+            2044,
+            2076,
+            2108,
+            2124,
+            2156,
+            2188,
+            2220,
+            2252,
+            2284,
+        ]
+        color1_offsets = color1_offsets + [
+            2316,
+            2348,
+            2380,
+            2396,
+            2412,
+            2428,
+            2444,
+            2476,
+            2508,
+            2540,
+            2572,
+            2604,
+            2636,
+            2652,
+            2668,
+            2684,
+        ]
+        color1_offsets = color1_offsets + [
+            2700,
+            2716,
+            2732,
+            2748,
+            2764,
+            2780,
+            2796,
+            2812,
+            2828,
+            2860,
+            2892,
+            2924,
+            2956,
+            2988,
+            3020,
+            3052,
+        ]
+        color2_offsets = [
+            1564,
+            1596,
+            1628,
+            1660,
+            1692,
+            1724,
+            1740,
+            1772,
+            2332,
+            2364,
+            2460,
+            2492,
+            2524,
+            2556,
+            2588,
+            2620,
+        ]
         new_color1 = getRGBFromHash(color_bases[kong])
         new_color2 = getRGBFromHash(color_bases[kong])
         if kong == 0:
@@ -2158,13 +2327,37 @@ GENERIC_SCALE = 0.49
 krusha_scaling = [
     # [x, y, z, xz, y]
     # DK
-    [lambda x: x * DK_SCALE, lambda x: x * DK_SCALE, lambda x: x * GENERIC_SCALE, lambda x: x * DK_SCALE, lambda x: x * DK_SCALE],
+    [
+        lambda x: x * DK_SCALE,
+        lambda x: x * DK_SCALE,
+        lambda x: x * GENERIC_SCALE,
+        lambda x: x * DK_SCALE,
+        lambda x: x * DK_SCALE,
+    ],
     # Diddy
-    [lambda x: (x * 1.043) - 41.146, lambda x: (x * 9.893) - 8.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.103) - 14.759, lambda x: (x * 0.823) + 35.220],
+    [
+        lambda x: (x * 1.043) - 41.146,
+        lambda x: (x * 9.893) - 8.0,
+        lambda x: x * GENERIC_SCALE,
+        lambda x: (x * 1.103) - 14.759,
+        lambda x: (x * 0.823) + 35.220,
+    ],
     # Lanky
-    [lambda x: (x * 0.841) - 17.231, lambda x: (x * 6.925) - 2.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 0.680) - 18.412, lambda x: (x * 0.789) + 42.138],
+    [
+        lambda x: (x * 0.841) - 17.231,
+        lambda x: (x * 6.925) - 2.0,
+        lambda x: x * GENERIC_SCALE,
+        lambda x: (x * 0.680) - 18.412,
+        lambda x: (x * 0.789) + 42.138,
+    ],
     # Tiny
-    [lambda x: (x * 0.632) + 7.590, lambda x: (x * 6.925) + 0.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.567) - 21.676, lambda x: (x * 0.792) + 41.509],
+    [
+        lambda x: (x * 0.632) + 7.590,
+        lambda x: (x * 6.925) + 0.0,
+        lambda x: x * GENERIC_SCALE,
+        lambda x: (x * 1.567) - 21.676,
+        lambda x: (x * 0.792) + 41.509,
+    ],
     # Chunky
     [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
 ]
@@ -2395,39 +2588,6 @@ def placeKrushaHead(slot):
     ROM_COPY.writeBytes(bytearray(data32_rgba32))
     ROM_COPY.seek(rgba16_addr32)
     ROM_COPY.writeBytes(bytearray(data32))
-
-
-barrel_skins = (
-    "gb",
-    "dk",
-    "diddy",
-    "lanky",
-    "tiny",
-    "chunky",
-    "bp",
-    "nin_coin",
-    "rw_coin",
-    "key",
-    "crown",
-    "medal",
-    "potion",
-    "bean",
-    "pearl",
-    "fairy",
-    "rainbow",
-    "fakegb",
-    "melon",
-    "cranky",
-    "funky",
-    "candy",
-    "snide",
-    "hint",
-)
-
-
-def getBonusSkinOffset(offset: int):
-    """Get texture index after the barrel skins."""
-    return 6026 + (3 * len(barrel_skins)) + offset
 
 
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
@@ -2720,7 +2880,11 @@ def writeMiscCosmeticChanges(settings):
         hueShiftImageContainer(25, 0x1235, 1, 348, TextureFormat.RGBA5551, kosha_shift)
         if enemy_setting == RandomModels.extreme:
             kosha_helmet_int = getEnemySwapColor(80, min_channel_variance=80)
-            kosha_helmet_list = [(kosha_helmet_int >> 16) & 0xFF, (kosha_helmet_int >> 8) & 0xFF, kosha_helmet_int & 0xFF]
+            kosha_helmet_list = [
+                (kosha_helmet_int >> 16) & 0xFF,
+                (kosha_helmet_int >> 8) & 0xFF,
+                kosha_helmet_int & 0xFF,
+            ]
             kosha_club_int = getEnemySwapColor(80, min_channel_variance=80)
             kosha_club_list = [(kosha_club_int >> 16) & 0xFF, (kosha_club_int >> 8) & 0xFF, kosha_club_int & 0xFF]
             for img in range(0x122E, 0x1230):
@@ -2923,7 +3087,14 @@ def writeMiscCosmeticChanges(settings):
             0x1119: (64, 32),
         }
         for img_index in spider_dims:
-            hueShiftImageContainer(25, img_index, spider_dims[img_index][0], spider_dims[img_index][1], TextureFormat.RGBA5551, spider_shift)
+            hueShiftImageContainer(
+                25,
+                img_index,
+                spider_dims[img_index][0],
+                spider_dims[img_index][1],
+                TextureFormat.RGBA5551,
+                spider_shift,
+            )
 
         mush_man_shift = getRandomHueShift()
         for img_index in (0x11FC, 0x11FD, 0x11FE, 0x11FF, 0x1200, 0x1209, 0x120A, 0x120B):
@@ -3205,7 +3376,14 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                 base = Image.new(mode="RGBA", size=(44, 44))
                 base_overlay = Image.new(mode="RGBA", size=image_data.dimensions)
                 for image_slot, image in enumerate(image_data.image_indexes):
-                    item_im = getImageFile(image_data.table, image, image_data.table in (14, 25), image_data.dimensions[0], image_data.dimensions[1], image_data.format)
+                    item_im = getImageFile(
+                        image_data.table,
+                        image,
+                        image_data.table in (14, 25),
+                        image_data.dimensions[0],
+                        image_data.dimensions[1],
+                        image_data.format,
+                    )
                     start_x = 0
                     finish_x = image_data.dimensions[0]
                     if len(image_data.image_indexes) > 1:
@@ -3236,15 +3414,26 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                             if a > 128:
                                 pix_pearl[x, y] = (0, 0, 0, 0)
                 writeColorImageToROM(base, 25, door.item_image, 44, 44, True, TextureFormat.RGBA5551)
-                writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, TextureFormat.RGBA5551)
+                writeColorImageToROM(
+                    numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM),
+                    25,
+                    door.number_image,
+                    44,
+                    44,
+                    True,
+                    TextureFormat.RGBA5551,
+                )
 
 
-def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None):
+def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None, brighten_barrel: bool = False):
     """Change the colors of the various barrels."""
     wood_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellWood), True, 32, 64, TextureFormat.RGBA5551)
     metal_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellMetal), True, 32, 64, TextureFormat.RGBA5551)
     qmark_img = getImageFile(25, getBonusSkinOffset(ExtraTextures.ShellQMark), True, 32, 64, TextureFormat.RGBA5551)
     if barrel_color is not None:
+        if brighten_barrel:
+            enhancer = ImageEnhance.Brightness(wood_img)
+            wood_img = enhancer.enhance(2)
         wood_img = maskImageWithColor(wood_img, barrel_color)
     if metal_color is not None:
         metal_img = maskImageWithColor(metal_img, metal_color)
@@ -3302,6 +3491,52 @@ def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None):
             writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551)
 
 
+def applyCelebrationRims(hue_shift: int, enabled_bananas: list[bool] = [False, False, False, False, False]):
+    """Retexture the warp pad rims to have a more celebratory tone."""
+    banana_textures = []
+    vanilla_banana_textures = [0xA8, 0x98, 0xE8, 0xD0, 0xF0]
+    for kong_index, ban in enumerate(enabled_bananas):
+        if ban:
+            banana_textures.append(vanilla_banana_textures[kong_index])
+    place_bananas = False
+    if len(banana_textures) > 0:
+        place_bananas = True
+        if len(banana_textures) < 4:
+            banana_textures = (banana_textures * 4)[:4]
+    if place_bananas:
+        bananas = [getImageFile(7, x, False, 44, 44, TextureFormat.RGBA5551).resize((14, 14)) for x in banana_textures]
+    banana_placement = [
+        # File, x, y
+        [0xBB3, 15, 1],  # 3
+        [0xBB2, 2, 1],  # 2
+        [0xBB3, 0, 1],  # 4
+        [0xBB2, 17, 1],  # 1
+    ]
+    for img in (0xBB2, 0xBB3):
+        side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
+        hueShift(side_im, hue_shift)
+        if place_bananas:
+            for bi, banana in enumerate(bananas):
+                if banana_placement[bi][0] == img:
+                    b_x = banana_placement[bi][1]
+                    b_y = banana_placement[bi][2]
+                    side_im.paste(banana, (b_x, b_y), banana)
+        side_by = []
+        side_px = side_im.load()
+        for y in range(16):
+            for x in range(32):
+                red_short = (side_px[x, y][0] >> 3) & 31
+                green_short = (side_px[x, y][1] >> 3) & 31
+                blue_short = (side_px[x, y][2] >> 3) & 31
+                alpha_short = 1 if side_px[x, y][3] > 128 else 0
+                value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
+                side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
+        px_data = bytearray(side_by)
+        px_data = gzip.compress(px_data, compresslevel=9)
+        ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
+        ROM().writeBytes(px_data)
+
+
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = getHoliday(settings)
@@ -3354,36 +3589,7 @@ def applyHolidayMode(settings):
         ROM().seek(start)
         ROM().writeBytes(byte_data)
         # Alter rims
-        bananas = [getImageFile(7, x, False, 44, 44, TextureFormat.RGBA5551).resize((14, 14)) for x in [0xD0, 0xE8, 0xA8, 0x98]]
-        banana_placement = [
-            # File, x, y
-            [0xBB3, 15, 1],  # 3
-            [0xBB2, 2, 1],  # 2
-            [0xBB3, 0, 1],  # 4
-            [0xBB2, 17, 1],  # 1
-        ]
-        for img in (0xBB2, 0xBB3):
-            side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
-            hueShift(side_im, 50)
-            for bi, banana in enumerate(bananas):
-                if banana_placement[bi][0] == img:
-                    b_x = banana_placement[bi][1]
-                    b_y = banana_placement[bi][2]
-                    side_im.paste(banana, (b_x, b_y), banana)
-            side_by = []
-            side_px = side_im.load()
-            for y in range(16):
-                for x in range(32):
-                    red_short = (side_px[x, y][0] >> 3) & 31
-                    green_short = (side_px[x, y][1] >> 3) & 31
-                    blue_short = (side_px[x, y][2] >> 3) & 31
-                    alpha_short = 1 if side_px[x, y][3] > 128 else 0
-                    value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
-                    side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
-            px_data = bytearray(side_by)
-            px_data = gzip.compress(px_data, compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
-            ROM().writeBytes(px_data)
+        applyCelebrationRims(50, [True, True, True, True, False])
         # Change DK's Tie and Tiny's Hair
         if settings.dk_tie_colors != CharacterColors.custom and settings.kong_model_dk == KongModels.default:
             tie_hang = [0xFF] * 0xAB8
@@ -3407,23 +3613,7 @@ def applyHolidayMode(settings):
         ROM().seek(settings.rom_data + 0xDB)
         ROM().writeMultipleBytes(1, 1)
         # Pad Rim
-        for img in (0xBB2, 0xBB3):
-            side_im = getImageFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
-            hueShift(side_im, -12)
-            side_by = []
-            side_px = side_im.load()
-            for y in range(16):
-                for x in range(32):
-                    red_short = (side_px[x, y][0] >> 3) & 31
-                    green_short = (side_px[x, y][1] >> 3) & 31
-                    blue_short = (side_px[x, y][2] >> 3) & 31
-                    alpha_short = 1 if side_px[x, y][3] > 128 else 0
-                    value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
-                    side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
-            px_data = bytearray(side_by)
-            px_data = gzip.compress(px_data, compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
-            ROM().writeBytes(px_data)
+        applyCelebrationRims(-12)
         # Tag Barrel, Bonus Barrel & Transform Barrels
         changeBarrelColor((0x00, 0xC0, 0x00))
         # Turn Ice Tomato Orange
@@ -3443,7 +3633,17 @@ def applyHolidayMode(settings):
         for img in range(0x1237, 0x1241 + 1):
             hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
     elif HOLIDAY == Holidays.Anniv25:
-        changeBarrelColor((0xC0, 0xC0, 0x00))
+        changeBarrelColor((0xFF, 0xFF, 0x00), None, True)
+        sticker_im = getImageFile(25, getBonusSkinOffset(ExtraTextures.Anniv25Sticker), True, 1, 1372, TextureFormat.RGBA5551)
+        vanilla_sticker_im = getImageFile(25, 0xB7D, True, 1, 1372, TextureFormat.RGBA5551)
+        sticker_im_snipped = sticker_im.crop((0, 0, 1, 1360))
+        writeColorImageToROM(sticker_im_snipped, 25, 0xB7D, 1, 1360, False, TextureFormat.RGBA5551)
+        vanilla_sticker_portion = vanilla_sticker_im.crop((0, 1360, 1, 1372))
+        new_im = Image.new(mode="RGBA", size=(1, 1372))
+        new_im.paste(sticker_im_snipped, (0, 0), sticker_im_snipped)
+        new_im.paste(vanilla_sticker_portion, (0, 1360), vanilla_sticker_portion)
+        writeColorImageToROM(new_im, 25, 0x1266, 1, 1372, False, TextureFormat.RGBA5551)
+        applyCelebrationRims(0, [False, True, True, True, True])
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
@@ -3643,7 +3843,14 @@ def showWinCondition(settings: Settings):
     if win_con == WinConditionComplex.req_pearl:
         base_im = Image.open(BytesIO(js.getFile("./base-hack/assets/arcade_jetpac/arcade/pearl.png")))
     else:
-        item_im = getImageFile(item_data.table, item_data.image, item_data.table != 7, item_data.width, item_data.height, item_data.tex_format)
+        item_im = getImageFile(
+            item_data.table,
+            item_data.image,
+            item_data.table != 7,
+            item_data.width,
+            item_data.height,
+            item_data.tex_format,
+        )
         if item_data.flip:
             item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
         dim = max(item_data.width, item_data.height)
@@ -4005,7 +4212,14 @@ def getImageChunk(im_f, width: int, height: int):
         middle_h = im_h / 2
         middle_targ_w = width / 2
         middle_targ_h = height / 2
-        return im_f.crop((int(middle_w - middle_targ_w), int(middle_h - middle_targ_h), int(middle_w + middle_targ_w), int(middle_h + middle_targ_h)))
+        return im_f.crop(
+            (
+                int(middle_w - middle_targ_w),
+                int(middle_h - middle_targ_h),
+                int(middle_w + middle_targ_w),
+                int(middle_h + middle_targ_h),
+            )
+        )
     # Ratio matches, just scale up
     return im_f.resize((width, height))
 
@@ -4154,3 +4368,33 @@ def writeCustomPaintings(settings: Settings) -> None:
     settings.painting_museum_swords = PAINTING_INFO[3].name
     settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
     settings.painting_treehouse_candy = PAINTING_INFO[5].name
+
+
+def randomizePlants(ROM_COPY: ROM, settings: Settings):
+    """Randomize the plants in the setup file."""
+    if not settings.misc_cosmetics:
+        return
+
+    flowers = [0x05, 0x08, 0x43]
+    for x in range(0x1F1 - 0x1DE):
+        flowers.append(0x1DE + x)
+    maps_that_contain_flowers = [
+        Maps.JungleJapes,
+        Maps.JungleJapesLobby,
+        Maps.TrainingGrounds,
+        Maps.JapesTinyHive,
+        Maps.AngryAztec,
+        Maps.Isles,
+        Maps.BananaFairyRoom,
+    ]
+    for map_id in maps_that_contain_flowers:
+        setup_file = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
+        ROM_COPY.seek(setup_file)
+        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        for model2_item in range(model2_count):
+            item_start = setup_file + 4 + (model2_item * 0x30)
+            ROM_COPY.seek(item_start + 0x28)
+            item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if item_type in flowers:
+                ROM_COPY.seek(item_start + 0x28)
+                ROM_COPY.writeMultipleBytes(random.choice(flowers), 2)

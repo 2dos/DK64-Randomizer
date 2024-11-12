@@ -116,6 +116,11 @@ snide_head_im = Image.open(f"{hash_dir}snide_face.png")
 im.paste(snide_head_im, (0, 16), snide_head_im)
 im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}snide_head.png")
 
+# Small 25y logo
+y25_im = Image.open(f"{disp_dir}25y.png")
+y25_im = y25_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+y25_im.save(f"{disp_dir}y25_small.png")
+
 # Others
 other_shop_owners = ("candy", "cranky", "funky")
 for owner in other_shop_owners:
@@ -176,6 +181,13 @@ Image.Image.paste(im1, im, (65, 1))
 im1.save(f"{disp_dir}wxys.png")
 
 Image.open(f"{hash_dir}specialchars.png").crop((2, 0, 34, 32)).resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}perc44.png")
+
+# Bean Spin Images
+bean_dir = getDir("assets/bean_spin/")
+for x in range(12):
+    im = Image.open(f"{bean_dir}f{x + 1}a.png")
+    im = im.resize((64, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    im.save(f"{bean_dir}f{x + 1}a_64_32.png")
 
 # Generate Yellow Q Mark
 for idx in range(2):

@@ -28,7 +28,11 @@ HardItems = [
         -1,
         "All maps are pitch black, with only a light to help you path your way to the end of the game. Mixing this with 'Donk in the Sky' will convert the challenge into 'Memory Challenge' instead.",
     ),
-    HardModeItem("Donk in the Sky", -1, "Collision Geometry is disabled. Mixing this with 'Donk in the Dark World' will convert the challenge into 'Memory Challenge' instead."),
+    HardModeItem(
+        "Donk in the Sky",
+        -1,
+        "Collision Geometry is disabled. Mixing this with 'Donk in the Dark World' will convert the challenge into 'Memory Challenge' instead.",
+    ),
 ]
 HardBossItems = [
     HardModeItem("Fast Mad Jack", -1, "Mad Jack is faster."),
@@ -37,10 +41,25 @@ HardBossItems = [
     HardModeItem("Pufftoss Star Raised", -1, "Star locations in Pufftoss are raised slightly."),
     HardModeItem("Kut Out Phase Rando", -1, "Kut Out Phases have been randomized in order, including the unused 4th phase."),
     HardModeItem("K Rool Toes Rando", -1, "The toe sequence in Tiny Phase is randomized."),
+    HardModeItem("Beta Lanky Phase", -1, "K. Rool is distracted by shooting a balloon rather than playing an instrument."),
 ]
 for item in HardItems:
     if item.name != "No Group":
-        HardSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
+        HardSelector.append(
+            {
+                "name": item.name,
+                "value": item.name.lower().replace(" ", "_"),
+                "tooltip": item.tooltip,
+                "shift": item.shift,
+            }
+        )
 for item in HardBossItems:
     if item.name != "No Group":
-        HardBossSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
+        HardBossSelector.append(
+            {
+                "name": item.name,
+                "value": item.name.lower().replace(" ", "_"),
+                "tooltip": item.tooltip,
+                "shift": item.shift,
+            }
+        )

@@ -42,6 +42,14 @@ int hasHelmProgMove(helm_prog_enum sub_id) {
     return 0;
 }
 
+int canOpenSpecificBLocker(int level) {
+    ItemRequirement req = {.count = BLockerDefaultArray[level], .item = Rando.b_locker_requirements[level]};
+    if (!isItemRequirementSatisfied(&req)) {
+        return 0;
+    }
+    return 1;
+}
+
 int canOpenAllBLockersUntil(int level_cap) {
     for (int level = 0; level < level_cap; level++) {
         ItemRequirement req = {.count = BLockerDefaultArray[level], .item = Rando.b_locker_requirements[level]};
@@ -247,7 +255,7 @@ void HelmLobbyGoneLeverCode(behaviour_data* behaviour_pointer, int index) {
             setObjectOpacity(behaviour_pointer, 255);
             behaviour_pointer->next_state = 1;
         } else {
-            if (canOpenAllBLockersUntil(8)) {
+            if (canOpenSpecificBLocker(7)) {
                 if ((standingOnM2Object(index)) && (Player->standing_on_subposition == 2)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
                     behaviour_pointer->next_state = 8;
@@ -304,7 +312,7 @@ void HelmLobbyGoneGongCode(behaviour_data* behaviour_pointer, int index) {
             return;
         }
         if (inRangeOfGong()) {
-            if (canOpenAllBLockersUntil(8)) {
+            if (canOpenSpecificBLocker(7)) {
                 PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
                 behaviour_pointer->next_state = 6;
                 behaviour_pointer->current_state = 6;
@@ -455,7 +463,7 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
             setScriptRunState(behaviour_pointer, RUNSTATE_DISTANCERUN, 300);
             behaviour_pointer->next_state = 1;
         } else {
-            if (canOpenAllBLockersUntil(8)) {
+            if (canOpenSpecificBLocker(7)) {
                 if (standingOnM2Object(index)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
                     behaviour_pointer->next_state = 6;
