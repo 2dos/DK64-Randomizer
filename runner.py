@@ -513,11 +513,8 @@ def get_seed():
     """Get the lanky for a seed."""
     # Get the hash from the query string.
     hash = request.args.get("hash")
-    # check if hash contains special characters not in an approved list.
-    if all(c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_=" for c in hash):
-        file_name = secure_filename(hash)
-    else:
-        return make_response(json.dumps({"error": "error"}), 205)
+    # Sanitize the hash parameter
+    file_name = secure_filename(hash)
     fullpath = path.normpath(path.join("generated_seeds/", str(file_name) + ".json"))
     if not fullpath.startswith(path.normpath("generated_seeds/")):
         raise Exception("not allowed")
