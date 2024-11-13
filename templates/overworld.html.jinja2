@@ -268,8 +268,8 @@
                         {% for kong in kong_lst %}
                             <div class="item-select">   
                                 <p class="select-title">{{ kong }}</p>
-                                <select name="kong_model_{{ kong.lower() }}"
-                                        id="kong_model_{{ kong.lower() }}"
+                                <select name="kong_model_{{ kong | lower }}"
+                                        id="kong_model_{{ kong | lower }}"
                                         display_name="Kong Model - {{ kong }}"
                                         class="form-select"
                                         aria-label="{{ kong }}">

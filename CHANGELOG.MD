@@ -3,6 +3,7 @@ This is the changelog for the initial push of 4.0 into Dev:
 - Below is a list of features that are being pushed to the dev site
 - If you encounter any Bugs, please post your Spoiler log and [BPS](https://dev.dk64randomizer.com/bps_maker) with an explanation of the bug in the #dev-Bug-Reports [Discord Channel](https://discord.dk64randomizer.com).
 
+
 ## CHANGELOG
 ### New Randomizers
 - Chaos B. Lockers

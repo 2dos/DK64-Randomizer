@@ -611,7 +611,13 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
                 writeValue(ROM_COPY, 0x80707226, Overlay.Static, 0xF080, offset_dict)
                 writeValue(ROM_COPY, 0x8070725A, Overlay.Static, 0x2000, offset_dict)
                 writeValue(ROM_COPY, 0x807072A2, Overlay.Static, 0x0100, offset_dict)
-            writeValue(ROM_COPY, 0x80707126, Overlay.Static, compatible_background_textures[settings.menu_texture_index].table, offset_dict)
+            writeValue(
+                ROM_COPY,
+                0x80707126,
+                Overlay.Static,
+                compatible_background_textures[settings.menu_texture_index].table,
+                offset_dict,
+            )
             menu_background_rgba = 0x505050FF
             if compatible_background_textures[settings.menu_texture_index].is_color:
                 menu_background_rgba = 0x000020FF  # TODO: Get colors working properly
@@ -800,7 +806,15 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
 class MinigameImageLoader:
     """Class to store information regarding the image loader for an 8-bit minigame reward."""
 
-    def __init__(self, file_name: str = None, table_index: int = 0, file_index: int = 0, width: int = 0, height: int = 0, tex_format: TextureFormat = TextureFormat.RGBA5551):
+    def __init__(
+        self,
+        file_name: str = None,
+        table_index: int = 0,
+        file_index: int = 0,
+        width: int = 0,
+        height: int = 0,
+        tex_format: TextureFormat = TextureFormat.RGBA5551,
+    ):
         """Initialize with given parameters."""
         self.pull_from_repo = file_name is not None
         if self.pull_from_repo:
@@ -888,7 +902,11 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         Minigame8BitImage(ItemPool.ChunkyMoves, MinigameImageLoader("potion_chunky"), MinigameImageLoader("potion")),
         Minigame8BitImage(colorless_potions, MinigameImageLoader("potion_any"), MinigameImageLoader("potion")),
         Minigame8BitImage([Items.BattleCrown], MinigameImageLoader(None, 25, 5893, 44, 44), MinigameImageLoader("crown")),
-        Minigame8BitImage([Items.BananaFairy], MinigameImageLoader(None, 25, 0x16ED, 32, 32, TextureFormat.RGBA32), MinigameImageLoader("fairy")),
+        Minigame8BitImage(
+            [Items.BananaFairy],
+            MinigameImageLoader(None, 25, 0x16ED, 32, 32, TextureFormat.RGBA32),
+            MinigameImageLoader("fairy"),
+        ),
         Minigame8BitImage([Items.GoldenBanana], MinigameImageLoader(None, 25, 5468, 44, 44), MinigameImageLoader("gb")),
         Minigame8BitImage(ItemPool.Blueprints(), MinigameImageLoader(None, 25, 0x1593, 48, 42), MinigameImageLoader("blueprint")),
         Minigame8BitImage(ItemPool.Keys(), MinigameImageLoader(None, 25, 5877, 44, 44), MinigameImageLoader("key")),
@@ -897,7 +915,11 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         Minigame8BitImage([Items.NintendoCoin], None, MinigameImageLoader("nintendo")),
         Minigame8BitImage([Items.RarewareCoin], MinigameImageLoader(None, 25, 5905, 44, 44), None),
         Minigame8BitImage([Items.RainbowCoin], MinigameImageLoader(None, 25, 5963, 48, 44), MinigameImageLoader("rainbow")),
-        Minigame8BitImage(ItemPool.HintItems(), MinigameImageLoader(None, 25, 0x1775, 64, 64, TextureFormat.IA8), MinigameImageLoader("hint")),
+        Minigame8BitImage(
+            ItemPool.HintItems(),
+            MinigameImageLoader(None, 25, 0x1775, 64, 64, TextureFormat.IA8),
+            MinigameImageLoader("hint"),
+        ),
     ]
     arcade_image_data = None
     jetpac_image_data = None
@@ -1378,7 +1400,18 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Item Rando
     # Item Get
-    item_get_addrs = [0x806F64C8, 0x806F6BA8, 0x806F7740, 0x806F7764, 0x806F7774, 0x806F7798, 0x806F77B0, 0x806F77C4, 0x806F7804, 0x806F781C]
+    item_get_addrs = [
+        0x806F64C8,
+        0x806F6BA8,
+        0x806F7740,
+        0x806F7764,
+        0x806F7774,
+        0x806F7798,
+        0x806F77B0,
+        0x806F77C4,
+        0x806F7804,
+        0x806F781C,
+    ]
     for addr in item_get_addrs:
         writeFunction(ROM_COPY, addr, Overlay.Static, "getItem", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806F6350, Overlay.Static, "getObjectCollectability", offset_dict)  # Modify Function Call
@@ -1511,7 +1544,20 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806F6A2C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
 
     # Spawn Enemy Drops function
-    enemy_drop_addrs = [0x806AD40C, 0x806AED14, 0x806AF5A4, 0x806B0218, 0x806B0704, 0x806B0C8C, 0x806B1C88, 0x806B4744, 0x806B5B90, 0x806B61E0, 0x806B744C, 0x806B9AB4]
+    enemy_drop_addrs = [
+        0x806AD40C,
+        0x806AED14,
+        0x806AF5A4,
+        0x806B0218,
+        0x806B0704,
+        0x806B0C8C,
+        0x806B1C88,
+        0x806B4744,
+        0x806B5B90,
+        0x806B61E0,
+        0x806B744C,
+        0x806B9AB4,
+    ]
     for addr in enemy_drop_addrs:
         writeFunction(ROM_COPY, addr, Overlay.Static, "spawnEnemyDrops", offset_dict)
 
@@ -2531,7 +2577,13 @@ def patchAssembly(ROM_COPY, spoiler):
     }
     for map_id in settings.krool_order:
         writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
-        if map_id not in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]:
+        if map_id not in [
+            Maps.KroolDonkeyPhase,
+            Maps.KroolDiddyPhase,
+            Maps.KroolLankyPhase,
+            Maps.KroolTinyPhase,
+            Maps.KroolChunkyPhase,
+        ]:
             writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, 3, offset_dict, 4)
     # Got a bunch of stuff to fix with this
     # for map_id in vanilla_props_values:
@@ -2860,7 +2912,18 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Enable oranges in Crowns
     writeHook(ROM_COPY, 0x806E6000, Overlay.Static, "DisableGunInCrowns", offset_dict)
-    for map_id in (Maps.JapesCrown, Maps.AztecCrown, Maps.FactoryCrown, Maps.GalleonCrown, Maps.ForestCrown, Maps.CavesCrown, Maps.CastleCrown, Maps.HelmCrown, Maps.LobbyCrown, Maps.SnidesCrown):
+    for map_id in (
+        Maps.JapesCrown,
+        Maps.AztecCrown,
+        Maps.FactoryCrown,
+        Maps.GalleonCrown,
+        Maps.ForestCrown,
+        Maps.CavesCrown,
+        Maps.CastleCrown,
+        Maps.HelmCrown,
+        Maps.LobbyCrown,
+        Maps.SnidesCrown,
+    ):
         writeValue(ROM_COPY, 0x8074482C + (12 * map_id), Overlay.Static, 0x01120402, offset_dict, 4)
     # Disable pickup respawn in spider boss (temporary)
     writeValue(ROM_COPY, 0x8074482C + (12 * Maps.ForestSpider), Overlay.Static, 0x00000141, offset_dict, 4)

@@ -146,7 +146,10 @@ def ShuffleExitsInPool(spoiler, frontpool, backpool):
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
             origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
-        elif settings.decoupled_loading_zones and backExit.back.regionId in [Regions.JapesMinecarts, Regions.ForestMinecarts]:
+        elif settings.decoupled_loading_zones and backExit.back.regionId in [
+            Regions.JapesMinecarts,
+            Regions.ForestMinecarts,
+        ]:
             # In decoupled, we still have to prevent one-way minecart exits from leading to the minecarts themselves
             if Transitions.JapesCartsToMain in origins:
                 origins.remove(Transitions.JapesCartsToMain)
@@ -184,13 +187,23 @@ def AssumeExits(spoiler, frontpool, backpool, newpool):
         if not spoiler.settings.decoupled_loading_zones and exit.back.reverse is None:
             continue
         # Don't shuffle the Aztec temples if they are not eligible to be shuffled
-        if not spoiler.settings.shuffle_aztec_temples and exitId in (Transitions.AztecStartToTemple, Transitions.AztecTempleToStart, Transitions.AztecMainToLlama, Transitions.AztecLlamaToMain):
+        if not spoiler.settings.shuffle_aztec_temples and exitId in (
+            Transitions.AztecStartToTemple,
+            Transitions.AztecTempleToStart,
+            Transitions.AztecMainToLlama,
+            Transitions.AztecLlamaToMain,
+        ):
             continue
         # Don't shuffle the Prison if we're not automatically turning in keys
         if not spoiler.settings.auto_keys and exitId in (Transitions.IslesMainToPrison, Transitions.IslesPrisonToMain):
             continue
         # Shuffling Helm's location is opt-in
-        if not spoiler.settings.shuffle_helm_location and exitId in (Transitions.IslesMainToHelmLobby, Transitions.IslesHelmLobbyToMain, Transitions.IslesToHelm, Transitions.HelmToIsles):
+        if not spoiler.settings.shuffle_helm_location and exitId in (
+            Transitions.IslesMainToHelmLobby,
+            Transitions.IslesHelmLobbyToMain,
+            Transitions.IslesToHelm,
+            Transitions.HelmToIsles,
+        ):
             continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
@@ -357,7 +370,16 @@ def GenerateLevelOrderWithRestrictions(settings: Settings):
 def GenerateLevelOrderUnrestricted(settings):
     """Generate a level order without Kong placement restrictions."""
     newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
-    unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle, Levels.HideoutHelm]
+    unplacedLevels = [
+        Levels.JungleJapes,
+        Levels.AngryAztec,
+        Levels.FranticFactory,
+        Levels.GloomyGalleon,
+        Levels.FungiForest,
+        Levels.CrystalCaves,
+        Levels.CreepyCastle,
+        Levels.HideoutHelm,
+    ]
     if settings.enable_plandomizer:
         for i in range(len(newLevelOrder.keys())):
             if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
@@ -525,7 +547,11 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
                     if lankyAccessible:
                         guitarDoorAccess = (
                             Kongs.diddy in settings.starting_kong_list
-                            or IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door)
+                            or IsItemSelected(
+                                settings.remove_barriers_enabled,
+                                settings.remove_barriers_selected,
+                                RemovedBarriersSelected.aztec_tunnel_door,
+                            )
                             or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == ActivateAllBananaports.all)
                         )
                         if not guitarDoorAccess or (

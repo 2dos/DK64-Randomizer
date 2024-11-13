@@ -18,7 +18,15 @@ class PkmnSnapEnemy:
     def __init__(self, enemy):
         """Initialize with given parameters."""
         self.enemy = enemy
-        if enemy in (Enemies.KasplatDK, Enemies.KasplatDiddy, Enemies.KasplatLanky, Enemies.KasplatTiny, Enemies.KasplatChunky, Enemies.Book, Enemies.EvilTomato):
+        if enemy in (
+            Enemies.KasplatDK,
+            Enemies.KasplatDiddy,
+            Enemies.KasplatLanky,
+            Enemies.KasplatTiny,
+            Enemies.KasplatChunky,
+            Enemies.Book,
+            Enemies.EvilTomato,
+        ):
             # Always spawned, not in pool
             self.spawned = True
         else:
@@ -174,7 +182,18 @@ valid_maps = [
     Maps.ForestLankyZingersRoom,
     Maps.CastleBoss,
 ]
-crown_maps = [Maps.JapesCrown, Maps.AztecCrown, Maps.FactoryCrown, Maps.GalleonCrown, Maps.ForestCrown, Maps.CavesCrown, Maps.CastleCrown, Maps.HelmCrown, Maps.SnidesCrown, Maps.LobbyCrown]
+crown_maps = [
+    Maps.JapesCrown,
+    Maps.AztecCrown,
+    Maps.FactoryCrown,
+    Maps.GalleonCrown,
+    Maps.ForestCrown,
+    Maps.CavesCrown,
+    Maps.CastleCrown,
+    Maps.HelmCrown,
+    Maps.SnidesCrown,
+    Maps.LobbyCrown,
+]
 minigame_maps_easy = [
     # Maps.BusyBarrelBarrageEasy,
     # Maps.BusyBarrelBarrageHard,
@@ -184,7 +203,13 @@ minigame_maps_easy = [
     Maps.HelmBarrelChunkyShooting,
 ]
 minigame_maps_beatable = [Maps.MadMazeMaulEasy, Maps.MadMazeMaulNormal, Maps.MadMazeMaulHard, Maps.MadMazeMaulInsane]
-minigame_maps_nolimit = [Maps.HelmBarrelLankyMaze, Maps.StashSnatchEasy, Maps.StashSnatchNormal, Maps.StashSnatchHard, Maps.StashSnatchInsane]
+minigame_maps_nolimit = [
+    Maps.HelmBarrelLankyMaze,
+    Maps.StashSnatchEasy,
+    Maps.StashSnatchNormal,
+    Maps.StashSnatchHard,
+    Maps.StashSnatchInsane,
+]
 minigame_maps_beavers = [Maps.BeaverBotherEasy, Maps.BeaverBotherNormal, Maps.BeaverBotherHard]
 minigame_maps_total = minigame_maps_easy.copy()
 minigame_maps_total.extend(minigame_maps_beatable)
@@ -497,7 +522,12 @@ def randomize_enemies_0(spoiler):
             if map not in data:
                 data[map] = []
             data[map].append(
-                {"enemy": new_enemy, "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed], "id": enemy_location_list[loc].id, "location": Locations(loc).name}
+                {
+                    "enemy": new_enemy,
+                    "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed],
+                    "id": enemy_location_list[loc].id,
+                    "location": Locations(loc).name,
+                }
             )
     spoiler.enemy_rando_data = data
     for enemy in pkmn_snap_enemies:

@@ -2,6 +2,7 @@
 
 import glob
 import os
+import re
 import shutil
 import subprocess
 from hashlib import md5
@@ -10,6 +11,13 @@ from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
+
+# Load version from version.py
+version = None
+with open("version.py", "r") as version_file:
+    for line in version_file:
+        if line.startswith("version"):
+            version = line.split("=")[1].strip().strip('"')
 
 
 def get_files(path, extension, recursive=False):
@@ -25,25 +33,28 @@ def get_files(path, extension, recursive=False):
 
 def find_list_resources(tag, attribute, soup):
     """Find resources based off of their tag and attributes."""
-    list = []
+    resources = []
     for x in soup.findAll(tag):
         try:
-            list.append(x[attribute])
+            resources.append(x[attribute])
         except KeyError:
             pass
-    return list
+    return resources
 
 
 for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.getcwd(), "html", recursive=True)]:
     with open(f, "r") as reader:
-        html: str = reader.read()
+        html = reader.read()
         soup = BeautifulSoup(html, features="html.parser")
 
         image_src = find_list_resources("img", "src", soup)
         script_src = find_list_resources("script", "src", soup)
         css_link = find_list_resources("link", "href", soup)
+
+        # Update HTML file links
         for link in [*css_link, *script_src, *image_src]:
             if "http://" in link or "https://" in link:
+                # External link
                 pre = ""
                 if "wiki/" in f:
                     pre = "."
@@ -52,19 +63,20 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
                 req = requests.get(link, allow_redirects=False)
                 open(f".{file_name}", "wb").write(req.content)
                 html = html.replace(link, f".{pre}{file_name}")
-                with open(f, "w") as writer:
-                    writer.write(html)
+            elif link.endswith(".js"):
+                # Local JavaScript file - append version query parameter
+                html = html.replace(link, f"{link}?v={version}")
 
-# subprocess.run(["css-html-js-minify", "static/styles/", "--overwrite"])
-# subprocess.run(["pyminify", "-i", "."])
+        # Update JavaScript blocks
+        pattern = r'(\{ src: [\'"])(\.\/static\/js\/.*?\.js)([\'"], defer: true \})'
+        updated_html = re.sub(pattern, rf"\1\2?v={version}\3", html)
+
+        # Write the modified HTML content back to the file
+        with open(f, "w") as writer:
+            writer.write(updated_html)
+
 subprocess.run(["python3", "setup.py", "bdist_wheel"])
 shutil.copyfile("dist/dk64rando-1.0.0-py3-none-any.whl", "static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
-with open("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl", "rb") as file:
-    wheel = file.read()
-    hash = md5(wheel).hexdigest()
-    with open("version.py", "a") as version:
-        version.write(f'\nwhl_hash = "{hash}"')
-
 
 # Create the file Gemfile
 with open("Gemfile", "w") as file:
