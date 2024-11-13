@@ -2244,7 +2244,7 @@ CustomLocations = {
             z=2450.29,
             max_size=84.8,
             logic_region=Regions.GloomyGalleonStart,
-            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False),
+            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False),
             vanilla_crown=True,
             group=3,
         ),

@@ -429,7 +429,7 @@
 | On Broken Ship railings | 6 |  | 
 | Around Tiny's Kasplat | 6 |  | 
 | Around the T&S Portal near Cranky | 2 |  | 
-| Underneath Cranky's | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False)` | 
+| Underneath Cranky's | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
 | In the corner of the main room | 3 |  | 
 | Near Tiny's Slam Switch | 3 |  | 
 | Around 5-Door Ship Exterior | 4 |  | 

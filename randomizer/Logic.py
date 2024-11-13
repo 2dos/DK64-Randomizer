@@ -575,11 +575,14 @@ class LogicVarHolder:
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
         return Events.WaterRaised in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.kong_model_lanky == KongModels.default)))
 
-    def CanSkew(self, swim, kong_req=Kongs.any):
+    def CanSkew(self, swim, is_japes=True, kong_req=Kongs.any):
         """Determine whether the player can skew."""
         if swim:
             return self.skew and self.swim and self.HasGun(kong_req) and self.CanPhaseswim()
-        return self.skew and self.oranges and self.settings.damage_amount != DamageAmount.ohko
+        satisfies_cannon_req = True
+        if is_japes:
+            satisfies_cannon_req = Events.JapesAccessToCannon in self.Events
+        return self.skew and self.oranges and self.settings.damage_amount != DamageAmount.ohko and satisfies_cannon_req
 
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""

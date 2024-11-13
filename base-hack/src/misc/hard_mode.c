@@ -267,10 +267,7 @@ challenge_type getMemoryChallengeType(maps map) {
     if (inShortList(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps) >> 1)) {
         return CHALLENGE_NONE;
     }
-    int offset = map >> 3;
-    int check = map % 8;
-    int is_dw = *(unsigned char*)((unsigned char*)(&is_dark_world_mc) + offset) & (0x80 >> check);
-    if (is_dw) {
+    if (getBitArrayValue(&is_dark_world_mc, map)) {
         return CHALLENGE_DARK_WORLD;
     }
     return CHALLENGE_SKY;

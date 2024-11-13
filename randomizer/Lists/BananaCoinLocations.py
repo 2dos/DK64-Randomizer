@@ -4148,7 +4148,7 @@ BananaCoinGroupList = {
             name="Underneath Cranky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.GloomyGalleonStart,
-            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False),
+            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False),
             locations=[
                 [1.0, 3334, 1670, 2555],
                 [1.0, 3240, 1670, 2500],

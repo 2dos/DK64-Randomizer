@@ -25,6 +25,7 @@ extern int inTraining(maps map);
 extern int inShop(maps map, int include_snide);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
 extern int inMinigame(maps map);
+extern int getBitArrayValue(unsigned char* arr, int value);
 extern int isGamemode(gamemodes target_mode, int force_both);
 extern int has_key(int index);
 extern overlays getOverlayFromMap(maps map);

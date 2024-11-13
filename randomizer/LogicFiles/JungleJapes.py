@@ -56,7 +56,9 @@ LogicRegions = {
 
     Regions.JapesCannonPlatform: Region("Jungle Japes Cannon Platform", HintRegion.Hillside, Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesLankyCagedBanana, lambda l: ((Events.JapesLankySwitch in l.Events or ((not l.settings.shuffle_shops) and l.CanSkew(True)) or l.CanSkew(False)) and l.lanky) or (((not l.settings.shuffle_shops) and l.CanSkew(True)) or l.CanSkew(False) and l.settings.free_trade_items)),
-    ], [], [
+    ], [
+        Event(Events.JapesAccessToCannon, lambda l: True),
+    ], [
         TransitionFront(Regions.JapesHillTop, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesHill, lambda l: l.can_use_vines),
