@@ -41,7 +41,7 @@
 
 ## About the project
 
-**DK64 Randomizer** is a tool that randomizes various elements of *Donkey Kong 64*, giving players a new and unpredictable experience each time they play. This randomizer shuffles item placements, Kongs, enemy encounters, and more, creating a fresh and challenging take on the beloved classic.
+**DK64 Randomizer** is a tool that randomizes various elements of *Donkey Kong 64*, giving players a new and unpredictable experience each time they play. This randomizer shuffles item placements, Kongs, enemies, and more, creating a fresh and challenging take on the beloved classic.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
