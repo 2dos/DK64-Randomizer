@@ -6,9 +6,9 @@
   </a>
 
   <h1 align="center">DK64 Randomizer</h1>
-<img alt="Stable Branch Version" src="https://img.shields.io/badge/stable-3.0-green">
-<img alt="Dev Branch Version" src="https://img.shields.io/badge/dev-4.0-blue">
-<img alt="GitHub License" src="https://img.shields.io/github/license/2dos/DK64-Randomizer">
+<img alt="Stable Branch Version" src="https://img.shields.io/badge/stable-3.0-darkgreen">
+<img alt="Dev Branch Version" src="https://img.shields.io/badge/dev-4.0-midnightblue">
+<img alt="GitHub License" src="https://img.shields.io/github/license/2dos/DK64-Randomizer?color=darkred">
 <img alt="Seeds Genned" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fhook.us2.make.com%2Fvbfjgbseucn5taygvlxcfkh7q4060wo4">
 
 
