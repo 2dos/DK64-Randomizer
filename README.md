@@ -64,7 +64,9 @@
    ```bash
    pip install -r requirements-dev.txt
    ```
-3. **Run the Randomizer**:
+3. **Place a DK64 ROM into the repo**:
+The US ROM needs to be named `dk64.z64` and placed into the base directory of the repository.
+4. **Run the Randomizer**:
    Run `runner.py` to boot up a local copy of the randomizer webpage at `localhost:8000`. This can also be achieved with the `Run Server` task on VSCode.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
