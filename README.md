@@ -9,7 +9,7 @@
 [![GitHub release](https://img.shields.io/badge/stable-3.0-green)](https://github.com/2dos/DK64-Randomizer/tree/master)
 [![GitHub release](https://img.shields.io/badge/dev-4.0-blue)](https://github.com/2dos/DK64-Randomizer/tree/dev)
 ![GitHub License](https://img.shields.io/github/license/2dos/DK64-Randomizer)
-![Endpoint Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fhook.us2.make.com%2Fvbfjgbseucn5taygvlxcfkh7q4060wo4)
+<img alt="Endpoint Badge" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fhook.us2.make.com%2Fvbfjgbseucn5taygvlxcfkh7q4060wo4">
 
 
 <p align="center">
