@@ -283,7 +283,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | First dead end | 10 | `l.coconut` | 
-| Second dead end | 5 | `l.coconut, locations=[[5, 1.0, 1046, 62, 1082]]` | 
+| Second dead end | 5 | `l.coconut` | 
 | Path to GB | 16 | `l.coconut` | 
 | Path to GB | 4 |  | 
 | First dead end | Balloon |  | 
@@ -300,7 +300,7 @@
 | ---- | ------ | ----- |
 | Path to GB | 21 | `l.grape` | 
 | Path to GB | 4 |  | 
-| Dead end | 5 | `l.grape, locations=[[5, 1.0, 768, 128, 925]])` | 
+| Dead end | 5 | `l.grape` | 
 | Dead end | Balloon |  | 
 | Middle (Lanky) | Balloon |  | 
 ## Aztec Tiny5DTemple
@@ -308,7 +308,7 @@
 | ---- | ------ | ----- |
 | Path to GB | 21 | `l.feather` | 
 | Path to GB | 4 |  | 
-| Dead end | 5 | `l.feather, locations=[[5, 1.0, 330, 128, 1400]])` | 
+| Dead end | 5 | `l.feather` | 
 | Right side Mini Monkey room (scale 0.6) | 10 | `l.mini or l.CanPhase()` | 
 | Dead end | Balloon |  | 
 ## Aztec Chunky5DTemple
@@ -405,7 +405,7 @@
 | Chunky R&D room behind chest | 10 | `l.CanAccessRNDRoom() or (l.punch and l.triangle and l.climbing)` | 
 | Lanky R&D room upper 3 barrels | 15 | `l.CanAccessRNDRoom() or l.trombone` | 
 | Lanky R&D room lower 3 barrels | 15 | `l.CanAccessRNDRoom() or l.trombone` | 
-| On F Key | 5 | `l.CanAccessRNDRoom() or l.trombone, locations=[[5, 1.0, 3460, 1285, 424]]` | 
+| On F Key | 5 | `l.CanAccessRNDRoom() or l.trombone` | 
 | Side walls of Lanky R&D room | 10 | `l.CanAccessRNDRoom() or l.trombone` | 
 | In fall from the hatch to power shed | 5 |  | 
 | In Dark room on box | 5 | `l.punch or l.CanPhase()` | 
@@ -827,7 +827,7 @@
 | Saxophone pad in tree area | 5 |  | 
 | On anthill around hole | 5 | `(l.jetpack and l.isdiddy) or (l.mini and l.saxophone and l.istiny)` | 
 | Around anthill (2 custom, 8 Tiny) | 10 |  | 
-| In owl alcove | 5 | `l.jetpack, locations=[[5, 1.0, 1275, 410, 3876]]` | 
+| In owl alcove | 5 | `l.jetpack` | 
 | Around rocketbarrel barrel | 5 |  | 
 | Tree stumps rocketbarrel side | 10 |  | 
 | Tree stumps rabbit side | 10 |  | 
@@ -1037,7 +1037,7 @@
 | Around Tag Barrel in 5DI area | 5 |  | 
 | Singles on 5DI | 10 |  | 
 | Bunch on 5DI | 5 |  | 
-| On pointy pillar by Chunky igloo | 5 | `l.jetpack, locations=[[5, 1.0, 731, 150, 994]]` | 
+| On pointy pillar by Chunky igloo | 5 | `l.jetpack` | 
 | In water around Chunky Igloo | 5 |  | 
 | In water around Tiny Igloo | 5 |  | 
 | On edge of useless platform on the right side of waterfall | 5 |  | 
@@ -1242,7 +1242,7 @@
 | On tree by big tree (Tiny coins) | 2 |  | 
 | On tree by big tree (Tiny coins) | 3 | `l.climbing` | 
 | On branch sticking out of big tree | 5 | `l.climbing` | 
-| On big tree | 5 | `l.jetpack, locations=[[5, 1.0, 1240, 770, 230]])` | 
+| On big tree | 5 | `l.jetpack` | 
 | On BBlast pad | 5 |  | 
 | On sewer pipe | 5 |  | 
 | Around big tree platform | 10 |  | 
@@ -1376,8 +1376,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Shed - Around room | 15 |  | 
-| On Gorilla Gone pad | 5 | `l.punch, locations=[[5, 1.0, 304, 12, 354]])` | 
-| In shed (Chunky) | Balloon |  | 
+| On Gorilla Gone pad | 5 | `l.punch` | 
 ## Castle Lower Cave
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1417,7 +1416,7 @@
 | On Goo hands | 15 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.twirl` | 
 | On torches on Tiny's path | 10 |  | 
 | Path to Lanky's side | 20 |  | 
-| On trombone pad | 5 | `l.grape and l.sprint, locations=[[5, 1.0, 2100, 94, 560]]` | 
+| On trombone pad | 5 | `l.grape and l.sprint` | 
 | In green goo gap (Tiny) | 5 | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In and out of green goo pit | Balloon |  | 
 | Above green goo room | Balloon | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
