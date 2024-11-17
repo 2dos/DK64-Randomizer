@@ -85,10 +85,10 @@
 | Angry Aztec | Near Llama Temple (Left) |  |  | 
 | Angry Aztec | Near Llama Temple (Right) |  |  | 
 | Angry Aztec | Next to Llama Temple |  |  | 
-| Angry Aztec | On Llama Temple |  | `(l.jetpack and l.diddy) or l.CanMoonkick(), group=3` | 
+| Angry Aztec | On Llama Temple |  | `(l.jetpack and l.diddy) or l.CanMoonkick()` | 
 | Angry Aztec | On Llama Temple (1) |  | `(l.jetpack and l.diddy) or l.CanMoonkick()` | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Shop |  |  | 
-| Angry Aztec | On 5-Door Temple |  | `(l.jetpack and l.diddy) or l.CanMoonkick(), group=3` | 
+| Angry Aztec | On 5-Door Temple |  | `(l.jetpack and l.diddy) or l.CanMoonkick()` | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Exterior Warp |  |  | 
 | Angry Aztec | Near Vulture Cage |  | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.diddy)` | 
 | Angry Aztec | Under Vulture Cage |  |  | 
@@ -143,13 +143,13 @@
 | Frantic Factory | Tunnel to production room |  |  | 
 | Frantic Factory | Production Room Lower Section |  |  | 
 | Frantic Factory | Under High Conveyors |  |  | 
-| Frantic Factory | Past Tiny Production Bonus |  | `l.twirl and l.tiny, group=1)` | 
+| Frantic Factory | Past Tiny Production Bonus |  | `l.twirl and l.tiny` | 
 | Frantic Factory | On Production outside box |  |  | 
 | Frantic Factory | Storage Room Corner |  |  | 
 | Frantic Factory | Cranky and Candy Room | MelonCrate |  | 
 | Frantic Factory | Near Candy |  |  | 
+| Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk` | 
 | Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.CanPhase(), group=4` | 
-| Frantic Factory | Arcade Room Bench |  |  | 
 | Frantic Factory | Next to DK Arcade |  |  | 
 | Frantic Factory | Near Snide (1) |  |  | 
 | Frantic Factory | Near Snide (2) |  |  | 
@@ -168,6 +168,7 @@
 | Frantic Factory | In Diddy's Pincode enemies room | CrownPad, Bananaport | `((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Chunky R and D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In front of Chunky's toy boss room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.phasewalk` | 
 | Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | Tiny race entry area |  | `((l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | R and D lever room - by Tiny's barrel |  |  | 
@@ -387,7 +388,7 @@
 | Caves Donkey Cabin | DK 5DC: Opposite Entrance |  |  | 
 | Caves Frozen Castle | Frozen Castle: Next to Slam Puzzle - left |  |  | 
 | Caves Frozen Castle | Frozen Castle: Next to Slam Puzzle - right |  |  | 
-| Caves Tiny Cabin | Tiny Cabin: Interior |  | `l.oranges, group=1)` | 
+| Caves Tiny Cabin | Tiny Cabin: Interior |  | `l.oranges` | 
 
 # Creepy Castle
 | Map | Name | Banned Types | Logic |
@@ -417,7 +418,7 @@
 | Creepy Castle | Near Wind Tower (1) |  |  | 
 | Creepy Castle | Top of Castle near fence |  |  | 
 | Creepy Castle | Near Snide's HQ |  |  | 
-| Creepy Castle | On Wind Tower |  | `l.jetpack and l.isdiddy, group=5)` | 
+| Creepy Castle | On Wind Tower |  | `l.jetpack and l.isdiddy` | 
 | Creepy Castle | Vanilla Upper Warp 2 |  |  | 
 | Creepy Castle | Vanilla Upper Warp 5 |  |  | 
 | Creepy Castle | Vanilla Close Warp 1 |  |  | 
