@@ -513,7 +513,7 @@ def export_plando_options(evt):
     plandoData = populate_plando_options(form, True)
     js.export_settings_string(None)
     plandoData["Settings String"] = js.settings_string.value
-    js.download_json_file(plandoData, "plando_settings.json")
+    js.download_json_file(json.dumps(plandoData), "plando_settings.json")
 
 
 @bind("change", "plando_starting_kongs_selected")

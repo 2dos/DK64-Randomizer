@@ -446,7 +446,7 @@ function uuidv4() {
     );
   }
 
-document.getElementById("import_settings").addEventListener("click", async function(event) {
+async function import_settings_string(event) {
     // Click event for importing settings from a string.
 
     event.preventDefault();
@@ -552,6 +552,8 @@ document.getElementById("import_settings").addEventListener("click", async funct
     update_ui_states(null);
     savesettings();
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
-});
+}
+
+document.getElementById("import_settings").addEventListener("click", import_settings_string);
 
 window["setup_pyodide"] = setup_pyodide;
