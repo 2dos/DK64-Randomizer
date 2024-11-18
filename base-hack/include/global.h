@@ -34,6 +34,7 @@ extern int applyDamageMask(int player_index, int damage);
 extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
 extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1);
 extern int isBounceObject(int object);
+extern void genericStatUpdate(bonus_stat stat);
 
 extern int getEnemyItem(int id);
 extern int getEnemyFlag(int id);
@@ -383,7 +384,6 @@ extern void handleCannonGameReticle(void);
 
 extern void cFuncLoop(void);
 extern void overlay_mod_menu(void);
-extern void overlay_mod_critter(void);
 extern void overlay_mod_boss(void);
 extern void overlay_mod_bonus(void);
 extern void initJetpac(void);

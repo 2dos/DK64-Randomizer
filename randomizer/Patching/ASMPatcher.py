@@ -87,6 +87,8 @@ ENABLE_MINIGAME_SPRITE_RANDO = False
 ENABLE_HELM_GBS = True
 ENABLE_BLAST_LZR = False
 POP_TARGETTING = True
+UNSHROUDED_CASTLE = True
+FARPLANE_VIEW = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1050,6 +1052,16 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if DISABLE_BORDERS:
         writeValue(ROM_COPY, 0x805FBAB4, Overlay.Static, 0x1000FFC7, offset_dict, 4)  # Disable borders around game. Has "quirks"
+
+    if UNSHROUDED_CASTLE:
+        # Credit: Retroben
+        writeFloatUpper(ROM_COPY, 0x80663CB6, Overlay.Static, 8000, offset_dict)
+
+    if FARPLANE_VIEW:
+        # Credit: Retroben
+        writeValue(ROM_COPY, 0x80663D24, Overlay.Static, 0x240B1F40, offset_dict, 4)
+        writeValue(ROM_COPY, 0x80663D30, Overlay.Static, 0x240B1F40, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8062F09C, Overlay.Static, 0x240F1F40, offset_dict, 4)
 
     # Kong Model Swap handlers
     writeFunction(ROM_COPY, 0x806C871C, Overlay.Static, "adjustGunBone", offset_dict)

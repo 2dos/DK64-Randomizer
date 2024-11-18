@@ -61,7 +61,6 @@
 .importobj "obj/src_overlays_bonus.o"
 .importobj "obj/src_overlays_boss.o"
 .importobj "obj/src_overlays_changes.o"
-.importobj "obj/src_overlays_critter.o"
 .importobj "obj/src_overlays_jetpac.o"
 .importobj "obj/src_overlays_menu.o"
 .importobj "obj/src_overlays_race.o"

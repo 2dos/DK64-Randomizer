@@ -21,10 +21,6 @@ void overlay_changes(void) {
 			// Also contains shops
 			overlay_mod_menu();
 			break;
-		case OVERLAY_CRITTER:
-			// Known as "Water" in Ghidra repo
-			overlay_mod_critter();
-			break;
 		case OVERLAY_BOSS:
 			overlay_mod_boss();
 			break;
