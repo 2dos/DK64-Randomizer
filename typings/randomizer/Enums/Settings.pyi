@@ -319,6 +319,18 @@ class PuzzleRando(IntEnum):
     hard = 3
     chaos = 4
 
+class ProgressiveHintItem(IntEnum):
+    off = 0
+    req_gb = 1
+    req_bp = 2
+    req_key = 3
+    req_medal = 4
+    req_crown = 5
+    req_fairy = 6
+    req_rainbowcoin = 7
+    req_bean = 8
+    req_pearl = 9
+
 class RandomPrices(IntEnum):
     vanilla = 0
     free = 1
@@ -612,6 +624,7 @@ class SettingsStringEnum(IntEnum):
     troff_7 = 185
     has_password = 186
     randomize_enemy_sizes = 187
+    progressive_hint_item = 188
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -692,6 +705,7 @@ SettingsMap: dict = {
     "kong_model_chunky": KongModels,
     "chunky_phase_slam_req": SlamRequirement,
     "puzzle_rando_difficulty": PuzzleRando,
+    "progressive_hint_item": ProgressiveHintItem,
 }
 
 SettingsStringTypeMap: dict = {
@@ -882,6 +896,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
+    SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
 }
 
 SettingsStringListTypeMap: dict = {

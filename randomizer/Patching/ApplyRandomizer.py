@@ -18,6 +18,7 @@ from randomizer.Enums.Settings import (
     HardModeSelected,
     HardBossesSelected,
     MiscChangesSelected,
+    ProgressiveHintItem,
     PuzzleRando,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -64,7 +65,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount
+from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
     updateKrushaMoveNames,
@@ -391,15 +392,17 @@ def patching_response(spoiler):
     hints_in_pool_handler = 0
     if Types.Hint in spoiler.settings.shuffled_location_types:
         hints_in_pool_handler = 1
-        if spoiler.settings.enable_progressive_hints:
+        if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
             hints_in_pool_handler = 2
     ROM_COPY.write(int(hints_in_pool_handler))
 
     # Progressive Hints
-    ROM_COPY.seek(sav + 0x115)
     count = 0
-    if spoiler.settings.enable_progressive_hints:
+    if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         count = spoiler.settings.progressive_hint_text
+        ROM_COPY.seek(sav + 0x0C3)
+        ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))  # Set prog hint item as GBs (for now)
+    ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
 
     # Microhints
@@ -435,9 +438,6 @@ def patching_response(spoiler):
         if bonus < 0:
             bonus += 65536
         ROM_COPY.writeMultipleBytes(bonus, 2)
-
-    ROM_COPY.seek(sav + 0x0C3)
-    ROM_COPY.write(int(BarrierItems.GoldenBanana))  # Set prog hint item as GBs (for now)
 
     # Activate Bananaports
     ROM_COPY.seek(sav + 0x138)
@@ -707,7 +707,7 @@ def patching_response(spoiler):
         PushHints(spoiler)
         if spoiler.settings.dim_solved_hints:
             PushHelpfulHints(spoiler, ROM_COPY)
-    if Types.Hint in spoiler.settings.shuffled_location_types and not spoiler.settings.enable_progressive_hints:
+    if Types.Hint in spoiler.settings.shuffled_location_types and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off:
         PushHintTiedRegions(spoiler, ROM_COPY)
 
     writeBootMessages()

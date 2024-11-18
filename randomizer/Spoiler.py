@@ -24,6 +24,7 @@ from randomizer.Enums.Settings import (
     LogicType,
     HardBossesSelected,
     MinigameBarrels,
+    ProgressiveHintItem,
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -369,7 +370,7 @@ class Spoiler:
         settings["Galleon Water Level"] = self.settings.galleon_water.name
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
         settings["Hint Preset"] = self.settings.wrinkly_hints
-        if self.settings.enable_progressive_hints:
+        if self.settings.progressive_hint_item != ProgressiveHintItem.off:
             settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_text)
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints

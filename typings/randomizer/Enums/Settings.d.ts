@@ -347,6 +347,19 @@ export enum MusicFilters {
     location = 2,
 }
 
+export enum ProgressiveHintItem {
+    off = 0,
+    req_gb = 1,
+    req_bp = 2,
+    req_key = 3,
+    req_medal = 4,
+    req_crown = 5,
+    req_fairy = 6,
+    req_rainbowcoin = 7,
+    req_bean = 8,
+    req_pearl = 9,
+}
+
 export enum PuzzleRando {
     off = 0,
     easy = 1,
@@ -661,6 +674,7 @@ export enum SettingsStringEnum {
     troff_7 = 185,
     has_password = 186,
     randomize_enemy_sizes = 187,
+    progressive_hint_item = 188,
 }
 
 export enum SettingsStringDataType {
@@ -743,6 +757,7 @@ export const SettingsMap = {
     'kong_model_chunky': KongModels,
     'chunky_phase_slam_req': SlamRequirement,
     'puzzle_rando_difficulty': PuzzleRando,
+    'progressive_hint_item': ProgressiveHintItem,
 }
 
 export const SettingsStringTypeMap = {
@@ -933,6 +948,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
+    SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
 }
 
 export const SettingsStringListTypeMap = {

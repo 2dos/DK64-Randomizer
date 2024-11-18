@@ -600,6 +600,23 @@
   },
 
   /*
+    ProgressiveHintItem:
+    - The item required to obtain hints via the progressive hint system.
+  */
+  "ProgressiveHintItem": {
+    "off": 0,
+    "req_gb": 1,
+    "req_bp": 2,
+    "req_key": 3,
+    "req_medal": 4,
+    "req_crown": 5,
+    "req_fairy": 6,
+    "req_rainbowcoin": 7,
+    "req_bean": 8,
+    "req_pearl": 9
+  },
+
+  /*
     PuzzleRando:
     - Determines the difficulty of puzzle rando.
     - off: Puzzle solutions are NOT randomized.
@@ -1026,7 +1043,8 @@
     "bananaport_placement_rando": 184,
     "troff_7": 185,
     "has_password": 186,
-    "randomize_enemy_sizes": 187
+    "randomize_enemy_sizes": 187,
+    "progressive_hint_item": 188
   },
   /*
     SettingsStringDataType:
@@ -1115,7 +1133,8 @@
     "kong_model_tiny": { "obj": "KongModels" },
     "kong_model_chunky": { "obj": "KongModels" },
     "chunky_phase_slam_req": { "obj": "SlamRequirement" },
-    "puzzle_rando_difficulty": { "obj": "PuzzleRando" }
+    "puzzle_rando_difficulty": { "obj": "PuzzleRando" },
+    "progressive_hint_item": { "obj": "ProgressiveHintItem" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
   // This maps settings to the data types that will be used to encode them in the
@@ -1549,7 +1568,8 @@
     "SettingsStringEnum.has_password": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.randomize_enemy_sizes": {
       "obj": "SettingsStringDataType.bool"
-    }
+    },
+    "SettingsStringEnum.progressive_hint_item": { "obj": "ProgressiveHintItem" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.

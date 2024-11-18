@@ -41,6 +41,7 @@ from randomizer.Enums.Settings import (
     HardBossesSelected,
     LogicType,
     MiscChangesSelected,
+    ProgressiveHintItem,
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -56,7 +57,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Lib import IsItemSelected, getProgHintBarrierItem
 from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -583,6 +584,16 @@ class LogicVarHolder:
         if is_japes:
             satisfies_cannon_req = Events.JapesAccessToCannon in self.Events
         return self.skew and self.oranges and self.settings.damage_amount != DamageAmount.ohko and satisfies_cannon_req
+    
+    def canFulfillProgHint(self, value: int) -> bool:
+        """Determine whether the player can view a progressive hint."""
+        req_item = self.settings.progressive_hint_item
+        if req_item == ProgressiveHintItem.off:
+            return True
+        barrier_item = getProgHintBarrierItem(req_item)
+        if barrier_item is None:
+            raise Exception("Invalid Item for progressive hints")
+        return self.ItemCheck(barrier_item, value)
 
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""

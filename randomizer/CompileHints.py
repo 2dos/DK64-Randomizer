@@ -20,6 +20,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, HINT_REGION_PAIRING
 from randomizer.Enums.Settings import (
     ClimbingStatus,
+    ProgressiveHintItem,
     HelmSetting,
     LogicType,
     MicrohintsEnabled,
@@ -1222,7 +1223,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If we're using hint doors, put it on a random hint door
         hint_location = getRandomHintLocation()
         # If we're using progressive hints, put it on the last hint
-        if spoiler.settings.enable_progressive_hints:
+        if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
             hint_location = [hint for hint in hints if hint.level == Levels.CreepyCastle and hint.kong == Kongs.chunky][0]
             if hint_location.hint_type == HintType.Plando:
                 hint_location = getRandomHintLocation()
@@ -1258,7 +1259,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location = random.choice(hint_options)
             # If there are no doors available early (very rare) or the Kong is not WotH (obscenely rare) then just get a random one. Tough luck.
             else:
-                if spoiler.settings.enable_progressive_hints:  # In progressive hints we'll still stick the hint in the first 20 hints
+                if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:  # In progressive hints we'll still stick the hint in the first 20 hints
                     hint_location = getRandomHintLocation(levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon])
                 else:
                     hint_location = getRandomHintLocation()
@@ -1392,7 +1393,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if hint_location is None or len(hint_options) == 0:
                 level_limit = None
                 # Limit our level options to the first 4 if we're on progressive hints and this is a Kong
-                if ItemList[spoiler.LocationList[loc_id].item].type == Types.Kong and spoiler.settings.enable_progressive_hints:
+                if ItemList[spoiler.LocationList[loc_id].item].type == Types.Kong and spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
                     level_limit = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon]
                 hint_location = getRandomHintLocation(levels=level_limit)
             location = spoiler.LocationList[loc_id]
@@ -2671,7 +2672,7 @@ def getDoorRestrictionsForItem(spoiler: Spoiler, item: Items):
     """Given the input item, return a list of HintLocation objects that hints for this item must be in."""
     accessible_hints = []
     # Progressive hints need additional restrictions to feel good
-    if spoiler.settings.enable_progressive_hints:
+    if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         # If we're not in LZR, Keys that unlock levels are awful to get on the last few hints
         if spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
             # In SLO, we know what order we'll find keys in, which can put early keys even earlier

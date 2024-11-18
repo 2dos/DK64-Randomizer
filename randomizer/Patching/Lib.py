@@ -16,7 +16,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency
+from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem
 
 if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
@@ -1062,6 +1062,20 @@ def getIceTrapCount(settings) -> int:
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
+def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
+    """Get the accompanying barrier item for the prog hint item."""
+    barrier_bijection = {
+        ProgressiveHintItem.req_gb: BarrierItems.GoldenBanana,
+        ProgressiveHintItem.req_bp: BarrierItems.Blueprint,
+        ProgressiveHintItem.req_key: BarrierItems.Key,
+        ProgressiveHintItem.req_medal: BarrierItems.Medal,
+        ProgressiveHintItem.req_crown: BarrierItems.Crown,
+        ProgressiveHintItem.req_fairy: BarrierItems.Fairy,
+        ProgressiveHintItem.req_rainbowcoin: BarrierItems.RainbowCoin,
+        ProgressiveHintItem.req_bean: BarrierItems.Bean,
+        ProgressiveHintItem.req_pearl: BarrierItems.Pearl,
+    }
+    return barrier_bijection[item]
 
 class Holidays(IntEnum):
     """Holiday Enum."""

@@ -1482,6 +1482,77 @@ document
     element.addEventListener("input", onInput);
   });
 
+
+// Update Win Condition Number Access
+function update_prog_hint_num_access() {
+  const DISABLED_PROG_VALUES = [
+    "off",
+  ];
+
+  const progHintSelection = document.getElementById("progressive_hint_item");
+  const progHintContainer = document.getElementById("progressive_hint_container");
+  const progHintReq = document.getElementById("progressive_hint_text");
+  const disabled = DISABLED_PROG_VALUES.includes(progHintSelection.value);
+
+  if (disabled) {
+    progHintContainer.classList.add("hide-input");
+  } else {
+    progHintContainer.classList.remove("hide-input");
+  }
+
+  if (!progHintReq.value) {
+    progHintReq.value = 1;
+  } else if (
+    progHintSelection.value === "req_gb" &&
+    parseInt(progHintReq.value) > 201
+  ) {
+    progHintReq.value = 201;
+  } else if (
+    progHintSelection.value === "req_bp" &&
+    parseInt(progHintReq.value) > 40
+  ) {
+    progHintReq.value = 40;
+  } else if (
+    progHintSelection.value === "req_key" &&
+    parseInt(progHintReq.value) > 8
+  ) {
+    progHintReq.value = 8;
+  } else if (
+    progHintSelection.value === "req_medal" &&
+    parseInt(progHintReq.value) > 40
+  ) {
+    progHintReq.value = 40;
+  } else if (
+    progHintSelection.value === "req_crown" &&
+    parseInt(progHintReq.value) > 10
+  ) {
+    progHintReq.value = 10;
+  } else if (
+    progHintSelection.value === "req_fairy" &&
+    parseInt(progHintReq.value) > 18
+  ) {
+    progHintReq.value = 18;
+  } else if (
+    progHintSelection.value === "req_bean" &&
+    parseInt(progHintReq.value) > 1
+  ) {
+    progHintReq.value = 1;
+  } else if (
+    progHintSelection.value === "req_pearl" &&
+    parseInt(progHintReq.value) > 5
+  ) {
+    progHintReq.value = 5;
+  } else if (
+    progHintSelection.value === "req_rainbowcoin" &&
+    parseInt(progHintReq.value) > 16
+  ) {
+    progHintReq.value = 16;
+  }
+}
+
+document
+  .getElementById("win_condition_item")
+  .addEventListener("change", update_prog_hint_num_access);
 // Validate blocker input on loss of focus
 function handle_progressive_hint_text() {
   const progressiveHintText = document.getElementById("progressive_hint_text");
@@ -2084,6 +2155,7 @@ function update_ui_states() {
   update_door_one_num_access(null);
   update_door_two_num_access(null);
   update_win_con_num_access(null);
+  update_prog_hint_num_access(null);
   disable_tag_spawn(null);
   disable_krool_phases(null);
   disable_helm_phases(null);
