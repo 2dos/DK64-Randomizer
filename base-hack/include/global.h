@@ -186,7 +186,7 @@ extern void CBDing(void);
 extern Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec);
 extern Gfx* renderDingSprite(Gfx* dl);
 extern Gfx* renderProgressiveSprite(Gfx* dl);
-extern int getHintGBRequirement(int slot);
+extern int getHintRequirement(int slot);
 extern void gbUpdateHandler(void);
 extern void handleProgressiveIndicator(int delta);
 extern int hasEnoughCBs(void);

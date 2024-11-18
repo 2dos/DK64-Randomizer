@@ -131,11 +131,11 @@ void handleProgressiveIndicator(int delta) {
     if (Rando.progressive_hint_gb_cap == 0) {
         return;
     }
-    int gb_count = getTotalGBs();
+    int gb_count = getItemCountReq(Rando.prog_hint_item);
     int old_progressive_level = -1;
     int new_progressive_level = -1;
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
-        int local_req = getHintGBRequirement(i);
+        int local_req = getHintRequirement(i);
         if (gb_count >= local_req) {
             new_progressive_level = i;
         }
@@ -322,7 +322,7 @@ static unsigned char hints_per_screen = 5;
 static unsigned char hint_screen_count = 7;
 static unsigned char hint_offset = 140;
 
-int getHintGBRequirement(int slot) {
+int getHintRequirement(int slot) {
     int cap = Rando.progressive_hint_gb_cap;
     if (slot < 34) {
         /*
@@ -370,8 +370,8 @@ int getPluralCharacter(int amount) {
 
 int showHint(int slot) {
     if (Rando.progressive_hint_gb_cap > 0) {
-        int req = getHintGBRequirement(slot);
-        int gb_count = getTotalGBs();
+        int req = getHintRequirement(slot);
+        int gb_count = getItemCountReq(Rando.prog_hint_item);
         return gb_count >= req;
     }
     // Not progressive hints
@@ -491,7 +491,7 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
                     dk_strFormat(unknown_hints[i], "??? - %s", hint_region_names[tied_region]);
                 }
             } else {
-                int requirement = getHintGBRequirement(hint_local_index);
+                int requirement = getHintRequirement(hint_local_index);
                 dk_strFormat(unknown_hints[i], "??? - %d GOLDEN BANANA%c", requirement, getPluralCharacter(requirement));
             }
             dl = drawSplitString(dl, unknown_hints[i], level_x, hint_offset + (120 * i), 40, 0xFF);

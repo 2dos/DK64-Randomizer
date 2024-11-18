@@ -27,7 +27,7 @@ from randomizer.Enums.Settings import (
     WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -435,6 +435,9 @@ def patching_response(spoiler):
         if bonus < 0:
             bonus += 65536
         ROM_COPY.writeMultipleBytes(bonus, 2)
+
+    ROM_COPY.seek(sav + 0x0C3)
+    ROM_COPY.write(int(BarrierItems.GoldenBanana))  # Set prog hint item as GBs (for now)
 
     # Activate Bananaports
     ROM_COPY.seek(sav + 0x138)
