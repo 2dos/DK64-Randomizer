@@ -5,9 +5,8 @@ function download_json_file(jsonData, filename) {
         jsonData (Object): The object containing the data to be downloaded.
         filename (string): The name of the file to be downloaded.
     */
-    
-    // Convert the JSON data to a string
-    const jsonString = JSON.stringify(jsonData, null, 4);
+    // Check if the jsonData is already a string, if not convert it to a string
+    const jsonString = typeof jsonData === "string" ? jsonData : JSON.stringify(jsonData, null, 4);
 
     // Create a Blob object representing the data as a JSON file
     const blob = new Blob([jsonString], { type: "application/json" });
