@@ -384,8 +384,8 @@ document
 function plando_disable_wrinkly_custom_locations() {
   const randomDoors = document.getElementById("wrinkly_location_rando").checked;
   const progressiveHints = document.getElementById(
-    "enable_progressive_hints"
-  ).checked;
+    "progressive_hint_item"
+  ).value != "off";
   const customWrinklyElem = document.getElementById("plando_place_wrinkly");
   let tooltip = "Allows the user to specify locations for each Wrinkly door.";
 
@@ -408,8 +408,8 @@ document
   .getElementById("wrinkly_location_rando")
   .addEventListener("click", plando_disable_wrinkly_custom_locations);
 document
-  .getElementById("enable_progressive_hints")
-  .addEventListener("click", plando_disable_wrinkly_custom_locations);
+  .getElementById("progressive_hint_item")
+  .addEventListener("change", plando_disable_wrinkly_custom_locations);
 
 
 // Enable or disable custom locations for Troff 'n' Scoff portals
