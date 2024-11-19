@@ -127,25 +127,28 @@ void playProgressiveDing(void) {
     playSFX(0x2EA);
 }
 
-void handleProgressiveIndicator(int delta) {
+static int old_progressive_level = -1;
+
+void handleProgressiveIndicator(int allow_ding) {
     if (Rando.progressive_hint_gb_cap == 0) {
         return;
     }
-    int gb_count = getItemCountReq(Rando.prog_hint_item);
-    int old_progressive_level = -1;
+    int item_count = getItemCountReq(Rando.prog_hint_item);
     int new_progressive_level = -1;
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
-        int local_req = getHintRequirement(i);
-        if (gb_count >= local_req) {
+        if (item_count >= getHintRequirement(i)) {
             new_progressive_level = i;
         }
-        if ((gb_count - delta) >= local_req) {
-            old_progressive_level = i;
-        }
     }
-    if (old_progressive_level != new_progressive_level) {
+    if (new_progressive_level > old_progressive_level) {
         playProgressiveDing();
     }
+    old_progressive_level = new_progressive_level;
+}
+
+void resetProgressive(void) {
+    old_progressive_level = -1;
+    handleProgressiveIndicator(0);
 }
 
 void initHints(void) {
@@ -449,6 +452,39 @@ void initHintFlags(void) {
     }
 }
 
+const char* item_names[] = {
+    "NOTHING",
+    "KONG",
+    "MOVE",
+    "GOLDEN BANANA",
+    "BLUEPRINT",
+    "FAIRY",
+    "KEY",
+    "CROWN",
+    "COMPANY COIN",
+    "MEDAL",
+    "BEAN",
+    "PEARL",
+    "RAINBOW COIN",
+    "ICE TRAP",
+    "%",
+    "COLORED BANANA",
+};
+char item_name_plural[] = "COLORED BANANAS";
+
+char* getItemName(int item_index, int item_count) {
+    if ((item_count == 1) || (item_index == 14)) {
+        // Item index 14 is game percentage, avoid pluralizing
+        return item_names[item_index];
+    }
+    if (item_index == 5) {
+        // We love grammar
+        return "FAIRIES";
+    }
+    dk_strFormat(&item_name_plural, "%s%c", item_names[item_index], 'S');
+    return &item_name_plural;
+}
+
 Gfx* drawHintScreen(Gfx* dl, int level_x) {
     display_billboard_fix = 1;
     dl = printText(dl, level_x, 0x3C, 0.65f, "HINTS");
@@ -492,7 +528,7 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
                 }
             } else {
                 int requirement = getHintRequirement(hint_local_index);
-                dk_strFormat(unknown_hints[i], "??? - %d GOLDEN BANANA%c", requirement, getPluralCharacter(requirement));
+                dk_strFormat(unknown_hints[i], "??? - %d %s", requirement, getItemName(Rando.prog_hint_item, requirement));
             }
             dl = drawSplitString(dl, unknown_hints[i], level_x, hint_offset + (120 * i), 40, 0xFF);
         }

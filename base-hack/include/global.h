@@ -187,8 +187,8 @@ extern Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* t
 extern Gfx* renderDingSprite(Gfx* dl);
 extern Gfx* renderProgressiveSprite(Gfx* dl);
 extern int getHintRequirement(int slot);
-extern void gbUpdateHandler(void);
-extern void handleProgressiveIndicator(int delta);
+extern void handleProgressiveIndicator(int allow_ding);
+extern void resetProgressive(void);
 extern int hasEnoughCBs(void);
 extern void initDingSprite(void);
 extern void fastWarpShockwaveFix(void);

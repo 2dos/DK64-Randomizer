@@ -255,6 +255,9 @@ void earlyFrame(void) {
 	} else {
 		actor_functions[196] = &cutsceneDKCode;
 	}
+	if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
+		handleProgressiveIndicator(1);
+	}
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	CBDing();

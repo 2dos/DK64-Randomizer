@@ -2804,11 +2804,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8002608A, Overlay.Menu, getHiSym("FunkyMoves_New"), offset_dict)
     writeValue(ROM_COPY, 0x8002608E, Overlay.Menu, getLoSym("FunkyMoves_New"), offset_dict)
 
-    # Progressive Hints
-    writeFunction(ROM_COPY, 0x800248D4, Overlay.Menu, "gbUpdateHandler_snide", offset_dict)
-    writeValue(ROM_COPY, 0x800248D8, Overlay.Menu, 0x02802025, offset_dict, 4)  # or $a0, $s4, $zero
-    writeFunction(ROM_COPY, 0x806F93D4, Overlay.Static, "gbUpdateHandler", offset_dict)
-
     # Mill and Crypt Levers
     # Mill Levers
     if settings.mill_levers[0] > 0:

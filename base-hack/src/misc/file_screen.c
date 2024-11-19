@@ -797,6 +797,7 @@ void startFile(void) {
 		determineStartKong_PermaLossMode();
 		giveCollectables();
 	}
+	resetProgressive();
 	updateBarrierCounts();
 	if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
 		QueueHelmTimer = 1;
