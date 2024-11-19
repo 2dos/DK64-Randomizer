@@ -312,13 +312,6 @@ class MusicFilters(IntEnum):
     length = 1
     location = 2
 
-class PuzzleRando(IntEnum):
-    off = 0
-    easy = 1
-    medium = 2
-    hard = 3
-    chaos = 4
-
 class ProgressiveHintItem(IntEnum):
     off = 0
     req_gb = 1
@@ -330,6 +323,13 @@ class ProgressiveHintItem(IntEnum):
     req_rainbowcoin = 7
     req_bean = 8
     req_pearl = 9
+
+class PuzzleRando(IntEnum):
+    off = 0
+    easy = 1
+    medium = 2
+    hard = 3
+    chaos = 4
 
 class RandomPrices(IntEnum):
     vanilla = 0

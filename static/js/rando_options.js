@@ -1551,7 +1551,7 @@ function update_prog_hint_num_access() {
 }
 
 document
-  .getElementById("win_condition_item")
+  .getElementById("progressive_hint_item")
   .addEventListener("change", update_prog_hint_num_access);
 // Validate blocker input on loss of focus
 function handle_progressive_hint_text() {

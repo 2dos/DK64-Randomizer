@@ -1812,16 +1812,7 @@ CustomLocations = {
             logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
             group=4,
         ),
-        CustomLocation(
-            map=Maps.FranticFactory,
-            name="Arcade Room Bench",
-            x=1922,
-            y=1143,
-            z=1515,
-            max_size=40,
-            logic_region=Regions.FactoryArcadeTunnel,
-            group=4
-        ),
+        CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.FactoryArcadeTunnel, group=4),
         CustomLocation(
             name="Next to DK Arcade",
             map=Maps.FranticFactory,

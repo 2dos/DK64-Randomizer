@@ -584,7 +584,7 @@ class LogicVarHolder:
         if is_japes:
             satisfies_cannon_req = Events.JapesAccessToCannon in self.Events
         return self.skew and self.oranges and self.settings.damage_amount != DamageAmount.ohko and satisfies_cannon_req
-    
+
     def canFulfillProgHint(self, value: int) -> bool:
         """Determine whether the player can view a progressive hint."""
         req_item = self.settings.progressive_hint_item

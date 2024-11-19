@@ -1062,6 +1062,7 @@ def getIceTrapCount(settings) -> int:
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
+
 def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
     """Get the accompanying barrier item for the prog hint item."""
     barrier_bijection = {
@@ -1076,6 +1077,7 @@ def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
         ProgressiveHintItem.req_pearl: BarrierItems.Pearl,
     }
     return barrier_bijection[item]
+
 
 class Holidays(IntEnum):
     """Holiday Enum."""
