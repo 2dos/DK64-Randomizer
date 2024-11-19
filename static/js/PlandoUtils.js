@@ -276,8 +276,10 @@ function PlandoCustomLocationFilter(locationList, locationId) {
 // A map of custom location types, mapped to a set of which items may not
 // appear in that location type. This will be used to filter the dropdowns used
 // in the plandomizer.
+var CrownItemSet = new Set(BlueprintItemSet);
+CrownItemSet.add("junk_item");
 var ItemRestrictionsPerLocationType = new Map([
-    ["crownpad", BlueprintItemSet.union(new Set(["junk_item"]))],
+    ["crownpad", CrownItemSet],
     ["dirtpatch", BlueprintItemSet],
     ["fairy", BananaFairyRestrictedItems],
     ["kasplat", new Set()],
@@ -321,7 +323,7 @@ function PlandoMinigameFilter(minigameList, kong) {
  * @returns 
  */
 function PlandoShopSortFilter(shopLocationList) {
-    return shopLocationList.toSorted((a, b) => shopLocationOrderingMap.get(a) - shopLocationOrderingMap.get(b));
+    return shopLocationList.sort((a, b) => shopLocationOrderingMap.get(a) - shopLocationOrderingMap.get(b));
 }
 
 

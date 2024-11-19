@@ -1232,7 +1232,7 @@ function preset_select_changed(event) {
       } catch (e) {
           console.log(e);
       }
-  }
+    }
   }
 
   update_ui_states(null);
@@ -1434,6 +1434,9 @@ function load_settings(json) {
 
     if (updateQueue.length > 0) {
       requestAnimationFrame(processQueue);
+    }
+    else {
+      trigger_ui_update();
     }
   }
 

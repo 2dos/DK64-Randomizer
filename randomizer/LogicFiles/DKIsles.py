@@ -280,7 +280,7 @@ LogicRegions = {
         TransitionFront(Regions.Prison, lambda l: True, Transitions.IslesMainToPrison),
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs or l.CanMoontail()),
-        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.hasMoveSwitchsanity(Switches.IslesMonkeyport)),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.hasMoveSwitchsanity(Switches.IslesMonkeyport, not l.assumeLevel8Entry)),
         # This transition is to make the MP pad not on the path to everything in level 8 - the key requirement is covered in the KremIsleMouth region
         TransitionFront(Regions.KremIsleMouth, lambda l: l.assumeLevel8Entry),
     ]),
