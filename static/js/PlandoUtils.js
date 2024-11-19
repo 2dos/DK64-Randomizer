@@ -323,7 +323,7 @@ function PlandoMinigameFilter(minigameList, kong) {
  * @returns 
  */
 function PlandoShopSortFilter(shopLocationList) {
-    return shopLocationList.toSorted((a, b) => shopLocationOrderingMap.get(a) - shopLocationOrderingMap.get(b));
+    return shopLocationList.sort((a, b) => shopLocationOrderingMap.get(a) - shopLocationOrderingMap.get(b));
 }
 
 
