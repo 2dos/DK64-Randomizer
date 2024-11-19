@@ -327,37 +327,11 @@ static unsigned char hint_offset = 140;
 
 int getHintRequirement(int slot) {
     int cap = Rando.progressive_hint_gb_cap;
+    int batch_index = 9;
     if (slot < 34) {
-        /*
-            Little bit of chunking to reduce amount of times checking the pause menu
-            You'll get:
-                1  2  3  4  - Price of hint 1
-                5  6  7  8  - Price of hint 5
-                9  10 11 12 - Price of hint 9
-                13 14 15 16 - Price of hint 13
-                17 18 19 20 - Price of hint 17
-                21 22 23 24 - Price of hint 21
-                25 26 27 28 - Price of hint 25
-                29 30 31 32 - Price of hint 29
-                33 34       - Price of hint 33
-                35          - Price of hint 35
-        */
-        slot &= 0xFC;
+        batch_index = slot >> 2;
     }
-    float req = 1;
-    req /= GAME_HINT_COUNT;
-    req *= (slot + 1);
-    req += 3.0f;
-    req *= 1.570796f; // 0.5pi
-    req = dk_sin(req) * cap;
-    req += cap;
-    int req_i = req;
-    if (req_i <= 0) {
-        req_i = 1; // Ensure no hints are free
-    } else if (slot == (GAME_HINT_COUNT - 1)) {
-        req_i = cap; // Ensure last hint is always at cap
-    }
-    return req_i;
+    return Rando.progressive_bounds[batch_index];
 }
 
 regions getHintItemRegion(int slot) {

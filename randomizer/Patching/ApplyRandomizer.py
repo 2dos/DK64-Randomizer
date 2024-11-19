@@ -65,7 +65,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem
+from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
     updateKrushaMoveNames,
@@ -401,7 +401,10 @@ def patching_response(spoiler):
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         count = spoiler.settings.progressive_hint_text
         ROM_COPY.seek(sav + 0x0C3)
-        ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))  # Set prog hint item as GBs (for now)
+        ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))
+        for x in range(10):
+            ROM_COPY.seek(sav + 0x197 + x)
+            ROM_COPY.write(getHintRequirementBatch(x, count))
     ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
 

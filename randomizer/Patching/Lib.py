@@ -10,6 +10,7 @@ import js
 import random
 import zlib
 import gzip
+import math
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
@@ -1062,6 +1063,30 @@ def getIceTrapCount(settings) -> int:
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
+EXPONENT = 1.7
+OFFSET_DIVISOR = 15
+
+def getHintRequirement(slot: int, cap: int):
+    """Get the hint requirement for a slot index."""
+    if slot == 34:
+        return cap
+    offset = cap / OFFSET_DIVISOR
+    hint_slot = slot & 0xFC
+    multiplier = cap - offset
+    final_offset = (cap + offset) / 2
+    exp_result = 1 + (math.pow(hint_slot, EXPONENT) / math.pow(35, EXPONENT))
+    z = math.pi * exp_result
+    required_gb_count = int(multiplier * 0.5 * math.cos(z) + final_offset)
+    if required_gb_count == 0:
+        return 1
+    return required_gb_count
+
+def getHintRequirementBatch(batch: int, cap: int):
+    """Get the hint requirement for a batch index."""
+    slot = 34
+    if batch < 9:
+        slot = batch * 4
+    return getHintRequirement(slot, cap)
 
 def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
     """Get the accompanying barrier item for the prog hint item."""

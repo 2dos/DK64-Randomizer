@@ -13,6 +13,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists import Exceptions
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
+from randomizer.Patching.Lib import getHintRequirement
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -350,15 +351,7 @@ def SetProgressiveHintDoorLogic(spoiler):
     hint_costs = []
     for i in range(hint_count):
         door_location = Locations.JapesDonkeyDoor + i  # Hint door locations are ordered in their unlocking
-        hint_slot = i  # This is to determine what pack of hints this door belongs to
-        if i < 34:
-            hint_slot = i & 0xFC
-        required_gb_count = int(spoiler.settings.progressive_hint_text + spoiler.settings.progressive_hint_text * math.sin(math.pi * 0.5 * ((1 / hint_count) * (hint_slot + 1) + 3)))
-        if required_gb_count == 0:
-            required_gb_count = 1
-        if i == 34:
-            required_gb_count = spoiler.settings.progressive_hint_text
-        hint_costs.append(required_gb_count)
+        hint_costs.append(getHintRequirement(i, spoiler.settings.progressive_hint_text))
     # I probably hate this more than you do but lambda functions in python REALLY like to mutate apparently
     spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_01, lambda l: l.canFulfillProgHint(hint_costs[0])))
     spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_02, lambda l: l.canFulfillProgHint(hint_costs[1])))
