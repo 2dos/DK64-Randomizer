@@ -1,6 +1,7 @@
 """This file contains the pytest configuration for the test suite."""
 
 import pytest
+import os
 
 
 def pytest_addoption(parser):
@@ -11,6 +12,7 @@ def pytest_addoption(parser):
 @pytest.hookimpl(tryfirst=True)
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
     """Log the failure rate of the test suite."""
+    github_env = os.getenv("GITHUB_ENV")
     total_tests = len(terminalreporter.stats.get("passed", [])) + len(terminalreporter.stats.get("failed", []))
     failed_tests = len(terminalreporter.stats.get("failed", []))
     if total_tests > 0:
@@ -19,19 +21,13 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
 
         if failure_rate > max_failure_rate:
             print(f"\nTest suite failure rate ({failure_rate:.2%}) exceeds allowed limit ({max_failure_rate:.2%}).")
+            if github_env:
+                with open(github_env, "a") as f:
+                    f.write("TEST_SUITE_FAILURE=1\n")
         else:
             print(f"\nTest suite failure rate ({failure_rate:.2%}) is within the allowed limit ({max_failure_rate:.2%}).")
-
-
-@pytest.hookimpl(tryfirst=True)
-def pytest_exit_code(config, code):
-    """Modify the exit code based on failure rate."""
-    terminalreporter = config.pluginmanager.getplugin("terminalreporter")
-    total_tests = len(terminalreporter.stats.get("passed", [])) + len(terminalreporter.stats.get("failed", []))
-    failed_tests = len(terminalreporter.stats.get("failed", []))
-    if total_tests > 0:
-        failure_rate = failed_tests / total_tests
-        max_failure_rate = config.getoption("--max-failure-rate")
-        if failure_rate > max_failure_rate:
-            return 1  # Exit with failure code
-    return code  # Retain the original exit code if within limit
+            # Write Success or failure to the github ENV
+            if github_env:
+                with open(github_env, "a") as f:
+                    f.write("TEST_SUITE_FAILURE=0\n")
+            
