@@ -5,6 +5,7 @@ from __future__ import annotations
 from math import ceil
 from random import choice, randint, shuffle, uniform
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
+from functools import lru_cache
 
 import js
 import randomizer.ItemPool as ItemPool
@@ -117,9 +118,6 @@ def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
             except Ex.KasplatPlacementException:
                 retries += 1
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
-
-
-from functools import lru_cache
 
 
 @lru_cache(maxsize=None)
