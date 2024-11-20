@@ -668,7 +668,7 @@ def randomize_enemies(spoiler):
                     CrownEnemyRando.hard: 30,
                 }
                 low_limit = limits.get(spoiler.settings.crown_enemy_rando, 5)
-                crown_timer = random.randint(low_limit, 60)
+                crown_timer = random.randint(low_limit, low_limit + 30)
                 # Place Enemies
                 for spawner in vanilla_spawners:
                     if spawner.enemy_id in crown_enemies:
