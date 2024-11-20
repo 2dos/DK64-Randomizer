@@ -3,7 +3,6 @@
 from math import ceil
 from functools import lru_cache
 from collections import Counter
-from profilehooks import profile
 
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
