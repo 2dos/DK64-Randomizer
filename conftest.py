@@ -22,12 +22,11 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
         if failure_rate > max_failure_rate:
             print(f"\nTest suite failure rate ({failure_rate:.2%}) exceeds allowed limit ({max_failure_rate:.2%}).")
             if github_env:
-                with open(github_env, "a") as f:
-                    f.write("TEST_SUITE_FAILURE=1\n")
+                with open("error_status", "w") as f:
+                    f.write("1")
         else:
             print(f"\nTest suite failure rate ({failure_rate:.2%}) is within the allowed limit ({max_failure_rate:.2%}).")
             # Write Success or failure to the github ENV
             if github_env:
-                with open(github_env, "a") as f:
-                    f.write("TEST_SUITE_FAILURE=0\n")
-            
+                with open("error_status", "w") as f:
+                    f.write("0")

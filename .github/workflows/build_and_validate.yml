@@ -48,8 +48,9 @@ jobs:
       - name: Run pytest
         run:  |
           pytest --max-failure-rate 0.5 -n 4 -v --cov --cov-report xml:coverage.xml ${GITHUB_WORKSPACE}/tests || true
-          if [ $TEST_SUITE_FAILURE -eq 1 ]; then
-              echo "Tests failed"
+          # cat the file error_status to see if there were any errors 1 if there was 0 if not
+          STATUS=$(cat error_status)
+          if [ "$STATUS" -eq 1 ]; then
               exit 1
           fi
 
