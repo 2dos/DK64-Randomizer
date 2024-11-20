@@ -5,6 +5,7 @@ from __future__ import annotations
 from math import ceil
 from random import choice, randint, shuffle, uniform
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
+from functools import lru_cache
 
 import js
 import randomizer.ItemPool as ItemPool
@@ -119,12 +120,11 @@ def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
 
 
-def GetExitLevelExit(region: Region) -> Optional[Transitions]:
+@lru_cache(maxsize=None)
+def GetExitLevelExit(level, restart) -> Optional[Transitions]:
     """Get the exit that using the "Exit Level" button will take you to."""
-    level = region.level
-
     # If you have option to restart, means there is no Exit Level option
-    if region.restart is not None:
+    if restart is not None:
         return None
     # For now, restarts will not be randomized
     # if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.restart is not None:
@@ -145,44 +145,89 @@ def GetExitLevelExit(region: Region) -> Optional[Transitions]:
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-def GetLobbyOfRegion(region):
+@lru_cache(maxsize=None)
+def GetLobbyOfRegion(level):
     """Get the lobby region for the parameter's region."""
-    if region.level == Levels.JungleJapes:
+    if level == Levels.JungleJapes:
         return Regions.JungleJapesLobby
-    elif region.level == Levels.AngryAztec:
+    elif level == Levels.AngryAztec:
         return Regions.AngryAztecLobby
-    elif region.level == Levels.FranticFactory:
+    elif level == Levels.FranticFactory:
         return Regions.FranticFactoryLobby
-    elif region.level == Levels.GloomyGalleon:
+    elif level == Levels.GloomyGalleon:
         return Regions.GloomyGalleonLobby
-    elif region.level == Levels.FungiForest:
+    elif level == Levels.FungiForest:
         return Regions.FungiForestLobby
-    elif region.level == Levels.CrystalCaves:
+    elif level == Levels.CrystalCaves:
         return Regions.CrystalCavesLobby
-    elif region.level == Levels.CreepyCastle:
+    elif level == Levels.CreepyCastle:
         return Regions.CreepyCastleLobby
     else:
         return None
 
 
-def GetLevelExitTransition(region):
+@lru_cache(maxsize=None)
+def GetLevelExitTransition(level):
     """Get the exit level transition for the parameter region's level."""
-    if region.level == Levels.JungleJapes:
+    if level == Levels.JungleJapes:
         return Transitions.JapesToIsles
-    elif region.level == Levels.AngryAztec:
+    elif level == Levels.AngryAztec:
         return Transitions.AztecToIsles
-    elif region.level == Levels.FranticFactory:
+    elif level == Levels.FranticFactory:
         return Transitions.FactoryToIsles
-    elif region.level == Levels.GloomyGalleon:
+    elif level == Levels.GloomyGalleon:
         return Transitions.GalleonToIsles
-    elif region.level == Levels.FungiForest:
+    elif level == Levels.FungiForest:
         return Transitions.ForestToIsles
-    elif region.level == Levels.CrystalCaves:
+    elif level == Levels.CrystalCaves:
         return Transitions.CavesToIsles
-    elif region.level == Levels.CreepyCastle:
+    elif level == Levels.CreepyCastle:
         return Transitions.CastleToIsles
     else:
         return None
+
+
+def should_skip_location(location, location_obj, spoiler, settings, region):
+    """Check if a location should be skipped based on various criteria."""
+    # Skip if location is inaccessible
+    if location_obj.inaccessible:
+        return True
+
+    # Skip bonus barrels based on settings and logic
+    if location.bonusBarrel:
+        if (
+            (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels == MinigameBarrels.skip)
+            or (location.bonusBarrel is MinigameType.HelmBarrelFirst and (settings.helm_barrels == MinigameBarrels.skip or settings.helm_room_bonus_count == HelmBonuses.zero))
+            or (location.bonusBarrel is MinigameType.HelmBarrelSecond and (settings.helm_barrels == MinigameBarrels.skip or settings.helm_room_bonus_count != HelmBonuses.two))
+            or (location.bonusBarrel is MinigameType.TrainingBarrel and settings.training_barrels_minigames == MinigameBarrels.skip)
+        ):
+            if not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(spoiler.LogicVariables):
+                return True
+
+    # Skip hint doors if the wrong Kong
+    if location_obj.type == Types.Hint and not spoiler.LogicVariables.HintAccess(location_obj, region.id):
+        return True
+
+    # Skip blueprint locations if the wrong Kong
+    if location_obj.item and ItemList[location_obj.item].type == Types.Blueprint:
+        if not spoiler.LogicVariables.BlueprintAccess(ItemList[location_obj.item]):
+            return True
+
+    # Skip Kasplats with no blueprint if the wrong Kong
+    if location_obj.type == Types.Blueprint:
+        if not spoiler.LogicVariables.IsKong(location_obj.kong) and not settings.free_trade_items:
+            return True
+
+    # Skip dirt patches if no shockwave
+    if location_obj.type == Types.RainbowCoin and not spoiler.LogicVariables.shockwave:
+        return True
+
+    # Skip Helm crowns if Helm isn't finished
+    if location_obj.type == Types.Crown and location_obj.level == Levels.HideoutHelm:
+        if Events.HelmFinished not in spoiler.LogicVariables.Events:
+            return True
+
+    return False
 
 
 def GetAccessibleLocations(
@@ -205,7 +250,7 @@ def GetAccessibleLocations(
         purchaseList = []
     accessible = set()
     newLocations = set()
-    ownedItems = startingOwnedItems.copy()
+    ownedItems = startingOwnedItems[:]
     newItems = []  # debug code utility
     if searchType == SearchMode.GeneratePlaythrough:
         spoiler.playthroughTransitionOrder = []
@@ -306,77 +351,55 @@ def GetAccessibleLocations(
                 # Check accessibility for each event in this region
                 for event in region.events:
                     if event.name not in spoiler.LogicVariables.Events and event.logic(spoiler.LogicVariables):
+                        # Add the event if it's not already in the list and its logic is satisfied
                         eventAdded = True
                         spoiler.LogicVariables.Events.append(event.name)
-                    # Can start searching with night access
-                    # Check this even if Night's already been added, because you could
-                    # lose night access from start to Forest main, then regain it here
-                    if event.name == Events.Night and event.logic(spoiler.LogicVariables):
-                        region.nightAccess[kong] = True
-                    # Same with day
-                    if event.name == Events.Day and event.logic(spoiler.LogicVariables):
-                        region.dayAccess[kong] = True
+
+                    # Update region access based on specific events
+                    if event.name == Events.Night:
+                        if event.logic(spoiler.LogicVariables):
+                            region.nightAccess[kong] = True
+                    elif event.name == Events.Day:
+                        if event.logic(spoiler.LogicVariables):
+                            region.dayAccess[kong] = True
                 # Check accessibility for collectibles
                 if region.id in spoiler.CollectibleRegions.keys():
                     for collectible in spoiler.CollectibleRegions[region.id]:
                         if not collectible.added and collectible.kong in (kong, Kongs.any) and collectible.enabled and collectible.logic(spoiler.LogicVariables):
                             spoiler.LogicVariables.AddCollectible(collectible, region.level)
                 # Check accessibility for each location in this region
+
                 for location in region.locations:
-                    if location.id not in newLocations and location.id not in accessible and location.logic(spoiler.LogicVariables):
-                        location_obj = spoiler.LocationList[location.id]
-                        # If this location is flagged as inaccessible, ignore it
-                        if location_obj.inaccessible:
-                            continue
-                        # If this location is a bonus barrel, must make sure its logic is met as well (so long as we're not skipping them)
-                        elif (
-                            (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels != MinigameBarrels.skip)
-                            # The first Helm barrel only needs logic checked if we're doing at least one barrel per room
-                            or (location.bonusBarrel is MinigameType.HelmBarrelFirst and settings.helm_barrels != MinigameBarrels.skip and settings.helm_room_bonus_count != HelmBonuses.zero)
-                            # The second Helm barrel only needs logic checked if we're doing both barrels
-                            or (location.bonusBarrel is MinigameType.HelmBarrelSecond and settings.helm_barrels != MinigameBarrels.skip and settings.helm_room_bonus_count == HelmBonuses.two)
-                            # Training barrels only need to be done if fast start beginning of game is off
-                            or (location.bonusBarrel is MinigameType.TrainingBarrel and settings.training_barrels_minigames != MinigameBarrels.skip)
-                        ) and (not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(spoiler.LogicVariables)):
-                            continue
-                        # If this location is a hint door, then make sure we're the right Kong
-                        elif location_obj.type == Types.Hint and not spoiler.LogicVariables.HintAccess(location_obj, region.id):
-                            continue
-                        # If this location has a blueprint, then make sure this is the correct kong
-                        elif (location_obj.item is not None and ItemList[location_obj.item].type == Types.Blueprint) and (not spoiler.LogicVariables.BlueprintAccess(ItemList[location_obj.item])):
-                            continue
-                        # If this location is a Kasplat but doesn't have a blueprint, still make sure this is the correct kong to be accessible at all
-                        elif (location_obj.type == Types.Blueprint) and (not spoiler.LogicVariables.IsKong(location_obj.kong) and not settings.free_trade_items):
-                            continue
-                        # If this location is a shop then we know it's reachable and that we have the money for it, but we may want to purchase the location
-                        elif location_obj.type == Types.Shop:
-                            # The handling of shop locations is a bit complicated so it's broken up for readability
-                            # Empty locations are notable because we don't want to buy empty shops (and waste coins) if the fill is complete
-                            shopIsEmpty = location_obj.item is None or location_obj.item == Items.NoItem
-                            # When handling coin logic we want to buy specific moves, so we may not be allowed to purchase every location
-                            locationCanBeBought = searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList
-                            # We always buy non-empty locations if we are not prevented from buying this location
-                            if not shopIsEmpty and locationCanBeBought:
-                                spoiler.LogicVariables.PurchaseShopItem(location.id)
-                            # Empty locations are accessible, but we need to note them down and possibly purchase them later depending on the search type
-                            elif shopIsEmpty:
-                                unpurchasedEmptyShopLocationIds.append(location.id)
-                        # If this location is a dirt patch, make sure we have shockwave
-                        elif location_obj.type == Types.RainbowCoin and not spoiler.LogicVariables.shockwave:
-                            continue
-                        elif location.id == Locations.NintendoCoin:
-                            # Spend Two Coins for arcade lever
-                            spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
-                            spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
-                        # Crowns in Helm always logically expect you to have finished Helm first
-                        elif location_obj.type == Types.Crown and location_obj.level == Levels.HideoutHelm and Events.HelmFinished not in spoiler.LogicVariables.Events:
-                            continue
-                        newLocations.add(location.id)
+                    # Skip locations already accessible or not meeting logic
+                    if location.id in newLocations or location.id in accessible or not location.logic(spoiler.LogicVariables):
+                        continue
+
+                    location_obj = spoiler.LocationList[location.id]
+
+                    if should_skip_location(location, location_obj, spoiler, settings, region):
+                        continue
+
+                    # Handle shop logic
+                    if location_obj.type == Types.Shop:
+                        shop_is_empty = location_obj.item is None or location_obj.item == Items.NoItem
+                        location_can_be_bought = searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList
+
+                        if not shop_is_empty and location_can_be_bought:
+                            spoiler.LogicVariables.PurchaseShopItem(location.id)
+                        elif shop_is_empty:
+                            unpurchasedEmptyShopLocationIds.append(location.id)
+                    elif location.id == Locations.NintendoCoin:
+                        # Spend Two Coins for arcade lever
+                        spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
+                        spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
+
+                    newLocations.add(location.id)
+
                 # Check accessibility for each exit in this region
-                exits = region.exits.copy()
+                exits = region.exits[:]
                 # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
                 if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.level != Levels.DKIsles and region.level != Levels.Shops:
-                    levelExit = GetExitLevelExit(region)
+                    levelExit = GetExitLevelExit(region.level, region.restart)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
@@ -384,70 +407,77 @@ def GetAccessibleLocations(
                         # If we're generating the final playthrough, note down the order in which we access entrances for LZR purposes
                         # No need to check access on this transition, it's always accessible
                         if searchType == SearchMode.GeneratePlaythrough:
-                            levelExitTransitionId = GetLevelExitTransition(region)
+                            levelExitTransitionId = GetLevelExitTransition(region.level)
                             if levelExitTransitionId not in spoiler.playthroughTransitionOrder:
                                 spoiler.playthroughTransitionOrder.append(levelExitTransitionId)
                 # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
                 elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops and region.restart is None:
-                    levelLobby = GetLobbyOfRegion(region)
+                    levelLobby = GetLobbyOfRegion(region.level)
                     if levelLobby is not None and levelLobby not in kongAccessibleRegions[kong]:
                         exits.append(TransitionFront(levelLobby, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
-                    # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,
-                    # use the entrance it was shuffled to by getting the region of the destination exit.
-                    # If the exit is assumed from root, do not look for a shuffled exit - just explore the destination
-                    if exit.exitShuffleId is not None and not exit.assumed:
-                        shuffledExit = ShuffleExits.ShufflableExits[exit.exitShuffleId]
-                        if shuffledExit.shuffled:
-                            destination = ShuffleExits.ShufflableExits[shuffledExit.shuffledId].back.regionId
-                        elif shuffledExit.toBeShuffled and not exit.assumed:
+                    shuffle_id = exit.exitShuffleId
+                    is_shuffled = shuffle_id is not None and not exit.assumed
+
+                    # Handle shuffled exits
+                    if is_shuffled:
+                        shuffled_exit = ShuffleExits.ShufflableExits[shuffle_id]
+                        if shuffled_exit.shuffled:
+                            destination = ShuffleExits.ShufflableExits[shuffled_exit.shuffledId].back.regionId
+                        elif shuffled_exit.toBeShuffled:
                             continue
-                    # If we can access this transition...
-                    if exit.logic(spoiler.LogicVariables):
-                        # ...with one caveat: If water is lava, don't consider underwater locations in Galleon before having 3rd melon
-                        if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
-                            if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
-                                continue
-                            # Mainly Seal Race exit. Situations where this matters are extremely rare.
-                            if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
-                                continue
-                        # Check time of day
-                        timeAccess = True
-                        if exit.time == Time.Night and not region.nightAccess[kong]:
-                            timeAccess = False
-                        elif exit.time == Time.Day and not region.dayAccess[kong]:
-                            timeAccess = False
-                        if timeAccess:
-                            # If we're generating the final playthrough, note down the order in which we access entrances for LZR purposes
-                            if searchType == SearchMode.GeneratePlaythrough and settings.shuffle_loading_zones == ShuffleLoadingZones.all:
-                                if exit.exitShuffleId is not None and exit.exitShuffleId not in spoiler.playthroughTransitionOrder:
-                                    spoiler.playthroughTransitionOrder.append(exit.exitShuffleId)
-                            # If a region is accessible through this exit that has not yet been added, add it to the queue to be visited eventually
-                            if destination not in kongAccessibleRegions[kong]:
-                                kongAccessibleRegions[kong].add(destination)
-                                newRegion = spoiler.RegionList[destination]
-                                newRegion.id = destination
-                                regionPool.append(destination)
-                        # Given that it's accessible, update time of day access whether or not we've already visited it
-                        # This way if a region has access from 2 different regions, one time-restricted and one not,
-                        # it will be known that it can be accessed during either time of day
-                        # If this region has day access and the exit isn't restricted to night-only, then the destination has day access
-                        if region.dayAccess[kong] and exit.time != Time.Night and not spoiler.RegionList[destination].dayAccess[kong]:
-                            spoiler.RegionList[destination].dayAccess[kong] = True
-                            # Count as event added so search doesn't get stuck if region is searched,
-                            # then later a new time of day access is found so it should be re-visited
-                            eventAdded = True
-                        # And vice versa
-                        if region.nightAccess[kong] and exit.time != Time.Day and not spoiler.RegionList[destination].nightAccess[kong]:
-                            spoiler.RegionList[destination].nightAccess[kong] = True
-                            eventAdded = True
-                        # If it's dusk, we don't even have to worry about this at all - it's day and night access always
-                        if settings.fungi_time == FungiTimeSetting.dusk:
-                            spoiler.RegionList[destination].dayAccess[kong] = True
-                            spoiler.RegionList[destination].nightAccess[kong] = True
+
+                    # Check if the transition is accessible
+                    if not exit.logic(spoiler.LogicVariables):
+                        continue
+
+                    # Handle water/lava restrictions
+                    is_lava_water = spoiler.LogicVariables.IsLavaWater()
+                    if is_lava_water and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                        if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
+                            continue
+                        if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
+                            continue
+
+                    # Check time of day access
+                    time_access = True
+                    if exit.time == Time.Night and not region.nightAccess[kong]:
+                        time_access = False
+                    elif exit.time == Time.Day and not region.dayAccess[kong]:
+                        time_access = False
+
+                    if not time_access:
+                        continue
+
+                    # Track playthrough transitions if needed
+                    if searchType == SearchMode.GeneratePlaythrough and settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+                        if shuffle_id and shuffle_id not in spoiler.playthroughTransitionOrder:
+                            spoiler.playthroughTransitionOrder.append(shuffle_id)
+
+                    # Add new regions to the queue
+                    if destination not in kongAccessibleRegions[kong]:
+                        kongAccessibleRegions[kong].add(destination)
+                        new_region = spoiler.RegionList[destination]
+                        new_region.id = destination
+                        regionPool.append(destination)
+
+                    # Update day/night access
+                    region_list_dest = spoiler.RegionList[destination]
+                    if region.dayAccess[kong] and exit.time != Time.Night and not region_list_dest.dayAccess[kong]:
+                        region_list_dest.dayAccess[kong] = True
+                        eventAdded = True
+                    if region.nightAccess[kong] and exit.time != Time.Day and not region_list_dest.nightAccess[kong]:
+                        region_list_dest.nightAccess[kong] = True
+                        eventAdded = True
+
+                    # Handle dusk time setting
+                    if settings.fungi_time == FungiTimeSetting.dusk:
+                        region_list_dest.dayAccess[kong] = True
+                        region_list_dest.nightAccess[kong] = True
+
                 # Deathwarps currently send to the vanilla destination
-                if region.deathwarp is not None and settings.perma_death is False:
+                if region.deathwarp and not settings.perma_death:
                     destination = region.deathwarp.dest
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in kongAccessibleRegions[kong] and region.deathwarp.logic(spoiler.LogicVariables):

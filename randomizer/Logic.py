@@ -1,6 +1,8 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
 
 from math import ceil
+from functools import lru_cache
+from collections import Counter
 
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
@@ -131,27 +133,27 @@ class LogicVarHolder:
         self.climbing = self.settings.climbing_status == ClimbingStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
-        self.progDonkey = 0
+        progDonkey = 0
         self.blast = False
         self.strongKong = False
         self.grab = False
 
-        self.progDiddy = 0
+        progDiddy = 0
         self.charge = False
         self.jetpack = False
         self.spring = False
 
-        self.progLanky = 0
+        progLanky = 0
         self.handstand = False
         self.balloon = False
         self.sprint = False
 
-        self.progTiny = 0
+        progTiny = 0
         self.mini = False
         self.twirl = False
         self.monkeyport = False
 
-        self.progChunky = 0
+        progChunky = 0
         self.hunkyChunky = False
         self.punch = False
         self.gorillaGone = False
@@ -324,7 +326,7 @@ class LogicVarHolder:
         """Update logic variables based on owned items."""
         # Except for banned items - these items aren't allowed to be used by the logic
         ownedItems = [item for item in ownedItems if item not in self.banned_items]
-
+        item_counts = Counter(ownedItems)
         self.latest_owned_items = ownedItems
         self.found_test_item = self.found_test_item or Items.TestItem in ownedItems
 
@@ -341,30 +343,30 @@ class LogicVarHolder:
         self.barrels = self.barrels or Items.Barrels in ownedItems
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
-        self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
-        self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
-        self.strongKong = self.strongKong or (Items.StrongKong in ownedItems or self.progDonkey >= 2) and self.donkey
-        self.grab = self.grab or (Items.GorillaGrab in ownedItems or self.progDonkey >= 3) and self.donkey
+        progDonkey = item_counts[Items.ProgressiveDonkeyPotion]
+        self.blast = self.blast or (Items.BaboonBlast in ownedItems or progDonkey >= 1) and self.donkey
+        self.strongKong = self.strongKong or (Items.StrongKong in ownedItems or progDonkey >= 2) and self.donkey
+        self.grab = self.grab or (Items.GorillaGrab in ownedItems or progDonkey >= 3) and self.donkey
 
-        self.progDiddy = sum(1 for x in ownedItems if x == Items.ProgressiveDiddyPotion)
-        self.charge = self.charge or (Items.ChimpyCharge in ownedItems or self.progDiddy >= 1) and self.diddy
-        self.jetpack = self.jetpack or (Items.RocketbarrelBoost in ownedItems or self.progDiddy >= 2) and self.diddy
-        self.spring = self.spring or (Items.SimianSpring in ownedItems or self.progDiddy >= 3) and self.diddy
+        progDiddy = item_counts[Items.ProgressiveDiddyPotion]
+        self.charge = self.charge or (Items.ChimpyCharge in ownedItems or progDiddy >= 1) and self.diddy
+        self.jetpack = self.jetpack or (Items.RocketbarrelBoost in ownedItems or progDiddy >= 2) and self.diddy
+        self.spring = self.spring or (Items.SimianSpring in ownedItems or progDiddy >= 3) and self.diddy
 
-        self.progLanky = sum(1 for x in ownedItems if x == Items.ProgressiveLankyPotion)
-        self.handstand = self.handstand or (Items.Orangstand in ownedItems or self.progLanky >= 1) and self.lanky
-        self.balloon = self.balloon or (Items.BaboonBalloon in ownedItems or self.progLanky >= 2) and self.lanky
-        self.sprint = self.sprint or (Items.OrangstandSprint in ownedItems or self.progLanky >= 3) and self.lanky
+        progLanky = item_counts[Items.ProgressiveLankyPotion]
+        self.handstand = self.handstand or (Items.Orangstand in ownedItems or progLanky >= 1) and self.lanky
+        self.balloon = self.balloon or (Items.BaboonBalloon in ownedItems or progLanky >= 2) and self.lanky
+        self.sprint = self.sprint or (Items.OrangstandSprint in ownedItems or progLanky >= 3) and self.lanky
 
-        self.progTiny = sum(1 for x in ownedItems if x == Items.ProgressiveTinyPotion)
-        self.mini = self.mini or (Items.MiniMonkey in ownedItems or self.progTiny >= 1) and self.tiny
-        self.twirl = self.twirl or (Items.PonyTailTwirl in ownedItems or self.progTiny >= 2) and self.tiny
-        self.monkeyport = self.monkeyport or (Items.Monkeyport in ownedItems or self.progTiny >= 3) and self.tiny
+        progTiny = item_counts[Items.ProgressiveTinyPotion]
+        self.mini = self.mini or (Items.MiniMonkey in ownedItems or progTiny >= 1) and self.tiny
+        self.twirl = self.twirl or (Items.PonyTailTwirl in ownedItems or progTiny >= 2) and self.tiny
+        self.monkeyport = self.monkeyport or (Items.Monkeyport in ownedItems or progTiny >= 3) and self.tiny
 
-        self.progChunky = sum(1 for x in ownedItems if x == Items.ProgressiveChunkyPotion)
-        self.hunkyChunky = self.hunkyChunky or (Items.HunkyChunky in ownedItems or self.progChunky >= 1) and self.chunky
-        self.punch = self.punch or (Items.PrimatePunch in ownedItems or self.progChunky >= 2) and self.chunky
-        self.gorillaGone = self.gorillaGone or (Items.GorillaGone in ownedItems or self.progChunky >= 3) and self.chunky
+        progChunky = item_counts[Items.ProgressiveChunkyPotion]
+        self.hunkyChunky = self.hunkyChunky or (Items.HunkyChunky in ownedItems or progChunky >= 1) and self.chunky
+        self.punch = self.punch or (Items.PrimatePunch in ownedItems or progChunky >= 2) and self.chunky
+        self.gorillaGone = self.gorillaGone or (Items.GorillaGone in ownedItems or progChunky >= 3) and self.chunky
 
         self.coconut = self.coconut or Items.Coconut in ownedItems and self.donkey
         self.peanut = self.peanut or Items.Peanut in ownedItems and self.diddy
@@ -408,32 +410,33 @@ class LogicVarHolder:
 
         has_all = True
         if not self.settings.fast_start_beginning_of_game:
-            for loc in (
-                Locations.IslesSwimTrainingBarrel,
-                Locations.IslesVinesTrainingBarrel,
-                Locations.IslesBarrelsTrainingBarrel,
-                Locations.IslesOrangesTrainingBarrel,
-            ):
-                if self.spoiler.LocationList[loc].item not in ownedItems:
-                    has_all = False
+            has_all = all(
+                self.spoiler.LocationList[loc].item in ownedItems
+                for loc in (
+                    Locations.IslesSwimTrainingBarrel,
+                    Locations.IslesVinesTrainingBarrel,
+                    Locations.IslesBarrelsTrainingBarrel,
+                    Locations.IslesOrangesTrainingBarrel,
+                )
+            )
         self.allTrainingChecks = self.allTrainingChecks or has_all
 
-        self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
+        self.Slam = item_counts[Items.ProgressiveSlam] + STARTING_SLAM
         if Items.ProgressiveSlam in self.banned_items:  # If slam is banned, prevent logic from owning a better slam
             self.Slam = STARTING_SLAM
-        self.AmmoBelts = sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
-        self.InstUpgrades = sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+        self.AmmoBelts = item_counts[Items.ProgressiveAmmoBelt]
+        self.InstUpgrades = item_counts[Items.ProgressiveInstrumentUpgrade]
         self.Melons = 1
         if self.bongos or self.guitar or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0:
             self.Melons = 2
         if self.InstUpgrades >= 2:
             self.Melons = 3
 
-        self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
-        self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
-        self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
-        self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)
-        self.RainbowCoins = sum(1 for x in ownedItems if x == Items.RainbowCoin)
+        self.GoldenBananas = item_counts[Items.GoldenBanana]
+        self.BananaFairies = item_counts[Items.BananaFairy]
+        self.BananaMedals = item_counts[Items.BananaMedal]
+        self.BattleCrowns = item_counts[Items.BattleCrown]
+        self.RainbowCoins = item_counts[Items.RainbowCoin]
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
@@ -475,14 +478,17 @@ class LogicVarHolder:
             return self.superDuperSlam
         return self.Slam
 
+    @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
         """Determine whether the water is lava water or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.water_is_lava)
 
+    @lru_cache(maxsize=None)
     def HardBossesSettingEnabled(self, check: HardBossesSelected) -> bool:
         """Determine whether the hard bosses feature is enabled or not."""
         return IsItemSelected(self.settings.hard_bosses, self.settings.hard_bosses_selected, check)
 
+    @lru_cache(maxsize=None)
     def IsHardFallDamage(self) -> bool:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
@@ -493,14 +499,17 @@ class LogicVarHolder:
             return self.snideAccess
         return self.snideAccess or self.assumeFillSuccess
 
+    @lru_cache(maxsize=None)
     def checkFastCheck(self, check: FasterChecksSelected):
         """Determine whether a fast check is selected."""
         return IsItemSelected(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, check)
 
+    @lru_cache(maxsize=None)
     def checkBarrier(self, check: RemovedBarriersSelected):
         """Determine whether a barrier has been removed by the removed barriers setting."""
         return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
 
+    @lru_cache(maxsize=None)
     def galleonGatesStayOpen(self) -> bool:
         """Determine whether the galleon gates stay open once the instrument is played."""
         return IsItemSelected(
@@ -684,17 +693,16 @@ class LogicVarHolder:
 
     def ItemCounts(self):
         """Get the amount of items collected in terms of B. Locker-relevant items."""
-        CBCount = 0
-        for lvl in self.ColoredBananas:
-            CBCount += sum(lvl)
+        # Calculate Colored Bananas count
+        CBCount = sum(sum(lvl) for lvl in self.ColoredBananas)
+
+        # List of moves
         moves = [
-            # Training Moves
             self.vines,
             self.swim,
             self.oranges,
             self.barrels,
             self.climbing,
-            # Special Moves
             self.blast,
             self.strongKong,
             self.grab,
@@ -710,47 +718,34 @@ class LogicVarHolder:
             self.hunkyChunky,
             self.punch,
             self.gorillaGone,
-            # Guns
             self.coconut,
             self.peanut,
             self.grape,
             self.feather,
             self.pineapple,
-            # Instruments
             self.bongos,
             self.guitar,
             self.trombone,
             self.saxophone,
             self.triangle,
-            # BFI
             self.camera,
             self.shockwave,
-            # Misc
             self.scope,
             self.homing,
         ]
+
+        # Calculate keys count
+        keys = sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey])
+
+        # Calculate company coins count
+        company_coins = self.nintendoCoin + self.rarewareCoin
+
         # Calculate game percentage
-        keys = sum(
-            [
-                self.JapesKey,
-                self.AztecKey,
-                self.FactoryKey,
-                self.GalleonKey,
-                self.ForestKey,
-                self.CavesKey,
-                self.CastleKey,
-                self.HelmKey,
-            ]
-        )
-        company_coins = sum([self.nintendoCoin, self.rarewareCoin])
-        game_percentage = 0.4 * self.GoldenBananas
-        game_percentage += 0.5 * self.BattleCrowns
-        game_percentage += 0.2 * self.BananaFairies
-        game_percentage += 0.2 * self.BananaMedals
-        game_percentage += 0.25 * keys
-        game_percentage += 0.5 * company_coins
+        game_percentage = 0.4 * self.GoldenBananas + 0.5 * self.BattleCrowns + 0.2 * self.BananaFairies + 0.2 * self.BananaMedals + 0.25 * keys + 0.5 * company_coins
         if game_percentage == 100.4:
             game_percentage = 101
+
+        # Create check counts dictionary
         check_counts = {
             BarrierItems.GoldenBanana: self.GoldenBananas,
             BarrierItems.Blueprint: len(self.Blueprints),
@@ -768,6 +763,7 @@ class LogicVarHolder:
             BarrierItems.Move: sum(moves) + self.Slam + self.AmmoBelts + self.InstUpgrades,
             BarrierItems.Percentage: int(game_percentage),
         }
+
         return check_counts
 
     def ItemCheck(self, item: BarrierItems, count: int) -> bool:

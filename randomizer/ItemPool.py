@@ -22,7 +22,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Patching.Lib import IsItemSelected, getIceTrapCount
+from randomizer.Patching.Lib import getIceTrapCount
 
 
 def getHelmKey(settings) -> Items:

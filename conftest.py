@@ -1,6 +1,7 @@
 """This file contains the pytest configuration for the test suite."""
 
 import pytest
+import os
 
 
 def pytest_addoption(parser):
@@ -10,17 +11,22 @@ def pytest_addoption(parser):
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
-    """Check the failure rate of the test suite and fail if it exceeds the maximum acceptable rate."""
-    total_tests = terminalreporter.stats.get("passed", 0) + terminalreporter.stats.get("failed", 0)
-    failed_tests = terminalreporter.stats.get("failed", 0)
-    total_tests = len(total_tests)
-    failed_tests = len(failed_tests)
+    """Log the failure rate of the test suite."""
+    github_env = os.getenv("GITHUB_ENV")
+    total_tests = len(terminalreporter.stats.get("passed", [])) + len(terminalreporter.stats.get("failed", []))
+    failed_tests = len(terminalreporter.stats.get("failed", []))
     if total_tests > 0:
         failure_rate = failed_tests / total_tests
         max_failure_rate = config.getoption("--max-failure-rate")
 
         if failure_rate > max_failure_rate:
             print(f"\nTest suite failure rate ({failure_rate:.2%}) exceeds allowed limit ({max_failure_rate:.2%}).")
-            exitstatus |= 1
+            if github_env:
+                with open("error_status", "w") as f:
+                    f.write("1")
         else:
             print(f"\nTest suite failure rate ({failure_rate:.2%}) is within the allowed limit ({max_failure_rate:.2%}).")
+            # Write Success or failure to the github ENV
+            if github_env:
+                with open("error_status", "w") as f:
+                    f.write("0")
