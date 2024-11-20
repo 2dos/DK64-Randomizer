@@ -5,6 +5,7 @@ from __future__ import annotations
 import struct
 from enum import IntEnum, auto
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
+from functools import lru_cache
 
 import js
 import random
@@ -775,10 +776,11 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
     return None
 
 
-def IsItemSelected(
+@lru_cache(maxsize=None)
+def is_item_selected_cached(
     bool_setting: bool,
-    multiselector_setting: List[Union[MiscChangesSelected, Any]],
-    check: Union[HardModeSelected, MiscChangesSelected],
+    multiselector_setting: tuple,  # Change the type here
+    check: Union["HardModeSelected", "MiscChangesSelected"],
 ) -> bool:
     """Determine whether a multiselector setting is enabled."""
     if not bool_setting:
@@ -786,6 +788,17 @@ def IsItemSelected(
     if len(multiselector_setting) == 0:
         return True
     return check in multiselector_setting
+
+
+# Helper function to call the cached version
+def IsItemSelected(
+    bool_setting: bool,
+    multiselector_setting: List[Union["MiscChangesSelected", Any]],
+    check: Union["HardModeSelected", "MiscChangesSelected"],
+) -> bool:
+    """Determine whether a multiselector setting is enabled."""
+    # Convert the list to a tuple before passing it to the cached function
+    return is_item_selected_cached(bool_setting, tuple(multiselector_setting), check)
 
 
 class SpawnerChange:
