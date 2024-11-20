@@ -188,7 +188,7 @@ def GetLevelExitTransition(level):
 
 
 def should_skip_location(location, location_obj, spoiler, settings, region):
-    """Checks if a location should be skipped based on various criteria."""
+    """Check if a location should be skipped based on various criteria."""
     # Skip if location is inaccessible
     if location_obj.inaccessible:
         return True
