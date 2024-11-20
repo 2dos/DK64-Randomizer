@@ -1666,6 +1666,23 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types], placed_items: 
             raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
     # # Simple linear level order progression leads to straightforward key placement
     else:
+        # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset,
+        # place Key 8 in the 8th level somewhere
+        if Items.HideoutHelmKey in keysToPlace and spoiler.settings.key_8_helm:
+            last_level = spoiler.settings.level_order[8]
+            if last_level != Levels.HideoutHelm:
+                if spoiler.settings.shuffle_items:
+                    potential_locations = [
+                        loc
+                        for loc in spoiler.LocationList
+                        if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types and not spoiler.LocationList[loc].inaccessible
+                    ]
+                # Outside of item rando, the only eligible location is the boss in level 8. This should filter down to only one location.
+                else:
+                    potential_locations = [loc for loc in spoiler.LocationList if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type == Types.Key]
+                selected_location = choice(potential_locations)
+                spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)
+                keysToPlace.remove(Items.HideoutHelmKey)
         # Place the keys in order
         keysToPlace.sort()
         keysUnplaced = PlaceItems(
@@ -1868,6 +1885,23 @@ def Fill(spoiler: Spoiler) -> None:
         for item in preplaced_items:
             if item in bigListOfItemsToPlace:
                 bigListOfItemsToPlace.remove(item)
+        # If Helm is not last, and we're locking key 8 and we're using the SLO ruleset, place Key 8 in the 8th level somewhere
+        if (
+            Items.HideoutHelmKey in bigListOfItemsToPlace
+            and spoiler.settings.key_8_helm
+            and spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels
+            and not spoiler.settings.hard_level_progression
+        ):
+            last_level = spoiler.settings.level_order[8]
+            if last_level != Levels.HideoutHelm:
+                potential_locations = [
+                    loc
+                    for loc in spoiler.LocationList
+                    if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types and not spoiler.LocationList[loc].inaccessible
+                ]
+                selected_location = choice(potential_locations)
+                spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)
+                bigListOfItemsToPlace.remove(Items.HideoutHelmKey)
         unplaced = PlaceItems(
             spoiler,
             FillAlgorithm.assumed,
