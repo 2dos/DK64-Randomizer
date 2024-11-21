@@ -1013,7 +1013,7 @@ KasplatLocationList = {
             xmax=4300,
             zmin=3609,
             zmax=3664,
-            region=Regions.MillArea,
+            region=Regions.ForestTopOfMill,
         ),
         KasplatLocation(
             name="Forest Kasplat: Minecart Exit Well",

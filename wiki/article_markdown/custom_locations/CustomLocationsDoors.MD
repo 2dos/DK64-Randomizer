@@ -29,7 +29,7 @@
 | Jungle Japes | Next to Lanky's Painting Room - right | Boss, Dk_Portal, Wrinkly | `(l.handstand and l.islanky) or (l.twirl and l.istiny)` | 
 | Jungle Japes | Outside Diddy Cave Switch - left | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Outside Diddy Cave Switch - right | Boss, Dk_Portal, Wrinkly |  | 
-| Jungle Japes | Entrance Tunnel - Near Diddy Cave - back left | Boss, Dk_Portal, Wrinkly |  | 
+| Jungle Japes | Entrance Tunnel - Near Diddy Cave - back left | Wrinkly |  | 
 | Jungle Japes | Entrance Tunnel - Near Diddy Cave - front left | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Entrance Tunnel - Near Warppad 1 and 2 | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Diddy Tunnel - next to hole - river side | Boss, Dk_Portal, Wrinkly |  | 
