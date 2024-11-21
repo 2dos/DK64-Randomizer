@@ -276,7 +276,6 @@
 | Fungi Forest | Near Beanstalk Mini Monkey |  |  | 
 | Fungi Forest | Near Giant Mushroom |  |  | 
 | Fungi Forest | Near Yellow Tunnel | DirtPatch, Bananaport |  | 
-| Fungi Forest | Near Cranky |  |  | 
 | Fungi Forest | Near Lower Baboon Blast Ladder |  |  | 
 | Fungi Forest | Near Baboon Blast |  | `l.climbing` | 
 | Fungi Forest | Above Upper Baboon Blast Ladder |  |  | 
@@ -493,7 +492,6 @@
 | Isles | Near Monkeyport (2) |  |  | 
 | Isles | Under DK Caged GB |  |  | 
 | Isles | Back of Kroc Isle (Lower) |  |  | 
-| Isles | Back of Kroc Isle (Middle) |  |  | 
 | Isles | Behind Factory Lobby Entrance |  |  | 
 | Isles | Right of Factory Lobby Entrance |  |  | 
 | Isles | Behind Helm Lobby Entrance |  |  | 
