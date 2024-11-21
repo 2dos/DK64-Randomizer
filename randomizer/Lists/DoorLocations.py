@@ -396,6 +396,7 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[1891.0, 280.0, 879.0, 180.0],
             group=2,
+            door_type=[DoorType.wrinkly],  # Causes the Painting Room Gate's script to run incorrectly when Japes is first entered through this portal.
         ),
         DoorData(
             name="Entrance Tunnel - Near Diddy Cave - front left",
