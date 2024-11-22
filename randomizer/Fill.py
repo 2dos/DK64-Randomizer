@@ -195,7 +195,7 @@ def should_skip_location(location, location_obj, spoiler, settings, region):
 
     # Skip bonus barrels based on settings and logic
     if location.bonusBarrel:
-        if (
+        if not (
             (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels == MinigameBarrels.skip)
             or (location.bonusBarrel is MinigameType.HelmBarrelFirst and (settings.helm_barrels == MinigameBarrels.skip or settings.helm_room_bonus_count == HelmBonuses.zero))
             or (location.bonusBarrel is MinigameType.HelmBarrelSecond and (settings.helm_barrels == MinigameBarrels.skip or settings.helm_room_bonus_count != HelmBonuses.two))
