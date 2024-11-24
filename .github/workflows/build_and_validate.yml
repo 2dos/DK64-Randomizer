@@ -46,7 +46,13 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run pytest
-        run:  pytest --max-failure-rate 0.5 -n 4 -v --cov --cov-report xml:coverage.xml ${GITHUB_WORKSPACE}/tests
+        run:  |
+          pytest --max-failure-rate 0.5 -n 4 -v --cov --cov-report xml:coverage.xml ${GITHUB_WORKSPACE}/tests || true
+          # cat the file error_status to see if there were any errors 1 if there was 0 if not
+          STATUS=$(cat error_status)
+          if [ "$STATUS" -eq 1 ]; then
+              exit 1
+          fi
 
       - name: Get Cover 
         uses: orgoro/coverage@v3.1
