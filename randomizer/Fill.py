@@ -376,9 +376,6 @@ def GetAccessibleLocations(
                     if location_id in accessible or location_id in newLocations or not location.logic(spoiler.LogicVariables):
                         continue
 
-                    if should_skip_location(location, location_obj, spoiler, settings, region.id):
-                        continue
-
                     location_obj = spoiler.LocationList[location_id]
 
                     if should_skip_location(location, location_obj, spoiler, settings, region.id):
