@@ -323,6 +323,7 @@ class ProgressiveHintItem(IntEnum):
     req_rainbowcoin = 7
     req_bean = 8
     req_pearl = 9
+    req_cb = 10
 
 class PuzzleRando(IntEnum):
     off = 0
@@ -625,6 +626,7 @@ class SettingsStringEnum(IntEnum):
     has_password = 186
     randomize_enemy_sizes = 187
     progressive_hint_item = 188
+    mirror_mode = 189
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -897,6 +899,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
+    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
 }
 
 SettingsStringListTypeMap: dict = {

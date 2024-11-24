@@ -27,6 +27,8 @@
         "list": "c",
         "vector": "c",
         "xstring": "c",
-        "xlocale": "c"
+        "xlocale": "c",
+        "algorithm": "c",
+        "iterator": "c"
     }
 }

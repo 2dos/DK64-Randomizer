@@ -2822,14 +2822,14 @@ def writeMiscCosmeticChanges(settings):
             for img_index in range(129, 138 + 1):
                 hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA32, fire_shift)
             # Number Game Numbers
-            COLOR_COUNT = 16  # 2 or 16
-            colors = [getRandomHueShift() for x in range(COLOR_COUNT)]
+            COLOR_COUNT = 2  # 2 or 16
+            colors = [getRandomHueShift() for x in range(16)]
             # vanilla_green = [2, 4, 5, 7, 9, 10, 12, 13]
             vanilla_blue = [1, 3, 6, 8, 11, 14, 15, 16]
             for x in range(16):
                 number_hue_shift = colors[0]
                 if COLOR_COUNT == 2:
-                    if x in vanilla_blue:
+                    if (x + 1) in vanilla_blue:
                         number_hue_shift = colors[1]
                 else:
                     number_hue_shift = colors[x]

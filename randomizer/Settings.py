@@ -695,6 +695,7 @@ class Settings:
         self.hard_mode_selected = []
         self.hard_bosses = False
         self.hard_bosses_selected = []
+        self.mirror_mode = False
         self.faster_checks_enabled = False
         self.remove_barriers_enabled = False
         self.faster_checks_selected = []

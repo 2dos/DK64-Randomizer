@@ -319,6 +319,7 @@ class Spoiler:
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
         settings["Ice Trap Frequency"] = self.settings.ice_trap_frequency.name
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
+        settings["Mirror Mode"] = self.settings.mirror_mode
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
         # settings["Krusha Slot"] = self.settings.krusha_ui.name

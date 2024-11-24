@@ -430,7 +430,6 @@ static const unsigned char dance_skip_ban_maps[] = {
     MAP_AZTECBEETLE, // Aztec Beetle
     MAP_FACTORYCARRACE, // Factory Car Race
     MAP_GALLEONSEALRACE, // Galleon Seal Race
-    MAP_CAVESBEETLERACE, // Caves Beetle
     MAP_CASTLECARRACE, // Castle Car Race
 };
 
@@ -438,9 +437,15 @@ static const unsigned char dance_force_maps[] = {
     MAP_AZTECBEETLE, // Aztec Beetle
     MAP_FACTORYCARRACE, // Factory Car Race
     MAP_GALLEONSEALRACE, // Galleon Seal Race
-    MAP_CAVESBEETLERACE, // Caves Beetle
     MAP_CASTLECARRACE, // Castle Car Race
 };
+
+int isCavesBeetleReward(void) {
+    if (CurrentMap != MAP_CAVESBEETLERACE) {
+        return 0;
+    }
+    return Player->yPos < 0;
+}
 
 int canDanceSkip(void) {
     /**
@@ -465,6 +470,9 @@ int canDanceSkip(void) {
         if (inBossMap(CurrentMap, 1, 1, 0)) {
             is_banned_map = 1;
         }
+        if (isCavesBeetleReward()) {
+            is_banned_map = 1;
+        }
         for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
             if (dance_skip_ban_maps[i] == CurrentMap) {
                 is_banned_map = 1;
@@ -478,6 +486,10 @@ int canDanceSkip(void) {
 }
 
 void forceDance(void) {
+    if (isCavesBeetleReward()) {
+        setAction(0x29, 0, 0);
+        return;
+    }
     for (int i = 0; i < sizeof(dance_force_maps); i++) {
         if (dance_force_maps[i] == CurrentMap) {
             setAction(0x29, 0, 0);

@@ -1025,8 +1025,13 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
 def getRawFile(table_index: int, file_index: int, compressed: bool):
     """Get raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
+    if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
+        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
+        if file_size is None:
+            return bytes(bytearray([]))
+    else:
+        file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+        file_size = file_end - file_start
     try:
         LocalROM().seek(file_start)
         data = LocalROM().readBytes(file_size)
@@ -1041,8 +1046,11 @@ def getRawFile(table_index: int, file_index: int, compressed: bool):
 def writeRawFile(table_index: int, file_index: int, compressed: bool, data: bytearray, ROM_COPY):
     """Write raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
+    if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
+        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
+    else:
+        file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+        file_size = file_end - file_start
     write_data = bytes(data)
     if compressed:
         write_data = gzip.compress(bytes(data), compresslevel=9)
@@ -1100,6 +1108,7 @@ def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
         ProgressiveHintItem.req_rainbowcoin: BarrierItems.RainbowCoin,
         ProgressiveHintItem.req_bean: BarrierItems.Bean,
         ProgressiveHintItem.req_pearl: BarrierItems.Pearl,
+        ProgressiveHintItem.req_cb: BarrierItems.ColoredBanana,
     }
     return barrier_bijection[item]
 

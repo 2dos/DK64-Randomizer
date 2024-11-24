@@ -358,6 +358,7 @@ export enum ProgressiveHintItem {
     req_rainbowcoin = 7,
     req_bean = 8,
     req_pearl = 9,
+    req_cb = 10,
 }
 
 export enum PuzzleRando {
@@ -675,6 +676,7 @@ export enum SettingsStringEnum {
     has_password = 186,
     randomize_enemy_sizes = 187,
     progressive_hint_item = 188,
+    mirror_mode = 189,
 }
 
 export enum SettingsStringDataType {
@@ -949,6 +951,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
+    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
 }
 
 export const SettingsStringListTypeMap = {

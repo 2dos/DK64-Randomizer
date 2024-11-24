@@ -1547,28 +1547,17 @@ function update_prog_hint_num_access() {
     parseInt(progHintReq.value) > 16
   ) {
     progHintReq.value = 16;
+  } else if (
+    progHintSelection.value === "req_cb" &&
+    parseInt(progHintReq.value) > 3500
+  ) {
+    progHintReq.value = 3500;
   }
 }
 
 document
   .getElementById("progressive_hint_item")
   .addEventListener("change", update_prog_hint_num_access);
-// Validate blocker input on loss of focus
-function handle_progressive_hint_text() {
-  const progressiveHintText = document.getElementById("progressive_hint_text");
-
-  if (!progressiveHintText.value) {
-    progressiveHintText.value = 60;
-  } else if (parseInt(progressiveHintText.value) < 1) {
-    progressiveHintText.value = 1;
-  } else if (parseInt(progressiveHintText.value) > 201) {
-    progressiveHintText.value = 201;
-  }
-}
-
-document
-  .getElementById("progressive_hint_text")
-  .addEventListener("focusout", handle_progressive_hint_text);
 
 // Validate chaos ratio input on loss of focus
 function handle_chaos_ratio_text() {
@@ -2131,7 +2120,6 @@ function update_ui_states() {
   disable_music(null);
   disable_move_shuffles(null);
   max_randomized_blocker(null);
-  handle_progressive_hint_text(null);
   handle_chaos_ratio_text(null);
   max_randomized_troff(null);
   max_music(null);

@@ -37,6 +37,7 @@ class File:
         do_not_compress=False,
         do_not_recompress=False,
         bloat_compression=False,
+        buffer_compression=False,
     ):
         """Initialize with given parameters."""
         self.name = name
@@ -55,6 +56,7 @@ class File:
         self.do_not_delete = do_not_delete
         self.target_compressed_size = target_compressed_size
         self.target_uncompressed_size = target_uncompressed_size
+        self.buffer_compression = buffer_compression
         if target_size is not None:
             self.target_compressed_size = target_size
             self.target_uncompressed_size = target_size

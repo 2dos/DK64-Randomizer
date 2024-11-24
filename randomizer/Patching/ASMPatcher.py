@@ -26,6 +26,7 @@ from randomizer.Enums.Settings import (
     WinConditionComplex,
     ExtraCutsceneSkips,
     ExcludedSongs,
+    ProgressiveHintItem,
 )
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -246,6 +247,9 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
     if overlay == Overlay.Custom:
         rdram_start = 0x805FAE00 - 0x39DC0
         overlay_start = 0x2000000
+    elif overlay == Overlay.Boot:
+        rdram_start = 0x80000450
+        overlay_start = 0x1050
     else:
         if overlay not in list(offset_dict.keys()):
             return None
@@ -260,6 +264,8 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
             raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     if address < rdram_start:
         raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
+    if overlay == Overlay.Boot:
+        print(hex(rdram_start), hex(overlay_start), hex(overlay_start + (address - rdram_start)))
     return overlay_start + (address - rdram_start)
 
 
@@ -1448,6 +1454,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806A94CC, Overlay.Static, 0x2C610003, offset_dict, 4)  # SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
     writeValue(ROM_COPY, 0x806A94D0, Overlay.Static, 0x10200298, offset_dict, 4)  # BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
     writeValue(ROM_COPY, 0x806A932A, Overlay.Static, 12500, offset_dict)  # Increase memory allocated for displaying the Pause menu (fixes hints corrupting the heap)
+    if settings.progressive_hint_item == ProgressiveHintItem.req_cb:
+        writeFunction(ROM_COPY, 0x806AB4C4, Overlay.Static, "displayCBCount", offset_dict)
     # Restore unused events
     writeValue(ROM_COPY, 0x800336A4, Overlay.Menu, 7, offset_dict)  # Play cutscene 7 (Overwrites one of the leg shakes)
     writeValue(ROM_COPY, 0x800336A6, Overlay.Menu, 150, offset_dict)  # Set duration as 150
@@ -1506,13 +1514,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x806C4654, Overlay.Static, "spawnMinecartReward", offset_dict)  # Spawn Squawks Reward - Minecart
         writeFunction(ROM_COPY, 0x8002501C, Overlay.Bonus, "spawnCrownReward", offset_dict)  # Crown Spawn
         writeFunction(ROM_COPY, 0x80028650, Overlay.Boss, "spawnBossReward", offset_dict)  # Key Spawn
-        # Initialize fixed item scales
-        writeFunction(ROM_COPY, 0x806F4918, Overlay.Static, "writeItemScale", offset_dict)  # Write scale to collision info
-        writeValue(ROM_COPY, 0x806F491C, Overlay.Static, 0x87A40066, offset_dict, 4)
-        # LH $a0, 0x66 ($sp)
-        writeValue(ROM_COPY, 0x806F4C6E, Overlay.Static, 0x20, offset_dict)  # Change size
-        writeValue(ROM_COPY, 0x806F4C82, Overlay.Static, 0x20, offset_dict)  # Change size
-        writeFunction(ROM_COPY, 0x806F515C, Overlay.Static, "writeItemActorScale", offset_dict)  # Write actor scale to collision info
+        
         writeFunction(ROM_COPY, 0x80027E68, Overlay.Critter, "fairyQueenCutsceneInit", offset_dict)  # BFI, Init Cutscene Setup
         writeFunction(ROM_COPY, 0x80028104, Overlay.Critter, "fairyQueenCutsceneCheck", offset_dict)  # BFI, Cutscene Play
         # Flag Stuff
@@ -1533,6 +1535,13 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8069C266, Overlay.Static, getActorIndex(spoiler.japes_rock_actor), offset_dict)
         # Melon Crates
         writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
+    # Initialize fixed item scales
+    writeFunction(ROM_COPY, 0x806F4918, Overlay.Static, "writeItemScale", offset_dict)  # Write scale to collision info
+    writeValue(ROM_COPY, 0x806F491C, Overlay.Static, 0x87A40066, offset_dict, 4)
+    # LH $a0, 0x66 ($sp)
+    writeValue(ROM_COPY, 0x806F4C6E, Overlay.Static, 0x20, offset_dict)  # Change size
+    writeValue(ROM_COPY, 0x806F4C82, Overlay.Static, 0x20, offset_dict)  # Change size
+    writeFunction(ROM_COPY, 0x806F515C, Overlay.Static, "writeItemActorScale", offset_dict)  # Write actor scale to collision info
     writeFunction(ROM_COPY, 0x80681910, Overlay.Static, "spawnBonusReward", offset_dict)  # Spawn Bonus Reward
 
     if settings.fast_warps:
@@ -2848,6 +2857,16 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeValue(ROM_COPY, 0x806BA5A8, Overlay.Static, 0x1D800003, offset_dict, 4)  # Fix some health oversights by making death if health <= 0 instead of == 0
     writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict)  # Change BHDM Cooldown
+
+    if settings.mirror_mode:
+        # Invert Aspect
+        writeValue(ROM_COPY, 0x80006070, Overlay.Boot, 0x3C048000, offset_dict, 4)  # Invert Aspect - LUI a0, 0x8000
+        writeValue(ROM_COPY, 0x80006074, Overlay.Boot, 0x00E43826, offset_dict, 4)  # Invert Aspect - XOR a3, a3, a0
+        # Invert X Axis input
+        writeFunction(ROM_COPY, 0x8060AC60, Overlay.Static, "parseControllerInput", offset_dict)
+        # Invert camera directions
+        writeValue(ROM_COPY, 0x806EA25E, Overlay.Static, 45, offset_dict, 2, True)
+        writeValue(ROM_COPY, 0x806EA2CA, Overlay.Static, -45, offset_dict, 2, True)
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold

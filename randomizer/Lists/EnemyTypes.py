@@ -640,8 +640,8 @@ enemy_location_list = {
     Locations.AztecDK5DTEnemy_EndTrap0: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.Kaboom, 10, [], True),
     Locations.AztecDK5DTEnemy_EndTrap1: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.Kaboom, 11, [], True),
     Locations.AztecDK5DTEnemy_EndTrap2: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.Kaboom, 12, [], True),
-    Locations.AztecDK5DTEnemy_EndPath0: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 13, [], True),
-    Locations.AztecDK5DTEnemy_EndPath1: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 14, [], True),
+    Locations.AztecDK5DTEnemy_EndPath0: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 13, [Enemies.Guard], True),
+    Locations.AztecDK5DTEnemy_EndPath1: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 14, [Enemies.Guard], True),
     Locations.AztecDK5DTEnemy_StartPath: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 15, [], True),
     # Diddy 5DT
     Locations.AztecDiddy5DTEnemy_EndTrap0: EnemyLoc(Maps.AztecDiddy5DTemple, Enemies.Klobber, 4, [], True),
@@ -917,8 +917,8 @@ enemy_location_list = {
     # Main
     Locations.CastleMainEnemy_NearBridge0: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 4, [], True),
     Locations.CastleMainEnemy_NearBridge1: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 5, [], True),
-    Locations.CastleMainEnemy_WoodenExtrusion0: EnemyLoc(Maps.CreepyCastle, Enemies.Kosha, 6, [], True),
-    Locations.CastleMainEnemy_WoodenExtrusion1: EnemyLoc(Maps.CreepyCastle, Enemies.Kosha, 7, [], True),
+    Locations.CastleMainEnemy_WoodenExtrusion0: EnemyLoc(Maps.CreepyCastle, Enemies.Kosha, 6, [Enemies.Guard], True),
+    Locations.CastleMainEnemy_WoodenExtrusion1: EnemyLoc(Maps.CreepyCastle, Enemies.Kosha, 7, [Enemies.Guard], True),
     Locations.CastleMainEnemy_NearShed: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 8, [], True),
     Locations.CastleMainEnemy_NearLibrary: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 9, [], True),
     Locations.CastleMainEnemy_NearTower: EnemyLoc(Maps.CreepyCastle, Enemies.Kosha, 10, [], True),

@@ -87,6 +87,7 @@ from randomizer.Patching.UpdateHints import (
     PushHintTiedRegions,
 )
 from randomizer.Patching.ASMPatcher import patchAssembly
+from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
 
 # from randomizer.Spoiler import Spoiler
@@ -382,7 +383,7 @@ def patching_response(spoiler):
         DamageAmount.quad: 4,
         DamageAmount.ohko: 12,
     }
-    ROM_COPY.seek(sav + 0x0A5)
+    ROM_COPY.seek(sav + 0x097)
     ROM_COPY.write(damage_multipliers[spoiler.settings.damage_amount])
 
     ROM_COPY.seek(sav + 0x0C5)
@@ -403,8 +404,8 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x0C3)
         ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))
         for x in range(10):
-            ROM_COPY.seek(sav + 0x197 + x)
-            ROM_COPY.write(getHintRequirementBatch(x, count))
+            ROM_COPY.seek(sav + 0x98 + (x * 2))
+            ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count), 2)
     ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
 
@@ -726,6 +727,7 @@ def patching_response(spoiler):
         applyKongModelSwaps(spoiler.settings)
 
         patchAssembly(ROM_COPY, spoiler)
+        ApplyMirrorMode(spoiler.settings, ROM_COPY)
 
     # Apply Hash
     order = 0

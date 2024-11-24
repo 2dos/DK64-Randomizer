@@ -334,15 +334,22 @@ int getHintRequirement(int slot) {
     return Rando.progressive_bounds[batch_index];
 }
 
-regions getHintItemRegion(int slot) {
-    return hint_item_regions[slot];
+void displayCBCount(pause_paad *handler, void* sprite, int x, int y, float scale, int unk0, int unk1) {
+    displaySprite(handler, sprite, x, y, scale, unk0, unk1);
+    if (handler->screen == PAUSESCREEN_HINTS) {
+        int cb_count = 0;
+        for (int world = 0; world < 7; world++) {
+            for (int kong = 0; kong < 5; kong++) {
+                cb_count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
+            }
+        }
+        displayPauseSpriteNumber(handler, 0x24, 0x1C, 0xC, -10, cb_count, 1, 0);
+        displaySprite(handler, (void*)0x80721474, 0x24, 0x1C, 0.75f, 2, 1);
+    }
 }
 
-int getPluralCharacter(int amount) {
-    if (amount != 1) {
-        return 0x53; // "S"
-    }
-    return 0;
+regions getHintItemRegion(int slot) {
+    return hint_item_regions[slot];
 }
 
 int showHint(int slot) {
