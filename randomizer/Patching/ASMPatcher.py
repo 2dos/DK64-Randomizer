@@ -90,6 +90,7 @@ ENABLE_BLAST_LZR = False
 POP_TARGETTING = True
 UNSHROUDED_CASTLE = True
 FARPLANE_VIEW = True
+KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1563,6 +1564,15 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806F5134, Overlay.Static, "getCollisionSquare_New", offset_dict)  # Assigning hitbox to data table
     writeFunction(ROM_COPY, 0x806F6A0C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
     writeFunction(ROM_COPY, 0x806F6A2C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
+
+    # Make BBBash reference the internal hit counter rather than the displayed one
+    writeValue(ROM_COPY, 0x8002B4DE, Overlay.Bonus, 0x2A, offset_dict)
+    writeValue(ROM_COPY, 0x8002B502, Overlay.Bonus, 0x2A, offset_dict)
+    writeValue(ROM_COPY, 0x8002B55A, Overlay.Bonus, 0x2A, offset_dict)
+
+    # Alter amount of Klaptraps in Searchlight seek
+    writeValue(ROM_COPY, 0x8002C1FA, Overlay.Bonus, KLAPTRAPS_IN_SEARCHLIGHT_SEEK, offset_dict)
+    writeValue(ROM_COPY, 0x8002C1D2, Overlay.Bonus, KLAPTRAPS_IN_SEARCHLIGHT_SEEK, offset_dict)
 
     # Spawn Enemy Drops function
     enemy_drop_addrs = [
