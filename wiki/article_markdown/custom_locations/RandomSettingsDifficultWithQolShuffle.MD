@@ -277,11 +277,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Forest Yellow Tunnel: 75%
 	- Caves Igloo Pads: 80%
 	- Caves Ice Walls: 70%
-- Banana Fairy Island Move Status: 
-	- Vanilla: 20%
-	- Shuffled: 30%
-	- Shuffled Decoupled: 30%
-	- Start With: 20%
 - Shop Indicator: 50%
 - Shorten Boss Fights: 80%
 - Shuffle Helm Location / Include Helm: 70%
@@ -289,7 +284,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Smaller Shops: 50%
 - Starting Kong: 
 	- Any: 100%
-- Random Starting Move Count: Between 0 and 10, usually close to 3
+- Starting Moves Count: Between 0 and 10, usually close to 3
 - Switchsanity: 
 	- Off: 50%
 	- Helm Access: 40%

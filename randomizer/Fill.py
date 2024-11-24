@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from math import ceil
-from random import choice, randint, shuffle, uniform
+from random import choice, randint, shuffle, uniform, sample
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
 from functools import lru_cache
 
@@ -307,7 +307,9 @@ def GetAccessibleLocations(
                     elif location.item == Items.BananaHoard:
                         sphere.locations = [locationId]
                         break
-                    sphere.locations.append(locationId)
+                    # The starting shop owner locations are not eligible for the playthrough
+                    if location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+                        sphere.locations.append(locationId)
                 # If we're looking for one item and we find it, we're done
                 elif searchType == SearchMode.CheckSpecificItemReachable and location.item == targetItemId:
                     return True
@@ -938,11 +940,8 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.climbing_status != ClimbingStatus.normal:
         majorItems.extend(ItemPool.ClimbingAbilities())
-    if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
-        majorItems.append(Items.CameraAndShockwave)
-    if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
-        majorItems.append(Items.Shockwave)
-        majorItems.append(Items.Camera)
+    if Types.Shockwave in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
 
@@ -1030,8 +1029,18 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
         if not location.inaccessible and location.item in filtered_major_items:
             interesting_locations.append(id)
     interesting_locations.append(Locations.BananaHoard)
+    # If intentionally starting with a slam, don't count it for paths
     if spoiler.settings.start_with_slam:
         interesting_locations.remove(Locations.IslesFirstMove)
+    # Starting shop owners should not be on paths - only shop owners can be in these locations
+    if Locations.ShopOwner_Location00 in interesting_locations:
+        interesting_locations.remove(Locations.ShopOwner_Location00)
+    if Locations.ShopOwner_Location01 in interesting_locations:
+        interesting_locations.remove(Locations.ShopOwner_Location01)
+    if Locations.ShopOwner_Location02 in interesting_locations:
+        interesting_locations.remove(Locations.ShopOwner_Location02)
+    if Locations.ShopOwner_Location03 in interesting_locations:
+        interesting_locations.remove(Locations.ShopOwner_Location03)
 
     ordered_interesting_locations = []
     # Prep the dictionaries that will contain the paths to our interesting locations
@@ -1896,8 +1905,8 @@ def Fill(spoiler: Spoiler) -> None:
                 bigListOfItemsToPlace.extend(ItemPool.TrainingBarrelAbilities())
             if spoiler.settings.climbing_status != ClimbingStatus.normal:
                 bigListOfItemsToPlace.extend(ItemPool.ClimbingAbilities())
-            if spoiler.settings.shockwave_status not in (ShockwaveStatus.start_with, ShockwaveStatus.vanilla):
-                bigListOfItemsToPlace.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
+        if spoiler.settings.shockwave_status != ShockwaveStatus.start_with and Types.Shockwave in spoiler.settings.shuffled_location_types:
+            bigListOfItemsToPlace.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         if Types.Key in spoiler.settings.shuffled_location_types:
             bigListOfItemsToPlace.extend(ItemPool.KeysToPlace(spoiler.settings))
         if Types.Cranky in spoiler.settings.shuffled_location_types:
@@ -2248,70 +2257,81 @@ def Fill(spoiler: Spoiler) -> None:
     return
 
 
-def FillTrainingMoves(spoiler: Spoiler, placedMoves: List[Items]):
+def FillTrainingMoves(spoiler: Spoiler, preplacedMoves: List[Items]):
     """Fill training barrels with your starting moves."""
-    # If we start with a slam as the training grounds reward, it counts as placed for fill purposes
+    # Convenient assumptions made by this method:
+    # - No list is expected to pull more items than are contained in the list.
+    # - Training locations that are made Constant will already have been made so. Essentially, do this after placing constants.
+    # - No non-progressive item is in multiple lists. The correct quantity of progressive items are cumulatively in all lists.
+
+    # To account for plando things, remove the possibility for plando'd items to get chosen.
+    # This isn't foolproof, particularly around progressive items!
+    for item in preplacedMoves:
+        for i in range(len(spoiler.settings.starting_moves_lists)):
+            if item in spoiler.settings.starting_moves_lists[i]:
+                spoiler.settings.starting_moves_lists[i].remove(item)
+
+    # Determine what moves will be placed in these locations
+    movesToPlace = []
+    # Check for if we've found what would be the vanilla starting slam - this is only necessary if the settings dictate that we should find one
+    startingSlamIdentified = not spoiler.settings.start_with_slam
+    for i in range(len(spoiler.settings.starting_moves_lists)):
+        # If every item in this list is guaranteed to be placed, we have to watch out for vanilla items that should already be placed
+        if len(spoiler.settings.starting_moves_lists[i]) <= spoiler.settings.starting_moves_list_counts[i]:
+            for item in spoiler.settings.starting_moves_lists[i]:
+                # Avoid vanilla training moves, the first starting slam, and climbing
+                if item in ItemPool.TrainingBarrelAbilities() and spoiler.settings.training_barrels == TrainingBarrels.normal:
+                    continue
+                if item == Items.ProgressiveSlam and not startingSlamIdentified:
+                    startingSlamIdentified = True
+                    continue
+                if item == Items.Climbing and spoiler.settings.climbing_status == ClimbingStatus.normal:
+                    continue
+                # Avoid anything that isn't supposed to be shuffled but could be in the starting move selector (Shopkeepers, Camera/Shockwave)
+                if ItemList[item].type not in spoiler.settings.shuffled_location_types:
+                    continue
+                # Otherwise everything else in this pool is guaranteed to be placed on a starting location
+                movesToPlace.append(item)
+        # Otherwise we take a random selection of items in this pool equal to the corresponding desired amount
+        else:
+            movesToPlace.extend(sample(spoiler.settings.starting_moves_lists[i], k=spoiler.settings.starting_moves_list_counts[i]))
+
+    placedMoves = []
     if spoiler.settings.start_with_slam:
         placedMoves.append(Items.ProgressiveSlam)
-    # First place our starting moves randomly
-    locationsNeedingMoves = []
-    # We can expect that all locations in this region are starting move locations or Training Barrels
-    for locationLogic in spoiler.RegionList[Regions.GameStart].locations:
-        location = spoiler.LocationList[locationLogic.id]
-        if location.item is None and not location.inaccessible:
-            locationsNeedingMoves.append(locationLogic.id)
-    # Fill the empty starting locations
-    newlyPlacedItems = []
-    if any(locationsNeedingMoves):
-        # Identify all possible items that can be starting moves if we need to randomly pick some
-        possibleStartingMoves = ItemPool.AllKongMoves().copy()
-        if len(locationsNeedingMoves) < 10:
-            # Generally only include one copy of the useless progressive moves to bias against picking them when you only have a few starting moves
-            possibleStartingMoves.append(Items.ProgressiveAmmoBelt)
-            possibleStartingMoves.append(Items.ProgressiveInstrumentUpgrade)
-        else:
-            # If we have lots of starting moves, we'll need to include all copies so we have enough stuff to fill all locations
-            possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
-        if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
-            possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
-        if spoiler.settings.climbing_status == ClimbingStatus.shuffled:
-            possibleStartingMoves.extend(ItemPool.ClimbingAbilities())
-        if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
-            possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
-        # Any placed items placed before this method can't be random starting items
-        for item in placedMoves:
-            if item in possibleStartingMoves:
-                possibleStartingMoves.remove(item)
-        shuffle(possibleStartingMoves)
-        # Assemble the starting move pool
-        startingMovePool = [move for move in spoiler.settings.random_starting_move_list_selected]  # These are the user-chosen moves eligible to be random starting moves
-        shuffle(startingMovePool)
-        startingMovePool.extend(spoiler.settings.starting_move_list_selected)  # Append the guaranteed starting moves at the end so they're always picked first
-        # For each location needing a move, put in a random valid move
-        for locationId in locationsNeedingMoves:
-            # If there are moves in the starting move pool, always pick from there first
-            if len(startingMovePool) > 0:
-                startingMove = startingMovePool.pop()
-                if startingMove in possibleStartingMoves:  # Make sure to ward off issues of duplication
-                    possibleStartingMoves.remove(startingMove)
-            # Otherwise, pick from any random eligible move
-            else:
-                startingMove = possibleStartingMoves.pop()
-            newlyPlacedItems.append(startingMove)  # This line of code now assumes we place starting moves first!!
-            spoiler.LocationList[locationId].PlaceItem(spoiler, startingMove)
-            # Helpful debug code to keep track of where all major items are placed - do not rely on this variable anywhere
-            if locationId in spoiler.settings.debug_fill.keys():
-                del spoiler.settings.debug_fill[spoiler.LocationList[locationId].name]
-            spoiler.settings.debug_fill[spoiler.LocationList[locationId].name] = startingMove
-        # If we ever decide to place starting moves after other moves, we may find ourselves having placed moves twice.
-        # I don't foresee a reason to do this ever, just something to consider if things change.
-        # if any(toBeUnplaced):
-        #     for location in LocationList.values():
-        #         if location.item in (toBeUnplaced) and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
-        #             toBeUnplaced.remove(location.item)
-        #             location.UnplaceItem()
-    # Return all the moves we now know are placed
-    return newlyPlacedItems
+    # Shopkeepers can be placed in their special starting locations
+    if Items.Cranky in movesToPlace:
+        spoiler.LocationList[Locations.ShopOwner_Location00].PlaceItem(spoiler, Items.Cranky)
+        spoiler.LocationList[Locations.ShopOwner_Location00].inaccessible = False
+        placedMoves.append(Items.Cranky)
+        movesToPlace.remove(Items.Cranky)
+    if Items.Funky in movesToPlace:
+        spoiler.LocationList[Locations.ShopOwner_Location01].PlaceItem(spoiler, Items.Funky)
+        spoiler.LocationList[Locations.ShopOwner_Location01].inaccessible = False
+        placedMoves.append(Items.Funky)
+        movesToPlace.remove(Items.Funky)
+    if Items.Candy in movesToPlace:
+        spoiler.LocationList[Locations.ShopOwner_Location02].PlaceItem(spoiler, Items.Candy)
+        spoiler.LocationList[Locations.ShopOwner_Location02].inaccessible = False
+        placedMoves.append(Items.Candy)
+        movesToPlace.remove(Items.Candy)
+    if Items.Snide in movesToPlace:
+        spoiler.LocationList[Locations.ShopOwner_Location03].PlaceItem(spoiler, Items.Snide)
+        spoiler.LocationList[Locations.ShopOwner_Location03].inaccessible = False
+        placedMoves.append(Items.Snide)
+        movesToPlace.remove(Items.Snide)
+    if len(movesToPlace) > 0:
+        # We can expect that all locations in this region are starting move locations, Training Barrels, or starting shopkeeper locations
+        for locationLogic in spoiler.RegionList[Regions.GameStart].locations:
+            location = spoiler.LocationList[locationLogic.id]
+            if location.item is None and location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):  # Don't put moves in shopkeeper locations!
+                placedMove = movesToPlace.pop()
+                location.inaccessible = False
+                location.PlaceItem(spoiler, placedMove)
+                placedMoves.append(placedMove)
+                if len(movesToPlace) <= 0:
+                    break
+    return placedMoves
 
 
 def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: List[Types]) -> None:

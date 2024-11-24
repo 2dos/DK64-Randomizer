@@ -6,6 +6,11 @@
             "tooltip": "Cranky, Funky, and Candy Moves are in the Pool and become possible locations for items.&#10;By selecting this, Cross-Kong purchases is forced on."
         },
         {
+            "name": "Camera & Shockwave",
+            "value": "shockwave",
+            "tooltip": "Camera and Shockwave may not necessarily be the Fairy Queen's gift."
+        },
+        {
             "name": "Golden Bananas",
             "value": "banana",
             "tooltip": ""

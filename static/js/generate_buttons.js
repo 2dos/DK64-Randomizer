@@ -257,9 +257,6 @@ else:
         return element.value;
     }
 
-    let required_starting_moves = [];
-    let random_starting_moves = [];
-
     for (let obj of form) {
         if (is_plando_input(obj.name)) continue;
         if (is_starting_move_radio_button(obj.name)) continue;
@@ -281,21 +278,6 @@ else:
     for (let element of inputElements) {
         if (is_plando_input(element.name)) continue;
         if (is_starting_move_radio_button(element.name) && element.checked) {
-            if (element.id.startsWith("start")) {
-
-                for (let item in Items) {
-                    if (Items[item] === parseInt(element.name.slice(18))) {
-                        required_starting_moves.push(Items[item]);
-                    }
-                }
-            } else if (element.id.startsWith("random")) {
-                // Items key is a string, we want to check based off the int, its an enum
-                for (let item in Items) {
-                    if (Items[item] === parseInt(element.name.slice(18))) {
-                        random_starting_moves.push(Items[item]);
-                    }
-                }
-            }
             continue;
         }
         if (element.type === "checkbox" && !element.checked) {
@@ -324,10 +306,21 @@ else:
             }
             form_data[element.getAttribute("name")] = values;
         }
+        if (element.id.startsWith("starting_moves_list_")) {
+            let move_list = []
+            for (let option of element.options) {
+                if (!option.hasAttribute("hidden")) {
+                    for (let item in Items) {
+                        if (Items[item] === parseInt(option.id.slice(14))) {
+                            move_list.push(Items[item]);
+                        }
+                    }
+                }
+            }
+            form_data[element.id] = move_list;
+        }
     }
 
-    form_data["starting_move_list_selected"] = required_starting_moves;
-    form_data["random_starting_move_list_selected"] = random_starting_moves;
     return JSON.stringify(form_data);
 }
 
@@ -481,16 +474,13 @@ async function import_settings_string(event) {
                 }
                 document.getElementsByName(key)[0].removeAttribute("disabled");
             } else if (Array.isArray(settings[key])) {
-                if (key === "starting_move_list_selected" || key === "random_starting_move_list_selected") {
-                    settings[key].forEach(item => {
-                        const radioButtons = document.getElementsByName("starting_move_box_" + String(item));
-                        if (key === "starting_move_list_selected") {
-                            const startButton = Array.from(radioButtons).find(button => button.id.startsWith("start"));
-                            startButton.checked = true;
-                        } else {
-                            const randomButton = Array.from(radioButtons).find(button => button.id.startsWith("random"));
-                            randomButton.checked = true;
-                        }
+                if (key.startsWith("starting_moves_list_")) {
+                    select = document.getElementById(key);
+                    settings[key].forEach(value => {
+                        let existing_option = document.getElementById("starting_move_" + value);
+                        const parentSelect = existing_option.parentNode;
+                        parentSelect.removeChild(existing_option);
+                        select.appendChild(existing_option);
                     });
                     continue;
                 }
