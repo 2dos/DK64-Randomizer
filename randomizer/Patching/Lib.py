@@ -1097,7 +1097,7 @@ def getHintRequirement(slot: int, cap: int):
     hint_slot = slot & 0xFC
     multiplier = cap - offset
     final_offset = (cap + offset) / 2
-    exp_result = 1 + (math.pow(hint_slot, EXPONENT) / math.pow(35, EXPONENT))
+    exp_result = 1 + (math.pow(hint_slot, EXPONENT) / math.pow(34, EXPONENT))
     z = math.pi * exp_result
     required_gb_count = int(multiplier * 0.5 * math.cos(z) + final_offset)
     if required_gb_count == 0:
