@@ -315,7 +315,6 @@
       "low": 0.3,
       "medium": 0.3
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -355,11 +354,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 4,
       "max": 10,
       "mean": 4
+    },
+    "starting_moves_list_count_1": {
+      "min": 4,
+      "max": 10,
+      "mean": 4
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
@@ -715,7 +734,6 @@
       "medium": 0.35,
       "high": 0.25
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0.3,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -755,11 +773,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 2,
       "max": 10,
       "mean": 4
+    },
+    "starting_moves_list_count_1": {
+      "min": 2,
+      "max": 10,
+      "mean": 4
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
@@ -1164,7 +1202,6 @@
       "high": 0.2,
       "extreme": 0.1
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0.6,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -1204,11 +1241,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 0,
       "max": 10,
       "mean": 3
+    },
+    "starting_moves_list_count_1": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
@@ -1613,7 +1670,6 @@
       "high": 0.2,
       "extreme": 0.1
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0.6,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -1653,11 +1709,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 0,
       "max": 10,
       "mean": 3
+    },
+    "starting_moves_list_count_1": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
