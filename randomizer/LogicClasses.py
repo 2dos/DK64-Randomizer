@@ -84,7 +84,10 @@ class Collectible:
         self.name = name
         self.locked = locked
 
+
 from functools import lru_cache
+
+
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
@@ -149,6 +152,7 @@ class Region:
     def deathwarp(self, value: TransitionFront) -> None:
         """Set the deathwarp transition front."""
         self._deathwarp = value
+
     @lru_cache(maxsize=None)
     def GetDefaultDeathwarp(self) -> Regions:
         """Get the default deathwarp depending on the region's level."""
@@ -205,6 +209,7 @@ class TransitionBack:
 
 
 from functools import lru_cache
+
 
 class TransitionFront:
     """The entered side of a transition between regions."""

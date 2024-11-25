@@ -70,7 +70,7 @@ class Settings:
 
         Args:
             form_data (dict): Post data from the html form.
-        """     
+        """
         self.__hash = randomizer_version
         self.public_hash = randomizer_version
         self.algorithm = FillAlgorithm.forward
@@ -200,6 +200,7 @@ class Settings:
         except Exception as ex:
             raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
         self.make_read_only
+
     def make_read_only(self):
         for name in list(self.__dict__.keys()):  # Get all existing attributes
             private_name = f"_{name}"
@@ -218,6 +219,7 @@ class Settings:
 
             # Define a property dynamically and add it to the class
             setattr(self.__class__, name, property(getter, setter))
+
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
 

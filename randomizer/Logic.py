@@ -3,7 +3,6 @@
 from math import ceil
 from functools import lru_cache
 from collections import Counter
-#import line_profiler
 
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
@@ -109,86 +108,90 @@ class LogicVarHolder:
         self.skew = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.skew)
         self.moontail = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.moontail)
         self.phasefall = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phasefall)
-        self.blueprint_list = set([
-            Items.JungleJapesDonkeyBlueprint,
-            Items.JungleJapesDiddyBlueprint,
-            Items.JungleJapesLankyBlueprint,
-            Items.JungleJapesTinyBlueprint,
-            Items.JungleJapesChunkyBlueprint,
-            Items.AngryAztecDonkeyBlueprint,
-            Items.AngryAztecDiddyBlueprint,
-            Items.AngryAztecLankyBlueprint,
-            Items.AngryAztecTinyBlueprint,
-            Items.AngryAztecChunkyBlueprint,
-            Items.FranticFactoryDonkeyBlueprint,
-            Items.FranticFactoryDiddyBlueprint,
-            Items.FranticFactoryLankyBlueprint,
-            Items.FranticFactoryTinyBlueprint,
-            Items.FranticFactoryChunkyBlueprint,
-            Items.GloomyGalleonDonkeyBlueprint,
-            Items.GloomyGalleonDiddyBlueprint,
-            Items.GloomyGalleonLankyBlueprint,
-            Items.GloomyGalleonTinyBlueprint,
-            Items.GloomyGalleonChunkyBlueprint,
-            Items.FungiForestDonkeyBlueprint,
-            Items.FungiForestDiddyBlueprint,
-            Items.FungiForestLankyBlueprint,
-            Items.FungiForestTinyBlueprint,
-            Items.FungiForestChunkyBlueprint,
-            Items.CrystalCavesDonkeyBlueprint,
-            Items.CrystalCavesDiddyBlueprint,
-            Items.CrystalCavesLankyBlueprint,
-            Items.CrystalCavesTinyBlueprint,
-            Items.CrystalCavesChunkyBlueprint,
-            Items.CreepyCastleDonkeyBlueprint,
-            Items.CreepyCastleDiddyBlueprint,
-            Items.CreepyCastleLankyBlueprint,
-            Items.CreepyCastleTinyBlueprint,
-            Items.CreepyCastleChunkyBlueprint,
-            Items.DKIslesDonkeyBlueprint,
-            Items.DKIslesDiddyBlueprint,
-            Items.DKIslesLankyBlueprint,
-            Items.DKIslesTinyBlueprint,
-            Items.DKIslesChunkyBlueprint, 
-        ])
-        self.hint_list = set([
-            Items.JapesDonkeyHint,  
-            Items.JapesDiddyHint,
-            Items.JapesLankyHint,
-            Items.JapesTinyHint,
-            Items.JapesChunkyHint,
-            Items.AztecDonkeyHint,
-            Items.AztecDiddyHint,
-            Items.AztecLankyHint,
-            Items.AztecTinyHint,
-            Items.AztecChunkyHint,
-            Items.FactoryDonkeyHint,
-            Items.FactoryDiddyHint,
-            Items.FactoryLankyHint,
-            Items.FactoryTinyHint,
-            Items.FactoryChunkyHint,
-            Items.GalleonDonkeyHint,
-            Items.GalleonDiddyHint,
-            Items.GalleonLankyHint,
-            Items.GalleonTinyHint,
-            Items.GalleonChunkyHint,
-            Items.ForestDonkeyHint,
-            Items.ForestDiddyHint,
-            Items.ForestLankyHint,
-            Items.ForestTinyHint,
-            Items.ForestChunkyHint,
-            Items.CavesDonkeyHint,
-            Items.CavesDiddyHint,
-            Items.CavesLankyHint,
-            Items.CavesTinyHint,
-            Items.CavesChunkyHint,
-            Items.CastleDonkeyHint,
-            Items.CastleDiddyHint,
-            Items.CastleLankyHint,
-            Items.CastleTinyHint,
-            Items.CastleChunkyHint,
-        ])
-        
+        self.blueprint_list = set(
+            [
+                Items.JungleJapesDonkeyBlueprint,
+                Items.JungleJapesDiddyBlueprint,
+                Items.JungleJapesLankyBlueprint,
+                Items.JungleJapesTinyBlueprint,
+                Items.JungleJapesChunkyBlueprint,
+                Items.AngryAztecDonkeyBlueprint,
+                Items.AngryAztecDiddyBlueprint,
+                Items.AngryAztecLankyBlueprint,
+                Items.AngryAztecTinyBlueprint,
+                Items.AngryAztecChunkyBlueprint,
+                Items.FranticFactoryDonkeyBlueprint,
+                Items.FranticFactoryDiddyBlueprint,
+                Items.FranticFactoryLankyBlueprint,
+                Items.FranticFactoryTinyBlueprint,
+                Items.FranticFactoryChunkyBlueprint,
+                Items.GloomyGalleonDonkeyBlueprint,
+                Items.GloomyGalleonDiddyBlueprint,
+                Items.GloomyGalleonLankyBlueprint,
+                Items.GloomyGalleonTinyBlueprint,
+                Items.GloomyGalleonChunkyBlueprint,
+                Items.FungiForestDonkeyBlueprint,
+                Items.FungiForestDiddyBlueprint,
+                Items.FungiForestLankyBlueprint,
+                Items.FungiForestTinyBlueprint,
+                Items.FungiForestChunkyBlueprint,
+                Items.CrystalCavesDonkeyBlueprint,
+                Items.CrystalCavesDiddyBlueprint,
+                Items.CrystalCavesLankyBlueprint,
+                Items.CrystalCavesTinyBlueprint,
+                Items.CrystalCavesChunkyBlueprint,
+                Items.CreepyCastleDonkeyBlueprint,
+                Items.CreepyCastleDiddyBlueprint,
+                Items.CreepyCastleLankyBlueprint,
+                Items.CreepyCastleTinyBlueprint,
+                Items.CreepyCastleChunkyBlueprint,
+                Items.DKIslesDonkeyBlueprint,
+                Items.DKIslesDiddyBlueprint,
+                Items.DKIslesLankyBlueprint,
+                Items.DKIslesTinyBlueprint,
+                Items.DKIslesChunkyBlueprint,
+            ]
+        )
+        self.hint_list = set(
+            [
+                Items.JapesDonkeyHint,
+                Items.JapesDiddyHint,
+                Items.JapesLankyHint,
+                Items.JapesTinyHint,
+                Items.JapesChunkyHint,
+                Items.AztecDonkeyHint,
+                Items.AztecDiddyHint,
+                Items.AztecLankyHint,
+                Items.AztecTinyHint,
+                Items.AztecChunkyHint,
+                Items.FactoryDonkeyHint,
+                Items.FactoryDiddyHint,
+                Items.FactoryLankyHint,
+                Items.FactoryTinyHint,
+                Items.FactoryChunkyHint,
+                Items.GalleonDonkeyHint,
+                Items.GalleonDiddyHint,
+                Items.GalleonLankyHint,
+                Items.GalleonTinyHint,
+                Items.GalleonChunkyHint,
+                Items.ForestDonkeyHint,
+                Items.ForestDiddyHint,
+                Items.ForestLankyHint,
+                Items.ForestTinyHint,
+                Items.ForestChunkyHint,
+                Items.CavesDonkeyHint,
+                Items.CavesDiddyHint,
+                Items.CavesLankyHint,
+                Items.CavesTinyHint,
+                Items.CavesChunkyHint,
+                Items.CastleDonkeyHint,
+                Items.CastleDiddyHint,
+                Items.CastleLankyHint,
+                Items.CastleTinyHint,
+                Items.CastleChunkyHint,
+            ]
+        )
+
         # Reset
         self.Reset()
 
@@ -403,7 +406,7 @@ class LogicVarHolder:
         """Update coin total."""
         for x in range(5):
             self.Coins[x] = (self.RegularCoins[x] + (5 * self.RainbowCoins)) - self.SpentCoins[x]
-    #@line_profiler.profile
+
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
         item_counts = Counter(ownedItems)
@@ -567,7 +570,7 @@ class LogicVarHolder:
         self.funkyAccess = self.funkyAccess or bool(ownedItems & {Items.Funky})
         self.candyAccess = self.candyAccess or bool(ownedItems & {Items.Candy})
         self.snideAccess = self.snideAccess or bool(ownedItems & {Items.Snide})
-        
+
     def UpdateMiscellaneous(self, item_counts, ownedItems):
         """Update miscellaneous variables based on owned items."""
         self.found_test_item = self.found_test_item or bool(ownedItems & {Items.TestItem})

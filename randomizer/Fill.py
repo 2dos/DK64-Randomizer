@@ -229,8 +229,7 @@ def should_skip_location(location, location_obj, spoiler, settings, region):
 
     return False
 
-import line_profiler
-@line_profiler.profile
+
 def GetAccessibleLocations(
     spoiler: Spoiler,
     startingOwnedItems: List[Union[Any, Items]],
@@ -422,6 +421,10 @@ def GetAccessibleLocations(
                     shuffle_id = exit.exitShuffleId
                     is_shuffled = shuffle_id is not None and not exit.assumed
 
+                    # Skip if the destination is already accessible
+                    if destination in kongAccessibleRegions[kong]:
+                        continue
+
                     # Handle shuffled exits
                     if is_shuffled:
                         shuffled_exit = ShuffleExits.ShufflableExits[shuffle_id]
@@ -430,11 +433,13 @@ def GetAccessibleLocations(
                         elif shuffled_exit.toBeShuffled:
                             continue
 
-                    # Check if the transition is accessible
-                    if not exit.logic(spoiler.LogicVariables):
+                    # Quick skip: time of day access
+                    if exit.time == Time.Night and not region.nightAccess[kong]:
+                        continue
+                    if exit.time == Time.Day and not region.dayAccess[kong]:
                         continue
 
-                    # Handle water/lava restrictions
+                    # Quick skip: water/lava restrictions
                     is_lava_water = spoiler.LogicVariables.IsLavaWater()
                     if is_lava_water and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
                         if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
@@ -442,14 +447,8 @@ def GetAccessibleLocations(
                         if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
                             continue
 
-                    # Check time of day access
-                    time_access = True
-                    if exit.time == Time.Night and not region.nightAccess[kong]:
-                        time_access = False
-                    elif exit.time == Time.Day and not region.dayAccess[kong]:
-                        time_access = False
-
-                    if not time_access:
+                    # Expensive logic check
+                    if not exit.logic(spoiler.LogicVariables):
                         continue
 
                     # Track playthrough transitions if needed
@@ -458,11 +457,10 @@ def GetAccessibleLocations(
                             spoiler.playthroughTransitionOrder.append(shuffle_id)
 
                     # Add new regions to the queue
-                    if destination not in kongAccessibleRegions[kong]:
-                        kongAccessibleRegions[kong].add(destination)
-                        new_region = spoiler.RegionList[destination]
-                        new_region.id = destination
-                        regionPool.append(destination)
+                    kongAccessibleRegions[kong].add(destination)
+                    new_region = spoiler.RegionList[destination]
+                    new_region.id = destination
+                    regionPool.append(destination)
 
                     # Update day/night access
                     region_list_dest = spoiler.RegionList[destination]
@@ -504,9 +502,7 @@ def GetAccessibleLocations(
         # For each location...
         # Attempt to "buy" empty shop locations
         for location_id in unpurchasedEmptyShopLocationIds:
-            can_buy = (
-                location_id in SharedShopLocations and spoiler.LogicVariables.AnyKongCanBuy(location_id, buy_empty=True)
-            ) or (
+            can_buy = (location_id in SharedShopLocations and spoiler.LogicVariables.AnyKongCanBuy(location_id, buy_empty=True)) or (
                 location_id not in SharedShopLocations and spoiler.LogicVariables.CanBuy(location_id, buy_empty=True)
             )
 
