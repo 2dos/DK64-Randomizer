@@ -528,6 +528,8 @@ class Settings:
 
         #  Unlock Moves - 0-40?
         self.starting_moves_count = 0
+        self.starting_moves_list_counts = []
+        self.starting_moves_lists = []
 
         #  Color
         self.colors = {}
@@ -705,8 +707,6 @@ class Settings:
         self.music_filtering_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
-        self.starting_move_list_selected = []
-        self.random_starting_move_list_selected = []
         self.starting_keys_list_selected = []
         self.warp_level_list_selected = []
         self.select_keys = False
@@ -778,62 +778,57 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
-        # Correct the invalid items in the starting move lists
-        copy_of_starting_move_list_selected = self.starting_move_list_selected.copy()
-        for item in copy_of_starting_move_list_selected:
-            if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
-                self.starting_move_list_selected.remove(item)
-                self.starting_move_list_selected.append(Items.ProgressiveSlam)
-            if item == Items.ProgressiveAmmoBelt2:
-                self.starting_move_list_selected.remove(item)
-                self.starting_move_list_selected.append(Items.ProgressiveAmmoBelt)
-            elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
-                self.starting_move_list_selected.remove(item)
-                self.starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
-        copy_of_random_starting_move_list_selected = self.random_starting_move_list_selected.copy()
-        for item in copy_of_random_starting_move_list_selected:
-            if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
-                self.random_starting_move_list_selected.remove(item)
-                self.random_starting_move_list_selected.append(Items.ProgressiveSlam)
-            if item == Items.ProgressiveAmmoBelt2:
-                self.random_starting_move_list_selected.remove(item)
-                self.random_starting_move_list_selected.append(Items.ProgressiveAmmoBelt)
-            elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
-                self.random_starting_move_list_selected.remove(item)
-                self.random_starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
+        # Correct the invalid items in the starting move lists and identify the total number of starting moves
+        guaranteed_starting_moves = []
+        self.starting_moves_list_counts = [
+            self.starting_moves_list_count_1,
+            self.starting_moves_list_count_2,
+            self.starting_moves_list_count_3,
+            self.starting_moves_list_count_4,
+            self.starting_moves_list_count_5,
+        ]
+        self.starting_moves_lists = [self.starting_moves_list_1, self.starting_moves_list_2, self.starting_moves_list_3, self.starting_moves_list_4, self.starting_moves_list_5]
+        for i in range(len(self.starting_moves_lists)):
+            copy_of_list = self.starting_moves_lists[i].copy()
+            for item in copy_of_list:
+                # The additional fake progressive items are translated into the correct version
+                if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
+                    self.starting_moves_lists[i].remove(item)
+                    self.starting_moves_lists[i].append(Items.ProgressiveSlam)
+                if item == Items.ProgressiveAmmoBelt2:
+                    self.starting_moves_lists[i].remove(item)
+                    self.starting_moves_lists[i].append(Items.ProgressiveAmmoBelt)
+                elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
+                    self.starting_moves_lists[i].remove(item)
+                    self.starting_moves_lists[i].append(Items.ProgressiveInstrumentUpgrade)
+            # If we are intending to place every item in this pool, these moves are guaranteed to be placed
+            if len(self.starting_moves_lists[i]) <= self.starting_moves_list_counts[i]:
+                self.starting_moves_list_counts[i] = len(self.starting_moves_lists[i])
+                guaranteed_starting_moves.extend(self.starting_moves_lists[i])
+        self.starting_moves_count = sum(self.starting_moves_list_counts)
+
         # Some settings have to be derived from the guaranteed starting moves - this needs to be done early in this method
         # If we are *guaranteed* to start with a slam, place it in the training grounds reward slot and don't make it hintable, as before
-        if Items.ProgressiveSlam in self.starting_move_list_selected or not self.shuffle_items:  # Non item rando must have this set to true
+        if Items.ProgressiveSlam in guaranteed_starting_moves:
             self.start_with_slam = True
-            if Items.ProgressiveSlam in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.ProgressiveSlam)
+        elif not self.shuffle_items:
+            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-1")
         else:
             self.start_with_slam = False
         # If we are *guaranteed* to start with ALL training moves, put them in their vanilla locations and don't make them hintable, as before
-        if not self.shuffle_items or (  # Non item rando must start with training moves
-            Items.Vines in self.starting_move_list_selected
-            and Items.Barrels in self.starting_move_list_selected
-            and Items.Oranges in self.starting_move_list_selected
-            and Items.Swim in self.starting_move_list_selected
-        ):
+        if Items.Vines in guaranteed_starting_moves and Items.Barrels in guaranteed_starting_moves and Items.Oranges in guaranteed_starting_moves and Items.Swim in guaranteed_starting_moves:
             self.training_barrels = TrainingBarrels.normal
-            if Items.Vines in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Vines)
-            if Items.Barrels in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Barrels)
-            if Items.Oranges in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Oranges)
-            if Items.Swim in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Swim)
+        elif not self.shuffle_items:
+            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-2")
         else:
             self.training_barrels = TrainingBarrels.shuffled
-        if not self.shuffle_items or Items.Climbing in self.starting_move_list_selected:
+        # If Climbing is a guaranteed starting move, treat it like the others as well.
+        if Items.Climbing in guaranteed_starting_moves:
             self.climbing_status = ClimbingStatus.normal
-            if Items.Climbing in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Climbing)
+        elif not self.shuffle_items:
+            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-3")
         else:
             self.climbing_status = ClimbingStatus.shuffled
-        self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
 
         # Switchsanity handling
         ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {
@@ -904,13 +899,6 @@ class Settings:
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
             self.tns_location_rando = True
-
-        # Move Location Rando
-        if self.move_rando == MoveRando.start_with:
-            self.starting_moves_count = 41
-            self.training_barrels = TrainingBarrels.normal
-            self.climbing_status = ClimbingStatus.normal
-            self.shockwave_status = ShockwaveStatus.start_with
 
         # Krusha Kong
         # if self.krusha_ui == KrushaUi.random:
@@ -1180,6 +1168,7 @@ class Settings:
                     Types.Candy,
                     Types.Snide,
                     Types.Hint,
+                    Types.Shockwave,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -1194,14 +1183,14 @@ class Settings:
                                 # Only append cranky with settings that would require you to spawn the training barrels early
                                 # Also allow it in LZR
                                 shopowner_array.append(Types.Cranky)
+                            # If this owner is a guaranteed starting move, it's not a shuffled item type
+                            if type in guaranteed_starting_moves:
+                                shopowner_array.remove(type)
                             self.shuffled_location_types.extend(shopowner_array)
             if self.enemy_drop_rando:  # Enemy location type handled separately for UI/UX reasons
                 self.shuffled_location_types.append(Types.Enemies)
             if Types.Shop in self.shuffled_location_types:
                 self.move_rando = MoveRando.item_shuffle
-                if self.shockwave_status not in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
-                    self.shuffled_location_types.append(Types.Shockwave)
-                    self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
                 if self.climbing_status != ClimbingStatus.normal:
@@ -1209,6 +1198,13 @@ class Settings:
                 self.shuffled_location_types.append(Types.PreGivenMove)
             if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
                 self.shuffled_location_types.append(Types.IslesMedal)
+            if Types.Shockwave not in self.shuffled_location_types:
+                self.shockwave_status = ShockwaveStatus.vanilla
+            elif Items.Camera in guaranteed_starting_moves and Items.Shockwave in guaranteed_starting_moves:
+                self.shockwave_status = ShockwaveStatus.start_with
+            else:
+                self.shockwave_status = ShockwaveStatus.shuffled_decoupled
+
         kongs = GetKongs()
 
         # B Locker and Troff n Scoff amounts Rando
@@ -1644,6 +1640,7 @@ class Settings:
         if IsItemSelected(self.quality_of_life, self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
 
+        # TODO: Rework this when minimal shops is implemented so it can take into account the starting move situation
         # Calculate the net balance of locations being added to the pool vs number of items being shuffled
         # Positive means we have more locations than items, negatives means we have more items than locations (very bad!)
         # The number is effectively (locations - items) so losing locations means we lower this value, losing items means we raise this value
@@ -1696,38 +1693,11 @@ class Settings:
         spoiler.LocationList[Locations.IslesBarrelsTrainingBarrel].type = Types.TrainingBarrel
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].default = Items.Oranges
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].type = Types.TrainingBarrel
-        location_cap = 37  # Increment this for every new potential starting move added
-        if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
-            location_cap -= 2
-        if self.shockwave_status == ShockwaveStatus.shuffled:
-            location_cap -= 1
-        if self.start_with_slam:
-            location_cap -= 1
-        locations_to_add = self.starting_moves_count
-        # If the training barrels are shuffled in, we may have to remove the training barrel locations if we don't have enough starting moves to place
-        if self.training_barrels == TrainingBarrels.shuffled:
-            locations_to_add -= 4
-        if locations_to_add > location_cap:
-            locations_to_add = location_cap
-        first_pregiven_location = Locations.PreGiven_Location00
-        if not self.start_with_slam:
-            first_pregiven_location -= 1
-        first_empty_location = first_pregiven_location + locations_to_add
-        # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
-        if locations_to_add < 0:
-            first_empty_location = first_pregiven_location
-            invalid_training_barrels = [
-                Locations.IslesVinesTrainingBarrel,
-                Locations.IslesSwimTrainingBarrel,
-                Locations.IslesOrangesTrainingBarrel,
-                Locations.IslesBarrelsTrainingBarrel,
-            ][self.starting_moves_count :]
-            for locationId in invalid_training_barrels:
-                spoiler.LocationList[locationId].default = Items.NoItem
-                spoiler.LocationList[locationId].type = Types.Constant
-        # We need to block PreGiven locations depending on the id of the first empty location
+        # Always block PreGiven locations and only unblock them as we intentionally place moves there
+        for location_id in TrainingBarrelLocations:
+            spoiler.LocationList[location_id].inaccessible = True
         for location_id in PreGivenLocations:
-            spoiler.LocationList[location_id].inaccessible = location_id >= first_empty_location
+            spoiler.LocationList[location_id].inaccessible = True
 
         if self.cb_rando != CBRando.on_with_isles:
             spoiler.LocationList[Locations.IslesDonkeyMedal].inaccessible = True
@@ -1833,7 +1803,7 @@ class Settings:
                 allKongMoveLocations.update(LankyMoveLocations.copy())
                 if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
                     allKongMoveLocations.update(TrainingBarrelLocations.copy())
-                if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with) and Types.Shockwave not in self.shuffled_location_types:
+                if self.shockwave_status == ShockwaveStatus.vanilla:
                     allKongMoveLocations.remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations.copy()
@@ -1845,12 +1815,6 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
             elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
                 self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
-            if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
-                for kong in Kongs:
-                    self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
-            if self.starting_moves_count > 0:
-                for kong in Kongs:
-                    self.valid_locations[Types.Shop][kong].update(PreGivenLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.Climbing] = self.valid_locations[Types.Shop][Kongs.any]

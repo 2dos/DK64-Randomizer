@@ -36,7 +36,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
-from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
+from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations, TrainingBarrelLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -175,6 +175,11 @@ class Spoiler:
         """Clear item from every location."""
         for location in self.LocationList.values():
             location.item = None
+        # Always block PreGiven locations and only unblock them as we intentionally place moves there
+        for location_id in TrainingBarrelLocations:
+            self.LocationList[location_id].inaccessible = True
+        for location_id in PreGivenLocations:
+            self.LocationList[location_id].inaccessible = True
 
     def ResetLocationList(self) -> None:
         """Reset the LocationList to values conducive to a new fill."""
