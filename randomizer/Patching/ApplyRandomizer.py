@@ -133,7 +133,6 @@ def encPass(spoiler) -> int:
 def patching_response(spoiler):
     """Apply the patch data to the ROM in the local server to be returned to the client."""
     # Make sure we re-load the seed id
-    return
     spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes

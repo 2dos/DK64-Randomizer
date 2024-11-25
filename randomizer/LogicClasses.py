@@ -1,7 +1,6 @@
 """Contains classes used in the logic system."""
 
 from __future__ import annotations
-from functools import lru_cache
 
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union
 
@@ -121,16 +120,16 @@ class Region:
         if deathwarp is not None:
             # If deathwarp is itself an exit class (necessary when deathwarp requires custom logic) just add it directly
             if isinstance(deathwarp, TransitionFront):
-                self._deathwarp = deathwarp
+                self.deathwarp = deathwarp
             else:
                 # If deathwarp is -1, indicates to use the default value for it, which is the starting area of the level
                 if deathwarp == -1:
                     deathwarp = self.GetDefaultDeathwarp()
                 if deathwarp is not None:
                     if isinstance(deathwarp, Regions):
-                        self._deathwarp = TransitionFront(deathwarp, lambda l: True)
+                        self.deathwarp = TransitionFront(deathwarp, lambda l: True)
                     else:
-                        self._deathwarp = TransitionFront(Regions(deathwarp), lambda l: True)
+                        self.deathwarp = TransitionFront(Regions(deathwarp), lambda l: True)
 
         self.ResetAccess()
 
@@ -140,18 +139,6 @@ class Region:
         self.dayAccess = [False] * 5
         self.nightAccess = [False] * 5
 
-    @property
-    @lru_cache(maxsize=None)
-    def deathwarp(self) -> TransitionFront:
-        """Get the deathwarp transition front."""
-        return self._deathwarp
-
-    @deathwarp.setter
-    def deathwarp(self, value: TransitionFront) -> None:
-        """Set the deathwarp transition front."""
-        self._deathwarp = value
-
-    @lru_cache(maxsize=None)
     def GetDefaultDeathwarp(self) -> Regions:
         """Get the default deathwarp depending on the region's level."""
         if self.level == Levels.DKIsles:
@@ -174,22 +161,18 @@ class Region:
             return Regions.HideoutHelmEntry
         return Regions.GameStart
 
-    @lru_cache(maxsize=None)
     def getHintRegionName(self) -> str:
         """Convert hint region enum to the name."""
         return HINT_REGION_PAIRING.get(self.hint_name, "Unknown Region")
 
-    @lru_cache(maxsize=None)
     def isMedalRegion(self) -> bool:
         """Return whether the associated hint region is a medal reward region."""
         return self.hint_name in MEDAL_REWARD_REGIONS
 
-    @lru_cache(maxsize=None)
     def isCBRegion(self) -> bool:
         """Return whether the associated hint region requires CBs to access (Bosses and medal rewards)."""
         return self.hint_name in MEDAL_REWARD_REGIONS or self.hint_name == HintRegion.Bosses
 
-    @lru_cache(maxsize=None)
     def isShopRegion(self) -> bool:
         """Return whether the associated hint region is a shop region."""
         return self.hint_name in SHOP_REGIONS
@@ -211,17 +194,17 @@ class TransitionFront:
 
     def __init__(
         self,
-        dest: "Regions",
+        dest: Regions,
         logic: Callable,
-        exitShuffleId: Optional["Transitions"] = None,
+        exitShuffleId: Optional[Transitions] = None,
         assumed: bool = False,
-        time: "Time" = "Time.Both",
+        time: Time = Time.Both,
         isGlitchTransition: bool = False,
         isBananaportTransition: bool = False,
     ) -> None:
         """Initialize with given parameters."""
         self.dest = dest
-        self.logic = logic
+        self.logic = logic  # Lambda function for accessibility
         self.exitShuffleId = exitShuffleId
         self.time = time
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root

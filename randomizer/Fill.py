@@ -205,7 +205,7 @@ def should_skip_location(location, location_obj, spoiler, settings, region):
                 return True
 
     # Skip hint doors if the wrong Kong
-    if location_obj.type == Types.Hint and not spoiler.LogicVariables.HintAccess(location_obj, region):
+    if location_obj.type == Types.Hint and not spoiler.LogicVariables.HintAccess(location_obj, region.id):
         return True
 
     # Skip blueprint locations if the wrong Kong
@@ -372,31 +372,30 @@ def GetAccessibleLocations(
                 # Check accessibility for each location in this region
 
                 for location in region.locations:
-                    location_id = location.id
-                    # Skip locations already accessible, in newLocations, or not meeting logic
-                    if location_id in accessible or location_id in newLocations or not location.logic(spoiler.LogicVariables):
+                    # Skip locations already accessible or not meeting logic
+                    if location.id in newLocations or location.id in accessible or not location.logic(spoiler.LogicVariables):
                         continue
 
-                    location_obj = spoiler.LocationList[location_id]
+                    location_obj = spoiler.LocationList[location.id]
 
-                    if should_skip_location(location, location_obj, spoiler, settings, region.id):
+                    if should_skip_location(location, location_obj, spoiler, settings, region):
                         continue
 
                     # Handle shop logic
                     if location_obj.type == Types.Shop:
                         shop_is_empty = location_obj.item is None or location_obj.item == Items.NoItem
-                        location_can_be_bought = searchType != SearchMode.GetReachableWithControlledPurchases or location_id in purchaseList
+                        location_can_be_bought = searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList
 
                         if not shop_is_empty and location_can_be_bought:
-                            spoiler.LogicVariables.PurchaseShopItem(location_id)
+                            spoiler.LogicVariables.PurchaseShopItem(location.id)
                         elif shop_is_empty:
-                            unpurchasedEmptyShopLocationIds.append(location_id)
-                    elif location_id == Locations.NintendoCoin:
+                            unpurchasedEmptyShopLocationIds.append(location.id)
+                    elif location.id == Locations.NintendoCoin:
                         # Spend Two Coins for arcade lever
                         spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
                         spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
 
-                    newLocations.add(location_id)
+                    newLocations.add(location.id)
 
                 # Check accessibility for each exit in this region
                 exits = region.exits[:]
@@ -423,10 +422,6 @@ def GetAccessibleLocations(
                     shuffle_id = exit.exitShuffleId
                     is_shuffled = shuffle_id is not None and not exit.assumed
 
-                    # Skip if the destination is already accessible
-                    if destination in kongAccessibleRegions[kong]:
-                        continue
-
                     # Handle shuffled exits
                     if is_shuffled:
                         shuffled_exit = ShuffleExits.ShufflableExits[shuffle_id]
@@ -435,13 +430,11 @@ def GetAccessibleLocations(
                         elif shuffled_exit.toBeShuffled:
                             continue
 
-                    # Quick skip: time of day access
-                    if exit.time == Time.Night and not region.nightAccess[kong]:
-                        continue
-                    if exit.time == Time.Day and not region.dayAccess[kong]:
+                    # Check if the transition is accessible
+                    if not exit.logic(spoiler.LogicVariables):
                         continue
 
-                    # Quick skip: water/lava restrictions
+                    # Handle water/lava restrictions
                     is_lava_water = spoiler.LogicVariables.IsLavaWater()
                     if is_lava_water and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
                         if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
@@ -449,8 +442,14 @@ def GetAccessibleLocations(
                         if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
                             continue
 
-                    # Expensive logic check
-                    if not exit.logic(spoiler.LogicVariables):
+                    # Check time of day access
+                    time_access = True
+                    if exit.time == Time.Night and not region.nightAccess[kong]:
+                        time_access = False
+                    elif exit.time == Time.Day and not region.dayAccess[kong]:
+                        time_access = False
+
+                    if not time_access:
                         continue
 
                     # Track playthrough transitions if needed
@@ -459,10 +458,11 @@ def GetAccessibleLocations(
                             spoiler.playthroughTransitionOrder.append(shuffle_id)
 
                     # Add new regions to the queue
-                    kongAccessibleRegions[kong].add(destination)
-                    new_region = spoiler.RegionList[destination]
-                    new_region.id = destination
-                    regionPool.append(destination)
+                    if destination not in kongAccessibleRegions[kong]:
+                        kongAccessibleRegions[kong].add(destination)
+                        new_region = spoiler.RegionList[destination]
+                        new_region.id = destination
+                        regionPool.append(destination)
 
                     # Update day/night access
                     region_list_dest = spoiler.RegionList[destination]
@@ -479,7 +479,7 @@ def GetAccessibleLocations(
                         region_list_dest.nightAccess[kong] = True
 
                 # Deathwarps currently send to the vanilla destination
-                if not settings.perma_death and region.deathwarp:
+                if region.deathwarp and not settings.perma_death:
                     destination = region.deathwarp.dest
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in kongAccessibleRegions[kong] and region.deathwarp.logic(spoiler.LogicVariables):
@@ -502,16 +502,15 @@ def GetAccessibleLocations(
     if searchType == SearchMode.GetReachableForFilling:
         shuffle(unpurchasedEmptyShopLocationIds)  # This shuffle is to not bias fills towards earlier shops
         # For each location...
-        # Attempt to "buy" empty shop locations
         for location_id in unpurchasedEmptyShopLocationIds:
-            can_buy = (location_id in SharedShopLocations and spoiler.LogicVariables.AnyKongCanBuy(location_id, buy_empty=True)) or (
+            # If we can, "buy" the empty location. This will affect our ability to buy future locations. It's not a guarantee we'll be able to buy all of these locations.
+            if (location_id in SharedShopLocations and spoiler.LogicVariables.AnyKongCanBuy(location_id, buy_empty=True)) or (
                 location_id not in SharedShopLocations and spoiler.LogicVariables.CanBuy(location_id, buy_empty=True)
-            )
-
-            if can_buy:
+            ):
                 spoiler.LogicVariables.PurchaseShopItem(location_id)
+            # If we can't, treat the location as inaccessible
             else:
-                accessible.discard(location_id)  # More efficient than remove
+                accessible.remove(location_id)
     if searchType in (
         SearchMode.GetReachable,
         SearchMode.GetReachableForFilling,
@@ -1507,13 +1506,13 @@ def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
                 valid = True
                 # For each remaining item, ensure that it has a valid location reachable after placing this item
                 for checkItem in itemsToPlace:
-                    itemValid: set = settings.GetValidLocationsForItem(checkItem)
-                    validReachable = set(reachable).intersection(itemValid) - {locationId}
+                    itemValid = settings.GetValidLocationsForItem(checkItem)
+                    validReachable = [x for x in reachable if x in itemValid and x != locationId]
                     if len(validReachable) == 0:
                         js.postMessage("Failed placing item " + ItemList[item].name + " in location " + spoiler.LocationList[locationId].name + ", due to too few remaining locations in play")
                         valid = False
                         break
-                    reachable.remove(next(iter(validReachable)))  # Remove one so same location can't be "used" twice
+                    reachable.remove(validReachable[0])  # Remove one so same location can't be "used" twice
                 # If world is not valid, undo item placement and try next location
                 if not valid:
                     spoiler.LocationList[locationId].UnplaceItem(spoiler)
