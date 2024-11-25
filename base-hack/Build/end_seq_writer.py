@@ -61,8 +61,8 @@ main_devs = [
 assistant_devs = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Assistant Developers"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["Aljex", "GloriousLiar", "JXJacob"]),
-    CreditItem(CreditsDirection.left, CreditsType.normal, ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
-    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "Snap", "UmedMuzl"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Mittenz", "Naramgamjan", "OnlySpaghettiCode", "Plessy"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["Rain", "Retroben", "Snap", "UmedMuzl"]),
 ]
 
 # BETA TESTERS
@@ -88,7 +88,7 @@ assistant_devs = [
 
 additional_thanks = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Additional Thanks"]),
-    CreditItem(CreditsDirection.left, CreditsType.normal, ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Game Developers", " ", "Rareware Ltd", "Nintendo", "L. Godfrey"]),
     CreditItem(CreditsDirection.bottom, CreditsType.normal, ["Crankys Lab Developer", "Isotarge"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["SpikeVegeta", "KeiperDontCare", "NintendoSara", "Flargrah"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Beta Testers", "Dev Branch Testers"]),

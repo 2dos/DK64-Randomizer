@@ -127,25 +127,28 @@ void playProgressiveDing(void) {
     playSFX(0x2EA);
 }
 
-void handleProgressiveIndicator(int delta) {
+static int old_progressive_level = -1;
+
+void handleProgressiveIndicator(int allow_ding) {
     if (Rando.progressive_hint_gb_cap == 0) {
         return;
     }
-    int gb_count = getTotalGBs();
-    int old_progressive_level = -1;
+    int item_count = getItemCountReq(Rando.prog_hint_item);
     int new_progressive_level = -1;
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
-        int local_req = getHintGBRequirement(i);
-        if (gb_count >= local_req) {
+        if (item_count >= getHintRequirement(i)) {
             new_progressive_level = i;
         }
-        if ((gb_count - delta) >= local_req) {
-            old_progressive_level = i;
-        }
     }
-    if (old_progressive_level != new_progressive_level) {
+    if (new_progressive_level > old_progressive_level) {
         playProgressiveDing();
     }
+    old_progressive_level = new_progressive_level;
+}
+
+void resetProgressive(void) {
+    old_progressive_level = -1;
+    handleProgressiveIndicator(0);
 }
 
 void initHints(void) {
@@ -322,56 +325,37 @@ static unsigned char hints_per_screen = 5;
 static unsigned char hint_screen_count = 7;
 static unsigned char hint_offset = 140;
 
-int getHintGBRequirement(int slot) {
+int getHintRequirement(int slot) {
     int cap = Rando.progressive_hint_gb_cap;
+    int batch_index = 9;
     if (slot < 34) {
-        /*
-            Little bit of chunking to reduce amount of times checking the pause menu
-            You'll get:
-                1  2  3  4  - Price of hint 1
-                5  6  7  8  - Price of hint 5
-                9  10 11 12 - Price of hint 9
-                13 14 15 16 - Price of hint 13
-                17 18 19 20 - Price of hint 17
-                21 22 23 24 - Price of hint 21
-                25 26 27 28 - Price of hint 25
-                29 30 31 32 - Price of hint 29
-                33 34       - Price of hint 33
-                35          - Price of hint 35
-        */
-        slot &= 0xFC;
+        batch_index = slot >> 2;
     }
-    float req = 1;
-    req /= GAME_HINT_COUNT;
-    req *= (slot + 1);
-    req += 3.0f;
-    req *= 1.570796f; // 0.5pi
-    req = dk_sin(req) * cap;
-    req += cap;
-    int req_i = req;
-    if (req_i <= 0) {
-        req_i = 1; // Ensure no hints are free
-    } else if (slot == (GAME_HINT_COUNT - 1)) {
-        req_i = cap; // Ensure last hint is always at cap
+    return Rando.progressive_bounds[batch_index];
+}
+
+void displayCBCount(pause_paad *handler, void* sprite, int x, int y, float scale, int unk0, int unk1) {
+    displaySprite(handler, sprite, x, y, scale, unk0, unk1);
+    if (handler->screen == PAUSESCREEN_HINTS) {
+        int cb_count = 0;
+        for (int world = 0; world < 7; world++) {
+            for (int kong = 0; kong < 5; kong++) {
+                cb_count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
+            }
+        }
+        displayPauseSpriteNumber(handler, 0x24, 0x1C, 0xC, -10, cb_count, 1, 0);
+        displaySprite(handler, (void*)0x80721474, 0x24, 0x1C, 0.75f, 2, 1);
     }
-    return req_i;
 }
 
 regions getHintItemRegion(int slot) {
     return hint_item_regions[slot];
 }
 
-int getPluralCharacter(int amount) {
-    if (amount != 1) {
-        return 0x53; // "S"
-    }
-    return 0;
-}
-
 int showHint(int slot) {
     if (Rando.progressive_hint_gb_cap > 0) {
-        int req = getHintGBRequirement(slot);
-        int gb_count = getTotalGBs();
+        int req = getHintRequirement(slot);
+        int gb_count = getItemCountReq(Rando.prog_hint_item);
         return gb_count >= req;
     }
     // Not progressive hints
@@ -449,6 +433,39 @@ void initHintFlags(void) {
     }
 }
 
+const char* item_names[] = {
+    "NOTHING",
+    "KONG",
+    "MOVE",
+    "GOLDEN BANANA",
+    "BLUEPRINT",
+    "FAIRY",
+    "KEY",
+    "CROWN",
+    "COMPANY COIN",
+    "MEDAL",
+    "BEAN",
+    "PEARL",
+    "RAINBOW COIN",
+    "ICE TRAP",
+    "%",
+    "COLORED BANANA",
+};
+char item_name_plural[] = "COLORED BANANAS";
+
+char* getItemName(int item_index, int item_count) {
+    if ((item_count == 1) || (item_index == 14)) {
+        // Item index 14 is game percentage, avoid pluralizing
+        return item_names[item_index];
+    }
+    if (item_index == 5) {
+        // We love grammar
+        return "FAIRIES";
+    }
+    dk_strFormat(&item_name_plural, "%s%c", item_names[item_index], 'S');
+    return &item_name_plural;
+}
+
 Gfx* drawHintScreen(Gfx* dl, int level_x) {
     display_billboard_fix = 1;
     dl = printText(dl, level_x, 0x3C, 0.65f, "HINTS");
@@ -491,8 +508,8 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
                     dk_strFormat(unknown_hints[i], "??? - %s", hint_region_names[tied_region]);
                 }
             } else {
-                int requirement = getHintGBRequirement(hint_local_index);
-                dk_strFormat(unknown_hints[i], "??? - %d GOLDEN BANANA%c", requirement, getPluralCharacter(requirement));
+                int requirement = getHintRequirement(hint_local_index);
+                dk_strFormat(unknown_hints[i], "??? - %d %s", requirement, getItemName(Rando.prog_hint_item, requirement));
             }
             dl = drawSplitString(dl, unknown_hints[i], level_x, hint_offset + (120 * i), 40, 0xFF);
         }

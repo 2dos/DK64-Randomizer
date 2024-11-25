@@ -149,7 +149,7 @@
 | Frantic Factory | Cranky and Candy Room | MelonCrate |  | 
 | Frantic Factory | Near Candy |  |  | 
 | Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk` | 
-| Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.CanPhase(), group=4` | 
+| Frantic Factory | Arcade Room Bench |  |  | 
 | Frantic Factory | Next to DK Arcade |  |  | 
 | Frantic Factory | Near Snide (1) |  |  | 
 | Frantic Factory | Near Snide (2) |  |  | 
@@ -169,7 +169,6 @@
 | Frantic Factory | Chunky R and D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In front of Chunky's toy boss room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.phasewalk` | 
-| Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | Tiny race entry area |  | `((l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | R and D lever room - by Tiny's barrel |  |  | 
 | Frantic Factory | Under R and D Grate (2) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanPhase() or l.generalclips` | 
@@ -189,7 +188,7 @@
 # Gloomy Galleon
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Gloomy Galleon | Under Cranky |  | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False)` | 
+| Gloomy Galleon | Under Cranky |  | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
 | Galleon Lighthouse | Lighthouse: Interior Rear |  |  | 
 | Gloomy Galleon | Near Cactus | DirtPatch, CrownPad, Bananaport |  | 
 | Gloomy Galleon | Next to Cannonball - in front |  | `l.CanGetOnCannonGamePlatform()` | 

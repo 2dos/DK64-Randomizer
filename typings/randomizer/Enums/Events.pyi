@@ -204,3 +204,4 @@ class Events(IntEnum):
     CastleLobbyAccessed = 201
     HelmLobbyAccessed = 202
     HelmLobbyTraversable = 203
+    JapesAccessToCannon = 204

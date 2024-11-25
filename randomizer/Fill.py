@@ -34,6 +34,7 @@ from randomizer.Enums.Settings import (
     LogicType,
     MinigameBarrels,
     MoveRando,
+    ProgressiveHintItem,
     RandomPrices,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -1745,7 +1746,7 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type not in (Types.Constant, Types.Enemies) and spoiler.LocationList[loc_id].item is None
     ]
     # Make sure hints don't get placed, if progressive hints are enabled
-    if spoiler.settings.enable_progressive_hints:
+    if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         placed_types.append(Types.Hint)
     # Rig the valid_locations for all relevant items to only be able to place things in Helm
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
@@ -1801,7 +1802,7 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         if spoiler.LocationList[loc_id].level != Levels.HideoutHelm and spoiler.LocationList[loc_id].type == Types.Key and spoiler.LocationList[loc_id].item is None
     ]
     # Make sure hints don't get placed, if progressive hints are enabled
-    if spoiler.settings.enable_progressive_hints:
+    if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         placed_types.append(Types.Hint)
     # Rig the valid_locations for all relevant items to only be able to place things on bosses
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
@@ -2198,7 +2199,7 @@ def Fill(spoiler: Spoiler) -> None:
             "Tough GBs",
         )
     # Place Hints
-    if Types.Hint in spoiler.settings.shuffled_location_types and not spoiler.settings.enable_progressive_hints:
+    if Types.Hint in spoiler.settings.shuffled_location_types and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off:
         placed_types.append(Types.Hint)
         spoiler.Reset()
         hintItemsToBePlaced = ItemPool.HintItems()
@@ -3555,7 +3556,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ShufflePorts(spoiler, port_replacements, port_human_replacements)
         spoiler.warp_locations = port_replacements
         spoiler.human_warps = port_human_replacements
-    if spoiler.settings.enable_progressive_hints:
+    if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         SetProgressiveHintDoorLogic(spoiler)
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.vanilla_door_rando:

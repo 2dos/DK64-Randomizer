@@ -381,8 +381,8 @@ document
 function plando_disable_wrinkly_custom_locations() {
   const randomDoors = document.getElementById("wrinkly_location_rando").checked;
   const progressiveHints = document.getElementById(
-    "enable_progressive_hints"
-  ).checked;
+    "progressive_hint_item"
+  ).value != "off";
   const customWrinklyElem = document.getElementById("plando_place_wrinkly");
   let tooltip = "Allows the user to specify locations for each Wrinkly door.";
 
@@ -405,8 +405,8 @@ document
   .getElementById("wrinkly_location_rando")
   .addEventListener("click", plando_disable_wrinkly_custom_locations);
 document
-  .getElementById("enable_progressive_hints")
-  .addEventListener("click", plando_disable_wrinkly_custom_locations);
+  .getElementById("progressive_hint_item")
+  .addEventListener("change", plando_disable_wrinkly_custom_locations);
 
 
 // Enable or disable custom locations for Troff 'n' Scoff portals
@@ -1427,22 +1427,82 @@ document
     element.addEventListener("input", onInput);
   });
 
-// Validate blocker input on loss of focus
-function handle_progressive_hint_text() {
-  const progressiveHintText = document.getElementById("progressive_hint_text");
 
-  if (!progressiveHintText.value) {
-    progressiveHintText.value = 60;
-  } else if (parseInt(progressiveHintText.value) < 1) {
-    progressiveHintText.value = 1;
-  } else if (parseInt(progressiveHintText.value) > 201) {
-    progressiveHintText.value = 201;
+// Update Win Condition Number Access
+function update_prog_hint_num_access() {
+  const DISABLED_PROG_VALUES = [
+    "off",
+  ];
+
+  const progHintSelection = document.getElementById("progressive_hint_item");
+  const progHintContainer = document.getElementById("progressive_hint_container");
+  const progHintReq = document.getElementById("progressive_hint_count");
+  const disabled = DISABLED_PROG_VALUES.includes(progHintSelection.value);
+
+  if (disabled) {
+    progHintContainer.classList.add("hide-input");
+  } else {
+    progHintContainer.classList.remove("hide-input");
+  }
+
+  if (!progHintReq.value) {
+    progHintReq.value = 1;
+  } else if (
+    progHintSelection.value === "req_gb" &&
+    parseInt(progHintReq.value) > 201
+  ) {
+    progHintReq.value = 201;
+  } else if (
+    progHintSelection.value === "req_bp" &&
+    parseInt(progHintReq.value) > 40
+  ) {
+    progHintReq.value = 40;
+  } else if (
+    progHintSelection.value === "req_key" &&
+    parseInt(progHintReq.value) > 8
+  ) {
+    progHintReq.value = 8;
+  } else if (
+    progHintSelection.value === "req_medal" &&
+    parseInt(progHintReq.value) > 40
+  ) {
+    progHintReq.value = 40;
+  } else if (
+    progHintSelection.value === "req_crown" &&
+    parseInt(progHintReq.value) > 10
+  ) {
+    progHintReq.value = 10;
+  } else if (
+    progHintSelection.value === "req_fairy" &&
+    parseInt(progHintReq.value) > 18
+  ) {
+    progHintReq.value = 18;
+  } else if (
+    progHintSelection.value === "req_bean" &&
+    parseInt(progHintReq.value) > 1
+  ) {
+    progHintReq.value = 1;
+  } else if (
+    progHintSelection.value === "req_pearl" &&
+    parseInt(progHintReq.value) > 5
+  ) {
+    progHintReq.value = 5;
+  } else if (
+    progHintSelection.value === "req_rainbowcoin" &&
+    parseInt(progHintReq.value) > 16
+  ) {
+    progHintReq.value = 16;
+  } else if (
+    progHintSelection.value === "req_cb" &&
+    parseInt(progHintReq.value) > 3500
+  ) {
+    progHintReq.value = 3500;
   }
 }
 
 document
-  .getElementById("progressive_hint_text")
-  .addEventListener("focusout", handle_progressive_hint_text);
+  .getElementById("progressive_hint_item")
+  .addEventListener("change", update_prog_hint_num_access);
 
 // Validate chaos ratio input on loss of focus
 function handle_chaos_ratio_text() {
@@ -2075,7 +2135,6 @@ function update_ui_states() {
   disable_music(null);
   disable_move_shuffles(null);
   max_randomized_blocker(null);
-  handle_progressive_hint_text(null);
   handle_chaos_ratio_text(null);
   max_randomized_troff(null);
   max_music(null);
@@ -2099,6 +2158,7 @@ function update_ui_states() {
   update_door_one_num_access(null);
   update_door_two_num_access(null);
   update_win_con_num_access(null);
+  update_prog_hint_num_access(null);
   disable_tag_spawn(null);
   disable_krool_phases(null);
   disable_helm_phases(null);

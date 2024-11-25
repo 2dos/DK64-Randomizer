@@ -496,11 +496,7 @@ void callIceTrap(void) {
                 return;
             }
             // Check Control State
-            int control_state = Player->control_state;
-            int offset = control_state >> 3;
-            int check = control_state % 8;
-            int is_banned = *(unsigned char*)((unsigned char*)(&banned_trap_movement) + offset) & (0x80 >> check);
-            if (is_banned) {
+            if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
                 return;
             }
             initIceTrap();

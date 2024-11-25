@@ -18,6 +18,7 @@ from randomizer.Enums.Settings import (
     HardModeSelected,
     HardBossesSelected,
     MiscChangesSelected,
+    ProgressiveHintItem,
     PuzzleRando,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -27,7 +28,7 @@ from randomizer.Enums.Settings import (
     WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -64,7 +65,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount
+from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
     updateKrushaMoveNames,
@@ -86,6 +87,7 @@ from randomizer.Patching.UpdateHints import (
     PushHintTiedRegions,
 )
 from randomizer.Patching.ASMPatcher import patchAssembly
+from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
 
 # from randomizer.Spoiler import Spoiler
@@ -381,7 +383,7 @@ def patching_response(spoiler):
         DamageAmount.quad: 4,
         DamageAmount.ohko: 12,
     }
-    ROM_COPY.seek(sav + 0x0A5)
+    ROM_COPY.seek(sav + 0x097)
     ROM_COPY.write(damage_multipliers[spoiler.settings.damage_amount])
 
     ROM_COPY.seek(sav + 0x0C5)
@@ -391,15 +393,20 @@ def patching_response(spoiler):
     hints_in_pool_handler = 0
     if Types.Hint in spoiler.settings.shuffled_location_types:
         hints_in_pool_handler = 1
-        if spoiler.settings.enable_progressive_hints:
+        if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
             hints_in_pool_handler = 2
     ROM_COPY.write(int(hints_in_pool_handler))
 
     # Progressive Hints
-    ROM_COPY.seek(sav + 0x115)
     count = 0
-    if spoiler.settings.enable_progressive_hints:
-        count = spoiler.settings.progressive_hint_text
+    if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
+        count = spoiler.settings.progressive_hint_count
+        ROM_COPY.seek(sav + 0x0C3)
+        ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))
+        for x in range(10):
+            ROM_COPY.seek(sav + 0x98 + (x * 2))
+            ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count), 2)
+    ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
 
     # Microhints
@@ -704,7 +711,7 @@ def patching_response(spoiler):
         PushHints(spoiler)
         if spoiler.settings.dim_solved_hints:
             PushHelpfulHints(spoiler, ROM_COPY)
-    if Types.Hint in spoiler.settings.shuffled_location_types and not spoiler.settings.enable_progressive_hints:
+    if Types.Hint in spoiler.settings.shuffled_location_types and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off:
         PushHintTiedRegions(spoiler, ROM_COPY)
 
     writeBootMessages()
@@ -720,6 +727,7 @@ def patching_response(spoiler):
         applyKongModelSwaps(spoiler.settings)
 
         patchAssembly(ROM_COPY, spoiler)
+        ApplyMirrorMode(spoiler.settings, ROM_COPY)
 
     # Apply Hash
     order = 0

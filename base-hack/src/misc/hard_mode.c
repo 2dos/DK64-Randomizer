@@ -267,10 +267,7 @@ challenge_type getMemoryChallengeType(maps map) {
     if (inShortList(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps) >> 1)) {
         return CHALLENGE_NONE;
     }
-    int offset = map >> 3;
-    int check = map % 8;
-    int is_dw = *(unsigned char*)((unsigned char*)(&is_dark_world_mc) + offset) & (0x80 >> check);
-    if (is_dw) {
+    if (getBitArrayValue(&is_dark_world_mc, map)) {
         return CHALLENGE_DARK_WORLD;
     }
     return CHALLENGE_SKY;
@@ -495,4 +492,27 @@ void incHitCounter(void* actor, int val) {
     setActorSpeed(actor, val);
     KRoolLanky178* aad178 = CurrentActorPointer_0->paad2;
     aad178->hits++; 
+}
+
+void parseControllerInput(Controller * cont) {
+    getControllerInput(cont);
+    if (isGamemode(GAMEMODE_MAINMENU, 1)) {
+        return;
+    }
+    if ((CutsceneActive == 2) || (CutsceneActive == 3)) {
+        // In arcade/jetpac
+        // TODO: Flip these
+        return;
+    }
+    if (TBVoidByte & 3) {
+        // Is pausing/paused
+        return;
+    }
+    if (Player) {
+        if (Player->control_state == 0x42) {
+            // Tag Barrel
+            return;
+        }
+    }
+    cont->stickX = -cont->stickX;
 }

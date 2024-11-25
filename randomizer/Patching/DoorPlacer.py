@@ -4,7 +4,7 @@ import js
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Enums.Settings import MiscChangesSelected
+from randomizer.Enums.Settings import MiscChangesSelected, ProgressiveHintItem
 from randomizer.Enums.Types import Types
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Enums.Maps import Maps
@@ -305,7 +305,7 @@ def place_door_locations(spoiler):
         spoiler.settings.wrinkly_location_rando,
         spoiler.settings.tns_location_rando,
         spoiler.settings.remove_wrinkly_puzzles,
-        spoiler.settings.enable_progressive_hints,
+        spoiler.settings.progressive_hint_item != ProgressiveHintItem.off,
         spoiler.settings.dk_portal_location_rando,
     ]
     for boolean in settings_enable:
@@ -342,7 +342,7 @@ def place_door_locations(spoiler):
                 ROM_COPY.seek(item_start + 0x28)
                 item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 retain = True
-                if spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.enable_progressive_hints:
+                if spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
                     if item_type in wrinkly_doors:
                         retain = False
                     if cont_map_id == Maps.AngryAztecLobby and item_type in (0x23C, 0x18):
@@ -401,7 +401,7 @@ def place_door_locations(spoiler):
                                 MiscChangesSelected.remove_wrinkly_puzzles,
                             )
                         ):
-                            if (not spoiler.settings.enable_progressive_hints) or Types.Hint in spoiler.settings.shuffled_location_types:
+                            if (spoiler.settings.progressive_hint_item == ProgressiveHintItem.off) or Types.Hint in spoiler.settings.shuffled_location_types:
                                 kong = data[2]
                                 item_data = []
                                 for coord_index in range(3):

@@ -14,3 +14,4 @@
 .definelabel playBonusCutsceneWrapper, 0x80627948
 .definelabel handleMusicTransition, 0x80605510
 .definelabel playSFXAtXYZ, 0x806086CC
+.definelabel getControllerInput, 0x80007454

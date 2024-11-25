@@ -721,7 +721,7 @@ KasplatLocationList = {
             zmin=2370,
             zmax=2500,
             region=Regions.GloomyGalleonStart,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False),
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False),
         ),
         # Problematic - insanely hard to kill and get blueprint, maybe move to entrance and reduce wander?
         # KasplatLocation(

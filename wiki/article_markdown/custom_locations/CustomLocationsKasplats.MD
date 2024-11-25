@@ -74,7 +74,7 @@
 | Gloomy Galleon | Galleon Kasplat: Cannon Game Room | `l.CanGetOnCannonGamePlatform()` | 
 | Gloomy Galleon | Galleon Kasplat: Past Vines |  | 
 | Gloomy Galleon | Galleon Kasplat: Musical Cactus |  | 
-| Gloomy Galleon | Galleon Kasplat: On the Crown Pad | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False)` | 
+| Gloomy Galleon | Galleon Kasplat: On the Crown Pad | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's |  | 
 | Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `l.climbing` | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish |  | 

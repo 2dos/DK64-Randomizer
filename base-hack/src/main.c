@@ -255,6 +255,9 @@ void earlyFrame(void) {
 	} else {
 		actor_functions[196] = &cutsceneDKCode;
 	}
+	if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
+		handleProgressiveIndicator(1);
+	}
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	CBDing();
@@ -418,12 +421,10 @@ static const eeprom_warning_struct warning_text[] = {
 	{.text="WARNING", .x_offset=-10, .error=1, .margin_bottom=20},
 	{.text="YOUR EMULATOR SETUP IS WRONG", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="YOUR GAME WILL NOT SAVE!", .x_offset=-76, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="YOU MAY ALSO EXPERIENCE", .x_offset=-76, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="SPORADIC CRASHES THAT", .x_offset=-72, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="WE             SUPPORT.", .x_offset=-56, .error=0, .margin_bottom=0},
-	{.text="CANNOT", .x_offset=-31, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="PLEASE CONSULT THE WIKI", .x_offset=-72, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="OR THE DISCORD", .x_offset=-40, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="YOUR GAME WILL LIKELY", .x_offset=-88, .error=0, .margin_bottom=0},
+	{.text="CRASH", .x_offset=-88, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="GO TO THE WIKI", .x_offset=-32, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="OR THE DISCORD", .x_offset=-32, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="DISCORD.DK64RANDOMIZER.COM", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="FOR HELP", .x_offset=-8, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 };

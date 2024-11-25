@@ -1812,9 +1812,7 @@ CustomLocations = {
             logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
             group=4,
         ),
-        CustomLocation(
-            map=Maps.FranticFactory, name="Dark Room Corner", x=1850, y=6, z=525, max_size=72, logic_region=Regions.BeyondHatch, logic=lambda l: (l.punch and l.chunky) or l.CanPhase(), group=4
-        ),
+        CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.FactoryArcadeTunnel, group=4),
         CustomLocation(
             name="Next to DK Arcade",
             map=Maps.FranticFactory,
@@ -2047,7 +2045,6 @@ CustomLocations = {
             logic_region=Regions.RandD,
             logic=lambda l: (l.mini and l.istiny) or l.phasewalk,
         ),
-        CustomLocation(map=Maps.FranticFactory, name="Near Car Race", x=3553, y=1264, z=1383, max_size=48, logic_region=Regions.RandD, logic=lambda l: (l.mini and l.istiny) or l.CanPhase()),
         CustomLocation(
             name="Tiny race entry area",
             map=Maps.FranticFactory,
@@ -2244,7 +2241,7 @@ CustomLocations = {
             z=2450.29,
             max_size=84.8,
             logic_region=Regions.GloomyGalleonStart,
-            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False),
+            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False),
             vanilla_crown=True,
             group=3,
         ),

@@ -36,16 +36,16 @@ typedef struct varspace {
 	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x088 */ LZREntrance enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
-	/* 0x097 */ char unk_97[14];
-	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
-	/* 0x0A6 */ char unk_A6[0xAE - 0xA6];
+	/* 0x097 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
+	/* 0x098 */ short progressive_bounds[10];
+	/* 0x0AC */ char unk_98[0xAE - 0xAC];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
 	/* 0x0B4 */ char unk_B0[0xC0 - 0xB4];
 	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"
 	/* 0x0C2 */ char hints_are_items; // Hints are collectable as items, wrinkly doors should behave differently
-	/* 0x0C3 */ char unk_c3;
+	/* 0x0C3 */ unsigned char prog_hint_item;
 	/* 0x0C4 */ ROMFlags rom_flags;
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
 	/* 0x0C6 */ HardModeSettings hard_mode; // Colloquially known as "Seed of Death"
@@ -134,7 +134,7 @@ typedef struct varspace {
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 	/* 0x196 */ char misc_cosmetic_on;
-	/* 0x197 */ char unk_197[0x1A2 - 0x197];
+	/* 0x197 */ unsigned char unk_197[0x1A2 - 0x197];
 	/* 0x1A2 */ LZREntrance blast_entrances[7];
 	/* 0x1B0 */ int password;
 	/* 0x1B4 */ char unk_1B4;

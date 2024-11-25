@@ -697,6 +697,7 @@ class Settings:
         self.hard_mode_selected = []
         self.hard_bosses = False
         self.hard_bosses_selected = []
+        self.mirror_mode = False
         self.faster_checks_enabled = False
         self.remove_barriers_enabled = False
         self.faster_checks_selected = []
@@ -767,8 +768,10 @@ class Settings:
         self.points_list_active_moves = 5
         self.points_list_bean = 3
         # Progressive hints
-        self.enable_progressive_hints = False
+        self.progressive_hint_item = None
+        self.enable_progressive_hints = False  # Deprecated
         self.progressive_hint_text = 0
+        self.progressive_hint_count = 0
 
     def shuffle_prices(self, spoiler):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -1664,9 +1667,9 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_text == 0:
+        if self.progressive_hint_count == 0:
             # Disable progressive hints if hint text is 0
-            self.enable_progressive_hints = False
+            self.progressive_hint_item = ProgressiveHintItem.off
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
@@ -1707,9 +1710,9 @@ class Settings:
             spoiler.LocationList[Locations.IslesChunkyMedal].inaccessible = True
 
         for location_id in ProgressiveHintLocations:
-            spoiler.LocationList[location_id].inaccessible = not self.enable_progressive_hints
+            spoiler.LocationList[location_id].inaccessible = self.progressive_hint_item == ProgressiveHintItem.off
 
-        if self.enable_progressive_hints and not (Types.Hint in self.shuffled_location_types):
+        if self.progressive_hint_item != ProgressiveHintItem.off and not (Types.Hint in self.shuffled_location_types):
             for location_id in WrinklyHintLocations:
                 spoiler.LocationList[location_id].inaccessible = True
 

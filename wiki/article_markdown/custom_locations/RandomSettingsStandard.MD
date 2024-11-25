@@ -85,7 +85,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Dim Solved Hints: 50%
 - Tag Barrels Disabled: 50%
 - Dk Portal Location Rando: 10%
-- Progressive Hints: 50%
+- Enable Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
 - Shuffle Enemies: 95%

@@ -24,6 +24,7 @@ from randomizer.Enums.Settings import (
     LogicType,
     HardBossesSelected,
     MinigameBarrels,
+    ProgressiveHintItem,
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -323,6 +324,7 @@ class Spoiler:
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
         settings["Ice Trap Frequency"] = self.settings.ice_trap_frequency.name
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
+        settings["Mirror Mode"] = self.settings.mirror_mode
         settings["Damage Amount"] = self.settings.damage_amount.name
         settings["Hard Mode Enabled"] = self.settings.hard_mode
         # settings["Krusha Slot"] = self.settings.krusha_ui.name
@@ -374,8 +376,8 @@ class Spoiler:
         settings["Galleon Water Level"] = self.settings.galleon_water.name
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
         settings["Hint Preset"] = self.settings.wrinkly_hints
-        if self.settings.enable_progressive_hints:
-            settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_text)
+        if self.settings.progressive_hint_item != ProgressiveHintItem.off:
+            settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_count)
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
         settings["Item Reward Previews"] = self.settings.item_reward_previews

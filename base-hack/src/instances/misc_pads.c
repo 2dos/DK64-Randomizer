@@ -47,7 +47,7 @@ int canOpenSpecificBLocker(int level) {
     if (!isItemRequirementSatisfied(&req)) {
         return 0;
     }
-    return 1;
+    return Rando.microhints != MICROHINTS_NONE;
 }
 
 int canOpenAllBLockersUntil(int level_cap) {

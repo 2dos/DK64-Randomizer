@@ -348,6 +348,20 @@ export enum MusicFilters {
     location = 2,
 }
 
+export enum ProgressiveHintItem {
+    off = 0,
+    req_gb = 1,
+    req_bp = 2,
+    req_key = 3,
+    req_medal = 4,
+    req_crown = 5,
+    req_fairy = 6,
+    req_rainbowcoin = 7,
+    req_bean = 8,
+    req_pearl = 9,
+    req_cb = 10,
+}
+
 export enum PuzzleRando {
     off = 0,
     easy = 1,
@@ -672,6 +686,9 @@ export enum SettingsStringEnum {
     starting_moves_list_count_4 = 195,
     starting_moves_list_5 = 196,
     starting_moves_list_count_5 = 197,
+    progressive_hint_item = 198,
+    mirror_mode = 199,
+    progressive_hint_count = 200,
 }
 
 export enum SettingsStringDataType {
@@ -754,6 +771,7 @@ export const SettingsMap = {
     'kong_model_chunky': KongModels,
     'chunky_phase_slam_req': SlamRequirement,
     'puzzle_rando_difficulty': PuzzleRando,
+    'progressive_hint_item': ProgressiveHintItem,
     'starting_moves_list_1': Items,
     'starting_moves_list_2': Items,
     'starting_moves_list_3': Items,
@@ -921,6 +939,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
+    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.var_int,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
@@ -949,6 +968,8 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
+    SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
+    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_2: SettingsStringDataType.list,
@@ -1013,5 +1034,6 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.troff_7: {'max': 500, 'min': 0},
     SettingsStringEnum.troff_text: {'max': 500, 'min': 0},
     SettingsStringEnum.progressive_hint_text: {'max': 201, 'min': 0},
+    SettingsStringEnum.progressive_hint_count: {'max': 3500, 'min': 0},
     SettingsStringEnum.win_condition_count: {'max': 201, 'min': 0},
 }

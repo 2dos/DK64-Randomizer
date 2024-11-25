@@ -408,8 +408,9 @@ with open(ROMName, "rb") as rom:
         data = fh.read()
     if os.path.exists("temp.bin"):
         os.remove("temp.bin")
-    with open("fake_item.bin", "wb") as fh:
-        fh.write(data)
+    for x in range(3):
+        with open(f"fake_item_{x}.bin", "wb") as fh:
+            fh.write(data)
     # Fake Item - Actor
     rom.seek(actor_table + (0x87 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")

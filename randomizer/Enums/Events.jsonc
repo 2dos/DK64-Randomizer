@@ -229,6 +229,9 @@
         "CavesLobbyAccessed": 200,
         "CastleLobbyAccessed": 201,
         "HelmLobbyAccessed": 202,
-        "HelmLobbyTraversable": 203
+        "HelmLobbyTraversable": 203,
+        
+        // Misc Events
+        "JapesAccessToCannon": 204
     }
 }

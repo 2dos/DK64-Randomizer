@@ -1290,6 +1290,7 @@ function set_preset_options() {
   update_door_one_num_access(null);
   update_door_two_num_access(null);
   update_win_con_num_access(null);
+  update_prog_hint_num_access(null);
 
   // // Load the data
   // load_data();

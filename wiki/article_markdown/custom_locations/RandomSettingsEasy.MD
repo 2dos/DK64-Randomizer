@@ -97,7 +97,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Default: 50%
 	- Double: 50%
 - Tag Barrels Disabled: 50%
-- Progressive Hints: 50%
+- Enable Progressive Hints: 50%
 - Shuffle Enemies: 95%
 - Enemy Speed Rando: 50%
 - Randomize Enemy Sizes: 90%

@@ -786,10 +786,14 @@ overlays getOverlayFromMap(maps map) {
 	return overlay_indexes[map];
 }
 
+int getBitArrayValue(unsigned char* arr, int value) {
+	int offset = value >> 3;
+    int check = value % 8;
+	return arr[offset] & (0x80 >> check);
+}
+
 int inMinigame(maps map) {
-	int offset = map >> 3;
-    int check = map % 8;
-    return *(unsigned char*)((unsigned char*)(&minigame_maps_btf) + offset) & (0x80 >> check);
+	return getBitArrayValue(&minigame_maps_btf, map);
 }
 
 int inShop(maps map, int include_snide) {

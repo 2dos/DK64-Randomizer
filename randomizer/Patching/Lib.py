@@ -11,13 +11,14 @@ import js
 import random
 import zlib
 import gzip
+import math
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency
+from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem
 
 if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
@@ -1037,8 +1038,13 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
 def getRawFile(table_index: int, file_index: int, compressed: bool):
     """Get raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
+    if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
+        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
+        if file_size is None:
+            return bytes(bytearray([]))
+    else:
+        file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+        file_size = file_end - file_start
     try:
         LocalROM().seek(file_start)
         data = LocalROM().readBytes(file_size)
@@ -1053,8 +1059,11 @@ def getRawFile(table_index: int, file_index: int, compressed: bool):
 def writeRawFile(table_index: int, file_index: int, compressed: bool, data: bytearray, ROM_COPY):
     """Write raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
+    if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
+        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
+    else:
+        file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+        file_size = file_end - file_start
     write_data = bytes(data)
     if compressed:
         write_data = gzip.compress(bytes(data), compresslevel=9)
@@ -1076,6 +1085,51 @@ def getIceTrapCount(settings) -> int:
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
 
+EXPONENT = 1.7
+OFFSET_DIVISOR = 15
+
+
+def getHintRequirement(slot: int, cap: int):
+    """Get the hint requirement for a slot index."""
+    if slot == 34:
+        return cap
+    offset = cap / OFFSET_DIVISOR
+    hint_slot = slot & 0xFC
+    multiplier = cap - offset
+    final_offset = (cap + offset) / 2
+    exp_result = 1 + (math.pow(hint_slot, EXPONENT) / math.pow(34, EXPONENT))
+    z = math.pi * exp_result
+    required_gb_count = int(multiplier * 0.5 * math.cos(z) + final_offset)
+    if required_gb_count == 0:
+        return 1
+    return required_gb_count
+
+
+def getHintRequirementBatch(batch: int, cap: int):
+    """Get the hint requirement for a batch index."""
+    slot = 34
+    if batch < 9:
+        slot = batch * 4
+    return getHintRequirement(slot, cap)
+
+
+def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
+    """Get the accompanying barrier item for the prog hint item."""
+    barrier_bijection = {
+        ProgressiveHintItem.req_gb: BarrierItems.GoldenBanana,
+        ProgressiveHintItem.req_bp: BarrierItems.Blueprint,
+        ProgressiveHintItem.req_key: BarrierItems.Key,
+        ProgressiveHintItem.req_medal: BarrierItems.Medal,
+        ProgressiveHintItem.req_crown: BarrierItems.Crown,
+        ProgressiveHintItem.req_fairy: BarrierItems.Fairy,
+        ProgressiveHintItem.req_rainbowcoin: BarrierItems.RainbowCoin,
+        ProgressiveHintItem.req_bean: BarrierItems.Bean,
+        ProgressiveHintItem.req_pearl: BarrierItems.Pearl,
+        ProgressiveHintItem.req_cb: BarrierItems.ColoredBanana,
+    }
+    return barrier_bijection[item]
+
+
 class Holidays(IntEnum):
     """Holiday Enum."""
 
@@ -1087,7 +1141,7 @@ class Holidays(IntEnum):
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
-    is_offseason = False
+    is_offseason = True
     if is_offseason:
         return settings.holiday_setting_offseason
     return settings.holiday_setting

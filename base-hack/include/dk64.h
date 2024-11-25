@@ -121,6 +121,8 @@ extern void CrownGet(void);
 extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
 
+extern void updateCamera(void* mtx_i);
+
 extern int callFunc(void* func);
 
 extern void cancelMusic(int song, int unk0);
@@ -176,6 +178,8 @@ extern void enterPortal(void* player);
 extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, int unk1);
 extern void displayShopIcon(behaviour_data* behaviour_data, int id, int image_index, int unk0);
 extern void hideShop(behaviour_data* behaviour_data, int id, int unk0, int unk1);
+
+extern void getControllerInput(Controller *cont);
 
 extern Gfx* initDisplayList(Gfx* dl);
 extern Gfx* initDisplayList_0(Gfx* dl);

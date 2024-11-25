@@ -37,3 +37,5 @@
 .definelabel getCharacterWidth, 0x806FB914
 .definelabel styleSpecificDLStuff, 0x806FBEF0
 .definelabel recolorVertBlockText, 0x80704298
+.definelabel updateCamera, 0x805FCA94
+.definelabel guPerspectiveF, 0x80006050

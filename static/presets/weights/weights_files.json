@@ -285,6 +285,7 @@
       "all": 0.75
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0,
     "misc_changes_selected": {},
     "move_rando": {
       "cross_purchase": 1
@@ -294,7 +295,7 @@
     "open_lobbies": 0.9,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 60,
       "mean": 45
@@ -701,6 +702,7 @@
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0,
     "misc_changes_selected": {},
     "move_rando": {
       "on": 0.3,
@@ -711,7 +713,7 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 60
@@ -1142,6 +1144,7 @@
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0.05,
     "misc_changes_selected": {
       "auto_dance_skip": 1,
       "fast_boot": 1,
@@ -1180,7 +1183,7 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 70
@@ -1610,6 +1613,7 @@
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0.05,
     "misc_changes_selected": {
       "auto_dance_skip": 0.8,
       "fast_boot": 0.75,
@@ -1648,7 +1652,7 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 0.5,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 70
