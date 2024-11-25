@@ -2017,6 +2017,7 @@ function moveSelectedStartingMoves(target_list_id) {
   savesettings();
 }
 
+// Move all starting moves back to list #1.
 function startingMovesFullReset() {
   for (let i = 2; i <= 5; i++) {
     const move_selector = document.getElementById(`starting_moves_list_${i}`);
