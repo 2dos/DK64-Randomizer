@@ -57,19 +57,29 @@ class File:
         self.target_compressed_size = target_compressed_size
         self.target_uncompressed_size = target_uncompressed_size
         self.buffer_compression = buffer_compression
+        self.adjusted_size = False
         if target_size is not None:
             self.target_compressed_size = target_size
             self.target_uncompressed_size = target_size
+            self.adjusted_size = True
         elif bloat_compression and self.source_file != "":
             with open(self.source_file, "rb") as sf:
                 size = len(sf.read())
                 self.target_compressed_size = size
                 self.target_uncompressed_size = size
+            self.adjusted_size = True
         self.do_not_extract = do_not_extract
         self.do_not_compress = do_not_compress
         self.do_not_recompress = do_not_recompress
         # Static files
         self.output_file = None
+
+    def bloatCompression(self):
+        """Bloat the compression so that a file is max entropy."""
+        with open(self.source_file, "rb") as sf:
+            size = len(sf.read())
+            self.target_compressed_size = size
+            self.target_uncompressed_size = size
 
     def getTextureFormatName(self) -> int:
         """Get name of texture format used for n64tex."""

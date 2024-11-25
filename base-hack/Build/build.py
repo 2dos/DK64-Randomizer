@@ -267,9 +267,9 @@ file_dict = [
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
     ),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=612, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=613, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=612, source_file="fake_item_1.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=613, source_file="fake_item_2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
@@ -1585,7 +1585,10 @@ for x in file_dict:
     if x.pointer_table_index in list(expanded_tables.keys()):
         if x.file_index in expanded_tables[x.pointer_table_index]:
             expanded_tables[x.pointer_table_index] = [y for y in expanded_tables[x.pointer_table_index] if y != x.file_index]
-        x.buffer_compression = True
+        if x.pointer_table_index == TableNames.ModelTwoGeometry and x.bps_file is None and not x.adjusted_size:
+            x.bloatCompression()
+        else:
+            x.buffer_compression = True
 with open(ROMName, "rb") as fh:
     for tbl in expanded_tables:
         fh.seek(0x101C50 + (tbl << 2))
@@ -1594,11 +1597,18 @@ with open(ROMName, "rb") as fh:
             fh.seek(tbl_start + (file << 2))
             start = int.from_bytes(fh.read(4), "big")
             finish = int.from_bytes(fh.read(4), "big")
-            # is_ref_file = start & 0x80000000
-            is_ref_file = False
-            if not is_ref_file:
-                size = (finish & 0x7FFFFFFF) - (start & 0x7FFFFFFF)
-                if size > 0:
+            is_ref_file = start & 0x80000000
+            size = (finish & 0x7FFFFFFF) - (start & 0x7FFFFFFF)
+            if size > 0:
+                data_len = 1
+                if not is_ref_file:
+                    fh.seek(0x101C50 + (start & 0x7FFFFFFF))
+                    print("Checking uncompressed size of", tbl, file)
+                    data = zlib.decompress(fh.read(size), (15 + 32))
+                    data_len = len(data)
+                    if data_len == 0:
+                        print("Ignoring ptr file", tbl, file)
+                if data_len > 0:
                     file_dict.append(File(
                         name=f"Expanded Table {tbl} file {file}",
                         pointer_table_index=tbl,
@@ -1705,6 +1715,8 @@ with open(newROMName, "r+b") as fh:
                 if x.target_compressed_size is None:
                     x.target_compressed_size = compressed_size
                 x.target_compressed_size += 0x800
+                if x.pointer_table_index == TableNames.ModelTwoGeometry:
+                    print("Expanding buffer compression ", x.pointer_table_index, x.file_index, hex(x.target_compressed_size), hex(compressed_size), hex(uncompressed_size))
 
 
         if x.target_compressed_size is not None:
