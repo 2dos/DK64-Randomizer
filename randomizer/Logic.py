@@ -77,6 +77,7 @@ class LogicVarHolder:
         settings = spoiler.settings
         self.settings = settings
         self.spoiler = spoiler
+        self.cache = {}
         # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
         self.assumeFillSuccess = False
         # See CalculateWothPaths method for details on these assumptions
@@ -107,6 +108,90 @@ class LogicVarHolder:
         self.skew = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.skew)
         self.moontail = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.moontail)
         self.phasefall = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phasefall)
+        self.blueprint_list = set(
+            [
+                Items.JungleJapesDonkeyBlueprint,
+                Items.JungleJapesDiddyBlueprint,
+                Items.JungleJapesLankyBlueprint,
+                Items.JungleJapesTinyBlueprint,
+                Items.JungleJapesChunkyBlueprint,
+                Items.AngryAztecDonkeyBlueprint,
+                Items.AngryAztecDiddyBlueprint,
+                Items.AngryAztecLankyBlueprint,
+                Items.AngryAztecTinyBlueprint,
+                Items.AngryAztecChunkyBlueprint,
+                Items.FranticFactoryDonkeyBlueprint,
+                Items.FranticFactoryDiddyBlueprint,
+                Items.FranticFactoryLankyBlueprint,
+                Items.FranticFactoryTinyBlueprint,
+                Items.FranticFactoryChunkyBlueprint,
+                Items.GloomyGalleonDonkeyBlueprint,
+                Items.GloomyGalleonDiddyBlueprint,
+                Items.GloomyGalleonLankyBlueprint,
+                Items.GloomyGalleonTinyBlueprint,
+                Items.GloomyGalleonChunkyBlueprint,
+                Items.FungiForestDonkeyBlueprint,
+                Items.FungiForestDiddyBlueprint,
+                Items.FungiForestLankyBlueprint,
+                Items.FungiForestTinyBlueprint,
+                Items.FungiForestChunkyBlueprint,
+                Items.CrystalCavesDonkeyBlueprint,
+                Items.CrystalCavesDiddyBlueprint,
+                Items.CrystalCavesLankyBlueprint,
+                Items.CrystalCavesTinyBlueprint,
+                Items.CrystalCavesChunkyBlueprint,
+                Items.CreepyCastleDonkeyBlueprint,
+                Items.CreepyCastleDiddyBlueprint,
+                Items.CreepyCastleLankyBlueprint,
+                Items.CreepyCastleTinyBlueprint,
+                Items.CreepyCastleChunkyBlueprint,
+                Items.DKIslesDonkeyBlueprint,
+                Items.DKIslesDiddyBlueprint,
+                Items.DKIslesLankyBlueprint,
+                Items.DKIslesTinyBlueprint,
+                Items.DKIslesChunkyBlueprint,
+            ]
+        )
+        self.hint_list = set(
+            [
+                Items.JapesDonkeyHint,
+                Items.JapesDiddyHint,
+                Items.JapesLankyHint,
+                Items.JapesTinyHint,
+                Items.JapesChunkyHint,
+                Items.AztecDonkeyHint,
+                Items.AztecDiddyHint,
+                Items.AztecLankyHint,
+                Items.AztecTinyHint,
+                Items.AztecChunkyHint,
+                Items.FactoryDonkeyHint,
+                Items.FactoryDiddyHint,
+                Items.FactoryLankyHint,
+                Items.FactoryTinyHint,
+                Items.FactoryChunkyHint,
+                Items.GalleonDonkeyHint,
+                Items.GalleonDiddyHint,
+                Items.GalleonLankyHint,
+                Items.GalleonTinyHint,
+                Items.GalleonChunkyHint,
+                Items.ForestDonkeyHint,
+                Items.ForestDiddyHint,
+                Items.ForestLankyHint,
+                Items.ForestTinyHint,
+                Items.ForestChunkyHint,
+                Items.CavesDonkeyHint,
+                Items.CavesDiddyHint,
+                Items.CavesLankyHint,
+                Items.CavesTinyHint,
+                Items.CavesChunkyHint,
+                Items.CastleDonkeyHint,
+                Items.CastleDiddyHint,
+                Items.CastleLankyHint,
+                Items.CastleTinyHint,
+                Items.CastleChunkyHint,
+            ]
+        )
+
         # Reset
         self.Reset()
 
@@ -324,90 +409,125 @@ class LogicVarHolder:
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
-        # Except for banned items - these items aren't allowed to be used by the logic
-        ownedItems = [item for item in ownedItems if item not in self.banned_items]
         item_counts = Counter(ownedItems)
-        self.latest_owned_items = ownedItems
-        self.found_test_item = self.found_test_item or Items.TestItem in ownedItems
+        banned_set = set(self.banned_items)
+        ownedItems = set(ownedItems) - banned_set
+        self.latest_owned_items = list(ownedItems)
 
-        self.donkey = self.donkey or Items.Donkey in ownedItems or self.startkong == Kongs.donkey
-        self.diddy = self.diddy or Items.Diddy in ownedItems or self.startkong == Kongs.diddy
-        self.lanky = self.lanky or Items.Lanky in ownedItems or self.startkong == Kongs.lanky
-        self.tiny = self.tiny or Items.Tiny in ownedItems or self.startkong == Kongs.tiny
-        self.chunky = self.chunky or Items.Chunky in ownedItems or self.startkong == Kongs.chunky
+        self.UpdateKongOwnership(ownedItems)
+        self.UpdateAbilities(ownedItems, item_counts)
+        self.UpdateKeys(ownedItems)
+        self.UpdateHelmKeys(ownedItems)
+        self.UpdateTrainingChecks(ownedItems)
+        self.UpdateUpgrades(item_counts)
+        self.UpdateCollectibles(item_counts)
+        self.UpdateMiscellaneous(item_counts, ownedItems)
+        self.UpdateAccess(ownedItems)
+        self.UpdateCoins()
 
-        self.climbing = self.climbing or Items.Climbing in ownedItems
-        self.vines = self.vines or Items.Vines in ownedItems
-        self.swim = self.swim or Items.Swim in ownedItems
-        self.oranges = self.oranges or Items.Oranges in ownedItems
-        self.barrels = self.barrels or Items.Barrels in ownedItems
-        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
+    def UpdateKongOwnership(self, ownedItems):
+        """Update kong ownership based on owned items."""
+        if all([self.donkey, self.diddy, self.lanky, self.tiny, self.chunky]):
+            return
+        self.donkey = self.donkey or bool(ownedItems & {Items.Donkey}) or self.startkong == Kongs.donkey
+        self.diddy = self.diddy or bool(ownedItems & {Items.Diddy}) or self.startkong == Kongs.diddy
+        self.lanky = self.lanky or bool(ownedItems & {Items.Lanky}) or self.startkong == Kongs.lanky
+        self.tiny = self.tiny or bool(ownedItems & {Items.Tiny}) or self.startkong == Kongs.tiny
+        self.chunky = self.chunky or bool(ownedItems & {Items.Chunky}) or self.startkong == Kongs.chunky
 
-        progDonkey = item_counts[Items.ProgressiveDonkeyPotion]
-        self.blast = self.blast or (Items.BaboonBlast in ownedItems or progDonkey >= 1) and self.donkey
-        self.strongKong = self.strongKong or (Items.StrongKong in ownedItems or progDonkey >= 2) and self.donkey
-        self.grab = self.grab or (Items.GorillaGrab in ownedItems or progDonkey >= 3) and self.donkey
+    def UpdateAbilities(self, ownedItems, item_counts):
+        """Update abilities based on owned items."""
+        if not all([self.climbing, self.vines, self.swim, self.oranges, self.barrels]):
+            self.climbing = self.climbing or bool(ownedItems & {Items.Climbing})
+            self.vines = self.vines or bool(ownedItems & {Items.Vines})
+            self.swim = self.swim or bool(ownedItems & {Items.Swim})
+            self.oranges = self.oranges or bool(ownedItems & {Items.Oranges})
+            self.barrels = self.barrels or bool(ownedItems & {Items.Barrels})
+            self.can_use_vines = self.vines
 
-        progDiddy = item_counts[Items.ProgressiveDiddyPotion]
-        self.charge = self.charge or (Items.ChimpyCharge in ownedItems or progDiddy >= 1) and self.diddy
-        self.jetpack = self.jetpack or (Items.RocketbarrelBoost in ownedItems or progDiddy >= 2) and self.diddy
-        self.spring = self.spring or (Items.SimianSpring in ownedItems or progDiddy >= 3) and self.diddy
+        if not all([self.blast, self.strongKong, self.grab]):
+            progDonkey = item_counts[Items.ProgressiveDonkeyPotion]
+            self.blast = self.blast or bool(ownedItems & {Items.BaboonBlast}) or progDonkey >= 1 and self.donkey
+            self.strongKong = self.strongKong or bool(ownedItems & {Items.StrongKong}) or progDonkey >= 2 and self.donkey
+            self.grab = self.grab or bool(ownedItems & {Items.GorillaGrab}) or progDonkey >= 3 and self.donkey
 
-        progLanky = item_counts[Items.ProgressiveLankyPotion]
-        self.handstand = self.handstand or (Items.Orangstand in ownedItems or progLanky >= 1) and self.lanky
-        self.balloon = self.balloon or (Items.BaboonBalloon in ownedItems or progLanky >= 2) and self.lanky
-        self.sprint = self.sprint or (Items.OrangstandSprint in ownedItems or progLanky >= 3) and self.lanky
+        if not all([self.charge, self.jetpack, self.spring]):
+            progDiddy = item_counts[Items.ProgressiveDiddyPotion]
+            self.charge = self.charge or bool(ownedItems & {Items.ChimpyCharge}) or progDiddy >= 1 and self.diddy
+            self.jetpack = self.jetpack or bool(ownedItems & {Items.RocketbarrelBoost}) or progDiddy >= 2 and self.diddy
+            self.spring = self.spring or bool(ownedItems & {Items.SimianSpring}) or progDiddy >= 3 and self.diddy
 
-        progTiny = item_counts[Items.ProgressiveTinyPotion]
-        self.mini = self.mini or (Items.MiniMonkey in ownedItems or progTiny >= 1) and self.tiny
-        self.twirl = self.twirl or (Items.PonyTailTwirl in ownedItems or progTiny >= 2) and self.tiny
-        self.monkeyport = self.monkeyport or (Items.Monkeyport in ownedItems or progTiny >= 3) and self.tiny
+        if not all([self.handstand, self.balloon, self.sprint]):
+            progLanky = item_counts[Items.ProgressiveLankyPotion]
+            self.handstand = self.handstand or bool(ownedItems & {Items.Orangstand}) or progLanky >= 1 and self.lanky
+            self.balloon = self.balloon or bool(ownedItems & {Items.BaboonBalloon}) or progLanky >= 2 and self.lanky
+            self.sprint = self.sprint or bool(ownedItems & {Items.OrangstandSprint}) or progLanky >= 3 and self.lanky
 
-        progChunky = item_counts[Items.ProgressiveChunkyPotion]
-        self.hunkyChunky = self.hunkyChunky or (Items.HunkyChunky in ownedItems or progChunky >= 1) and self.chunky
-        self.punch = self.punch or (Items.PrimatePunch in ownedItems or progChunky >= 2) and self.chunky
-        self.gorillaGone = self.gorillaGone or (Items.GorillaGone in ownedItems or progChunky >= 3) and self.chunky
+        if not all([self.mini, self.twirl, self.monkeyport]):
+            progTiny = item_counts[Items.ProgressiveTinyPotion]
+            self.mini = self.mini or bool(ownedItems & {Items.MiniMonkey}) or progTiny >= 1 and self.tiny
+            self.twirl = self.twirl or bool(ownedItems & {Items.PonyTailTwirl}) or progTiny >= 2 and self.tiny
+            self.monkeyport = self.monkeyport or bool(ownedItems & {Items.Monkeyport}) or progTiny >= 3 and self.tiny
 
-        self.coconut = self.coconut or Items.Coconut in ownedItems and self.donkey
-        self.peanut = self.peanut or Items.Peanut in ownedItems and self.diddy
-        self.grape = self.grape or Items.Grape in ownedItems and self.lanky
-        self.feather = self.feather or Items.Feather in ownedItems and self.tiny
-        self.pineapple = self.pineapple or Items.Pineapple in ownedItems and self.chunky
+        if not all([self.hunkyChunky, self.punch, self.gorillaGone]):
+            progChunky = item_counts[Items.ProgressiveChunkyPotion]
+            self.hunkyChunky = self.hunkyChunky or bool(ownedItems & {Items.HunkyChunky}) or progChunky >= 1 and self.chunky
+            self.punch = self.punch or bool(ownedItems & {Items.PrimatePunch}) or progChunky >= 2 and self.chunky
+            self.gorillaGone = self.gorillaGone or bool(ownedItems & {Items.GorillaGone}) or progChunky >= 3 and self.chunky
 
-        self.bongos = self.bongos or Items.Bongos in ownedItems and self.donkey
-        self.guitar = self.guitar or Items.Guitar in ownedItems and self.diddy
-        self.trombone = self.trombone or Items.Trombone in ownedItems and self.lanky
-        self.saxophone = self.saxophone or Items.Saxophone in ownedItems and self.tiny
-        self.triangle = self.triangle or Items.Triangle in ownedItems and self.chunky
+        if not all([self.coconut, self.peanut, self.grape, self.feather, self.pineapple]):
+            self.coconut = self.coconut or bool(ownedItems & {Items.Coconut}) and self.donkey
+            self.peanut = self.peanut or bool(ownedItems & {Items.Peanut}) and self.diddy
+            self.grape = self.grape or bool(ownedItems & {Items.Grape}) and self.lanky
+            self.feather = self.feather or bool(ownedItems & {Items.Feather}) and self.tiny
+            self.pineapple = self.pineapple or bool(ownedItems & {Items.Pineapple}) and self.chunky
 
-        self.crankyAccess = self.crankyAccess or Items.Cranky in ownedItems
-        self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
-        self.candyAccess = self.candyAccess or Items.Candy in ownedItems
-        self.snideAccess = self.snideAccess or Items.Snide in ownedItems
+        if not all([self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]):
+            self.bongos = self.bongos or bool(ownedItems & {Items.Bongos}) and self.donkey
+            self.guitar = self.guitar or bool(ownedItems & {Items.Guitar}) and self.diddy
+            self.trombone = self.trombone or bool(ownedItems & {Items.Trombone}) and self.lanky
+            self.saxophone = self.saxophone or bool(ownedItems & {Items.Saxophone}) and self.tiny
+            self.triangle = self.triangle or bool(ownedItems & {Items.Triangle}) and self.chunky
 
-        self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
-        self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
+        if not all([self.camera, self.shockwave, self.scope, self.homing]):
+            self.camera = self.camera or bool(ownedItems & {Items.CameraAndShockwave, Items.Camera})
+            self.shockwave = self.shockwave or bool(ownedItems & {Items.CameraAndShockwave, Items.Shockwave})
+            self.scope = self.scope or bool(ownedItems & {Items.SniperSight})
+            self.homing = self.homing or (bool(ownedItems & {Items.HomingAmmo}) and (Events.ForestEntered in self.Events or Events.CastleEntered in self.Events or self.assumeFillSuccess))
 
-        self.JapesKey = self.JapesKey or Items.JungleJapesKey in ownedItems
-        self.AztecKey = self.AztecKey or Items.AngryAztecKey in ownedItems
-        self.FactoryKey = self.FactoryKey or Items.FranticFactoryKey in ownedItems
-        self.GalleonKey = self.GalleonKey or Items.GloomyGalleonKey in ownedItems
-        self.ForestKey = self.ForestKey or Items.FungiForestKey in ownedItems
-        self.CavesKey = self.CavesKey or Items.CrystalCavesKey in ownedItems
-        self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
-        self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
+        self.superSlam = self.Slam >= 2
+        self.superDuperSlam = self.Slam >= 3
 
-        self.HelmDonkey1 = self.HelmDonkey1 or Items.HelmDonkey1 in ownedItems
-        self.HelmDonkey2 = self.HelmDonkey2 or Items.HelmDonkey2 in ownedItems
-        self.HelmDiddy1 = self.HelmDiddy1 or Items.HelmDiddy1 in ownedItems
-        self.HelmDiddy2 = self.HelmDiddy2 or Items.HelmDiddy2 in ownedItems
-        self.HelmLanky1 = self.HelmLanky1 or Items.HelmLanky1 in ownedItems
-        self.HelmLanky2 = self.HelmLanky2 or Items.HelmLanky2 in ownedItems
-        self.HelmTiny1 = self.HelmTiny1 or Items.HelmTiny1 in ownedItems
-        self.HelmTiny2 = self.HelmTiny2 or Items.HelmTiny2 in ownedItems
-        self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
-        self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
+    def UpdateKeys(self, ownedItems):
+        """Update keys based on owned items."""
+        if all([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey]):
+            return
+        self.JapesKey = self.JapesKey or bool(ownedItems & {Items.JungleJapesKey})
+        self.AztecKey = self.AztecKey or bool(ownedItems & {Items.AngryAztecKey})
+        self.FactoryKey = self.FactoryKey or bool(ownedItems & {Items.FranticFactoryKey})
+        self.GalleonKey = self.GalleonKey or bool(ownedItems & {Items.GloomyGalleonKey})
+        self.ForestKey = self.ForestKey or bool(ownedItems & {Items.FungiForestKey})
+        self.CavesKey = self.CavesKey or bool(ownedItems & {Items.CrystalCavesKey})
+        self.CastleKey = self.CastleKey or bool(ownedItems & {Items.CreepyCastleKey})
+        self.HelmKey = self.HelmKey or bool(ownedItems & {Items.HideoutHelmKey})
 
+    def UpdateHelmKeys(self, ownedItems):
+        """Update helm keys based on owned items."""
+        if all([self.HelmDonkey1, self.HelmDonkey2, self.HelmDiddy1, self.HelmDiddy2, self.HelmLanky1, self.HelmLanky2, self.HelmTiny1, self.HelmTiny2, self.HelmChunky1, self.HelmChunky2]):
+            return
+        self.HelmDonkey1 = self.HelmDonkey1 or bool(ownedItems & {Items.HelmDonkey1})
+        self.HelmDonkey2 = self.HelmDonkey2 or bool(ownedItems & {Items.HelmDonkey2})
+        self.HelmDiddy1 = self.HelmDiddy1 or bool(ownedItems & {Items.HelmDiddy1})
+        self.HelmDiddy2 = self.HelmDiddy2 or bool(ownedItems & {Items.HelmDiddy2})
+        self.HelmLanky1 = self.HelmLanky1 or bool(ownedItems & {Items.HelmLanky1})
+        self.HelmLanky2 = self.HelmLanky2 or bool(ownedItems & {Items.HelmLanky2})
+        self.HelmTiny1 = self.HelmTiny1 or bool(ownedItems & {Items.HelmTiny1})
+        self.HelmTiny2 = self.HelmTiny2 or bool(ownedItems & {Items.HelmTiny2})
+        self.HelmChunky1 = self.HelmChunky1 or bool(ownedItems & {Items.HelmChunky1})
+        self.HelmChunky2 = self.HelmChunky2 or bool(ownedItems & {Items.HelmChunky2})
+
+    def UpdateTrainingChecks(self, ownedItems):
+        """Update training checks based on owned items."""
         has_all = True
         if not self.settings.fast_start_beginning_of_game:
             has_all = all(
@@ -421,41 +541,48 @@ class LogicVarHolder:
             )
         self.allTrainingChecks = self.allTrainingChecks or has_all
 
+    def UpdateUpgrades(self, item_counts):
+        """Update upgrades based on item counts."""
         self.Slam = item_counts[Items.ProgressiveSlam] + STARTING_SLAM
-        if Items.ProgressiveSlam in self.banned_items:  # If slam is banned, prevent logic from owning a better slam
+        if Items.ProgressiveSlam in self.banned_items:
             self.Slam = STARTING_SLAM
         self.AmmoBelts = item_counts[Items.ProgressiveAmmoBelt]
         self.InstUpgrades = item_counts[Items.ProgressiveInstrumentUpgrade]
-        self.Melons = 1
-        if self.bongos or self.guitar or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0:
-            self.Melons = 2
-        if self.InstUpgrades >= 2:
-            self.Melons = 3
+        if self.Melons < 3:
+            self.Melons = 1
+            if self.bongos or self.guitar or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0:
+                self.Melons = 2
+            if self.InstUpgrades >= 2:
+                self.Melons = 3
 
+    def UpdateCollectibles(self, item_counts):
+        """Update collectibles based on item counts."""
         self.GoldenBananas = item_counts[Items.GoldenBanana]
         self.BananaFairies = item_counts[Items.BananaFairy]
         self.BananaMedals = item_counts[Items.BananaMedal]
         self.BattleCrowns = item_counts[Items.BattleCrown]
         self.RainbowCoins = item_counts[Items.RainbowCoin]
 
-        self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
-        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
+    def UpdateAccess(self, ownedItems):
+        """Update access based on owned items."""
+        self.nintendoCoin = self.nintendoCoin or bool(ownedItems & {Items.NintendoCoin})
+        self.rarewareCoin = self.rarewareCoin or bool(ownedItems & {Items.RarewareCoin})
+        self.crankyAccess = self.crankyAccess or bool(ownedItems & {Items.Cranky})
+        self.funkyAccess = self.funkyAccess or bool(ownedItems & {Items.Funky})
+        self.candyAccess = self.candyAccess or bool(ownedItems & {Items.Candy})
+        self.snideAccess = self.snideAccess or bool(ownedItems & {Items.Snide})
 
-        self.scope = self.scope or Items.SniperSight in ownedItems
-        # Having the homing ammo ability also requires having reliable access to homing ammo. This is not a perfect fix, but should cover 99.9% of cases and won't show up in hint paths.
-        self.homing = self.homing or (Items.HomingAmmo in ownedItems and (Events.ForestEntered in self.Events or Events.CastleEntered in self.Events or self.assumeFillSuccess))
+    def UpdateMiscellaneous(self, item_counts, ownedItems):
+        """Update miscellaneous variables based on owned items."""
+        self.found_test_item = self.found_test_item or bool(ownedItems & {Items.TestItem})
 
-        self.superSlam = self.Slam >= 2
-        self.superDuperSlam = self.Slam >= 3
+        self.Blueprints = list(self.blueprint_list.intersection(ownedItems))
+        self.Hints = list(self.hint_list.intersection(ownedItems))
 
-        self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint and x <= Items.DKIslesChunkyBlueprint]
-        self.Hints = [x for x in ownedItems if x >= Items.JapesDonkeyHint and x <= Items.CastleChunkyHint]
-        self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
-        self.Pearls = sum(1 for x in ownedItems if x == Items.Pearl)
+        self.Beans = item_counts[Items.Bean]
+        self.Pearls = item_counts[Items.Pearl]
 
-        self.UpdateCoins()
-
-        self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
+        self.bananaHoard = self.bananaHoard or bool(ownedItems & {Items.BananaHoard})
 
     def GetCoins(self, kong):
         """Get Coin Total for a kong."""
@@ -694,7 +821,7 @@ class LogicVarHolder:
     def ItemCounts(self):
         """Get the amount of items collected in terms of B. Locker-relevant items."""
         # Calculate Colored Bananas count
-        CBCount = sum(sum(lvl) for lvl in self.ColoredBananas)
+        CBCount = sum(map(sum, self.ColoredBananas))
 
         # List of moves
         moves = [

@@ -199,6 +199,27 @@ class Settings:
             self.settings_string = encrypt_settings_string_enum(form_data)
         except Exception as ex:
             raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
+        self.make_read_only
+
+    def make_read_only(self):
+        """Make all settings read-only."""
+        for name in list(self.__dict__.keys()):  # Get all existing attributes
+            private_name = f"_{name}"
+            value = self.__dict__.pop(name)  # Remove from the instance dictionary
+
+            # Store the value in a private attribute
+            setattr(self, private_name, value)
+
+            # Define a getter to access the value
+            def getter(self, private_name=private_name):
+                return getattr(self, private_name)
+
+            # Define a setter to prevent modification
+            def setter(self, value, private_name=private_name):
+                raise AttributeError(f"Cannot modify read-only attribute '{private_name[1:]}'")
+
+            # Define a property dynamically and add it to the class
+            setattr(self.__class__, name, property(getter, setter))
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -1998,7 +2019,7 @@ class Settings:
             valid_locations = self.valid_locations[item_obj.type][item_obj.kong]
         else:
             valid_locations = self.valid_locations[item_obj.type]
-        return valid_locations
+        return set(valid_locations)
 
     def SelectKongLocations(self):
         """Select which random kong locations to use depending on number of starting kongs."""
