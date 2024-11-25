@@ -72,7 +72,11 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Medium Random: 40%
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
-- Crown Enemy Randomizer: 95%
+- Crown Enemy Randomizer: 
+	- Off: 10%
+	- Easy: 30%
+	- Medium: 40%
+	- Hard: 20%
 - Crown Placement Rando: 30%
 - Damage Multiplier: 
 	- Default: 50%
@@ -84,6 +88,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
+- Shuffle Enemies: 95%
 - Enemy Speed Rando: 50%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 

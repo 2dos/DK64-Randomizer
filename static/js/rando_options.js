@@ -972,6 +972,16 @@ document
     plando_disable_krool_phases_as_bosses(evt);
 });
 
+// Randomize all non-cosmetic settings.
+document.getElementById("randomize_settings").addEventListener("click", function (evt) {
+  generateToast(`Randomizing settings (${document.getElementById('random-weights').value}).<br>All non-cosmetic settings have been overwritten.`);
+
+  randomize_settings();
+
+  // Run additional functions to ensure there are no conflicts.
+  update_ui_states(evt);
+});
+
 // Disable Boss Kong and Boss Location Rando if Vanilla levels and Kong Rando
 document.getElementById("kong_rando").addEventListener("click", function (evt) {
   const level = document.getElementById("level_randomization");
