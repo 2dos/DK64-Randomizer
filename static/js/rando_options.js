@@ -2017,6 +2017,16 @@ function moveSelectedStartingMoves(target_list_id) {
   savesettings();
 }
 
+function startingMovesFullReset() {
+  for (let i = 2; i <= 5; i++) {
+    const move_selector = document.getElementById(`starting_moves_list_${i}`);
+    for (const move of move_selector.options) {
+      move.selected = true;
+    }
+  }
+  moveSelectedStartingMoves(1);
+}
+
 // Min-Max validation for inputs
 function minMax(event, min, max) {
   try {

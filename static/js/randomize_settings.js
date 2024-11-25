@@ -183,16 +183,14 @@ function randomize_settings() {
     }
 
     const randSettings = {};
-    const ignoredSettings = [
+    const ignoredFields = [
         "name",
         "description",
-        "random_starting_move_list_selected",
-        "starting_move_list_selected",
     ];
 
     // Start by generating random values and placing them in the object.
     for (const [settingName, weights] of Object.entries(weightData)) {
-        if (ignoredSettings.includes(settingName)) {
+        if (ignoredFields.includes(settingName)) {
             continue;
         }
 
@@ -239,6 +237,9 @@ function randomize_settings() {
     if (randSettings["bananaport_placement_rando"] === "off") {
         randSettings["warp_level_list_selected"] = [];
     }
+
+    // Reset all starting moves, placing them all into a single list.
+    startingMovesFullReset();
 
     // Now we assign the random values to the HTML settings.
     for (const [settingName, settingVal] of Object.entries(randSettings)) {
