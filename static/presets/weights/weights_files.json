@@ -354,6 +354,11 @@
     "starting_kong": {
       "any": 1
     },
+    "starting_moves_count": {
+      "min": 4,
+      "max": 10,
+      "mean": 4
+    },
     "starting_moves_list_count_1": {
       "min": 4,
       "max": 10,
@@ -767,6 +772,11 @@
     "starting_keys_list_selected": {},
     "starting_kong": {
       "any": 1
+    },
+    "starting_moves_count": {
+      "min": 2,
+      "max": 10,
+      "mean": 4
     },
     "starting_moves_list_count_1": {
       "min": 2,
@@ -1231,6 +1241,11 @@
     "starting_kong": {
       "any": 1
     },
+    "starting_moves_count": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
+    },
     "starting_moves_list_count_1": {
       "min": 0,
       "max": 10,
@@ -1693,6 +1708,11 @@
     "starting_keys_list_selected": {},
     "starting_kong": {
       "any": 1
+    },
+    "starting_moves_count": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
     },
     "starting_moves_list_count_1": {
       "min": 0,
