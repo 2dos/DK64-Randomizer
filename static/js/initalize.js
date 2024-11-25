@@ -507,6 +507,13 @@ function savesettings() {
       }
       json[element.name] = values;
     }
+    if (element.id.startsWith("starting_moves_list_")) {
+      let moves = []
+      for (let option of element.options) {
+        moves.push(option.id.slice(14));
+      }
+      json[element.id] = moves;
+    }
   }
   var starting_move_box_buttons = $(
     ":input[name^='starting_move_box_']:checked"
@@ -1166,18 +1173,20 @@ function preset_select_changed(event) {
               }
               document.getElementsByName(key)[0].removeAttribute("disabled");
           } else if (Array.isArray(settings[key])) {
+              // Removed settings with the starting moves rework
               if (key === "starting_move_list_selected" || key === "random_starting_move_list_selected") {
-                  settings[key].forEach(item => {
-                      const radioButtons = document.getElementsByName("starting_move_box_" + String(item));
-                      if (key === "starting_move_list_selected") {
-                          const startButton = Array.from(radioButtons).find(button => button.id.startsWith("start"));
-                          startButton.checked = true;
-                      } else {
-                          const randomButton = Array.from(radioButtons).find(button => button.id.startsWith("random"));
-                          randomButton.checked = true;
-                      }
-                  });
                   continue;
+              }
+
+              if (key.startsWith("starting_moves_list_")) {
+                select = document.getElementById(key);
+                settings[key].forEach(value => {
+                    let existing_option = document.getElementById("starting_move_" + value);
+                    const parentSelect = existing_option.parentNode;
+                    parentSelect.removeChild(existing_option);
+                    select.appendChild(existing_option);
+                });
+                continue;
               }
 
               const selector = document.getElementById(key);
@@ -1398,6 +1407,17 @@ function load_settings(json) {
       if (key.includes("starting_move_box")) {
         elements.forEach((button) => {
           button.checked = button.id.includes(value);
+        });
+        return;
+      }
+
+      if (element.name.startsWith("starting_moves_list_") && !element.name.startsWith("starting_moves_list_count")) {
+        select = document.getElementById(key);
+        json[key].forEach(value => {
+            let existing_option = document.getElementById("starting_move_" + value);
+            const parentSelect = existing_option.parentNode;
+            parentSelect.removeChild(existing_option);
+            select.appendChild(existing_option);
         });
         return;
       }

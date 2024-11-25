@@ -64,8 +64,6 @@ def PlaceConstants(spoiler):
             typesOfItemsShuffled.append(Types.TrainingBarrel)
         if settings.climbing_status == ClimbingStatus.shuffled:
             typesOfItemsShuffled.append(Types.Climbing)
-        if settings.shockwave_status != ShockwaveStatus.vanilla:
-            typesOfItemsShuffled.append(Types.Shockwave)
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         typesOfItemsShuffled.append(Types.Key)
     typesOfItemsShuffled.extend(settings.shuffled_location_types)
@@ -75,6 +73,9 @@ def PlaceConstants(spoiler):
     for location in spoiler.LocationList:
         if spoiler.LocationList[location].type in typesOfItemsNotShuffled:
             spoiler.LocationList[location].PlaceDefaultItem(spoiler)
+            # If we're placing a vanilla training move, we have to make the location available
+            if spoiler.LocationList[location].type in (Types.TrainingBarrel, Types.Climbing, Types.PreGivenMove):
+                spoiler.LocationList[location].inaccessible = False
         else:
             spoiler.LocationList[location].constant = False
             spoiler.LocationList[location].item = None
@@ -119,10 +120,9 @@ def PlaceConstants(spoiler):
         spoiler.LocationList[Locations.LankyKong].PlaceConstantItem(spoiler, Items.NoItem)
         spoiler.LocationList[Locations.TinyKong].PlaceConstantItem(spoiler, Items.NoItem)
         spoiler.LocationList[Locations.ChunkyKong].PlaceConstantItem(spoiler, Items.NoItem)
-    if settings.shockwave_status == ShockwaveStatus.start_with:
-        spoiler.LocationList[Locations.CameraAndShockwave].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.start_with_slam:
         spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(spoiler, Items.ProgressiveSlam)
+        spoiler.LocationList[Locations.IslesFirstMove].inaccessible = False
 
     # Plando items are placed with constants but should not change locations to Constant type
     settings.plandomizer_items_placed = []
@@ -740,6 +740,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(CandyItems())
     if Types.Snide in unplacedTypes:
         itemPool.extend(SnideItems())
+    if Types.Shockwave in unplacedTypes:
+        itemPool.extend(ShockwaveTypeItems(settings))
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())
@@ -755,8 +757,6 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
             itemPool.extend(TrainingBarrelAbilities().copy())
         if settings.climbing_status == ClimbingStatus.shuffled:
             itemPool.extend(ClimbingAbilities().copy())
-        if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
-            itemPool.extend(ShockwaveTypeItems(settings))
     # With a list of specifically placed items, we can't assume those
     for item in placed_items:
         if item in itemPool:

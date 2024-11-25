@@ -224,15 +224,11 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Caves Igloo Pads: 100%
 	- Caves Ice Walls: 100%
 - No Joke Hints: 70%
-- Banana Fairy Island Move Status: 
-	- Vanilla: 30%
-	- Shuffled: 20%
-	- Start With: 50%
 - Shuffle Shop Locations: 50%
 - Smaller Shops: 50%
 - Starting Kong: 
 	- Any: 100%
-- Random Starting Move Count: Between 4 and 10, usually close to 4
+- Starting Moves Count: Between 4 and 10, usually close to 4
 - Switchsanity: 
 	- Off: 100%
 - Troff n' Scoff Max: Between 100 and 300, usually close to 200

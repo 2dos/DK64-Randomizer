@@ -339,6 +339,12 @@ StartingMoveOptions = [
     Items.ProgressiveInstrumentUpgrade,
     Items.ProgressiveInstrumentUpgrade2,
     Items.ProgressiveInstrumentUpgrade3,
+    Items.Cranky,
+    Items.Funky,
+    Items.Candy,
+    Items.Snide,
+    Items.Camera,
+    Items.Shockwave,
 ]
 
 for item in StartingMoveOptions:
