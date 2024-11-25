@@ -279,7 +279,7 @@ LogicRegions = {
         Event(Events.GrinderActivated, lambda l: l.punch and l.triangle and l.ischunky),
         Event(Events.MillBoxBroken, lambda l: l.punch and l.ischunky),
     ], [
-        TransitionFront(Regions.MillArea, lambda l: l.ischunky, Transitions.ForestChunkyMillToMain, time=Time.Day),
+        TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestChunkyMillToMain, time=Time.Day),
         TransitionFront(Regions.MillArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.CanPhase() or l.ledgeclip, Transitions.ForestTinyMillToMain),
         TransitionFront(Regions.SpiderRoom, lambda l: True, Transitions.ForestTinyMillToSpider, time=Time.Night),
         TransitionFront(Regions.GrinderRoom, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.ledgeclip, Transitions.ForestTinyMillToGrinder),

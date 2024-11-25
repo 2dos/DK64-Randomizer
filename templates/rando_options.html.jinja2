@@ -76,7 +76,7 @@
                 <div class="flex-column-container" style="flex-grow: 1">
                     <div class="item-select" style="margin-top: 0; max-height: 34px;">
                         <button
-                            class="btn btn-secondary"
+                            class="btn btn-secondary btn-custom-large"
                             type="button"
                             href="#"
                             id="starting_moves_modal"
@@ -84,7 +84,7 @@
                             data-bs-toggle="modal"
                             data-bs-target="#starting_moves_Modal"
                             data-toggle="tooltip"
-                            title="Choose your starting moves and your pool of moves you can randomly start with.">
+                            title="Customize your starting moves. Start with more items, fewer items, certain items, and more.">
                             Customize Starting Moves
                             <span id="shared_shop_warning" data-toggle="tooltip" title="When all moves are purchased in shops, you are extremely likely to run into fill problems if you do not start with enough shared moves! Seeds that do generate will have fill biases - consider starting with training moves.">
                                 <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 18 18" class="warning-icon" style="overflow: visible; margin-bottom: 7px;" stroke="#ffff00" fill="#ffff00">
@@ -92,21 +92,6 @@
                                 </svg>
                             </span>
                         </button>
-                    </div>
-                    <div class="item-select">
-                        <p class="select-title">Random Starting Move Count</p>
-                        <input min="0"
-                                max="41"
-                                display_name="Random Starting Move Count"
-                                name="starting_moves_count"
-                                id="starting_moves_count"
-                                style="width: 15%; display: inline-block; margin-top: 0;"
-                                class="form-control center-div"
-                                type="number"
-                                data-toggle="tooltip"
-                                title="Amount of moves given at the start of a new seed chosen randomly."
-                                default="0"
-                                placeholder="0"/>
                     </div>
                 </div>
             </div>
@@ -407,29 +392,6 @@
                     </select>
                 </div>
                 <div class="item-select">
-                    <p class="select-title">Banana Fairy Isle</p>
-                    <select name="shockwave_status"
-                            id="shockwave_status"
-                            display_name="Banana Fairy Island Move Status"
-                            class="form-select"
-                            aria-label="Randomization type"
-                            data-toggle="tooltip"
-                            title="Determines how Banana Fairy Isle is handled.&#10;-Vanilla: Shockwave and Camera are given at BFI.&#10;-Shuffle: Camera and Shockwave are shuffled with other moves and BFI can hold a shared or Tiny move.&#10;-Shuffle Separately: Same as Shuffle but Camera and Shockwave are separate upgrades.&#10;-Start With: Start with Camera and Shockwave. BFI will have nothing.">
-                        <option id="shockwave_status_vanilla" value="vanilla">
-                            Vanilla
-                        </option>
-                        <option id="shockwave_status_shuffled" value="shuffled">
-                            Shuffle
-                        </option>
-                        <option id="shockwave_status_shuffled_decoupled" value="shuffled_decoupled">
-                            Shuffle Separately
-                        </option>
-                        <option id="shockwave_status_start_with" value="start_with">
-                            Start With
-                        </option>
-                    </select>
-                </div>
-                <div class="item-select">
                     <p class="select-title">Cross-Map Bananaports</p>
                     <div class="customize-select">
                     <select name="bananaport_rando"
@@ -481,7 +443,7 @@
      tabindex="-1"
      aria-labelledby="starting_moves_ModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 1250px;">
         <div class="modal-content modal-content-tall">
             <div class="modal-header">
                 <h3 class="modal-title title" id="starting_moves_ModalLabel">CUSTOMIZE STARTING MOVES</h3>
@@ -491,20 +453,108 @@
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="flex-column-container" id="starting_moves_box">
-                    {% for item in custom_starting_moves %}
-                        <div class="flex-container starting-move-row px-auto justify-content-center">
-                            <div class="my-auto" style="width: 185px;">
-                                {{ item.name }}
-                            </div>
-                            <input class="btn-check" name="starting_move_box_{{ item.value }}" id="none-{{ item.value }}" type="radio" autocomplete="off">
-                            <label class="btn-always-empty my-auto ms-1" for="none-{{ item.value }}">Reset</label>
-                            <input class="btn-check" name="starting_move_box_{{ item.value }}" id="start-{{ item.value }}" type="radio" autocomplete="off">
-                            <label class="btn btn-sm btn-outline-secondary my-auto ms-1" for="start-{{ item.value }}">Start With</label>
-                            <input class="btn-check" name="starting_move_box_{{ item.value }}" id="random-{{ item.value }}" type="radio" autocomplete="off">
-                            <label class="btn btn-sm btn-outline-secondary my-auto ms-1" for="random-{{ item.value }}">Random</label>
-                        </div>
-                    {% endfor %}
+                Place your items into a number of item pools, then choose how many of each pool's items you want given to you at the start of the seed.
+                <br/>
+                To move items, select them from any list and click the item pool you want them to be in.
+                <div class="flex-container" style="justify-content: space-around;">
+                    <div class="flex-column-container">
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_1">Pool 1</button>
+                        <select id="starting_moves_list_1" name="starting_moves_list_1" class="starting_moves_list multi-select" multiple>
+                            {% for item in custom_starting_moves %}
+                                <option id="starting_move_{{item.value}}" class="starting_moves_option">{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_1"
+                                id="starting_moves_list_count_1"
+                                style="width: 15%; display: inline-block; margin-top: 0;"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div class="flex-column-container">
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_2">Pool 2</button>
+                        <select id="starting_moves_list_2" name="starting_moves_list_2" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_2"
+                                id="starting_moves_list_count_2"
+                                style="width: 15%; display: inline-block; margin-top: 0;"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div class="flex-column-container">
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_3">Pool 3</button>
+                        <select id="starting_moves_list_3" name="starting_moves_list_3" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_3"
+                                id="starting_moves_list_count_3"
+                                style="width: 15%; display: inline-block; margin-top: 0;"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div class="flex-column-container">
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_4">Pool 4</button>
+                        <select id="starting_moves_list_4" name="starting_moves_list_4" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_4"
+                                id="starting_moves_list_count_4"
+                                style="width: 15%; display: inline-block; margin-top: 0;"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div class="flex-column-container">
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_5">Pool 5</button>
+                        <select id="starting_moves_list_5" name="starting_moves_list_5" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_5"
+                                id="starting_moves_list_count_5"
+                                style="width: 15%; display: inline-block; margin-top: 0;"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -520,5 +570,5 @@
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
         })
-    })
+    });
 </script>

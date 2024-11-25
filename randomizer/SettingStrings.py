@@ -100,7 +100,6 @@ settingsExclusionMap = {
         ]
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
-    "starting_moves_count": {0: ["random_starting_move_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
     "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
@@ -144,7 +143,7 @@ def prune_settings(settings_dict: dict):
     settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections"]
     # Remove settings based on the exclusion map above.
     for keySetting, exclusions in settingsExclusionMap.items():
-        if settings_dict[keySetting] in exclusions:
+        if keySetting in settings_dict.keys() and settings_dict[keySetting] in exclusions:
             settings_to_remove.extend(exclusions[settings_dict[keySetting]])
     # Remove any deprecated settings.
     for pop in settings_to_remove:
@@ -232,6 +231,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "fill_with_custom_music",
         "show_song_name",
         "delayed_spoilerlog_release",
+        "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

@@ -1,9 +1,6 @@
 function toggle_logic_type(event) {
   /** Toggle settings based on the presence of logic. */
 
-  // Call the function to toggle extreme prices based on the event
-  toggle_extreme_prices_option(event);
-
   // Get the glitch customization modal element
   let glitchCustomization = document.getElementById("glitches_modal");
 
@@ -660,63 +657,6 @@ function toggle_medals_box() {
   }
 }
 
-document
-  .getElementById("random_medal_requirement")
-  .addEventListener("click", toggle_medals_box);
-
-// Determine the visibility of the extreme prices option
-function toggle_extreme_prices_option() {
-  const unlockedShockwave =
-    document.getElementById("shockwave_status").value === "start_with";
-  const logicDisabled =
-    document.getElementById("logic_type").value === "nologic";
-  const option = document.getElementById("extreme_price_option");
-
-  if (unlockedShockwave || logicDisabled) {
-    option.removeAttribute("disabled");
-  } else {
-    option.setAttribute("disabled", "disabled");
-    const priceOption = document.getElementById("random_prices");
-    if (priceOption.value === "extreme") {
-      priceOption.value = "high";
-    }
-  }
-}
-
-document
-  .getElementById("shockwave_status")
-  .addEventListener("change", toggle_extreme_prices_option);
-
-// Disable placement of camera/shockwave if they are not shuffled
-function plando_disable_camera_shockwave() {
-  const shockwaveStatus = document.getElementById("shockwave_status").value;
-  const itemDropdowns = document.getElementsByClassName("plando-item-select");
-  const moveOptions = document.getElementsByClassName(
-    "plando-camera-shockwave-option"
-  );
-  const disabled =
-    shockwaveStatus === "start_with" || shockwaveStatus === "vanilla";
-
-  if (disabled) {
-    for (let option of moveOptions) {
-      option.setAttribute("disabled", "disabled");
-    }
-    for (let dropdown of itemDropdowns) {
-      if (dropdown.value === "Camera" || dropdown.value === "Shockwave") {
-        dropdown.value = "";
-      }
-    }
-  } else {
-    for (let option of moveOptions) {
-      option.removeAttribute("disabled");
-    }
-  }
-}
-
-document
-  .getElementById("shockwave_status")
-  .addEventListener("change", plando_disable_camera_shockwave);
-
 // Enable and disable the Plandomizer tab
 async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
@@ -952,7 +892,6 @@ document
   .addEventListener("click", function (evt) {
     disable_krool_phases(evt);
     disable_helm_phases(evt);
-    plando_disable_camera_shockwave(evt);
     plando_toggle_custom_locations_tab(evt);
     plando_toggle_custom_arena_locations(evt);
     plando_toggle_custom_patch_locations(evt);
@@ -1119,46 +1058,14 @@ document
 function disable_move_shuffles() {
   const moves = document.getElementById("move_rando");
   const prices = document.getElementById("random_prices");
-  const trainingBarrels = document.getElementById("training_barrels");
-  const shockwaveStatus = document.getElementById("shockwave_status");
-  const startingMovesCount = document.getElementById("starting_moves_count");
-  const startWithSlam = document.getElementById("start_with_slam");
   if (moves) {
     if (moves.value === "start_with" || moves.value === "off") {
       if (prices) {
         prices.setAttribute("disabled", "disabled");
       }
-      if (trainingBarrels) {
-        trainingBarrels.value = "normal";
-        trainingBarrels.setAttribute("disabled", "disabled");
-      }
-      if (shockwaveStatus) {
-        shockwaveStatus.value = "vanilla";
-        shockwaveStatus.setAttribute("disabled", "disabled");
-      }
-      if (startingMovesCount) {
-        startingMovesCount.value = 41;
-        startingMovesCount.setAttribute("disabled", "disabled");
-      }
-      if (startWithSlam) {
-        startWithSlam.checked = true;
-        startWithSlam.setAttribute("disabled", "disabled");
-      }
     } else {
       if (prices) {
         prices.removeAttribute("disabled");
-      }
-      if (trainingBarrels) {
-        trainingBarrels.removeAttribute("disabled");
-      }
-      if (shockwaveStatus) {
-        shockwaveStatus.removeAttribute("disabled");
-      }
-      if (startingMovesCount) {
-        startingMovesCount.removeAttribute("disabled");
-      }
-      if (startWithSlam) {
-        startWithSlam.removeAttribute("disabled");
       }
     }
   }
@@ -1175,7 +1082,6 @@ function toggle_item_rando() {
     "item_rando_list_selected"
   ).options;
   const smallerShops = document.getElementById("smaller_shops");
-  const shockwave = document.getElementById("shockwave_status_shuffled");
   const moveVanilla = document.getElementById("move_off");
   const moveRando = document.getElementById("move_on");
   const enemyDropRando = document.getElementById("enemy_drop_rando");
@@ -1210,7 +1116,6 @@ function toggle_item_rando() {
     selector.setAttribute("disabled", "disabled");
     smallerShops.setAttribute("disabled", "disabled");
     smallerShops.checked = false;
-    shockwave.removeAttribute("disabled");
     moveVanilla.removeAttribute("disabled");
     moveRando.removeAttribute("disabled");
     enemyDropRando.setAttribute("disabled", "disabled");
@@ -1226,21 +1131,14 @@ function toggle_item_rando() {
     if (shopsInPool) {
       sharedShopWarning.setAttribute("hidden", "hidden");
 
-      if (shockwave.selected) {
-        document.getElementById(
-          "shockwave_status_shuffled_decoupled"
-        ).selected = true;
-      }
       if (moveVanilla.selected || moveRando.selected) {
         document.getElementById("move_on_cross_purchase").selected = true;
       }
 
-      shockwave.setAttribute("disabled", "disabled");
       moveVanilla.setAttribute("disabled", "disabled");
       moveRando.setAttribute("disabled", "disabled");
       smallerShops.removeAttribute("disabled");
 
-      document.getElementById("shockwave_status").removeAttribute("disabled");
       document.getElementById("random_prices").removeAttribute("disabled");
     }
 
@@ -1272,7 +1170,6 @@ function item_rando_list_changed(evt) {
   const itemRandoPool = document.getElementById(
     "item_rando_list_selected"
   ).options;
-  const shockwave = document.getElementById("shockwave_status_shuffled");
   const smallerShops = document.getElementById("smaller_shops");
   const moveVanilla = document.getElementById("move_off");
   const moveRando = document.getElementById("move_on");
@@ -1280,40 +1177,78 @@ function item_rando_list_changed(evt) {
   const kongRando = document.getElementById("kong_rando");
   let shopsInPool = false;
   let kongsInPool = false;
+  let shockwaveInPool = false;
+  let shopownersInPool = false;
   let nothingSelected = true;
 
   for (let option of itemRandoPool) {
     if (option.value === "shop" && option.selected) shopsInPool = true;
     if (option.value === "kong" && option.selected) kongsInPool = true;
+    if (option.value === "shockwave" && option.selected) shockwaveInPool = true;
+    if (option.value === "shopowners" && option.selected) shopownersInPool = true;
     if (option.selected) nothingSelected = false;
   }
 
   if (nothingSelected) {
     shopsInPool = true;
     kongsInPool = true;
+    shockwaveInPool = true;
+    shopownersInPool = true;
   }
 
   if (document.getElementById("shuffle_items").checked) {
     itemRandoDisabled = false;
   }
 
+  let camera_option = document.getElementById("starting_move_52");
+  let shockwave_option = document.getElementById("starting_move_53");
+  let cranky_option = document.getElementById("starting_move_92");
+  let funky_option = document.getElementById("starting_move_93");
+  let candy_option = document.getElementById("starting_move_94");
+  let snide_option = document.getElementById("starting_move_95");
+
+  if (itemRandoDisabled) {
+    camera_option.setAttribute("hidden", "hidden");
+    shockwave_option.setAttribute("hidden", "hidden");
+    cranky_option.setAttribute("hidden", "hidden");
+    funky_option.setAttribute("hidden", "hidden");
+    candy_option.setAttribute("hidden", "hidden");
+    snide_option.setAttribute("hidden", "hidden");
+  }
+
   if (shopsInPool && !itemRandoDisabled) {
     sharedShopWarning.setAttribute("hidden", "hidden");
-    if (shockwave.selected) {
-      document.getElementById(
-        "shockwave_status_shuffled_decoupled"
-      ).selected = true;
-    }
     if (moveVanilla.selected || moveRando.selected) {
       document.getElementById("move_on_cross_purchase").selected = true;
     }
-    shockwave.setAttribute("disabled", "disabled");
     moveVanilla.setAttribute("disabled", "disabled");
     moveRando.setAttribute("disabled", "disabled");
     smallerShops.removeAttribute("disabled");
+
+    
+    if (!shockwaveInPool) {
+      camera_option.setAttribute("hidden", "hidden");
+      shockwave_option.setAttribute("hidden", "hidden");
+    }
+    else {
+      camera_option.removeAttribute("hidden");
+      shockwave_option.removeAttribute("hidden");
+    }
+    if (!shopownersInPool) {
+      cranky_option.setAttribute("hidden", "hidden");
+      funky_option.setAttribute("hidden", "hidden");
+      candy_option.setAttribute("hidden", "hidden");
+      snide_option.setAttribute("hidden", "hidden");
+    }
+    else {
+      cranky_option.removeAttribute("hidden");
+      funky_option.removeAttribute("hidden");
+      candy_option.removeAttribute("hidden");
+      snide_option.removeAttribute("hidden");
+    }
+
   } else {
     sharedShopWarning.removeAttribute("hidden");
-    shockwave.removeAttribute("disabled");
     moveVanilla.removeAttribute("disabled");
     moveRando.removeAttribute("disabled");
     smallerShops.setAttribute("disabled", "disabled");
@@ -1645,37 +1580,37 @@ document
     }
   });
 
-// Validate starting moves count input on loss of focus
-// Function to handle validation of starting moves count
-function max_starting_moves_count() {
-  const moveCount = document.getElementById("starting_moves_count");
-  const moves = document.getElementById("move_rando");
-  const itemRando = document.getElementById("shuffle_items");
-  let maxStartingMoves = 41;
+// // Validate starting moves count input on loss of focus
+// // Function to handle validation of starting moves count
+// function max_starting_moves_count() {
+//   const moveCount = document.getElementById("starting_moves_count");
+//   const moves = document.getElementById("move_rando");
+//   const itemRando = document.getElementById("shuffle_items");
+//   let maxStartingMoves = 41;
 
-  if (!itemRando.checked && moves.value !== "off") {
-    maxStartingMoves = 4;
-  }
+//   if (!itemRando.checked && moves.value !== "off") {
+//     maxStartingMoves = 4;
+//   }
 
-  if (!moveCount.value) {
-    moveCount.value = 4;
-  } else if (parseInt(moveCount.value) < 0) {
-    moveCount.value = 0;
-  } else if (parseInt(moveCount.value) > maxStartingMoves) {
-    moveCount.value = maxStartingMoves;
-  }
-}
+//   if (!moveCount.value) {
+//     moveCount.value = 4;
+//   } else if (parseInt(moveCount.value) < 0) {
+//     moveCount.value = 0;
+//   } else if (parseInt(moveCount.value) > maxStartingMoves) {
+//     moveCount.value = maxStartingMoves;
+//   }
+// }
 
 // Adding event listeners for shuffle_items, move_rando, and starting_moves_count
-document
-  .getElementById("shuffle_items")
-  .addEventListener("click", max_starting_moves_count);
-document
-  .getElementById("move_rando")
-  .addEventListener("change", max_starting_moves_count);
-document
-  .getElementById("starting_moves_count")
-  .addEventListener("focusout", max_starting_moves_count);
+// document
+//   .getElementById("shuffle_items")
+//   .addEventListener("click", max_starting_moves_count);
+// document
+//   .getElementById("move_rando")
+//   .addEventListener("change", max_starting_moves_count);
+// document
+//   .getElementById("starting_moves_count")
+//   .addEventListener("focusout", max_starting_moves_count);
 
 // Update Door 1 Number Access
 function update_door_one_num_access() {
@@ -2013,6 +1948,65 @@ document
     }
   });
 
+$(document).on('mousedown', 'select option.starting_moves_option', function (e) {
+    this.selected = !this.selected;
+    e.preventDefault();
+});
+
+document
+  .getElementById("starting_moves_list_mover_1")
+  .addEventListener("click", function (event) {
+    moveSelectedStartingMoves(1);
+  });
+
+document
+  .getElementById("starting_moves_list_mover_2")
+  .addEventListener("click", function (event) {
+    moveSelectedStartingMoves(2);
+  });
+
+document
+  .getElementById("starting_moves_list_mover_3")
+  .addEventListener("click", function (event) {
+    moveSelectedStartingMoves(3);
+  });
+
+document
+  .getElementById("starting_moves_list_mover_4")
+  .addEventListener("click", function (event) {
+    moveSelectedStartingMoves(4);
+  });
+
+document
+  .getElementById("starting_moves_list_mover_5")
+  .addEventListener("click", function (event) {
+    moveSelectedStartingMoves(5);
+  });
+
+function moveSelectedStartingMoves(target_list_id) {
+  let selected_moves = [];
+  for (let i = 1; i <= 5; i++) {
+    const move_selector = document.getElementById("starting_moves_list_" + i);
+    for (let j = 0; j < move_selector.options.length; j++) {
+      const move = move_selector.options[j];
+      if (move.selected) {
+        selected_moves.push(move);
+        move_selector.options.remove(j);
+        j--;
+      }
+    }
+  }
+  const target_selector = document.getElementById("starting_moves_list_" + target_list_id);
+  for (let i = 0; i < selected_moves.length; i++) {
+    let moved_move = document.createElement('option');
+    moved_move.id = selected_moves[i].id;
+    moved_move.text = selected_moves[i].text;
+    moved_move.classList = selected_moves[i].classList;
+    target_selector.appendChild(moved_move);
+  }
+  savesettings();
+}
+
 // Min-Max validation for inputs
 function minMax(event, min, max) {
   try {
@@ -2080,7 +2074,7 @@ function update_ui_states() {
   disable_faster_checks(null);
   toggle_logic_type(null);
   toggle_key_settings(null);
-  max_starting_moves_count(null);
+  //max_starting_moves_count(null);
   update_door_one_num_access(null);
   update_door_two_num_access(null);
   update_win_con_num_access(null);
@@ -2089,7 +2083,6 @@ function update_ui_states() {
   disable_helm_phases(null);
   enable_plandomizer(null);
   toggle_medals_box(null);
-  toggle_extreme_prices_option(null);
   toggle_vanilla_door_rando(null);
   validate_fast_start_status(null);
 
