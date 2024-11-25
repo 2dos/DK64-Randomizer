@@ -294,7 +294,7 @@
     "open_lobbies": 0.9,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 60,
       "mean": 45
@@ -711,7 +711,7 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 60
@@ -1180,7 +1180,7 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 70
@@ -1648,7 +1648,7 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 0.5,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 70

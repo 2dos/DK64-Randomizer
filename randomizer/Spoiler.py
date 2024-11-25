@@ -377,7 +377,7 @@ class Spoiler:
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
         settings["Hint Preset"] = self.settings.wrinkly_hints
         if self.settings.progressive_hint_item != ProgressiveHintItem.off:
-            settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_text)
+            settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_count)
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
         settings["Item Reward Previews"] = self.settings.item_reward_previews

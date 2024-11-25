@@ -5,6 +5,7 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Settings import Settings
 from randomizer.Patching.Lib import TableNames, getRawFile, writeRawFile
 
+
 def FlipDisplayList(ROM_COPY: LocalROM, data: bytearray, start: int, end: int, table: int, file: int):
     """Flip the 2nd and 3rd vertices on any G_TRI, G_TRI2 or G_QUAD f3dex2 call."""
     instruction_count = int((end - start) / 8)
@@ -19,6 +20,7 @@ def FlipDisplayList(ROM_COPY: LocalROM, data: bytearray, start: int, end: int, t
                 data[ins_start + offset + 1] = v1
     writeRawFile(table, file, True, data, ROM_COPY)
 
+
 def readDataFromBytestream(data: bytearray, offset: int, size: int) -> int:
     """Read data from a byte stream and output an int."""
     value = 0
@@ -26,6 +28,7 @@ def readDataFromBytestream(data: bytearray, offset: int, size: int) -> int:
         value <<= 8
         value += data[offset + x]
     return value
+
 
 def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
     """Apply all Mirror Mode changes."""
@@ -48,4 +51,3 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
                 dl_start = readDataFromBytestream(data, 0x40, 4)
                 dl_end = readDataFromBytestream(data, 0x48, 4)
             FlipDisplayList(ROM_COPY, data, dl_start, dl_end, tbl, file_index)
-            

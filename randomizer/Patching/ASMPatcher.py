@@ -89,7 +89,7 @@ ENABLE_HELM_GBS = True
 ENABLE_BLAST_LZR = False
 POP_TARGETTING = True
 UNSHROUDED_CASTLE = True
-FARPLANE_VIEW = True
+FARPLANE_VIEW = False
 KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 
 WARPS_JAPES = [
@@ -1515,7 +1515,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x806C4654, Overlay.Static, "spawnMinecartReward", offset_dict)  # Spawn Squawks Reward - Minecart
         writeFunction(ROM_COPY, 0x8002501C, Overlay.Bonus, "spawnCrownReward", offset_dict)  # Crown Spawn
         writeFunction(ROM_COPY, 0x80028650, Overlay.Boss, "spawnBossReward", offset_dict)  # Key Spawn
-        
+
         writeFunction(ROM_COPY, 0x80027E68, Overlay.Critter, "fairyQueenCutsceneInit", offset_dict)  # BFI, Init Cutscene Setup
         writeFunction(ROM_COPY, 0x80028104, Overlay.Critter, "fairyQueenCutsceneCheck", offset_dict)  # BFI, Cutscene Play
         # Flag Stuff
@@ -2882,7 +2882,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80657F7C, Overlay.Static, 0x0046082A, offset_dict, 4)
         # Fix cannon game
         writeValue(ROM_COPY, 0x807599B0, Overlay.Static, 0xBF, offset_dict, 1)
-
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold

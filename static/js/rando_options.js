@@ -1436,7 +1436,7 @@ function update_prog_hint_num_access() {
 
   const progHintSelection = document.getElementById("progressive_hint_item");
   const progHintContainer = document.getElementById("progressive_hint_container");
-  const progHintReq = document.getElementById("progressive_hint_text");
+  const progHintReq = document.getElementById("progressive_hint_count");
   const disabled = DISABLED_PROG_VALUES.includes(progHintSelection.value);
 
   if (disabled) {

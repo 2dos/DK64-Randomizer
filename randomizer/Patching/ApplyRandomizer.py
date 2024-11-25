@@ -400,7 +400,7 @@ def patching_response(spoiler):
     # Progressive Hints
     count = 0
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
-        count = spoiler.settings.progressive_hint_text
+        count = spoiler.settings.progressive_hint_count
         ROM_COPY.seek(sav + 0x0C3)
         ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))
         for x in range(10):

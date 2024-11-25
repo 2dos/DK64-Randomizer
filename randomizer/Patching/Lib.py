@@ -1084,8 +1084,10 @@ def getIceTrapCount(settings) -> int:
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
+
 EXPONENT = 1.7
 OFFSET_DIVISOR = 15
+
 
 def getHintRequirement(slot: int, cap: int):
     """Get the hint requirement for a slot index."""
@@ -1102,12 +1104,14 @@ def getHintRequirement(slot: int, cap: int):
         return 1
     return required_gb_count
 
+
 def getHintRequirementBatch(batch: int, cap: int):
     """Get the hint requirement for a batch index."""
     slot = 34
     if batch < 9:
         slot = batch * 4
     return getHintRequirement(slot, cap)
+
 
 def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
     """Get the accompanying barrier item for the prog hint item."""

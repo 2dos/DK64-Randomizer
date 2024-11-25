@@ -1609,13 +1609,7 @@ with open(ROMName, "rb") as fh:
                     if data_len == 0:
                         print("Ignoring ptr file", tbl, file)
                 if data_len > 0:
-                    file_dict.append(File(
-                        name=f"Expanded Table {tbl} file {file}",
-                        pointer_table_index=tbl,
-                        file_index=file,
-                        source_file=f"exptbl{tbl}f{file}.bin",
-                        buffer_compression=True
-                    ))
+                    file_dict.append(File(name=f"Expanded Table {tbl} file {file}", pointer_table_index=tbl, file_index=file, source_file=f"exptbl{tbl}f{file}.bin", buffer_compression=True))
 
 print("\nDK64 Extractor\nBuilt by Isotarge")
 
@@ -1717,7 +1711,6 @@ with open(newROMName, "r+b") as fh:
                 x.target_compressed_size += 0x800
                 if x.pointer_table_index == TableNames.ModelTwoGeometry:
                     print("Expanding buffer compression ", x.pointer_table_index, x.file_index, hex(x.target_compressed_size), hex(compressed_size), hex(uncompressed_size))
-
 
         if x.target_compressed_size is not None:
             x.do_not_compress = True

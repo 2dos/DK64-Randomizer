@@ -351,7 +351,7 @@ def SetProgressiveHintDoorLogic(spoiler):
     hint_costs = []
     for i in range(hint_count):
         door_location = Locations.JapesDonkeyDoor + i  # Hint door locations are ordered in their unlocking
-        hint_costs.append(getHintRequirement(i, spoiler.settings.progressive_hint_text))
+        hint_costs.append(getHintRequirement(i, spoiler.settings.progressive_hint_count))
     # I probably hate this more than you do but lambda functions in python REALLY like to mutate apparently
     spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_01, lambda l: l.canFulfillProgHint(hint_costs[0])))
     spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ProgressiveHint_02, lambda l: l.canFulfillProgHint(hint_costs[1])))

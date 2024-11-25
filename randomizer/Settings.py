@@ -771,6 +771,7 @@ class Settings:
         self.progressive_hint_item = None
         self.enable_progressive_hints = False  # Deprecated
         self.progressive_hint_text = 0
+        self.progressive_hint_count = 0
 
     def shuffle_prices(self, spoiler):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -1666,7 +1667,7 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_text == 0:
+        if self.progressive_hint_count == 0:
             # Disable progressive hints if hint text is 0
             self.progressive_hint_item = ProgressiveHintItem.off
 

@@ -688,6 +688,7 @@ export enum SettingsStringEnum {
     starting_moves_list_count_5 = 197,
     progressive_hint_item = 198,
     mirror_mode = 199,
+    progressive_hint_count = 200,
 }
 
 export enum SettingsStringDataType {
@@ -938,6 +939,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
+    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.var_int,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
@@ -1032,5 +1034,6 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.troff_7: {'max': 500, 'min': 0},
     SettingsStringEnum.troff_text: {'max': 500, 'min': 0},
     SettingsStringEnum.progressive_hint_text: {'max': 201, 'min': 0},
+    SettingsStringEnum.progressive_hint_count: {'max': 3500, 'min': 0},
     SettingsStringEnum.win_condition_count: {'max': 201, 'min': 0},
 }
