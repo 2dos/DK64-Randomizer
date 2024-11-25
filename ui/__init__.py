@@ -7,4 +7,3 @@ try:
 except Exception:
     pass
 import ui.plando_settings
-import ui.rando_options
