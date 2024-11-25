@@ -140,8 +140,10 @@ void handleProgressiveIndicator(int allow_ding) {
             new_progressive_level = i;
         }
     }
-    if (new_progressive_level > old_progressive_level) {
-        playProgressiveDing();
+    if ((CurrentMap != MAP_MAINMENU) && (allow_ding)) {
+        if (new_progressive_level > old_progressive_level) {
+            playProgressiveDing();
+        }
     }
     old_progressive_level = new_progressive_level;
 }
