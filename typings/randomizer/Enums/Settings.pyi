@@ -197,6 +197,7 @@ class ItemRandoListSelected(IntEnum):
     rarewarecoin = 16
     shopowners = 17
     hint = 18
+    shockwave = 19
 
 class KasplatRandoSetting(IntEnum):
     off = 0
@@ -625,8 +626,18 @@ class SettingsStringEnum(IntEnum):
     troff_7 = 185
     has_password = 186
     randomize_enemy_sizes = 187
-    progressive_hint_item = 188
-    mirror_mode = 189
+    starting_moves_list_1 = 188
+    starting_moves_list_count_1 = 189
+    starting_moves_list_2 = 190
+    starting_moves_list_count_2 = 191
+    starting_moves_list_3 = 192
+    starting_moves_list_count_3 = 193
+    starting_moves_list_4 = 194
+    starting_moves_list_count_4 = 195
+    starting_moves_list_5 = 196
+    starting_moves_list_count_5 = 197
+    progressive_hint_item = 198
+    mirror_mode = 199
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -708,6 +719,11 @@ SettingsMap: dict = {
     "chunky_phase_slam_req": SlamRequirement,
     "puzzle_rando_difficulty": PuzzleRando,
     "progressive_hint_item": ProgressiveHintItem,
+    "starting_moves_list_1": Items,
+    "starting_moves_list_2": Items,
+    "starting_moves_list_3": Items,
+    "starting_moves_list_4": Items,
+    "starting_moves_list_5": Items,
 }
 
 SettingsStringTypeMap: dict = {
@@ -900,6 +916,16 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
     SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
+    SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
+    SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
+    SettingsStringEnum.starting_moves_list_2: SettingsStringDataType.list,
+    SettingsStringEnum.starting_moves_list_count_2: SettingsStringDataType.int16,
+    SettingsStringEnum.starting_moves_list_3: SettingsStringDataType.list,
+    SettingsStringEnum.starting_moves_list_count_3: SettingsStringDataType.int16,
+    SettingsStringEnum.starting_moves_list_4: SettingsStringDataType.list,
+    SettingsStringEnum.starting_moves_list_count_4: SettingsStringDataType.int16,
+    SettingsStringEnum.starting_moves_list_5: SettingsStringDataType.list,
+    SettingsStringEnum.starting_moves_list_count_5: SettingsStringDataType.int16,
 }
 
 SettingsStringListTypeMap: dict = {
@@ -916,6 +942,11 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.remove_barriers_selected: RemovedBarriersSelected,
     SettingsStringEnum.faster_checks_selected: FasterChecksSelected,
     SettingsStringEnum.hard_bosses_selected: HardBossesSelected,
+    SettingsStringEnum.starting_moves_list_1: Items,
+    SettingsStringEnum.starting_moves_list_2: Items,
+    SettingsStringEnum.starting_moves_list_3: Items,
+    SettingsStringEnum.starting_moves_list_4: Items,
+    SettingsStringEnum.starting_moves_list_5: Items,
 }
 
 SettingsStringIntRangeMap: dict = {

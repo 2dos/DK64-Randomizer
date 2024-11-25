@@ -345,11 +345,6 @@
     },
     "select_keys": 0,
     "serious_hints": 0.7,
-    "shockwave_status": {
-      "vanilla": 0.3,
-      "shuffled": 0.2,
-      "start_with": 0.5
-    },
     "shop_indicator": 1,
     "shorten_boss": 1,
     "shuffle_helm_location": 0,
@@ -750,12 +745,6 @@
     },
     "select_keys": 0,
     "serious_hints": 0.3,
-    "shockwave_status": {
-      "vanilla": 0.2,
-      "shuffled": 0.2,
-      "shuffled_decoupled": 0.2,
-      "start_with": 0.4
-    },
     "shop_indicator": 1,
     "shorten_boss": 1,
     "shuffle_helm_location": 0.5,
@@ -1205,12 +1194,6 @@
     },
     "select_keys": 0,
     "serious_hints": 0,
-    "shockwave_status": {
-      "vanilla": 0.2,
-      "shuffled": 0.3,
-      "shuffled_decoupled": 0.3,
-      "start_with": 0.2
-    },
     "shop_indicator": 1,
     "shorten_boss": 0.8,
     "shuffle_helm_location": 0.7,
@@ -1660,12 +1643,6 @@
     },
     "select_keys": 0,
     "serious_hints": 0,
-    "shockwave_status": {
-      "vanilla": 0.2,
-      "shuffled": 0.3,
-      "shuffled_decoupled": 0.3,
-      "start_with": 0.2
-    },
     "shop_indicator": 0.5,
     "shorten_boss": 0.8,
     "shuffle_helm_location": 0.7,

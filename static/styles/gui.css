@@ -1110,3 +1110,13 @@ input[type=range][disabled]::-ms-fill-upper {
 .select-number-container.hide-input input {
   display: none !important;
 }
+
+.starting_moves_list {
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 500px; 
+}
+
+.btn-custom-large {
+  font-size: 20px;
+}

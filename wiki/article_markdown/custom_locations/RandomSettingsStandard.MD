@@ -234,17 +234,12 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Caves Igloo Pads: 80%
 	- Caves Ice Walls: 70%
 - No Joke Hints: 30%
-- Banana Fairy Island Move Status: 
-	- Vanilla: 20%
-	- Shuffled: 20%
-	- Shuffled Decoupled: 20%
-	- Start With: 40%
 - Shuffle Helm Location / Include Helm: 50%
 - Shuffle Shop Locations: 50%
 - Smaller Shops: 50%
 - Starting Kong: 
 	- Any: 100%
-- Random Starting Move Count: Between 2 and 10, usually close to 4
+- Starting Moves Count: Between 2 and 10, usually close to 4
 - Switchsanity: 
 	- Off: 85%
 	- Helm Access: 10%

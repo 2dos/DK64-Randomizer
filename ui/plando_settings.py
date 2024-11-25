@@ -228,7 +228,6 @@ async def import_plando_options(jsonString):
         validate_hint_text(hintLocation)
     # for shopLocation in shopCostList:
     #     validate_shop_costs(shopLocation)
-    js.plando_disable_camera_shockwave(None)
     plando_disable_keys(None)
     plando_disable_kong_items(None)
     js.plando_hide_helm_options(None)
