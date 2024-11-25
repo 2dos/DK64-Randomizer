@@ -1,6 +1,7 @@
 """Contains classes used in the logic system."""
 
 from __future__ import annotations
+from functools import lru_cache
 
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union
 
@@ -83,9 +84,6 @@ class Collectible:
         self.vanilla = vanilla
         self.name = name
         self.locked = locked
-
-
-from functools import lru_cache
 
 
 class Region:
@@ -206,9 +204,6 @@ class TransitionBack:
         self.name = exitName
         self.spoilerName = spoilerName
         self.reverse = reverse  # Indicates a reverse direction transition, if one exists
-
-
-from functools import lru_cache
 
 
 class TransitionFront:
