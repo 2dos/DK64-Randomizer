@@ -202,6 +202,7 @@ class Settings:
         self.make_read_only
 
     def make_read_only(self):
+        """Make all settings read-only."""
         for name in list(self.__dict__.keys()):  # Get all existing attributes
             private_name = f"_{name}"
             value = self.__dict__.pop(name)  # Remove from the instance dictionary

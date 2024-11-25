@@ -564,6 +564,7 @@ class LogicVarHolder:
         self.RainbowCoins = item_counts[Items.RainbowCoin]
 
     def UpdateAccess(self, ownedItems):
+        """Update access based on owned items."""
         self.nintendoCoin = self.nintendoCoin or bool(ownedItems & {Items.NintendoCoin})
         self.rarewareCoin = self.rarewareCoin or bool(ownedItems & {Items.RarewareCoin})
         self.crankyAccess = self.crankyAccess or bool(ownedItems & {Items.Cranky})
