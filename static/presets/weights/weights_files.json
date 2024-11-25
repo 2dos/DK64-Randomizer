@@ -285,6 +285,7 @@
       "all": 0.75
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0,
     "misc_changes_selected": {},
     "move_rando": {
       "cross_purchase": 1
@@ -701,6 +702,7 @@
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0,
     "misc_changes_selected": {},
     "move_rando": {
       "on": 0.3,
@@ -1142,6 +1144,7 @@
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0.05,
     "misc_changes_selected": {
       "auto_dance_skip": 1,
       "fast_boot": 1,
@@ -1610,6 +1613,7 @@
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0.05,
     "misc_changes_selected": {
       "auto_dance_skip": 0.8,
       "fast_boot": 0.75,
