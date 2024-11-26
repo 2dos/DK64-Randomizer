@@ -2882,6 +2882,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80657F7C, Overlay.Static, 0x0046082A, offset_dict, 4)
         # Fix cannon game
         writeValue(ROM_COPY, 0x807599B0, Overlay.Static, 0xBF, offset_dict, 1)
+        # Skybox
+        writeValue(ROM_COPY, 0x8068BD0C, Overlay.Static, 0x46103201, offset_dict, 4)
+        writeValue(ROM_COPY, 0x80706A54, Overlay.Static, 0x03194023, offset_dict, 4)
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold
