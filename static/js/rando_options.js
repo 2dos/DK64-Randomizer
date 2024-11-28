@@ -840,7 +840,7 @@ document
 
 // Hide plando options for Isles medal locations if medal CBs aren't shuffled
 function plando_disable_isles_medals(evt) {
-  const cbShuffle = document.getElementById("cb_rando").value;
+  const cbShuffle = document.getElementById("cb_rando_enabled").value;
   const kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"];
 
   if (cbShuffle !== "on_with_isles") {
@@ -860,7 +860,7 @@ function plando_disable_isles_medals(evt) {
   }
 }
 
-document.getElementById("cb_rando").addEventListener("change", plando_disable_isles_medals);
+document.getElementById("cb_rando_enabled").addEventListener("change", plando_disable_isles_medals);
 
 // Disable K. Rool phases as bosses if they are not in the boss pool.
 function plando_disable_krool_phases_as_bosses(evt) {

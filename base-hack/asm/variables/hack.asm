@@ -35,7 +35,6 @@
 .definelabel EnemyInView, 0x807FFFD4
 .definelabel ItemRandoOn, 0x807FFFD3
 .definelabel TextItemName, 0x807FFFD2
-.definelabel TextOverlayData, 0x807FFFA0
 .definelabel RandomSwitches, 0x807FFF20
 .definelabel SwitchLevel, 0x807FFF21
 .definelabel FedItem, 0x807FFF1C

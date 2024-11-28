@@ -2895,31 +2895,40 @@ def writeMiscCosmeticChanges(settings):
                 kosha_im = getImageFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
                 kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
                 writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
-            # Kremling
-            kremling_dimensions = [
-                [32, 64],  # FCE
-                [64, 24],  # FCF
-                [1, 1372],  # fd0
-                [32, 32],  # fd1
-                [24, 8],  # fd2
-                [24, 8],  # fd3
-                [24, 8],  # fd4
-                [24, 24],  # fd5
-                [32, 32],  # fd6
-                [32, 64],  # fd7
-                [32, 64],  # fd8
-                [36, 16],  # fd9
-                [20, 28],  # fda
-                [32, 32],  # fdb
-                [32, 32],  # fdc
-                [12, 28],  # fdd
-                [64, 24],  # fde
-                [32, 32],  # fdf
-            ]
-            kremling_shift = getRandomHueShift()
-            for dim_index, dims in enumerate(kremling_dimensions):
-                if dims is not None:
-                    hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
+            if settings.colorblind_mode == ColorblindMode.off:
+                # Kremling
+                kremling_dimensions = [
+                    [32, 64],  # FCE
+                    [64, 24],  # FCF
+                    [1, 1372],  # fd0
+                    [32, 32],  # fd1
+                    [24, 8],  # fd2
+                    [24, 8],  # fd3
+                    [24, 8],  # fd4
+                    [24, 24],  # fd5
+                    [32, 32],  # fd6
+                    [32, 64],  # fd7
+                    [32, 64],  # fd8
+                    [36, 16],  # fd9
+                    [20, 28],  # fda
+                    [32, 32],  # fdb
+                    [32, 32],  # fdc
+                    [12, 28],  # fdd
+                    [64, 24],  # fde
+                    [32, 32],  # fdf
+                ]
+                while True:
+                    kremling_shift = getRandomHueShift()
+                    # Block red coloring
+                    if kremling_shift > 290:
+                        break
+                    if kremling_shift > -70 and kremling_shift < 228:
+                        break
+                    if kremling_shift < -132:
+                        break
+                for dim_index, dims in enumerate(kremling_dimensions):
+                    if dims is not None:
+                        hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
             # Rabbit
             rabbit_dimensions = [
                 [1, 1372],  # 111A

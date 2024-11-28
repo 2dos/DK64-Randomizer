@@ -15,7 +15,7 @@ extern void quickInit(void);
 extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
-extern void spawnItemOverlay(int type, int kong, int index, int force);
+extern int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force);
 extern int giveSlamLevel(void);
 extern int isSlamFlag(int flag);
 extern int isBeltFlag(int flag);
@@ -484,6 +484,7 @@ extern unsigned int base_text_color;
 extern unsigned int emph_text_colors[10];
 extern unsigned char HeadSize[MODEL_COUNT];
 extern const char big_head_actors[MODEL_COUNT];
+extern move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER];;
 
 // Items we're extern-ing for usage with "ASMPatcher.py"
 // DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING

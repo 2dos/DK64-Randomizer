@@ -137,3 +137,4 @@
 
 #define PATH_CAP 64
 #define BONUS_DATA_COUNT 99
+#define TEXT_OVERLAY_BUFFER 4

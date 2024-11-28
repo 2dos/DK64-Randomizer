@@ -1175,7 +1175,7 @@ void giveGB(int kong, int level) {
 int getTotalCBCount(void) {
 	int world = getWorld(CurrentMap,1);
 	int count = 0;
-	if (world < 7) {
+	if (world < 8) {
 		for (int kong = 0; kong < 5; kong++) {
 			count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 		}
@@ -1240,16 +1240,35 @@ int getCustomActorIndex(new_custom_actors offset) {
 	return CUSTOM_ACTORS_START + offset;
 }
 
-void spawnItemOverlay(int type, int kong, int index, int force) {
+move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER];
+
+int findNextUnusedOverlay(void) {
+	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
+		if (!text_overlay_data[i].used) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
+	int vacant_spot = findNextUnusedOverlay();
+	if (vacant_spot == -1) {
+		return -1;
+	}
 	if (force) {
 		spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
 	} else {
 		spawnActor(324,0);
 	}
-    TextOverlayData.type = type;
-    TextOverlayData.flag = index;
-    TextOverlayData.kong = kong;
-	TextOverlayData.string = (char*)0;
+	move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+	ovl_paad->index = vacant_spot;
+    text_overlay_data[vacant_spot].type = type;
+    text_overlay_data[vacant_spot].flag = index;
+    text_overlay_data[vacant_spot].kong = kong;
+	text_overlay_data[vacant_spot].string = (char*)0;
+	text_overlay_data[vacant_spot].used = 1;
+	return vacant_spot;
 }
 
 int giveSlamLevel(void) {
@@ -1602,7 +1621,7 @@ int getItemCountReq(requirement_item item) {
 		case REQITEM_GAMEPERCENTAGE:
 			return getGamePercentage();
 		case REQITEM_COLOREDBANANA:
-			for (int world = 0; world < 7; world++) {
+			for (int world = 0; world < 8; world++) {
 				for (int kong = 0; kong < 5; kong++) {
 					count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 				}

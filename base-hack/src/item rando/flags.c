@@ -175,7 +175,7 @@ int clampFlag(int flag) {
     return 0;
 }
 
-void moveGiveHook(int kong, int type, int index, int is_jetpac) {
+void moveGiveHook(int kong, PURCHASE_TYPES type, int index, int is_jetpac) {
     /**
      * @brief Hook into the move give function, only for non-progressive moves purchased from Cranky, Candy and Funky
      * 
@@ -203,7 +203,7 @@ void moveGiveHook(int kong, int type, int index, int is_jetpac) {
 void displayKeyText(int flag) {
     for (int i = 0; i < 8; i++) {
         if (getKeyFlag(i) == flag) {
-            spawnItemOverlay(5, 0, getKeyFlag(i), 0);
+            spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
         }
     }
 }
@@ -331,7 +331,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     } else {
         int flag_index = *flag;
         int spawn_overlay = 0;
-        int item_type = 0;
+        PURCHASE_TYPES item_type = 0;
         int item_index = 0;
         int item_kong = 0;
         if ((source == 1) && (!checkFlagDuplicate(flag_index, FLAGTYPE_PERMANENT)) && (Gamemode == GAMEMODE_ADVENTURE)) {
@@ -339,7 +339,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 // Slam
                 item_index = giveSlamLevel();
                 spawn_overlay = 1;
-                item_type = 1;
+                item_type = PURCHASE_SLAM;
             } else if ((flag_index == FLAG_ITEM_BELT_0) || (flag_index == FLAG_ITEM_BELT_1)) {
                 // Belt
                 MovesBase[0].ammo_belt += 1;
@@ -349,7 +349,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 }
                 CollectableBase.StandardAmmo = 50 * (1 << item_index);
                 spawn_overlay = 1;
-                item_type = 3;
+                item_type = PURCHASE_AMMOBELT;
             } else if ((flag_index >= FLAG_ITEM_INS_0) && (flag_index <= FLAG_ITEM_INS_2)) {
                 // Instrument Upgrade
                 item_index = 0;
@@ -363,7 +363,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                     MovesBase[i].instrument_bitfield |= (1 << item_index);
                 }
                 spawn_overlay = 1;
-                item_type = 4;
+                item_type = PURCHASE_INSTRUMENT;
                 if (item_index >= 2) {
                     // 3rd Melon
                     if (CollectableBase.Melons < 3) {
@@ -384,7 +384,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 int is_special_flag = inShortList(flag_index, &flags_produce_overlay, sizeof(flags_produce_overlay) >> 1);
                 if ((is_shopkeeper) || (is_hint) || (is_kong) || (is_special_flag)) {
                     spawn_overlay = 1;
-                    item_type = 5;
+                    item_type = PURCHASE_FLAG;
                     item_index = flag_index;
                 }
                 if (flag_index == FLAG_TBARREL_VINE) {
