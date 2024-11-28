@@ -689,6 +689,8 @@ export enum SettingsStringEnum {
     progressive_hint_item = 198,
     mirror_mode = 199,
     progressive_hint_count = 200,
+    cb_rando_enabled = 201,
+    cb_rando_list_selected = 202,
 }
 
 export enum SettingsStringDataType {
@@ -777,6 +779,7 @@ export const SettingsMap = {
     'starting_moves_list_3': Items,
     'starting_moves_list_4': Items,
     'starting_moves_list_5': Items,
+    'cb_rando_list_selected': Levels,
 }
 
 export const SettingsStringTypeMap = {
@@ -874,6 +877,8 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.medal_requirement: SettingsStringDataType.var_int,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
+    SettingsStringEnum.cb_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
     SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
@@ -1001,6 +1006,7 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.starting_moves_list_3: Items,
     SettingsStringEnum.starting_moves_list_4: Items,
     SettingsStringEnum.starting_moves_list_5: Items,
+    SettingsStringEnum.cb_rando_list_selected: Levels,
 }
 
 export const SettingsStringIntRangeMap = {

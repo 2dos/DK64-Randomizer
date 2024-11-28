@@ -639,6 +639,8 @@ class SettingsStringEnum(IntEnum):
     progressive_hint_item = 198
     mirror_mode = 199
     progressive_hint_count = 200
+    cb_rando_enabled = 201
+    cb_rando_list_selected = 202
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -725,6 +727,7 @@ SettingsMap: dict = {
     "starting_moves_list_3": Items,
     "starting_moves_list_4": Items,
     "starting_moves_list_5": Items,
+    "cb_rando_list_enabled": Levels
 }
 
 SettingsStringTypeMap: dict = {

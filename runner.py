@@ -45,7 +45,7 @@ from randomizer.Lists.Plandomizer import (
     PlannableSpawns,
     PlannableSwitches,
 )
-from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
+from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector, CBRandoSelector
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
@@ -500,6 +500,7 @@ def get_selector_info():
         "select_songs": PlannableSongs,
         "remove_barriers": RemovedBarrierSelector,
         "faster_checks": FasterCheckSelector,
+        "cb_rando_levels": CBRandoSelector,
     }
     response = make_response(json.dumps(selector_data), 200)
     response.mimetype = "application/json"

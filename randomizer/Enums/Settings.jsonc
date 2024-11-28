@@ -1058,7 +1058,9 @@
     "starting_moves_list_count_5": 197,
     "progressive_hint_item": 198,
     "mirror_mode": 199,
-    "progressive_hint_count": 200
+    "progressive_hint_count": 200,
+    "cb_rando_enabled": 201,
+    "cb_rando_list_selected": 202
   },
   /*
     SettingsStringDataType:
@@ -1117,6 +1119,7 @@
     "logic_type": { "obj": "LogicType" },
     "microhints_enabled": { "obj": "MicrohintsEnabled" },
     "minigames_list_selected": { "obj": "MinigamesListSelected" },
+    "cb_rando_list_selected": { "obj": "Levels" },
     "misc_changes_selected": { "obj": "MiscChangesSelected" },
     "more_cutscene_skips": { "obj": "ExtraCutsceneSkips" },
     "move_rando": { "obj": "MoveRando" },
@@ -1369,6 +1372,12 @@
     },
     "SettingsStringEnum.microhints_enabled": { "obj": "MicrohintsEnabled" },
     "SettingsStringEnum.minigames_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.cb_rando_enabled": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.cb_rando_list_selected": {
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.misc_changes_selected": {
@@ -1626,6 +1635,9 @@
     },
     "SettingsStringEnum.minigames_list_selected": {
       "obj": "MinigamesListSelected"
+    },
+    "SettingsStringEnum.cb_rando_list_selected": {
+      "obj": "Levels"
     },
     "SettingsStringEnum.misc_changes_selected": {
       "obj": "MiscChangesSelected"

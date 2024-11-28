@@ -565,9 +565,10 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
     allLocationsReached = len(unreachables) == 0
     allCBsFound = True
     for level_index in range(9):
+        isles_cb_rando_enabled = IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles)
         if level_index == Levels.HideoutHelm:
             continue
-        elif level_index == Levels.DKIsles and spoiler.settings.cb_rando != CBRando.on_with_isles or len(spoiler.cb_placements) == 0:
+        elif level_index == Levels.DKIsles and (not isles_cb_rando_enabled) or len(spoiler.cb_placements) == 0:
             continue
         if sum(spoiler.LogicVariables.ColoredBananas[level_index]) != 500:
             missingCBs = []
@@ -1191,7 +1192,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         HintRegion.Jetpac,
     }
     nonHintableNames = {HintRegion.GameStart, HintRegion.KRool, HintRegion.Error, HintRegion.Credits, HintRegion.Jetpac}
-    if spoiler.settings.cb_rando != CBRando.on_with_isles:
+    if not IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles):
         # Disable hinting this if CBs aren't in Isles. Obviously Isles CBs would be foolish if there's no CBs to get
         nonHintableNames.add(HintRegion.IslesCBs)
     spoiler.region_hintable_count = {}
@@ -3605,7 +3606,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # CB Shuffle
-    if spoiler.settings.cb_rando != CBRando.off:
+    if spoiler.settings.cb_rando_enabled:
         ShuffleCBs(spoiler)
     # Coin Shuffle
     if spoiler.settings.coin_rando:

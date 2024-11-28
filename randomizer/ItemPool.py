@@ -22,7 +22,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Patching.Lib import getIceTrapCount
+from randomizer.Patching.Lib import getIceTrapCount, IsItemSelected
 
 
 def getHelmKey(settings) -> Items:
@@ -91,7 +91,7 @@ def PlaceConstants(spoiler):
         else:
             spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.NoItem)
     # If no CB rando in isles, clear these locations
-    if settings.cb_rando != CBRando.on_with_isles:
+    if not IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles):
         for x in range(5):
             spoiler.LocationList[Locations.IslesDonkeyMedal + x].PlaceConstantItem(spoiler, Items.NoItem)
     # Handle key placements
@@ -556,7 +556,7 @@ def BananaMedalItems(settings):
     """Return a list of Banana Medals to be placed."""
     itemPool = []
     count = 40
-    if settings.cb_rando == CBRando.on_with_isles:
+    if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):
         count = 45
     itemPool.extend(itertools.repeat(Items.BananaMedal, count))
     return itemPool
