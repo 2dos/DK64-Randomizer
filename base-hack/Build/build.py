@@ -1209,6 +1209,17 @@ colorblind_changes = [
     [0x1237, 0x1241],  # Ice Tomato
     [0x1266, 0x1266],  # GB Sticker (Actor - Size 0xAB8)
     [0xB7D, 0xB7D],  # GB Sticker (OM2 - Size 0xAA0)
+    [0xEA2, 0xEA2],  # Trombone/Sax Shine
+    [0xEBF, 0xEBF],  # Triangle Shine
+    [0x1317, 0x1319],  # Bongo Textures
+    [0xBC8, 0xBC9],  # Bongo (Pad) Textures
+    [0xBCC, 0xBD1],  # Triangle/Trombone/Sax (Pad) Textures
+    [0x15AC, 0x15AF],  # Various instrument icons
+    [0x1126, 0x1147],  # Beanstalk
+    [0x127E, 0x1282],  # Cannon Barrel
+    [0xE1C, 0xE1D],  # Race Ring
+    [0xD38, 0xD39],  # DK Logo (DK Star)
+    [0x134C, 0x134C],  # Trap Bubble
 ]
 
 file_dict.append(

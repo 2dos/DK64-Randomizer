@@ -2952,9 +2952,73 @@ def writeMiscCosmeticChanges(settings):
             snake_shift = getRandomHueShift()
             for x in range(2):
                 hueShiftImageContainer(25, 0xEF7 + x, 32, 32, TextureFormat.RGBA5551, snake_shift)
+        # Headphones Sprite
         headphones_shift = getRandomHueShift()
         for x in range(8):
             hueShiftImageContainer(7, 0x3D3 + x, 40, 40, TextureFormat.RGBA5551, headphones_shift)
+        # Instruments
+        trombone_sax_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0xEA2, 32, 32, TextureFormat.RGBA5551, trombone_sax_shift)  # Shine
+        hueShiftImageContainer(25, 0x15AF, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone Icon
+        hueShiftImageContainer(25, 0x15AD, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax Icon
+        hueShiftImageContainer(25, 0xBCC, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBCD, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBD0, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad)
+        hueShiftImageContainer(25, 0xBD1, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad)
+        triangle_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0xEBF, 32, 32, TextureFormat.RGBA5551, triangle_shift)  # Shine
+        hueShiftImageContainer(25, 0x15AE, 40, 40, TextureFormat.RGBA5551, triangle_shift)  # Triangle Icon
+        hueShiftImageContainer(25, 0xBCE, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad)
+        hueShiftImageContainer(25, 0xBCF, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad)
+        bongo_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x1317, 1, 1372, TextureFormat.RGBA5551, bongo_shift)  # Skin
+        hueShiftImageContainer(25, 0x1318, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Side
+        hueShiftImageContainer(25, 0x1319, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Side 2
+        hueShiftImageContainer(25, 0x15AC, 40, 40, TextureFormat.RGBA5551, bongo_shift)  # Bongo Icon
+        hueShiftImageContainer(25, 0xBC8, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad)
+        hueShiftImageContainer(25, 0xBC9, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad)
+        if enemy_setting == RandomModels.extreme:
+            # Beanstalk
+            beanstalk_unc_size = [
+                0x480,
+                0x480,
+                0x480,
+                0x2b8,
+                0xac0,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xaf8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xaf8,
+                0x578,
+                0xab8,
+                0x578,
+                0x5f8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0xab8,
+                0x578,
+                0xab8,
+                0xaf8,
+                0xab8,
+                0xab8,
+                0x560,
+                0xab8,
+                0x2b8,
+            ]
+            beanstalk_shift = getRandomHueShift()
+            for index, size in enumerate(beanstalk_unc_size):
+                hueShiftImageContainer(25, 0x1126 + index, 1, int(size >> 1), TextureFormat.RGBA5551, beanstalk_shift)
+        # Fairy Particles Sprites
         fairy_particles_shift = getRandomHueShift()
         for x in range(0xB):
             hueShiftImageContainer(25, 0x138D + x, 32, 32, TextureFormat.RGBA32, fairy_particles_shift)
@@ -3030,6 +3094,12 @@ def writeMiscCosmeticChanges(settings):
         for xi, x in enumerate(settings.jetman_color):
             ROM().seek(settings.rom_data + 0x1E8 + xi)
             ROM().writeMultipleBytes(x, 1)
+        # Blast Barrels
+        blast_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x127E, 1, 1372, TextureFormat.RGBA5551, blast_shift)
+        for x in range(4):
+            hueShiftImageContainer(25, 0x127F + x, 16, 64, TextureFormat.RGBA5551, blast_shift)
+        hueShiftImageContainer(25, getBonusSkinOffset(ExtraTextures.BlastTop), 1, 1372, TextureFormat.RGBA5551, blast_shift)
         # K Rool
         red_cs_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
         shorts_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
@@ -3075,6 +3145,14 @@ def writeMiscCosmeticChanges(settings):
         for img_index in (0x10A0, 0x10A2, 0x10A4, 0x10A5):
             hueShiftImageContainer(25, img_index, 1, 1372, TextureFormat.RGBA5551, zinger_shift)
         hueShiftImageContainer(25, 0x10A3, 32, 32, TextureFormat.RGBA32, zinger_shift)
+        # Rings/DK Star
+        ring_shift = getRandomHueShift()
+        for x in range(2):
+            hueShiftImageContainer(25, 0xE1C + x, 1, 344, TextureFormat.RGBA5551, ring_shift)
+            hueShiftImageContainer(25, 0xD38 + x, 64, 32, TextureFormat.RGBA5551, ring_shift)
+        hueShiftImageContainer(7, 0x2EB, 32, 32, TextureFormat.RGBA5551, ring_shift)
+        # Trap Bubble
+        hueShiftImageContainer(25, 0x134C, 32, 32, TextureFormat.RGBA5551, getRandomHueShift())
         # Spider
         spider_shift = getRandomHueShift()
         spider_dims = {
