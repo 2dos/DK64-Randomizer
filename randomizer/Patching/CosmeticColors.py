@@ -3151,6 +3151,9 @@ def writeMiscCosmeticChanges(settings):
             hueShiftImageContainer(25, 0xE1C + x, 1, 344, TextureFormat.RGBA5551, ring_shift)
             hueShiftImageContainer(25, 0xD38 + x, 64, 32, TextureFormat.RGBA5551, ring_shift)
         hueShiftImageContainer(7, 0x2EB, 32, 32, TextureFormat.RGBA5551, ring_shift)
+        # Buoys
+        for x in range(2):
+            hueShiftImageContainer(25, 0x133A + x, 1, 1372, TextureFormat.RGBA5551, getRandomHueShift())
         # Trap Bubble
         hueShiftImageContainer(25, 0x134C, 32, 32, TextureFormat.RGBA5551, getRandomHueShift())
         # Spider

@@ -1220,6 +1220,7 @@ colorblind_changes = [
     [0xE1C, 0xE1D],  # Race Ring
     [0xD38, 0xD39],  # DK Logo (DK Star)
     [0x134C, 0x134C],  # Trap Bubble
+    [0x133A, 0x133B],  # Buoy Bases
 ]
 
 file_dict.append(
