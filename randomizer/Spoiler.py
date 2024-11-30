@@ -388,7 +388,7 @@ class Spoiler:
             settings["Enemy Rando"] = [enemy["name"] for enemy in EnemySelector if enemy["value"] in value_lst]
         else:
             settings["Enemy Rando"] = self.settings.enemy_rando
-        settings["Crown Enemy Rando"] = self.settings.crown_enemy_rando.name
+        settings["Crown Enemy Rando"] = self.settings.crown_enemy_difficulty.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings

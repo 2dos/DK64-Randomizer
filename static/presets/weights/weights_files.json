@@ -63,8 +63,8 @@
       "max": 2,
       "mean": 1
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "easy": 0.5,
       "medium": 0.3
     },
@@ -469,8 +469,8 @@
       "max": 2,
       "mean": 1
     },
-    "crown_enemy_rando": {
-      "off": 0.1,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.1,
       "easy": 0.3,
       "medium": 0.4,
       "hard": 0.2
@@ -896,8 +896,8 @@
       "max": 2,
       "mean": 2
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "medium": 0.5,
       "hard": 0.3
     },
@@ -1365,8 +1365,8 @@
       "max": 2,
       "mean": 2
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "medium": 0.5,
       "hard": 0.3
     },

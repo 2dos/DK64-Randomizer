@@ -673,7 +673,9 @@ class Settings:
         self.crypt_levers = [1, 4, 3]
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         self.enemy_rando = False
-        self.crown_enemy_rando = CrownEnemyRando.off
+        self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
+        self.crown_enemy_difficulty = CrownEnemyDifficulty.vanilla
+        self.crown_difficulties = [CrownEnemyDifficulty.vanilla] * 10
         self.enemy_speed_rando = False
         self.normalize_enemy_sizes = False
         self.randomize_enemy_sizes = False
@@ -1372,6 +1374,17 @@ class Settings:
                 random.shuffle(allocation)
                 allocation.append(3)
             self.switch_allocation = allocation.copy()
+
+        if self.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
+            self.crown_difficulties = [self.crown_enemy_difficulty] * 10
+            if self.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
+                allocation = [CrownEnemyDifficulty.easy] * 4
+                allocation.extend([CrownEnemyDifficulty.medium] * 4)
+                allocation.extend([CrownEnemyDifficulty.hard] * 2)
+                # Start out with a default of 4 easy, 4 medium, then 2 hard crowns
+                # Randomize placement for LZR (Matching level order will come from a different calculation)
+                random.shuffle(allocation)
+                self.crown_difficulties = allocation.copy()
 
         # Mill Levers
         mill_shortened = IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)

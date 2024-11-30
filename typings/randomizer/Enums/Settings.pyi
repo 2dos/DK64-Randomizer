@@ -39,6 +39,13 @@ class CrownEnemyRando(IntEnum):
     medium = 2
     hard = 3
 
+class CrownEnemyDifficulty(IntEnum):
+    vanilla = 0
+    easy = 1
+    medium = 2
+    hard = 3
+    progressive = 4
+
 class DamageAmount(IntEnum):
     default = 0
     double = 1
@@ -641,6 +648,7 @@ class SettingsStringEnum(IntEnum):
     progressive_hint_count = 200
     cb_rando_enabled = 201
     cb_rando_list_selected = 202
+    crown_enemy_difficulty = 203
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -664,6 +672,7 @@ SettingsMap: dict = {
     "colorblind_mode": ColorblindMode,
     "crown_door_item": HelmDoorItem,
     "crown_enemy_rando": CrownEnemyRando,
+    "crown_enemy_difficulty": CrownEnemyDifficulty,
     "damage_amount": DamageAmount,
     "diddy_colors": CharacterColors,
     "dk_colors": CharacterColors,
@@ -757,6 +766,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
+    SettingsStringEnum.crown_enemy_difficulty: CrownEnemyDifficulty,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
