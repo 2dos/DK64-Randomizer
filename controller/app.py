@@ -19,10 +19,9 @@ from version import version
 from waitress import serve
 app = Flask(__name__)
 import os
-if os.environ.get("TEST_REDIS"):
-    redis_conn = Redis(host="localhost", port=6379)
-else:
-    redis_conn = Redis(host="redis", port=6379)
+import threading
+thread = None
+redis_conn = Redis(host="redis", port=6379)
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
 CORS(app)
@@ -98,6 +97,14 @@ def get_user_ip():
 @api.route("/submit-task", methods=["POST"])
 def submit_task():
     data = request.json
+    if os.environ.get("TEST_REDIS") == "1":
+        # Start the task immediately if we're using a fake Redis server
+        # Make it a thread, and we're going to directly import and call the function
+        from worker.tasks import generate_seed
+        global thread
+        thread = threading.Thread(target=lambda: setattr(thread, 'result', generate_seed(data)))
+        thread.start()
+        return set_response(json.dumps({"task_id": "testingID", "status": "queued", "priority": "High"}), 200)
     if not data or "settings_data" not in data:
         return set_response(json.dumps({"error": "Invalid payload"}), 400)
 
@@ -112,12 +119,12 @@ def submit_task():
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip})
-        priority = "high"
+        task = task_queue_high.enqueue("worker.tasks.generate_seed", settings_data, meta={"ip": user_ip})
+        priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip})
-        priority = "low"
+        task = task_queue_low.enqueue("worker.tasks.generate_seed", settings_data, meta={"ip": user_ip})
+        priority = "Low"
 
     # Update the last submission time for this IP
     redis_conn.set(last_submission_key, current_time)
@@ -127,6 +134,15 @@ def submit_task():
 
 @api.route("/task-status/<task_id>", methods=["GET"])
 def task_status(task_id):
+    if os.environ.get("TEST_REDIS") == "1":
+        global thread
+        if thread is not None:
+            if thread.is_alive():
+                return set_response(json.dumps({"task_id": "testingID", "status": "started", "priority": "high"}), 200)
+            else:
+                # Thread result
+                result = thread.result
+                return set_response(result, 200)
     # Fetch task from both queues
     task = Job.fetch(task_id, connection=redis_conn)
     if not task:

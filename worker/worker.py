@@ -20,11 +20,7 @@ from randomizer.Lists.WrinklyHints import PointSpreadSelector
 from worker.tasks import generate_seed
 
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
-if os.environ.get("TEST_REDIS"):
-    print("Using fake Redis server")
-    redis_conn = Redis(host="127.0.0.1", port=6379)
-else:
-    redis_conn = Redis(host="redis", port=6379)
+redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
 
 app = Flask(__name__)
