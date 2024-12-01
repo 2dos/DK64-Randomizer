@@ -25,3 +25,4 @@ apscheduler==3.10.4
 pyopenssl==24.2.1
 pytest-xdist==3.5.0
 parameterized==0.9.0
+fakeredis

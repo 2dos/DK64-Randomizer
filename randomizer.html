@@ -495,13 +495,13 @@
             // Update the statistics every 60 seconds by querying the API for the latest data 
             // if the site is dev.dk64randomizer.com or dk64randomizer.com
             if (window.location.hostname == "dev.dk64randomizer.com") {
-                current_total_url = "https://dev-generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=dev";
             }
             else if (window.location.hostname == "dk64randomizer.com") {
-                current_total_url = "https://generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=master";
             }
             else {
-                current_total_url = "http://" + window.location.hostname + ":8000/current_total";
+                current_total_url = "http://" + window.location.hostname + ":8000/api/current_total?branch=dev";
             }
             let site_version = "";
             function query_stats(){
@@ -728,18 +728,23 @@
                     });
                     // TODO REWRITE: Need to Repoint the default URLs
                     let base_url;
+                    let branch;
                     if (location.hostname === "dev.dk64randomizer.com") {
                       base_url =
-                        "https://dev-generate.dk64rando.com";
+                        "https://api.dk64rando.com";
+                      branch = "dev";
                     } else if (location.hostname === "dk64randomizer.com") {
-                      base_url = "https://generate.dk64rando.com";
+                      base_url = "https://api.dk64rando.com";
+                      branch = "master";
                     } else {
                       base_url = `${location.origin}`;
+                        branch = "dev";
                     }
                     
                     var selector_info = $.ajax({
                         type: "GET",
-                        url: base_url + "/get_selector_info",
+                        url: base_url + "/api/get_selector_info",
+                        args: { "branch": branch },
                         async: false
                     }).responseJSON;
                     // Append the KongZones to the selector_info

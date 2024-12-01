@@ -10,3 +10,5 @@ cryptography==43.0.1
 apscheduler==3.10.4
 vidua==0.4.5
 pyopenssl==24.2.1
+redis
+rq

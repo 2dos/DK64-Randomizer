@@ -1,0 +1,10 @@
+Flask
+redis
+rq
+apscheduler==3.10.4
+flask-cors==4.0.2
+pillow
+requests
+waitress
+opentelemetry-distro==0.43b0
+opentelemetry-exporter-otlp==1.22.0
