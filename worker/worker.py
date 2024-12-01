@@ -26,6 +26,7 @@ job_timeout = 300  # Timeout in seconds (5 minutes)
 app = Flask(__name__)
 api = Blueprint("worker_api", __name__)
 
+
 class PriorityAwareWorker(Worker):
     def execute_job(self, job, queue):
         # Log which queue the job came from and its metadata
@@ -86,10 +87,12 @@ def convert_settings():
     else:
         return jsonify({"error": "Invalid data"}), 400
 
+
 def runWaitressWorker():
     # Start the Flask server
     app.register_blueprint(api)
     serve(app, host="0.0.0.0", port=8000)
+
 
 def runWorker(jobs):
     # Create queues for high- and low-priority tasks

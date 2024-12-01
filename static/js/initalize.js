@@ -862,7 +862,7 @@ function wipeToastHistory() {
   document.getElementById("progress-history").innerHTML = "";
   previous_queue_position = null;
 }
-
+var sent_generating_status = false;
 function query_seed_status(url, task_id) {
   $.ajax(url + "/task-status/" + task_id, {
     success: function (data, textStatus, xhr) {
@@ -870,19 +870,26 @@ function query_seed_status(url, task_id) {
         console.log("seed gen waiting in queue");
         position = data["position"];
         postToastMessage("Seed is in Position: " + position, false, 0.4);
+        sent_generating_status = false;
         setTimeout(function () {
           query_seed_status(url, task_id);
         }, 5000);
       } else if (data["status"] == "started") {
-        postToastMessage("Seed is generating", false, 0.6);
+        if (!sent_generating_status) {
+          postToastMessage("Seed is generating", false, 0.6);
+        }
+        sent_generating_status = true;
+
         setTimeout(function () {
           query_seed_status(url, task_id);
         }, 5000);
       } else if (data["status"] == "finished") {
         postToastMessage("Seed Generation Complete, applying cosmetics", false, 0.8);
-        window.apply_patch(data["result"], true);
+        sent_generating_status = false;
+        window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
         postToastMessage("Something went wrong please try again", true, 1);
+        sent_generating_status = false;
       }
     },
     error: function (data, textStatus, xhr) {
@@ -1050,11 +1057,11 @@ function get_seed_from_server(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev-generate.dk64rando.com/get_seed";
+    var url = "https://dev-generate.dk64rando.com/api/get_seed";
   } else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://generate.dk64rando.com/get_seed";
+    var url = "https://generate.dk64rando.com/api/get_seed";
   } else {
-    var url = "http://localhost:8000/get_seed";
+    var url = "http://localhost:8000/api/get_seed";
   }
   // Make the ajax call synchronously
   return_data = $.ajax({

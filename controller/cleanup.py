@@ -31,4 +31,6 @@ def enable_cleanup():
     scheduler.add_job(func=delete_old_files, trigger="interval", hours=2)
     scheduler.start()
     return scheduler
+
+
 enable_cleanup()

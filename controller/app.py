@@ -17,10 +17,28 @@ from controller.oauth import DiscordAuth
 import requests
 from version import version
 from waitress import serve
+
 app = Flask(__name__)
 import os
 import threading
-thread = None
+
+# Shared structure to manage threads
+tasks = {}
+
+
+class TaskThread(threading.Thread):
+    def __init__(self, task_id, target, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.task_id = task_id
+        self.target = target
+        self.args = args
+        self.kwargs = kwargs
+        self.result = None
+
+    def run(self):
+        self.result = self.target(self.kwargs.get("args")[0])
+
+
 redis_conn = Redis(host="redis", port=6379)
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
@@ -101,9 +119,12 @@ def submit_task():
         # Start the task immediately if we're using a fake Redis server
         # Make it a thread, and we're going to directly import and call the function
         from worker.tasks import generate_seed
-        global thread
-        thread = threading.Thread(target=lambda: setattr(thread, 'result', generate_seed(data)))
-        thread.start()
+
+        global tasks
+        json_data = json.loads(data.get("settings_data"))
+        task_thread = TaskThread(task_id="testingID", target=generate_seed, args=(json_data,))
+        tasks["testingID"] = task_thread
+        task_thread.start()
         return set_response(json.dumps({"task_id": "testingID", "status": "queued", "priority": "High"}), 200)
     if not data or "settings_data" not in data:
         return set_response(json.dumps({"error": "Invalid payload"}), 400)
@@ -135,27 +156,29 @@ def submit_task():
 @api.route("/task-status/<task_id>", methods=["GET"])
 def task_status(task_id):
     if os.environ.get("TEST_REDIS") == "1":
-        global thread
-        if thread is not None:
-            if thread.is_alive():
-                return set_response(json.dumps({"task_id": "testingID", "status": "started", "priority": "high"}), 200)
+        global tasks
+        task_thread = tasks.get(task_id)
+        if task_thread:
+            if task_thread.is_alive():
+                return jsonify({"task_id": task_id, "status": "started", "priority": "High"}), 200
             else:
-                # Thread result
-                result = thread.result
-                return set_response(result, 200)
+                # Retrieve and return the result
+                result = task_thread.result
+                return set_response(json.dumps({"result": result, "status": "finished"}), 200)
+        return jsonify({"error": "Task not found"}), 404
     # Fetch task from both queues
     task = Job.fetch(task_id, connection=redis_conn)
     if not task:
         return set_response(json.dumps({"error": "Task not found"}), 404)
     # Get what was returned from the task
     if task.result:
-        return set_response(task.result, 200)
+        return set_response(json.dumps({"result": task.result, "status": "finished"}), 200)
     # If the task failed, return the error message
     if task.exc_info:
         # Summarize the error message to just the final exception
         exceptdata = task.exc_info.strip().split("\n")[-1]
         return set_response(json.dumps({"error": exceptdata}), 500)
-    
+
     # Get the position in the queue
     position = 0
     if task in task_queue_high.jobs:
@@ -254,7 +277,7 @@ def admin_presets():
             return set_response(json.dumps({"message": "Local presets deleted"}), 200)
 
 
-@app.route("/get_seed", methods=["GET"])
+@api.route("/get_seed", methods=["GET"])
 def get_seed():
     """Get the lanky for a seed."""
     # Get the hash from the query string and sanitize it
@@ -281,13 +304,13 @@ def get_seed():
             lanky_path,
             mimetype="application/zip",
             as_attachment=True,
-            attachment_filename=f"{file_name}.lanky",
+            download_name=f"{file_name}.lanky",
         )
     except Exception as e:
         return set_response({"error": str(e)}, 500)
 
 
-@app.route("/get_spoiler_log", methods=["GET"])
+@api.route("/get_spoiler_log", methods=["GET"])
 def get_spoiler_log():
     """Get the spoiler log for a seed."""
     # Get the hash from the query string
@@ -371,7 +394,6 @@ def convert_settings():
     data = request.get_json()
     response = requests.post(f"{url}/convert_settings", json=data)
     return set_response(response.json(), response.status_code)
-
 
 
 if __name__ == "__main__":
