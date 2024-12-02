@@ -1,9 +1,9 @@
-FROM nginx:latest
+FROM nginx:alpine-otel
 ARG BRANCH=LOCAL
 ENV BRANCH=$BRANCH
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx-dev.conf /etc/nginx/nginx-dev.conf
-RUN apt-get update && apt-get install -y nginx-otel-module && \
-    if [ "$BRANCH" = "LOCAL" ]; then \
+RUN if [ "$BRANCH" = "LOCAL" ]; then \
         cp /etc/nginx/nginx-dev.conf /etc/nginx/nginx.conf; \
     fi
+COPY ./opentelemetry_config.yaml /etc/nginx/opentelemetry_config.yaml

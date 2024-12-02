@@ -31,7 +31,11 @@ services:
       - "host.docker.internal:host-gateway"
 
   nginx:
-    image: nginx:latest
+    build:
+      context: ./controller/
+      dockerfile: ./nginx.Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
     container_name: nginx
     ports:
       - "8000:8000"
