@@ -223,6 +223,7 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
         return True
     return False
 
+
 def disableDynamicReverb(ROM_COPY: ROM):
     """Disable the dynamic FXMix (Reverb) that would otherwise be applied in tunnels and underwater."""
     for index in range(1, 175):
