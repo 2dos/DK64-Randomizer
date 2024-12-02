@@ -400,10 +400,10 @@ def convert_settings():
     response = requests.post(f"{url}/convert_settings", json=data)
     return set_response(response.json(), response.status_code)
 
+app.register_blueprint(api, url_prefix="/api")
 
 print("Pre startup")
 if __name__ == "__main__":
-    app.register_blueprint(api, url_prefix="/api")
     # Configure logging
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger("waitress")
