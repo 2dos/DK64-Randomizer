@@ -1,6 +1,0 @@
-service_name: nginx
-sampler:
-  name: always_on
-exporter:
-  name: otlp
-  endpoint: "http://host.docker.internal:4317"

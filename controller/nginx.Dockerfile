@@ -6,4 +6,3 @@ COPY ./nginx-dev.conf /etc/nginx/nginx-dev.conf
 RUN if [ "$BRANCH" = "LOCAL" ]; then \
         cp /etc/nginx/nginx-dev.conf /etc/nginx/nginx.conf; \
     fi
-COPY ./opentelemetry_config.yaml /etc/nginx/opentelemetry_config.yaml
