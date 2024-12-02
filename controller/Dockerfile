@@ -28,7 +28,7 @@ RUN if [ "$BRANCH" = "LOCAL" ]; then \
 RUN pip install -r requirements.txt && \
     mv /app/version.py /app/controller/version.py && \
     opentelemetry-bootstrap --action=install
-    
-# Set environment variables for OpenTelemetry
-CMD ["opentelemetry-instrument", "--exporter_otlp_endpoint", "http://127.0.0.1:4317", "--exporter_otlp_protocol", "grpc", "--resource_attributes", "service.name=controller", "python", "app.py"]
+
+
+CMD ["OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4317", "OTEL_EXPORTER_OTLP_PROTOCOL=grpc", "OTEL_RESOURCE_ATTRIBUTES=service.name=controller", "opentelemetry-instrument", "python", "app.py"]
 #CMD ["python", "app.py"]
