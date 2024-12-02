@@ -223,6 +223,17 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
         return True
     return False
 
+def disableDynamicReverb(ROM_COPY: ROM):
+    """Disable the dynamic FXMix (Reverb) that would otherwise be applied in tunnels and underwater."""
+    for index in range(1, 175):
+        offset_dict = populateOverlayOffsets(ROM_COPY)
+        ram_address = 0x80745658 + (index * 2)
+        rom_address = getROMAddress(ram_address, Overlay.Static, offset_dict)
+        ROM_COPY.seek(rom_address)
+        original_value = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        original_value &= 0xFFFE
+        writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
+
 
 def writeSongMemory(ROM_COPY: ROM, index: int, value: int):
     """Write song memory to ROM."""
@@ -741,6 +752,10 @@ def randomize_music(settings: Settings):
             location_pool = open_locations + assigned_item_locations + shuffled_group_items.copy()
             song_pool = open_songs + assigned_items + shuffled_group_items.copy()
             shuffle_music(settings, music_data, music_names, location_pool, song_pool, song_rom_data)
+    # Disable dynamic FXMix (reverb)
+    # If this impacts non-BGM music in a way that produces unwanted behavior, we'll want to only apply this to BGM
+    if settings.music_disable_reverb:
+        disableDynamicReverb(ROM_COPY)
     return music_data, music_names
 
 

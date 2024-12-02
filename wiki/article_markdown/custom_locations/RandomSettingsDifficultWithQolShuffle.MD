@@ -67,10 +67,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Medium Random: 20%
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 2
-- Crown Enemy Randomizer: 
-	- Off: 20%
-	- Medium: 50%
-	- Hard: 30%
+- Crown Enemy Randomizer: 95%
 - Crown Placement Rando: 70%
 - Damage Multiplier: 
 	- Default: 40%
@@ -83,7 +80,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Enable Shop Hints: 50%
 - Enable Tag Anywhere: 90%
 - Dropsanity: 60%
-- Shuffle Enemies: 95%
 - Enemy Speed Rando: 70%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
@@ -213,6 +209,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 30%
 	- Base: 35%
 	- All: 35%
+- Mirror Mode: 5%
 - Misc Changes Selected: 
 	- Auto Dance Skip: 80%
 	- Fast Boot: 75%
@@ -289,6 +286,9 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Starting Kong: 
 	- Any: 100%
 - Starting Moves Count: Between 0 and 10, usually close to 3
+- Move Count: 
+	- Min: 0%
+	- Max: 0%
 - Switchsanity: 
 	- Off: 50%
 	- Helm Access: 40%

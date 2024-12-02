@@ -662,6 +662,9 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806035C6, Overlay.Static, 0, offset_dict)  # Set Fungi count to 0
         writeValue(ROM_COPY, 0x8060357E, Overlay.Static, 0, offset_dict)  # Set Fungi Cart count to 0
         writeValue(ROM_COPY, 0x806035BA, Overlay.Static, 0, offset_dict)  # Set TGrounds count to 0
+    if settings.music_disable_reverb:
+        # Disable volume changes that would counteract the dynamic reverb's volume loss
+        writeValue(ROM_COPY, 0x80603DB8, Overlay.Static, 0x08180F80, offset_dict, 4)  # J 80603E00
 
     # Holiday Mode Stuff
     if holiday == Holidays.Halloween:
