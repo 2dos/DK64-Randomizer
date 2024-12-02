@@ -46,8 +46,7 @@ RUN pip install -r requirements.txt && \
     mv /app/version.py /app/worker/version.py && \
     mv /app/js.py /app/worker/js.py && \
     mv /app/base-hack /app/worker/base-hack/
-RUN pip install opentelemetry-api opentelemetry-sdk opentelemetry-instrumentation && \
-    opentelemetry-bootstrap --action=install
+RUN opentelemetry-bootstrap --action=install
 
 # Set working directory
 ENV OTEL_RESOURCE_ATTRIBUTES=service.name=worker-${BRANCH}

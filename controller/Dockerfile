@@ -27,7 +27,6 @@ RUN if [ "$BRANCH" = "LOCAL" ]; then \
 
 RUN pip install -r requirements.txt && \
     mv /app/version.py /app/controller/version.py && \
-    pip install opentelemetry-api opentelemetry-sdk opentelemetry-instrumentation && \
     opentelemetry-bootstrap --action=install
     
 # Set environment variables for OpenTelemetry

@@ -4,6 +4,7 @@ from rq import Queue, Worker
 import threading
 import json
 from waitress import serve
+from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector
 from randomizer.Lists.EnemyTypes import EnemySelector
@@ -23,6 +24,7 @@ redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
 
 app = Flask(__name__)
+app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 api = Blueprint("worker_api", __name__)
 
 
