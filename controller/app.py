@@ -60,7 +60,7 @@ discord = DiscordAuth(
 )
 admin_roles = ["550784070188138508"]
 
-
+ALLOWED_REFERRERS.extend(["*"])
 @api.before_request
 def enforce_api_restrictions():
     referer = request.headers.get("Referer")
