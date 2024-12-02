@@ -8,6 +8,8 @@ services:
       - "6379:6379"
     networks:
       - task_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   controller:
     build:
@@ -25,6 +27,9 @@ services:
       - BRANCH=${BRANCH:-LOCAL}
     deploy:
       replicas: ${CONTROLLER_REPLICAS:-2}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -36,6 +41,9 @@ services:
       - task_network
     volumes:
       - ./controller/${NGINX_CONF:-nginx-dev.conf}:/etc/nginx/nginx.conf
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   dev_worker:
     build:
       context: ./
@@ -59,6 +67,8 @@ services:
     deploy:
       replicas: ${WORKER_REPLICAS:-3}
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   master_worker:
     build:
@@ -84,6 +94,8 @@ services:
       replicas: 1
     profiles:
       - master
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   task_network:
