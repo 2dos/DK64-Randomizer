@@ -34,5 +34,6 @@ RUN pip install -r requirements.txt && \
 ENV OTEL_RESOURCE_ATTRIBUTES=service.name=controller
 ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4317
 ENV OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+ENV OTEL_TRACES_EXPORTER=console
 CMD ["opentelemetry-instrument", "python", "app.py"]
 #CMD ["python", "app.py"]

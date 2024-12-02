@@ -50,6 +50,9 @@ RUN pip install opentelemetry-api opentelemetry-sdk opentelemetry-instrumentatio
     opentelemetry-bootstrap --action=install
 
 # Set working directory
-
+ENV OTEL_RESOURCE_ATTRIBUTES=service.name=worker-${BRANCH}
+ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4317
+ENV OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+ENV OTEL_TRACES_EXPORTER=console
 # Command to run the application
 CMD ["opentelemetry-instrument", "python", "worker.py"]
