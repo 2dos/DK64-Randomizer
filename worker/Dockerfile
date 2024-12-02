@@ -16,20 +16,21 @@ RUN apt-get update && apt-get install -y \
     autoconf
 
 # Install xdelta
-# RUN wget https://github.com/jmacd/xdelta/archive/refs/tags/v3.1.0.tar.gz \
-#     && tar -xzf v3.1.0.tar.gz \
-#     && cd xdelta-3.1.0/xdelta3 \
-#     && autoreconf --install \
-#     && ./configure \
-#     && make \
-#     && make install \
-#     && cp xdelta3.c /usr/include/ \
-#     && cd .. \
-#     && rm -rf xdelta-3.1.0 v3.1.0.tar.gz \
-#     && pip install pyxdelta
+RUN wget https://github.com/jmacd/xdelta/archive/refs/tags/v3.1.0.tar.gz \
+    && tar -xzf v3.1.0.tar.gz \
+    && cd xdelta-3.1.0/xdelta3 \
+    && autoreconf --install \
+    && ./configure \
+    && make \
+    && make install \
+    && cp xdelta3.c /usr/include/ \
+    && cd .. \
+    && rm -rf xdelta-3.1.0 v3.1.0.tar.gz \
+    && pip install pyxdelta
 
 # Copy local files
 COPY ./ /app/
+WORKDIR /app/worker
 
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN if [ "$BRANCH" != "LOCAL" ]; then \
@@ -39,12 +40,16 @@ RUN if [ "$BRANCH" != "LOCAL" ]; then \
     fi
 
 # Install dependencies
-RUN pip install -r /app/requirements.txt && \
-    # Move everything from the worker folder to the root
-    mv /app/worker/* /app/ 
+RUN pip install -r requirements.txt && \
+    mv /app/static /app/worker/static && \
+    mv /app/randomizer /app/worker/randomizer && \
+    mv /app/version.py /app/worker/version.py && \
+    mv /app/js.py /app/worker/js.py && \
+    mv /app/base-hack /app/worker/base-hack/
+RUN pip install opentelemetry-api opentelemetry-sdk opentelemetry-instrumentation && \
+    opentelemetry-bootstrap --action=install
 
 # Set working directory
-WORKDIR /app
 
 # Command to run the application
-CMD ["python", "worker.py"]
+CMD ["opentelemetry-instrument", "python", "worker.py"]

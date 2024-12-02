@@ -6,22 +6,23 @@ import time
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
-from controller.cleanup import enable_cleanup
+from cleanup import enable_cleanup
 from flask import Blueprint, Flask, jsonify, make_response, request, session, send_from_directory, render_template, redirect, send_file
 from flask_cors import CORS
 from redis import Redis
 from rq import Queue
 from rq.job import Job
 from datetime import datetime, UTC
-from controller.oauth import DiscordAuth
+from oauth import DiscordAuth
 import requests
 from version import version
 from waitress import serve
+import logging
 
-app = Flask(__name__)
 import os
 import threading
 
+app = Flask(__name__, static_folder="", template_folder="")
 # Shared structure to manage threads
 tasks = {}
 
@@ -128,8 +129,10 @@ def submit_task():
         return set_response(json.dumps({"task_id": "testingID", "status": "queued", "priority": "High"}), 200)
     if not data or "settings_data" not in data:
         return set_response(json.dumps({"error": "Invalid payload"}), 400)
-
-    settings_data = data.get("settings_data")
+    if isinstance(data.get("settings_data"), str):
+        settings_data = json.loads(data.get("settings_data"))
+    else:
+        settings_data = data.get("settings_data")
     user_ip = get_user_ip()
 
     # Check the last submission time for this IP
@@ -140,11 +143,11 @@ def submit_task():
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("worker.tasks.generate_seed", settings_data, meta={"ip": user_ip})
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip})
         priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("worker.tasks.generate_seed", settings_data, meta={"ip": user_ip})
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip})
         priority = "Low"
 
     # Update the last submission time for this IP
@@ -396,7 +399,29 @@ def convert_settings():
     return set_response(response.json(), response.status_code)
 
 
+print("Pre startup")
 if __name__ == "__main__":
     app.register_blueprint(api, url_prefix="/api")
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger("waitress")
+    logger.setLevel(logging.INFO)
+    logger.info("Starting the server")
+    if os.environ.get("BRANCH") == "LOCAL":
+        logger.info("Starting the server in local mode")
+
+        @app.route("/")
+        def index():
+            """Serve the index page."""
+            print("Serving index page")
+            return send_from_directory(".", "index.html")
+
+        @app.route("/randomizer")
+        def rando():
+            """Serve the randomizer page."""
+            return send_from_directory(".", "randomizer.html")
+
+        ALLOWED_REFERRERS.extend(["*"])
+        API_KEYS.append("LOCAL_API_KEY")
 
     serve(app, host="0.0.0.0", port=8000)

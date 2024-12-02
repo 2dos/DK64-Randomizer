@@ -13,6 +13,8 @@ services:
     build:
       context: ./
       dockerfile: ./controller/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
     depends_on:
       - redis
     networks:
@@ -20,6 +22,7 @@ services:
     environment:
       - WORKER_URL_DEV=http://dev_worker:8000
       - WORKER_URL_MASTER=http://master_worker:8000
+      - BRANCH=${BRANCH:-LOCAL}
     deploy:
       replicas: ${CONTROLLER_REPLICAS:-2}
   nginx:
@@ -32,7 +35,7 @@ services:
     networks:
       - task_network
     volumes:
-      - ./controller/nginx.conf:/etc/nginx/nginx.conf
+      - ./controller/${NGINX_CONF:-nginx-dev.conf}:/etc/nginx/nginx.conf
   dev_worker:
     build:
       context: ./
@@ -47,11 +50,12 @@ services:
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
       - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
+      - BRANCH=${BRANCH:-LOCAL}
     volumes:
-      - ./dk64.z64:/app/dk64.z64
-      - ./generated_seeds/:/app/generated_seeds/
-      - ./current_total.cfg:/app/current_total.cfg
-      - ./last_generated_time.cfg:/app/last_generated_time.cfg
+      - ./dk64.z64:/app/worker/dk64.z64
+      - ./generated_seeds/:/app/worker/generated_seeds/
+      - ./current_total.cfg:/app/worker/current_total.cfg
+      - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
     deploy:
       replicas: ${WORKER_REPLICAS:-3}
     restart: always
@@ -64,18 +68,18 @@ services:
         - BRANCH=${MASTER_BRANCH:-master}
     depends_on:
       - redis
-      - dev_worker
     networks:
       - task_network
     environment:
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
       - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
+      - BRANCH=${BRANCH:-LOCAL}
     volumes:
-      - ./dk64.z64:/app/dk64.z64
-      - ./generated_seeds/:/app/generated_seeds/
-      - ./current_total.cfg:/app/current_total.cfg
-      - ./last_generated_time.cfg:/app/last_generated_time.cfg
+      - ./dk64.z64:/app/worker/dk64.z64
+      - ./generated_seeds/:/app/worker/generated_seeds/
+      - ./current_total.cfg:/app/worker/current_total.cfg
+      - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
     deploy:
       replicas: 1
     profiles:

@@ -1,12 +1,13 @@
 from flask import send_from_directory, Flask
 import os
+import sys
 
 os.environ["WORKER_URL_DEV"] = "http://localhost:8000"
 os.environ["TEST_REDIS"] = "1"
-from threading import Thread
+sys.path.append("worker")
+sys.path.append("controller")
 
 from worker.worker import api as worker_api
-from worker.worker import runWorker
 from controller.app import ALLOWED_REFERRERS, API_KEYS, api
 
 

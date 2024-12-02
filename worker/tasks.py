@@ -19,6 +19,8 @@ from version import version
 
 def generate_seed(settings_dict):
     print("Running task with")
+    if isinstance(settings_dict, str):
+        settings_dict = json.loads(settings_dict)
     patch = open("./static/patches/shrink-dk64.bps", "rb")
     original = open("dk64.z64", "rb")
     patched = BytesIO(bps.patch(original, patch).read())

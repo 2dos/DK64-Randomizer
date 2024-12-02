@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, Blueprint
 from redis import Redis
 from rq import Queue, Worker
-import os
 import threading
 import json
 from waitress import serve
@@ -17,7 +16,7 @@ from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocat
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
-from worker.tasks import generate_seed
+from tasks import generate_seed
 
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
 redis_conn = Redis(host="redis", port=6379)
