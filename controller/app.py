@@ -17,14 +17,14 @@ from oauth import DiscordAuth
 import requests
 from version import version
 from waitress import serve
-#from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
+from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 import logging
 
 import os
 import threading
 
 app = Flask(__name__, static_folder="", template_folder="")
-#app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
+app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 # Shared structure to manage threads
 tasks = {}
 
@@ -426,4 +426,4 @@ if __name__ == "__main__":
         ALLOWED_REFERRERS.extend(["*"])
         API_KEYS.append("LOCAL_API_KEY")
 
-    app.run(host="0.0.0.0", port=8000, threaded=True)
+    serve(app, host="0.0.0.0", port=8000)
