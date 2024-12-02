@@ -72,6 +72,7 @@ from randomizer.Patching.MiscSetupChanges import (
     updateKrushaMoveNames,
     updateRandomSwitches,
     updateSwitchsanity,
+    remove5DSCameraPoint,
 )
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves, parseMoveBlock
 from randomizer.Patching.Patcher import LocalROM
@@ -690,6 +691,7 @@ def patching_response(spoiler):
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
     showWinCondition(spoiler.settings)
+    remove5DSCameraPoint(spoiler, ROM_COPY)
     alterTextboxRequirements(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin

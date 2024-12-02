@@ -1240,35 +1240,28 @@ int getCustomActorIndex(new_custom_actors offset) {
 	return CUSTOM_ACTORS_START + offset;
 }
 
-move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER];
-
-int findNextUnusedOverlay(void) {
-	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
-		if (!text_overlay_data[i].used) {
-			return i;
-		}
-	}
-	return -1;
-}
+move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER] = {};
 
 int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
-	int vacant_spot = findNextUnusedOverlay();
-	if (vacant_spot == -1) {
-		return -1;
+	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
+		if (text_overlay_data[i].used) {
+			continue;
+		}
+		if (force) {
+			spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
+		} else {
+			spawnActor(324,0);
+		}
+		move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+		ovl_paad->index = i;
+		text_overlay_data[i].type = type;
+		text_overlay_data[i].flag = index;
+		text_overlay_data[i].kong = kong;
+		text_overlay_data[i].string = (char*)0;
+		text_overlay_data[i].used = 1;
+		return i;
 	}
-	if (force) {
-		spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
-	} else {
-		spawnActor(324,0);
-	}
-	move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
-	ovl_paad->index = vacant_spot;
-    text_overlay_data[vacant_spot].type = type;
-    text_overlay_data[vacant_spot].flag = index;
-    text_overlay_data[vacant_spot].kong = kong;
-	text_overlay_data[vacant_spot].string = (char*)0;
-	text_overlay_data[vacant_spot].used = 1;
-	return vacant_spot;
+	return -1;
 }
 
 int giveSlamLevel(void) {
