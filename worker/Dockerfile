@@ -50,7 +50,7 @@ RUN opentelemetry-bootstrap --action=install
 
 # Set working directory
 ENV OTEL_RESOURCE_ATTRIBUTES=service.name=worker-${BRANCH}
-ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4317
+ENV OTEL_EXPORTER_OTLP_ENDPOINT=host.docker.internal:4317
 ENV OTEL_EXPORTER_OTLP_PROTOCOL=grpc
 ENV OTEL_TRACES_EXPORTER=console
 # Command to run the application
