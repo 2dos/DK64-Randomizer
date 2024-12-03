@@ -340,7 +340,8 @@ def get_seed():
             download_name=f"{file_name}.lanky",
         )
     except Exception as e:
-        return set_response({"error": str(e)}, 500)
+        logging.error(f"Error in get_seed: {e}")
+        return set_response({"error": "An internal error has occurred"}, 500)
 
 
 @api.route("/get_spoiler_log", methods=["GET"])
@@ -378,7 +379,8 @@ def get_spoiler_log():
     except json.JSONDecodeError:
         return set_response({"error": "Invalid JSON format in file"}, 500)
     except Exception as e:
-        return set_response({"error": str(e)}, 500)
+        logging.error(f"Error in get_spoiler_log: {e}")
+        return set_response({"error": "An internal error has occurred"}, 500)
 
 
 @api.route("/current_total", methods=["GET"])
