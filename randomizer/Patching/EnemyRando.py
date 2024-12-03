@@ -415,9 +415,9 @@ def getBalancedCrownEnemyRando(spoiler, crown_setting: CrownEnemyDifficulty, dam
                 if count == 0 and oops_all_get_out:
                     enemy_to_place = Enemies.GetOut
                     get_out_spawned_this_hard_map = True
-                elif get_out_spawned_this_hard_map:
-                    enemy_to_place = random.choice([possible_enemy for possible_enemy in legacy_hard_mode_copy if possible_enemy != Enemies.GetOut])
                 else:
+                    if get_out_spawned_this_hard_map:
+                        legacy_hard_mode_copy = [possible_enemy for possible_enemy in legacy_hard_mode_copy if possible_enemy != Enemies.GetOut]
                     enemy_to_place = random.choice(legacy_hard_mode_copy)
                     if enemy_to_place in ANNOYING_ENEMIES:
                         no_annoying_enemies = [e for e in legacy_hard_mode_copy if e not in ANNOYING_ENEMIES]
