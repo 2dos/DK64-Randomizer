@@ -21,20 +21,20 @@ span = trace.get_current_span()
 
 def generate_seed(settings_dict):
     print("Running task with")
-    if isinstance(settings_dict, str):
-        settings_dict = json.loads(settings_dict)
-    patch = open("./static/patches/shrink-dk64.bps", "rb")
-    original = open("dk64.z64", "rb")
-    patched = BytesIO(bps.patch(original, patch).read())
-    if not settings_dict.get("seed"):
-        settings_dict["seed"] = random.randint(0, 100000000)
     try:
-        load_base_rom(default_file=patched)
-        settings_obj = Settings(cleanup_settings(settings_dict))
-        spoiler = Spoiler(settings_obj)
-        patch, spoiler = Generate_Spoiler(spoiler)
-        spoiler.FlushAllExcessSpoilerData()
-        return update_seed_results(patch, spoiler, settings_dict)
+        if isinstance(settings_dict, str):
+            settings_dict = json.loads(settings_dict)
+        patch = open("./static/patches/shrink-dk64.bps", "rb")
+        original = open("dk64.z64", "rb")
+        patched = BytesIO(bps.patch(original, patch).read())
+        if not settings_dict.get("seed"):
+            settings_dict["seed"] = random.randint(0, 100000000)
+            load_base_rom(default_file=patched)
+            settings_obj = Settings(cleanup_settings(settings_dict))
+            spoiler = Spoiler(settings_obj)
+            patch, spoiler = Generate_Spoiler(spoiler)
+            spoiler.FlushAllExcessSpoilerData()
+            return update_seed_results(patch, spoiler, settings_dict)
 
     except Exception as e:
         print(traceback.format_exc())
