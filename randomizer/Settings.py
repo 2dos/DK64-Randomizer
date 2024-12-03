@@ -1696,7 +1696,7 @@ class Settings:
             ProgressiveHintItem.req_pearl: 5,
             ProgressiveHintItem.req_cb: 3500,
         }
-        prog_max = prog_hint_max.get(self.progressive_hint_count, 0)
+        prog_max = prog_hint_max.get(self.progressive_hint_item, 0)
         if self.progressive_hint_count <= 0:
             # Disable progressive hints if hint text is 0, or less than 0
             self.progressive_hint_item = ProgressiveHintItem.off
