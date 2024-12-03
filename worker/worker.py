@@ -4,7 +4,13 @@ from rq import Queue, Worker
 import threading
 import json
 from waitress import serve
+from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
+from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector
 from randomizer.Lists.EnemyTypes import EnemySelector
@@ -17,6 +23,7 @@ from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocat
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
+from version import version
 from tasks import generate_seed
 
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
@@ -24,6 +31,27 @@ redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
 
 app = Flask(__name__)
+
+# Define a resource to identify your service
+resource = Resource(
+    attributes={
+        "service.name": "worker",
+        "service.version": str(version),
+    }
+)
+
+# Set up the TracerProvider and Span Exporter
+trace.set_tracer_provider(TracerProvider(resource=resource))
+tracer_provider = trace.get_tracer_provider()
+
+# Configure OTLP Exporter for sending traces to the collector
+otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
+
+# Add the BatchSpanProcessor to the TracerProvider
+span_processor = BatchSpanProcessor(otlp_exporter)
+tracer_provider.add_span_processor(span_processor)
+
+FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 api = Blueprint("worker_api", __name__)
 
