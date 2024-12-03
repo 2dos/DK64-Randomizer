@@ -42,7 +42,7 @@ resource = Resource(
     }
 )
 
-# Set up the TracerProvider and Span Exporter
+span = trace.get_current_span()
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer_provider = trace.get_tracer_provider()
 

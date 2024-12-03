@@ -8,13 +8,15 @@ from datetime import UTC, datetime
 from io import BytesIO
 
 from vidua import bps
-
+from opentelemetry import trace
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from version import version
+
+span = trace.get_current_span()
 
 
 def generate_seed(settings_dict):
@@ -38,6 +40,7 @@ def generate_seed(settings_dict):
         print(traceback.format_exc())
         # Return the error and the type of error.
         error = str(type(e).__name__) + ": " + str(e)
+        span.record_exception(e)
         raise e
         # queue.put(error)
 
