@@ -1,2 +1,2 @@
 #!/bin/sh
-OTEL_EXPORTER_OTLP_ENDPOINT=host.docker.internal:4317 OTEL_EXPORTER_OTLP_PROTOCOL=grpc OTEL_TRACES_EXPORTER=console OTEL_RESOURCE_ATTRIBUTES=service.name=controller opentelemetry-instrument waitress-serve --port=8000 app:app
+OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4317 OTEL_TRACES_EXPORTER=otlp OTEL_RESOURCE_ATTRIBUTES=service.name=controller opentelemetry-instrument waitress-serve --port=8000 app:app

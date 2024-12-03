@@ -11,3 +11,6 @@ pyopenssl==24.2.1
 opentelemetry-instrumentation
 opentelemetry-api
 opentelemetry-instrumentation-wsgi
+opentelemetry-exporter-otlp
+opentelemetry-sdk
+opentelemetry-instrumentation-flask
