@@ -89,7 +89,6 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
-- Shuffle Enemies: 95%
 - Enemy Speed Rando: 50%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
