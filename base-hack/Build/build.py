@@ -624,6 +624,7 @@ bloat_actors = [
     {"name": "Zinger", "file": 0x1B, "size": 0xC00},
     {"name": "Robo-Zinger", "file": 0x3F, "size": 0x1D00},
     {"name": "Laser", "file": 0x86, "size": 0x600},
+    {"name": "Dogadon", "file": 0x3B, "size": 0x2700},
 ]
 
 for actor in bloat_actors:
@@ -1221,6 +1222,9 @@ colorblind_changes = [
     [0xD38, 0xD39],  # DK Logo (DK Star)
     [0x134C, 0x134C],  # Trap Bubble
     [0x133A, 0x133B],  # Buoy Bases
+    [0x102A, 0x102D],  # Dillo
+    [0x103A, 0x103A],  # Dillo
+    [0x103D, 0x103E],  # Dillo
 ]
 
 file_dict.append(

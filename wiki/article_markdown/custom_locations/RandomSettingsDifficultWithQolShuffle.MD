@@ -45,7 +45,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Shuffle Bonus Barrels: 70%
 - Shuffle Boss Kong Required: 50%
 - Boss Location Rando: 80%
-- Random CB Locations: 
+- Randomize CB Locations: 
 	- Off: 40%
 	- On: 30%
 	- On With Isles: 30%
@@ -68,7 +68,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 2
 - Crown Enemy Randomizer: 
-	- Off: 20%
+	- Vanilla: 20%
 	- Medium: 50%
 	- Hard: 30%
 - Crown Placement Rando: 70%
@@ -213,6 +213,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 30%
 	- Base: 35%
 	- All: 35%
+- Mirror Mode: 5%
 - Misc Changes Selected: 
 	- Auto Dance Skip: 80%
 	- Fast Boot: 75%
@@ -289,6 +290,9 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Starting Kong: 
 	- Any: 100%
 - Starting Moves Count: Between 0 and 10, usually close to 3
+- Move Count: 
+	- Min: 0%
+	- Max: 0%
 - Switchsanity: 
 	- Off: 50%
 	- Helm Access: 40%

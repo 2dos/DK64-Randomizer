@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from randomizer.Enums.Levels import Levels
 
+
 class MultiselectorItem:
     """Quality of life multiselector information."""
 
@@ -207,6 +208,7 @@ def parseMultiselector(items: list[MultiselectorItem]) -> list:
         )
     return lst
 
+
 cb_levels = {
     Levels.JungleJapes: "Jungle Japes",
     Levels.AngryAztec: "Angry Aztec",
@@ -218,12 +220,15 @@ cb_levels = {
     Levels.DKIsles: "DK Isles",
 }
 
-CBRandoSelector = [{
-    "name": name,
-    "value": lvl.name,
-    "tooltip": name,
-    "shift": -1,
-} for lvl, name in cb_levels.items()]
+CBRandoSelector = [
+    {
+        "name": name,
+        "value": lvl.name,
+        "tooltip": name,
+        "shift": -1,
+    }
+    for lvl, name in cb_levels.items()
+]
 
 QoLSelector = parseMultiselector(QoLItems)
 RemovedBarrierSelector = parseMultiselector(RemovedBarrierItems)

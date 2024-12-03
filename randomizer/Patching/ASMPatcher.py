@@ -1646,6 +1646,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     updateActorFunction(ROM_COPY, 340, "handleBugEnemy")
 
+    writeFunction(ROM_COPY, 0x80714168, Overlay.Static, "fixHelmTimerDisable", offset_dict)
+
     if Types.Hint in spoiler.settings.shuffled_location_types:
         writeValue(ROM_COPY, 0x8069E18C, Overlay.Static, 0x00003025, offset_dict, 4)  # or a2, zero, zero
 

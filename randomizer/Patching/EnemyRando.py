@@ -244,6 +244,7 @@ def setPkmnSnapEnemy(focused_enemy):
         if enemy.enemy == focused_enemy:
             enemy.addEnemy()
 
+
 MAP_DIFFICULTY_ORDER = (
     Maps.JapesCrown,
     Maps.AztecCrown,
@@ -257,6 +258,7 @@ MAP_DIFFICULTY_ORDER = (
     Maps.LobbyCrown,
 )
 
+
 def getCrownEnemyDifficultyFromMap(settings, map_id: Maps) -> CrownEnemyDifficulty:
     """Get the crown enemy difficulty for a map."""
     if map_id not in MAP_DIFFICULTY_ORDER:
@@ -264,13 +266,16 @@ def getCrownEnemyDifficultyFromMap(settings, map_id: Maps) -> CrownEnemyDifficul
     placement_index = MAP_DIFFICULTY_ORDER.index(map_id)
     return settings.crown_difficulties[placement_index]
 
+
 def getCrownEnemyCount(map_id: Maps) -> int:
     """Get the amount of enemies in a crown map."""
     if map_id in (Maps.GalleonCrown, Maps.LobbyCrown, Maps.HelmCrown):
         return 4
     return 3
 
+
 ANNOYING_ENEMIES = (Enemies.Klump, Enemies.Kosha, Enemies.Klobber)
+
 
 def getBalancedCrownEnemyRando(spoiler, crown_setting: CrownEnemyDifficulty, damage_ohko_setting):
     """Get array of weighted enemies."""

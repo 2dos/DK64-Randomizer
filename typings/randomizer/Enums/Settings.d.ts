@@ -752,6 +752,7 @@ export const SettingsMap = {
     'logic_type': LogicType,
     'microhints_enabled': MicrohintsEnabled,
     'minigames_list_selected': MinigamesListSelected,
+    'cb_rando_list_selected': Levels,
     'misc_changes_selected': MiscChangesSelected,
     'more_cutscene_skips': ExtraCutsceneSkips,
     'move_rando': MoveRando,
@@ -789,7 +790,6 @@ export const SettingsMap = {
     'starting_moves_list_3': Items,
     'starting_moves_list_4': Items,
     'starting_moves_list_5': Items,
-    'cb_rando_list_selected': Levels,
 }
 
 export const SettingsStringTypeMap = {
@@ -981,11 +981,11 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
+    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
-    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_2: SettingsStringDataType.list,
@@ -1003,6 +1003,7 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.glitches_selected: GlitchesSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
+    SettingsStringEnum.cb_rando_list_selected: Levels,
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
@@ -1017,7 +1018,6 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.starting_moves_list_3: Items,
     SettingsStringEnum.starting_moves_list_4: Items,
     SettingsStringEnum.starting_moves_list_5: Items,
-    SettingsStringEnum.cb_rando_list_selected: Levels,
 }
 
 export const SettingsStringIntRangeMap = {

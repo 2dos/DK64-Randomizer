@@ -1703,7 +1703,6 @@ class Settings:
             # Cap at prog max
             self.progressive_hint_count = prog_max
 
-
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
         bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]

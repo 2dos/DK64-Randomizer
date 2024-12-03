@@ -41,6 +41,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Hard Troff n' Scoff
 - Helm Hurry Mode
 - Vanilla K. Rool Requirement
+- Mirror Mode
 - No Heals
 - No Melon Slice Drops
 - Irondonk
@@ -71,7 +72,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Shuffle Bonus Barrels: 70%
 - Shuffle Boss Kong Required: 80%
 - Boss Location Rando: 80%
-- Random CB Locations: 
+- Randomize CB Locations: 
 	- Off: 70%
 	- On: 30%
 - Chaos Ratio: Between 0 and 0, usually close to 0
@@ -90,7 +91,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
 - Crown Enemy Randomizer: 
-	- Off: 20%
+	- Vanilla: 20%
 	- Easy: 50%
 	- Medium: 30%
 - Damage Multiplier: 
@@ -233,6 +234,9 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Starting Kong: 
 	- Any: 100%
 - Starting Moves Count: Between 4 and 10, usually close to 4
+- Move Count: 
+	- Min: 0%
+	- Max: 0%
 - Switchsanity: 
 	- Off: 100%
 - Troff n' Scoff Max: Between 100 and 300, usually close to 200

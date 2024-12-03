@@ -2983,37 +2983,37 @@ def writeMiscCosmeticChanges(settings):
                 0x480,
                 0x480,
                 0x480,
-                0x2b8,
-                0xac0,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xaf8,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xaf8,
+                0x2B8,
+                0xAC0,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAF8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAF8,
                 0x578,
-                0xab8,
+                0xAB8,
                 0x578,
-                0x5f8,
-                0xab8,
-                0xab8,
-                0xab8,
-                0xab8,
+                0x5F8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
                 0x578,
-                0xab8,
-                0xaf8,
-                0xab8,
-                0xab8,
+                0xAB8,
+                0xAF8,
+                0xAB8,
+                0xAB8,
                 0x560,
-                0xab8,
-                0x2b8,
+                0xAB8,
+                0x2B8,
             ]
             beanstalk_shift = getRandomHueShift()
             for index, size in enumerate(beanstalk_unc_size):
@@ -3186,6 +3186,22 @@ def writeMiscCosmeticChanges(settings):
                 spider_shift,
             )
 
+        if enemy_setting == RandomModels.extreme:
+            # Army Dillo
+            dillo_px_count = {
+                0x102D: 64 * 32,
+                0x103A: 16 * 16,
+                0x102A: 24 * 24,
+                0x102B: 24 * 24,
+                0x102C: 1372,
+                0x103D: 688,
+                0x103E: 688,
+            }
+            dillo_shift = getRandomHueShift()
+            for img, px_count in dillo_px_count.items():
+                hueShiftImageContainer(25, img, 1, px_count, TextureFormat.RGBA5551, dillo_shift)
+
+        # Mushrooms
         mush_man_shift = getRandomHueShift()
         for img_index in (0x11FC, 0x11FD, 0x11FE, 0x11FF, 0x1200, 0x1209, 0x120A, 0x120B):
             hueShiftImageContainer(25, img_index, 1, 1372, TextureFormat.RGBA5551, mush_man_shift)
@@ -3233,6 +3249,63 @@ def writeMiscCosmeticChanges(settings):
         }
         if enemy_setting == RandomModels.extreme:
             enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859])
+            dogadon_color = getEnemySwapColor(80, 160, min_channel_variance=80)
+            enemy_changes[Model.Dogadon] = EnemyColorSwap(
+                [
+                    0xFF0000,
+                    0xFF7F00,
+                    0x450A1F,
+                    0xB05800,
+                    0xFF3200,
+                    0xFFD400,
+                    0x4F260D,
+                    0x600F00,
+                    0x6A1400,
+                    0xAA0000,
+                    0xDF3F1F,
+                    0xFF251F,
+                    0x8F4418,
+                    0x522900,
+                    0xDF9F1F,
+                    0x3B0606,
+                    0x91121E,
+                    0x700C0D,
+                    0xFF5900,
+                    0xFF7217,
+                    0xFF7425,
+                    0xFF470B,
+                    0xA82100,
+                    0x4A0D18,
+                    0x580E00,
+                    0x461309,
+                    0x4C1503,
+                    0x780D0E,
+                    0xFFA74A,
+                    0x7E120F,
+                    0x700000,
+                    0xB64D19,
+                    0x883A13,
+                    0xBD351A,
+                    0xD42900,
+                    0xFF2A00,
+                    0x921511,
+                    0x9C662D,
+                    0xDF5F1F,
+                    0x9B1112,
+                    0x461F0A,
+                    0x4B0808,
+                    0x500809,
+                    0xA42000,
+                    0x5F0B13,
+                    0xBF6A3F,
+                    0x602E10,
+                    0x971414,
+                    0x422C15,
+                    0xFC5800,
+                    0x5C0D0B,
+                ],
+                dogadon_color,
+            )
         for enemy in enemy_changes:
             file_data = bytearray(getRawFile(5, enemy, True))
             vert_start = 0x28

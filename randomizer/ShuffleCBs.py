@@ -120,7 +120,7 @@ def ShuffleCBs(spoiler):
         MAX_BALLOONS -= balloon_in_vanilla
         MAX_SINGLES -= singles_in_vanilla
         MAX_BUNCHES -= bunches_in_vanilla
-        PLACEMENT_LIMIT -= (singles_in_vanilla + bunches_in_vanilla + balloon_in_vanilla)
+        PLACEMENT_LIMIT -= singles_in_vanilla + bunches_in_vanilla + balloon_in_vanilla
         levels_to_populate -= 1
 
     while True:

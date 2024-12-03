@@ -29,6 +29,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Hard Mode
 - Helm Hurry Mode
 - Vanilla K. Rool Requirement
+- Mirror Mode
 - Irondonk
 - Guaranteed Starting Keys
 
@@ -51,7 +52,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Shuffle Boss Kong Required: 65%
 - Boss Location Rando: 80%
 - DK Phase requires Baboon Blast: 50%
-- Random CB Locations: 
+- Randomize CB Locations: 
 	- Off: 50%
 	- On: 40%
 	- On With Isles: 10%
@@ -73,7 +74,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
 - Crown Enemy Randomizer: 
-	- Off: 10%
+	- Vanilla: 10%
 	- Easy: 30%
 	- Medium: 40%
 	- Hard: 20%
@@ -245,6 +246,9 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Starting Kong: 
 	- Any: 100%
 - Starting Moves Count: Between 2 and 10, usually close to 4
+- Move Count: 
+	- Min: 0%
+	- Max: 0%
 - Switchsanity: 
 	- Off: 85%
 	- Helm Access: 10%

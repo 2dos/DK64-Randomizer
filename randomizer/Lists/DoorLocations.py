@@ -45,6 +45,7 @@ UNDERWATER_LOGIC_REGIONS = (
     Regions.TreasureRoom,
 )
 
+
 class DoorData:
     """Stores information about a door location."""
 

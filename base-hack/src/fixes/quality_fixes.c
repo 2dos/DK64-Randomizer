@@ -361,6 +361,19 @@ void movePelletWrapper(actorData* actor) {
 	unkProjectileCode_2(actor);
 }
 
+static short good_gamemode_list[] = {
+	GAMEMODE_ADVENTURE,
+	GAMEMODE_RAP,
+	GAMEMODE_SNIDEGAMES,
+};
+
+void fixHelmTimerDisable(void) {
+	if (inShortList(Gamemode, &good_gamemode_list, 3)) {
+		return;
+	}
+	HelmTimerShown = 0;
+}
+
 // Segment framebuffer
 // Should help with framebuffer crashes
 

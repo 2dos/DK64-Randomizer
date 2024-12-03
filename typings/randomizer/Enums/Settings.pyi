@@ -699,6 +699,7 @@ SettingsMap: dict = {
     "logic_type": LogicType,
     "microhints_enabled": MicrohintsEnabled,
     "minigames_list_selected": MinigamesListSelected,
+    "cb_rando_list_selected": Levels,
     "misc_changes_selected": MiscChangesSelected,
     "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
@@ -736,7 +737,6 @@ SettingsMap: dict = {
     "starting_moves_list_3": Items,
     "starting_moves_list_4": Items,
     "starting_moves_list_5": Items,
-    "cb_rando_list_enabled": Levels
 }
 
 SettingsStringTypeMap: dict = {
@@ -835,6 +835,8 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.medal_requirement: SettingsStringDataType.var_int,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
+    SettingsStringEnum.cb_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
     SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
@@ -926,11 +928,11 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
+    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
-    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_2: SettingsStringDataType.list,
@@ -948,6 +950,7 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.glitches_selected: GlitchesSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
+    SettingsStringEnum.cb_rando_list_selected: Levels,
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
@@ -995,6 +998,6 @@ SettingsStringIntRangeMap: dict = {
     SettingsStringEnum.troff_7: {"max": 500, "min": 0},
     SettingsStringEnum.troff_text: {"max": 500, "min": 0},
     SettingsStringEnum.progressive_hint_text: {"max": 201, "min": 0},
-    SettingsStringEnum.progressive_hint_count: {"max": 201, "min": 0},
+    SettingsStringEnum.progressive_hint_count: {"max": 3500, "min": 0},
     SettingsStringEnum.win_condition_count: {"max": 201, "min": 0},
 }

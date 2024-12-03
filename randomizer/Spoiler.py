@@ -802,9 +802,7 @@ class Spoiler:
                 for combo in join_combos:
                     if combo in map_name:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
-                humanspoiler["Colored Banana Locations"][f"{lvl_name} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(
-                    f"{map_name.strip()}: {group['name']}"
-                )
+                humanspoiler["Colored Banana Locations"][f"{lvl_name} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(f"{map_name.strip()}: {group['name']}")
         if self.settings.coin_rando:
             humanspoiler["Coin Locations"] = {}
             coin_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
