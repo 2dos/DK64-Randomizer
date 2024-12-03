@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
     ProgressiveHintItem,
 )
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -646,7 +647,6 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.transformation):
         writeValue(ROM_COPY, 0x8067E9E4, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
         writeValue(ROM_COPY, 0x8067F7C0, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
-    writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18
     if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.sub_areas):
         # writeValue(ROM_COPY, 0x806025BC, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic` - Map Load
         writeValue(ROM_COPY, 0x8061DF74, Overlay.Static, 0, offset_dict, 4)  # Disable `playLevelMusic`
@@ -1661,6 +1661,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     updateActorFunction(ROM_COPY, 340, "handleBugEnemy")
 
+    writeFunction(ROM_COPY, 0x80714168, Overlay.Static, "fixHelmTimerDisable", offset_dict)
+
     if Types.Hint in spoiler.settings.shuffled_location_types:
         writeValue(ROM_COPY, 0x8069E18C, Overlay.Static, 0x00003025, offset_dict, 4)  # or a2, zero, zero
 
@@ -1766,13 +1768,13 @@ def patchAssembly(ROM_COPY, spoiler):
         # Adjust warp code to make camera be behind player, loading portal
         writeValue(ROM_COPY, 0x806C97D0, Overlay.Static, 0xA06E0007, offset_dict, 4)  # SB $t6, 0x7 ($v1)
 
-    if settings.cb_rando != CBRando.off:
-        writeValue(ROM_COPY, 0x8069C2FC, Overlay.Static, 0, offset_dict, 4)
-        if settings.cb_rando == CBRando.on_with_isles:
-            writeFunction(ROM_COPY, 0x806ABF48, Overlay.Static, "getMedalCount", offset_dict)
-            writeValue(ROM_COPY, 0x806AA458, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Main Screen)
-            writeValue(ROM_COPY, 0x806AA858, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Level Kong Screen)
-            # TODO: Work on Level Totals screen - this one is a bit more complicated
+    if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.JungleJapes):
+        writeValue(ROM_COPY, 0x8069C2FC, Overlay.Static, 0, offset_dict, 4)  # Japes Bunch
+    if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):
+        writeFunction(ROM_COPY, 0x806ABF48, Overlay.Static, "getMedalCount", offset_dict)
+        writeValue(ROM_COPY, 0x806AA458, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Main Screen)
+        writeValue(ROM_COPY, 0x806AA858, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Level Kong Screen)
+        # TODO: Work on Level Totals screen - this one is a bit more complicated
 
     writeFunction(ROM_COPY, 0x8002D6A8, Overlay.Bonus, "warpOutOfArenas", offset_dict)  # Enable the two arenas to be minigames
     writeFunction(ROM_COPY, 0x8002D31C, Overlay.Bonus, "ArenaTagKongCode", offset_dict)  # Tag Rambi/Enguarde Instantly
@@ -2347,6 +2349,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8060D01E, Overlay.Static, getLoSym("InvertedControls"), offset_dict)  # Change language store to inverted controls store
 
     writeFunction(ROM_COPY, 0x80602AB0, Overlay.Static, "filterSong", offset_dict)
+    writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18I'm
     writeFunction(ROM_COPY, 0x80602B80, Overlay.Static, "filterSong_Cancelled", offset_dict)
     # Decompressed Overlays
     overlays_being_decompressed = [

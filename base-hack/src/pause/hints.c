@@ -339,12 +339,7 @@ int getHintRequirement(int slot) {
 void displayCBCount(pause_paad *handler, void* sprite, int x, int y, float scale, int unk0, int unk1) {
     displaySprite(handler, sprite, x, y, scale, unk0, unk1);
     if (handler->screen == PAUSESCREEN_HINTS) {
-        int cb_count = 0;
-        for (int world = 0; world < 7; world++) {
-            for (int kong = 0; kong < 5; kong++) {
-                cb_count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
-            }
-        }
+        int cb_count = getItemCountReq(REQITEM_COLOREDBANANA);
         displayPauseSpriteNumber(handler, 0x24, 0x1C, 0xC, -10, cb_count, 1, 0);
         displaySprite(handler, (void*)0x80721474, 0x24, 0x1C, 0.75f, 2, 1);
     }

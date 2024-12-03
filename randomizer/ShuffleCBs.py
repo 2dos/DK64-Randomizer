@@ -20,46 +20,61 @@ import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
 import randomizer.Lists.CBLocations.DKIslesCBLocations
+import randomizer.CollectibleLogicFiles.AngryAztec
+import randomizer.CollectibleLogicFiles.CreepyCastle
+import randomizer.CollectibleLogicFiles.CrystalCaves
+import randomizer.CollectibleLogicFiles.FranticFactory
+import randomizer.CollectibleLogicFiles.FungiForest
+import randomizer.CollectibleLogicFiles.GloomyGalleon
+import randomizer.CollectibleLogicFiles.JungleJapes
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Settings import CBRando
+from randomizer.Enums.Collectibles import Collectibles
 from randomizer.LogicClasses import Collectible
-
-from .Enums.Collectibles import Collectibles
+from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Lists.MapsAndExits import RegionMapList, LevelMapTable
 
 level_data = {
     Levels.JungleJapes: {
         "cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList,
+        "vanilla": randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
     },
     Levels.AngryAztec: {
         "cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList,
+        "vanilla": randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
     },
     Levels.FranticFactory: {
         "cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList,
+        "vanilla": randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
     },
     Levels.GloomyGalleon: {
         "cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList,
+        "vanilla": randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
     },
     Levels.FungiForest: {
         "cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList,
+        "vanilla": randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
     },
     Levels.CrystalCaves: {
         "cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList,
+        "vanilla": randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
     },
     Levels.CreepyCastle: {
         "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
+        "vanilla": randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
     },
     Levels.DKIsles: {
         "cb": randomizer.Lists.CBLocations.DKIslesCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.DKIslesCBLocations.BalloonList,
+        "vanilla": None,
     },
 }
 
@@ -72,13 +87,41 @@ def ShuffleCBs(spoiler):
     MAX_SINGLES = 780  # 793 Singles in Vanilla, under-representing this to help with the calculation formula
     MAX_BUNCHES = 790 - MAX_BALLOONS * 2 - round(MAX_SINGLES / 5)  # 334 bunches in vanilla, biasing this for now to help with calculation formula
     PLACEMENT_LIMIT = 1127
-    add_isles_cbs = spoiler.settings.cb_rando == CBRando.on_with_isles
+    add_isles_cbs = IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles)
     if add_isles_cbs:
         levels_to_populate = 8
         INCREASE_FACTOR = 8 / 7
         MAX_SINGLES = int(MAX_SINGLES * INCREASE_FACTOR)
         MAX_BUNCHES = int(MAX_BUNCHES * INCREASE_FACTOR)
         PLACEMENT_LIMIT = 1400
+    # Calculate how many CBs to remove from the total based off what levels aren't placed
+    levels_to_place = []
+    for level in level_data:
+        is_level_placed = IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, level)
+        if is_level_placed:
+            # Level is placed, no need to remove CBs
+            levels_to_place.append(level)
+            continue
+        if level == Levels.DKIsles:
+            # Isles has no CBs in vanilla, don't place
+            continue
+        vanilla_regions = level_data[level]["vanilla"]
+        singles_in_vanilla = 0
+        bunches_in_vanilla = 0
+        balloon_in_vanilla = 0
+        for region, region_items in vanilla_regions.items():
+            for item in region_items:
+                if item.type == Collectibles.balloon:
+                    balloon_in_vanilla += 1
+                elif item.type == Collectibles.bunch:
+                    bunches_in_vanilla += 1
+                elif item.type == Collectibles.banana:
+                    singles_in_vanilla += 1
+        MAX_BALLOONS -= balloon_in_vanilla
+        MAX_SINGLES -= singles_in_vanilla
+        MAX_BUNCHES -= bunches_in_vanilla
+        PLACEMENT_LIMIT -= singles_in_vanilla + bunches_in_vanilla + balloon_in_vanilla
+        levels_to_populate -= 1
 
     while True:
         try:
@@ -88,10 +131,18 @@ def ShuffleCBs(spoiler):
             cb_data = []
             # First, remove all placed colored bananas
             for region_id in spoiler.CollectibleRegions.keys():
-                spoiler.CollectibleRegions[region_id] = [
-                    collectible for collectible in spoiler.CollectibleRegions[region_id] if collectible.type not in [Collectibles.balloon, Collectibles.bunch, Collectibles.banana]
-                ]
-            for level_index, level in enumerate(level_data):
+                map_id = RegionMapList[region_id]
+                level_id = None
+                for lvl, map_ids in LevelMapTable.items():
+                    if map_id in map_ids:
+                        level_id = lvl
+                if level_id is None:
+                    raise Exception(f"Invalid Level ID for {map_id} in region {region_id}")
+                if level_id in levels_to_place:
+                    spoiler.CollectibleRegions[region_id] = [
+                        collectible for collectible in spoiler.CollectibleRegions[region_id] if collectible.type not in [Collectibles.balloon, Collectibles.bunch, Collectibles.banana]
+                    ]
+            for level_index, level in enumerate(levels_to_place):
                 if (not add_isles_cbs) and level == Levels.DKIsles:
                     continue
                 level_placement = []

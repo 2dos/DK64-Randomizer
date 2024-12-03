@@ -38,6 +38,13 @@ LEVEL_ENTRY_HANDLER_REGIONS = (
     Regions.CreepyCastleEntryHandler,
 )
 
+UNDERWATER_LOGIC_REGIONS = (
+    Regions.TempleUnderwater,
+    Regions.LighthouseUnderwater,
+    Regions.ShipyardUnderwater,
+    Regions.TreasureRoom,
+)
+
 
 class DoorData:
     """Stores information about a door location."""
@@ -87,6 +94,10 @@ class DoorData:
         if True:  # Disable once I figure some stuff out
             if DoorType.dk_portal in self.door_type and self.map not in LEVEL_MAIN_MAPS:
                 # Disable non-main maps for now because of instance script/exit memes
+                self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
+        if True:  # Disable if we figure it's not necessary
+            if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
+                # Disable portals in underwater regions
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
         if self.default_placed == DoorType.dk_portal:
             # Disable TnS spawning here because of it being slightly bugged when exiting as DK/Chunky

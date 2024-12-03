@@ -540,17 +540,6 @@ int getLocationStatus(location_list location_index) {
 	return 0;
 }
 
-typedef struct move_overlay_paad {
-	/* 0x000 */ void* upper_text;
-	/* 0x004 */ void* lower_text;
-	/* 0x008 */ unsigned char opacity;
-	/* 0x009 */ char unk_09[0x10-0x9];
-	/* 0x010 */ mtx_item matrix_0;
-	/* 0x050 */ mtx_item matrix_1;
-	/* 0x090 */ int timer;
-	/* 0x094 */ actorData* shop_owner;
-} move_overlay_paad;
-
 Gfx* displayMoveText(Gfx* dl, actorData* actor) {
 	move_overlay_paad* paad = actor->paad;
 	gSPDisplayList(dl++, 0x01000118);
@@ -610,18 +599,19 @@ void getNextMoveText(void) {
 	int p_flag = 0;
 	char* p_string = 0;
 	int has_data = 0;
+	move_text_overlay_struct *used_overlay = &text_overlay_data[paad->index];
 	if (shop_data) {
 		has_data = 1;
 		p_value = shop_data->purchase_value;
 		p_type = shop_data->purchase_type;
 		p_kong = shop_data->kong;
 		p_flag = shop_data->flag;
-	} else if (TextOverlayData.flag != 0) {
+	} else if (used_overlay->flag != 0) {
 		has_data = 1;
-		p_type = TextOverlayData.type;
-		p_value = TextOverlayData.flag;
-		p_kong = TextOverlayData.kong;
-		p_string = TextOverlayData.string;
+		p_type = used_overlay->type;
+		p_value = used_overlay->flag;
+		p_kong = used_overlay->kong;
+		p_string = used_overlay->string;
 		p_flag = p_value;
 	} else if (CurrentMap == MAP_FAIRYISLAND) {
 		has_data = 1;
@@ -644,10 +634,11 @@ void getNextMoveText(void) {
 	int override_string = Rando.archipelago && p_type == 8;
 	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-			TextOverlayData.kong = 0;
-			TextOverlayData.flag = 0;
-			TextOverlayData.type = 0;
-			TextOverlayData.string = 0;
+			used_overlay->kong = 0;
+			used_overlay->flag = 0;
+			used_overlay->type = 0;
+			used_overlay->string = 0;
+			used_overlay->used = 0;
 			int overlay_count = 0;
 			for (int i = 0; i < LoadedActorCount; i++) {
 				actorData* actor = (actorData*)LoadedActorArray[i].actor;

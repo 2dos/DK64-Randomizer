@@ -9,7 +9,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones, RemovedBarriersSelected
+from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones, RemovedBarriersSelected, CrownEnemyDifficulty
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
@@ -235,6 +235,19 @@ def ShuffleExits(spoiler):
             for x in range(8):
                 level = settings.level_order[x + 1]
                 settings.switch_allocation[level] = allocation[x]
+        if settings.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
+            # There's 4 levels of easy, 2 of medium, 2 of hard
+            # Both Isles crowns will be a random difficulty.
+            # One will either be easy or medium. The other will either be medium or hard.
+            allocation = [CrownEnemyDifficulty.easy] * 4
+            allocation.extend([CrownEnemyDifficulty.medium] * 2)
+            allocation.extend([CrownEnemyDifficulty.hard] * 2)
+            for x in range(8):
+                level = settings.level_order[x + 1]
+                settings.crown_difficulties[level] = allocation[x]
+            settings.crown_difficulties[8] = random.choice([CrownEnemyDifficulty.easy, CrownEnemyDifficulty.medium])
+            settings.crown_difficulties[9] = random.choice([CrownEnemyDifficulty.medium, CrownEnemyDifficulty.hard])
+
     elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
         frontpool = []
         backpool = []

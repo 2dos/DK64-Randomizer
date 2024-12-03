@@ -674,11 +674,15 @@ class Settings:
         self.crypt_levers = [1, 4, 3]
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         self.enemy_rando = False
-        self.crown_enemy_rando = CrownEnemyRando.off
+        self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
+        self.crown_enemy_difficulty = CrownEnemyDifficulty.vanilla
+        self.crown_difficulties = [CrownEnemyDifficulty.vanilla] * 10
         self.enemy_speed_rando = False
         self.normalize_enemy_sizes = False
         self.randomize_enemy_sizes = False
-        self.cb_rando = CBRando.off
+        self.cb_rando = CBRando.off  # Deprecated
+        self.cb_rando_list_selected = []
+        self.cb_rando_enabled = False
         self.coin_rando = False
         self.crown_placement_rando = False
         self.bananaport_placement_rando = ShufflePortLocations.off
@@ -1200,7 +1204,7 @@ class Settings:
                 if self.climbing_status != ClimbingStatus.normal:
                     self.shuffled_location_types.append(Types.Climbing)
                 self.shuffled_location_types.append(Types.PreGivenMove)
-            if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
+            if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles) and Types.Medal in self.shuffled_location_types:
                 self.shuffled_location_types.append(Types.IslesMedal)
             if Types.Shockwave not in self.shuffled_location_types:
                 self.shockwave_status = ShockwaveStatus.vanilla
@@ -1371,6 +1375,17 @@ class Settings:
                 random.shuffle(allocation)
                 allocation.append(3)
             self.switch_allocation = allocation.copy()
+
+        if self.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
+            self.crown_difficulties = [self.crown_enemy_difficulty] * 10
+            if self.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
+                allocation = [CrownEnemyDifficulty.easy] * 4
+                allocation.extend([CrownEnemyDifficulty.medium] * 4)
+                allocation.extend([CrownEnemyDifficulty.hard] * 2)
+                # Start out with a default of 4 easy, 4 medium, then 2 hard crowns
+                # Randomize placement for LZR (Matching level order will come from a different calculation)
+                random.shuffle(allocation)
+                self.crown_difficulties = allocation.copy()
 
         # Mill Levers
         mill_shortened = IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
@@ -1668,9 +1683,26 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_count == 0:
-            # Disable progressive hints if hint text is 0
+        prog_hint_max = {
+            ProgressiveHintItem.off: 0,
+            ProgressiveHintItem.req_gb: 201,
+            ProgressiveHintItem.req_bp: 40,
+            ProgressiveHintItem.req_key: 8,
+            ProgressiveHintItem.req_medal: 40,
+            ProgressiveHintItem.req_crown: 10,
+            ProgressiveHintItem.req_fairy: 20,
+            ProgressiveHintItem.req_rainbowcoin: 16,
+            ProgressiveHintItem.req_bean: 1,
+            ProgressiveHintItem.req_pearl: 5,
+            ProgressiveHintItem.req_cb: 3500,
+        }
+        prog_max = prog_hint_max.get(self.progressive_hint_count, 0)
+        if self.progressive_hint_count <= 0:
+            # Disable progressive hints if hint text is 0, or less than 0
             self.progressive_hint_item = ProgressiveHintItem.off
+        elif self.progressive_hint_count > prog_max:
+            # Cap at prog max
+            self.progressive_hint_count = prog_max
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
@@ -1703,7 +1735,7 @@ class Settings:
         for location_id in PreGivenLocations:
             spoiler.LocationList[location_id].inaccessible = True
 
-        if self.cb_rando != CBRando.on_with_isles:
+        if not IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
             spoiler.LocationList[Locations.IslesDonkeyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesDiddyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesLankyMedal].inaccessible = True

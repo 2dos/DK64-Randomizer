@@ -229,6 +229,10 @@ function randomize_settings() {
     if (!randSettings["bonus_barrel_rando"]) {
         randSettings["minigames_list_selected"] = [];
     }
+    // Remove all selected levels if the CBs in them aren't being randomized.
+    if (!randSettings["cb_rando_enabled"]) {
+        randSettings["cb_rando_list_selected"] = [];
+    }
     // Remove all selected enemies if they aren't being randomized.
     if (!randSettings["enemy_rando"]) {
         randSettings["enemies_selected"] = [];

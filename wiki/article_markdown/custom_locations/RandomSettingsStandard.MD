@@ -52,7 +52,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Shuffle Boss Kong Required: 65%
 - Boss Location Rando: 80%
 - DK Phase requires Baboon Blast: 50%
-- Random CB Locations: 
+- Randomize CB Locations: 
 	- Off: 50%
 	- On: 40%
 	- On With Isles: 10%
@@ -73,7 +73,11 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Medium Random: 40%
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
-- Crown Enemy Randomizer: 95%
+- Crown Enemy Randomizer: 
+	- Vanilla: 10%
+	- Easy: 30%
+	- Medium: 40%
+	- Hard: 20%
 - Crown Placement Rando: 30%
 - Damage Multiplier: 
 	- Default: 50%
@@ -85,6 +89,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%
+- Shuffle Enemies: 95%
 - Enemy Speed Rando: 50%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 

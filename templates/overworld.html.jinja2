@@ -443,14 +443,14 @@
                 </div>
                 <div class="item-select">
                     <p class="select-title">Crown Enemies</p>
-                    <select name="crown_enemy_rando"
-                            id="crown_enemy_rando"
+                    <select name="crown_enemy_difficulty"
+                            id="crown_enemy_difficulty"
                             display_name="Crown Enemy Randomizer"
                             class="form-select"
-                            aria-label="Activate Bananaports"
+                            aria-label="Crown Enemy Randomizer"
                             data-toggle="tooltip"
                             title="Battle Crown Enemies are Randomized.&#10;-Vanilla: No crown enemy randomization will take place.&#10;-Easy: Crown enemies are randomized with a bias towards the easier enemies.&#10;-Medium: Crown enemies are randomized with a bias towards the medium-difficulty enemies.&#10;-Hard: Crown enemies are randomized with a bias towards the hardest enemies.">
-                        <option selected id="off" value="off">
+                        <option selected id="vanilla" value="vanilla">
                             Vanilla
                         </option>
                         <option id="easy" value="easy">
@@ -461,6 +461,9 @@
                         </option>
                         <option id="hard" value="hard">
                             Hard
+                        </option>
+                        <option id="progressive" value="progressive" title="The difficulty of crowns will scale up as you progress through the game.">
+                            Progressive Difficulty
                         </option>
                     </select>
                 </div>

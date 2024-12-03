@@ -787,3 +787,29 @@ def updateKrushaMoveNames(spoiler):
                         reference.item_name = replacement["new"]
                         chosen_replacements.remove(replacement)
     spoiler.text_changes[39] = text_replacements
+
+
+def remove5DSCameraPoint(spoiler, ROM_COPY: LocalROM):
+    """Remove the camera lock triggers for Tiny 5DS entry."""
+    if not IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.vanilla_bug_fixes):
+        return
+    file_start = js.pointer_addresses[8]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
+    ROM_COPY.seek(file_start)
+    header_end = 0x30
+    for x in range(0x18):
+        count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        header_end += 0x12 * count
+    ROM_COPY.seek(file_start + header_end)
+    count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    for index in range(count):
+        lock_start = file_start + header_end + (index * 0x1C) + 2
+        ROM_COPY.seek(lock_start + 0x14)
+        z_val = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        if z_val > 0x7FFF:
+            z_val -= 0x10000
+        if z_val > 1700:
+            ROM_COPY.seek(lock_start + 0x10)
+            for y in range(3):
+                ROM_COPY.writeMultipleBytes(0, 2)
+            ROM_COPY.seek(lock_start + 0x19)
+            ROM_COPY.writeMultipleBytes(0, 1)
