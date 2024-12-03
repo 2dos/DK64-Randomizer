@@ -1,29 +1,52 @@
 import json
+import logging
+import os
 import secrets
-from os import path, walk, environ
-from werkzeug.utils import secure_filename
+import threading
 import time
+from datetime import UTC, datetime
+from os import environ, path, walk
 
-COOLDOWN_PERIOD = 300  # 5 minutes in seconds
-
-from cleanup import enable_cleanup
-from flask import Blueprint, Flask, jsonify, make_response, request, session, send_from_directory, render_template, redirect, send_file
+import requests
+from flask import Blueprint, Flask, jsonify, make_response, redirect, render_template, request, send_file, send_from_directory, session
 from flask_cors import CORS
+from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
+from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis
 from rq import Queue
 from rq.job import Job
-from datetime import datetime, UTC
-from oauth import DiscordAuth
-import requests
 from version import version
 from waitress import serve
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
-#from otel_config import tracer_provider  # Import configuration from Step 1
-import logging
+from werkzeug.utils import secure_filename
 
-import os
-import threading
+from cleanup import enable_cleanup
+from oauth import DiscordAuth
+
+COOLDOWN_PERIOD = 300  # 5 minutes in seconds
+
+# Define a resource to identify your service
+resource = Resource(
+    attributes={
+        "service.name": "controller",
+        "service.version": str(version),
+    }
+)
+
+# Set up the TracerProvider and Span Exporter
+trace.set_tracer_provider(TracerProvider(resource=resource))
+tracer_provider = trace.get_tracer_provider()
+
+# Configure OTLP Exporter for sending traces to the collector
+otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
+
+# Add the BatchSpanProcessor to the TracerProvider
+span_processor = BatchSpanProcessor(otlp_exporter)
+tracer_provider.add_span_processor(span_processor)
 
 app = Flask(__name__, static_folder="", template_folder="")
 FlaskInstrumentor().instrument_app(app)
@@ -64,6 +87,8 @@ discord = DiscordAuth(
 admin_roles = ["550784070188138508"]
 
 ALLOWED_REFERRERS.extend(["*"])
+
+
 @api.before_request
 def enforce_api_restrictions():
     referer = request.headers.get("Referer")
@@ -402,6 +427,7 @@ def convert_settings():
     data = request.get_json()
     response = requests.post(f"{url}/convert_settings", json=data)
     return set_response(response.json(), response.status_code)
+
 
 app.register_blueprint(api, url_prefix="/api")
 
