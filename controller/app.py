@@ -34,6 +34,12 @@ resource = Resource(
     attributes={
         "service.name": "controller",
         "service.version": str(version),
+        "service.environment": environ.get("BRANCH", "LOCAL"),
+        "service.namespace": "dk64randomizer",
+        "service.instance.name": "controller",
+        "service.instance.version": str(version),
+        "service.instance.environment": environ.get("BRANCH", "LOCAL"),
+        "service.instance.namespace": "dk64randomizer",
     }
 )
 

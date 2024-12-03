@@ -3,6 +3,7 @@ from redis import Redis
 from rq import Queue, Worker
 import threading
 import json
+import os
 from waitress import serve
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
@@ -37,6 +38,12 @@ resource = Resource(
     attributes={
         "service.name": "worker",
         "service.version": str(version),
+        "service.environment": os.environ.get("BRANCH", "LOCAL"),
+        "service.namespace": "dk64randomizer",
+        "service.instance.name": "worker",
+        "service.instance.version": str(version),
+        "service.instance.environment": os.environ.get("BRANCH", "LOCAL"),
+        "service.instance.namespace": "dk64randomizer",
     }
 )
 
