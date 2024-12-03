@@ -32,4 +32,4 @@ ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4317
 ENV OTEL_TRACES_EXPORTER=otlp
 ENV OTEL_RESOURCE_ATTRIBUTES=service.name=controller
 # Command to run the application
-CMD ["opentelemetry-instrument", "waitress-serve", "--port=8000", "app:app"]
+CMD ["waitress-serve", "--port=8000", "app:app"]
