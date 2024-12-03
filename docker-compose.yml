@@ -44,7 +44,7 @@ services:
     networks:
       - task_network
     volumes:
-      - ./controller/${NGINX_CONF:-nginx-dev.conf}:/etc/nginx/nginx.conf
+      - ./controller/${NGINX_CONF:-nginx-local.conf}:/etc/nginx/nginx.conf
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
