@@ -28,7 +28,7 @@ from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText
-from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
+from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays, KongModels
@@ -271,6 +271,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
             patchAssemblyCosmetic(ROM_COPY, settings)
             music_data, music_names = randomize_music(settings)
+            # Disable dynamic FXMix (reverb)
+            # If this impacts non-BGM music in a way that produces unwanted behavior, we'll want to only apply this to BGM
+            if settings.music_disable_reverb:
+                disableDynamicReverb(ROM_COPY)
             music_text = []
             accepted_characters = [*string.ascii_uppercase] + [" ", "\n", "(", ")", "%", ",", ".", "!", ">", ":", ";", "'", "-"] + [*string.digits]
             for name in music_names:

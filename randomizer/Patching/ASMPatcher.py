@@ -662,6 +662,9 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806035C6, Overlay.Static, 0, offset_dict)  # Set Fungi count to 0
         writeValue(ROM_COPY, 0x8060357E, Overlay.Static, 0, offset_dict)  # Set Fungi Cart count to 0
         writeValue(ROM_COPY, 0x806035BA, Overlay.Static, 0, offset_dict)  # Set TGrounds count to 0
+    if settings.music_disable_reverb:
+        # Disable volume changes that would counteract the dynamic reverb's volume loss
+        writeValue(ROM_COPY, 0x80603DB8, Overlay.Static, 0x10000011, offset_dict, 4)  # B 80603E00
 
     # Holiday Mode Stuff
     if holiday == Holidays.Halloween:
@@ -1007,6 +1010,18 @@ def writeKongItemOwnership(ROM_COPY, settings: Settings):
         start = getSym("new_flag_mapping") + (41 * 8)
         writeValue(ROM_COPY, start, Overlay.Custom, Maps.FactoryBaboonBlast, {}, 1)
         writeValue(ROM_COPY, start + 2, Overlay.Custom, 0, {})
+
+
+def disableDynamicReverb(ROM_COPY: ROM):
+    """Disable the dynamic FXMix (Reverb) that would otherwise be applied in tunnels and underwater."""
+    for index in range(1, 175):
+        offset_dict = populateOverlayOffsets(ROM_COPY)
+        ram_address = 0x80745658 + (index * 2)
+        rom_address = getROMAddress(ram_address, Overlay.Static, offset_dict)
+        ROM_COPY.seek(rom_address)
+        original_value = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        original_value &= 0xFFFE
+        writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
 
 
 def patchAssembly(ROM_COPY, spoiler):

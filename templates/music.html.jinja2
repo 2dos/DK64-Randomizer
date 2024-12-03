@@ -90,6 +90,18 @@
                     {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
+                            title="If true, songs will not have additional reverb while underwater or in tunnels.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_disable_reverb"
+                            id="music_disable_reverb"
+                            display_name="Disable Dynamic Reverb"
+                            value="True"/>
+                        Disable Dynamic Reverb
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
                            title="This option enables music filtering options for .candy files.">
                         <input class="form-check-input"
                                type="checkbox"
@@ -101,7 +113,6 @@
                     </label>
                     {{ list_selector(song_filters, "music_filtering", "Music Filtering", "This will open a popup that will let you customize how the game applies additional filters.", 2, True, "These filters only work for .candy files.") }}
                     {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="spacer"></div>
             </div>
         </div>
         <div class="col border panel">

@@ -516,6 +516,7 @@ class Settings:
         self.music_events_randomized = False
         self.random_music = False
         self.music_vanilla_locations = False
+        self.music_disable_reverb = False
         self.music_selection_dict = {
             "vanilla": {},
             "custom": {},
