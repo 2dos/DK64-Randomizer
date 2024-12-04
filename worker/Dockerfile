@@ -48,9 +48,5 @@ RUN pip install -r requirements.txt && \
     mv /app/base-hack /app/worker/base-hack/
 RUN opentelemetry-bootstrap --action=install
 
-# Set working directory
-ENV OTEL_RESOURCE_ATTRIBUTES=service.name=worker-${BRANCH}
-ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4317
-ENV OTEL_TRACES_EXPORTER=otlp
 # Command to run the application
 CMD ["opentelemetry-instrument", "python", "worker.py"]

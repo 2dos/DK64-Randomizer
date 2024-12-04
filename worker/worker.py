@@ -37,7 +37,7 @@ app = Flask(__name__)
 # Define a resource to identify your service
 resource = Resource(
     attributes={
-        "service.name": "worker",
+        "service.name": "worker-" + os.environ.get("BRANCH", "LOCAL"),
         "service.version": str(version),
         "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
     }
