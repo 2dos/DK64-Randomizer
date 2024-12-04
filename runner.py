@@ -308,6 +308,7 @@ def lambda_function():
                 "Spoiler Hints Data",
                 "Generated Time",
                 "Item Pool",
+                "Randomizer Version",
             ]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
@@ -646,6 +647,7 @@ def get_seed_data():
                 "Spoiler Hints Data",
                 "Generated Time",
                 "Item Pool",
+                "Randomizer Version",
             ]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
