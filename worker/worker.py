@@ -131,8 +131,9 @@ def runWorker(jobs):
 
     # Use the custom PriorityAwareWorker to process tasks
     worker = PriorityAwareWorker(queues, connection=redis_conn)
+    
     # Start processing tasks, prioritizing high-priority queue
-    worker.work(max_jobs=jobs, with_scheduler=True)
+    worker.work(max_jobs=jobs, with_scheduler=False)
 
 
 if __name__ == "__main__":

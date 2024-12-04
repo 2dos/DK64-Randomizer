@@ -8,37 +8,13 @@ from datetime import UTC, datetime
 from io import BytesIO
 
 from vidua import bps
-from opentelemetry import trace
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from version import version
-from opentelemetry.trace import Status, StatusCode
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-import os
-resource = Resource(
-    attributes={
-        "service.name": "worker",
-        "service.version": str(version),
-        "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
-    }
-)
 
-span = trace.get_current_span()
-trace.set_tracer_provider(TracerProvider(resource=resource))
-tracer_provider = trace.get_tracer_provider()
-
-# Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
-
-# Add the BatchSpanProcessor to the TracerProvider
-span_processor = BatchSpanProcessor(otlp_exporter)
-tracer_provider.add_span_processor(span_processor)
 
 def generate_seed(settings_dict):
     print("Running task with")
@@ -50,19 +26,17 @@ def generate_seed(settings_dict):
         patched = BytesIO(bps.patch(original, patch).read())
         if not settings_dict.get("seed"):
             settings_dict["seed"] = random.randint(0, 100000000)
-            load_base_rom(default_file=patched)
-            settings_obj = Settings(cleanup_settings(settings_dict))
-            spoiler = Spoiler(settings_obj)
-            patch, spoiler = Generate_Spoiler(spoiler)
-            spoiler.FlushAllExcessSpoilerData()
-            return update_seed_results(patch, spoiler, settings_dict)
+        load_base_rom(default_file=patched)
+        settings_obj = Settings(cleanup_settings(settings_dict))
+        spoiler = Spoiler(settings_obj)
+        patch, spoiler = Generate_Spoiler(spoiler)
+        spoiler.FlushAllExcessSpoilerData()
+        return update_seed_results(patch, spoiler, settings_dict)
 
     except Exception as e:
         print(traceback.format_exc())
         # Return the error and the type of error.
         error = str(type(e).__name__) + ": " + str(e)
-        span.record_exception(e)
-        span.set_status(Status(StatusCode.ERROR, str(e)))
         raise e
         # queue.put(error)
 
