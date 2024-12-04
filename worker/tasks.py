@@ -16,8 +16,29 @@ from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from version import version
 from opentelemetry.trace import Status, StatusCode
-span = trace.get_current_span()
+from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+import os
+resource = Resource(
+    attributes={
+        "service.name": "worker",
+        "service.version": str(version),
+        "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
+    }
+)
 
+span = trace.get_current_span()
+trace.set_tracer_provider(TracerProvider(resource=resource))
+tracer_provider = trace.get_tracer_provider()
+
+# Configure OTLP Exporter for sending traces to the collector
+otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
+
+# Add the BatchSpanProcessor to the TracerProvider
+span_processor = BatchSpanProcessor(otlp_exporter)
+tracer_provider.add_span_processor(span_processor)
 
 def generate_seed(settings_dict):
     print("Running task with")
