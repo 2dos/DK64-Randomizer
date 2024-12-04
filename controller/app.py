@@ -23,7 +23,8 @@ from rq.job import Job
 from version import version
 from waitress import serve
 from werkzeug.utils import secure_filename
-
+from flask_swagger import swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 from cleanup import enable_cleanup
 from oauth import DiscordAuth
 
@@ -52,6 +53,7 @@ tracer_provider.add_span_processor(span_processor)
 app = Flask(__name__, static_folder="", template_folder="")
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
+swagger(app)
 # Shared structure to manage threads
 tasks = {}
 
@@ -430,7 +432,24 @@ def convert_settings():
     data = request.get_json()
     response = requests.post(f"{url}/convert_settings", json=data)
     return set_response(response.json(), response.status_code)
+@app.route('/swagger')
+def get_swagger():
+    swag = swagger(app)
+    swag['info']['version'] = "1.0"
+    swag['info']['title'] = "My API"
+    return jsonify(swag)
 
+# Swagger UI route
+SWAGGER_URL = '/swagger-ui'
+API_URL = '/swagger'
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "My API"
+    }
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 app.register_blueprint(api, url_prefix="/api")
 
