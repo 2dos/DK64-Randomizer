@@ -118,3 +118,14 @@ setFlag_ItemRando:
     addiu $a3, $zero, 1
     j 0x80731300
     nop
+
+adjustExitRead:
+    bgez $a0, adjustExitRead_checkCount
+    nop
+    j 0x806C97F0
+    nop
+
+    adjustExitRead_checkCount:
+        lui $v0, hi(ExitCount)
+        j 0x806C97E8
+        lbu $v0, lo(ExitCount) ($v0)

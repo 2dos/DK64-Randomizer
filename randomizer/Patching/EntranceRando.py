@@ -133,10 +133,14 @@ def randomize_entrances(spoiler):
                 ROM_COPY.write(GetMapId(shuffledBack.regionId))
                 ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        for transition in enter_transitions:
+        for world_index, transition in enumerate(enter_transitions):
             shuffledBack = spoiler.shuffled_exit_data[transition]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
-            ROM_COPY.write(GetExitId(shuffledBack))
+            map_id = GetMapId(shuffledBack.regionId)
+            exit_id = GetExitId(shuffledBack)
+            spoiler.settings.level_portal_destinations[world_index] = {
+                "map": map_id,
+                "exit": exit_id,
+            }
         # /* 0x120 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleBallroomToMuseum]
         ROM_COPY.seek(varspaceOffset + 0x130)

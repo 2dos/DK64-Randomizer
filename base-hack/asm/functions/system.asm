@@ -79,3 +79,4 @@
 .definelabel wipeMallocSpace, 0x80611690
 .definelabel inDKTV, 0x807142D8
 .definelabel handleGamemodes, 0x80712BD4
+.definelabel handleRaisedGalleonWater, 0x806C9658

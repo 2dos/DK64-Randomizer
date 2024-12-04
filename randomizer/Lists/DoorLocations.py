@@ -13,10 +13,12 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     FungiTimeSetting,
     ShufflePortLocations,
+    ShuffleLoadingZones,
 )
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Lists.MapsAndExits import RegionMapList
 
 LEVEL_MAIN_MAPS = (
     Maps.JungleJapes,
@@ -91,7 +93,7 @@ class DoorData:
             self.dk_portal_logic = lambda s: False
         else:
             self.dk_portal_logic = dk_portal_logic
-        if True:  # Disable once I figure some stuff out
+        if False:  # Disable once I figure some stuff out
             if DoorType.dk_portal in self.door_type and self.map not in LEVEL_MAIN_MAPS:
                 # Disable non-main maps for now because of instance script/exit memes
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
@@ -133,7 +135,13 @@ class DoorData:
         self.placed = DoorType.dk_portal
         placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level]
         spoiler.RegionList[placement_region].exits[1] = TransitionFront(self.logicregion, lambda l: True)
-
+        tied_map = RegionMapList[self.logicregion]
+        if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+            spoiler.settings.level_portal_destinations[level] = {
+                "map": tied_map,
+                "exit": -1,
+            }
+        spoiler.settings.level_void_maps[level] = tied_map
 
 def GetBossLobbyRegionIdForRegion(region_id, region):
     """Return the region id of the boss lobby the given region id and Region object should take you to."""

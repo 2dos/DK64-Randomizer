@@ -1739,7 +1739,7 @@ typedef struct RandomSwitchesSetting {
 
 typedef struct LZREntrance {
 	/* 0x000 */ unsigned char map;
-	/* 0x001 */ unsigned char exit;
+	/* 0x001 */ char exit;
 } LZREntrance;
 
 typedef struct ROMFlags {
@@ -2329,3 +2329,13 @@ typedef struct move_overlay_paad {
 	/* 0x090 */ int timer;
 	/* 0x094 */ actorData* shop_owner;
 } move_overlay_paad;
+
+typedef struct SingleExitStruct {
+    /* 0x000 */ short x;
+    /* 0x002 */ short y;
+    /* 0x004 */ short z;
+    /* 0x006 */ unsigned char player_angle;
+    /* 0x007 */ unsigned char camera_angle;
+    /* 0x008 */ unsigned char autowalk;
+    /* 0x009 */ unsigned char size;
+} SingleExitStruct;

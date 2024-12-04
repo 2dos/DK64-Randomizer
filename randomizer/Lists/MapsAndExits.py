@@ -623,9 +623,20 @@ def GetMapId(regionId) -> Maps:
     """Get the map id of a transition."""
     return RegionMapList[regionId]
 
+ENTRY_HANDLERS = (
+    Regions.JungleJapesEntryHandler,
+    Regions.AngryAztecEntryHandler,
+    Regions.FranticFactoryEntryHandler,
+    Regions.GloomyGalleonEntryHandler,
+    Regions.FungiForestEntryHandler,
+    Regions.CrystalCavesEntryHandler,
+    Regions.CreepyCastleEntryHandler,
+)
 
 def GetExitId(back: TransitionBack) -> int:
     """Get exit id of a transition."""
+    if back.regionId in ENTRY_HANDLERS:
+        return -1
     mapId = GetMapId(back.regionId)
     if mapId in MapExitTable:
         return MapExitTable[mapId].index(back.name)
