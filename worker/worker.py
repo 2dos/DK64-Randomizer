@@ -26,7 +26,8 @@ from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
 from version import version
 from tasks import generate_seed
-
+from rq.registry import FailedJobRegistry
+from rq.job import Job
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
 redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
@@ -130,20 +131,47 @@ def runWorker(jobs):
     queues = [Queue(name, connection=redis_conn, default_timeout=job_timeout) for name in listen]
 
     # Use the custom PriorityAwareWorker to process tasks
-    worker = PriorityAwareWorker(queues, connection=redis_conn, exception_handlers=[my_handler], disable_default_exception_handler=True)
+    worker = PriorityAwareWorker(queues, connection=redis_conn)
     
     # Start processing tasks, prioritizing high-priority queue
     worker.work(max_jobs=jobs, with_scheduler=True)
-def my_handler(job, *exc_info):
-    span.record_exception(*exc_info)
-    return False
+import time
+def monitor_failed_jobs():
+    queues = [Queue(name, connection=redis_conn, default_timeout=job_timeout) for name in listen]
+    # Run monitoring loop
+    while True:
+        for queue in queues:
+            # Create a FailedJobRegistry for the current queue
+            registry = FailedJobRegistry(queue=queue)
+            
+            # Get list of failed job IDs
+            failed_job_ids = registry.get_job_ids()
+            for job_id in failed_job_ids:
+                # Fetch the job
+                job = Job.fetch(job_id, connection=queue.connection)
+                
+                # Process the exception
+                exception = job.exc_info
+                print(f"Job {job_id} in queue {queue.name} failed with exception: {exception}")
+                
+                # Optionally requeue or perform cleanup
+                # queue.enqueue_call(func=job.func, args=job.args, kwargs=job.kwargs)
+                
+                # Remove from registry once handled
+                registry.remove(job, delete_job=False)
+        
+        # Add a sleep to avoid tight polling
+        time.sleep(5)
 
 if __name__ == "__main__":
 
     # Start the worker in a separate thread
     worker_thread = threading.Thread(target=runWaitressWorker)
     worker_thread.start()
-
+    # Run monitor_failed_jobs in a thread, pass it the high-priority queue
+    monitor_thread = threading.Thread(target=monitor_failed_jobs)
+    monitor_thread.start()
     runWorker(None)
     # Close the worker thread instead of waiting for it to finish
     worker_thread.join(0)
+    monitor_thread.join(0)
