@@ -153,7 +153,7 @@ def monitor_failed_jobs():
                 # Process the exception
                 exception = job.exc_info
                 print(f"Job {job_id} in queue {queue.name} failed with exception: {exception}")
-                raise exception
+                raise str(exception)
                 
                 # Optionally requeue or perform cleanup
                 # queue.enqueue_call(func=job.func, args=job.args, kwargs=job.kwargs)
