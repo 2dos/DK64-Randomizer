@@ -2448,6 +2448,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x805FEAE4, Overlay.Static, "loadExits", offset_dict)
     writeHook(ROM_COPY, 0x806C97E0, Overlay.Static, "adjustExitRead", offset_dict)
     writeValue(ROM_COPY, 0x805FF1CC, Overlay.Static, 0x2009FFFF, offset_dict, 4)  # Set default void location to be exit -1 instead of exit 0
+    writeValue(ROM_COPY, 0x805FF220, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
+    writeValue(ROM_COPY, 0x805FF278, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
+    writeValue(ROM_COPY, 0x805FF2D0, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
 
     # Boot setup checker optimization
     writeFunction(ROM_COPY, 0x805FEB00, Overlay.Static, "bootSpeedup", offset_dict)  # Modify Function Call
