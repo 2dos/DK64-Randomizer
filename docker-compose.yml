@@ -17,6 +17,10 @@ services:
         - BRANCH=${BRANCH:-LOCAL}
     depends_on:
       - redis
+    volumes:
+      - ./generated_seeds/:/app/worker/generated_seeds/
+      - ./current_total.cfg:/app/worker/current_total.cfg
+      - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
     networks:
       - task_network
     environment:
