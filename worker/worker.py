@@ -133,10 +133,10 @@ def runWorker(jobs):
     worker = PriorityAwareWorker(queues, connection=redis_conn, exception_handlers=[my_handler], disable_default_exception_handler=True)
     
     # Start processing tasks, prioritizing high-priority queue
-    worker.work(max_jobs=jobs, with_scheduler=False)
+    worker.work(max_jobs=jobs, with_scheduler=True)
 def my_handler(job, *exc_info):
     print("Job failed")
-    raise "Task failed"
+    return False
 
 if __name__ == "__main__":
 
