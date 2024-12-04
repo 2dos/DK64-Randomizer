@@ -135,7 +135,7 @@ def runWorker(jobs):
     # Start processing tasks, prioritizing high-priority queue
     worker.work(max_jobs=jobs, with_scheduler=True)
 def my_handler(job, *exc_info):
-    print("Job failed")
+    span.record_exception(*exc_info)
     return False
 
 if __name__ == "__main__":
