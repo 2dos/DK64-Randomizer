@@ -130,7 +130,7 @@ def runWorker(jobs):
     queues = [Queue(name, connection=redis_conn, default_timeout=job_timeout) for name in listen]
 
     # Use the custom PriorityAwareWorker to process tasks
-    worker = PriorityAwareWorker(queues, connection=redis_conn, exception_handlers=[my_handler])
+    worker = PriorityAwareWorker(queues, connection=redis_conn, exception_handlers=[my_handler], disable_default_exception_handler=True)
     
     # Start processing tasks, prioritizing high-priority queue
     worker.work(max_jobs=jobs, with_scheduler=False)
