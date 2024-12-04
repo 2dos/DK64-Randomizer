@@ -8,9 +8,6 @@ services:
       - task_network
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    sysctls:
-      - net.core.somaxconn=511
-      - vm.overcommit_memory=1
 
   controller:
     build:
