@@ -406,11 +406,11 @@ def get_total_info():
     last_generated_time = datetime.now(UTC)
     try:
         with open("last_generated_time.cfg", "r") as f:
-            last_generated_time = datetime.strptime(f.read(), "%Y-%m-%d %H:%M:%S.%f")
+            last_generated_time = datetime.strptime(f.read().strip(), "%Y-%m-%d %H:%M:%S.%f%z")
     except Exception:
-        # If we can't read the file, just set it to 0 in the file.
+        # If we can't read the file, just set it to the current time.
         with open("last_generated_time.cfg", "w") as f:
-            f.write(str(last_generated_time))
+            f.write(last_generated_time.isoformat())
     return current_total, last_generated_time
 
 
