@@ -52,10 +52,16 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Shuffle Bonus Barrels: 70%
 - Shuffle Boss Kong Required: 50%
 - Boss Location Rando: 80%
-- Randomize CB Locations: 
-	- Off: 40%
-	- On: 30%
-	- On With Isles: 30%
+- Randomize CB Locations: 60%
+- Randomized CB Levels: 
+	- Jungle Japes: 90%
+	- Angry Aztec: 90%
+	- Frantic Factory: 90%
+	- Gloomy Galleon: 90%
+	- Fungi Forest: 90%
+	- Crystal Caves: 90%
+	- Creepy Castle: 90%
+	- DK Isles: 50%
 - Chaos B. Lockers: 60%
 - Chaos Ratio: Between 0.25 and 0.7, usually close to 0.4
 - Chunky Phase Slam Requirement: 
