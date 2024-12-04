@@ -201,8 +201,9 @@ def pushNewDKPortalScript(cont_map_id: Maps):
         Maps.CreepyCastle: 0xB8,
     }
     if cont_map_id not in id_pairings:
-        raise Exception(f"Invalid map for pairing. Alert the devs (Map {cont_map_id})")
-    obj_id = id_pairings[cont_map_id]
+        obj_id = getNextFreeID(cont_map_id)
+    else:
+        obj_id = id_pairings[cont_map_id]
     ROM_COPY = LocalROM()
     script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
     ROM_COPY.seek(script_table)
@@ -491,9 +492,14 @@ def place_door_locations(spoiler):
                 if dk_portal_locations[portal_map][0] + dk_portal_locations[portal_map][1] + dk_portal_locations[portal_map][2] + dk_portal_locations[portal_map][3] != 0:
                     pushNewDKPortalScript(portal_map)
                     exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
-                    exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
+                    exits_to_alter = [-1]
+                    if cont_map_id in LEVEL_MAIN_MAPS:
+                        exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
                     for exit_index in exits_to_alter:
-                        ROM_COPY.seek(exit_start + (exit_index * 10))
+                        if exit_index >= 0:
+                            ROM_COPY.seek(exit_start + 12 + (exit_index * 10))
+                        else:
+                            ROM_COPY.seek(exit_start)
                         for coord_index in range(3):
                             coord_value = dk_portal_locations[portal_map][coord_index]
                             coord_int = int(coord_value)

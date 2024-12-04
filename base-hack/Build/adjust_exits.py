@@ -4,7 +4,7 @@ import os
 import zlib
 from typing import BinaryIO
 
-from BuildEnums import TableNames
+from BuildEnums import TableNames, Maps
 from BuildLib import intf_to_float, main_pointer_table_offset
 
 new_caves_portal_coords = [120.997, 50, 1182.974]
@@ -225,6 +225,24 @@ def adjustExits(fh):
                         fg.write(shortToUshort(exit["x"]).to_bytes(2, "big"))
                         fg.write(shortToUshort(exit["y"]).to_bytes(2, "big"))
                         fg.write(shortToUshort(exit["z"]).to_bytes(2, "big"))
+        exit_count = 0
+        data = None
+        with open(file_name, "rb") as fg:
+            data = fg.read()
+            exit_count = int(len(data) / 10)
+        if exit_count == 0:
+            data = bytes(bytearray([0] * 10))
+        default_exit = 0
+        if map_index == Maps.Japes:
+            default_exit = 15
+        elif map_index == Maps.Fungi:
+            default_exit = 27
+        default_start = default_exit * 10
+        print("Rewriting exit file:", map_index, data)
+        with open(file_name, "wb") as fg:
+            fg.write(data[default_start:default_start + 10])
+            fg.write(exit_count.to_bytes(2, "big"))
+            fg.write(data)
         if os.path.exists(file_name):
             if os.path.getsize(file_name) == 0:
                 os.remove(file_name)

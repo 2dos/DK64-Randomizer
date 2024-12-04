@@ -1589,7 +1589,17 @@ with open(ROMName, "rb") as fh:
 
 for x in range(216):
     if os.path.exists(f"exit{x}.bin"):
-        file_dict.append(File(name=f"Map {x} Exits", pointer_table_index=TableNames.Exits, file_index=x, source_file=f"exit{x}.bin", do_not_compress=True, do_not_delete_source=True))
+        file_dict.append(
+            File(
+                name=f"Map {x} Exits",
+                pointer_table_index=TableNames.Exits,
+                file_index=x,
+                source_file=f"exit{x}.bin",
+                do_not_compress=True,
+                do_not_delete_source=True,
+                do_not_extract=True,
+            )
+        )
 
 # Force all geo files to not be compressed
 expanded_tables = {
