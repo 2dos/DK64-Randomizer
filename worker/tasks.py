@@ -14,38 +14,11 @@ from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from version import version
-from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-import os
-
-# Define a resource to identify your service
-resource = Resource(
-    attributes={
-        "service.name": "worker",
-        "service.version": str(version),
-        "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
-    }
-)
-
-trace.set_tracer_provider(TracerProvider(resource=resource))
-tracer_provider = trace.get_tracer_provider()
-tracer = trace.get_tracer(__name__)
-
-# Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
-
-# Add the BatchSpanProcessor to the TracerProvider
-span_processor = BatchSpanProcessor(otlp_exporter)
-tracer_provider.add_span_processor(span_processor)
 
 
 def generate_seed(settings_dict):
     print("Running task with")
-    with tracer.start_as_current_span(__name__):
-
+    try:
         if isinstance(settings_dict, str):
             settings_dict = json.loads(settings_dict)
         patch = open("./static/patches/shrink-dk64.bps", "rb")
@@ -54,18 +27,18 @@ def generate_seed(settings_dict):
         if not settings_dict.get("seed"):
             settings_dict["seed"] = random.randint(0, 100000000)
         load_base_rom(default_file=patched)
-        try:
-            settings_obj = Settings(cleanup_settings(settings_dict))
-            spoiler = Spoiler(settings_obj)
-            patch, spoiler = Generate_Spoiler(spoiler)
-            spoiler.FlushAllExcessSpoilerData()
-            return update_seed_results(patch, spoiler, settings_dict)
-        except Exception as e:
-            print(traceback.format_exc())
-            # Return the error and the type of error.
-            error = str(type(e).__name__) + ": " + str(e)
-            raise e
-            # queue.put(error)
+        settings_obj = Settings(cleanup_settings(settings_dict))
+        spoiler = Spoiler(settings_obj)
+        patch, spoiler = Generate_Spoiler(spoiler)
+        spoiler.FlushAllExcessSpoilerData()
+        return update_seed_results(patch, spoiler, settings_dict)
+
+    except Exception as e:
+        print(traceback.format_exc())
+        # Return the error and the type of error.
+        error = str(type(e).__name__) + ": " + str(e)
+        raise e
+        # queue.put(error)
 
 
 def cleanup_settings(settings):

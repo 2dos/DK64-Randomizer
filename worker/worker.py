@@ -130,11 +130,15 @@ def runWorker(jobs):
     queues = [Queue(name, connection=redis_conn, default_timeout=job_timeout) for name in listen]
 
     # Use the custom PriorityAwareWorker to process tasks
-    worker = PriorityAwareWorker(queues, connection=redis_conn)
+    worker = PriorityAwareWorker(queues, connection=redis_conn, exception_handlers=[my_handler])
     
     # Start processing tasks, prioritizing high-priority queue
     worker.work(max_jobs=jobs, with_scheduler=False)
-
+def my_handler(job, exc_type, exc_value, traceback):
+    print("Job failed")
+    print(exc_type)
+    print(exc_value)
+    print(traceback)
 
 if __name__ == "__main__":
 
@@ -142,6 +146,6 @@ if __name__ == "__main__":
     worker_thread = threading.Thread(target=runWaitressWorker)
     worker_thread.start()
 
-    runWorker(1)
+    runWorker(None)
     # Close the worker thread instead of waiting for it to finish
     worker_thread.join(0)
