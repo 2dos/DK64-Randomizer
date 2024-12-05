@@ -734,6 +734,15 @@ class Settings:
             Maps.CrystalCaves,
             Maps.CreepyCastle,
         ]
+        self.level_entrance_regions = [
+            Regions.JungleJapesStart,
+            Regions.AngryAztecStart,
+            Regions.FranticFactoryStart,
+            Regions.GloomyGalleonStart,
+            Regions.FungiForestStart,
+            Regions.CrystalCavesMain,
+            Regions.CreepyCastleMain,
+        ]
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
@@ -2143,7 +2152,7 @@ class Settings:
             if region_name == "":
                 raise Ex.PlandoIncompatibleException(f"No region found for {planned_transition}")
             if region in RegionMapList:
-                tied_map = GetMapId(region)
+                tied_map = GetMapId(self, region)
                 tied_exit = GetExitId(planned_back_transition)
                 valid_starting_regions.append(
                     {
@@ -2166,7 +2175,7 @@ class Settings:
                 ]
                 if region in RegionMapList:
                     # Has tied map
-                    tied_map = GetMapId(region)
+                    tied_map = GetMapId(self, region)
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)

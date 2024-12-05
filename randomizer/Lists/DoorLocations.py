@@ -126,7 +126,7 @@ class DoorData:
 
     def updateDoorTypeLogic(self, spoiler):
         """Update door type list depending on enabled settings."""
-        if self.dk_portal_logic(spoiler):
+        if self.dk_portal_logic(spoiler) and self.logicregion not in UNDERWATER_LOGIC_REGIONS:
             if DoorType.dk_portal not in self.door_type:
                 self.door_type.append(DoorType.dk_portal)
 
@@ -142,6 +142,7 @@ class DoorData:
                 "exit": -1,
             }
         spoiler.settings.level_void_maps[level] = tied_map
+        spoiler.settings.level_entrance_regions[level] = self.logicregion
 
 def GetBossLobbyRegionIdForRegion(region_id, region):
     """Return the region id of the boss lobby the given region id and Region object should take you to."""
@@ -2564,6 +2565,7 @@ door_locations = {
             group=2,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Across from the 5Door Cabin",
@@ -2694,6 +2696,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Near W4 Opposite Cranky - right",
@@ -2703,6 +2706,7 @@ door_locations = {
             group=7,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Near W4 Opposite Cranky - left",
@@ -2712,6 +2716,7 @@ door_locations = {
             group=7,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Under Bridge to Cranky",
@@ -2721,6 +2726,7 @@ door_locations = {
             group=7,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Under Handstand Slope",
@@ -2803,6 +2809,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Igloo Area - Behind Tag Barrel Island",
@@ -2812,6 +2819,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Igloo Area - Behind Warp 1",
@@ -2821,6 +2829,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Igloo Area - right of entrance",
@@ -2830,6 +2839,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Under Funky's Store",
@@ -2839,6 +2849,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Next to Waterfall that's Next to Funky",
@@ -2848,6 +2859,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Under Funky - left",
@@ -2857,6 +2869,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Under Funky - center",
@@ -2866,6 +2879,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Under Funky - right",
@@ -2875,6 +2889,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Ice Castle Interior - left",

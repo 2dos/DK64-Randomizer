@@ -81,18 +81,18 @@ def randomize_entrances(spoiler):
         # /* 0x05E */ unsigned short aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
         shuffledBack = spoiler.shuffled_exit_data[Transitions.AztecMainToRace]
         ROM_COPY.seek(varspaceOffset + 0x5E)
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
+        ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x06A */ unsigned short seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.GalleonLighthouseAreaToSickBay]
         ROM_COPY.seek(varspaceOffset + 0x6A)
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
+        ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x06C */ unsigned short fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         ROM_COPY.seek(varspaceOffset + 0x6C)
         if Transitions.ForestMainToCarts in spoiler.shuffled_exit_data:
             shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestMainToCarts]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
+            ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
             ROM_COPY.write(GetExitId(shuffledBack))
         else:
             ROM_COPY.write(Maps.ForestMinecarts)
@@ -100,7 +100,7 @@ def randomize_entrances(spoiler):
         # /* 0x074 */ unsigned short castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         ROM_COPY.seek(varspaceOffset + 0x74)
         shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesMainToCastleLobby]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
+        ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x078 */ unsigned short exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         enter_transitions = [
@@ -130,12 +130,12 @@ def randomize_entrances(spoiler):
                 ROM_COPY.write(1)
             else:
                 shuffledBack = spoiler.shuffled_exit_data[transition]
-                ROM_COPY.write(GetMapId(shuffledBack.regionId))
+                ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
                 ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         for world_index, transition in enumerate(enter_transitions):
             shuffledBack = spoiler.shuffled_exit_data[transition]
-            map_id = GetMapId(shuffledBack.regionId)
+            map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
             exit_id = GetExitId(shuffledBack)
             spoiler.settings.level_portal_destinations[world_index] = {
                 "map": map_id,
@@ -144,11 +144,11 @@ def randomize_entrances(spoiler):
         # /* 0x120 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleBallroomToMuseum]
         ROM_COPY.seek(varspaceOffset + 0x130)
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
+        ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
         # /* 0x122 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleMuseumToBallroom]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
+        ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
         ROM_COPY.write(GetExitId(shuffledBack))
 
 
