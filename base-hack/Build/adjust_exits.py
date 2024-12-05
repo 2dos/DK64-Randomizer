@@ -193,9 +193,12 @@ def adjustExits(fh):
                                 coords.append(int(intf_to_float(int.from_bytes(fg.read(4), "big"))))
                             coords[1] += 5
                         exit_coords.append(coords.copy())
-                if map_index == 0x22:
+                if map_index == Maps.Isles:
                     # Isles
                     exit_coords.append([2524, 1724, 3841])  # Top of Krem Isles
+                elif map_index == Maps.Galleon:
+                    # Galleon
+                    exit_coords.append([2886, 1249, 1121])  # Mech Fish Exit
             if os.path.exists(temp_file):
                 os.remove(temp_file)
         exit_additions.append(exit_coords.copy())
@@ -246,3 +249,50 @@ def adjustExits(fh):
         if os.path.exists(file_name):
             if os.path.getsize(file_name) == 0:
                 os.remove(file_name)
+
+class LoadingZone:
+    """Class to store information regarding a loading zone."""
+
+    def __init__(self, x: int, y: int, z: int, radius: int, height: int, map_id: Maps, exit: int):
+        """Initialize with given parameters."""
+        self.x = x
+        self.y = y
+        self.z = z
+        self.radius = radius
+        self.height = height
+        if height is None:
+            self.height = 0xFFFF
+        self.map_id = map_id
+        self.exit = exit
+
+    def writeZone(self, fh: BinaryIO):
+        """Write data to file."""
+        for value in (self.x, self.y, self.z):
+            v = value
+            if value < 0:
+                v += 0x10000
+            fh.write(v.to_bytes(2, "big"))
+        fh.write(self.radius.to_bytes(2, "big"))  # 0x6
+        fh.write(self.height.to_bytes(2, "big"))  # 0x8
+        fh.write((1).to_bytes(2, "big"))  # 0xA
+        fh.write((1).to_bytes(2, "big")) # 0xC
+        fh.write((1).to_bytes(1, "big")) # 0xE
+        fh.write((0).to_bytes(1, "big")) # 0XF
+        LZ_TYPE = 9
+        fh.write(LZ_TYPE.to_bytes(2, "big"))
+        fh.write(self.map_id.to_bytes(2, "big"))
+        fh.write(self.exit.to_bytes(2, "big"))
+        TRANSITION_TYPE = 0
+        fh.write(TRANSITION_TYPE.to_bytes(2, "big"))
+        for _ in range(0x38 - 0x18):
+            fh.write((0).to_bytes(1, "big"))
+
+mech_fish_triggers = [
+    LoadingZone(360, 70, 92, 50, None, Maps.Galleon, 34),
+]
+
+def addMechFishLZ():
+    with open("mech_fish_triggers.bin", "wb") as fh:
+        fh.write(len(mech_fish_triggers).to_bytes(2, "big"))
+        for trigger in mech_fish_triggers:
+            trigger.writeZone(fh)

@@ -2568,6 +2568,12 @@ def patchAssembly(ROM_COPY, spoiler):
     for index, map_id in enumerate(settings.level_void_maps):
         writeValue(ROM_COPY, 0x80744748 + (2 * index), Overlay.Static, map_id, offset_dict)
 
+    # Write Mech Fish entry
+    writeValue(ROM_COPY, 0x806C6DC6, Overlay.Static, settings.mech_fish_entrance["map"], offset_dict)
+    exit_val = settings.mech_fish_entrance["exit"]
+    if exit_val == -1:
+        exit_val = 0xFFFF
+    writeValue(ROM_COPY, 0x806C6DD0, Overlay.Static, 0x20050000 | exit_val, offset_dict, 4)
     # Misc LZR Stuff
     if settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
         # K Rool Exit

@@ -743,6 +743,10 @@ class Settings:
             Regions.CrystalCavesMain,
             Regions.CreepyCastleMain,
         ]
+        self.mech_fish_entrance = {
+            "map": Maps.GalleonMechafish,
+            "exit": 0,
+        }
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []

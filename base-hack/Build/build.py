@@ -19,7 +19,7 @@ from model_port import loadNewModels
 # Patcher functions for the extracted files
 from patch_text import writeNoExpPakMessages
 import portal_instance_script
-from adjust_exits import adjustExits
+from adjust_exits import adjustExits, addMechFishLZ
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
@@ -917,7 +917,29 @@ for x in range(6):
     )
 file_dict.append(File(name="Fungi Geometry", pointer_table_index=TableNames.MapGeometry, file_index=Maps.Fungi, source_file="geo_fungi.bin", target_compressed_size=0x1A558))
 for x in range(221):
-    file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
+    if x == Maps.GalleonMechFish:
+        file_dict.append(
+            File(
+                name=f"Zones for map {x}",
+                pointer_table_index=TableNames.Triggers,
+                file_index=x,
+                source_file="mech_fish_triggers.bin",
+                target_compressed_size=0x850,
+                do_not_recompress=True,
+                do_not_extract=True,
+            )
+        )
+    else:
+        file_dict.append(
+            File(
+                name=f"Zones for map {x}",
+                pointer_table_index=TableNames.Triggers,
+                file_index=x,
+                source_file=f"lz{x}.bin",
+                target_compressed_size=0x850,
+                do_not_recompress=True
+            )
+        )
 # Setup
 setup_expansion_size = 0x2580
 for x in range(221):
@@ -1584,6 +1606,7 @@ for index, text in enumerate(text_files):
         data.do_not_recompress = True
     file_dict.append(data)
 
+addMechFishLZ()
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
 
