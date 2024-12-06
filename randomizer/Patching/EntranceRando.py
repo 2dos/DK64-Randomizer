@@ -43,7 +43,7 @@ def getOneByteExit(back):
         return value + 0x100
     return value
 
-def writeEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla_exit: int) -> dict:
+def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla_exit: int) -> dict:
     """Create the LZR Entrance dict for a locally stored entrance."""
     if transition in spoiler.shuffled_exit_data:
         shuffledBack = spoiler.shuffled_exit_data[transition]
@@ -59,7 +59,7 @@ def writeEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanil
 def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: int, vanilla_map: Maps, vanilla_exit: int):
     """Write LZREntrance struct to ROM."""
     ROM_COPY.seek(spoiler.settings.rom_data + offset)
-    data = writeEntranceDict(spoiler, transition, vanilla_map, vanilla_exit)
+    data = getEntranceDict(spoiler, transition, vanilla_map, vanilla_exit)
     exit_id = data["exit"]
     if exit_id < 0:
         exit_id += 0x100
@@ -153,7 +153,7 @@ def randomize_entrances(spoiler):
         writeEntrance(ROM_COPY, spoiler, Transitions.CastleBallroomToMuseum, 0x130, Maps.CastleMuseum, 2)
         writeEntrance(ROM_COPY, spoiler, Transitions.CastleBallroomToMuseum, 0x132, Maps.CastleBallroom, 1)
         # Mech Fish Entrance
-        spoiler.settings.mech_fish_entrance = writeEntranceDict(spoiler, Transitions.GalleonShipyardToMechFish, Maps.GalleonMechafish, 0)
+        spoiler.settings.mech_fish_entrance = getEntranceDict(spoiler, Transitions.GalleonShipyardToMechFish, Maps.GalleonMechafish, 0)
         # Mech Fish Exit
         writeEntrance(ROM_COPY, spoiler, Transitions.GalleonMechFishToShipyard, 0x32, Maps.GloomyGalleon, 34)
 

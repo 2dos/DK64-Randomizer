@@ -53,6 +53,7 @@ static char* items[] = {
     "ANTHILL SECOND REWARD",
     "TREASURE CHEST CLAMS",
     "DIRT PATCHES",
+    "WRINKLY DOORS",
     "MELON CRATES",
 };
 static char* raw_items[] = {
@@ -68,6 +69,7 @@ static char* raw_items[] = {
     "BEAN",
     "PEARLS",
     "RAINBOW COINS",
+    "HINTS",
     "JUNK ITEMS",
 };
 
@@ -115,6 +117,11 @@ void checkItemDB(void) {
                 int search_flag = FLAG_MELONCRATE_0 + k;
                 int lvl = getCrateWorld(k);
                 check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
+            }
+        } else if (i == CHECK_HINTS) {
+            for (int k = 0; k < 35; k++) {
+                int lvl = k / 5;
+                check_data[0][lvl][i] += checkFlag(FLAG_WRINKLYVIEWED + k, FLAGTYPE_PERMANENT);
             }
         }
         // Get Denominator
@@ -181,6 +188,11 @@ void checkItemDB(void) {
                         if (getPatchWorld(k) == j) {
                             denominator += 1;
                         }
+                    }
+                    break;
+                case CHECK_HINTS:
+                    if (j < 7) {
+                        denominator = 5;
                     }
                     break;
                 case CHECK_CRATE:
