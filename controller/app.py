@@ -8,7 +8,18 @@ from datetime import UTC, datetime
 from os import environ, path, walk
 
 import requests
-from flask import Blueprint, Flask, jsonify, make_response, redirect, render_template, request, send_file, send_from_directory, session
+from flask import (
+    Blueprint,
+    Flask,
+    jsonify,
+    make_response,
+    redirect,
+    render_template,
+    request,
+    send_file,
+    send_from_directory,
+    session
+)
 from flask_cors import CORS
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
@@ -19,16 +30,17 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis
 from rq import Queue
-from rq.job import Job
+from rq.job import Job, Retry
 from version import version
 from waitress import serve
 from werkzeug.utils import secure_filename
-from flask_swagger import swagger
-from flask_swagger_ui import get_swaggerui_blueprint
 from cleanup import enable_cleanup
 from oauth import DiscordAuth
-
+from swagger_ui import flask_api_doc
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Define a resource to identify your service
 resource = Resource(
@@ -53,7 +65,8 @@ tracer_provider.add_span_processor(span_processor)
 app = Flask(__name__, static_folder="", template_folder="")
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
-swagger(app)
+flask_api_doc(app, config_path='./swagger.yaml', url_prefix='/api/doc', title='API doc')
+
 # Shared structure to manage threads
 tasks = {}
 
@@ -65,7 +78,7 @@ class TaskThread(threading.Thread):
         self.target = target
         self.args = args
         self.kwargs = kwargs
-        self.result = None
+        self.result = self.target(self.args[0])
 
     def run(self):
         self.result = self.target(self.kwargs.get("args")[0])
@@ -101,12 +114,13 @@ def enforce_api_restrictions():
         print(f"Unauthorized access attempt from IP: {get_user_ip()}, Referer: {referer}, API Key: {api_key}")
         return set_response(json.dumps({"error": "Unauthorized access"}), 403)
     # Validate the request is JSON
-    if request.method in ["POST", "PUT"] and request.content_type != "application/json":
+    if request.method in ["POST", "PUT"] and request.content_type not in ["application/json", "application/json; charset=utf-8"]:
         return set_response(json.dumps({"error": "Invalid content type"}), 400)
     # Check if they provide a branch in their args, if they don't default to dev
     if "branch" not in request.args:
-        request.args = request.args.to_dict()
-        request.args["branch"] = "dev"
+        args_copy = request.args.to_dict()
+        args_copy["branch"] = "dev"
+        request.args = args_copy
 
 
 def set_response(content, status_code, content_type="application/json", version_header=version):
@@ -117,7 +131,38 @@ def set_response(content, status_code, content_type="application/json", version_
     response.headers["Version"] = version_header
     return response
 
+cached_presets = None
+cached_local_presets = None
+last_updated = 0
+CACHE_DURATION = 300  # Cache duration in seconds
 
+def update_presets():
+    global cached_presets, cached_local_presets, last_updated
+    current_time = int(time.time())
+    if cached_presets is not None and cached_local_presets is not None and (current_time - last_updated) < CACHE_DURATION:
+        return cached_presets, cached_local_presets
+
+    presets = []
+    local_presets = []
+    with open("static/presets/preset_files.json", "r") as f:
+        presets = json.load(f)
+    if path.isfile("local_presets.json"):
+        with open("local_presets.json", "r") as f:
+            local_presets = json.load(f)
+            for local_preset in local_presets:
+                found_preset = False
+                for i, global_preset in enumerate(presets):
+                    if global_preset.get("name") == local_preset.get("name"):
+                        presets[i] = local_preset
+                        found_preset = True
+                        break
+                if not found_preset:
+                    presets.append(local_preset)
+    
+    cached_presets = presets
+    cached_local_presets = local_presets
+    last_updated = current_time
+    data = request.get_json()
 def update_presets():
     """Update the presets list with the global and local presets."""
     presets = []
@@ -171,16 +216,18 @@ def submit_task():
     # Check the last submission time for this IP
     last_submission_key = f"last_submission:{user_ip}"
     last_submission_time = redis_conn.get(last_submission_key)
+    if last_submission_time is not None:
+        last_submission_time = int(last_submission_time.decode())
     current_time = int(time.time())
 
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip})
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=2))
         priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip})
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=1))
         priority = "Low"
 
     # Update the last submission time for this IP
@@ -201,7 +248,10 @@ def task_status(task_id):
                 # Retrieve and return the result
                 result = task_thread.result
                 return set_response(json.dumps({"result": result, "status": "finished"}), 200)
-        return jsonify({"error": "Task not found"}), 404
+    try:
+        task = Job.fetch(task_id, connection=redis_conn)
+    except Exception:
+        return set_response(json.dumps({"error": "Task not found"}), 404)
     # Fetch task from both queues
     task = Job.fetch(task_id, connection=redis_conn)
     if not task:
@@ -247,7 +297,7 @@ def get_presets():
 
     return set_response(json.dumps(presets_to_return), 200)
 
-
+    content = request.get_json()
 @api.route("/admin", methods=["GET"])
 def admin_portal():
     if session.get("admin") is None:
@@ -382,7 +432,7 @@ def get_spoiler_log():
     except json.JSONDecodeError:
         return set_response({"error": "Invalid JSON format in file"}, 500)
     except Exception as e:
-        logging.error(f"Error in get_spoiler_log: {e}")
+        logging.error(f"Error in get_spoiler_log: {e}", exc_info=True)
         return set_response({"error": "An internal error has occurred"}, 500)
 
 
@@ -401,15 +451,20 @@ def get_total_info():
     try:
         with open("current_total.cfg", "r") as f:
             current_total = int(f.read())
-    except Exception:
-        # If we can't read the file, just set it to 0 in the file.
-        with open("current_total.cfg", "w") as f:
-            f.write("0")
-    last_generated_time = datetime.now(UTC)
+    except ValueError:
+        current_total = 0
     try:
         with open("last_generated_time.cfg", "r") as f:
             last_generated_time = datetime.strptime(f.read().strip(), "%Y-%m-%d %H:%M:%S.%f%z")
+    except ValueError:
+        logging.error("Incorrect date format in last_generated_time.cfg, resetting to current time.")
+        last_generated_time = datetime.now(UTC)
+        with open("last_generated_time.cfg", "w") as f:
+            f.write(last_generated_time.isoformat())
     except Exception:
+        # If we can't read the file, just set it to the current time.
+        with open("last_generated_time.cfg", "w") as f:
+            f.write(last_generated_time.isoformat())
         # If we can't read the file, just set it to the current time.
         with open("last_generated_time.cfg", "w") as f:
             f.write(last_generated_time.isoformat())
@@ -432,49 +487,24 @@ def convert_settings():
     data = request.get_json()
     response = requests.post(f"{url}/convert_settings", json=data)
     return set_response(response.json(), response.status_code)
-@app.route('/swagger')
-def get_swagger():
-    swag = swagger(app)
-    swag['info']['version'] = "1.0"
-    swag['info']['title'] = "My API"
-    return jsonify(swag)
 
-# Swagger UI route
-SWAGGER_URL = '/swagger-ui'
-API_URL = '/swagger'
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "My API"
-    }
-)
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 app.register_blueprint(api, url_prefix="/api")
 
-print("Pre startup")
+if os.environ.get("BRANCH", "LOCAL") == "LOCAL":
+    @app.route("/")
+    def index():
+        """Serve the index page."""
+        print("Serving index page")
+        return send_from_directory(".", "index.html")
+
+    @app.route("/randomizer")
+    def rando():
+        """Serve the randomizer page."""
+        return send_from_directory(".", "randomizer.html")
+
+    ALLOWED_REFERRERS.extend(["*"])
+    API_KEYS.append("LOCAL_API_KEY")
+
 if __name__ == "__main__":
-    # Configure logging
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("waitress")
-    logger.setLevel(logging.INFO)
-    logger.info("Starting the server")
-    if os.environ.get("BRANCH") == "LOCAL":
-        logger.info("Starting the server in local mode")
-
-        @app.route("/")
-        def index():
-            """Serve the index page."""
-            print("Serving index page")
-            return send_from_directory(".", "index.html")
-
-        @app.route("/randomizer")
-        def rando():
-            """Serve the randomizer page."""
-            return send_from_directory(".", "randomizer.html")
-
-        ALLOWED_REFERRERS.extend(["*"])
-        API_KEYS.append("LOCAL_API_KEY")
-
     serve(app, host="0.0.0.0", port=8000)

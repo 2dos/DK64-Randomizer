@@ -14,5 +14,3 @@ opentelemetry-instrumentation-wsgi
 opentelemetry-exporter-otlp
 opentelemetry-sdk
 opentelemetry-instrumentation-flask
-flask-swagger
-flask-swagger-ui

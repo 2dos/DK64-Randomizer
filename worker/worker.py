@@ -27,6 +27,8 @@ from randomizer.Lists.WrinklyHints import PointSpreadSelector
 from version import version
 from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
+from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
+
 
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
 redis_conn = Redis(host="redis", port=6379)
@@ -133,6 +135,16 @@ def runWorker(jobs):
 
     # Use the custom PriorityAwareWorker to process tasks
     worker = PriorityAwareWorker(queues, connection=redis_conn)
+
+    def handle_exception(job, exc_type, exc_value, traceback):
+        if isinstance(exc_value, (SettingsIncompatibleException, PlandoIncompatibleException)):
+            # Do not retry the job
+            job.meta["retry"] = False
+            job.save_meta()
+            return False  # Return False to indicate that the job should not be retried
+        return True  # For other exceptions, retry the job
+
+    worker.push_exc_handler(handle_exception)
     
     # Start processing tasks, prioritizing high-priority queue
     worker.work(max_jobs=jobs, with_scheduler=False)
