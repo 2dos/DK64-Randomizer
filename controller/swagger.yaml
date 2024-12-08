@@ -323,6 +323,14 @@ paths:
   /current_total:
     get:
       summary: Get the current total of generated seeds
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [total_shield, time_shield, none]
+            description: Format of the response. If 'total_shield', returns a shield for total seeds. If 'time_shield', returns a shield for last generated time.
       responses:
         '200':
           description: Current total retrieved successfully
@@ -333,7 +341,30 @@ paths:
                 properties:
                   total_seeds:
                     type: integer
+                    example: 1234
                   last_generated_time:
+                    type: string
+                    example: "2023-10-01 12:34:56.789"
+                  label:
+                    type: string
+                    example: Seeds Generated
+                  message:
+                    type: string
+                    example: "1234"
+                  schemaVersion:
+                    type: integer
+                    example: 1
+                  color:
+                    type: string
+                    example: darkcyan
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
                     type: string
   /get_selector_info:
     get:
@@ -346,7 +377,10 @@ paths:
             type: string
       responses:
         '200':
-          description: Selector data retrieved successfully
+          description: |
+            Selector data retrieved successfully.
+            If the branch is 'master', it calls the master worker URL.
+            If the branch is 'dev', it calls the dev worker URL.
           content:
             application/json:
               schema:
@@ -354,6 +388,12 @@ paths:
   /convert_settings:
     post:
       summary: Convert settings
+      parameters:
+        - name: branch
+          in: query
+          required: false
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -362,7 +402,10 @@ paths:
               type: object
       responses:
         '200':
-          description: Settings converted successfully
+          description: |
+            Settings converted successfully.
+            If the branch is 'master', it calls the master worker URL.
+            If the branch is 'dev', it calls the dev worker URL.
           content:
             application/json:
               schema:

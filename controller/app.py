@@ -439,10 +439,25 @@ def get_spoiler_log():
 @api.route("/current_total", methods=["GET"])
 def get_current_total():
     current_total, last_generated_time = get_total_info()
-    response_data = {
-        "total_seeds": current_total,
-        "last_generated_time": last_generated_time.strftime("%Y-%m-%d %H:%M:%S.%f"),
-    }
+    if request.args.get("format") == "total_shield":
+        response_data = {
+            "label": "Seeds Generated",
+            "message": str(current_total),
+            "schemaVersion": 1,
+            "color": "darkcyan",
+        }
+    elif request.args.get("format") == "time_shield":
+        response_data = {
+            "label": "Last Generated",
+            "message": str(last_generated_time.strftime("%Y-%m-%d %H:%M:%S.%f")),
+            "schemaVersion": 1,
+            "color": "darkcyan",
+        }
+    else:
+        response_data = {
+            "total_seeds": current_total,
+            "last_generated_time": last_generated_time.strftime("%Y-%m-%d %H:%M:%S.%f"),
+        }
     return set_response(json.dumps(response_data), 200)
 
 
@@ -487,6 +502,7 @@ def convert_settings():
     data = request.get_json()
     response = requests.post(f"{url}/convert_settings", json=data)
     return set_response(response.json(), response.status_code)
+
 
 
 app.register_blueprint(api, url_prefix="/api")
