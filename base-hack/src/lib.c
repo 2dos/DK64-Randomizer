@@ -1167,6 +1167,36 @@ sprite_data_struct fool_overlay_sprite = {
 	},
 };
 
+sprite_data_struct company_coin_sprite = {
+	.unk0 = 0xC9,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 44,
+	.height = 44,
+	.image_count = 16,
+	.images = {
+		0x170D,
+		0x170E,
+		0x170F,
+		0x1710,
+		0x0D48,
+		0x1711,
+		0x1712,
+		0x1713,
+		0x1714,
+		0x1715,
+		0x1716,
+		0x1717,
+		0x0D49,
+		0x1718,
+		0x1719,
+		0x171A,
+	},
+};
+
 void giveGB(int kong, int level) {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);

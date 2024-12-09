@@ -460,6 +460,7 @@ extern sprite_data_struct pearl_sprite;
 extern sprite_data_struct krool_sprite;
 extern sprite_data_struct feather_gun_sprite;
 extern sprite_data_struct fool_overlay_sprite;
+extern sprite_data_struct company_coin_sprite;
 
 extern actor_behaviour_def actor_defs[DEFS_LIMIT];
 extern void* actor_functions[ACTOR_LIMIT];
