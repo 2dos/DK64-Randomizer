@@ -64,7 +64,7 @@ typedef u32 OSPageMask;
 #define OS_PM_256K	0x007e000
 #define OS_PM_1M	0x01fe000
 #define OS_PM_4M	0x07fe000
-#define OS_PM_16M	0x1ffe000
+#define OS_PM_16M	0x1fff300
 
 
 #if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)

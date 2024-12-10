@@ -329,7 +329,7 @@ void initHack(int source) {
 			if (Rando.fairy_rando_on) {
 				// Fairy Location Table
 				int fairy_size = 20<<2;
-				fairy_location_item* fairy_write = getFile(fairy_size, 0x1FFC000);
+				fairy_location_item* fairy_write = getFile(fairy_size, 0x1FFF380);
 				for (int i = 0; i < (fairy_size >> 2); i++) {
 					for (int j = 0; j < 0x1F; j++) {
 						if (charspawnerflags[j].tied_flag == fairy_write[i].flag) {

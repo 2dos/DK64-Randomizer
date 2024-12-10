@@ -132,7 +132,7 @@ def writeUncompressedOverlays(fr: BinaryIO):
             multi_upper = getUpperValue(x.code_start)
             multi_data_upper = getUpperValue(x.data_end)
         # Write plain offsets to ROM
-        fr.seek(0x1FFB000 + (8 * x.overlay))
+        fr.seek(0x1FFAF80 + (8 * x.overlay))
         fr.write(x.code_start.to_bytes(4, "big"))
         fr.write(x.data_end.to_bytes(4, "big"))
     # Disable decompression of static

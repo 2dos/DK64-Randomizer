@@ -30,7 +30,7 @@ void populateEnemyMapData(void) {
     }
     // Pull table from ROM
     int table_size = ENEMIES_TOTAL * sizeof(enemy_item_rom_item);
-    enemy_item_rom_item* enemy_write = getFile(table_size, 0x1FF9000);
+    enemy_item_rom_item* enemy_write = getFile(table_size, 0x1FF8880);
     for (int i = 0; i < ENEMIES_TOTAL; i++) {
         if (enemy_write[i].map == CurrentMap) {
             int spawn_id = enemy_write[i].char_spawner_id;

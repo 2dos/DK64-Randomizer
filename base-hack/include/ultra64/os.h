@@ -425,7 +425,7 @@ typedef struct {
 #define OS_PM_256K	0x007e000
 #define OS_PM_1M	0x01fe000
 #define OS_PM_4M	0x07fe000
-#define OS_PM_16M	0x1ffe000
+#define OS_PM_16M	0x1fff300
 
 /*
  * Stack size for I/O device managers: PIM (PI Manager), VIM (VI Manager),

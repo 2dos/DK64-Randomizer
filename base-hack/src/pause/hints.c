@@ -420,8 +420,8 @@ void getItemSpecificity(char** str, int step, int flag) {
 }
 
 void initHintFlags(void) {
-    unsigned short* hint_clear_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE000);
-    unsigned short* hint_reg_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE080);
+    unsigned short* hint_clear_write = getFile(GAME_HINT_COUNT << 1, 0x1FFF400);
+    unsigned short* hint_reg_write = getFile(GAME_HINT_COUNT << 1, 0x1FFF480);
     if (Rando.progressive_hint_gb_cap > 0) {
         hints_per_screen = 4;
         hint_screen_count = 9;

@@ -321,7 +321,7 @@ def PlaceFairies(spoiler):
         # Array construction
         write_data = [255, 255]
         for index, item in enumerate(spoiler.fairy_data_table):
-            ROM_COPY.seek(0x1FFC000 + (4 * index))
+            ROM_COPY.seek(0x1FFF380 + (4 * index))
             ROM_COPY.writeMultipleBytes(item["flag"], 2)
             item_level = item["level"]
             item_map = fairy_locations[item_level][item["fairy_index"]].map

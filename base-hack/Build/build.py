@@ -156,8 +156,53 @@ file_dict = [
     File(
         name="Krusha Head",
         subtype=ChangeType.FixedLocation,
-        start=0x1FF6000,
+        start=0x1FF4080,
         source_file="assets/displays/krusha_head64.png",
+        do_not_delete_source=True,
+        texture_format=TextureFormat.RGBA5551,
+        do_not_compress=True,
+    ),
+    File(
+        name="Krusha Head 1",
+        subtype=ChangeType.FixedLocation,
+        start=0x1FF4080,
+        source_file="assets/displays/krusha_head_1_64.png",
+        do_not_delete_source=True,
+        texture_format=TextureFormat.RGBA5551,
+        do_not_compress=True,
+    ),
+    File(
+        name="Krusha Head 2",
+        subtype=ChangeType.FixedLocation,
+        start=0x1FF6080,
+        source_file="assets/displays/krusha_head_2_64.png",
+        do_not_delete_source=True,
+        texture_format=TextureFormat.RGBA5551,
+        do_not_compress=True,
+    ),
+    File(
+        name="Krusha Head 3",
+        subtype=ChangeType.FixedLocation,
+        start=0x1FF8F80,
+        source_file="assets/displays/krusha_head_3_64.png",
+        do_not_delete_source=True,
+        texture_format=TextureFormat.RGBA5551,
+        do_not_compress=True,
+    ),
+    File(
+        name="Krusha Head 4",
+        subtype=ChangeType.FixedLocation,
+        start=0x1FFB000,
+        source_file="assets/displays/krusha_head_4_64.png",
+        do_not_delete_source=True,
+        texture_format=TextureFormat.RGBA5551,
+        do_not_compress=True,
+    ),
+    File(
+        name="Krusha Head 5",
+        subtype=ChangeType.FixedLocation,
+        start=0x1FFD000,
+       source_file="assets/displays/krusha_head_5_64.png",
         do_not_delete_source=True,
         texture_format=TextureFormat.RGBA5551,
         do_not_compress=True,
@@ -165,7 +210,7 @@ file_dict = [
     File(
         name="Snow Texture",
         subtype=ChangeType.FixedLocation,
-        start=0x1FF8000,
+        start=0x1FF8080,
         source_file="assets/displays/snow32.png",
         do_not_delete_source=True,
         texture_format=TextureFormat.RGBA5551,
@@ -1976,20 +2021,20 @@ with open(newROMName, "r+b") as fh:
     for x in range(16):
         fh.write((0x2F).to_bytes(2, "big"))
     # Enemies
-    fh.seek(0x1FF9000)
+    fh.seek(0x1FF8880)
     for x in range(427):
         fh.write((0).to_bytes(4, "big"))
 
-    fh.seek(0x1FFD000)
+    fh.seek(0x1FFF100)
     for x in range(64):
         fh.write((0).to_bytes(4, "big"))
 
     # Hint Flags
-    fh.seek(0x1FFE000)
+    fh.seek(0x1FFF200)
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
     # Hint Regions
-    fh.seek(0x1FFE080)
+    fh.seek(0x1FFF280)
     for x in range(35):
         fh.write((0x0000).to_bytes(2, "big"))
 
@@ -2126,6 +2171,11 @@ with open(newROMName, "r+b") as fh:
         "win_con_logo",
         "25y_mipped",
         "y25_small",
+        "krusha_head_1_64",
+        "krusha_head_2_64",
+        "krusha_head_3_64",
+        "krusha_head_4_64",
+        "krusha_head_5_64",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

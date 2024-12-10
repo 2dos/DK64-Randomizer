@@ -236,7 +236,7 @@ def populateOverlayOffsets(ROM_COPY) -> dict:
     """Populate the overlay offset database."""
     result = {}
     for ovl in HANDLED_OVERLAYS:
-        ROM_COPY.seek(0x1FFB000 + (8 * ovl))
+        ROM_COPY.seek(0x1FFAF80 + (8 * ovl))
         code = int.from_bytes(ROM_COPY.readBytes(4), "big")
         if code not in BANNED_OFFSETS:
             result[ovl] = code
@@ -3036,7 +3036,7 @@ def patchAssembly(ROM_COPY, spoiler):
     file_init_flags = list(set(file_init_flags))  # Make sure it only contains unique values
     if len(file_init_flags) > 0x3FF:
         raise Exception("Too many file init flags. Please report this to the devs with a setting string.")
-    ROM_COPY.seek(0x1FFD800)
+    ROM_COPY.seek(0x1FFF500)
     for flag in file_init_flags:
         ROM_COPY.writeMultipleBytes(flag, 2)
     ROM_COPY.writeMultipleBytes(0xFFFF, 2)

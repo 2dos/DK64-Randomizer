@@ -753,7 +753,7 @@ void wipeFileStats(void) {
 }
 
 void setAllDefaultFlags(void) {
-	short* data = getFile(0x800, 0x1FFD800);
+	short* data = getFile(0x800, 0x1FFF500);
 	for (int i = 0; i < 0x400; i++) {
 		short flag = data[i];
 		if (flag == -1) {

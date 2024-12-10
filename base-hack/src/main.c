@@ -357,7 +357,7 @@ static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
 
 void insertROMMessages(void) {
 	for (int i = 0; i < 4; i++) {
-		unsigned char* message_write = getFile(WAIT_SIZE, 0x1FFD000 + (WAIT_SIZE * i));
+		unsigned char* message_write = getFile(WAIT_SIZE, 0x1FFF100 + (WAIT_SIZE * i));
 		void* ptr = 0;
 		if (i == 0) {
 			ptr = &wait_text_0;

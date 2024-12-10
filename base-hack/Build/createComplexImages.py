@@ -379,6 +379,36 @@ krusha_im = krusha_im.resize((64, 64))
 krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 krusha_im.save(f"{disp_dir}krusha_head64.png")
 
+# Krusha Head 1
+krusha_im = Image.open(f"{disp_dir}krusha_head_1.png")
+krusha_im = krusha_im.resize((64, 64))
+krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+krusha_im.save(f"{disp_dir}krusha_head_1_64.png")
+
+# Krusha Head 2
+krusha_im = Image.open(f"{disp_dir}krusha_head_2.png")
+krusha_im = krusha_im.resize((64, 64))
+krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+krusha_im.save(f"{disp_dir}krusha_head_2_64.png")
+
+# Krusha Head 3
+krusha_im = Image.open(f"{disp_dir}krusha_head_3.png")
+krusha_im = krusha_im.resize((64, 64))
+krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+krusha_im.save(f"{disp_dir}krusha_head_3_64.png")
+
+# Krusha Head 4
+krusha_im = Image.open(f"{disp_dir}krusha_head_4.png")
+krusha_im = krusha_im.resize((64, 64))
+krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+krusha_im.save(f"{disp_dir}krusha_head_4_64.png")
+
+# Krusha Head 5
+krusha_im = Image.open(f"{disp_dir}krusha_head_5.png")
+krusha_im = krusha_im.resize((64, 64))
+krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+krusha_im.save(f"{disp_dir}krusha_head_5_64.png")
+
 # Wrinkly
 wrinkly_im = Image.open(f"{hash_dir}wrinkly.png").resize((48, 48)).save(f"{disp_dir}wrinkly_sprite.png")
 

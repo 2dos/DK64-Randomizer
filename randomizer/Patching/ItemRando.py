@@ -699,7 +699,7 @@ def place_randomized_items(spoiler, original_flut: list):
                             print("Melon Crate Item Placement Error")
                     elif item.location >= Locations.JapesMainEnemy_Start and item.location <= Locations.IslesMainEnemy_LowerFactoryPath1:
                         index = item.location - Locations.JapesMainEnemy_Start
-                        ROM_COPY.seek(0x1FF9000 + (index * 4))
+                        ROM_COPY.seek(0x1FF8880 + (index * 4))
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].map, 1)
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
