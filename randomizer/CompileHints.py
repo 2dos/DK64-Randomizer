@@ -2017,6 +2017,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     Types.Candy,
                     Types.Constant,
                     Types.IslesMedal,
+                    Types.Climbing,
                 ):
                     continue
                 region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
