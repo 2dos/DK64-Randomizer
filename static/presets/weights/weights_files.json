@@ -452,9 +452,9 @@
     },
     "chaos_blockers": 0.25,
     "chaos_ratio": {
-      "min": 0.1,
-      "max": 0.35,
-      "mean": 0.25
+      "min": 10,
+      "max": 35,
+      "mean": 25
     },
     "chunky_phase_slam_req": {
       "random": 1
@@ -884,9 +884,9 @@
     },
     "chaos_blockers": 0.6,
     "chaos_ratio": {
-      "min": 0.25,
-      "max": 0.7,
-      "mean": 0.4
+      "min": 25,
+      "max": 70,
+      "mean": 40
     },
     "chunky_phase_slam_req": {
       "blue": 0.7,
@@ -1359,9 +1359,9 @@
     },
     "chaos_blockers": 0.6,
     "chaos_ratio": {
-      "min": 0.25,
-      "max": 0.7,
-      "mean": 0.4
+      "min": 25,
+      "max": 70,
+      "mean": 40
     },
     "chunky_phase_slam_req": {
       "blue": 0.7,

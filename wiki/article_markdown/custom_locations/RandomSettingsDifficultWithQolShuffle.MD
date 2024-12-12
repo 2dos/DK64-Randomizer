@@ -56,7 +56,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Creepy Castle: 90%
 	- DK Isles: 50%
 - Chaos B. Lockers: 60%
-- Chaos Ratio: Between 0.25 and 0.7, usually close to 0.4
+- Chaos Ratio: Between 25 and 70, usually close to 40
 - Chunky Phase Slam Requirement: 
 	- Blue: 70%
 	- Red: 30%
