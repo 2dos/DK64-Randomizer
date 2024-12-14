@@ -62,7 +62,7 @@ otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 
-app = Flask(__name__, static_folder="", template_folder="")
+app = Flask(__name__, static_folder="", template_folder="templates")
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path='./swagger.yaml', url_prefix='/api/doc', title='API doc')
@@ -148,11 +148,11 @@ def update_presets():
     dev_presets = []
     local_presets = []
     # Call the Master API to get the presets
-    master = requests.get(f"{os.environ.get('WORKER_URL_MASTER')}/get_presets")
+    master = requests.get(f"{os.environ.get('WORKER_URL_MASTER', "http://127.0.0.1:8000")}/get_presets")
     if master.status_code == 200:
         master_presets = master.json()
     # Call the Dev API to get the presets
-    dev = requests.get(f"{os.environ.get('WORKER_URL_DEV')}/get_presets")
+    dev = requests.get(f"{os.environ.get('WORKER_URL_DEV', "http://127.0.0.1:8000")}/get_presets")
     if dev.status_code == 200:
         dev_presets = dev.json()
 
@@ -279,6 +279,7 @@ def get_presets():
     presets_to_return = []
     presets, local_presets = update_presets()
     presets = presets.get(branch, [])
+    print(presets)
     if return_blank is None:
         presets_to_return = [preset for preset in presets if preset.get("settings_string") is not None]
     else:
@@ -497,6 +498,8 @@ def get_selector_info():
     # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
     # Else call os.environ.get("WORKER_URL_DEV") with requests
     url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
+    if not url:
+        url = "http://127.0.0.1:8000"
     response = requests.get(f"{url}/get_selector_info")
     return set_response(response.json(), response.status_code)
 
@@ -504,6 +507,8 @@ def get_selector_info():
 @api.route("/convert_settings", methods=["POST"])
 def convert_settings():
     url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
+    if not url:
+        url = "http://127.0.0.1:8000"
     data = request.get_json()
     response = requests.post(f"{url}/convert_settings", json=data)
     return set_response(response.json(), response.status_code)
