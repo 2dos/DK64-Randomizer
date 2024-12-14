@@ -866,6 +866,11 @@ class ExtraTextures(IntEnum):
     BeanSpin10 = auto()
     BeanSpin11 = auto()
     BeanSpin12 = auto()
+    KrushaFace1 = auto()
+    KrushaFace2 = auto()
+    KrushaFace3 = auto()
+    KrushaFace4 = auto()
+    KrushaFace5 = auto()
 
 
 class MoveTypes(IntEnum):
