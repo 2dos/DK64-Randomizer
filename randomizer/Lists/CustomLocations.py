@@ -4312,9 +4312,9 @@ CustomLocations = {
         CustomLocation(
             name="Vanilla Igloo Warp 3",
             map=Maps.CrystalCaves,
-            x=163.979,
+            x=176.505,
             y=50.167,
-            z=1136.328,
+            z=1089.408,
             rot_y=683,
             max_size=WARP_MAX_SIZE,
             logic_region=Regions.IglooArea,

@@ -110,11 +110,11 @@ class DoorData:
             if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
                 # Disable portals in underwater regions
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
-        if self.default_placed == DoorType.dk_portal:
-            # Disable TnS spawning here because of it being slightly bugged when exiting as DK/Chunky
-            # Instantly re-activates the portal for some reason?
-            # TODO: Figure out how to prevent this so we can remove this condition
-            self.door_type = [x for x in self.door_type if x != DoorType.boss]
+        # if self.default_placed == DoorType.dk_portal:
+        #     # Disable TnS spawning here because of it being slightly bugged when exiting as DK/Chunky
+        #     # Instantly re-activates the portal for some reason?
+        #     # TODO: Figure out how to prevent this so we can remove this condition
+        #     self.door_type = [x for x in self.door_type if x != DoorType.boss]
         self.default_door_list = self.door_type.copy()
         # if self.default_placed == DoorType.dk_portal:
         #     # Disable other doors being able to occupy the space of DK portals, for now
