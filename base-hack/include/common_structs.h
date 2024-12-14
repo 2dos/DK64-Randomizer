@@ -2339,3 +2339,19 @@ typedef struct SingleExitStruct {
     /* 0x008 */ unsigned char autowalk;
     /* 0x009 */ unsigned char size;
 } SingleExitStruct;
+
+typedef struct FogMapping {
+	/* 0x000 */ rgb rgb;
+	/* 0x003 */ unsigned char map_index;
+	/* 0x004 */ short fog_entry;
+	/* 0x006 */ short fog_cap;
+} FogMapping;
+
+typedef struct FogData {
+	/* 0x000 */ unsigned char enabled;
+	/* 0x001 */ rgb rgb;
+	/* 0x004 */ unsigned char opacity;
+	/* 0x005 */ char pad5;
+	/* 0x006 */ short entry_range;
+	/* 0x008 */ short cap_range;
+} FogData;

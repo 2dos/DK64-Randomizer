@@ -45,6 +45,15 @@ UNDERWATER_LOGIC_REGIONS = (
     Regions.LighthouseUnderwater,
     Regions.ShipyardUnderwater,
     Regions.TreasureRoom,
+    Regions.TinyChest,
+    Regions.Submarine,
+    Regions.LankyShip,
+    Regions.TinyShip,
+    Regions.BongosShip,
+    Regions.GuitarShip,
+    Regions.TromboneShip,
+    Regions.SaxophoneShip,
+    Regions.TriangleShip,
 )
 
 

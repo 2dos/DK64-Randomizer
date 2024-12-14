@@ -273,3 +273,5 @@
 .definelabel RambiArenaComboChain, 0x8002DEF0
 
 .definelabel StoredOrangeCount, 0x80029FA4
+
+.definelabel EnvironmentFog, 0x807F7360

@@ -898,49 +898,31 @@ void resetMapContainer(void) {
 	}
 }
 
-static const unsigned char dk_portal_maps[] = {
-	MAP_JAPES,
-	MAP_AZTEC,
-	MAP_FACTORY,
-	MAP_GALLEON,
-	MAP_FUNGI,
-	MAP_CAVES,
-	MAP_CASTLE,
-	MAP_JAPESLOBBY,
-	MAP_AZTECLOBBY,
-	MAP_FACTORYLOBBY,
-	MAP_GALLEONLOBBY,
-	MAP_FUNGILOBBY,
-	MAP_CAVESLOBBY,
-	MAP_CASTLELOBBY
-};
 void correctDKPortal(void) {
-	int is_portal_map = 0;
-	for (int i = 0; i < sizeof(dk_portal_maps); i++) {
-		if (dk_portal_maps[i] == CurrentMap) {
-			is_portal_map = 1;
-		}
-	}
-	if (is_portal_map) {
-		int portal_exit = isLobby(CurrentMap);
-		int exit = DestExit;
-		int portal_state = 2;
-		if (portal_exit == exit) {
+	int exit = DestExit;
+	int portal_state = 2;
+	if (isLobby(CurrentMap))  {
+		if (exit == 1) {
 			portal_state = 0;
 		}
+	} else {
 		if ((CurrentMap == MAP_JAPES) && (exit == 15)) {
 			portal_state = 0;
+		} else if ((CurrentMap == MAP_FUNGI) && (exit == 27)) {
+			portal_state = 0;
+		} else if (exit == -1) {
+			portal_state = 0;
 		}
-		int _count = ObjectModel2Count;
-		int* m2location = (int*)ObjectModel2Pointer;
-		for (int i = 0; i < _count; i++) {
-			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
-			if (_object->object_type == 0x2AD) {
-				behaviour_data* behav = _object->behaviour_pointer;
-				if (behav) {
-					behav->current_state = portal_state;
-					//behav->next_state = portal_state;
-				}
+	}		
+	int _count = ObjectModel2Count;
+	int* m2location = (int*)ObjectModel2Pointer;
+	for (int i = 0; i < _count; i++) {
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		if (_object->object_type == 0x2AD) {
+			behaviour_data* behav = _object->behaviour_pointer;
+			if (behav) {
+				behav->current_state = portal_state;
+				//behav->next_state = portal_state;
 			}
 		}
 	}

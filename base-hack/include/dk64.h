@@ -800,6 +800,7 @@ extern float unkFloatArray[7];
 extern float BackflipVelArray[7];
 
 extern SingleExitStruct DefaultExit;
+extern FogData EnvironmentFog;
 
 //hack data
 extern int TestVariable;
