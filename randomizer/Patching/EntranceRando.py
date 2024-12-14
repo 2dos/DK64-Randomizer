@@ -36,12 +36,14 @@ def intToArr(val, size):
             break
     return arr
 
+
 def getOneByteExit(back):
     """Convert 'getExitId' output to something acceptable to write to a 1-byte value."""
     value = GetExitId(back)
     if value < 0:
         return value + 0x100
     return value
+
 
 def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla_exit: int) -> dict:
     """Create the LZR Entrance dict for a locally stored entrance."""
@@ -56,6 +58,7 @@ def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla
         "exit": vanilla_exit,
     }
 
+
 def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: int, vanilla_map: Maps, vanilla_exit: int):
     """Write LZREntrance struct to ROM."""
     ROM_COPY.seek(spoiler.settings.rom_data + offset)
@@ -65,6 +68,7 @@ def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: 
         exit_id += 0x100
     ROM_COPY.write(data["map"])
     ROM_COPY.write(exit_id & 0xFF)
+
 
 def randomize_entrances(spoiler):
     """Randomize Entrances based on shuffled_exit_instructions."""

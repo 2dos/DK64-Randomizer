@@ -243,12 +243,13 @@ def adjustExits(fh):
         default_start = default_exit * 10
         print("Rewriting exit file:", map_index, data)
         with open(file_name, "wb") as fg:
-            fg.write(data[default_start:default_start + 10])
+            fg.write(data[default_start : default_start + 10])
             fg.write(exit_count.to_bytes(2, "big"))
             fg.write(data)
         if os.path.exists(file_name):
             if os.path.getsize(file_name) == 0:
                 os.remove(file_name)
+
 
 class LoadingZone:
     """Class to store information regarding a loading zone."""
@@ -275,9 +276,9 @@ class LoadingZone:
         fh.write(self.radius.to_bytes(2, "big"))  # 0x6
         fh.write(self.height.to_bytes(2, "big"))  # 0x8
         fh.write((1).to_bytes(2, "big"))  # 0xA
-        fh.write((1).to_bytes(2, "big")) # 0xC
-        fh.write((1).to_bytes(1, "big")) # 0xE
-        fh.write((0).to_bytes(1, "big")) # 0XF
+        fh.write((1).to_bytes(2, "big"))  # 0xC
+        fh.write((1).to_bytes(1, "big"))  # 0xE
+        fh.write((0).to_bytes(1, "big"))  # 0XF
         LZ_TYPE = 9
         fh.write(LZ_TYPE.to_bytes(2, "big"))
         fh.write(self.map_id.to_bytes(2, "big"))
@@ -287,11 +288,14 @@ class LoadingZone:
         for _ in range(0x38 - 0x18):
             fh.write((0).to_bytes(1, "big"))
 
+
 mech_fish_triggers = [
     LoadingZone(360, 70, 92, 50, None, Maps.Galleon, 34),
 ]
 
+
 def addMechFishLZ():
+    """Add mech fish loading zone to the trigger file."""
     with open("mech_fish_triggers.bin", "wb") as fh:
         fh.write(len(mech_fish_triggers).to_bytes(2, "big"))
         for trigger in mech_fish_triggers:

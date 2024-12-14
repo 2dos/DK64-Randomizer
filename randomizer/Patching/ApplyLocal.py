@@ -172,9 +172,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             holiday = getHoliday(settings)
             fog_enabled = [0, 0, 0]  # 0 = Vanilla, 1 = Set to a default (defined by either holiday mode or a custom default), 2 = rando
             default_colors = [
-                [0x8A, 0x52, 0x16], # Aztec
-                [0x20, 0xFF, 0xFF], # Caves
-                [0x40, 0x10, 0x10], # Castle
+                [0x8A, 0x52, 0x16],  # Aztec
+                [0x20, 0xFF, 0xFF],  # Caves
+                [0x40, 0x10, 0x10],  # Castle
             ]
             holiday_colors = {
                 Holidays.Anniv25: [0xFF, 0xFF, 0x00],

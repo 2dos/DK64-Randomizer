@@ -1208,7 +1208,8 @@ class Settings:
                 {
                     "map": k,
                     "exit": -1,
-                } for k in level_base_maps
+                }
+                for k in level_base_maps
             ]
 
         self.shuffled_location_types = []

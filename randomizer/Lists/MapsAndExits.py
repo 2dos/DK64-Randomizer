@@ -638,12 +638,14 @@ ENTRY_HANDLERS = (
     Regions.CreepyCastleEntryHandler,
 )
 
+
 def GetMapId(settings, regionId) -> Maps:
     """Get the map id of a transition."""
     if regionId in ENTRY_HANDLERS:
         level_index = ENTRY_HANDLERS.index(regionId)
         return RegionMapList[settings.level_entrance_regions[level_index]]
     return RegionMapList[regionId]
+
 
 def GetExitId(back: TransitionBack) -> int:
     """Get exit id of a transition."""

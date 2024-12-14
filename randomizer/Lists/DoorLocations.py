@@ -153,6 +153,7 @@ class DoorData:
         spoiler.settings.level_void_maps[level] = tied_map
         spoiler.settings.level_entrance_regions[level] = self.logicregion
 
+
 def GetBossLobbyRegionIdForRegion(region_id, region):
     """Return the region id of the boss lobby the given region id and Region object should take you to."""
     if region_id == Regions.JungleJapesLobby or region.level == Levels.JungleJapes:

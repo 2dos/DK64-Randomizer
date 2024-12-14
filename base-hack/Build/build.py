@@ -930,16 +930,7 @@ for x in range(221):
             )
         )
     else:
-        file_dict.append(
-            File(
-                name=f"Zones for map {x}",
-                pointer_table_index=TableNames.Triggers,
-                file_index=x,
-                source_file=f"lz{x}.bin",
-                target_compressed_size=0x850,
-                do_not_recompress=True
-            )
-        )
+        file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
 # Setup
 setup_expansion_size = 0x2580
 for x in range(221):

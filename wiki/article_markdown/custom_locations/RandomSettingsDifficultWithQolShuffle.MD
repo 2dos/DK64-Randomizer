@@ -133,6 +133,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Lower Max Refill Amounts: 50%
 	- Strict Helm Timer: 20%
 	- Angry Caves: 5%
+	- Donk In The Dark World: 0%
+	- Donk In The Sky: 0%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 50%
 - Helm Hurry Mode: 5%
