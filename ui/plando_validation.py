@@ -314,8 +314,8 @@ def hint_text_validation_fn(hintString: str) -> str:
 ############
 
 
-@bindList("click", [str(i) for i in range(1,6)], prefix="starting_moves_list_mover_")
-@bindList("change", [str(i) for i in range(1,6)], prefix="starting_moves_list_count_")
+@bindList("click", [str(i) for i in range(1, 6)], prefix="starting_moves_list_mover_")
+@bindList("change", [str(i) for i in range(1, 6)], prefix="starting_moves_list_count_")
 @bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
 @bindList("change", CrownLocationEnumList, prefix="plando_", suffix="_location_reward")
@@ -337,7 +337,7 @@ def validate_item_limits(evt):
     startingMoveSet = set()
     # Look at every list, and if any list will have all of its items given,
     # add those moves to the set.
-    for i in range(1,6):
+    for i in range(1, 6):
         moveListElem = js.document.getElementById(f"starting_moves_list_{i}")
         moveCountElem = js.document.getElementById(f"starting_moves_list_count_{i}")
         givenMoveCount = int(moveCountElem.value)
@@ -1431,7 +1431,7 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
     startingMoveSet = set()
     # Look at every list, and if any list will have all of its items given,
     # add those moves to the set.
-    for i in range(1,6):
+    for i in range(1, 6):
         moveListElem = js.document.getElementById(f"starting_moves_list_{i}")
         moveCountElem = js.document.getElementById(f"starting_moves_list_count_{i}")
         givenMoveCount = int(moveCountElem.value)
