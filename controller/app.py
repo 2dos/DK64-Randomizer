@@ -133,48 +133,21 @@ def set_response(content, status_code, content_type="application/json", version_
     response.headers["Version"] = version_header
     return response
 
-cached_presets = None
 cached_local_presets = None
 last_updated = 0
 CACHE_DURATION = 300  # Cache duration in seconds
 
-def update_presets():
-    global cached_presets, cached_local_presets, last_updated
+def update_presets(force=False):
+    global cached_local_presets, last_updated
     current_time = int(time.time())
-    if cached_presets is not None and cached_local_presets is not None and (current_time - last_updated) < CACHE_DURATION:
-        return cached_presets, cached_local_presets
-
-    master_presets = []
-    dev_presets = []
-    local_presets = []
-    # Call the Master API to get the presets
-    master = requests.get(f"{os.environ.get('WORKER_URL_MASTER', "http://127.0.0.1:8000")}/get_presets")
-    if master.status_code == 200:
-        master_presets = master.json()
-    # Call the Dev API to get the presets
-    dev = requests.get(f"{os.environ.get('WORKER_URL_DEV', "http://127.0.0.1:8000")}/get_presets")
-    if dev.status_code == 200:
-        dev_presets = dev.json()
-
-
-    presets = {}
-    presets["master"] = master_presets
-    presets["dev"] = dev_presets
+    if cached_local_presets is not None and (current_time - last_updated) < CACHE_DURATION and not force:
+        return cached_local_presets
 
     if path.isfile("local_presets.json"):
         with open("local_presets.json", "r") as f:
             local_presets = json.load(f)
-            for branch in ["master", "dev"]:
-                for local_preset in local_presets.get(branch, []):
-                    found_preset = False
-                    for i, global_preset in enumerate(presets[branch]):
-                        if global_preset.get("name") == local_preset.get("name"):
-                            presets[branch][i] = local_preset
-                            found_preset = True
-                            break
-                    if not found_preset:
-                        presets[branch].append(local_preset)
-    return presets, local_presets
+            cached_local_presets = local_presets
+    return local_presets
 
 
 def get_user_ip():
@@ -277,7 +250,7 @@ def get_presets():
     branch = request.args.get("branch")
     return_blank = request.args.get("return_blank")
     presets_to_return = []
-    presets, local_presets = update_presets()
+    presets = update_presets()
     presets = presets.get(branch, [])
     print(presets)
     if return_blank is None:
@@ -320,7 +293,7 @@ def admin_portal():
     if not session.get("admin", False):
         session.pop("admin")
         return set_response("You do not have permission to access this page.", 403, "text/html")
-    presets, local_presets = update_presets()
+    local_presets = update_presets()
     return render_template("admin.html.jinja2", local_presets=local_presets)
 
 
@@ -330,7 +303,7 @@ def admin_presets():
         return set_response(json.dumps({"message": "You do not have permission to access this page."}), 403)
 
     content = request.json
-    presets, local_presets = update_presets()
+    local_presets = update_presets()
     branch = request.args.get("branch")
     if branch not in ["master", "dev"]:
         return set_response(json.dumps({"message": "Invalid branch"}), 400)
@@ -347,7 +320,7 @@ def admin_presets():
 
         with open("local_presets.json", "w") as f:
             f.write(json.dumps(local_presets))
-        update_presets()
+        update_presets(True)
         return set_response(json.dumps({"message": "Local presets updated"}), 200)
 
     elif request.method == "DELETE":
@@ -363,7 +336,7 @@ def admin_presets():
         else:
             with open("local_presets.json", "w") as f:
                 f.write(json.dumps(local_presets))
-            update_presets()
+            update_presets(True)
             return set_response(json.dumps({"message": "Local presets deleted"}), 200)
 
 
