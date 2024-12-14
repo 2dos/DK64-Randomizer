@@ -122,6 +122,11 @@ def convert_settings():
     else:
         return jsonify({"error": "Invalid data"}), 400
 
+@api.route("/get_presets", methods=["GET"])
+def get_presets():
+    with open("static/presets/preset_files.json") as f:
+        presets = json.load(f)
+    return jsonify(presets)
 
 def runWaitressWorker():
     # Start the Flask server

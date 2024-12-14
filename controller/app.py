@@ -89,9 +89,11 @@ task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-pr
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
 CORS(app)
 # Prepend all routes with /api
-app.config["SECRET_KEY"] = secrets.token_hex(256)
+secret_token = secrets.token_hex(256)
 
 api = Blueprint("api", __name__, url_prefix="/api")
+app.config["SECRET_KEY"] = secret_token
+# Set the secret key for the blueprint as well
 ALLOWED_REFERRERS = ["https://dk64randomizer.com"]
 API_KEYS = ["your_api_key_1", "your_api_key_2"]
 discord = DiscordAuth(
@@ -142,45 +144,36 @@ def update_presets():
     if cached_presets is not None and cached_local_presets is not None and (current_time - last_updated) < CACHE_DURATION:
         return cached_presets, cached_local_presets
 
-    presets = []
+    master_presets = []
+    dev_presets = []
     local_presets = []
-    with open("static/presets/preset_files.json", "r") as f:
-        presets = json.load(f)
+    # Call the Master API to get the presets
+    master = requests.get(f"{os.environ.get('WORKER_URL_MASTER')}/get_presets")
+    if master.status_code == 200:
+        master_presets = master.json()
+    # Call the Dev API to get the presets
+    dev = requests.get(f"{os.environ.get('WORKER_URL_DEV')}/get_presets")
+    if dev.status_code == 200:
+        dev_presets = dev.json()
+
+
+    presets = {}
+    presets["master"] = master_presets
+    presets["dev"] = dev_presets
+
     if path.isfile("local_presets.json"):
         with open("local_presets.json", "r") as f:
             local_presets = json.load(f)
-            for local_preset in local_presets:
-                found_preset = False
-                for i, global_preset in enumerate(presets):
-                    if global_preset.get("name") == local_preset.get("name"):
-                        presets[i] = local_preset
-                        found_preset = True
-                        break
-                if not found_preset:
-                    presets.append(local_preset)
-    
-    cached_presets = presets
-    cached_local_presets = local_presets
-    last_updated = current_time
-    data = request.get_json()
-def update_presets():
-    """Update the presets list with the global and local presets."""
-    presets = []
-    local_presets = []
-    with open("static/presets/preset_files.json", "r") as f:
-        presets = json.load(f)
-    if path.isfile("local_presets.json"):
-        with open("local_presets.json", "r") as f:
-            local_presets = json.load(f)
-            for local_preset in local_presets:
-                found_preset = False
-                for i, global_preset in enumerate(presets):
-                    if global_preset.get("name") == local_preset.get("name"):
-                        presets[i] = local_preset
-                        found_preset = True
-                        break
-                if not found_preset:
-                    presets.append(local_preset)
+            for branch in ["master", "dev"]:
+                for local_preset in local_presets.get(branch, []):
+                    found_preset = False
+                    for i, global_preset in enumerate(presets[branch]):
+                        if global_preset.get("name") == local_preset.get("name"):
+                            presets[branch][i] = local_preset
+                            found_preset = True
+                            break
+                    if not found_preset:
+                        presets[branch].append(local_preset)
     return presets, local_presets
 
 
@@ -281,9 +274,11 @@ def get_version():
 
 @api.route("/get_presets", methods=["GET"])
 def get_presets():
+    branch = request.args.get("branch")
     return_blank = request.args.get("return_blank")
     presets_to_return = []
     presets, local_presets = update_presets()
+    presets = presets.get(branch, [])
     if return_blank is None:
         presets_to_return = [preset for preset in presets if preset.get("settings_string") is not None]
     else:
@@ -297,24 +292,29 @@ def get_presets():
 
     return set_response(json.dumps(presets_to_return), 200)
 
-    content = request.get_json()
-@api.route("/admin", methods=["GET"])
+@app.route("/admin", methods=["GET"])
 def admin_portal():
+    # Branch Data for the admin portal
+    branch = os.environ.get("BRANCH", "LOCAL")
     if session.get("admin") is None:
-        code = request.args.get("code")
-        if code is None:
-            return redirect(discord.login())
-
-        tokens = discord.get_tokens(code)
-        try:
-            guilds = discord.get_guild_roles(tokens.get("access_token"))
-        except Exception:
-            guilds = {}
-
-        if not any(role in admin_roles for role in guilds.get("roles", [])):
-            return set_response("You do not have permission to access this page.", 403, "text/html")
-        else:
+        if branch == "LOCAL":
+            # This is a debug chunk of code for when locally testing the admin portal
             session["admin"] = True
+        else:
+            code = request.args.get("code")
+            if code is None:
+                return redirect(discord.login())
+
+            tokens = discord.get_tokens(code)
+            try:
+                guilds = discord.get_guild_roles(tokens.get("access_token"))
+            except Exception:
+                guilds = {}
+
+            if not any(role in admin_roles for role in guilds.get("roles", [])):
+                return set_response("You do not have permission to access this page.", 403, "text/html")
+            else:
+                session["admin"] = True
 
     if not session.get("admin", False):
         session.pop("admin")
@@ -330,16 +330,19 @@ def admin_presets():
 
     content = request.json
     presets, local_presets = update_presets()
+    branch = request.args.get("branch")
+    if branch not in ["master", "dev"]:
+        return set_response(json.dumps({"message": "Invalid branch"}), 400)
     if request.method == "PUT":
         preset_name = content.get("name")
         found_preset = False
-        for i, preset in enumerate(local_presets):
+        for i, preset in enumerate(local_presets[branch]):
             if preset.get("name").lower() == preset_name.lower():
-                local_presets[i] = content
+                local_presets[branch][i] = content
                 found_preset = True
                 break
         if not found_preset:
-            local_presets.append(content)
+            local_presets[branch].append(content)
 
         with open("local_presets.json", "w") as f:
             f.write(json.dumps(local_presets))
@@ -349,9 +352,9 @@ def admin_presets():
     elif request.method == "DELETE":
         preset_name = content.get("name")
         found = False
-        for i, preset in enumerate(local_presets):
+        for i, preset in enumerate(local_presets[branch]):
             if preset.get("name").lower() == preset_name.lower():
-                local_presets.pop(i)
+                local_presets[branch].pop(i)
                 found = True
                 break
         if not found:
@@ -468,6 +471,10 @@ def get_total_info():
             current_total = int(f.read())
     except ValueError:
         current_total = 0
+    except Exception:
+        current_total = 0
+        with open("current_total.cfg", "w") as f:
+            f.write(str(current_total))
     try:
         with open("last_generated_time.cfg", "r") as f:
             last_generated_time = datetime.strptime(f.read().strip(), "%Y-%m-%d %H:%M:%S.%f%z")
@@ -478,9 +485,7 @@ def get_total_info():
             f.write(last_generated_time.isoformat())
     except Exception:
         # If we can't read the file, just set it to the current time.
-        with open("last_generated_time.cfg", "w") as f:
-            f.write(last_generated_time.isoformat())
-        # If we can't read the file, just set it to the current time.
+        last_generated_time = datetime.now(UTC)
         with open("last_generated_time.cfg", "w") as f:
             f.write(last_generated_time.isoformat())
     return current_total, last_generated_time
