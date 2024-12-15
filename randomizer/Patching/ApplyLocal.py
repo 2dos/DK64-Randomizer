@@ -27,7 +27,7 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText
+from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText, getHoliday, Holidays
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 
 # from randomizer.Spoiler import Spoiler
@@ -167,6 +167,36 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             darkenPauseBubble(settings)
             if settings.misc_cosmetics:
                 writeCrownNames()
+
+            # Fog
+            holiday = getHoliday(settings)
+            fog_enabled = [0, 0, 0]  # 0 = Vanilla, 1 = Set to a default (defined by either holiday mode or a custom default), 2 = rando
+            default_colors = [
+                [0x8A, 0x52, 0x16],  # Aztec
+                [0x20, 0xFF, 0xFF],  # Caves
+                [0x40, 0x10, 0x10],  # Castle
+            ]
+            holiday_colors = {
+                Holidays.Anniv25: [0xFF, 0xFF, 0x00],
+                Holidays.Halloween: [0xFF, 0x00, 0x00],
+                Holidays.Christmas: [0x00, 0xFF, 0xFF],
+            }
+            if holiday in holiday_colors:
+                fog_enabled = [1, 1, 1]
+                for x in range(3):
+                    default_colors[x] = holiday_colors[holiday]
+            elif settings.misc_cosmetics:
+                fog_enabled = [2, 1, 1]
+            for index, enabled_setting in enumerate(fog_enabled):
+                if enabled_setting != 0:
+                    color = default_colors[index]
+                    if enabled_setting == 2:
+                        color = []
+                        for x in range(3):
+                            color.append(random.randint(1, 0xFF))
+                    ROM_COPY.seek(sav + 0x088 + (index * 3))
+                    for x in color:
+                        ROM_COPY.writeMultipleBytes(x, 1)
 
             # D-Pad Display
             ROM_COPY.seek(sav + 0x139)

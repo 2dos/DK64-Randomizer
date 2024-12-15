@@ -14,7 +14,7 @@ short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
     0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0, // Crates
+    0, 0, 0, 0, // Hints, Crates
 };
 
 int file_sprites[17] = {
@@ -30,15 +30,16 @@ int file_sprites[17] = {
     (int)&bean_sprite, // Bean
     (int)&pearl_sprite, // Pearls
     0x80721378, // Rainbow Coins
+    0x80721530, // Hint
     0x80720710, // Crate
-    0, 0, 0,
+    0, 0,
     0, // Null Item, Leave Empty
 };
 short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
     5, 1, 5, 16,
-    0, 0, 0, 0, // First here is Junk Items
+    35, 0, 0, 0, // Second here is Junk Items
 };
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -169,31 +170,43 @@ void handleSpriteCode(int control_type) {
     }
 }
 
+typedef struct CarouselBoundStruct {
+    /* 0x000 */ unsigned char check_type;
+    /* 0x001 */ unsigned char flag_count;
+    /* 0x002 */ short starting_flag;
+} CarouselBoundStruct;
+
+static CarouselBoundStruct carousel_bounds[] = {
+    {.check_type = CHECK_CRATE, .flag_count = ENEMIES_TOTAL, .starting_flag = FLAG_ENEMY_KILLED_0}, // Make sure this is always first
+    {.check_type = CHECK_PEARLS, .flag_count = 5, .starting_flag = FLAG_PEARL_0_COLLECTED},
+    {.check_type = CHECK_RAINBOW, .flag_count = 16, .starting_flag = FLAG_RAINBOWCOIN_0},
+    {.check_type = CHECK_HINTS, .flag_count = 35, .starting_flag = FLAG_WRINKLYVIEWED},
+    {.check_type = CHECK_BEAN, .flag_count = 1, .starting_flag = FLAG_COLLECTABLE_BEAN},
+};
+
 void initCarousel_onPause(void) {
     for (int i = 0; i < 8; i++) {
         file_items[i] = FileVariables[i];
     }
     file_items[CHECK_KONG] = 0;
-    file_items[CHECK_BEAN] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
-    file_items[CHECK_PEARLS] = 0;
-    file_items[CHECK_RAINBOW] = 0;
-    file_items[CHECK_CRATE] = 0;
     for (int i = 0; i < 5; i++) {
         file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], FLAGTYPE_PERMANENT);
-        file_items[CHECK_PEARLS] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
     }
-    for (int i = 0; i < 16; i++) {
-        file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, FLAGTYPE_PERMANENT);
+    if (!Rando.enemy_item_rando) {
+        carousel_bounds[0].flag_count = 0;
+    }
+    for (int i = 0; i < sizeof(carousel_bounds)/sizeof(CarouselBoundStruct); i++) {
+        int check_type = carousel_bounds[i].check_type;
+        int start_flag = carousel_bounds[i].starting_flag;
+        file_items[check_type] = 0;
+        for (int j = 0; j < carousel_bounds[i].flag_count; j++) {
+            file_items[check_type] += checkFlagDuplicate(start_flag + i, FLAGTYPE_PERMANENT);
+        }
     }
     for (int i = 0; i < 100; i++) {
         // Junk Item Check
         if (isIceTrapFlag(FLAG_JUNKITEM + i) == DYNFLAG_JUNK) {
             file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
-        }
-    }
-    if (Rando.enemy_item_rando) {
-        for (int i = 0; i < ENEMIES_TOTAL; i++) {
-            file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_ENEMY_KILLED_0 + i, FLAGTYPE_PERMANENT);
         }
     }
 }

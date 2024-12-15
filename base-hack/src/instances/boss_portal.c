@@ -123,8 +123,13 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 				setPermFlag(tnsportal_flags[world]);
 				behaviour->next_state = 40;
 			} else {
-				behaviour->next_state = 2;
+				behaviour->next_state = 101;
+				behaviour->timer = 60;
 			}
+		}
+	} else if (behaviour->current_state == 101) {
+		if (behaviour->timer == 0) {
+			behaviour->next_state = 2;
 		}
 	}
 }

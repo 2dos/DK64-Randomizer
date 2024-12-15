@@ -13,10 +13,12 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     FungiTimeSetting,
     ShufflePortLocations,
+    ShuffleLoadingZones,
 )
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Lists.MapsAndExits import RegionMapList
 
 LEVEL_MAIN_MAPS = (
     Maps.JungleJapes,
@@ -43,6 +45,15 @@ UNDERWATER_LOGIC_REGIONS = (
     Regions.LighthouseUnderwater,
     Regions.ShipyardUnderwater,
     Regions.TreasureRoom,
+    Regions.TinyChest,
+    Regions.Submarine,
+    Regions.LankyShip,
+    Regions.TinyShip,
+    Regions.BongosShip,
+    Regions.GuitarShip,
+    Regions.TromboneShip,
+    Regions.SaxophoneShip,
+    Regions.TriangleShip,
 )
 
 
@@ -91,7 +102,7 @@ class DoorData:
             self.dk_portal_logic = lambda s: False
         else:
             self.dk_portal_logic = dk_portal_logic
-        if True:  # Disable once I figure some stuff out
+        if False:  # Disable once I figure some stuff out
             if DoorType.dk_portal in self.door_type and self.map not in LEVEL_MAIN_MAPS:
                 # Disable non-main maps for now because of instance script/exit memes
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
@@ -99,11 +110,11 @@ class DoorData:
             if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
                 # Disable portals in underwater regions
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
-        if self.default_placed == DoorType.dk_portal:
-            # Disable TnS spawning here because of it being slightly bugged when exiting as DK/Chunky
-            # Instantly re-activates the portal for some reason?
-            # TODO: Figure out how to prevent this so we can remove this condition
-            self.door_type = [x for x in self.door_type if x != DoorType.boss]
+        # if self.default_placed == DoorType.dk_portal:
+        #     # Disable TnS spawning here because of it being slightly bugged when exiting as DK/Chunky
+        #     # Instantly re-activates the portal for some reason?
+        #     # TODO: Figure out how to prevent this so we can remove this condition
+        #     self.door_type = [x for x in self.door_type if x != DoorType.boss]
         self.default_door_list = self.door_type.copy()
         # if self.default_placed == DoorType.dk_portal:
         #     # Disable other doors being able to occupy the space of DK portals, for now
@@ -124,7 +135,7 @@ class DoorData:
 
     def updateDoorTypeLogic(self, spoiler):
         """Update door type list depending on enabled settings."""
-        if self.dk_portal_logic(spoiler):
+        if self.dk_portal_logic(spoiler) and self.logicregion not in UNDERWATER_LOGIC_REGIONS:
             if DoorType.dk_portal not in self.door_type:
                 self.door_type.append(DoorType.dk_portal)
 
@@ -133,6 +144,14 @@ class DoorData:
         self.placed = DoorType.dk_portal
         placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level]
         spoiler.RegionList[placement_region].exits[1] = TransitionFront(self.logicregion, lambda l: True)
+        tied_map = RegionMapList[self.logicregion]
+        if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+            spoiler.settings.level_portal_destinations[level] = {
+                "map": tied_map,
+                "exit": -1,
+            }
+        spoiler.settings.level_void_maps[level] = tied_map
+        spoiler.settings.level_entrance_regions[level] = self.logicregion
 
 
 def GetBossLobbyRegionIdForRegion(region_id, region):
@@ -2556,6 +2575,7 @@ door_locations = {
             group=2,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Across from the 5Door Cabin",
@@ -2686,6 +2706,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Near W4 Opposite Cranky - right",
@@ -2695,6 +2716,7 @@ door_locations = {
             group=7,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Near W4 Opposite Cranky - left",
@@ -2704,6 +2726,7 @@ door_locations = {
             group=7,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Under Bridge to Cranky",
@@ -2713,6 +2736,7 @@ door_locations = {
             group=7,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Under Handstand Slope",
@@ -2795,6 +2819,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Igloo Area - Behind Tag Barrel Island",
@@ -2804,6 +2829,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Igloo Area - Behind Warp 1",
@@ -2813,6 +2839,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Igloo Area - right of entrance",
@@ -2822,6 +2849,7 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Under Funky's Store",
@@ -2831,6 +2859,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Next to Waterfall that's Next to Funky",
@@ -2840,6 +2869,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Under Funky - left",
@@ -2849,6 +2879,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Under Funky - center",
@@ -2858,6 +2889,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="In Water Under Funky - right",
@@ -2867,6 +2899,7 @@ door_locations = {
             group=6,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Ice Castle Interior - left",

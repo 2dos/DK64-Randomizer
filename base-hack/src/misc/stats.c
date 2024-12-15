@@ -127,8 +127,10 @@ void updatePercentageKongStat(void) {
             current_kong = Player->characterID - 2;
         }
         if (current_kong <= 4) {
-            int old = ReadExtraData(EGD_KONGIGT, current_kong);
-            SaveExtraData(EGD_KONGIGT, current_kong, old + current_kong_diff);
+            if (CurrentMap != MAP_MAINMENU) {
+                int old = ReadExtraData(EGD_KONGIGT, current_kong);
+                SaveExtraData(EGD_KONGIGT, current_kong, old + current_kong_diff);
+            }
         }
         setKongIgt();
     }

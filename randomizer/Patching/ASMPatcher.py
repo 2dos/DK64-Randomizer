@@ -578,35 +578,6 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
                         writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + ((y + 1) * 3) + zi, Overlay.Static, z, offset_dict, 1)
         writeValue(ROM_COPY, 0x8075E1EC, Overlay.Static, 0x80708234, offset_dict, 4)
 
-    # Haze Color
-    addrs = [0x8065912E, 0x8065913E, 0x8065914A]
-    color = []
-    enabled = False
-    force_fog_color = False
-    if holiday == Holidays.Anniv25:
-        enabled = True
-        force_fog_color = True
-        color = [0xFF, 0xFF, 0x00]
-    elif holiday == Holidays.Halloween:
-        enabled = True
-        force_fog_color = True
-        color = [0xFF, 0x00, 0x00]
-    elif holiday == Holidays.Christmas:
-        enabled = True
-        force_fog_color = True
-        color = [0x00, 0xFF, 0xFF]
-    else:
-        # Non-Holiday
-        enabled = settings.misc_cosmetics
-        for x in range(3):
-            color.append(random.randint(0, 0xFF))
-
-    if enabled:
-        for addr_i, addr in enumerate(addrs):
-            writeValue(ROM_COPY, addr, Overlay.Static, color[addr_i], offset_dict)
-        if force_fog_color:
-            writeValue(ROM_COPY, 0x80659124, Overlay.Static, 0, offset_dict, 4)
-
     writeValue(ROM_COPY, 0x8064F052, Overlay.Static, settings.wrinkly_rgb[0], offset_dict)
     writeValue(ROM_COPY, 0x8064F04A, Overlay.Static, settings.wrinkly_rgb[1], offset_dict)
     writeValue(ROM_COPY, 0x8064F046, Overlay.Static, settings.wrinkly_rgb[2], offset_dict)
@@ -1529,9 +1500,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x806F633C, Overlay.Static, "isObjectTangible_detailed", offset_dict)  # Change object tangibility check function
 
         writeValue(ROM_COPY, 0x806C5C7C, Overlay.Static, 0, offset_dict, 4)  # Cancel out fairy draw distance reduction
-        writeValue(ROM_COPY, 0x806C46AA, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (X)
-        writeValue(ROM_COPY, 0x806C46E2, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (Z)
-        writeValue(ROM_COPY, 0x806C45C2, Overlay.Static, 0x0013, offset_dict)  # Y Offset squawks reward
         writeFunction(ROM_COPY, 0x806C63BC, Overlay.Static, "spawnRewardAtActor", offset_dict)  # Spawn Squawks Reward
         writeFunction(ROM_COPY, 0x806C4654, Overlay.Static, "spawnMinecartReward", offset_dict)  # Spawn Squawks Reward - Minecart
         writeFunction(ROM_COPY, 0x8002501C, Overlay.Bonus, "spawnCrownReward", offset_dict)  # Crown Spawn
@@ -1565,6 +1533,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806F4C82, Overlay.Static, 0x20, offset_dict)  # Change size
     writeFunction(ROM_COPY, 0x806F515C, Overlay.Static, "writeItemActorScale", offset_dict)  # Write actor scale to collision info
     writeFunction(ROM_COPY, 0x80681910, Overlay.Static, "spawnBonusReward", offset_dict)  # Spawn Bonus Reward
+    writeValue(ROM_COPY, 0x806C46AA, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (X)
+    writeValue(ROM_COPY, 0x806C46E2, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (Z)
+    writeValue(ROM_COPY, 0x806C45C2, Overlay.Static, 0x0013, offset_dict)  # Y Offset squawks reward
 
     if settings.fast_warps:
         writeValue(ROM_COPY, 0x806EE692, Overlay.Static, 0x54, offset_dict)
@@ -1594,6 +1565,8 @@ def patchAssembly(ROM_COPY, spoiler):
     # Alter amount of Klaptraps in Searchlight seek
     writeValue(ROM_COPY, 0x8002C1FA, Overlay.Bonus, KLAPTRAPS_IN_SEARCHLIGHT_SEEK, offset_dict)
     writeValue(ROM_COPY, 0x8002C1D2, Overlay.Bonus, KLAPTRAPS_IN_SEARCHLIGHT_SEEK, offset_dict)
+
+    writeFunction(ROM_COPY, 0x8062F084, Overlay.Static, "setFog", offset_dict)
 
     # Spawn Enemy Drops function
     enemy_drop_addrs = [
@@ -2444,6 +2417,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
+    # Adjust Exit File
+    writeFunction(ROM_COPY, 0x805FEAE4, Overlay.Static, "loadExits", offset_dict)
+    writeHook(ROM_COPY, 0x806C97E0, Overlay.Static, "adjustExitRead", offset_dict)
+    writeValue(ROM_COPY, 0x805FF1CC, Overlay.Static, 0x2009FFFF, offset_dict, 4)  # Set default void location to be exit -1 instead of exit 0
+    writeValue(ROM_COPY, 0x805FF220, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
+    writeValue(ROM_COPY, 0x805FF278, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
+    writeValue(ROM_COPY, 0x805FF2D0, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
+
     # Boot setup checker optimization
     writeFunction(ROM_COPY, 0x805FEB00, Overlay.Static, "bootSpeedup", offset_dict)  # Modify Function Call
     writeValue(ROM_COPY, 0x805FEB08, Overlay.Static, 0, offset_dict, 4)  # Cancel 2nd check
@@ -2548,7 +2529,24 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8068AD10, Overlay.Static, 0, offset_dict, 4)  # Disable the cutscene value for helm, disabling the FTT warp
     writeValue(ROM_COPY, 0x8068B054, Overlay.Static, 0x5000, offset_dict)
     writeFunction(ROM_COPY, 0x80640720, Overlay.Static, "portalWarpFix", offset_dict)
+    writeValue(ROM_COPY, 0x806406F4, Overlay.Static, 0x2006FFFF, offset_dict, 4)
+    if settings.dk_portal_location_rando:
+        # Disable K Rool intros (for now)
+        writeValue(ROM_COPY, 0x8068AC60, Overlay.Static, 0x1000, offset_dict, 2)
+    for index, data in enumerate(settings.level_portal_destinations):
+        writeValue(ROM_COPY, 0x8074809C + (2 * index), Overlay.Static, data["map"], offset_dict)
+        writeValue(ROM_COPY, 0x807480AC + (2 * index), Overlay.Static, data["exit"], offset_dict, 2, True)
+        if data["map"] != Maps.CreepyCastle and data["exit"] != -1:
+            writeValue(ROM_COPY, 0x807480BC + (2 * index), Overlay.Static, 0, offset_dict)
+    for index, map_id in enumerate(settings.level_void_maps):
+        writeValue(ROM_COPY, 0x80744748 + (2 * index), Overlay.Static, map_id, offset_dict)
 
+    # Write Mech Fish entry
+    writeValue(ROM_COPY, 0x806C6DC6, Overlay.Static, settings.mech_fish_entrance["map"], offset_dict)
+    exit_val = settings.mech_fish_entrance["exit"]
+    if exit_val == -1:
+        exit_val = 0xFFFF
+    writeValue(ROM_COPY, 0x806C6DD0, Overlay.Static, 0x20050000 | exit_val, offset_dict, 4)
     # Misc LZR Stuff
     if settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
         # K Rool Exit
@@ -2598,7 +2596,7 @@ def patchAssembly(ROM_COPY, spoiler):
                 address_head = 0x807447A0 + (12 * race_index)
                 shuffled_back = spoiler.shuffled_exit_data[race_exit["tied_transition"]]
                 writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict, 4)
-                writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(shuffled_back.regionId), offset_dict, 4)
+                writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(settings, shuffled_back.regionId), offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
         if ENABLE_BLAST_LZR:
             addr_hi = getHiSym("blastWarpHandler")

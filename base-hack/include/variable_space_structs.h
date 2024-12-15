@@ -7,7 +7,7 @@ typedef struct varspace {
 	/* 0x02F */ char sprint_barrel_requires_sprint;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
-	/* 0x032 */ char unk_32[2];
+	/* 0x032 */ LZREntrance mech_fish_exit;
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char crown_timer_reduction;
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
@@ -34,7 +34,8 @@ typedef struct varspace {
 	/* 0x074 */ LZREntrance castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x076 */ char unk_76[2];
 	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x088 */ LZREntrance enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x088 */ rgb fog[3]; // Order: Aztec, Caves, Castle
+	/* 0x091 */ char unk_91[0x96 - 0x91];
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
 	/* 0x098 */ short progressive_bounds[10];
