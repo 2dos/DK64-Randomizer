@@ -136,7 +136,7 @@ exit_adjustments = [
                 "z": int(new_caves_portal_coords[2] - 12),
             }
         ],
-    }
+    },
 ]
 
 exit_additions = []
