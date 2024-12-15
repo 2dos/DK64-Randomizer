@@ -134,6 +134,7 @@
 #define FISH_SHIELD1 0x3
 #define FISH_SHIELD2 0x4
 #define FISH_SHIELD3 0x5
+#define FISH_WARP_CONTROLLER 0xE
 
 #define CHEST_PEARL_0 0x0
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
@@ -245,7 +246,7 @@ void setCrusher(void) {
 	}
 }
 
-void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
+void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map, int exit) {
 	if (Rando.randomize_more_loading_zones == 1) {
 		int exit = entrance->exit;
 		if (entrance->map == MAP_HELM) {
@@ -253,7 +254,7 @@ void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
 		}
 		initiateTransition_0(entrance->map, exit, 0, 0);
 	} else {
-		initiateTransition_0(vanilla_map, 0, 0, 0);
+		initiateTransition_0(vanilla_map, exit, 0, 0);
 	}
 }
 
@@ -279,7 +280,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int gate_flag = -1;
 					switch (param2) {
 						case SEASICK_SHIP:
-							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP);
+							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP, 0);
 							break;
 						case GALLEON_DKSTAR:
 							{
@@ -358,7 +359,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_AZTEC:
 				if (param2 == AZTEC_BEETLE_GRATE) {
-					initiateLZRTransition(&Rando.aztec_beetle_enter, MAP_AZTECBEETLE);
+					initiateLZRTransition(&Rando.aztec_beetle_enter, MAP_AZTECBEETLE, 0);
 				} else if (param2 == AZTEC_SNOOPDOOR) {
 					if (index == 0) {
 						// Flag Check
@@ -388,7 +389,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_FUNGI:
 				if (param2 == FUNGI_MINECART_GRATE) {
-					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART);
+					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART, 0);
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
 					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
@@ -1018,6 +1019,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						fish_state = 5;
 					}
 					behaviour_pointer->next_state = fish_state;
+				} else if (param2 == FISH_WARP_CONTROLLER) {
+					initiateLZRTransition(&Rando.mech_fish_exit, MAP_GALLEON, 34);
 				}
 				break;
 			case MAP_FACTORYBBLAST:

@@ -464,6 +464,16 @@ MapExitTable = {
         "From Cranky's",
         "From Funky's",
         "From Galleon Lobby",
+        "Galleon Zone 25",
+        "Galleon Zone 26",
+        "Galleon Zone 27",
+        "Galleon Zone 28",
+        "Galleon Zone 29",
+        "Galleon Zone 30",
+        "Galleon Zone 31",
+        "Galleon Zone 32",
+        "Galleon Zone 33",
+        "From Mech Fish",
     ],
     Maps.Galleon5DShipDiddyLankyChunky: [
         "From Galleon (Diddy Entrance)",
@@ -618,15 +628,30 @@ MapExitTable = {
     Maps.HideoutHelmLobby: ["From DK Isles", "From Helm", "From DK Isles"],
 }
 
+ENTRY_HANDLERS = (
+    Regions.JungleJapesEntryHandler,
+    Regions.AngryAztecEntryHandler,
+    Regions.FranticFactoryEntryHandler,
+    Regions.GloomyGalleonEntryHandler,
+    Regions.FungiForestEntryHandler,
+    Regions.CrystalCavesEntryHandler,
+    Regions.CreepyCastleEntryHandler,
+)
 
-def GetMapId(regionId) -> Maps:
+
+def GetMapId(settings, regionId) -> Maps:
     """Get the map id of a transition."""
+    if regionId in ENTRY_HANDLERS:
+        level_index = ENTRY_HANDLERS.index(regionId)
+        return RegionMapList[settings.level_entrance_regions[level_index]]
     return RegionMapList[regionId]
 
 
 def GetExitId(back: TransitionBack) -> int:
     """Get exit id of a transition."""
-    mapId = GetMapId(back.regionId)
+    if back.regionId in ENTRY_HANDLERS:
+        return -1
+    mapId = RegionMapList[back.regionId]
     if mapId in MapExitTable:
         return MapExitTable[mapId].index(back.name)
     else:

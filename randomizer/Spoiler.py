@@ -1045,13 +1045,13 @@ class Spoiler:
                     vanillaBack = exit.back
                     shuffledBack = ShufflableExits[exit.shuffledId].back
                     self.shuffled_exit_data[key] = shuffledBack
-                    containerMapId = GetMapId(exit.region)
+                    containerMapId = GetMapId(self.settings, exit.region)
                     if containerMapId not in containerMaps:
                         containerMaps[containerMapId] = {"container_map": containerMapId, "zones": []}  # DK Isles
                     loading_zone_mapping = {}
-                    loading_zone_mapping["vanilla_map"] = GetMapId(vanillaBack.regionId)
+                    loading_zone_mapping["vanilla_map"] = GetMapId(self.settings, vanillaBack.regionId)
                     loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)
-                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack.regionId)
+                    loading_zone_mapping["new_map"] = GetMapId(self.settings, shuffledBack.regionId)
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:

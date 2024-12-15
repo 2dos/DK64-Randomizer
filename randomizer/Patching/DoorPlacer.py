@@ -189,7 +189,7 @@ DK_PORTAL_SCRIPT = [
 ]
 
 
-def pushNewDKPortalScript(cont_map_id: Maps):
+def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict):
     """Write new dk portal script to ROM."""
     id_pairings = {
         Maps.JungleJapes: 0x11B,
@@ -200,9 +200,9 @@ def pushNewDKPortalScript(cont_map_id: Maps):
         Maps.CrystalCaves: 0x54,
         Maps.CreepyCastle: 0xB8,
     }
-    if cont_map_id not in id_pairings:
-        raise Exception(f"Invalid map for pairing. Alert the devs (Map {cont_map_id})")
-    obj_id = id_pairings[cont_map_id]
+    obj_id = portal_id_dict[cont_map_id]
+    if obj_id is None:
+        raise Exception("Invalid Portal ID.")
     ROM_COPY = LocalROM()
     script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
     ROM_COPY.seek(script_table)
@@ -321,15 +321,8 @@ def place_door_locations(spoiler):
         #   0x28: Lever (Fungi Lobby)
         #   0x35: Ice Block (Caves Lobby)
         #   0xCE: Grey Switch (Caves Lobby)
-        dk_portal_locations = {
-            Maps.JungleJapes: [0, 0, 0, 0],
-            Maps.AngryAztec: [0, 0, 0, 0],
-            Maps.FranticFactory: [0, 0, 0, 0],
-            Maps.GloomyGalleon: [0, 0, 0, 0],
-            Maps.FungiForest: [0, 0, 0, 0],
-            Maps.CrystalCaves: [0, 0, 0, 0],
-            Maps.CreepyCastle: [0, 0, 0, 0],
-        }
+        dk_portal_locations = {}
+        dk_portal_ids = {}
         # Handle Setup
         for cont_map_id in range(216):
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -457,6 +450,8 @@ def place_door_locations(spoiler):
                             item_data = []
                             for coord_index in range(3):
                                 item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
+                            if cont_map_id not in dk_portal_locations:
+                                dk_portal_locations[cont_map_id] = [0, 0, 0, 0]
                             for coord_index in range(4):
                                 dk_portal_locations[cont_map_id][coord_index] = door.location[coord_index]
                             default_scale = 1
@@ -469,7 +464,11 @@ def place_door_locations(spoiler):
                             item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
                             item_data.append(int(float_to_hex(door.rz), 16))  # rz
                             item_data.append(0)
-                            item_data.append((0x2AD << 16) | PORTAL_MAP_ID_PAIRING[cont_map_id])
+                            if cont_map_id in PORTAL_MAP_ID_PAIRING:
+                                dk_portal_ids[cont_map_id] = PORTAL_MAP_ID_PAIRING[cont_map_id]
+                            else:
+                                dk_portal_ids[cont_map_id] = getNextFreeID(cont_map_id, door_ids)
+                            item_data.append((0x2AD << 16) | dk_portal_ids[cont_map_id])
                             item_data.append(1 << 16)
                             retained_model2.append(item_data)
             if len(map_wrinkly_ids) > 0:
@@ -489,11 +488,16 @@ def place_door_locations(spoiler):
         if spoiler.settings.dk_portal_location_rando:
             for portal_map in dk_portal_locations:
                 if dk_portal_locations[portal_map][0] + dk_portal_locations[portal_map][1] + dk_portal_locations[portal_map][2] + dk_portal_locations[portal_map][3] != 0:
-                    pushNewDKPortalScript(portal_map)
+                    pushNewDKPortalScript(portal_map, dk_portal_ids)
                     exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
-                    exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
+                    exits_to_alter = [-1]
+                    if cont_map_id in LEVEL_MAIN_MAPS:
+                        exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
                     for exit_index in exits_to_alter:
-                        ROM_COPY.seek(exit_start + (exit_index * 10))
+                        if exit_index >= 0:
+                            ROM_COPY.seek(exit_start + 12 + (exit_index * 10))
+                        else:
+                            ROM_COPY.seek(exit_start)
                         for coord_index in range(3):
                             coord_value = dk_portal_locations[portal_map][coord_index]
                             coord_int = int(coord_value)
