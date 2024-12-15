@@ -193,17 +193,17 @@ def adjustExits(fh):
                                 coords.append(int(intf_to_float(int.from_bytes(fg.read(4), "big"))))
                             coords[1] += 5
                         exit_coords.append(coords.copy())
-                if map_index == Maps.Isles:
-                    # Isles
-                    exit_coords.append([2524, 1724, 3841])  # Top of Krem Isles
-                elif map_index == Maps.Galleon:
-                    # Galleon
-                    exit_coords.append([2886, 1249, 1121])  # Mech Fish Exit
-                elif map_index == Maps.CavesBeetleRace:
-                    # Caves Beetle
-                    exit_coords.append([1315, 5130, 485])
             if os.path.exists(temp_file):
                 os.remove(temp_file)
+        if map_index == Maps.Isles:
+            # Isles
+            exit_coords.append([2524, 1724, 3841])  # Top of Krem Isles
+        elif map_index == Maps.Galleon:
+            # Galleon
+            exit_coords.append([2886, 1249, 1121])  # Mech Fish Exit
+        elif map_index == Maps.CavesBeetleRace:
+            # Caves Beetle
+            exit_coords.append([1315, 5130, 485])
         exit_additions.append(exit_coords.copy())
     # Exits
     fh.seek(main_pointer_table_offset + (4 * TableNames.Exits))
@@ -245,7 +245,7 @@ def adjustExits(fh):
         elif map_index == Maps.Fungi:
             default_exit = 27
         default_start = default_exit * 10
-        print("Rewriting exit file:", map_index, data)
+        print(f"Rewriting exit file with {exit_count} exits:", map_index, data)
         with open(file_name, "wb") as fg:
             fg.write(data[default_start : default_start + 10])
             fg.write(exit_count.to_bytes(2, "big"))
