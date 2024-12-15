@@ -2312,7 +2312,7 @@ def applyKongModelSwaps(settings: Settings) -> None:
                 base_im = getImageFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
                 orange_im = getImageFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
                 if settings.colorblind_mode == ColorblindMode.off:
-                    """match index:
+                    match index:
                         case Kongs.donkey:
                             color_r = 255
                             color_g = 224
@@ -2333,10 +2333,10 @@ def applyKongModelSwaps(settings: Settings) -> None:
                             color_r = 0
                             color_g = 255
                             color_b = 0
-                        case _:"""
-                    color_r = 100
-                    color_g = 255
-                    color_b = 60                            
+                        case _:
+                            color_r = 100
+                            color_g = 255
+                            color_b = 60
                     orange_im = maskImageWithColor(orange_im, (color_r, color_g, color_b))
                 else:
                     orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
