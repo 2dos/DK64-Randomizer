@@ -871,6 +871,11 @@ class ExtraTextures(IntEnum):
     KrushaFace3 = auto()
     KrushaFace4 = auto()
     KrushaFace5 = auto()
+    KrushaFace321 = auto()
+    KrushaFace322 = auto()
+    KrushaFace323 = auto()
+    KrushaFace324 = auto()
+    KrushaFace325 = auto()
 
 
 class MoveTypes(IntEnum):

@@ -1131,6 +1131,15 @@ for x in range(5):
             texture_format=TextureFormat.RGBA5551,
         )
     )
+    file_dict.append(
+        File(
+            name=f"Krusha Head 32 {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.KrushaFace1 + 5 + x),
+            source_file=f"assets/displays/krusha_head_{x + 1}_32.png",
+            texture_format=TextureFormat.RGBA32,
+        )
+    )
 
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
