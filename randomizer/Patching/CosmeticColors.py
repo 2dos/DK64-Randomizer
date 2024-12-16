@@ -2304,7 +2304,7 @@ def applyKongModelSwaps(settings: Settings) -> None:
             if value in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight):
                 fixModelSmallKongCollision(index)
             if value == KongModels.krusha:
-                placeKrushaHead(index) # Settings, index)
+                placeKrushaHead(settings, index)
                 if index == Kongs.donkey:
                     fixBaboonBlasts()
                 # Orange Switches
@@ -2312,7 +2312,7 @@ def applyKongModelSwaps(settings: Settings) -> None:
                 base_im = getImageFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
                 orange_im = getImageFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
                 if settings.colorblind_mode == ColorblindMode.off:
-                    """match index:
+                    match index:
                         case Kongs.donkey:
                             color_r = 255
                             color_g = 224
@@ -2333,13 +2333,13 @@ def applyKongModelSwaps(settings: Settings) -> None:
                             color_r = 0
                             color_g = 255
                             color_b = 0
-                        case _:"""
-                    color_r = 100
-                    color_g = 255
-                    color_b = 60                            
+                        case _:
+                            color_r = 100
+                            color_g = 255
+                            color_b = 60                            
                     orange_im = maskImageWithColor(orange_im, (color_r, color_g, color_b))
                 else:
-                    orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
+                    orange_im = maskImageWithColor(orange_im, (0, 255, 0))
                 dim_length = int(32 * ORANGE_SCALING)
                 dim_offset = int((32 - dim_length) / 2)
                 orange_im = orange_im.resize((dim_length, dim_length))
@@ -2552,15 +2552,17 @@ def darkenDPad():
     ROM().writeBytes(px_data)
 
 
-def placeKrushaHead(slot): # settings: Settings, slot):
+def placeKrushaHead(settings: Settings, slot):
     """Replace a kong's face with the Krusha face."""
     if settings.colorblind_mode != ColorblindMode.off:
         return
+
     kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
     unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
     krushaFace64 = getImageFile(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.KrushaFace1 + slot), True, 64, 64, TextureFormat.RGBA5551)
     krushaFace64Left = krushaFace64.crop([0, 0, 32, 64])
     krushaFace64Right = krushaFace64.crop([32, 0, 64, 64])
+    krushaFace64
     writeColorImageToROM(krushaFace64Left, 25, kong_face_textures[slot][0], 32, 64, False, TextureFormat.RGBA5551)
     writeColorImageToROM(krushaFace64Right, 25, kong_face_textures[slot][1], 32, 64, False, TextureFormat.RGBA5551)
     writeColorImageToROM(krushaFace64Left, 7, unc_face_textures[slot][0], 32, 64, False, TextureFormat.RGBA5551)
@@ -2572,7 +2574,9 @@ def placeKrushaHead(slot): # settings: Settings, slot):
     writeColorImageToROM(krushaFace32, 14, 190 + slot, 32, 32, False, TextureFormat.RGBA5551)
     writeColorImageToROM(krushaFace32RBGA32, 14, 197 + slot, 32, 32, False, TextureFormat.RGBA32)
 
-    """ROM_COPY = LocalROM()
+    """kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
+    unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
+    ROM_COPY = LocalROM()
     ROM_COPY.seek(0x1FF6000)
     left = []
     right = []
