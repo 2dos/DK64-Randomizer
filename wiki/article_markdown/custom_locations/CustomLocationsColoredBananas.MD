@@ -233,7 +233,7 @@
 | 5DT side (1 custom, 4 Diddy) | 5 |  | 
 | Around 5DT bottom ledge | 20 |  | 
 | Around 5DT top ledge | 15 |  | 
-| Bunches on patch of sand between Llama temple and W2-3-4 (accessible by jumping from nearby tree) | 10 |  | 
+| Bunches on patch of sand between Llama temple and W2-3-4 (accessible by jumping from nearby tree) | 10 | `l.climbing or l.jetpack` | 
 | Bunches on 4 corners of Chunky BB cage | 20 |  | 
 | Bunches on top of Chunky BB cage | 10 |  | 
 | Along the walls around Chunky BB cage | 15 |  | 
