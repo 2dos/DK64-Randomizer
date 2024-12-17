@@ -379,16 +379,6 @@ krusha_im = krusha_im.resize((64, 64))
 krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 krusha_im.save(f"{disp_dir}krusha_head64.png")
 
-# Krusha Heads 1-5
-for x in range(5):
-    krusha_im = Image.open(f"{disp_dir}krusha_head_{x + 1}.png")
-    krusha_im = krusha_im.resize((64, 64), Image.Resampling.NEAREST)
-    krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-    krusha_im.save(f"{disp_dir}krusha_head_{x + 1}_64.png")
-    krusha_im = Image.open(f"{disp_dir}krusha_head_{x + 1}.png")
-    krusha_im = krusha_im.resize((32, 32), Image.Resampling.NEAREST)
-    krusha_im.save(f"{disp_dir}krusha_head_{x + 1}_32.png")
-
 # Wrinkly
 wrinkly_im = Image.open(f"{hash_dir}wrinkly.png").resize((48, 48)).save(f"{disp_dir}wrinkly_sprite.png")
 
