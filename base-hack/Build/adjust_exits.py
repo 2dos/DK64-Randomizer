@@ -12,7 +12,7 @@ new_caves_portal_coords = [120.997, 50, 1182.974]
 
 exit_adjustments = [
     {
-        "containing_map": 0x30,  # Fungi Main
+        "containing_map": Maps.Fungi,  # Fungi Main
         "exits": [
             {
                 # Dark Attic
@@ -45,7 +45,7 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 0x1E,  # Galleon
+        "containing_map": Maps.Galleon,  # Galleon
         "exits": [
             {
                 # Lighthouse
@@ -64,7 +64,7 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 112,  # DDC Crypt
+        "containing_map": Maps.CastleCryptDKDiddyChunky,  # DDC Crypt
         "exits": [
             {
                 # Minecart
@@ -76,7 +76,7 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 0x22,  # Isles
+        "containing_map": Maps.Isles,  # Isles
         "exits": [
             {
                 # Aztec Lobby
@@ -95,7 +95,7 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 0x1A,  # Factory
+        "containing_map": Maps.Factory,  # Factory
         "exits": [
             {
                 # Crusher
@@ -107,7 +107,7 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 0x57,  # Castle
+        "containing_map": Maps.Castle,  # Castle
         "exits": [
             {
                 # Tree
@@ -126,7 +126,7 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 0x48,  # Caves
+        "containing_map": Maps.Caves,  # Caves
         "exits": [
             {
                 # Unused 5DI Portal Exit
@@ -193,22 +193,25 @@ def adjustExits(fh):
                                 coords.append(int(intf_to_float(int.from_bytes(fg.read(4), "big"))))
                             coords[1] += 5
                         exit_coords.append(coords.copy())
-                if map_index == Maps.Isles:
-                    # Isles
-                    exit_coords.append([2524, 1724, 3841])  # Top of Krem Isles
-                elif map_index == Maps.Galleon:
-                    # Galleon
-                    exit_coords.append([2886, 1249, 1121])  # Mech Fish Exit
             if os.path.exists(temp_file):
                 os.remove(temp_file)
+        if map_index == Maps.Isles:
+            # Isles
+            exit_coords.append([2524, 1724, 3841])  # Top of Krem Isles
+        elif map_index == Maps.Galleon:
+            # Galleon
+            exit_coords.append([2886, 1249, 1121])  # Mech Fish Exit
+        elif map_index == Maps.CavesBeetleRace:
+            # Caves Beetle
+            exit_coords.append([1315, 5130, 485])
         exit_additions.append(exit_coords.copy())
     # Exits
     fh.seek(main_pointer_table_offset + (4 * TableNames.Exits))
     ptr_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     for map_index in range(216):
         fh.seek(ptr_table + (4 * map_index))
-        exit_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        exit_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+        exit_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        exit_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
         exit_size = exit_end - exit_start
         fh.seek(exit_start)
         data = fh.read(exit_size)
@@ -234,6 +237,7 @@ def adjustExits(fh):
             data = fg.read()
             exit_count = int(len(data) / 10)
         if exit_count == 0:
+            print(f"NO EXITS FOUND FOR {Maps(map_index).name}")
             data = bytes(bytearray([0] * 10))
         default_exit = 0
         if map_index == Maps.Japes:
@@ -241,7 +245,7 @@ def adjustExits(fh):
         elif map_index == Maps.Fungi:
             default_exit = 27
         default_start = default_exit * 10
-        print("Rewriting exit file:", map_index, data)
+        print(f"Rewriting exit file with {exit_count} exits:", map_index, data)
         with open(file_name, "wb") as fg:
             fg.write(data[default_start : default_start + 10])
             fg.write(exit_count.to_bytes(2, "big"))

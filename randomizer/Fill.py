@@ -1133,10 +1133,6 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                     break
             # If it's not on any other path, it's not WotH
             if not inAnotherPath:
-                # Never pare out these moves - the assumptions might overlook their need to enter levels with
-                # This is a bit of a compromise, as you *might* see these moves WotH purely for coins/GBs but they won't be on paths
-                if location.item in (Items.Swim, Items.Vines, Items.Climbing):
-                    continue
                 # In Chaos B. Lockers, you may need certain items purely to pass B. Locker
                 if spoiler.settings.chaos_blockers:
                     # Most likely: The Bean is always required to pass the Bean Locker - if it gets here, that means you need it and it should be WotH
@@ -1151,12 +1147,23 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 # Keys that make it here are also always WotH
                 if location.item in ItemPool.Keys():
                     continue
-                WothLocations.remove(locationId)
-                spoiler.other_paths[locationId] = spoiler.woth_paths[locationId]
-                del spoiler.woth_paths[locationId]
-                # If we remove anything, we have to check the whole list again
-                anything_removed = True
-                break
+                # We do need to double check our work sometimes - this item might be required to beat the game if it's needed to get into a level
+                spoiler.LogicVariables.assumeAztecEntry = False
+                spoiler.LogicVariables.assumeLevel4Entry = False
+                spoiler.LogicVariables.assumeLevel8Entry = False
+                spoiler.LogicVariables.assumeUpperIslesAccess = False
+                spoiler.LogicVariables.assumeKRoolAccess = False  # This item may also be needed to access K. Rool because of the aforementioned level entry
+                # Confirm that banning this item makes the game unbeatable
+                spoiler.Reset()
+                spoiler.LogicVariables.BanItems([location.item])
+                if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
+                    # If the game is still beatable when banned with the other assumptions, this item is definitely not WotH
+                    WothLocations.remove(locationId)
+                    spoiler.other_paths[locationId] = spoiler.woth_paths[locationId]
+                    del spoiler.woth_paths[locationId]
+                    # If we remove anything, we have to check the whole list again
+                    anything_removed = True
+                    break
     # None of these assumptions should ever make it out of this method
     spoiler.LogicVariables.assumePaidBLockers = False
     spoiler.LogicVariables.assumeInfiniteCoins = False
@@ -1166,6 +1173,27 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
     spoiler.LogicVariables.assumeUpperIslesAccess = False
     spoiler.LogicVariables.assumeKRoolAccess = False
     spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change as needed
+
+    # Confirm that all paths that should have at least one item on them do. This sidesteps an unsolved mystery issue where sometimes paths inexplicably end up empty.
+    # This should never happen, but it's *really* bad if it does, so this quickly double checks the work.
+    for goal, path in spoiler.woth_paths.items():
+        if len(path) < 1:
+            raise Ex.FillException("Rare path calculation error - report this to the devs with your settings string. Error code PL-1")
+    for goal, path in spoiler.krool_paths.items():
+        if len(path) < 1:
+            # Some K. Rool fights are expected to have no items on the path
+            expectedEmptyPathPhases = [Maps.GalleonBoss]  # Galleon boss never requires an item
+            # Castle boss requires items only with lava water
+            if not spoiler.LogicVariables.IsLavaWater():
+                expectedEmptyPathPhases.append(Maps.CastleBoss)
+            # DK Phase sometimes needs blast and always needs climbing, but the climbing isn't relevant unless it's shuffled
+            if not spoiler.settings.cannons_require_blast and Types.Climbing not in spoiler.settings.shuffled_location_types:
+                expectedEmptyPathPhases.append(Maps.KroolDonkeyPhase)
+            if goal not in expectedEmptyPathPhases:
+                raise Ex.FillException("Rare path calculation error - report this to the devs with your settings string. Error code PL-2")
+    for goal, path in spoiler.rap_win_con_paths.items():
+        if len(path) < 1:
+            raise Ex.FillException("Rare path calculation error - report this to the devs with your settings string. Error code PL-3")
 
 
 def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]], MajorItems: List[Items]) -> None:
