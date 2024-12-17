@@ -422,7 +422,7 @@ static const eeprom_warning_struct warning_text[] = {
 	{.text="YOUR EMULATOR SETUP IS WRONG", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="YOUR GAME WILL NOT SAVE!", .x_offset=-76, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="YOUR GAME WILL LIKELY", .x_offset=-88, .error=0, .margin_bottom=0},
-	{.text="CRASH", .x_offset=-88, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="CRASH", .x_offset=88, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="GO TO THE WIKI", .x_offset=-32, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="OR THE DISCORD", .x_offset=-32, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="DISCORD.DK64RANDOMIZER.COM", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},

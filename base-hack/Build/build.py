@@ -19,7 +19,7 @@ from model_port import loadNewModels
 # Patcher functions for the extracted files
 from patch_text import writeNoExpPakMessages
 import portal_instance_script
-from adjust_exits import adjustExits
+from adjust_exits import adjustExits, addMechFishLZ
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
@@ -624,6 +624,7 @@ bloat_actors = [
     {"name": "Zinger", "file": 0x1B, "size": 0xC00},
     {"name": "Robo-Zinger", "file": 0x3F, "size": 0x1D00},
     {"name": "Laser", "file": 0x86, "size": 0x600},
+    {"name": "Dogadon", "file": 0x3B, "size": 0x2700},
 ]
 
 for actor in bloat_actors:
@@ -916,7 +917,20 @@ for x in range(6):
     )
 file_dict.append(File(name="Fungi Geometry", pointer_table_index=TableNames.MapGeometry, file_index=Maps.Fungi, source_file="geo_fungi.bin", target_compressed_size=0x1A558))
 for x in range(221):
-    file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
+    if x == Maps.GalleonMechFish:
+        file_dict.append(
+            File(
+                name=f"Zones for map {x}",
+                pointer_table_index=TableNames.Triggers,
+                file_index=x,
+                source_file="mech_fish_triggers.bin",
+                target_compressed_size=0x850,
+                do_not_recompress=True,
+                do_not_extract=True,
+            )
+        )
+    else:
+        file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
 # Setup
 setup_expansion_size = 0x2580
 for x in range(221):
@@ -1241,6 +1255,21 @@ colorblind_changes = [
     [0x1237, 0x1241],  # Ice Tomato
     [0x1266, 0x1266],  # GB Sticker (Actor - Size 0xAB8)
     [0xB7D, 0xB7D],  # GB Sticker (OM2 - Size 0xAA0)
+    [0xEA2, 0xEA2],  # Trombone/Sax Shine
+    [0xEBF, 0xEBF],  # Triangle Shine
+    [0x1317, 0x1319],  # Bongo Textures
+    [0xBC8, 0xBC9],  # Bongo (Pad) Textures
+    [0xBCC, 0xBD1],  # Triangle/Trombone/Sax (Pad) Textures
+    [0x15AC, 0x15AF],  # Various instrument icons
+    [0x1126, 0x1147],  # Beanstalk
+    [0x127E, 0x1282],  # Cannon Barrel
+    [0xE1C, 0xE1D],  # Race Ring
+    [0xD38, 0xD39],  # DK Logo (DK Star)
+    [0x134C, 0x134C],  # Trap Bubble
+    [0x133A, 0x133B],  # Buoy Bases
+    [0x102A, 0x102D],  # Dillo
+    [0x103A, 0x103A],  # Dillo
+    [0x103D, 0x103E],  # Dillo
 ]
 
 file_dict.append(
@@ -1600,12 +1629,23 @@ for index, text in enumerate(text_files):
         data.do_not_recompress = True
     file_dict.append(data)
 
+addMechFishLZ()
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
 
 for x in range(216):
     if os.path.exists(f"exit{x}.bin"):
-        file_dict.append(File(name=f"Map {x} Exits", pointer_table_index=TableNames.Exits, file_index=x, source_file=f"exit{x}.bin", do_not_compress=True, do_not_delete_source=True))
+        file_dict.append(
+            File(
+                name=f"Map {x} Exits",
+                pointer_table_index=TableNames.Exits,
+                file_index=x,
+                source_file=f"exit{x}.bin",
+                do_not_compress=True,
+                do_not_delete_source=True,
+                do_not_extract=True,
+            )
+        )
 
 # Force all geo files to not be compressed
 expanded_tables = {

@@ -44,11 +44,11 @@
 | Jungle Japes | Cranky Area - back right | Boss, Dk_Portal, Wrinkly |  | 
 | Japes Tiny Hive | Beehive Room 2 - left | Wrinkly | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase() or l.generalclips` | 
 | Japes Tiny Hive | Beehive Room 2 - right | Wrinkly | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase() or l.generalclips` | 
-| Japes Lanky Cave | Painting Room - Next to the Entrance | Boss, Wrinkly |  | 
+| Japes Lanky Cave | Painting Room - Next to the Entrance | Boss, Dk_Portal, Wrinkly |  | 
 | Japes Mountain | Diddy Mountain - Next to Conveyor Controls | Wrinkly | `(l.charge and l.isdiddy) or l.CanPhase()` | 
-| Japes Mountain | Diddy Mountain - between River and GB switch | Wrinkly |  | 
-| Japes Mountain | Diddy Mountain - between River and Peanut Switch | Wrinkly |  | 
-| Jungle Japes | Japes Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
+| Japes Mountain | Diddy Mountain - between River and GB switch | Wrinkly, Dk_Portal |  | 
+| Japes Mountain | Diddy Mountain - between River and Peanut Switch | Wrinkly, Dk_Portal |  | 
+| Jungle Japes | Japes Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 
 # Angry Aztec
 | Map | Name | Door types acceptable in location | Logic |
@@ -82,8 +82,8 @@
 | Angry Aztec | Entrance Tunnel - left (near the oasis end) | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | in the sealed quicksand tunnel | Wrinkly | `l.isdonkey and l.strongKong` | 
 | Angry Aztec | Near Tag Barrel near Snides - strong kong | Wrinkly | `l.isdonkey and l.strongKong` | 
-| Aztec Llama Temple | In Face Matching Game - right | Wrinkly | `(l.islanky and l.grape) or l.CanPhase()` | 
-| Aztec Llama Temple | In Face Matching Game - left | Wrinkly | `(l.islanky and l.grape) or l.CanPhase()` | 
+| Aztec Llama Temple | In Face Matching Game - right | Wrinkly, Dk_Portal | `(l.islanky and l.grape) or l.CanPhase()` | 
+| Aztec Llama Temple | In Face Matching Game - left | Wrinkly, Dk_Portal | `(l.islanky and l.grape) or l.CanPhase()` | 
 | Angry Aztec | Next to Tiny Temple - front left | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Next to Tiny Temple - back left | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Oasis - Next to Tunnel - far left | Boss, Dk_Portal, Wrinkly |  | 
@@ -91,18 +91,18 @@
 | Angry Aztec | Between Snides and Diddy Gong Tower | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Next to Llama Temple - left | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Llama Temple's switchless side | Boss, Dk_Portal |  | 
-| Aztec Tiny Temple | Tiny Temple - Main Room - left | Boss, Wrinkly |  | 
-| Aztec Tiny Temple | Tiny Temple - Main Room - back | Wrinkly |  | 
+| Aztec Tiny Temple | Tiny Temple - Main Room - left | Boss, Dk_Portal, Wrinkly |  | 
+| Aztec Tiny Temple | Tiny Temple - Main Room - back | Wrinkly, Dk_Portal |  | 
 | Aztec Tiny Temple | Tiny Temple - Across from Slope to Tiny Cage - left | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Across from Slope to Tiny Cage - right | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Next to Opening to Underwater Room | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Across from Opening to Underwater Room | Boss, Wrinkly |  | 
 | Angry Aztec | Llama Temple Stairs - left | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Llama Temple Stairs - right | Boss, Dk_Portal, Wrinkly |  | 
-| Aztec Llama Temple | Llama Temple - Entrance Staircase - left | Boss, Wrinkly |  | 
-| Aztec Llama Temple | Llama Temple - Entrance Staircase - right | Boss, Wrinkly |  | 
-| Aztec Llama Temple | Llama Temple - Across from the Spit Gate | Boss, Wrinkly | `Events.AztecLlamaSpit in l.Events and l.swim` | 
-| Angry Aztec | Aztec Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
+| Aztec Llama Temple | Llama Temple - Entrance Staircase - left | Boss, Dk_Portal, Wrinkly |  | 
+| Aztec Llama Temple | Llama Temple - Entrance Staircase - right | Boss, Dk_Portal, Wrinkly |  | 
+| Aztec Llama Temple | Llama Temple - Across from the Spit Gate | Boss, Dk_Portal, Wrinkly | `Events.AztecLlamaSpit in l.Events and l.swim` | 
+| Angry Aztec | Aztec Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 
 # Frantic Factory
 | Map | Name | Door types acceptable in location | Logic |
@@ -151,8 +151,8 @@
 | Frantic Factory | Lanky's Piano Room - right | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky's Piano Room - left | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Chunky's Dark Room | Wrinkly, Boss | `(l.chunky and l.punch) or l.CanPhase() or l.generalclips` | 
-| Factory Crusher | Crusher Room - start | Boss, Wrinkly |  | 
-| Frantic Factory | Factory Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
+| Factory Crusher | Crusher Room - start | Boss, Dk_Portal, Wrinkly |  | 
+| Frantic Factory | Factory Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 
 # Gloomy Galleon
 | Map | Name | Door types acceptable in location | Logic |
@@ -197,12 +197,12 @@
 | Gloomy Galleon | Near Mermaid's Palace - right | Boss, Wrinkly |  | 
 | Gloomy Galleon | Near Mermaid's Palace - left | Boss, Wrinkly |  | 
 | Gloomy Galleon | Near Mermaid's Palace - Under Tag Barrel | Wrinkly |  | 
-| Galleon Lighthouse | Lighthouse Interior | Boss, Wrinkly |  | 
+| Galleon Lighthouse | Lighthouse Interior | Boss, Dk_Portal, Wrinkly |  | 
 | Galleon Mermaid Room | In Mermaid's Palace | Wrinkly |  | 
 | Galleon5DShip DKTiny | Tiny's 5D ship | Wrinkly |  | 
 | Galleon5DShip Diddy Lanky Chunky | Lanky's 5D ship | Wrinkly |  | 
 | Galleon2DShip | Lanky's 2D ship | Boss, Wrinkly |  | 
-| Gloomy Galleon | Galleon Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
+| Gloomy Galleon | Galleon Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 
 # Fungi Forest
 | Map | Name | Door types acceptable in location | Logic |
@@ -240,18 +240,18 @@
 | Fungi Forest | Clock Area - Next to Clock - right | Wrinkly |  | 
 | Fungi Forest | Funky Area - Near Beanstalk - left | Boss, Wrinkly |  | 
 | Fungi Forest | Funky Area - Near Beanstalk - back | Boss, Wrinkly |  | 
-| Forest Giant Mushroom | Inside the Mushroom - All Kong Gun Switch - right | Boss, Wrinkly |  | 
-| Forest Giant Mushroom | Inside the Mushroom - All Kong Gun Switch - left | Boss, Wrinkly |  | 
-| Forest Giant Mushroom | Inside the Mushroom - halfway along the Dead End | Boss, Wrinkly |  | 
-| Forest Giant Mushroom | Inside the Mushroom - Along the Wall near Klump and Oranges | Boss, Wrinkly |  | 
+| Forest Giant Mushroom | Inside the Mushroom - All Kong Gun Switch - right | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Giant Mushroom | Inside the Mushroom - All Kong Gun Switch - left | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Giant Mushroom | Inside the Mushroom - halfway along the Dead End | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Giant Mushroom | Inside the Mushroom - Along the Wall near Klump and Oranges | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Chunky Face Room | Chunky's Face Puzzle | Wrinkly |  | 
-| Forest Lanky Zingers Room | Lanky's 2-Mushroom Room | Boss, Wrinkly |  | 
+| Forest Lanky Zingers Room | Lanky's 2-Mushroom Room | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Mill Front | DK Lever puzzle Area | Wrinkly | `(l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.CanPhase() or l.generalclips` | 
-| Forest Mill Back | Mill - back side - Near Chunky Coins | Boss, Wrinkly |  | 
-| Forest Winch Room | Winch Room - on the Winch | Boss, Wrinkly |  | 
-| Forest Mill Attic | Lanky's Attic | Boss, Wrinkly |  | 
-| Forest Thornvine Barn | DK's Barn - Between 2 Barrels near Switch | Boss, Wrinkly |  | 
-| Fungi Forest | Forest Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
+| Forest Mill Back | Mill - back side - Near Chunky Coins | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Winch Room | Winch Room - on the Winch | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Mill Attic | Lanky's Attic | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Thornvine Barn | DK's Barn - Between 2 Barrels near Switch | Boss, Dk_Portal, Wrinkly |  | 
+| Fungi Forest | Forest Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 
 # Crystal Caves
 | Map | Name | Door types acceptable in location | Logic |
@@ -270,7 +270,7 @@
 | Crystal Caves | Outside Chunky's Cabin | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Outside Diddy's Lower Cabin | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Outside Diddy's Upper Cabin | Boss, Dk_Portal, Wrinkly |  | 
-| Crystal Caves | Under the Waterfall (Cabin Area) | Boss, Dk_Portal, Wrinkly | `l.swim` | 
+| Crystal Caves | Under the Waterfall (Cabin Area) | Wrinkly, Boss | `l.swim` | 
 | Crystal Caves | Across from the 5Door Cabin | Wrinkly |  | 
 | Crystal Caves | 5Door Igloo - DK's right | Boss |  | 
 | Crystal Caves | 5Door Igloo - Diddy's right | Boss |  | 
@@ -284,25 +284,25 @@
 | Crystal Caves | 5Door Igloo - Lanky's instrument pad | Boss | `l.swim` | 
 | Crystal Caves | Ice Castle Area - Near Rock Switch | Wrinkly |  | 
 | Crystal Caves | Between Funky and Ice Castle - on land | Boss, Dk_Portal, Wrinkly |  | 
-| Crystal Caves | Between Funky and Ice Castle - underwater | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | In Water Near W4 Opposite Cranky - right | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | In Water Near W4 Opposite Cranky - left | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | Under Bridge to Cranky | Boss, Dk_Portal, Wrinkly | `l.swim` | 
+| Crystal Caves | Between Funky and Ice Castle - underwater | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | In Water Near W4 Opposite Cranky - right | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | In Water Near W4 Opposite Cranky - left | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | Under Bridge to Cranky | Wrinkly, Boss | `l.swim` | 
 | Crystal Caves | Under Handstand Slope | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Mini Monkey Ledge | Wrinkly |  | 
 | Crystal Caves | Across from Snide | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Slope to Cranky with Mini Monkey Hole | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Level Entrance - right | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Level Entrance - left | Boss, Dk_Portal, Wrinkly |  | 
-| Crystal Caves | Igloo Area - left of entrance | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | Igloo Area - Behind Tag Barrel Island | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | Igloo Area - Behind Warp 1 | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | Igloo Area - right of entrance | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | Under Funky's Store | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | Next to Waterfall that's Next to Funky | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | In Water Under Funky - left | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | In Water Under Funky - center | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Crystal Caves | In Water Under Funky - right | Boss, Dk_Portal, Wrinkly | `l.swim` | 
+| Crystal Caves | Igloo Area - left of entrance | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | Igloo Area - Behind Tag Barrel Island | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | Igloo Area - Behind Warp 1 | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | Igloo Area - right of entrance | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | Under Funky's Store | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | Next to Waterfall that's Next to Funky | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | In Water Under Funky - left | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | In Water Under Funky - center | Wrinkly, Boss | `l.swim` | 
+| Crystal Caves | In Water Under Funky - right | Wrinkly, Boss | `l.swim` | 
 | Caves Frozen Castle | Ice Castle Interior - left | Wrinkly |  | 
 | Caves Frozen Castle | Ice Castle Interior - right | Wrinkly |  | 
 | Caves Chunky Cabin | In Chunky's 5Door Cabin on a Book Shelf | Wrinkly |  | 
@@ -311,7 +311,7 @@
 | Crystal Caves | Outside Tiny's Cabin | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Cabin Area - Next to Tag Barrel on 2nd Floor | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Under Cranky Slope - small | Wrinkly |  | 
-| Crystal Caves | Caves Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
+| Crystal Caves | Caves Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 
 # Creepy Castle
 | Map | Name | Door types acceptable in location | Logic |
@@ -324,8 +324,8 @@
 | Creepy Castle | Near Greenhouse | Boss, Dk_Portal, Wrinkly |  | 
 | Creepy Castle | Small Plateau | Boss, Dk_Portal, Wrinkly |  | 
 | Creepy Castle | Back of Castle | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Lower Cave | Near Funky's | Boss, Wrinkly |  | 
-| Castle Upper Cave | Near Candy's | Boss, Wrinkly |  | 
+| Castle Lower Cave | Near Funky's | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Upper Cave | Near Candy's | Boss, Dk_Portal, Wrinkly |  | 
 | Creepy Castle | Next to Small Pool outside of the Big Tree | Boss |  | 
 | Creepy Castle | Against the Big Tree | Boss, Dk_Portal, Wrinkly |  | 
 | Creepy Castle | Next to Tag Barrel at the Warp Pad Hub | Boss, Dk_Portal, Wrinkly |  | 
@@ -345,20 +345,20 @@
 | Creepy Castle | Moat - Next to Tunnel Entrance - right | Boss, Dk_Portal, Wrinkly | `l.swim` | 
 | Creepy Castle | Moat - Next to Ladder - left | Boss, Dk_Portal, Wrinkly | `l.swim` | 
 | Creepy Castle | Moat - Next to Ladder - right | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Castle Tree | Inside the Tree | Boss, Wrinkly |  | 
+| Castle Tree | Inside the Tree | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Library | Library - Room with Big Books - left | Wrinkly |  | 
 | Castle Library | Library - Room with big Books - back | Wrinkly |  | 
 | Castle Library | Library - Next to Exit - left | Wrinkly |  | 
 | Castle Library | Library - Next to Exit - right | Wrinkly |  | 
-| Castle Ballroom | Ballroom - Left Candle - left | Boss, Wrinkly |  | 
-| Castle Ballroom | Ballroom - Left Candle - right | Boss, Wrinkly |  | 
-| Castle Ballroom | Ballroom - Back Candle - left | Boss, Wrinkly |  | 
-| Castle Ballroom | Ballroom - Back Candle - right | Boss, Wrinkly |  | 
-| Castle Ballroom | Ballroom - Right Candle - left | Boss, Wrinkly |  | 
-| Castle Ballroom | Ballroom - Right Candle - right | Boss, Wrinkly |  | 
+| Castle Ballroom | Ballroom - Left Candle - left | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Ballroom | Ballroom - Left Candle - right | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Ballroom | Ballroom - Back Candle - left | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Ballroom | Ballroom - Back Candle - right | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Ballroom | Ballroom - Right Candle - left | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Ballroom | Ballroom - Right Candle - right | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Trash Can | Trash Can - Cheese | Wrinkly |  | 
 | Castle Shed | Inside Chunky's Shed | Wrinkly |  | 
-| Castle Lower Cave | Lower Tunnel - Under Peanut Switch | Boss, Wrinkly |  | 
-| Castle Lower Cave | Lower Tunnel - Under Coconut and Pineapple Switches | Boss, Wrinkly |  | 
+| Castle Lower Cave | Lower Tunnel - Under Peanut Switch | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Lower Cave | Lower Tunnel - Under Coconut and Pineapple Switches | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Mausoleum | Crypt - Under Lanky's Switch | Wrinkly |  | 
-| Creepy Castle | Castle Vanilla Level Entry | Dk_Portal, Wrinkly |  | 
+| Creepy Castle | Castle Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 

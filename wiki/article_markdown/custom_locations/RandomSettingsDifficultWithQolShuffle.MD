@@ -45,12 +45,18 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Shuffle Bonus Barrels: 70%
 - Shuffle Boss Kong Required: 50%
 - Boss Location Rando: 80%
-- Random CB Locations: 
-	- Off: 40%
-	- On: 30%
-	- On With Isles: 30%
+- Randomize CB Locations: 60%
+- Cb Rando List Selected: 
+	- Junglejapes: 90%
+	- Angryaztec: 90%
+	- Franticfactory: 90%
+	- Gloomygalleon: 90%
+	- Fungiforest: 90%
+	- Crystalcaves: 90%
+	- Creepycastle: 90%
+	- Dkisles: 50%
 - Chaos B. Lockers: 60%
-- Chaos Ratio: Between 0.25 and 0.7, usually close to 0.4
+- Chaos Ratio: Between 25 and 70, usually close to 40
 - Chunky Phase Slam Requirement: 
 	- Blue: 70%
 	- Red: 30%
@@ -67,7 +73,10 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Medium Random: 20%
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 2
-- Crown Enemy Randomizer: 95%
+- Crown Enemy Randomizer: 
+	- Vanilla: 20%
+	- Medium: 50%
+	- Hard: 30%
 - Crown Placement Rando: 70%
 - Damage Multiplier: 
 	- Default: 40%
@@ -129,6 +138,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Lower Max Refill Amounts: 50%
 	- Strict Helm Timer: 20%
 	- Angry Caves: 5%
+	- Donk In The Dark World: 0%
+	- Donk In The Sky: 0%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 50%
 - Helm Hurry Mode: 5%

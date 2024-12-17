@@ -28,9 +28,16 @@
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 0,
-    "cb_rando": {
-      "off": 0.7,
-      "on": 0.3
+    "cb_rando_enabled": 0.3,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.5,
+      "AngryAztec": 0.5,
+      "FranticFactory": 0.5,
+      "GloomyGalleon": 0.5,
+      "FungiForest": 0.5,
+      "CrystalCaves": 0.5,
+      "CreepyCastle": 0.5,
+      "DKIsles": 0
     },
     "chaos_blockers": 0,
     "chaos_ratio": {
@@ -63,8 +70,8 @@
       "max": 2,
       "mean": 1
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "easy": 0.5,
       "medium": 0.3
     },
@@ -432,16 +439,22 @@
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 0.5,
-    "cb_rando": {
-      "off": 0.5,
-      "on": 0.4,
-      "on_with_isles": 0.1
+    "cb_rando_enabled": 0.5,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.7,
+      "AngryAztec": 0.7,
+      "FranticFactory": 0.7,
+      "GloomyGalleon": 0.7,
+      "FungiForest": 0.7,
+      "CrystalCaves": 0.7,
+      "CreepyCastle": 0.7,
+      "DKIsles": 0.2
     },
     "chaos_blockers": 0.25,
     "chaos_ratio": {
-      "min": 0.1,
-      "max": 0.35,
-      "mean": 0.25
+      "min": 10,
+      "max": 35,
+      "mean": 25
     },
     "chunky_phase_slam_req": {
       "random": 1
@@ -469,8 +482,8 @@
       "max": 2,
       "mean": 1
     },
-    "crown_enemy_rando": {
-      "off": 0.1,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.1,
       "easy": 0.3,
       "medium": 0.4,
       "hard": 0.2
@@ -858,16 +871,22 @@
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
-    "cb_rando": {
-      "off": 0.4,
-      "on": 0.3,
-      "on_with_isles": 0.3
+    "cb_rando_enabled": 0.6,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.9,
+      "AngryAztec": 0.9,
+      "FranticFactory": 0.9,
+      "GloomyGalleon": 0.9,
+      "FungiForest": 0.9,
+      "CrystalCaves": 0.9,
+      "CreepyCastle": 0.9,
+      "DKIsles": 0.5
     },
     "chaos_blockers": 0.6,
     "chaos_ratio": {
-      "min": 0.25,
-      "max": 0.7,
-      "mean": 0.4
+      "min": 25,
+      "max": 70,
+      "mean": 40
     },
     "chunky_phase_slam_req": {
       "blue": 0.7,
@@ -896,8 +915,8 @@
       "max": 2,
       "mean": 2
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "medium": 0.5,
       "hard": 0.3
     },
@@ -973,7 +992,9 @@
       "shuffled_jetpac_enemies": 0.2,
       "lower_max_refill_amounts": 0.5,
       "strict_helm_timer": 0.2,
-      "angry_caves": 0.05
+      "angry_caves": 0.05,
+      "donk_in_the_dark_world": 0,
+      "donk_in_the_sky": 0
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -1327,16 +1348,22 @@
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
-    "cb_rando": {
-      "off": 0.4,
-      "on": 0.3,
-      "on_with_isles": 0.3
+    "cb_rando_enabled": 0.6,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.9,
+      "AngryAztec": 0.9,
+      "FranticFactory": 0.9,
+      "GloomyGalleon": 0.9,
+      "FungiForest": 0.9,
+      "CrystalCaves": 0.9,
+      "CreepyCastle": 0.9,
+      "DKIsles": 0.5
     },
     "chaos_blockers": 0.6,
     "chaos_ratio": {
-      "min": 0.25,
-      "max": 0.7,
-      "mean": 0.4
+      "min": 25,
+      "max": 70,
+      "mean": 40
     },
     "chunky_phase_slam_req": {
       "blue": 0.7,
@@ -1365,8 +1392,8 @@
       "max": 2,
       "mean": 2
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "medium": 0.5,
       "hard": 0.3
     },
@@ -1442,7 +1469,9 @@
       "shuffled_jetpac_enemies": 0.2,
       "lower_max_refill_amounts": 0.5,
       "strict_helm_timer": 0.2,
-      "angry_caves": 0.05
+      "angry_caves": 0.05,
+      "donk_in_the_dark_world": 0,
+      "donk_in_the_sky": 0
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,

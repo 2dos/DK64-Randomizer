@@ -45,7 +45,7 @@ from randomizer.Lists.Plandomizer import (
     PlannableSpawns,
     PlannableSwitches,
 )
-from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
+from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector, CBRandoSelector
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
@@ -308,6 +308,7 @@ def lambda_function():
                 "Spoiler Hints Data",
                 "Generated Time",
                 "Item Pool",
+                "Randomizer Version",
             ]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
@@ -500,6 +501,7 @@ def get_selector_info():
         "select_songs": PlannableSongs,
         "remove_barriers": RemovedBarrierSelector,
         "faster_checks": FasterCheckSelector,
+        "cb_rando_levels": CBRandoSelector,
     }
     response = make_response(json.dumps(selector_data), 200)
     response.mimetype = "application/json"
@@ -645,6 +647,7 @@ def get_seed_data():
                 "Spoiler Hints Data",
                 "Generated Time",
                 "Item Pool",
+                "Randomizer Version",
             ]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}

@@ -898,49 +898,31 @@ void resetMapContainer(void) {
 	}
 }
 
-static const unsigned char dk_portal_maps[] = {
-	MAP_JAPES,
-	MAP_AZTEC,
-	MAP_FACTORY,
-	MAP_GALLEON,
-	MAP_FUNGI,
-	MAP_CAVES,
-	MAP_CASTLE,
-	MAP_JAPESLOBBY,
-	MAP_AZTECLOBBY,
-	MAP_FACTORYLOBBY,
-	MAP_GALLEONLOBBY,
-	MAP_FUNGILOBBY,
-	MAP_CAVESLOBBY,
-	MAP_CASTLELOBBY
-};
 void correctDKPortal(void) {
-	int is_portal_map = 0;
-	for (int i = 0; i < sizeof(dk_portal_maps); i++) {
-		if (dk_portal_maps[i] == CurrentMap) {
-			is_portal_map = 1;
-		}
-	}
-	if (is_portal_map) {
-		int portal_exit = isLobby(CurrentMap);
-		int exit = DestExit;
-		int portal_state = 2;
-		if (portal_exit == exit) {
+	int exit = DestExit;
+	int portal_state = 2;
+	if (isLobby(CurrentMap))  {
+		if (exit == 1) {
 			portal_state = 0;
 		}
+	} else {
 		if ((CurrentMap == MAP_JAPES) && (exit == 15)) {
 			portal_state = 0;
+		} else if ((CurrentMap == MAP_FUNGI) && (exit == 27)) {
+			portal_state = 0;
+		} else if (exit == -1) {
+			portal_state = 0;
 		}
-		int _count = ObjectModel2Count;
-		int* m2location = (int*)ObjectModel2Pointer;
-		for (int i = 0; i < _count; i++) {
-			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
-			if (_object->object_type == 0x2AD) {
-				behaviour_data* behav = _object->behaviour_pointer;
-				if (behav) {
-					behav->current_state = portal_state;
-					//behav->next_state = portal_state;
-				}
+	}		
+	int _count = ObjectModel2Count;
+	int* m2location = (int*)ObjectModel2Pointer;
+	for (int i = 0; i < _count; i++) {
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		if (_object->object_type == 0x2AD) {
+			behaviour_data* behav = _object->behaviour_pointer;
+			if (behav) {
+				behav->current_state = portal_state;
+				//behav->next_state = portal_state;
 			}
 		}
 	}
@@ -1167,6 +1149,36 @@ sprite_data_struct fool_overlay_sprite = {
 	},
 };
 
+sprite_data_struct company_coin_sprite = {
+	.unk0 = 0xC9,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 44,
+	.height = 44,
+	.image_count = 16,
+	.images = {
+		0x170D,
+		0x170E,
+		0x170F,
+		0x1710,
+		0x0D48,
+		0x1711,
+		0x1712,
+		0x1713,
+		0x1714,
+		0x1715,
+		0x1716,
+		0x1717,
+		0x0D49,
+		0x1718,
+		0x1719,
+		0x171A,
+	},
+};
+
 void giveGB(int kong, int level) {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);
@@ -1175,7 +1187,7 @@ void giveGB(int kong, int level) {
 int getTotalCBCount(void) {
 	int world = getWorld(CurrentMap,1);
 	int count = 0;
-	if (world < 7) {
+	if (world < 8) {
 		for (int kong = 0; kong < 5; kong++) {
 			count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 		}
@@ -1240,16 +1252,28 @@ int getCustomActorIndex(new_custom_actors offset) {
 	return CUSTOM_ACTORS_START + offset;
 }
 
-void spawnItemOverlay(int type, int kong, int index, int force) {
-	if (force) {
-		spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
-	} else {
-		spawnActor(324,0);
+move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER] = {};
+
+int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
+	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
+		if (text_overlay_data[i].used) {
+			continue;
+		}
+		if (force) {
+			spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
+		} else {
+			spawnActor(324,0);
+		}
+		move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+		ovl_paad->index = i;
+		text_overlay_data[i].type = type;
+		text_overlay_data[i].flag = index;
+		text_overlay_data[i].kong = kong;
+		text_overlay_data[i].string = (char*)0;
+		text_overlay_data[i].used = 1;
+		return i;
 	}
-    TextOverlayData.type = type;
-    TextOverlayData.flag = index;
-    TextOverlayData.kong = kong;
-	TextOverlayData.string = (char*)0;
+	return -1;
 }
 
 int giveSlamLevel(void) {
@@ -1602,7 +1626,7 @@ int getItemCountReq(requirement_item item) {
 		case REQITEM_GAMEPERCENTAGE:
 			return getGamePercentage();
 		case REQITEM_COLOREDBANANA:
-			for (int world = 0; world < 7; world++) {
+			for (int world = 0; world < 8; world++) {
 				for (int kong = 0; kong < 5; kong++) {
 					count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 				}

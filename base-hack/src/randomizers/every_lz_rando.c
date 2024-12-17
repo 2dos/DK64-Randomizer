@@ -26,13 +26,6 @@ void replace_zones(int init_flag) {
 		if (init_flag) {
 			if (more_lz_byte == 1) {
 				for (int i = 0; i < 8; i++) {
-					if (i < 7) {
-						WorldArray[i] = Rando.enter_levels[i].map;
-						WorldExitArray[i] = Rando.enter_levels[i].exit;
-						if ((WorldArray[i] != MAP_CASTLE) || (WorldExitArray[i] != 0)) {
-							WorldCutsceneArray[i] = 0;
-						}
-					}
 					ReplacementLobbiesArray[i] = Rando.exit_levels[i].map;
 					ReplacementLobbyExitsArray[i] = Rando.exit_levels[i].exit;
 					ReplacementLobbiesArray[8] = ReplacementLobbiesArray[7];

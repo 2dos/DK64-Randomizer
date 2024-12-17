@@ -181,7 +181,7 @@ LogicRegions = {
         TransitionFront(Regions.Shipyard, lambda l: not l.IsLavaWater() or l.Melons >= 2),
         TransitionFront(Regions.TreasureRoom, lambda l: Events.ShipyardTreasureRoomOpened in l.Events or l.CanPhaseswim()),
         TransitionFront(Regions.Submarine, lambda l: ((l.mini or l.CanSTS()) and l.istiny) or l.CanPhaseswim(), Transitions.GalleonShipyardToSubmarine),
-        TransitionFront(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy),
+        TransitionFront(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy, Transitions.GalleonShipyardToMechFish),
         TransitionFront(Regions.LankyShip, lambda l: (Events.GalleonLankySwitch in l.Events and l.islanky) or l.CanPhaseswim(), Transitions.GalleonShipyardToLanky),
         TransitionFront(Regions.TinyShip, lambda l: (Events.GalleonTinySwitch in l.Events and l.istiny) or l.CanPhaseswim(), Transitions.GalleonShipyardToTiny),
         TransitionFront(Regions.BongosShip, lambda l: (Events.GalleonDonkeyPad in l.Events and l.isdonkey) or l.CanPhaseswim(), Transitions.GalleonShipyardToBongos),
@@ -239,7 +239,7 @@ LogicRegions = {
     Regions.Mechafish: Region("Mechafish", HintRegion.ShipyardOutskirts, Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDiddyMechafish, lambda l: l.HasGun(Kongs.diddy) or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
     ], [], [
-        TransitionFront(Regions.ShipyardUnderwater, lambda l: True)
+        TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonMechFishToShipyard)
     ]),
 
     Regions.LankyShip: Region("Lanky Ship", HintRegion.ShipyardOutskirts, Levels.GloomyGalleon, False, None, [

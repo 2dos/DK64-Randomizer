@@ -570,7 +570,7 @@ fairy_locations = {
             region=Regions.ThornvineBarn,
             is_vanilla=True,
             spawn_xyz=[497, 162, 502],
-            logic=lambda l: l.isdonkey and l.Slam and l.camera,
+            logic=lambda l: l.isdonkey and l.Slam and l.camera and l.climbing,
             natural_index=1,
         ),
         FairyData(

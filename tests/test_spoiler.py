@@ -10,7 +10,7 @@ from parameterized import parameterized_class
 from randomizer.Enums.HintType import HintType
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
-                                       CrownEnemyRando, DamageAmount,
+                                       CrownEnemyDifficulty, DamageAmount,
                                        ExtraCutsceneSkips, FillAlgorithm,
                                        FreeTradeSetting, HelmDoorItem, HelmBonuses,
                                        HelmSetting, KasplatRandoSetting,

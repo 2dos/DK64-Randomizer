@@ -27,8 +27,8 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText
-from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
+from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText, getHoliday, Holidays
+from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays, KongModels
@@ -125,6 +125,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.document.getElementById("patch_warning_message").innerHTML = (
             f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
         )
+        ROM_COPY = ROM()
+        fixLankyIncompatibility(ROM_COPY)
     elif from_patch_gen is True:
         sav = settings.rom_data
         if from_patch_gen:
@@ -165,6 +167,36 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             darkenPauseBubble(settings)
             if settings.misc_cosmetics:
                 writeCrownNames()
+
+            # Fog
+            holiday = getHoliday(settings)
+            fog_enabled = [0, 0, 0]  # 0 = Vanilla, 1 = Set to a default (defined by either holiday mode or a custom default), 2 = rando
+            default_colors = [
+                [0x8A, 0x52, 0x16],  # Aztec
+                [0x20, 0xFF, 0xFF],  # Caves
+                [0x40, 0x10, 0x10],  # Castle
+            ]
+            holiday_colors = {
+                Holidays.Anniv25: [0xFF, 0xFF, 0x00],
+                Holidays.Halloween: [0xFF, 0x00, 0x00],
+                Holidays.Christmas: [0x00, 0xFF, 0xFF],
+            }
+            if holiday in holiday_colors:
+                fog_enabled = [1, 1, 1]
+                for x in range(3):
+                    default_colors[x] = holiday_colors[holiday]
+            elif settings.misc_cosmetics:
+                fog_enabled = [2, 1, 1]
+            for index, enabled_setting in enumerate(fog_enabled):
+                if enabled_setting != 0:
+                    color = default_colors[index]
+                    if enabled_setting == 2:
+                        color = []
+                        for x in range(3):
+                            color.append(random.randint(1, 0xFF))
+                    ROM_COPY.seek(sav + 0x088 + (index * 3))
+                    for x in color:
+                        ROM_COPY.writeMultipleBytes(x, 1)
 
             # D-Pad Display
             ROM_COPY.seek(sav + 0x139)
@@ -271,6 +303,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
             patchAssemblyCosmetic(ROM_COPY, settings)
             music_data, music_names = randomize_music(settings)
+            # Disable dynamic FXMix (reverb)
+            # If this impacts non-BGM music in a way that produces unwanted behavior, we'll want to only apply this to BGM
+            if settings.music_disable_reverb:
+                disableDynamicReverb(ROM_COPY)
             music_text = []
             accepted_characters = [*string.ascii_uppercase] + [" ", "\n", "(", ")", "%", ",", ".", "!", ">", ":", ";", "'", "-"] + [*string.digits]
             for name in music_names:

@@ -52,12 +52,18 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Shuffle Boss Kong Required: 65%
 - Boss Location Rando: 80%
 - DK Phase requires Baboon Blast: 50%
-- Random CB Locations: 
-	- Off: 50%
-	- On: 40%
-	- On With Isles: 10%
+- Randomize CB Locations: 50%
+- Cb Rando List Selected: 
+	- Junglejapes: 70%
+	- Angryaztec: 70%
+	- Franticfactory: 70%
+	- Gloomygalleon: 70%
+	- Fungiforest: 70%
+	- Crystalcaves: 70%
+	- Creepycastle: 70%
+	- Dkisles: 20%
 - Chaos B. Lockers: 25%
-- Chaos Ratio: Between 0.1 and 0.35, usually close to 0.25
+- Chaos Ratio: Between 10 and 35, usually close to 25
 - Chunky Phase Slam Requirement: 
 	- Random: 100%
 - Helm Door 2 Requirement Item: 
@@ -73,7 +79,11 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Medium Random: 40%
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
-- Crown Enemy Randomizer: 95%
+- Crown Enemy Randomizer: 
+	- Vanilla: 10%
+	- Easy: 30%
+	- Medium: 40%
+	- Hard: 20%
 - Crown Placement Rando: 30%
 - Damage Multiplier: 
 	- Default: 50%

@@ -10,7 +10,7 @@ from tempfile import mktemp
 from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
-    CrownEnemyRando,
+    CrownEnemyDifficulty,
     DamageAmount,
     FasterChecksSelected,
     FungiTimeSetting,
@@ -33,6 +33,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
@@ -71,6 +72,7 @@ from randomizer.Patching.MiscSetupChanges import (
     updateKrushaMoveNames,
     updateRandomSwitches,
     updateSwitchsanity,
+    remove5DSCameraPoint,
 )
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves, parseMoveBlock
 from randomizer.Patching.Patcher import LocalROM
@@ -234,7 +236,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
         BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
-        BooleanProperties(spoiler.settings.cb_rando == CBRando.on_with_isles, 0x10B),  # 5 extra medal handling
+        BooleanProperties(IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles), 0x10B),  # 5 extra medal handling
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
         BooleanProperties(
@@ -649,7 +651,7 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x112)
         ROM_COPY.write(spoiler.settings.medal_cb_req)
 
-    if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != CrownEnemyRando.off):
+    if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla):
         lst = []
         for enemy in EnemySelector:
             lst.append(Enemies[enemy["value"]])
@@ -689,6 +691,7 @@ def patching_response(spoiler):
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
     showWinCondition(spoiler.settings)
+    remove5DSCameraPoint(spoiler, ROM_COPY)
     alterTextboxRequirements(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin

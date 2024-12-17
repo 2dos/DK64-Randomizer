@@ -4316,11 +4316,11 @@ BananaCoinGroupList = {
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.LighthouseSurface,
             locations=[
-                [1.0, 752, 1564, 4213],
-                [1.0, 584, 1564, 4201],
-                [1.0, 530, 1564, 4047],
-                [1.0, 581, 1564, 3890],
-                [1.0, 759, 1564, 3870],
+                [1.0, 752, 1574, 4213],
+                [1.0, 584, 1574, 4201],
+                [1.0, 530, 1574, 4047],
+                [1.0, 581, 1574, 3890],
+                [1.0, 759, 1574, 3870],
             ],
         ),
         BananaCoinGroup(
@@ -5356,7 +5356,7 @@ BananaCoinGroupList = {
             map_id=Maps.FungiForest,
             name="On the waterwheel",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MillArea,
+            region=Regions.ForestTopOfMill,
             locations=[
                 [1.0, 4117, 208, 3369],
                 [1.0, 4108, 259, 3390],
