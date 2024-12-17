@@ -1145,6 +1145,7 @@ for x in range(5):
             file_index=getBonusSkinOffset(ExtraTextures.KrushaFace321 + x),
             source_file=f"assets/displays/krusha_head_{x + 1}_32.png",
             texture_format=TextureFormat.RGBA32,
+            target_compressed_size = 32 * 32 * 4
         )
     )
 

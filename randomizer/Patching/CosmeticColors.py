@@ -2562,16 +2562,19 @@ def placeKrushaHead(settings: Settings, slot):
     krushaFace64 = getImageFile(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.KrushaFace1 + slot), True, 64, 64, TextureFormat.RGBA5551)
     krushaFace64Left = krushaFace64.crop([0, 0, 32, 64])
     krushaFace64Right = krushaFace64.crop([32, 0, 64, 64])
-    krushaFace64
+    # Used in File Select, Pause Menu, Tag Barrels, Switches, Transformation Barrels
     writeColorImageToROM(krushaFace64Left, 25, kong_face_textures[slot][0], 32, 64, False, TextureFormat.RGBA5551)
     writeColorImageToROM(krushaFace64Right, 25, kong_face_textures[slot][1], 32, 64, False, TextureFormat.RGBA5551)
+    # Used in Troff and Scoff
     writeColorImageToROM(krushaFace64Left, 7, unc_face_textures[slot][0], 32, 64, False, TextureFormat.RGBA5551)
     writeColorImageToROM(krushaFace64Right, 7, unc_face_textures[slot][1], 32, 64, False, TextureFormat.RGBA5551)
 
     krushaFace32 = krushaFace64.resize((32, 32))
     krushaFace32 = krushaFace32.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-    krushaFace32RBGA32 = getImageFile(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.KrushaFace321 + slot), True, 64, 64, TextureFormat.RGBA32)
+    krushaFace32RBGA32 = getImageFile(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.KrushaFace321 + slot), True, 32, 32, TextureFormat.RGBA32)
+    # Used in the DPad Selection Menu
     writeColorImageToROM(krushaFace32, 14, 190 + slot, 32, 32, False, TextureFormat.RGBA5551)
+    # Used in Shops Previews
     writeColorImageToROM(krushaFace32RBGA32, 14, 197 + slot, 32, 32, False, TextureFormat.RGBA32)
 
     """kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
