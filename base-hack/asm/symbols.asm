@@ -201,6 +201,8 @@
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
 .definelabel songData, 0x80745658
+.definelabel trackStateArray, 0x80745924
+.definelabel SongInWriteSlot, 0x80770560
 .definelabel songVolumes, 0x807454F0
 .definelabel compactSequencePlayers, 0x8076BF20
 .definelabel MusicTrackChannels, 0x807458DC

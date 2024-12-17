@@ -13,9 +13,42 @@
 
 static unsigned char display_timer = 0;
 static short displayed_text_offset = -1;
+static short storedMusicTrackChannel[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static char storedTrackState[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
+}
+
+
+void detectSongChange(){
+    char trackChannelsChanged = 0;
+    for(int i = 0; i < 12; i++){
+        if(storedMusicTrackChannel[i] != MusicTrackChannels[i]){
+            // Block song display from occurring in the pause menu
+            // Other instances of this occurring are fair game, maybe even desired
+            if(MusicTrackChannels[i] != 41){
+                // New song was requested to play on this channel
+                // Do record pause music playing, so we know when it stops playing
+                storedMusicTrackChannel[i] = MusicTrackChannels[i];
+                if(MusicTrackChannels[i] != 34){
+                    trackChannelsChanged = 1;
+                }
+            }
+        }
+    }
+    for(int i = 0; i < 12; i++){
+        if(trackStateArray[i] != storedTrackState[i]){
+            if(trackStateArray[i] == 2 && storedTrackState[i] == 1){
+                // New song has loaded in and has now started
+                initSongDisplay(MusicTrackChannels[i]);
+            }
+            storedTrackState[i] = trackStateArray[i];
+        } else if(trackStateArray[i] == 2 && trackChannelsChanged){
+            // Song that was newly requested was already loaded in and has now started
+            initSongDisplay(MusicTrackChannels[i]);
+        }
+    }
 }
 
 void initSongDisplay(int song) {
@@ -32,17 +65,6 @@ void initSongDisplay(int song) {
     if ((CurrentMap == MAP_ISLES) && (CutsceneActive == 1) && (CutsceneIndex == 29)) {
         // In K Rool gets launched cutscene
         return;
-    }
-    int channel = getTrackChannel(song);
-    int writeSlot = getSongWriteSlot(song);
-    if ((MusicTrackChannels[channel] == song) && ((songData[song] & 0x200) == 0)) {
-        if(cspGetState(compactSequencePlayers[writeSlot]) == 1){
-            // If CompactSequence Player is already playing this song
-            // Not gonna bother looking through the event queue whether or not
-            // the CompactSequence Player is being stopped and started on the same audio frame
-            // because that's hard to trigger and very expensive, if even reliable.
-            return;
-        }
     }
     if (DisplayedSongNamePointer) {
         complex_free(DisplayedSongNamePointer);

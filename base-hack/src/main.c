@@ -141,6 +141,7 @@ void cFuncLoop(void) {
 		}
 	}
 	handleSFXCache();
+	detectSongChange();
 	handleDPadFunctionality();
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
