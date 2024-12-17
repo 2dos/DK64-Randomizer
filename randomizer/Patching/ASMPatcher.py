@@ -2526,15 +2526,11 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Helm Warp Handler
     writeFunction(ROM_COPY, 0x8068B04C, Overlay.Static, "WarpToHelm", offset_dict)
-    writeValue(ROM_COPY, 0x8068AD10, Overlay.Static, 0, offset_dict, 4)  # Disable the cutscene value for helm, disabling the FTT warp
     writeValue(ROM_COPY, 0x8068B054, Overlay.Static, 0x5000, offset_dict)
     writeFunction(ROM_COPY, 0x80640720, Overlay.Static, "portalWarpFix", offset_dict)
     writeValue(ROM_COPY, 0x806406F4, Overlay.Static, 0x2006FFFF, offset_dict, 4)
-    if settings.dk_portal_location_rando:
-        # Disable K Rool intros (for now)
-        writeValue(ROM_COPY, 0x8068AD40, Overlay.Static, 0, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8068AD48, Overlay.Static, 0, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8068AD56, Overlay.Static, 0, offset_dict)
+
+    writeFunction(ROM_COPY, 0x8064070C, Overlay.Static, "DetermineLevel_NewLevel", offset_dict)
     for index, data in enumerate(settings.level_portal_destinations):
         writeValue(ROM_COPY, 0x8074809C + (2 * index), Overlay.Static, data["map"], offset_dict)
         writeValue(ROM_COPY, 0x807480AC + (2 * index), Overlay.Static, data["exit"], offset_dict, 2, True)

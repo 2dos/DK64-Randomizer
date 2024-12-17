@@ -1694,3 +1694,32 @@ int isGlobalCutscenePlaying(int cutscene_index) {
 	}
 	return 0;
 }
+
+int DetermineLevel_NewLevel(maps map) {
+	for (int i = 0; i < 8; i++) {
+		if (CurrentMap == LobbiesArray[i]) {
+			if (!checkFlag(FLAG_STORY_JAPES + i, FLAGTYPE_PERMANENT)) {
+				int world = getWorld(map, 0);
+				if (world == 8) {
+					world = 7;
+					return 0; // TODO: This was turned off in ASM Patcher - for the first time warp?
+				} else if (world > 6) {
+					return 0;
+				}
+				setFlag(FLAG_STORY_JAPES + i, 1, FLAGTYPE_PERMANENT);
+				return 0; // Disabled in ASM Patcher for DK Portal Rando
+				if (StorySkip) {
+					int exit = 0;
+					if (map == MAP_CASTLE) {
+						exit = 0x15;
+					}
+					initiateTransition(map, exit);
+				} else {
+					initiateTransitionFade(MAP_HELM_INTROSGAMEOVER, 0xF + world, Mode);
+				}
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
