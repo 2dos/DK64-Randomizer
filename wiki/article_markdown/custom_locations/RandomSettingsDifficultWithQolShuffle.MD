@@ -89,6 +89,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Enable Shop Hints: 50%
 - Enable Tag Anywhere: 90%
 - Dropsanity: 60%
+- Shuffle Enemies: 95%
 - Enemy Speed Rando: 70%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 

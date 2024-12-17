@@ -2336,7 +2336,7 @@ def applyKongModelSwaps(settings: Settings) -> None:
                         case _:
                             color_r = 100
                             color_g = 255
-                            color_b = 60                            
+                            color_b = 60
                     orange_im = maskImageWithColor(orange_im, (color_r, color_g, color_b))
                 else:
                     orange_im = maskImageWithColor(orange_im, (0, 255, 0))
