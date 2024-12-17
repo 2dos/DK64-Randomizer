@@ -1127,17 +1127,6 @@ for x in range(12):
         )
     )
 
-for x in range(12):
-    file_dict.append(
-        File(
-            name=f"Bean Spin Frame {x + 1}",
-            pointer_table_index=TableNames.TexturesGeometry,
-            file_index=getBonusSkinOffset(ExtraTextures.BeanSpin01 + x),
-            source_file=f"assets/bean_spin/f{x + 1}a_64_32.png",
-            texture_format=TextureFormat.RGBA5551,
-        )
-    )
-
 
 for x in range(5):
     file_dict.append(
