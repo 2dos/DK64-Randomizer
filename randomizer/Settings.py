@@ -443,6 +443,8 @@ class Settings:
         self.starting_kongs_count = 5
         self.starting_random = False
 
+        self.disable_racing_patches = False
+
         self.has_password = False
         self.password = [1] * 8
 
