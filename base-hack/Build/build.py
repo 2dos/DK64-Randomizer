@@ -1127,27 +1127,6 @@ for x in range(12):
         )
     )
 
-
-for x in range(5):
-    file_dict.append(
-        File(
-            name=f"Krusha Head {x + 1}",
-            pointer_table_index=TableNames.TexturesGeometry,
-            file_index=getBonusSkinOffset(ExtraTextures.KrushaFace1 + x),
-            source_file=f"assets/displays/krusha_head_{x + 1}_64.png",
-            texture_format=TextureFormat.RGBA5551,
-        )
-    )
-    file_dict.append(
-        File(
-            name=f"Krusha Head 32 {x + 1}",
-            pointer_table_index=TableNames.TexturesGeometry,
-            file_index=getBonusSkinOffset(ExtraTextures.KrushaFace321 + x),
-            source_file=f"assets/displays/krusha_head_{x + 1}_32.png",
-            texture_format=TextureFormat.RGBA32,
-        )
-    )
-
 kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
     0xE8D: [(43, 32), "checkered"],  # DK Tie Hang
@@ -2187,16 +2166,6 @@ with open(newROMName, "r+b") as fh:
         "win_con_logo",
         "25y_mipped",
         "y25_small",
-        "krusha_head_1_64",
-        "krusha_head_2_64",
-        "krusha_head_3_64",
-        "krusha_head_4_64",
-        "krusha_head_5_64",
-        "krusha_head_1_32",
-        "krusha_head_2_32",
-        "krusha_head_3_32",
-        "krusha_head_4_32",
-        "krusha_head_5_32",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

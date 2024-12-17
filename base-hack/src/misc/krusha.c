@@ -320,26 +320,7 @@ typedef struct projectile_extra {
 } projectile_extra;
 
 void setKrushaAmmoColor(void) {
-    int currentPellet = CurrentActorPointer_0->actorType;
-    switch (currentPellet) {
-        case 48:
-            changeActorColor(0xC0, 0xFF, 0, 0xFF);
-            break;
-        case 36:
-            changeActorColor(0xFF, 0x40, 0x40, 0xFF);
-            break;
-        case 42:
-            changeActorColor(0x18, 0x18, 0xFF, 0xFF);
-            break;
-        case 43:
-            changeActorColor(0x80, 0, 0xFF, 0xFF);
-            break;
-        case 38:
-            changeActorColor(0, 0xFF, 0, 0xFF);
-            break;
-        default:
-            changeActorColor(0, 0xFF, 0, 0xFF);
-    }
+    changeActorColor(0, 0xFF, 0, 0xFF);
 }
 
 void OrangeGunCode(void) {
