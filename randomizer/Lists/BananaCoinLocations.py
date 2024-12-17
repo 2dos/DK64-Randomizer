@@ -5356,7 +5356,7 @@ BananaCoinGroupList = {
             map_id=Maps.FungiForest,
             name="On the waterwheel",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MillArea,
+            region=Regions.ForestTopOfMill,
             locations=[
                 [1.0, 4117, 208, 3369],
                 [1.0, 4108, 259, 3390],
