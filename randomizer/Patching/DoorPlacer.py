@@ -4,10 +4,13 @@ import js
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Enums.Settings import MiscChangesSelected, ProgressiveHintItem
+from randomizer.Enums.Settings import MiscChangesSelected, ProgressiveHintItem, HelmSetting
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.DoorLocations import door_locations
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
+from randomizer.Lists.DoorLocations import door_locations
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
@@ -259,43 +262,44 @@ def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict):
 
 def remove_existing_indicators(spoiler):
     """Remove all existing indicators."""
-    if not spoiler.settings.portal_numbers:
-        ROM_COPY = LocalROM()
-        for cont_map_id in range(216):
-            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-            # Filter Setup
-            ROM_COPY.seek(setup_table)
-            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
-            retained_model2 = []
-            for item in range(model2_count):
-                item_start = setup_table + 4 + (item * 0x30)
-                ROM_COPY.seek(item_start + 0x28)
-                item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                if cont_map_id == 0x2A or item_type != 0x2AB:
-                    ROM_COPY.seek(item_start)
-                    item_data = []
-                    for x in range(int(0x30 / 4)):
-                        item_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
-                    retained_model2.append(item_data)
-            mys_start = setup_table + 4 + (model2_count * 0x30)
-            ROM_COPY.seek(mys_start)
-            mys_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
-            act_start = mys_start + 4 + (mys_count * 0x24)
-            ROM_COPY.seek(act_start)
-            act_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
-            act_end = act_start + 4 + (act_count * 0x38)
-            other_retained_data = []
-            ROM_COPY.seek(mys_start)
-            for x in range(int((act_end - mys_start) / 4)):
-                other_retained_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
-            # Reconstruct setup file
-            ROM_COPY.seek(setup_table)
-            ROM_COPY.writeMultipleBytes(len(retained_model2), 4)
-            for item in retained_model2:
-                for data in item:
-                    ROM_COPY.writeMultipleBytes(data, 4)
-            for data in other_retained_data:
+    if spoiler.settings.portal_numbers:
+        return
+    ROM_COPY = LocalROM()
+    for cont_map_id in range(216):
+        setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+        # Filter Setup
+        ROM_COPY.seek(setup_table)
+        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        retained_model2 = []
+        for item in range(model2_count):
+            item_start = setup_table + 4 + (item * 0x30)
+            ROM_COPY.seek(item_start + 0x28)
+            item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if cont_map_id == 0x2A or item_type != 0x2AB:
+                ROM_COPY.seek(item_start)
+                item_data = []
+                for x in range(int(0x30 / 4)):
+                    item_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+                retained_model2.append(item_data)
+        mys_start = setup_table + 4 + (model2_count * 0x30)
+        ROM_COPY.seek(mys_start)
+        mys_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        act_start = mys_start + 4 + (mys_count * 0x24)
+        ROM_COPY.seek(act_start)
+        act_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        act_end = act_start + 4 + (act_count * 0x38)
+        other_retained_data = []
+        ROM_COPY.seek(mys_start)
+        for x in range(int((act_end - mys_start) / 4)):
+            other_retained_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+        # Reconstruct setup file
+        ROM_COPY.seek(setup_table)
+        ROM_COPY.writeMultipleBytes(len(retained_model2), 4)
+        for item in retained_model2:
+            for data in item:
                 ROM_COPY.writeMultipleBytes(data, 4)
+        for data in other_retained_data:
+            ROM_COPY.writeMultipleBytes(data, 4)
 
 
 def place_door_locations(spoiler):
@@ -513,3 +517,110 @@ def place_door_locations(spoiler):
                         cam_angle = int(255 * (cam_raw_angle / 360))
                         ROM_COPY.writeMultipleBytes(angle, 1)
                         ROM_COPY.writeMultipleBytes(cam_angle, 1)
+
+
+cs_advancements = {
+    1: 10,
+    2: 12,
+    3: 16,
+    10: 18,
+    15: 18,
+    16: 18,
+    12: 6,
+}
+
+modifications = {
+    0x1C: {
+        753: Levels.JungleJapes,
+        754: Levels.AngryAztec,
+        755: Levels.FranticFactory,
+        756: Levels.GloomyGalleon,
+        884: Levels.FungiForest,
+        885: Levels.CrystalCaves,
+        886: Levels.CreepyCastle,
+    },
+    Maps.Snide: {
+        44: Levels.HideoutHelm,
+    }
+}
+
+def getStoryDestination(spoiler, level: Levels) -> dict:
+    if level != Levels.HideoutHelm:
+        return spoiler.settings.level_portal_destinations[level]
+    map_id = Maps.HideoutHelm
+    exit_id = 0
+    if Transitions.IslesToHelm in spoiler.shuffled_exit_data:
+        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToHelm]
+        map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
+        exit_id = GetExitId(shuffledBack)
+    if map_id == Maps.HideoutHelm:
+        helm_start = spoiler.settings.helm_setting
+        if helm_start == HelmSetting.default:
+            exit_id = 0
+        elif helm_start == HelmSetting.skip_start:
+            exit_id = 3
+        elif helm_start == HelmSetting.skip_all:
+            exit_id = 4
+    return {
+        "map": map_id,
+        "exit": exit_id,
+    }
+
+def alterStoryCutsceneWarps(spoiler, ROM_COPY: LocalROM):
+    for map_id in modifications:
+        cutscene_start = js.pointer_addresses[TableNames.Cutscenes]["entries"][map_id]["pointing_to"]
+        info_l = 0x30
+        ROM_COPY.seek(cutscene_start)
+        for _ in range(0x18):
+            count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            info_l += (count * 0x12)
+        ROM_COPY.seek(cutscene_start + info_l)
+        base_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        info_l += 2
+        info_l += (base_count * 0x1C)
+        ROM_COPY.seek(cutscene_start + info_l)
+        cutscene_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        info_l += 2
+        for _ in range(cutscene_count):
+            ROM_COPY.seek(cutscene_start + info_l)
+            subcount = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            info_l += 2
+            info_l += (4 * subcount)
+        ROM_COPY.seek(cutscene_start + info_l)
+        point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        point_count_copy = point_count
+        info_l += 2
+        seg_idx = 0
+        while point_count_copy != 0:
+            ROM_COPY.seek(cutscene_start + info_l + 1)
+            command = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            point_count_copy -= 1
+            if command in cs_advancements:
+                info_l += cs_advancements[command]
+            elif command == 4:
+                ROM_COPY.seek(cutscene_start + info_l + 4)
+                cmd_4_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                info_l += 0x20
+                info_l += (0xE * cmd_4_count)
+            elif command == 5:
+                ROM_COPY.seek(cutscene_start + info_l + 4)
+                cmd_5_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                info_l += 0x14
+                info_l += (0x8 * cmd_5_count)
+            elif command == 13:
+                info_l += 4
+                ROM_COPY.seek(cutscene_start + info_l)
+                subcommand = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                if seg_idx in modifications[map_id]:
+                    level = modifications[map_id][seg_idx]
+                    dest = getStoryDestination(spoiler, level)
+                    if subcommand ==  0x22:
+                        # Init Map Change
+                        ROM_COPY.seek(cutscene_start + info_l + 4)
+                        ROM_COPY.writeMultipleBytes(dest["map"], 2)
+                        ROM_COPY.writeMultipleBytes(dest["exit"], 2)
+                info_l += 12
+            else:
+                point_count_copy += 1
+                info_l += 4
+            seg_idx += 1
