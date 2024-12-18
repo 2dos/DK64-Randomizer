@@ -1189,6 +1189,9 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             # DK Phase sometimes needs blast and always needs climbing, but the climbing isn't relevant unless it's shuffled
             if not spoiler.settings.cannons_require_blast and Types.Climbing not in spoiler.settings.shuffled_location_types:
                 expectedEmptyPathPhases.append(Maps.KroolDonkeyPhase)
+            # If your training moves are unshuffled, they don't end up on paths. All the Barrels-only bosses no longer have any path requirements.
+            if spoiler.settings.training_barrels == TrainingBarrels.normal:
+                expectedEmptyPathPhases.extend([Maps.JapesBoss, Maps.AztecBoss, Maps.CavesBoss])
             if goal not in expectedEmptyPathPhases:
                 raise Ex.FillException("Rare path calculation error - report this to the devs with your settings string. Error code PL-2")
     for goal, path in spoiler.rap_win_con_paths.items():
