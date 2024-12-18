@@ -2304,7 +2304,7 @@ def applyKongModelSwaps(settings: Settings) -> None:
             if value in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight):
                 fixModelSmallKongCollision(index)
             if value == KongModels.krusha:
-                placeKrushaHead(index)
+                placeKrushaHead(settings, index)
                 if index == Kongs.donkey:
                     fixBaboonBlasts()
                 # Orange Switches
@@ -2552,8 +2552,11 @@ def darkenDPad():
     ROM().writeBytes(px_data)
 
 
-def placeKrushaHead(slot):
+def placeKrushaHead(settings: Settings, slot):
     """Replace a kong's face with the Krusha face."""
+    if settings.colorblind_mode != ColorblindMode.off:
+        return
+
     kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
     unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
     krushaFace64 = getImageFile(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.KrushaFace1 + slot), True, 64, 64, TextureFormat.RGBA5551)
