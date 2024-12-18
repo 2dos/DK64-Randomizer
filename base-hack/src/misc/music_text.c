@@ -22,41 +22,38 @@ void resetDisplayedMusic(void) {
 
 
 void detectSongChange(){
-    char trackChannelsChanged = 0;
-    for(int i = 0; i < 12; i++){
+    char loadedSongCanceled = 0;
+    for(int i = 11; i >= 0; i--){
         if(storedMusicTrackChannel[i] != MusicTrackChannels[i]){
-            // Block song display from occurring in the pause menu
-            // Other instances of this occurring are fair game, maybe even desired
-            if(MusicTrackChannels[i] != 41){
-                // New song was requested to play on this channel
-                // Do record pause music playing, so we know when it stops playing
-                storedMusicTrackChannel[i] = MusicTrackChannels[i];
-                if(MusicTrackChannels[i] != 34){
-                    trackChannelsChanged = 1;
-                }
+            // New song was requested to play on this channel
+            initSongDisplay(MusicTrackChannels[i]);
+            if(MusicTrackChannels[i] == 0 && music_types[storedMusicTrackChannel[i]] == SONGTYPE_BGM){
+                loadedSongCanceled = 1;
+            }
+            storedMusicTrackChannel[i] = MusicTrackChannels[i];
+        } else if(loadedSongCanceled){
+            // An already playing BGM got canceled. This song might have been blocking songs on lower channels from playing
+            // So next song in line that is a BGM will be played.
+            if(music_types[MusicTrackChannels[i]] == SONGTYPE_BGM){
+                initSongDisplay(MusicTrackChannels[i]);
+                // And ignore songs in lower channels. The BGM filter should be enough to make it accurate
+                loadedSongCanceled = 0;
             }
         }
-    }
-    for(int i = 0; i < 12; i++){
         if(trackStateArray[i] != storedTrackState[i]){
             if(trackStateArray[i] == 2 && storedTrackState[i] == 1){
                 // New song has loaded in and has now started
+                // This call is so close to being obsolete, but it covers edge cases where
+                // you enter a level in a location where one BGM has priority over another (Aztec/Galleon tunnel spawn)
                 initSongDisplay(MusicTrackChannels[i]);
             }
             storedTrackState[i] = trackStateArray[i];
-        } else if(trackStateArray[i] == 2 && trackChannelsChanged){
-            // Song that was newly requested was already loaded in and has now started
-            initSongDisplay(MusicTrackChannels[i]);
         }
     }
 }
 
 void initSongDisplay(int song) {
     if (song == 0) {
-        return;
-    }
-    if (song == 34) {
-        // Block it from occurring in the pause menu, cause text overload
         return;
     }
     if (music_types[song] != SONGTYPE_BGM) {
