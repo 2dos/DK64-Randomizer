@@ -2312,7 +2312,32 @@ def applyKongModelSwaps(settings: Settings) -> None:
                 base_im = getImageFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
                 orange_im = getImageFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
                 if settings.colorblind_mode == ColorblindMode.off:
-                    orange_im = maskImageWithColor(orange_im, (0, 150, 0))
+                    match index:
+                        case Kongs.donkey:
+                            color_r = 255
+                            color_g = 224
+                            color_b = 8
+                        case Kongs.diddy:
+                            color_r = 255
+                            color_g = 48
+                            color_b = 32
+                        case Kongs.lanky:
+                            color_r = 40
+                            color_g = 168
+                            color_b = 255
+                        case Kongs.tiny:
+                            color_r = 216
+                            color_g = 100
+                            color_b = 248
+                        case Kongs.chunky:
+                            color_r = 0
+                            color_g = 255
+                            color_b = 0
+                        case _:
+                            color_r = 100
+                            color_g = 255
+                            color_b = 60
+                    orange_im = maskImageWithColor(orange_im, (color_r, color_g, color_b))
                 else:
                     orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
                 dim_length = int(32 * ORANGE_SCALING)
@@ -4117,6 +4142,7 @@ boot_phrases = (
     "Enforcing the law of the Jungle",
     "Saving 20 frames",
     "Reporting bugs. Unlike some",
+    "Color-coding Krusha for convenience",
 )
 
 crown_heads = (
