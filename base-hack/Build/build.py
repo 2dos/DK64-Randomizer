@@ -2188,16 +2188,6 @@ with open(newROMName, "r+b") as fh:
         "win_con_logo",
         "25y_mipped",
         "y25_small",
-        "krusha_head_1_64",
-        "krusha_head_2_64",
-        "krusha_head_3_64",
-        "krusha_head_4_64",
-        "krusha_head_5_64",
-        "krusha_head_1_32",
-        "krusha_head_2_32",
-        "krusha_head_3_32",
-        "krusha_head_4_32",
-        "krusha_head_5_32",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
