@@ -14,7 +14,6 @@ from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import KasplatRandoSetting
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
-from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.Plandomizer import (
     CrownLocationEnumList,
@@ -314,19 +313,16 @@ def hint_text_validation_fn(hintString: str) -> str:
 # BINDINGS #
 ############
 
-startingMoveValues = [str(item.value) for item in StartingMoveOptions]
 
-
-@bindList("click", startingMoveValues, prefix="none-")
-@bindList("click", startingMoveValues, prefix="start-")
-@bindList("click", startingMoveValues, prefix="random-")
+@bindList("click", [str(i) for i in range(1, 6)], prefix="starting_moves_list_mover_")
+@bindList("change", [str(i) for i in range(1, 6)], prefix="starting_moves_list_count_")
 @bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
 @bindList("change", CrownLocationEnumList, prefix="plando_", suffix="_location_reward")
 @bindList("change", KasplatLocationEnumList, prefix="plando_", suffix="_location_reward")
-@bindList("change", [f"patch_{i}" for i in range(0, 16)], prefix="plando_", suffix="_location_reward")
-@bindList("change", [f"fairy_{i}" for i in range(0, 20)], prefix="plando_", suffix="_location_reward")
-@bindList("change", [f"crate_{i}" for i in range(0, 13)], prefix="plando_", suffix="_location_reward")
+@bindList("change", [str(i) for i in range(0, 16)], prefix="plando_patch_", suffix="_location_reward")
+@bindList("change", [str(i) for i in range(0, 20)], prefix="plando_fairy_", suffix="_location_reward")
+@bindList("change", [str(i) for i in range(0, 13)], prefix="plando_crate_", suffix="_location_reward")
 @bind("change", "plando_place_arenas")
 @bind("change", "plando_place_patches")
 @bind("change", "plando_place_fairies")
@@ -339,17 +335,27 @@ def validate_item_limits(evt):
     count_dict = count_items()
     # Add in starting moves, which also count toward the totals.
     startingMoveSet = set()
-    for startingMove in StartingMoveOptions:
-        startingMoveElem = js.document.getElementById(f"start-{str(startingMove.value)}")
-        if startingMoveElem.checked:
-            plandoMove = ItemToPlandoItemMap[startingMove]
-            startingMoveSet.add(plandoMove)
-            if plandoMove in count_dict:
-                # Add in None, so we don't attempt to mark a nonexistent
-                # element.
-                count_dict[plandoMove].append(None)
-            else:
-                count_dict[plandoMove] = [None]
+    # Look at every list, and if any list will have all of its items given,
+    # add those moves to the set.
+    for i in range(1, 6):
+        moveListElem = js.document.getElementById(f"starting_moves_list_{i}")
+        moveCountElem = js.document.getElementById(f"starting_moves_list_count_{i}")
+        givenMoveCount = int(moveCountElem.value)
+        listedMoveCount = 0
+        for opt in moveListElem.options:
+            if not opt.hidden:
+                listedMoveCount += 1
+        if givenMoveCount == listedMoveCount:
+            for opt in moveListElem.options:
+                moveId = re.search("^starting_move_(.+)$", opt.id)[1]
+                plandoMove = ItemToPlandoItemMap[Items(int(moveId))]
+                startingMoveSet.add(plandoMove)
+                if plandoMove in count_dict:
+                    # Add in None, so we don't attempt to mark a nonexistent
+                    # element.
+                    count_dict[plandoMove].append(None)
+                else:
+                    count_dict[plandoMove] = [None]
     for item, locations in count_dict.items():
         if item not in PlannableItemLimits:
             for loc in locations:
@@ -363,7 +369,7 @@ def validate_item_limits(evt):
         itemMax = PlannableItemLimits[item]
         if itemCount > itemMax:
             maybePluralTimes = "time" if itemMax == 1 else "times"
-            maybeStartingMoves = " (This includes starting moves.)" if None in locations else ""
+            maybeStartingMoves = " (This includes guaranteed starting moves.)" if None in locations else ""
             errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.{maybeStartingMoves}'
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
@@ -1423,15 +1429,25 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
         count_item(crate["reward"])
     # Add in starting moves, which also count toward the totals.
     startingMoveSet = set()
-    for startingMove in StartingMoveOptions:
-        startingMoveElem = js.document.getElementById(f"start-{str(startingMove.value)}")
-        if startingMoveElem.checked:
-            plandoMove = ItemToPlandoItemMap[startingMove]
-            startingMoveSet.add(plandoMove)
-            if plandoMove in count_dict:
-                count_dict[plandoMove] += 1
-            else:
-                count_dict[plandoMove] = 1
+    # Look at every list, and if any list will have all of its items given,
+    # add those moves to the set.
+    for i in range(1, 6):
+        moveListElem = js.document.getElementById(f"starting_moves_list_{i}")
+        moveCountElem = js.document.getElementById(f"starting_moves_list_count_{i}")
+        givenMoveCount = int(moveCountElem.value)
+        listedMoveCount = 0
+        for opt in moveListElem.options:
+            if not opt.hidden:
+                listedMoveCount += 1
+        if givenMoveCount == listedMoveCount:
+            for opt in moveListElem.options:
+                moveId = re.search("^starting_move_(.+)$", opt.id)[1]
+                plandoMove = ItemToPlandoItemMap[Items(int(moveId))]
+                startingMoveSet.add(plandoMove)
+                if plandoMove in count_dict:
+                    count_dict[plandoMove] += 1
+                else:
+                    count_dict[plandoMove] = 1
     # If any items have exceeded their maximum amounts, add an error.
     for item, itemCount in count_dict.items():
         if item not in PlannableItemLimits:
@@ -1441,7 +1457,7 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
             maybePluralTimes = "time" if itemMax == 1 else "times"
             errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.'
             if item in startingMoveSet:
-                errString += " (This includes starting moves.)"
+                errString += " (This includes guaranteed starting moves.)"
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             errList.append(errString)
