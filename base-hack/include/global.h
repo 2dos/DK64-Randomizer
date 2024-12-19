@@ -194,6 +194,7 @@ extern void initDingSprite(void);
 extern void fastWarpShockwaveFix(void);
 extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
+extern void detectSongChange();
 extern int getTotalCBCount(void);
 
 extern void swapKremlingModel(void);
@@ -460,6 +461,7 @@ extern sprite_data_struct pearl_sprite;
 extern sprite_data_struct krool_sprite;
 extern sprite_data_struct feather_gun_sprite;
 extern sprite_data_struct fool_overlay_sprite;
+extern sprite_data_struct company_coin_sprite;
 
 extern actor_behaviour_def actor_defs[DEFS_LIMIT];
 extern void* actor_functions[ACTOR_LIMIT];

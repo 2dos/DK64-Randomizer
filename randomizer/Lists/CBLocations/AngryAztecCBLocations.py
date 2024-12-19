@@ -735,6 +735,7 @@ ColoredBananaGroupList = [
         name="Bunches on patch of sand between Llama temple and W2-3-4 (accessible by jumping from nearby tree)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
+        logic=lambda l: l.climbing or l.jetpack,
         locations=[[5, 1.0, 3315, 268, 3168], [5, 1.0, 3369, 283, 3114]],
     ),
     ColoredBananaGroup(

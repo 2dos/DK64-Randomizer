@@ -992,7 +992,9 @@
       "shuffled_jetpac_enemies": 0.2,
       "lower_max_refill_amounts": 0.5,
       "strict_helm_timer": 0.2,
-      "angry_caves": 0.05
+      "angry_caves": 0.05,
+      "donk_in_the_dark_world": 0,
+      "donk_in_the_sky": 0
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
@@ -1467,7 +1469,9 @@
       "shuffled_jetpac_enemies": 0.2,
       "lower_max_refill_amounts": 0.5,
       "strict_helm_timer": 0.2,
-      "angry_caves": 0.05
+      "angry_caves": 0.05,
+      "donk_in_the_dark_world": 0,
+      "donk_in_the_sky": 0
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,

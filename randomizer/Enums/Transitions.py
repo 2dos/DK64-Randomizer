@@ -121,6 +121,8 @@ class Transitions(IntEnum):
     GalleonTreasureToChest = auto()
     GalleonChestToTreasure = auto()
     GalleonMainToBBlast = auto()
+    GalleonShipyardToMechFish = auto()
+    GalleonMechFishToShipyard = auto()
 
     # Fungi Forest Exits
     ForestMainToCarts = auto()

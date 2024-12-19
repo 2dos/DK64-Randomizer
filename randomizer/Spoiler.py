@@ -996,12 +996,12 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
             humanspoiler["Wrinkly Hints"] = human_hint_list
-            humanspoiler["Unhinted Score"] = self.unhinted_score
-            humanspoiler["Potentially Awful Locations"] = {}
-            for location_description in self.poor_scoring_locations:
-                humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
-            if hasattr(self, "hint_swap_advisory"):
-                humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
+            # humanspoiler["Unhinted Score"] = self.unhinted_score
+            # humanspoiler["Potentially Awful Locations"] = {}
+            # for location_description in self.poor_scoring_locations:
+            #     humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
+            # if hasattr(self, "hint_swap_advisory"):
+            #     humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:
@@ -1045,13 +1045,13 @@ class Spoiler:
                     vanillaBack = exit.back
                     shuffledBack = ShufflableExits[exit.shuffledId].back
                     self.shuffled_exit_data[key] = shuffledBack
-                    containerMapId = GetMapId(exit.region)
+                    containerMapId = GetMapId(self.settings, exit.region)
                     if containerMapId not in containerMaps:
                         containerMaps[containerMapId] = {"container_map": containerMapId, "zones": []}  # DK Isles
                     loading_zone_mapping = {}
-                    loading_zone_mapping["vanilla_map"] = GetMapId(vanillaBack.regionId)
+                    loading_zone_mapping["vanilla_map"] = GetMapId(self.settings, vanillaBack.regionId)
                     loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)
-                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack.regionId)
+                    loading_zone_mapping["new_map"] = GetMapId(self.settings, shuffledBack.regionId)
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:

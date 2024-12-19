@@ -42,6 +42,7 @@
 .importobj "obj/src_misc_cutscene_remove.o"
 .importobj "obj/src_misc_enemies.o"
 .importobj "obj/src_misc_enemy_drop_table.o"
+.importobj "obj/src_misc_exit_parser.o"
 .importobj "obj/src_misc_file_screen.o"
 .importobj "obj/src_misc_hard_mode.o"
 .importobj "obj/src_misc_helm_hurry.o"

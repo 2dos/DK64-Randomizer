@@ -37,6 +37,39 @@ def intToArr(val, size):
     return arr
 
 
+def getOneByteExit(back):
+    """Convert 'getExitId' output to something acceptable to write to a 1-byte value."""
+    value = GetExitId(back)
+    if value < 0:
+        return value + 0x100
+    return value
+
+
+def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla_exit: int) -> dict:
+    """Create the LZR Entrance dict for a locally stored entrance."""
+    if transition in spoiler.shuffled_exit_data:
+        shuffledBack = spoiler.shuffled_exit_data[transition]
+        return {
+            "map": GetMapId(spoiler.settings, shuffledBack.regionId),
+            "exit": GetExitId(shuffledBack),
+        }
+    return {
+        "map": vanilla_map,
+        "exit": vanilla_exit,
+    }
+
+
+def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: int, vanilla_map: Maps, vanilla_exit: int):
+    """Write LZREntrance struct to ROM."""
+    ROM_COPY.seek(spoiler.settings.rom_data + offset)
+    data = getEntranceDict(spoiler, transition, vanilla_map, vanilla_exit)
+    exit_id = data["exit"]
+    if exit_id < 0:
+        exit_id += 0x100
+    ROM_COPY.write(data["map"])
+    ROM_COPY.write(exit_id & 0xFF)
+
+
 def randomize_entrances(spoiler):
     """Randomize Entrances based on shuffled_exit_instructions."""
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
@@ -78,30 +111,10 @@ def randomize_entrances(spoiler):
         moreLoadingZonesOffset = 0x05D
         ROM_COPY.seek(varspaceOffset + moreLoadingZonesOffset)
         ROM_COPY.write(1)
-        # /* 0x05E */ unsigned short aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.AztecMainToRace]
-        ROM_COPY.seek(varspaceOffset + 0x5E)
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x06A */ unsigned short seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.GalleonLighthouseAreaToSickBay]
-        ROM_COPY.seek(varspaceOffset + 0x6A)
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x06C */ unsigned short fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        ROM_COPY.seek(varspaceOffset + 0x6C)
-        if Transitions.ForestMainToCarts in spoiler.shuffled_exit_data:
-            shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestMainToCarts]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
-            ROM_COPY.write(GetExitId(shuffledBack))
-        else:
-            ROM_COPY.write(Maps.ForestMinecarts)
-            ROM_COPY.write(0)
-        # /* 0x074 */ unsigned short castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        ROM_COPY.seek(varspaceOffset + 0x74)
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesMainToCastleLobby]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
+        writeEntrance(ROM_COPY, spoiler, Transitions.AztecMainToRace, 0x5E, Maps.AztecTinyRace, 0)
+        writeEntrance(ROM_COPY, spoiler, Transitions.GalleonLighthouseAreaToSickBay, 0x6A, Maps.GalleonSickBay, 0)
+        writeEntrance(ROM_COPY, spoiler, Transitions.ForestMainToCarts, 0x6C, Maps.ForestMinecarts, 0)
+        writeEntrance(ROM_COPY, spoiler, Transitions.IslesMainToCastleLobby, 0x74, Maps.CreepyCastleLobby, 0)
         # /* 0x078 */ unsigned short exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         enter_transitions = [
             Transitions.IslesToJapes,
@@ -130,22 +143,23 @@ def randomize_entrances(spoiler):
                 ROM_COPY.write(1)
             else:
                 shuffledBack = spoiler.shuffled_exit_data[transition]
-                ROM_COPY.write(GetMapId(shuffledBack.regionId))
-                ROM_COPY.write(GetExitId(shuffledBack))
+                ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
+                ROM_COPY.write(getOneByteExit(shuffledBack))
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        for transition in enter_transitions:
+        for world_index, transition in enumerate(enter_transitions):
             shuffledBack = spoiler.shuffled_exit_data[transition]
-            ROM_COPY.write(GetMapId(shuffledBack.regionId))
-            ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x120 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleBallroomToMuseum]
-        ROM_COPY.seek(varspaceOffset + 0x130)
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
-        # /* 0x122 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleMuseumToBallroom]
-        ROM_COPY.write(GetMapId(shuffledBack.regionId))
-        ROM_COPY.write(GetExitId(shuffledBack))
+            map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
+            exit_id = GetExitId(shuffledBack)
+            spoiler.settings.level_portal_destinations[world_index] = {
+                "map": map_id,
+                "exit": exit_id,
+            }
+        writeEntrance(ROM_COPY, spoiler, Transitions.CastleBallroomToMuseum, 0x130, Maps.CastleMuseum, 2)
+        writeEntrance(ROM_COPY, spoiler, Transitions.CastleBallroomToMuseum, 0x132, Maps.CastleBallroom, 1)
+        # Mech Fish Entrance
+        spoiler.settings.mech_fish_entrance = getEntranceDict(spoiler, Transitions.GalleonShipyardToMechFish, Maps.GalleonMechafish, 0)
+        # Mech Fish Exit
+        writeEntrance(ROM_COPY, spoiler, Transitions.GalleonMechFishToShipyard, 0x32, Maps.GloomyGalleon, 34)
 
 
 banned_filtration = (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide, Maps.HideoutHelm)

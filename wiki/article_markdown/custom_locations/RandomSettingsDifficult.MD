@@ -53,15 +53,15 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Shuffle Boss Kong Required: 50%
 - Boss Location Rando: 80%
 - Randomize CB Locations: 60%
-- Randomized CB Levels: 
-	- Jungle Japes: 90%
-	- Angry Aztec: 90%
-	- Frantic Factory: 90%
-	- Gloomy Galleon: 90%
-	- Fungi Forest: 90%
-	- Crystal Caves: 90%
-	- Creepy Castle: 90%
-	- DK Isles: 50%
+- Cb Rando List Selected: 
+	- Junglejapes: 90%
+	- Angryaztec: 90%
+	- Franticfactory: 90%
+	- Gloomygalleon: 90%
+	- Fungiforest: 90%
+	- Crystalcaves: 90%
+	- Creepycastle: 90%
+	- Dkisles: 50%
 - Chaos B. Lockers: 60%
 - Chaos Ratio: Between 25 and 70, usually close to 40
 - Chunky Phase Slam Requirement: 
@@ -143,6 +143,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Lower Max Refill Amounts: 50%
 	- Strict Helm Timer: 20%
 	- Angry Caves: 5%
+	- Donk In The Dark World: 0%
+	- Donk In The Sky: 0%
 - Hard Shooting: 50%
 - Hard Troff n' Scoff: 50%
 - Helm Hurry Mode: 5%

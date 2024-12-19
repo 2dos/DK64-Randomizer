@@ -19,7 +19,7 @@ from model_port import loadNewModels
 # Patcher functions for the extracted files
 from patch_text import writeNoExpPakMessages
 import portal_instance_script
-from adjust_exits import adjustExits
+from adjust_exits import adjustExits, addMechFishLZ
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
@@ -917,7 +917,20 @@ for x in range(6):
     )
 file_dict.append(File(name="Fungi Geometry", pointer_table_index=TableNames.MapGeometry, file_index=Maps.Fungi, source_file="geo_fungi.bin", target_compressed_size=0x1A558))
 for x in range(221):
-    file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
+    if x == Maps.GalleonMechFish:
+        file_dict.append(
+            File(
+                name=f"Zones for map {x}",
+                pointer_table_index=TableNames.Triggers,
+                file_index=x,
+                source_file="mech_fish_triggers.bin",
+                target_compressed_size=0x850,
+                do_not_recompress=True,
+                do_not_extract=True,
+            )
+        )
+    else:
+        file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
 # Setup
 setup_expansion_size = 0x2580
 for x in range(221):
@@ -1111,6 +1124,28 @@ for x in range(12):
             file_index=getBonusSkinOffset(ExtraTextures.BeanSpin01 + x),
             source_file=f"assets/bean_spin/f{x + 1}a_64_32.png",
             texture_format=TextureFormat.RGBA5551,
+        )
+    )
+
+
+for x in range(5):
+    file_dict.append(
+        File(
+            name=f"Krusha Head {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.KrushaFace1 + x),
+            source_file=f"assets/displays/krusha_head_{x + 1}_64.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
+    file_dict.append(
+        File(
+            name=f"Krusha Head 32 {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.KrushaFace321 + x),
+            source_file=f"assets/displays/krusha_head_{x + 1}_32.png",
+            texture_format=TextureFormat.RGBA32,
+            target_compressed_size=32 * 32 * 4,
         )
     )
 
@@ -1584,12 +1619,23 @@ for index, text in enumerate(text_files):
         data.do_not_recompress = True
     file_dict.append(data)
 
+addMechFishLZ()
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
 
 for x in range(216):
     if os.path.exists(f"exit{x}.bin"):
-        file_dict.append(File(name=f"Map {x} Exits", pointer_table_index=TableNames.Exits, file_index=x, source_file=f"exit{x}.bin", do_not_compress=True, do_not_delete_source=True))
+        file_dict.append(
+            File(
+                name=f"Map {x} Exits",
+                pointer_table_index=TableNames.Exits,
+                file_index=x,
+                source_file=f"exit{x}.bin",
+                do_not_compress=True,
+                do_not_delete_source=True,
+                do_not_extract=True,
+            )
+        )
 
 # Force all geo files to not be compressed
 expanded_tables = {
@@ -2142,6 +2188,16 @@ with open(newROMName, "r+b") as fh:
         "win_con_logo",
         "25y_mipped",
         "y25_small",
+        "krusha_head_1_64",
+        "krusha_head_2_64",
+        "krusha_head_3_64",
+        "krusha_head_4_64",
+        "krusha_head_5_64",
+        "krusha_head_1_32",
+        "krusha_head_2_32",
+        "krusha_head_3_32",
+        "krusha_head_4_32",
+        "krusha_head_5_32",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

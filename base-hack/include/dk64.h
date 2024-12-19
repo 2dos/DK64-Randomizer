@@ -93,6 +93,7 @@ extern int cstring_strlen(char* str);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
+extern void handleRaisedGalleonWater(maps map);
 extern int getParentDataIndex(int map);
 extern void WarpToDKTV(void);
 extern void initHelmTimer(void);
@@ -676,6 +677,8 @@ extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
 extern short songData[SONG_COUNT];
+extern short trackStateArray[12];
+extern char songInWriteSlot[4];
 extern short songVolumes[SONG_COUNT];
 extern int* compactSequencePlayers[4];
 extern unsigned int DKTVData[5];
@@ -797,6 +800,9 @@ extern rgba KongRGBA[5];
 extern char_spawner_paad* ActorPaad;
 extern float unkFloatArray[7];
 extern float BackflipVelArray[7];
+
+extern SingleExitStruct DefaultExit;
+extern FogData EnvironmentFog;
 
 //hack data
 extern int TestVariable;

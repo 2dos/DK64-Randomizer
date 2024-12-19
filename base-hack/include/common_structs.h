@@ -1739,7 +1739,7 @@ typedef struct RandomSwitchesSetting {
 
 typedef struct LZREntrance {
 	/* 0x000 */ unsigned char map;
-	/* 0x001 */ unsigned char exit;
+	/* 0x001 */ char exit;
 } LZREntrance;
 
 typedef struct ROMFlags {
@@ -2329,3 +2329,29 @@ typedef struct move_overlay_paad {
 	/* 0x090 */ int timer;
 	/* 0x094 */ actorData* shop_owner;
 } move_overlay_paad;
+
+typedef struct SingleExitStruct {
+    /* 0x000 */ short x;
+    /* 0x002 */ short y;
+    /* 0x004 */ short z;
+    /* 0x006 */ unsigned char player_angle;
+    /* 0x007 */ unsigned char camera_angle;
+    /* 0x008 */ unsigned char autowalk;
+    /* 0x009 */ unsigned char size;
+} SingleExitStruct;
+
+typedef struct FogMapping {
+	/* 0x000 */ rgb rgb;
+	/* 0x003 */ unsigned char map_index;
+	/* 0x004 */ short fog_entry;
+	/* 0x006 */ short fog_cap;
+} FogMapping;
+
+typedef struct FogData {
+	/* 0x000 */ unsigned char enabled;
+	/* 0x001 */ rgb rgb;
+	/* 0x004 */ unsigned char opacity;
+	/* 0x005 */ char pad5;
+	/* 0x006 */ short entry_range;
+	/* 0x008 */ short cap_range;
+} FogData;

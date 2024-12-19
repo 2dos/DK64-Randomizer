@@ -53,6 +53,7 @@ static char* items[] = {
     "ANTHILL SECOND REWARD",
     "TREASURE CHEST CLAMS",
     "DIRT PATCHES",
+    "WRINKLY DOORS",
     "MELON CRATES",
 };
 static char* raw_items[] = {
@@ -68,13 +69,67 @@ static char* raw_items[] = {
     "BEAN",
     "PEARLS",
     "RAINBOW COINS",
+    "HINTS",
     "JUNK ITEMS",
 };
 
 static char check_level = 0;
 static char level_check_text[0x18] = "";
 
-static unsigned char check_data[2][9][CHECK_TERMINATOR] = {}; // 8 items, 9 levels, numerator + denominator
+typedef struct CheckDataLevelStruct {
+    unsigned char level[9];
+} CheckDataLevelStruct;
+
+typedef struct CheckDataTypeStruct {
+    CheckDataLevelStruct type[CHECK_TERMINATOR];
+} CheckDataTypeStruct;
+
+typedef struct CheckDataStruct {
+    CheckDataTypeStruct numerator;
+    CheckDataTypeStruct denominator;
+} CheckDataStruct;
+
+// 7 main levels, isles, helm
+static CheckDataStruct check_data = {
+    .denominator = {
+        .type[CHECK_GB] =      {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
+        .type[CHECK_CROWN] =   {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
+        .type[CHECK_KEY] =     {.level = {1, 1, 1, 1, 1, 1, 1, 0, 1}},
+        .type[CHECK_MEDAL] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 5}},
+        .type[CHECK_RWCOIN] =  {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_FAIRY] =   {.level = {2, 2, 2, 2, 2, 2, 2, 4, 2}},
+        .type[CHECK_NINCOIN] = {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BP] =      {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
+        .type[CHECK_KONG] =    {.level = {5, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BEAN] =    {.level = {0, 0, 0, 0, 1, 0, 0, 0, 0}},
+        .type[CHECK_PEARLS] =  {.level = {0, 0, 0, 5, 0, 0, 0, 0, 0}},
+        .type[CHECK_RAINBOW] = {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_HINTS] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
+        .type[CHECK_CRATE] =   {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+    }
+};
+
+void initItemCheckDenominators(void) {
+    if (Rando.isles_cb_rando) {
+        check_data.denominator.type[CHECK_MEDAL].level[LEVEL_ISLES] = 5;
+    }
+    for (int lvl = 0; lvl < 9; lvl++) {
+        int rainbow_count = 0;
+        int crate_count = 0;
+        for (int k = 0; k < 16; k++) {
+            if (k < 13) {
+                if (getCrateWorld(k) == lvl) {
+                    crate_count += 1;
+                }
+            }
+            if (getPatchWorld(k) == lvl) {
+                rainbow_count += 1;
+            }
+        }
+        check_data.denominator.type[CHECK_RAINBOW].level[lvl] = rainbow_count;
+        check_data.denominator.type[CHECK_CRATE].level[lvl] = crate_count;
+    }
+}
 
 void checkItemDB(void) {
     /**
@@ -92,106 +147,25 @@ void checkItemDB(void) {
     for (int i = 0; i < CHECK_TERMINATOR; i++) {
         // Wipe data upon every search
         for (int j = 0; j < 9; j++) {
-            check_data[0][j][i] = 0;
-            check_data[1][j][i] = 0;
+            check_data.numerator.type[i].level[j] = 0;
         }
         // Check FLUT
         for (int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
             if (item_db[k].type == i) {
-                int search_flag = item_db[k].flag;
                 int lvl = item_db[k].associated_level;
-                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
+                check_data.numerator.type[i].level[lvl] += checkFlag(item_db[k].flag, FLAGTYPE_PERMANENT);
             }
         }
         // Check Rainbow Flags
-        if (i == CHECK_RAINBOW) {
-            for (int k = 0; k < 16; k++) {
-                int search_flag = FLAG_RAINBOWCOIN_0 + k;
-                int lvl = getPatchWorld(k);
-                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
+        for (int k = 0; k < 35; k++) {
+            if (k < 16)  {
+                if (k < 13) {
+                    check_data.numerator.type[CHECK_CRATE].level[getCrateWorld(k)] += checkFlag(FLAG_MELONCRATE_0 + k, FLAGTYPE_PERMANENT);
+                }
+                check_data.numerator.type[CHECK_RAINBOW].level[getPatchWorld(k)] += checkFlag(FLAG_RAINBOWCOIN_0 + k, FLAGTYPE_PERMANENT);
             }
-        } else if (i == CHECK_CRATE) {
-            for (int k = 0; k < 13; k++) {
-                int search_flag = FLAG_MELONCRATE_0 + k;
-                int lvl = getCrateWorld(k);
-                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
-            }
-        }
-        // Get Denominator
-        for (int j = 0; j < 9; j++) {
-            int denominator = 0;
-            switch (i) {
-                case CHECK_GB:
-                    if (j < 8) {
-                        if (j == 7) {
-                            denominator = 21;
-                        } else {
-                            denominator = 20;
-                        }
-                    }
-                    break;
-                case CHECK_CROWN:
-                    if (j == 7) {
-                        denominator = 2;
-                    } else {
-                        denominator = 1;
-                    }
-                    break;
-                case CHECK_KEY:
-                    if (j != 7) {
-                        denominator = 1;
-                    }
-                    break;
-                case CHECK_MEDAL:
-                    if ((j != 7) || (Rando.isles_cb_rando)) {
-                        denominator = 5;
-                    }
-                    break;
-                case CHECK_RWCOIN:
-                case CHECK_NINCOIN:
-                    check_data[1][0][i] = 1;
-                    break;
-                case CHECK_FAIRY:
-                    if (j == 7) {
-                        denominator = 4;
-                    } else {
-                        denominator = 2;
-                    }
-                    break;
-                case CHECK_BP:
-                    if (j < 8) {
-                        denominator = 5;
-                    }
-                    break;
-                case CHECK_KONG:
-                    check_data[1][0][i] = 5;
-                    break;
-                case CHECK_BEAN:
-                    if (j == 4) {
-                        denominator = 1;
-                    }
-                    break;
-                case CHECK_PEARLS:
-                    if (j == 3) {
-                        denominator = 5;
-                    }
-                    break;
-                case CHECK_RAINBOW:
-                    for (int k = 0; k < 16; k++) {
-                        if (getPatchWorld(k) == j) {
-                            denominator += 1;
-                        }
-                    }
-                    break;
-                case CHECK_CRATE:
-                    for (int k = 0; k < 13; k++) {
-                        if (getCrateWorld(k) == j) {
-                            denominator += 1;
-                        }
-                    }
-                break;
-            }
-            check_data[1][j][i] = denominator;
+            int hint_level = k / 5;
+            check_data.numerator.type[CHECK_HINTS].level[hint_level] += checkFlag(FLAG_WRINKLYVIEWED + k, FLAGTYPE_PERMANENT);
         }
     }
 }
@@ -281,8 +255,8 @@ Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk
         if (check_level == 0) {
             // All
             for (int i = 0; i < 9; i++) {
-                top_num += check_data[0][i][item_index];
-                bottom_num += check_data[1][i][item_index];
+                top_num += check_data.numerator.type[item_index].level[i];
+                bottom_num += check_data.denominator.type[item_index].level[i];
             }
         } else {
             int lvl = check_level - 1;
@@ -290,8 +264,8 @@ Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk
                 // Nin/RW Coin, Kongs
                 lvl = 0;
             }
-            top_num = check_data[0][lvl][item_index];
-            bottom_num = check_data[1][lvl][item_index];
+            top_num = check_data.numerator.type[item_index].level[lvl];
+            bottom_num = check_data.denominator.type[item_index].level[lvl];
         }
         return printOutOfCounter(x, y, top_num, bottom_num, dl, unk0, scale);
     }
@@ -352,5 +326,6 @@ void initPauseMenu(void) {
      */
     
     initCarousel_onBoot();
+    initItemCheckDenominators();
     initHintFlags();
 }

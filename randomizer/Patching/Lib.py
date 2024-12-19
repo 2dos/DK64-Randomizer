@@ -1141,7 +1141,7 @@ class Holidays(IntEnum):
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
-    is_offseason = True
+    is_offseason = False
     if is_offseason:
         return settings.holiday_setting_offseason
     return settings.holiday_setting
@@ -1150,7 +1150,7 @@ def getHolidaySetting(settings):
 def getHoliday(settings):
     """Get the holiday experienced."""
     if getHolidaySetting(settings):
-        return Holidays.Anniv25
+        return Holidays.Christmas
     return Holidays.no_holiday
 
 

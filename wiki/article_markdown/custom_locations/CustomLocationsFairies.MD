@@ -83,7 +83,7 @@
 # Fungi Forest
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Forest Thornvine Barn | Thornvine Barn | `l.isdonkey and l.Slam and l.camera` | 
+| Forest Thornvine Barn | Thornvine Barn | `l.isdonkey and l.Slam and l.camera and l.climbing` | 
 | Forest Rafters | Dark Rafters | `l.guitar and l.isdiddy and l.camera` | 
 | Fungi Forest | Above Blue Tunnel | `l.camera` | 
 | Fungi Forest | Above the Clock | `l.camera` | 

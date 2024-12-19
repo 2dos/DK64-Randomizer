@@ -2017,10 +2017,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                     Types.Candy,
                     Types.Constant,
                     Types.IslesMedal,
+                    Types.Climbing,
                 ):
                     continue
                 region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
-                woth_map = GetMapId(region_id)
+                woth_map = GetMapId(spoiler.settings, region_id)
             # Ignore the main map of each level, these should be fairly straightforward to find - mind the exceptions!
             main_level_maps = (
                 Maps.Isles,
@@ -2064,7 +2065,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 entrances_sourced_from_connectors = []
                 for transitionId in connected_entrances:
                     exit = ShufflableExits[transitionId]
-                    sourceMap = GetMapId(exit.region)
+                    sourceMap = GetMapId(spoiler.settings, exit.region)
                     # If this location's source is a connector, note it down to find a transition to a non-connector map
                     if sourceMap in connector_maps.keys() and exit.region in connector_maps[sourceMap]:
                         entrances_sourced_from_connectors.append(transitionId)
@@ -2077,7 +2078,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     # Repeat the same process as we did for the woth_map
                     transitionId = entrances_sourced_from_connectors.pop()
                     exit = ShufflableExits[transitionId]
-                    sourceMap = GetMapId(exit.region)
+                    sourceMap = GetMapId(spoiler.settings, exit.region)
                     # Find all connected entrances, keeping in mind the specific transitions some regions need to track down
                     target_transitions = []
                     if exit.region in region_exceptions.keys():
@@ -2086,7 +2087,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     # Check if any of these entrances also lead to connectors
                     for deeper_transitionId in deeper_connected_entrances:
                         deeper_exit = ShufflableExits[deeper_transitionId]
-                        deeperMap = GetMapId(deeper_exit.region)
+                        deeperMap = GetMapId(spoiler.settings, deeper_exit.region)
                         # New to this second-level checking: make sure we're not potentially returning to any map we've already checked, this would make a loop
                         if deeperMap in seenMaps:
                             continue
@@ -2983,8 +2984,8 @@ def TryCreatingLoadingZoneHint(spoiler: Spoiler, transition: Transitions, disall
     if ShufflableExits[pathToHint].region in disallowedRegions:
         return ""
     # Validate the hinted destination is not the same as the hinted origin
-    entranceMap = GetMapId(ShufflableExits[pathToHint].region)
-    destinationMap = GetMapId(spoiler.shuffled_exit_data[transition].regionId)
+    entranceMap = GetMapId(spoiler.settings, ShufflableExits[pathToHint].region)
+    destinationMap = GetMapId(spoiler.settings, spoiler.shuffled_exit_data[transition].regionId)
     if entranceMap == destinationMap:
         return ""
     entranceName = ShufflableExits[pathToHint].name
@@ -3005,10 +3006,10 @@ def GetConnectedEntrances(spoiler: Spoiler, target_map: Maps, target_transitions
         # If the exit of this transition is shuffled, check the shuffled data, otherwise check the bases data
         if exit.shuffled:
             shuffledBack = spoiler.shuffled_exit_data[transitionId]
-            destinationMap = GetMapId(shuffledBack.regionId)
+            destinationMap = GetMapId(spoiler.settings, shuffledBack.regionId)
             destinationTransition = shuffledBack.reverse
         else:
-            destinationMap = GetMapId(exit.back.regionId)
+            destinationMap = GetMapId(spoiler.settings, exit.back.regionId)
             destinationTransition = exit.back.reverse
         # If this transition reaches our target map, it's a relevant entrance
         if destinationMap == target_map and (not any(target_transitions) or destinationTransition in target_transitions):
@@ -3361,7 +3362,7 @@ def ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals):
                 # 1. No Isles checks get this boost - all Isles checks are relatively accessible compared to a check deeper in a level.
                 # 2. Shops do not get this boost. You're reasonably likely to look at shops, as most of them fall in the main map. This includes Jetpac.
                 # 3. Boss and Medal locations are already getting a *hefty* multiplier and don't need any more.
-                node_map = GetMapId(GetRegionIdOfLocation(spoiler, node.node_location_id))
+                node_map = GetMapId(spoiler.settings, GetRegionIdOfLocation(spoiler, node.node_location_id))
                 if node_map not in (Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle):
                     node.score_multiplier *= 1.1
             # Shop locations are much easier (or at least predictable) to find and peek their contents

@@ -695,6 +695,58 @@ class Settings:
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
         self.dk_portal_location_rando = False
+        self.level_portal_destinations = [
+            {
+                "map": Maps.JungleJapes,
+                "exit": 15,
+            },
+            {
+                "map": Maps.AngryAztec,
+                "exit": 0,
+            },
+            {
+                "map": Maps.FranticFactory,
+                "exit": 0,
+            },
+            {
+                "map": Maps.GloomyGalleon,
+                "exit": 0,
+            },
+            {
+                "map": Maps.FungiForest,
+                "exit": 27,
+            },
+            {
+                "map": Maps.CrystalCaves,
+                "exit": 0,
+            },
+            {
+                "map": Maps.CreepyCastle,
+                "exit": 0,
+            },
+        ]
+        self.level_void_maps = [
+            Maps.JungleJapes,
+            Maps.AngryAztec,
+            Maps.FranticFactory,
+            Maps.GloomyGalleon,
+            Maps.FungiForest,
+            Maps.CrystalCaves,
+            Maps.CreepyCastle,
+        ]
+        self.level_entrance_regions = [
+            Regions.JungleJapesStart,
+            Regions.AngryAztecStart,
+            Regions.FranticFactoryStart,
+            Regions.GloomyGalleonStart,
+            Regions.FungiForestStart,
+            Regions.CrystalCavesMain,
+            Regions.CreepyCastleMain,
+        ]
+        self.mech_fish_entrance = {
+            "map": Maps.GalleonMechafish,
+            "exit": 0,
+        }
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
@@ -1149,6 +1201,16 @@ class Settings:
             self.win_condition_count = win_con_pool[selected_item]
         if self.win_condition_item in helmdoor_items.keys():
             self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
+
+        if self.dk_portal_location_rando:
+            level_base_maps = [Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle]
+            self.level_portal_destinations = [
+                {
+                    "map": k,
+                    "exit": -1,
+                }
+                for k in level_base_maps
+            ]
 
         self.shuffled_location_types = []
         if self.shuffle_items:
@@ -2095,7 +2157,7 @@ class Settings:
             if region_name == "":
                 raise Ex.PlandoIncompatibleException(f"No region found for {planned_transition}")
             if region in RegionMapList:
-                tied_map = GetMapId(region)
+                tied_map = GetMapId(self, region)
                 tied_exit = GetExitId(planned_back_transition)
                 valid_starting_regions.append(
                     {
@@ -2118,7 +2180,7 @@ class Settings:
                 ]
                 if region in RegionMapList:
                     # Has tied map
-                    tied_map = GetMapId(region)
+                    tied_map = GetMapId(self, region)
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
