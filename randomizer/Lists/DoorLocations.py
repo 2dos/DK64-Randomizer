@@ -4112,7 +4112,7 @@ door_locations = {
             logicregion=Regions.Museum,
             location=[407, 100, 395, 88.15],
             group=22,
-            kong_lst=[Kongs.diddy, Kongs.tiny],
+            kong_lst=[Kongs.chunky],
         ),
         DoorData(
             name="Far Right Side",
@@ -4120,7 +4120,7 @@ door_locations = {
             logicregion=Regions.Museum,
             location=[1140, 100, 395, 270.17],
             group=22,
-            kong_lst=[Kongs.diddy, Kongs.tiny],
+            kong_lst=[Kongs.chunky],
         ),
         DoorData(
             name="Tiny side - near the statue",
