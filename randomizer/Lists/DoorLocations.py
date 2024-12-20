@@ -1295,6 +1295,7 @@ door_locations = {
             logicregion=Regions.TempleStart,
             location=[1828, 389, 1126, 225],
             group=11,
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Next to triangle pad",
@@ -1302,6 +1303,7 @@ door_locations = {
             logicregion=Regions.TempleStart,
             location=[1626, 215, 269, 11.95],
             group=11,
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
             name="Vulture room back wall",
@@ -1310,6 +1312,8 @@ door_locations = {
             location=[1462, 305, 2421, 180],
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.aztec_tiny_temple_ice),
         ),
         DoorData(
             name="Tiny room right wall",
@@ -1318,6 +1322,8 @@ door_locations = {
             location=[696, 344, 1151, 315],
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.aztec_tiny_temple_ice),
         ),
         DoorData(
             name="Tiny room - on the K",
@@ -1327,6 +1333,7 @@ door_locations = {
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
             kong_lst=[Kongs.diddy, Kongs.tiny],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.aztec_tiny_temple_ice),
         ),
         DoorData(
             name="Behind the llama cage",
@@ -2886,7 +2893,7 @@ door_locations = {
             location=[630, 0, 458, 270],
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
         ),
         DoorData(
             name="In the hay",
@@ -2895,7 +2902,7 @@ door_locations = {
             location=[26, 6, 290, 90],
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
         ),
         DoorData(
             name="Above the switch crate",
@@ -2904,7 +2911,7 @@ door_locations = {
             location=[27, 137, 152, 90],
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
         ),
         DoorData(
             name="In the hay",
@@ -2913,7 +2920,7 @@ door_locations = {
             location=[306, 22, 667, 180],
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
         ),
         DoorData(
             name="Crates near spider entrance",
@@ -2922,7 +2929,7 @@ door_locations = {
             location=[201, 51, 99, 0],
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
         ),
         DoorData(
             name="Top towards tag barrel",
