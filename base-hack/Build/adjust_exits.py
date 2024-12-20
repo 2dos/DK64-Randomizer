@@ -9,6 +9,7 @@ from BuildLib import intf_to_float, main_pointer_table_offset
 
 new_caves_portal_coords = [120.997, 50, 1182.974]
 
+
 class ExitAdjustment:
     """Class to store an exit adjustment."""
 
@@ -17,37 +18,41 @@ class ExitAdjustment:
         self.index = index
         self.coords = coords.copy()
 
+
 exit_adjustments = {
     Maps.Fungi: [
-        ExitAdjustment(3, [3429, 462, 4494]), # Dark Attic
-        ExitAdjustment(6, [4153, 163, 3721]), # Mill (W1 Exit)
-        ExitAdjustment(4, [3982, 115, 2026]), # DK Barn
-        ExitAdjustment(5, [4550, 162, 3646]), # Mill Rear PPunch Door
+        ExitAdjustment(3, [3429, 462, 4494]),  # Dark Attic
+        ExitAdjustment(6, [4153, 163, 3721]),  # Mill (W1 Exit)
+        ExitAdjustment(4, [3982, 115, 2026]),  # DK Barn
+        ExitAdjustment(5, [4550, 162, 3646]),  # Mill Rear PPunch Door
     ],
     Maps.Galleon: [
-        ExitAdjustment(10, [1524, 1754, 3964]), # Lighthouse
-        ExitAdjustment(19, [3380, 1640, 120]), # Seal Race
+        ExitAdjustment(10, [1524, 1754, 3964]),  # Lighthouse
+        ExitAdjustment(19, [3380, 1640, 120]),  # Seal Race
     ],
     Maps.CastleCryptDKDiddyChunky: [
-        ExitAdjustment(1, [1515, 80, 2506]), # Minecart
+        ExitAdjustment(1, [1515, 80, 2506]),  # Minecart
     ],
     Maps.Isles: [
-        ExitAdjustment(3, [3464, 1040, 1716]), # Aztec Lobby
-        ExitAdjustment(5, [1947, 406, 3229]), # Galleon Lobby
+        ExitAdjustment(3, [3464, 1040, 1716]),  # Aztec Lobby
+        ExitAdjustment(5, [1947, 406, 3229]),  # Galleon Lobby
     ],
     Maps.Factory: [
-        ExitAdjustment(8, [814, 8, 1334]), # Crusher
+        ExitAdjustment(8, [814, 8, 1334]),  # Crusher
     ],
     Maps.Castle: [
-        ExitAdjustment(15, [1293, 472, 238]), # Tree
-        ExitAdjustment(11, [1808, 1406, 1270]), # Ballroom
+        ExitAdjustment(15, [1293, 472, 238]),  # Tree
+        ExitAdjustment(11, [1808, 1406, 1270]),  # Ballroom
     ],
     Maps.Caves: [
-        ExitAdjustment(11, [
-            int(new_caves_portal_coords[0] - 25),
-            int(new_caves_portal_coords[1]),
-            int(new_caves_portal_coords[2] - 12),
-        ]), # Unused 5DI Portal Exit
+        ExitAdjustment(
+            11,
+            [
+                int(new_caves_portal_coords[0] - 25),
+                int(new_caves_portal_coords[1]),
+                int(new_caves_portal_coords[2] - 12),
+            ],
+        ),  # Unused 5DI Portal Exit
     ],
 }
 

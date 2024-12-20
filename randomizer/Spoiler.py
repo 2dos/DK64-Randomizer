@@ -20,6 +20,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
+    DKPortalRando,
     GlitchesSelected,
     LogicType,
     HardBossesSelected,
@@ -689,10 +690,13 @@ class Spoiler:
         if self.settings.bananaport_rando != BananaportRando.off:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if self.settings.wrinkly_location_rando:
-            humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
+            prog_hint_setting = self.settings.progressive_hint_item
+            item_types = self.settings.shuffled_location_types
+            if prog_hint_setting == ProgressiveHintItem.off or Types.Hint in item_types:
+                humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
-        if self.settings.dk_portal_location_rando:
+        if self.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
