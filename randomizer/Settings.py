@@ -830,7 +830,7 @@ class Settings:
         # Progressive hints
         self.progressive_hint_item = None
         self.enable_progressive_hints = False  # Deprecated
-        self.progressive_hint_text = 0
+        self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
 
     def shuffle_prices(self, spoiler):

@@ -44,14 +44,17 @@ LogicRegions = {
     ],
     Regions.TempleUnderwater: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.mini or l.CanPhaseswim(), None, 5),
+    ],
+    Regions.TempleVultureRoom: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 9),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.mini or l.CanPhaseswim(), None, 5),
-        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 2),
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),
-
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # By Chimpy charge switch
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 4),  # In vulture room
+    ],
+    Regions.TempleKONGRoom: [
+        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 2),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # By Chimpy charge switch
     ],
     Regions.AngryAztecMain: [
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 2),  # Cranky

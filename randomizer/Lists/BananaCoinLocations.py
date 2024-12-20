@@ -2604,7 +2604,7 @@ BananaCoinGroupList = {
             map_id=Maps.AztecTinyTemple,
             name="Around Lanky Pedestal",
             konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleVultureRoom,
             locations=[
                 [1.0, 1467, 360, 2140],
                 [1.0, 1435, 375, 2156],
@@ -2621,7 +2621,7 @@ BananaCoinGroupList = {
             map_id=Maps.AztecTinyTemple,
             name="On KONG Letters",
             konglist=[Kongs.diddy, Kongs.tiny],
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleKONGRoom,
             locations=[
                 [1.0, 758, 412, 1703],
                 [1.0, 354, 412, 1822],
@@ -2658,7 +2658,7 @@ BananaCoinGroupList = {
             map_id=Maps.AztecTinyTemple,
             name="Around the Upper Lanky Pedestal",
             konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleVultureRoom,
             locations=[
                 [1.0, 1465.5142822265625, 375.3333435058594, 2161.44775390625],
                 [1.0, 1499.1553955078125, 375.3333435058594, 2192.168212890625],
@@ -2698,7 +2698,7 @@ BananaCoinGroupList = {
             map_id=Maps.AztecTinyTemple,
             name="Near Kong Cage",
             konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleKONGRoom,
             locations=[
                 [1.0, 289.41265869140625, 344.8333435058594, 1129.9959716796875],
                 [1.0, 307.7870788574219, 344.8333435058594, 1131.9871826171875],
