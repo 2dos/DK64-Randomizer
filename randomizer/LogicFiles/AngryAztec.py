@@ -112,7 +112,7 @@ LogicRegions = {
 
     Regions.TempleKONGRoom: Region("Temple KONG Room", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
-        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny() or l.CanPhase() or l.ledgeclip or l.CanPhaseswim()),        
+        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny() or l.CanPhase() or l.ledgeclip or l.CanPhaseswim()),
     ], [], [
         TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),
     ]),
