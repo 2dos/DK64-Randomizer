@@ -142,6 +142,19 @@
     "on": 1,
     "minimal": 2
   },
+  
+  /*
+    DKPortalRando:
+    - Varying methods of displaying the D-Pad.
+    - off: Display isn't rendered.
+    - main_only: Only main-map locations are included.
+    - on: All locations are included.
+  */
+  "DKPortalRando": {
+    "off": 0,
+    "main_only": 1,
+    "on": 2
+  },
 
   /*
     ExcludedSongs:
@@ -1078,7 +1091,8 @@
     "progressive_hint_count": 200,
     "cb_rando_enabled": 201,
     "cb_rando_list_selected": 202,
-    "crown_enemy_difficulty": 203
+    "crown_enemy_difficulty": 203,
+    "dk_portal_location_rando_v2": 204
   },
   /*
     SettingsStringDataType:
@@ -1113,6 +1127,7 @@
     "crown_enemy_rando": { "obj": "CrownEnemyRando" },
     "crown_enemy_difficulty": { "obj": "CrownEnemyDifficulty" },
     "damage_amount": { "obj": "DamageAmount" },
+    "dk_portal_location_rando_v2": { "obj": "DKPortalRando" },
     "diddy_colors": { "obj": "CharacterColors" },
     "dk_colors": { "obj": "CharacterColors" },
     "dpad_display": { "obj": "DPadDisplays" },
@@ -1247,6 +1262,9 @@
     },
     "SettingsStringEnum.dk_portal_location_rando": {
       "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.dk_portal_location_rando_v2": {
+      "obj": "DKPortalRando"
     },
     "SettingsStringEnum.enable_plandomizer": {
       "obj": "SettingsStringDataType.bool"

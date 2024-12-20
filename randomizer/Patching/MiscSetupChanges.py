@@ -188,7 +188,8 @@ def getRandomGalleonStarLocation() -> tuple:
 
 def randomize_setup(spoiler):
     """Randomize setup."""
-    SpeedUpFungiRabbit()
+    if not spoiler.settings.disable_racing_patches:
+        SpeedUpFungiRabbit()
     pickup_weights = [
         {"item": "orange", "type": 0x56, "weight": 3},
         {"item": "film", "type": 0x98, "weight": 1},

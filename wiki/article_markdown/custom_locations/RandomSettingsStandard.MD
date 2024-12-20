@@ -91,7 +91,9 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Quad: 15%
 - Dim Solved Hints: 50%
 - Tag Barrels Disabled: 50%
-- Dk Portal Location Rando: 10%
+- Random DK Portal Locations: 
+	- Off: 90%
+	- Main Only: 10%
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 90%
 - Dropsanity: 25%

@@ -103,13 +103,45 @@
                 {{ toggle_input("random_fairies", "Random Banana Fairy Locations", "Fairy checks are in random locations.", False, "Banana Fairies") }}
                 {{ toggle_input("wrinkly_location_rando", "Random Wrinkly Door Locations", "Wrinkly Door Locations are randomized.", False, "Wrinkly Doors") }}
                 {{ toggle_input("tns_location_rando", "Random Troff 'n' Scoff Portal Locations", "T&S Portal Locations are randomized.", False, "Troff 'n' Scoff Portals") }}
-                {{ toggle_input("dk_portal_location_rando", "Random DK Portal Locations", "DK Portal Locations are randomized.", False, "DK Portals") }}
                 {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.") }}
                 {{ toggle_input("crown_placement_rando", "Random Battle Crown Pad Locations", "Crown Locations are randomized. There's 1 in each level, except Isles which has two.", False, "Battle Crowns") }}
                 {{ toggle_input("random_crates", "Random Melon Crate Locations", "Melon Crate Locations are randomized.", False, "Melon Crates") }}
                 <div class="spacer"></div>
             </div>
             <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Colored Banana Locations are randomized.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="cb_rando_enabled"
+                                id="cb_rando_enabled"
+                                display_name="Randomize CB Locations"
+                                value="True"/>
+                        Colored Bananas
+                    </label>
+                    {{ list_selector(cb_rando_levels, "cb_rando_list", "LEVELS", "This will open a popup that will let you customize what levels have CB rando in the game.&#10;This defaults to All options.", 8, 1) }}
+                {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="item-select">
+                    <p class="select-title">DK Portals</p>
+                    <select name="dk_portal_location_rando_v2"
+                            id="dk_portal_location_rando_v2"
+                            display_name="Random DK Portal Locations"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="DK Portal Locations are randomized.">
+                        <option id="off" selected value="off">
+                            Vanilla
+                        </option>
+                        <option id="main_only" value="main_only" title="Will only place portals in the main level maps of the 7 levels">
+                            Main Maps only
+                        </option>
+                        <option id="on" value="on">
+                            On
+                        </option>
+                    </select>
+                </div>
                 <div class="item-select">
                     <p class="select-title">Kasplats</p>
                     <select name="kasplat_rando_setting"
@@ -130,19 +162,6 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Colored Banana Locations are randomized.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="cb_rando_enabled"
-                                id="cb_rando_enabled"
-                                display_name="Randomize CB Locations"
-                                value="True"/>
-                        Colored Bananas
-                    </label>
-                    {{ list_selector(cb_rando_levels, "cb_rando_list", "LEVELS", "This will open a popup that will let you customize what levels have CB rando in the game.&#10;This defaults to All options.", 8, 1) }}
-                {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="item-select">
                     <p class="select-title">Bananaports</p>
                     <div class="d-flex">

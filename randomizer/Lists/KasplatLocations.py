@@ -384,7 +384,7 @@ KasplatLocationList = {
             xmax=720,
             zmin=1200,
             zmax=1700,
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleKONGRoom,
         ),
         KasplatLocation(
             name="Aztec Kasplat: Chunky 5-Door Temple",

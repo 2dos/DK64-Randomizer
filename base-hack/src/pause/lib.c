@@ -156,17 +156,17 @@ void checkItemDB(void) {
                 check_data.numerator.type[i].level[lvl] += checkFlag(item_db[k].flag, FLAGTYPE_PERMANENT);
             }
         }
-        // Check Rainbow Flags
-        for (int k = 0; k < 35; k++) {
-            if (k < 16)  {
-                if (k < 13) {
-                    check_data.numerator.type[CHECK_CRATE].level[getCrateWorld(k)] += checkFlag(FLAG_MELONCRATE_0 + k, FLAGTYPE_PERMANENT);
-                }
-                check_data.numerator.type[CHECK_RAINBOW].level[getPatchWorld(k)] += checkFlag(FLAG_RAINBOWCOIN_0 + k, FLAGTYPE_PERMANENT);
+    }
+    // Check extra flags
+    for (int k = 0; k < 35; k++) {
+        if (k < 16)  {
+            if (k < 13) {
+                check_data.numerator.type[CHECK_CRATE].level[getCrateWorld(k)] += checkFlag(FLAG_MELONCRATE_0 + k, FLAGTYPE_PERMANENT);
             }
-            int hint_level = k / 5;
-            check_data.numerator.type[CHECK_HINTS].level[hint_level] += checkFlag(FLAG_WRINKLYVIEWED + k, FLAGTYPE_PERMANENT);
+            check_data.numerator.type[CHECK_RAINBOW].level[getPatchWorld(k)] += checkFlag(FLAG_RAINBOWCOIN_0 + k, FLAGTYPE_PERMANENT);
         }
+        int hint_level = k / 5;
+        check_data.numerator.type[CHECK_HINTS].level[hint_level] += checkFlag(FLAG_WRINKLYVIEWED + k, FLAGTYPE_PERMANENT);
     }
 }
 
@@ -260,7 +260,7 @@ Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk
             }
         } else {
             int lvl = check_level - 1;
-            if ((item_index == 4) || (item_index == 6) || (item_index == 8)) {
+            if ((item_index == CHECK_RWCOIN) || (item_index == CHECK_NINCOIN) || (item_index == CHECK_KONG)) {
                 // Nin/RW Coin, Kongs
                 lvl = 0;
             }

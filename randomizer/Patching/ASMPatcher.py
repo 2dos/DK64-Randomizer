@@ -2525,13 +2525,11 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Helm Warp Handler
     writeFunction(ROM_COPY, 0x8068B04C, Overlay.Static, "WarpToHelm", offset_dict)
-    writeValue(ROM_COPY, 0x8068AD10, Overlay.Static, 0, offset_dict, 4)  # Disable the cutscene value for helm, disabling the FTT warp
     writeValue(ROM_COPY, 0x8068B054, Overlay.Static, 0x5000, offset_dict)
     writeFunction(ROM_COPY, 0x80640720, Overlay.Static, "portalWarpFix", offset_dict)
     writeValue(ROM_COPY, 0x806406F4, Overlay.Static, 0x2006FFFF, offset_dict, 4)
-    if settings.dk_portal_location_rando:
-        # Disable K Rool intros (for now)
-        writeValue(ROM_COPY, 0x8068AC60, Overlay.Static, 0x1000, offset_dict, 2)
+
+    writeFunction(ROM_COPY, 0x8064070C, Overlay.Static, "DetermineLevel_NewLevel", offset_dict)
     for index, data in enumerate(settings.level_portal_destinations):
         writeValue(ROM_COPY, 0x8074809C + (2 * index), Overlay.Static, data["map"], offset_dict)
         writeValue(ROM_COPY, 0x807480AC + (2 * index), Overlay.Static, data["exit"], offset_dict, 2, True)
@@ -2906,6 +2904,9 @@ def patchAssembly(ROM_COPY, spoiler):
         # Skybox
         writeValue(ROM_COPY, 0x8068BD0C, Overlay.Static, 0x46103201, offset_dict, 4)
         writeValue(ROM_COPY, 0x80706A54, Overlay.Static, 0x03194023, offset_dict, 4)
+        # Invert G_TRI2 Call
+        writeValue(ROM_COPY, 0x8065DFBE, Overlay.Static, 0x0206, offset_dict)
+        writeValue(ROM_COPY, 0x8065DFC6, Overlay.Static, 0x0604, offset_dict)
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold
@@ -3004,9 +3005,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeLabelValue(ROM_COPY, 0x8074B6B8, Overlay.Static, "fixed_dice_collision", offset_dict)  # Mr. Dice (Both), Sir Domino, Ruler
     writeLabelValue(ROM_COPY, 0x8074B4C4, Overlay.Static, "fixed_klap_collision", offset_dict)  # Green Klaptrap, Skeleton Klaptrap
 
-    writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
-    writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
-    writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
+    if not settings.disable_racing_patches:
+        writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
+        writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
+        writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
 
     # Expand Path Allocation
     writeValue(ROM_COPY, 0x80722E56, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)

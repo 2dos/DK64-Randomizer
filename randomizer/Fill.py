@@ -26,6 +26,7 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
     ClimbingStatus,
+    DKPortalRando,
     FasterChecksSelected,
     FillAlgorithm,
     FungiTimeSetting,
@@ -3480,7 +3481,12 @@ def GetAccessibleOpenLevels(spoiler: Spoiler) -> List[int]:
         accessibleOpenLevels.append(Levels.JungleJapes)
     if Events.AztecLobbyAccessed in lobbyAccessEvents:
         # Also make sure we can do anything in Aztec. BONUS: if your DK portal is random the odds are very high it's not behind the vines, so this will suffice.
-        if spoiler.LogicVariables.vines or (spoiler.LogicVariables.tiny and spoiler.LogicVariables.twirl) or spoiler.LogicVariables.CanPhase() or spoiler.settings.dk_portal_location_rando:
+        if (
+            spoiler.LogicVariables.vines
+            or (spoiler.LogicVariables.tiny and spoiler.LogicVariables.twirl)
+            or spoiler.LogicVariables.CanPhase()
+            or spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off
+        ):
             accessibleOpenLevels.append(Levels.AngryAztec)
     if Events.FactoryLobbyAccessed in lobbyAccessEvents:
         accessibleOpenLevels.append(Levels.FranticFactory)
@@ -3593,9 +3599,9 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.vanilla_door_rando:
         ShuffleVanillaDoors(spoiler)
-        if spoiler.settings.dk_portal_location_rando:
+        if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             ShuffleDoors(spoiler, True)
-    elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando:
+    elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
         ShuffleDoors(spoiler, False)
     if Types.Hint in spoiler.settings.shuffled_location_types:
         UpdateDoorLevels(spoiler)

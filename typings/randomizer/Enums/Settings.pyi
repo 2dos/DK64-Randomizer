@@ -57,6 +57,11 @@ class DPadDisplays(IntEnum):
     on = 1
     minimal = 2
 
+class DKPortalRando(IntEnum):
+    off = 0
+    main_only = 1
+    on = 2
+
 class ExcludedSongs(IntEnum):
     wrinkly = 1
     transformation = 2
@@ -649,6 +654,7 @@ class SettingsStringEnum(IntEnum):
     cb_rando_enabled = 201
     cb_rando_list_selected = 202
     crown_enemy_difficulty = 203
+    dk_portal_location_rando_v2 = 204
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -674,6 +680,7 @@ SettingsMap: dict = {
     "crown_enemy_rando": CrownEnemyRando,
     "crown_enemy_difficulty": CrownEnemyDifficulty,
     "damage_amount": DamageAmount,
+    "dk_portal_location_rando_v2": DKPortalRando,
     "diddy_colors": CharacterColors,
     "dk_colors": CharacterColors,
     "dpad_display": DPadDisplays,
@@ -771,6 +778,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
     SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.dk_portal_location_rando_v2: DKPortalRando,
     SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,

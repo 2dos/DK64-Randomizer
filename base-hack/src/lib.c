@@ -1683,3 +1683,25 @@ int isGlobalCutscenePlaying(int cutscene_index) {
 	}
 	return 0;
 }
+
+int DetermineLevel_NewLevel(maps map) {
+	for (int i = 0; i < 8; i++) {
+		if (CurrentMap == LobbiesArray[i]) {
+			if (!checkFlag(FLAG_STORY_JAPES + i, FLAGTYPE_PERMANENT)) {
+				setFlag(FLAG_STORY_JAPES + i, 1, FLAGTYPE_PERMANENT);
+				if (StorySkip) {
+					return 0;
+				}
+				int world = getWorld(map, 0);
+				if (world == 8) {
+					world = 7;
+				} else if (world > 6) {
+					return 0;
+				}
+				initiateTransitionFade(MAP_HELM_INTROSGAMEOVER, 0xF + world, Mode);
+				return 1;
+			}
+		}
+	}
+	return 0;
+}

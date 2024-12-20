@@ -155,7 +155,7 @@ def randomize_entrances(spoiler):
                 "exit": exit_id,
             }
         writeEntrance(ROM_COPY, spoiler, Transitions.CastleBallroomToMuseum, 0x130, Maps.CastleMuseum, 2)
-        writeEntrance(ROM_COPY, spoiler, Transitions.CastleBallroomToMuseum, 0x132, Maps.CastleBallroom, 1)
+        writeEntrance(ROM_COPY, spoiler, Transitions.CastleMuseumToBallroom, 0x132, Maps.CastleBallroom, 1)
         # Mech Fish Entrance
         spoiler.settings.mech_fish_entrance = getEntranceDict(spoiler, Transitions.GalleonShipyardToMechFish, Maps.GalleonMechafish, 0)
         # Mech Fish Exit

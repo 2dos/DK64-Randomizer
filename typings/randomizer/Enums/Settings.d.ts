@@ -65,6 +65,12 @@ export enum DPadDisplays {
     minimal = 2,
 }
 
+export enum DKPortalRando {
+    off = 0,
+    main_only = 1,
+    on = 2,
+}
+
 export enum ExcludedSongs {
     wrinkly = 1,
     transformation = 2,
@@ -700,6 +706,7 @@ export enum SettingsStringEnum {
     cb_rando_enabled = 201,
     cb_rando_list_selected = 202,
     crown_enemy_difficulty = 203,
+    dk_portal_location_rando_v2 = 204,
 }
 
 export enum SettingsStringDataType {
@@ -727,6 +734,7 @@ export const SettingsMap = {
     'crown_enemy_rando': CrownEnemyRando,
     'crown_enemy_difficulty': CrownEnemyDifficulty,
     'damage_amount': DamageAmount,
+    'dk_portal_location_rando_v2': DKPortalRando,
     'diddy_colors': CharacterColors,
     'dk_colors': CharacterColors,
     'dpad_display': DPadDisplays,
@@ -824,6 +832,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
     SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.dk_portal_location_rando_v2: DKPortalRando,
     SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,

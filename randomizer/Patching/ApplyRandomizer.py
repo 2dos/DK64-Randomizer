@@ -54,7 +54,7 @@ from randomizer.Patching.CosmeticColors import (
 )
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
-from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
+from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators, alterStoryCutsceneWarps
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import (
     enableTriggerText,
@@ -720,6 +720,7 @@ def patching_response(spoiler):
     writeBootMessages()
     enableTriggerText(spoiler)
     shortenCastleMinecart(spoiler)
+    alterStoryCutsceneWarps(spoiler, ROM_COPY)
 
     if "PYTEST_CURRENT_TEST" not in os.environ:
         replaceIngameText(spoiler)

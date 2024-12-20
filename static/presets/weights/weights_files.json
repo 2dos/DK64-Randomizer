@@ -82,7 +82,9 @@
     },
     "dim_solved_hints": 1,
     "disable_tag_barrels": 0.5,
-    "dk_portal_location_rando": 0,
+    "dk_portal_location_rando_v2": {
+      "off": 1.0
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 1,
@@ -496,7 +498,10 @@
     },
     "dim_solved_hints": 0.5,
     "disable_tag_barrels": 0.5,
-    "dk_portal_location_rando": 0.1,
+    "dk_portal_location_rando_v2": {
+      "off": 0.9,
+      "main_only": 0.1
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.9,
@@ -929,7 +934,11 @@
     },
     "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
-    "dk_portal_location_rando": 0.3,
+    "dk_portal_location_rando_v2": {
+      "off": 0.5,
+      "main_only": 0.3,
+      "on": 0.2
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
@@ -1406,7 +1415,11 @@
     },
     "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
-    "dk_portal_location_rando": 0.3,
+    "dk_portal_location_rando_v2": {
+      "off": 0.5,
+      "main_only": 0.3,
+      "on": 0.2
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
