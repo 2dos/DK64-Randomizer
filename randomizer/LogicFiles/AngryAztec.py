@@ -101,11 +101,6 @@ LogicRegions = {
     Regions.TempleVultureRoom: Region("Temple Vulture Room", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.islanky),
         LocationLogic(Locations.AztecBattleArena, lambda l: not l.settings.crown_placement_rando and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.lanky),
-        LocationLogic(Locations.AztecTempleEnemy_KongRoom0, lambda l: True),
-        LocationLogic(Locations.AztecTempleEnemy_KongRoom1, lambda l: True),
-        LocationLogic(Locations.AztecTempleEnemy_KongRoom2, lambda l: True),
-        LocationLogic(Locations.AztecTempleEnemy_KongRoom3, lambda l: True),
-        LocationLogic(Locations.AztecTempleEnemy_KongRoom4, lambda l: True),
     ], [], [
         TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),
     ]),
@@ -113,6 +108,11 @@ LogicRegions = {
     Regions.TempleKONGRoom: Region("Temple KONG Room", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
         LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny() or l.CanPhase() or l.ledgeclip or l.CanPhaseswim()),
+        LocationLogic(Locations.AztecTempleEnemy_KongRoom0, lambda l: True),
+        LocationLogic(Locations.AztecTempleEnemy_KongRoom1, lambda l: True),
+        LocationLogic(Locations.AztecTempleEnemy_KongRoom2, lambda l: True),
+        LocationLogic(Locations.AztecTempleEnemy_KongRoom3, lambda l: True),
+        LocationLogic(Locations.AztecTempleEnemy_KongRoom4, lambda l: True),
     ], [], [
         TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),
     ]),
