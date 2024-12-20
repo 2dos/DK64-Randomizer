@@ -109,6 +109,19 @@
                 <div class="spacer"></div>
             </div>
             <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Colored Banana Locations are randomized.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="cb_rando_enabled"
+                                id="cb_rando_enabled"
+                                display_name="Randomize CB Locations"
+                                value="True"/>
+                        Colored Bananas
+                    </label>
+                    {{ list_selector(cb_rando_levels, "cb_rando_list", "LEVELS", "This will open a popup that will let you customize what levels have CB rando in the game.&#10;This defaults to All options.", 8, 1) }}
+                {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="item-select">
                     <p class="select-title">DK Portals</p>
                     <select name="dk_portal_location_rando_v2"
@@ -149,19 +162,6 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Colored Banana Locations are randomized.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="cb_rando_enabled"
-                                id="cb_rando_enabled"
-                                display_name="Randomize CB Locations"
-                                value="True"/>
-                        Colored Bananas
-                    </label>
-                    {{ list_selector(cb_rando_levels, "cb_rando_list", "LEVELS", "This will open a popup that will let you customize what levels have CB rando in the game.&#10;This defaults to All options.", 8, 1) }}
-                {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="item-select">
                     <p class="select-title">Bananaports</p>
                     <div class="d-flex">
