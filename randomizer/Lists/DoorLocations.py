@@ -3515,7 +3515,7 @@ door_locations = {
             name="Cabins - far far left",
             map=Maps.CrystalCaves,
             logicregion=Regions.CabinArea,
-            location=[3177, 136, 1459, 316],
+            location=[3177, 136, 1459, 353],
             group=2,
         ),
         DoorData(
