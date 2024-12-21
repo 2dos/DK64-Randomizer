@@ -30,6 +30,7 @@ RUN if [ "$BRANCH" = "LOCAL" ]; then \
         mv /app/randomizer.html /app/controller/randomizer.html && \
         mv /app/base-hack /app/controller/base-hack/; \
     fi
+
 WORKDIR /app/controller
 RUN pip install -r requirements.txt && \
     mv /app/version.py /app/controller/version.py
