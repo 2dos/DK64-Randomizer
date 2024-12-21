@@ -13,7 +13,6 @@ RUN if [ "$BRANCH" != "LOCAL" ]; then \
         git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app; \
     fi
 
-
 RUN if [ "$BRANCH" = "LOCAL" ]; then \
         mv /app/static /app/controller/static && \
         mv /app/randomizer /app/controller/randomizer && \
