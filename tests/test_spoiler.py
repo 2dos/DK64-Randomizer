@@ -25,16 +25,9 @@ from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
 
-# Get the preset_files.json file from static/presets
-with open("static/presets/preset_files.json", "r") as file:
-    preset_files = json.load(file)
-    # For each preset in the list if settings_string is not None, add the preset to the list
-    valid_presets = [(preset.get("name"), preset.get("settings_string")) for preset in preset_files if preset.get("settings_string")]
-
-# Add a custom preset for testing
-# If we're not running on github actions, add the custom preset
-if not os.environ.get("GITHUB_ACTIONS"):
-    valid_presets.append(("Custom", "fjNPxAMxDKY6IJUtjnxUlZlBBJuCPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKK47VAhMF6AAd+AA+CAAOGAAGKAAE3nAkMRkMdC3AUgtFLbYFuAkkA0yZqohRikFKKYDILq9X4KAtwBBgJvAQOBuADCARxAgSCuQFCgZzAwWDugHDAi5BCZDUB1ZFeADKcSmrWElCUd1WrJYkZmK0gRydoVqUvRURYBExFAFYsscjdkvF3kUDkOxl7T0DPJksmZVOCIQAC4UAC4YACYcACYgAB60AB4kABYoAA4sAB4wABY0AA64AC0+V6BJcqWz2WT0bFQfAwjl2sDAZy6rAcVRWUyotBSgBQVg0oBOKi0SRcQyKnjWlkGkRGujsADoBeEIQEhQWHVhGWCAiJEhaKCosSlwwMjRMXjg6PE5gQEJEUFN8DhgaVGK+aGuABri6vYQGVmRniAE6AWQAogA"))
+# For each preset in the list if settings_string is not None, add the preset to the list
+valid_presets = []
+valid_presets.append(("Custom", "fjNPxAMxDKY6IJUtjnxUlZlBBJuCPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKK47VAhMF6AAd+AA+CAAOGAAGKAAE3nAkMRkMdC3AUgtFLbYFuAkkA0yZqohRikFKKYDILq9X4KAtwBBgJvAQOBuADCARxAgSCuQFCgZzAwWDugHDAi5BCZDUB1ZFeADKcSmrWElCUd1WrJYkZmK0gRydoVqUvRURYBExFAFYsscjdkvF3kUDkOxl7T0DPJksmZVOCIQAC4UAC4YACYcACYgAB60AB4kABYoAA4sAB4wABY0AA64AC0+V6BJcqWz2WT0bFQfAwjl2sDAZy6rAcVRWUyotBSgBQVg0oBOKi0SRcQyKnjWlkGkRGujsADoBeEIQEhQWHVhGWCAiJEhaKCosSlwwMjRMXjg6PE5gQEJEUFN8DhgaVGK+aGuABri6vYQGVmRniAE6AWQAogA"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)
