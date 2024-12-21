@@ -3,7 +3,12 @@ FROM python:3.12-slim
 ARG BRANCH=LOCAL
 ENV BRANCH=$BRANCH
 # Copy local files
-
+ARG CLIENT_ID
+ENV CLIENT_ID=$CLIENT_ID
+ARG CLIENT_SECRET
+ENV CLIENT_SECRET=$CLIENT_SECRET
+ARG REDIRECT
+ENV REDIRECT=$REDIRECT
 COPY ./ /app/
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN if [ "$BRANCH" != "LOCAL" ]; then \
