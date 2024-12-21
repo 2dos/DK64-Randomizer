@@ -25,6 +25,7 @@ services:
       - ./generated_seeds/:/app/controller/generated_seeds/
       - ./current_total.cfg:/app/controller/current_total.cfg
       - ./last_generated_time.cfg:/app/controller/last_generated_time.cfg
+      - ./local_presets.json:/app/controller/local_presets.json
     networks:
       - task_network
     restart: always
