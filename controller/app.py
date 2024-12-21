@@ -87,7 +87,7 @@ CORS(app)
 # Prepend all routes with /api
 secret_token = secrets.token_hex(256)
 
-api = Blueprint("api", __name__, url_prefix="/api")
+api = Blueprint("api", __name__, url_prefix="/api", template_folder="templates")
 app.config["SECRET_KEY"] = secret_token
 # Set the secret key for the blueprint as well
 ALLOWED_REFERRERS = ["https://dk64randomizer.com"]
@@ -303,7 +303,7 @@ def admin_portal():
         session.pop("admin")
         return set_response("You do not have permission to access this page.", 403, "text/html")
     local_presets = update_presets()
-    return render_template("templates/admin.html.jinja2", local_presets=local_presets)
+    return render_template("admin.html.jinja2", local_presets=local_presets)
 
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])
