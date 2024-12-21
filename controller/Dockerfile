@@ -25,6 +25,7 @@ RUN if [ "$BRANCH" = "LOCAL" ]; then \
         mv /app/js.py /app/controller/js.py && \
         mv /app/ui /app/controller/ui/ && \
         cp -r /app/templates /app/controller/templates/ && \
+        cp /app/templates/admin.html.jinja2 /app/controller/admin.html.jinja2 && \
         mv /app/index.html /app/controller/index.html && \
         mv /app/randomizer.html /app/controller/randomizer.html && \
         mv /app/base-hack /app/controller/base-hack/; \
