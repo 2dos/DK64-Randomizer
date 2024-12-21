@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:8000/api
     description: Local server
-  - url: https://api.dkrandomizer.com/api
+  - url: https://api.dk64rando.com/api
     description: Production server
 paths:
   /submit-task:
