@@ -147,6 +147,9 @@ def update_presets(force=False):
         with open("local_presets.json", "r") as f:
             local_presets = json.load(f)
             cached_local_presets = local_presets
+    else:
+        local_presets = {"master": [], "dev": []}
+        cached_local_presets = local_presets
     return local_presets
 
 
