@@ -87,7 +87,7 @@ CORS(app)
 # Prepend all routes with /api
 secret_token = secrets.token_hex(256)
 
-api = Blueprint("api", __name__, url_prefix="/api", template_folder="templates")
+api = Blueprint("api", __name__, url_prefix="/api")
 app.config["SECRET_KEY"] = secret_token
 # Set the secret key for the blueprint as well
 ALLOWED_REFERRERS = ["https://dk64randomizer.com"]

@@ -19,16 +19,14 @@ RUN if [ "$BRANCH" != "LOCAL" ]; then \
     fi
 
 
-RUN if [ "$BRANCH" = "LOCAL" ]; then \
-        mv /app/static /app/controller/static && \
-        mv /app/randomizer /app/controller/randomizer && \
-        mv /app/js.py /app/controller/js.py && \
-        mv /app/ui /app/controller/ui && \
-        mv /app/templates /app/controller/templates && \
-        mv /app/index.html /app/controller/index.html && \
-        mv /app/randomizer.html /app/controller/randomizer.html && \
-        mv /app/base-hack /app/controller/base-hack; \
-    fi
+RUN mv /app/static /app/controller/static && \
+    mv /app/randomizer /app/controller/randomizer && \
+    mv /app/js.py /app/controller/js.py && \
+    mv /app/ui /app/controller/ui && \
+    mv /app/templates /app/controller/templates && \
+    mv /app/index.html /app/controller/index.html && \
+    mv /app/randomizer.html /app/controller/randomizer.html && \
+    mv /app/base-hack /app/controller/base-hack
 
 WORKDIR /app/controller
 RUN pip install -r requirements.txt && \
