@@ -3,6 +3,7 @@ import os
 import sys
 from swagger_ui import flask_api_doc
 import secrets
+
 os.environ["WORKER_URL_DEV"] = "http://localhost:8000"
 os.environ["TEST_REDIS"] = "1"
 sys.path.append("worker")
@@ -15,7 +16,7 @@ from controller.app import admin_portal
 
 
 app = Flask(__name__, static_folder="", template_folder="templates")
-flask_api_doc(app, config_path='./controller/swagger.yaml', url_prefix='/api/doc', title='API doc')
+flask_api_doc(app, config_path="./controller/swagger.yaml", url_prefix="/api/doc", title="API doc")
 app.register_blueprint(api)
 app.register_blueprint(worker_api)
 secret_token = secrets.token_hex(256)
@@ -34,8 +35,9 @@ def rando():
     """Serve the randomizer page."""
     return send_from_directory(".", "randomizer.html")
 
+
 # Its a full function not a blueprint so we need to register it as a route
-app.add_url_rule('/admin', view_func=admin_portal)
+app.add_url_rule("/admin", view_func=admin_portal)
 
 ALLOWED_REFERRERS.extend(["*"])
 API_KEYS.append("LOCAL_API_KEY")

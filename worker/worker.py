@@ -145,9 +145,10 @@ def runWorker(jobs):
         return True  # For other exceptions, retry the job
 
     worker.push_exc_handler(handle_exception)
-    
+
     # Start processing tasks, prioritizing high-priority queue
     worker.work(max_jobs=jobs, with_scheduler=False)
+
 
 if __name__ == "__main__":
 

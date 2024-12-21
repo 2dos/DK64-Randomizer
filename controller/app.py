@@ -8,18 +8,7 @@ from datetime import UTC, datetime
 from os import environ, path, walk
 
 import requests
-from flask import (
-    Blueprint,
-    Flask,
-    jsonify,
-    make_response,
-    redirect,
-    render_template,
-    request,
-    send_file,
-    send_from_directory,
-    session
-)
+from flask import Blueprint, Flask, jsonify, make_response, redirect, render_template, request, send_file, send_from_directory, session
 from flask_cors import CORS
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
@@ -37,6 +26,7 @@ from werkzeug.utils import secure_filename
 from cleanup import enable_cleanup
 from oauth import DiscordAuth
 from swagger_ui import flask_api_doc
+
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
 # Configure logging
@@ -65,7 +55,7 @@ tracer_provider.add_span_processor(span_processor)
 app = Flask(__name__, static_folder="", template_folder="templates")
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
-flask_api_doc(app, config_path='./swagger.yaml', url_prefix='/api/doc', title='API doc')
+flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
 
 # Shared structure to manage threads
 tasks = {}
@@ -133,9 +123,11 @@ def set_response(content, status_code, content_type="application/json", version_
     response.headers["Version"] = version_header
     return response
 
+
 cached_local_presets = None
 last_updated = 0
 CACHE_DURATION = 300  # Cache duration in seconds
+
 
 def update_presets(force=False):
     global cached_local_presets, last_updated
@@ -265,6 +257,7 @@ def get_presets():
                 presets_to_return.append(preset)
 
     return set_response(json.dumps(presets_to_return), 200)
+
 
 @app.route("/admin", methods=["GET"])
 def admin_portal():
@@ -487,10 +480,10 @@ def convert_settings():
     return set_response(response.json(), response.status_code)
 
 
-
 app.register_blueprint(api, url_prefix="/api")
 
 if os.environ.get("BRANCH", "LOCAL") == "LOCAL":
+
     @app.route("/")
     def index():
         """Serve the index page."""
