@@ -1,7 +1,6 @@
 FROM python:3.12-slim
 # Define ARG and ENV variables
 ARG BRANCH=LOCAL
-ENV BRANCH=$BRANCH
 # Copy local files
 
 COPY ./ /app/
