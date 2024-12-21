@@ -9,6 +9,8 @@ WORKDIR /app/controller
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN if [ "$BRANCH" != "LOCAL" ]; then \
         apt-get update -y && apt-get install -y git && \
+        rm -rf /app/ && \
+        mkdir /app && \
         git config --global core.compression 0 && \
         git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app; \
     fi
