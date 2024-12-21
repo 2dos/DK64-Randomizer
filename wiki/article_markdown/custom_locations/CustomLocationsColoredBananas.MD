@@ -1542,9 +1542,9 @@
 | Fairy Isle W5 | 5 |  | 
 | Japes entrance | 5 |  | 
 | Tree between tag barrel and Japes | 5 |  | 
-| Tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events)` | 
-| Tree on beaver beach | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events)` | 
-| Tree near W3 | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events)` | 
+| Tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Tree on beaver beach | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Tree near W3 | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
 | Behind cannon to Forest | 5 |  | 
 | Waterfall pond | 15 | `l.swim` | 
 | Seafloor around the X platform | 10 | `l.swim` | 
