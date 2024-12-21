@@ -232,6 +232,7 @@
         "HelmLobbyTraversable": 203,
         
         // Misc Events
-        "JapesAccessToCannon": 204
+        "JapesAccessToCannon": 204,
+        "AirSpaceEntered": 205
     }
 }

@@ -216,7 +216,7 @@
 | Around totem Llama temple/5DT side (8 custom, 7 Chunky) | 15 |  | 
 | Around totem Snide's side (2 custom, 3 Chunky) | 5 |  | 
 | Top of ramps by tower | 10 |  | 
-| Bunch on trees between Snide's and Beetle Race tower (1 custom, 2 Lanky bunches) | 15 | `l.climbing` | 
+| Bunch on trees between Snide's and Beetle Race tower (1 custom, 2 Lanky bunches) | 15 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Around Snide's HQ platform edge | 5 |  | 
 | To Diddy's Tower GB (4 custom, 6 Chunky) | 10 |  | 
 | Near Beetle Race Tower (2 custom, 3 Diddy) | 5 |  | 
@@ -233,7 +233,7 @@
 | 5DT side (1 custom, 4 Diddy) | 5 |  | 
 | Around 5DT bottom ledge | 20 |  | 
 | Around 5DT top ledge | 15 |  | 
-| Bunches on patch of sand between Llama temple and W2-3-4 (accessible by jumping from nearby tree) | 10 | `l.climbing or l.jetpack` | 
+| Bunches on patch of sand between Llama temple and W2-3-4 (accessible by jumping from nearby tree) | 10 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Bunches on 4 corners of Chunky BB cage | 20 |  | 
 | Bunches on top of Chunky BB cage | 10 |  | 
 | Along the walls around Chunky BB cage | 15 |  | 
@@ -250,11 +250,11 @@
 | DK Blueprint cave (Donkey) | 10 | `(l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.CanPhase()) and l.strongKong` | 
 | On Melon crate on Llama Temple roof (Diddy) | 5 | `l.jetpack` | 
 | In sun (Diddy) | 5 | `l.jetpack` | 
-| On trees around Beetle race tower (Diddy) | 15 | `l.climbing` | 
+| On trees around Beetle race tower (Diddy) | 15 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Path to 5DT (Tiny) | 5 |  | 
-| Trees around back of 5DT (Tiny) | 10 | `l.climbing` | 
-| Trees around front of 5DT (Tiny) | 15 | `l.climbing` | 
-| Trees between Llama Temple and 5DT (Lanky) | 15 | `l.climbing` | 
+| Trees around back of 5DT (Tiny) | 10 | `l.climbing or (l.twirl and l.istiny) or (l.jetpack and l.isdiddy)` | 
+| Trees around front of 5DT (Tiny) | 15 | `l.climbing or (l.twirl and l.istiny) or (l.jetpack and l.isdiddy)` | 
+| Trees between Llama Temple and 5DT (Lanky) | 15 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Around the outside of Llama Temple | 15 |  | 
 | Vase room (Chunky) | 20 | `l.pineapple or l.CanPhase()` | 
 | On Tiny Temple Staircase | 5 |  | 
@@ -755,15 +755,15 @@
 ## Fungi Forest
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Mushroom near DK portal | 5 | `l.climbing` | 
-| Mushroom by pink tunnel | 5 | `l.climbing` | 
-| Mushroom with vines leading to other mushroom | 5 | `l.climbing` | 
-| Other mushroom whose vines lead to | 5 | `l.climbing` | 
-| Mushroom with vines leading to minecart | 5 | `l.climbing` | 
-| On vines between two shrooms | 10 | `l.can_use_vines and l.climbing` | 
-| Vines to minecart | 5 | `l.can_use_vines and l.climbing` | 
+| Mushroom near DK portal | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| Mushroom by pink tunnel | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| Mushroom with vines leading to other mushroom | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| Other mushroom whose vines lead to | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| Mushroom with vines leading to minecart | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| On vines between two shrooms | 10 | `(l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy)` | 
+| Vines to minecart | 5 | `(l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | Around the roof of minecart | 10 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
-| Mushroom by blue tunnel | 5 | `l.climbing` | 
+| Mushroom by blue tunnel | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Stumps leading to pendulum | 15 |  | 
 | Up the pendulum | 5 |  | 
 | Behind clock | 5 |  | 
@@ -801,9 +801,9 @@
 | Inside fence around beanstalk | 10 |  | 
 | Around the outside of the fence around beanstalk | 15 |  | 
 | Below tag barrel on bouncy shroom around giant mushroom | 5 |  | 
-| On mushroom near Cranky | 5 | `l.climbing` | 
-| Mushroom near rocketbarrel | 5 | `l.climbing` | 
-| Mushroom near yellow tunnel | 5 | `l.climbing` | 
+| On mushroom near Cranky | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| Mushroom near rocketbarrel | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| Mushroom near yellow tunnel | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | In patch of grass near yellow tunnel | 10 |  | 
 | In moat around giant mushroom | 10 | `l.swim` | 
 | By middle exit of giant mushroom | 5 |  | 
@@ -1237,11 +1237,11 @@
 | Center of DK portal platform | 5 |  | 
 | Around small pool outside tree | 5 |  | 
 | On tree by small pool outside big tree | 2 |  | 
-| On tree by small pool outside big tree | 3 | `l.climbing` | 
+| On tree by small pool outside big tree | 3 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | On steps to big tree | 5 |  | 
 | On tree by big tree (Tiny coins) | 2 |  | 
-| On tree by big tree (Tiny coins) | 3 | `l.climbing` | 
-| On branch sticking out of big tree | 5 | `l.climbing` | 
+| On tree by big tree (Tiny coins) | 3 | `l.climbing or (l.jetpack and l.isdiddy)` | 
+| On branch sticking out of big tree | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | On big tree | 5 | `l.jetpack` | 
 | On BBlast pad | 5 |  | 
 | On sewer pipe | 5 |  | 
@@ -1252,9 +1252,9 @@
 | On staircase to W1 (1 custom, 4 Donkey) | 5 |  | 
 | On stones on path from moving platforms to W1 | 15 |  | 
 | On tree by staircase to W1 | 2 |  | 
-| On tree by staircase to W1 | 3 | `l.climbing` | 
+| On tree by staircase to W1 | 3 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | On tree by low T&S portal (by Lanky coins) | 2 |  | 
-| On tree by low T&S portal (by Lanky coins) | 3 | `l.climbing` | 
+| On tree by low T&S portal (by Lanky coins) | 3 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Path from crypt to low T&S portal | 10 |  | 
 | On ladder from W1 stairs to crypt | 2 |  | 
 | On ladder from W1 stairs to crypt | 3 |  | 
@@ -1271,7 +1271,7 @@
 | W4 | 10 |  | 
 | W5 | 10 |  | 
 | On tree on platform past/below W1 | 2 |  | 
-| On tree on platform past/below W1 | 3 | `l.climbing` | 
+| On tree on platform past/below W1 | 3 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | On ladder next to Tiny BP | 2 |  | 
 | On ladder next to Tiny BP | 3 |  | 
 | Path from W1 to ladder (7 custom, 8 Donkey) | 15 |  | 
@@ -1282,7 +1282,7 @@
 | Near W2 (1 custom, 4 Donkey) | 5 |  | 
 | On brick piles past W1 | 10 |  | 
 | On tree past W1 | 2 |  | 
-| On tree past W1 | 3 | `l.climbing` | 
+| On tree past W1 | 3 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | In moat by warps | 10 | `l.swim` | 
 | In moat by upper cave entrance | 10 | `l.swim` | 
 | On steps of upper cave entrance (warps side) | 10 |  | 
@@ -1542,9 +1542,9 @@
 | Fairy Isle W5 | 5 |  | 
 | Japes entrance | 5 |  | 
 | Tree between tag barrel and Japes | 5 |  | 
-| Tree next to Japes | 5 | `l.climbing` | 
-| Tree on beaver beach | 5 | `l.climbing` | 
-| Tree near W3 | 5 | `l.climbing` | 
+| Tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Tree on beaver beach | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Tree near W3 | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
 | Behind cannon to Forest | 5 |  | 
 | Waterfall pond | 15 | `l.swim` | 
 | Seafloor around the X platform | 10 | `l.swim` | 
