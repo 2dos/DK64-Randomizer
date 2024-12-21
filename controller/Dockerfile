@@ -24,7 +24,7 @@ RUN if [ "$BRANCH" = "LOCAL" ]; then \
         mv /app/randomizer /app/controller/randomizer && \
         mv /app/js.py /app/controller/js.py && \
         mv /app/ui /app/controller/ui/ && \
-        mv /app/templates /app/controller/templates/ && \
+        cp -r /app/templates /app/controller/templates/ && \
         mv /app/index.html /app/controller/index.html && \
         mv /app/randomizer.html /app/controller/randomizer.html && \
         mv /app/base-hack /app/controller/base-hack/; \
