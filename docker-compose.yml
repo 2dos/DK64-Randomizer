@@ -34,6 +34,10 @@ services:
       - BRANCH=${BRANCH:-LOCAL}
     deploy:
       replicas: ${CONTROLLER_REPLICAS:-2}
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: start-first
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -80,6 +84,10 @@ services:
       - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
     deploy:
       replicas: ${WORKER_REPLICAS:-3}
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: start-first
     restart: always
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -107,6 +115,10 @@ services:
       - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
     deploy:
       replicas: ${MASTER_WORKER_REPLICAS:-3}
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: start-first
     profiles:
       - master
     extra_hosts:
