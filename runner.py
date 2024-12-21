@@ -35,6 +35,10 @@ def rando():
     """Serve the randomizer page."""
     return send_from_directory(".", "randomizer.html")
 
+@app.route("/privacy")
+def privacy():
+    """Serve the privacy page."""
+    return send_from_directory(".", "privacy.html")
 
 # Its a full function not a blueprint so we need to register it as a route
 app.add_url_rule("/admin", view_func=admin_portal)
