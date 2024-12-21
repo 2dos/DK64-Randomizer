@@ -1335,12 +1335,14 @@ typedef struct actor_behaviour_def {
     /* 0x014 */ char str[0x1C];
 } actor_behaviour_def;
 
-typedef struct arbitrary_overlay {
+typedef struct move_text_overlay_struct {
 	/* 0x000 */ unsigned char type;
 	/* 0x001 */ unsigned char kong;
 	/* 0x002 */ short flag;
 	/* 0x004 */ char* string;
-} arbitrary_overlay;
+	/* 0x008 */ unsigned char used;
+	/* 0x009 */ char pad_9[3]; // Used to align with a 4-byte region
+} move_text_overlay_struct;
 
 typedef struct rgb {
 	/* 0x000 */ unsigned char red;
@@ -1737,7 +1739,7 @@ typedef struct RandomSwitchesSetting {
 
 typedef struct LZREntrance {
 	/* 0x000 */ unsigned char map;
-	/* 0x001 */ unsigned char exit;
+	/* 0x001 */ char exit;
 } LZREntrance;
 
 typedef struct ROMFlags {
@@ -2315,3 +2317,41 @@ typedef struct collision_tree_struct {
 	/* 0x00A */ unsigned char force_break;
 	/* 0x00B */ unsigned char unkB;
 } collision_tree_struct;
+
+typedef struct move_overlay_paad {
+	/* 0x000 */ void* upper_text;
+	/* 0x004 */ void* lower_text;
+	/* 0x008 */ unsigned char opacity;
+	/* 0x009 */ unsigned char index;
+	/* 0x00A */ char unk_0A[0x10-0xA];
+	/* 0x010 */ mtx_item matrix_0;
+	/* 0x050 */ mtx_item matrix_1;
+	/* 0x090 */ int timer;
+	/* 0x094 */ actorData* shop_owner;
+} move_overlay_paad;
+
+typedef struct SingleExitStruct {
+    /* 0x000 */ short x;
+    /* 0x002 */ short y;
+    /* 0x004 */ short z;
+    /* 0x006 */ unsigned char player_angle;
+    /* 0x007 */ unsigned char camera_angle;
+    /* 0x008 */ unsigned char autowalk;
+    /* 0x009 */ unsigned char size;
+} SingleExitStruct;
+
+typedef struct FogMapping {
+	/* 0x000 */ rgb rgb;
+	/* 0x003 */ unsigned char map_index;
+	/* 0x004 */ short fog_entry;
+	/* 0x006 */ short fog_cap;
+} FogMapping;
+
+typedef struct FogData {
+	/* 0x000 */ unsigned char enabled;
+	/* 0x001 */ rgb rgb;
+	/* 0x004 */ unsigned char opacity;
+	/* 0x005 */ char pad5;
+	/* 0x006 */ short entry_range;
+	/* 0x008 */ short cap_range;
+} FogData;

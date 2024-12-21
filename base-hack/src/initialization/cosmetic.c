@@ -369,10 +369,42 @@ int determineShockwaveColor(actorData* shockwave) {
     return model;
 }
 
+static FogMapping fog_data[] = {
+    {.rgb.red = 0x8A, .rgb.green = 0x52, .rgb.blue = 0x16, .map_index = MAP_AZTEC, .fog_entry=990, .fog_cap = 999},
+    {.rgb.red = 0, .rgb.green = 0, .rgb.blue = 0, .map_index = MAP_CAVES, .fog_entry=990, .fog_cap = 999},
+    {.rgb.red = 0, .rgb.green = 0, .rgb.blue = 0, .map_index = MAP_CASTLE, .fog_entry=990, .fog_cap = 999},
+    {.rgb.red = 0, .rgb.green = 0, .rgb.blue = 0, .map_index = MAP_TESTMAP, .fog_entry=990, .fog_cap = 999}, // What's used for default
+};
+
 void initCosmetic(void) {
     /**
      * @brief Initialize all cosmetic functionality
      * 
      */
     initModelChanges();
+    for (int i = 0; i < 3; i++) {
+        int red = Rando.fog[i].red;
+        int green = Rando.fog[i].green;
+        int blue = Rando.fog[i].blue;
+        if ((red != 0) || (green != 0) || (blue != 0)) {
+            fog_data[i].rgb = Rando.fog[i];
+            if (i != 0) {
+                fog_data[i].fog_entry = 995;
+                fog_data[i].fog_cap = 1003;
+            }
+        }
+    }
+}
+
+void setFog(int enabled) {
+    EnvironmentFog.enabled = enabled;
+    EnvironmentFog.opacity = 0;
+    for (int i = 0; i < 4; i++) {
+        if ((CurrentMap == fog_data[i].map_index) || (i == 3)) {
+            EnvironmentFog.rgb = fog_data[i].rgb;
+            EnvironmentFog.entry_range = fog_data[i].fog_entry;
+            EnvironmentFog.cap_range = fog_data[i].fog_cap;
+            return;
+        }
+    }
 }

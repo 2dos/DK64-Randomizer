@@ -188,7 +188,8 @@ def getRandomGalleonStarLocation() -> tuple:
 
 def randomize_setup(spoiler):
     """Randomize setup."""
-    SpeedUpFungiRabbit()
+    if not spoiler.settings.disable_racing_patches:
+        SpeedUpFungiRabbit()
     pickup_weights = [
         {"item": "orange", "type": 0x56, "weight": 3},
         {"item": "film", "type": 0x98, "weight": 1},
@@ -692,7 +693,7 @@ def updateKrushaMoveNames(spoiler):
     """Replace move names for the kong that Krusha replaces."""
     move_data = {
         Kongs.donkey: [
-            {"textbox_index": 36, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+            {"textbox_index": 36, "mode": "replace_whole", "target": "CITRON CANNON"},
             {"textbox_index": 6, "mode": "replace_whole", "target": "KANNON BLAST"},
             {"textbox_index": 8, "mode": "replace_whole", "target": "STRONG KROC"},
             {"textbox_index": 10, "mode": "replace_whole", "target": "GATOR GRAB"},
@@ -700,7 +701,7 @@ def updateKrushaMoveNames(spoiler):
             {"textbox_index": 81, "mode": "replace_whole", "target": "KRUSHA"},
         ],
         Kongs.diddy: [
-            {"textbox_index": 37, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+            {"textbox_index": 37, "mode": "replace_whole", "target": "CHERRY RIFLE"},
             {"textbox_index": 12, "mode": "replace_whole", "target": "KREMLING KHARGE"},
             {"textbox_index": 14, "mode": "replace_whole", "target": "ROCKET REPTILE"},
             {"textbox_index": 16, "mode": "replace_whole", "target": "SALAMANDER SPRING"},
@@ -708,7 +709,7 @@ def updateKrushaMoveNames(spoiler):
             {"textbox_index": 82, "mode": "replace_whole", "target": "KRUSHA"},
         ],
         Kongs.lanky: [
-            {"textbox_index": 38, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+            {"textbox_index": 38, "mode": "replace_whole", "target": "CURRANT CARBINE"},
             {"textbox_index": 18, "mode": "replace_whole", "target": "KREMSTAND"},
             {"textbox_index": 20, "mode": "replace_whole", "target": "KABOOM BALLOON"},
             {"textbox_index": 22, "mode": "replace_whole", "target": "KREMSTAND SPRINT"},
@@ -716,7 +717,7 @@ def updateKrushaMoveNames(spoiler):
             {"textbox_index": 83, "mode": "replace_whole", "target": "KRUSHA"},
         ],
         Kongs.tiny: [
-            {"textbox_index": 39, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+            {"textbox_index": 39, "mode": "replace_whole", "target": "POMEGRANATE MORTAR"},
             {"textbox_index": 24, "mode": "replace_whole", "target": "MINI DILE"},
             {"textbox_index": 26, "mode": "replace_whole", "target": "LIZARD TWIRL"},
             {"textbox_index": 28, "mode": "replace_whole", "target": "KROCOPORT"},
@@ -734,28 +735,28 @@ def updateKrushaMoveNames(spoiler):
     }
     name_replacements = {
         Kongs.donkey: [
-            {"old": "Coconut Gun", "new": "LIME BAZOOKA"},
+            {"old": "Coconut Gun", "new": "CITRON CANNON"},
             {"old": "Baboon Blast", "new": "KANNON BLAST"},
             {"old": "Strong Kong", "new": "STRONG KROC"},
             {"old": "Gorilla Grab", "new": "GATOR GRAB"},
             {"old": "Donkey Kong", "new": "KRUSHA"},
         ],
         Kongs.diddy: [
-            {"old": "Peanut Popguns", "new": "LIME BAZOOKA"},
+            {"old": "Peanut Popguns", "new": "CHERRY RIFLE"},
             {"old": "Chimpy Charge", "new": "KREMLING KHARGE"},
             {"old": "Rocketbarrel Boost", "new": "ROCKET REPTILE"},
             {"old": "Simian Spring", "new": "SALAMANDER SPRING"},
             {"old": "Diddy Kong", "new": "KRUSHA"},
         ],
         Kongs.lanky: [
-            {"old": "Grape Shooter", "new": "LIME BAZOOKA"},
+            {"old": "Grape Shooter", "new": "CURRANT CARBINE"},
             {"old": "Orangstand", "new": "KREMSTAND"},
             {"old": "Baboon Balloon", "new": "KABOOM BALLOON"},
             {"old": "Orangstand Sprint", "new": "KREMSTAND SPRINT"},
             {"old": "Lanky Kong", "new": "KRUSHA"},
         ],
         Kongs.tiny: [
-            {"old": "Feather Bow", "new": "LIME BAZOOKA"},
+            {"old": "Feather Bow", "new": "POMEGRANATE MORTAR"},
             {"old": "Mini Monkey", "new": "MINI DILE"},
             {"old": "Pony Tail Twirl", "new": "LIZARD TWIRL"},
             {"old": "Monkeyport", "new": "KROCOPORT"},
@@ -787,3 +788,29 @@ def updateKrushaMoveNames(spoiler):
                         reference.item_name = replacement["new"]
                         chosen_replacements.remove(replacement)
     spoiler.text_changes[39] = text_replacements
+
+
+def remove5DSCameraPoint(spoiler, ROM_COPY: LocalROM):
+    """Remove the camera lock triggers for Tiny 5DS entry."""
+    if not IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.vanilla_bug_fixes):
+        return
+    file_start = js.pointer_addresses[8]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
+    ROM_COPY.seek(file_start)
+    header_end = 0x30
+    for x in range(0x18):
+        count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        header_end += 0x12 * count
+    ROM_COPY.seek(file_start + header_end)
+    count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    for index in range(count):
+        lock_start = file_start + header_end + (index * 0x1C) + 2
+        ROM_COPY.seek(lock_start + 0x14)
+        z_val = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        if z_val > 0x7FFF:
+            z_val -= 0x10000
+        if z_val > 1700:
+            ROM_COPY.seek(lock_start + 0x10)
+            for y in range(3):
+                ROM_COPY.writeMultipleBytes(0, 2)
+            ROM_COPY.seek(lock_start + 0x19)
+            ROM_COPY.writeMultipleBytes(0, 1)

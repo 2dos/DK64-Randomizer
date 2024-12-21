@@ -2304,7 +2304,7 @@ def applyKongModelSwaps(settings: Settings) -> None:
             if value in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight):
                 fixModelSmallKongCollision(index)
             if value == KongModels.krusha:
-                placeKrushaHead(index)
+                placeKrushaHead(settings, index)
                 if index == Kongs.donkey:
                     fixBaboonBlasts()
                 # Orange Switches
@@ -2312,7 +2312,32 @@ def applyKongModelSwaps(settings: Settings) -> None:
                 base_im = getImageFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
                 orange_im = getImageFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
                 if settings.colorblind_mode == ColorblindMode.off:
-                    orange_im = maskImageWithColor(orange_im, (0, 150, 0))
+                    match index:
+                        case Kongs.donkey:
+                            color_r = 255
+                            color_g = 224
+                            color_b = 8
+                        case Kongs.diddy:
+                            color_r = 255
+                            color_g = 48
+                            color_b = 32
+                        case Kongs.lanky:
+                            color_r = 40
+                            color_g = 168
+                            color_b = 255
+                        case Kongs.tiny:
+                            color_r = 216
+                            color_g = 100
+                            color_b = 248
+                        case Kongs.chunky:
+                            color_r = 0
+                            color_g = 255
+                            color_b = 0
+                        case _:
+                            color_r = 100
+                            color_g = 255
+                            color_b = 60
+                    orange_im = maskImageWithColor(orange_im, (color_r, color_g, color_b))
                 else:
                     orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
                 dim_length = int(32 * ORANGE_SCALING)
@@ -2527,9 +2552,32 @@ def darkenDPad():
     ROM().writeBytes(px_data)
 
 
-def placeKrushaHead(slot):
+def placeKrushaHead(settings: Settings, slot):
     """Replace a kong's face with the Krusha face."""
+    if settings.colorblind_mode != ColorblindMode.off:
+        return
+
     kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
+    unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
+    krushaFace64 = getImageFile(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.KrushaFace1 + slot), True, 64, 64, TextureFormat.RGBA5551)
+    krushaFace64Left = krushaFace64.crop([0, 0, 32, 64])
+    krushaFace64Right = krushaFace64.crop([32, 0, 64, 64])
+    # Used in File Select, Pause Menu, Tag Barrels, Switches, Transformation Barrels
+    writeColorImageToROM(krushaFace64Left, 25, kong_face_textures[slot][0], 32, 64, False, TextureFormat.RGBA5551)
+    writeColorImageToROM(krushaFace64Right, 25, kong_face_textures[slot][1], 32, 64, False, TextureFormat.RGBA5551)
+    # Used in Troff and Scoff
+    writeColorImageToROM(krushaFace64Left, 7, unc_face_textures[slot][0], 32, 64, False, TextureFormat.RGBA5551)
+    writeColorImageToROM(krushaFace64Right, 7, unc_face_textures[slot][1], 32, 64, False, TextureFormat.RGBA5551)
+
+    krushaFace32 = krushaFace64.resize((32, 32))
+    krushaFace32 = krushaFace32.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    krushaFace32RBGA32 = getImageFile(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.KrushaFace321 + slot), True, 32, 32, TextureFormat.RGBA32)
+    # Used in the DPad Selection Menu
+    writeColorImageToROM(krushaFace32, 14, 190 + slot, 32, 32, False, TextureFormat.RGBA5551)
+    # Used in Shops Previews
+    writeColorImageToROM(krushaFace32RBGA32, 14, 197 + slot, 32, 32, False, TextureFormat.RGBA32)
+
+    """kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
     unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
     ROM_COPY = LocalROM()
     ROM_COPY.seek(0x1FF6000)
@@ -2587,7 +2635,7 @@ def placeKrushaHead(slot):
     ROM_COPY.seek(rgba32_addr32)
     ROM_COPY.writeBytes(bytearray(data32_rgba32))
     ROM_COPY.seek(rgba16_addr32)
-    ROM_COPY.writeBytes(bytearray(data32))
+    ROM_COPY.writeBytes(bytearray(data32))"""
 
 
 def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
@@ -2895,31 +2943,40 @@ def writeMiscCosmeticChanges(settings):
                 kosha_im = getImageFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
                 kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
                 writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
-            # Kremling
-            kremling_dimensions = [
-                [32, 64],  # FCE
-                [64, 24],  # FCF
-                [1, 1372],  # fd0
-                [32, 32],  # fd1
-                [24, 8],  # fd2
-                [24, 8],  # fd3
-                [24, 8],  # fd4
-                [24, 24],  # fd5
-                [32, 32],  # fd6
-                [32, 64],  # fd7
-                [32, 64],  # fd8
-                [36, 16],  # fd9
-                [20, 28],  # fda
-                [32, 32],  # fdb
-                [32, 32],  # fdc
-                [12, 28],  # fdd
-                [64, 24],  # fde
-                [32, 32],  # fdf
-            ]
-            kremling_shift = getRandomHueShift()
-            for dim_index, dims in enumerate(kremling_dimensions):
-                if dims is not None:
-                    hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
+            if settings.colorblind_mode == ColorblindMode.off:
+                # Kremling
+                kremling_dimensions = [
+                    [32, 64],  # FCE
+                    [64, 24],  # FCF
+                    [1, 1372],  # fd0
+                    [32, 32],  # fd1
+                    [24, 8],  # fd2
+                    [24, 8],  # fd3
+                    [24, 8],  # fd4
+                    [24, 24],  # fd5
+                    [32, 32],  # fd6
+                    [32, 64],  # fd7
+                    [32, 64],  # fd8
+                    [36, 16],  # fd9
+                    [20, 28],  # fda
+                    [32, 32],  # fdb
+                    [32, 32],  # fdc
+                    [12, 28],  # fdd
+                    [64, 24],  # fde
+                    [32, 32],  # fdf
+                ]
+                while True:
+                    kremling_shift = getRandomHueShift()
+                    # Block red coloring
+                    if kremling_shift > 290:
+                        break
+                    if kremling_shift > -70 and kremling_shift < 228:
+                        break
+                    if kremling_shift < -132:
+                        break
+                for dim_index, dims in enumerate(kremling_dimensions):
+                    if dims is not None:
+                        hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift)
             # Rabbit
             rabbit_dimensions = [
                 [1, 1372],  # 111A
@@ -2943,9 +3000,73 @@ def writeMiscCosmeticChanges(settings):
             snake_shift = getRandomHueShift()
             for x in range(2):
                 hueShiftImageContainer(25, 0xEF7 + x, 32, 32, TextureFormat.RGBA5551, snake_shift)
+        # Headphones Sprite
         headphones_shift = getRandomHueShift()
         for x in range(8):
             hueShiftImageContainer(7, 0x3D3 + x, 40, 40, TextureFormat.RGBA5551, headphones_shift)
+        # Instruments
+        trombone_sax_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0xEA2, 32, 32, TextureFormat.RGBA5551, trombone_sax_shift)  # Shine
+        hueShiftImageContainer(25, 0x15AF, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone Icon
+        hueShiftImageContainer(25, 0x15AD, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax Icon
+        hueShiftImageContainer(25, 0xBCC, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBCD, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBD0, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad)
+        hueShiftImageContainer(25, 0xBD1, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad)
+        triangle_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0xEBF, 32, 32, TextureFormat.RGBA5551, triangle_shift)  # Shine
+        hueShiftImageContainer(25, 0x15AE, 40, 40, TextureFormat.RGBA5551, triangle_shift)  # Triangle Icon
+        hueShiftImageContainer(25, 0xBCE, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad)
+        hueShiftImageContainer(25, 0xBCF, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad)
+        bongo_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x1317, 1, 1372, TextureFormat.RGBA5551, bongo_shift)  # Skin
+        hueShiftImageContainer(25, 0x1318, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Side
+        hueShiftImageContainer(25, 0x1319, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Side 2
+        hueShiftImageContainer(25, 0x15AC, 40, 40, TextureFormat.RGBA5551, bongo_shift)  # Bongo Icon
+        hueShiftImageContainer(25, 0xBC8, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad)
+        hueShiftImageContainer(25, 0xBC9, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad)
+        if enemy_setting == RandomModels.extreme:
+            # Beanstalk
+            beanstalk_unc_size = [
+                0x480,
+                0x480,
+                0x480,
+                0x2B8,
+                0xAC0,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAF8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAF8,
+                0x578,
+                0xAB8,
+                0x578,
+                0x5F8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0xAB8,
+                0x578,
+                0xAB8,
+                0xAF8,
+                0xAB8,
+                0xAB8,
+                0x560,
+                0xAB8,
+                0x2B8,
+            ]
+            beanstalk_shift = getRandomHueShift()
+            for index, size in enumerate(beanstalk_unc_size):
+                hueShiftImageContainer(25, 0x1126 + index, 1, int(size >> 1), TextureFormat.RGBA5551, beanstalk_shift)
+        # Fairy Particles Sprites
         fairy_particles_shift = getRandomHueShift()
         for x in range(0xB):
             hueShiftImageContainer(25, 0x138D + x, 32, 32, TextureFormat.RGBA32, fairy_particles_shift)
@@ -3021,6 +3142,12 @@ def writeMiscCosmeticChanges(settings):
         for xi, x in enumerate(settings.jetman_color):
             ROM().seek(settings.rom_data + 0x1E8 + xi)
             ROM().writeMultipleBytes(x, 1)
+        # Blast Barrels
+        blast_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0x127E, 1, 1372, TextureFormat.RGBA5551, blast_shift)
+        for x in range(4):
+            hueShiftImageContainer(25, 0x127F + x, 16, 64, TextureFormat.RGBA5551, blast_shift)
+        hueShiftImageContainer(25, getBonusSkinOffset(ExtraTextures.BlastTop), 1, 1372, TextureFormat.RGBA5551, blast_shift)
         # K Rool
         red_cs_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
         shorts_im = Image.new(mode="RGBA", size=(32, 32), color=convertColorIntToTuple(getEnemySwapColor()))
@@ -3066,6 +3193,17 @@ def writeMiscCosmeticChanges(settings):
         for img_index in (0x10A0, 0x10A2, 0x10A4, 0x10A5):
             hueShiftImageContainer(25, img_index, 1, 1372, TextureFormat.RGBA5551, zinger_shift)
         hueShiftImageContainer(25, 0x10A3, 32, 32, TextureFormat.RGBA32, zinger_shift)
+        # Rings/DK Star
+        ring_shift = getRandomHueShift()
+        for x in range(2):
+            hueShiftImageContainer(25, 0xE1C + x, 1, 344, TextureFormat.RGBA5551, ring_shift)
+            hueShiftImageContainer(25, 0xD38 + x, 64, 32, TextureFormat.RGBA5551, ring_shift)
+        hueShiftImageContainer(7, 0x2EB, 32, 32, TextureFormat.RGBA5551, ring_shift)
+        # Buoys
+        for x in range(2):
+            hueShiftImageContainer(25, 0x133A + x, 1, 1372, TextureFormat.RGBA5551, getRandomHueShift())
+        # Trap Bubble
+        hueShiftImageContainer(25, 0x134C, 32, 32, TextureFormat.RGBA5551, getRandomHueShift())
         # Spider
         spider_shift = getRandomHueShift()
         spider_dims = {
@@ -3096,6 +3234,22 @@ def writeMiscCosmeticChanges(settings):
                 spider_shift,
             )
 
+        if enemy_setting == RandomModels.extreme:
+            # Army Dillo
+            dillo_px_count = {
+                0x102D: 64 * 32,
+                0x103A: 16 * 16,
+                0x102A: 24 * 24,
+                0x102B: 24 * 24,
+                0x102C: 1372,
+                0x103D: 688,
+                0x103E: 688,
+            }
+            dillo_shift = getRandomHueShift()
+            for img, px_count in dillo_px_count.items():
+                hueShiftImageContainer(25, img, 1, px_count, TextureFormat.RGBA5551, dillo_shift)
+
+        # Mushrooms
         mush_man_shift = getRandomHueShift()
         for img_index in (0x11FC, 0x11FD, 0x11FE, 0x11FF, 0x1200, 0x1209, 0x120A, 0x120B):
             hueShiftImageContainer(25, img_index, 1, 1372, TextureFormat.RGBA5551, mush_man_shift)
@@ -3143,6 +3297,63 @@ def writeMiscCosmeticChanges(settings):
         }
         if enemy_setting == RandomModels.extreme:
             enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859])
+            dogadon_color = getEnemySwapColor(80, 160, min_channel_variance=80)
+            enemy_changes[Model.Dogadon] = EnemyColorSwap(
+                [
+                    0xFF0000,
+                    0xFF7F00,
+                    0x450A1F,
+                    0xB05800,
+                    0xFF3200,
+                    0xFFD400,
+                    0x4F260D,
+                    0x600F00,
+                    0x6A1400,
+                    0xAA0000,
+                    0xDF3F1F,
+                    0xFF251F,
+                    0x8F4418,
+                    0x522900,
+                    0xDF9F1F,
+                    0x3B0606,
+                    0x91121E,
+                    0x700C0D,
+                    0xFF5900,
+                    0xFF7217,
+                    0xFF7425,
+                    0xFF470B,
+                    0xA82100,
+                    0x4A0D18,
+                    0x580E00,
+                    0x461309,
+                    0x4C1503,
+                    0x780D0E,
+                    0xFFA74A,
+                    0x7E120F,
+                    0x700000,
+                    0xB64D19,
+                    0x883A13,
+                    0xBD351A,
+                    0xD42900,
+                    0xFF2A00,
+                    0x921511,
+                    0x9C662D,
+                    0xDF5F1F,
+                    0x9B1112,
+                    0x461F0A,
+                    0x4B0808,
+                    0x500809,
+                    0xA42000,
+                    0x5F0B13,
+                    0xBF6A3F,
+                    0x602E10,
+                    0x971414,
+                    0x422C15,
+                    0xFC5800,
+                    0x5C0D0B,
+                ],
+                dogadon_color,
+            )
         for enemy in enemy_changes:
             file_data = bytearray(getRawFile(5, enemy, True))
             vert_start = 0x28
@@ -3934,6 +4145,7 @@ boot_phrases = (
     "Enforcing the law of the Jungle",
     "Saving 20 frames",
     "Reporting bugs. Unlike some",
+    "Color-coding Krusha for convenience",
 )
 
 crown_heads = (

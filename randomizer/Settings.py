@@ -443,6 +443,8 @@ class Settings:
         self.starting_kongs_count = 5
         self.starting_random = False
 
+        self.disable_racing_patches = False
+
         self.has_password = False
         self.password = [1] * 8
 
@@ -516,6 +518,7 @@ class Settings:
         self.music_events_randomized = False
         self.random_music = False
         self.music_vanilla_locations = False
+        self.music_disable_reverb = False
         self.music_selection_dict = {
             "vanilla": {},
             "custom": {},
@@ -673,11 +676,15 @@ class Settings:
         self.crypt_levers = [1, 4, 3]
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         self.enemy_rando = False
-        self.crown_enemy_rando = CrownEnemyRando.off
+        self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
+        self.crown_enemy_difficulty = CrownEnemyDifficulty.vanilla
+        self.crown_difficulties = [CrownEnemyDifficulty.vanilla] * 10
         self.enemy_speed_rando = False
         self.normalize_enemy_sizes = False
         self.randomize_enemy_sizes = False
-        self.cb_rando = CBRando.off
+        self.cb_rando = CBRando.off  # Deprecated
+        self.cb_rando_list_selected = []
+        self.cb_rando_enabled = False
         self.coin_rando = False
         self.crown_placement_rando = False
         self.bananaport_placement_rando = ShufflePortLocations.off
@@ -689,7 +696,60 @@ class Settings:
         self.hard_troff_n_scoff = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
-        self.dk_portal_location_rando = False
+        self.dk_portal_location_rando = False  # Deprecated
+        self.dk_portal_location_rando_v2 = DKPortalRando.off
+        self.level_portal_destinations = [
+            {
+                "map": Maps.JungleJapes,
+                "exit": 15,
+            },
+            {
+                "map": Maps.AngryAztec,
+                "exit": 0,
+            },
+            {
+                "map": Maps.FranticFactory,
+                "exit": 0,
+            },
+            {
+                "map": Maps.GloomyGalleon,
+                "exit": 0,
+            },
+            {
+                "map": Maps.FungiForest,
+                "exit": 27,
+            },
+            {
+                "map": Maps.CrystalCaves,
+                "exit": 0,
+            },
+            {
+                "map": Maps.CreepyCastle,
+                "exit": 0,
+            },
+        ]
+        self.level_void_maps = [
+            Maps.JungleJapes,
+            Maps.AngryAztec,
+            Maps.FranticFactory,
+            Maps.GloomyGalleon,
+            Maps.FungiForest,
+            Maps.CrystalCaves,
+            Maps.CreepyCastle,
+        ]
+        self.level_entrance_regions = [
+            Regions.JungleJapesStart,
+            Regions.AngryAztecStart,
+            Regions.FranticFactoryStart,
+            Regions.GloomyGalleonStart,
+            Regions.FungiForestStart,
+            Regions.CrystalCavesMain,
+            Regions.CreepyCastleMain,
+        ]
+        self.mech_fish_entrance = {
+            "map": Maps.GalleonMechafish,
+            "exit": 0,
+        }
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
@@ -770,7 +830,7 @@ class Settings:
         # Progressive hints
         self.progressive_hint_item = None
         self.enable_progressive_hints = False  # Deprecated
-        self.progressive_hint_text = 0
+        self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
 
     def shuffle_prices(self, spoiler):
@@ -1145,6 +1205,16 @@ class Settings:
         if self.win_condition_item in helmdoor_items.keys():
             self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
 
+        if self.dk_portal_location_rando_v2 != DKPortalRando.off:
+            level_base_maps = [Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle]
+            self.level_portal_destinations = [
+                {
+                    "map": k,
+                    "exit": -1,
+                }
+                for k in level_base_maps
+            ]
+
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
@@ -1199,7 +1269,7 @@ class Settings:
                 if self.climbing_status != ClimbingStatus.normal:
                     self.shuffled_location_types.append(Types.Climbing)
                 self.shuffled_location_types.append(Types.PreGivenMove)
-            if self.cb_rando == CBRando.on_with_isles and Types.Medal in self.shuffled_location_types:
+            if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles) and Types.Medal in self.shuffled_location_types:
                 self.shuffled_location_types.append(Types.IslesMedal)
             if Types.Shockwave not in self.shuffled_location_types:
                 self.shockwave_status = ShockwaveStatus.vanilla
@@ -1370,6 +1440,17 @@ class Settings:
                 random.shuffle(allocation)
                 allocation.append(3)
             self.switch_allocation = allocation.copy()
+
+        if self.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
+            self.crown_difficulties = [self.crown_enemy_difficulty] * 10
+            if self.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
+                allocation = [CrownEnemyDifficulty.easy] * 4
+                allocation.extend([CrownEnemyDifficulty.medium] * 4)
+                allocation.extend([CrownEnemyDifficulty.hard] * 2)
+                # Start out with a default of 4 easy, 4 medium, then 2 hard crowns
+                # Randomize placement for LZR (Matching level order will come from a different calculation)
+                random.shuffle(allocation)
+                self.crown_difficulties = allocation.copy()
 
         # Mill Levers
         mill_shortened = IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
@@ -1667,9 +1748,26 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_count == 0:
-            # Disable progressive hints if hint text is 0
+        prog_hint_max = {
+            ProgressiveHintItem.off: 0,
+            ProgressiveHintItem.req_gb: 201,
+            ProgressiveHintItem.req_bp: 40,
+            ProgressiveHintItem.req_key: 8,
+            ProgressiveHintItem.req_medal: 40,
+            ProgressiveHintItem.req_crown: 10,
+            ProgressiveHintItem.req_fairy: 20,
+            ProgressiveHintItem.req_rainbowcoin: 16,
+            ProgressiveHintItem.req_bean: 1,
+            ProgressiveHintItem.req_pearl: 5,
+            ProgressiveHintItem.req_cb: 3500,
+        }
+        prog_max = prog_hint_max.get(self.progressive_hint_item, 0)
+        if self.progressive_hint_count <= 0:
+            # Disable progressive hints if hint text is 0, or less than 0
             self.progressive_hint_item = ProgressiveHintItem.off
+        elif self.progressive_hint_count > prog_max:
+            # Cap at prog max
+            self.progressive_hint_count = prog_max
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
@@ -1702,7 +1800,7 @@ class Settings:
         for location_id in PreGivenLocations:
             spoiler.LocationList[location_id].inaccessible = True
 
-        if self.cb_rando != CBRando.on_with_isles:
+        if not IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
             spoiler.LocationList[Locations.IslesDonkeyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesDiddyMedal].inaccessible = True
             spoiler.LocationList[Locations.IslesLankyMedal].inaccessible = True
@@ -2062,7 +2160,7 @@ class Settings:
             if region_name == "":
                 raise Ex.PlandoIncompatibleException(f"No region found for {planned_transition}")
             if region in RegionMapList:
-                tied_map = GetMapId(region)
+                tied_map = GetMapId(self, region)
                 tied_exit = GetExitId(planned_back_transition)
                 valid_starting_regions.append(
                     {
@@ -2085,7 +2183,7 @@ class Settings:
                 ]
                 if region in RegionMapList:
                     # Has tied map
-                    tied_map = GetMapId(region)
+                    tied_map = GetMapId(self, region)
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)

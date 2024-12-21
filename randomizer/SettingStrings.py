@@ -102,6 +102,7 @@ settingsExclusionMap = {
     "shuffle_items": {False: ["item_rando_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
     "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
+    "cb_rando_enabled": {False: ["cb_rando_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
     "hard_mode": {False: ["hard_mode_selected"]},
@@ -232,6 +233,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "show_song_name",
         "delayed_spoilerlog_release",
         "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
+        "music_disable_reverb",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

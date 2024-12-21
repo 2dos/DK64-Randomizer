@@ -20,6 +20,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
+    DKPortalRando,
     GlitchesSelected,
     LogicType,
     HardBossesSelected,
@@ -56,6 +57,7 @@ from randomizer.Settings import Settings
 from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
 from randomizer.ShuffleKasplats import constants, shufflable
+from randomizer.Patching.Lib import IsItemSelected
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
@@ -298,7 +300,7 @@ class Spoiler:
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates
-        settings["Randomize CB Locations"] = self.settings.cb_rando.name
+        settings["Randomize CB Locations"] = self.settings.cb_rando_enabled
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Randomize Shop Locations"] = self.settings.shuffle_shops
         settings["Randomize Kasplats"] = self.settings.kasplat_rando_setting.name
@@ -377,6 +379,7 @@ class Spoiler:
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
         settings["Hint Preset"] = self.settings.wrinkly_hints
         if self.settings.progressive_hint_item != ProgressiveHintItem.off:
+            settings["Progressive Hint Item"] = self.settings.progressive_hint_item.name
             settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_count)
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
@@ -387,7 +390,7 @@ class Spoiler:
             settings["Enemy Rando"] = [enemy["name"] for enemy in EnemySelector if enemy["value"] in value_lst]
         else:
             settings["Enemy Rando"] = self.settings.enemy_rando
-        settings["Crown Enemy Rando"] = self.settings.crown_enemy_rando.name
+        settings["Crown Enemy Rando"] = self.settings.crown_enemy_difficulty.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
@@ -688,10 +691,13 @@ class Spoiler:
         if self.settings.bananaport_rando != BananaportRando.off:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if self.settings.wrinkly_location_rando:
-            humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
+            prog_hint_setting = self.settings.progressive_hint_item
+            item_types = self.settings.shuffled_location_types
+            if prog_hint_setting == ProgressiveHintItem.off or Types.Hint in item_types:
+                humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
-        if self.settings.dk_portal_location_rando:
+        if self.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
@@ -775,29 +781,33 @@ class Spoiler:
             if is_empty:
                 del humanspoiler[spoiler_dict]
 
-        if self.settings.cb_rando != CBRando.off:
+        if self.settings.cb_rando_enabled:
             human_cb_type_map = {"cb": " Bananas", "balloons": " Balloons"}
             humanspoiler["Colored Banana Locations"] = {}
-            cb_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle"]
-            if self.settings.cb_rando == CBRando.on_with_isles:
-                cb_levels.append("Isles")
+            cb_levels = []
+            level_dict = {
+                Levels.DKIsles: "DK Isles",
+                Levels.JungleJapes: "Jungle Japes",
+                Levels.AngryAztec: "Angry Aztec",
+                Levels.FranticFactory: "Frantic Factory",
+                Levels.GloomyGalleon: "Gloomy Galleon",
+                Levels.FungiForest: "Fungi Forest",
+                Levels.CrystalCaves: "Crystal Caves",
+                Levels.CreepyCastle: "Creepy Castle",
+            }
+            cb_levels = [name for lvl, name in level_dict.items() if IsItemSelected(self.settings.cb_rando_enabled, self.settings.cb_rando_list_selected, lvl)]
             cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
             for lvl in cb_levels:
                 for kng in cb_kongs:
                     humanspoiler["Colored Banana Locations"][f"{lvl} {kng}"] = {"Balloons": [], "Bananas": []}
             for group in self.cb_placements:
                 lvl_name = level_dict[group["level"]]
-                idx = 1
-                if group["level"] == Levels.FungiForest:
-                    idx = 0
                 map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
                 join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
                 for combo in join_combos:
                     if combo in map_name:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
-                humanspoiler["Colored Banana Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(
-                    f"{map_name.strip()}: {group['name']}"
-                )
+                humanspoiler["Colored Banana Locations"][f"{lvl_name} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(f"{map_name.strip()}: {group['name']}")
         if self.settings.coin_rando:
             humanspoiler["Coin Locations"] = {}
             coin_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
@@ -991,12 +1001,12 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
             humanspoiler["Wrinkly Hints"] = human_hint_list
-            humanspoiler["Unhinted Score"] = self.unhinted_score
-            humanspoiler["Potentially Awful Locations"] = {}
-            for location_description in self.poor_scoring_locations:
-                humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
-            if hasattr(self, "hint_swap_advisory"):
-                humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
+            # humanspoiler["Unhinted Score"] = self.unhinted_score
+            # humanspoiler["Potentially Awful Locations"] = {}
+            # for location_description in self.poor_scoring_locations:
+            #     humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
+            # if hasattr(self, "hint_swap_advisory"):
+            #     humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:
@@ -1040,13 +1050,13 @@ class Spoiler:
                     vanillaBack = exit.back
                     shuffledBack = ShufflableExits[exit.shuffledId].back
                     self.shuffled_exit_data[key] = shuffledBack
-                    containerMapId = GetMapId(exit.region)
+                    containerMapId = GetMapId(self.settings, exit.region)
                     if containerMapId not in containerMaps:
                         containerMaps[containerMapId] = {"container_map": containerMapId, "zones": []}  # DK Isles
                     loading_zone_mapping = {}
-                    loading_zone_mapping["vanilla_map"] = GetMapId(vanillaBack.regionId)
+                    loading_zone_mapping["vanilla_map"] = GetMapId(self.settings, vanillaBack.regionId)
                     loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)
-                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack.regionId)
+                    loading_zone_mapping["new_map"] = GetMapId(self.settings, shuffledBack.regionId)
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:

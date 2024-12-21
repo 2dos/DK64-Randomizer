@@ -290,7 +290,7 @@ fairy_locations = {
         FairyData(
             name="Tiny Temple Kong Cage Room",
             map=Maps.AztecTinyTemple,
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleKONGRoom,
             fence=Fence(280, 1288, 721, 1614),
             spawn_y=442,
         ),
@@ -570,7 +570,7 @@ fairy_locations = {
             region=Regions.ThornvineBarn,
             is_vanilla=True,
             spawn_xyz=[497, 162, 502],
-            logic=lambda l: l.isdonkey and l.Slam and l.camera,
+            logic=lambda l: l.isdonkey and l.Slam and l.camera and l.climbing,
             natural_index=1,
         ),
         FairyData(

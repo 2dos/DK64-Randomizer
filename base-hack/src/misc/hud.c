@@ -158,7 +158,7 @@ static const hud_element_definition elements[] = {
         // Move - 1
         .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
         .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_MOVE - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
-        .sprite_index={0x94, 0x94, 0x94, 0x94, 0x94}, // TODO(theballaam96): Get a potion sprite
+        .sprite_index={0x94, 0x94, 0x94, 0x94, 0x94},
     },
     {
         // GB - 2
@@ -194,7 +194,7 @@ static const hud_element_definition elements[] = {
         // Comapny Coin - 7
         .x = 0x7A, .y=0xD0, .unk0 = 0, .unk1=0,
         .cheat=0, .counter=&hud_counts[ITEMID_CHAOSBLOCKER_COMPANYCOIN - ITEMID_CHAOSBLOCKER_KONG], .run_allocation=1,
-        .sprite_index={0x8D, 0x8D, 0x8D, 0x8D, 0x8D},
+        .sprite_index={0x92, 0x92, 0x92, 0x92, 0x92}, // Handled externally
     },
     {
         // Medal - 8
@@ -410,6 +410,8 @@ void* getHUDSprite_Complex(item_ids item) {
         return &bean_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_PEARL) {
         return &pearl_sprite;
+    } else if (item == ITEMID_CHAOSBLOCKER_COMPANYCOIN) {
+        return &company_coin_sprite;
     } else if ((item == ITEMID_STANDARDAMMO) || (item == ITEMID_HOMINGAMMO)) {
         if (isKrushaAdjacentModel(kong)) {
             return (void*)0x80720268; // Orange Ammo

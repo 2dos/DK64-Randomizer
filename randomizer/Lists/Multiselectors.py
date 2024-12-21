@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from randomizer.Enums.Levels import Levels
+
 
 class MultiselectorItem:
     """Quality of life multiselector information."""
@@ -18,6 +20,7 @@ class MultiselectorItem:
 QoLSelector = []
 RemovedBarrierSelector = []
 FasterCheckSelector = []
+CBRandoSelector = []
 
 # If you make changes to this list, make sure to change the corresponding
 # MiscChangesSelected enum in randomizer.Enums.Settings.
@@ -205,6 +208,27 @@ def parseMultiselector(items: list[MultiselectorItem]) -> list:
         )
     return lst
 
+
+cb_levels = {
+    Levels.JungleJapes: "Jungle Japes",
+    Levels.AngryAztec: "Angry Aztec",
+    Levels.FranticFactory: "Frantic Factory",
+    Levels.GloomyGalleon: "Gloomy Galleon",
+    Levels.FungiForest: "Fungi Forest",
+    Levels.CrystalCaves: "Crystal Caves",
+    Levels.CreepyCastle: "Creepy Castle",
+    Levels.DKIsles: "DK Isles",
+}
+
+CBRandoSelector = [
+    {
+        "name": name,
+        "value": lvl.name,
+        "tooltip": name,
+        "shift": -1,
+    }
+    for lvl, name in cb_levels.items()
+]
 
 QoLSelector = parseMultiselector(QoLItems)
 RemovedBarrierSelector = parseMultiselector(RemovedBarrierItems)

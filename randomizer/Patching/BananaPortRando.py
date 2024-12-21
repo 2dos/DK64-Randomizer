@@ -88,7 +88,7 @@ def move_bananaports(spoiler):
                         }
                     )
                     # Modify Exit Table
-                    ROM_COPY.seek(exit_table + (10 * exit_id))
+                    ROM_COPY.seek(exit_table + (10 * exit_id) + 12)
                     ROM_COPY.writeMultipleBytes(int(new_coords[0]), 2)
                     ROM_COPY.writeMultipleBytes(int(new_coords[1] + 4.25), 2)
                     ROM_COPY.writeMultipleBytes(int(new_coords[2]), 2)

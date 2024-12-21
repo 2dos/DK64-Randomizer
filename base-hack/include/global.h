@@ -15,7 +15,7 @@ extern void quickInit(void);
 extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
-extern void spawnItemOverlay(int type, int kong, int index, int force);
+extern int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force);
 extern int giveSlamLevel(void);
 extern int isSlamFlag(int flag);
 extern int isBeltFlag(int flag);
@@ -194,6 +194,7 @@ extern void initDingSprite(void);
 extern void fastWarpShockwaveFix(void);
 extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
+extern void detectSongChange();
 extern int getTotalCBCount(void);
 
 extern void swapKremlingModel(void);
@@ -460,6 +461,7 @@ extern sprite_data_struct pearl_sprite;
 extern sprite_data_struct krool_sprite;
 extern sprite_data_struct feather_gun_sprite;
 extern sprite_data_struct fool_overlay_sprite;
+extern sprite_data_struct company_coin_sprite;
 
 extern actor_behaviour_def actor_defs[DEFS_LIMIT];
 extern void* actor_functions[ACTOR_LIMIT];
@@ -484,6 +486,7 @@ extern unsigned int base_text_color;
 extern unsigned int emph_text_colors[10];
 extern unsigned char HeadSize[MODEL_COUNT];
 extern const char big_head_actors[MODEL_COUNT];
+extern move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER];;
 
 // Items we're extern-ing for usage with "ASMPatcher.py"
 // DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING

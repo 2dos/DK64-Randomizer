@@ -125,7 +125,7 @@ void displayMedalOverlay(int flag, int item_type) {
                     for (int i = 0; i < 8; i++) {
                         if ((checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) && ((key_bitfield & (1 << i)) == 0)) {
                             if (!spawned) {
-                                spawnItemOverlay(5, 0, getKeyFlag(i), 0);
+                                spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
                                 spawned = 1;
                             }
                         }
@@ -283,7 +283,7 @@ void collectKey(void) {
     for (int i = 0; i < 8; i++) {
         if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
             if ((old_keys & (1 << i)) == 0) {
-                spawnItemOverlay(5, 0, getKeyFlag(i), 0);
+                spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
             }
         }
     }
@@ -417,7 +417,7 @@ void giveFairyItem(int flag, int state, flagtypes type) {
         for (int i = 0; i < 8; i++) {
             if ((checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) && ((key_bitfield & (1 << i)) == 0)) {
                 if (!spawned) {
-                    spawnItemOverlay(5, 0, getKeyFlag(i), 0);
+                    spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
                     spawned = 1;
                 }
             }

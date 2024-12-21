@@ -44,6 +44,14 @@ export enum CrownEnemyRando {
     hard = 3,
 }
 
+export enum CrownEnemyDifficulty {
+    vanilla = 0,
+    easy = 1,
+    medium = 2,
+    hard = 3,
+    progressive = 4,
+}
+
 export enum DamageAmount {
     default = 0,
     double = 1,
@@ -55,6 +63,12 @@ export enum DPadDisplays {
     off = 0,
     on = 1,
     minimal = 2,
+}
+
+export enum DKPortalRando {
+    off = 0,
+    main_only = 1,
+    on = 2,
 }
 
 export enum ExcludedSongs {
@@ -689,6 +703,10 @@ export enum SettingsStringEnum {
     progressive_hint_item = 198,
     mirror_mode = 199,
     progressive_hint_count = 200,
+    cb_rando_enabled = 201,
+    cb_rando_list_selected = 202,
+    crown_enemy_difficulty = 203,
+    dk_portal_location_rando_v2 = 204,
 }
 
 export enum SettingsStringDataType {
@@ -714,7 +732,9 @@ export const SettingsMap = {
     'colorblind_mode': ColorblindMode,
     'crown_door_item': HelmDoorItem,
     'crown_enemy_rando': CrownEnemyRando,
+    'crown_enemy_difficulty': CrownEnemyDifficulty,
     'damage_amount': DamageAmount,
+    'dk_portal_location_rando_v2': DKPortalRando,
     'diddy_colors': CharacterColors,
     'dk_colors': CharacterColors,
     'dpad_display': DPadDisplays,
@@ -740,6 +760,7 @@ export const SettingsMap = {
     'logic_type': LogicType,
     'microhints_enabled': MicrohintsEnabled,
     'minigames_list_selected': MinigamesListSelected,
+    'cb_rando_list_selected': Levels,
     'misc_changes_selected': MiscChangesSelected,
     'more_cutscene_skips': ExtraCutsceneSkips,
     'move_rando': MoveRando,
@@ -806,10 +827,12 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
+    SettingsStringEnum.crown_enemy_difficulty: CrownEnemyDifficulty,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
     SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.dk_portal_location_rando_v2: DKPortalRando,
     SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
@@ -874,6 +897,8 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.medal_requirement: SettingsStringDataType.var_int,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
+    SettingsStringEnum.cb_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
     SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
@@ -965,11 +990,11 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
+    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
-    SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_2: SettingsStringDataType.list,
@@ -987,6 +1012,7 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.glitches_selected: GlitchesSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
+    SettingsStringEnum.cb_rando_list_selected: Levels,
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,

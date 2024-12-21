@@ -9,6 +9,7 @@ from randomizer.JsonReader import generate_globals
 from enum import IntEnum, auto, Enum
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Levels import Levels
 from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Enums.Maps import Maps
 
