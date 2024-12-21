@@ -24,6 +24,10 @@ $.ajax({
   dataType: "json",
   async: false,
   success: function (data) {
+    progression_presets.push({
+      "name": "-- Select a Preset --",
+      "description": " "
+    })
     data.forEach((file) => {
       progression_presets.push(file);
     });
