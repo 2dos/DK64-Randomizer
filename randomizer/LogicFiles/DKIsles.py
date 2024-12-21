@@ -386,7 +386,9 @@ LogicRegions = {
 
     Regions.IslesAirspace: Region("Isles Airspace", HintRegion.MainIsles, Levels.DKIsles, False, None, [  # You are assumed to be on Rocketbarrel in this region
         LocationLogic(Locations.IslesDiddySummit, lambda l: True, MinigameType.BonusBarrel),
-    ], [], [
+    ], [
+        Event(Events.AirSpaceEntered, lambda l: True),
+    ], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: True),
         TransitionFront(Regions.CabinIsle, lambda l: True),

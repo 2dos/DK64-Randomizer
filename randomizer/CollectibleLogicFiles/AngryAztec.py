@@ -65,7 +65,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Behind Guitar Door
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Near Rocketbarrel
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Gongs steps
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.climbing, None, 3),  # Gongs Trees
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.climbing or l.jetpack, None, 3),  # Gongs Trees
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Sun Ring
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # On top llama temple
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 4),  # 5DTemple Steps
@@ -77,7 +77,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # Tunnel
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Beetle Slide
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Warp 5
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.climbing, None, 5),  # Treetops around 5DTemple
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.climbing or l.twirl, None, 5),  # Treetops around 5DTemple
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 5),  # 5DTemple path
 
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),  # Around Totem

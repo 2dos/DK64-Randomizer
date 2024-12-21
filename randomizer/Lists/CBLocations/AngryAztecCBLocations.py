@@ -478,7 +478,7 @@ ColoredBananaGroupList = [
         name="Bunch on trees between Snide's and Beetle Race tower (1 custom, 2 Lanky bunches)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[
             [5, 1.0, 3829, 315, 4198],
             [5, 1.0, 3749.179443359375, 340.0, 3823.531982421875],
@@ -735,7 +735,7 @@ ColoredBananaGroupList = [
         name="Bunches on patch of sand between Llama temple and W2-3-4 (accessible by jumping from nearby tree)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: l.climbing or l.jetpack,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 3315, 268, 3168], [5, 1.0, 3369, 283, 3114]],
     ),
     ColoredBananaGroup(
@@ -1554,7 +1554,7 @@ ColoredBananaGroupList = [
         name="On trees around Beetle race tower (Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         vanilla=True,
         locations=[
             [5, 1.0, 4201.38134765625, 305.0, 3067.024169921875],
@@ -1583,7 +1583,7 @@ ColoredBananaGroupList = [
         name="Trees around back of 5DT (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.twirl and l.istiny) or (l.jetpack and l.isdiddy),
         vanilla=True,
         locations=[
             [5, 1.0, 2165.227294921875, 332.35711669921875, 3373.839599609375],
@@ -1596,7 +1596,7 @@ ColoredBananaGroupList = [
         name="Trees around front of 5DT (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.twirl and l.istiny) or (l.jetpack and l.isdiddy),
         vanilla=True,
         locations=[
             [5, 1.0, 1909.673828125, 313.08673095703125, 4099.64208984375],
@@ -1610,7 +1610,7 @@ ColoredBananaGroupList = [
         name="Trees between Llama Temple and 5DT (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         vanilla=True,
         locations=[
             [5, 1.0, 2851.993896484375, 310.0, 3940.567626953125],
