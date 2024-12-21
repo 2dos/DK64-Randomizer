@@ -27,7 +27,10 @@ def bind(event, id, iterations=0):
         """
         function = create_proxy(function)
         if iterations == 0:
-            document.getElementById(id).addEventListener(event, function, False)
+            try:
+                document.getElementById(id).addEventListener(event, function, False)
+            except Exception:
+                pass
         else:
             for i in range(0, iterations):
                 try:
