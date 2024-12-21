@@ -10,9 +10,9 @@ sys.path.append("worker")
 sys.path.append("controller")
 # Prepend all routes with /api
 
-from worker.worker import api as worker_api # noqa
-from controller.app import ALLOWED_REFERRERS, API_KEYS, api # noqa
-from controller.app import admin_portal # noqa
+from worker.worker import api as worker_api  # noqa
+from controller.app import ALLOWED_REFERRERS, API_KEYS, api  # noqa
+from controller.app import admin_portal  # noqa
 
 
 app = Flask(__name__, static_folder="", template_folder="templates")
