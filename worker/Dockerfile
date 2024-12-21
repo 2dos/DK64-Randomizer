@@ -30,7 +30,6 @@ RUN wget https://github.com/jmacd/xdelta/archive/refs/tags/v3.1.0.tar.gz \
 
 # Copy local files
 COPY ./ /app/
-WORKDIR /app/worker
 
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN if [ "$BRANCH" != "LOCAL" ]; then \
@@ -38,6 +37,7 @@ RUN if [ "$BRANCH" != "LOCAL" ]; then \
         git config --global core.compression 0 && \
         git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app; \
     fi
+WORKDIR /app/worker
 
 # Install dependencies
 RUN pip install -r requirements.txt && \
@@ -46,6 +46,7 @@ RUN pip install -r requirements.txt && \
     mv /app/version.py /app/worker/version.py && \
     mv /app/js.py /app/worker/js.py && \
     mv /app/base-hack /app/worker/base-hack/
+
 RUN opentelemetry-bootstrap --action=install
 
 # Command to run the application
