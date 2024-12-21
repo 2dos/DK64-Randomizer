@@ -49,7 +49,6 @@ services:
     networks:
       - task_network
     volumes:
-      - ./controller/${NGINX_CONF:-nginx-local.conf}:/etc/nginx/nginx.conf
       - ./certificate.crt:/etc/nginx/certificate.crt
       - ./private.key:/etc/nginx/private.key
     extra_hosts:
@@ -96,7 +95,7 @@ services:
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
       - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
-      - BRANCH=${BRANCH:-LOCAL}
+      - BRANCH=${MASTER_BRANCH:-master}
     volumes:
       - ./dk64.z64:/app/worker/dk64.z64
       - ./generated_seeds/:/app/worker/generated_seeds/
