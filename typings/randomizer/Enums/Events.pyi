@@ -13,6 +13,7 @@ class Events(IntEnum):
     CastleKeyTurnedIn = 10
     HelmKeyTurnedIn = 11
     TrainingBarrelsSpawned = 12
+    AirSpaceEntered = 13
     Rambi = 13
     JapesFreeKongOpenGates = 14
     JapesDonkeySwitch = 15

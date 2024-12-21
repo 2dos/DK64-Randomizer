@@ -13,6 +13,7 @@
         "CastleKeyTurnedIn": 10,
         "HelmKeyTurnedIn": 11,
         "TrainingBarrelsSpawned": 12,
+        "AirSpaceEntered": 13,
 
         // Jungle Japes events
         "Rambi": 13,
