@@ -5,17 +5,14 @@ ENV BRANCH=$BRANCH
 # Copy local files
 
 COPY ./ /app/
-WORKDIR /app/controller
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN if [ "$BRANCH" != "LOCAL" ]; then \
         apt-get update -y && apt-get install -y git && \
         rm -rf /app/ && \
-        mkdir /app && \
         git config --global core.compression 0 && \
-        git config --global user.email "clone@clone.com" && \
-        git config --global user.name "Clone" && \
         git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app; \
     fi
+
 
 RUN if [ "$BRANCH" = "LOCAL" ]; then \
         mv /app/static /app/controller/static && \
@@ -27,7 +24,7 @@ RUN if [ "$BRANCH" = "LOCAL" ]; then \
         mv /app/randomizer.html /app/controller/randomizer.html && \
         mv /app/base-hack /app/controller/base-hack/; \
     fi
-
+WORKDIR /app/controller
 RUN pip install -r requirements.txt && \
     mv /app/version.py /app/controller/version.py
 
