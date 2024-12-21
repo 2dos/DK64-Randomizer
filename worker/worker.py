@@ -1,3 +1,5 @@
+"""Worker process for the randomizer service."""
+
 from flask import Flask, request, jsonify, Blueprint
 from redis import Redis
 from rq import Queue, Worker
@@ -63,7 +65,10 @@ api = Blueprint("worker_api", __name__)
 
 
 class PriorityAwareWorker(Worker):
+    """Worker that processes high-priority tasks first."""
+
     def execute_job(self, job, queue):
+        """Process a job from the queue."""
         # Log which queue the job came from and its metadata
         user_ip = job.meta.get("ip", "unknown")
         print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip})")
@@ -107,6 +112,7 @@ def get_selector_info():
 
 @api.route("/convert_settings", methods=["POST"])
 def convert_settings():
+    """Convert settings between JSON and encrypted string formats."""
     data = request.get_json()
     if "settings" in data:
         try:
@@ -124,12 +130,14 @@ def convert_settings():
 
 
 def runWaitressWorker():
+    """Run the worker using Waitress."""
     # Start the Flask server
     app.register_blueprint(api)
     serve(app, host="0.0.0.0", port=8000)
 
 
 def runWorker(jobs):
+    """Run the worker using RQ."""
     # Create queues for high- and low-priority tasks
     queues = [Queue(name, connection=redis_conn, default_timeout=job_timeout) for name in listen]
 

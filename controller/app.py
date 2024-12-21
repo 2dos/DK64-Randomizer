@@ -1,3 +1,5 @@
+"""Controller Router manages all the worker nodes."""
+
 import json
 import logging
 import os
@@ -62,7 +64,10 @@ tasks = {}
 
 
 class TaskThread(threading.Thread):
+    """Thread to run a task in the background."""
+
     def __init__(self, task_id, target, *args, **kwargs):
+        """Initialize the thread with the task ID and target function."""
         super().__init__(*args, **kwargs)
         self.task_id = task_id
         self.target = target
@@ -71,6 +76,7 @@ class TaskThread(threading.Thread):
         self.result = self.target(self.args[0])
 
     def run(self):
+        """Run the task in the background."""
         self.result = self.target(self.kwargs.get("args")[0])
 
 
@@ -99,6 +105,7 @@ ALLOWED_REFERRERS.extend(["*"])
 
 @api.before_request
 def enforce_api_restrictions():
+    """Enforce restrictions on the API."""
     referer = request.headers.get("Referer")
     api_key = request.headers.get("X-API-Key")
     # Check if the request is allowed based on referer or API key
@@ -116,7 +123,7 @@ def enforce_api_restrictions():
 
 
 def set_response(content, status_code, content_type="application/json", version_header=version):
-    """Utility function to set common response headers."""
+    """Set common response headers."""
     response = make_response(content, status_code)
     response.mimetype = content_type
     response.headers["Content-Type"] = f"{content_type}; charset=utf-8"
@@ -130,6 +137,7 @@ CACHE_DURATION = 300  # Cache duration in seconds
 
 
 def update_presets(force=False):
+    """Update the local presets from the JSON file."""
     global cached_local_presets, last_updated
     current_time = int(time.time())
     if cached_local_presets is not None and (current_time - last_updated) < CACHE_DURATION and not force:
@@ -151,6 +159,7 @@ def get_user_ip():
 
 @api.route("/submit-task", methods=["POST"])
 def submit_task():
+    """Submit a task to the worker queue."""
     data = request.json
     if os.environ.get("TEST_REDIS") == "1":
         # Start the task immediately if we're using a fake Redis server
@@ -196,6 +205,7 @@ def submit_task():
 
 @api.route("/task-status/<task_id>", methods=["GET"])
 def task_status(task_id):
+    """Get the status of a task."""
     if os.environ.get("TEST_REDIS") == "1":
         global tasks
         task_thread = tasks.get(task_id)
@@ -234,11 +244,13 @@ def task_status(task_id):
 
 @api.route("/get_version", methods=["GET"])
 def get_version():
+    """Get the version of the controller."""
     return set_response(json.dumps({"version": version}), 200)
 
 
 @api.route("/get_presets", methods=["GET"])
 def get_presets():
+    """Get the presets for the randomizer."""
     branch = request.args.get("branch")
     return_blank = request.args.get("return_blank")
     presets_to_return = []
@@ -261,6 +273,7 @@ def get_presets():
 
 @app.route("/admin", methods=["GET"])
 def admin_portal():
+    """Serve the admin portal."""
     # Branch Data for the admin portal
     branch = os.environ.get("BRANCH", "LOCAL")
     if session.get("admin") is None:
@@ -292,6 +305,7 @@ def admin_portal():
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])
 def admin_presets():
+    """Update or delete a local preset."""
     if not session.get("admin", False):
         return set_response(json.dumps({"message": "You do not have permission to access this page."}), 403)
 
@@ -408,6 +422,7 @@ def get_spoiler_log():
 
 @api.route("/current_total", methods=["GET"])
 def get_current_total():
+    """Get the current total of generated seeds."""
     current_total, last_generated_time = get_total_info()
     if request.args.get("format") == "total_shield":
         response_data = {
@@ -432,6 +447,7 @@ def get_current_total():
 
 
 def get_total_info():
+    """Get the total number of generated seeds."""
     current_total = 0
     try:
         with open("current_total.cfg", "r") as f:
@@ -472,6 +488,7 @@ def get_selector_info():
 
 @api.route("/convert_settings", methods=["POST"])
 def convert_settings():
+    """Convert settings for the randomizer."""
     url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
     if not url:
         url = "http://127.0.0.1:8000"

@@ -1,3 +1,5 @@
+"""This module contains the task that generates a seed."""
+
 import codecs
 import json
 import random
@@ -17,6 +19,7 @@ from version import version
 
 
 def generate_seed(settings_dict):
+    """Generate a seed with the given settings."""
     print("Running task with")
     try:
         if isinstance(settings_dict, str):
@@ -42,6 +45,7 @@ def generate_seed(settings_dict):
 
 
 def cleanup_settings(settings):
+    """Cleanup the settings dictionary."""
     # Convert string data to enums where possible.
     for k, v in settings.items():
         if k in SettingsMap:
@@ -64,7 +68,7 @@ def cleanup_settings(settings):
 
 
 def update_seed_results(patch, spoiler, settings_dict):
-
+    """Update the seed results."""
     # Assuming post_body.get("delayed_spoilerlog_release") is an int, and its the number of hours to delay the spoiler log release convert that to time.time() + hours as seconds.
     try:
         spoiler_log_release = int(settings_dict.get("delayed_spoilerlog_release", 0))

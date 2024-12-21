@@ -1,3 +1,5 @@
+"""This module is responsible for deleting old files."""
+
 import json
 import time
 from os import listdir, makedirs, path, remove
@@ -26,6 +28,7 @@ def delete_old_files():
 
 
 def enable_cleanup():
+    """Enable the cleanup scheduler."""
     # Setup the scheduler
     scheduler = BackgroundScheduler()
     scheduler.add_job(func=delete_old_files, trigger="interval", hours=2)
