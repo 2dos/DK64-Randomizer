@@ -16,6 +16,9 @@ services:
       dockerfile: ./controller/Dockerfile
       args:
         - BRANCH=${BRANCH:-LOCAL}
+        - CLIENT_ID=${CLIENT_ID}
+        - CLIENT_SECRET=${CLIENT_SECRET}
+        - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
     depends_on:
       - redis
     volumes:
