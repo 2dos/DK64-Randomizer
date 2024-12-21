@@ -58,7 +58,7 @@ ColoredBananaGroupList = [
         name="On tree by small pool outside big tree",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[1, 1.0, 688, 490, 175], [1, 1.0, 680, 525, 180], [1, 1.0, 675, 560, 180]],
     ),
     ColoredBananaGroup(
@@ -89,7 +89,7 @@ ColoredBananaGroupList = [
         name="On tree by big tree (Tiny coins)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[1, 1.0, 1090, 570, 150], [1, 1.0, 1100, 605, 147], [1, 1.0, 1100, 640, 147]],
     ),
     ColoredBananaGroup(
@@ -98,7 +98,7 @@ ColoredBananaGroupList = [
         name="On branch sticking out of big tree",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 1228, 610, 191]],
     ),
     ColoredBananaGroup(
@@ -233,7 +233,7 @@ ColoredBananaGroupList = [
         name="On tree by staircase to W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[1, 1.0, 1465, 615, 1965], [1, 1.0, 1459, 650, 1965], [1, 1.0, 1457, 685, 1965]],
     ),
     ColoredBananaGroup(
@@ -250,7 +250,7 @@ ColoredBananaGroupList = [
         name="On tree by low T&S portal (by Lanky coins)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleVeryBottom,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[1, 1.0, 1724, 470, 2055], [1, 1.0, 1715, 505, 2053], [1, 1.0, 1712, 540, 2051]],
     ),
     ColoredBananaGroup(
@@ -436,7 +436,7 @@ ColoredBananaGroupList = [
         name="On tree on platform past/below W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleGraveyardPlatform,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[1, 1.0, 638, 615, 1935], [1, 1.0, 628, 650, 1935], [1, 1.0, 625, 685, 1933]],
     ),
     ColoredBananaGroup(
@@ -586,7 +586,7 @@ ColoredBananaGroupList = [
         name="On tree past W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[1, 1.0, 200, 730, 1625], [1, 1.0, 195, 765, 1620], [1, 1.0, 196, 800, 1616]],
     ),
     ColoredBananaGroup(

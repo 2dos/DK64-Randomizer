@@ -15,7 +15,7 @@ ColoredBananaGroupList = [
         name="Mushroom near DK portal",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 2436, 440, 1860]],
     ),
     ColoredBananaGroup(
@@ -24,7 +24,7 @@ ColoredBananaGroupList = [
         name="Mushroom by pink tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 2210, 460, 2047]],
     ),
     ColoredBananaGroup(
@@ -33,7 +33,7 @@ ColoredBananaGroupList = [
         name="Mushroom with vines leading to other mushroom",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 2053, 430, 2334]],
     ),
     ColoredBananaGroup(
@@ -42,7 +42,7 @@ ColoredBananaGroupList = [
         name="Other mushroom whose vines lead to",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 2178, 390, 2718]],
     ),
     ColoredBananaGroup(
@@ -51,7 +51,7 @@ ColoredBananaGroupList = [
         name="Mushroom with vines leading to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 2573, 410, 2733]],
     ),
     ColoredBananaGroup(
@@ -60,7 +60,7 @@ ColoredBananaGroupList = [
         name="On vines between two shrooms",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.can_use_vines and l.climbing,
+        logic=lambda l: (l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy),
         locations=[[5, 1.2, 2140, 430, 2619], [5, 1.2, 2078, 445, 2434]],
     ),
     ColoredBananaGroup(
@@ -69,7 +69,7 @@ ColoredBananaGroupList = [
         name="Vines to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.can_use_vines and l.climbing,
+        logic=lambda l: (l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy),
         locations=[
             [1, 1.2, 2489, 428, 2813],
             [1, 1.2, 2410, 415, 2895],
@@ -104,7 +104,7 @@ ColoredBananaGroupList = [
         name="Mushroom by blue tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 2861, 425, 2567]],
     ),
     ColoredBananaGroup(
@@ -594,7 +594,7 @@ ColoredBananaGroupList = [
         name="On mushroom near Cranky",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GiantMushroomArea,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 650, 425, 427]],
     ),
     ColoredBananaGroup(
@@ -603,7 +603,7 @@ ColoredBananaGroupList = [
         name="Mushroom near rocketbarrel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GiantMushroomArea,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 241, 425, 967]],
     ),
     ColoredBananaGroup(
@@ -612,7 +612,7 @@ ColoredBananaGroupList = [
         name="Mushroom near yellow tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GiantMushroomArea,
-        logic=lambda l: l.climbing,
+        logic=lambda l: l.climbing or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 546, 400, 1448]],
     ),
     ColoredBananaGroup(
