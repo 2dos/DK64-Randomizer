@@ -50,6 +50,8 @@ services:
       - task_network
     volumes:
       - ./controller/${NGINX_CONF:-nginx-local.conf}:/etc/nginx/nginx.conf
+      - ./certificate.crt:/etc/nginx/certificate.crt
+      - ./private.key:/etc/nginx/private.key
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
