@@ -10,6 +10,7 @@ sys.path.append("worker")
 sys.path.append("controller")
 # Prepend all routes with /api
 
+# noqa: E402
 from worker.worker import api as worker_api
 from controller.app import ALLOWED_REFERRERS, API_KEYS, api
 from controller.app import admin_portal
