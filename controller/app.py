@@ -83,7 +83,7 @@ class TaskThread(threading.Thread):
 redis_conn = Redis(host="redis", port=6379)
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
-CORS(app)
+CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com", "http://127.0.0.1"])
 # Prepend all routes with /api
 secret_token = secrets.token_hex(256)
 
