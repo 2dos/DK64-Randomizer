@@ -6,8 +6,11 @@ import random
 import gzip
 import math
 from enum import IntEnum, auto
-from PIL import Image
+from PIL import Image, ImageEnhance
 from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Settings import ColorblindMode
+from randomizer.Enums.Kongs import Kongs
+from typing import Tuple
 
 
 class TextureFormat(IntEnum):
@@ -257,3 +260,219 @@ def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int
     ROM_COPY.write(tex_bin_file)
     ROM_COPY.seek(pal_start)
     ROM_COPY.write(pal_bin_file)
+
+def writeColorImageToROM(
+    im_f,
+    table_index: int,
+    file_index: int,
+    width: int,
+    height: int,
+    transparent_border: bool,
+    format: TextureFormat,
+) -> None:
+    """Write texture to ROM."""
+    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+    file_size = file_end - file_start
+    try:
+        LocalROM().seek(file_start)
+    except Exception:
+        ROM().seek(file_start)
+    pix = im_f.load()
+    width, height = im_f.size
+    bytes_array = []
+    border = 1
+    right_border = 3
+    for y in range(height):
+        for x in range(width):
+            if transparent_border:
+                if ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
+                    pix_data = [0, 0, 0, 0]
+                else:
+                    pix_data = list(pix[x, y])
+            else:
+                pix_data = list(pix[x, y])
+            if format == TextureFormat.RGBA32:
+                bytes_array.extend(pix_data)
+            elif format == TextureFormat.RGBA5551:
+                red = int((pix_data[0] >> 3) << 11)
+                green = int((pix_data[1] >> 3) << 6)
+                blue = int((pix_data[2] >> 3) << 1)
+                alpha = int(pix_data[3] != 0)
+                value = red | green | blue | alpha
+                bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+            elif format == TextureFormat.IA4:
+                intensity = pix_data[0] >> 5
+                alpha = 0 if pix_data[3] == 0 else 1
+                data = ((intensity << 1) | alpha) & 0xF
+                bytes_array.append(data)
+    bytes_per_px = 2
+    if format == TextureFormat.IA4:
+        temp_ba = bytes_array.copy()
+        bytes_array = []
+        value_storage = 0
+        bytes_per_px = 0.5
+        for idx, val in enumerate(temp_ba):
+            polarity = idx % 2
+            if polarity == 0:
+                value_storage = val << 4
+            else:
+                value_storage |= val
+                bytes_array.append(value_storage)
+    data = bytearray(bytes_array)
+    if format == TextureFormat.RGBA32:
+        bytes_per_px = 4
+    if len(data) > (bytes_per_px * width * height):
+        print(f"Image too big error: {table_index} > {file_index}")
+    if table_index in (14, 25):
+        data = gzip.compress(data, compresslevel=9)
+    if len(data) > file_size:
+        print(f"File too big error: {table_index} > {file_index}")
+    try:
+        LocalROM().writeBytes(data)
+    except Exception:
+        ROM().writeBytes(data)
+
+def getNumberImage(number: int):
+    """Get Number Image from number."""
+    if number < 5:
+        num_0_bounds = [0, 20, 30, 45, 58, 76]
+        x = number
+        return getImageFile(14, 15, True, 76, 24, TextureFormat.RGBA5551).crop((num_0_bounds[x], 0, num_0_bounds[x + 1], 24))
+    num_1_bounds = [0, 15, 28, 43, 58, 76]
+    x = number - 5
+    return getImageFile(14, 16, True, 76, 24, TextureFormat.RGBA5551).crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
+
+
+def numberToImage(number: int, dim: Tuple[int, int]):
+    """Convert multi-digit number to image."""
+    digits = 1
+    if number < 10:
+        digits = 1
+    elif number < 100:
+        digits = 2
+    else:
+        digits = 3
+    current = number
+    nums = []
+    total_width = 0
+    max_height = 0
+    sep_dist = 1
+    for _ in range(digits):
+        base = getNumberImage(current % 10)
+        bbox = base.getbbox()
+        base = base.crop(bbox)
+        nums.append(base)
+        base_w, base_h = base.size
+        max_height = max(max_height, base_h)
+        total_width += base_w
+        current = int(current / 10)
+    nums.reverse()
+    total_width += (digits - 1) * sep_dist
+    base = Image.new(mode="RGBA", size=(total_width, max_height))
+    pos = 0
+    for num in nums:
+        base.paste(num, (pos, 0), num)
+        num_w, num_h = num.size
+        pos += num_w + sep_dist
+    output = Image.new(mode="RGBA", size=dim)
+    xScale = dim[0] / total_width
+    yScale = dim[1] / max_height
+    scale = xScale
+    if yScale < xScale:
+        scale = yScale
+    new_w = int(total_width * scale)
+    new_h = int(max_height * scale)
+    x_offset = int((dim[0] - new_w) / 2)
+    y_offset = int((dim[1] - new_h) / 2)
+    new_dim = (new_w, new_h)
+    base = base.resize(new_dim)
+    output.paste(base, (x_offset, y_offset), base)
+    return output
+
+def getRGBFromHash(hash: str):
+    """Convert hash RGB code to rgb array."""
+    red = int(hash[1:3], 16)
+    green = int(hash[3:5], 16)
+    blue = int(hash[5:7], 16)
+    return [red, green, blue]
+
+def maskImageWithColor(im_f: Image, mask: tuple):
+    """Apply rgb mask to image using a rgb color tuple."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.copy()
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, 0), im_dupe)
+    pix = im_f.load()
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
+def getColorBase(mode: ColorblindMode) -> list[str]:
+    """Get the color base array."""
+    if mode == ColorblindMode.prot:
+        return ["#000000", "#0072FF", "#766D5A", "#FFFFFF", "#FDE400"]
+    elif mode == ColorblindMode.deut:
+        return ["#000000", "#318DFF", "#7F6D59", "#FFFFFF", "#E3A900"]
+    elif mode == ColorblindMode.trit:
+        return ["#000000", "#C72020", "#13C4D8", "#FFFFFF", "#FFA4A4"]
+    return ["#FFD700", "#FF0000", "#1699FF", "#B045FF", "#41FF25"]
+
+def getKongItemColor(mode: ColorblindMode, kong: Kongs) -> str:
+    """Get the color assigned to a kong."""
+    return getColorBase(mode)[kong]
+
+def maskImage(im_f, base_index, min_y, keep_dark=False, mode = ColorblindMode.off):
+    """Apply RGB mask to image."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, min_y, w, h))
+    if keep_dark is False:
+        brightener = ImageEnhance.Brightness(im_dupe)
+        im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, min_y), im_dupe)
+    pix = im_f.load()
+    mask = getRGBFromHash(getKongItemColor(mode, base_index))
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(min_y, h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
+def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int):
+    """Load an image, shift the hue and rewrite it back to ROM."""
+    loaded_im = getImageFile(table, image, table != 7, width, height, format)
+    loaded_im = hueShift(loaded_im, shift)
+    loaded_px = loaded_im.load()
+    bytes_array = []
+    for y in range(height):
+        for x in range(width):
+            pix_data = list(loaded_px[x, y])
+            if format == TextureFormat.RGBA32:
+                bytes_array.extend(pix_data)
+            elif format == TextureFormat.RGBA5551:
+                red = int((pix_data[0] >> 3) << 11)
+                green = int((pix_data[1] >> 3) << 6)
+                blue = int((pix_data[2] >> 3) << 1)
+                alpha = int(pix_data[3] != 0)
+                value = red | green | blue | alpha
+                bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+    px_data = bytearray(bytes_array)
+    if table != 7:
+        px_data = gzip.compress(px_data, compresslevel=9)
+    ROM().seek(js.pointer_addresses[table]["entries"][image]["pointing_to"])
+    ROM().writeBytes(px_data)

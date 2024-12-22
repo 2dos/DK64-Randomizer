@@ -43,13 +43,11 @@ from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
+from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
+from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors
 from randomizer.Patching.CosmeticColors import (
     applyHelmDoorCosmetics,
     applyKongModelSwaps,
-    updateCryptLeverTexture,
-    updateMillLeverTexture,
-    writeBootMessages,
-    updateDiddyDoors,
     showWinCondition,
 )
 from randomizer.Patching.CratePlacer import randomize_melon_crate
