@@ -6,20 +6,28 @@ const random_settings_presets = [];
 
 // Determine the correct URL for fetching presets based on the hostname
 let base_url;
+let branch;
 if (location.hostname === "dev.dk64randomizer.com") {
-  base_url = "https://dev-generate.dk64rando.com";
+  base_url = "https://api.dk64rando.com/api";
+  branch = "dev";
 } else if (location.hostname === "dk64randomizer.com") {
-  base_url = "https://generate.dk64rando.com";
+  base_url = "https://api.dk64rando.com/api";
+  branch = "master";
 } else {
-  base_url = `${location.origin}`;
+  base_url = `${location.origin}/api`;
+  branch = "dev";
 }
 
 // Use fetch to get the presets and populate progression_presets and random_settings_presets
 $.ajax({
-  url: base_url + "/get_presets?return_blank=true",
+  url: base_url + "/get_presets?return_blank=true" + "&branch=" + branch,
   dataType: "json",
   async: false,
   success: function (data) {
+    progression_presets.push({
+      "name": "-- Select a Preset --",
+      "description": " "
+    })
     data.forEach((file) => {
       progression_presets.push(file);
     });
@@ -77,8 +85,8 @@ function decrypt_settings_string_enum(settings_string) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
   var response = $.ajax({
     type: "POST",
-    url: base_url + "/convert_settings_string",
-    data: JSON.stringify({ settings_string: settings_string }),
+    url: base_url + "/convert_settings" + "?branch=" + branch,
+    data: JSON.stringify({ "settings": settings_string }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -91,8 +99,8 @@ function encrypt_settings_string_enum(settings) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
   var response = $.ajax({
     type: "POST",
-    url: base_url + "/convert_settings_json",
-    data: JSON.stringify({ settings_json: JSON.stringify(settings) }),
+    url: base_url + "/convert_settings" + "?branch=" + branch,
+    data: JSON.stringify({ "settings": JSON.stringify(settings) }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -858,52 +866,60 @@ function wipeToastHistory() {
   document.getElementById("progress-history").innerHTML = "";
   previous_queue_position = null;
 }
-
-function query_seed_generation(url, json, git_branch) {
-  $.ajax(url, {
-    data: JSON.stringify({
-      branch: git_branch,
-      post_body: json,
-    }),
-    contentType: "application/json",
-    type: "POST",
+var sent_generating_status = false;
+function query_seed_status(url, task_id) {
+  $.ajax(url + "/task-status/" + task_id, {
     success: function (data, textStatus, xhr) {
-      if (xhr.status == 202) {
+      if (data["status"] == "queued") {
         console.log("seed gen waiting in queue");
-        // Get the position in the queue
         position = data["position"];
-        if (position != previous_queue_position) {
-          postToastMessage("Position in Queue: " + position, false, 0.4);
-          if (position == 0) {
-            postToastMessage("Your seed is now generating.");
-          }
+        postToastMessage("Seed is in Position: " + position, false, 0.4);
+        sent_generating_status = false;
+        setTimeout(function () {
+          query_seed_status(url, task_id);
+        }, 5000);
+      } else if (data["status"] == "started") {
+        if (!sent_generating_status) {
+          postToastMessage("Seed is generating", false, 0.6);
         }
-        previous_queue_position = position;
+        sent_generating_status = true;
+
         setTimeout(function () {
-          query_seed_generation(url, json, git_branch);
+          query_seed_status(url, task_id);
         }, 5000);
-      } else if (xhr.status == 201) {
-        console.log("seed gen queued");
-        postToastMessage("Seed Generation Queued", false, 0.3);
-        setTimeout(function () {
-          query_seed_generation(url, json, git_branch);
-        }, 5000);
-      } else if (xhr.status == 208) {
-        console.log(data);
-        postToastMessage(data, true, 1);
-      } else {
-        postToastMessage(
-          "Seed Generation Complete, applying cosmetics",
-          false,
-          0.8
-        );
-        window.apply_patch(data, true);
+      } else if (data["status"] == "finished") {
+        postToastMessage("Seed Generation Complete, applying cosmetics", false, 0.8);
+        sent_generating_status = false;
+        window.apply_patch(data["result"]["patch"], true);
+      } else if (data["status"] == "failed") {
+        postToastMessage("Something went wrong please try again", true, 1);
+        sent_generating_status = false;
       }
     },
     error: function (data, textStatus, xhr) {
       postToastMessage("Something went wrong please try again", true, 1);
     },
   });
+}
+
+
+function submit_seed_generation(url, json, branch) {
+  $.ajax({
+    type: "POST",
+    url: url + "/submit-task?branch=" + branch,
+    data: JSON.stringify({
+      settings_data: json,
+    }),
+    contentType: "application/json",
+    success: function (data, textStatus, xhr) {
+      task_id = data["task_id"];
+      priority = data["priority"];
+      postToastMessage("Seed has been queued in the " + priority + " Priority Queue", false, 0.3);
+      query_seed_status(url, task_id);
+    },
+    error: function (data, textStatus, xhr) {
+      postToastMessage("Something went wrong please try again", true, 1);
+    }});
 }
 function getStringFile(file) {
   return $.ajax({
@@ -982,11 +998,11 @@ function unlock_spoiler_log(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev-generate.dk64rando.com/get_spoiler_log";
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=dev";
   } else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://generate.dk64rando.com/get_spoiler_log";
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=master";
   } else {
-    var url = "http://localhost:8000/get_spoiler_log";
+    var url = "http://localhost:8000/api/get_spoiler_log?branch=dev";
   }
   $.ajax({
     url: url,
@@ -1045,11 +1061,11 @@ function get_seed_from_server(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev-generate.dk64rando.com/get_seed";
+    var url = "https://dev-generate.dk64rando.com/api/get_seed";
   } else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://generate.dk64rando.com/get_seed";
+    var url = "https://generate.dk64rando.com/api/get_seed";
   } else {
-    var url = "http://localhost:8000/get_seed";
+    var url = "http://localhost:8000/api/get_seed";
   }
   // Make the ajax call synchronously
   return_data = $.ajax({

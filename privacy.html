@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>DK64 Randomizer</title>
+        <link href="./static/img/dk.png" rel="icon" />
+        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+              rel="stylesheet"/>
+        <link href="static/styles/styles.css" rel="stylesheet" />
+        <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <style>
+            .privacy-policy-container {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+                background-color: #2b2b2b;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                color: #ffffff;
+                line-height: 1.6;
+            }
+        
+            .privacy-policy-container h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+        
+            .privacy-policy-container h2 {
+                margin-top: 20px;
+                color: #bdbdbd;
+            }
+        
+            .privacy-policy-container ul {
+                margin-left: 20px;
+            }
+        </style>
+        
+    </head>
+    <body id="page-top">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div class="container px-5">
+                <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarResponsive"
+                        aria-controls="navbarResponsive"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="./wiki/Consoles-and-Emulators.html">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="./wiki/home.html">Wiki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://discord.dk64randomizer.com"
+                               target="_blank">Discord</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="privacy-policy-container">
+            <h1>Privacy Policy</h1>
+            <p>Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your data when you visit our website.</p>
+            
+            <h2>1. Data We Collect</h2>
+            <p>We only collect the following information:</p>
+            <ul>
+                <li><strong>IP Logs:</strong> When you access our website, NGINX automatically logs your IP address. These logs are retained for the default retention period configured in our server (typically 30 days), after which they are automatically deleted. This data is used solely for technical and security purposes, such as diagnosing server issues and preventing malicious activity.</li>
+                <li><strong>Metrics and Performance Data:</strong> We use <strong>OpenTelemetry</strong> to monitor the performance and reliability of our website. This tool collects aggregated metrics, such as request response times and error rates. It does not collect or provide us with any information that can identify you as an individual.</li>
+            </ul>
+            
+            <h2>2. How We Use Your Data</h2>
+            <p>The data we collect is used for:</p>
+            <ul>
+                <li>Maintaining the security and stability of our website.</li>
+                <li>Monitoring and improving website performance.</li>
+            </ul>
+            <p>We do not use your data for marketing, profiling, or any other purposes beyond the technical and operational needs of our website.</p>
+            
+            <h2>3. Data Sharing</h2>
+            <p>We do not share your data with third parties, except where required by law or for technical operations, such as hosting providers.</p>
+            
+            <h2>4. Your Rights</h2>
+            <p>Under applicable data protection laws, you have rights concerning your personal data. However, as we only collect minimal technical data (e.g., IP logs for security purposes), there may be limitations to the applicability of certain rights.</p>
+            
+        </div>
+    </body>
+    
+    <footer id="footer">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+            <!-- Left Section: Statistics -->
+            <div id="footer-left" style="text-align: center;">
+                <h3>Statistics</h3>
+                <p id="total_generated_seeds"><strong>Total Generated Seeds:</strong> 0</p>
+                <p id="last_seed_generated"><strong>Last Seed Generated:</strong> -1 seconds ago</p>
+            </div>
+            <script>
+                // Update the statistics every 60 seconds by querying the API for the latest data 
+                // if the site is dev.dk64randomizer.com or dk64randomizer.com
+                if (window.location.hostname == "dev.dk64randomizer.com") {
+                    current_total_url = "https://api.dk64rando.com/api/current_total?branch=dev";
+                }
+                else if (window.location.hostname == "dk64randomizer.com") {
+                    current_total_url = "https://api.dk64rando.com/api/current_total?branch=master";
+                }
+                else {
+                    current_total_url = "http://" + window.location.hostname + ":8000/api/current_total?branch=dev";
+                }
+                function query_stats(){
+                    $.ajax({
+                        url: current_total_url,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            // we want to parse the last_generated_time to just how long its been since then the format is "2023-12-20 10:40:42.962004"
+                            // We want to tell them X Minutes/Seconds/Days ago
+                            var last_generated_time = data.last_generated_time;
+                            var last_generated_time_utc = new Date(last_generated_time + 'Z');
+                            var now_utc = new Date(Date.now());
+                            var diff = now_utc - last_generated_time_utc;
+                            var seconds = Math.floor(diff / 1000);
+                            var minutes = Math.floor(seconds / 60);
+                            var hours = Math.floor(minutes / 60);
+                            var days = Math.floor(hours / 24);
+                            var months = Math.floor(days / 30);
+                            var years = Math.floor(months / 12);
+                            var time_since_generated = "";
+                            if (years > 0) {
+                                time_since_generated = years + " years ago";
+                            }
+                            else if (months > 0) {
+                                time_since_generated = months + " months ago";
+                            }
+                            else if (days > 0) {
+                                time_since_generated = days + " days ago";
+                            }
+                            else if (hours > 0) {
+                                time_since_generated = hours + " hours ago";
+                            }
+                            else if (minutes > 0) {
+                                time_since_generated = minutes + " minutes ago";
+                            }
+                            else if (seconds > 0) {
+                                time_since_generated = seconds + " seconds ago";
+                            }
+                            else {
+                                time_since_generated = "just now";
+                            }
+
+                            $("#total_generated_seeds").html("<strong>Total Generated Seeds:</strong> " + data.total_seeds);
+                            $("#last_seed_generated").html("<strong>Last Seed Generated:</strong> " + time_since_generated);
+                        }
+                    })
+                }
+                setInterval(function () {
+                    query_stats();
+                    
+                }, 60000);
+                // trigger it once on page load
+                query_stats();
+            </script>
+
+            <!-- Middle Section: Existing Data -->
+            <div id="footer-middle" style="text-align: center;">
+                <a href="https://github.com/2dos/DK64-Randomizer" target="_blank" style="text-decoration: none">
+                    <img src="./static/img/github.png" alt="GitHub" />
+                </a>
+                <a href="./wiki/home.html" style="text-decoration: none">
+                    <img src="./static/img/wiki.png" alt="Wiki" />
+                </a>
+                <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: none">
+                    <img src="./static/img/discord.png" alt="Discord" />
+                </a>
+                <div class="footer-info">
+                    <a id="live-version">DK64 Randomizer | </a>
+                    <a href="https://dev.dk64randomizer.com">Dev Branch</a>
+                    <br />
+                    Randomizer by 2dos and Ballaam | Web Generator by Killklli
+                    <br />
+                    In-game characters, images and logos copyright © 1999-2024 Nintendo or Rareware respectively.
+                    <br />
+                    DK64Randomizer.com does not distribute copyright material.
+                    <br />
+                    <a href="./privacy.html">Privacy Policy</a>
+                </div>
+            </div>
+
+            <!-- Right Section: User Data -->
+            <div id="footer-right" style="text-align: center;">
+                <h4>Your Most Recent Seed</h4>
+                <p id="most_recent_seed_id"><strong>Most Recent Seed ID:</strong> None</p>
+                <p id="most_recent_seed_date"><strong>Most Recent Seed Date:</strong> None</p>
+            </div>
+            <script>
+                function load_old_seeds() {
+                    try {
+                    // If we actually have a file in the DB load it
+                    var seed_db = seeddatabase.result;
+                    var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
+                    var seed_store = seed_tx.objectStore("SeedStorage");
+                
+                    var all_seeds = seed_store.getAll();
+                    all_seeds.onsuccess = function () {
+                        try {
+                        var arrayLength = all_seeds.result.length;
+                        var sorted_array = all_seeds.result;
+                        sorted_array.sort(function (a, b) {
+                            return new Date(b.date) - new Date(a.date);
+                        });
+                        // Write the most recent seed to the UI
+                        document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
+                        document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + sorted_array[0].date.toLocaleDateString( undefined, {  year: "numeric",  month: "short",  day: "2-digit",  hour: "2-digit",  minute: "2-digit",  second: "2-digit",});
+                        } catch {}
+                    };
+                    } catch {}
+                }
+                var indexedDB =
+                    window.indexedDB ||
+                    window.mozIndexedDB ||
+                    window.webkitIndexedDB ||
+                    window.msIndexedDB ||
+                    window.shimIndexedDB;
+
+                // Open (or create) the database
+                var seeddatabase = indexedDB.open("SeedStorage", 1);
+                seeddatabase.onupgradeneeded = function () {
+                    try {
+                        var seed_db = seeddatabase.result;
+                        seed_db.createObjectStore("SeedStorage", {
+                        keyPath: "id",
+                        });
+                    } catch {}
+                };
+
+                seeddatabase.onsuccess = function () {
+                    load_old_seeds();
+                };
+
+            </script>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function render_page(page) {
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", page + ".html", false);
+            xmlhttp.send();
+            var data = xmlhttp.responseText;
+            document.documentElement.innerHTML = "";
+            document.open();
+            document.write(data);
+            document.close();
+            history.pushState({}, "page 1", "randomizer");
+        }
+        if (window.location.protocol != 'https:') {
+            if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
+                location.href = location.href.replace("http://", "https://");
+            }
+        }
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger: 'hover'
+            })
+        })
+        async function fetchVersion(url) {
+        try {
+            // Fetch the contents of the file
+            const response = await fetch(url);
+            const text = await response.text();
+    
+            // Regular expression to match the version pattern
+            const versionPattern = /version\s*=\s*"([0-9]+\.[0-9]+\.[0-9]+)"/;
+            const match = versionPattern.exec(text);
+    
+            // Check if the version is found and return it
+            if (match && match[1]) {
+                return match[1];
+            } else {
+                throw new Error("Version not found in file");
+            }
+        } catch (error) {
+            console.error("Error fetching version:", error);
+            return null;
+        }
+    }
+    
+    // Example usage
+    fetchVersion("version.py")
+        .then(version => document.getElementById("version").innerHTML = "Version " + version)
+        .catch(error => console.error('Error:', error));
+    </script>
+    </body>
+</html>
