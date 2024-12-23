@@ -742,14 +742,11 @@
                       base_url = `${location.origin}`;
                         branch = "dev";
                     }
-                    console.log("Pre ajax")
                     $.ajax({
                         type: "GET",
                         url: base_url + "/api/get_selector_info",
                         data: { "branch": branch },
                         success: function (data) {
-                            console.log("AJAX request successful");
-                            console.log("Response data:", data);
                             try {
                                 var selector_info = data;
                                 console.log("Parsed selector_info:", selector_info);
