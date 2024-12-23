@@ -112,9 +112,14 @@ admin_roles = ["550784070188138508"]
 
 
 def enforce_api_restrictions():
+    """Enforce API restrictions on the request."""
+
     def decorator(func):
+        """Decorator to enforce API restrictions."""
+
         @wraps(func)
         def wrapper(*args, **kwargs):
+            """Wrapper to enforce API restrictions."""
             referer = request.headers.get("Referer")
             api_key = request.headers.get("X-API-Key")
 
