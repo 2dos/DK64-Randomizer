@@ -27,6 +27,7 @@ from waitress import serve
 from werkzeug.utils import secure_filename
 from cleanup import enable_cleanup
 from oauth import DiscordAuth
+from functools import wraps
 from swagger_ui import flask_api_doc
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
@@ -73,25 +74,34 @@ class TaskThread(threading.Thread):
         self.target = target
         self.args = args
         self.kwargs = kwargs
-        self.result = self.target(self.args[0])
+        self.result = self.run()
+        self.result_complete = True
 
     def run(self):
         """Run the task in the background."""
-        self.result = self.target(self.kwargs.get("args")[0])
+        if not self.result_complete:
+            self.result = self.target(self.kwargs.get("args")[0])
 
 
 redis_conn = Redis(host="redis", port=6379)
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
-CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com", "http://127.0.0.1"])
+CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com"])
 # Prepend all routes with /api
 secret_token = secrets.token_hex(256)
 
 api = Blueprint("api", __name__, url_prefix="/api")
 app.config["SECRET_KEY"] = secret_token
 # Set the secret key for the blueprint as well
-ALLOWED_REFERRERS = ["https://dk64randomizer.com"]
-API_KEYS = ["your_api_key_1", "your_api_key_2"]
+ALLOWED_REFERRERS = ["https://dk64randomizer.com/", "https://dev.dk64randomizer.com/"]
+API_KEYS = []
+# Check if the file api_keys.cfg exists and load the keys
+if path.isfile("api_keys.cfg"):
+    with open("api_keys.cfg", "r") as f:
+        keys = f.read().splitlines()
+        cleared_keys = [key for key in keys if len(key) > 0]
+        API_KEYS.extend(cleared_keys)
+
 discord = DiscordAuth(
     environ.get("CLIENT_ID"),
     environ.get("CLIENT_SECRET"),
@@ -100,26 +110,40 @@ discord = DiscordAuth(
 )
 admin_roles = ["550784070188138508"]
 
-ALLOWED_REFERRERS.extend(["*"])
 
-
-@api.before_request
 def enforce_api_restrictions():
-    """Enforce restrictions on the API."""
-    referer = request.headers.get("Referer")
-    api_key = request.headers.get("X-API-Key")
-    # Check if the request is allowed based on referer or API key
-    if referer not in ALLOWED_REFERRERS and "*" not in ALLOWED_REFERRERS and api_key not in API_KEYS:
-        print(f"Unauthorized access attempt from IP: {get_user_ip()}, Referer: {referer}, API Key: {api_key}")
-        return set_response(json.dumps({"error": "Unauthorized access"}), 403)
-    # Validate the request is JSON
-    if request.method in ["POST", "PUT"] and request.content_type not in ["application/json", "application/json; charset=utf-8"]:
-        return set_response(json.dumps({"error": "Invalid content type"}), 400)
-    # Check if they provide a branch in their args, if they don't default to dev
-    if "branch" not in request.args:
-        args_copy = request.args.to_dict()
-        args_copy["branch"] = "dev"
-        request.args = args_copy
+    """Enforce API restrictions on the request."""
+
+    def decorator(func):
+        """Enforce API restrictions."""
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            """Enforce API restrictions."""
+            referer = request.headers.get("Referer")
+            api_key = request.headers.get("X-API-Key")
+
+            # Check if the request is allowed based on referer or API key
+            print(referer)
+            if "*" not in ALLOWED_REFERRERS and (referer not in ALLOWED_REFERRERS and api_key not in API_KEYS):
+                print(f"Unauthorized access attempt from IP: {get_user_ip()}, Referer: {referer}, API Key: {api_key}")
+                return jsonify({"error": "Unauthorized access"}), 403
+
+            # Validate the request is JSON
+            if request.method in ["POST", "PUT"] and request.content_type not in ["application/json", "application/json; charset=utf-8"]:
+                return jsonify({"error": "Invalid content type"}), 400
+
+            # Check if they provide a branch in their args, if they don't, default to 'dev'
+            if "branch" not in request.args:
+                args_copy = request.args.to_dict()
+                args_copy["branch"] = "dev"
+                request.args = args_copy
+
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def set_response(content, status_code, content_type="application/json", version_header=version):
@@ -161,6 +185,7 @@ def get_user_ip():
 
 
 @api.route("/submit-task", methods=["POST"])
+@enforce_api_restrictions()
 def submit_task():
     """Submit a task to the worker queue."""
     data = request.json
@@ -207,6 +232,7 @@ def submit_task():
 
 
 @api.route("/task-status/<task_id>", methods=["GET"])
+@enforce_api_restrictions()
 def task_status(task_id):
     """Get the status of a task."""
     if os.environ.get("TEST_REDIS") == "1":
@@ -246,12 +272,14 @@ def task_status(task_id):
 
 
 @api.route("/get_version", methods=["GET"])
+@enforce_api_restrictions()
 def get_version():
     """Get the version of the controller."""
     return set_response(json.dumps({"version": version}), 200)
 
 
 @api.route("/get_presets", methods=["GET"])
+@enforce_api_restrictions()
 def get_presets():
     """Get the presets for the randomizer."""
     branch = request.args.get("branch")
@@ -275,6 +303,7 @@ def get_presets():
 
 
 @app.route("/admin", methods=["GET"])
+@enforce_api_restrictions()
 def admin_portal():
     """Serve the admin portal."""
     # Branch Data for the admin portal
@@ -307,6 +336,7 @@ def admin_portal():
 
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])
+@enforce_api_restrictions()
 def admin_presets():
     """Update or delete a local preset."""
     if not session.get("admin", False):
@@ -351,6 +381,7 @@ def admin_presets():
 
 
 @api.route("/get_seed", methods=["GET"])
+@enforce_api_restrictions()
 def get_seed():
     """Get the lanky for a seed."""
     # Get the hash from the query string and sanitize it
@@ -385,6 +416,7 @@ def get_seed():
 
 
 @api.route("/get_spoiler_log", methods=["GET"])
+@enforce_api_restrictions()
 def get_spoiler_log():
     """Get the spoiler log for a seed."""
     # Get the hash from the query string
@@ -478,6 +510,7 @@ def get_total_info():
 
 
 @api.route("/get_selector_info", methods=["GET"])
+@enforce_api_restrictions()
 def get_selector_info():
     """Get the selector data for the randomizer."""
     # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
@@ -490,6 +523,7 @@ def get_selector_info():
 
 
 @api.route("/convert_settings", methods=["POST"])
+@enforce_api_restrictions()
 def convert_settings():
     """Convert settings for the randomizer."""
     url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
@@ -501,22 +535,6 @@ def convert_settings():
 
 
 app.register_blueprint(api, url_prefix="/api")
-
-if os.environ.get("BRANCH", "LOCAL") == "LOCAL":
-
-    @app.route("/")
-    def index():
-        """Serve the index page."""
-        print("Serving index page")
-        return send_from_directory(".", "index.html")
-
-    @app.route("/randomizer")
-    def rando():
-        """Serve the randomizer page."""
-        return send_from_directory(".", "randomizer.html")
-
-    ALLOWED_REFERRERS.extend(["*"])
-    API_KEYS.append("LOCAL_API_KEY")
 
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=8000)
