@@ -37,6 +37,7 @@ redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 
 # Define a resource to identify your service
 resource = Resource(
