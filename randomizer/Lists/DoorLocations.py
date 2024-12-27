@@ -2852,6 +2852,7 @@ door_locations = {
             kong_lst=[Kongs.tiny, Kongs.chunky],
             group=11,
             moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
         ),  # might be accessible by all kongs post-punch?
         DoorData(
             name="Winch Room - on the Winch",
