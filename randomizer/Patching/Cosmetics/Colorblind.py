@@ -22,7 +22,7 @@ from PIL import ImageEnhance
 
 
 def changeVertexColor(num_data: list[int], offset: int, new_color: list[int]) -> list[int]:
-    """Changes the vertex color based on the luminance of the original."""
+    """Change the vertex color based on the luminance of the original."""
     total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
     channel_light = int(total_light / 3)
     for i in range(3):
@@ -683,7 +683,6 @@ def getPotionColor(colorblind_mode: ColorblindMode, kong: Kongs) -> list[int]:
 
 def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
     """Overwrite potion colors."""
-
     # Actor:
     file = [[0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2], [0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA]]
     for type in range(2):

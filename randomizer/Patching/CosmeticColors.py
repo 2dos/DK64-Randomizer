@@ -113,7 +113,6 @@ def changePatchFace(settings: Settings):
 
 def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
-
     ROM_COPY = ROM()
     sav = settings.rom_data
 

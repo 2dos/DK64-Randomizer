@@ -62,6 +62,7 @@ KONG_ZONES = {
 
 
 def writeKongColors(settings: Settings):
+    """Write kong colors based on the settings."""
     color_palettes = []
     color_obj = {}
     colors_dict = {}
