@@ -241,7 +241,6 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                 shuffled_door_data[level].append((selected_door_index, DoorType.dk_portal))
 
     # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
-    print(shuffled_door_data)
     spoiler.shuffled_door_data = shuffled_door_data
     # Give human text to spoiler log
     if shuffle_wrinkly:

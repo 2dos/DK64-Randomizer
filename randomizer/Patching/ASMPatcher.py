@@ -266,8 +266,6 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
             raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     if address < rdram_start:
         raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
-    if overlay == Overlay.Boot:
-        print(hex(rdram_start), hex(overlay_start), hex(overlay_start + (address - rdram_start)))
     return overlay_start + (address - rdram_start)
 
 
