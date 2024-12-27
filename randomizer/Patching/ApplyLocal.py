@@ -17,10 +17,10 @@ from randomizer.Enums.Settings import RandomModels, BigHeadMode
 from randomizer.Lists.Songs import ExcludedSongsSelector
 from randomizer.Patching.Cosmetics.TextRando import writeCrownNames
 from randomizer.Patching.Cosmetics.Holiday import applyHolidayMode
+from randomizer.Patching.Cosmetics.EnemyColors import writeMiscCosmeticChanges
 from randomizer.Patching.CosmeticColors import (
     apply_cosmetic_colors,
     overwrite_object_colors,
-    writeMiscCosmeticChanges,
     darkenDPad,
     darkenPauseBubble,
 )

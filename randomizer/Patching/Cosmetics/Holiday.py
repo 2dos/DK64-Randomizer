@@ -1,3 +1,4 @@
+"""All code associated with temporary holiday-based cosmetic effects."""
 import gzip
 import js
 from PIL import Image, ImageEnhance

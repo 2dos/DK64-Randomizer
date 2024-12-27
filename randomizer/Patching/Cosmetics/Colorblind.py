@@ -1,3 +1,4 @@
+"""All code associated with colorblind mode."""
 import js
 import gzip
 import zlib
@@ -193,7 +194,7 @@ def maskBlueprintImage(im_f, base_index, mode: ColorblindMode):
     im_f.paste(im_dupe, (0, 0), im_dupe)
     pix = im_f.load()
     pix2 = im_f_original.load()
-    mask = getRGBFromHash(getKongItemColor(mode, base_index))
+    mask = getKongItemColor(mode, base_index, True)
     if max(mask[0], max(mask[1], mask[2])) < 39:
         for channel in range(3):
             mask[channel] = max(39, mask[channel])  # Too black is bad for these items
@@ -227,7 +228,7 @@ def maskLaserImage(im_f, base_index, mode: ColorblindMode):
     im_f.paste(im_dupe, (0, 0), im_dupe)
     pix = im_f.load()
     pix2 = im_f_original.load()
-    mask = getRGBFromHash(getKongItemColor(mode, base_index))
+    mask = getKongItemColor(mode, base_index, True)
     w, h = im_f.size
     for x in range(w):
         for y in range(h):
@@ -549,12 +550,9 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
             num_data.append(d)
         # Figure out which colors to use and where to put them
         color_offsets = [1828, 1844, 1860, 1876, 1892, 1908]
-        green_switch_str = getKongItemColor(mode, Kongs.chunky)
-        blue_switch_str = getKongItemColor(mode, Kongs.lanky)
-        red_switch_str = getKongItemColor(mode, Kongs.diddy)
-        new_color1 = getRGBFromHash(green_switch_str)  # chunky's color
-        new_color2 = getRGBFromHash(blue_switch_str)  # lanky's color
-        new_color3 = getRGBFromHash(red_switch_str)  # diddy's color
+        new_color1 = getKongItemColor(mode, Kongs.chunky, True)
+        new_color2 = getKongItemColor(mode, Kongs.lanky, True)
+        new_color3 = getKongItemColor(mode, Kongs.diddy, True)
 
         # Green switches
         if switch < 5:
@@ -608,7 +606,7 @@ def recolorBlueprintModelTwo(mode: ColorblindMode):
         color1_offsets = [0x52C, 0x54C, 0x57C, 0x58C, 0x5AC, 0x5CC, 0x5FC, 0x61C]
         color2_offsets = [0x53C, 0x55C, 0x5EC, 0x60C]
         color3_offsets = [0x56C, 0x59C, 0x5BC, 0x5DC]
-        new_color = getRGBFromHash(getKongItemColor(mode, kong))
+        new_color = getKongItemColor(mode, kong, True)
         if kong == 0:
             for channel in range(3):
                 new_color[channel] = max(39, new_color[channel])  # Too black is bad, because anything times 0 is 0
@@ -663,14 +661,14 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
             if coord[3] > 0:
                 mask_coords.append([(x + paste_coords[0]), (y + paste_coords[1])])
     if image_color_index < 5:
-        mask = getRGBFromHash(getKongItemColor(mode, image_color_index))
+        mask = getKongItemColor(mode, image_color_index, True)
         for channel in range(3):
             mask[channel] = max(39, mask[channel])  # Too dark looks bad
     else:
-        mask = getRGBFromHash(getKongItemColor(mode, Kongs.lanky))
-    mask2 = getRGBFromHash("#000000")
+        mask = getKongItemColor(mode, Kongs.lanky, True)
+    mask2 = [0x00, 0x00, 0x00]
     if image_color_index == 0:
-        mask2 = getRGBFromHash("#FFFFFF")
+        mask2 = [0xFF, 0xFF, 0xFF]
     for x in range(w):
         for y in range(h):
             base = list(pix[x, y])
@@ -778,8 +776,8 @@ def recolorBells():
     # Figure out which colors to use and where to put them
     color1_offsets = [0x214, 0x244, 0x264, 0x274, 0x284]
     color2_offsets = [0x224, 0x234, 0x254]
-    new_color1 = getRGBFromHash("#0066FF")
-    new_color2 = getRGBFromHash("#0000FF")
+    new_color1 = [0x00, 0x66, 0xFF]
+    new_color2 = [0x00, 0x00, 0xFF]
 
     # Recolor the bell
     for offset in color1_offsets:
@@ -856,7 +854,7 @@ def recolorPotions(colorblind_mode):
             color5_offsets = [0xB4, 0xC4, 0xD4]
             # color6_offsets = [0xF4, 0x104, 0x114, 0x124, 0x134, 0x144, 0x154, 0x164]
             if potion_color < 5:
-                new_color = getRGBFromHash(getKongItemColor(colorblind_mode, potion_color))
+                new_color = getKongItemColor(colorblind_mode, potion_color, True)
             else:
                 new_color = getRGBFromHash("#FFFFFF")
 
@@ -931,7 +929,7 @@ def recolorPotions(colorblind_mode):
         color5_offsets = [0x1C4, 0x1D4, 0x1E4]
         # color6_offsets = [0x204, 0x214, 0x224, 0x234, 0x244, 0x254, 0x264, 0x274]
         if potion_color < 5:
-            new_color = getRGBFromHash(getKongItemColor(colorblind_mode, potion_color))
+            new_color = getKongItemColor(colorblind_mode, potion_color, True)
         else:
             new_color = getRGBFromHash("#FFFFFF")
 

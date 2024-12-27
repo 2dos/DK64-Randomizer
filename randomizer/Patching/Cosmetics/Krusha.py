@@ -1,3 +1,4 @@
+"""All code associated with Krusha."""
 import js
 import zlib
 import gzip
@@ -14,9 +15,7 @@ from randomizer.Patching.LibImage import (
     TextureFormat,
 )
 from randomizer.Enums.Kongs import Kongs
-
-if TYPE_CHECKING:
-    from PIL.Image import Image
+from PIL import Image
 
 DK_SCALE = 0.75
 GENERIC_SCALE = 0.49

@@ -1,10 +1,7 @@
-from typing import TYPE_CHECKING
-
+"""All code associated with updating textures for puzzles."""
 from randomizer.Settings import Settings
 from randomizer.Patching.LibImage import writeColorImageToROM, TextureFormat, getImageFile, getNumberImage
-
-if TYPE_CHECKING:
-    from PIL.Image import Image
+from PIL import Image
 
 def updateMillLeverTexture(settings: Settings) -> None:
     """Update the 21132 texture."""

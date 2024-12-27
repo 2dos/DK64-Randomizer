@@ -427,9 +427,12 @@ def getColorBase(mode: ColorblindMode) -> list[str]:
         return ["#000000", "#C72020", "#13C4D8", "#FFFFFF", "#FFA4A4"]
     return ["#FFD700", "#FF0000", "#1699FF", "#B045FF", "#41FF25"]
 
-def getKongItemColor(mode: ColorblindMode, kong: Kongs) -> str:
+def getKongItemColor(mode: ColorblindMode, kong: Kongs, output_as_list: bool = False) -> str:
     """Get the color assigned to a kong."""
-    return getColorBase(mode)[kong]
+    hash_str = getColorBase(mode)[kong]
+    if output_as_list:
+        return getRGBFromHash(hash_str)
+    return hash_str
 
 def maskImage(im_f, base_index, min_y, keep_dark=False, mode = ColorblindMode.off):
     """Apply RGB mask to image."""
@@ -442,7 +445,7 @@ def maskImage(im_f, base_index, min_y, keep_dark=False, mode = ColorblindMode.of
         im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
-    mask = getRGBFromHash(getKongItemColor(mode, base_index))
+    mask = getKongItemColor(mode, base_index, True)
     w, h = im_f.size
     for x in range(w):
         for y in range(min_y, h):
@@ -453,7 +456,7 @@ def maskImage(im_f, base_index, min_y, keep_dark=False, mode = ColorblindMode.of
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
-def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int):
+def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int, ROM_COPY: ROM = None):
     """Load an image, shift the hue and rewrite it back to ROM."""
     loaded_im = getImageFile(table, image, table != 7, width, height, format)
     loaded_im = hueShift(loaded_im, shift)
@@ -474,5 +477,64 @@ def hueShiftImageContainer(table: int, image: int, width: int, height: int, form
     px_data = bytearray(bytes_array)
     if table != 7:
         px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[table]["entries"][image]["pointing_to"])
-    ROM().writeBytes(px_data)
+    if ROM_COPY is None:
+        ROM_COPY = ROM()
+    ROM_COPY.seek(js.pointer_addresses[table]["entries"][image]["pointing_to"])
+    ROM_COPY.writeBytes(px_data)
+
+def getLuma(color: tuple) -> float:
+    """Get the luma value of a color."""
+    return (0.299 * color[0]) + (0.587 * color[1]) + (0.114 * color[2])
+
+def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
+    """Apply a hue shift to a color."""
+    # RGB -> HSV Conversion
+    red_ratio = color[0] / 255
+    green_ratio = color[1] / 255
+    blue_ratio = color[2] / 255
+    color_max = max(red_ratio, green_ratio, blue_ratio)
+    color_min = min(red_ratio, green_ratio, blue_ratio)
+    color_delta = color_max - color_min
+    hue = 0
+    if color_delta != 0:
+        if color_max == red_ratio:
+            hue = 60 * (((green_ratio - blue_ratio) / color_delta) % 6)
+        elif color_max == green_ratio:
+            hue = 60 * (((blue_ratio - red_ratio) / color_delta) + 2)
+        else:
+            hue = 60 * (((red_ratio - green_ratio) / color_delta) + 4)
+    sat = 0 if color_max == 0 else color_delta / color_max
+    val = color_max
+    # Adjust Hue
+    if head_ratio is not None and sat != 0:
+        amount = head_ratio / (sat * 100)
+    hue = (hue + amount) % 360
+    # HSV -> RGB Conversion
+    c = val * sat
+    x = c * (1 - abs(((hue / 60) % 2) - 1))
+    m = val - c
+    if hue < 60:
+        red_ratio = c
+        green_ratio = x
+        blue_ratio = 0
+    elif hue < 120:
+        red_ratio = x
+        green_ratio = c
+        blue_ratio = 0
+    elif hue < 180:
+        red_ratio = 0
+        green_ratio = c
+        blue_ratio = x
+    elif hue < 240:
+        red_ratio = 0
+        green_ratio = x
+        blue_ratio = c
+    elif hue < 300:
+        red_ratio = x
+        green_ratio = 0
+        blue_ratio = c
+    else:
+        red_ratio = c
+        green_ratio = 0
+        blue_ratio = x
+    return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))

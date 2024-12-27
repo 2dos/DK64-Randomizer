@@ -1,14 +1,12 @@
+"""Code associated with custom textures that can be applied through the cosmetic pack."""
 import js
 import random
 import math
 from io import BytesIO
-from typing import TYPE_CHECKING
 
 from randomizer.Settings import Settings
 from randomizer.Patching.LibImage import writeColorImageToROM, TextureFormat, getImageFile
-
-if TYPE_CHECKING:
-    from PIL.Image import Image
+from PIL import Image
 
 def writeTransition(settings: Settings) -> None:
     """Write transition cosmetic to ROM."""
