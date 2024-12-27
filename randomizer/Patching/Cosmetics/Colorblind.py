@@ -814,7 +814,7 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
             if potion_color < 5:
                 new_color = getKongItemColor(colorblind_mode, potion_color, True)
             else:
-                new_color = getRGBFromHash("#FFFFFF")
+                new_color = [0xFF, 0xFF, 0xFF]
 
             # Recolor the actor item
             for offset in color1_offsets:
@@ -876,7 +876,7 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
         if potion_color < 5:
             new_color = getKongItemColor(colorblind_mode, potion_color, True)
         else:
-            new_color = getRGBFromHash("#FFFFFF")
+            new_color = [0xFF, 0xFF, 0xFF]
 
         # Recolor the model2 item
         for offset in color1_offsets:

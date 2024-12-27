@@ -349,8 +349,13 @@ def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
                         pix[x, y] = (mask2[0], mask2[1], mask2[2], base[3])
     return im_f
 
-
+SINGLE_START = [168, 152, 232, 208, 240]
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
+LASER_START = [784, 748, 363, 760, 772]
+SHOCKWAVE_START = [4897, 4903, 4712, 4950, 4925]
+BLUEPRINT_START = [5624, 5608, 5519, 5632, 5616]
+COIN_START = [224, 256, 248, 216, 264]
+BUNCH_START = [274, 854, 818, 842, 830]
 
 
 def overwrite_object_colors(settings, ROM_COPY: ROM):
@@ -367,13 +372,12 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
         if mode in (ColorblindMode.prot, ColorblindMode.deut):
             recolorBells(ROM_COPY)
         # Preload DK single cb image to paste onto balloons
-        file = 175
-        dk_single = getImageFile(7, file, False, 44, 44, TextureFormat.RGBA5551)
+        dk_single = getImageFile(7, 175, False, 44, 44, TextureFormat.RGBA5551)
         dk_single = dk_single.resize((21, 21))
         blueprint_lanky = []
         # Preload blueprint images. Lanky's blueprint image is so much easier to mask, because it is blue, and the frame is brown
         for file in range(8):
-            blueprint_lanky.append(getImageFile(25, 5519 + (file), True, 48, 42, TextureFormat.RGBA5551))
+            blueprint_lanky.append(getImageFile(25, 5519 + file, True, 48, 42, TextureFormat.RGBA5551))
         writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, TextureFormat.RGBA5551, ROM_COPY)
         recolorWrinklyDoors(mode, ROM_COPY)
         recolorSlamSwitches(galleon_switch_value, ROM_COPY, mode)
@@ -389,74 +393,65 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
             # hair_im = maskImage(hair_im, kong_index, 0)
             # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
             writeKasplatHairColorToROM(getKongItemColor(mode, kong_index), 25, [4124, 4122, 4123, 4120, 4121][kong_index], TextureFormat.RGBA5551, ROM_COPY)
-            for file in range(5519, 5527):
+            for offset in range(8):
                 # Blueprint sprite
-                blueprint_start = [5624, 5608, 5519, 5632, 5616]
-                blueprint_im = blueprint_lanky[(file - 5519)]
+                blueprint_im = blueprint_lanky[offset]
                 blueprint_im = maskBlueprintImage(blueprint_im, kong_index, mode)
-                writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False, TextureFormat.RGBA5551)
-            for file in range(4925, 4931):
+                writeColorImageToROM(blueprint_im, 25, BLUEPRINT_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551)
+            for offset in range(6):
                 # Shockwave
-                shockwave_start = [4897, 4903, 4712, 4950, 4925]
-                shockwave_im = getImageFile(25, shockwave_start[kong_index] + (file - 4925), True, 32, 32, TextureFormat.RGBA32)
+                shockwave_im = getImageFile(25, SHOCKWAVE_START[kong_index] + offset, True, 32, 32, TextureFormat.RGBA32)
                 shockwave_im = maskImage(shockwave_im, kong_index, 0, False, mode)
-                writeColorImageToROM(shockwave_im, 25, shockwave_start[kong_index] + (file - 4925), 32, 32, False, TextureFormat.RGBA32)
-            for file in range(784, 796):
+                writeColorImageToROM(shockwave_im, 25, SHOCKWAVE_START[kong_index] + offset, 32, 32, False, TextureFormat.RGBA32)
+            for offset in range(12):
                 # Helm Laser (will probably also affect the Pufftoss laser and the Game Over laser)
-                laser_start = [784, 748, 363, 760, 772]
-                laser_im = getImageFile(7, laser_start[kong_index] + (file - 784), False, 32, 32, TextureFormat.RGBA32)
+                laser_im = getImageFile(7, LASER_START[kong_index] + offset, False, 32, 32, TextureFormat.RGBA32)
                 laser_im = maskLaserImage(laser_im, kong_index, mode)
-                writeColorImageToROM(laser_im, 7, laser_start[kong_index] + (file - 784), 32, 32, False, TextureFormat.RGBA32)
-            if kong_index == 0 or kong_index == 3 or (kong_index == 2 and mode != ColorblindMode.trit):  # Lanky (prot, deut only) or DK or Tiny
-                for file in range(152, 160):
+                writeColorImageToROM(laser_im, 7, LASER_START[kong_index] + offset, 32, 32, False, TextureFormat.RGBA32)
+            if kong_index in (Kongs.donkey, Kongs.tiny) or (kong_index == Kongs.lanky and mode != ColorblindMode.trit):  # Lanky (prot, deut only) or DK or Tiny
+                for offset in range(8):
                     # Single
-                    single_start = [168, 152, 232, 208, 240]
-                    single_im = getImageFile(7, single_start[kong_index] + (file - 152), False, 44, 44, TextureFormat.RGBA5551)
+                    single_im = getImageFile(7, SINGLE_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     single_im = maskImageWithOutline(single_im, kong_index, 0, mode, "single")
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, TextureFormat.RGBA5551)
-                for file in range(216, 224):
+                    writeColorImageToROM(single_im, 7, SINGLE_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                for offset in range(8):
                     # Coin
-                    coin_start = [224, 256, 248, 216, 264]
-                    coin_im = getImageFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, TextureFormat.RGBA5551)
+                    coin_im = getImageFile(7, COIN_START[kong_index] + offset, False, 48, 42, TextureFormat.RGBA5551)
                     coin_im = maskImageWithOutline(coin_im, kong_index, 0, mode)
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, TextureFormat.RGBA5551)
-                for file in range(274, 286):
+                    writeColorImageToROM(coin_im, 7, COIN_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551)
+                for offset in range(12):
                     # Bunch
-                    bunch_start = [274, 854, 818, 842, 830]
-                    bunch_im = getImageFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, TextureFormat.RGBA5551)
+                    bunch_im = getImageFile(7, BUNCH_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     bunch_im = maskImageWithOutline(bunch_im, kong_index, 0, mode, "bunch")
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, TextureFormat.RGBA5551)
-                for file in range(5819, 5827):
+                    writeColorImageToROM(bunch_im, 7, BUNCH_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                for offset in range(8):
                     # Balloon
-                    balloon_im = getImageFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, TextureFormat.RGBA5551)
+                    balloon_im = getImageFile(25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
                     balloon_im = maskImageWithOutline(balloon_im, kong_index, 33, mode)
-                    balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, TextureFormat.RGBA5551)
+                    balloon_im.paste(dk_single, balloon_single_frames[offset], dk_single)
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551)
             else:
-                for file in range(152, 160):
+                for offset in range(8):
                     # Single
-                    single_start = [168, 152, 232, 208, 240]
-                    single_im = getImageFile(7, single_start[kong_index] + (file - 152), False, 44, 44, TextureFormat.RGBA5551)
+                    single_im = getImageFile(7, SINGLE_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     single_im = maskImage(single_im, kong_index, 0, False, mode)
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, TextureFormat.RGBA5551)
-                for file in range(216, 224):
+                    writeColorImageToROM(single_im, 7, SINGLE_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                for offset in range(8):
                     # Coin
-                    coin_start = [224, 256, 248, 216, 264]
-                    coin_im = getImageFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, TextureFormat.RGBA5551)
+                    coin_im = getImageFile(7, COIN_START[kong_index] + offset, False, 48, 42, TextureFormat.RGBA5551)
                     coin_im = maskImage(coin_im, kong_index, 0, False, mode)
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, TextureFormat.RGBA5551)
-                for file in range(274, 286):
+                    writeColorImageToROM(coin_im, 7, COIN_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551)
+                for offset in range(12):
                     # Bunch
-                    bunch_start = [274, 854, 818, 842, 830]
-                    bunch_im = getImageFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, TextureFormat.RGBA5551)
+                    bunch_im = getImageFile(7, BUNCH_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     bunch_im = maskImage(bunch_im, kong_index, 0, True, mode)
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, TextureFormat.RGBA5551)
-                for file in range(5819, 5827):
+                    writeColorImageToROM(bunch_im, 7, BUNCH_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                for offset in range(8):
                     # Balloon
-                    balloon_im = getImageFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, TextureFormat.RGBA5551)
+                    balloon_im = getImageFile(25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
                     balloon_im = maskImage(balloon_im, kong_index, 33, False, mode)
-                    balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, TextureFormat.RGBA5551)
+                    balloon_im.paste(dk_single, balloon_single_frames[offset], dk_single)
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551)
     else:
         # Recolor slam switch if colorblind mode is off
         if galleon_switch_value is not None:
@@ -487,6 +482,14 @@ model_index_mapping = {
     KongModels.funky: (0x117, 0x117),
 }
 
+LIME_COLORS = {
+    Kongs.donkey: (255, 224, 8),
+    Kongs.diddy: (255, 48, 32),
+    Kongs.lanky: (40, 168, 255),
+    Kongs.tiny: (216, 100, 248),
+    Kongs.chunky: (0, 255, 0),
+    Kongs.any: (100, 255, 60),
+}
 
 def applyKongModelSwaps(settings: Settings) -> None:
     """Apply Krusha Kong setting."""
@@ -536,32 +539,7 @@ def applyKongModelSwaps(settings: Settings) -> None:
                 base_im = getImageFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
                 orange_im = getImageFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
                 if settings.colorblind_mode == ColorblindMode.off:
-                    match index:
-                        case Kongs.donkey:
-                            color_r = 255
-                            color_g = 224
-                            color_b = 8
-                        case Kongs.diddy:
-                            color_r = 255
-                            color_g = 48
-                            color_b = 32
-                        case Kongs.lanky:
-                            color_r = 40
-                            color_g = 168
-                            color_b = 255
-                        case Kongs.tiny:
-                            color_r = 216
-                            color_g = 100
-                            color_b = 248
-                        case Kongs.chunky:
-                            color_r = 0
-                            color_g = 255
-                            color_b = 0
-                        case _:
-                            color_r = 100
-                            color_g = 255
-                            color_b = 60
-                    orange_im = maskImageWithColor(orange_im, (color_r, color_g, color_b))
+                    orange_im = maskImageWithColor(orange_im, LIME_COLORS[index])
                 else:
                     orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
                 dim_length = int(32 * ORANGE_SCALING)

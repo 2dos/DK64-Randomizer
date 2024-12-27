@@ -319,26 +319,29 @@ typedef struct projectile_extra {
     /* 0x014 */ float unk14;
 } projectile_extra;
 
+typedef struct KrushaProjectileColorStruct {
+    unsigned char pellet;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+} KrushaProjectileColorStruct;
+
+static KrushaProjectileColorStruct krusha_projectile_colors[] = {
+    {.pellet = 48, .red = 0xC0, .green = 0xFF, .blue = 0x00},
+    {.pellet = 36, .red = 0xFF, .green = 0x40, .blue = 0x00},
+    {.pellet = 42, .red = 0x18, .green = 0x18, .blue = 0x00},
+    {.pellet = 43, .red = 0x80, .green = 0x00, .blue = 0x00},
+    {.pellet = 38, .red = 0x00, .green = 0xFF, .blue = 0x00},
+};
+
 void setKrushaAmmoColor(void) {
     int currentPellet = CurrentActorPointer_0->actorType;
-    switch (currentPellet) {
-        case 48:
-            changeActorColor(0xC0, 0xFF, 0, 0xFF);
-            break;
-        case 36:
-            changeActorColor(0xFF, 0x40, 0x40, 0xFF);
-            break;
-        case 42:
-            changeActorColor(0x18, 0x18, 0xFF, 0xFF);
-            break;
-        case 43:
-            changeActorColor(0x80, 0, 0xFF, 0xFF);
-            break;
-        case 38:
-            changeActorColor(0, 0xFF, 0, 0xFF);
-            break;
-        default:
-            changeActorColor(0, 0xFF, 0, 0xFF);
+    for (int i = 0; i < 5; i++) {
+        KrushaProjectileColorStruct *data = &krusha_projectile_colors[i];
+        if ((currentPellet == data->pellet) || (i == 4)) {
+            changeActorColor(data->red, data->green, data->blue, 0xFF);
+            return;
+        }
     }
 }
 
