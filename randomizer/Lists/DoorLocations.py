@@ -80,6 +80,7 @@ class DoorData:
         default_kong=None,
         door_type: list[DoorType] = [DoorType.boss, DoorType.dk_portal, DoorType.wrinkly],
         dk_portal_logic=None,
+        test=False,
     ):
         """Initialize with provided data."""
         self.name = name
@@ -118,6 +119,7 @@ class DoorData:
         #     # Disable other doors being able to occupy the space of DK portals, for now
         #     self.door_type = [DoorType.dk_portal]
         self.assigned_kong = None
+        self.test = test
 
     def assignDoor(self, kong):
         """Assign door to kong."""
@@ -606,7 +608,7 @@ door_locations = {
             name="Diddy Mountain - Next to the slam switch",
             map=Maps.JapesMountain,
             logicregion=Regions.Mine,
-            location=[480, 134, 66, 356.83],
+            location=[480, 134, 66, 0],
             group=10,
             logic=lambda l: l.peanut and l.isdiddy,
             moveless=False,
@@ -616,7 +618,7 @@ door_locations = {
             name="Diddy Mountain - River grate 1",
             map=Maps.JapesMountain,
             logicregion=Regions.Mine,
-            location=[723, 30, 207, 329.58],
+            location=[725, 30, 203.5, 322.5],
             group=10,
             kong_lst=[Kongs.diddy],
         ),
@@ -632,7 +634,7 @@ door_locations = {
             name="Diddy Mountain - Minecart room",
             map=Maps.JapesMountain,
             logicregion=Regions.Mine,
-            location=[607, 100, 973, 326.33],
+            location=[606.7, 100, 965.7, 330],
             group=10,
             kong_lst=[Kongs.diddy],
         ),
@@ -640,7 +642,7 @@ door_locations = {
             name="Painting room - Left of painting",
             map=Maps.JapesLankyCave,
             logicregion=Regions.JapesLankyCave,
-            location=[330, 80, 374, 218.32],
+            location=[340, 80, 374, 222],
             group=9,
             kong_lst=[Kongs.lanky],
         ),
@@ -656,21 +658,21 @@ door_locations = {
             name="Chunky underground - left wall",
             map=Maps.JapesUnderGround,
             logicregion=Regions.JapesCatacomb,
-            location=[795, 20, 100, 315.35],
+            location=[800, 20, 96, 315.6],
             group=12,
         ),
         DoorData(
             name="Chunky underground - right wall",
             map=Maps.JapesUnderGround,
             logicregion=Regions.JapesCatacomb,
-            location=[731, 20, 325, 90],
+            location=[726, 20, 325, 85],
             group=12,
         ),
         DoorData(
             name="Chunky underground - Kasplat platform",
             map=Maps.JapesUnderGround,
             logicregion=Regions.JapesCatacomb,
-            location=[422, 20, 397, 4.48],
+            location=[422, 20, 390.9, 3],
             group=12,
             door_type=[DoorType.boss, DoorType.wrinkly],
             logic=lambda l: l.can_use_vines and l.pineapple and l.ischunky,
@@ -681,7 +683,7 @@ door_locations = {
             name="Next to the baboon blast pad",
             map=Maps.JungleJapes,
             logicregion=Regions.JungleJapesStart,
-            location=[2433, 530, 1083, 330.73],
+            location=[2433, 530, 1076.25, 333.5],
             group=11,
             logic=lambda l: l.can_use_vines and l.climbing,
             moveless=False,
@@ -690,7 +692,7 @@ door_locations = {
             name="Entrance door switch",
             map=Maps.JungleJapes,
             logicregion=Regions.JungleJapesStart,
-            location=[1491, 439, 299, 270],
+            location=[1498.8, 438.167, 299, 270],
             group=11,
             logic=lambda l: l.can_use_vines and l.climbing,
             moveless=False,
@@ -699,7 +701,8 @@ door_locations = {
             name="Against the mountain",
             map=Maps.JungleJapes,
             logicregion=Regions.JapesHillTop,
-            location=[1705, 790, 2348, 132.45],
+            location=[1702, 789, 2354, 134.65],
+            rx=-12,
             group=5,
         ),
     ],
@@ -1146,6 +1149,7 @@ door_locations = {
             logic=lambda l: l.coconut and l.isdonkey,
             moveless=False,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
         DoorData(
             name="Donkey 5DT - Second left branch",
@@ -1156,6 +1160,7 @@ door_locations = {
             logic=lambda l: l.coconut and l.isdonkey,
             moveless=False,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
         DoorData(
             name="Diddy 5DT - First left branch",
@@ -1166,6 +1171,7 @@ door_locations = {
             logic=lambda l: l.peanut and l.isdiddy,
             moveless=False,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Diddy 5DT - Second right branch",
@@ -1176,6 +1182,7 @@ door_locations = {
             logic=lambda l: l.peanut and l.isdiddy,
             moveless=False,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Lanky 5DT - Left side",
@@ -1186,6 +1193,7 @@ door_locations = {
             logic=lambda l: l.grape and l.islanky,
             moveless=False,
             kong_lst=[Kongs.lanky],
+            test=True,
         ),
         DoorData(
             name="Lanky 5DT - Right side",
@@ -1196,6 +1204,7 @@ door_locations = {
             logic=lambda l: l.grape and l.islanky,
             moveless=False,
             kong_lst=[Kongs.lanky],
+            test=True,
         ),
         DoorData(
             name="Tiny 5DT - Left side",
@@ -1206,6 +1215,7 @@ door_locations = {
             logic=lambda l: l.feather and l.istiny,
             moveless=False,
             kong_lst=[Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Tiny 5DT - Second center tunnel",
@@ -1216,6 +1226,7 @@ door_locations = {
             logic=lambda l: l.feather and l.istiny,
             moveless=False,
             kong_lst=[Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Chunky 5DT - Intersection",
@@ -1226,6 +1237,7 @@ door_locations = {
             logic=lambda l: l.pineapple and l.ischunky,
             moveless=False,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Chunky 5DT - Left side",
@@ -1236,6 +1248,7 @@ door_locations = {
             logic=lambda l: l.pineapple and l.ischunky,
             moveless=False,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Llama Temple - Down the stairs - right",
@@ -1243,6 +1256,7 @@ door_locations = {
             logicregion=Regions.LlamaTemple,
             location=[2564, 371, 1901, 0],
             group=9,
+            test=True,
         ),
         DoorData(
             name="Llama Temple - Down the stairs - left",
@@ -1250,6 +1264,7 @@ door_locations = {
             logicregion=Regions.LlamaTemple,
             location=[2566, 371, 2895, 180],
             group=9,
+            test=True,
         ),
         DoorData(
             name="Llama Temple - Near top stairs - left",
@@ -1257,6 +1272,7 @@ door_locations = {
             logicregion=Regions.LlamaTemple,
             location=[1613, 472, 2608, 135],
             group=9,
+            test=True,
         ),
         DoorData(
             name="Llama Temple - Near top stairs - right",
@@ -1264,6 +1280,7 @@ door_locations = {
             logicregion=Regions.LlamaTemple,
             location=[1633, 472, 2192, 45],
             group=9,
+            test=True,
         ),
         DoorData(
             name="Llama Temple - Center torch below entrance",
@@ -1271,6 +1288,7 @@ door_locations = {
             logicregion=Regions.LlamaTemple,
             location=[2689, 469, 2393, 270],
             group=9,
+            test=True,
         ),
         DoorData(
             name="Llama Temple - Next to mini tunnel",
@@ -1278,6 +1296,7 @@ door_locations = {
             logicregion=Regions.LlamaTemple,
             location=[1720, 433, 3172, 219.02],
             group=9,
+            test=True,
         ),
         DoorData(
             name="Tiny Temple - Behind the guitar pad",
@@ -1288,6 +1307,7 @@ door_locations = {
             logic=lambda l: l.peanut and l.isdiddy and l.CanSlamSwitch(Levels.AngryAztec, 1),
             moveless=False,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Tiny Temple - Little alcove above mini barrel",
@@ -1296,6 +1316,7 @@ door_locations = {
             location=[1828, 389, 1126, 225],
             group=11,
             kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Tiny Temple - Next to triangle pad",
@@ -1304,6 +1325,7 @@ door_locations = {
             location=[1626, 215, 269, 11.95],
             group=11,
             kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Tiny Temple - Vulture room back wall",
@@ -1314,6 +1336,7 @@ door_locations = {
             door_type=[DoorType.boss, DoorType.wrinkly],
             kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.aztec_tiny_temple_ice),
+            test=True,
         ),
         DoorData(
             name="Tiny Temple - Tiny room right wall",
@@ -1324,6 +1347,7 @@ door_locations = {
             door_type=[DoorType.boss, DoorType.wrinkly],
             kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.aztec_tiny_temple_ice),
+            test=True,
         ),
         DoorData(
             name="Tiny Temple - Tiny room - on the K",
@@ -1334,6 +1358,7 @@ door_locations = {
             door_type=[DoorType.boss, DoorType.wrinkly],
             kong_lst=[Kongs.diddy, Kongs.tiny],
             dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.aztec_tiny_temple_ice),
+            test=True,
         ),
         DoorData(
             name="Behind the llama cage",
@@ -1341,6 +1366,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2088, 216, 1601, 310.25],
             group=4,
+            test=True,
         ),
         DoorData(
             name="In the quicksand near 5-door temple",
@@ -1352,6 +1378,7 @@ door_locations = {
             logic=lambda l: l.strongKong and l.isdonkey,
             moveless=False,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
         DoorData(
             name="On top of llama temple",
@@ -1362,6 +1389,7 @@ door_locations = {
             logic=lambda l: l.jetpack and l.diddy,
             moveless=False,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Behind the start of beetle race",
@@ -1371,6 +1399,7 @@ door_locations = {
             group=18,
             door_type=[DoorType.wrinkly],
             kong_lst=[Kongs.tiny],
+            test=True,
         ),
     ],
     Levels.FranticFactory: [
@@ -1787,6 +1816,7 @@ door_locations = {
             location=[47, 0, 108, 90],
             group=8,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
     ],
     Levels.GloomyGalleon: [
@@ -2328,6 +2358,7 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[1994, 1609, 2930, 5.71],
             group=2,
+            test=True,
         ),
         DoorData(
             name="Pineapple gate tunnel - left",
@@ -2335,6 +2366,7 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[1992, 1609, 3035, 169.98],
             group=2,
+            test=True,
         ),
         DoorData(
             name="Next to Cranky's ship",
@@ -2342,6 +2374,7 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[3211, 1678, 2717, 90],
             group=2,
+            test=True,
         ),
         DoorData(
             name="Against Cranky's ship",
@@ -2349,6 +2382,7 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[3248, 1670, 2543, 325],
             group=2,
+            test=True,
         ),
         DoorData(
             name="Seasick ship - start left",
@@ -2357,6 +2391,7 @@ door_locations = {
             location=[743, 20, 196, 270],
             group=20,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Seasick ship - start right",
@@ -2365,6 +2400,7 @@ door_locations = {
             location=[513, 20, 203, 90],
             group=20,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Seasick ship - after cannons front left",
@@ -2373,6 +2409,7 @@ door_locations = {
             location=[743, 20, 763, 270],
             group=20,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Seasick ship - after cannons front right",
@@ -2381,6 +2418,7 @@ door_locations = {
             location=[513, 20, 759, 90],
             group=20,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Seasick ship - after cannons center",
@@ -2389,6 +2427,7 @@ door_locations = {
             location=[622, 20, 1006, 180],
             group=20,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Left wall of Mech Fish",
@@ -2397,6 +2436,7 @@ door_locations = {
             location=[551, 39, 614, 246.35],
             group=21,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Right wall of Mech Fish",
@@ -2405,6 +2445,7 @@ door_locations = {
             location=[140, 39, 504, 109.07],
             group=21,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Chunky 5DS - Against a chest",
@@ -2413,6 +2454,7 @@ door_locations = {
             location=[1493, 0, 1561, 270],
             group=22,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Donkey 5DS - Next to the left cell bed",
@@ -2421,6 +2463,7 @@ door_locations = {
             location=[430, 0, 466, 0],
             group=23,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
         DoorData(
             name="On top of the lighthouse",
@@ -2431,6 +2474,7 @@ door_locations = {
             logic=lambda l: l.jetpack and l.isdiddy,
             moveless=False,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
     ],
     Levels.FungiForest: [
@@ -2852,6 +2896,7 @@ door_locations = {
             kong_lst=[Kongs.tiny, Kongs.chunky],
             group=11,
             moveless=False,
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
         ),  # might be accessible by all kongs post-punch?
         DoorData(
             name="Winch Room - on the Winch",
@@ -2894,6 +2939,7 @@ door_locations = {
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
+            test=True,
         ),
         DoorData(
             name="Mill - front side - In the hay",
@@ -2903,6 +2949,7 @@ door_locations = {
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
+            test=True,
         ),
         DoorData(
             name="Mill - front side - Above the switch crate",
@@ -2912,6 +2959,7 @@ door_locations = {
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
+            test=True,
         ),
         DoorData(
             name="Mill - back side - In the hay",
@@ -2921,6 +2969,7 @@ door_locations = {
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
+            test=True,
         ),
         DoorData(
             name="Mill - back side - Crates near spider entrance",
@@ -2930,6 +2979,7 @@ door_locations = {
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
+            test=True,
         ),
         DoorData(
             name="Giant mushroom - Top towards tag barrel",
@@ -2937,6 +2987,7 @@ door_locations = {
             logicregion=Regions.MushroomUpper,
             location=[785, 1839, 760, 233.78],
             group=5,
+            test=True,
         ),
         DoorData(
             name="Night door in the owl tree",
@@ -2947,6 +2998,7 @@ door_locations = {
             door_type=[DoorType.boss, DoorType.wrinkly],
             logic=lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.isdiddy,
             moveless=False,
+            test=True,
         ),
         DoorData(
             name="Lanky's colored mushrooms room",
@@ -2954,6 +3006,7 @@ door_locations = {
             logicregion=Regions.MushroomLankyMushroomsRoom,
             location=[447, 0, 368, 239.50],
             group=20,
+            test=True,
         ),
         DoorData(
             name="DK's Barn - Second floor",
@@ -2964,6 +3017,7 @@ door_locations = {
             door_type=[DoorType.boss, DoorType.wrinkly],
             logic=lambda l: l.climbing,
             moveless=False,
+            test=True,
         ),
     ],
     Levels.CrystalCaves: [
@@ -3517,6 +3571,7 @@ door_locations = {
             logicregion=Regions.CabinArea,
             location=[3177, 136, 1459, 353],
             group=2,
+            test=True,
         ),
         DoorData(
             name="Donkey 5door cabin - Right of entrance",
@@ -3524,6 +3579,7 @@ door_locations = {
             logicregion=Regions.DonkeyCabin,
             location=[387, 0, 107, 0],
             group=20,
+            test=True,
         ),
         DoorData(
             name="Donkey 5door cabin - Back wall",
@@ -3531,6 +3587,7 @@ door_locations = {
             logicregion=Regions.DonkeyCabin,
             location=[107, 0, 310, 90],
             group=20,
+            test=True,
         ),
         DoorData(
             name="Diddy upper cabin - Near right corner",
@@ -3538,6 +3595,7 @@ door_locations = {
             logicregion=Regions.DiddyUpperCabin,
             location=[47, 0, 154, 90],
             group=21,
+            test=True,
         ),
         DoorData(
             name="Diddy upper cabin - Far right corner",
@@ -3545,6 +3603,7 @@ door_locations = {
             logicregion=Regions.DiddyUpperCabin,
             location=[47, 0, 553, 90],
             group=21,
+            test=True,
         ),
         DoorData(
             name="Diddy upper cabin - Back bookshelf",
@@ -3552,6 +3611,7 @@ door_locations = {
             logicregion=Regions.DiddyUpperCabin,
             location=[433, 42, 612, 180],
             group=21,
+            test=True,
         ),
         DoorData(
             name="Tiny cabin - Near corner",
@@ -3559,6 +3619,7 @@ door_locations = {
             logicregion=Regions.TinyCabin,
             location=[107, 0, 129, 90],
             group=22,
+            test=True,
         ),
         DoorData(
             name="Tiny cabin - Far corner",
@@ -3566,6 +3627,7 @@ door_locations = {
             logicregion=Regions.TinyCabin,
             location=[460, 0, 491, 180],
             group=22,
+            test=True,
         ),
         DoorData(
             name="Chunky cabin - Near corner",
@@ -3573,6 +3635,8 @@ door_locations = {
             logicregion=Regions.ChunkyCabin,
             location=[495, 0, 106, 0],
             group=23,
+            door_type=[DoorType.wrinkly],
+            test=True,
         ),
         DoorData(
             name="Chunky cabin - Back shelf",
@@ -3580,6 +3644,8 @@ door_locations = {
             logicregion=Regions.ChunkyCabin,
             location=[404, 45, 572, 180],
             group=23,
+            door_type=[DoorType.wrinkly],
+            test=True,
         ),
         DoorData(
             name="Donkey igloo - Under the swords",
@@ -3587,6 +3653,7 @@ door_locations = {
             logicregion=Regions.DonkeyIgloo,
             location=[233, 0, 787, 141.41],
             group=24,
+            test=True,
         ),
         DoorData(
             name="Tiny igloo - Back wall",
@@ -3594,6 +3661,7 @@ door_locations = {
             logicregion=Regions.TinyIgloo,
             location=[121, 0, 417, 126.47],
             group=25,
+            test=True,
         ),
         DoorData(
             name="Near ice castle tag barrel",
@@ -3601,6 +3669,7 @@ door_locations = {
             logicregion=Regions.CrystalCavesMain,
             location=[2200, 280, 1341, 178.06],
             group=8,
+            test=True,
         ),
         DoorData(
             name="Left small platform towards baboon blast",
@@ -3608,6 +3677,7 @@ door_locations = {
             logicregion=Regions.CrystalCavesMain,
             location=[1556, 166, 1983, 279.05],
             group=8,
+            test=True,
         ),
         DoorData(
             name="Near Cranky",
@@ -3615,6 +3685,7 @@ door_locations = {
             logicregion=Regions.CrystalCavesMain,
             location=[1030, 294, 1643, 55.28],
             group=8,
+            test=True,
         ),
         DoorData(
             name="Behind giant boulder ice wall",
@@ -3622,6 +3693,7 @@ door_locations = {
             logicregion=Regions.BoulderCave,
             location=[1523, 287, 2783, 188.26],
             group=4,
+            test=True,
         ),
         DoorData(
             name="Behind gorilla gone ice wall",
@@ -3631,6 +3703,7 @@ door_locations = {
             group=8,
             logic=lambda l: l.punch and l.chunky,
             moveless=False,
+            test=True,
         ),
         DoorData(
             name="Starting room of beetle race",
@@ -3639,6 +3712,7 @@ door_locations = {
             location=[1121, 5110, 395, 61.34],
             group=26,
             door_type=[DoorType.wrinkly],
+            test=True,
         ),
     ],
     Levels.CreepyCastle: [
@@ -4055,6 +4129,7 @@ door_locations = {
             location=[619, 225, 514, 238.79],
             group=20,
             kong_lst=[Kongs.lanky],
+            test=True,
         ),
         DoorData(
             name="Lanky wind tower - Left of Entrance",
@@ -4063,6 +4138,7 @@ door_locations = {
             location=[174, 225, 513, 119.88],
             group=20,
             kong_lst=[Kongs.lanky],
+            test=True,
         ),
         DoorData(
             name="Greenhouse - Dead end",
@@ -4072,6 +4148,7 @@ door_locations = {
             group=21,
             door_type=[DoorType.wrinkly, DoorType.boss],
             kong_lst=[Kongs.lanky],
+            test=True,
         ),
         DoorData(
             name="Greenhouse - Also dead end",
@@ -4081,6 +4158,7 @@ door_locations = {
             group=21,
             door_type=[DoorType.wrinkly, DoorType.boss],
             kong_lst=[Kongs.lanky],
+            test=True,
         ),
         DoorData(
             name="Ballroom - In Front of Monkeyport Pad",
@@ -4089,6 +4167,7 @@ door_locations = {
             location=[552, 40, 1086, 176.92],
             group=13,
             kong_lst=[Kongs.diddy, Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Ballroom - Far Right Corner",
@@ -4097,6 +4176,7 @@ door_locations = {
             location=[913, 40, 207, 303.83],
             group=13,
             kong_lst=[Kongs.diddy, Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Ballroom - Far Left Corner",
@@ -4105,6 +4185,7 @@ door_locations = {
             location=[187, 40, 207, 47.1],
             group=13,
             kong_lst=[Kongs.diddy, Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Museum - Far Left Side",
@@ -4113,6 +4194,7 @@ door_locations = {
             location=[407, 100, 395, 88.15],
             group=22,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Museum - Far Right Side",
@@ -4121,6 +4203,7 @@ door_locations = {
             location=[1140, 100, 395, 270.17],
             group=22,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Museum - Tiny side - near the statue",
@@ -4132,6 +4215,7 @@ door_locations = {
             logic=lambda l: l.monkeyport,
             moveless=False,
             kong_lst=[Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Museum - Tiny side - on the factory",
@@ -4141,6 +4225,7 @@ door_locations = {
             group=23,
             door_type=[DoorType.boss, DoorType.wrinkly],
             kong_lst=[Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Tree - Near Coconut Gate",
@@ -4149,6 +4234,7 @@ door_locations = {
             location=[831, 400, 1025, 130.07],
             group=11,
             kong_lst=[Kongs.donkey, Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Tree - Past Punch Gate",
@@ -4159,6 +4245,7 @@ door_locations = {
             logic=lambda l: (l.punch and l.ischunky) or l.CanPhase(),
             moveless=False,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Library - Strong Kong Alcove",
@@ -4167,6 +4254,7 @@ door_locations = {
             location=[2073, 180, 208, 0.35],
             group=12,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
         DoorData(
             name="Library - Enemy Gauntlet",
@@ -4175,6 +4263,7 @@ door_locations = {
             location=[290, 190, 617, 177.53],
             group=12,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
         DoorData(
             name="Chunky crypt - between right coffins",
@@ -4185,6 +4274,7 @@ door_locations = {
             logic=lambda l: l.pineapple and l.ischunky,
             moveless=False,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Chunky crypt - between left coffins",
@@ -4195,6 +4285,7 @@ door_locations = {
             logic=lambda l: l.pineapple and l.ischunky,
             moveless=False,
             kong_lst=[Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Donkey crypt - behind the levers",
@@ -4205,6 +4296,7 @@ door_locations = {
             logic=lambda l: l.coconut and l.isdonkey,
             moveless=False,
             kong_lst=[Kongs.donkey],
+            test=True,
         ),
         DoorData(
             name="Diddy crypt - right of the tomb",
@@ -4215,6 +4307,7 @@ door_locations = {
             logic=lambda l: l.peanut and l.isdiddy,
             moveless=False,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Diddy crypt - left of the tomb",
@@ -4225,6 +4318,7 @@ door_locations = {
             logic=lambda l: l.peanut and l.isdiddy,
             moveless=False,
             kong_lst=[Kongs.diddy],
+            test=True,
         ),
         DoorData(
             name="Crypt - Second intersection",
@@ -4233,6 +4327,7 @@ door_locations = {
             location=[1142, 160, 1285, 270],
             group=24,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
+            test=True,
         ),
         DoorData(
             name="Near the crypt staircase",
@@ -4240,6 +4335,7 @@ door_locations = {
             logicregion=Regions.LowerCave,
             location=[731, 90, 1263, 270],
             group=16,
+            test=True,
         ),
         DoorData(
             name="Behind the mausoleum",
@@ -4247,6 +4343,7 @@ door_locations = {
             logicregion=Regions.LowerCave,
             location=[1774, 320, 1259, 90],
             group=16,
+            test=True,
         ),
         DoorData(
             name="Mausoleum - sprint corridor",
@@ -4255,6 +4352,7 @@ door_locations = {
             location=[1146, 160, 638, 186.76],
             group=17,
             kong_lst=[Kongs.lanky, Kongs.tiny],
+            test=True,
         ),
         DoorData(
             name="Dungeon - Lanky side",
@@ -4262,6 +4360,7 @@ door_locations = {
             logicregion=Regions.Dungeon,
             location=[688, 115, 1384, 315],
             group=18,
+            test=True,
         ),
         DoorData(
             name="Dungeon - Diddy side",
@@ -4276,6 +4375,7 @@ door_locations = {
             logicregion=Regions.Dungeon,
             location=[894, 195, 2148, 225],
             group=18,
+            test=True,
         ),
         DoorData(
             name="Candy intersection",
@@ -4283,6 +4383,7 @@ door_locations = {
             logicregion=Regions.UpperCave,
             location=[484, 220, 2143, 90],
             group=6,
+            test=True,
         ),
         DoorData(
             name="Next to dungeon door",
@@ -4290,6 +4391,7 @@ door_locations = {
             logicregion=Regions.UpperCave,
             location=[132, 200, 1509, 90],
             group=6,
+            test=True,
         ),
         DoorData(
             name="Next to the chasm",
@@ -4297,6 +4399,7 @@ door_locations = {
             logicregion=Regions.UpperCave,
             location=[481, 200, 852, 90],
             group=6,
+            test=True,
         ),
         DoorData(
             name="Tombstone near lower door",
@@ -4305,6 +4408,7 @@ door_locations = {
             location=[813, 366, 2051, 16],
             group=4,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            test=True,
         ),
         DoorData(
             name="Behind the shed",
@@ -4312,6 +4416,7 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[1724, 1391, 1944, 22.32],
             group=7,
+            test=True,
         ),
     ],
 }
