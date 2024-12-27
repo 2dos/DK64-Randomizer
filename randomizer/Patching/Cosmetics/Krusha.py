@@ -5,7 +5,7 @@ import gzip
 from typing import TYPE_CHECKING
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import ColorblindMode
-from randomizer.Patching.Lib import TableNames, getObjectAddress, float_to_hex, intf_to_float, int_to_list
+from randomizer.Patching.Lib import TableNames, getObjectAddress, float_to_hex, intf_to_float, int_to_list, getRawFile, writeRawFile
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.LibImage import (
     writeColorImageToROM,
@@ -73,22 +73,13 @@ kong_index_mapping = {
     Kongs.chunky: (11, 12),
 }
 
-def fixModelSmallKongCollision(kong_index: int):
+def fixModelSmallKongCollision(kong_index: int, ROM_COPY: LocalROM):
     """Modify Krusha Model to be smaller to enable him to fit through smaller gaps."""
     for x in range(2):
         file = kong_index_mapping[kong_index][x]
         if file is None:
             continue
-        krusha_model_start = js.pointer_addresses[5]["entries"][file]["pointing_to"]
-        krusha_model_finish = js.pointer_addresses[5]["entries"][file + 1]["pointing_to"]
-        krusha_model_size = krusha_model_finish - krusha_model_start
-        ROM_COPY = LocalROM()
-        ROM_COPY.seek(krusha_model_start)
-        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        ROM_COPY.seek(krusha_model_start)
-        data = ROM_COPY.readBytes(krusha_model_size)
-        if indicator == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
+        data = getRawFile(TableNames.ActorGeometry, file, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -121,15 +112,11 @@ def fixModelSmallKongCollision(kong_index: int):
                 for di, d in enumerate(int_to_list(val_i, 4)):
                     num_data[i_start + (4 * coord_index) + di] = d
         data = bytearray(num_data)  # convert num_data back to binary string
-        if indicator == 0x1F8B:
-            data = gzip.compress(data, compresslevel=9)
-        LocalROM().seek(krusha_model_start)
-        LocalROM().writeBytes(data)
+        writeRawFile(TableNames.ActorGeometry, file, True, data, ROM_COPY)
 
-def fixBaboonBlasts():
+def fixBaboonBlasts(ROM_COPY: LocalROM):
     """Fix various baboon blasts to work for Krusha."""
     # Fungi Baboon Blast
-    ROM_COPY = LocalROM()
     for id in (2, 5):
         item_start = getObjectAddress(0xBC, id, "actor")
         if item_start is not None:

@@ -279,15 +279,8 @@ def recolorWrinklyDoors(mode: ColorblindMode, ROM_COPY: ROM):
     """Recolor the Wrinkly hint door doorframes for colorblind mode."""
     file = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
     for kong in range(5):
-        wrinkly_door_start = js.pointer_addresses[4]["entries"][file[kong]]["pointing_to"]
-        wrinkly_door_finish = js.pointer_addresses[4]["entries"][file[kong] + 1]["pointing_to"]
-        wrinkly_door_size = wrinkly_door_finish - wrinkly_door_start
-        ROM_COPY.seek(wrinkly_door_start)
-        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        ROM_COPY.seek(wrinkly_door_start)
-        data = ROM_COPY.readBytes(wrinkly_door_size)
-        if indicator == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
+        file_index = file[kong]
+        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -398,10 +391,7 @@ def recolorWrinklyDoors(mode: ColorblindMode, ROM_COPY: ROM):
                 num_data[offset + i] = new_color2[i]
 
         data = bytearray(num_data)  # convert num_data back to binary string
-        if indicator == 0x1F8B:
-            data = gzip.compress(data, compresslevel=9)
-        ROM_COPY.seek(wrinkly_door_start)
-        ROM_COPY.writeBytes(data)
+        writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
 
 def recolorKRoolShipSwitch(color: tuple, ROM_COPY: ROM):
     """Recolors the simian slam switch that is part of K. Rool's ship in galleon."""
@@ -536,15 +526,8 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
     file = [0x94, 0x93, 0x95, 0x96, 0xB8, 0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 0x167, 0x166, 0x168, 0x169, 0x165]
     written_galleon_ship = False
     for switch in range(15):
-        slam_switch_start = js.pointer_addresses[4]["entries"][file[switch]]["pointing_to"]
-        slam_switch_finish = js.pointer_addresses[4]["entries"][file[switch] + 1]["pointing_to"]
-        slam_switch_size = slam_switch_finish - slam_switch_start
-        ROM_COPY.seek(slam_switch_start)
-        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        ROM_COPY.seek(slam_switch_start)
-        data = ROM_COPY.readBytes(slam_switch_size)
-        if indicator == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
+        file_index = file[switch]
+        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -571,10 +554,7 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
                     num_data[offset + i] = new_color3[i]
 
         data = bytearray(num_data)  # convert num_data back to binary string
-        if indicator == 0x1F8B:
-            data = gzip.compress(data, compresslevel=9)
-        ROM_COPY.seek(slam_switch_start)
-        ROM_COPY.writeBytes(data)
+        writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
         if not written_galleon_ship:
             galleon_switch_color = new_color1.copy()
             if galleon_switch_value is not None:
@@ -590,15 +570,8 @@ def recolorBlueprintModelTwo(mode: ColorblindMode, ROM_COPY: ROM):
     """Recolor the Blueprint Model2 items for colorblind mode."""
     file = [0xDE, 0xE0, 0xE1, 0xDD, 0xDF]
     for kong in range(5):
-        blueprint_model2_start = js.pointer_addresses[4]["entries"][file[kong]]["pointing_to"]
-        blueprint_model2_finish = js.pointer_addresses[4]["entries"][file[kong] + 1]["pointing_to"]
-        blueprint_model2_size = blueprint_model2_finish - blueprint_model2_start
-        ROM_COPY.seek(blueprint_model2_start)
-        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        ROM_COPY.seek(blueprint_model2_start)
-        data = ROM_COPY.readBytes(blueprint_model2_size)
-        if indicator == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
+        file_index = file[kong]
+        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -632,10 +605,7 @@ def recolorBlueprintModelTwo(mode: ColorblindMode, ROM_COPY: ROM):
                 num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
 
         data = bytearray(num_data)  # convert num_data back to binary string
-        if indicator == 0x1F8B:
-            data = gzip.compress(data, compresslevel=9)
-        ROM_COPY.seek(blueprint_model2_start)
-        ROM_COPY.writeBytes(data)
+        writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
 
 def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side, mode: ColorblindMode):
     """Apply RGB mask to image of a Rotating Room Memory Tile."""
@@ -760,16 +730,7 @@ def recolorRotatingRoomTiles(mode):
 
 def recolorBells(ROM_COPY: ROM):
     """Recolor the Chunky Minecart bells for colorblind mode (prot/deut)."""
-    file = 693
-    minecart_bell_start = js.pointer_addresses[4]["entries"][file]["pointing_to"]
-    minecart_bell_finish = js.pointer_addresses[4]["entries"][file + 1]["pointing_to"]
-    minecart_bell_size = minecart_bell_finish - minecart_bell_start
-    ROM_COPY.seek(minecart_bell_start)
-    indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-    ROM_COPY.seek(minecart_bell_start)
-    data = ROM_COPY.readBytes(minecart_bell_size)
-    if indicator == 0x1F8B:
-        data = zlib.decompress(data, (15 + 32))
+    data = getRawFile(TableNames.ModelTwoGeometry, 693, True)
     num_data = []  # data, but represented as nums rather than b strings
     for d in data:
         num_data.append(d)
@@ -788,10 +749,7 @@ def recolorBells(ROM_COPY: ROM):
             num_data[offset + i] = new_color2[i]
 
     data = bytearray(num_data)  # convert num_data back to binary string
-    if indicator == 0x1F8B:
-        data = gzip.compress(data, compresslevel=9)
-    ROM_COPY.seek(minecart_bell_start)
-    ROM_COPY.writeBytes(data)
+    writeRawFile(TableNames.ModelTwoGeometry, 693, True, data, ROM_COPY)
 
 
 def recolorKlaptraps(mode, ROM_COPY: ROM):
@@ -834,15 +792,8 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
     file = [[0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2], [0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA]]
     for type in range(2):
         for potion_color in range(6):
-            potion_actor_start = js.pointer_addresses[5]["entries"][file[type][potion_color]]["pointing_to"]
-            potion_actor_finish = js.pointer_addresses[5]["entries"][file[type][potion_color] + 1]["pointing_to"]
-            potion_actor_size = potion_actor_finish - potion_actor_start
-            ROM_COPY.seek(potion_actor_start)
-            indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            ROM_COPY.seek(potion_actor_start)
-            data = ROM_COPY.readBytes(potion_actor_size)
-            if indicator == 0x1F8B:
-                data = zlib.decompress(data, (15 + 32))
+            file_index = file[type][potion_color]
+            data = getRawFile(TableNames.ActorGeometry, file_index, True)
             num_data = []  # data, but represented as nums rather than b strings
             for d in data:
                 num_data.append(d)
@@ -898,26 +849,13 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
                     num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
 
             data = bytearray(num_data)  # convert num_data back to binary string
-            if indicator == 0x1F8B:
-                data = gzip.compress(data, compresslevel=9)
-            if len(data) > potion_actor_size:
-                print(f"Attempted size bigger {hex(len(data))} than slot {hex(potion_actor_size)}")
-                continue
-            ROM_COPY.seek(potion_actor_start)
-            ROM_COPY.writeBytes(data)
+            writeRawFile(TableNames.ActorGeometry, file_index, True, data, ROM_COPY)
 
     # Model2:
     file = [91, 498, 89, 499, 501, 502]
     for potion_color in range(6):
-        potion_model2_start = js.pointer_addresses[4]["entries"][file[potion_color]]["pointing_to"]
-        potion_model2_finish = js.pointer_addresses[4]["entries"][file[potion_color] + 1]["pointing_to"]
-        potion_model2_size = potion_model2_finish - potion_model2_start
-        ROM_COPY.seek(potion_model2_start)
-        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        ROM_COPY.seek(potion_model2_start)
-        data = ROM_COPY.readBytes(potion_model2_size)
-        if indicator == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
+        file_index = file[potion_color]
+        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -973,10 +911,7 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
                 num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
 
         data = bytearray(num_data)  # convert num_data back to binary string
-        if indicator == 0x1F8B:
-            data = gzip.compress(data, compresslevel=9)
-        ROM_COPY.seek(potion_model2_start)
-        ROM_COPY.writeBytes(data)
+        writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
 
     return
     # DK Arcade sprites

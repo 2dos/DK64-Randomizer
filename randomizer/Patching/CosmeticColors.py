@@ -519,11 +519,11 @@ def applyKongModelSwaps(settings: Settings) -> None:
                     ROM_COPY.writeMultipleBytes(unc_size, 4)
             changeModelTextures(settings, index)
             if value in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight):
-                fixModelSmallKongCollision(index)
+                fixModelSmallKongCollision(index, ROM_COPY)
             if value == KongModels.krusha:
                 placeKrushaHead(settings, index)
                 if index == Kongs.donkey:
-                    fixBaboonBlasts()
+                    fixBaboonBlasts(ROM_COPY)
                 # Orange Switches
                 switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
                 base_im = getImageFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)

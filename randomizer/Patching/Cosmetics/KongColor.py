@@ -6,7 +6,7 @@ import random
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, KongModels
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import PaletteFillType, int_to_list
+from randomizer.Patching.Lib import PaletteFillType, int_to_list, getRawFile, writeRawFile, TableNames
 from randomizer.Patching.LibImage import getKongItemColor
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Cosmetics.Krusha import kong_index_mapping
@@ -238,15 +238,7 @@ def changeModelTextures(settings: Settings, kong_index: int):
         file = kong_index_mapping[kong_index][x]
         if file is None:
             continue
-        krusha_model_start = js.pointer_addresses[5]["entries"][file]["pointing_to"]
-        krusha_model_finish = js.pointer_addresses[5]["entries"][file + 1]["pointing_to"]
-        krusha_model_size = krusha_model_finish - krusha_model_start
-        ROM_COPY.seek(krusha_model_start)
-        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        ROM_COPY.seek(krusha_model_start)
-        data = ROM_COPY.readBytes(krusha_model_size)
-        if indicator == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
+        data = getRawFile(TableNames.ActorGeometry, file, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -258,7 +250,4 @@ def changeModelTextures(settings: Settings, kong_index: int):
             for di, d in enumerate(int_to_list(krusha_texture_replacement[kong_index][1], 2)):  # Belt
                 num_data[tex_idx + di] = d
         data = bytearray(num_data)  # convert num_data back to binary string
-        if indicator == 0x1F8B:
-            data = gzip.compress(data, compresslevel=9)
-        ROM_COPY.seek(krusha_model_start)
-        ROM_COPY.writeBytes(data)
+        writeRawFile(TableNames.ActorGeometry, file, True, data, ROM_COPY)
