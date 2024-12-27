@@ -1,7 +1,8 @@
 """This file contains the pytest configuration for the test suite."""
 
-import pytest
 import os
+
+import pytest
 
 
 def pytest_addoption(parser):

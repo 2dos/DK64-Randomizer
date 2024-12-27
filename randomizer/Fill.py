@@ -2843,10 +2843,11 @@ def FillWorld(spoiler: Spoiler) -> None:
             spoiler.Reset()
             spoiler.ClearAllLocations()
             retries += 1
-            if retries == 10:
+            if retries == 2:
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
             spoiler.settings.shuffle_prices(spoiler)
+            # We don't really reach this block anymore now that we moved this to the server
             # Every 3rd fill, retry more aggressively by reshuffling level order, move prices, and starting location as applicable
             if retries % 3 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))

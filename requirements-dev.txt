@@ -6,22 +6,11 @@ black==24.10.0
 pycodestyle==2.10.0
 pydocstyle==6.3.0
 css-html-js-minify==2.5.5
-requests==2.32.0
 bs4==0.0.1
 beautifulsoup4==4.12.2
 djlint==1.30.2
 cpplint==1.6.1
-flask==3.0.0
-flask-cors==4.0.2
-waitress==3.0.1
-flask-executor==1.0.0
-vidua==0.4.5
-pyxdelta==0.2.0
-pillow==10.3.0
-boto3==1.28.43
 GitPython==3.1.41
-cryptography==43.0.1
-apscheduler==3.10.4
-pyopenssl==24.2.1
 pytest-xdist==3.5.0
 parameterized==0.9.0
+-r requirements.txt
