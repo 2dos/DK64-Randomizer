@@ -1,4 +1,5 @@
 """All code related to changing the color of kongs."""
+
 import js
 import zlib
 import gzip
@@ -14,6 +15,7 @@ from randomizer.Patching.Cosmetics.ModelSwaps import model_texture_sections
 from randomizer.Patching.Patcher import LocalROM
 
 DEFAULT_COLOR = "#000000"
+
 
 class KongPalette:
     """Class to store information regarding a kong palette."""
@@ -38,6 +40,7 @@ class KongPaletteSetting:
         self.palettes = palettes.copy()
         self.setting_kong = kong
 
+
 krusha_texture_replacement = {
     # Textures Krusha can use when he replaces various kongs (Main color, belt color)
     Kongs.donkey: (3724, 0x177D),
@@ -56,6 +59,7 @@ KONG_ZONES = {
     "Rambi": ["Skin"],
     "Enguarde": ["Skin"],
 }
+
 
 def writeKongColors(settings: Settings):
     color_palettes = []
@@ -218,6 +222,7 @@ def writeKongColors(settings: Settings):
             if pal not in new_color_palettes:
                 new_color_palettes.append(pal)
         convertColors(new_color_palettes)
+
 
 def changeModelTextures(settings: Settings, kong_index: int):
     """Change the textures associated with a model."""

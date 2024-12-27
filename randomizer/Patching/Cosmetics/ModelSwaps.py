@@ -1,4 +1,5 @@
 """All code associated with model swaps."""
+
 import random
 import js
 from randomizer.Enums.Models import Model, Sprite
@@ -390,9 +391,11 @@ model_texture_sections = {
 
 KLAPTRAPS = [Model.KlaptrapGreen, Model.KlaptrapPurple, Model.KlaptrapRed]
 
+
 def getRandomKlaptrapModel() -> Model:
     """Get random klaptrap model."""
     return random.choice(KLAPTRAPS)
+
 
 def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
     """Apply model swaps to the settings dict."""

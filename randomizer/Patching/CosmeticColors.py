@@ -36,11 +36,11 @@ from randomizer.Patching.Lib import (
     TableNames,
 )
 from randomizer.Patching.LibImage import (
-    getImageFile, 
+    getImageFile,
     TextureFormat,
-    ExtraTextures, 
-    getBonusSkinOffset, 
-    writeColorImageToROM, 
+    ExtraTextures,
+    getBonusSkinOffset,
+    writeColorImageToROM,
     numberToImage,
     maskImage,
     maskImageWithColor,
@@ -54,6 +54,7 @@ from randomizer.Patching.Cosmetics.ModelSwaps import (
     applyCosmeticModelSwaps,
 )
 from randomizer.Patching.Cosmetics.KongColor import writeKongColors, changeModelTextures
+
 
 class HelmDoorSetting:
     """Class to store information regarding helm doors."""
@@ -86,7 +87,9 @@ class HelmDoorImages:
         self.dimensions = dimensions
         self.format = format
 
+
 RECOLOR_MEDAL_RIM = False
+
 
 def changePatchFace(settings: Settings):
     """Change the top of the dirt patch image."""
@@ -110,14 +113,14 @@ def changePatchFace(settings: Settings):
 
 def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
-    
+
     ROM_COPY = ROM()
     sav = settings.rom_data
 
     applyCosmeticModelSwaps(settings, ROM_COPY)
     changePatchFace(settings)
     writeKongColors(settings)
-    
+
     settings.jetman_color = [0xFF, 0xFF, 0xFF]
     if settings.misc_cosmetics and settings.override_cosmetics:
         ROM_COPY.seek(sav + 0x196)
@@ -141,7 +144,7 @@ def apply_cosmetic_colors(settings: Settings):
             value = random.randint(brightness_threshold, 0xFF)
             jetman_color[channel] = value
         settings.jetman_color = jetman_color.copy()
-    
+
     if js.document.getElementById("override_cosmetics").checked or True:
         writeTransition(settings)
         writeCustomPortal(settings)
@@ -151,7 +154,7 @@ def apply_cosmetic_colors(settings: Settings):
         settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
     else:
         settings.gb_colors = CharacterColors.randomized
-    
+
     # GB Shine
     if settings.override_cosmetics and settings.gb_colors != CharacterColors.vanilla:
         channels = []
@@ -210,7 +213,9 @@ def apply_cosmetic_colors(settings: Settings):
                 )
             writeColorImageToROM(gb_shine_img, 25, tex, width, height, False, TextureFormat.RGBA5551)
 
+
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
+
 
 def getSpinPixels() -> dict:
     """Get pixels that shouldn't be affected by the mask."""
@@ -293,6 +298,7 @@ def maskImageGBSpin(im_f, color: tuple, image_index: int):
         px_0[point[0], point[1]] = px[point[0], point[1]]
     return masked_im
 
+
 def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     """Apply RGB mask to image with an Outline in a different color."""
     w, h = im_f.size
@@ -342,6 +348,7 @@ def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
                     ):
                         pix[x, y] = (mask2[0], mask2[1], mask2[2], base[3])
     return im_f
+
 
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
 
@@ -564,7 +571,6 @@ def applyKongModelSwaps(settings: Settings) -> None:
                 writeColorImageToROM(base_im, 25, switch_faces[index], 32, 32, False, TextureFormat.RGBA5551)
 
 
-
 def darkenDPad():
     """Change the DPad cross texture for the DPad HUD."""
     img = getImageFile(14, 187, True, 32, 32, TextureFormat.RGBA5551)
@@ -591,6 +597,7 @@ def darkenDPad():
     px_data = gzip.compress(px_data, compresslevel=9)
     ROM().seek(js.pointer_addresses[14]["entries"][187]["pointing_to"])
     ROM().writeBytes(px_data)
+
 
 def applyHelmDoorCosmetics(settings: Settings) -> None:
     """Apply Helm Door Cosmetic Changes."""
@@ -665,6 +672,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                     True,
                     TextureFormat.RGBA5551,
                 )
+
 
 def darkenPauseBubble(settings: Settings):
     """Change the brightness of the text bubble used for the pause menu for dark mode."""
@@ -764,6 +772,7 @@ def showWinCondition(settings: Settings):
     num_im = numberToImage(settings.win_condition_count, (20, 20))
     base_im.paste(num_im, (6, 6), num_im)
     writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+
 
 def randomizePlants(ROM_COPY: ROM, settings: Settings):
     """Randomize the plants in the setup file."""

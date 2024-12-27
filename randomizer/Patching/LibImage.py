@@ -261,6 +261,7 @@ def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int
     ROM_COPY.seek(pal_start)
     ROM_COPY.write(pal_bin_file)
 
+
 def writeColorImageToROM(
     im_f,
     table_index: int,
@@ -333,6 +334,7 @@ def writeColorImageToROM(
     except Exception:
         ROM().writeBytes(data)
 
+
 def getNumberImage(number: int):
     """Get Number Image from number."""
     if number < 5:
@@ -390,12 +392,14 @@ def numberToImage(number: int, dim: Tuple[int, int]):
     output.paste(base, (x_offset, y_offset), base)
     return output
 
+
 def getRGBFromHash(hash: str):
     """Convert hash RGB code to rgb array."""
     red = int(hash[1:3], 16)
     green = int(hash[3:5], 16)
     blue = int(hash[5:7], 16)
     return [red, green, blue]
+
 
 def maskImageWithColor(im_f: Image, mask: tuple):
     """Apply rgb mask to image using a rgb color tuple."""
@@ -417,6 +421,7 @@ def maskImageWithColor(im_f: Image, mask: tuple):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+
 def getColorBase(mode: ColorblindMode) -> list[str]:
     """Get the color base array."""
     if mode == ColorblindMode.prot:
@@ -427,6 +432,7 @@ def getColorBase(mode: ColorblindMode) -> list[str]:
         return ["#000000", "#C72020", "#13C4D8", "#FFFFFF", "#FFA4A4"]
     return ["#FFD700", "#FF0000", "#1699FF", "#B045FF", "#41FF25"]
 
+
 def getKongItemColor(mode: ColorblindMode, kong: Kongs, output_as_list: bool = False) -> str:
     """Get the color assigned to a kong."""
     hash_str = getColorBase(mode)[kong]
@@ -434,7 +440,8 @@ def getKongItemColor(mode: ColorblindMode, kong: Kongs, output_as_list: bool = F
         return getRGBFromHash(hash_str)
     return hash_str
 
-def maskImage(im_f, base_index, min_y, keep_dark=False, mode = ColorblindMode.off):
+
+def maskImage(im_f, base_index, min_y, keep_dark=False, mode=ColorblindMode.off):
     """Apply RGB mask to image."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -455,6 +462,7 @@ def maskImage(im_f, base_index, min_y, keep_dark=False, mode = ColorblindMode.of
                     base[channel] = int(mask[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
+
 
 def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int, ROM_COPY: ROM = None):
     """Load an image, shift the hue and rewrite it back to ROM."""
@@ -482,9 +490,11 @@ def hueShiftImageContainer(table: int, image: int, width: int, height: int, form
     ROM_COPY.seek(js.pointer_addresses[table]["entries"][image]["pointing_to"])
     ROM_COPY.writeBytes(px_data)
 
+
 def getLuma(color: tuple) -> float:
     """Get the luma value of a color."""
     return (0.299 * color[0]) + (0.587 * color[1]) + (0.114 * color[2])
+
 
 def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
     """Apply a hue shift to a color."""

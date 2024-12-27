@@ -1,4 +1,5 @@
 """All code associated with Krusha."""
+
 import js
 import zlib
 import gzip
@@ -57,12 +58,14 @@ krusha_scaling = [
     [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
 ]
 
+
 def readListAsInt(arr: list, start: int, size: int) -> int:
     """Read list and convert to int."""
     val = 0
     for i in range(size):
         val = (val * 256) + arr[start + i]
     return val
+
 
 kong_index_mapping = {
     # Regular model, instrument model
@@ -72,6 +75,7 @@ kong_index_mapping = {
     Kongs.tiny: (8, 9),
     Kongs.chunky: (11, 12),
 }
+
 
 def fixModelSmallKongCollision(kong_index: int, ROM_COPY: LocalROM):
     """Modify Krusha Model to be smaller to enable him to fit through smaller gaps."""
@@ -114,6 +118,7 @@ def fixModelSmallKongCollision(kong_index: int, ROM_COPY: LocalROM):
         data = bytearray(num_data)  # convert num_data back to binary string
         writeRawFile(TableNames.ActorGeometry, file, True, data, ROM_COPY)
 
+
 def fixBaboonBlasts(ROM_COPY: LocalROM):
     """Fix various baboon blasts to work for Krusha."""
     # Fungi Baboon Blast
@@ -140,6 +145,7 @@ def fixBaboonBlasts(ROM_COPY: LocalROM):
         ROM_COPY.writeMultipleBytes(int(float_to_hex(2472), 16), 4)
         ROM_COPY.seek(item_start + 0x8)
         ROM_COPY.writeMultipleBytes(int(float_to_hex(1980), 16), 4)
+
 
 def placeKrushaHead(settings: Settings, slot):
     """Replace a kong's face with the Krusha face."""

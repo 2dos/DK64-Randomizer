@@ -1,13 +1,14 @@
 """All code associated with temporary holiday-based cosmetic effects."""
+
 import gzip
 import js
 from PIL import Image, ImageEnhance
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import Holidays, getHoliday
 from randomizer.Patching.LibImage import (
-    getImageFile, 
-    getBonusSkinOffset, 
-    ExtraTextures, 
+    getImageFile,
+    getBonusSkinOffset,
+    ExtraTextures,
     TextureFormat,
     maskImageWithColor,
     writeColorImageToROM,
@@ -15,6 +16,7 @@ from randomizer.Patching.LibImage import (
     hueShiftImageContainer,
 )
 from randomizer.Settings import CharacterColors, KongModels
+
 
 def changeBarrelColor(barrel_color: tuple = None, metal_color: tuple = None, brighten_barrel: bool = False):
     """Change the colors of the various barrels."""

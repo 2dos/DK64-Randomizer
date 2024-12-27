@@ -1,4 +1,5 @@
 """All code associated with cosmetic tweaks to text."""
+
 import random
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Lib import writeText, grabText

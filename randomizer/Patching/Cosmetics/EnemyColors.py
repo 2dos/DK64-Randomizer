@@ -1,4 +1,5 @@
 """All code changes associated with enemy color rando."""
+
 import js
 import gzip
 import random
@@ -21,6 +22,7 @@ from randomizer.Patching.LibImage import (
 from randomizer.Patching.Lib import getRawFile, TableNames, getValueFromByteArray
 from randomizer.Patching.Patcher import ROM
 from PIL import Image
+
 
 def getEnemySwapColor(channel_min: int = 0, channel_max: int = 255, min_channel_variance: int = 0) -> int:
     """Get an RGB color compatible with enemy swaps."""
@@ -46,6 +48,7 @@ def getEnemySwapColor(channel_min: int = 0, channel_max: int = 255, min_channel_
         value <<= 8
         value += channels[x]
     return value
+
 
 class EnemyColorSwap:
     """Class to store information regarding an enemy color swap."""
@@ -95,7 +98,8 @@ class EnemyColorSwap:
             new_color <<= 8
             new_color += replacement_channel
         return new_color
-    
+
+
 # Enemy texture data
 FIRE_TEXTURES = (
     [0x1539, 0x1553, 32],  # Fireball. RGBA32 32x32
@@ -251,10 +255,12 @@ SPIDER_TEXTURE_DIMENSIONS = {
     0x1118: (64, 32),
     0x1119: (64, 32),
 }
-    
+
+
 def convertColorIntToTuple(color: int) -> tuple:
     """Convert color stored as 3-byte int to tuple."""
     return ((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF)
+
 
 def adjustFungiMushVertexColor(shift: int):
     """Adjust the special vertex coloring on Fungi Giant Mushroom."""
@@ -292,6 +298,7 @@ def adjustFungiMushVertexColor(shift: int):
     ROM_COPY = ROM()
     ROM_COPY.seek(js.pointer_addresses[TableNames.MapGeometry]["entries"][Maps.FungiForest]["pointing_to"])
     ROM_COPY.writeBytes(file_data)
+
 
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
@@ -388,7 +395,7 @@ def writeMiscCosmeticChanges(settings):
         # Klump
         klump_jacket_shift = getRandomHueShift()
         klump_hatammo_shift = getRandomHueShift()
-        
+
         for img_data in KLUMP_JACKET_TEXTURES:
             hueShiftImageContainer(25, img_data["image"], 1, img_data["px"], TextureFormat.RGBA5551, klump_jacket_shift, ROM_COPY)
         for img_data in KLUMP_HAT_AMMO_TEXTURES:
@@ -416,7 +423,7 @@ def writeMiscCosmeticChanges(settings):
                 writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
             if settings.colorblind_mode == ColorblindMode.off:
                 # Kremling
-                
+
                 while True:
                     kremling_shift = getRandomHueShift()
                     # Block red coloring
@@ -430,7 +437,7 @@ def writeMiscCosmeticChanges(settings):
                     if dims is not None:
                         hueShiftImageContainer(25, 0xFCE + dim_index, dims[0], dims[1], TextureFormat.RGBA5551, kremling_shift, ROM_COPY)
             # Rabbit
-            
+
             rabbit_shift = getRandomHueShift()
             for dim_index, dims in enumerate(RABBIT_TEXTURE_DIMENSIONS):
                 if dims is not None:
@@ -478,7 +485,7 @@ def writeMiscCosmeticChanges(settings):
             hueShiftImageContainer(7, 0x1F0 + x, 48, 42, TextureFormat.RGBA5551, race_coin_shift, ROM_COPY)
         scoff_shift = getRandomHueShift()
         troff_shift = getRandomHueShift()
-        
+
         for img in SCOFF_TEXTURE_DATA:
             hueShiftImageContainer(25, img, 1, SCOFF_TEXTURE_DATA[img], TextureFormat.RGBA5551, scoff_shift, ROM_COPY)
 
@@ -565,7 +572,7 @@ def writeMiscCosmeticChanges(settings):
         hueShiftImageContainer(25, 0x134C, 32, 32, TextureFormat.RGBA5551, getRandomHueShift(), ROM_COPY)
         # Spider
         spider_shift = getRandomHueShift()
-        
+
         for img_index in SPIDER_TEXTURE_DIMENSIONS:
             hueShiftImageContainer, ROM_COPY(
                 25,

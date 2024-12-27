@@ -1,4 +1,5 @@
 """All code associated with colorblind mode."""
+
 import js
 import gzip
 import zlib
@@ -17,6 +18,7 @@ from randomizer.Patching.Lib import getRawFile, TableNames, writeRawFile
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from PIL import ImageEnhance
+
 
 def writeKasplatHairColorToROM(color, table_index, file_index, format: str, ROM_COPY: ROM):
     """Write color to ROM for kasplats."""
@@ -393,6 +395,7 @@ def recolorWrinklyDoors(mode: ColorblindMode, ROM_COPY: ROM):
         data = bytearray(num_data)  # convert num_data back to binary string
         writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
 
+
 def recolorKRoolShipSwitch(color: tuple, ROM_COPY: ROM):
     """Recolors the simian slam switch that is part of K. Rool's ship in galleon."""
     addresses = (
@@ -521,6 +524,7 @@ def recolorKRoolShipSwitch(color: tuple, ROM_COPY: ROM):
         data[0x1B58 + x] = 0
     writeRawFile(TableNames.ModelTwoGeometry, 305, True, data, ROM_COPY)
 
+
 def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMode):
     """Recolor the Simian Slam switches for colorblind mode."""
     file = [0x94, 0x93, 0x95, 0x96, 0xB8, 0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 0x167, 0x166, 0x168, 0x169, 0x165]
@@ -607,6 +611,7 @@ def recolorBlueprintModelTwo(mode: ColorblindMode, ROM_COPY: ROM):
         data = bytearray(num_data)  # convert num_data back to binary string
         writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
 
+
 def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side, mode: ColorblindMode):
     """Apply RGB mask to image of a Rotating Room Memory Tile."""
     w, h = im_f.size
@@ -670,6 +675,7 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
             pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+
 def recolorRotatingRoomTiles(mode):
     """Determine how to recolor the tiles rom the memory game in Donkey's Rotating Room in Caves."""
     question_mark_tiles = [900, 901, 892, 893, 896, 897, 890, 891, 898, 899, 894, 895]
@@ -727,6 +733,7 @@ def recolorRotatingRoomTiles(mode):
         tile_image = getImageFile(7, face_tiles[tile], False, 32, 64, TextureFormat.RGBA5551)
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile / 2)], face_index, (int(tile / 2) % 2), mode)
         writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
+
 
 def recolorBells(ROM_COPY: ROM):
     """Recolor the Chunky Minecart bells for colorblind mode (prot/deut)."""
@@ -925,6 +932,7 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
         potion_image = maskPotionImage(potion_image, color, secondary_color[index])
         writeColorImageToROM(potion_image, 6, file, 20, 20, False, TextureFormat.RGBA5551)
 
+
 def maskMushroomImage(im_f, reference_image, color, side_2=False):
     """Apply RGB mask to mushroom image."""
     w, h = im_f.size
@@ -956,6 +964,7 @@ def maskMushroomImage(im_f, reference_image, color, side_2=False):
                     base[channel] = int(mask[channel] * (average_light / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
+
 
 def recolorMushrooms(mode: ColorblindMode):
     """Recolor the various colored mushrooms in the game for colorblind mode."""
