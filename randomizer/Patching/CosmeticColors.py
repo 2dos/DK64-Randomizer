@@ -349,6 +349,7 @@ def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
                         pix[x, y] = (mask2[0], mask2[1], mask2[2], base[3])
     return im_f
 
+
 SINGLE_START = [168, 152, 232, 208, 240]
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
 LASER_START = [784, 748, 363, 760, 772]
@@ -490,6 +491,7 @@ LIME_COLORS = {
     Kongs.chunky: (0, 255, 0),
     Kongs.any: (100, 255, 60),
 }
+
 
 def applyKongModelSwaps(settings: Settings) -> None:
     """Apply Krusha Kong setting."""

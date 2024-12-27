@@ -548,3 +548,12 @@ def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
         green_ratio = 0
         blue_ratio = x
     return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))
+
+
+def rgba32to5551(rgba_32: list[int]) -> list[int]:
+    """Convert list as RGBA32 bytes with no alpha to list of RGBA5551 bytes."""
+    val_r = int((rgba_32[0] >> 3) << 11)
+    val_g = int((rgba_32[1] >> 3) << 6)
+    val_b = int((rgba_32[2] >> 3) << 1)
+    rgba_val = val_r | val_g | val_b | 1
+    return [(rgba_val >> 8) & 0xFF, rgba_val & 0xFF]
