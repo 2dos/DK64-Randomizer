@@ -358,7 +358,7 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
         galleon_switch_value = int.from_bytes(ROM_COPY.readBytes(1), "big")
     if mode != ColorblindMode.off:
         if mode in (ColorblindMode.prot, ColorblindMode.deut):
-            recolorBells()
+            recolorBells(ROM_COPY)
         # Preload DK single cb image to paste onto balloons
         file = 175
         dk_single = getImageFile(7, file, False, 44, 44, TextureFormat.RGBA5551)
@@ -367,13 +367,13 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
         # Preload blueprint images. Lanky's blueprint image is so much easier to mask, because it is blue, and the frame is brown
         for file in range(8):
             blueprint_lanky.append(getImageFile(25, 5519 + (file), True, 48, 42, TextureFormat.RGBA5551))
-        writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, TextureFormat.RGBA5551)
-        recolorWrinklyDoors(mode)
+        writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, TextureFormat.RGBA5551, ROM_COPY)
+        recolorWrinklyDoors(mode, ROM_COPY)
         recolorSlamSwitches(galleon_switch_value, ROM_COPY, mode)
         recolorRotatingRoomTiles(mode)
-        recolorBlueprintModelTwo(mode)
-        recolorKlaptraps(mode)
-        recolorPotions(mode)
+        recolorBlueprintModelTwo(mode, ROM_COPY)
+        recolorKlaptraps(mode, ROM_COPY)
+        recolorPotions(mode, ROM_COPY)
         recolorMushrooms(mode)
         for kong_index in range(5):
             # file = 4120
@@ -381,7 +381,7 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
             # hair_im = getFile(25, file, True, 32, 44, TextureFormat.RGBA5551)
             # hair_im = maskImage(hair_im, kong_index, 0)
             # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
-            writeKasplatHairColorToROM(getKongItemColor(mode, kong_index), 25, [4124, 4122, 4123, 4120, 4121][kong_index], TextureFormat.RGBA5551)
+            writeKasplatHairColorToROM(getKongItemColor(mode, kong_index), 25, [4124, 4122, 4123, 4120, 4121][kong_index], TextureFormat.RGBA5551, ROM_COPY)
             for file in range(5519, 5527):
                 # Blueprint sprite
                 blueprint_start = [5624, 5608, 5519, 5632, 5616]

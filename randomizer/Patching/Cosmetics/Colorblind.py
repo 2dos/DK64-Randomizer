@@ -18,7 +18,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from PIL import ImageEnhance
 
-def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
+def writeKasplatHairColorToROM(color, table_index, file_index, format: str, ROM_COPY: ROM):
     """Write color to ROM for kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color)
@@ -46,11 +46,11 @@ def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
     data = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
-    ROM().seek(file_start)
-    ROM().writeBytes(data)
+    ROM_COPY.seek(file_start)
+    ROM_COPY.writeBytes(data)
 
 
-def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, format: str):
+def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, format: str, ROM_COPY: ROM):
     """Write color to ROM for white kasplats, giving them a black-white block pattern."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color1)
@@ -89,11 +89,11 @@ def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, for
     data = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
-    ROM().seek(file_start)
-    ROM().writeBytes(data)
+    ROM_COPY.seek(file_start)
+    ROM_COPY.writeBytes(data)
 
 
-def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: str, mode: ColorblindMode):
+def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: str, mode: ColorblindMode, ROM_COPY: ROM):
     """Write color to ROM for klaptraps."""
     im_f = getImageFile(table_index, file_index, True, 32, 43, format)
     im_f = maskImage(im_f, color_index, 0, (color_index != 3), mode)
@@ -119,11 +119,11 @@ def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: st
     data = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
-    ROM().seek(file_start)
-    ROM().writeBytes(data)
+    ROM_COPY.seek(file_start)
+    ROM_COPY.writeBytes(data)
 
 
-def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, format: str, pixels_to_ignore: list, mode: ColorblindMode):
+def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, format: str, pixels_to_ignore: list, mode: ColorblindMode, ROM_COPY: ROM):
     """Write color to ROM for klaptraps special texture(s)."""
     im_f = getImageFile(table_index, file_index, True, 32, 43, format)
     pix_original = im_f.load()
@@ -164,8 +164,8 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
     data = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
-    ROM().seek(file_start)
-    ROM().writeBytes(data)
+    ROM_COPY.seek(file_start)
+    ROM_COPY.writeBytes(data)
 
 
 def calculateKlaptrapPixel(mask: list, format: str):
@@ -275,17 +275,17 @@ def maskPotionImage(im_f, primary_color, secondary_color=None):
     return im_f
 
 
-def recolorWrinklyDoors(mode: ColorblindMode):
+def recolorWrinklyDoors(mode: ColorblindMode, ROM_COPY: ROM):
     """Recolor the Wrinkly hint door doorframes for colorblind mode."""
     file = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
     for kong in range(5):
         wrinkly_door_start = js.pointer_addresses[4]["entries"][file[kong]]["pointing_to"]
         wrinkly_door_finish = js.pointer_addresses[4]["entries"][file[kong] + 1]["pointing_to"]
         wrinkly_door_size = wrinkly_door_finish - wrinkly_door_start
-        ROM().seek(wrinkly_door_start)
-        indicator = int.from_bytes(ROM().readBytes(2), "big")
-        ROM().seek(wrinkly_door_start)
-        data = ROM().readBytes(wrinkly_door_size)
+        ROM_COPY.seek(wrinkly_door_start)
+        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        ROM_COPY.seek(wrinkly_door_start)
+        data = ROM_COPY.readBytes(wrinkly_door_size)
         if indicator == 0x1F8B:
             data = zlib.decompress(data, (15 + 32))
         num_data = []  # data, but represented as nums rather than b strings
@@ -400,8 +400,8 @@ def recolorWrinklyDoors(mode: ColorblindMode):
         data = bytearray(num_data)  # convert num_data back to binary string
         if indicator == 0x1F8B:
             data = gzip.compress(data, compresslevel=9)
-        ROM().seek(wrinkly_door_start)
-        ROM().writeBytes(data)
+        ROM_COPY.seek(wrinkly_door_start)
+        ROM_COPY.writeBytes(data)
 
 def recolorKRoolShipSwitch(color: tuple, ROM_COPY: ROM):
     """Recolors the simian slam switch that is part of K. Rool's ship in galleon."""
@@ -539,10 +539,10 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
         slam_switch_start = js.pointer_addresses[4]["entries"][file[switch]]["pointing_to"]
         slam_switch_finish = js.pointer_addresses[4]["entries"][file[switch] + 1]["pointing_to"]
         slam_switch_size = slam_switch_finish - slam_switch_start
-        ROM().seek(slam_switch_start)
-        indicator = int.from_bytes(ROM().readBytes(2), "big")
-        ROM().seek(slam_switch_start)
-        data = ROM().readBytes(slam_switch_size)
+        ROM_COPY.seek(slam_switch_start)
+        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        ROM_COPY.seek(slam_switch_start)
+        data = ROM_COPY.readBytes(slam_switch_size)
         if indicator == 0x1F8B:
             data = zlib.decompress(data, (15 + 32))
         num_data = []  # data, but represented as nums rather than b strings
@@ -573,8 +573,8 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
         data = bytearray(num_data)  # convert num_data back to binary string
         if indicator == 0x1F8B:
             data = gzip.compress(data, compresslevel=9)
-        ROM().seek(slam_switch_start)
-        ROM().writeBytes(data)
+        ROM_COPY.seek(slam_switch_start)
+        ROM_COPY.writeBytes(data)
         if not written_galleon_ship:
             galleon_switch_color = new_color1.copy()
             if galleon_switch_value is not None:
@@ -586,17 +586,17 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
             written_galleon_ship = True
 
 
-def recolorBlueprintModelTwo(mode: ColorblindMode):
+def recolorBlueprintModelTwo(mode: ColorblindMode, ROM_COPY: ROM):
     """Recolor the Blueprint Model2 items for colorblind mode."""
     file = [0xDE, 0xE0, 0xE1, 0xDD, 0xDF]
     for kong in range(5):
         blueprint_model2_start = js.pointer_addresses[4]["entries"][file[kong]]["pointing_to"]
         blueprint_model2_finish = js.pointer_addresses[4]["entries"][file[kong] + 1]["pointing_to"]
         blueprint_model2_size = blueprint_model2_finish - blueprint_model2_start
-        ROM().seek(blueprint_model2_start)
-        indicator = int.from_bytes(ROM().readBytes(2), "big")
-        ROM().seek(blueprint_model2_start)
-        data = ROM().readBytes(blueprint_model2_size)
+        ROM_COPY.seek(blueprint_model2_start)
+        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        ROM_COPY.seek(blueprint_model2_start)
+        data = ROM_COPY.readBytes(blueprint_model2_size)
         if indicator == 0x1F8B:
             data = zlib.decompress(data, (15 + 32))
         num_data = []  # data, but represented as nums rather than b strings
@@ -634,8 +634,8 @@ def recolorBlueprintModelTwo(mode: ColorblindMode):
         data = bytearray(num_data)  # convert num_data back to binary string
         if indicator == 0x1F8B:
             data = gzip.compress(data, compresslevel=9)
-        ROM().seek(blueprint_model2_start)
-        ROM().writeBytes(data)
+        ROM_COPY.seek(blueprint_model2_start)
+        ROM_COPY.writeBytes(data)
 
 def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side, mode: ColorblindMode):
     """Apply RGB mask to image of a Rotating Room Memory Tile."""
@@ -758,16 +758,16 @@ def recolorRotatingRoomTiles(mode):
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile / 2)], face_index, (int(tile / 2) % 2), mode)
         writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
 
-def recolorBells():
+def recolorBells(ROM_COPY: ROM):
     """Recolor the Chunky Minecart bells for colorblind mode (prot/deut)."""
     file = 693
     minecart_bell_start = js.pointer_addresses[4]["entries"][file]["pointing_to"]
     minecart_bell_finish = js.pointer_addresses[4]["entries"][file + 1]["pointing_to"]
     minecart_bell_size = minecart_bell_finish - minecart_bell_start
-    ROM().seek(minecart_bell_start)
-    indicator = int.from_bytes(ROM().readBytes(2), "big")
-    ROM().seek(minecart_bell_start)
-    data = ROM().readBytes(minecart_bell_size)
+    ROM_COPY.seek(minecart_bell_start)
+    indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    ROM_COPY.seek(minecart_bell_start)
+    data = ROM_COPY.readBytes(minecart_bell_size)
     if indicator == 0x1F8B:
         data = zlib.decompress(data, (15 + 32))
     num_data = []  # data, but represented as nums rather than b strings
@@ -790,11 +790,11 @@ def recolorBells():
     data = bytearray(num_data)  # convert num_data back to binary string
     if indicator == 0x1F8B:
         data = gzip.compress(data, compresslevel=9)
-    ROM().seek(minecart_bell_start)
-    ROM().writeBytes(data)
+    ROM_COPY.seek(minecart_bell_start)
+    ROM_COPY.writeBytes(data)
 
 
-def recolorKlaptraps(mode):
+def recolorKlaptraps(mode, ROM_COPY: ROM):
     """Recolor the klaptrap models for colorblind mode."""
     green_files = [0xF31, 0xF32, 0xF33, 0xF35, 0xF37, 0xF39]  # 0xF2F collar? 0xF30 feet?
     red_files = [0xF44, 0xF45, 0xF46, 0xF47, 0xF48, 0xF49]  # , 0xF42 collar? 0xF43 feet?
@@ -802,9 +802,9 @@ def recolorKlaptraps(mode):
 
     # Regular textures
     for file in range(6):
-        writeKlaptrapSkinColorToROM(4, 25, green_files[file], TextureFormat.RGBA5551, mode)
-        writeKlaptrapSkinColorToROM(1, 25, red_files[file], TextureFormat.RGBA5551, mode)
-        writeKlaptrapSkinColorToROM(3, 25, purple_files[file], TextureFormat.RGBA5551, mode)
+        writeKlaptrapSkinColorToROM(4, 25, green_files[file], TextureFormat.RGBA5551, mode, ROM_COPY)
+        writeKlaptrapSkinColorToROM(1, 25, red_files[file], TextureFormat.RGBA5551, mode, ROM_COPY)
+        writeKlaptrapSkinColorToROM(3, 25, purple_files[file], TextureFormat.RGBA5551, mode, ROM_COPY)
 
     belly_pixels_to_ignore = []
     for x in range(32):
@@ -815,10 +815,10 @@ def recolorKlaptraps(mode):
                 belly_pixels_to_ignore.append([x, y])
 
     # Special texture that requires only partial recoloring, in this case file 0xF38 which is the belly, and only the few green pixels
-    writeSpecialKlaptrapTextureToROM(4, 25, 0xF38, TextureFormat.RGBA5551, belly_pixels_to_ignore, mode)
+    writeSpecialKlaptrapTextureToROM(4, 25, 0xF38, TextureFormat.RGBA5551, belly_pixels_to_ignore, mode, ROM_COPY)
 
 
-def recolorPotions(colorblind_mode):
+def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
     """Overwrite potion colors."""
     diddy_color = getKongItemColor(colorblind_mode, Kongs.diddy)
     chunky_color = getKongItemColor(colorblind_mode, Kongs.chunky)
@@ -837,10 +837,10 @@ def recolorPotions(colorblind_mode):
             potion_actor_start = js.pointer_addresses[5]["entries"][file[type][potion_color]]["pointing_to"]
             potion_actor_finish = js.pointer_addresses[5]["entries"][file[type][potion_color] + 1]["pointing_to"]
             potion_actor_size = potion_actor_finish - potion_actor_start
-            ROM().seek(potion_actor_start)
-            indicator = int.from_bytes(ROM().readBytes(2), "big")
-            ROM().seek(potion_actor_start)
-            data = ROM().readBytes(potion_actor_size)
+            ROM_COPY.seek(potion_actor_start)
+            indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            ROM_COPY.seek(potion_actor_start)
+            data = ROM_COPY.readBytes(potion_actor_size)
             if indicator == 0x1F8B:
                 data = zlib.decompress(data, (15 + 32))
             num_data = []  # data, but represented as nums rather than b strings
@@ -903,8 +903,8 @@ def recolorPotions(colorblind_mode):
             if len(data) > potion_actor_size:
                 print(f"Attempted size bigger {hex(len(data))} than slot {hex(potion_actor_size)}")
                 continue
-            ROM().seek(potion_actor_start)
-            ROM().writeBytes(data)
+            ROM_COPY.seek(potion_actor_start)
+            ROM_COPY.writeBytes(data)
 
     # Model2:
     file = [91, 498, 89, 499, 501, 502]
@@ -912,10 +912,10 @@ def recolorPotions(colorblind_mode):
         potion_model2_start = js.pointer_addresses[4]["entries"][file[potion_color]]["pointing_to"]
         potion_model2_finish = js.pointer_addresses[4]["entries"][file[potion_color] + 1]["pointing_to"]
         potion_model2_size = potion_model2_finish - potion_model2_start
-        ROM().seek(potion_model2_start)
-        indicator = int.from_bytes(ROM().readBytes(2), "big")
-        ROM().seek(potion_model2_start)
-        data = ROM().readBytes(potion_model2_size)
+        ROM_COPY.seek(potion_model2_start)
+        indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        ROM_COPY.seek(potion_model2_start)
+        data = ROM_COPY.readBytes(potion_model2_size)
         if indicator == 0x1F8B:
             data = zlib.decompress(data, (15 + 32))
         num_data = []  # data, but represented as nums rather than b strings
@@ -975,8 +975,8 @@ def recolorPotions(colorblind_mode):
         data = bytearray(num_data)  # convert num_data back to binary string
         if indicator == 0x1F8B:
             data = gzip.compress(data, compresslevel=9)
-        ROM().seek(potion_model2_start)
-        ROM().writeBytes(data)
+        ROM_COPY.seek(potion_model2_start)
+        ROM_COPY.writeBytes(data)
 
     return
     # DK Arcade sprites
