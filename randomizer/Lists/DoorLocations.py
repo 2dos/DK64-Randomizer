@@ -2955,6 +2955,7 @@ door_locations = {
             logicregion=Regions.MushroomLankyMushroomsRoom,
             location=[447, 0, 368, 239.50],
             group=20,
+            door_type=[DoorType.dk_portal, DoorType.wrinkly],
         ),
         DoorData(
             name="DK's Barn - Second floor",
