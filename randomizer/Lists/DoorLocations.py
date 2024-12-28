@@ -2267,13 +2267,53 @@ door_locations = {
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
-            name="Lighthouse Interior",
+            name="Lighthouse - Up the ledge",
             map=Maps.GalleonLighthouse,
             logicregion=Regions.Lighthouse,
             location=[508.0, 200.0, 409.0, 135.2],
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
+            logic=lambda l: l.climbing,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
+        ),
+        DoorData(
+            name="Lighthouse - Left",
+            map=Maps.GalleonLighthouse,
+            logicregion=Regions.Lighthouse,
+            location=[612, 0, 465, 90],
+            kong_lst=[Kongs.donkey],
+            group=11,
+            moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
+        ),
+        DoorData(
+            name="Lighthouse - Back",
+            map=Maps.GalleonLighthouse,
+            logicregion=Regions.Lighthouse,
+            location=[319, 0, 590, 315],
+            kong_lst=[Kongs.donkey],
+            group=11,
+            moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="In Mermaid's Palace",
@@ -4181,6 +4221,14 @@ door_locations = {
             group=12,
             kong_lst=[Kongs.donkey],
             door_type=[DoorType.wrinkly],
+        ),
+        DoorData(
+            name="Library - Left wing",
+            map=Maps.CastleLibrary,
+            logicregion=Regions.Library,
+            location=[1028, 100, 658, 0],
+            group=12,
+            kong_lst=[Kongs.donkey],
         ),
         DoorData(
             name="Chunky crypt - between right coffins",
