@@ -214,3 +214,5 @@ base-hack/actor_data.json
 certificate.crt
 private.key
 api_keys.cfg
+redis_data/
+redis_data/*
