@@ -266,8 +266,6 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
             raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     if address < rdram_start:
         raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
-    if overlay == Overlay.Boot:
-        print(hex(rdram_start), hex(overlay_start), hex(overlay_start + (address - rdram_start)))
     return overlay_start + (address - rdram_start)
 
 
@@ -664,7 +662,23 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     elif holiday == Holidays.Anniv25:
         # Change barrel base sprite
         writeValue(ROM_COPY, 0x80721458, Overlay.Static, getBonusSkinOffset(ExtraTextures.Anniv25Barrel), offset_dict)
+    # Smoother Camera
+    if settings.smoother_camera:
+        camera_change_cooldown = 5
+        writeValue(ROM_COPY, 0x806EA238, Overlay.Static, 0, offset_dict, 4)  # Disable it requiring a new input
+        writeValue(ROM_COPY, 0x806EA2A4, Overlay.Static, 0, offset_dict, 4)  # Disable it requiring a new input
+        camera_change_amount = 5 * (camera_change_cooldown - 2)
+        addr = getROMAddress(0x806EA25E, Overlay.Static, offset_dict)
+        ROM_COPY.seek(addr)
+        val = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        if (val & 0x8000) == 0:  # Is Mirror Mode
+            camera_change_amount = -camera_change_amount
+        writeValue(ROM_COPY, 0x806EA256, Overlay.Static, camera_change_cooldown, offset_dict)
+        writeValue(ROM_COPY, 0x806EA25E, Overlay.Static, -camera_change_amount, offset_dict, 2, True)
+        writeValue(ROM_COPY, 0x806EA2C2, Overlay.Static, camera_change_cooldown, offset_dict)
+        writeValue(ROM_COPY, 0x806EA2CA, Overlay.Static, camera_change_amount, offset_dict, 2, True)
 
+    # Crosshair
     if settings.colorblind_mode != ColorblindMode.off:
         writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict)  # Force first option
         writeValue(ROM_COPY, 0x8069E9B0, Overlay.Static, 0, offset_dict, 4)  # Prevent write

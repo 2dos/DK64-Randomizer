@@ -615,6 +615,7 @@ class Settings:
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
         self.custom_music_proportion = 100
+        self.smoother_camera = False
         self.fill_with_custom_music = False
         self.show_song_name = False
 
