@@ -2877,6 +2877,8 @@ door_locations = {
             location=[12.7, 4.0, 301.5, 90.0],
             kong_lst=[Kongs.donkey],
             group=14,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
             moveless=False,
         ),
         DoorData(
@@ -2964,6 +2966,7 @@ door_locations = {
             location=[331, 140, 87, 0],
             group=14,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
             logic=lambda l: l.climbing,
             moveless=False,
         ),
@@ -4177,6 +4180,7 @@ door_locations = {
             location=[290, 190, 617, 177.53],
             group=12,
             kong_lst=[Kongs.donkey],
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Chunky crypt - between right coffins",
