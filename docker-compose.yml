@@ -51,8 +51,14 @@ services:
         - BRANCH=${BRANCH:-LOCAL}
     container_name: nginx
     ports:
-      - "8000:8000"
-      - "443:443"
+      - target: 80
+        published: 80
+        mode: host
+        host_ip: 0.0.0.0
+      - target: 443
+        published: 443
+        mode: host
+        host_ip: 0.0.0.0
     depends_on:
       - controller
     restart: always
