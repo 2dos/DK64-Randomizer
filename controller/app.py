@@ -214,10 +214,6 @@ def submit_task():
     else:
         settings_data = data.get("settings_data")
     user_ip = get_user_ip()
-    logger.info("-----------------")
-    logger.info("User IP Address:")
-    logger.info(user_ip)
-    logger.info("-----------------")
     # Check the last submission time for this IP
     last_submission_key = f"last_submission:{user_ip}"
     last_submission_time = redis_conn.get(last_submission_key)
