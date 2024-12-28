@@ -182,9 +182,9 @@ def update_presets(force=False):
 
 def get_user_ip():
     """Retrieve the user's IP address."""
-    logger.info(request.remote_addr)
-    logger.info(request.headers)
-    if request.headers.get("X-Real-IP"):
+    if request.headers.get("Cf-Connecting-Ip"):
+        return request.headers.get("Cf-Connecting-Ip")
+    elif request.headers.get("X-Real-IP"):
         return request.headers.get("X-Real-IP")
     elif request.headers.get("X-Forwarded-For"):
         return request.headers.get("X-Forwarded-For")
