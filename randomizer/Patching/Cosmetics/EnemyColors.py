@@ -574,7 +574,7 @@ def writeMiscCosmeticChanges(settings):
         spider_shift = getRandomHueShift()
 
         for img_index in SPIDER_TEXTURE_DIMENSIONS:
-            hueShiftImageContainer, ROM_COPY(
+            hueShiftImageContainer(
                 25,
                 img_index,
                 SPIDER_TEXTURE_DIMENSIONS[img_index][0],
