@@ -29,11 +29,13 @@ from cleanup import enable_cleanup
 from oauth import DiscordAuth
 from functools import wraps
 from swagger_ui import flask_api_doc
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Define a resource to identify your service
 resource = Resource(
@@ -59,6 +61,7 @@ app = Flask(__name__, static_folder="", template_folder="templates")
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 
 # Shared structure to manage threads
 tasks = {}
@@ -179,8 +182,12 @@ def update_presets(force=False):
 
 def get_user_ip():
     """Retrieve the user's IP address."""
-    if request.headers.get("X-Forwarded-For"):
-        return request.headers.get("X-Forwarded-For").split(",")[0]
+    logger.info(request.remote_addr)
+    logger.info(request.headers)
+    if request.headers.get("X-Real-IP"):
+        return request.headers.get("X-Real-IP")
+    elif request.headers.get("X-Forwarded-For"):
+        return request.headers.get("X-Forwarded-For")
     return request.remote_addr
 
 
@@ -207,7 +214,10 @@ def submit_task():
     else:
         settings_data = data.get("settings_data")
     user_ip = get_user_ip()
-
+    logger.info("-----------------")
+    logger.info("User IP Address:")
+    logger.info(user_ip)
+    logger.info("-----------------")
     # Check the last submission time for this IP
     last_submission_key = f"last_submission:{user_ip}"
     last_submission_time = redis_conn.get(last_submission_key)
