@@ -77,6 +77,7 @@ class TaskThread(threading.Thread):
         self.target = target
         self.args = args
         self.kwargs = kwargs
+        self.result_complete = False
         self.result = self.run()
         self.result_complete = True
 
