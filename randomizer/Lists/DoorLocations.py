@@ -56,6 +56,7 @@ UNDERWATER_LOGIC_REGIONS = (
     Regions.TromboneShip,
     Regions.SaxophoneShip,
     Regions.TriangleShip,
+    Regions.Mechafish,
 )
 
 
@@ -2470,6 +2471,7 @@ door_locations = {
             group=7,
             logic=lambda l: l.jetpack and l.isdiddy,
             moveless=False,
+            door_type=[DoorType.wrinkly],
             kong_lst=[Kongs.diddy],
         ),
     ],

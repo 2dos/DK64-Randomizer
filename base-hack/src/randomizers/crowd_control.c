@@ -289,7 +289,7 @@ int cc_enabler_balloon(void) {
         Player->control_state = 0x6E;
         Player->control_state_progress = 0;
         Player->yVelocity = 0.0f;
-        Player->yAccel = 2.0f + (*(double*)(0x8075D308) * 10.0f);
+        Player->yAccel = 1.8f + (*(double*)(0x8075D308) * 10.0f);
         Player->balloon_timer = 10;
         playActorAnimation(Player, 0x169);
     }

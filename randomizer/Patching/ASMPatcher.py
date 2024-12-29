@@ -1638,7 +1638,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806DEFFC, Overlay.Static, "refillIfRefillable", offset_dict)
 
     if settings.item_reward_previews:
-        writeValue(ROM_COPY, 0x8002489C, Overlay.Race, 0, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8002489C, Overlay.Race, 0, offset_dict, 4)  # Beetle Races
+        writeValue(ROM_COPY, 0x8002BA9C, Overlay.Race, 0, offset_dict, 4)  # Castle Car Race
+        writeValue(ROM_COPY, 0x80028580, Overlay.Race, 0, offset_dict, 4)  # Factory Car Race
 
     # Pause Stuff
     FLAG_BP_JAPES_DK_HAS = 0x1D5
