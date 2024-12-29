@@ -8,6 +8,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import PaletteFillType
 from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
 
+
 def patchColorTranspose(name, x, y, patch_img, target_color):
     """Transposes RGBA value from patch file to new palette."""
     currentPix = patch_img.getpixel((x, y))
