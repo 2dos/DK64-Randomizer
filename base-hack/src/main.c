@@ -178,6 +178,7 @@ static short mj_falling_cutscenes[] = {
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer < 2) {
+		setFlag(0x6A, 1, FLAGTYPE_TEMPORARY);
 		swap_ending_cutscene_model();
 		swapKremlingModel();
 		force_enable_diving_timer = 0;

@@ -1608,6 +1608,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x800289B0, Overlay.Boss, 0, offset_dict, 4)  # K Rool between-phase health refilll
     else:
         writeValue(ROM_COPY, 0x806A6EA8, Overlay.Static, 0x0C1C2519, offset_dict, 4)  # Set Bonus Barrel to refill health
+        writeFunction(ROM_COPY, 0x80025664, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Army Dillo
+        writeFunction(ROM_COPY, 0x8002A9B0, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Dogadon
+        writeFunction(ROM_COPY, 0x80033B70, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Mad Jack
+        writeFunction(ROM_COPY, 0x800294C0, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Pufftoss
+        writeFunction(ROM_COPY, 0x80031C6C, Overlay.Boss, "refillPlayerHealthKKO", offset_dict)  # KKO
 
     if settings.warp_to_isles:
         writeHook(ROM_COPY, 0x806A995C, Overlay.Static, "PauseExtraSlotCode", offset_dict)
@@ -1628,6 +1633,14 @@ def patchAssembly(ROM_COPY, spoiler):
     # Big Head Static stuff
     writeValue(ROM_COPY, 0x80612E98, Overlay.Static, 0xA4850172, offset_dict, 4)  # sh $a1, 0x172 ($a0)
     writeValue(ROM_COPY, 0x80612E9E, Overlay.Static, 0xBB30, offset_dict)  # change lhu offset
+
+    # Fix fairies to not drain items
+    writeFunction(ROM_COPY, 0x806DEFFC, Overlay.Static, "refillIfRefillable", offset_dict)
+
+    if settings.item_reward_previews:
+        writeValue(ROM_COPY, 0x8002489C, Overlay.Race, 0, offset_dict, 4)  # Beetle Races
+        writeValue(ROM_COPY, 0x8002BA9C, Overlay.Race, 0, offset_dict, 4)  # Castle Car Race
+        writeValue(ROM_COPY, 0x80028580, Overlay.Race, 0, offset_dict, 4)  # Factory Car Race
 
     # Pause Stuff
     FLAG_BP_JAPES_DK_HAS = 0x1D5

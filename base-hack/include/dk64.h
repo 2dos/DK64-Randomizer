@@ -296,6 +296,7 @@ extern void addDLToOverlay(void* code, void* actor, int delay);
 extern int groundContactCheck(void);
 extern void groundContactSet(void);
 extern int getRefillCount(int item, int player);
+extern int getItemCount(int item, int player);
 extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
 extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
 extern int ReadFile(int data, int kong, int level, int file);

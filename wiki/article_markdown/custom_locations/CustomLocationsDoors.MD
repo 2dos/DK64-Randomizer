@@ -236,7 +236,9 @@
 | Gloomy Galleon | Near Mermaid's Palace - right | Boss, Wrinkly |  | 
 | Gloomy Galleon | Near Mermaid's Palace - left | Boss, Wrinkly |  | 
 | Gloomy Galleon | Near Mermaid's Palace - Under Tag Barrel | Wrinkly |  | 
-| Galleon Lighthouse | Lighthouse Interior | Boss, Dk_Portal, Wrinkly |  | 
+| Galleon Lighthouse | Lighthouse - Up the ledge | Boss, Wrinkly | `l.climbing` | 
+| Galleon Lighthouse | Lighthouse - Left | Boss, Wrinkly |  | 
+| Galleon Lighthouse | Lighthouse - Back | Boss, Wrinkly |  | 
 | Galleon Mermaid Room | In Mermaid's Palace | Wrinkly |  | 
 | Galleon5DShip DKTiny | Tiny's 5D ship | Wrinkly |  | 
 | Galleon5DShip Diddy Lanky Chunky | Lanky's 5D ship | Wrinkly |  | 
@@ -251,11 +253,11 @@
 | Galleon Sick Bay | Seasick ship - after cannons front left | Boss, Dk_Portal, Wrinkly |  | 
 | Galleon Sick Bay | Seasick ship - after cannons front right | Boss, Dk_Portal, Wrinkly |  | 
 | Galleon Sick Bay | Seasick ship - after cannons center | Boss, Dk_Portal, Wrinkly |  | 
-| Galleon Mechafish | Left wall of Mech Fish | Boss, Dk_Portal, Wrinkly |  | 
-| Galleon Mechafish | Right wall of Mech Fish | Boss, Dk_Portal, Wrinkly |  | 
+| Galleon Mechafish | Left wall of Mech Fish | Boss, Wrinkly |  | 
+| Galleon Mechafish | Right wall of Mech Fish | Boss, Wrinkly |  | 
 | Galleon5DShip Diddy Lanky Chunky | Chunky 5DS - Against a chest | Boss, Wrinkly |  | 
 | Galleon5DShip DKTiny | Donkey 5DS - Next to the left cell bed | Boss, Wrinkly |  | 
-| Gloomy Galleon | On top of the lighthouse | Boss, Dk_Portal, Wrinkly | `l.jetpack and l.isdiddy` | 
+| Gloomy Galleon | On top of the lighthouse | Wrinkly | `l.jetpack and l.isdiddy` | 
 
 # Fungi Forest
 | Map | Name | Door types acceptable in location | Logic |
@@ -303,7 +305,7 @@
 | Forest Mill Back | Mill - back side - Near Chunky Coins | Boss, Wrinkly |  | 
 | Forest Winch Room | Winch Room - on the Winch | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Mill Attic | Lanky's Attic | Boss, Dk_Portal, Wrinkly |  | 
-| Forest Thornvine Barn | DK's Barn - Between 2 Barrels near Switch | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Thornvine Barn | DK's Barn - Between 2 Barrels near Switch | Boss, Wrinkly |  | 
 | Fungi Forest | Forest Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Mill Front | Mill - front side - Next to entrance | Boss, Wrinkly |  | 
 | Forest Mill Front | Mill - front side - In the hay | Boss, Wrinkly |  | 
@@ -456,7 +458,8 @@
 | Castle Tree | Tree - Near Coconut Gate | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Tree | Tree - Past Punch Gate | Boss, Dk_Portal, Wrinkly | `(l.punch and l.ischunky) or l.CanPhase()` | 
 | Castle Library | Library - Strong Kong Alcove | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Library | Library - Enemy Gauntlet | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Library | Library - Enemy Gauntlet | Wrinkly |  | 
+| Castle Library | Library - Left wing | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Crypt | Chunky crypt - between right coffins | Boss, Dk_Portal, Wrinkly | `l.pineapple and l.ischunky` | 
 | Castle Crypt | Chunky crypt - between left coffins | Boss, Dk_Portal, Wrinkly | `l.pineapple and l.ischunky` | 
 | Castle Crypt | Donkey crypt - behind the levers | Boss, Dk_Portal, Wrinkly | `l.coconut and l.isdonkey` | 

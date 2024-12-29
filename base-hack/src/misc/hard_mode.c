@@ -499,7 +499,7 @@ void parseControllerInput(Controller * cont) {
     if (isGamemode(GAMEMODE_MAINMENU, 1)) {
         return;
     }
-    if ((CutsceneActive == 2) || (CutsceneActive == 3)) {
+    if ((CutsceneActive == 3) || (CutsceneActive == 4)) {
         // In arcade/jetpac
         // TODO: Flip these
         return;

@@ -6,7 +6,7 @@ import math
 import js
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import PaletteFillType
-from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA
+from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
 
 
 def patchColorTranspose(name, x, y, patch_img, target_color):
@@ -154,14 +154,16 @@ def convertColors(color_palettes):
             elif zone["fill_type"] == PaletteFillType.patch:
                 if zone["image"] == 3725 or zone["image"] == 3734:
                     # DK's tie or lanky's butt patch, respectively
-                    from randomizer.Patching.CosmeticColors import getImageFile
-
                     patch_img = getImageFile(25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
 
                     safe = True
                     for y in range(64):
                         for x in range(32):
                             ext = convertRGBAToBytearray(patchColorTranspose(zone["zone"], x, y, patch_img, rgba_list[0]))
+                            # Potentially fix the TA crash issues
+                            if y == 42:
+                                if (x >= 18 and x < 22) or (x >= 25):
+                                    ext = [0, 0]
                             bytes_array.extend(ext)
                             if len(bytes_array) == 2744:
                                 # its done copying all the bytes we care about (not the full 32x64); bail

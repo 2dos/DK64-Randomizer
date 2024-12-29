@@ -1705,3 +1705,24 @@ int DetermineLevel_NewLevel(maps map) {
 	}
 	return 0;
 }
+
+void refillIfRefillable(item_ids item_id, int player, int change) {
+	int cap = getRefillCount(item_id, player);
+	int count = getItemCount(item_id, player);
+	if (count < cap) {
+		changeCollectableCount(item_id, player, change);
+	}
+}
+
+void refillHealthOnInit(void) {
+	initCharSpawnerActor();
+	if (CurrentActorPointer_0->obj_props_bitfield & 0x10) {
+		return;
+	}
+	refillHealth(0);
+}
+
+void refillPlayerHealthKKO(void* actor, int cutscene, int bitfield) {
+	playCutscene(actor, cutscene, bitfield);
+	refillHealth(0);
+}
