@@ -77,12 +77,13 @@ class TaskThread(threading.Thread):
         self.target = target
         self.args = args
         self.kwargs = kwargs
-        self.result = self.run()
-        self.result_complete = True
+        self.result_complete = False
+        self.result = None
 
     def run(self):
         """Run the task in the background."""
         if not self.result_complete:
+            self.result_complete = True
             self.result = self.target(self.kwargs.get("args")[0])
 
 
@@ -127,7 +128,6 @@ def enforce_api_restrictions():
             api_key = request.headers.get("X-API-Key")
 
             # Check if the request is allowed based on referer or API key
-            print(referer)
             if "*" not in ALLOWED_REFERRERS and (referer not in ALLOWED_REFERRERS and api_key not in API_KEYS):
                 print(f"Unauthorized access attempt from IP: {get_user_ip()}, Referer: {referer}, API Key: {api_key}")
                 return jsonify({"error": "Unauthorized access"}), 403
@@ -245,10 +245,11 @@ def task_status(task_id):
         global tasks
         task_thread = tasks.get(task_id)
         if task_thread:
+            if not task_thread.result_complete:
+                task_thread.run()
             if task_thread.is_alive():
                 return jsonify({"task_id": task_id, "status": "started", "priority": "High"}), 200
             else:
-                # Retrieve and return the result
                 result = task_thread.result
                 return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     try:
