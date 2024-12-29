@@ -249,7 +249,7 @@ def task_status(task_id):
                 task_thread.run()
             if task_thread.is_alive():
                 return jsonify({"task_id": task_id, "status": "started", "priority": "High"}), 200
-            else:                
+            else:
                 result = task_thread.result
                 return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     try:
