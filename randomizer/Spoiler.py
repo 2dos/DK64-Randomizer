@@ -20,6 +20,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
+    DKPortalRando,
     GlitchesSelected,
     LogicType,
     HardBossesSelected,
@@ -378,6 +379,7 @@ class Spoiler:
         settings["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req.name
         settings["Hint Preset"] = self.settings.wrinkly_hints
         if self.settings.progressive_hint_item != ProgressiveHintItem.off:
+            settings["Progressive Hint Item"] = self.settings.progressive_hint_item.name
             settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_count)
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
@@ -689,10 +691,13 @@ class Spoiler:
         if self.settings.bananaport_rando != BananaportRando.off:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if self.settings.wrinkly_location_rando:
-            humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
+            prog_hint_setting = self.settings.progressive_hint_item
+            item_types = self.settings.shuffled_location_types
+            if prog_hint_setting == ProgressiveHintItem.off or Types.Hint in item_types:
+                humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
-        if self.settings.dk_portal_location_rando:
+        if self.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
@@ -996,12 +1001,12 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
             humanspoiler["Wrinkly Hints"] = human_hint_list
-            humanspoiler["Unhinted Score"] = self.unhinted_score
-            humanspoiler["Potentially Awful Locations"] = {}
-            for location_description in self.poor_scoring_locations:
-                humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
-            if hasattr(self, "hint_swap_advisory"):
-                humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
+            # humanspoiler["Unhinted Score"] = self.unhinted_score
+            # humanspoiler["Potentially Awful Locations"] = {}
+            # for location_description in self.poor_scoring_locations:
+            #     humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
+            # if hasattr(self, "hint_swap_advisory"):
+            #     humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:

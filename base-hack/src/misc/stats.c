@@ -204,8 +204,11 @@ static const dynamic_credits_item stat_credits_items[] = {
 
 static char number_text[10] = "";
 
+#define STATIC_CREDITS_ALLOCATION 0x300
+#define DYNAMIC_CREDITS_ALLOCATION 0x200
+
 char* createEndSeqCreditsFile(void) {
-    char* text_data = dk_malloc(0x400);
+    char* text_data = dk_malloc(STATIC_CREDITS_ALLOCATION + DYNAMIC_CREDITS_ALLOCATION);
     int write_position = 0;
     int raw_write_location = (int)text_data;
     for (int i = 0; i < (int)(sizeof(stat_credits_items)/sizeof(dynamic_credits_item)); i++) {
@@ -242,6 +245,6 @@ char* createEndSeqCreditsFile(void) {
         write_position += 1;
     }
     void* raw_text_data = getMapData(0x13, 7, 1, 1);
-    dk_memcpy((void*)(raw_write_location + write_position), raw_text_data, 0x200);
+    dk_memcpy((void*)(raw_write_location + write_position), raw_text_data, STATIC_CREDITS_ALLOCATION);
     return text_data;
 }

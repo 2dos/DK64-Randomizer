@@ -91,7 +91,10 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Quad: 20%
 	- Ohko: 10%
 - Tag Barrels Disabled: 50%
-- Dk Portal Location Rando: 30%
+- Random DK Portal Locations: 
+	- Off: 50%
+	- Main Only: 30%
+	- On: 20%
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 50%
 - Dropsanity: 60%

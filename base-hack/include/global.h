@@ -194,6 +194,7 @@ extern void initDingSprite(void);
 extern void fastWarpShockwaveFix(void);
 extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
+extern void detectSongChange();
 extern int getTotalCBCount(void);
 
 extern void swapKremlingModel(void);

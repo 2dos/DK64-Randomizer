@@ -13,17 +13,47 @@
 
 static unsigned char display_timer = 0;
 static short displayed_text_offset = -1;
+static short storedMusicTrackChannel[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static char storedTrackState[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
 }
 
+
+void detectSongChange(){
+    char loadedSongCanceled = 0;
+    for(int i = 11; i >= 0; i--){
+        if(storedMusicTrackChannel[i] != MusicTrackChannels[i]){
+            // New song was requested to play on this channel
+            initSongDisplay(MusicTrackChannels[i]);
+            if(MusicTrackChannels[i] == 0 && music_types[storedMusicTrackChannel[i]] == SONGTYPE_BGM){
+                loadedSongCanceled = 1;
+            }
+            storedMusicTrackChannel[i] = MusicTrackChannels[i];
+        } else if(loadedSongCanceled){
+            // An already playing BGM got canceled. This song might have been blocking songs on lower channels from playing
+            // So next song in line that is a BGM will be played.
+            if(music_types[MusicTrackChannels[i]] == SONGTYPE_BGM){
+                initSongDisplay(MusicTrackChannels[i]);
+                // And ignore songs in lower channels. The BGM filter should be enough to make it accurate
+                loadedSongCanceled = 0;
+            }
+        }
+        if(trackStateArray[i] != storedTrackState[i]){
+            if(trackStateArray[i] == 2 && storedTrackState[i] == 1){
+                // New song has loaded in and has now started
+                // This call is so close to being obsolete, but it covers edge cases where
+                // you enter a level in a location where one BGM has priority over another (Aztec/Galleon tunnel spawn)
+                initSongDisplay(MusicTrackChannels[i]);
+            }
+            storedTrackState[i] = trackStateArray[i];
+        }
+    }
+}
+
 void initSongDisplay(int song) {
     if (song == 0) {
-        return;
-    }
-    if (song == 34) {
-        // Block it from occurring in the pause menu, cause text overload
         return;
     }
     if (music_types[song] != SONGTYPE_BGM) {
@@ -32,17 +62,6 @@ void initSongDisplay(int song) {
     if ((CurrentMap == MAP_ISLES) && (CutsceneActive == 1) && (CutsceneIndex == 29)) {
         // In K Rool gets launched cutscene
         return;
-    }
-    int channel = getTrackChannel(song);
-    int writeSlot = getSongWriteSlot(song);
-    if ((MusicTrackChannels[channel] == song) && ((songData[song] & 0x200) == 0)) {
-        if(cspGetState(compactSequencePlayers[writeSlot]) == 1){
-            // If CompactSequence Player is already playing this song
-            // Not gonna bother looking through the event queue whether or not
-            // the CompactSequence Player is being stopped and started on the same audio frame
-            // because that's hard to trigger and very expensive, if even reliable.
-            return;
-        }
     }
     if (DisplayedSongNamePointer) {
         complex_free(DisplayedSongNamePointer);

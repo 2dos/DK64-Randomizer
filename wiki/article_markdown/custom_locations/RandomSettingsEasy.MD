@@ -31,7 +31,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - DK Phase requires Baboon Blast
 - Chaos B. Lockers
 - Crown Placement Rando
-- Dk Portal Location Rando
 - Enable Plandomizer
 - Dropsanity
 - Hard B. Lockers
@@ -105,6 +104,8 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Default: 50%
 	- Double: 50%
 - Tag Barrels Disabled: 50%
+- Random DK Portal Locations: 
+	- Off: 100%
 - Enable Progressive Hints: 50%
 - Shuffle Enemies: 95%
 - Enemy Speed Rando: 50%

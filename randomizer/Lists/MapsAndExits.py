@@ -70,6 +70,8 @@ RegionMapList = {
     Regions.AngryAztecOasis: Maps.AngryAztec,
     Regions.TempleStart: Maps.AztecTinyTemple,
     Regions.TempleUnderwater: Maps.AztecTinyTemple,
+    Regions.TempleVultureRoom: Maps.AztecTinyTemple,
+    Regions.TempleKONGRoom: Maps.AztecTinyTemple,
     Regions.AngryAztecConnectorTunnel: Maps.AngryAztec,
     Regions.AngryAztecMain: Maps.AngryAztec,
     Regions.AztecDonkeyQuicksandCave: Maps.AngryAztec,

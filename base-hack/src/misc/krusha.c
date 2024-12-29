@@ -319,8 +319,30 @@ typedef struct projectile_extra {
     /* 0x014 */ float unk14;
 } projectile_extra;
 
+typedef struct KrushaProjectileColorStruct {
+    unsigned char pellet;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+} KrushaProjectileColorStruct;
+
+static KrushaProjectileColorStruct krusha_projectile_colors[] = {
+    {.pellet = 48, .red = 0xC0, .green = 0xFF, .blue = 0x00},
+    {.pellet = 36, .red = 0xFF, .green = 0x40, .blue = 0x00},
+    {.pellet = 42, .red = 0x18, .green = 0x18, .blue = 0x00},
+    {.pellet = 43, .red = 0x80, .green = 0x00, .blue = 0x00},
+    {.pellet = 38, .red = 0x00, .green = 0xFF, .blue = 0x00},
+};
+
 void setKrushaAmmoColor(void) {
-    changeActorColor(0, 0xFF, 0, 0xFF);
+    int currentPellet = CurrentActorPointer_0->actorType;
+    for (int i = 0; i < 5; i++) {
+        KrushaProjectileColorStruct *data = &krusha_projectile_colors[i];
+        if ((currentPellet == data->pellet) || (i == 4)) {
+            changeActorColor(data->red, data->green, data->blue, 0xFF);
+            return;
+        }
+    }
 }
 
 void OrangeGunCode(void) {

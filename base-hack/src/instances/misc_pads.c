@@ -75,7 +75,7 @@ int ableToUseMonkeyport(int id) {
                             createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);
                         } else if (mport_kong == 2) {
                             // Balloon
-                            createCollisionObjInstance(COLLISION_BABOON_BALLOON, 80, 200);	
+                            createCollisionObjInstance(COLLISION_BABOON_BALLOON, 15, 0);	
                         }
                     }
                 }

@@ -196,13 +196,13 @@
             // Update the statistics every 60 seconds by querying the API for the latest data 
             // if the site is dev.dk64randomizer.com or dk64randomizer.com
             if (window.location.hostname == "dev.dk64randomizer.com") {
-                current_total_url = "https://dev-generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=dev";
             }
             else if (window.location.hostname == "dk64randomizer.com") {
-                current_total_url = "https://generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=master";
             }
             else {
-                current_total_url = "http://" + window.location.hostname + ":8000/current_total";
+                current_total_url = "http://" + window.location.hostname + ":8000/api/current_total?branch=dev";
             }
             function query_stats(){
                 $.ajax({
@@ -278,6 +278,8 @@
                 In-game characters, images and logos copyright © 1999-2024 Nintendo or Rareware respectively.
                 <br />
                 DK64Randomizer.com does not distribute copyright material.
+                <br />
+                <a href="./privacy.html">Privacy Policy</a>
             </div>
         </div>
 

@@ -1395,17 +1395,6 @@ int filterSong(int* song_write) {
 			}
 		}
 	}
-	initSongDisplay(song);
-	return getTrackChannel(song);
-}
-
-int filterSong_Cancelled(songs song) {
-	for (int i = 0; i < 12; i++) {
-		if ((MusicTrackChannels[i] != SONG_SILENCE) && (MusicTrackChannels[i] != song)) {
-			initSongDisplay(MusicTrackChannels[i]);
-			break;
-		}
-	}
 	return getTrackChannel(song);
 }
 
@@ -1693,4 +1682,47 @@ int isGlobalCutscenePlaying(int cutscene_index) {
 		return 1;
 	}
 	return 0;
+}
+
+int DetermineLevel_NewLevel(maps map) {
+	for (int i = 0; i < 8; i++) {
+		if (CurrentMap == LobbiesArray[i]) {
+			if (!checkFlag(FLAG_STORY_JAPES + i, FLAGTYPE_PERMANENT)) {
+				setFlag(FLAG_STORY_JAPES + i, 1, FLAGTYPE_PERMANENT);
+				if (StorySkip) {
+					return 0;
+				}
+				int world = getWorld(map, 0);
+				if (world == 8) {
+					world = 7;
+				} else if (world > 6) {
+					return 0;
+				}
+				initiateTransitionFade(MAP_HELM_INTROSGAMEOVER, 0xF + world, Mode);
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+void refillIfRefillable(item_ids item_id, int player, int change) {
+	int cap = getRefillCount(item_id, player);
+	int count = getItemCount(item_id, player);
+	if (count < cap) {
+		changeCollectableCount(item_id, player, change);
+	}
+}
+
+void refillHealthOnInit(void) {
+	initCharSpawnerActor();
+	if (CurrentActorPointer_0->obj_props_bitfield & 0x10) {
+		return;
+	}
+	refillHealth(0);
+}
+
+void refillPlayerHealthKKO(void* actor, int cutscene, int bitfield) {
+	playCutscene(actor, cutscene, bitfield);
+	refillHealth(0);
 }

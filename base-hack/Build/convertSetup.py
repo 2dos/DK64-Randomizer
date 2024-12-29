@@ -196,6 +196,7 @@ def getObjectModifications(target_map: Maps) -> list:
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CD, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CE, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CF, y=178.5), # Factory Spring Coins
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Japes, 0x0, new_id=0x100, x=1839.1, y=680, z=2863, obj_type=112, rx=0, ry=0, rz=0, scale=0.25),  # Japes Headphones
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x100, x=575.763, y=HELM_FACE_HIGH, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x101, x=494.518, y=HELM_FACE_HIGH, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Helm, 0x0, new_id=0x102, x=606.161, y=HELM_FACE_LOW, z=HELM_FACE_Z, obj_type=54, rx=0, ry=0, rz=0, scale=0.35),  # Helm Faces

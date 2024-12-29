@@ -497,7 +497,7 @@ ColoredBananaGroupList = [
         name="Tree next to Japes",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
         locations=[
             [5, 1.0, 3554, 709, 1920],
         ],
@@ -508,7 +508,7 @@ ColoredBananaGroupList = [
         name="Tree on beaver beach",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
         locations=[
             [5, 1.0, 3506, 706, 1388],
         ],
@@ -519,7 +519,7 @@ ColoredBananaGroupList = [
         name="Tree near W3",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
-        logic=lambda l: l.climbing,
+        logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
         locations=[
             [5, 1.0, 3170, 707, 880],
         ],

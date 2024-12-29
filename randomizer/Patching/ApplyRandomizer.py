@@ -43,18 +43,16 @@ from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
+from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
+from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors
 from randomizer.Patching.CosmeticColors import (
     applyHelmDoorCosmetics,
     applyKongModelSwaps,
-    updateCryptLeverTexture,
-    updateMillLeverTexture,
-    writeBootMessages,
-    updateDiddyDoors,
     showWinCondition,
 )
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
-from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
+from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators, alterStoryCutsceneWarps
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import (
     enableTriggerText,
@@ -720,6 +718,7 @@ def patching_response(spoiler):
     writeBootMessages()
     enableTriggerText(spoiler)
     shortenCastleMinecart(spoiler)
+    alterStoryCutsceneWarps(spoiler, ROM_COPY)
 
     if "PYTEST_CURRENT_TEST" not in os.environ:
         replaceIngameText(spoiler)

@@ -260,7 +260,7 @@
 | At the end of the quicksand tunnel | 4 |  | 
 | Around the Giant Boulder | 3 |  | 
 | Around the Bonus Barrel Cage | 4 |  | 
-| Vines near Snide's HQ | 4 | `l.can_use_vines and l.climbing` | 
+| Vines near Snide's HQ | 4 | `(l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | Around Hunky Chunky Barrel | 3 |  | 
 | Behind 5-Door Temple | 3 |  | 
 | Under Oasis Tag | 4 |  | 
@@ -538,7 +538,7 @@
 | Right of blue tunnel entry | 3 |  | 
 | Around well stump | 4 |  | 
 | On well roof edges | 3 | `(l.climbing and (l.can_use_vines or l.CanMoonkick())) or (l.jetpack and l.isdiddy)` | 
-| Mushroom Stem | 4 | `l.climbing` | 
+| Mushroom Stem | 4 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | On Clock Pendulum | 3 | `l.climbing` | 
 | On Clock Torches | 2 |  | 
 | Level Entry | 3 |  | 
@@ -758,7 +758,7 @@
 | Near DK Portal | 4 |  | 
 | Starting pool | 3 |  | 
 | Near Low Tag Barrel | 4 |  | 
-| High tree at the back of Castle | 4 | `l.climbing` | 
+| High tree at the back of Castle | 4 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Above a gravestone near lower tunnel entry | 3 |  | 
 | Outside lower tunnel entry | 4 |  | 
 | Above retracting platforms | 2 |  | 
@@ -776,11 +776,11 @@
 | Around Castle Tree exterior | 3 | `l.jetpack and l.isdiddy` | 
 | Around Tiny Kasplat | 3 |  | 
 | Around upper W2 | 3 |  | 
-| On thin tree near the Tree entrance | 2 | `l.climbing` | 
+| On thin tree near the Tree entrance | 2 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Behind Grave (1) | 3 |  | 
 | Hanging off ledge near Castle Tree entrance | 3 |  | 
 | Behind Grave (2) | 3 |  | 
-| On tree near Crypt Entrance | 2 | `l.climbing` | 
+| On tree near Crypt Entrance | 2 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | On Drawbridge | 4 | `l.jetpack and l.isdiddy` | 
 | Above Window | 2 | `l.jetpack and l.isdiddy` | 
 ## Castle Ballroom

@@ -10,7 +10,7 @@
 | Jungle Japes | Diddy Cavern |  |  | 
 | Jungle Japes | Inside Diddy's Cavern |  |  | 
 | Jungle Japes | Inside the first tunnel - later half |  |  | 
-| Jungle Japes | Painting Hill |  | `(l.handstand and l.islanky) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy))` | 
+| Jungle Japes | Painting Hill | MelonCrate | `(l.handstand and l.islanky) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy))` | 
 | Jungle Japes | Shellhive Island |  |  | 
 | Jungle Japes | Near Stump |  |  | 
 | Jungle Japes | Near Log |  |  | 

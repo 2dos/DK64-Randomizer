@@ -27,13 +27,18 @@ def bind(event, id, iterations=0):
         """
         function = create_proxy(function)
         if iterations == 0:
-            document.getElementById(id).addEventListener(event, function, False)
-        else:
-            for i in range(0, iterations):
+            if document.getElementById(id) is not None:
                 try:
-                    document.getElementById(id + str(i)).addEventListener(event, function)
+                    document.getElementById(id).addEventListener(event, function, False)
                 except Exception:
                     pass
+        else:
+            for i in range(0, iterations):
+                if document.getElementById(id) is not None:
+                    try:
+                        document.getElementById(id + str(i)).addEventListener(event, function)
+                    except Exception:
+                        pass
 
         @wraps(function)
         def wrapper(*args, **kwargs):

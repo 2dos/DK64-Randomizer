@@ -479,7 +479,11 @@ int canTagAnywhere(void) {
     if (tag_countdown != 0) {
         return 0;
     }
-    if (getBitArrayValue(&banned_map_btf, CurrentMap)) {
+    if (CurrentMap != MAP_HELMBARREL_FLOORISLAVA) {
+        if (getBitArrayValue(&banned_map_btf, CurrentMap)) {
+            return 0;
+        }
+    } else if (!Rando.disable_race_patches) {
         return 0;
     }
     if (getBitArrayValue(&banned_movement_btf, Player->control_state)) {
@@ -845,9 +849,11 @@ void handleLedgeLock(void) {
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
         return;
     }
-    if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
-        // Even Spike wants this trick patched
-        return;
+    if (!Rando.disable_race_patches) {
+        if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
+            // Even Spike wants this trick patched
+            return;
+        }
     }
     handleLedgeGrabbing();
 }

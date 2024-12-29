@@ -443,6 +443,8 @@ class Settings:
         self.starting_kongs_count = 5
         self.starting_random = False
 
+        self.disable_racing_patches = False
+
         self.has_password = False
         self.password = [1] * 8
 
@@ -613,6 +615,7 @@ class Settings:
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
         self.custom_music_proportion = 100
+        self.smoother_camera = False
         self.fill_with_custom_music = False
         self.show_song_name = False
 
@@ -694,7 +697,8 @@ class Settings:
         self.hard_troff_n_scoff = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
-        self.dk_portal_location_rando = False
+        self.dk_portal_location_rando = False  # Deprecated
+        self.dk_portal_location_rando_v2 = DKPortalRando.off
         self.level_portal_destinations = [
             {
                 "map": Maps.JungleJapes,
@@ -827,7 +831,7 @@ class Settings:
         # Progressive hints
         self.progressive_hint_item = None
         self.enable_progressive_hints = False  # Deprecated
-        self.progressive_hint_text = 0
+        self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
 
     def shuffle_prices(self, spoiler):
@@ -1202,7 +1206,7 @@ class Settings:
         if self.win_condition_item in helmdoor_items.keys():
             self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
 
-        if self.dk_portal_location_rando:
+        if self.dk_portal_location_rando_v2 != DKPortalRando.off:
             level_base_maps = [Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle]
             self.level_portal_destinations = [
                 {

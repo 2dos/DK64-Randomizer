@@ -141,6 +141,7 @@ void cFuncLoop(void) {
 		}
 	}
 	handleSFXCache();
+	detectSongChange();
 	handleDPadFunctionality();
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
@@ -176,19 +177,8 @@ static short mj_falling_cutscenes[] = {
 };
 
 void earlyFrame(void) {
-	if (!(Player->strong_kong_ostand_bitfield & 0x8000)) {
-		int reset = 1;
-		actorData *picture = Player->vehicle_actor_pointer;
-		if (picture) {
-			if (picture->actorType == 0xCA) {
-				reset = 0;
-			}
-		}
-		if (reset) {
-			Player->fairy_state = 0;
-		}
-	}
 	if (ObjectModel2Timer < 2) {
+		setFlag(0x6A, 1, FLAGTYPE_TEMPORARY);
 		swap_ending_cutscene_model();
 		swapKremlingModel();
 		force_enable_diving_timer = 0;

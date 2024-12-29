@@ -1,0 +1,412 @@
+openapi: 3.0.0
+info:
+  title: DK64 Randomizer API
+  version: 1.0.0
+  description: API for the DK64 Randomizer service
+servers:
+  - url: http://localhost:8000/api
+    description: Local server
+  - url: https://api.dk64rando.com/api
+    description: Production server
+paths:
+  /submit-task:
+    post:
+      summary: Submit a task to generate a seed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings_data:
+                  type: string
+                  description: Settings data for the seed generation
+      responses:
+        '200':
+          description: Task submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task_id:
+                    type: string
+                  status:
+                    type: string
+                  priority:
+                    type: string
+        '400':
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /task-status/{task_id}:
+    get:
+      summary: Get the status of a submitted task
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task_id:
+                    type: string
+                  status:
+                    type: string
+                  position:
+                    type: integer
+                  result:
+                    type: string
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Task failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get_version:
+    get:
+      summary: Get the version of the API
+      responses:
+        '200':
+          description: Version retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+  /get_presets:
+    get:
+      summary: Get the list of presets
+      parameters:
+        - name: return_blank
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Presets retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /admin:
+    get:
+      summary: Access the admin portal
+      responses:
+        '200':
+          description: Admin portal accessed successfully
+          content:
+            text/html:
+              schema:
+                type: string
+        '403':
+          description: Unauthorized access
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/presets:
+    put:
+      summary: Update a local preset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                settings_string:
+                  type: string
+      responses:
+        '200':
+          description: Local presets updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Preset not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    delete:
+      summary: Delete a local preset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Local presets deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Preset not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /get_seed:
+    get:
+      summary: Get the lanky file for a seed
+      parameters:
+        - name: hash
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lanky file retrieved successfully
+          content:
+            application/zip:
+              schema:
+                type: string
+        '400':
+          description: Missing or invalid hash parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Lanky file not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get_spoiler_log:
+    get:
+      summary: Get the spoiler log for a seed
+      parameters:
+        - name: hash
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Spoiler log retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Missing or invalid hash parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '425':
+          description: Spoiler log is locked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /current_total:
+    get:
+      summary: Get the current total of generated seeds
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [total_shield, time_shield, none]
+            description: Format of the response. If 'total_shield', returns a shield for total seeds. If 'time_shield', returns a shield for last generated time.
+      responses:
+        '200':
+          description: Current total retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_seeds:
+                    type: integer
+                    example: 1234
+                  last_generated_time:
+                    type: string
+                    example: "2023-10-01 12:34:56.789"
+                  label:
+                    type: string
+                    example: Seeds Generated
+                  message:
+                    type: string
+                    example: "1234"
+                  schemaVersion:
+                    type: integer
+                    example: 1
+                  color:
+                    type: string
+                    example: darkcyan
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get_selector_info:
+    get:
+      summary: Get the selector data for the randomizer
+      parameters:
+        - name: branch
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Selector data retrieved successfully.
+            If the branch is 'master', it calls the master worker URL.
+            If the branch is 'dev', it calls the dev worker URL.
+          content:
+            application/json:
+              schema:
+                type: object
+  /convert_settings:
+    post:
+      summary: Convert settings
+      parameters:
+        - name: branch
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: |
+            Settings converted successfully.
+            If the branch is 'master', it calls the master worker URL.
+            If the branch is 'dev', it calls the dev worker URL.
+          content:
+            application/json:
+              schema:
+                type: object

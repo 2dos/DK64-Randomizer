@@ -295,6 +295,7 @@ CustomLocations = {
             logic_region=Regions.JungleJapesMain,
             logic=lambda l: (l.handstand and l.islanky) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy)),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],
         ),
         CustomLocation(
             map=Maps.JungleJapes,
@@ -856,7 +857,7 @@ CustomLocations = {
             y=305.33,
             z=2340.39,
             max_size=65.6,
-            logic_region=Regions.TempleUnderwater,
+            logic_region=Regions.TempleVultureRoom,
             vanilla_crown=True,
             logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.islanky,
             group=2,
@@ -925,7 +926,7 @@ CustomLocations = {
             y=344,
             z=1468,
             max_size=80,
-            logic_region=Regions.TempleUnderwater,
+            logic_region=Regions.TempleKONGRoom,
             group=2,
         ),
         CustomLocation(
@@ -936,7 +937,7 @@ CustomLocations = {
             z=1146.0,
             rot_y=3959,
             max_size=64,
-            logic_region=Regions.TempleUnderwater,
+            logic_region=Regions.TempleKONGRoom,
             group=2,
         ),
         CustomLocation(

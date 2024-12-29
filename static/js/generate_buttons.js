@@ -414,22 +414,19 @@ js.plando_errors = plando_errors
             branch = "dev";
             if (!window.location.hostname.toLowerCase().includes("dev")) {
                 branch = "master";
-                url = "https://generate.dk64rando.com/generate";
+                url = "https://api.dk64rando.com/api";
             } else {
-                url = "https://dev-generate.dk64rando.com/generate";
+                url = "https://api.dk64rando.com/api";
+                branch = "dev";
             }
         } else {
-            url = `http://${window.location.hostname}:8000/generate`;
+            url = `http://${window.location.hostname}:8000/api`;
             branch = "dev";
         }
 
-        // Get the current time in milliseconds so we can use it as a key for the future.
-        let current_time = Date.now().toString() + uuidv4();
-        url = `${url}?gen_key=${current_time}`;
-
         wipeToastHistory();
         postToastMessage("Initializing", false, 0);
-        query_seed_generation(url, JSON.stringify(form_data), branch);
+        submit_seed_generation(url, JSON.stringify(form_data), branch);
     }
 }
 
