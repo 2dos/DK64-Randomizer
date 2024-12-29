@@ -100,3 +100,7 @@ extern void DKPhaseShort(void);
 extern void TinyPhaseShort(void);
 extern void ChunkyPhaseShort(void);
 extern void ChunkyPhaseAddedSave(void);
+
+extern void storeFairyData(void);
+extern void setSadFace(void);
+extern void setHappyFace(void);

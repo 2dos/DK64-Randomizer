@@ -176,7 +176,20 @@ static short mj_falling_cutscenes[] = {
 	8, 2, 16, 18, 17
 };
 
+void resetPictureStatus(void) {
+	if (!(Player->strong_kong_ostand_bitfield & 0x8000)) {
+		actorData *picture = Player->vehicle_actor_pointer;
+		if (picture) {
+			if (picture->actorType == 0xCA) {
+				return;
+			}
+		}
+		Player->fairy_state = 0;
+	}
+}
+
 void earlyFrame(void) {
+	resetPictureStatus();
 	if (ObjectModel2Timer < 2) {
 		setFlag(0x6A, 1, FLAGTYPE_TEMPORARY);
 		swap_ending_cutscene_model();
