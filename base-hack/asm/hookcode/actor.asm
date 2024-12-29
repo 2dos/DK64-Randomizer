@@ -693,11 +693,11 @@ setSadFace:
     lw $v1, lo(CurrentActorPointer_0) ($v1)
     sh $zero, 0x1B6 ($v1)
     lbu $v1, 0x1EC ($v0)
-    addiu $t1, $zero, 2
+    addiu $t1, $zero, 1
     beq $t1, $v1, setSadFace_finish ; If face is happy, do not overwrite with sad
     nop
     sb $t0, 0x1EC ($v0)
-    
+
     setSadFace_finish:
         j 0x806C5E90
         lui $v0, 0x8080

@@ -1616,7 +1616,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806C5EA8, Overlay.Static, 0x3C108080, offset_dict, 4)  # lui $s0, 0x8080
         writeValue(ROM_COPY, 0x806C5EAC, Overlay.Static, 0x8E0ABB40, offset_dict, 4)  # lw $t2, 0xBB40 ($s0)
         writeValue(ROM_COPY, 0x806C5EB0, Overlay.Static, 0x854A0000 | FAIRY_SCREEN_RANGE, offset_dict, 4)  # lh $t2, 0x01B6 ($t2)
-        writeValue(ROM_COPY, 0x806C5EB4, Overlay.Static, 0x1100001B, offset_dict, 4)  # beqz $t2, 0x1B
+        writeValue(ROM_COPY, 0x806C5EB4, Overlay.Static, 0x1140001B, offset_dict, 4)  # beqz $t2, 0x1B
         # Face controllers
         writeHook(ROM_COPY, 0x806C5E88, Overlay.Static, "setSadFace", offset_dict)
         writeHook(ROM_COPY, 0x806C5E3C, Overlay.Static, "setHappyFace", offset_dict)

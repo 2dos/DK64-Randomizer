@@ -178,6 +178,10 @@ static short mj_falling_cutscenes[] = {
 
 void resetPictureStatus(void) {
 	if (!(Player->strong_kong_ostand_bitfield & 0x8000)) {
+		int control_state = Player->control_state;
+		if ((control_state == 0x64) || (control_state == 0x65)) {
+			return;
+		}
 		actorData *picture = Player->vehicle_actor_pointer;
 		if (picture) {
 			if (picture->actorType == 0xCA) {
