@@ -190,7 +190,7 @@ class RandoHandler(RaceHandler):
 
     async def roll(self, preset, reply_to, race, password_protected, spoiler_log):
         """Generate a seed and send it to the race room."""
-        if race == False:
+        if not race:
             if preset not in self.dk64.dev_presets:
                 res_cmd = "!presets"
                 await self.send_message("Sorry %(reply_to)s, I don't recognise that preset. Use " "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"})
@@ -286,7 +286,7 @@ class RandoHandler(RaceHandler):
             "avatar_url": "https://mario.wiki.gallery/images/b/b3/DK64_Racecar.png",
             "attachments": [],
         }
-        if self.dk64.discord_webhook and self.data.get("unlisted", False) == False:
+        if self.dk64.discord_webhook and not self.data.get("unlisted", False):
             requests.post(self.dk64.discord_webhook, json=embed_data)
 
     async def send_presets(self, dev):

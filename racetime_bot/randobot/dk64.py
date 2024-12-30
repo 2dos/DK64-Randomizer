@@ -67,10 +67,10 @@ class DK64:
                 json.dumps({"settings": presets[preset]["settings_string"]}),
                 headers={"Content-Type": "application/json", "x-api-key": self.api_key},
             ).json()
-            if spoiler == False:
-                converted_settings["generate_spoilerlog"] = False
-            else:
+            if spoiler:
                 converted_settings["generate_spoilerlog"] = True
+            else:
+                converted_settings["generate_spoilerlog"] = False
             if password:
                 converted_settings["has_password"] = True
             else:
