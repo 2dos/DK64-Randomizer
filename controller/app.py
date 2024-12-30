@@ -197,6 +197,7 @@ def get_user_ip():
 def submit_task():
     """Submit a task to the worker queue."""
     data = request.json
+    branch = request.args.get("branch", "dev")
     if os.environ.get("TEST_REDIS") == "1":
         # Start the task immediately if we're using a fake Redis server
         # Make it a thread, and we're going to directly import and call the function
@@ -225,11 +226,11 @@ def submit_task():
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=2))
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=2))
         priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=1))
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=1))
         priority = "Low"
 
     # Update the last submission time for this IP

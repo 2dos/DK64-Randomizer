@@ -26,7 +26,7 @@ class DK64:
         """Initialize the API class."""
         self.dev_seed_url = "https://dev.dk64randomizer.com/randomizer?seed_id=%s"
         self.live_seed_url = "https://dk64randomizer.com/randomizer?seed_id=%s"
-        self.seed_endpoint = "https://api.dk64rando.com/api/submit-task"
+        self.seed_endpoint = "https://api.dk64rando.com/api/submit-task?branch=%s"
         self.json_converter = "https://api.dk64rando.com/api/convert_settings"
         self.preset_endpoint = "https://api.dk64rando.com/api/get_presets?return_blank=false&branch=%s"
         self.data_endpoint = "https://api.dk64rando.com/api/get_seed?hash=%s"
@@ -57,8 +57,10 @@ class DK64:
         presets = []
         if race:
             presets = self.master_presets
+            branch = "master"
         else:
             presets = self.dev_presets
+            branch = "dev"
         if preset is not None:
             converted_settings = requests.post(
                 self.json_converter,
@@ -75,7 +77,7 @@ class DK64:
                 converted_settings["has_password"] = False
             req_body = {"settings_data": json.dumps(converted_settings)}
             data = requests.post(
-                self.seed_endpoint,
+                self.seed_endpoint % branch,
                 headers={"Content-Type": "application/json", "x-api-key": self.api_key},
                 json=req_body,
             ).json()
