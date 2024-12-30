@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import copy
 import secrets
 import threading
 import time
@@ -262,7 +263,10 @@ def task_status(task_id):
         return set_response(json.dumps({"error": "Task not found"}), 404)
     # Get what was returned from the task
     if task.result:
-        return set_response(json.dumps({"result": task.result, "status": "finished"}), 200)
+        # make sure we clear the task from the queue if it's done
+        result = copy(task.result)
+        task.delete()
+        return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     # If the task failed, return the error message
     if task.exc_info:
         # Summarize the error message to just the final exception
