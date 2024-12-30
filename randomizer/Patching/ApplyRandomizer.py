@@ -134,7 +134,7 @@ def encPass(*args) -> int:
 
 
 def load_custom_encPass():
-    """Attempts to load and override encPass from randomizer/encryption.py."""
+    """Attempt to load and override encPass from randomizer/encryption.py."""
     # Define the file path to randomizer/encryption.py
     encryption_file_path = os.path.join(os.path.dirname(__file__), "randomizer", "encryption.py")
 
