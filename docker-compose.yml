@@ -70,7 +70,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     profiles:
-      - master
+      - racetime
 
   nginx:
     build:
