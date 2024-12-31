@@ -93,6 +93,7 @@ UNSHROUDED_CASTLE = False
 FARPLANE_VIEW = False
 KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 FAIRY_LOAD_FIX = True
+CAMERA_RESET_REDUCTION = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1015,6 +1016,96 @@ def disableDynamicReverb(ROM_COPY: ROM):
         original_value &= 0xFFFE
         writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
 
+boss_maps = [
+    Maps.JapesBoss,
+    Maps.AztecBoss,
+    Maps.FactoryBoss,
+    Maps.GalleonBoss,
+    Maps.FungiBoss,
+    Maps.CavesBoss,
+    Maps.CastleBoss,
+    Maps.KroolDonkeyPhase,
+    Maps.KroolDiddyPhase,
+    Maps.KroolLankyPhase,
+    Maps.KroolTinyPhase,
+    Maps.KroolChunkyPhase,
+    Maps.KroolShoe,
+]
+k_rool_maps = [
+    Maps.KroolDonkeyPhase,
+    Maps.KroolDiddyPhase,
+    Maps.KroolLankyPhase,
+    Maps.KroolTinyPhase,
+    Maps.KroolChunkyPhase,
+]
+
+IS_FINAL_BOSS_BIT = 0x200
+
+def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings):
+    """Fixes all boss map properties to account for the correct attributes."""
+    # 02
+    writeValue(ROM_COPY, 0x805FF476, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict) # 805ff474 - Transition song playing (checks bit is not set)
+    # 80618640 - SFX play from actor (checks bit is not set)
+    # 806206fc - something with mini
+    # 80621790 - rocket something
+    # 80621888 - ????
+    # 80621A30 - ????
+    # 80621AC8 - ????
+    # 80622248 - ????
+    # 806223C4 - ????
+    # 80624718 - ????
+    # 806286DC - Warp actor to vehicle
+    # 8067EA94 - Barrel code
+    # 8067F3A4 - Play transform barrel song
+    # 8067F7E8 - Transform cooldown
+    # 80680200 - Cannon Barrel
+    # 806802AC - Cannon Barrel
+    # 80680434 - Cannon Barrel
+    # 8068210C - Rocketbarrel HUD
+    # 806C3008 - Cutscene Models
+    # 806C308C - Cutscene Models
+    # 806C7FD4 - Refilling health if dead (if not set)
+    # 806D2EAC - Rocketbarrel something
+    # 806D3164 - Rocketbarrel something
+    # 806D7ABC - Play "knockout" sfx on death
+    # 806D9A04 - Noclip for instrument
+    # 806D9A7C - Trombone volume
+    # 806E5430 - Noclip for instrument
+    # 806EA0D8 - Zoom level
+    # 806ECD24 - Jump Y Vel
+    # 806ECDF8 - Damage take
+    # 806EE804 - Cancel trombone music
+    # 806EE83C - Damage take something
+    # 806F058C - Play instrument cutscene
+    # 806F12C8 - Play gone song
+    writeValue(ROM_COPY, 0x8071288A, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict) # 80712888 - Deathwarp location (should change this)
+    # 80712C34 - Helm Timer init
+    # 80712F34 - Warp after beating KR in main menu
+    # 80726CDC - If off, and enemy id != 4 and actor_type != fairy, set props bitfield
+
+    # 20
+    # 8061bfb0 - Camera stuff
+    writeValue(ROM_COPY, 0x806A8954, Overlay.Static, 0x3C068080, offset_dict, 4)  # lui $a2, 0x8080
+    writeValue(ROM_COPY, 0x806A8958, Overlay.Static, 0x8CC2BB64, offset_dict, 4)  # lw $v0, 0xBB64 ($a0)
+    writeValue(ROM_COPY, 0x806A895C, Overlay.Static, 0x8CC6BB68, offset_dict, 4)  # lw $a2, 0xBB68 ($a0)
+    writeValue(ROM_COPY, 0x806A8960, Overlay.Static, 0x30C10000 | IS_FINAL_BOSS_BIT, offset_dict, 4)  # andi $at, $a2, IS_FINAL_BOSS_BIT
+    writeValue(ROM_COPY, 0x806A8970, Overlay.Static, 0x10200009, offset_dict, 4)  # beqz $at, 0x9
+    
+    for map_id in boss_maps:
+        check_map = map_id
+        if check_map == Maps.KroolShoe:
+            check_map = Maps.KroolTinyPhase
+        rom_address = getROMAddress(0x8074482C + (12 * map_id) + 4, Overlay.Static, offset_dict)
+        ROM_COPY.seek(rom_address)
+        raw_value = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        is_final_boss = check_map in settings.krool_order
+        is_krool = check_map in k_rool_maps
+        is_shoe = map_id == Maps.KroolShoe
+        if is_final_boss:
+            raw_value |= IS_FINAL_BOSS_BIT
+        ROM_COPY.seek(rom_address)
+        ROM_COPY.writeMultipleBytes(raw_value, 4)
+
 
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
@@ -1038,6 +1129,7 @@ def patchAssembly(ROM_COPY, spoiler):
     ACTOR_HEALTH_START = getSym("actor_health_damage")
 
     alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
+    fixBossProperties(ROM_COPY, offset_dict, settings)
 
     writeValue(ROM_COPY, 0x8060E04C, Overlay.Static, 0, offset_dict, 4)  # Prevent moves overwrite
     writeValue(ROM_COPY, 0x8060DDAA, Overlay.Static, 0, offset_dict)  # Writes readfile data to moves
@@ -1157,6 +1249,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)
     writeHook(ROM_COPY, 0x80600674, Overlay.Static, "updateLag", offset_dict)
     writeHook(ROM_COPY, 0x806FC990, Overlay.Static, "ApplyTextRecolorHints", offset_dict)
+
+    if CAMERA_RESET_REDUCTION:
+        # Credit: Retroben
+        writeValue(ROM_COPY, 0x8061BDF0, Overlay.Static, 0x1000, offset_dict)
+        writeValue(ROM_COPY, 0x8061BE12, Overlay.Static, 0x0001, offset_dict)
+        writeValue(ROM_COPY, 0x8061BE18, Overlay.Static, 0x1000, offset_dict)
 
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
@@ -2593,6 +2691,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x80680AD4, Overlay.Static, "expandTBarrelResponse", offset_dict)  # Allow Training Barrels to disappear if already beaten
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
 
+    writeValue(ROM_COPY, 0x8069215E, Overlay.Static, 0x3F, offset_dict)  # Reduce fireball collision volume
+
     # Helm Warp Handler
     writeFunction(ROM_COPY, 0x8068B04C, Overlay.Static, "WarpToHelm", offset_dict)
     writeValue(ROM_COPY, 0x8068B054, Overlay.Static, 0x5000, offset_dict)
@@ -2695,16 +2795,16 @@ def patchAssembly(ROM_COPY, spoiler):
         Maps.KroolShoe: 3,
         Maps.KroolChunkyPhase: 0x23,
     }
-    for map_id in settings.krool_order:
-        writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
-        if map_id not in [
-            Maps.KroolDonkeyPhase,
-            Maps.KroolDiddyPhase,
-            Maps.KroolLankyPhase,
-            Maps.KroolTinyPhase,
-            Maps.KroolChunkyPhase,
-        ]:
-            writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, 3, offset_dict, 4)
+    # for map_id in settings.krool_order:
+    #     writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
+    #     if map_id not in [
+    #         Maps.KroolDonkeyPhase,
+    #         Maps.KroolDiddyPhase,
+    #         Maps.KroolLankyPhase,
+    #         Maps.KroolTinyPhase,
+    #         Maps.KroolChunkyPhase,
+    #     ]:
+    #         writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, 3, offset_dict, 4)
     # Got a bunch of stuff to fix with this
     # for map_id in vanilla_props_values:
     #     new_value = vanilla_props_values[map_id]

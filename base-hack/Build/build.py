@@ -1260,6 +1260,7 @@ colorblind_changes = [
     [0x102A, 0x102D],  # Dillo
     [0x103A, 0x103A],  # Dillo
     [0x103D, 0x103E],  # Dillo
+    [0xE6C, 0xE6C],  # Diddy back star texture
 ]
 
 file_dict.append(
@@ -1353,7 +1354,7 @@ shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", 
 shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
 shrinkModel(True, "dk_base.bin", 0, 1 / 0.15, "shrink_dk.bin", True)  # DK
-shrinkModel(True, "diddy_base.bin", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
+shrinkModel(False, "", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
 shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
 shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
 shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
@@ -1382,8 +1383,6 @@ with open(FINAL_RACE_HOOP, "r+b") as rh:
     rh.write(RACE_HOOP_Y_OFFSET.to_bytes(4, "big"))
 
 model_changes = [
-    ModelChange(0, "diddy_base.bin"),
-    ModelChange(1, "diddy_ins.bin"),
     ModelChange(5, "lanky_base.bin"),
     ModelChange(6, "lanky_ins.bin"),
     ModelChange(3, "dk_base.bin"),
