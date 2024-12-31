@@ -175,16 +175,17 @@ def getRandomHueShift(min: int = -359, max: int = 359) -> int:
     return random.randint(min, max)
 
 
-def hueShift(im, amount):
+def hueShift(im, amount: int):
     """Apply a hue shift on an image."""
     hsv_im = im.convert("HSV")
     im_px = im.load()
     w, h = hsv_im.size
     hsv_px = hsv_im.load()
+    amount = int(amount * (256 / 360))  # Truncate to within 256
     for y in range(h):
         for x in range(w):
             old = list(hsv_px[x, y]).copy()
-            old[0] = (old[0] + amount) % 360
+            old[0] = (old[0] + amount) % 256
             hsv_px[x, y] = (old[0], old[1], old[2])
     rgb_im = hsv_im.convert("RGB")
     rgb_px = rgb_im.load()
