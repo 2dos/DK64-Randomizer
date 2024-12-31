@@ -38,13 +38,13 @@ job_timeout = 300  # Timeout in seconds (5 minutes)
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
-
+BRANCH = os.environ.get("BRANCH", "LOCAL")
 # Define a resource to identify your service
 resource = Resource(
     attributes={
-        "service.name": "worker-" + os.environ.get("BRANCH", "LOCAL"),
+        "service.name": "worker-" + BRANCH,
         "service.version": str(version),
-        "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
+        "deployment.environment": BRANCH,
     }
 )
 
@@ -72,6 +72,11 @@ class PriorityAwareWorker(Worker):
         """Process a job from the queue."""
         # Log which queue the job came from and its metadata
         user_ip = job.meta.get("ip", "unknown")
+        job_branch = job.meta.get("branch", "dev")
+        if job_branch != BRANCH and BRANCH != "LOCAL":
+            print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
+            return
+
         print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip})")
 
         # Process the job

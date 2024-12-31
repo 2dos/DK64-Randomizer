@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import copy
 import secrets
 import threading
 import time
@@ -196,6 +197,7 @@ def get_user_ip():
 def submit_task():
     """Submit a task to the worker queue."""
     data = request.json
+    branch = request.args.get("branch", "dev")
     if os.environ.get("TEST_REDIS") == "1":
         # Start the task immediately if we're using a fake Redis server
         # Make it a thread, and we're going to directly import and call the function
@@ -224,11 +226,11 @@ def submit_task():
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=2))
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=2))
         priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=1))
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=1))
         priority = "Low"
 
     # Update the last submission time for this IP
@@ -262,7 +264,10 @@ def task_status(task_id):
         return set_response(json.dumps({"error": "Task not found"}), 404)
     # Get what was returned from the task
     if task.result:
-        return set_response(json.dumps({"result": task.result, "status": "finished"}), 200)
+        # make sure we clear the task from the queue if it's done
+        result = copy(task.result)
+        task.delete()
+        return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     # If the task failed, return the error message
     if task.exc_info:
         # Summarize the error message to just the final exception

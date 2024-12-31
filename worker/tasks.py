@@ -32,9 +32,9 @@ def generate_seed(settings_dict):
         load_base_rom(default_file=patched)
         settings_obj = Settings(cleanup_settings(settings_dict))
         spoiler = Spoiler(settings_obj)
-        patch, spoiler = Generate_Spoiler(spoiler)
+        patch, spoiler, password = Generate_Spoiler(spoiler)
         spoiler.FlushAllExcessSpoilerData()
-        return update_seed_results(patch, spoiler, settings_dict)
+        return update_seed_results(patch, spoiler, settings_dict, password)
 
     except Exception as e:
         print(traceback.format_exc())
@@ -67,7 +67,7 @@ def cleanup_settings(settings):
     return settings
 
 
-def update_seed_results(patch, spoiler, settings_dict):
+def update_seed_results(patch, spoiler, settings_dict, password):
     """Update the seed results."""
     # Assuming post_body.get("delayed_spoilerlog_release") is an int, and its the number of hours to delay the spoiler log release convert that to time.time() + hours as seconds.
     try:
@@ -130,6 +130,8 @@ def update_seed_results(patch, spoiler, settings_dict):
     # Store the patch file in generated_seeds folder.
     with open("generated_seeds/" + file_name + ".lanky", "w") as f:
         f.write(zip_conv)
+    if password:
+        return {"patch": zip_conv, "hash": hash, "seed_number": current_seed_number, "password": password}
     return {"patch": zip_conv, "hash": hash, "seed_number": current_seed_number}
 
 

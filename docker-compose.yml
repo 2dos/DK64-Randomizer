@@ -45,6 +45,28 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  randobot:
+    build:
+      context: ./
+      dockerfile: ./racetime_bot/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+    networks:
+      - task_network
+    restart: always
+    environment:
+      - BRANCH=${BRANCH:-LOCAL}
+    deploy:
+      replicas: ${RANDOBOT_REPLICAS:-1}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles:
+      - master
+
   nginx:
     build:
       context: ./controller/
