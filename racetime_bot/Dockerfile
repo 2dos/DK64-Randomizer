@@ -22,4 +22,4 @@ WORKDIR /app/racetime_bot
 RUN pip install .
 WORKDIR /app/racetime_bot/randobot
 # Command to run the application
-CMD ["python", "__init__.py", "--category_slug", "$CATEGORY_SLUG", "--client_id", "$RGG_CLIENT_ID", "--client_secret", "$RGG_CLIENT_SECRET"]
+CMD ["python", "__init__.py", "$CATEGORY_SLUG", "$RGG_CLIENT_ID", "$RGG_CLIENT_SECRET"]
