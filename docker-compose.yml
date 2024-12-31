@@ -51,6 +51,11 @@ services:
       dockerfile: ./racetime_bot/Dockerfile
       args:
         - BRANCH=${BRANCH:-LOCAL}
+        - CATEGORY_SLUG=${CATEGORY_SLUG}
+        - RGG_CLIENT_ID=${RGG_CLIENT_ID}
+        - RGG_CLIENT_SECRET=${RGG_CLIENT_SECRET}
+        - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
+        - API_KEY=${API_KEY}
     networks:
       - task_network
     restart: always

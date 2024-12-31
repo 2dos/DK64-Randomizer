@@ -265,7 +265,7 @@ def task_status(task_id):
     # Get what was returned from the task
     if task.result:
         # make sure we clear the task from the queue if it's done
-        result = copy(task.result)
+        result = copy.copy(task.result)
         task.delete()
         return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     # If the task failed, return the error message
