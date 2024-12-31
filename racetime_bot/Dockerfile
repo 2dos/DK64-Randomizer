@@ -3,8 +3,8 @@ FROM python:3.12-slim
 ARG BRANCH=LOCAL
 ENV BRANCH=$BRANCH
 ARG CATEGORY_SLUG
-ARG CLIENT_ID
-ARG CLIENT_SECRET
+ARG RGG_CLIENT_ID
+ARG RGG_CLIENT_SECRET
 ARG DISCORD_WEBHOOK
 ARG API_KEY
 ENV DISCORD_WEBHOOK=$DISCORD_WEBHOOK
@@ -22,4 +22,4 @@ WORKDIR /app/racetime_bot
 RUN pip install .
 WORKDIR /app/racetime_bot/randobot
 # Command to run the application
-CMD ["python", "__init__.py", "--category_slug", "$CATEGORY_SLUG", "--client_id", "$CLIENT_ID", "--client_secret", "$CLIENT_SECRET"]
+CMD ["python", "__init__.py", "--category_slug", "$CATEGORY_SLUG", "--client_id", "$RGG_CLIENT_ID", "--client_secret", "$RGG_CLIENT_SECRET"]
