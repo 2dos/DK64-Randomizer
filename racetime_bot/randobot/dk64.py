@@ -3,7 +3,9 @@
 import json
 import os
 import requests
-import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class DK64:
@@ -42,8 +44,9 @@ class DK64:
             try:
                 resp = requests.get(self.preset_endpoint % branch, headers={"x-api-key": self.api_key})
                 presets = resp.json()
+                logger.info(f"Loaded {len(presets)} {branch} presets.")
             except Exception as e:
-                print(e)
+                logger.error(f"Failed to load {branch} presets: {e}")
                 presets = []
             # turn the presets into a dict of name being the key with the settings_string as the value
             presets_dict = {}
