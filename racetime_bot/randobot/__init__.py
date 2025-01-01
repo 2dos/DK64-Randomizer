@@ -3,6 +3,7 @@
 import argparse
 import logging
 import sys
+import os
 
 from bot import RandoBot
 
@@ -12,9 +13,6 @@ def main():
     parser = argparse.ArgumentParser(
         description="RandoBot, because Zootr seeds weren't scary enough already.",
     )
-    parser.add_argument("category_slug", type=str, help="racetime.gg category")
-    parser.add_argument("client_id", type=str, help="racetime.gg client ID")
-    parser.add_argument("client_secret", type=str, help="racetime.gg client secret")
     parser.add_argument("--verbose", "-v", action="store_true", help="verbose output")
     parser.add_argument("--host", type=str, nargs="?", help="change the ractime.gg host (debug only!")
     parser.add_argument("--insecure", action="store_true", help="don't use HTTPS (debug only!)")
@@ -37,9 +35,9 @@ def main():
         RandoBot.racetime_secure = False
 
     inst = RandoBot(
-        category_slug=args.category_slug,
-        client_id=args.client_id,
-        client_secret=args.client_secret,
+        category_slug=os.environ.get("CATEGORY_SLUG"),
+        client_id=os.environ.get("RGG_CLIENT_ID"),
+        client_secret=os.environ.get("RGG_CLIENT_SECRET"),
         logger=logger,
     )
     inst.run()
