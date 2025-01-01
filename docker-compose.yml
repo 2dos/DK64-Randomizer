@@ -23,6 +23,8 @@ services:
         - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
     depends_on:
       - redis
+      - dev_worker
+      - nginx
     volumes:
       - ./generated_seeds/:/app/controller/generated_seeds/
       - ./current_total.cfg:/app/controller/current_total.cfg
@@ -58,6 +60,8 @@ services:
         - API_KEY=${API_KEY}
     networks:
       - task_network
+    depends_on:
+      - controller
     restart: always
     environment:
       - BRANCH=${BRANCH:-LOCAL}
