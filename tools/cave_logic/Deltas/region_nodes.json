@@ -1,0 +1,1906 @@
+{
+    "regions": {
+        "rr-gamestart": {
+            "id": "rr-gamestart",
+            "Name": "Game Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-dkislesmedals": {
+            "id": "rr-dkislesmedals",
+            "Name": "DK Isles Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-credits": {
+            "id": "rr-credits",
+            "Name": "Credits",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-treehouse": {
+            "id": "rr-treehouse",
+            "Name": "Treehouse",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-traininggrounds": {
+            "id": "rr-traininggrounds",
+            "Name": "Training Grounds",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-islesmain": {
+            "id": "rr-islesmain",
+            "Name": "Isles Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-outerisles": {
+            "id": "rr-outerisles",
+            "Name": "Outer Isles",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-isleshill": {
+            "id": "rr-isleshill",
+            "Name": "Isles Hill",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-islesmainupper": {
+            "id": "rr-islesmainupper",
+            "Name": "Isles Main Upper",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-islesear": {
+            "id": "rr-islesear",
+            "Name": "Isles Ear",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-prison": {
+            "id": "rr-prison",
+            "Name": "Prison",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-bananafairyroom": {
+            "id": "rr-bananafairyroom",
+            "Name": "Banana Fairy Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-rarewaregbroom": {
+            "id": "rr-rarewaregbroom",
+            "Name": "Rareware GB Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-junglejapeslobby": {
+            "id": "rr-junglejapeslobby",
+            "Name": "Jungle Japes Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-angryazteclobby": {
+            "id": "rr-angryazteclobby",
+            "Name": "Angry Aztec Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-kremisle": {
+            "id": "rr-kremisle",
+            "Name": "Krem Isle Base",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-kremislebeyondlift": {
+            "id": "rr-kremislebeyondlift",
+            "Name": "Krem Isle Beyond Lift",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-kremisletoplevel": {
+            "id": "rr-kremisletoplevel",
+            "Name": "Krem Isle Top Level",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-kremislemouth": {
+            "id": "rr-kremislemouth",
+            "Name": "Krem Isle Mouth",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-islessnideroom": {
+            "id": "rr-islessnideroom",
+            "Name": "Isles Snide Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-franticfactorylobby": {
+            "id": "rr-franticfactorylobby",
+            "Name": "Frantic Factory Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-gloomygalleonlobbyentrance": {
+            "id": "rr-gloomygalleonlobbyentrance",
+            "Name": "Gloomy Galleon Lobby Entrance",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-gloomygalleonlobby": {
+            "id": "rr-gloomygalleonlobby",
+            "Name": "Gloomy Galleon Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cabinisle": {
+            "id": "rr-cabinisle",
+            "Name": "Cabin Isle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-islesabovewaterfall": {
+            "id": "rr-islesabovewaterfall",
+            "Name": "Isles Above Waterfall",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-islesairspace": {
+            "id": "rr-islesairspace",
+            "Name": "Isles Airspace",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-azteclobbyroof": {
+            "id": "rr-azteclobbyroof",
+            "Name": "Aztec Lobby Roof",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-fungiforestlobby": {
+            "id": "rr-fungiforestlobby",
+            "Name": "Fungi Forest Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crystalcaveslobby": {
+            "id": "rr-crystalcaveslobby",
+            "Name": "Crystal Caves Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-creepycastlelobby": {
+            "id": "rr-creepycastlelobby",
+            "Name": "Creepy Castle Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmlobby": {
+            "id": "rr-hideouthelmlobby",
+            "Name": "Hideout Helm Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-krool": {
+            "id": "rr-krool",
+            "Name": "K. Rool",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-junglejapesmedals": {
+            "id": "rr-junglejapesmedals",
+            "Name": "Jungle Japes Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-junglejapesentryhandler": {
+            "id": "rr-junglejapesentryhandler",
+            "Name": "Jungle Japes Entry Handler",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-junglejapesstart": {
+            "id": "rr-junglejapesstart",
+            "Name": "Jungle Japes Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japescannonplatform": {
+            "id": "rr-japescannonplatform",
+            "Name": "Jungle Japes Cannon Platform",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japeshilltop": {
+            "id": "rr-japeshilltop",
+            "Name": "Jungle Japes Hilltop",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japeshill": {
+            "id": "rr-japeshill",
+            "Name": "Jungle Japes Hill",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-junglejapesmain": {
+            "id": "rr-junglejapesmain",
+            "Name": "Jungle Japes Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japestnsalcove": {
+            "id": "rr-japestnsalcove",
+            "Name": "Japes T&S Alcove",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japestopofmountain": {
+            "id": "rr-japestopofmountain",
+            "Name": "Japes Top of Mountain",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesbaboonblast": {
+            "id": "rr-japesbaboonblast",
+            "Name": "Japes Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesbeyondpeanutgate": {
+            "id": "rr-japesbeyondpeanutgate",
+            "Name": "Japes Beyond Peanut Gate",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesbeyondcoconutgate1": {
+            "id": "rr-japesbeyondcoconutgate1",
+            "Name": "Japes Beyond Coconut Gate 1",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesbeyondfeathergate": {
+            "id": "rr-japesbeyondfeathergate",
+            "Name": "Japes Beyond Feather Gate",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tinyhive": {
+            "id": "rr-tinyhive",
+            "Name": "Tiny Hive",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesbeyondcoconutgate2": {
+            "id": "rr-japesbeyondcoconutgate2",
+            "Name": "Japes Beyond Coconut Gate 2",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-beyondrambigate": {
+            "id": "rr-beyondrambigate",
+            "Name": "Beyond Rambi Gate",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japeslankycave": {
+            "id": "rr-japeslankycave",
+            "Name": "Japes Lanky Cave",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mine": {
+            "id": "rr-mine",
+            "Name": "Mine",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesminecarts": {
+            "id": "rr-japesminecarts",
+            "Name": "Japes Minecarts",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japescatacomb": {
+            "id": "rr-japescatacomb",
+            "Name": "Japes Catacomb",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesbosslobby": {
+            "id": "rr-japesbosslobby",
+            "Name": "Japes Boss Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-japesboss": {
+            "id": "rr-japesboss",
+            "Name": "Japes Boss",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-angryaztecmedals": {
+            "id": "rr-angryaztecmedals",
+            "Name": "Angry Aztec Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-angryaztecentryhandler": {
+            "id": "rr-angryaztecentryhandler",
+            "Name": "Angry Aztec Entry Handler",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-angryaztecstart": {
+            "id": "rr-angryaztecstart",
+            "Name": "Angry Aztec Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-betweenvinesbyportal": {
+            "id": "rr-betweenvinesbyportal",
+            "Name": "Angry Aztec Between Vines By Portal",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-aztectunnelbeforeoasis": {
+            "id": "rr-aztectunnelbeforeoasis",
+            "Name": "Angry Aztec Tunnel Before Oasis",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-angryaztecoasis": {
+            "id": "rr-angryaztecoasis",
+            "Name": "Angry Aztec Oasis",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-templestart": {
+            "id": "rr-templestart",
+            "Name": "Temple Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-templeunderwater": {
+            "id": "rr-templeunderwater",
+            "Name": "Temple Underwater",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-angryaztecconnectortunnel": {
+            "id": "rr-angryaztecconnectortunnel",
+            "Name": "Angry Aztec Connector Tunnel",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-angryaztecmain": {
+            "id": "rr-angryaztecmain",
+            "Name": "Angry Aztec Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-aztecdonkeyquicksandcave": {
+            "id": "rr-aztecdonkeyquicksandcave",
+            "Name": "Aztec Donkey Sand Tunnel",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-aztecbaboonblast": {
+            "id": "rr-aztecbaboonblast",
+            "Name": "Aztec Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-donkeytemple": {
+            "id": "rr-donkeytemple",
+            "Name": "Donkey Temple",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-diddytemple": {
+            "id": "rr-diddytemple",
+            "Name": "Diddy Temple",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lankytemple": {
+            "id": "rr-lankytemple",
+            "Name": "Lanky Temple",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tinytemple": {
+            "id": "rr-tinytemple",
+            "Name": "Tiny Temple",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-chunkytemple": {
+            "id": "rr-chunkytemple",
+            "Name": "Chunky Temple",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-aztectinyrace": {
+            "id": "rr-aztectinyrace",
+            "Name": "Aztec Tiny Race",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-llamatemple": {
+            "id": "rr-llamatemple",
+            "Name": "Llama Temple",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-llamatempleback": {
+            "id": "rr-llamatempleback",
+            "Name": "Llama Temple Back",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-aztecbosslobby": {
+            "id": "rr-aztecbosslobby",
+            "Name": "Aztec Boss Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-aztecboss": {
+            "id": "rr-aztecboss",
+            "Name": "Aztec Boss",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-franticfactorymedals": {
+            "id": "rr-franticfactorymedals",
+            "Name": "Frantic Factory Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-franticfactoryentryhandler": {
+            "id": "rr-franticfactoryentryhandler",
+            "Name": "Frantic Factory Entry Handler",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-franticfactorystart": {
+            "id": "rr-franticfactorystart",
+            "Name": "Frantic Factory Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-testing": {
+            "id": "rr-testing",
+            "Name": "Testing",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-randdupper": {
+            "id": "rr-randdupper",
+            "Name": "R&D Upper",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-randd": {
+            "id": "rr-randd",
+            "Name": "R&D",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-factorytinyracelobby": {
+            "id": "rr-factorytinyracelobby",
+            "Name": "Factory Tiny Race Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-factorytinyrace": {
+            "id": "rr-factorytinyrace",
+            "Name": "Factory Tiny Race",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-chunkyroomplatform": {
+            "id": "rr-chunkyroomplatform",
+            "Name": "Chunky Room Platform",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-powerhut": {
+            "id": "rr-powerhut",
+            "Name": "Power Hut",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-beyondhatch": {
+            "id": "rr-beyondhatch",
+            "Name": "Beyond Hatch",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-factoryarcadetunnel": {
+            "id": "rr-factoryarcadetunnel",
+            "Name": "Arcade Tunnel",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-factorybaboonblast": {
+            "id": "rr-factorybaboonblast",
+            "Name": "Factory Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lowercore": {
+            "id": "rr-lowercore",
+            "Name": "Lower Core",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-insidecore": {
+            "id": "rr-insidecore",
+            "Name": "Inside Core",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-middlecore": {
+            "id": "rr-middlecore",
+            "Name": "Middle Core",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-spinningcore": {
+            "id": "rr-spinningcore",
+            "Name": "Spinning Core",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-uppercore": {
+            "id": "rr-uppercore",
+            "Name": "Upper Core",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-factorybosslobby": {
+            "id": "rr-factorybosslobby",
+            "Name": "Factory Boss Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-factoryboss": {
+            "id": "rr-factoryboss",
+            "Name": "Factory Boss",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-gloomygalleonmedals": {
+            "id": "rr-gloomygalleonmedals",
+            "Name": "Gloomy Galleon Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-gloomygalleonentryhandler": {
+            "id": "rr-gloomygalleonentryhandler",
+            "Name": "Gloomy Galleon Entry Handler",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-gloomygalleonstart": {
+            "id": "rr-gloomygalleonstart",
+            "Name": "Gloomy Galleon Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-galleonpastvines": {
+            "id": "rr-galleonpastvines",
+            "Name": "Galleon Past Vines",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-galleonbeyondpineapplegate": {
+            "id": "rr-galleonbeyondpineapplegate",
+            "Name": "Galleon Beyond Pineapple Gate",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lighthousesurface": {
+            "id": "rr-lighthousesurface",
+            "Name": "Lighthouse Surface",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lighthouseplatform": {
+            "id": "rr-lighthouseplatform",
+            "Name": "Lighthouse Platform",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lighthouseunderwater": {
+            "id": "rr-lighthouseunderwater",
+            "Name": "Lighthouse Underwater",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lighthousesnidealcove": {
+            "id": "rr-lighthousesnidealcove",
+            "Name": "Lighthouse Snide Alcove",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-galleonbaboonblast": {
+            "id": "rr-galleonbaboonblast",
+            "Name": "Galleon Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lighthouse": {
+            "id": "rr-lighthouse",
+            "Name": "Lighthouse",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mermaidroom": {
+            "id": "rr-mermaidroom",
+            "Name": "Mermaid Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-sickbay": {
+            "id": "rr-sickbay",
+            "Name": "Sick Bay",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-shipyard": {
+            "id": "rr-shipyard",
+            "Name": "Shipyard",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-shipyardunderwater": {
+            "id": "rr-shipyardunderwater",
+            "Name": "Shipyard Underwater",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-sealrace": {
+            "id": "rr-sealrace",
+            "Name": "Seal Race",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-treasureroom": {
+            "id": "rr-treasureroom",
+            "Name": "Treasure Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-treasureroomdiddygoldtower": {
+            "id": "rr-treasureroomdiddygoldtower",
+            "Name": "Treasure Room Diddy Gold Tower",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tinychest": {
+            "id": "rr-tinychest",
+            "Name": "Tiny Chest",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-submarine": {
+            "id": "rr-submarine",
+            "Name": "Submarine",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mechafish": {
+            "id": "rr-mechafish",
+            "Name": "Mechafish",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lankyship": {
+            "id": "rr-lankyship",
+            "Name": "Lanky Ship",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tinyship": {
+            "id": "rr-tinyship",
+            "Name": "Tiny Ship",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-bongosship": {
+            "id": "rr-bongosship",
+            "Name": "Bongos Ship",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-guitarship": {
+            "id": "rr-guitarship",
+            "Name": "Guitar Ship",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tromboneship": {
+            "id": "rr-tromboneship",
+            "Name": "Trombone Ship",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-saxophoneship": {
+            "id": "rr-saxophoneship",
+            "Name": "Saxophone Ship",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-triangleship": {
+            "id": "rr-triangleship",
+            "Name": "Triangle Ship",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-galleonbosslobby": {
+            "id": "rr-galleonbosslobby",
+            "Name": "Galleon Boss Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-galleonboss": {
+            "id": "rr-galleonboss",
+            "Name": "Galleon Boss",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-fungiforestmedals": {
+            "id": "rr-fungiforestmedals",
+            "Name": "Fungi Forest Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-fungiforestentryhandler": {
+            "id": "rr-fungiforestentryhandler",
+            "Name": "Fungi Forest Entry Handler",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-fungiforeststart": {
+            "id": "rr-fungiforeststart",
+            "Name": "Fungi Forest Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-forestminecarts": {
+            "id": "rr-forestminecarts",
+            "Name": "Forest Minecarts",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-giantmushroomarea": {
+            "id": "rr-giantmushroomarea",
+            "Name": "Giant Mushroom Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomlower": {
+            "id": "rr-mushroomlower",
+            "Name": "Mushroom Lower",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomlowermid": {
+            "id": "rr-mushroomlowermid",
+            "Name": "Mushroom Lower Middle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomuppermidexterior": {
+            "id": "rr-mushroomuppermidexterior",
+            "Name": "Mushroom Upper Mid Exterior",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomlowerexterior": {
+            "id": "rr-mushroomlowerexterior",
+            "Name": "Mushroom Lower Exterior",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-forestbaboonblast": {
+            "id": "rr-forestbaboonblast",
+            "Name": "Forest Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroommiddle": {
+            "id": "rr-mushroommiddle",
+            "Name": "Mushroom Middle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomuppermid": {
+            "id": "rr-mushroomuppermid",
+            "Name": "Mushroom Upper Middle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomupper": {
+            "id": "rr-mushroomupper",
+            "Name": "Mushroom Upper",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomnightdoor": {
+            "id": "rr-mushroomnightdoor",
+            "Name": "Mushroom Night Door",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomnightexterior": {
+            "id": "rr-mushroomnightexterior",
+            "Name": "Mushroom Night Exterior",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomupperexterior": {
+            "id": "rr-mushroomupperexterior",
+            "Name": "Mushroom Upper Exterior",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomchunkyroom": {
+            "id": "rr-mushroomchunkyroom",
+            "Name": "Mushroom Chunky Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomlankyzingersroom": {
+            "id": "rr-mushroomlankyzingersroom",
+            "Name": "Mushroom Lanky Zingers Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mushroomlankymushroomsroom": {
+            "id": "rr-mushroomlankymushroomsroom",
+            "Name": "Mushroom Lanky Mushrooms Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hollowtreearea": {
+            "id": "rr-hollowtreearea",
+            "Name": "Hollow Tree Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-anthill": {
+            "id": "rr-anthill",
+            "Name": "Anthill",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-forestverytopofmill": {
+            "id": "rr-forestverytopofmill",
+            "Name": "Very top of the Mill",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-foresttopofmill": {
+            "id": "rr-foresttopofmill",
+            "Name": "Top of the Mill",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-millarea": {
+            "id": "rr-millarea",
+            "Name": "Mill Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-millchunkytinyarea": {
+            "id": "rr-millchunkytinyarea",
+            "Name": "Mill Back Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-spiderroom": {
+            "id": "rr-spiderroom",
+            "Name": "Spider Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-grinderroom": {
+            "id": "rr-grinderroom",
+            "Name": "Grinder Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-millrafters": {
+            "id": "rr-millrafters",
+            "Name": "Mill Rafters",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-winchroom": {
+            "id": "rr-winchroom",
+            "Name": "Winch Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-millattic": {
+            "id": "rr-millattic",
+            "Name": "Mill Attic",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-thornvinearea": {
+            "id": "rr-thornvinearea",
+            "Name": "Thornvine Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-thornvinebarn": {
+            "id": "rr-thornvinebarn",
+            "Name": "Thornvine Barn",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-wormarea": {
+            "id": "rr-wormarea",
+            "Name": "Worm Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-forestbosslobby": {
+            "id": "rr-forestbosslobby",
+            "Name": "Forest Boss Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-forestboss": {
+            "id": "rr-forestboss",
+            "Name": "Forest Boss",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crystalcavesmedals": {
+            "id": "rr-crystalcavesmedals",
+            "Name": "Crystal Caves Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crystalcavesentryhandler": {
+            "id": "rr-crystalcavesentryhandler",
+            "Name": "Crystal Caves Entry Handler",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crystalcavesmain": {
+            "id": "rr-crystalcavesmain",
+            "Name": "Crystal Caves Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavessnidearea": {
+            "id": "rr-cavessnidearea",
+            "Name": "Caves Snide Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavesblueprintcave": {
+            "id": "rr-cavesblueprintcave",
+            "Name": "Caves Blueprint Cave",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavesbonuscave": {
+            "id": "rr-cavesbonuscave",
+            "Name": "Caves Bonus Cave",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavesblueprintpillar": {
+            "id": "rr-cavesblueprintpillar",
+            "Name": "Caves Blueprint Pillar",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavesbananaportspire": {
+            "id": "rr-cavesbananaportspire",
+            "Name": "Caves Bananaport Spire",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavesbaboonblast": {
+            "id": "rr-cavesbaboonblast",
+            "Name": "Caves Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-bouldercave": {
+            "id": "rr-bouldercave",
+            "Name": "Boulder Cave",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-caveslankyrace": {
+            "id": "rr-caveslankyrace",
+            "Name": "Caves Lanky Race",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-frozencastle": {
+            "id": "rr-frozencastle",
+            "Name": "Frozen Castle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-iglooarea": {
+            "id": "rr-iglooarea",
+            "Name": "Igloo Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-giantkosha": {
+            "id": "rr-giantkosha",
+            "Name": "Giant Kosha",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-donkeyigloo": {
+            "id": "rr-donkeyigloo",
+            "Name": "Donkey Igloo",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-diddyigloo": {
+            "id": "rr-diddyigloo",
+            "Name": "Diddy Igloo",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lankyigloo": {
+            "id": "rr-lankyigloo",
+            "Name": "Lanky Igloo",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tinyigloo": {
+            "id": "rr-tinyigloo",
+            "Name": "Tiny Igloo",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-chunkyigloo": {
+            "id": "rr-chunkyigloo",
+            "Name": "Chunky Igloo",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cabinarea": {
+            "id": "rr-cabinarea",
+            "Name": "Cabin Area",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-rotatingcabin": {
+            "id": "rr-rotatingcabin",
+            "Name": "Rotating Cabin",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-donkeycabin": {
+            "id": "rr-donkeycabin",
+            "Name": "Donkey Cabin",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-diddylowercabin": {
+            "id": "rr-diddylowercabin",
+            "Name": "Diddy Lower Cabin",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-diddyuppercabin": {
+            "id": "rr-diddyuppercabin",
+            "Name": "Diddy Upper Cabin",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lankycabin": {
+            "id": "rr-lankycabin",
+            "Name": "Lanky Cabin",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tinycabin": {
+            "id": "rr-tinycabin",
+            "Name": "Tiny Cabin",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-chunkycabin": {
+            "id": "rr-chunkycabin",
+            "Name": "Chunky Cabin",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavesbosslobby": {
+            "id": "rr-cavesbosslobby",
+            "Name": "Caves Boss Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-cavesboss": {
+            "id": "rr-cavesboss",
+            "Name": "Caves Boss",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-creepycastlemedals": {
+            "id": "rr-creepycastlemedals",
+            "Name": "Creepy Castle Medals",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-creepycastleentryhandler": {
+            "id": "rr-creepycastleentryhandler",
+            "Name": "Creepy Castle Entry Handler",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-creepycastlemain": {
+            "id": "rr-creepycastlemain",
+            "Name": "Creepy Castle Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castleverybottom": {
+            "id": "rr-castleverybottom",
+            "Name": "Creepy Castle Very Bottom",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castlegraveyardplatform": {
+            "id": "rr-castlegraveyardplatform",
+            "Name": "Creepy Graveyard Platform",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castlebaboonblast": {
+            "id": "rr-castlebaboonblast",
+            "Name": "Castle Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castlewaterfall": {
+            "id": "rr-castlewaterfall",
+            "Name": "Castle Waterfall",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castletree": {
+            "id": "rr-castletree",
+            "Name": "Castle Tree",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-library": {
+            "id": "rr-library",
+            "Name": "Library",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-librarypastslam": {
+            "id": "rr-librarypastslam",
+            "Name": "Library Middle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-librarypastbooks": {
+            "id": "rr-librarypastbooks",
+            "Name": "Library Rear",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-ballroom": {
+            "id": "rr-ballroom",
+            "Name": "Ballroom",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-museumbehindglass": {
+            "id": "rr-museumbehindglass",
+            "Name": "Museum Behind Glass",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castletinyrace": {
+            "id": "rr-castletinyrace",
+            "Name": "Castle Tiny Race",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-tower": {
+            "id": "rr-tower",
+            "Name": "Tower",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-greenhouse": {
+            "id": "rr-greenhouse",
+            "Name": "Greenhouse",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-trashcan": {
+            "id": "rr-trashcan",
+            "Name": "Trash Can",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-shed": {
+            "id": "rr-shed",
+            "Name": "Shed",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-museum": {
+            "id": "rr-museum",
+            "Name": "Museum",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-lowercave": {
+            "id": "rr-lowercave",
+            "Name": "Lower Cave",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crypt": {
+            "id": "rr-crypt",
+            "Name": "Crypt",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castleminecarts": {
+            "id": "rr-castleminecarts",
+            "Name": "Castle Minecarts",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-mausoleum": {
+            "id": "rr-mausoleum",
+            "Name": "Mausoleum",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-uppercave": {
+            "id": "rr-uppercave",
+            "Name": "Upper Cave",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-dungeon": {
+            "id": "rr-dungeon",
+            "Name": "Dungeon",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castlebosslobby": {
+            "id": "rr-castlebosslobby",
+            "Name": "Castle Boss Lobby",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-castleboss": {
+            "id": "rr-castleboss",
+            "Name": "Castle Boss",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmentry": {
+            "id": "rr-hideouthelmentry",
+            "Name": "Hideout Helm Entry Redirect",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmstart": {
+            "id": "rr-hideouthelmstart",
+            "Name": "Hideout Helm Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmswitchroom": {
+            "id": "rr-hideouthelmswitchroom",
+            "Name": "Hideout Helm Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmminiroom": {
+            "id": "rr-hideouthelmminiroom",
+            "Name": "Hideout Helm Start",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmmain": {
+            "id": "rr-hideouthelmmain",
+            "Name": "Hideout Helm Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmdonkeyroom": {
+            "id": "rr-hideouthelmdonkeyroom",
+            "Name": "Hideout Helm Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmchunkyroom": {
+            "id": "rr-hideouthelmchunkyroom",
+            "Name": "Hideout Helm Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmtinyroom": {
+            "id": "rr-hideouthelmtinyroom",
+            "Name": "Hideout Helm Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmlankyroom": {
+            "id": "rr-hideouthelmlankyroom",
+            "Name": "Hideout Helm Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmdiddyroom": {
+            "id": "rr-hideouthelmdiddyroom",
+            "Name": "Hideout Helm Main",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmafterbom": {
+            "id": "rr-hideouthelmafterbom",
+            "Name": "Hideout Helm Navigation Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmthroneroom": {
+            "id": "rr-hideouthelmthroneroom",
+            "Name": "Hideout Helm Throne Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmkeyroom": {
+            "id": "rr-hideouthelmkeyroom",
+            "Name": "Hideout Helm Key Room",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmoobchunky": {
+            "id": "rr-hideouthelmoobchunky",
+            "Name": "Hideout Helm OOB (Chunky Room Elevation)",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-hideouthelmooblanky": {
+            "id": "rr-hideouthelmooblanky",
+            "Name": "Hideout Helm OOB (Lanky Room Elevation)",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkygeneric": {
+            "id": "rr-funkygeneric",
+            "Name": "Funky Generic",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkyjapes": {
+            "id": "rr-funkyjapes",
+            "Name": "Funky Japes",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkyaztec": {
+            "id": "rr-funkyaztec",
+            "Name": "Funky Aztec",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkyfactory": {
+            "id": "rr-funkyfactory",
+            "Name": "Funky Factory",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkygalleon": {
+            "id": "rr-funkygalleon",
+            "Name": "Funky Galleon",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkyforest": {
+            "id": "rr-funkyforest",
+            "Name": "Funky Forest",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkycaves": {
+            "id": "rr-funkycaves",
+            "Name": "Funky Caves",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-funkycastle": {
+            "id": "rr-funkycastle",
+            "Name": "Funky Castle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-candygeneric": {
+            "id": "rr-candygeneric",
+            "Name": "Candy Generic",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-candyaztec": {
+            "id": "rr-candyaztec",
+            "Name": "Candy Aztec",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-candyfactory": {
+            "id": "rr-candyfactory",
+            "Name": "Candy Factory",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-candygalleon": {
+            "id": "rr-candygalleon",
+            "Name": "Candy Galleon",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-candycaves": {
+            "id": "rr-candycaves",
+            "Name": "Candy Caves",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-candycastle": {
+            "id": "rr-candycastle",
+            "Name": "Candy Castle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankygeneric": {
+            "id": "rr-crankygeneric",
+            "Name": "Cranky Generic",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankyjapes": {
+            "id": "rr-crankyjapes",
+            "Name": "Cranky Japes",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankyaztec": {
+            "id": "rr-crankyaztec",
+            "Name": "Cranky Aztec",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankyfactory": {
+            "id": "rr-crankyfactory",
+            "Name": "Cranky Factory",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankygalleon": {
+            "id": "rr-crankygalleon",
+            "Name": "Cranky Galleon",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankyforest": {
+            "id": "rr-crankyforest",
+            "Name": "Cranky Forest",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankycaves": {
+            "id": "rr-crankycaves",
+            "Name": "Cranky Caves",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankycastle": {
+            "id": "rr-crankycastle",
+            "Name": "Cranky Castle",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-crankyisles": {
+            "id": "rr-crankyisles",
+            "Name": "Cranky Isles",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rr-snide": {
+            "id": "rr-snide",
+            "Name": "Snide",
+            "Class": "Region",
+            "Type": "Region"
+        },
+        "rh-noregion": {
+            "id": "rh-noregion",
+            "Name": "Null Region",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-islesshops": {
+            "id": "rh-islesshops",
+            "Name": "Isles Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-japesshops": {
+            "id": "rh-japesshops",
+            "Name": "Japes Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-aztecshops": {
+            "id": "rh-aztecshops",
+            "Name": "Aztec Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-factoryshops": {
+            "id": "rh-factoryshops",
+            "Name": "Factory Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-galleonshops": {
+            "id": "rh-galleonshops",
+            "Name": "Galleon Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-forestshops": {
+            "id": "rh-forestshops",
+            "Name": "Forest Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-cavesshops": {
+            "id": "rh-cavesshops",
+            "Name": "Caves Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-castleshops": {
+            "id": "rh-castleshops",
+            "Name": "Castle Shops",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-jetpac": {
+            "id": "rh-jetpac",
+            "Name": "Jetpac Game",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-islescbs": {
+            "id": "rh-islescbs",
+            "Name": "Isles Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-japescbs": {
+            "id": "rh-japescbs",
+            "Name": "Japes Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-azteccbs": {
+            "id": "rh-azteccbs",
+            "Name": "Aztec Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-factorycbs": {
+            "id": "rh-factorycbs",
+            "Name": "Factory Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-galleoncbs": {
+            "id": "rh-galleoncbs",
+            "Name": "Galleon Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-forestcbs": {
+            "id": "rh-forestcbs",
+            "Name": "Forest Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-cavescbs": {
+            "id": "rh-cavescbs",
+            "Name": "Caves Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-castlecbs": {
+            "id": "rh-castlecbs",
+            "Name": "Castle Medal Rewards",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-gamestart": {
+            "id": "rh-gamestart",
+            "Name": "Game Start",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-credits": {
+            "id": "rh-credits",
+            "Name": "Credits",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-mainisles": {
+            "id": "rh-mainisles",
+            "Name": "Main Isle",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-outerisles": {
+            "id": "rh-outerisles",
+            "Name": "Outer Isles",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-kremisles": {
+            "id": "rh-kremisles",
+            "Name": "Krem Isle",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-rarewareroom": {
+            "id": "rh-rarewareroom",
+            "Name": "Rareware Room",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-earlylobbies": {
+            "id": "rh-earlylobbies",
+            "Name": "Japes - Forest Lobbies",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-latelobbies": {
+            "id": "rh-latelobbies",
+            "Name": "Caves - Helm Lobbies",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-krool": {
+            "id": "rh-krool",
+            "Name": "K Rool Arena",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-lowlands": {
+            "id": "rh-lowlands",
+            "Name": "Japes Lowlands",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-hillside": {
+            "id": "rh-hillside",
+            "Name": "Japes Hillside",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-stormytunnel": {
+            "id": "rh-stormytunnel",
+            "Name": "Japes Stormy Tunnel Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-hivetunnel": {
+            "id": "rh-hivetunnel",
+            "Name": "Hive Tunnel Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-cavesandmines": {
+            "id": "rh-cavesandmines",
+            "Name": "Japes Caves and Mines",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-oasisandtotem": {
+            "id": "rh-oasisandtotem",
+            "Name": "Aztec Oasis and Totem Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-tinytemple": {
+            "id": "rh-tinytemple",
+            "Name": "Tiny Temple",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-fivedoortemple": {
+            "id": "rh-fivedoortemple",
+            "Name": "5 Door Temple",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-llamatemple": {
+            "id": "rh-llamatemple",
+            "Name": "Llama Temple",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-aztectunnels": {
+            "id": "rh-aztectunnels",
+            "Name": "Various Aztec Tunnels",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-factorystart": {
+            "id": "rh-factorystart",
+            "Name": "Frantic Factory Start",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-testing": {
+            "id": "rh-testing",
+            "Name": "Testing Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-researchanddevelopment": {
+            "id": "rh-researchanddevelopment",
+            "Name": "Research and Development Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-storage": {
+            "id": "rh-storage",
+            "Name": "Storage and Arcade Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-productionroom": {
+            "id": "rh-productionroom",
+            "Name": "Production Room",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-galleoncaverns": {
+            "id": "rh-galleoncaverns",
+            "Name": "Galleon Caverns",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-lighthouse": {
+            "id": "rh-lighthouse",
+            "Name": "Lighthouse Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-shipyardoutskirts": {
+            "id": "rh-shipyardoutskirts",
+            "Name": "Shipyard Outskirts",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-treasureroom": {
+            "id": "rh-treasureroom",
+            "Name": "Treasure Room",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-fivedoorship": {
+            "id": "rh-fivedoorship",
+            "Name": "5 Door Ship",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-forestcenterandbeanstalk": {
+            "id": "rh-forestcenterandbeanstalk",
+            "Name": "Forest Center and Beanstalk",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-mushroomexterior": {
+            "id": "rh-mushroomexterior",
+            "Name": "Giant Mushroom Exterior",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-mushroominterior": {
+            "id": "rh-mushroominterior",
+            "Name": "Giant Mushroom Insides",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-owltree": {
+            "id": "rh-owltree",
+            "Name": "Owl Tree Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-mills": {
+            "id": "rh-mills",
+            "Name": "Forest Mills",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-maincaves": {
+            "id": "rh-maincaves",
+            "Name": "Main Caves Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-igloo": {
+            "id": "rh-igloo",
+            "Name": "Igloo Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-cabins": {
+            "id": "rh-cabins",
+            "Name": "Cabins Area",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-castlesurroundings": {
+            "id": "rh-castlesurroundings",
+            "Name": "Castle Surroundings",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-castlerooms": {
+            "id": "rh-castlerooms",
+            "Name": "Castle Rooms",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-castleunderground": {
+            "id": "rh-castleunderground",
+            "Name": "Castle Underground",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-helm": {
+            "id": "rh-helm",
+            "Name": "Hideout Helm",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-bosses": {
+            "id": "rh-bosses",
+            "Name": "Troff 'n' Scoff",
+            "Class": "Region",
+            "Type": "HintRegion"
+        },
+        "rh-error": {
+            "id": "rh-error",
+            "Name": "This should not be hinted",
+            "Class": "Region",
+            "Type": "HintRegion"
+        }
+    }
+}

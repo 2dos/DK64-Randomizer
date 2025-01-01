@@ -1,0 +1,10 @@
+{
+    "personaRegistry": {
+      "donkey": { "Name": "Donkey", "Rewards": [{ "Name": "isDonkey" }] },
+      "lanky": { "Name": "Lanky", "Rewards": [{ "Name": "isLanky" }] },
+      "diddy": { "Name": "Diddy", "Rewards": [{ "Name": "isDiddy" }] },
+      "tiny": { "Name": "Tiny", "Rewards": [{ "Name": "isTiny" }] },
+      "chunky": { "Name": "Chunky", "Rewards": [{ "Name": "isChunky" }] }
+    }
+  }
+  

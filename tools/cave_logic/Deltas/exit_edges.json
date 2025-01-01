@@ -1,0 +1,4817 @@
+{
+    "edges": {
+        "tn-1": {
+            "id": "tn-1",
+            "Name": "Japes Lobby to Jungle Japes",
+            "source": "rr-junglejapeslobby",
+            "target": "rr-junglejapesentryhandler",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "JungleJapes"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-2": {
+            "id": "tn-2",
+            "Name": "Jungle Japes to Japes Lobby",
+            "source": "rr-junglejapesentryhandler",
+            "target": "rr-junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-3": {
+            "id": "tn-3",
+            "Name": "Aztec Lobby to Angry Aztec",
+            "source": "rr-angryazteclobby",
+            "target": "rr-angryaztecentryhandler",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "AngryAztec"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-4": {
+            "id": "tn-4",
+            "Name": "Angry Aztec to Aztec Lobby",
+            "source": "rr-angryaztecentryhandler",
+            "target": "rr-angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-5": {
+            "id": "tn-5",
+            "Name": "Factory Lobby to Frantic Factory",
+            "source": "rr-franticfactorylobby",
+            "target": "rr-franticfactoryentryhandler",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "FranticFactory"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-6": {
+            "id": "tn-6",
+            "Name": "Frantic Factory to Factory Lobby",
+            "source": "rr-franticfactoryentryhandler",
+            "target": "rr-franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-7": {
+            "id": "tn-7",
+            "Name": "Galleon Lobby to Gloomy Galleon",
+            "source": "rr-gloomygalleonlobby",
+            "target": "rr-gloomygalleonentryhandler",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "GloomyGalleon"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-8": {
+            "id": "tn-8",
+            "Name": "Gloomy Galleon to Galleon Lobby",
+            "source": "rr-gloomygalleonentryhandler",
+            "target": "rr-gloomygalleonlobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-9": {
+            "id": "tn-9",
+            "Name": "Fungi Lobby to Fungi Forest",
+            "source": "rr-fungiforestlobby",
+            "target": "rr-fungiforestentryhandler",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "FungiForest"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-10": {
+            "id": "tn-10",
+            "Name": "Fungi Forest to Fungi Lobby",
+            "source": "rr-fungiforestentryhandler",
+            "target": "rr-fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-11": {
+            "id": "tn-11",
+            "Name": "Caves Lobby to Crystal Caves",
+            "source": "rr-crystalcaveslobby",
+            "target": "rr-crystalcavesentryhandler",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "CrystalCaves"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-12": {
+            "id": "tn-12",
+            "Name": "Crystal Caves to Caves Lobby",
+            "source": "rr-crystalcavesentryhandler",
+            "target": "rr-crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-13": {
+            "id": "tn-13",
+            "Name": "Castle Lobby to Creepy Castle",
+            "source": "rr-creepycastlelobby",
+            "target": "rr-creepycastleentryhandler",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "CreepyCastle"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-14": {
+            "id": "tn-14",
+            "Name": "Creepy Castle to Castle Lobby",
+            "source": "rr-creepycastleentryhandler",
+            "target": "rr-creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-15": {
+            "id": "tn-15",
+            "Name": "Helm Lobby to Hideout Helm",
+            "source": "rr-hideouthelmlobby",
+            "target": "rr-hideouthelmentry",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmLobbyTraversable",
+                        "Events": true
+                    },
+                    {
+                        "Name": "IsLevelEnterable",
+                        "Params": [
+                            "HideoutHelm"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-16": {
+            "id": "tn-16",
+            "Name": "Hideout Helm to Helm Lobby",
+            "source": "rr-hideouthelmentry",
+            "target": "rr-hideouthelmlobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-20": {
+            "id": "tn-20",
+            "Name": "DK's Treehouse to Training Grounds",
+            "source": "rr-treehouse",
+            "target": "rr-traininggrounds",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-19": {
+            "id": "tn-19",
+            "Name": "Training Grounds to DK's Treehouse",
+            "source": "rr-traininggrounds",
+            "target": "rr-treehouse",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "climbing"
+                    }
+                ]
+            }
+        },
+        "tn-18": {
+            "id": "tn-18",
+            "Name": "Training Grounds to DK Isles Main",
+            "source": "rr-traininggrounds",
+            "target": "rr-islesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "Slam"
+                    },
+                    {
+                        "Name": "fast_start_beginning_of_game"
+                    }
+                ]
+            }
+        },
+        "tn-17": {
+            "id": "tn-17",
+            "Name": "DK Isles Main to Training Grounds",
+            "source": "rr-islesmain",
+            "target": "rr-traininggrounds",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-21": {
+            "id": "tn-21",
+            "Name": "DK Isles Main to K-Lumsy",
+            "source": "rr-kremisle",
+            "target": "rr-prison",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-22": {
+            "id": "tn-22",
+            "Name": "DK Isles K-Lumsy to Main",
+            "source": "rr-prison",
+            "target": "rr-kremisle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-23": {
+            "id": "tn-23",
+            "Name": "DK Isles Main to Banana Fairy Isle",
+            "source": "rr-outerisles",
+            "target": "rr-bananafairyroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSTS",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-24": {
+            "id": "tn-24",
+            "Name": "DK Isles Banana Fairy Isle to Main",
+            "source": "rr-bananafairyroom",
+            "target": "rr-outerisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-25": {
+            "id": "tn-25",
+            "Name": "DK Isles Main to Snide's Room",
+            "source": "rr-kremislebeyondlift",
+            "target": "rr-islessnideroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-26": {
+            "id": "tn-26",
+            "Name": "DK Isles Snide's Room to Main",
+            "source": "rr-islessnideroom",
+            "target": "rr-kremislebeyondlift",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-27": {
+            "id": "tn-27",
+            "Name": "DK Isles Main to Japes Lobby",
+            "source": "rr-islesmain",
+            "target": "rr-junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "open_lobbies"
+                    },
+                    {
+                        "Name": "KLumsyTalkedTo",
+                        "Events": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSTS",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-28": {
+            "id": "tn-28",
+            "Name": "DK Isles Japes Lobby to Main",
+            "source": "rr-junglejapeslobby",
+            "target": "rr-islesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-29": {
+            "id": "tn-29",
+            "Name": "DK Isles Main to Aztec Lobby",
+            "source": "rr-islesmainupper",
+            "target": "rr-angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "open_lobbies"
+                    },
+                    {
+                        "Name": "JapesKeyTurnedIn",
+                        "Events": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-30": {
+            "id": "tn-30",
+            "Name": "DK Isles Aztec Lobby to Main",
+            "source": "rr-angryazteclobby",
+            "target": "rr-islesmainupper",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-31": {
+            "id": "tn-31",
+            "Name": "DK Isles Main to Factory Lobby",
+            "source": "rr-kremislebeyondlift",
+            "target": "rr-franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "open_lobbies"
+                    },
+                    {
+                        "Name": "AztecKeyTurnedIn",
+                        "Events": true
+                    }
+                ]
+            }
+        },
+        "tn-32": {
+            "id": "tn-32",
+            "Name": "DK Isles Factory Lobby to Main",
+            "source": "rr-franticfactorylobby",
+            "target": "rr-kremislebeyondlift",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-33": {
+            "id": "tn-33",
+            "Name": "DK Isles Main to Galleon Lobby",
+            "source": "rr-islesmain",
+            "target": "rr-gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "open_lobbies"
+                            },
+                            {
+                                "Name": "AztecKeyTurnedIn",
+                                "Events": true
+                            },
+                            {
+                                "Name": "CanPhaseswim",
+                                "Params": [],
+                                "isFunction": true,
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "assumeLevel4Entry"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "tn-34": {
+            "id": "tn-34",
+            "Name": "DK Isles Galleon Lobby to Main",
+            "source": "rr-gloomygalleonlobbyentrance",
+            "target": "rr-islesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-35": {
+            "id": "tn-35",
+            "Name": "DK Isles Main to Fungi Lobby",
+            "source": "rr-cabinisle",
+            "target": "rr-fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-36": {
+            "id": "tn-36",
+            "Name": "DK Isles Fungi Lobby to Main",
+            "source": "rr-fungiforestlobby",
+            "target": "rr-cabinisle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-37": {
+            "id": "tn-37",
+            "Name": "DK Isles Main to Caves Lobby",
+            "source": "rr-islesear",
+            "target": "rr-crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-38": {
+            "id": "tn-38",
+            "Name": "DK Isles Caves Lobby to Main",
+            "source": "rr-crystalcaveslobby",
+            "target": "rr-islesear",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-39": {
+            "id": "tn-39",
+            "Name": "DK Isles Main to Castle Lobby",
+            "source": "rr-islesmain",
+            "target": "rr-creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "open_lobbies"
+                    },
+                    {
+                        "Name": "ForestKeyTurnedIn",
+                        "Events": true
+                    }
+                ]
+            }
+        },
+        "tn-40": {
+            "id": "tn-40",
+            "Name": "DK Isles Castle Lobby to Main",
+            "source": "rr-creepycastlelobby",
+            "target": "rr-islesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-41": {
+            "id": "tn-41",
+            "Name": "DK Isles Main to Helm Lobby",
+            "source": "rr-kremislemouth",
+            "target": "rr-hideouthelmlobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "open_lobbies"
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CavesKeyTurnedIn",
+                                "Events": true
+                            },
+                            {
+                                "Name": "CastleKeyTurnedIn",
+                                "Events": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "tn-42": {
+            "id": "tn-42",
+            "Name": "DK Isles Helm Lobby to Main",
+            "source": "rr-hideouthelmlobby",
+            "target": "rr-kremislemouth",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-43": {
+            "id": "tn-43",
+            "Name": "Jungle Japes Main to Mountain",
+            "source": "rr-japeshilltop",
+            "target": "rr-mine",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "peanut"
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            }
+        },
+        "tn-44": {
+            "id": "tn-44",
+            "Name": "Jungle Japes Mountain to Main",
+            "source": "rr-mine",
+            "target": "rr-japeshilltop",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-45": {
+            "id": "tn-45",
+            "Name": "Jungle Japes Main to Painting Room",
+            "source": "rr-junglejapesmain",
+            "target": "rr-japeslankycave",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "hasMoveSwitchsanity",
+                                        "Params": [
+                                            "JapesPainting",
+                                            false
+                                        ],
+                                        "isFunction": true
+                                    },
+                                    {
+                                        "Name": "CanSkew",
+                                        "Params": [
+                                            true
+                                        ],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    },
+                                    {
+                                        "Name": "CanSkew",
+                                        "Params": [
+                                            false
+                                        ],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "orangstand"
+                                            },
+                                            {
+                                                "Name": "lanky"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "ponytailtwirl"
+                                            },
+                                            {
+                                                "Name": "tiny"
+                                            },
+                                            {
+                                                "Name": "climbing"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Name": "CanMoonkick",
+                                        "Params": [],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanMoonkick",
+                                "Params": [],
+                                "isFunction": true,
+                                "isGlitch": true
+                            },
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "CanPhase",
+                                        "Params": [],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    },
+                                    {
+                                        "Name": "CanSkew",
+                                        "Params": [
+                                            true
+                                        ],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    },
+                                    {
+                                        "Name": "CanSkew",
+                                        "Params": [
+                                            false
+                                        ],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "CanPhase",
+                                        "Params": [],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    },
+                                    {
+                                        "Name": "generalclips",
+                                        "isGlitch": true
+                                    },
+                                    {
+                                        "Name": "CanSkew",
+                                        "Params": [
+                                            true
+                                        ],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    },
+                                    {
+                                        "Name": "CanSkew",
+                                        "Params": [
+                                            false
+                                        ],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "diddy"
+                                    },
+                                    {
+                                        "Name": "tiny"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "tn-46": {
+            "id": "tn-46",
+            "Name": "Jungle Japes Painting Room to Main",
+            "source": "rr-japeslankycave",
+            "target": "rr-junglejapesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-47": {
+            "id": "tn-47",
+            "Name": "Jungle Japes Main to Underground",
+            "source": "rr-junglejapesstart",
+            "target": "rr-japescatacomb",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "Slam"
+                            },
+                            {
+                                "Name": "chunky"
+                            },
+                            {
+                                "Name": "barrels"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            false
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-48": {
+            "id": "tn-48",
+            "Name": "Jungle Japes Underground to Main",
+            "source": "rr-japescatacomb",
+            "target": "rr-junglejapesstart",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-49": {
+            "id": "tn-49",
+            "Name": "Jungle Japes Main to Beehive",
+            "source": "rr-japesbeyondfeathergate",
+            "target": "rr-tinyhive",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            false
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "hunkyChunky"
+                            },
+                            {
+                                "Name": "chunky"
+                            },
+                            {
+                                "Name": "generalclips",
+                                "isGlitch": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "tn-50": {
+            "id": "tn-50",
+            "Name": "Jungle Japes Beehive to Main",
+            "source": "rr-tinyhive",
+            "target": "rr-japesbeyondfeathergate",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "diddy"
+                    },
+                    {
+                        "Name": "tiny"
+                    },
+                    {
+                        "Name": "lanky"
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-51": {
+            "id": "tn-51",
+            "Name": "Jungle Japes Mountain to Minecart",
+            "source": "rr-mine",
+            "target": "rr-japesminecarts",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-53": {
+            "id": "tn-53",
+            "Name": "Jungle Japes Minecart to Main",
+            "source": "rr-japesminecarts",
+            "target": "rr-junglejapesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-54": {
+            "id": "tn-54",
+            "Name": "Angry Aztec Main to Tiny Temple",
+            "source": "rr-angryaztecoasis",
+            "target": "rr-templestart",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "peanut"
+                                    },
+                                    {
+                                        "Name": "diddy"
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "grape"
+                                    },
+                                    {
+                                        "Name": "lanky"
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "feather"
+                                    },
+                                    {
+                                        "Name": "tiny"
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "pineapple"
+                                    },
+                                    {
+                                        "Name": "chunky"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-55": {
+            "id": "tn-55",
+            "Name": "Angry Aztec Tiny Temple to Main",
+            "source": "rr-templestart",
+            "target": "rr-angryaztecoasis",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-56": {
+            "id": "tn-56",
+            "Name": "Angry Aztec Main to Donkey 5DTemple",
+            "source": "rr-angryaztecoasis",
+            "target": "rr-donkeytemple",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "FedTotem",
+                                "Events": true
+                            },
+                            {
+                                "Name": "coconut"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-57": {
+            "id": "tn-57",
+            "Name": "Angry Aztec Donkey 5DTemple to Main",
+            "source": "rr-donkeytemple",
+            "target": "rr-angryaztecmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-58": {
+            "id": "tn-58",
+            "Name": "Angry Aztec Main to Diddy 5DTemple",
+            "source": "rr-angryaztecmain",
+            "target": "rr-diddytemple",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "FedTotem",
+                                "Events": true
+                            },
+                            {
+                                "Name": "peanut"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "generalclips",
+                                "isGlitch": true
+                            },
+                            {
+                                "Name": "chimpycharge"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-59": {
+            "id": "tn-59",
+            "Name": "Angry Aztec Diddy 5DTemple to Main",
+            "source": "rr-diddytemple",
+            "target": "rr-angryaztecmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-60": {
+            "id": "tn-60",
+            "Name": "Angry Aztec Main to Lanky 5DTemple",
+            "source": "rr-angryaztecmain",
+            "target": "rr-lankytemple",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "FedTotem",
+                                "Events": true
+                            },
+                            {
+                                "Name": "grape"
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-61": {
+            "id": "tn-61",
+            "Name": "Angry Aztec Lanky 5DTemple to Main",
+            "source": "rr-lankytemple",
+            "target": "rr-angryaztecmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-62": {
+            "id": "tn-62",
+            "Name": "Angry Aztec Main to Tiny 5DTemple",
+            "source": "rr-angryaztecmain",
+            "target": "rr-tinytemple",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "FedTotem",
+                                "Events": true
+                            },
+                            {
+                                "Name": "feather"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-63": {
+            "id": "tn-63",
+            "Name": "Angry Aztec Tiny 5DTemple To Main",
+            "source": "rr-tinytemple",
+            "target": "rr-angryaztecmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-64": {
+            "id": "tn-64",
+            "Name": "Angry Aztec Main to Chunky 5DTemple",
+            "source": "rr-angryaztecmain",
+            "target": "rr-chunkytemple",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "FedTotem",
+                                "Events": true
+                            },
+                            {
+                                "Name": "pineapple"
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "generalclips",
+                                "isGlitch": true
+                            },
+                            {
+                                "Name": "chunky"
+                            },
+                            {
+                                "Name": "hunkyChunky"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "tn-65": {
+            "id": "tn-65",
+            "Name": "Angry Aztec Chunky 5DTemple to Main",
+            "source": "rr-chunkytemple",
+            "target": "rr-angryaztecmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-66": {
+            "id": "tn-66",
+            "Name": "Angry Aztec Main to Beetle Race",
+            "source": "rr-angryaztecmain",
+            "target": "rr-aztectinyrace",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "chimpycharge"
+                    },
+                    {
+                        "Name": "rocketbarrelboost"
+                    },
+                    {
+                        "Name": "diddy"
+                    },
+                    {
+                        "Name": "minimonkey"
+                    },
+                    {
+                        "Name": "saxophone"
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            }
+        },
+        "tn-67": {
+            "id": "tn-67",
+            "Name": "Angry Aztec Beetle Race to Main",
+            "source": "rr-aztectinyrace",
+            "target": "rr-angryaztecmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-69": {
+            "id": "tn-69",
+            "Name": "Angry Aztec Llama Temple to Main",
+            "source": "rr-llamatemple",
+            "target": "rr-angryaztecmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-68": {
+            "id": "tn-68",
+            "Name": "Angry Aztec Main to Llama Temple",
+            "source": "rr-angryaztecmain",
+            "target": "rr-llamatemple",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "canOpenLlamaTemple",
+                        "Params": [],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-71": {
+            "id": "tn-71",
+            "Name": "Frantic Factory R&D to Car Race",
+            "source": "rr-factorytinyracelobby",
+            "target": "rr-factorytinyrace",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-72": {
+            "id": "tn-72",
+            "Name": "Frantic Factory Car Race to R&D",
+            "source": "rr-factorytinyrace",
+            "target": "rr-factorytinyracelobby",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-73": {
+            "id": "tn-73",
+            "Name": "Frantic Factory Main to Power Shed",
+            "source": "rr-chunkyroomplatform",
+            "target": "rr-powerhut",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "coconut"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanMoonkick",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-74": {
+            "id": "tn-74",
+            "Name": "Frantic Factory Power Room to Chunky Room",
+            "source": "rr-powerhut",
+            "target": "rr-chunkyroomplatform",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-75": {
+            "id": "tn-75",
+            "Name": "Frantic Factory Main to Crusher Room",
+            "source": "rr-beyondhatch",
+            "target": "rr-insidecore",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "ledgeclip",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-76": {
+            "id": "tn-76",
+            "Name": "Frantic Factory Crusher Room to Main",
+            "source": "rr-insidecore",
+            "target": "rr-beyondhatch",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-78": {
+            "id": "tn-78",
+            "Name": "Gloomy Galleon Main to Lighthouse",
+            "source": "rr-lighthouseplatform",
+            "target": "rr-lighthouse",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "CanSlamSwitch",
+                                        "Params": [
+                                            "GloomyGalleon",
+                                            1
+                                        ],
+                                        "isFunction": true
+                                    },
+                                    {
+                                        "Name": "donkey"
+                                    }
+                                ]
+                            },
+                            {
+                                "Name": "generalclips",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "climbing"
+                    }
+                ]
+            }
+        },
+        "tn-79": {
+            "id": "tn-79",
+            "Name": "Gloomy Galleon Lighthouse to Main",
+            "source": "rr-lighthouse",
+            "target": "rr-lighthouseplatform",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-80": {
+            "id": "tn-80",
+            "Name": "Gloomy Galleon Main to Mermaid",
+            "source": "rr-lighthouseunderwater",
+            "target": "rr-mermaidroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-81": {
+            "id": "tn-81",
+            "Name": "Gloomy Galleon Mermaid to Main",
+            "source": "rr-mermaidroom",
+            "target": "rr-lighthouseunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-82": {
+            "id": "tn-82",
+            "Name": "Gloomy Galleon Main to Seasick Ship",
+            "source": "rr-lighthouseplatform",
+            "target": "rr-sickbay",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "ActivatedLighthouse",
+                        "Events": true
+                    },
+                    {
+                        "Name": "Slam"
+                    },
+                    {
+                        "Name": "chunky"
+                    }
+                ]
+            }
+        },
+        "tn-83": {
+            "id": "tn-83",
+            "Name": "Gloomy Galleon Seasick Ship to Main",
+            "source": "rr-sickbay",
+            "target": "rr-lighthouseplatform",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-84": {
+            "id": "tn-84",
+            "Name": "Gloomy Galleon Main to Seal Race",
+            "source": "rr-shipyard",
+            "target": "rr-sealrace",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "SealReleased",
+                                "Events": true
+                            },
+                            {
+                                "Name": "WaterRaised",
+                                "Events": true
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-85": {
+            "id": "tn-85",
+            "Name": "Gloomy Galleon Seal Race to Main",
+            "source": "rr-sealrace",
+            "target": "rr-shipyard",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "NOT",
+                        "rules": [
+                            {
+                                "Name": "IsLavaWater",
+                                "Params": [],
+                                "isFunction": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "Melons",
+                        "Amount": "2"
+                    }
+                ]
+            }
+        },
+        "tn-86": {
+            "id": "tn-86",
+            "Name": "Gloomy Galleon Main to Submarine",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-submarine",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "minimonkey"
+                                    },
+                                    {
+                                        "Name": "CanSTS",
+                                        "Params": [],
+                                        "isFunction": true,
+                                        "isGlitch": true
+                                    }
+                                ]
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-87": {
+            "id": "tn-87",
+            "Name": "Gloomy Galleon Submarine to Main",
+            "source": "rr-submarine",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-88": {
+            "id": "tn-88",
+            "Name": "Gloomy Galleon Main to Lanky 2DShip",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-lankyship",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "GalleonLankySwitch",
+                                "Events": true
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-89": {
+            "id": "tn-89",
+            "Name": "Gloomy Galleon Lanky 2DShip to Main",
+            "source": "rr-lankyship",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-90": {
+            "id": "tn-90",
+            "Name": "Gloomy Galleon Main to Tiny 2DShip",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-tinyship",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "GalleonTinySwitch",
+                                "Events": true
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-91": {
+            "id": "tn-91",
+            "Name": "Gloomy Galleon Tiny 2DShip to Main",
+            "source": "rr-tinyship",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-92": {
+            "id": "tn-92",
+            "Name": "Gloomy Galleon Main to DK 5DShip",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-bongosship",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "GalleonDonkeyPad",
+                                "Events": true
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-93": {
+            "id": "tn-93",
+            "Name": "Gloomy Galleon DK 5DShip to Main",
+            "source": "rr-bongosship",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-94": {
+            "id": "tn-94",
+            "Name": "Gloomy Galleon Main to Diddy 5DShip",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-guitarship",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "GalleonDiddyPad",
+                                "Events": true
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-95": {
+            "id": "tn-95",
+            "Name": "Gloomy Galleon Diddy 5DShip to Main",
+            "source": "rr-guitarship",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-96": {
+            "id": "tn-96",
+            "Name": "Gloomy Galleon Main to Lanky 5DShip",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-tromboneship",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "GalleonLankyPad",
+                                "Events": true
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-97": {
+            "id": "tn-97",
+            "Name": "Gloomy Galleon Lanky 5DShip to Main",
+            "source": "rr-tromboneship",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-98": {
+            "id": "tn-98",
+            "Name": "Gloomy Galleon Main to Tiny 5DShip",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-saxophoneship",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "GalleonTinyPad",
+                                "Events": true
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-99": {
+            "id": "tn-99",
+            "Name": "Gloomy Galleon Tiny 5DShip to Main",
+            "source": "rr-saxophoneship",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-100": {
+            "id": "tn-100",
+            "Name": "Gloomy Galleon Main to Chunky 5DShip",
+            "source": "rr-shipyardunderwater",
+            "target": "rr-triangleship",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "GalleonChunkyPad",
+                                "Events": true
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-101": {
+            "id": "tn-101",
+            "Name": "Gloomy Galleon Chunky 5DShip to Main",
+            "source": "rr-triangleship",
+            "target": "rr-shipyardunderwater",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-102": {
+            "id": "tn-102",
+            "Name": "Gloomy Galleon Main to Treasure Chest",
+            "source": "rr-treasureroom",
+            "target": "rr-tinychest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            },
+                            {
+                                "Name": "swim"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-103": {
+            "id": "tn-103",
+            "Name": "Gloomy Galleon Treasure Chest to Main",
+            "source": "rr-tinychest",
+            "target": "rr-treasureroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-105": {
+            "id": "tn-105",
+            "Name": "Fungi Forest Main To Minecart",
+            "source": "rr-fungiforeststart",
+            "target": "rr-forestminecarts",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-106": {
+            "id": "tn-106",
+            "Name": "Fungi Forest Minecart To Main",
+            "source": "rr-forestminecarts",
+            "target": "rr-millarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-107": {
+            "id": "tn-107",
+            "Name": "Fungi Forest Main to Giant Mushroom (Lower)",
+            "source": "rr-giantmushroomarea",
+            "target": "rr-mushroomlower",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-108": {
+            "id": "tn-108",
+            "Name": "Fungi Forest Giant Mushroom (Lower) to Main",
+            "source": "rr-mushroomlower",
+            "target": "rr-giantmushroomarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-109": {
+            "id": "tn-109",
+            "Name": "Fungi Forest Main to Giant Mushroom (Middle Low)",
+            "source": "rr-mushroomlowerexterior",
+            "target": "rr-mushroomlowermid",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-110": {
+            "id": "tn-110",
+            "Name": "Fungi Forest Giant Mushroom (Middle Low) to Main",
+            "source": "rr-mushroomlowermid",
+            "target": "rr-mushroomlowerexterior",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-111": {
+            "id": "tn-111",
+            "Name": "Fungi Forest Main to Giant Mushroom (Middle High)",
+            "source": "rr-mushroomuppermidexterior",
+            "target": "rr-mushroommiddle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-112": {
+            "id": "tn-112",
+            "Name": "Fungi Forest Giant Mushroom (Middle High) to Main",
+            "source": "rr-mushroommiddle",
+            "target": "rr-mushroomuppermidexterior",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-113": {
+            "id": "tn-113",
+            "Name": "Fungi Forest Main to Giant Mushroom (Top)",
+            "source": "rr-mushroomupperexterior",
+            "target": "rr-mushroomupper",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-114": {
+            "id": "tn-114",
+            "Name": "Fungi Forest Giant Mushroom (Top) to Main",
+            "source": "rr-mushroomupper",
+            "target": "rr-mushroomupperexterior",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-115": {
+            "id": "tn-115",
+            "Name": "Fungi Forest Main to Giant Mushroom (Night Door)",
+            "source": "rr-mushroomnightexterior",
+            "target": "rr-mushroomnightdoor",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-116": {
+            "id": "tn-116",
+            "Name": "Fungi Forest Giant Mushroom (Night Door) to Main",
+            "source": "rr-mushroomnightdoor",
+            "target": "rr-mushroomnightexterior",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-117": {
+            "id": "tn-117",
+            "Name": "Fungi Forest Main to Face Puzzle (Chunky)",
+            "source": "rr-mushroomupperexterior",
+            "target": "rr-mushroomchunkyroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "FungiForest",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanOStandTBSNoclip",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-118": {
+            "id": "tn-118",
+            "Name": "Fungi Forest Face Puzzle (Chunky) to Main",
+            "source": "rr-mushroomchunkyroom",
+            "target": "rr-mushroomupperexterior",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-119": {
+            "id": "tn-119",
+            "Name": "Fungi Forest Main to Bouncy Shrooms (Lanky)",
+            "source": "rr-mushroomupperexterior",
+            "target": "rr-mushroomlankyzingersroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "orangstand"
+                            },
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "FungiForest",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanOStandTBSNoclip",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-120": {
+            "id": "tn-120",
+            "Name": "Fungi Forest Bouncy Shrooms (Lanky) to Main",
+            "source": "rr-mushroomlankyzingersroom",
+            "target": "rr-mushroomupperexterior",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-121": {
+            "id": "tn-121",
+            "Name": "Fungi Forest Main to Mushroom Puzzle (Lanky)",
+            "source": "rr-mushroomupperexterior",
+            "target": "rr-mushroomlankymushroomsroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "orangstand"
+                            },
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "FungiForest",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanOStandTBSNoclip",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-122": {
+            "id": "tn-122",
+            "Name": "Fungi Forest Mushroom Puzzle (Lanky) to Main",
+            "source": "rr-mushroomlankymushroomsroom",
+            "target": "rr-mushroomupperexterior",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-123": {
+            "id": "tn-123",
+            "Name": "Fungi Forest Main to Anthill",
+            "source": "rr-hollowtreearea",
+            "target": "rr-anthill",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "minimonkey"
+                    },
+                    {
+                        "Name": "saxophone"
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            }
+        },
+        "tn-124": {
+            "id": "tn-124",
+            "Name": "Fungi Forest Anthill to Main",
+            "source": "rr-anthill",
+            "target": "rr-hollowtreearea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "tiny"
+                            },
+                            {
+                                "Name": "free_trade_items"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "oranges"
+                            },
+                            {
+                                "Name": "saxophone"
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "free_trade_items"
+                                    },
+                                    {
+                                        "Name": "HasInstrument",
+                                        "Params": [
+                                            "any"
+                                        ],
+                                        "isFunction": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "tn-125": {
+            "id": "tn-125",
+            "Name": "Fungi Forest Main to Mill Back Door",
+            "source": "rr-millarea",
+            "target": "rr-millchunkytinyarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "primatepunch"
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "ledgeclip",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-126": {
+            "id": "tn-126",
+            "Name": "Fungi Forest Mill Back Door to Main",
+            "source": "rr-millchunkytinyarea",
+            "target": "rr-millarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "chunky"
+                    }
+                ]
+            }
+        },
+        "tn-127": {
+            "id": "tn-127",
+            "Name": "Fungi Forest Main to Mill Tiny Hole",
+            "source": "rr-millarea",
+            "target": "rr-millchunkytinyarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "MillBoxBroken",
+                                "Events": true
+                            },
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "ledgeclip",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-128": {
+            "id": "tn-128",
+            "Name": "Fungi Forest Mill Tiny Hole to Main",
+            "source": "rr-millchunkytinyarea",
+            "target": "rr-millarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "MillBoxBroken",
+                                "Events": true
+                            },
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "ledgeclip",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-129": {
+            "id": "tn-129",
+            "Name": "Fungi Forest Main to Mill Front Door",
+            "source": "rr-millarea",
+            "target": "rr-grinderroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-130": {
+            "id": "tn-130",
+            "Name": "Fungi Forest Mill Front Door to Main",
+            "source": "rr-grinderroom",
+            "target": "rr-millarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-131": {
+            "id": "tn-131",
+            "Name": "Fungi Forest Main to Dark Rafters",
+            "source": "rr-millarea",
+            "target": "rr-millrafters",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "simianspring"
+                            },
+                            {
+                                "Name": "CanMoontail",
+                                "Params": [],
+                                "isFunction": true,
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            }
+        },
+        "tn-132": {
+            "id": "tn-132",
+            "Name": "Fungi Forest Dark Rafters to Main",
+            "source": "rr-millrafters",
+            "target": "rr-millarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-133": {
+            "id": "tn-133",
+            "Name": "Fungi Forest Main to Winch Room",
+            "source": "rr-forestverytopofmill",
+            "target": "rr-winchroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "FungiForest",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanMoonkick",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-134": {
+            "id": "tn-134",
+            "Name": "Fungi Forest Winch Room to Main",
+            "source": "rr-winchroom",
+            "target": "rr-forestverytopofmill",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-135": {
+            "id": "tn-135",
+            "Name": "Fungi Forest Main to Mill Attic (Lanky)",
+            "source": "rr-foresttopofmill",
+            "target": "rr-millattic",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-136": {
+            "id": "tn-136",
+            "Name": "Fungi Forest Mill Attic (Lanky) to Main",
+            "source": "rr-millattic",
+            "target": "rr-foresttopofmill",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-137": {
+            "id": "tn-137",
+            "Name": "Fungi Forest Back Mill to Spider",
+            "source": "rr-millchunkytinyarea",
+            "target": "rr-spiderroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-138": {
+            "id": "tn-138",
+            "Name": "Fungi Forest Spider to Back Mill",
+            "source": "rr-spiderroom",
+            "target": "rr-millchunkytinyarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-139": {
+            "id": "tn-139",
+            "Name": "Fungi Forest Back Mill to Front Mill",
+            "source": "rr-millchunkytinyarea",
+            "target": "rr-grinderroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "ledgeclip",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-140": {
+            "id": "tn-140",
+            "Name": "Fungi Forest Front Mill to Back Mill",
+            "source": "rr-grinderroom",
+            "target": "rr-millchunkytinyarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-141": {
+            "id": "tn-141",
+            "Name": "Fungi Forest Main to Thornvine Barn",
+            "source": "rr-thornvinearea",
+            "target": "rr-thornvinebarn",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "FungiForest",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "donkey"
+                            },
+                            {
+                                "Name": "strongKong"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-142": {
+            "id": "tn-142",
+            "Name": "Fungi Forest Thornvine Barn to Main",
+            "source": "rr-thornvinebarn",
+            "target": "rr-thornvinearea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-144": {
+            "id": "tn-144",
+            "Name": "Crystal Caves Main to Beetle Race",
+            "source": "rr-crystalcavesmain",
+            "target": "rr-caveslankyrace",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "CrystalCaves",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "balloon"
+                                    },
+                                    {
+                                        "Name": "advanced_platforming",
+                                        "isGlitch": true
+                                    }
+                                ]
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-145": {
+            "id": "tn-145",
+            "Name": "Crystal Caves Beetle Race to Main",
+            "source": "rr-caveslankyrace",
+            "target": "rr-crystalcavesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-146": {
+            "id": "tn-146",
+            "Name": "Crystal Caves Main to Ice Castle",
+            "source": "rr-crystalcavesmain",
+            "target": "rr-frozencastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "CrystalCaves",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-147": {
+            "id": "tn-147",
+            "Name": "Crystal Caves Ice Castle to Main",
+            "source": "rr-frozencastle",
+            "target": "rr-crystalcavesmain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-148": {
+            "id": "tn-148",
+            "Name": "Crystal Caves Main to DK 5DIgloo",
+            "source": "rr-iglooarea",
+            "target": "rr-donkeyigloo",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "checkBarrier",
+                                        "Params": [
+                                            "caves_igloo_pads"
+                                        ],
+                                        "isFunction": true
+                                    },
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "rocketbarrelboost"
+                                            },
+                                            {
+                                                "Name": "diddy"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "bongos"
+                                    },
+                                    {
+                                        "Name": "donkey"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-149": {
+            "id": "tn-149",
+            "Name": "Crystal Caves DK 5DIgloo to Main",
+            "source": "rr-donkeyigloo",
+            "target": "rr-iglooarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-150": {
+            "id": "tn-150",
+            "Name": "Crystal Caves Main to Diddy 5DIgloo",
+            "source": "rr-iglooarea",
+            "target": "rr-diddyigloo",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "checkBarrier",
+                                        "Params": [
+                                            "caves_igloo_pads"
+                                        ],
+                                        "isFunction": true
+                                    },
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "rocketbarrelboost"
+                                            },
+                                            {
+                                                "Name": "diddy"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "guitar"
+                                    },
+                                    {
+                                        "Name": "diddy"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-151": {
+            "id": "tn-151",
+            "Name": "Crystal Caves Diddy 5DIgloo to Main",
+            "source": "rr-diddyigloo",
+            "target": "rr-iglooarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-152": {
+            "id": "tn-152",
+            "Name": "Crystal Caves Main to Lanky 5DIgloo",
+            "source": "rr-iglooarea",
+            "target": "rr-lankyigloo",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "checkBarrier",
+                                        "Params": [
+                                            "caves_igloo_pads"
+                                        ],
+                                        "isFunction": true
+                                    },
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "rocketbarrelboost"
+                                            },
+                                            {
+                                                "Name": "diddy"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "trombone"
+                                    },
+                                    {
+                                        "Name": "lanky"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-153": {
+            "id": "tn-153",
+            "Name": "Crystal Caves Lanky 5DIgloo to Main",
+            "source": "rr-lankyigloo",
+            "target": "rr-iglooarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-154": {
+            "id": "tn-154",
+            "Name": "Crystal Caves Main to Tiny 5DIgloo",
+            "source": "rr-iglooarea",
+            "target": "rr-tinyigloo",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "checkBarrier",
+                                        "Params": [
+                                            "caves_igloo_pads"
+                                        ],
+                                        "isFunction": true
+                                    },
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "rocketbarrelboost"
+                                            },
+                                            {
+                                                "Name": "diddy"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "saxophone"
+                                    },
+                                    {
+                                        "Name": "tiny"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-155": {
+            "id": "tn-155",
+            "Name": "Crystal Caves Tiny 5DIgloo to Main",
+            "source": "rr-tinyigloo",
+            "target": "rr-iglooarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-156": {
+            "id": "tn-156",
+            "Name": "Crystal Caves Main to Chunky 5DIgloo",
+            "source": "rr-iglooarea",
+            "target": "rr-chunkyigloo",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "checkBarrier",
+                                        "Params": [
+                                            "caves_igloo_pads"
+                                        ],
+                                        "isFunction": true
+                                    },
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "rocketbarrelboost"
+                                            },
+                                            {
+                                                "Name": "diddy"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "triangle"
+                                    },
+                                    {
+                                        "Name": "chunky"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-157": {
+            "id": "tn-157",
+            "Name": "Crystal Caves Chunky 5DIgloo to Main",
+            "source": "rr-chunkyigloo",
+            "target": "rr-iglooarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-158": {
+            "id": "tn-158",
+            "Name": "Crystal Caves Main to Rotating Room",
+            "source": "rr-cabinarea",
+            "target": "rr-rotatingcabin",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "bongos"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-159": {
+            "id": "tn-159",
+            "Name": "Crystal Caves Rotating Room to Main",
+            "source": "rr-rotatingcabin",
+            "target": "rr-cabinarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-160": {
+            "id": "tn-160",
+            "Name": "Crystal Caves Main to DK 5DCabin",
+            "source": "rr-cabinarea",
+            "target": "rr-donkeycabin",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "bongos"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-161": {
+            "id": "tn-161",
+            "Name": "Crystal Caves DK 5DCabin to Main",
+            "source": "rr-donkeycabin",
+            "target": "rr-cabinarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-162": {
+            "id": "tn-162",
+            "Name": "Crystal Caves Main to Diddy Lower 5DCabin",
+            "source": "rr-cabinarea",
+            "target": "rr-diddylowercabin",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "guitar"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-163": {
+            "id": "tn-163",
+            "Name": "Crystal Caves Diddy Lower 5DCabin to Main",
+            "source": "rr-diddylowercabin",
+            "target": "rr-cabinarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-164": {
+            "id": "tn-164",
+            "Name": "Crystal Caves Main to Diddy Upper 5DCabin",
+            "source": "rr-cabinarea",
+            "target": "rr-diddyuppercabin",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "guitar"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-165": {
+            "id": "tn-165",
+            "Name": "Crystal Caves Diddy Upper 5DCabin to Main",
+            "source": "rr-diddyuppercabin",
+            "target": "rr-cabinarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-166": {
+            "id": "tn-166",
+            "Name": "Crystal Caves Main to Lanky 1DCabin",
+            "source": "rr-cabinarea",
+            "target": "rr-lankycabin",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "trombone"
+                            },
+                            {
+                                "Name": "balloon"
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-167": {
+            "id": "tn-167",
+            "Name": "Crystal Caves Lanky 1DCabin to Main",
+            "source": "rr-lankycabin",
+            "target": "rr-cabinarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-168": {
+            "id": "tn-168",
+            "Name": "Crystal Caves Main to Tiny 5DCabin",
+            "source": "rr-cabinarea",
+            "target": "rr-tinycabin",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "saxophone"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-169": {
+            "id": "tn-169",
+            "Name": "Crystal Caves Tiny 5DCabin to Main",
+            "source": "rr-tinycabin",
+            "target": "rr-cabinarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-170": {
+            "id": "tn-170",
+            "Name": "Crystal Caves Main to Chunky 5DCabin",
+            "source": "rr-cabinarea",
+            "target": "rr-chunkycabin",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "triangle"
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-171": {
+            "id": "tn-171",
+            "Name": "Crystal Caves Chunky 5DCabin to Main",
+            "source": "rr-chunkycabin",
+            "target": "rr-cabinarea",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-173": {
+            "id": "tn-173",
+            "Name": "Creepy Castle Main to Tree",
+            "source": "rr-creepycastlemain",
+            "target": "rr-castletree",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "CastleTreeOpened",
+                        "Events": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhaseswim",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-174": {
+            "id": "tn-174",
+            "Name": "Creepy Castle Tree to Main",
+            "source": "rr-castletree",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-175": {
+            "id": "tn-175",
+            "Name": "Creepy Castle Tree Drain to Main",
+            "source": "rr-castletree",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "combinator": "AND",
+                                        "rules": [
+                                            {
+                                                "Name": "coconut"
+                                            },
+                                            {
+                                                "Name": "swim"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Name": "generalclips",
+                                        "isGlitch": true
+                                    }
+                                ]
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-176": {
+            "id": "tn-176",
+            "Name": "Creepy Castle Main to Library (Entrance)",
+            "source": "rr-creepycastlemain",
+            "target": "rr-library",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "CreepyCastle",
+                            3
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            }
+        },
+        "tn-177": {
+            "id": "tn-177",
+            "Name": "Creepy Castle Library (Entrance) to Main",
+            "source": "rr-library",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-178": {
+            "id": "tn-178",
+            "Name": "Creepy Castle Main to Library (Exit)",
+            "source": "rr-creepycastlemain",
+            "target": "rr-librarypastbooks",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-179": {
+            "id": "tn-179",
+            "Name": "Creepy Castle Library (Exit) to Main",
+            "source": "rr-librarypastbooks",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "donkey"
+                    },
+                    {
+                        "Name": "coconut"
+                    }
+                ]
+            }
+        },
+        "tn-180": {
+            "id": "tn-180",
+            "Name": "Creepy Castle Main to Ballroom",
+            "source": "rr-creepycastlemain",
+            "target": "rr-ballroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "CreepyCastle",
+                                    3
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-181": {
+            "id": "tn-181",
+            "Name": "Creepy Castle Ballroom to Main",
+            "source": "rr-ballroom",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-182": {
+            "id": "tn-182",
+            "Name": "Creepy Castle Main to Tower",
+            "source": "rr-creepycastlemain",
+            "target": "rr-tower",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "CreepyCastle",
+                                    3
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-183": {
+            "id": "tn-183",
+            "Name": "Creepy Castle Tower to Main",
+            "source": "rr-tower",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-184": {
+            "id": "tn-184",
+            "Name": "Creepy Castle Main to Greenhouse",
+            "source": "rr-creepycastlemain",
+            "target": "rr-greenhouse",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "CreepyCastle",
+                                    3
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "ledgeclip",
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-185": {
+            "id": "tn-185",
+            "Name": "Creepy Castle Greenhouse (Entrance) to Main",
+            "source": "rr-greenhouse",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-186": {
+            "id": "tn-186",
+            "Name": "Creepy Castle Greenhouse (Exit) to Main",
+            "source": "rr-greenhouse",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "lanky"
+                    },
+                    {
+                        "Name": "free_trade_items"
+                    }
+                ]
+            }
+        },
+        "tn-187": {
+            "id": "tn-187",
+            "Name": "Creepy Castle Main to Trash Can",
+            "source": "rr-creepycastlemain",
+            "target": "rr-trashcan",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-188": {
+            "id": "tn-188",
+            "Name": "Creepy Castle Trash Can to Main",
+            "source": "rr-trashcan",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-189": {
+            "id": "tn-189",
+            "Name": "Creepy Castle Main to Shed",
+            "source": "rr-creepycastlemain",
+            "target": "rr-shed",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "primatepunch"
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-190": {
+            "id": "tn-190",
+            "Name": "Creepy Castle Shed to Main",
+            "source": "rr-shed",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-191": {
+            "id": "tn-191",
+            "Name": "Creepy Castle Main to Museum",
+            "source": "rr-creepycastlemain",
+            "target": "rr-museum",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "CreepyCastle",
+                                    3
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanSkew",
+                        "Params": [
+                            true
+                        ],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-192": {
+            "id": "tn-192",
+            "Name": "Creepy Castle Museum to Main",
+            "source": "rr-museum",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-193": {
+            "id": "tn-193",
+            "Name": "Creepy Castle Main to Lower Cave",
+            "source": "rr-castleverybottom",
+            "target": "rr-lowercave",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-194": {
+            "id": "tn-194",
+            "Name": "Creepy Castle Lower Cave to Main",
+            "source": "rr-lowercave",
+            "target": "rr-castleverybottom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-195": {
+            "id": "tn-195",
+            "Name": "Creepy Castle Main to Upper Cave (Back door)",
+            "source": "rr-creepycastlemain",
+            "target": "rr-uppercave",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-196": {
+            "id": "tn-196",
+            "Name": "Creepy Castle Upper Cave to Main (Back door)",
+            "source": "rr-uppercave",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-197": {
+            "id": "tn-197",
+            "Name": "Creepy Castle Main to Upper Cave (Moat door)",
+            "source": "rr-castlewaterfall",
+            "target": "rr-uppercave",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-198": {
+            "id": "tn-198",
+            "Name": "Creepy Castle Upper Cave to Main (Moat door)",
+            "source": "rr-uppercave",
+            "target": "rr-creepycastlemain",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-199": {
+            "id": "tn-199",
+            "Name": "Creepy Castle Ballroom to Museum",
+            "source": "rr-ballroom",
+            "target": "rr-museumbehindglass",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "monkeyport"
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            }
+        },
+        "tn-200": {
+            "id": "tn-200",
+            "Name": "Creepy Castle Museum to Ballroom",
+            "source": "rr-museumbehindglass",
+            "target": "rr-ballroom",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "monkeyport"
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            }
+        },
+        "tn-201": {
+            "id": "tn-201",
+            "Name": "Creepy Castle Museum to Car Race",
+            "source": "rr-museumbehindglass",
+            "target": "rr-castletinyrace",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-202": {
+            "id": "tn-202",
+            "Name": "Creepy Castle Car Race to Museum",
+            "source": "rr-castletinyrace",
+            "target": "rr-museumbehindglass",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-203": {
+            "id": "tn-203",
+            "Name": "Creepy Castle Lower Cave to Crypt",
+            "source": "rr-lowercave",
+            "target": "rr-crypt",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "coconut"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "peanut"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "pineapple"
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "ledgeclip",
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "checkBarrier",
+                        "Params": [
+                            "castle_crypt_doors"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-204": {
+            "id": "tn-204",
+            "Name": "Creepy Castle Crypt to Lower Cave",
+            "source": "rr-crypt",
+            "target": "rr-lowercave",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-205": {
+            "id": "tn-205",
+            "Name": "Creepy Castle Lower Cave to Mausoleum",
+            "source": "rr-lowercave",
+            "target": "rr-mausoleum",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "grape"
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "feather"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "checkBarrier",
+                        "Params": [
+                            "castle_crypt_doors"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            }
+        },
+        "tn-206": {
+            "id": "tn-206",
+            "Name": "Creepy Castle Mausoleum to Lower cave",
+            "source": "rr-mausoleum",
+            "target": "rr-lowercave",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-207": {
+            "id": "tn-207",
+            "Name": "Creepy Castle Crypt to Minecart",
+            "source": "rr-crypt",
+            "target": "rr-castleminecarts",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "coconut"
+                                    },
+                                    {
+                                        "Name": "checkBarrier",
+                                        "Params": [
+                                            "castle_crypt_doors"
+                                        ],
+                                        "isFunction": true
+                                    }
+                                ]
+                            },
+                            {
+                                "Name": "gorillagrab"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "CanPhase",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            }
+        },
+        "tn-208": {
+            "id": "tn-208",
+            "Name": "Creepy Castle Minecart to Crypt",
+            "source": "rr-castleminecarts",
+            "target": "rr-crypt",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-209": {
+            "id": "tn-209",
+            "Name": "Creepy Castle Upper Cave to Dungeon",
+            "source": "rr-uppercave",
+            "target": "rr-dungeon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        },
+        "tn-210": {
+            "id": "tn-210",
+            "Name": "Creepy Castle Dungeon to Upper Cave",
+            "source": "rr-dungeon",
+            "target": "rr-uppercave",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Transition",
+            "Type": "Direct",
+            "Requires": true
+        }
+    }
+}

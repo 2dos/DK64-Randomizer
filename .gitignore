@@ -202,3 +202,4 @@ current_total.cfg
 last_generated_time.cfg
 generated_seeds/*
 local_presets.json
+!tools/cave_logic
