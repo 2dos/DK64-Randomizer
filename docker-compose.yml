@@ -58,8 +58,6 @@ services:
         - RGG_CLIENT_SECRET=${RGG_CLIENT_SECRET}
         - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
         - API_KEY=${API_KEY}
-    networks:
-      - task_network
     depends_on:
       - controller
     restart: always

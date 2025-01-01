@@ -25,4 +25,4 @@ WORKDIR /app/racetime_bot
 RUN pip install .
 WORKDIR /app/racetime_bot/randobot
 # Command to run the application
-CMD ["python", "__init__.py"]
+CMD ["sh", "-c", "sleep 15 && python __init__.py"]
