@@ -216,3 +216,4 @@ private.key
 api_keys.cfg
 redis_data/
 redis_data/*
+randomizer/encryption.py
