@@ -112,7 +112,13 @@ def update_seed_results(patch, spoiler, settings_dict, password):
 
     # Always remove Password from the spoiler log.
     if spoiler.settings.has_password:
-        del spoiler_log["Password"]
+        try:
+            del spoiler_log["Password"]
+        except Exception:
+            try:
+                del spoiler_log["password"]
+            except Exception:
+                pass
 
     # Zip all the data into a single file.
     # Create a new zip file
