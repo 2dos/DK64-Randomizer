@@ -6,8 +6,6 @@ from datetime import datetime as Datetime
 from datetime import UTC
 import time
 from tempfile import mktemp
-import importlib.util
-import sys
 from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
@@ -128,31 +126,16 @@ def writeMultiselector(
             ROM_COPY.writeMultipleBytes(byte_data, 1)
 
 
-def encPass(*args) -> int:
+def encPass(spoiler) -> int:
     """Encrypt the password."""
-    return 0, 0
-
-
-def load_custom_encPass():
-    """Attempt to load and override encPass from randomizer/encryption.py."""
-    # Define the file path to randomizer/encryption.py
-    encryption_file_path = os.path.join(os.path.dirname(__file__), "randomizer", "encryption.py")
-
+    # Try to import randomizer.Encryption encrypt function, if we can pass all args to it.
     try:
-        if os.path.exists(encryption_file_path):
-            spec = importlib.util.spec_from_file_location("encryption", encryption_file_path)
-            if spec and spec.loader:
-                encryption_module = importlib.util.module_from_spec(spec)
-                sys.modules["randomizer.encryption"] = encryption_module
-                spec.loader.exec_module(encryption_module)
+        from randomizer.Encryption import encrypt
 
-                # Check if encPass is defined in the imported module
-                if hasattr(encryption_module, "encPass"):
-                    global encPass
-                    encPass = encryption_module.encPass
-                    print("Custom encPass function loaded.")
+        return encrypt(spoiler)
     except Exception as e:
-        print(f"An error occurred: {e}. Using default encPass.")
+        print(e)
+        return 0, 0
 
 
 def patching_response(spoiler):
@@ -602,7 +585,6 @@ def patching_response(spoiler):
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
     password = None
     if spoiler.settings.has_password:
-        load_custom_encPass()
         ROM_COPY.seek(sav + 0x1B0)
         byte_data, password = encPass(spoiler)
         ROM_COPY.writeMultipleBytes(byte_data, 4)
