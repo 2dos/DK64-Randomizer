@@ -23,7 +23,7 @@ color_palettes = [
         "kong": "diddy",
         "zones": [
             {"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "block"},
-            {"zone": "shirt_star", "image": 0xE6C, "colors": ["#00ff37"], "fill_type": "patch"}
+            {"zone": "shirt_star", "image": 0xE6C, "colors": ["#00ff37"], "fill_type": "patch"},
         ],
     },
     {
