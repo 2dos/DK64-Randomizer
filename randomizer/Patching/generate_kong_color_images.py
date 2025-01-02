@@ -9,10 +9,10 @@ from randomizer.Patching.Lib import PaletteFillType
 from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
 
 
-def patchColorTranspose(name, x, y, patch_img, target_color):
+def patchColorTranspose(x: int, y: int, patch_img, target_color: list, image_index: int):
     """Transposes RGBA value from patch file to new palette."""
     currentPix = patch_img.getpixel((x, y))
-    if name == "tie":
+    if image_index in (3725, 0xE6C):
         redRef = (255, 0, 0, 1)
         yellowRef = (255, 255, 0, 1)
         if (abs(currentPix[0] - redRef[0]) < 20) and (abs(currentPix[1] - redRef[1]) < 20) and (abs(currentPix[2] - redRef[2]) < 20):
@@ -54,7 +54,7 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
         else:
             # quickly convert the read pixel from RGBA32 to RGBA5551 so it doesnt write garbage data later
             return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
-    elif name == "clothes":
+    elif image_index == 3734:
         blueRef = (0, 90, 255, 1)
         if (abs(currentPix[0] - blueRef[0]) < 20) and (abs(currentPix[1] - blueRef[1]) < 20) and (abs(currentPix[2] - blueRef[2]) < 20):
             # if currentPix is exactly our reference colour or close enough to not be noticable
@@ -152,14 +152,14 @@ def convertColors(color_palettes):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
             elif zone["fill_type"] == PaletteFillType.patch:
-                if zone["image"] == 3725 or zone["image"] == 3734:
-                    # DK's tie or lanky's butt patch, respectively
+                if zone["image"] in (3725, 3734, 0xE6C):
+                    # DK's tie, lanky's butt patch and diddy's back star, respectively
                     patch_img = getImageFile(25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
 
                     safe = True
                     for y in range(64):
                         for x in range(32):
-                            ext = convertRGBAToBytearray(patchColorTranspose(zone["zone"], x, y, patch_img, rgba_list[0]))
+                            ext = convertRGBAToBytearray(patchColorTranspose(x, y, patch_img, rgba_list[0], zone["image"]))
                             # Potentially fix the TA crash issues
                             if y == 42:
                                 if (x >= 18 and x < 22) or (x >= 25):

@@ -81,6 +81,7 @@ def writeKongColors(settings: Settings):
             1,
             [
                 KongPalette("clothes", 3686, PaletteFillType.block),
+                KongPalette("clothes", 0xE6C, PaletteFillType.patch),
             ],
         ),
         KongPaletteSetting(

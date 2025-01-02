@@ -666,3 +666,46 @@ blockTreeClimbing:
     blockTreeClimbing_noclimb:
         j 0x8072F474
         or $a0, $s2, $zero
+
+storeFairyData:
+    ; f16 = screen x
+    ; f4 = screen y
+    lui $at, hi(CurrentActorPointer_0)
+    lw $at, lo(CurrentActorPointer_0) ($at)
+    trunc.w.s $f16, $f16
+    trunc.w.s $f4, $f4
+    mfc1 $a0, $f16 ; x
+    mfc1 $a1, $f4 ; y
+    sh $a0, 0x1B0 ($at)
+    jal getScreenDist
+    sh $a1, 0x1B2 ($at)
+    jal getDistanceCap
+    or $a0, $v0, $zero
+    lui $a0, hi(CurrentActorPointer_0)
+    lw $a0, lo(CurrentActorPointer_0) ($a0)
+    jal renderActor
+    sh $v0, 0x1B4 ($a0)
+    j 0x806C5FD8
+    nop
+
+setSadFace:
+    lui $v1, hi(CurrentActorPointer_0)
+    lw $v1, lo(CurrentActorPointer_0) ($v1)
+    sh $zero, 0x1B6 ($v1)
+    lbu $v1, 0x1EC ($v0)
+    addiu $t1, $zero, 1
+    beq $t1, $v1, setSadFace_finish ; If face is happy, do not overwrite with sad
+    nop
+    sb $t0, 0x1EC ($v0)
+
+    setSadFace_finish:
+        j 0x806C5E90
+        lui $v0, 0x8080
+
+setHappyFace:
+    addiu $t6, $zero, 1
+    lui $v0, hi(CurrentActorPointer_0)
+    lw $v0, lo(CurrentActorPointer_0) ($v0)
+    sb $t6, 0x1EC ($t7)
+    j 0x806C5E44
+    sh $t6, 0x1B6 ($v0)
