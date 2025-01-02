@@ -1016,6 +1016,7 @@ def disableDynamicReverb(ROM_COPY: ROM):
         original_value &= 0xFFFE
         writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
 
+
 boss_maps = [
     Maps.JapesBoss,
     Maps.AztecBoss,
@@ -1041,10 +1042,11 @@ k_rool_maps = [
 
 IS_FINAL_BOSS_BIT = 0x200
 
+
 def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings):
-    """Fixes all boss map properties to account for the correct attributes."""
+    """Fix all boss map properties to account for the correct attributes."""
     # 02
-    writeValue(ROM_COPY, 0x805FF476, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict) # 805ff474 - Transition song playing (checks bit is not set)
+    writeValue(ROM_COPY, 0x805FF476, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict)  # 805ff474 - Transition song playing (checks bit is not set)
     # 80618640 - SFX play from actor (checks bit is not set)
     # 806206fc - something with mini
     # 80621790 - rocket something
@@ -1078,7 +1080,7 @@ def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings)
     # 806EE83C - Damage take something
     # 806F058C - Play instrument cutscene
     # 806F12C8 - Play gone song
-    writeValue(ROM_COPY, 0x8071288A, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict) # 80712888 - Deathwarp location (should change this)
+    writeValue(ROM_COPY, 0x8071288A, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict)  # 80712888 - Deathwarp location (should change this)
     # 80712C34 - Helm Timer init
     # 80712F34 - Warp after beating KR in main menu
     # 80726CDC - If off, and enemy id != 4 and actor_type != fairy, set props bitfield
@@ -1090,7 +1092,7 @@ def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings)
     writeValue(ROM_COPY, 0x806A895C, Overlay.Static, 0x8CC6BB68, offset_dict, 4)  # lw $a2, 0xBB68 ($a0)
     writeValue(ROM_COPY, 0x806A8960, Overlay.Static, 0x30C10000 | IS_FINAL_BOSS_BIT, offset_dict, 4)  # andi $at, $a2, IS_FINAL_BOSS_BIT
     writeValue(ROM_COPY, 0x806A8970, Overlay.Static, 0x10200009, offset_dict, 4)  # beqz $at, 0x9
-    
+
     for map_id in boss_maps:
         check_map = map_id
         if check_map == Maps.KroolShoe:
@@ -1707,7 +1709,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806C5E00, Overlay.Static, 0x45000016, offset_dict, 4)  # bc1f 0x16 - Free up one slot so we can store the box addr
         writeValue(ROM_COPY, 0x806C5E08, Overlay.Static, 0x24010001, offset_dict, 4)  # li $at, 1 - Shift this one addr earlier
         writeValue(ROM_COPY, 0x806C5E0C, Overlay.Static, 0xA5810000 | FAIRY_SCREEN_RANGE, offset_dict, 4)  # sh $at, 0x1b6 ($t4) - Store fairy as in box
-        writeValue(ROM_COPY, 0x806C5E10, Overlay.Static, 0x904D01EC, offset_dict, 4)  # lbu $t5 0x01EC ($v0) - Fix the reference address since we're no longer storing a copy of extra player pointer to t4
+        writeValue(
+            ROM_COPY, 0x806C5E10, Overlay.Static, 0x904D01EC, offset_dict, 4
+        )  # lbu $t5 0x01EC ($v0) - Fix the reference address since we're no longer storing a copy of extra player pointer to t4
         # Storage
         writeHook(ROM_COPY, 0x806C5FA8, Overlay.Static, "storeFairyData", offset_dict)
         # Check
@@ -1718,7 +1722,7 @@ def patchAssembly(ROM_COPY, spoiler):
         # Face controllers
         writeHook(ROM_COPY, 0x806C5E88, Overlay.Static, "setSadFace", offset_dict)
         writeHook(ROM_COPY, 0x806C5E3C, Overlay.Static, "setHappyFace", offset_dict)
-        
+
         # Thankfully currentactor is loaded into a0.
         # I don't think we can sneak in creating the other JALs necessary to calculate distance.
         # We could make this part of "better fairy camera"? This means those calcuations don't need to be made.
