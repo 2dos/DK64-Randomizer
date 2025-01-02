@@ -1087,10 +1087,7 @@ def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings)
 
     # 20
     # 8061bfb0 - Camera stuff
-    writeValue(ROM_COPY, 0x806A8954, Overlay.Static, 0x3C068080, offset_dict, 4)  # lui $a2, 0x8080
-    writeValue(ROM_COPY, 0x806A8958, Overlay.Static, 0x8CC2BB64, offset_dict, 4)  # lw $v0, 0xBB64 ($a0)
-    writeValue(ROM_COPY, 0x806A895C, Overlay.Static, 0x8CC6BB68, offset_dict, 4)  # lw $a2, 0xBB68 ($a0)
-    writeValue(ROM_COPY, 0x806A8960, Overlay.Static, 0x30C10000 | IS_FINAL_BOSS_BIT, offset_dict, 4)  # andi $at, $a2, IS_FINAL_BOSS_BIT
+    writeHook(ROM_COPY, 0x806A895C, Overlay.Static, "checkKRoolPause", offset_dict)
     writeValue(ROM_COPY, 0x806A8970, Overlay.Static, 0x10200009, offset_dict, 4)  # beqz $at, 0x9
 
     for map_id in boss_maps:

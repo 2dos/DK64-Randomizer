@@ -274,6 +274,9 @@ void writeEndSequence(void) {
 }
 
 float getOscillationDelta(void) {
+	if (CurrentMap == MAP_CAVES) {
+		return 0.59f;
+	}
 	return 0.5f;
 }
 

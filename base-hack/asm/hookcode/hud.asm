@@ -280,3 +280,9 @@ capScreenShake:
     capScreenShake_finish:
         j 0x8061F0D4
         addiu $at, $zero, 1
+
+checkKRoolPause:
+    lw $at, 0xBB68 ($v0)
+    lw $v0, 0xBB64 ($v0)
+    j 0x806A8964
+    andi $at, $at, 0x200
