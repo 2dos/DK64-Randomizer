@@ -133,7 +133,8 @@ def encPass(spoiler) -> int:
         from randomizer.Encryption import encrypt
 
         return encrypt(spoiler)
-    except ImportError:
+    except Exception as e:
+        print(e)
         return 0, 0
 
 
