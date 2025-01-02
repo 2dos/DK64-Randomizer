@@ -288,6 +288,10 @@ class RandoHandler(RaceHandler):
         }
         if self.dk64.discord_webhook and not self.data.get("unlisted", False):
             requests.post(self.dk64.discord_webhook, json=embed_data)
+        if self.state["result_data"].get("password"):
+            # await self.send_message("Seed generated! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
+            # DM the password to the user
+            await self.send_message(f"Seed generated! Password: {self.state['result_data']['password']}", direct_to=self.data.get("opened_by", {}).get("id"))
 
     async def send_presets(self, dev):
         """Send a list of known presets to the race room."""
