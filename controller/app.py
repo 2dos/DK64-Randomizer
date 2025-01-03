@@ -325,7 +325,6 @@ def get_presets():
 
 
 @app.route("/admin", methods=["GET"])
-@enforce_api_restrictions()
 def admin_portal():
     """Serve the admin portal."""
     # Branch Data for the admin portal
