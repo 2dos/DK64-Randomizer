@@ -357,7 +357,6 @@ def admin_portal():
 
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])
-@enforce_api_restrictions()
 def admin_presets():
     """Update or delete a local preset."""
     if not session.get("admin", False):
