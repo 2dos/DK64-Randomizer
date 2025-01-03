@@ -683,6 +683,7 @@ storeFairyData:
     or $a0, $v0, $zero
     lui $a0, hi(CurrentActorPointer_0)
     lw $a0, lo(CurrentActorPointer_0) ($a0)
+    or $a1, $zero, $zero
     jal renderActor
     sh $v0, 0x1B4 ($a0)
     j 0x806C5FD8
