@@ -410,7 +410,12 @@
     "wrinkly_hints": {
       "standard": 1
     },
-    "wrinkly_location_rando": 0
+    "wrinkly_location_rando": 0,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   },
   {
     "name": "Standard",
@@ -843,7 +848,12 @@
       "cryptic": 0.2,
       "item_hinting": 0.3
     },
-    "wrinkly_location_rando": 0.3
+    "wrinkly_location_rando": 0.3,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   },
   {
     "name": "Difficult",
@@ -1324,7 +1334,12 @@
       "cryptic": 0.3,
       "item_hinting": 0.3
     },
-    "wrinkly_location_rando": 0.6
+    "wrinkly_location_rando": 0.6,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   },
   {
     "name": "Difficult with QoL Shuffle",
@@ -1806,6 +1821,11 @@
       "cryptic": 0.2,
       "item_hinting": 0.3
     },
-    "wrinkly_location_rando": 0.6
+    "wrinkly_location_rando": 0.6,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   }
 ]
