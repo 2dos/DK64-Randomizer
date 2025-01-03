@@ -325,7 +325,6 @@ def get_presets():
 
 
 @app.route("/admin", methods=["GET"])
-@enforce_api_restrictions()
 def admin_portal():
     """Serve the admin portal."""
     # Branch Data for the admin portal
@@ -358,7 +357,6 @@ def admin_portal():
 
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])
-@enforce_api_restrictions()
 def admin_presets():
     """Update or delete a local preset."""
     if not session.get("admin", False):
