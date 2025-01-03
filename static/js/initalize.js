@@ -892,13 +892,23 @@ function query_seed_status(url, task_id) {
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
-        postToastMessage("Something went wrong please try again", true, 1);
+        // If error is in the result object, display it
+        if (data["error"]) {
+          postToastMessage(data["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
         sent_generating_status = false;
       }
     },
     error: function (data, textStatus, xhr) {
-      postToastMessage("Something went wrong please try again", true, 1);
-    },
+        // If error is in the result object, display it
+        if (data["error"]) {
+          postToastMessage(data["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
+      },
   });
 }
 
