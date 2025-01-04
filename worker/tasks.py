@@ -110,6 +110,16 @@ def update_seed_results(patch, spoiler, settings_dict, password):
     else:
         del spoiler_log["Unlock Time"]
 
+    # Always remove Password from the spoiler log.
+    if spoiler.settings.has_password:
+        try:
+            del spoiler_log["Password"]
+        except Exception:
+            try:
+                del spoiler_log["password"]
+            except Exception:
+                pass
+
     # Zip all the data into a single file.
     # Create a new zip file
     zip_data = BytesIO()

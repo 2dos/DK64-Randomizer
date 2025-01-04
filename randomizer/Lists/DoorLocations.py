@@ -2904,6 +2904,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=12,
             moveless=False,
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Lanky's Attic",

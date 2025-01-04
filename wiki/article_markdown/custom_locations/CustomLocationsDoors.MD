@@ -303,7 +303,7 @@
 | Forest Lanky Zingers Room | Lanky's 2-Mushroom Room | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Mill Front | DK Lever puzzle Area | Wrinkly | `(l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.CanPhase() or l.generalclips` | 
 | Forest Mill Back | Mill - back side - Near Chunky Coins | Boss, Wrinkly |  | 
-| Forest Winch Room | Winch Room - on the Winch | Boss, Dk_Portal, Wrinkly |  | 
+| Forest Winch Room | Winch Room - on the Winch | Wrinkly |  | 
 | Forest Mill Attic | Lanky's Attic | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Thornvine Barn | DK's Barn - Between 2 Barrels near Switch | Boss, Wrinkly |  | 
 | Fungi Forest | Forest Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 

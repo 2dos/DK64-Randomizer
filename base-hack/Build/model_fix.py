@@ -7,19 +7,6 @@ import math
 from BuildEnums import TableNames, ExtraTextures
 from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS
 
-diddy_fix = """
-    E7 00 00 00 00 00 00 00
-    FC 12 18 24 FF 33 FF FF
-    D7 00 00 02 08 00 08 00
-    FD 10 00 00 0E 00 00 00
-    E6 00 00 00 00 00 00 00
-    F3 00 00 00 07 3F F1 00
-    E7 00 00 00 00 00 00 00
-    E3 00 10 01 00 00 00 00
-    D9 FF FF FF 00 04 00 00
-    DA 38 00 03 04 00 00 40
-"""
-
 # lanky_fix = """
 #     E7 00 00 00 00 00 00 00
 #     E3 00 0A 01 00 10 00 00
@@ -101,8 +88,6 @@ counter_adjustment_2 = """
 """
 
 modifications = [
-    {"model_index": 0, "model_file": "diddy_base.bin", "wipe": [[0x47D0, 0x4878]], "add": [diddy_fix]},
-    {"model_index": 1, "model_file": "diddy_ins.bin", "wipe": [[0x4598, 0x4620]], "add": [diddy_fix]},
     {"model_index": 5, "model_file": "lanky_base.bin", "wipe": [[0x5204, 0x5208], [0x541C, 0x5420], [0x56CC, 0x56D0]], "add": [lanky_fix5, lanky_fix5, lanky_fix5]},
     {"model_index": 6, "model_file": "lanky_ins.bin", "wipe": [[0x5BEC, 0x5BF0], [0x5EA4, 0x5EA8], [0x594C, 0x5950], [0x5FEC, 0x5FF0]], "add": [lanky_fix5, lanky_fix5, lanky_fix5, lanky_fix5]},
     {"model_index": 3, "model_file": "dk_base.bin", "wipe": [[0x61A2, 0x61A4]], "add": [dk_adjustment]},
