@@ -43,7 +43,8 @@ LogicRegions = {
         Event(Events.FactoryW3aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.Testing, lambda l: (Events.TestingGateOpened in l.Events or l.CanPhase() or l.generalclips) and l.climbing),
-        TransitionFront(Regions.BeyondHatch, lambda l: Events.HatchOpened in l.Events or l.CanPhase()),
+        TransitionFront(Regions.LowerCore, lambda l: Events.HatchOpened in l.Events or l.CanPhase()),
+        TransitionFront(Regions.AlcoveBeyondHatch, lambda l: Events.HatchOpened in l.Events),  # Not sure how easy it is to get there, especially without damage boosting
     ]),
 
     Regions.Testing: Region("Testing", HintRegion.Testing, Levels.FranticFactory, True, -1, [
@@ -142,7 +143,6 @@ LogicRegions = {
         Event(Events.FactoryW4aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
-        TransitionFront(Regions.FranticFactoryStart, lambda l: Events.HatchOpened in l.Events and l.climbing),
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
@@ -169,6 +169,11 @@ LogicRegions = {
         TransitionFront(Regions.BeyondHatch, lambda l: True)
     ]),
 
+    Regions.AlcoveBeyondHatch: Region("Alcove Beyond Hatch", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [], [], [
+        TransitionFront(Regions.LowerCore, lambda l: True),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: Events.HatchOpened in l.Events and l.climbing)
+    ]),
+
     Regions.LowerCore: Region("Lower Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryKasplatProductionBottom, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryMainEnemy_LowWarp4, lambda l: True),
@@ -183,6 +188,8 @@ LogicRegions = {
         Event(Events.ChunkyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.chunky),
     ], [
         TransitionFront(Regions.BeyondHatch, lambda l: True),
+        TransitionFront(Regions.AlcoveBeyondHatch, lambda l: Events.HatchOpened in l.Events and l.climbing),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: Events.HatchOpened in l.Events and l.climbing),
         TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events or l.CanPhase(), Transitions.FactoryBeyondHatchToInsideCore),
         TransitionFront(Regions.MiddleCore, lambda l: Events.MainCoreActivated in l.Events),
     ]),

@@ -510,6 +510,7 @@ def GenerateLevelOrderForOneStartingKong(settings):
 def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
     """Generate a level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
+    last_level_index = 7
     # Initialize level order
     newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
     # Sort levels by most to least kongs
@@ -528,6 +529,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
     else:
         kongsInLevels[Levels.HideoutHelm] = 0.5  # Make sure Helm is always the first one to be shuffled if you have something of zero index
         levelIndicesToFill.add(8)
+        last_level_index = 8
     levelsSortedByKongs = [kongsInLevel[0] for kongsInLevel in sorted(kongsInLevels.items(), key=lambda x: x[1], reverse=True)]
     if settings.shuffle_helm_location:
         kongsInLevels[Levels.HideoutHelm] = 0  # Reset helm back to 0 (I hate this whole system more than you do)
@@ -542,7 +544,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         kongsAssumed = settings.starting_kongs_count + kongsUnplaced
         levelsReachable = []
         # Traverse through levels in order
-        for level in range(1, 9):
+        for level in range(1, (last_level_index + 1)):
             # If don't have 5 kongs yet, stop if don't have enough kongs to reach this level
             if kongsAssumed < 5 and level > kongsAssumed + 1:
                 break

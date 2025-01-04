@@ -1087,79 +1087,59 @@ document
 
 // Enable and disable settings based on Item Rando being on/off
 function toggle_item_rando() {
-  const selector = document.getElementById("item_rando_list_modal");
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  const smallerShops = document.getElementById("smaller_shops");
-  const moveVanilla = document.getElementById("move_off");
-  const moveRando = document.getElementById("move_on");
-  const enemyDropRando = document.getElementById("enemy_drop_rando");
-  const nonItemRandoWarning = document.getElementById("non_item_rando_warning");
-  const sharedShopWarning = document.getElementById("shared_shop_warning");
-  const kongRando = document.getElementById("kong_rando");
+  const elements = {
+    selector: document.getElementById("item_rando_list_modal"),
+    itemRandoPool: document.getElementById("item_rando_list_selected").options,
+    smallerShops: document.getElementById("smaller_shops"),
+    moveVanilla: document.getElementById("move_off"),
+    moveRando: document.getElementById("move_on"),
+    enemyDropRando: document.getElementById("enemy_drop_rando"),
+    nonItemRandoWarning: document.getElementById("non_item_rando_warning"),
+    sharedShopWarning: document.getElementById("shared_shop_warning"),
+    kongRando: document.getElementById("kong_rando"),
+    shuffleItems: document.getElementById("shuffle_items"),
+    moveOnCrossPurchase: document.getElementById("move_on_cross_purchase"),
+    randomPrices: document.getElementById("random_prices"),
+  };
 
   let shopsInPool = false;
   let kongsInPool = false;
   let nothingSelected = true;
 
-  for (let option of itemRandoPool) {
-    if (option.value === "shop" && option.selected) {
-      shopsInPool = true;
-    }
-    if (option.value === "kong" && option.selected) {
-      kongsInPool = true;
-    }
+  for (let option of elements.itemRandoPool) {
     if (option.selected) {
       nothingSelected = false;
+      if (option.value === "shop") shopsInPool = true;
+      if (option.value === "kong") kongsInPool = true;
     }
   }
 
   if (nothingSelected) {
-    shopsInPool = true;
-    kongsInPool = true;
+    shopsInPool = kongsInPool = true;
   }
 
-  const disabled = !document.getElementById("shuffle_items").checked;
+  const disabled = !elements.shuffleItems.checked;
 
-  if (disabled) {
-    selector.setAttribute("disabled", "disabled");
-    smallerShops.setAttribute("disabled", "disabled");
-    smallerShops.checked = false;
-    moveVanilla.removeAttribute("disabled");
-    moveRando.removeAttribute("disabled");
-    enemyDropRando.setAttribute("disabled", "disabled");
-    enemyDropRando.checked = false;
-    nonItemRandoWarning.removeAttribute("hidden");
-    sharedShopWarning.removeAttribute("hidden");
-    kongRando.removeAttribute("disabled");
-  } else {
-    selector.removeAttribute("disabled");
-    enemyDropRando.removeAttribute("disabled");
-    nonItemRandoWarning.setAttribute("hidden", "hidden");
+  elements.selector.toggleAttribute("disabled", disabled);
+  elements.smallerShops.toggleAttribute("disabled", disabled || !shopsInPool);
+  elements.smallerShops.checked = false;
+  elements.moveVanilla.toggleAttribute("disabled", shopsInPool);
+  elements.moveRando.toggleAttribute("disabled", shopsInPool);
+  elements.enemyDropRando.toggleAttribute("disabled", disabled);
+  elements.enemyDropRando.checked = disabled;
+  elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
+  elements.sharedShopWarning.toggleAttribute("hidden", !shopsInPool || disabled);
+  elements.kongRando.toggleAttribute("disabled", kongsInPool);
+  elements.kongRando.checked = kongsInPool;
 
-    if (shopsInPool) {
-      sharedShopWarning.setAttribute("hidden", "hidden");
-
-      if (moveVanilla.selected || moveRando.selected) {
-        document.getElementById("move_on_cross_purchase").selected = true;
-      }
-
-      moveVanilla.setAttribute("disabled", "disabled");
-      moveRando.setAttribute("disabled", "disabled");
-      smallerShops.removeAttribute("disabled");
-
-      document.getElementById("random_prices").removeAttribute("disabled");
+  if (!disabled && shopsInPool) {
+    if (elements.moveVanilla.selected || elements.moveRando.selected) {
+      elements.moveOnCrossPurchase.selected = true;
     }
-
-    if (kongsInPool) {
-      kongRando.setAttribute("disabled", "disabled");
-      kongRando.checked = true;
-    } else {
-      kongRando.removeAttribute("disabled");
-    }
+    elements.randomPrices.removeAttribute("disabled");
   }
 }
+
 
 document
   .getElementById("shuffle_items")

@@ -94,6 +94,7 @@ RegionMapList = {
     Regions.ChunkyRoomPlatform: Maps.FranticFactory,
     Regions.PowerHut: Maps.FactoryPowerHut,
     Regions.BeyondHatch: Maps.FranticFactory,
+    Regions.AlcoveBeyondHatch: Maps.FranticFactory,
     Regions.LowerCore: Maps.FranticFactory,
     Regions.InsideCore: Maps.FactoryCrusher,
     Regions.MiddleCore: Maps.FranticFactory,

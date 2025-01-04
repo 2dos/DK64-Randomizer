@@ -39,7 +39,7 @@ services:
       - WORKER_URL_MASTER=http://master_worker:8000
       - BRANCH=${BRANCH:-LOCAL}
     deploy:
-      replicas: ${CONTROLLER_REPLICAS:-1}
+      replicas: ${CONTROLLER_REPLICAS:-2}
       update_config:
         parallelism: 1
         delay: 10s

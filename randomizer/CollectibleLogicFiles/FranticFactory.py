@@ -2,6 +2,7 @@
 """Collectible logic file for Frantic Factory."""
 
 from randomizer.Enums.Collectibles import Collectibles
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
@@ -11,6 +12,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # First tunnel
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # W2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # W1
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.HatchOpened in l.Events, None, 10),  # On pole down the hatch
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Around hatch
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 5),  # Around hatch
@@ -73,6 +75,9 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.CanPhase(), None, 3),  # Behind Stash Snatch barrel
     ],
+    Regions.AlcoveBeyondHatch: [
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 2),  # Halfway down the hatch
+    ],
     Regions.BeyondHatch: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 6),  # Tunnel to production room
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 4),  # Tunnel between production room and Chunky room
@@ -80,8 +85,6 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 12),  # Around bottom of production room
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Path to shops
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 5),  # Pipe to free Chunky switch
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 2),  # Halfway down the hatch
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),  # On pole down the hatch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # W1
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),  # Dark Room
 

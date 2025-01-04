@@ -824,7 +824,7 @@ function pushToHistory(message, emphasize = false) {
 function postToastMessage(message, is_warning, progress_ratio) {
   // Write Toast
   $("#progress-text").text(message);
-  pushToHistory(message);
+  pushToHistory(message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'));
   // Handle Progress Bar
   perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
@@ -892,13 +892,23 @@ function query_seed_status(url, task_id) {
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
-        postToastMessage("Something went wrong please try again", true, 1);
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
         sent_generating_status = false;
       }
     },
     error: function (data, textStatus, xhr) {
-      postToastMessage("Something went wrong please try again", true, 1);
-    },
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
+      },
   });
 }
 

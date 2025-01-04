@@ -13,6 +13,7 @@ from os import environ, path, walk
 import requests
 from flask import Blueprint, Flask, jsonify, make_response, redirect, render_template, request, send_file, send_from_directory, session
 from flask_cors import CORS
+from flask_session import Session
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -20,7 +21,7 @@ from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from redis import Redis
+from redis import Redis, from_url
 from rq import Queue
 from rq.job import Job, Retry
 from version import version
@@ -63,6 +64,15 @@ FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
+# Configure Redis for storing the session data on the server-side
+app.config["SESSION_TYPE"] = "redis"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_USE_SIGNER"] = True
+app.config["SESSION_REDIS"] = from_url("redis://redis:6379")
+
+# Create and initialize the Flask-Session object AFTER `app` has been configured
+server_session = Session(app)
+
 
 # Shared structure to manage threads
 tasks = {}
@@ -315,7 +325,6 @@ def get_presets():
 
 
 @app.route("/admin", methods=["GET"])
-@enforce_api_restrictions()
 def admin_portal():
     """Serve the admin portal."""
     # Branch Data for the admin portal
@@ -348,7 +357,6 @@ def admin_portal():
 
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])
-@enforce_api_restrictions()
 def admin_presets():
     """Update or delete a local preset."""
     if not session.get("admin", False):
