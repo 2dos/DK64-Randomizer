@@ -824,7 +824,7 @@ function pushToHistory(message, emphasize = false) {
 function postToastMessage(message, is_warning, progress_ratio) {
   // Write Toast
   $("#progress-text").text(message);
-  pushToHistory(message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'));
+  pushToHistory(message);
   // Handle Progress Bar
   perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
@@ -892,9 +892,9 @@ function query_seed_status(url, task_id) {
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
-        // If error is in the result object, display it
-        if(Object.hasOwn(data, "error")){
-          postToastMessage(data["error"], true, 1);
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
         } else {
           postToastMessage("Something went wrong please try again", true, 1);
         }
@@ -902,13 +902,13 @@ function query_seed_status(url, task_id) {
       }
     },
     error: function (data, textStatus, xhr) {
-      // If error is in the result object, display it
-      if(Object.hasOwn(data, "error")){
-        postToastMessage(data["error"], true, 1);
-      } else {
-        postToastMessage("Something went wrong please try again", true, 1);
-      }
-    },
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
+      },
   });
 }
 
@@ -928,11 +928,7 @@ function submit_seed_generation(url, json, branch) {
       query_seed_status(url, task_id);
     },
     error: function (data, textStatus, xhr) {
-      if(Object.hasOwn(data, "error")){
-        postToastMessage(data["error"], true, 1);
-      } else {
-        postToastMessage("Something went wrong please try again", true, 1);
-      }
+      postToastMessage("Something went wrong please try again", true, 1);
     }});
 }
 function getStringFile(file) {
