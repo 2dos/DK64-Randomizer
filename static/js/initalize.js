@@ -893,6 +893,9 @@ function query_seed_status(url, task_id) {
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
         // If error is in the result object, display it
+        console.log(data)
+        // Log the type
+        console.log(typeof data)
         if (data["error"]) {
           postToastMessage(data["error"], true, 1);
         } else {
@@ -903,6 +906,9 @@ function query_seed_status(url, task_id) {
     },
     error: function (data, textStatus, xhr) {
         // If error is in the result object, display it
+        console.log(data)
+        // Log the type
+        console.log(typeof data)
         if (data["error"]) {
           postToastMessage(data["error"], true, 1);
         } else {
