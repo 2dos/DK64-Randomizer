@@ -892,12 +892,9 @@ function query_seed_status(url, task_id) {
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
-        // If error is in the result object, display it
-        console.log(data)
-        // Log the type
-        console.log(typeof data)
-        if (data["error"]) {
-          postToastMessage(data["error"], true, 1);
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
         } else {
           postToastMessage("Something went wrong please try again", true, 1);
         }
@@ -905,12 +902,9 @@ function query_seed_status(url, task_id) {
       }
     },
     error: function (data, textStatus, xhr) {
-        // If error is in the result object, display it
-        console.log(data)
-        // Log the type
-        console.log(typeof data)
-        if (data["error"]) {
-          postToastMessage(data["error"], true, 1);
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
         } else {
           postToastMessage("Something went wrong please try again", true, 1);
         }
