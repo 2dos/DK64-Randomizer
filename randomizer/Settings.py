@@ -1,6 +1,7 @@
 """Settings class and functions."""
 
 import json
+import logging
 import math
 import random
 from copy import deepcopy
@@ -196,7 +197,9 @@ class Settings:
 
         # Generate the settings string - DO THIS LAST because the encryption method alters the form data
         try:
+            logger = logging.getLogger(__name__)
             self.settings_string = encrypt_settings_string_enum(form_data)
+            logger.warning("Using settings string: " + self.settings_string)
         except Exception as ex:
             raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
 

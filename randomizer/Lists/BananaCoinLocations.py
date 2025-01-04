@@ -3115,7 +3115,7 @@ BananaCoinGroupList = {
             map_id=Maps.FranticFactory,
             name="Down Hatch",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.LowerCore,
+            region=Regions.AlcoveBeyondHatch,
             locations=[
                 [1.0, 609, 443, 1853],
                 [1.0, 644, 443, 1840],

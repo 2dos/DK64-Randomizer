@@ -858,7 +858,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         kongs_to_hint = [kong for kong in ItemPool.Kongs(spoiler.settings) if ItemPool.GetKongForItem(kong) not in spoiler.settings.starting_kong_list]
         if spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types:
             item_region_locations_to_hint.extend([key_loc for key_loc in key_location_ids.values()])  # Keys you don't start with
-            if spoiler.settings.key_8_helm:  # You may know that Key 8 is in Helm and that's pointless to hint
+            if spoiler.settings.key_8_helm and Locations.HelmKey in item_region_locations_to_hint:  # You may know that Key 8 is in Helm and that's pointless to hint
                 item_region_locations_to_hint.remove(Locations.HelmKey)
         # Determine what moves are hintable
         all_hintable_moves = ItemPool.AllKongMoves() + ItemPool.TrainingBarrelAbilities() + kongs_to_hint
