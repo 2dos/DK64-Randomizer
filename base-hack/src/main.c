@@ -27,6 +27,7 @@ int resetPictureStatus(void) {
 		}
 	}
 	Player->fairy_state = 0;
+	return value;
 }
 
 void cFuncLoop(void) {
