@@ -1719,6 +1719,7 @@ def patchAssembly(ROM_COPY, spoiler):
         # Face controllers
         writeHook(ROM_COPY, 0x806C5E88, Overlay.Static, "setSadFace", offset_dict)
         writeHook(ROM_COPY, 0x806C5E3C, Overlay.Static, "setHappyFace", offset_dict)
+        writeFunction(ROM_COPY, 0x806CAAA0, Overlay.Static, "resetPictureStatus", offset_dict)
 
         # Thankfully currentactor is loaded into a0.
         # I don't think we can sneak in creating the other JALs necessary to calculate distance.
