@@ -31,7 +31,6 @@ from cleanup import enable_cleanup
 from oauth import DiscordAuth
 from functools import wraps
 from swagger_ui import flask_api_doc
-from traceback import format_exception_only
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
@@ -91,17 +90,12 @@ class TaskThread(threading.Thread):
         self.kwargs = kwargs
         self.result_complete = False
         self.result = None
-        self.error = None
 
     def run(self):
         """Run the task in the background."""
         if not self.result_complete:
             self.result_complete = True
-            try:
-                self.result = self.target(self.kwargs.get("args")[0])
-            except Exception as err:
-                self.error = format_exception_only(err)[-1].strip().replace("\n", "")
-                raise
+            self.result = self.target(self.kwargs.get("args")[0])
 
 
 redis_conn = Redis(host="redis", port=6379)
@@ -269,13 +263,7 @@ def task_status(task_id):
                 return jsonify({"task_id": task_id, "status": "started", "priority": "High"}), 200
             else:
                 result = task_thread.result
-                if result is not None:
-                    return set_response(json.dumps({"result": result, "status": "finished"}), 200)
-                else:
-                    error = None
-                    if task_thread.error:
-                        error = task_thread.error
-                    return set_response(json.dumps({"status": "failed", "error": f"{error}"}), 200)
+                return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     try:
         task = Job.fetch(task_id, connection=redis_conn)
     except Exception:
