@@ -1,24 +1,23 @@
+import json
 import sys
 import os
 import inspect
 import ast
-from ast_logic import ast_to_json
-
-
-
+import re
 # Append the parent directory to sys.path
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+parent_dir = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), '../../../'))
 sys.path.append(parent_dir)
 
+from copy import deepcopy
+
+from tools.cave_logic.Processor.Utils import parse_ast_by_separator, parse_ast_to_dict
+from tools.cave_logic.ast_logic import ast_to_json
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.DoorType import DoorType
+# from randomizer.Enums.DoorType import DoorType
 from randomizer.Lists.DoorLocations import door_locations,GetBossLobbyRegionIdForRegion
 from randomizer.Enums.Items import Items
 from randomizer.Logic import RegionsOriginal
-
-
-import json
-from copy import deepcopy
 
 RegionList = deepcopy(RegionsOriginal)
 
@@ -36,20 +35,24 @@ def door_to_edge(door):
     target = Items.NoItem.name
 
 
-    if(door.door_type == DoorType.boss):
+    if(door.door_type == 'boss'): #DoorType.boss
         target_region = GetBossLobbyRegionIdForRegion(
         door.logicregion, portal_region)
         target = target_region.name
         edgeType = "Neighbourhood"
         edgeTargetType= "Location"
 
-    l = door.logic
-    req_str = inspect.getsource(door.logic).strip()
-    # req = req.split("lambda l: ")[1]
-    # req = req.replace("\n", "")
-    req_str = req_str.rstrip(',')
+    # l = door.logic
+    # req_str = inspect.getsource(door.logic).strip()
+    # # req = req.split("lambda l: ")[1]
+    # # req = req.replace("\n", "")
+    # req_str = req_str.rstrip(',')
 
-    req = ast.parse(req_str)
+    # req = ast.parse(req_str)
+    # req_ast = req.body[0].value
+    # req2 = ast_to_json(req_ast, {})
+
+    req = parse_ast_by_separator(door.logic,  "logic = lambda l: ")
     req_ast = req.body[0].value
     req2 = ast_to_json(req_ast, {})
 
@@ -57,7 +60,6 @@ def door_to_edge(door):
 
     return {
         "id": key,
-        "Key": key,
         "Name": door.name,
         "source": door.logicregion.name.lower(),
         "target": target.lower(),

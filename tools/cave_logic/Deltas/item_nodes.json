@@ -60,12 +60,6 @@
             "Class": "Item",
             "Type": "TrainingBarrel"
         },
-        "climbing": {
-            "id": "climbing",
-            "Name": "Climbing",
-            "Class": "Item",
-            "Type": "Climbing"
-        },
         "progressiveslam": {
             "id": "progressiveslam",
             "Name": "Progressive Slam",
@@ -328,13 +322,13 @@
             "id": "nintendocoin",
             "Name": "Nintendo Coin",
             "Class": "Item",
-            "Type": "NintendoCoin"
+            "Type": "Coin"
         },
         "rarewarecoin": {
             "id": "rarewarecoin",
             "Name": "Rareware Coin",
             "Class": "Item",
-            "Type": "RarewareCoin"
+            "Type": "Coin"
         },
         "junglejapeskey": {
             "id": "junglejapeskey",
@@ -486,21 +480,9 @@
             "Class": "Item",
             "Type": "RainbowCoin"
         },
-        "icetrapbubble": {
-            "id": "icetrapbubble",
-            "Name": "Ice Trap (Bubble)",
-            "Class": "Item",
-            "Type": "FakeItem"
-        },
-        "icetrapreverse": {
-            "id": "icetrapreverse",
-            "Name": "Ice Trap (Reverse)",
-            "Class": "Item",
-            "Type": "FakeItem"
-        },
-        "icetrapslow": {
-            "id": "icetrapslow",
-            "Name": "Ice Trap (Slow)",
+        "fakeitem": {
+            "id": "fakeitem",
+            "Name": "Ice Trap",
             "Class": "Item",
             "Type": "FakeItem"
         },
@@ -545,30 +527,6 @@
             "Name": "Enemy Item",
             "Class": "Item",
             "Type": "Enemies"
-        },
-        "cranky": {
-            "id": "cranky",
-            "Name": "Cranky",
-            "Class": "Item",
-            "Type": "Cranky"
-        },
-        "funky": {
-            "id": "funky",
-            "Name": "Funky",
-            "Class": "Item",
-            "Type": "Funky"
-        },
-        "candy": {
-            "id": "candy",
-            "Name": "Candy",
-            "Class": "Item",
-            "Type": "Candy"
-        },
-        "snide": {
-            "id": "snide",
-            "Name": "Snide",
-            "Class": "Item",
-            "Type": "Snide"
         },
         "dkislesdonkeyblueprint": {
             "id": "dkislesdonkeyblueprint",
@@ -818,26 +776,26 @@
         },
         "japesdiddyhint": {
             "id": "japesdiddyhint",
-            "Name": "Japes Diddy Hint",
-            "Class": "Item",
+            "Name": "Japes Diddy",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "japeslankyhint": {
             "id": "japeslankyhint",
-            "Name": "Japes Lanky Hint",
-            "Class": "Item",
+            "Name": "Japes Lanky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "japestinyhint": {
             "id": "japestinyhint",
-            "Name": "Japes Tiny Hint",
-            "Class": "Item",
+            "Name": "Japes Tiny",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "japeschunkyhint": {
             "id": "japeschunkyhint",
-            "Name": "Japes Chunky Hint",
-            "Class": "Item",
+            "Name": "Japes Chunky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "aztecdonkeyhint": {
@@ -848,26 +806,26 @@
         },
         "aztecdiddyhint": {
             "id": "aztecdiddyhint",
-            "Name": "Aztec Diddy Hint",
-            "Class": "Item",
+            "Name": "Aztec Diddy",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "azteclankyhint": {
             "id": "azteclankyhint",
-            "Name": "Aztec Lanky Hint",
-            "Class": "Item",
+            "Name": "Aztec Lanky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "aztectinyhint": {
             "id": "aztectinyhint",
-            "Name": "Aztec Tiny Hint",
-            "Class": "Item",
+            "Name": "Aztec Tiny",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "aztecchunkyhint": {
             "id": "aztecchunkyhint",
-            "Name": "Aztec Chunky Hint",
-            "Class": "Item",
+            "Name": "Aztec Chunky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "factorydonkeyhint": {
@@ -878,26 +836,26 @@
         },
         "factorydiddyhint": {
             "id": "factorydiddyhint",
-            "Name": "Factory Diddy Hint",
-            "Class": "Item",
+            "Name": "Factory Diddy",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "factorylankyhint": {
             "id": "factorylankyhint",
-            "Name": "Factory Lanky Hint",
-            "Class": "Item",
+            "Name": "Factory Lanky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "factorytinyhint": {
             "id": "factorytinyhint",
-            "Name": "Factory Tiny Hint",
-            "Class": "Item",
+            "Name": "Factory Tiny",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "factorychunkyhint": {
             "id": "factorychunkyhint",
-            "Name": "Factory Chunky Hint",
-            "Class": "Item",
+            "Name": "Factory Chunky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "galleondonkeyhint": {
@@ -908,26 +866,26 @@
         },
         "galleondiddyhint": {
             "id": "galleondiddyhint",
-            "Name": "Galleon Diddy Hint",
-            "Class": "Item",
+            "Name": "Galleon Diddy",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "galleonlankyhint": {
             "id": "galleonlankyhint",
-            "Name": "Galleon Lanky Hint",
-            "Class": "Item",
+            "Name": "Galleon Lanky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "galleontinyhint": {
             "id": "galleontinyhint",
-            "Name": "Galleon Tiny Hint",
-            "Class": "Item",
+            "Name": "Galleon Tiny",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "galleonchunkyhint": {
             "id": "galleonchunkyhint",
-            "Name": "Galleon Chunky Hint",
-            "Class": "Item",
+            "Name": "Galleon Chunky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "forestdonkeyhint": {
@@ -968,26 +926,26 @@
         },
         "cavesdiddyhint": {
             "id": "cavesdiddyhint",
-            "Name": "Caves Diddy Hint",
-            "Class": "Item",
+            "Name": "Caves Diddy",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "caveslankyhint": {
             "id": "caveslankyhint",
-            "Name": "Caves Lanky Hint",
-            "Class": "Item",
+            "Name": "Caves Lanky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "cavestinyhint": {
             "id": "cavestinyhint",
-            "Name": "Caves Tiny Hint",
-            "Class": "Item",
+            "Name": "Caves Tiny",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "caveschunkyhint": {
             "id": "caveschunkyhint",
-            "Name": "Caves Chunky Hint",
-            "Class": "Item",
+            "Name": "Caves Chunky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "castledonkeyhint": {
@@ -998,26 +956,26 @@
         },
         "castlediddyhint": {
             "id": "castlediddyhint",
-            "Name": "Castle Diddy Hint",
-            "Class": "Item",
+            "Name": "Castle Diddy",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "castlelankyhint": {
             "id": "castlelankyhint",
-            "Name": "Castle Lanky Hint",
-            "Class": "Item",
+            "Name": "Castle Lanky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "castletinyhint": {
             "id": "castletinyhint",
-            "Name": "Castle Tiny Hint",
-            "Class": "Item",
+            "Name": "Castle Tiny",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "castlechunkyhint": {
             "id": "castlechunkyhint",
-            "Name": "Castle Chunky Hint",
-            "Class": "Item",
+            "Name": "Castle Chunky",
+            "Class": "Hint",
             "Type": "Hint"
         },
         "bananahoard": {
@@ -1089,12 +1047,6 @@
         "helmkeyturnedin": {
             "id": "helmkeyturnedin",
             "Name": "Helm Key Turned In",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "trainingbarrelsspawned": {
-            "id": "trainingbarrelsspawned",
-            "Name": "Training Barrels Spawned",
             "Class": "Item",
             "Type": "Event"
         },
@@ -1173,12 +1125,6 @@
         "aztecllamaspit": {
             "id": "aztecllamaspit",
             "Name": "Aztec Llama Spit",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "aztecicemelted": {
-            "id": "aztecicemelted",
-            "Name": "Aztec Ice Melted",
             "Class": "Item",
             "Type": "Event"
         },
@@ -1518,87 +1464,9 @@
             "Class": "Item",
             "Type": "Event"
         },
-        "krooldillo1": {
-            "id": "krooldillo1",
-            "Name": "K Rool Dillo 1",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "krooldog1": {
-            "id": "krooldog1",
-            "Name": "K Rool Dog 1",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "krooljack": {
-            "id": "krooljack",
-            "Name": "K Rool Jack",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "kroolpufftoss": {
-            "id": "kroolpufftoss",
-            "Name": "K Rool Pufftoss",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "krooldog2": {
-            "id": "krooldog2",
-            "Name": "K Rool Dog 2",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "krooldillo2": {
-            "id": "krooldillo2",
-            "Name": "K Rool Dillo 2",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "kroolkko": {
-            "id": "kroolkko",
-            "Name": "K Rool KKO",
-            "Class": "Item",
-            "Type": "Event"
-        },
         "krooldefeated": {
             "id": "krooldefeated",
             "Name": "K Rool Defeated",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "donkeyverse": {
-            "id": "donkeyverse",
-            "Name": "Donkey Verse",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "diddyverse": {
-            "id": "diddyverse",
-            "Name": "Diddy Verse",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "lankyverse": {
-            "id": "lankyverse",
-            "Name": "Lanky Verse",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "tinyverse": {
-            "id": "tinyverse",
-            "Name": "Tiny Verse",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "chunkyverse": {
-            "id": "chunkyverse",
-            "Name": "Chunky Verse",
-            "Class": "Item",
-            "Type": "Event"
-        },
-        "fridgeverse": {
-            "id": "fridgeverse",
-            "Name": "Fridge Verse",
             "Class": "Item",
             "Type": "Event"
         },
@@ -2232,11 +2100,77 @@
             "Class": "Item",
             "Type": "Event"
         },
-        "helmlobbytraversable": {
-            "id": "helmlobbytraversable",
-            "Name": "Helm Lobby Traversable",
-            "Class": "Item",
-            "Type": "Event"
+        "firsttimetalkhint": {
+            "id": "firsttimetalkhint",
+            "Name": "First Time Talk",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "japesdkhint": {
+            "id": "japesdkhint",
+            "Name": "Japes DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "aztecdkhint": {
+            "id": "aztecdkhint",
+            "Name": "Aztec DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "factorydkhint": {
+            "id": "factorydkhint",
+            "Name": "Factory DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "galleondkhint": {
+            "id": "galleondkhint",
+            "Name": "Galleon DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungidkhint": {
+            "id": "fungidkhint",
+            "Name": "Fungi DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungididdyhint": {
+            "id": "fungididdyhint",
+            "Name": "Fungi Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungilankyhint": {
+            "id": "fungilankyhint",
+            "Name": "Fungi Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungitinyhint": {
+            "id": "fungitinyhint",
+            "Name": "Fungi Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungichunkyhint": {
+            "id": "fungichunkyhint",
+            "Name": "Fungi Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "cavesdkhint": {
+            "id": "cavesdkhint",
+            "Name": "Caves DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "castledkhint": {
+            "id": "castledkhint",
+            "Name": "Castle DK",
+            "Class": "Hint",
+            "Type": "Hint"
         }
     }
 }

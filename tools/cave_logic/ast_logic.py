@@ -17,7 +17,7 @@ from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, Regions
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.DoorLocations import GetBossLobbyRegionIdForRegion
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.HintRegion import HintRegion, HINT_REGION_PAIRING
+# from randomizer.Enums.HintRegion import HintRegion, HINT_REGION_PAIRING
 from randomizer.Lists.DoorLocations import door_locations
 
 RegionList = deepcopy(RegionsOriginal)
@@ -159,7 +159,7 @@ def ast_to_json(node, params):
                 "Key": vals[0]['Name'],
                 "Class": "Event",
                 "Requires": vals[1]['Requires'],
-                "Level": params['file_name'],
+                # "Level": params['file_name'],
                 "Rewards": {"Name": vals[0]['Name']}
             }
             if length > 2:

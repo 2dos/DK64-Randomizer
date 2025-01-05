@@ -1,22 +1,20 @@
-from tools.cave_logic.Processor.checks import parse_ast_to_dict
-from tools.cave_logic.ast_logic import ast_to_json
-
-from randomizer.Enums.HintRegion import HINT_REGION_PAIRING
-from randomizer.ShuffleExits import ShufflableExits
-from randomizer.Logic import RegionsOriginal
-from copy import deepcopy
 import json
-
 import sys
 import os
 import inspect
 import ast
 import re
 # Append the parent directory to sys.path
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+parent_dir = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), '../../../'))
 sys.path.append(parent_dir)
 
+# from randomizer.Enums.HintRegion import HINT_REGION_PAIRING
+from randomizer.ShuffleExits import ShufflableExits
+from randomizer.Logic import RegionsOriginal
 from tools.cave_logic.Processor.Classes import RegionNode, RegionEdge
+from tools.cave_logic.Processor.checks import parse_ast_to_dict
+from tools.cave_logic.ast_logic import ast_to_json
 
 def strip_name(name):
     return name.replace(" ", "").replace(":", "").replace("-", "").replace("'", "").lower()
@@ -53,9 +51,9 @@ def build_regions():
         r = region_to_node(id, region)
         nodes[r['node']['id']] = r['node']
         edges.update(r['edges'])
-    for id, region in HINT_REGION_PAIRING.items():
-        node = RegionNode(id.name.lower(), region, "Region", "HintRegion")
-        nodes[node.id] = node.to_dict()
+    # for id, region in HINT_REGION_PAIRING.items():
+    #     node = RegionNode(id.name.lower(), region, "Region", "HintRegion")
+    #     nodes[node.id] = node.to_dict()
     return nodes
 
 world = {

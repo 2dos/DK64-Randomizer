@@ -1,7 +1,19 @@
-from tools.cave_logic.Processor.Classes import ItemNode, EventNode
+import json
+import sys
+import os
+import inspect
+import ast
+import re
+# Append the parent directory to sys.path
+parent_dir = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), '../../../'))
+sys.path.append(parent_dir)
+
+from tools.cave_logic.Processor.Classes import ItemNode, EventNode, strip_name
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemList
+from randomizer.Lists.WrinklyHints import hints
 import json
 
 import sys
@@ -30,6 +42,16 @@ def build_items():
         # we can fix this in the overrides later
         i = EventNode(event)
         edges[i.id] = i.to_dict()
+
+    for hint in hints:
+        id = strip_name(hint.name)+"hint"
+        edges[id] = {
+            "id":id,
+            "Name": hint.name,
+            "Class": "Hint",
+            "Type": "Hint"
+        }
+
     return edges
 
 world = {

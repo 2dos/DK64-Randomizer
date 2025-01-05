@@ -13,6 +13,7 @@ from tools.cave_logic.Processor.Utils import parse_ast_by_separator, parse_ast_t
 from copy import deepcopy
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Lists.Location import LocationListOriginal
 from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.Lists.KasplatLocations import KasplatLocationList
@@ -40,13 +41,13 @@ def location_to_edge(id, location):
 
     region = checkList[id]["region"] if id in checkList else None
     source = RegionNode(region, '') if region else None
-    target = Items.GoldenBanana
+    target = Items.NoItem
 
     logic = checkList[id]["logic"] if id in checkList else True
     if logic != True:
         logic = parse_ast_to_dict(logic,  None)
 
-    return CheckEdge(id.name.lower(), location.name, source, target, location.type.name, "Check", logic, {"Name": location.kong.name}).to_dict()
+    return CheckEdge('li-'+id.name.lower(), location.name, source, target, location.type.name, "Check", logic, {"Name": location.kong.name}).to_dict()
 
 
 def minigame_to_edge(id, minigame):
@@ -57,20 +58,23 @@ def minigame_to_edge(id, minigame):
 
     requires = req2["Requires"] if req2 is not None else True
 
-    return {
-        "id": id.name.lower(),
-        "label": minigame.name,
-        "source": "",
-        "target": Items.NoItem.name.lower(),
+    id = 'm-'+id.name.lower()
+    return CheckEdge(id, minigame.name, "", Items.NoItem, "Minigame", "Check", requires, {"Name": minigame.name}).to_dict()
 
-        "cldata": {
-            "Key": id.name.lower(),
-            "Name": minigame.name,
-            "Requires": requires,
-            "Class": "Minigame",
-            "Types": minigame.group,
-        }
-    }
+    # return {
+    #     "id": id.name.lower(),
+    #     "label": minigame.name,
+    #     "source": "",
+    #     "target": Items.NoItem.name.lower(),
+
+    #     "cldata": {
+    #         "Key": id.name.lower(),
+    #         "Name": minigame.name,
+    #         "Requires": requires,
+    #         "Class": "Minigame",
+    #         "Types": minigame.group,
+    #     }
+    # }
 
 
 def kasplat_to_edge(key, kasplat):
@@ -93,19 +97,70 @@ def collectible_to_edge(collectible, region, index):
 
     name = portal_region.name + " " + collectible.kong.name.capitalize() + " " + \
         collectible.type.name.capitalize() + " " + str(index)
-    reward_name = collectible.type.name + "_" + \
+    
+    reward_type = collectible.type.name
+    multiplier = 1
+
+    if collectible.type == Collectibles.bunch:
+        reward_type = Collectibles.banana.name
+        multiplier = 5
+    if collectible.type == Collectibles.balloon:
+        reward_type = Collectibles.banana.name
+        multiplier = 10
+
+    reward_name = reward_type + "_" + \
         get_level_name(portal_region.level.name) + "_" + collectible.kong.name
+
+    level_reward = reward_type + "_" + \
+        get_level_name(portal_region.level.name) 
 
     req = parse_ast_by_separator(collectible.logic,  "lambda l: ")
     req_ast = req.body[0].value
     req2 = ast_to_json(req_ast, {})
 
-    requires = req2["Requires"] if req2 is not None else True
+    req_kong_rules = [
+            {
+                "Name": collectible.kong.name
+            },
+        ]
+
+    if req2 is not None and req2['Requires'] is not True:
+        req_kong_rules.append(req2['Requires'])
+
+    requires = {
+        "combinator": "AND",
+        "rules": req_kong_rules
+    }
+
+    # requires = req2["Requires"] if req2 is not None else True
 
     normalised_reward = normalise_name(reward_name.lower())
 
     coll = CheckEdge(strip_name(name), name, RegionNode(portal_region, ''), normalised_reward, collectible.type.name, "Collectible", requires, {"Name": collectible.kong.name})
-    coll.set_reward_amount(normalised_reward, collectible.amount)
+    # coll.set_reward_amount(normalised_reward, collectible.amount * multiplier)
+
+    rewards = [
+            {
+                "Name": reward_name.lower(),
+                "Amount": collectible.amount * multiplier
+            }
+        ]
+    
+    if(reward_type == Collectibles.banana.name):
+        rewards.append({
+            "Name": level_reward.lower(),
+            "Amount": collectible.amount * multiplier
+        })
+
+    coll.set_multiple_rewards({
+        "combinator": "AND",
+        "rules": rewards
+    })
+
+    if coll.source and coll.source == "japest&salcove":
+        coll.source = "japestnsalcove"
+    if coll.source and coll.source == "r&d":
+        coll.source = "randd"
     return coll
 
 
@@ -115,10 +170,12 @@ def build_checks():
 
 
     for id, location in LocationListOriginal.items():
-        edges[id.name.lower()] = location_to_edge(id, location)
+        e = location_to_edge(id, location)
+        edges[e['id']] = e
 
-    # for id, minigame in MinigameRequirements.items():
-    #     edges[id.name.lower()] = minigame_to_edge(id, minigame)
+    for id, minigame in MinigameRequirements.items():
+        e = minigame_to_edge(id, minigame)
+        edges[e['id']] = e
 
     for level in KasplatLocationList:
         kasplats = KasplatLocationList[level]

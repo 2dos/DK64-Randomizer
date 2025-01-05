@@ -34,7 +34,8 @@ class RegionNode:
 
         _id = id if isinstance(id, str) else strip_name(id.name.lower())
 
-        self.id = prefix+_id
+        # self.id = prefix+_id
+        self.id = _id
         self.Name = Name
         self.Class = Class
         self.Type = Type
@@ -63,7 +64,7 @@ class RegionEdge:
                  Name: str,
                  Logic: object | bool = True,
                  Class: str = "Transition",
-                 Type: str = "Direct",
+                 type: str = "Neighbourhood",
                  ):
 
         if id is None:
@@ -76,9 +77,9 @@ class RegionEdge:
         self.source = source.id if isinstance(source, RegionNode) else source
         self.target = target.id if isinstance(target, RegionNode) else target
         self.sourceType = "Region"
-        self.targetType = "Region"
+        self.targetType = "Location"
         self.Class = Class
-        self.Type = Type
+        self.type = type
         self.Requires = Logic
 
     def to_dict(self):
@@ -91,12 +92,30 @@ class RegionEdge:
             "sourceType": self.sourceType,
             "targetType": self.targetType,
             "Class": self.Class,
-            "Type": self.Type,
+            "type": self.type,
             "Requires": self.Requires
         }
 
     def to_json(self):
         """Convert the RegionEdge to a JSON string."""
+        return json.dumps(self.to_dict(), indent=4)
+
+
+class QueryLogic:
+    def __init__(self, combinator: str, rules: list):
+        if combinator not in ['or', 'and']:
+            raise ValueError("Combinator must be 'or' or 'and'")
+        self.combinator = combinator
+        self.rules = rules
+
+    def to_dict(self):
+        return {
+            "combinator": self.combinator,
+            "rules": self.rules
+        }
+    
+    def to_json(self):
+        """Convert the QueryLogic to a JSON string."""
         return json.dumps(self.to_dict(), indent=4)
 
 
@@ -110,35 +129,38 @@ class CheckEdge:
         self.target = target.name.lower() if isinstance(
             target, (Items, Collectibles)) else target
         self.sourceType = "Region"
+        self.type = "Location"
         self.targetType = "Item"
         self.Types = Types
         self.Class = Class
         self.Persona = Persona
         self.Requires = Logic
-        self.Reward = {
-            "Name": self.target,
-            "Amount": 1
-        }
+        self.Rewards = QueryLogic('and', [{"Name": self.target, "Amount": 1}])
 
     def set_reward_amount(self, reward: str = None, amount: int = 1):
         if reward:
-            self.Reward["Name"] = reward
-        self.Reward["Amount"] = amount
+            self.Rewards["Name"] = reward
+        self.Rewards["Amount"] = amount
+
+    def set_multiple_rewards(self, rewards: QueryLogic):
+        self.Rewards = rewards
 
     def to_dict(self):
         """Convert the RegionNode to a dictionary."""
+        rewards = self.Rewards.to_dict() if isinstance(self.Rewards, QueryLogic) else self.Rewards
         return {
             "id": self.id,
             "Name": self.Name,
             "source": self.source,
             "target": self.target,
+            "type": self.type,
             "sourceType": self.sourceType,
             "targetType": self.targetType,
             "Types": self.Types,
             "Class": self.Class,
             "Requires": self.Requires,
             # "Persona": self.Persona,
-            "Reward": self.Reward
+            "Rewards": rewards
         }
 
     def to_json(self):
