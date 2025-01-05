@@ -140,19 +140,21 @@
                 {{ toggle_input("show_song_name", "Display song name in-game", "Will display the song name for 2 seconds upon it playing (Only applies to BGM).") }}
             </div>
             <div class="flex-container">
-                <div class="item-group">
-                    <p class="select-title">Custom Music Fill (%)</p>
-                    <input class="form-control"
-                        min="0"
-                        max="100"
-                        name="custom_music_proportion"
-                        id="custom_music_proportion"
-                        display_name="Custom Music Fill"
-                        type="number"
-                        data-toggle="tooltip"
-                        title="Proportion of songs that will be filled with custom music."
-                        default="100"
-                        placeholder="100"/>
+                <div style="width:50%">
+                    <div class="item-group" style="margin-left:auto;margin-right:auto;max-width:200px;">
+                        <p class="select-title">Custom Music Fill (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="custom_music_proportion"
+                            id="custom_music_proportion"
+                            display_name="Custom Music Fill"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Proportion of songs that will be filled with custom music."
+                            default="100"
+                            placeholder="100"/>
+                    </div>
                 </div>
                 <div class="spacer"></div>
             </div>

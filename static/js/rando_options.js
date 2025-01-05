@@ -1122,13 +1122,17 @@ function toggle_item_rando() {
 
   elements.selector.toggleAttribute("disabled", disabled);
   elements.smallerShops.toggleAttribute("disabled", disabled || !shopsInPool);
-  elements.smallerShops.checked = false;
+  if (disabled || !shopsInPool) {
+    elements.smallerShops.checked = false;
+  }
   elements.moveVanilla.toggleAttribute("disabled", shopsInPool);
   elements.moveRando.toggleAttribute("disabled", shopsInPool);
   elements.enemyDropRando.toggleAttribute("disabled", disabled);
-  elements.enemyDropRando.checked = disabled;
+  if (disabled) {
+    elements.enemyDropRando.checked = false;
+  }
   elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
-  elements.sharedShopWarning.toggleAttribute("hidden", !shopsInPool || disabled);
+  elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
   elements.kongRando.toggleAttribute("disabled", kongsInPool);
   elements.kongRando.checked = kongsInPool;
 
