@@ -94,7 +94,7 @@ def parseFile(file_name: str) -> Kickback:
             return Kickback(GameState.Paused, "Paused Game")
         if (tb_void_byte & 0x30) == 0:
             return Kickback(GameState.BadPlayerState, "In Tag Barrel")
-        if (cutscene_state == 2) or (cutscene_state == 3):
+        if cutscene_state in (3, 4):
             return Kickback(GameState.SafeArea, "In 8Bit Minigame")
         if cutscene_state != 0:
             return Kickback(GameState.Paused, "In cutscene")
