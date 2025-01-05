@@ -466,10 +466,12 @@
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Place your items into a number of item pools, then choose how many of each pool's items you want given to you at the start of the seed.
+                <b>Place your items into a number of item pools, then choose how many of each pool's items you want given to you at the start of the seed.</b>
                 <br/>
-                To move items, select them from any list and click the item pool you want them to be in.
-                <div class="flex-container" style="justify-content: space-around;">
+                <b>To move items, select them from any list and click the item pool you want them to be in.</b>
+                <br/>
+                <em>Use the presets at the bottom as quick actions.</em>
+                <div class="flex-container" style="justify-content: space-around; margin-top: 15px;">
                     <div class="flex-column-container">
                         <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_1">Pool 1</button>
                         <select id="starting_moves_list_1" name="starting_moves_list_1" class="starting_moves_list multi-select" multiple>
@@ -571,7 +573,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="starting_moves_reset">Reset</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_reset">No Item Start</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_start_vanilla">Vanilla Start</button>
                 <button type="button" class="btn btn-secondary" id="starting_moves_start_all">Start With All</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
