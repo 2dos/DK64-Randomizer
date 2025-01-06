@@ -2825,9 +2825,9 @@ def compileSpoilerHints(spoiler):
         starting_info.starting_moves_not_hintable.append(Items.Climbing)
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         starting_info.starting_moves_not_hintable.extend([Items.Camera, Items.Shockwave, Items.CameraAndShockwave])
-    if spoiler.settings.training_barrels == TrainingBarrels.normal:
+    if spoiler.settings.training_barrels == TrainingBarrels.normal and spoiler.settings.fast_start_beginning_of_game:
         starting_info.starting_moves_not_hintable.extend(ItemPool.TrainingBarrelAbilities())
-    if spoiler.settings.start_with_slam:
+    if spoiler.settings.start_with_slam and spoiler.settings.fast_start_beginning_of_game:
         starting_info.starting_moves_not_hintable.append(Items.ProgressiveSlam)
     starting_info.starting_moves_not_hintable = [ItemList[item].name for item in starting_info.starting_moves_not_hintable]
     # Sort the items by level they're found in
@@ -2838,7 +2838,13 @@ def compileSpoilerHints(spoiler):
             level_of_location = Levels.DKIsles
         if location.item in important_items:
             item_obj = ItemList[location.item]
-            if location.type in (Types.TrainingBarrel, Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+            # If this location/item is pre-given before you even enter the seed, it doesn't count for points. This leads to a messy if statement, so here's the breakdown:
+            # 1. The Climbing location, pre-given moves (with one exception!), and the pre-given shopkeeper locations are all always on the title screen.
+            # 2. Training barrel locations are only pre-given if fast start is on 
+            # 3. The exception: IslesFirstMove (the Simian Slam location) is only pre-given if fast start is on
+            if ((location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location_id != Locations.IslesFirstMove)
+                or (spoiler.settings.fast_start_beginning_of_game and location.type == (Types.TrainingBarrel))
+                or (location_id == Locations.IslesFirstMove and spoiler.settings.fast_start_beginning_of_game)):
                 starting_info.starting_moves.append(item_obj.name)
                 # Starting shopkeepers are never hintable
                 if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):

@@ -3765,6 +3765,8 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn off Fast Start with Loading Zones Randomized. "
         if settings.random_starting_region:
             found_incompatibilities += "Cannot turn off Fast Start with a Random Starting Location. "
+        if not settings.start_with_slam:
+            found_incompatibilities += "Cannot turn off Fast Start unless you are guaranteed to start with a Progressive Slam. "
     if found_incompatibilities != "":
         raise Ex.SettingsIncompatibleException(found_incompatibilities)
 
