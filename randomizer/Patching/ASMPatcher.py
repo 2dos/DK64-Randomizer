@@ -94,6 +94,7 @@ FARPLANE_VIEW = False
 KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 FAIRY_LOAD_FIX = True
 CAMERA_RESET_REDUCTION = True
+PAL_DOGADON_REMATCH_FIRE = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1254,6 +1255,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8061BDF0, Overlay.Static, 0x1000, offset_dict)
         writeValue(ROM_COPY, 0x8061BE12, Overlay.Static, 0x0001, offset_dict)
         writeValue(ROM_COPY, 0x8061BE18, Overlay.Static, 0x1000, offset_dict)
+
+    if PAL_DOGADON_REMATCH_FIRE:
+        writeValue(ROM_COPY, 0x80691E36, Overlay.Static, 166, offset_dict)  # PAL = 200 * (50 / 60)
 
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
