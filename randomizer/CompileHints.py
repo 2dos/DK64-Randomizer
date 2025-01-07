@@ -2840,11 +2840,13 @@ def compileSpoilerHints(spoiler):
             item_obj = ItemList[location.item]
             # If this location/item is pre-given before you even enter the seed, it doesn't count for points. This leads to a messy if statement, so here's the breakdown:
             # 1. The Climbing location, pre-given moves (with one exception!), and the pre-given shopkeeper locations are all always on the title screen.
-            # 2. Training barrel locations are only pre-given if fast start is on 
+            # 2. Training barrel locations are only pre-given if fast start is on
             # 3. The exception: IslesFirstMove (the Simian Slam location) is only pre-given if fast start is on
-            if ((location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location_id != Locations.IslesFirstMove)
+            if (
+                (location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location_id != Locations.IslesFirstMove)
                 or (spoiler.settings.fast_start_beginning_of_game and location.type == (Types.TrainingBarrel))
-                or (location_id == Locations.IslesFirstMove and spoiler.settings.fast_start_beginning_of_game)):
+                or (location_id == Locations.IslesFirstMove and spoiler.settings.fast_start_beginning_of_game)
+            ):
                 starting_info.starting_moves.append(item_obj.name)
                 # Starting shopkeepers are never hintable
                 if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
