@@ -66,9 +66,8 @@ flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="A
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 # Configure Redis for storing the session data on the server-side
 app.config["SESSION_TYPE"] = "redis"
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_USE_SIGNER"] = True
-app.config["SESSION_REDIS"] = from_url("redis://redis:6379")
+redis_conn = Redis(host="redis", port=6379)
+app.config["SESSION_REDIS"] = redis_conn
 
 # Create and initialize the Flask-Session object AFTER `app` has been configured
 server_session = Session(app)
@@ -98,7 +97,6 @@ class TaskThread(threading.Thread):
             self.result = self.target(self.kwargs.get("args")[0])
 
 
-redis_conn = Redis(host="redis", port=6379)
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
 CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com"])
