@@ -412,7 +412,7 @@ class LogicVarHolder:
         has_all = True
         if not self.settings.fast_start_beginning_of_game:
             has_all = all(
-                self.spoiler.LocationList[loc].item in ownedItems
+                self.spoiler.LocationList[loc].inaccessible or self.spoiler.LocationList[loc].item in ownedItems
                 for loc in (
                     Locations.IslesSwimTrainingBarrel,
                     Locations.IslesVinesTrainingBarrel,

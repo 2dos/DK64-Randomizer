@@ -28,6 +28,7 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     SpoilerHints,
+    TrainingBarrels,
     WinConditionComplex,
     WrinklyHints,
     KongModels,
@@ -138,6 +139,9 @@ class StartingSpoiler:
         self.helm_order = settings.kong_helm_order.copy()
         self.starting_kongs = settings.starting_kong_list.copy()
         self.starting_keys = [ItemList[key].name for key in settings.starting_key_list]
+        self.starting_moves = []
+        self.starting_moves_not_hintable = []
+        self.starting_moves_woth_count = 0
         if settings.spoiler_include_level_order:
             self.level_order = [
                 settings.level_order[1],
@@ -2790,6 +2794,7 @@ def compileMicrohints(spoiler: Spoiler) -> None:
 
 def compileSpoilerHints(spoiler):
     """Assemble the specified spoiler-style hints. See SpoilerHints enum for a list of all options."""
+    starting_info = StartingSpoiler(spoiler.settings)
     spoiler.level_spoiler = {
         Levels.JungleJapes: LevelSpoiler(level_list[Levels.JungleJapes]),
         Levels.AngryAztec: LevelSpoiler(level_list[Levels.AngryAztec]),
@@ -2802,28 +2807,57 @@ def compileSpoilerHints(spoiler):
         Levels.DKIsles: LevelSpoiler(level_list[Levels.DKIsles]),
         # Levels.Shops: LevelSpoiler(level_list[Levels.Shops]),
     }
+    # Identify which items are worth hinting
+    important_items = (
+        ItemPool.Keys()
+        + ItemPool.Kongs(spoiler.settings)
+        + ItemPool.AllKongMoves()
+        + ItemPool.TrainingBarrelAbilities()
+        + [Items.Bean, Items.Camera, Items.Shockwave, Items.CameraAndShockwave]
+        + ItemPool.CrankyItems()
+        + ItemPool.FunkyItems()
+        + ItemPool.CandyItems()
+        + ItemPool.SnideItems()
+        + ItemPool.ClimbingAbilities()
+    )
+    # Idenfity what moves among our starting items cannot be hinted. This is to aid trackers in communicating what starting moves count towards the WotH count.
+    if spoiler.settings.climbing_status == ClimbingStatus.normal:
+        starting_info.starting_moves_not_hintable.append(Items.Climbing)
+    if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
+        starting_info.starting_moves_not_hintable.extend([Items.Camera, Items.Shockwave, Items.CameraAndShockwave])
+    if spoiler.settings.training_barrels == TrainingBarrels.normal and spoiler.settings.fast_start_beginning_of_game:
+        starting_info.starting_moves_not_hintable.extend(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.start_with_slam and spoiler.settings.fast_start_beginning_of_game:
+        starting_info.starting_moves_not_hintable.append(Items.ProgressiveSlam)
+    starting_info.starting_moves_not_hintable = [ItemList[item].name for item in starting_info.starting_moves_not_hintable]
     # Sort the items by level they're found in
-    important_items = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings) + ItemPool.AllKongMoves() + ItemPool.ShockwaveTypeItems(spoiler.settings) + ItemPool.TrainingBarrelAbilities() + [Items.Bean]
-    if Types.Cranky in spoiler.settings.shuffled_location_types:
-        important_items.append(Items.Cranky)
-    if Types.Funky in spoiler.settings.shuffled_location_types:
-        important_items.append(Items.Funky)
-    if Types.Candy in spoiler.settings.shuffled_location_types:
-        important_items.append(Items.Candy)
-    if Types.Snide in spoiler.settings.shuffled_location_types:
-        important_items.append(Items.Snide)
-    if spoiler.settings.climbing_status != ClimbingStatus.normal:
-        important_items.append(Items.Climbing)
     for location_id in spoiler.LocationList.keys():
         location = spoiler.LocationList[location_id]
         level_of_location = location.level
         if level_of_location == Levels.Shops:  # Jetpac and BlueprintBananas - we want Jetpac in Isles now, but we probably won't want BlueprintBananas there too when those start shuffling
             level_of_location = Levels.DKIsles
         if location.item in important_items:
-            spoiler.level_spoiler[level_of_location].vial_colors.append(CategorizeItem(ItemList[location.item]))
-            spoiler.level_spoiler[level_of_location].points += PointValueOfItem(spoiler.settings, location.item)
-            if location_id in spoiler.woth_locations:
-                spoiler.level_spoiler[level_of_location].woth_count += 1
+            item_obj = ItemList[location.item]
+            # If this location/item is pre-given before you even enter the seed, it doesn't count for points. This leads to a messy if statement, so here's the breakdown:
+            # 1. The Climbing location, pre-given moves (with one exception!), and the pre-given shopkeeper locations are all always on the title screen.
+            # 2. Training barrel locations are only pre-given if fast start is on
+            # 3. The exception: IslesFirstMove (the Simian Slam location) is only pre-given if fast start is on
+            if (
+                (location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location_id != Locations.IslesFirstMove)
+                or (spoiler.settings.fast_start_beginning_of_game and location.type == (Types.TrainingBarrel))
+                or (location_id == Locations.IslesFirstMove and spoiler.settings.fast_start_beginning_of_game)
+            ):
+                starting_info.starting_moves.append(item_obj.name)
+                # Starting shopkeepers are never hintable
+                if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+                    starting_info.starting_moves_not_hintable.append(item_obj.name)
+                if location_id in spoiler.woth_locations:
+                    starting_info.starting_moves_woth_count += 1
+            else:
+                spoiler.level_spoiler[level_of_location].vial_colors.append(CategorizeItem(item_obj))
+                spoiler.level_spoiler[level_of_location].points += PointValueOfItem(spoiler.settings, location.item)
+                if location_id in spoiler.woth_locations:
+                    spoiler.level_spoiler[level_of_location].woth_count += 1
     # Convert those spoiler hints to readable text
     spoiler.level_spoiler_human_readable = {
         level_list[Levels.DKIsles]: "",
@@ -2841,6 +2875,7 @@ def compileSpoilerHints(spoiler):
         # Clear out variables if they're unused or undesired
         if not spoiler.settings.spoiler_include_woth_count:
             spoiler.level_spoiler[level].woth_count = -1
+            starting_info.starting_moves_woth_count = -1
         if spoiler.settings.spoiler_hints != SpoilerHints.vial_colors:
             spoiler.level_spoiler[level].vial_colors = []
         if spoiler.settings.spoiler_hints != SpoilerHints.points:
@@ -2854,10 +2889,12 @@ def compileSpoilerHints(spoiler):
             spoiler.level_spoiler_human_readable[level_list[level]] = "Points: " + str(spoiler.level_spoiler[level].points)
         if spoiler.settings.spoiler_include_woth_count:
             spoiler.level_spoiler_human_readable[level_list[level]] += " | WotH Items: " + str(spoiler.level_spoiler[level].woth_count)
-    starting_info = StartingSpoiler(spoiler.settings)
     spoiler.level_spoiler["starting_info"] = starting_info
     spoiler.level_spoiler_human_readable["Starting Info"] = "Starting Kongs: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.starting_kongs])
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Starting Keys: " + ", ".join(starting_info.starting_keys)
+    spoiler.level_spoiler_human_readable["Starting Info"] += " | Starting Moves: " + ", ".join(starting_info.starting_moves)
+    if spoiler.settings.spoiler_include_woth_count:
+        spoiler.level_spoiler_human_readable["Starting Info"] += " | Starting Move WotH Count: " + str(starting_info.starting_moves_woth_count)
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Helm Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.helm_order])
     spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([boss_names[map_id] for map_id in starting_info.krool_order])
     if spoiler.settings.spoiler_include_level_order:
