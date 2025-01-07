@@ -473,7 +473,7 @@
 | Arcade room, by Mini Monkey tunnel (Tiny) | 5 |  | 
 | In Spinning wheel room (Tiny) | 5 | `l.mini or l.CanPhase()` | 
 | By middle window outside of production room (Tiny) | 10 |  | 
-| On pole down hatch (Chunky) | 10 |  | 
+| On pole down hatch (Chunky) | 10 | `Events.HatchOpened in l.Events` | 
 | Chunky R&D room left side (Chunky) | 5 | `(l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
 | Chunky R&D room right side (Chunky) | 5 | `(l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
 | W1 (Chunky) | 5 |  | 

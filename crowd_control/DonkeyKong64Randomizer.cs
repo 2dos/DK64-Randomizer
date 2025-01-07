@@ -140,7 +140,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if (!Connector.Read8(ADDR_NEXT_GAMEMODE, out byte next_gamemode)) return GameState.Unknown;
         if (!Connector.Read32(ADDR_MAP_TIMER, out uint map_timer)) return GameState.Unknown;
         if (!Connector.Read32(ADDR_PLAYER_POINTER, out uint player_pointer)) return GameState.Unknown;
-        if (!Connector.Read32(ADDR_TBVOID_BYTE, out uint tb_void_byte)) return GameState.Unknown;
+        if (!Connector.Read8(ADDR_TBVOID_BYTE, out byte tb_void_byte)) return GameState.Unknown;
         if (!Connector.Read8(ADDR_RANDO_CANARY, out byte rando_version)) return GameState.Unknown;
         if (!Connector.Read8(ADDR_CUTSCENE_ACTIVE, out byte cutscene_state)) return GameState.Unknown;
         if (!Connector.ReadFloat(ADDR_TRANSITION_SPEED, out float transition_speed)) return GameState.Unknown;
@@ -185,7 +185,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
             // Player is in tag
             return GameState.BadPlayerState;
         }
-        if ((cutscene_state == 2) || (cutscene_state == 3))
+        if ((cutscene_state == 3) || (cutscene_state == 4))
         {
             // In Arcade/Jetpac
             return GameState.SafeArea;

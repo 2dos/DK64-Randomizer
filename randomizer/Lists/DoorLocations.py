@@ -56,6 +56,7 @@ UNDERWATER_LOGIC_REGIONS = (
     Regions.TromboneShip,
     Regions.SaxophoneShip,
     Regions.TriangleShip,
+    Regions.Mechafish,
 )
 
 
@@ -2297,13 +2298,53 @@ door_locations = {
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
-            name="Lighthouse Interior",
+            name="Lighthouse - Up the ledge",
             map=Maps.GalleonLighthouse,
             logicregion=Regions.Lighthouse,
             location=[508.0, 200.0, 409.0, 135.2],
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
+            logic=lambda l: l.climbing,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
+        ),
+        DoorData(
+            name="Lighthouse - Left",
+            map=Maps.GalleonLighthouse,
+            logicregion=Regions.Lighthouse,
+            location=[612, 0, 465, 90],
+            kong_lst=[Kongs.donkey],
+            group=11,
+            moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
+        ),
+        DoorData(
+            name="Lighthouse - Back",
+            map=Maps.GalleonLighthouse,
+            logicregion=Regions.Lighthouse,
+            location=[319, 0, 590, 315],
+            kong_lst=[Kongs.donkey],
+            group=11,
+            moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="In Mermaid's Palace",
@@ -2473,6 +2514,7 @@ door_locations = {
             group=7,
             logic=lambda l: l.jetpack and l.isdiddy,
             moveless=False,
+            door_type=[DoorType.wrinkly],
             kong_lst=[Kongs.diddy],
             test=True,
         ),
@@ -2906,6 +2948,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=12,
             moveless=False,
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Lanky's Attic",
@@ -2921,6 +2964,8 @@ door_locations = {
             location=[12.7, 4.0, 301.5, 90.0],
             kong_lst=[Kongs.donkey],
             group=14,
+            door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
             moveless=False,
         ),
         DoorData(
@@ -3006,6 +3051,7 @@ door_locations = {
             logicregion=Regions.MushroomLankyMushroomsRoom,
             location=[447, 0, 368, 239.50],
             group=20,
+            door_type=[DoorType.dk_portal, DoorType.wrinkly],
             test=True,
         ),
         DoorData(
@@ -3015,6 +3061,7 @@ door_locations = {
             location=[331, 140, 87, 0],
             group=14,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            dk_portal_logic=lambda s: s.settings.fungi_time_internal == FungiTimeSetting.dusk,
             logic=lambda l: l.climbing,
             moveless=False,
             test=True,
@@ -4264,6 +4311,15 @@ door_locations = {
             group=12,
             kong_lst=[Kongs.donkey],
             test=True,
+            door_type=[DoorType.wrinkly],
+        ),
+        DoorData(
+            name="Library - Left wing",
+            map=Maps.CastleLibrary,
+            logicregion=Regions.Library,
+            location=[1028, 100, 658, 0],
+            group=12,
+            kong_lst=[Kongs.donkey],
         ),
         DoorData(
             name="Chunky crypt - between right coffins",

@@ -320,3 +320,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Cryptic: 30%
 	- Item Hinting: 30%
 - Wrinkly Location Rando: 60%
+- Spoiler Hints: 
+	- Off: 100%
+	- Vial Colors: 0%
+	- Points: 0%

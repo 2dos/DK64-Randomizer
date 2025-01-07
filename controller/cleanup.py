@@ -21,10 +21,13 @@ def delete_old_files():
 
                 # Check if it's been 4 weeks since unlock_time
                 if current_time - generated_time >= 2419200:  # 4 weeks in seconds
-                    remove(file_path)
-                    print(f"Deleted file: {filename}")
-                    # also delete the lanky file
-                    remove(path.join(folder_path, filename.replace(".json", ".lanky")))
+                    try:
+                        remove(file_path)
+                        print(f"Deleted file: {filename}")
+                        # also delete the lanky file
+                        remove(path.join(folder_path, filename.replace(".json", ".lanky")))
+                    except Exception as e:
+                        print(e)
 
 
 def enable_cleanup():

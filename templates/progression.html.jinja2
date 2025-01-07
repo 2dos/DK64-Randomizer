@@ -121,7 +121,9 @@
                     </label>
                 </div>
                 <div class="spacer"></div>
-                <div class="item-group" style="margin-left:auto;margin-right:auto">
+            </div>
+            <div class="flex-container">
+                <div class="item-group" style="margin-left:auto;margin-right:auto;margin-top:0;">
                     <p class="select-title">Chaos Ratio</p>
                     <input class="form-control"
                         min="0"
@@ -137,31 +139,33 @@
                 </div>
                 <div class="spacer"></div>
             </div>
-            <div class="form-check form-switch item-switch">
-                <label data-toggle="tooltip"
-                        title="Only relevant in Level Order shuffle. Generally increase the values randomly rolled by B. Lockers, making them closer to the total number of available GBs."
-                        style="text-align: left">
-                    <input class="form-check-input"
-                            type="checkbox"
-                            name="hard_blockers"
-                            id="hard_blockers"
-                            display_name="Hard B. Lockers"
-                            value="True"/>
-                    Hard B. Lockers
-                </label>
-            </div>
-            <div class="form-check form-switch item-switch">
-                <label data-toggle="tooltip"
-                        title="Increase the minimum values rollable by Troff n Scoff."
-                        style="text-align: left">
-                    <input class="form-check-input"
-                            type="checkbox"
-                            name="hard_troff_n_scoff"
-                            id="hard_troff_n_scoff"
-                            display_name="Hard Troff n' Scoff"
-                            value="True"/>
-                    Hard Troff N' Scoff
-                </label>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Only relevant in Level Order shuffle. Generally increase the values randomly rolled by B. Lockers, making them closer to the total number of available GBs."
+                            style="text-align: left">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="hard_blockers"
+                                id="hard_blockers"
+                                display_name="Hard B. Lockers"
+                                value="True"/>
+                        Hard B. Lockers
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Increase the minimum values rollable by Troff n Scoff."
+                            style="text-align: left">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="hard_troff_n_scoff"
+                                id="hard_troff_n_scoff"
+                                display_name="Hard Troff n' Scoff"
+                                value="True"/>
+                        Hard Troff N' Scoff
+                    </label>
+                </div>
             </div>
             <hr>
             <h5 class="select-title">Banana Medal/Fairy Requirements</h5>
@@ -501,8 +505,6 @@
                                 placeholder="1"/>
                         </div>
                     </div>
-                </div>
-                <div class="flex-container">
                     <div class="item-select">
                         <p class="select-title">Door 2 Requirements</p>
                         <div class="d-flex select-number-container" id="door_2_container">

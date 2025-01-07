@@ -6,7 +6,6 @@ from datetime import datetime as Datetime
 from datetime import UTC
 import time
 from tempfile import mktemp
-
 from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
@@ -43,13 +42,11 @@ from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
+from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
+from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors
 from randomizer.Patching.CosmeticColors import (
     applyHelmDoorCosmetics,
     applyKongModelSwaps,
-    updateCryptLeverTexture,
-    updateMillLeverTexture,
-    writeBootMessages,
-    updateDiddyDoors,
     showWinCondition,
 )
 from randomizer.Patching.CratePlacer import randomize_melon_crate
@@ -131,7 +128,14 @@ def writeMultiselector(
 
 def encPass(spoiler) -> int:
     """Encrypt the password."""
-    return 0
+    # Try to import randomizer.Encryption encrypt function, if we can pass all args to it.
+    try:
+        from randomizer.Encryption import encrypt
+
+        return encrypt(spoiler)
+    except Exception as e:
+        print(e)
+        return 0, 0
 
 
 def patching_response(spoiler):
@@ -579,9 +583,11 @@ def patching_response(spoiler):
     rom_flags |= 0x20 if spoiler.settings.has_password else 0
     ROM_COPY.seek(sav + 0xC4)
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
+    password = None
     if spoiler.settings.has_password:
         ROM_COPY.seek(sav + 0x1B0)
-        ROM_COPY.writeMultipleBytes(encPass(spoiler), 4)
+        byte_data, password = encPass(spoiler)
+        ROM_COPY.writeMultipleBytes(byte_data, 4)
 
     # Ice Trap Count
     ROM_COPY.seek(sav + 0x14E)
@@ -760,7 +766,7 @@ def patching_response(spoiler):
         os.remove(delta_tempfile)
     else:
         patch = None
-    return patch
+    return patch, password
 
 
 def FormatSpoiler(value):

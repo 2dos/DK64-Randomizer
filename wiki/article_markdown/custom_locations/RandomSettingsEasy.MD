@@ -252,3 +252,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Easy Random: 100%
 - Wrinkly Hints: 
 	- Standard: 100%
+- Spoiler Hints: 
+	- Off: 100%
+	- Vial Colors: 0%
+	- Points: 0%

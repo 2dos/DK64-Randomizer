@@ -1693,7 +1693,7 @@ CustomLocations = {
             z=1778,
             rot_y=4073,
             max_size=72,
-            logic_region=Regions.LowerCore,
+            logic_region=Regions.AlcoveBeyondHatch,
             group=1,
         ),
         # CrownLocation(
@@ -1704,7 +1704,7 @@ CustomLocations = {
         #     z=1796.0,
         #     rot_y=4073,
         #     max_size=64,
-        #     logic_region=Regions.LowerCore,
+        #     logic_region=Regions.AlcoveBeyondHatch,
         #     group=1,
         # ),
         CustomLocation(
@@ -5099,7 +5099,7 @@ CustomLocations = {
             map=Maps.CastleCrypt,
             x=732.318,
             y=240,
-            z=1611.099,
+            z=1661.099,
             rot_y=3107,
             max_size=WARP_MAX_SIZE,
             logic_region=Regions.Crypt,

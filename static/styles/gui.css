@@ -491,7 +491,7 @@ i {
   text-align: left;
   margin: 10px 25px 10px 80px;
   flex: 1 0 30%;
-  min-width: 225px;
+  min-width: 200px;
 }
 
 .item-select {
@@ -525,10 +525,10 @@ i {
 
 .item-color-select {
   text-align: center;
-  margin: 0px 20px;
+  margin: 0px 30px 0px 40px;
   flex: 1 0 30%;
-  min-width: 220px;
-  max-width: 220px;
+  min-width: 265px;
+  max-width: 265px;
 }
 
 .item-link {

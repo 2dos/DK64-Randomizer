@@ -487,7 +487,7 @@ KasplatLocationList = {
             xmax=700,
             zmin=1740,
             zmax=1820,
-            region=Regions.LowerCore,  # This guy is weird - no good logic region to put him in besides Production Room
+            region=Regions.AlcoveBeyondHatch,
         ),
         KasplatLocation(
             name="Factory Kasplat: Dark Room",

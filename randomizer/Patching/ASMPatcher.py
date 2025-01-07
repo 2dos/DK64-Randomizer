@@ -92,6 +92,9 @@ POP_TARGETTING = True
 UNSHROUDED_CASTLE = False
 FARPLANE_VIEW = False
 KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
+FAIRY_LOAD_FIX = True
+CAMERA_RESET_REDUCTION = True
+PAL_DOGADON_REMATCH_FIRE = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -266,8 +269,6 @@ def getROMAddress(address: int, overlay: Overlay, offset_dict: dict) -> int:
             raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
     if address < rdram_start:
         raise Exception(f"Seeking out of bounds for this overlay. Attempted to seek to {hex(address)} in overlay {overlay.name}")
-    if overlay == Overlay.Boot:
-        print(hex(rdram_start), hex(overlay_start), hex(overlay_start + (address - rdram_start)))
     return overlay_start + (address - rdram_start)
 
 
@@ -664,7 +665,23 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     elif holiday == Holidays.Anniv25:
         # Change barrel base sprite
         writeValue(ROM_COPY, 0x80721458, Overlay.Static, getBonusSkinOffset(ExtraTextures.Anniv25Barrel), offset_dict)
+    # Smoother Camera
+    if settings.smoother_camera:
+        camera_change_cooldown = 5
+        writeValue(ROM_COPY, 0x806EA238, Overlay.Static, 0, offset_dict, 4)  # Disable it requiring a new input
+        writeValue(ROM_COPY, 0x806EA2A4, Overlay.Static, 0, offset_dict, 4)  # Disable it requiring a new input
+        camera_change_amount = 5 * (camera_change_cooldown - 2)
+        addr = getROMAddress(0x806EA25E, Overlay.Static, offset_dict)
+        ROM_COPY.seek(addr)
+        val = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        if (val & 0x8000) == 0:  # Is Mirror Mode
+            camera_change_amount = -camera_change_amount
+        writeValue(ROM_COPY, 0x806EA256, Overlay.Static, camera_change_cooldown, offset_dict)
+        writeValue(ROM_COPY, 0x806EA25E, Overlay.Static, -camera_change_amount, offset_dict, 2, True)
+        writeValue(ROM_COPY, 0x806EA2C2, Overlay.Static, camera_change_cooldown, offset_dict)
+        writeValue(ROM_COPY, 0x806EA2CA, Overlay.Static, camera_change_amount, offset_dict, 2, True)
 
+    # Crosshair
     if settings.colorblind_mode != ColorblindMode.off:
         writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict)  # Force first option
         writeValue(ROM_COPY, 0x8069E9B0, Overlay.Static, 0, offset_dict, 4)  # Prevent write
@@ -1001,6 +1018,95 @@ def disableDynamicReverb(ROM_COPY: ROM):
         writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
 
 
+boss_maps = [
+    Maps.JapesBoss,
+    Maps.AztecBoss,
+    Maps.FactoryBoss,
+    Maps.GalleonBoss,
+    Maps.FungiBoss,
+    Maps.CavesBoss,
+    Maps.CastleBoss,
+    Maps.KroolDonkeyPhase,
+    Maps.KroolDiddyPhase,
+    Maps.KroolLankyPhase,
+    Maps.KroolTinyPhase,
+    Maps.KroolChunkyPhase,
+    Maps.KroolShoe,
+]
+k_rool_maps = [
+    Maps.KroolDonkeyPhase,
+    Maps.KroolDiddyPhase,
+    Maps.KroolLankyPhase,
+    Maps.KroolTinyPhase,
+    Maps.KroolChunkyPhase,
+]
+
+IS_FINAL_BOSS_BIT = 0x200
+
+
+def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings):
+    """Fix all boss map properties to account for the correct attributes."""
+    # 02
+    writeValue(ROM_COPY, 0x805FF476, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict)  # 805ff474 - Transition song playing (checks bit is not set)
+    # 80618640 - SFX play from actor (checks bit is not set)
+    # 806206fc - something with mini
+    # 80621790 - rocket something
+    # 80621888 - ????
+    # 80621A30 - ????
+    # 80621AC8 - ????
+    # 80622248 - ????
+    # 806223C4 - ????
+    # 80624718 - ????
+    # 806286DC - Warp actor to vehicle
+    # 8067EA94 - Barrel code
+    # 8067F3A4 - Play transform barrel song
+    # 8067F7E8 - Transform cooldown
+    # 80680200 - Cannon Barrel
+    # 806802AC - Cannon Barrel
+    # 80680434 - Cannon Barrel
+    # 8068210C - Rocketbarrel HUD
+    # 806C3008 - Cutscene Models
+    # 806C308C - Cutscene Models
+    # 806C7FD4 - Refilling health if dead (if not set)
+    # 806D2EAC - Rocketbarrel something
+    # 806D3164 - Rocketbarrel something
+    # 806D7ABC - Play "knockout" sfx on death
+    # 806D9A04 - Noclip for instrument
+    # 806D9A7C - Trombone volume
+    # 806E5430 - Noclip for instrument
+    # 806EA0D8 - Zoom level
+    # 806ECD24 - Jump Y Vel
+    # 806ECDF8 - Damage take
+    # 806EE804 - Cancel trombone music
+    # 806EE83C - Damage take something
+    # 806F058C - Play instrument cutscene
+    # 806F12C8 - Play gone song
+    writeValue(ROM_COPY, 0x8071288A, Overlay.Static, IS_FINAL_BOSS_BIT, offset_dict)  # 80712888 - Deathwarp location (should change this)
+    # 80712C34 - Helm Timer init
+    # 80712F34 - Warp after beating KR in main menu
+    # 80726CDC - If off, and enemy id != 4 and actor_type != fairy, set props bitfield
+
+    # 20
+    # 8061bfb0 - Camera stuff
+    writeHook(ROM_COPY, 0x806A895C, Overlay.Static, "checkKRoolPause", offset_dict)
+    writeValue(ROM_COPY, 0x806A8970, Overlay.Static, 0x10200009, offset_dict, 4)  # beqz $at, 0x9
+
+    for map_id in boss_maps:
+        check_map = map_id
+        if check_map == Maps.KroolShoe:
+            check_map = Maps.KroolTinyPhase
+        rom_address = getROMAddress(0x8074482C + (12 * map_id) + 4, Overlay.Static, offset_dict)
+        ROM_COPY.seek(rom_address)
+        raw_value = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        is_final_boss = check_map in settings.krool_order
+        is_krool = check_map in k_rool_maps
+        is_shoe = map_id == Maps.KroolShoe
+        if is_final_boss:
+            raw_value |= IS_FINAL_BOSS_BIT
+        ROM_COPY.seek(rom_address)
+        ROM_COPY.writeMultipleBytes(raw_value, 4)
+
+
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -1023,6 +1129,7 @@ def patchAssembly(ROM_COPY, spoiler):
     ACTOR_HEALTH_START = getSym("actor_health_damage")
 
     alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
+    fixBossProperties(ROM_COPY, offset_dict, settings)
 
     writeValue(ROM_COPY, 0x8060E04C, Overlay.Static, 0, offset_dict, 4)  # Prevent moves overwrite
     writeValue(ROM_COPY, 0x8060DDAA, Overlay.Static, 0, offset_dict)  # Writes readfile data to moves
@@ -1142,6 +1249,15 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806A7474, Overlay.Static, "disableHelmKeyBounce", offset_dict)
     writeHook(ROM_COPY, 0x80600674, Overlay.Static, "updateLag", offset_dict)
     writeHook(ROM_COPY, 0x806FC990, Overlay.Static, "ApplyTextRecolorHints", offset_dict)
+
+    if CAMERA_RESET_REDUCTION:
+        # Credit: Retroben
+        writeValue(ROM_COPY, 0x8061BDF0, Overlay.Static, 0x1000, offset_dict)
+        writeValue(ROM_COPY, 0x8061BE12, Overlay.Static, 0x0001, offset_dict)
+        writeValue(ROM_COPY, 0x8061BE18, Overlay.Static, 0x1000, offset_dict)
+
+    if PAL_DOGADON_REMATCH_FIRE:
+        writeValue(ROM_COPY, 0x80691E36, Overlay.Static, 166, offset_dict)  # PAL = 200 * (50 / 60)
 
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
@@ -1568,6 +1684,51 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeFunction(ROM_COPY, 0x8062F084, Overlay.Static, "setFog", offset_dict)
 
+    # Fix issues where multiple loaded fairies will only allow 1 fairy to be referenced
+    if FAIRY_LOAD_FIX:
+        # Paad Offset | Actor offset | var name
+        # 038         | 1B0          | ScreenX
+        # 03A         | 1B2          | ScreenY
+        # 03C         | 1B4          | Dist
+        # 03E         | 1B6          | In Range
+        FAIRY_SCREEN_X = 0x1B0
+        FAIRY_SCREEN_Y = 0x1B2
+        FAIRY_SCREEN_DIST = 0x1B4
+        FAIRY_SCREEN_RANGE = 0x1B6
+        writeValue(ROM_COPY, 0x806C5DA0, Overlay.Static, 0x8D4CBB40, offset_dict, 4)  # lw $t4, 0xBB40 ($t2) - Get current actor pointer
+        writeValue(ROM_COPY, 0x806C5DA4, Overlay.Static, 0x2550D580, offset_dict, 4)  # addiu $s0, $t2, 0xD580 - Get extra player pointer addr (Overwritten)
+        writeValue(ROM_COPY, 0x806C5DA8, Overlay.Static, 0x8D4AC924, offset_dict, 4)  # lw $t2, 0xC924 ($t2) - Get char change pointer (overwritten)
+        writeValue(ROM_COPY, 0x806C5DAC, Overlay.Static, 0x85820000 | FAIRY_SCREEN_X, offset_dict, 4)  # lh $v0, 0x01B0 ($t4) - Get screen X in fairy storage
+        writeValue(ROM_COPY, 0x806C5DB0, Overlay.Static, 0xC5500284, offset_dict, 4)  # lwc1 $f16, 0x0284 ($t2) - Get some char spawner attr (Overwritten)
+        # writeValue(ROM_COPY, 0x806C5DB8, Overlay.Static, 0xA5800000 | FAIRY_SCREEN_RANGE, offset_dict, 4)  # sh $zero, 0x1B6 ($t4) - Store fairy not in box
+        writeValue(ROM_COPY, 0x806C5DB8, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP
+        writeValue(ROM_COPY, 0x806C5DCC, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP
+        writeValue(ROM_COPY, 0x806C5DD0, Overlay.Static, 0x85820000 | FAIRY_SCREEN_Y, offset_dict, 4)  # lh $v0, 0x01B2 ($t4) - Get screen Y in fairy storage
+        if not isQoLEnabled(spoiler, MiscChangesSelected.better_fairy_camera):
+            writeValue(ROM_COPY, 0x806C5DE4, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP
+            writeValue(ROM_COPY, 0x806C5DE8, Overlay.Static, 0x85820000 | FAIRY_SCREEN_DIST, offset_dict, 4)  # lh $v0, 0x01B4 ($t4) - Get max dist in fairy storage
+        writeValue(ROM_COPY, 0x806C5E00, Overlay.Static, 0x45000016, offset_dict, 4)  # bc1f 0x16 - Free up one slot so we can store the box addr
+        writeValue(ROM_COPY, 0x806C5E08, Overlay.Static, 0x24010001, offset_dict, 4)  # li $at, 1 - Shift this one addr earlier
+        writeValue(ROM_COPY, 0x806C5E0C, Overlay.Static, 0xA5810000 | FAIRY_SCREEN_RANGE, offset_dict, 4)  # sh $at, 0x1b6 ($t4) - Store fairy as in box
+        writeValue(
+            ROM_COPY, 0x806C5E10, Overlay.Static, 0x904D01EC, offset_dict, 4
+        )  # lbu $t5 0x01EC ($v0) - Fix the reference address since we're no longer storing a copy of extra player pointer to t4
+        # Storage
+        writeHook(ROM_COPY, 0x806C5FA8, Overlay.Static, "storeFairyData", offset_dict)
+        # Check
+        writeValue(ROM_COPY, 0x806C5EA8, Overlay.Static, 0x3C108080, offset_dict, 4)  # lui $s0, 0x8080
+        writeValue(ROM_COPY, 0x806C5EAC, Overlay.Static, 0x8E0ABB40, offset_dict, 4)  # lw $t2, 0xBB40 ($s0)
+        writeValue(ROM_COPY, 0x806C5EB0, Overlay.Static, 0x854A0000 | FAIRY_SCREEN_RANGE, offset_dict, 4)  # lh $t2, 0x01B6 ($t2)
+        writeValue(ROM_COPY, 0x806C5EB4, Overlay.Static, 0x1140001B, offset_dict, 4)  # beqz $t2, 0x1B
+        # Face controllers
+        writeHook(ROM_COPY, 0x806C5E88, Overlay.Static, "setSadFace", offset_dict)
+        writeHook(ROM_COPY, 0x806C5E3C, Overlay.Static, "setHappyFace", offset_dict)
+        writeFunction(ROM_COPY, 0x806CAAA0, Overlay.Static, "resetPictureStatus", offset_dict)
+
+        # Thankfully currentactor is loaded into a0.
+        # I don't think we can sneak in creating the other JALs necessary to calculate distance.
+        # We could make this part of "better fairy camera"? This means those calcuations don't need to be made.
+
     # Spawn Enemy Drops function
     enemy_drop_addrs = [
         0x806AD40C,
@@ -1594,6 +1755,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x800289B0, Overlay.Boss, 0, offset_dict, 4)  # K Rool between-phase health refilll
     else:
         writeValue(ROM_COPY, 0x806A6EA8, Overlay.Static, 0x0C1C2519, offset_dict, 4)  # Set Bonus Barrel to refill health
+        writeFunction(ROM_COPY, 0x80025564, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Army Dillo
+        writeFunction(ROM_COPY, 0x8002A9B0, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Dogadon
+        writeFunction(ROM_COPY, 0x80033B70, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Mad Jack
+        writeFunction(ROM_COPY, 0x800294C0, Overlay.Boss, "refillHealthOnInit", offset_dict)  # Pufftoss
+        writeFunction(ROM_COPY, 0x80031C6C, Overlay.Boss, "refillPlayerHealthKKO", offset_dict)  # KKO
 
     if settings.warp_to_isles:
         writeHook(ROM_COPY, 0x806A995C, Overlay.Static, "PauseExtraSlotCode", offset_dict)
@@ -1614,6 +1780,14 @@ def patchAssembly(ROM_COPY, spoiler):
     # Big Head Static stuff
     writeValue(ROM_COPY, 0x80612E98, Overlay.Static, 0xA4850172, offset_dict, 4)  # sh $a1, 0x172 ($a0)
     writeValue(ROM_COPY, 0x80612E9E, Overlay.Static, 0xBB30, offset_dict)  # change lhu offset
+
+    # Fix fairies to not drain items
+    writeFunction(ROM_COPY, 0x806DEFFC, Overlay.Static, "refillIfRefillable", offset_dict)
+
+    if settings.item_reward_previews:
+        writeValue(ROM_COPY, 0x8002489C, Overlay.Race, 0, offset_dict, 4)  # Beetle Races
+        writeValue(ROM_COPY, 0x8002BA9C, Overlay.Race, 0, offset_dict, 4)  # Castle Car Race
+        writeValue(ROM_COPY, 0x80028580, Overlay.Race, 0, offset_dict, 4)  # Factory Car Race
 
     # Pause Stuff
     FLAG_BP_JAPES_DK_HAS = 0x1D5
@@ -2523,6 +2697,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x80680AD4, Overlay.Static, "expandTBarrelResponse", offset_dict)  # Allow Training Barrels to disappear if already beaten
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
 
+    writeValue(ROM_COPY, 0x8069215E, Overlay.Static, 0x3F, offset_dict)  # Reduce fireball collision volume
+
     # Helm Warp Handler
     writeFunction(ROM_COPY, 0x8068B04C, Overlay.Static, "WarpToHelm", offset_dict)
     writeValue(ROM_COPY, 0x8068B054, Overlay.Static, 0x5000, offset_dict)
@@ -2625,16 +2801,16 @@ def patchAssembly(ROM_COPY, spoiler):
         Maps.KroolShoe: 3,
         Maps.KroolChunkyPhase: 0x23,
     }
-    for map_id in settings.krool_order:
-        writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
-        if map_id not in [
-            Maps.KroolDonkeyPhase,
-            Maps.KroolDiddyPhase,
-            Maps.KroolLankyPhase,
-            Maps.KroolTinyPhase,
-            Maps.KroolChunkyPhase,
-        ]:
-            writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, 3, offset_dict, 4)
+    # for map_id in settings.krool_order:
+    #     writeValue(ROM_COPY, 0x807445E0 + map_id, Overlay.Static, 8, offset_dict, 1)
+    #     if map_id not in [
+    #         Maps.KroolDonkeyPhase,
+    #         Maps.KroolDiddyPhase,
+    #         Maps.KroolLankyPhase,
+    #         Maps.KroolTinyPhase,
+    #         Maps.KroolChunkyPhase,
+    #     ]:
+    #         writeValue(ROM_COPY, 0x8074482C + (12 * map_id) + 4, Overlay.Static, 3, offset_dict, 4)
     # Got a bunch of stuff to fix with this
     # for map_id in vanilla_props_values:
     #     new_value = vanilla_props_values[map_id]

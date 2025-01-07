@@ -1130,6 +1130,16 @@ def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
     return barrier_bijection[item]
 
 
+def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
+    """Get value from byte array given an offset and size."""
+    value = 0
+    for x in range(size):
+        local_value = ba[offset + x]
+        value <<= 8
+        value += local_value
+    return value
+
+
 class Holidays(IntEnum):
     """Holiday Enum."""
 
@@ -1141,7 +1151,7 @@ class Holidays(IntEnum):
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
-    is_offseason = False
+    is_offseason = True
     if is_offseason:
         return settings.holiday_setting_offseason
     return settings.holiday_setting

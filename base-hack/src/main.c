@@ -15,6 +15,21 @@ char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
 char grab_lock_timer = -1;
 char tag_locked = 0;
 
+int resetPictureStatus(void) {
+	int value = *(unsigned char*)(0x807F946E);
+	if ((Player->strong_kong_ostand_bitfield & 0x8000)) {
+		return value;
+	}
+	actorData *picture = Player->vehicle_actor_pointer;
+	if (picture) {
+		if (picture->actorType == 0xCA) {
+			return value;
+		}
+	}
+	Player->fairy_state = 0;
+	return value;
+}
+
 void cFuncLoop(void) {
 	regularFrameLoop();
 	cc_effect_handler();
@@ -178,6 +193,7 @@ static short mj_falling_cutscenes[] = {
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer < 2) {
+		setFlag(0x6A, 1, FLAGTYPE_TEMPORARY);
 		swap_ending_cutscene_model();
 		swapKremlingModel();
 		force_enable_diving_timer = 0;

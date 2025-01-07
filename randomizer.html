@@ -742,25 +742,36 @@
                       base_url = `${location.origin}`;
                         branch = "dev";
                     }
-                    
-                    var selector_info = $.ajax({
+                    $.ajax({
                         type: "GET",
                         url: base_url + "/api/get_selector_info",
-                        args: { "branch": branch },
-                        async: false
-                    }).responseJSON;
-                    // Append the KongZones to the selector_info
-                    selector_info["kong_zones"] = KongZones;
-                    // Render templates
-                    var renderedHTML = env.render("base.html.jinja2", selector_info);
-                    var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
-        
-                    // Inject into the DOM
-                    $("#tab-data").html(renderedHTML);
-                    $("#nav-tab-list").html(navRenderedHTML);
-        
-                    // After rendering the HTML, dynamically load the other scripts
-                    loadAdditionalScripts();
+                        data: { "branch": branch },
+                        success: function (data) {
+                            try {
+                                var selector_info = data;
+                                //console.log("Parsed selector_info:", selector_info);
+                                // Append the KongZones to the selector_info
+                                selector_info["kong_zones"] = KongZones;
+                                // Render templates
+                                var renderedHTML = env.render("base.html.jinja2", selector_info);
+                                var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
+                    
+                                // Inject into the DOM
+                                $("#tab-data").html(renderedHTML);
+                                $("#nav-tab-list").html(navRenderedHTML);
+                    
+                                // After rendering the HTML, dynamically load the other scripts
+                                loadAdditionalScripts();
+                            } catch (error) {
+                                console.error("Error processing response data:", error);
+                                document.documentElement.innerHTML = error;
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            // Insert error to root of dom
+                            console.error("AJAX request failed:", errorThrown);
+                            document.documentElement.innerHTML = errorThrown;
+                        }})
                 } catch (error) {
                     console.error("Failed to load required modules:", error);
                 }

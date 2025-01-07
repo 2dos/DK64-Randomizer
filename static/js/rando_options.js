@@ -715,19 +715,42 @@ function disable_hard_mode_modal() {
   }
 }
 document.getElementById("starting_moves_reset").addEventListener("click", function(evt) {
-  // Reset the starting move selector to have nothing selected
-  const startingMoveButtons = Array.from(document.getElementsByTagName("input")).filter(element => element.name.startsWith("starting_move_box_"));
-  startingMoveButtons.forEach(button => {
-      button.checked = button.id.startsWith("none");
-  });
+  // Update the starting move pools to start with no items
+  for (let i = 1; i <= 5; i++) {
+    const move_selector = document.getElementById("starting_moves_list_count_" + i);
+    move_selector.value = 0;
+  }
+  startingMovesFullReset();
+});
+
+document.getElementById("starting_moves_start_vanilla").addEventListener("click", function(evt) {
+  // Update the starting move pools to start with vanilla items
+  for (let i = 1; i <= 5; i++) {
+    const move_selector = document.getElementById("starting_moves_list_count_" + i);
+    move_selector.value = i == 2 ? 10 : 0;
+  }
+  startingMovesFullReset();
+
+  document.getElementById("starting_move_92").selected = true;  // Cranky
+  document.getElementById("starting_move_93").selected = true;  // Funky
+  document.getElementById("starting_move_94").selected = true;  // Candy
+  document.getElementById("starting_move_95").selected = true; // Snide
+  document.getElementById("starting_move_8").selected = true; // Vines
+  document.getElementById("starting_move_9").selected = true; // Diving
+  document.getElementById("starting_move_10").selected = true; // Oranges
+  document.getElementById("starting_move_11").selected = true; // Barrels
+  document.getElementById("starting_move_12").selected = true; // Climbing
+  document.getElementById("starting_move_13").selected = true; // Simian Slam
+  moveSelectedStartingMoves(2);
 });
 
 document.getElementById("starting_moves_start_all").addEventListener("click", function(evt) {
-  // Update the starting move selector to start with all items
-  const startingMoveButtons = Array.from(document.getElementsByTagName("input")).filter(element => element.name.startsWith("starting_move_box_"));
-  startingMoveButtons.forEach(button => {
-      button.checked = button.id.startsWith("start");
-  });
+  // Update the starting move pools to start with all items
+  for (let i = 1; i <= 5; i++) {
+    const move_selector = document.getElementById("starting_moves_list_count_" + i);
+    move_selector.value = i == 1 ? 60 : 0;
+  }
+  startingMovesFullReset();
 });
 
 document
@@ -1087,79 +1110,63 @@ document
 
 // Enable and disable settings based on Item Rando being on/off
 function toggle_item_rando() {
-  const selector = document.getElementById("item_rando_list_modal");
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  const smallerShops = document.getElementById("smaller_shops");
-  const moveVanilla = document.getElementById("move_off");
-  const moveRando = document.getElementById("move_on");
-  const enemyDropRando = document.getElementById("enemy_drop_rando");
-  const nonItemRandoWarning = document.getElementById("non_item_rando_warning");
-  const sharedShopWarning = document.getElementById("shared_shop_warning");
-  const kongRando = document.getElementById("kong_rando");
+  const elements = {
+    selector: document.getElementById("item_rando_list_modal"),
+    itemRandoPool: document.getElementById("item_rando_list_selected").options,
+    smallerShops: document.getElementById("smaller_shops"),
+    moveVanilla: document.getElementById("move_off"),
+    moveRando: document.getElementById("move_on"),
+    enemyDropRando: document.getElementById("enemy_drop_rando"),
+    nonItemRandoWarning: document.getElementById("non_item_rando_warning"),
+    sharedShopWarning: document.getElementById("shared_shop_warning"),
+    kongRando: document.getElementById("kong_rando"),
+    shuffleItems: document.getElementById("shuffle_items"),
+    moveOnCrossPurchase: document.getElementById("move_on_cross_purchase"),
+    randomPrices: document.getElementById("random_prices"),
+  };
 
   let shopsInPool = false;
   let kongsInPool = false;
   let nothingSelected = true;
 
-  for (let option of itemRandoPool) {
-    if (option.value === "shop" && option.selected) {
-      shopsInPool = true;
-    }
-    if (option.value === "kong" && option.selected) {
-      kongsInPool = true;
-    }
+  for (let option of elements.itemRandoPool) {
     if (option.selected) {
       nothingSelected = false;
+      if (option.value === "shop") shopsInPool = true;
+      if (option.value === "kong") kongsInPool = true;
     }
   }
 
   if (nothingSelected) {
-    shopsInPool = true;
-    kongsInPool = true;
+    shopsInPool = kongsInPool = true;
   }
 
-  const disabled = !document.getElementById("shuffle_items").checked;
+  const disabled = !elements.shuffleItems.checked;
 
+  elements.selector.toggleAttribute("disabled", disabled);
+  elements.smallerShops.toggleAttribute("disabled", disabled || !shopsInPool);
+  if (disabled || !shopsInPool) {
+    elements.smallerShops.checked = false;
+  }
+  elements.moveVanilla.toggleAttribute("disabled", shopsInPool);
+  elements.moveRando.toggleAttribute("disabled", shopsInPool);
+  elements.enemyDropRando.toggleAttribute("disabled", disabled);
   if (disabled) {
-    selector.setAttribute("disabled", "disabled");
-    smallerShops.setAttribute("disabled", "disabled");
-    smallerShops.checked = false;
-    moveVanilla.removeAttribute("disabled");
-    moveRando.removeAttribute("disabled");
-    enemyDropRando.setAttribute("disabled", "disabled");
-    enemyDropRando.checked = false;
-    nonItemRandoWarning.removeAttribute("hidden");
-    sharedShopWarning.removeAttribute("hidden");
-    kongRando.removeAttribute("disabled");
-  } else {
-    selector.removeAttribute("disabled");
-    enemyDropRando.removeAttribute("disabled");
-    nonItemRandoWarning.setAttribute("hidden", "hidden");
+    elements.enemyDropRando.checked = false;
+  }
+  elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
+  elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
+  elements.kongRando.toggleAttribute("disabled", kongsInPool);
+  elements.kongRando.checked = kongsInPool;
 
-    if (shopsInPool) {
-      sharedShopWarning.setAttribute("hidden", "hidden");
-
-      if (moveVanilla.selected || moveRando.selected) {
-        document.getElementById("move_on_cross_purchase").selected = true;
-      }
-
-      moveVanilla.setAttribute("disabled", "disabled");
-      moveRando.setAttribute("disabled", "disabled");
-      smallerShops.removeAttribute("disabled");
-
-      document.getElementById("random_prices").removeAttribute("disabled");
+  if (!disabled && shopsInPool) {
+    if (elements.moveVanilla.selected || elements.moveRando.selected) {
+      elements.moveOnCrossPurchase.selected = true;
     }
-
-    if (kongsInPool) {
-      kongRando.setAttribute("disabled", "disabled");
-      kongRando.checked = true;
-    } else {
-      kongRando.removeAttribute("disabled");
-    }
+    elements.randomPrices.removeAttribute("disabled");
   }
 }
+
 
 document
   .getElementById("shuffle_items")
@@ -2072,6 +2079,9 @@ function moveSelectedStartingMoves(target_list_id) {
     moved_move.id = selected_moves[i].id;
     moved_move.text = selected_moves[i].text;
     moved_move.classList = selected_moves[i].classList;
+    if (selected_moves[i].hidden) {
+      moved_move.setAttribute("hidden", "hidden");
+    }
     target_selector.appendChild(moved_move);
   }
   savesettings();

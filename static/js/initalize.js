@@ -824,7 +824,7 @@ function pushToHistory(message, emphasize = false) {
 function postToastMessage(message, is_warning, progress_ratio) {
   // Write Toast
   $("#progress-text").text(message);
-  pushToHistory(message);
+  pushToHistory(message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'));
   // Handle Progress Bar
   perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
@@ -892,13 +892,23 @@ function query_seed_status(url, task_id) {
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
-        postToastMessage("Something went wrong please try again", true, 1);
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
         sent_generating_status = false;
       }
     },
     error: function (data, textStatus, xhr) {
-      postToastMessage("Something went wrong please try again", true, 1);
-    },
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
+      },
   });
 }
 
@@ -1061,9 +1071,9 @@ function get_seed_from_server(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev-generate.dk64rando.com/api/get_seed";
+    var url = "https://api.dk64rando.com/api/get_seed";
   } else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://generate.dk64rando.com/api/get_seed";
+    var url = "https://api.dk64rando.com/api/get_seed";
   } else {
     var url = "http://localhost:8000/api/get_seed";
   }
@@ -1489,17 +1499,17 @@ function trigger_ui_update() {
 // Ensure all functions are defined before calling them
 async function initialize() {
   // Call the function on page load to set the initial state
-  load_databases();
-  toggleDelayedSpoilerLogInput();
-  check_seed_info_tab();
+  await load_databases();
+  await toggleDelayedSpoilerLogInput();
+  await check_seed_info_tab();
   // check on any button with the nav-item class is clicked
   document.querySelectorAll(".nav-item").forEach((item) => {
-    item.addEventListener("click", () => {
-      check_seed_info_tab();
+    item.addEventListener("click", async () => {
+      await check_seed_info_tab();
     });
   });
-  set_preset_options();
-  set_random_weights_options();
+  await set_preset_options();
+  await set_random_weights_options();
 }
 // Initialize after ensuring all functions are loaded
 initialize();

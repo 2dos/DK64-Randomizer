@@ -1,5 +1,6 @@
 """Stores the data for the locations of colored bananas and balloons in Angry Aztec."""
 
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
@@ -1334,7 +1335,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="By middle window outside of production room (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.AlcoveBeyondHatch,
         vanilla=True,
         locations=[
             [5, 1.0, 598.0451049804688, 459.3333435058594, 1745.70458984375],
@@ -1346,8 +1347,9 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="On pole down hatch (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FranticFactoryStart,
         vanilla=True,
+        logic=lambda l: Events.HatchOpened in l.Events,
         locations=[
             [1, 1.0, 635.0736083984375, 717.8333129882812, 1891.0057373046875],
             [1, 1.0, 634.122802734375, 417.83331298828125, 1896.0335693359375],

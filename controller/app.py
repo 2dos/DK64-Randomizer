@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import copy
 import secrets
 import threading
 import time
@@ -12,6 +13,7 @@ from os import environ, path, walk
 import requests
 from flask import Blueprint, Flask, jsonify, make_response, redirect, render_template, request, send_file, send_from_directory, session
 from flask_cors import CORS
+from flask_session import Session
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -19,7 +21,7 @@ from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from redis import Redis
+from redis import Redis, from_url
 from rq import Queue
 from rq.job import Job, Retry
 from version import version
@@ -27,12 +29,15 @@ from waitress import serve
 from werkzeug.utils import secure_filename
 from cleanup import enable_cleanup
 from oauth import DiscordAuth
+from functools import wraps
 from swagger_ui import flask_api_doc
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Define a resource to identify your service
 resource = Resource(
@@ -58,6 +63,16 @@ app = Flask(__name__, static_folder="", template_folder="templates")
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
+# Configure Redis for storing the session data on the server-side
+app.config["SESSION_TYPE"] = "redis"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_USE_SIGNER"] = True
+app.config["SESSION_REDIS"] = from_url("redis://redis:6379")
+
+# Create and initialize the Flask-Session object AFTER `app` has been configured
+server_session = Session(app)
+
 
 # Shared structure to manage threads
 tasks = {}
@@ -73,25 +88,35 @@ class TaskThread(threading.Thread):
         self.target = target
         self.args = args
         self.kwargs = kwargs
-        self.result = self.target(self.args[0])
+        self.result_complete = False
+        self.result = None
 
     def run(self):
         """Run the task in the background."""
-        self.result = self.target(self.kwargs.get("args")[0])
+        if not self.result_complete:
+            self.result_complete = True
+            self.result = self.target(self.kwargs.get("args")[0])
 
 
 redis_conn = Redis(host="redis", port=6379)
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
-CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com", "http://127.0.0.1"])
+CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com"])
 # Prepend all routes with /api
 secret_token = secrets.token_hex(256)
 
 api = Blueprint("api", __name__, url_prefix="/api")
 app.config["SECRET_KEY"] = secret_token
 # Set the secret key for the blueprint as well
-ALLOWED_REFERRERS = ["https://dk64randomizer.com"]
-API_KEYS = ["your_api_key_1", "your_api_key_2"]
+ALLOWED_REFERRERS = ["https://dk64randomizer.com/", "https://dev.dk64randomizer.com/"]
+API_KEYS = []
+# Check if the file api_keys.cfg exists and load the keys
+if path.isfile("api_keys.cfg"):
+    with open("api_keys.cfg", "r") as f:
+        keys = f.read().splitlines()
+        cleared_keys = [key for key in keys if len(key) > 0]
+        API_KEYS.extend(cleared_keys)
+
 discord = DiscordAuth(
     environ.get("CLIENT_ID"),
     environ.get("CLIENT_SECRET"),
@@ -100,26 +125,39 @@ discord = DiscordAuth(
 )
 admin_roles = ["550784070188138508"]
 
-ALLOWED_REFERRERS.extend(["*"])
 
-
-@api.before_request
 def enforce_api_restrictions():
-    """Enforce restrictions on the API."""
-    referer = request.headers.get("Referer")
-    api_key = request.headers.get("X-API-Key")
-    # Check if the request is allowed based on referer or API key
-    if referer not in ALLOWED_REFERRERS and "*" not in ALLOWED_REFERRERS and api_key not in API_KEYS:
-        print(f"Unauthorized access attempt from IP: {get_user_ip()}, Referer: {referer}, API Key: {api_key}")
-        return set_response(json.dumps({"error": "Unauthorized access"}), 403)
-    # Validate the request is JSON
-    if request.method in ["POST", "PUT"] and request.content_type not in ["application/json", "application/json; charset=utf-8"]:
-        return set_response(json.dumps({"error": "Invalid content type"}), 400)
-    # Check if they provide a branch in their args, if they don't default to dev
-    if "branch" not in request.args:
-        args_copy = request.args.to_dict()
-        args_copy["branch"] = "dev"
-        request.args = args_copy
+    """Enforce API restrictions on the request."""
+
+    def decorator(func):
+        """Enforce API restrictions."""
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            """Enforce API restrictions."""
+            referer = request.headers.get("Referer")
+            api_key = request.headers.get("X-API-Key")
+
+            # Check if the request is allowed based on referer or API key
+            if "*" not in ALLOWED_REFERRERS and (referer not in ALLOWED_REFERRERS and api_key not in API_KEYS):
+                print(f"Unauthorized access attempt from IP: {get_user_ip()}, Referer: {referer}, API Key: {api_key}")
+                return jsonify({"error": "Unauthorized access"}), 403
+
+            # Validate the request is JSON
+            if request.method in ["POST", "PUT"] and request.content_type not in ["application/json", "application/json; charset=utf-8"]:
+                return jsonify({"error": "Invalid content type"}), 400
+
+            # Check if they provide a branch in their args, if they don't, default to 'dev'
+            if "branch" not in request.args:
+                args_copy = request.args.to_dict()
+                args_copy["branch"] = "dev"
+                request.args = args_copy
+
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def set_response(content, status_code, content_type="application/json", version_header=version):
@@ -155,15 +193,21 @@ def update_presets(force=False):
 
 def get_user_ip():
     """Retrieve the user's IP address."""
-    if request.headers.get("X-Forwarded-For"):
-        return request.headers.get("X-Forwarded-For").split(",")[0]
+    if request.headers.get("Cf-Connecting-Ip"):
+        return request.headers.get("Cf-Connecting-Ip")
+    elif request.headers.get("X-Real-IP"):
+        return request.headers.get("X-Real-IP")
+    elif request.headers.get("X-Forwarded-For"):
+        return request.headers.get("X-Forwarded-For")
     return request.remote_addr
 
 
 @api.route("/submit-task", methods=["POST"])
+@enforce_api_restrictions()
 def submit_task():
     """Submit a task to the worker queue."""
     data = request.json
+    branch = request.args.get("branch", "dev")
     if os.environ.get("TEST_REDIS") == "1":
         # Start the task immediately if we're using a fake Redis server
         # Make it a thread, and we're going to directly import and call the function
@@ -182,7 +226,6 @@ def submit_task():
     else:
         settings_data = data.get("settings_data")
     user_ip = get_user_ip()
-
     # Check the last submission time for this IP
     last_submission_key = f"last_submission:{user_ip}"
     last_submission_time = redis_conn.get(last_submission_key)
@@ -193,11 +236,11 @@ def submit_task():
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=2))
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=2))
         priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip}, retry=Retry(max=1))
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=1))
         priority = "Low"
 
     # Update the last submission time for this IP
@@ -207,16 +250,18 @@ def submit_task():
 
 
 @api.route("/task-status/<task_id>", methods=["GET"])
+@enforce_api_restrictions()
 def task_status(task_id):
     """Get the status of a task."""
     if os.environ.get("TEST_REDIS") == "1":
         global tasks
         task_thread = tasks.get(task_id)
         if task_thread:
+            if not task_thread.result_complete:
+                task_thread.run()
             if task_thread.is_alive():
                 return jsonify({"task_id": task_id, "status": "started", "priority": "High"}), 200
             else:
-                # Retrieve and return the result
                 result = task_thread.result
                 return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     try:
@@ -229,7 +274,10 @@ def task_status(task_id):
         return set_response(json.dumps({"error": "Task not found"}), 404)
     # Get what was returned from the task
     if task.result:
-        return set_response(json.dumps({"result": task.result, "status": "finished"}), 200)
+        # make sure we clear the task from the queue if it's done
+        result = copy.copy(task.result)
+        task.delete()
+        return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     # If the task failed, return the error message
     if task.exc_info:
         # Summarize the error message to just the final exception
@@ -246,12 +294,14 @@ def task_status(task_id):
 
 
 @api.route("/get_version", methods=["GET"])
+@enforce_api_restrictions()
 def get_version():
     """Get the version of the controller."""
     return set_response(json.dumps({"version": version}), 200)
 
 
 @api.route("/get_presets", methods=["GET"])
+@enforce_api_restrictions()
 def get_presets():
     """Get the presets for the randomizer."""
     branch = request.args.get("branch")
@@ -351,6 +401,7 @@ def admin_presets():
 
 
 @api.route("/get_seed", methods=["GET"])
+@enforce_api_restrictions()
 def get_seed():
     """Get the lanky for a seed."""
     # Get the hash from the query string and sanitize it
@@ -385,6 +436,7 @@ def get_seed():
 
 
 @api.route("/get_spoiler_log", methods=["GET"])
+@enforce_api_restrictions()
 def get_spoiler_log():
     """Get the spoiler log for a seed."""
     # Get the hash from the query string
@@ -478,6 +530,7 @@ def get_total_info():
 
 
 @api.route("/get_selector_info", methods=["GET"])
+@enforce_api_restrictions()
 def get_selector_info():
     """Get the selector data for the randomizer."""
     # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
@@ -490,6 +543,7 @@ def get_selector_info():
 
 
 @api.route("/convert_settings", methods=["POST"])
+@enforce_api_restrictions()
 def convert_settings():
     """Convert settings for the randomizer."""
     url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
@@ -501,22 +555,6 @@ def convert_settings():
 
 
 app.register_blueprint(api, url_prefix="/api")
-
-if os.environ.get("BRANCH", "LOCAL") == "LOCAL":
-
-    @app.route("/")
-    def index():
-        """Serve the index page."""
-        print("Serving index page")
-        return send_from_directory(".", "index.html")
-
-    @app.route("/randomizer")
-    def rando():
-        """Serve the randomizer page."""
-        return send_from_directory(".", "randomizer.html")
-
-    ALLOWED_REFERRERS.extend(["*"])
-    API_KEYS.append("LOCAL_API_KEY")
 
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=8000)

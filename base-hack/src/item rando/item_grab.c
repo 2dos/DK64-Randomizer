@@ -737,19 +737,23 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
     ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
     if (model2_type == 0x11) {
         // Homing
-        return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
+        return 1;
+        // return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
     } else if (model2_type == 0x8E) {
         // Crystal
-        return crystalsUnlocked(Character);
+        return 1;
+        // return crystalsUnlocked(Character);
     } else if (model2_type == 0x8F) {
         // Regular Crate
-        return MovesBase[(int)Character].weapon_bitfield & 1;
+        return 1;
+        // return MovesBase[(int)Character].weapon_bitfield & 1;
     } else if (model2_type == 0x56) {
         // Orange
-        if (CurrentMap == MAP_TBARREL_ORANGE) { // Orange Barrel
-            return 1;
-        }
-        return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+        return 1;
+        // if (CurrentMap == MAP_TBARREL_ORANGE) { // Orange Barrel
+        //     return 1;
+        // }
+        // return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
     } else if (model2_type == 0x90) {
         // Medal
         if (CurrentMap == MAP_HELM) {
@@ -762,7 +766,8 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
         }
     } else if (model2_type == 0x98) {
         // Film
-        return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+        return 1;
+        // return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
     }
     int collectable_state = _object->collectable_state;
     if (((collectable_state & 8) == 0) || (Player->new_kong == 2)) {
@@ -809,22 +814,22 @@ int isCollectable(int type) {
             return SwapObject[player_index].player->characterID == kong + 2;
         }
     }
-    if (type == 0x11) {
-        // Homing Crate
-        return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
-    } else if (type == 0x8E) {
-        // Crystal
-        return SwapObject[player_index].player->unk_fairycam_bitfield & 2;
-    } else if (type == 0x8F) {
-        // Ammo Crate
-        return MovesBase[(int)Character].weapon_bitfield & 1;
-    } else if (type == 0x98) {
-        // Film
-        return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
-    } else if (type == 0x56) {
-        // Oranges
-        return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
-    }
+    // if (type == 0x11) {
+    //     // Homing Crate
+    //     // return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
+    // } else if (type == 0x8E) {
+    //     // Crystal
+    //     return SwapObject[player_index].player->unk_fairycam_bitfield & 2;
+    // } else if (type == 0x8F) {
+    //     // Ammo Crate
+    //     return MovesBase[(int)Character].weapon_bitfield & 1;
+    // } else if (type == 0x98) {
+    //     // Film
+    //     return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+    // } else if (type == 0x56) {
+    //     // Oranges
+    //     return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+    // }
     return 1;
 }
 

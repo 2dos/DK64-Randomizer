@@ -257,4 +257,5 @@ export enum Regions {
     CrankyCastle = 256,
     CrankyIsles = 257,
     Snide = 258,
+    AlcoveBeyondHatch = 259,
 }

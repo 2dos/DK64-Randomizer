@@ -527,7 +527,7 @@ def loadNewModels():
         portalModel_Actor(f"{MODEL_DIRECTORY}potion_{kong}.vtx", None, f"potion_{kong}", 0xB8)  # Actors
     # Kongs
     portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
-    portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)
+    portActorToModelTwo(0, "", "kong_diddy", 0x90, True, 0.5)
     portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
     portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
     portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)

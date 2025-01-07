@@ -7,6 +7,8 @@ services:
     restart: always
     networks:
       - task_network
+    volumes:
+      - ./redis_data:/data
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -21,11 +23,14 @@ services:
         - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
     depends_on:
       - redis
+      - dev_worker
+      - nginx
     volumes:
       - ./generated_seeds/:/app/controller/generated_seeds/
       - ./current_total.cfg:/app/controller/current_total.cfg
       - ./last_generated_time.cfg:/app/controller/last_generated_time.cfg
       - ./local_presets.json:/app/controller/local_presets.json
+      - ./api_keys.cfg:/app/controller/api_keys.cfg
     networks:
       - task_network
     restart: always
@@ -34,13 +39,40 @@ services:
       - WORKER_URL_MASTER=http://master_worker:8000
       - BRANCH=${BRANCH:-LOCAL}
     deploy:
-      replicas: ${CONTROLLER_REPLICAS:-1}
+      replicas: ${CONTROLLER_REPLICAS:-2}
       update_config:
         parallelism: 1
         delay: 10s
         order: start-first
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  randobot:
+    build:
+      context: ./
+      dockerfile: ./racetime_bot/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+        - CATEGORY_SLUG=${CATEGORY_SLUG}
+        - RGG_CLIENT_ID=${RGG_CLIENT_ID}
+        - RGG_CLIENT_SECRET=${RGG_CLIENT_SECRET}
+        - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
+        - API_KEY=${API_KEY}
+    depends_on:
+      - controller
+    restart: always
+    environment:
+      - BRANCH=${BRANCH:-LOCAL}
+    deploy:
+      replicas: ${RANDOBOT_REPLICAS:-1}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles:
+      - racetime
 
   nginx:
     build:
@@ -50,10 +82,14 @@ services:
         - BRANCH=${BRANCH:-LOCAL}
     container_name: nginx
     ports:
-      - "8000:8000"
-      - "443:443"
-    depends_on:
-      - controller
+      - target: 80
+        published: 80
+        mode: host
+        host_ip: 0.0.0.0
+      - target: 443
+        published: 443
+        mode: host
+        host_ip: 0.0.0.0
     restart: always
     networks:
       - task_network

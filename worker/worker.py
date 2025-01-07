@@ -21,7 +21,7 @@ from randomizer.Lists.HardMode import HardBossSelector, HardSelector
 from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
 from randomizer.Lists.Logic import GlitchSelector
 from randomizer.Lists.Minigame import MinigameSelector
-from randomizer.Lists.Multiselectors import FasterCheckSelector, QoLSelector, RemovedBarrierSelector
+from randomizer.Lists.Multiselectors import FasterCheckSelector, QoLSelector, RemovedBarrierSelector, CBRandoSelector
 from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns, PlannableSwitches
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
@@ -37,13 +37,14 @@ redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
 
 app = Flask(__name__)
-
+app.config["JSON_SORT_KEYS"] = False
+BRANCH = os.environ.get("BRANCH", "LOCAL")
 # Define a resource to identify your service
 resource = Resource(
     attributes={
-        "service.name": "worker-" + os.environ.get("BRANCH", "LOCAL"),
+        "service.name": "worker-" + BRANCH,
         "service.version": str(version),
-        "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
+        "deployment.environment": BRANCH,
     }
 )
 
@@ -71,6 +72,11 @@ class PriorityAwareWorker(Worker):
         """Process a job from the queue."""
         # Log which queue the job came from and its metadata
         user_ip = job.meta.get("ip", "unknown")
+        job_branch = job.meta.get("branch", "dev")
+        if job_branch != BRANCH and BRANCH != "LOCAL":
+            print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
+            return
+
         print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip})")
 
         # Process the job
@@ -106,6 +112,7 @@ def get_selector_info():
         "select_songs": PlannableSongs,
         "remove_barriers": RemovedBarrierSelector,
         "faster_checks": FasterCheckSelector,
+        "cb_rando_levels": CBRandoSelector,
     }
     return jsonify(selector_data)
 
