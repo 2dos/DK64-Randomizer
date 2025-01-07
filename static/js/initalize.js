@@ -1284,6 +1284,7 @@ function preset_select_changed(event) {
       if (updateQueue.length > 0) {
         requestAnimationFrame(processQueue);
       } else {
+        update_ui_states(null);
         savesettings(); // Save settings after all updates
       }
     }
@@ -1388,7 +1389,7 @@ function load_data() {
           } 
         } else {
           preset_select_changed();
-          //trigger_ui_update();
+          trigger_ui_update();
         }
       } catch (error) {
         console.error("Error parsing settings:", error);
