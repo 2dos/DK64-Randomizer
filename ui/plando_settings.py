@@ -538,66 +538,69 @@ def plando_disable_kong_items(evt):
                 option.removeAttribute("disabled")
 
 
-startingMoveValues = [str(item.value) for item in StartingMoveOptions]
+# @bindList("click", [str(i) for i in range(1, 6)], prefix="starting_moves_list_mover_")
+# @bindList("change", [str(i) for i in range(1, 6)], prefix="starting_moves_list_count_")
+# @bind("click", "starting_moves_start_all")
+# @bind("click", "starting_moves_start_vanilla")
+# @bind("click", "starting_moves_reset")
+# def plando_disable_starting_moves(evt):
+#     """Do not allow starting moves to be placed as items."""
+#     startingMoveSet = set()
+#     # Look at every list, and if any list will have all of its items given,
+#     # add those moves to the set.
+#     for i in range(1, 6):
+#         moveListElem = js.document.getElementById(f"starting_moves_list_{i}")
+#         moveCountElem = js.document.getElementById(f"starting_moves_list_count_{i}")
+#         givenMoveCount = 0 if moveCountElem.value == "" else int(moveCountElem.value)
+#         listedMoveCount = 0
+#         for opt in moveListElem.options:
+#             if not opt.hidden:
+#                 listedMoveCount += 1
+#         if givenMoveCount == listedMoveCount:
+#             for opt in moveListElem.options:
+#                 moveId = re.search("^starting_move_(.+)$", opt.id)[1]
+#                 plandoMove = ItemToPlandoItemMap[Items(int(moveId))]
+#                 startingMoveSet.add(plandoMove)
 
+#     # Obtain the list of PlandoItems moves to disable.
+#     progressiveMoves = [
+#         PlandoItems.ProgressiveAmmoBelt,
+#         PlandoItems.ProgressiveInstrumentUpgrade,
+#         PlandoItems.ProgressiveSlam,
+#     ]
+#     selectedPlandoMoves = set([move for move in startingMoveSet if move not in progressiveMoves])
+#     # Progressive moves are handled differently. Only disable these if all
+#     # instances are included as starting moves.
+#     if set([Items.ProgressiveSlam, Items.ProgressiveSlam2, Items.ProgressiveSlam3]).issubset(startingMoveSet):
+#         selectedPlandoMoves.add(PlandoItems.ProgressiveSlam)
+#     if set([Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt2]).issubset(startingMoveSet):
+#         selectedPlandoMoves.add(PlandoItems.ProgressiveAmmoBelt)
+#     if set([Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3]).issubset(startingMoveSet):
+#         selectedPlandoMoves.add(PlandoItems.ProgressiveInstrumentUpgrade)
 
-@bindList("click", startingMoveValues, prefix="none-")
-@bindList("click", startingMoveValues, prefix="start-")
-@bindList("click", startingMoveValues, prefix="random-")
-@bind("click", "starting_moves_start_all")
-@bind("click", "starting_moves_reset")
-def plando_disable_starting_moves(evt):
-    """Do not allow starting moves to be placed as items."""
-    # Create a list of selected starting moves.
-    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
-        starting_move_button.checked = starting_move_button.id.startswith("start")
-    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
-        starting_move_button.checked = starting_move_button.id.startswith("none")
-    selectedStartingMoves = set()
-    for startingMove in startingMoveValues:
-        selectedElem = js.document.getElementById(f"start-{startingMove}")
-        if selectedElem.checked:
-            selectedStartingMoves.add(Items(int(startingMove)))
-
-    # Obtain the list of PlandoItems moves to disable.
-    progressiveMoves = [
-        PlandoItems.ProgressiveAmmoBelt,
-        PlandoItems.ProgressiveInstrumentUpgrade,
-        PlandoItems.ProgressiveSlam,
-    ]
-    selectedPlandoMoves = set([ItemToPlandoItemMap[move] for move in selectedStartingMoves if ItemToPlandoItemMap[move] not in progressiveMoves])
-    # Progressive moves are handled differently. Only disable these if all
-    # instances are included as starting moves.
-    if set([Items.ProgressiveSlam, Items.ProgressiveSlam2, Items.ProgressiveSlam3]).issubset(selectedStartingMoves):
-        selectedPlandoMoves.add(PlandoItems.ProgressiveSlam)
-    if set([Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt2]).issubset(selectedStartingMoves):
-        selectedPlandoMoves.add(PlandoItems.ProgressiveAmmoBelt)
-    if set([Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3]).issubset(selectedStartingMoves):
-        selectedPlandoMoves.add(PlandoItems.ProgressiveInstrumentUpgrade)
-
-    # Disable all the plando moves across the dropdowns.
-    for moveName in js.MoveSet:
-        moveEnum = PlandoItems[moveName]
-        # Ignore these moves.
-        if moveEnum in {PlandoItems.Camera, PlandoItems.Shockwave}:
-            continue
-        move_options = js.document.getElementsByClassName(f"plando-{moveName}-option")
-        if moveEnum in selectedPlandoMoves:
-            # Disable this move as a dropdown option.
-            for option in move_options:
-                option.setAttribute("disabled", "disabled")
-        else:
-            # Re-enable this move as a dropdown option.
-            for option in move_options:
-                option.removeAttribute("disabled")
-    # Deselect all the plando moves across the dropdowns.
-    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
-    for dropdown in item_dropdowns:
-        if dropdown.value == "":
-            continue
-        move = PlandoItems[dropdown.value]
-        if move in selectedPlandoMoves:
-            dropdown.value = ""
+#     # Disable all the plando moves across the dropdowns.
+#     for moveName in js.MoveSet:
+#         moveEnum = PlandoItems[moveName]
+#         # Ignore these moves.
+#         if moveEnum in {PlandoItems.Camera, PlandoItems.Shockwave}:
+#             continue
+#         move_options = js.document.getElementsByClassName(f"plando-{moveName}-option")
+#         if moveEnum in selectedPlandoMoves:
+#             # Disable this move as a dropdown option.
+#             for option in move_options:
+#                 option.setAttribute("disabled", "disabled")
+#         else:
+#             # Re-enable this move as a dropdown option.
+#             for option in move_options:
+#                 option.removeAttribute("disabled")
+#     # Deselect all the plando moves across the dropdowns.
+#     item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+#     for dropdown in item_dropdowns:
+#         if dropdown.value == "":
+#             continue
+#         move = PlandoItems[dropdown.value]
+#         if move in selectedPlandoMoves:
+#             dropdown.value = ""
 
 
 @bind("click", "key_8_helm")
