@@ -715,19 +715,42 @@ function disable_hard_mode_modal() {
   }
 }
 document.getElementById("starting_moves_reset").addEventListener("click", function(evt) {
-  // Reset the starting move selector to have nothing selected
-  const startingMoveButtons = Array.from(document.getElementsByTagName("input")).filter(element => element.name.startsWith("starting_move_box_"));
-  startingMoveButtons.forEach(button => {
-      button.checked = button.id.startsWith("none");
-  });
+  // Update the starting move pools to start with no items
+  for (let i = 1; i <= 5; i++) {
+    const move_selector = document.getElementById("starting_moves_list_count_" + i);
+    move_selector.value = 0;
+  }
+  startingMovesFullReset();
+});
+
+document.getElementById("starting_moves_start_vanilla").addEventListener("click", function(evt) {
+  // Update the starting move pools to start with vanilla items
+  for (let i = 1; i <= 5; i++) {
+    const move_selector = document.getElementById("starting_moves_list_count_" + i);
+    move_selector.value = i == 2 ? 10 : 0;
+  }
+  startingMovesFullReset();
+
+  document.getElementById("starting_move_92").selected = true;  // Cranky
+  document.getElementById("starting_move_93").selected = true;  // Funky
+  document.getElementById("starting_move_94").selected = true;  // Candy
+  document.getElementById("starting_move_95").selected = true; // Snide
+  document.getElementById("starting_move_8").selected = true; // Vines
+  document.getElementById("starting_move_9").selected = true; // Diving
+  document.getElementById("starting_move_10").selected = true; // Oranges
+  document.getElementById("starting_move_11").selected = true; // Barrels
+  document.getElementById("starting_move_12").selected = true; // Climbing
+  document.getElementById("starting_move_13").selected = true; // Simian Slam
+  moveSelectedStartingMoves(2);
 });
 
 document.getElementById("starting_moves_start_all").addEventListener("click", function(evt) {
-  // Update the starting move selector to start with all items
-  const startingMoveButtons = Array.from(document.getElementsByTagName("input")).filter(element => element.name.startsWith("starting_move_box_"));
-  startingMoveButtons.forEach(button => {
-      button.checked = button.id.startsWith("start");
-  });
+  // Update the starting move pools to start with all items
+  for (let i = 1; i <= 5; i++) {
+    const move_selector = document.getElementById("starting_moves_list_count_" + i);
+    move_selector.value = i == 1 ? 60 : 0;
+  }
+  startingMovesFullReset();
 });
 
 document
@@ -1122,13 +1145,17 @@ function toggle_item_rando() {
 
   elements.selector.toggleAttribute("disabled", disabled);
   elements.smallerShops.toggleAttribute("disabled", disabled || !shopsInPool);
-  elements.smallerShops.checked = false;
+  if (disabled || !shopsInPool) {
+    elements.smallerShops.checked = false;
+  }
   elements.moveVanilla.toggleAttribute("disabled", shopsInPool);
   elements.moveRando.toggleAttribute("disabled", shopsInPool);
   elements.enemyDropRando.toggleAttribute("disabled", disabled);
-  elements.enemyDropRando.checked = disabled;
+  if (disabled) {
+    elements.enemyDropRando.checked = false;
+  }
   elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
-  elements.sharedShopWarning.toggleAttribute("hidden", !shopsInPool || disabled);
+  elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
   elements.kongRando.toggleAttribute("disabled", kongsInPool);
   elements.kongRando.checked = kongsInPool;
 
@@ -1998,11 +2025,9 @@ document
     }
   });
 
-document.addEventListener('mousedown', function (e) {
-  if (e.target.matches('select option.starting_moves_option')) {
-    e.target.selected = !e.target.selected;
+$(document).on('mousedown', 'select option.starting_moves_option', function (e) {
+    this.selected = !this.selected;
     e.preventDefault();
-  }
 });
 
 document
@@ -2054,6 +2079,9 @@ function moveSelectedStartingMoves(target_list_id) {
     moved_move.id = selected_moves[i].id;
     moved_move.text = selected_moves[i].text;
     moved_move.classList = selected_moves[i].classList;
+    if (selected_moves[i].hidden) {
+      moved_move.setAttribute("hidden", "hidden");
+    }
     target_selector.appendChild(moved_move);
   }
   savesettings();
