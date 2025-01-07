@@ -1178,6 +1178,9 @@ function preset_select_changed(event) {
   }
 
   if (presets && "settings_string" in presets) {
+    // Define a queue to batch DOM updates
+    const updateQueue = [];
+    
     // Pass in setting string
     generateToast(
       `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
