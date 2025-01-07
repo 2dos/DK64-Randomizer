@@ -802,7 +802,7 @@ enemy_location_list = {
     Locations.ForestMainEnemy_NearLowWarp5: EnemyLoc(Maps.FungiForest, Enemies.MushroomMan, 23, [], True),
     Locations.ForestMainEnemy_NearPinkTunnelBounceTag: EnemyLoc(Maps.FungiForest, Enemies.MushroomMan, 24, [], True),
     Locations.ForestMainEnemy_NearGMRocketbarrel: EnemyLoc(Maps.FungiForest, Enemies.MushroomMan, 25, [], True),
-    Locations.ForestMainEnemy_BetweenRBAndYellowTunnel: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 26, [], True),
+    Locations.ForestMainEnemy_BetweenYellowTunnelAndRB: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 26, [], True),
     Locations.ForestMainEnemy_NearCranky: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 27, [], True),
     Locations.ForestMainEnemy_NearPinkTunnelGM: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 28, [], True),
     Locations.ForestMainEnemy_GMRearTag: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 29, [Enemies.Bug], True),
