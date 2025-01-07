@@ -2108,7 +2108,7 @@ document
     });
   });
 // Bind custom update UI event for "apply_preset"
-async function update_ui_states() {
+function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
   toggle_counts_boxes(null);
   toggle_b_locker_boxes(null);
