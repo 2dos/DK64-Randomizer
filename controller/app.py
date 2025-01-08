@@ -121,7 +121,7 @@ discord = DiscordAuth(
     environ.get("REDIRECT", "http://localhost:8000/admin"),
     "463917049782075395",
 )
-admin_roles = ["550784070188138508"]
+admin_roles = ["550784070188138508", "550784038600835101"]
 
 
 def enforce_api_restrictions():
@@ -362,7 +362,8 @@ def admin_presets():
 
     content = request.json
     local_presets = update_presets()
-    branch = request.args.get("branch")
+    # Check if branch is in the body
+    branch = content.get("branch", "")
     if branch not in ["master", "dev"]:
         return set_response(json.dumps({"message": "Invalid branch"}), 400)
     if request.method == "PUT":
