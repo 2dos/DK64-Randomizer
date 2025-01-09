@@ -7,7 +7,7 @@ import gzip
 from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import IsItemSelected, float_to_hex
+from randomizer.Patching.Lib import IsItemSelected, float_to_hex, TableNames
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 
@@ -20,7 +20,7 @@ def chooseSFX():
 
 def shiftCastleMinecartRewardZones():
     """Shifts the triggers for the reward point in castle minecart."""
-    cont_map_lzs_address = js.pointer_addresses[18]["entries"][Maps.CastleMinecarts]["pointing_to"]
+    cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][Maps.CastleMinecarts]["pointing_to"]
     ROM_COPY = LocalROM()
     ROM_COPY.seek(cont_map_lzs_address)
     lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -250,7 +250,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         0x1A,
         0x11,
     ]
-    map_spawners = js.pointer_addresses[16]["entries"][Maps.CastleTinyRace]["pointing_to"]
+    map_spawners = js.pointer_addresses[TableNames.Spawners]["entries"][Maps.CastleTinyRace]["pointing_to"]
     for point in range(len(checkpoint_ai_mapping)):
         slot = checkpoint_ai_mapping[point]
         ROM_COPY.seek(map_spawners + 36 + (slot * 0xA))
@@ -272,7 +272,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         diff = 0x10 - (len(start_bytes) & 0xF)
         for _ in range(diff):
             start_bytes.append(0)
-    map_checkpoints = js.pointer_addresses[24]["entries"][Maps.CastleTinyRace]["pointing_to"]
+    map_checkpoints = js.pointer_addresses[TableNames.RaceCheckpoints]["entries"][Maps.CastleTinyRace]["pointing_to"]
     ROM_COPY.seek(map_checkpoints)
     ROM_COPY.writeBytes(bytearray(start_bytes))
 
@@ -288,7 +288,7 @@ def shortenCastleMinecart(spoiler):
     shiftCastleMinecartRewardZones()
     new_squawks_coords = (3232, 482, 693)
     old_squawks_coords = (619, 690, 4134)
-    cont_map_spawner_address = js.pointer_addresses[16]["entries"][Maps.CastleMinecarts]["pointing_to"]
+    cont_map_spawner_address = js.pointer_addresses[TableNames.Spawners]["entries"][Maps.CastleMinecarts]["pointing_to"]
     ROM_COPY = LocalROM()
     ROM_COPY.seek(cont_map_spawner_address)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -581,7 +581,7 @@ def randomize_puzzles(spoiler):
             # },
         }
         for map_index in race_data:
-            map_spawners = js.pointer_addresses[16]["entries"][map_index]["pointing_to"]
+            map_spawners = js.pointer_addresses[TableNames.Spawners]["entries"][map_index]["pointing_to"]
             map_data = race_data[map_index]
             if map_data["start_angle"] is None:
                 initial_angle = random.randint(0, 359)

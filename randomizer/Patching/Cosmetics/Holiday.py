@@ -4,7 +4,7 @@ import gzip
 import js
 from PIL import Image, ImageEnhance
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import Holidays, getHoliday
+from randomizer.Patching.Lib import Holidays, getHoliday, TableNames
 from randomizer.Patching.LibImage import (
     getImageFile,
     getBonusSkinOffset,
@@ -126,7 +126,7 @@ def applyCelebrationRims(hue_shift: int, enabled_bananas: list[bool] = [False, F
                 side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
         px_data = bytearray(side_by)
         px_data = gzip.compress(px_data, compresslevel=9)
-        ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
+        ROM().seek(js.pointer_addresses[TableNames.TexturesGeometry]["entries"][img]["pointing_to"])
         ROM().writeBytes(px_data)
 
 
@@ -167,11 +167,11 @@ def applyHolidayMode(settings):
                     snow_by.extend([(data >> 8), (data & 0xFF)])
         byte_data = gzip.compress(bytearray(snow_by), compresslevel=9)
         for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
-            start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
+            start = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][img]["pointing_to"]
             ROM().seek(start)
             ROM().writeBytes(byte_data)
         # Alter CI4 Palettes
-        start = js.pointer_addresses[25]["entries"][2007]["pointing_to"]
+        start = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][2007]["pointing_to"]
         mags = [140, 181, 156, 181, 222, 206, 173, 230, 255, 255, 255, 189, 206, 255, 181, 255]
         new_ci4_palette = []
         for mag in mags:
@@ -187,18 +187,18 @@ def applyHolidayMode(settings):
         if settings.dk_tie_colors != CharacterColors.custom and settings.kong_model_dk == KongModels.default:
             tie_hang = [0xFF] * 0xAB8
             tie_hang_data = gzip.compress(bytearray(tie_hang), compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][0xE8D]["pointing_to"])
+            ROM().seek(js.pointer_addresses[TableNames.TexturesGeometry]["entries"][0xE8D]["pointing_to"])
             ROM().writeBytes(tie_hang_data)
             tie_loop = [0xFF] * (32 * 32 * 2)
             tie_loop_data = gzip.compress(bytearray(tie_loop), compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][0x177D]["pointing_to"])
+            ROM().seek(js.pointer_addresses[TableNames.TexturesGeometry]["entries"][0x177D]["pointing_to"])
             ROM().writeBytes(tie_loop_data)
         if settings.tiny_hair_colors != CharacterColors.custom and settings.kong_model_tiny == KongModels.default:
             tiny_hair = []
             for x in range(32 * 32):
                 tiny_hair.extend([0xF8, 0x01])
             tiny_hair_data = gzip.compress(bytearray(tiny_hair), compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][0xE68]["pointing_to"])
+            ROM().seek(js.pointer_addresses[TableNames.TexturesGeometry]["entries"][0xE68]["pointing_to"])
             ROM().writeBytes(tiny_hair_data)
         # Tag Barrel, Bonus Barrel & Transform Barrels
         changeBarrelColor(None, (0x00, 0xC0, 0x00))

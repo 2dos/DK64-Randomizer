@@ -27,7 +27,7 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText, getHoliday, Holidays
+from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText, getHoliday, Holidays, TableNames
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 
 # from randomizer.Spoiler import Spoiler
@@ -142,16 +142,16 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             chunky_slots = [11, 12]
             disco_slots = [0xD, 0xEC]
             for model_slot in range(2):
-                dest_start = js.pointer_addresses[5]["entries"][chunky_slots[model_slot]]["pointing_to"]
-                source_start = js.pointer_addresses[5]["entries"][disco_slots[model_slot]]["pointing_to"]
-                source_end = js.pointer_addresses[5]["entries"][disco_slots[model_slot] + 1]["pointing_to"]
+                dest_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][chunky_slots[model_slot]]["pointing_to"]
+                source_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][disco_slots[model_slot]]["pointing_to"]
+                source_end = js.pointer_addresses[TableNames.ActorGeometry]["entries"][disco_slots[model_slot] + 1]["pointing_to"]
                 source_size = source_end - source_start
                 ROM_COPY.seek(source_start)
                 file_bytes = ROM_COPY.readBytes(source_size)
                 ROM_COPY.seek(dest_start)
                 ROM_COPY.writeBytes(file_bytes)
                 # Write uncompressed size
-                unc_table = js.pointer_addresses[26]["entries"][5]["pointing_to"]
+                unc_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][5]["pointing_to"]
                 ROM_COPY.seek(unc_table + (disco_slots[model_slot] * 4))
                 unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
                 ROM_COPY.seek(unc_table + (chunky_slots[model_slot] * 4))

@@ -514,16 +514,16 @@ def applyKongModelSwaps(settings: Settings) -> None:
             source_data = model_index_mapping[value]
             for model_subindex in range(2):
                 if dest_data[model_subindex] is not None:
-                    dest_start = js.pointer_addresses[5]["entries"][dest_data[model_subindex]]["pointing_to"]
-                    source_start = js.pointer_addresses[5]["entries"][source_data[model_subindex]]["pointing_to"]
-                    source_end = js.pointer_addresses[5]["entries"][source_data[model_subindex] + 1]["pointing_to"]
+                    dest_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][dest_data[model_subindex]]["pointing_to"]
+                    source_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][source_data[model_subindex]]["pointing_to"]
+                    source_end = js.pointer_addresses[TableNames.ActorGeometry]["entries"][source_data[model_subindex] + 1]["pointing_to"]
                     source_size = source_end - source_start
                     ROM_COPY.seek(source_start)
                     file_bytes = ROM_COPY.readBytes(source_size)
                     ROM_COPY.seek(dest_start)
                     ROM_COPY.writeBytes(file_bytes)
                     # Write uncompressed size
-                    unc_table = js.pointer_addresses[26]["entries"][5]["pointing_to"]
+                    unc_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][5]["pointing_to"]
                     ROM_COPY.seek(unc_table + (source_data[model_subindex] * 4))
                     unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     ROM_COPY.seek(unc_table + (dest_data[model_subindex] * 4))
@@ -574,7 +574,7 @@ def darkenDPad():
             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
     px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[14]["entries"][187]["pointing_to"])
+    ROM().seek(js.pointer_addresses[TableNames.TexturesHUD]["entries"][187]["pointing_to"])
     ROM().writeBytes(px_data)
 
 
@@ -674,7 +674,7 @@ def darkenPauseBubble(settings: Settings):
             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
     px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[14]["entries"][107]["pointing_to"])
+    ROM().seek(js.pointer_addresses[TableNames.TexturesHUD]["entries"][107]["pointing_to"])
     ROM().writeBytes(px_data)
 
 

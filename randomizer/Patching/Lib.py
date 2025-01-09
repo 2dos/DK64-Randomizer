@@ -473,7 +473,7 @@ def int_to_list(num: int, size: int):
 def getNextFreeID(cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] = []) -> int:
     """Get next available Model 2 ID."""
     ROM_COPY = LocalROM()
-    setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+    setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
     ROM_COPY.seek(setup_table)
     model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     vacant_ids = list(range(0, 600))
@@ -497,7 +497,7 @@ def getNextFreeID(cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] =
 def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: ScriptTypes) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
     ROM_COPY = LocalROM()
-    script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
+    script_table = js.pointer_addresses[TableNames.InstanceScripts]["entries"][cont_map_id]["pointing_to"]
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     good_scripts = []
@@ -568,7 +568,7 @@ def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, Lis
         ROM_COPY = ROM()
     else:
         ROM_COPY = LocalROM()
-    file_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
+    file_start = js.pointer_addresses[TableNames.Text]["entries"][file_index]["pointing_to"]
     ROM_COPY.seek(file_start + 0)
     count = int.from_bytes(ROM_COPY.readBytes(1), "big")
     text = []
@@ -679,7 +679,7 @@ def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, Lis
 
 def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]], cosmetic: bool = False) -> None:
     """Write the text to ROM."""
-    text_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
+    text_start = js.pointer_addresses[TableNames.Text]["entries"][file_index]["pointing_to"]
     if cosmetic:
         ROM_COPY = ROM()
     else:
@@ -726,7 +726,7 @@ def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tupl
 
 def getObjectAddress(map: int, id: int, object_type: str) -> int:
     """Get address of object in setup."""
-    setup_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
+    setup_start = js.pointer_addresses[TableNames.Setups]["entries"][map]["pointing_to"]
     ROM_COPY = LocalROM()
     ROM_COPY.seek(setup_start)
     model_2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -753,7 +753,7 @@ def getObjectAddress(map: int, id: int, object_type: str) -> int:
 
 def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
     """Get address of object in setup."""
-    setup_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
+    setup_start = js.pointer_addresses[TableNames.Setups]["entries"][map]["pointing_to"]
     ROM().seek(setup_start)
     model_2_count = int.from_bytes(ROM().readBytes(4), "big")
     if object_type == "modeltwo":
@@ -827,7 +827,7 @@ def applyCharacterSpawnerChanges(changes: list[SpawnerChange], fence_speed_facto
         formatted_changes[change.map_target][change.spawner_target] = change
         id_changes_in_map[change.map_target].append(change.spawner_target)
     for map_id in formatted_changes:
-        file_start = js.pointer_addresses[16]["entries"][map_id]["pointing_to"]
+        file_start = js.pointer_addresses[TableNames.Spawners]["entries"][map_id]["pointing_to"]
         ROM_COPY.seek(file_start)
         fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         offset = 2
@@ -1035,7 +1035,7 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
     return converter.get(item, BarrierItems.Nothing)
 
 
-def getRawFile(table_index: int, file_index: int, compressed: bool):
+def getRawFile(table_index: TableNames, file_index: int, compressed: bool):
     """Get raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
@@ -1056,7 +1056,7 @@ def getRawFile(table_index: int, file_index: int, compressed: bool):
     return data
 
 
-def writeRawFile(table_index: int, file_index: int, compressed: bool, data: bytearray, ROM_COPY):
+def writeRawFile(table_index: TableNames, file_index: int, compressed: bool, data: bytearray, ROM_COPY):
     """Write raw file from ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:

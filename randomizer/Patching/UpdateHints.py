@@ -5,7 +5,7 @@ import random
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
-from randomizer.Patching.Lib import grabText, writeText
+from randomizer.Patching.Lib import grabText, writeText, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -97,8 +97,8 @@ def PushHints(spoiler):
         if short_hint == "":
             short_hint = "error: missing hint - report this error to the discord"
         short_hint_arr.append([short_hint.upper()])
-    writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
-    writeWrinklyHints(js.pointer_addresses[12]["entries"][45]["pointing_to"], short_hint_arr)
+    writeWrinklyHints(js.pointer_addresses[TableNames.Text]["entries"][41]["pointing_to"], hint_arr)
+    writeWrinklyHints(js.pointer_addresses[TableNames.Text]["entries"][45]["pointing_to"], short_hint_arr)
     spoiler.hint_list.pop("First Time Talk")  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
@@ -116,7 +116,7 @@ def PushItemLocations(spoiler):
         text_arr.append([loc.item_name.upper()])
         for subloc in loc.locations:
             text_arr.append([subloc.upper()])
-    writeWrinklyHints(js.pointer_addresses[12]["entries"][44]["pointing_to"], text_arr)
+    writeWrinklyHints(js.pointer_addresses[TableNames.Text]["entries"][44]["pointing_to"], text_arr)
 
 
 def replaceIngameText(spoiler):

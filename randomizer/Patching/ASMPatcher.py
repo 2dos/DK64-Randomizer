@@ -3151,6 +3151,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.enemy_kill_crown_timer:
         writeFunction(ROM_COPY, 0x8072AC80, Overlay.Static, "handleCrownTimer", offset_dict)
+        writeFunction(ROM_COPY, 0x806AEEBC, Overlay.Static, "klumpCrownHandler", offset_dict)
 
     # Enable oranges in Crowns
     writeHook(ROM_COPY, 0x806E6000, Overlay.Static, "DisableGunInCrowns", offset_dict)

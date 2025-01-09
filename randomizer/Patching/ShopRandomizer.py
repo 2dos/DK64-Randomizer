@@ -4,7 +4,7 @@ import js
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.VendorType import VendorType
-from randomizer.Patching.Lib import float_to_hex, intf_to_float
+from randomizer.Patching.Lib import float_to_hex, intf_to_float, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.ShuffleShopLocations import available_shops
 
@@ -439,7 +439,7 @@ def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, lz_id:
 def pushNewShopLocationWrite(cont_map_id: Maps, obj_id: int, old_vendor: VendorType, new_vendor: VendorType):
     """Write new shop location script to ROM."""
     ROM_COPY = LocalROM()
-    script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
+    script_table = js.pointer_addresses[TableNames.InstanceScripts]["entries"][cont_map_id]["pointing_to"]
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     good_scripts = []
@@ -511,8 +511,8 @@ def ApplyShopRandomizer(spoiler):
                     shop_placement_maps.append(shop.map)
         ROM_COPY = LocalROM()
         for map in shop_placement_maps:
-            setup_address = js.pointer_addresses[9]["entries"][map]["pointing_to"]
-            lz_address = js.pointer_addresses[18]["entries"][map]["pointing_to"]
+            setup_address = js.pointer_addresses[TableNames.Setups]["entries"][map]["pointing_to"]
+            lz_address = js.pointer_addresses[TableNames.Triggers]["entries"][map]["pointing_to"]
             shops_in_map = []
             map_level = 0
             for level in available_shops:

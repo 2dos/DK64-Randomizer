@@ -3,6 +3,7 @@
 import js
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import TableNames
 
 
 def randomize_barrels(spoiler):
@@ -27,7 +28,7 @@ def randomize_barrels(spoiler):
                 barrel_replacements.append({"containing_map": container_map, "barrels": [barrel_data]})
         for cont_map in barrel_replacements:
             cont_map_id = int(cont_map["containing_map"])
-            cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            cont_map_setup_address = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30))

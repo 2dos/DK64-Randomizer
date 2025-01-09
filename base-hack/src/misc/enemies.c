@@ -123,6 +123,13 @@ void handleCrownTimer(actorData* actor) {
     actor->unk_6C = actor->grounded;
 }
 
+void klumpCrownHandler(void) {
+    initCharSpawnerActor();
+    if ((CurrentActorPointer_0->control_state == 0x37) && (CurrentActorPointer_0->control_state_progress == 0)) {
+        handleCrownTimerInternal();
+    }
+}
+
 /*
 #define TRASHCAN_BUG_ANIM_0 0x30A
 #define TRASHCAN_BUG_ANIM_1 0x30B

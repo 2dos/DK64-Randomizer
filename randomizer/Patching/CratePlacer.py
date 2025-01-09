@@ -4,7 +4,7 @@ import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
-from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
+from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -60,7 +60,7 @@ def randomize_melon_crate(spoiler):
                         keep_galleon_crate = True
 
         for cont_map_id in action_maps:
-            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(setup_table)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             persisted_m2 = []
