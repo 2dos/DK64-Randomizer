@@ -25,9 +25,9 @@ $.ajax({
   async: false,
   success: function (data) {
     progression_presets.push({
-      "name": "-- Select a Preset --",
-      "description": " "
-    })
+      name: "-- Select a Preset --",
+      description: " ",
+    });
     data.forEach((file) => {
       progression_presets.push(file);
     });
@@ -86,7 +86,7 @@ function decrypt_settings_string_enum(settings_string) {
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings" + "?branch=" + branch,
-    data: JSON.stringify({ "settings": settings_string }),
+    data: JSON.stringify({ settings: settings_string }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -100,7 +100,7 @@ function encrypt_settings_string_enum(settings) {
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings" + "?branch=" + branch,
-    data: JSON.stringify({ "settings": JSON.stringify(settings) }),
+    data: JSON.stringify({ settings: JSON.stringify(settings) }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -139,7 +139,9 @@ async function try_to_load_from_args() {
     let resp = await get_seed_from_server(argsDict["seed_id"]);
 
     // Assuming patchingResponse is available globally as an async function
-    window.apply_patch(resp, false);
+    setTimeout(() => {
+      window.apply_patch(resp, false);
+    }, 0);
   }
 
   // Update the DOM: hide visual indicator and show tab-data
@@ -463,13 +465,18 @@ async function update_music_select_options(isInitialLoad) {
       // Only remove the custom-song options by setting innerHTML directly if needed
       let customOptionsExist = dropdown.querySelector(".custom-song");
       if (customOptionsExist) {
-        dropdown.querySelectorAll(".custom-song").forEach(option => option.remove());
+        dropdown
+          .querySelectorAll(".custom-song")
+          .forEach((option) => option.remove());
         // Clear the dropdown value if it was set to a custom song
-        if (dropdown.value && dropdown.querySelector(`[value="${dropdown.value}"].custom-song`)) {
+        if (
+          dropdown.value &&
+          dropdown.querySelector(`[value="${dropdown.value}"].custom-song`)
+        ) {
           dropdown.value = "";
         }
       }
-    
+
       // Create a document fragment to hold the new custom options
       const fragment = document.createDocumentFragment();
       for (const song of songs) {
@@ -482,7 +489,6 @@ async function update_music_select_options(isInitialLoad) {
       // Append all custom options at once to the dropdown
       dropdown.appendChild(fragment);
     }
-    
   }
 
   // If this is the initial load, we want to read from the database and restore
@@ -504,64 +510,64 @@ async function savesettings() {
 
   // Collect form data and temporarily enable disabled inputs
   const disabledInputs = Array.from(form.querySelectorAll(":disabled"));
-  disabledInputs.forEach(input => input.removeAttribute("disabled"));
+  disabledInputs.forEach((input) => input.removeAttribute("disabled"));
 
   const formData = new FormData(form);
 
   // Re-disable the inputs
-  disabledInputs.forEach(input => input.setAttribute("disabled", "disabled"));
+  disabledInputs.forEach((input) => input.setAttribute("disabled", "disabled"));
 
   // Convert form data to JSON
   const json = Object.fromEntries(formData.entries());
 
   // Handle <select> elements
-  document.querySelectorAll("select").forEach(select => {
+  document.querySelectorAll("select").forEach((select) => {
     if (select.classList.contains("selected")) {
       json[select.name] = Array.from(select.options)
-        .filter(option => option.selected)
-        .map(option => option.value);
+        .filter((option) => option.selected)
+        .map((option) => option.value);
     }
 
     if (select.id.startsWith("starting_moves_list_")) {
-      json[select.id] = Array.from(select.options).map(option =>
+      json[select.id] = Array.from(select.options).map((option) =>
         option.id.slice(14)
       );
     }
   });
 
   // Handle inputs with specific naming convention
-  document.querySelectorAll("input[name^='starting_move_box_']:checked").forEach(input => {
-    if (input.id.includes("start")) {
-      json[input.name] = "start";
-    } else if (input.id.includes("random")) {
-      json[input.name] = "random";
-    }
-  });
+  document
+    .querySelectorAll("input[name^='starting_move_box_']:checked")
+    .forEach((input) => {
+      if (input.id.includes("start")) {
+        json[input.name] = "start";
+      } else if (input.id.includes("random")) {
+        json[input.name] = "random";
+      }
+    });
 
   // Save JSON data to IndexedDB
   await saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
-
 
 // Music settings have to be saved separately, because the value we're trying
 // to load may not exist on the page when load_data() is called.
 async function savemusicsettings() {
   const musicJson = {};
 
-  document.querySelectorAll("select[id^='music_select_']").forEach(select => {
+  document.querySelectorAll("select[id^='music_select_']").forEach((select) => {
     musicJson[select.id] = select.value;
   });
 
   await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
 }
 
-
-document.querySelectorAll("#form input").forEach(input => {
+document.querySelectorAll("#form input").forEach((input) => {
   input.addEventListener("input", savesettings);
   input.addEventListener("change", savesettings);
 });
 
-document.querySelectorAll("#form select").forEach(select => {
+document.querySelectorAll("#form select").forEach((select) => {
   select.addEventListener("change", () => {
     savesettings();
     savemusicsettings();
@@ -632,7 +638,7 @@ function load_databases() {
     try {
       var settingsdb = settingsdatabase.result;
       settingsdb.createObjectStore("saved_settings");
-      preset_select_changed("default")
+      preset_select_changed("default");
     } catch {}
   };
   settingsdatabase.onsuccess = async function () {
@@ -773,18 +779,26 @@ async function load_file_from_db() {
     var getROM = store.get("N64");
     getROM.onsuccess = async function () {
       // When we pull it from the DB load it in as a global var
-      try {
-        romFile = new MarcFile(getROM.result.value, _parseROM);
-        $("#rom").attr("placeholder", "Using cached ROM");
-        $("#rom").val("Using cached ROM");
-        $("#rom_2").attr("placeholder", "Using cached ROM");
-        $("#rom_3").attr("placeholder", "Using cached ROM");
-        $("#rom_3").val("Using cached ROM");
-
-        try_to_load_from_args();
-      } catch {
-        try_to_load_from_args();
-      }
+      setTimeout(() => {
+        try {
+          // Disable the generate seed button if we have a ROM
+          romFile = new MarcFile(getROM.result.value);
+          window.romFile = romFile;
+            document.getElementById("rom").placeholder = "Using cached ROM";
+            document.getElementById("rom").value = "Using cached ROM";
+            document.getElementById("rom_2").placeholder = "Using cached ROM";
+            document.getElementById("rom_2").value = "Using cached ROM";
+            document.getElementById("rom_3").placeholder = "Using cached ROM";
+            document.getElementById("rom_3").value = "Using cached ROM";
+            // On each of these set the class to "is-valid" to show the user it's been loaded
+            document.getElementById("rom").classList.add("is-valid");
+            document.getElementById("rom_2").classList.add("is-valid");
+            document.getElementById("rom_3").classList.add("is-valid");
+          try_to_load_from_args();
+        } catch {
+          try_to_load_from_args();
+        }
+      }, 0);
     };
   } catch {
     try_to_load_from_args();
@@ -834,7 +848,14 @@ function pushToHistory(message, emphasize = false) {
 function postToastMessage(message, is_warning, progress_ratio) {
   // Write Toast
   $("#progress-text").text(message);
-  pushToHistory(message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'));
+  pushToHistory(
+    message
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+  );
   // Handle Progress Bar
   perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
@@ -898,7 +919,11 @@ function query_seed_status(url, task_id) {
           query_seed_status(url, task_id);
         }, 5000);
       } else if (data["status"] == "finished") {
-        postToastMessage("Seed Generation Complete, applying cosmetics", false, 0.8);
+        postToastMessage(
+          "Seed Generation Complete, applying cosmetics",
+          false,
+          0.8
+        );
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
@@ -912,16 +937,15 @@ function query_seed_status(url, task_id) {
       }
     },
     error: function (data, textStatus, xhr) {
-        resp = data["responseJSON"];
-        if (resp && resp["error"]) {
-          postToastMessage(resp["error"], true, 1);
-        } else {
-          postToastMessage("Something went wrong please try again", true, 1);
-        }
-      },
+      resp = data["responseJSON"];
+      if (resp && resp["error"]) {
+        postToastMessage(resp["error"], true, 1);
+      } else {
+        postToastMessage("Something went wrong please try again", true, 1);
+      }
+    },
   });
 }
-
 
 function submit_seed_generation(url, json, branch) {
   $.ajax({
@@ -934,12 +958,17 @@ function submit_seed_generation(url, json, branch) {
     success: function (data, textStatus, xhr) {
       task_id = data["task_id"];
       priority = data["priority"];
-      postToastMessage("Seed has been queued in the " + priority + " Priority Queue", false, 0.3);
+      postToastMessage(
+        "Seed has been queued in the " + priority + " Priority Queue",
+        false,
+        0.3
+      );
       query_seed_status(url, task_id);
     },
     error: function (data, textStatus, xhr) {
       postToastMessage("Something went wrong please try again", true, 1);
-    }});
+    },
+  });
 }
 function getStringFile(file) {
   return $.ajax({
@@ -1167,8 +1196,7 @@ function preset_select_changed(event) {
         break;
       }
     }
-  }
-  else{
+  } else {
     for (const val of progression_presets) {
       if (val.name === element.value) {
         presets = val;
@@ -1180,7 +1208,7 @@ function preset_select_changed(event) {
   if (presets && "settings_string" in presets) {
     // Define a queue to batch DOM updates
     const updateQueue = [];
-    
+
     // Pass in setting string
     generateToast(
       `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
@@ -1200,7 +1228,7 @@ function preset_select_changed(event) {
       updateQueue.push(() => {
         if (starting_move_button.checked) {
           starting_move_button.checked = false;
-          starting_move_button.dispatchEvent(new Event('click'));
+          starting_move_button.dispatchEvent(new Event("click"));
         }
       });
     }
@@ -1216,20 +1244,23 @@ function preset_select_changed(event) {
     for (let key in settings) {
       updateQueue.push(() => {
         try {
-          const element = document.getElementsByName(key)[0] || document.getElementById(key);
+          const element =
+            document.getElementsByName(key)[0] || document.getElementById(key);
           if (!element) return;
 
           if (typeof settings[key] === "boolean") {
             if (element.checked !== settings[key]) {
               element.checked = settings[key];
-              element.dispatchEvent(new Event('click'));
+              element.dispatchEvent(new Event("click"));
             }
             element.removeAttribute("disabled");
           } else if (Array.isArray(settings[key])) {
             if (key.startsWith("starting_moves_list_")) {
               const select = document.getElementById(key);
               settings[key].forEach((value) => {
-                const existing_option = document.getElementById("starting_move_" + value);
+                const existing_option = document.getElementById(
+                  "starting_move_" + value
+                );
                 if (existing_option.parentNode !== select) {
                   existing_option.parentNode.removeChild(existing_option);
                   select.appendChild(existing_option);
@@ -1242,11 +1273,18 @@ function preset_select_changed(event) {
                 const flipped = Object.fromEntries(
                   Object.entries(MapName).map(([k, v]) => [v, k])
                 );
-                const currentSelections = Array.from(selector.selectedOptions).map(opt => opt.value);
-                const newSelections = settings[key].map(item => flipped[item]);
+                const currentSelections = Array.from(
+                  selector.selectedOptions
+                ).map((opt) => opt.value);
+                const newSelections = settings[key].map(
+                  (item) => flipped[item]
+                );
 
-                if (JSON.stringify(currentSelections) !== JSON.stringify(newSelections)) {
-                  Array.from(selector.options).forEach(option => {
+                if (
+                  JSON.stringify(currentSelections) !==
+                  JSON.stringify(newSelections)
+                ) {
+                  Array.from(selector.options).forEach((option) => {
                     option.selected = newSelections.includes(option.value);
                   });
                 }
@@ -1261,7 +1299,7 @@ function preset_select_changed(event) {
               );
               if (selector.value !== flipped[settings[key]]) {
                 selector.value = flipped[settings[key]];
-                Array.from(selector.options).forEach(option => {
+                Array.from(selector.options).forEach((option) => {
                   option.selected = option.value === flipped[settings[key]];
                 });
               }
@@ -1389,7 +1427,7 @@ function load_data() {
           const json = JSON.parse(getRequest.result);
           if (json) {
             load_settings(json);
-          } 
+          }
         } else {
           preset_select_changed();
           trigger_ui_update();
@@ -1404,7 +1442,6 @@ function load_data() {
     preset_select_changed();
   }
   savesettings();
-
 }
 
 function initialize_sliders() {
@@ -1425,7 +1462,7 @@ function load_settings(json) {
       }
     }
   }
-  
+
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [key, document.getElementsByName(key)])
   );
@@ -1462,10 +1499,15 @@ function load_settings(json) {
         return;
       }
 
-      if (element.name.startsWith("starting_moves_list_") && !element.name.startsWith("starting_moves_list_count")) {
+      if (
+        element.name.startsWith("starting_moves_list_") &&
+        !element.name.startsWith("starting_moves_list_count")
+      ) {
         const select = document.getElementById(key);
         json[key].forEach((value) => {
-          const existing_option = document.getElementById("starting_move_" + value);
+          const existing_option = document.getElementById(
+            "starting_move_" + value
+          );
           const parentSelect = existing_option.parentNode;
           if (existing_option.parentNode !== select) {
             parentSelect.removeChild(existing_option);
@@ -1492,8 +1534,8 @@ function load_settings(json) {
         // Multiple selection for elements with "selected" class
         if (element.classList.contains("selected")) {
           const currentValues = Array.from(element.options)
-            .filter(option => option.selected)
-            .map(option => option.value);
+            .filter((option) => option.selected)
+            .map((option) => option.value);
           if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
             Array.from(element.options).forEach((option) => {
               option.selected = value.includes(option.value);
@@ -1507,7 +1549,7 @@ function load_settings(json) {
 
       // Trigger a click event if the value has changed
       if (valueChanged) {
-        element.dispatchEvent(new Event('click'));
+        element.dispatchEvent(new Event("click"));
       }
     });
   }
