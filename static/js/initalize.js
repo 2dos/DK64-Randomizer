@@ -139,7 +139,9 @@ async function try_to_load_from_args() {
     let resp = await get_seed_from_server(argsDict["seed_id"]);
 
     // Assuming patchingResponse is available globally as an async function
-    window.apply_patch(resp, false);
+    setTimeout(() => {
+      window.apply_patch(resp, false);
+    }, 0);
   }
 
   // Update the DOM: hide visual indicator and show tab-data
@@ -782,16 +784,16 @@ async function load_file_from_db() {
           // Disable the generate seed button if we have a ROM
           romFile = new MarcFile(getROM.result.value);
           window.romFile = romFile;
-          $("#rom").attr("placeholder", "Using cached ROM");
-          $("#rom").val("Using cached ROM");
-          $("#rom_2").attr("placeholder", "Using cached ROM");
-          $("#rom_2").val("Using cached ROM");
-          $("#rom_3").attr("placeholder", "Using cached ROM");
-          $("#rom_3").val("Using cached ROM");
-          // On each of these set the class to "is-valid" to show the user it's been loaded
-          $("#rom").addClass("is-valid");
-          $("#rom_2").addClass("is-valid");
-          $("#rom_3").addClass("is-valid");
+            document.getElementById("rom").placeholder = "Using cached ROM";
+            document.getElementById("rom").value = "Using cached ROM";
+            document.getElementById("rom_2").placeholder = "Using cached ROM";
+            document.getElementById("rom_2").value = "Using cached ROM";
+            document.getElementById("rom_3").placeholder = "Using cached ROM";
+            document.getElementById("rom_3").value = "Using cached ROM";
+            // On each of these set the class to "is-valid" to show the user it's been loaded
+            document.getElementById("rom").classList.add("is-valid");
+            document.getElementById("rom_2").classList.add("is-valid");
+            document.getElementById("rom_3").classList.add("is-valid");
           try_to_load_from_args();
         } catch {
           try_to_load_from_args();
