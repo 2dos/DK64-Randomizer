@@ -1,0 +1,74 @@
+{
+    "regions": {
+        "junglejapes": {
+            "id": "junglejapes",
+            "Name": "Jungle Japes",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#228B22"
+        },
+        "angryaztec": {
+            "id": "angryaztec",
+            "Name": "Angry Aztec",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#8B4513"
+        },
+        "franticfactory": {
+            "id": "franticfactory",
+            "Name": "Frantic Factory",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#FF4500"
+        },
+        "gloomygalleon": {
+            "id": "gloomygalleon",
+            "Name": "Gloomy Galleon",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#000080"
+        },
+        "fungiforest": {
+            "id": "fungiforest",
+            "Name": "Fungi Forest",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#006400"
+        },
+        "crystalcaves": {
+            "id": "crystalcaves",
+            "Name": "Crystal Caves",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#00FFFF"
+        },
+        "creepycastle": {
+            "id": "creepycastle",
+            "Name": "Creepy Castle",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#800080"
+        },
+        "hideouthelm": {
+            "id": "hideouthelm",
+            "Name": "Hideout Helm",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#808080"
+        },
+        "dkisles": {
+            "id": "dkisles",
+            "Name": "DK 5Isles",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#FFD700"
+        },
+        "shops": {
+            "id": "shops",
+            "Name": "Shops",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#FF00FF"
+        }
+    }
+}

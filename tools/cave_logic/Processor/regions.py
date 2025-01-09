@@ -9,12 +9,14 @@ parent_dir = os.path.abspath(os.path.join(
     os.path.dirname(__file__), '../../../'))
 sys.path.append(parent_dir)
 
-# from randomizer.Enums.HintRegion import HINT_REGION_PAIRING
-from randomizer.ShuffleExits import ShufflableExits
-from randomizer.Logic import RegionsOriginal
-from tools.cave_logic.Processor.Classes import RegionNode, RegionEdge
-from tools.cave_logic.Processor.checks import parse_ast_to_dict
+
 from tools.cave_logic.ast_logic import ast_to_json
+from tools.cave_logic.Processor.checks import parse_ast_to_dict
+from tools.cave_logic.Processor.Classes import RegionNode, RegionEdge
+from randomizer.Logic import RegionsOriginal
+from randomizer.ShuffleExits import ShufflableExits
+# from randomizer.Enums.HintRegion import HINT_REGION_PAIRING
+
 
 def strip_name(name):
     return name.replace(" ", "").replace(":", "").replace("-", "").replace("'", "").lower()
@@ -23,7 +25,21 @@ def strip_name(name):
 def region_to_node(id, region):
     node = RegionNode(id.name.lower(), region.name, "Region", "Region")
 
-    regionEdges = {}
+    level_id = region.level.name.lower()
+    edge_id = "rr-" + id.name.lower() + "-level"
+    level_edge = {
+        "id": edge_id,
+        "Name": region.name + " Level",
+        "source": id.name.lower(),
+        "target": level_id,
+        "sourceType": "Region",
+        "targetType":  "Region",
+        "Class":  "Region",
+        "type":  "Level"
+    }
+    regionEdges = {
+        level_edge['id']: level_edge
+    }
 
     # for rexit in region.exits:
     #     # get the full region object
@@ -54,10 +70,15 @@ def build_regions():
     # for id, region in HINT_REGION_PAIRING.items():
     #     node = RegionNode(id.name.lower(), region, "Region", "HintRegion")
     #     nodes[node.id] = node.to_dict()
-    return nodes
+    return {
+        "nodes": nodes,
+        "edges": edges
+    }
+
 
 world = {
-    "regions": build_regions(),
+    "regions": build_regions()['nodes'],
+    "edges": build_regions()['edges']
 }
 
 with open('./tools/cave_logic/Deltas/region_nodes.json', 'w') as json_file:

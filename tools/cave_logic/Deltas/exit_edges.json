@@ -1603,7 +1603,7 @@
         },
         "tn-31-12": {
             "id": "tn-31-12",
-            "Name": "Jungle Japes to Japes Lobby",
+            "Name": "Jungle Japes Start Exit Level",
             "source": "junglejapesstart",
             "target": "junglejapeslobby",
             "sourceType": "Region",
@@ -1879,6 +1879,17 @@
             "Name": "Jungle Japes Main to Jungle Japes Medals",
             "source": "junglejapesmain",
             "target": "junglejapesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-32-12": {
+            "id": "tn-32-12",
+            "Name": "Jungle Japes Main Exit Level",
+            "source": "junglejapesmain",
+            "target": "junglejapeslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -2283,6 +2294,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-33-12": {
+            "id": "tn-33-12",
+            "Name": "Japes T&S Alcove Exit Level",
+            "source": "japestnsalcove",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-33-45": {
             "id": "tn-33-45",
             "Name": "Japes T&S Alcove to Japes Boss Lobby",
@@ -2312,6 +2334,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-42-12": {
+            "id": "tn-42-12",
+            "Name": "Japes Top of Mountain Exit Level",
+            "source": "japestopofmountain",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-42-32": {
             "id": "tn-42-32",
             "Name": "Japes Top of Mountain to Jungle Japes Main",
@@ -2334,6 +2367,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-47-12": {
+            "id": "tn-47-12",
+            "Name": "Japes Baboon Blast Exit Level",
+            "source": "japesbaboonblast",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-47-31": {
             "id": "tn-47-31",
             "Name": "Japes Baboon Blast to Jungle Japes Start",
@@ -2350,6 +2394,17 @@
             "Name": "Japes Beyond Peanut Gate to Jungle Japes Medals",
             "source": "japesbeyondpeanutgate",
             "target": "junglejapesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-34-12": {
+            "id": "tn-34-12",
+            "Name": "Japes Beyond Peanut Gate Exit Level",
+            "source": "japesbeyondpeanutgate",
+            "target": "junglejapeslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -2390,6 +2445,17 @@
             "Name": "Japes Beyond Coconut Gate 1 to Jungle Japes Medals",
             "source": "japesbeyondcoconutgate1",
             "target": "junglejapesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-35-12": {
+            "id": "tn-35-12",
+            "Name": "Japes Beyond Coconut Gate 1 Exit Level",
+            "source": "japesbeyondcoconutgate1",
+            "target": "junglejapeslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -2462,6 +2528,17 @@
             "Name": "Japes Beyond Feather Gate to Jungle Japes Medals",
             "source": "japesbeyondfeathergate",
             "target": "junglejapesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-36-12": {
+            "id": "tn-36-12",
+            "Name": "Japes Beyond Feather Gate Exit Level",
+            "source": "japesbeyondfeathergate",
+            "target": "junglejapeslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -2576,6 +2653,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-37-12": {
+            "id": "tn-37-12",
+            "Name": "Tiny Hive Exit Level",
+            "source": "tinyhive",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-37-36": {
             "id": "tn-37-36",
             "Name": "Jungle Japes Beehive to Main",
@@ -2609,6 +2697,17 @@
             "Name": "Japes Beyond Coconut Gate 2 to Jungle Japes Medals",
             "source": "japesbeyondcoconutgate2",
             "target": "junglejapesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-38-12": {
+            "id": "tn-38-12",
+            "Name": "Japes Beyond Coconut Gate 2 Exit Level",
+            "source": "japesbeyondcoconutgate2",
+            "target": "junglejapeslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -2719,6 +2818,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-39-12": {
+            "id": "tn-39-12",
+            "Name": "Beyond Rambi Gate Exit Level",
+            "source": "beyondrambigate",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-39-38": {
             "id": "tn-39-38",
             "Name": "Beyond Rambi Gate to Japes Beyond Coconut Gate 2",
@@ -2759,6 +2869,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-40-12": {
+            "id": "tn-40-12",
+            "Name": "Japes Lanky Cave Exit Level",
+            "source": "japeslankycave",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-40-32": {
             "id": "tn-40-32",
             "Name": "Jungle Japes Painting Room to Main",
@@ -2775,6 +2896,17 @@
             "Name": "Mine to Jungle Japes Medals",
             "source": "mine",
             "target": "junglejapesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-41-12": {
+            "id": "tn-41-12",
+            "Name": "Mine Exit Level",
+            "source": "mine",
+            "target": "junglejapeslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -2867,11 +2999,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-43-12": {
+            "id": "tn-43-12",
+            "Name": "Japes Minecarts Exit Level",
+            "source": "japesminecarts",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-44-30": {
             "id": "tn-44-30",
             "Name": "Japes Catacomb to Jungle Japes Medals",
             "source": "japescatacomb",
             "target": "junglejapesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-44-12": {
+            "id": "tn-44-12",
+            "Name": "Japes Catacomb Exit Level",
+            "source": "japescatacomb",
+            "target": "junglejapeslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -2911,6 +3065,17 @@
                 ]
             }
         },
+        "tn-45-12": {
+            "id": "tn-45-12",
+            "Name": "Japes Boss Lobby Exit Level",
+            "source": "japesbosslobby",
+            "target": "junglejapeslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-49-48": {
             "id": "tn-49-48",
             "Name": "Angry Aztec Start to Angry Aztec Medals",
@@ -2924,7 +3089,7 @@
         },
         "tn-49-13": {
             "id": "tn-49-13",
-            "Name": "Angry Aztec to Aztec Lobby",
+            "Name": "Angry Aztec Start Exit Level",
             "source": "angryaztecstart",
             "target": "angryazteclobby",
             "sourceType": "Region",
@@ -2974,6 +3139,17 @@
             "Name": "Angry Aztec Between Vines By Portal to Angry Aztec Medals",
             "source": "betweenvinesbyportal",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-50-13": {
+            "id": "tn-50-13",
+            "Name": "Angry Aztec Between Vines By Portal Exit Level",
+            "source": "betweenvinesbyportal",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -3060,6 +3236,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-51-13": {
+            "id": "tn-51-13",
+            "Name": "Angry Aztec Tunnel Before Oasis Exit Level",
+            "source": "aztectunnelbeforeoasis",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-51-50": {
             "id": "tn-51-50",
             "Name": "Angry Aztec Tunnel Before Oasis to Angry Aztec Between Vines By Portal",
@@ -3109,6 +3296,17 @@
             "Name": "Angry Aztec Oasis to Angry Aztec Medals",
             "source": "angryaztecoasis",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-52-13": {
+            "id": "tn-52-13",
+            "Name": "Angry Aztec Oasis Exit Level",
+            "source": "angryaztecoasis",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -3268,6 +3466,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-53-13": {
+            "id": "tn-53-13",
+            "Name": "Temple Start Exit Level",
+            "source": "templestart",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-53-52": {
             "id": "tn-53-52",
             "Name": "Temple Start to Angry Aztec Oasis",
@@ -3308,6 +3517,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-54-13": {
+            "id": "tn-54-13",
+            "Name": "Temple Underwater Exit Level",
+            "source": "templeunderwater",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-54-53": {
             "id": "tn-54-53",
             "Name": "Temple Underwater to Temple Start",
@@ -3324,6 +3544,17 @@
             "Name": "Angry Aztec Connector Tunnel to Angry Aztec Medals",
             "source": "angryaztecconnectortunnel",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-55-13": {
+            "id": "tn-55-13",
+            "Name": "Angry Aztec Connector Tunnel Exit Level",
+            "source": "angryaztecconnectortunnel",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -3368,6 +3599,17 @@
             "Name": "Angry Aztec Main to Angry Aztec Medals",
             "source": "angryaztecmain",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-56-13": {
+            "id": "tn-56-13",
+            "Name": "Angry Aztec Main Exit Level",
+            "source": "angryaztecmain",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -3783,6 +4025,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-57-13": {
+            "id": "tn-57-13",
+            "Name": "Aztec Donkey Sand Tunnel Exit Level",
+            "source": "aztecdonkeyquicksandcave",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-57-56": {
             "id": "tn-57-56",
             "Name": "Aztec Donkey Sand Tunnel to Angry Aztec Main",
@@ -3824,6 +4077,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-68-13": {
+            "id": "tn-68-13",
+            "Name": "Aztec Baboon Blast Exit Level",
+            "source": "aztecbaboonblast",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-68-56": {
             "id": "tn-68-56",
             "Name": "Aztec Baboon Blast to Angry Aztec Main",
@@ -3840,6 +4104,17 @@
             "Name": "Donkey Temple to Angry Aztec Medals",
             "source": "donkeytemple",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-58-13": {
+            "id": "tn-58-13",
+            "Name": "Donkey Temple Exit Level",
+            "source": "donkeytemple",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -3868,6 +4143,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-59-13": {
+            "id": "tn-59-13",
+            "Name": "Diddy Temple Exit Level",
+            "source": "diddytemple",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-59-56": {
             "id": "tn-59-56",
             "Name": "Angry Aztec Diddy 5DTemple to Main",
@@ -3884,6 +4170,17 @@
             "Name": "Lanky Temple to Angry Aztec Medals",
             "source": "lankytemple",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-60-13": {
+            "id": "tn-60-13",
+            "Name": "Lanky Temple Exit Level",
+            "source": "lankytemple",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -3912,6 +4209,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-61-13": {
+            "id": "tn-61-13",
+            "Name": "Tiny Temple Exit Level",
+            "source": "tinytemple",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-61-56": {
             "id": "tn-61-56",
             "Name": "Angry Aztec Tiny 5DTemple To Main",
@@ -3928,6 +4236,17 @@
             "Name": "Chunky Temple to Angry Aztec Medals",
             "source": "chunkytemple",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-62-13": {
+            "id": "tn-62-13",
+            "Name": "Chunky Temple Exit Level",
+            "source": "chunkytemple",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -3956,11 +4275,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-63-13": {
+            "id": "tn-63-13",
+            "Name": "Aztec Tiny Race Exit Level",
+            "source": "aztectinyrace",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-64-48": {
             "id": "tn-64-48",
             "Name": "Llama Temple to Angry Aztec Medals",
             "source": "llamatemple",
             "target": "angryaztecmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-64-13": {
+            "id": "tn-64-13",
+            "Name": "Llama Temple Exit Level",
+            "source": "llamatemple",
+            "target": "angryazteclobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4029,6 +4370,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-65-13": {
+            "id": "tn-65-13",
+            "Name": "Llama Temple Back Exit Level",
+            "source": "llamatempleback",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-65-64": {
             "id": "tn-65-64",
             "Name": "Llama Temple Back to Llama Temple",
@@ -4062,6 +4414,17 @@
                 ]
             }
         },
+        "tn-66-13": {
+            "id": "tn-66-13",
+            "Name": "Aztec Boss Lobby Exit Level",
+            "source": "aztecbosslobby",
+            "target": "angryazteclobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-70-69": {
             "id": "tn-70-69",
             "Name": "Frantic Factory Start to Frantic Factory Medals",
@@ -4075,7 +4438,7 @@
         },
         "tn-70-18": {
             "id": "tn-70-18",
-            "Name": "Frantic Factory to Factory Lobby",
+            "Name": "Frantic Factory Start Exit Level",
             "source": "franticfactorystart",
             "target": "franticfactorylobby",
             "sourceType": "Region",
@@ -4146,6 +4509,17 @@
             "Name": "Testing to Frantic Factory Medals",
             "source": "testing",
             "target": "franticfactorymedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-71-18": {
+            "id": "tn-71-18",
+            "Name": "Testing Exit Level",
+            "source": "testing",
+            "target": "franticfactorylobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4231,6 +4605,17 @@
             "Name": "R&D to Frantic Factory Medals",
             "source": "randd",
             "target": "franticfactorymedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-72-18": {
+            "id": "tn-72-18",
+            "Name": "R&D Exit Level",
+            "source": "randd",
+            "target": "franticfactorylobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4354,6 +4739,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-73-18": {
+            "id": "tn-73-18",
+            "Name": "Factory Tiny Race Lobby Exit Level",
+            "source": "factorytinyracelobby",
+            "target": "franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-73-72": {
             "id": "tn-73-72",
             "Name": "Factory Tiny Race Lobby to R&D",
@@ -4395,11 +4791,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-74-18": {
+            "id": "tn-74-18",
+            "Name": "Factory Tiny Race Exit Level",
+            "source": "factorytinyrace",
+            "target": "franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-75-69": {
             "id": "tn-75-69",
             "Name": "Chunky Room Platform to Frantic Factory Medals",
             "source": "chunkyroomplatform",
             "target": "franticfactorymedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-75-18": {
+            "id": "tn-75-18",
+            "Name": "Chunky Room Platform Exit Level",
+            "source": "chunkyroomplatform",
+            "target": "franticfactorylobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4464,6 +4882,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-76-18": {
+            "id": "tn-76-18",
+            "Name": "Power Hut Exit Level",
+            "source": "powerhut",
+            "target": "franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-76-75": {
             "id": "tn-76-75",
             "Name": "Frantic Factory Power Room to Chunky Room",
@@ -4480,6 +4909,17 @@
             "Name": "Beyond Hatch to Frantic Factory Medals",
             "source": "beyondhatch",
             "target": "franticfactorymedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-77-18": {
+            "id": "tn-77-18",
+            "Name": "Beyond Hatch Exit Level",
+            "source": "beyondhatch",
+            "target": "franticfactorylobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4596,6 +5036,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-84-18": {
+            "id": "tn-84-18",
+            "Name": "Factory Baboon Blast Exit Level",
+            "source": "factorybaboonblast",
+            "target": "franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-84-77": {
             "id": "tn-84-77",
             "Name": "Factory Baboon Blast to Beyond Hatch",
@@ -4612,6 +5063,17 @@
             "Name": "Lower Core to Frantic Factory Medals",
             "source": "lowercore",
             "target": "franticfactorymedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-78-18": {
+            "id": "tn-78-18",
+            "Name": "Lower Core Exit Level",
+            "source": "lowercore",
+            "target": "franticfactorylobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4678,6 +5140,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-79-18": {
+            "id": "tn-79-18",
+            "Name": "Inside Core Exit Level",
+            "source": "insidecore",
+            "target": "franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-79-77": {
             "id": "tn-79-77",
             "Name": "Frantic Factory Crusher Room to Main",
@@ -4694,6 +5167,17 @@
             "Name": "Middle Core to Frantic Factory Medals",
             "source": "middlecore",
             "target": "franticfactorymedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-80-18": {
+            "id": "tn-80-18",
+            "Name": "Middle Core Exit Level",
+            "source": "middlecore",
+            "target": "franticfactorylobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4735,6 +5219,17 @@
             "Name": "Upper Core to Frantic Factory Medals",
             "source": "uppercore",
             "target": "franticfactorymedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-81-18": {
+            "id": "tn-81-18",
+            "Name": "Upper Core Exit Level",
+            "source": "uppercore",
+            "target": "franticfactorylobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -4803,11 +5298,33 @@
                 ]
             }
         },
+        "tn-82-18": {
+            "id": "tn-82-18",
+            "Name": "Factory Boss Lobby Exit Level",
+            "source": "factorybosslobby",
+            "target": "franticfactorylobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-86-85": {
             "id": "tn-86-85",
             "Name": "Gloomy Galleon Start to Gloomy Galleon Medals",
             "source": "gloomygalleonstart",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-86-20": {
+            "id": "tn-86-20",
+            "Name": "Gloomy Galleon Start Exit Level",
+            "source": "gloomygalleonstart",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -5032,6 +5549,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-87-20": {
+            "id": "tn-87-20",
+            "Name": "Galleon Past Vines Exit Level",
+            "source": "galleonpastvines",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-87-86": {
             "id": "tn-87-86",
             "Name": "Galleon Past Vines to Gloomy Galleon Start",
@@ -5066,6 +5594,17 @@
             "Name": "Galleon Beyond Pineapple Gate to Gloomy Galleon Medals",
             "source": "galleonbeyondpineapplegate",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-88-20": {
+            "id": "tn-88-20",
+            "Name": "Galleon Beyond Pineapple Gate Exit Level",
+            "source": "galleonbeyondpineapplegate",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -5175,6 +5714,17 @@
             "Name": "Lighthouse Surface to Gloomy Galleon Medals",
             "source": "lighthousesurface",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-89-20": {
+            "id": "tn-89-20",
+            "Name": "Lighthouse Surface Exit Level",
+            "source": "lighthousesurface",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -5354,6 +5904,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-90-20": {
+            "id": "tn-90-20",
+            "Name": "Lighthouse Platform Exit Level",
+            "source": "lighthouseplatform",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-90-89": {
             "id": "tn-90-89",
             "Name": "Lighthouse Platform to Lighthouse Surface",
@@ -5457,6 +6018,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-91-20": {
+            "id": "tn-91-20",
+            "Name": "Lighthouse Underwater Exit Level",
+            "source": "lighthouseunderwater",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-91-89": {
             "id": "tn-91-89",
             "Name": "Lighthouse Underwater to Lighthouse Surface",
@@ -5529,6 +6101,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-92-20": {
+            "id": "tn-92-20",
+            "Name": "Lighthouse Snide Alcove Exit Level",
+            "source": "lighthousesnidealcove",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-92-89": {
             "id": "tn-92-89",
             "Name": "Lighthouse Snide Alcove to Lighthouse Surface",
@@ -5562,6 +6145,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-113-20": {
+            "id": "tn-113-20",
+            "Name": "Galleon Baboon Blast Exit Level",
+            "source": "galleonbaboonblast",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-113-90": {
             "id": "tn-113-90",
             "Name": "Galleon Baboon Blast to Lighthouse Platform",
@@ -5578,6 +6172,17 @@
             "Name": "Lighthouse to Gloomy Galleon Medals",
             "source": "lighthouse",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-93-20": {
+            "id": "tn-93-20",
+            "Name": "Lighthouse Exit Level",
+            "source": "lighthouse",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -5606,6 +6211,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-94-20": {
+            "id": "tn-94-20",
+            "Name": "Mermaid Room Exit Level",
+            "source": "mermaidroom",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-94-91": {
             "id": "tn-94-91",
             "Name": "Gloomy Galleon Mermaid to Main",
@@ -5628,6 +6244,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-95-20": {
+            "id": "tn-95-20",
+            "Name": "Sick Bay Exit Level",
+            "source": "sickbay",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-95-90": {
             "id": "tn-95-90",
             "Name": "Gloomy Galleon Seasick Ship to Main",
@@ -5644,6 +6271,17 @@
             "Name": "Shipyard to Gloomy Galleon Medals",
             "source": "shipyard",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-96-20": {
+            "id": "tn-96-20",
+            "Name": "Shipyard Exit Level",
+            "source": "shipyard",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -5778,6 +6416,17 @@
             "Name": "Shipyard Underwater to Gloomy Galleon Medals",
             "source": "shipyardunderwater",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-97-20": {
+            "id": "tn-97-20",
+            "Name": "Shipyard Underwater Exit Level",
+            "source": "shipyardunderwater",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -6181,11 +6830,33 @@
                 ]
             }
         },
+        "tn-98-20": {
+            "id": "tn-98-20",
+            "Name": "Seal Race Exit Level",
+            "source": "sealrace",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-99-85": {
             "id": "tn-99-85",
             "Name": "Treasure Room to Gloomy Galleon Medals",
             "source": "treasureroom",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-99-20": {
+            "id": "tn-99-20",
+            "Name": "Treasure Room Exit Level",
+            "source": "treasureroom",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -6330,6 +7001,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-100-20": {
+            "id": "tn-100-20",
+            "Name": "Treasure Room Diddy Gold Tower Exit Level",
+            "source": "treasureroomdiddygoldtower",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-100-99": {
             "id": "tn-100-99",
             "Name": "Treasure Room Diddy Gold Tower to Treasure Room",
@@ -6346,6 +7028,17 @@
             "Name": "Tiny Chest to Gloomy Galleon Medals",
             "source": "tinychest",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-101-20": {
+            "id": "tn-101-20",
+            "Name": "Tiny Chest Exit Level",
+            "source": "tinychest",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -6374,6 +7067,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-102-20": {
+            "id": "tn-102-20",
+            "Name": "Submarine Exit Level",
+            "source": "submarine",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-102-97": {
             "id": "tn-102-97",
             "Name": "Gloomy Galleon Submarine to Main",
@@ -6396,6 +7100,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-103-20": {
+            "id": "tn-103-20",
+            "Name": "Mechafish Exit Level",
+            "source": "mechafish",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-103-97": {
             "id": "tn-103-97",
             "Name": "Mechafish to Shipyard Underwater",
@@ -6412,6 +7127,17 @@
             "Name": "Lanky Ship to Gloomy Galleon Medals",
             "source": "lankyship",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-104-20": {
+            "id": "tn-104-20",
+            "Name": "Lanky Ship Exit Level",
+            "source": "lankyship",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -6461,6 +7187,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-105-20": {
+            "id": "tn-105-20",
+            "Name": "Tiny Ship Exit Level",
+            "source": "tinyship",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-105-97": {
             "id": "tn-105-97",
             "Name": "Gloomy Galleon Tiny 2DShip to Main",
@@ -6504,6 +7241,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-106-20": {
+            "id": "tn-106-20",
+            "Name": "Bongos Ship Exit Level",
+            "source": "bongosship",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-106-97": {
             "id": "tn-106-97",
             "Name": "Gloomy Galleon DK 5DShip to Main",
@@ -6541,6 +7289,17 @@
             "Name": "Guitar Ship to Gloomy Galleon Medals",
             "source": "guitarship",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-107-20": {
+            "id": "tn-107-20",
+            "Name": "Guitar Ship Exit Level",
+            "source": "guitarship",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -6611,6 +7370,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-108-20": {
+            "id": "tn-108-20",
+            "Name": "Trombone Ship Exit Level",
+            "source": "tromboneship",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-108-97": {
             "id": "tn-108-97",
             "Name": "Gloomy Galleon Lanky 5DShip to Main",
@@ -6675,6 +7445,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-109-20": {
+            "id": "tn-109-20",
+            "Name": "Saxophone Ship Exit Level",
+            "source": "saxophoneship",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-109-97": {
             "id": "tn-109-97",
             "Name": "Gloomy Galleon Tiny 5DShip to Main",
@@ -6712,6 +7493,17 @@
             "Name": "Triangle Ship to Gloomy Galleon Medals",
             "source": "triangleship",
             "target": "gloomygalleonmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-110-20": {
+            "id": "tn-110-20",
+            "Name": "Triangle Ship Exit Level",
+            "source": "triangleship",
+            "target": "gloomygalleonlobbyentrance",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -6793,6 +7585,17 @@
                 ]
             }
         },
+        "tn-111-20": {
+            "id": "tn-111-20",
+            "Name": "Galleon Boss Lobby Exit Level",
+            "source": "galleonbosslobby",
+            "target": "gloomygalleonlobbyentrance",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-115-114": {
             "id": "tn-115-114",
             "Name": "Fungi Forest Start to Fungi Forest Medals",
@@ -6806,7 +7609,7 @@
         },
         "tn-115-25": {
             "id": "tn-115-25",
-            "Name": "Fungi Forest to Fungi Lobby",
+            "Name": "Fungi Forest Start Exit Level",
             "source": "fungiforeststart",
             "target": "fungiforestlobby",
             "sourceType": "Region",
@@ -6898,11 +7701,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-116-25": {
+            "id": "tn-116-25",
+            "Name": "Forest Minecarts Exit Level",
+            "source": "forestminecarts",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-117-114": {
             "id": "tn-117-114",
             "Name": "Giant Mushroom Area to Fungi Forest Medals",
             "source": "giantmushroomarea",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-117-25": {
+            "id": "tn-117-25",
+            "Name": "Giant Mushroom Area Exit Level",
+            "source": "giantmushroomarea",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -7110,6 +7935,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-118-25": {
+            "id": "tn-118-25",
+            "Name": "Mushroom Lower Exit Level",
+            "source": "mushroomlower",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-118-117": {
             "id": "tn-118-117",
             "Name": "Fungi Forest Giant Mushroom (Lower) to Main",
@@ -7156,6 +7992,17 @@
             "Name": "Mushroom Lower Exterior to Fungi Forest Medals",
             "source": "mushroomlowerexterior",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-119-25": {
+            "id": "tn-119-25",
+            "Name": "Mushroom Lower Exterior Exit Level",
+            "source": "mushroomlowerexterior",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -7216,6 +8063,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-141-25": {
+            "id": "tn-141-25",
+            "Name": "Forest Baboon Blast Exit Level",
+            "source": "forestbaboonblast",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-141-119": {
             "id": "tn-141-119",
             "Name": "Forest Baboon Blast to Mushroom Lower Exterior",
@@ -7232,6 +8090,17 @@
             "Name": "Mushroom Upper to Fungi Forest Medals",
             "source": "mushroomupper",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-120-25": {
+            "id": "tn-120-25",
+            "Name": "Mushroom Upper Exit Level",
+            "source": "mushroomupper",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -7300,6 +8169,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-121-25": {
+            "id": "tn-121-25",
+            "Name": "Mushroom Night Door Exit Level",
+            "source": "mushroomnightdoor",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-121-120": {
             "id": "tn-121-120",
             "Name": "Mushroom Night Door to Mushroom Upper",
@@ -7333,6 +8213,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-122-25": {
+            "id": "tn-122-25",
+            "Name": "Mushroom Night Exterior Exit Level",
+            "source": "mushroomnightexterior",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-122-121": {
             "id": "tn-122-121",
             "Name": "Fungi Forest Main to Giant Mushroom (Night Door)",
@@ -7360,6 +8251,17 @@
             "Name": "Mushroom Upper Exterior to Fungi Forest Medals",
             "source": "mushroomupperexterior",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-123-25": {
+            "id": "tn-123-25",
+            "Name": "Mushroom Upper Exterior Exit Level",
+            "source": "mushroomupperexterior",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -7578,6 +8480,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-124-25": {
+            "id": "tn-124-25",
+            "Name": "Mushroom Chunky Room Exit Level",
+            "source": "mushroomchunkyroom",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-124-123": {
             "id": "tn-124-123",
             "Name": "Fungi Forest Face Puzzle (Chunky) to Main",
@@ -7594,6 +8507,17 @@
             "Name": "Mushroom Lanky Zingers Room to Fungi Forest Medals",
             "source": "mushroomlankyzingersroom",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-125-25": {
+            "id": "tn-125-25",
+            "Name": "Mushroom Lanky Zingers Room Exit Level",
+            "source": "mushroomlankyzingersroom",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -7622,6 +8546,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-126-25": {
+            "id": "tn-126-25",
+            "Name": "Mushroom Lanky Mushrooms Room Exit Level",
+            "source": "mushroomlankymushroomsroom",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-126-123": {
             "id": "tn-126-123",
             "Name": "Fungi Forest Mushroom Puzzle (Lanky) to Main",
@@ -7638,6 +8573,17 @@
             "Name": "Hollow Tree Area to Fungi Forest Medals",
             "source": "hollowtreearea",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-127-25": {
+            "id": "tn-127-25",
+            "Name": "Hollow Tree Area Exit Level",
+            "source": "hollowtreearea",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -7703,6 +8649,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-128-25": {
+            "id": "tn-128-25",
+            "Name": "Anthill Exit Level",
+            "source": "anthill",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-128-127": {
             "id": "tn-128-127",
             "Name": "Fungi Forest Anthill to Main",
@@ -7760,6 +8717,17 @@
             "Name": "Mill Area to Fungi Forest Medals",
             "source": "millarea",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-129-25": {
+            "id": "tn-129-25",
+            "Name": "Mill Area Exit Level",
+            "source": "millarea",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -7990,6 +8958,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-130-25": {
+            "id": "tn-130-25",
+            "Name": "Mill Back Room Exit Level",
+            "source": "millchunkytinyarea",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-130-129": {
             "id": "tn-130-129",
             "Name": "Fungi Forest Mill Tiny Hole to Main",
@@ -8084,6 +9063,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-131-25": {
+            "id": "tn-131-25",
+            "Name": "Spider Room Exit Level",
+            "source": "spiderroom",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-131-130": {
             "id": "tn-131-130",
             "Name": "Fungi Forest Spider to Back Mill",
@@ -8100,6 +9090,17 @@
             "Name": "Grinder Room to Fungi Forest Medals",
             "source": "grinderroom",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-132-25": {
+            "id": "tn-132-25",
+            "Name": "Grinder Room Exit Level",
+            "source": "grinderroom",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -8162,6 +9163,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-133-25": {
+            "id": "tn-133-25",
+            "Name": "Mill Rafters Exit Level",
+            "source": "millrafters",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-133-129": {
             "id": "tn-133-129",
             "Name": "Fungi Forest Dark Rafters to Main",
@@ -8178,6 +9190,17 @@
             "Name": "Winch Room to Fungi Forest Medals",
             "source": "winchroom",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-134-25": {
+            "id": "tn-134-25",
+            "Name": "Winch Room Exit Level",
+            "source": "winchroom",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -8206,6 +9229,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-135-25": {
+            "id": "tn-135-25",
+            "Name": "Mill Attic Exit Level",
+            "source": "millattic",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-135-129": {
             "id": "tn-135-129",
             "Name": "Fungi Forest Mill Attic (Lanky) to Main",
@@ -8222,6 +9256,17 @@
             "Name": "Thornvine Area to Fungi Forest Medals",
             "source": "thornvinearea",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-136-25": {
+            "id": "tn-136-25",
+            "Name": "Thornvine Area Exit Level",
+            "source": "thornvinearea",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -8268,6 +9313,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-137-25": {
+            "id": "tn-137-25",
+            "Name": "Thornvine Barn Exit Level",
+            "source": "thornvinebarn",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-137-136": {
             "id": "tn-137-136",
             "Name": "Fungi Forest Thornvine Barn to Main",
@@ -8284,6 +9340,17 @@
             "Name": "Worm Area to Fungi Forest Medals",
             "source": "wormarea",
             "target": "fungiforestmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-138-25": {
+            "id": "tn-138-25",
+            "Name": "Worm Area Exit Level",
+            "source": "wormarea",
+            "target": "fungiforestlobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -8360,6 +9427,17 @@
                 ]
             }
         },
+        "tn-139-25": {
+            "id": "tn-139-25",
+            "Name": "Forest Boss Lobby Exit Level",
+            "source": "forestbosslobby",
+            "target": "fungiforestlobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-143-142": {
             "id": "tn-143-142",
             "Name": "Crystal Caves Main to Crystal Caves Medals",
@@ -8373,7 +9451,7 @@
         },
         "tn-143-26": {
             "id": "tn-143-26",
-            "Name": "Crystal Caves to Caves Lobby",
+            "Name": "Crystal Caves Main Exit Level",
             "source": "crystalcavesmain",
             "target": "crystalcaveslobby",
             "sourceType": "Region",
@@ -8850,6 +9928,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-144-26": {
+            "id": "tn-144-26",
+            "Name": "Caves Snide Area Exit Level",
+            "source": "cavessnidearea",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-144-232": {
             "id": "tn-144-232",
             "Name": "Caves Snide Area to Snide",
@@ -8884,6 +9973,17 @@
             "Name": "Caves Blueprint Cave to Crystal Caves Medals",
             "source": "cavesblueprintcave",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-145-26": {
+            "id": "tn-145-26",
+            "Name": "Caves Blueprint Cave Exit Level",
+            "source": "cavesblueprintcave",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -8939,6 +10039,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-146-26": {
+            "id": "tn-146-26",
+            "Name": "Caves Bonus Cave Exit Level",
+            "source": "cavesbonuscave",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-146-143": {
             "id": "tn-146-143",
             "Name": "Caves Bonus Cave to Crystal Caves Main",
@@ -8988,6 +10099,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-147-26": {
+            "id": "tn-147-26",
+            "Name": "Caves Blueprint Pillar Exit Level",
+            "source": "cavesblueprintpillar",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-147-143": {
             "id": "tn-147-143",
             "Name": "Caves Blueprint Pillar to Crystal Caves Main",
@@ -9004,6 +10126,17 @@
             "Name": "Caves Bananaport Spire to Crystal Caves Medals",
             "source": "cavesbananaportspire",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-148-26": {
+            "id": "tn-148-26",
+            "Name": "Caves Bananaport Spire Exit Level",
+            "source": "cavesbananaportspire",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -9032,6 +10165,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-169-26": {
+            "id": "tn-169-26",
+            "Name": "Caves Baboon Blast Exit Level",
+            "source": "cavesbaboonblast",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-169-143": {
             "id": "tn-169-143",
             "Name": "Caves Baboon Blast to Crystal Caves Main",
@@ -9048,6 +10192,17 @@
             "Name": "Boulder Cave to Crystal Caves Medals",
             "source": "bouldercave",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-149-26": {
+            "id": "tn-149-26",
+            "Name": "Boulder Cave Exit Level",
+            "source": "bouldercave",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -9094,11 +10249,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-150-26": {
+            "id": "tn-150-26",
+            "Name": "Caves Lanky Race Exit Level",
+            "source": "caveslankyrace",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-151-142": {
             "id": "tn-151-142",
             "Name": "Frozen Castle to Crystal Caves Medals",
             "source": "frozencastle",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-151-26": {
+            "id": "tn-151-26",
+            "Name": "Frozen Castle Exit Level",
+            "source": "frozencastle",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -9121,6 +10298,17 @@
             "Name": "Igloo Area to Crystal Caves Medals",
             "source": "iglooarea",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-152-26": {
+            "id": "tn-152-26",
+            "Name": "Igloo Area Exit Level",
+            "source": "iglooarea",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -9512,11 +10700,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-153-26": {
+            "id": "tn-153-26",
+            "Name": "Giant Kosha Exit Level",
+            "source": "giantkosha",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-154-142": {
             "id": "tn-154-142",
             "Name": "Donkey Igloo to Crystal Caves Medals",
             "source": "donkeyigloo",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-154-26": {
+            "id": "tn-154-26",
+            "Name": "Donkey Igloo Exit Level",
+            "source": "donkeyigloo",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -9545,6 +10755,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-155-26": {
+            "id": "tn-155-26",
+            "Name": "Diddy Igloo Exit Level",
+            "source": "diddyigloo",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-155-152": {
             "id": "tn-155-152",
             "Name": "Crystal Caves Diddy 5DIgloo to Main",
@@ -9561,6 +10782,17 @@
             "Name": "Lanky Igloo to Crystal Caves Medals",
             "source": "lankyigloo",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-156-26": {
+            "id": "tn-156-26",
+            "Name": "Lanky Igloo Exit Level",
+            "source": "lankyigloo",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -9589,6 +10821,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-157-26": {
+            "id": "tn-157-26",
+            "Name": "Tiny Igloo Exit Level",
+            "source": "tinyigloo",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-157-152": {
             "id": "tn-157-152",
             "Name": "Crystal Caves Tiny 5DIgloo to Main",
@@ -9611,6 +10854,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-158-26": {
+            "id": "tn-158-26",
+            "Name": "Chunky Igloo Exit Level",
+            "source": "chunkyigloo",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-158-152": {
             "id": "tn-158-152",
             "Name": "Crystal Caves Chunky 5DIgloo to Main",
@@ -9627,6 +10881,17 @@
             "Name": "Cabin Area to Crystal Caves Medals",
             "source": "cabinarea",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-159-26": {
+            "id": "tn-159-26",
+            "Name": "Cabin Area Exit Level",
+            "source": "cabinarea",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10035,6 +11300,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-160-26": {
+            "id": "tn-160-26",
+            "Name": "Rotating Cabin Exit Level",
+            "source": "rotatingcabin",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-160-159": {
             "id": "tn-160-159",
             "Name": "Crystal Caves Rotating Room to Main",
@@ -10051,6 +11327,17 @@
             "Name": "Donkey Cabin to Crystal Caves Medals",
             "source": "donkeycabin",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-161-26": {
+            "id": "tn-161-26",
+            "Name": "Donkey Cabin Exit Level",
+            "source": "donkeycabin",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10079,6 +11366,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-162-26": {
+            "id": "tn-162-26",
+            "Name": "Diddy Lower Cabin Exit Level",
+            "source": "diddylowercabin",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-162-159": {
             "id": "tn-162-159",
             "Name": "Crystal Caves Diddy Lower 5DCabin to Main",
@@ -10095,6 +11393,17 @@
             "Name": "Diddy Upper Cabin to Crystal Caves Medals",
             "source": "diddyuppercabin",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-163-26": {
+            "id": "tn-163-26",
+            "Name": "Diddy Upper Cabin Exit Level",
+            "source": "diddyuppercabin",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10123,6 +11432,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-164-26": {
+            "id": "tn-164-26",
+            "Name": "Lanky Cabin Exit Level",
+            "source": "lankycabin",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-164-159": {
             "id": "tn-164-159",
             "Name": "Crystal Caves Lanky 1DCabin to Main",
@@ -10145,6 +11465,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-165-26": {
+            "id": "tn-165-26",
+            "Name": "Tiny Cabin Exit Level",
+            "source": "tinycabin",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-165-159": {
             "id": "tn-165-159",
             "Name": "Crystal Caves Tiny 5DCabin to Main",
@@ -10161,6 +11492,17 @@
             "Name": "Chunky Cabin to Crystal Caves Medals",
             "source": "chunkycabin",
             "target": "crystalcavesmedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-166-26": {
+            "id": "tn-166-26",
+            "Name": "Chunky Cabin Exit Level",
+            "source": "chunkycabin",
+            "target": "crystalcaveslobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10200,6 +11542,17 @@
                 ]
             }
         },
+        "tn-167-26": {
+            "id": "tn-167-26",
+            "Name": "Caves Boss Lobby Exit Level",
+            "source": "cavesbosslobby",
+            "target": "crystalcaveslobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-171-170": {
             "id": "tn-171-170",
             "Name": "Creepy Castle Main to Creepy Castle Medals",
@@ -10213,7 +11566,7 @@
         },
         "tn-171-27": {
             "id": "tn-171-27",
-            "Name": "Creepy Castle to Castle Lobby",
+            "Name": "Creepy Castle Main Exit Level",
             "source": "creepycastlemain",
             "target": "creepycastlelobby",
             "sourceType": "Region",
@@ -10634,6 +11987,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-193-27": {
+            "id": "tn-193-27",
+            "Name": "Castle Baboon Blast Exit Level",
+            "source": "castlebaboonblast",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-193-171": {
             "id": "tn-193-171",
             "Name": "Castle Baboon Blast to Creepy Castle Main",
@@ -10650,6 +12014,17 @@
             "Name": "Castle Waterfall to Creepy Castle Medals",
             "source": "castlewaterfall",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-172-27": {
+            "id": "tn-172-27",
+            "Name": "Castle Waterfall Exit Level",
+            "source": "castlewaterfall",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10683,6 +12058,17 @@
             "Name": "Castle Tree to Creepy Castle Medals",
             "source": "castletree",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-173-27": {
+            "id": "tn-173-27",
+            "Name": "Castle Tree Exit Level",
+            "source": "castletree",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10741,6 +12127,17 @@
             "Name": "Library to Creepy Castle Medals",
             "source": "library",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-174-27": {
+            "id": "tn-174-27",
+            "Name": "Library Exit Level",
+            "source": "library",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10829,6 +12226,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-175-27": {
+            "id": "tn-175-27",
+            "Name": "Library Middle Exit Level",
+            "source": "librarypastslam",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-175-176": {
             "id": "tn-175-176",
             "Name": "Library Middle to Library Rear",
@@ -10893,11 +12301,33 @@
                 ]
             }
         },
+        "tn-176-27": {
+            "id": "tn-176-27",
+            "Name": "Library Rear Exit Level",
+            "source": "librarypastbooks",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-177-170": {
             "id": "tn-177-170",
             "Name": "Ballroom to Creepy Castle Medals",
             "source": "ballroom",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-177-27": {
+            "id": "tn-177-27",
+            "Name": "Ballroom Exit Level",
+            "source": "ballroom",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -10941,6 +12371,17 @@
             "Name": "Museum Behind Glass to Creepy Castle Medals",
             "source": "museumbehindglass",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-178-27": {
+            "id": "tn-178-27",
+            "Name": "Museum Behind Glass Exit Level",
+            "source": "museumbehindglass",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -11028,11 +12469,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-179-27": {
+            "id": "tn-179-27",
+            "Name": "Castle Tiny Race Exit Level",
+            "source": "castletinyrace",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-180-170": {
             "id": "tn-180-170",
             "Name": "Tower to Creepy Castle Medals",
             "source": "tower",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-180-27": {
+            "id": "tn-180-27",
+            "Name": "Tower Exit Level",
+            "source": "tower",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -11055,6 +12518,17 @@
             "Name": "Greenhouse to Creepy Castle Medals",
             "source": "greenhouse",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-181-27": {
+            "id": "tn-181-27",
+            "Name": "Greenhouse Exit Level",
+            "source": "greenhouse",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -11093,6 +12567,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-182-27": {
+            "id": "tn-182-27",
+            "Name": "Trash Can Exit Level",
+            "source": "trashcan",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-182-171": {
             "id": "tn-182-171",
             "Name": "Creepy Castle Trash Can to Main",
@@ -11115,6 +12600,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-183-27": {
+            "id": "tn-183-27",
+            "Name": "Shed Exit Level",
+            "source": "shed",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-183-171": {
             "id": "tn-183-171",
             "Name": "Creepy Castle Shed to Main",
@@ -11131,6 +12627,17 @@
             "Name": "Museum to Creepy Castle Medals",
             "source": "museum",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-184-27": {
+            "id": "tn-184-27",
+            "Name": "Museum Exit Level",
+            "source": "museum",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -11172,6 +12679,17 @@
             "Name": "Lower Cave to Creepy Castle Medals",
             "source": "lowercave",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-185-27": {
+            "id": "tn-185-27",
+            "Name": "Lower Cave Exit Level",
+            "source": "lowercave",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -11326,6 +12844,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-186-27": {
+            "id": "tn-186-27",
+            "Name": "Crypt Exit Level",
+            "source": "crypt",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-186-185": {
             "id": "tn-186-185",
             "Name": "Creepy Castle Crypt to Lower Cave",
@@ -11385,11 +12914,33 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-187-27": {
+            "id": "tn-187-27",
+            "Name": "Castle Minecarts Exit Level",
+            "source": "castleminecarts",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-188-170": {
             "id": "tn-188-170",
             "Name": "Mausoleum to Creepy Castle Medals",
             "source": "mausoleum",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-188-27": {
+            "id": "tn-188-27",
+            "Name": "Mausoleum Exit Level",
+            "source": "mausoleum",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -11412,6 +12963,17 @@
             "Name": "Upper Cave to Creepy Castle Medals",
             "source": "uppercave",
             "target": "creepycastlemedals",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
+        "tn-189-27": {
+            "id": "tn-189-27",
+            "Name": "Upper Cave Exit Level",
+            "source": "uppercave",
+            "target": "creepycastlelobby",
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
@@ -11480,6 +13042,17 @@
             "type": "Neighbourhood",
             "Requires": true
         },
+        "tn-190-27": {
+            "id": "tn-190-27",
+            "Name": "Dungeon Exit Level",
+            "source": "dungeon",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
+        },
         "tn-190-189": {
             "id": "tn-190-189",
             "Name": "Creepy Castle Dungeon to Upper Cave",
@@ -11512,6 +13085,17 @@
                     }
                 ]
             }
+        },
+        "tn-191-27": {
+            "id": "tn-191-27",
+            "Name": "Castle Boss Lobby Exit Level",
+            "source": "castlebosslobby",
+            "target": "creepycastlelobby",
+            "sourceType": "Region",
+            "targetType": "Location",
+            "Class": "Transition",
+            "type": "Neighbourhood",
+            "Requires": true
         },
         "tn-194-195": {
             "id": "tn-194-195",

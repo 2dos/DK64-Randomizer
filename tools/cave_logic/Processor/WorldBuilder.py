@@ -7,13 +7,16 @@ from exits import build_exits
 from collectible import build_collectibles
 from events import build_events
 from warps import build_warps
+from levels import build_levels
+
+regions = build_regions()
 
 world = {
-    "id":"newgen1",
+    "id": "newgen1",
     "world": {
         "worlds": {},
-        "regions": {**build_regions()},
-        "edges": {**build_checks(), **build_exits(), **build_events(), **build_warps()},
+        "regions": {**build_levels(), **regions['nodes']},
+        "edges": {**regions['edges'], **build_checks(), **build_exits(), **build_events(), **build_warps()},
         "locations": {},
         "subChecks": {},
         "items": {**build_items(), **build_collectibles()},

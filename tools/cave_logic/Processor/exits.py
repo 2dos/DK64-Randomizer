@@ -10,17 +10,16 @@ parent_dir = os.path.abspath(os.path.join(
 sys.path.append(parent_dir)
 
 
-from copy import deepcopy
-from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Regions import Regions
-from randomizer.Logic import RegionsOriginal
-from randomizer.Lists.ShufflableExit import ShufflableExits, ShufflableExit
-from tools.cave_logic.Processor.checks import parse_ast_to_dict
-from tools.cave_logic.Processor.regions import RegionNode, RegionEdge
-from randomizer.LogicClasses import (Event, LocationLogic, Region,
-                                     TransitionFront)
 from randomizer.LogicFiles.Shops import LogicRegions as ShopRegions
-
+from randomizer.LogicClasses import TransitionFront
+from tools.cave_logic.Processor.regions import RegionNode, RegionEdge
+from tools.cave_logic.Processor.checks import parse_ast_to_dict
+from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.LevelInfo import LevelInfoList
+from randomizer.Logic import RegionsOriginal
+from randomizer.Enums.Regions import Regions
+from copy import deepcopy
+import json
 
 nodes = {}
 edges = {}
@@ -28,18 +27,20 @@ edges = {}
 # region to exits logic mapping
 RegionsOriginalCopy = deepcopy(RegionsOriginal)
 ShopRegionsCopy = deepcopy(ShopRegions)
-regions_to_remove = [Regions.Snide, Regions.CrankyGeneric, Regions.FunkyGeneric, Regions.CandyGeneric]
+regions_to_remove = [Regions.Snide, Regions.CrankyGeneric,
+                     Regions.FunkyGeneric, Regions.CandyGeneric]
 for region in regions_to_remove:
     ShopRegionsCopy.pop(region)
 
 
 for region_id, region in RegionsOriginalCopy.items():
-     # if one of the keys from ShopRegionsCopy is in region.exits then we need to add the logic for the reverse region as well
+    # if one of the keys from ShopRegionsCopy is in region.exits then we need to add the logic for the reverse region as well
     for exit in region.exits:
         if ShopRegionsCopy.keys().__contains__(exit.dest):
             RegionsOriginalCopy[exit.dest].exits.append(
                 TransitionFront(region_id, lambda l: True),
             )
+
 
 def strip_name(name):
     return name.replace(" ", "").replace(":", "").replace("-", "").replace("'", "").lower()
@@ -77,7 +78,6 @@ def build_exits():
     for region_id, region in RegionsOriginalCopy.items():
         for exit in region.exits:
             if exit.exitShuffleId in ShufflableExits:
-
                 # use the shufflable exit to get the source and dest regions
                 # as well as the logic
                 shufflable_exit = ShufflableExits[exit.exitShuffleId]
@@ -98,6 +98,17 @@ def build_exits():
             r = exit_to_edge(source, dest, exit_name, logic)
 
             edges.update(r)
+
+            # Add the region 'exit to level' nodes
+            if region.level in LevelInfoList:
+                exit_to_level = LevelInfoList[region.level].TransitionsFrom
+                exit_source = region_id
+                exit_dest = ShufflableExits[exit_to_level].region
+                exit_name = region.name + " Exit Level"
+                rexit = exit_to_edge(exit_source, exit_dest, exit_name, True)
+
+                edges.update(rexit)
+
     return edges
 
 

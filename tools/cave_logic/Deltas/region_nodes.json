@@ -1392,5 +1392,2327 @@
             "Class": "Region",
             "Type": "Region"
         }
+    },
+    "edges": {
+        "rr-gamestart-level": {
+            "id": "rr-gamestart-level",
+            "Name": "Game Start Level",
+            "source": "gamestart",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-credits-level": {
+            "id": "rr-credits-level",
+            "Name": "Credits Level",
+            "source": "credits",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-treehouse-level": {
+            "id": "rr-treehouse-level",
+            "Name": "Treehouse Level",
+            "source": "treehouse",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-traininggrounds-level": {
+            "id": "rr-traininggrounds-level",
+            "Name": "Training Grounds Level",
+            "source": "traininggrounds",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-islesmain-level": {
+            "id": "rr-islesmain-level",
+            "Name": "Isles Main Level",
+            "source": "islesmain",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-outerisles-level": {
+            "id": "rr-outerisles-level",
+            "Name": "Outer Isles Level",
+            "source": "outerisles",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-islesmainupper-level": {
+            "id": "rr-islesmainupper-level",
+            "Name": "Isles Main Upper Level",
+            "source": "islesmainupper",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-islesear-level": {
+            "id": "rr-islesear-level",
+            "Name": "Isles Ear Level",
+            "source": "islesear",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-prison-level": {
+            "id": "rr-prison-level",
+            "Name": "Prison Level",
+            "source": "prison",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-bananafairyroom-level": {
+            "id": "rr-bananafairyroom-level",
+            "Name": "Banana Fairy Room Level",
+            "source": "bananafairyroom",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-rarewaregbroom-level": {
+            "id": "rr-rarewaregbroom-level",
+            "Name": "Rareware GB Room Level",
+            "source": "rarewaregbroom",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-junglejapeslobby-level": {
+            "id": "rr-junglejapeslobby-level",
+            "Name": "Jungle Japes Lobby Level",
+            "source": "junglejapeslobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-angryazteclobby-level": {
+            "id": "rr-angryazteclobby-level",
+            "Name": "Angry Aztec Lobby Level",
+            "source": "angryazteclobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-kremisle-level": {
+            "id": "rr-kremisle-level",
+            "Name": "Krem Isle Base Level",
+            "source": "kremisle",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-kremislebeyondlift-level": {
+            "id": "rr-kremislebeyondlift-level",
+            "Name": "Krem Isle Beyond Lift Level",
+            "source": "kremislebeyondlift",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-kremisletoplevel-level": {
+            "id": "rr-kremisletoplevel-level",
+            "Name": "Krem Isle Top Level Level",
+            "source": "kremisletoplevel",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-islessnideroom-level": {
+            "id": "rr-islessnideroom-level",
+            "Name": "Isles Snide Room Level",
+            "source": "islessnideroom",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-franticfactorylobby-level": {
+            "id": "rr-franticfactorylobby-level",
+            "Name": "Frantic Factory Lobby Level",
+            "source": "franticfactorylobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-gloomygalleonlobbyentrance-level": {
+            "id": "rr-gloomygalleonlobbyentrance-level",
+            "Name": "Gloomy Galleon Lobby Entrance Level",
+            "source": "gloomygalleonlobbyentrance",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-gloomygalleonlobby-level": {
+            "id": "rr-gloomygalleonlobby-level",
+            "Name": "Gloomy Galleon Lobby Level",
+            "source": "gloomygalleonlobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cabinisle-level": {
+            "id": "rr-cabinisle-level",
+            "Name": "Cabin Isle Level",
+            "source": "cabinisle",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-islesabovewaterfall-level": {
+            "id": "rr-islesabovewaterfall-level",
+            "Name": "Isles Above Waterfall Level",
+            "source": "islesabovewaterfall",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-islesairspace-level": {
+            "id": "rr-islesairspace-level",
+            "Name": "Isles Airspace Level",
+            "source": "islesairspace",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-azteclobbyroof-level": {
+            "id": "rr-azteclobbyroof-level",
+            "Name": "Aztec Lobby Roof Level",
+            "source": "azteclobbyroof",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-fungiforestlobby-level": {
+            "id": "rr-fungiforestlobby-level",
+            "Name": "Fungi Forest Lobby Level",
+            "source": "fungiforestlobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crystalcaveslobby-level": {
+            "id": "rr-crystalcaveslobby-level",
+            "Name": "Crystal Caves Lobby Level",
+            "source": "crystalcaveslobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-creepycastlelobby-level": {
+            "id": "rr-creepycastlelobby-level",
+            "Name": "Creepy Castle Lobby Level",
+            "source": "creepycastlelobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmlobby-level": {
+            "id": "rr-hideouthelmlobby-level",
+            "Name": "Hideout Helm Lobby Level",
+            "source": "hideouthelmlobby",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-krool-level": {
+            "id": "rr-krool-level",
+            "Name": "K. Rool Level",
+            "source": "krool",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-junglejapesmedals-level": {
+            "id": "rr-junglejapesmedals-level",
+            "Name": "Jungle Japes Medals Level",
+            "source": "junglejapesmedals",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-junglejapesstart-level": {
+            "id": "rr-junglejapesstart-level",
+            "Name": "Jungle Japes Start Level",
+            "source": "junglejapesstart",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-junglejapesmain-level": {
+            "id": "rr-junglejapesmain-level",
+            "Name": "Jungle Japes Main Level",
+            "source": "junglejapesmain",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japestnsalcove-level": {
+            "id": "rr-japestnsalcove-level",
+            "Name": "Japes T&S Alcove Level",
+            "source": "japestnsalcove",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japestopofmountain-level": {
+            "id": "rr-japestopofmountain-level",
+            "Name": "Japes Top of Mountain Level",
+            "source": "japestopofmountain",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesbaboonblast-level": {
+            "id": "rr-japesbaboonblast-level",
+            "Name": "Japes Baboon Blast Level",
+            "source": "japesbaboonblast",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesbeyondpeanutgate-level": {
+            "id": "rr-japesbeyondpeanutgate-level",
+            "Name": "Japes Beyond Peanut Gate Level",
+            "source": "japesbeyondpeanutgate",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesbeyondcoconutgate1-level": {
+            "id": "rr-japesbeyondcoconutgate1-level",
+            "Name": "Japes Beyond Coconut Gate 1 Level",
+            "source": "japesbeyondcoconutgate1",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesbeyondfeathergate-level": {
+            "id": "rr-japesbeyondfeathergate-level",
+            "Name": "Japes Beyond Feather Gate Level",
+            "source": "japesbeyondfeathergate",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tinyhive-level": {
+            "id": "rr-tinyhive-level",
+            "Name": "Tiny Hive Level",
+            "source": "tinyhive",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesbeyondcoconutgate2-level": {
+            "id": "rr-japesbeyondcoconutgate2-level",
+            "Name": "Japes Beyond Coconut Gate 2 Level",
+            "source": "japesbeyondcoconutgate2",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-beyondrambigate-level": {
+            "id": "rr-beyondrambigate-level",
+            "Name": "Beyond Rambi Gate Level",
+            "source": "beyondrambigate",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japeslankycave-level": {
+            "id": "rr-japeslankycave-level",
+            "Name": "Japes Lanky Cave Level",
+            "source": "japeslankycave",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mine-level": {
+            "id": "rr-mine-level",
+            "Name": "Mine Level",
+            "source": "mine",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesminecarts-level": {
+            "id": "rr-japesminecarts-level",
+            "Name": "Japes Minecarts Level",
+            "source": "japesminecarts",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japescatacomb-level": {
+            "id": "rr-japescatacomb-level",
+            "Name": "Japes Catacomb Level",
+            "source": "japescatacomb",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesbosslobby-level": {
+            "id": "rr-japesbosslobby-level",
+            "Name": "Japes Boss Lobby Level",
+            "source": "japesbosslobby",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-japesboss-level": {
+            "id": "rr-japesboss-level",
+            "Name": "Japes Boss Level",
+            "source": "japesboss",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-angryaztecmedals-level": {
+            "id": "rr-angryaztecmedals-level",
+            "Name": "Angry Aztec Medals Level",
+            "source": "angryaztecmedals",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-angryaztecstart-level": {
+            "id": "rr-angryaztecstart-level",
+            "Name": "Angry Aztec Start Level",
+            "source": "angryaztecstart",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-betweenvinesbyportal-level": {
+            "id": "rr-betweenvinesbyportal-level",
+            "Name": "Angry Aztec Between Vines By Portal Level",
+            "source": "betweenvinesbyportal",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-aztectunnelbeforeoasis-level": {
+            "id": "rr-aztectunnelbeforeoasis-level",
+            "Name": "Angry Aztec Tunnel Before Oasis Level",
+            "source": "aztectunnelbeforeoasis",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-angryaztecoasis-level": {
+            "id": "rr-angryaztecoasis-level",
+            "Name": "Angry Aztec Oasis Level",
+            "source": "angryaztecoasis",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-templestart-level": {
+            "id": "rr-templestart-level",
+            "Name": "Temple Start Level",
+            "source": "templestart",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-templeunderwater-level": {
+            "id": "rr-templeunderwater-level",
+            "Name": "Temple Underwater Level",
+            "source": "templeunderwater",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-angryaztecconnectortunnel-level": {
+            "id": "rr-angryaztecconnectortunnel-level",
+            "Name": "Angry Aztec Connector Tunnel Level",
+            "source": "angryaztecconnectortunnel",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-angryaztecmain-level": {
+            "id": "rr-angryaztecmain-level",
+            "Name": "Angry Aztec Main Level",
+            "source": "angryaztecmain",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-aztecdonkeyquicksandcave-level": {
+            "id": "rr-aztecdonkeyquicksandcave-level",
+            "Name": "Aztec Donkey Sand Tunnel Level",
+            "source": "aztecdonkeyquicksandcave",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-aztecbaboonblast-level": {
+            "id": "rr-aztecbaboonblast-level",
+            "Name": "Aztec Baboon Blast Level",
+            "source": "aztecbaboonblast",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-donkeytemple-level": {
+            "id": "rr-donkeytemple-level",
+            "Name": "Donkey Temple Level",
+            "source": "donkeytemple",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-diddytemple-level": {
+            "id": "rr-diddytemple-level",
+            "Name": "Diddy Temple Level",
+            "source": "diddytemple",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lankytemple-level": {
+            "id": "rr-lankytemple-level",
+            "Name": "Lanky Temple Level",
+            "source": "lankytemple",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tinytemple-level": {
+            "id": "rr-tinytemple-level",
+            "Name": "Tiny Temple Level",
+            "source": "tinytemple",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-chunkytemple-level": {
+            "id": "rr-chunkytemple-level",
+            "Name": "Chunky Temple Level",
+            "source": "chunkytemple",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-aztectinyrace-level": {
+            "id": "rr-aztectinyrace-level",
+            "Name": "Aztec Tiny Race Level",
+            "source": "aztectinyrace",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-llamatemple-level": {
+            "id": "rr-llamatemple-level",
+            "Name": "Llama Temple Level",
+            "source": "llamatemple",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-llamatempleback-level": {
+            "id": "rr-llamatempleback-level",
+            "Name": "Llama Temple Back Level",
+            "source": "llamatempleback",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-aztecbosslobby-level": {
+            "id": "rr-aztecbosslobby-level",
+            "Name": "Aztec Boss Lobby Level",
+            "source": "aztecbosslobby",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-aztecboss-level": {
+            "id": "rr-aztecboss-level",
+            "Name": "Aztec Boss Level",
+            "source": "aztecboss",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-franticfactorymedals-level": {
+            "id": "rr-franticfactorymedals-level",
+            "Name": "Frantic Factory Medals Level",
+            "source": "franticfactorymedals",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-franticfactorystart-level": {
+            "id": "rr-franticfactorystart-level",
+            "Name": "Frantic Factory Start Level",
+            "source": "franticfactorystart",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-testing-level": {
+            "id": "rr-testing-level",
+            "Name": "Testing Level",
+            "source": "testing",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-randd-level": {
+            "id": "rr-randd-level",
+            "Name": "R&D Level",
+            "source": "randd",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-factorytinyracelobby-level": {
+            "id": "rr-factorytinyracelobby-level",
+            "Name": "Factory Tiny Race Lobby Level",
+            "source": "factorytinyracelobby",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-factorytinyrace-level": {
+            "id": "rr-factorytinyrace-level",
+            "Name": "Factory Tiny Race Level",
+            "source": "factorytinyrace",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-chunkyroomplatform-level": {
+            "id": "rr-chunkyroomplatform-level",
+            "Name": "Chunky Room Platform Level",
+            "source": "chunkyroomplatform",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-powerhut-level": {
+            "id": "rr-powerhut-level",
+            "Name": "Power Hut Level",
+            "source": "powerhut",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-beyondhatch-level": {
+            "id": "rr-beyondhatch-level",
+            "Name": "Beyond Hatch Level",
+            "source": "beyondhatch",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-factorybaboonblast-level": {
+            "id": "rr-factorybaboonblast-level",
+            "Name": "Factory Baboon Blast Level",
+            "source": "factorybaboonblast",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lowercore-level": {
+            "id": "rr-lowercore-level",
+            "Name": "Lower Core Level",
+            "source": "lowercore",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-insidecore-level": {
+            "id": "rr-insidecore-level",
+            "Name": "Inside Core Level",
+            "source": "insidecore",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-middlecore-level": {
+            "id": "rr-middlecore-level",
+            "Name": "Middle Core Level",
+            "source": "middlecore",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-uppercore-level": {
+            "id": "rr-uppercore-level",
+            "Name": "Upper Core Level",
+            "source": "uppercore",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-factorybosslobby-level": {
+            "id": "rr-factorybosslobby-level",
+            "Name": "Factory Boss Lobby Level",
+            "source": "factorybosslobby",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-factoryboss-level": {
+            "id": "rr-factoryboss-level",
+            "Name": "Factory Boss Level",
+            "source": "factoryboss",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-gloomygalleonmedals-level": {
+            "id": "rr-gloomygalleonmedals-level",
+            "Name": "Gloomy Galleon Medals Level",
+            "source": "gloomygalleonmedals",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-gloomygalleonstart-level": {
+            "id": "rr-gloomygalleonstart-level",
+            "Name": "Gloomy Galleon Start Level",
+            "source": "gloomygalleonstart",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-galleonpastvines-level": {
+            "id": "rr-galleonpastvines-level",
+            "Name": "Galleon Past Vines Level",
+            "source": "galleonpastvines",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-galleonbeyondpineapplegate-level": {
+            "id": "rr-galleonbeyondpineapplegate-level",
+            "Name": "Galleon Beyond Pineapple Gate Level",
+            "source": "galleonbeyondpineapplegate",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lighthousesurface-level": {
+            "id": "rr-lighthousesurface-level",
+            "Name": "Lighthouse Surface Level",
+            "source": "lighthousesurface",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lighthouseplatform-level": {
+            "id": "rr-lighthouseplatform-level",
+            "Name": "Lighthouse Platform Level",
+            "source": "lighthouseplatform",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lighthouseunderwater-level": {
+            "id": "rr-lighthouseunderwater-level",
+            "Name": "Lighthouse Underwater Level",
+            "source": "lighthouseunderwater",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lighthousesnidealcove-level": {
+            "id": "rr-lighthousesnidealcove-level",
+            "Name": "Lighthouse Snide Alcove Level",
+            "source": "lighthousesnidealcove",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-galleonbaboonblast-level": {
+            "id": "rr-galleonbaboonblast-level",
+            "Name": "Galleon Baboon Blast Level",
+            "source": "galleonbaboonblast",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lighthouse-level": {
+            "id": "rr-lighthouse-level",
+            "Name": "Lighthouse Level",
+            "source": "lighthouse",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mermaidroom-level": {
+            "id": "rr-mermaidroom-level",
+            "Name": "Mermaid Room Level",
+            "source": "mermaidroom",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-sickbay-level": {
+            "id": "rr-sickbay-level",
+            "Name": "Sick Bay Level",
+            "source": "sickbay",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-shipyard-level": {
+            "id": "rr-shipyard-level",
+            "Name": "Shipyard Level",
+            "source": "shipyard",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-shipyardunderwater-level": {
+            "id": "rr-shipyardunderwater-level",
+            "Name": "Shipyard Underwater Level",
+            "source": "shipyardunderwater",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-sealrace-level": {
+            "id": "rr-sealrace-level",
+            "Name": "Seal Race Level",
+            "source": "sealrace",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-treasureroom-level": {
+            "id": "rr-treasureroom-level",
+            "Name": "Treasure Room Level",
+            "source": "treasureroom",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-treasureroomdiddygoldtower-level": {
+            "id": "rr-treasureroomdiddygoldtower-level",
+            "Name": "Treasure Room Diddy Gold Tower Level",
+            "source": "treasureroomdiddygoldtower",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tinychest-level": {
+            "id": "rr-tinychest-level",
+            "Name": "Tiny Chest Level",
+            "source": "tinychest",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-submarine-level": {
+            "id": "rr-submarine-level",
+            "Name": "Submarine Level",
+            "source": "submarine",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mechafish-level": {
+            "id": "rr-mechafish-level",
+            "Name": "Mechafish Level",
+            "source": "mechafish",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lankyship-level": {
+            "id": "rr-lankyship-level",
+            "Name": "Lanky Ship Level",
+            "source": "lankyship",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tinyship-level": {
+            "id": "rr-tinyship-level",
+            "Name": "Tiny Ship Level",
+            "source": "tinyship",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-bongosship-level": {
+            "id": "rr-bongosship-level",
+            "Name": "Bongos Ship Level",
+            "source": "bongosship",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-guitarship-level": {
+            "id": "rr-guitarship-level",
+            "Name": "Guitar Ship Level",
+            "source": "guitarship",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tromboneship-level": {
+            "id": "rr-tromboneship-level",
+            "Name": "Trombone Ship Level",
+            "source": "tromboneship",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-saxophoneship-level": {
+            "id": "rr-saxophoneship-level",
+            "Name": "Saxophone Ship Level",
+            "source": "saxophoneship",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-triangleship-level": {
+            "id": "rr-triangleship-level",
+            "Name": "Triangle Ship Level",
+            "source": "triangleship",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-galleonbosslobby-level": {
+            "id": "rr-galleonbosslobby-level",
+            "Name": "Galleon Boss Lobby Level",
+            "source": "galleonbosslobby",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-galleonboss-level": {
+            "id": "rr-galleonboss-level",
+            "Name": "Galleon Boss Level",
+            "source": "galleonboss",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-fungiforestmedals-level": {
+            "id": "rr-fungiforestmedals-level",
+            "Name": "Fungi Forest Medals Level",
+            "source": "fungiforestmedals",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-fungiforeststart-level": {
+            "id": "rr-fungiforeststart-level",
+            "Name": "Fungi Forest Start Level",
+            "source": "fungiforeststart",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-forestminecarts-level": {
+            "id": "rr-forestminecarts-level",
+            "Name": "Forest Minecarts Level",
+            "source": "forestminecarts",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-giantmushroomarea-level": {
+            "id": "rr-giantmushroomarea-level",
+            "Name": "Giant Mushroom Area Level",
+            "source": "giantmushroomarea",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomlower-level": {
+            "id": "rr-mushroomlower-level",
+            "Name": "Mushroom Lower Level",
+            "source": "mushroomlower",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomlowerexterior-level": {
+            "id": "rr-mushroomlowerexterior-level",
+            "Name": "Mushroom Lower Exterior Level",
+            "source": "mushroomlowerexterior",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-forestbaboonblast-level": {
+            "id": "rr-forestbaboonblast-level",
+            "Name": "Forest Baboon Blast Level",
+            "source": "forestbaboonblast",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomupper-level": {
+            "id": "rr-mushroomupper-level",
+            "Name": "Mushroom Upper Level",
+            "source": "mushroomupper",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomnightdoor-level": {
+            "id": "rr-mushroomnightdoor-level",
+            "Name": "Mushroom Night Door Level",
+            "source": "mushroomnightdoor",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomnightexterior-level": {
+            "id": "rr-mushroomnightexterior-level",
+            "Name": "Mushroom Night Exterior Level",
+            "source": "mushroomnightexterior",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomupperexterior-level": {
+            "id": "rr-mushroomupperexterior-level",
+            "Name": "Mushroom Upper Exterior Level",
+            "source": "mushroomupperexterior",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomchunkyroom-level": {
+            "id": "rr-mushroomchunkyroom-level",
+            "Name": "Mushroom Chunky Room Level",
+            "source": "mushroomchunkyroom",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomlankyzingersroom-level": {
+            "id": "rr-mushroomlankyzingersroom-level",
+            "Name": "Mushroom Lanky Zingers Room Level",
+            "source": "mushroomlankyzingersroom",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mushroomlankymushroomsroom-level": {
+            "id": "rr-mushroomlankymushroomsroom-level",
+            "Name": "Mushroom Lanky Mushrooms Room Level",
+            "source": "mushroomlankymushroomsroom",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hollowtreearea-level": {
+            "id": "rr-hollowtreearea-level",
+            "Name": "Hollow Tree Area Level",
+            "source": "hollowtreearea",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-anthill-level": {
+            "id": "rr-anthill-level",
+            "Name": "Anthill Level",
+            "source": "anthill",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-millarea-level": {
+            "id": "rr-millarea-level",
+            "Name": "Mill Area Level",
+            "source": "millarea",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-millchunkytinyarea-level": {
+            "id": "rr-millchunkytinyarea-level",
+            "Name": "Mill Back Room Level",
+            "source": "millchunkytinyarea",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-spiderroom-level": {
+            "id": "rr-spiderroom-level",
+            "Name": "Spider Room Level",
+            "source": "spiderroom",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-grinderroom-level": {
+            "id": "rr-grinderroom-level",
+            "Name": "Grinder Room Level",
+            "source": "grinderroom",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-millrafters-level": {
+            "id": "rr-millrafters-level",
+            "Name": "Mill Rafters Level",
+            "source": "millrafters",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-winchroom-level": {
+            "id": "rr-winchroom-level",
+            "Name": "Winch Room Level",
+            "source": "winchroom",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-millattic-level": {
+            "id": "rr-millattic-level",
+            "Name": "Mill Attic Level",
+            "source": "millattic",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-thornvinearea-level": {
+            "id": "rr-thornvinearea-level",
+            "Name": "Thornvine Area Level",
+            "source": "thornvinearea",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-thornvinebarn-level": {
+            "id": "rr-thornvinebarn-level",
+            "Name": "Thornvine Barn Level",
+            "source": "thornvinebarn",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-wormarea-level": {
+            "id": "rr-wormarea-level",
+            "Name": "Worm Area Level",
+            "source": "wormarea",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-forestbosslobby-level": {
+            "id": "rr-forestbosslobby-level",
+            "Name": "Forest Boss Lobby Level",
+            "source": "forestbosslobby",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-forestboss-level": {
+            "id": "rr-forestboss-level",
+            "Name": "Forest Boss Level",
+            "source": "forestboss",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crystalcavesmedals-level": {
+            "id": "rr-crystalcavesmedals-level",
+            "Name": "Crystal Caves Medals Level",
+            "source": "crystalcavesmedals",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crystalcavesmain-level": {
+            "id": "rr-crystalcavesmain-level",
+            "Name": "Crystal Caves Main Level",
+            "source": "crystalcavesmain",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavessnidearea-level": {
+            "id": "rr-cavessnidearea-level",
+            "Name": "Caves Snide Area Level",
+            "source": "cavessnidearea",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavesblueprintcave-level": {
+            "id": "rr-cavesblueprintcave-level",
+            "Name": "Caves Blueprint Cave Level",
+            "source": "cavesblueprintcave",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavesbonuscave-level": {
+            "id": "rr-cavesbonuscave-level",
+            "Name": "Caves Bonus Cave Level",
+            "source": "cavesbonuscave",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavesblueprintpillar-level": {
+            "id": "rr-cavesblueprintpillar-level",
+            "Name": "Caves Blueprint Pillar Level",
+            "source": "cavesblueprintpillar",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavesbananaportspire-level": {
+            "id": "rr-cavesbananaportspire-level",
+            "Name": "Caves Bananaport Spire Level",
+            "source": "cavesbananaportspire",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavesbaboonblast-level": {
+            "id": "rr-cavesbaboonblast-level",
+            "Name": "Caves Baboon Blast Level",
+            "source": "cavesbaboonblast",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-bouldercave-level": {
+            "id": "rr-bouldercave-level",
+            "Name": "Boulder Cave Level",
+            "source": "bouldercave",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-caveslankyrace-level": {
+            "id": "rr-caveslankyrace-level",
+            "Name": "Caves Lanky Race Level",
+            "source": "caveslankyrace",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-frozencastle-level": {
+            "id": "rr-frozencastle-level",
+            "Name": "Frozen Castle Level",
+            "source": "frozencastle",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-iglooarea-level": {
+            "id": "rr-iglooarea-level",
+            "Name": "Igloo Area Level",
+            "source": "iglooarea",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-giantkosha-level": {
+            "id": "rr-giantkosha-level",
+            "Name": "Giant Kosha Level",
+            "source": "giantkosha",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-donkeyigloo-level": {
+            "id": "rr-donkeyigloo-level",
+            "Name": "Donkey Igloo Level",
+            "source": "donkeyigloo",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-diddyigloo-level": {
+            "id": "rr-diddyigloo-level",
+            "Name": "Diddy Igloo Level",
+            "source": "diddyigloo",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lankyigloo-level": {
+            "id": "rr-lankyigloo-level",
+            "Name": "Lanky Igloo Level",
+            "source": "lankyigloo",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tinyigloo-level": {
+            "id": "rr-tinyigloo-level",
+            "Name": "Tiny Igloo Level",
+            "source": "tinyigloo",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-chunkyigloo-level": {
+            "id": "rr-chunkyigloo-level",
+            "Name": "Chunky Igloo Level",
+            "source": "chunkyigloo",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cabinarea-level": {
+            "id": "rr-cabinarea-level",
+            "Name": "Cabin Area Level",
+            "source": "cabinarea",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-rotatingcabin-level": {
+            "id": "rr-rotatingcabin-level",
+            "Name": "Rotating Cabin Level",
+            "source": "rotatingcabin",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-donkeycabin-level": {
+            "id": "rr-donkeycabin-level",
+            "Name": "Donkey Cabin Level",
+            "source": "donkeycabin",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-diddylowercabin-level": {
+            "id": "rr-diddylowercabin-level",
+            "Name": "Diddy Lower Cabin Level",
+            "source": "diddylowercabin",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-diddyuppercabin-level": {
+            "id": "rr-diddyuppercabin-level",
+            "Name": "Diddy Upper Cabin Level",
+            "source": "diddyuppercabin",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lankycabin-level": {
+            "id": "rr-lankycabin-level",
+            "Name": "Lanky Cabin Level",
+            "source": "lankycabin",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tinycabin-level": {
+            "id": "rr-tinycabin-level",
+            "Name": "Tiny Cabin Level",
+            "source": "tinycabin",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-chunkycabin-level": {
+            "id": "rr-chunkycabin-level",
+            "Name": "Chunky Cabin Level",
+            "source": "chunkycabin",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavesbosslobby-level": {
+            "id": "rr-cavesbosslobby-level",
+            "Name": "Caves Boss Lobby Level",
+            "source": "cavesbosslobby",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-cavesboss-level": {
+            "id": "rr-cavesboss-level",
+            "Name": "Caves Boss Level",
+            "source": "cavesboss",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-creepycastlemedals-level": {
+            "id": "rr-creepycastlemedals-level",
+            "Name": "Creepy Castle Medals Level",
+            "source": "creepycastlemedals",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-creepycastlemain-level": {
+            "id": "rr-creepycastlemain-level",
+            "Name": "Creepy Castle Main Level",
+            "source": "creepycastlemain",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-castlebaboonblast-level": {
+            "id": "rr-castlebaboonblast-level",
+            "Name": "Castle Baboon Blast Level",
+            "source": "castlebaboonblast",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-castlewaterfall-level": {
+            "id": "rr-castlewaterfall-level",
+            "Name": "Castle Waterfall Level",
+            "source": "castlewaterfall",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-castletree-level": {
+            "id": "rr-castletree-level",
+            "Name": "Castle Tree Level",
+            "source": "castletree",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-library-level": {
+            "id": "rr-library-level",
+            "Name": "Library Level",
+            "source": "library",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-librarypastslam-level": {
+            "id": "rr-librarypastslam-level",
+            "Name": "Library Middle Level",
+            "source": "librarypastslam",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-librarypastbooks-level": {
+            "id": "rr-librarypastbooks-level",
+            "Name": "Library Rear Level",
+            "source": "librarypastbooks",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-ballroom-level": {
+            "id": "rr-ballroom-level",
+            "Name": "Ballroom Level",
+            "source": "ballroom",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-museumbehindglass-level": {
+            "id": "rr-museumbehindglass-level",
+            "Name": "Museum Behind Glass Level",
+            "source": "museumbehindglass",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-castletinyrace-level": {
+            "id": "rr-castletinyrace-level",
+            "Name": "Castle Tiny Race Level",
+            "source": "castletinyrace",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-tower-level": {
+            "id": "rr-tower-level",
+            "Name": "Tower Level",
+            "source": "tower",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-greenhouse-level": {
+            "id": "rr-greenhouse-level",
+            "Name": "Greenhouse Level",
+            "source": "greenhouse",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-trashcan-level": {
+            "id": "rr-trashcan-level",
+            "Name": "Trash Can Level",
+            "source": "trashcan",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-shed-level": {
+            "id": "rr-shed-level",
+            "Name": "Shed Level",
+            "source": "shed",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-museum-level": {
+            "id": "rr-museum-level",
+            "Name": "Museum Level",
+            "source": "museum",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-lowercave-level": {
+            "id": "rr-lowercave-level",
+            "Name": "Lower Cave Level",
+            "source": "lowercave",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crypt-level": {
+            "id": "rr-crypt-level",
+            "Name": "Crypt Level",
+            "source": "crypt",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-castleminecarts-level": {
+            "id": "rr-castleminecarts-level",
+            "Name": "Castle Minecarts Level",
+            "source": "castleminecarts",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-mausoleum-level": {
+            "id": "rr-mausoleum-level",
+            "Name": "Mausoleum Level",
+            "source": "mausoleum",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-uppercave-level": {
+            "id": "rr-uppercave-level",
+            "Name": "Upper Cave Level",
+            "source": "uppercave",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-dungeon-level": {
+            "id": "rr-dungeon-level",
+            "Name": "Dungeon Level",
+            "source": "dungeon",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-castlebosslobby-level": {
+            "id": "rr-castlebosslobby-level",
+            "Name": "Castle Boss Lobby Level",
+            "source": "castlebosslobby",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-castleboss-level": {
+            "id": "rr-castleboss-level",
+            "Name": "Castle Boss Level",
+            "source": "castleboss",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmentry-level": {
+            "id": "rr-hideouthelmentry-level",
+            "Name": "Hideout Helm Entry Redirect Level",
+            "source": "hideouthelmentry",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmstart-level": {
+            "id": "rr-hideouthelmstart-level",
+            "Name": "Hideout Helm Start Level",
+            "source": "hideouthelmstart",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmswitchroom-level": {
+            "id": "rr-hideouthelmswitchroom-level",
+            "Name": "Hideout Helm Start Level",
+            "source": "hideouthelmswitchroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmminiroom-level": {
+            "id": "rr-hideouthelmminiroom-level",
+            "Name": "Hideout Helm Start Level",
+            "source": "hideouthelmminiroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmmain-level": {
+            "id": "rr-hideouthelmmain-level",
+            "Name": "Hideout Helm Main Level",
+            "source": "hideouthelmmain",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmdonkeyroom-level": {
+            "id": "rr-hideouthelmdonkeyroom-level",
+            "Name": "Hideout Helm Main Level",
+            "source": "hideouthelmdonkeyroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmchunkyroom-level": {
+            "id": "rr-hideouthelmchunkyroom-level",
+            "Name": "Hideout Helm Main Level",
+            "source": "hideouthelmchunkyroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmtinyroom-level": {
+            "id": "rr-hideouthelmtinyroom-level",
+            "Name": "Hideout Helm Main Level",
+            "source": "hideouthelmtinyroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmlankyroom-level": {
+            "id": "rr-hideouthelmlankyroom-level",
+            "Name": "Hideout Helm Main Level",
+            "source": "hideouthelmlankyroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmdiddyroom-level": {
+            "id": "rr-hideouthelmdiddyroom-level",
+            "Name": "Hideout Helm Main Level",
+            "source": "hideouthelmdiddyroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmafterbom-level": {
+            "id": "rr-hideouthelmafterbom-level",
+            "Name": "Hideout Helm Navigation Room Level",
+            "source": "hideouthelmafterbom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmthroneroom-level": {
+            "id": "rr-hideouthelmthroneroom-level",
+            "Name": "Hideout Helm Throne Room Level",
+            "source": "hideouthelmthroneroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmkeyroom-level": {
+            "id": "rr-hideouthelmkeyroom-level",
+            "Name": "Hideout Helm Key Room Level",
+            "source": "hideouthelmkeyroom",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmoobchunky-level": {
+            "id": "rr-hideouthelmoobchunky-level",
+            "Name": "Hideout Helm OOB (Chunky Room Elevation) Level",
+            "source": "hideouthelmoobchunky",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-hideouthelmooblanky-level": {
+            "id": "rr-hideouthelmooblanky-level",
+            "Name": "Hideout Helm OOB (Lanky Room Elevation) Level",
+            "source": "hideouthelmooblanky",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkygeneric-level": {
+            "id": "rr-funkygeneric-level",
+            "Name": "Funky Generic Level",
+            "source": "funkygeneric",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkyjapes-level": {
+            "id": "rr-funkyjapes-level",
+            "Name": "Funky Japes Level",
+            "source": "funkyjapes",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkyaztec-level": {
+            "id": "rr-funkyaztec-level",
+            "Name": "Funky Aztec Level",
+            "source": "funkyaztec",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkyfactory-level": {
+            "id": "rr-funkyfactory-level",
+            "Name": "Funky Factory Level",
+            "source": "funkyfactory",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkygalleon-level": {
+            "id": "rr-funkygalleon-level",
+            "Name": "Funky Galleon Level",
+            "source": "funkygalleon",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkyforest-level": {
+            "id": "rr-funkyforest-level",
+            "Name": "Funky Forest Level",
+            "source": "funkyforest",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkycaves-level": {
+            "id": "rr-funkycaves-level",
+            "Name": "Funky Caves Level",
+            "source": "funkycaves",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-funkycastle-level": {
+            "id": "rr-funkycastle-level",
+            "Name": "Funky Castle Level",
+            "source": "funkycastle",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-candygeneric-level": {
+            "id": "rr-candygeneric-level",
+            "Name": "Candy Generic Level",
+            "source": "candygeneric",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-candyaztec-level": {
+            "id": "rr-candyaztec-level",
+            "Name": "Candy Aztec Level",
+            "source": "candyaztec",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-candyfactory-level": {
+            "id": "rr-candyfactory-level",
+            "Name": "Candy Factory Level",
+            "source": "candyfactory",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-candygalleon-level": {
+            "id": "rr-candygalleon-level",
+            "Name": "Candy Galleon Level",
+            "source": "candygalleon",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-candycaves-level": {
+            "id": "rr-candycaves-level",
+            "Name": "Candy Caves Level",
+            "source": "candycaves",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-candycastle-level": {
+            "id": "rr-candycastle-level",
+            "Name": "Candy Castle Level",
+            "source": "candycastle",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankygeneric-level": {
+            "id": "rr-crankygeneric-level",
+            "Name": "Cranky Generic Level",
+            "source": "crankygeneric",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankyjapes-level": {
+            "id": "rr-crankyjapes-level",
+            "Name": "Cranky Japes Level",
+            "source": "crankyjapes",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankyaztec-level": {
+            "id": "rr-crankyaztec-level",
+            "Name": "Cranky Aztec Level",
+            "source": "crankyaztec",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankyfactory-level": {
+            "id": "rr-crankyfactory-level",
+            "Name": "Cranky Factory Level",
+            "source": "crankyfactory",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankygalleon-level": {
+            "id": "rr-crankygalleon-level",
+            "Name": "Cranky Galleon Level",
+            "source": "crankygalleon",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankyforest-level": {
+            "id": "rr-crankyforest-level",
+            "Name": "Cranky Forest Level",
+            "source": "crankyforest",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankycaves-level": {
+            "id": "rr-crankycaves-level",
+            "Name": "Cranky Caves Level",
+            "source": "crankycaves",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankycastle-level": {
+            "id": "rr-crankycastle-level",
+            "Name": "Cranky Castle Level",
+            "source": "crankycastle",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-crankyisles-level": {
+            "id": "rr-crankyisles-level",
+            "Name": "Cranky Isles Level",
+            "source": "crankyisles",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        },
+        "rr-snide-level": {
+            "id": "rr-snide-level",
+            "Name": "Snide Level",
+            "source": "snide",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "type": "Level"
+        }
     }
 }
