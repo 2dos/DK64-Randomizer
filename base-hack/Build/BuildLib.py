@@ -13,6 +13,7 @@ music_size = 24000
 heap_size = 0x34000 + music_size
 flut_size = 0
 MODEL_DIRECTORY = "assets/models/"
+KONG_MODEL_EXP_SIZE = 0x5000
 
 INSTRUMENT_PADS = {
     168: "bongo",
