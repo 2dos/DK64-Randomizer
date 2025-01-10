@@ -1,7 +1,7 @@
 """Apply Coin Rando changes."""
 
 import js
-from randomizer.Patching.Lib import float_to_hex
+from randomizer.Patching.Lib import float_to_hex, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -13,7 +13,7 @@ def randomize_coins(spoiler):
             # Wipe setup and paths of Coin information
             # SETUP
             coin_items = [0x1D, 0x24, 0x23, 0x1C, 0x27]  # Has to remain in this order
-            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(setup_table)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             # Model Two Coins

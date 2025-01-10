@@ -5,6 +5,7 @@ from randomizer.Enums.Enemies import Enemies
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import TableNames
 
 
 def randomize_kasplat_locations(spoiler):
@@ -41,7 +42,7 @@ def randomize_kasplat_locations(spoiler):
         ROM_COPY = LocalROM()
         selected_kasplat_names = [name for name in spoiler.shuffled_kasplat_map.keys()]
         for cont_map_id in range(216):
-            cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
+            cont_map_spawner_address = js.pointer_addresses[TableNames.Spawners]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(cont_map_spawner_address)
             fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             offset = 2

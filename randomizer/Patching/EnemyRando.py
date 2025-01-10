@@ -10,6 +10,7 @@ from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import TableNames
 
 
 class PkmnSnapEnemy:
@@ -634,7 +635,7 @@ def randomize_enemies(spoiler):
                         minigame_enemies_simple.append(enemy)
         ROM_COPY = LocalROM()
         for cont_map_id in range(216):
-            cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
+            cont_map_spawner_address = js.pointer_addresses[TableNames.Spawners]["entries"][cont_map_id]["pointing_to"]
             vanilla_spawners = []
             ROM_COPY.seek(cont_map_spawner_address)
             fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")

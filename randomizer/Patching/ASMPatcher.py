@@ -1706,7 +1706,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806C5DD0, Overlay.Static, 0x85820000 | FAIRY_SCREEN_Y, offset_dict, 4)  # lh $v0, 0x01B2 ($t4) - Get screen Y in fairy storage
         if not isQoLEnabled(spoiler, MiscChangesSelected.better_fairy_camera):
             writeValue(ROM_COPY, 0x806C5DE4, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP
-            writeValue(ROM_COPY, 0x806C5DE8, Overlay.Static, 0x85820000 | FAIRY_SCREEN_DIST, offset_dict, 4)  # lh $v0, 0x01B4 ($t4) - Get max dist in fairy storage
+            writeValue(ROM_COPY, 0x806C5DE8, Overlay.Static, 0x858B0000 | FAIRY_SCREEN_DIST, offset_dict, 4)  # lh $t3, 0x01B4 ($t4) - Get max dist in fairy storage
         writeValue(ROM_COPY, 0x806C5E00, Overlay.Static, 0x45000016, offset_dict, 4)  # bc1f 0x16 - Free up one slot so we can store the box addr
         writeValue(ROM_COPY, 0x806C5E08, Overlay.Static, 0x24010001, offset_dict, 4)  # li $at, 1 - Shift this one addr earlier
         writeValue(ROM_COPY, 0x806C5E0C, Overlay.Static, 0xA5810000 | FAIRY_SCREEN_RANGE, offset_dict, 4)  # sh $at, 0x1b6 ($t4) - Store fairy as in box
@@ -3151,6 +3151,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.enemy_kill_crown_timer:
         writeFunction(ROM_COPY, 0x8072AC80, Overlay.Static, "handleCrownTimer", offset_dict)
+        writeFunction(ROM_COPY, 0x806AEEBC, Overlay.Static, "klumpCrownHandler", offset_dict)
 
     # Enable oranges in Crowns
     writeHook(ROM_COPY, 0x806E6000, Overlay.Static, "DisableGunInCrowns", offset_dict)

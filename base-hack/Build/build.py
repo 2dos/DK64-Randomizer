@@ -23,7 +23,7 @@ from adjust_exits import adjustExits, addMechFishLZ
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, imageToMinMap
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, imageToMinMap, KONG_MODEL_EXP_SIZE
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
@@ -625,6 +625,8 @@ bloat_actors = [
     {"name": "Robo-Zinger", "file": 0x3F, "size": 0x1D00},
     {"name": "Laser", "file": 0x86, "size": 0x600},
     {"name": "Dogadon", "file": 0x3B, "size": 0x2700},
+    {"name": "Diddy (Base)", "file": 0, "size": KONG_MODEL_EXP_SIZE},
+    {"name": "Diddy (Instrument)", "file": 1, "size": KONG_MODEL_EXP_SIZE},
 ]
 
 for actor in bloat_actors:
@@ -1443,7 +1445,6 @@ model_changes = [
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
-KONG_MODEL_EXP_SIZE = 0x5000
 
 for x in model_changes:
     data = File(

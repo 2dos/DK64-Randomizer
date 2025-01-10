@@ -9,7 +9,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Levels import Levels
-from randomizer.Patching.Lib import float_to_hex
+from randomizer.Patching.Lib import float_to_hex, TableNames
 
 
 def randomize_bananaport(spoiler):
@@ -65,9 +65,9 @@ def move_bananaports(spoiler):
     if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
         for cont_map_id in MAPS_WITH_WARPS:
             level_id = MAPS_WITH_WARPS[cont_map_id]
-            cutscene_table = js.pointer_addresses[8]["entries"][cont_map_id]["pointing_to"]
-            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-            exit_table = js.pointer_addresses[23]["entries"][cont_map_id]["pointing_to"]
+            cutscene_table = js.pointer_addresses[TableNames.Cutscenes]["entries"][cont_map_id]["pointing_to"]
+            setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+            exit_table = js.pointer_addresses[TableNames.Exits]["entries"][cont_map_id]["pointing_to"]
             modification_table = []
             for warp_id in spoiler.warp_locations:
                 if BananaportVanilla[warp_id].map_id == cont_map_id:

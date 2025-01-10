@@ -23,7 +23,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
-from randomizer.Patching.Lib import IsItemSelected, float_to_hex, intf_to_float
+from randomizer.Patching.Lib import IsItemSelected, float_to_hex, intf_to_float, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -120,7 +120,7 @@ def pickChunkyCabinPadPositions():
 def SpeedUpFungiRabbit():
     """Change the speed of the Fungi Rabbit."""
     ROM_COPY = LocalROM()
-    file_start = js.pointer_addresses[16]["entries"][Maps.FungiForest]["pointing_to"]
+    file_start = js.pointer_addresses[TableNames.Spawners]["entries"][Maps.FungiForest]["pointing_to"]
     ROM_COPY.seek(file_start)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     offset = 2
@@ -314,7 +314,7 @@ def randomize_setup(spoiler):
         RemovedBarriersSelected.castle_crypt_doors,
     )
     for cont_map_id in range(216):
-        cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+        cont_map_setup_address = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
         ROM_COPY.seek(cont_map_setup_address)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         # Puzzle Stuff
@@ -597,7 +597,7 @@ def updateRandomSwitches(spoiler):
                 if level == Levels.GloomyGalleon:
                     acceptable_maps.append(Maps.GloomyGalleonLobby)  # Galleon lobby internally in the game is galleon, but isn't in rando files. Quick fix for this
                 for map in acceptable_maps:
-                    file_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
+                    file_start = js.pointer_addresses[TableNames.Setups]["entries"][map]["pointing_to"]
                     ROM_COPY.seek(file_start)
                     model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     for model2_item in range(model2_count):
@@ -652,7 +652,7 @@ def updateSwitchsanity(spoiler):
                     obj_ids = spoiler.settings.switchsanity_data[slot].ids
                     ids_in_map.extend(obj_ids)
             # Handle setup
-            file_start = js.pointer_addresses[9]["entries"][map_id]["pointing_to"]
+            file_start = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
             ROM_COPY.seek(file_start)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             for model2_item in range(model2_count):
@@ -794,7 +794,7 @@ def remove5DSCameraPoint(spoiler, ROM_COPY: LocalROM):
     """Remove the camera lock triggers for Tiny 5DS entry."""
     if not IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.vanilla_bug_fixes):
         return
-    file_start = js.pointer_addresses[8]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
+    file_start = js.pointer_addresses[TableNames.Cutscenes]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
     ROM_COPY.seek(file_start)
     header_end = 0x30
     for x in range(0x18):

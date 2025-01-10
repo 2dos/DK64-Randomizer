@@ -207,7 +207,7 @@ def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict):
     if obj_id is None:
         raise Exception("Invalid Portal ID.")
     ROM_COPY = LocalROM()
-    script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
+    script_table = js.pointer_addresses[TableNames.InstanceScripts]["entries"][cont_map_id]["pointing_to"]
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     good_scripts = []
@@ -266,7 +266,7 @@ def remove_existing_indicators(spoiler):
         return
     ROM_COPY = LocalROM()
     for cont_map_id in range(216):
-        setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+        setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
         # Filter Setup
         ROM_COPY.seek(setup_table)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -329,7 +329,7 @@ def place_door_locations(spoiler):
         dk_portal_ids = {}
         # Handle Setup
         for cont_map_id in range(216):
-            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
             # Filter Setup
             ROM_COPY.seek(setup_table)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")

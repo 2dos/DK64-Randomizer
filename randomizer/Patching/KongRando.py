@@ -7,6 +7,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import TableNames
 
 
 def apply_kongrando_cosmetic(spoiler):
@@ -114,7 +115,7 @@ def apply_kongrando_cosmetic(spoiler):
         for cont_map in kongrando_changes:
             cont_map_id = int(cont_map["map_index"])
             # Setup
-            cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            cont_map_setup_address = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             for x in range(model2_count):
@@ -131,7 +132,7 @@ def apply_kongrando_cosmetic(spoiler):
                     ROM_COPY.seek(start + 0x28)
                     ROM_COPY.writeMultipleBytes(new_type, 2)
             # Character Spawners
-            cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
+            cont_map_spawner_address = js.pointer_addresses[TableNames.Spawners]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(cont_map_spawner_address)
             fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             offset = 2

@@ -11,7 +11,7 @@ import randomizer.Lists.CBLocations.JungleJapesCBLocations
 import randomizer.Lists.CBLocations.DKIslesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Settings import CBRando
-from randomizer.Patching.Lib import float_to_hex, short_to_ushort, IsItemSelected
+from randomizer.Patching.Lib import float_to_hex, short_to_ushort, IsItemSelected, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Lists.MapsAndExits import LevelMapTable
 
@@ -78,7 +78,7 @@ def randomize_cbs(spoiler):
         # SETUP
         modeltwo_cbs = [0xA, 0xD, 0x16, 0x1E, 0x1F, 0x2B, 0x205, 0x206, 0x207, 0x208]
         actor_cbs = [91, 111, 112, 113, 114]
-        setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+        setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
         ROM_COPY.seek(setup_table)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         # Model Two CBs
@@ -131,7 +131,7 @@ def randomize_cbs(spoiler):
                 if path_id not in remove_paths:
                     remove_paths.append(path_id)
         # PATHS
-        path_table = js.pointer_addresses[15]["entries"][cont_map_id]["pointing_to"]
+        path_table = js.pointer_addresses[TableNames.Paths]["entries"][cont_map_id]["pointing_to"]
         ROM_COPY.seek(path_table)
         path_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         persisted_paths = []

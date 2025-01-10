@@ -310,9 +310,9 @@ def writeMiscCosmeticChanges(settings):
     if settings.misc_cosmetics:
         # Melon HUD
         data = {
-            7: [[0x13C, 0x147]],
-            14: [[0x5A, 0x5D]],
-            25: [
+            TableNames.TexturesUncompressed: [[0x13C, 0x147]],
+            TableNames.TexturesHUD: [[0x5A, 0x5D]],
+            TableNames.TexturesGeometry: [
                 [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)],
                 [0x144B, 0x1452],
             ],
@@ -322,7 +322,7 @@ def writeMiscCosmeticChanges(settings):
             table_data = data[table]
             for set in table_data:
                 for img in range(set[0], set[1] + 1):
-                    if table == 25:
+                    if table == TableNames.TexturesGeometry:
                         dims = (32, 32)
                     else:
                         dims = (48, 42)
@@ -340,7 +340,7 @@ def writeMiscCosmeticChanges(settings):
                             value = red | green | blue | alpha
                             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
                     px_data = bytearray(bytes_array)
-                    if table != 7:
+                    if table != TableNames.TexturesUncompressed:
                         px_data = gzip.compress(px_data, compresslevel=9)
                     ROM_COPY.seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
                     ROM_COPY.writeBytes(px_data)
@@ -719,5 +719,5 @@ def writeMiscCosmeticChanges(settings):
                     channel = (new_rgb >> shift) & 0xFF
                     file_data[local_start + 0xC + x] = channel
             file_data = gzip.compress(file_data, compresslevel=9)
-            ROM_COPY.seek(js.pointer_addresses[5]["entries"][enemy]["pointing_to"])
+            ROM_COPY.seek(js.pointer_addresses[TableNames.ActorGeometry]["entries"][enemy]["pointing_to"])
             ROM_COPY.writeBytes(file_data)

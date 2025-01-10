@@ -4,6 +4,7 @@ import js
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.EntranceRando import intToArr
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import TableNames
 
 
 def randomize_krool(spoiler):
@@ -22,7 +23,7 @@ def randomize_krool(spoiler):
     if firstPhase != 0:  # If not starting with DK
 
         # Find Isles->DK Phase loading zone in Pointer table 18 and write new destination map
-        cont_map_lzs_address = js.pointer_addresses[18]["entries"][Maps.Isles]["pointing_to"]
+        cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][Maps.Isles]["pointing_to"]
         ROM_COPY.seek(cont_map_lzs_address)
         lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         for lz_id in range(lz_count):
