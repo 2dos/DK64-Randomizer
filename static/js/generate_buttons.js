@@ -68,7 +68,7 @@ async function generate_seed_from_patch(event) {
                 patchElement.classList.add("is-invalid");
             }
         } else {
-            if (typeof romFile === "undefined") {
+            if (typeof window.romFile === "undefined") {
                 document.getElementById("rom").select();
                 if (!document.getElementById("rom").classList.contains("is-invalid")) {
                     document.getElementById("rom").classList.add("is-invalid");
@@ -370,7 +370,7 @@ function generate_seed(event) {
         }
     } else {
         // Do a double check that romFile var exists, if its not, then the rom file is not loaded, throw an invalid class on the rom file box.
-        if (typeof romFile === "undefined") {
+        if (typeof window.romFile === "undefined") {
             document.getElementById("rom").select();
             if (!document.getElementById("rom").classList.contains("is-invalid")) {
                 document.getElementById("rom").classList.add("is-invalid");
