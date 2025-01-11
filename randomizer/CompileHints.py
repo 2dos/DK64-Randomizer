@@ -1481,11 +1481,12 @@ def compileHints(spoiler: Spoiler) -> bool:
             if coin_flip == 1:
                 # Option A: hint the region the item is in
                 region = spoiler.RegionList[GetRegionIdOfLocation(spoiler, loc_id)]
-                if region.hint_name != HintRegion.Bosses:
+                if not region.isCBRegion():
                     hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
+                    message += f" Try looking in the {hinted_location_text}."
                 else:
-                    hinted_location_text = level_colors[Levels.DKIsles] + region.getHintRegionName() + level_colors[Levels.DKIsles]
-                message += f" Try looking in the {hinted_location_text}."
+                    hinted_location_text = level_colors[region.level] + level_list[location.level] + level_colors[Levels.DKIsles]
+                    message += f" Try collecting colored bananas in {hinted_location_text}."
             else:
                 # Option B: hint the kong + level the item is in, using similar systems as other hints to instead hint kasplats/shops/specific types of items
                 level_color = level_colors[location.level]
