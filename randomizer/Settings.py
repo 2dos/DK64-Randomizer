@@ -313,33 +313,34 @@ class Settings:
                 # Some barriers can only show up once
                 if item in (BarrierItems.Bean, BarrierItems.Pearl, BarrierItems.CompanyCoin):
                     locked_blocker_items.append(item)
-        elif self.randomize_blocker_required_amounts:
-            if self.blocker_max > 0:
-                choice_list = range(1, self.blocker_max)
-                if self.blocker_max < 7:
-                    # Can't create a random list with purely the range. Too small of a list
-                    choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
-                randomlist = random.choices(choice_list, k=7)
-                b_lockers = randomlist
-                if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
-                    b_lockers.append(random.randint(1, self.blocker_max))
-                    random.shuffle(b_lockers)
+        else:
+            if self.randomize_blocker_required_amounts:
+                if self.blocker_max > 0:
+                    choice_list = range(1, self.blocker_max)
+                    if self.blocker_max < 7:
+                        # Can't create a random list with purely the range. Too small of a list
+                        choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
+                    randomlist = random.choices(choice_list, k=7)
+                    b_lockers = randomlist
+                    if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
+                        b_lockers.append(random.randint(1, self.blocker_max))
+                        random.shuffle(b_lockers)
+                    else:
+                        b_lockers.append(1)
+                        b_lockers.sort()
                 else:
-                    b_lockers.append(1)
-                    b_lockers.sort()
-            else:
-                b_lockers = [0, 0, 0, 0, 0, 0, 0, 0]
-            self.blocker_0 = b_lockers[0]
-            self.blocker_1 = b_lockers[1]
-            self.blocker_2 = b_lockers[2]
-            self.blocker_3 = b_lockers[3]
-            self.blocker_4 = b_lockers[4]
-            self.blocker_5 = b_lockers[5]
-            self.blocker_6 = b_lockers[6]
-            if self.maximize_helm_blocker:
-                self.blocker_7 = self.blocker_max
-            else:
-                self.blocker_7 = b_lockers[7]
+                    b_lockers = [0, 0, 0, 0, 0, 0, 0, 0]
+                self.blocker_0 = b_lockers[0]
+                self.blocker_1 = b_lockers[1]
+                self.blocker_2 = b_lockers[2]
+                self.blocker_3 = b_lockers[3]
+                self.blocker_4 = b_lockers[4]
+                self.blocker_5 = b_lockers[5]
+                self.blocker_6 = b_lockers[6]
+                if self.maximize_helm_blocker:
+                    self.blocker_7 = self.blocker_max
+                else:
+                    self.blocker_7 = b_lockers[7]
             # Store banana values in array
             self.BLockerEntryCount = [
                 self.blocker_0,
