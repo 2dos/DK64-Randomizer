@@ -469,56 +469,109 @@ window["MusicSelectionPanel"] = {
 };
 // Do the fetch using jquery async: false to ensure that the Songs enum is loaded before the rest of the script runs.
 function loadFiles(fileList) {
-  fileList.forEach(function (file) {
-    $.ajax({
-      url: `/randomizer/Enums/${file}.jsonc`,
-      async: false,
-      cache: true,
-      success: function (data) {
-        try {
-          // Clean up and parse the JSONC file (removing comments)
-          const parsedData = JSON.parse(
-            data.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "")
-          );
+  // First, try to load ./static/compiled.jsonc
+  $.ajax({
+    url: `/static/compiled.jsonc`,
+    async: false,
+    cache: true,
+    success: function (data) {
+      try {
+        // Clean up and parse the JSONC file (removing comments)
+        const parsedData = JSON.parse(
+          data.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "")
+        );
 
-          // Iterate over the top-level keys of the parsed data
-          Object.keys(parsedData).forEach((topLevelKey) => {
-            const topLevelObject = parsedData[topLevelKey];
+        // Iterate over the top-level keys of the parsed data
+        Object.keys(parsedData).forEach((originalFileName) => {
+          const fileContents = parsedData[originalFileName];
 
-            // Iterate over the keys inside this top-level object
-            Object.keys(topLevelObject).forEach((key) => {
-              const entry = topLevelObject[key];
+          // Iterate over the keys inside this file's object
+          Object.keys(fileContents).forEach((key) => {
+            const entry = fileContents[key];
 
-              // Check if 'obj' field exists and is valid
-              if (entry && entry.obj) {
-                const objName = entry.obj;
-                // split at the period for everything before the period
-                const objNameSplit = objName.split(".");
-                // Check if the object is defined in the global `window`
-                if (window[objName] || window[objNameSplit[0]]) {
-                  // If there is a period map it to the object + attribute
-                  if (objNameSplit.length > 1) {
-                    topLevelObject[key] =
-                      window[objNameSplit[0]][objNameSplit[1]];
-                  } else {
-                    // Map the key to the actual object from `window`
-                    topLevelObject[key] = window[objName];
-                  }
+            // Check if 'obj' field exists and is valid
+            if (entry && entry.obj) {
+              const objName = entry.obj;
+              // Split at the period for everything before the period
+              const objNameSplit = objName.split(".");
+              // Check if the object is defined in the global `window`
+              if (window[objName] || window[objNameSplit[0]]) {
+                // If there is a period map it to the object + attribute
+                if (objNameSplit.length > 1) {
+                  fileContents[key] =
+                    window[objNameSplit[0]][objNameSplit[1]];
                 } else {
-                  // Object not found, provide more meaningful info only if needed
-                  console.warn(`Object ${objName} not found for key: ${key}`);
+                  // Map the key to the actual object from `window`
+                  fileContents[key] = window[objName];
                 }
+              } else {
+                // Object not found, provide more meaningful info only if needed
+                console.warn(`Object ${objName} not found for key: ${key}`);
               }
-            });
-
-            // Assign the parsed top-level object (e.g., SettingsMap) dynamically to the global scope
-            window[topLevelKey] = topLevelObject;
+            }
           });
-        } catch (error) {
-          console.error(`Failed to parse ${file}.jsonc: ${error}`);
-        }
-      },
-    });
+
+          // Assign the parsed file object dynamically to the global scope
+          window[originalFileName] = fileContents;
+        });
+      } catch (error) {
+        console.error(`Failed to parse compiled.jsonc: ${error}`);
+      }
+    },
+    error: function () {
+      // If compiled.jsonc is not found, fall back to processing individual files
+      fileList.forEach(function (file) {
+        $.ajax({
+          url: `/randomizer/Enums/${file}.jsonc`,
+          async: false,
+          cache: true,
+          success: function (data) {
+            try {
+              // Clean up and parse the JSONC file (removing comments)
+              const parsedData = JSON.parse(
+                data.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "")
+              );
+
+              // Iterate over the top-level keys of the parsed data
+              Object.keys(parsedData).forEach((topLevelKey) => {
+                const topLevelObject = parsedData[topLevelKey];
+
+                // Iterate over the keys inside this top-level object
+                Object.keys(topLevelObject).forEach((key) => {
+                  const entry = topLevelObject[key];
+
+                  // Check if 'obj' field exists and is valid
+                  if (entry && entry.obj) {
+                    const objName = entry.obj;
+                    // Split at the period for everything before the period
+                    const objNameSplit = objName.split(".");
+                    // Check if the object is defined in the global `window`
+                    if (window[objName] || window[objNameSplit[0]]) {
+                      // If there is a period map it to the object + attribute
+                      if (objNameSplit.length > 1) {
+                        topLevelObject[key] =
+                          window[objNameSplit[0]][objNameSplit[1]];
+                      } else {
+                        // Map the key to the actual object from `window`
+                        topLevelObject[key] = window[objName];
+                      }
+                    } else {
+                      // Object not found, provide more meaningful info only if needed
+                      console.warn(`Object ${objName} not found for key: ${key}`);
+                    }
+                  }
+                });
+
+                // Assign the parsed top-level object dynamically to the global scope
+                window[topLevelKey] = topLevelObject;
+              });
+            } catch (error) {
+              console.error(`Failed to parse ${file}.jsonc: ${error}`);
+            }
+          },
+        });
+      });
+    },
   });
 }
 
