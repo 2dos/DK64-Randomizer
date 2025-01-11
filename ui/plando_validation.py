@@ -42,7 +42,7 @@ from randomizer.Lists.Plandomizer import (
     WrinklyVanillaMap,
 )
 from randomizer.Lists.Switches import SwitchData
-from randomizer.Patching.Lib import plando_colors
+from randomizer.Patching.Library.Generic import plando_colors
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList

@@ -31,11 +31,8 @@ from randomizer.Patching.Cosmetics.Colorblind import (
     recolorKRoolShipSwitch,
     recolorRotatingRoomTiles,
 )
-from randomizer.Patching.Lib import (
-    compatible_background_textures,
-    TableNames,
-)
-from randomizer.Patching.LibImage import (
+from randomizer.Patching.Library.Generic import compatible_background_textures
+from randomizer.Patching.Library.Image import (
     getImageFile,
     TextureFormat,
     ExtraTextures,
@@ -47,6 +44,7 @@ from randomizer.Patching.LibImage import (
     getKongItemColor,
     hueShiftColor,
 )
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 from randomizer.Patching.Cosmetics.ModelSwaps import (
@@ -514,16 +512,16 @@ def applyKongModelSwaps(settings: Settings) -> None:
             source_data = model_index_mapping[value]
             for model_subindex in range(2):
                 if dest_data[model_subindex] is not None:
-                    dest_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][dest_data[model_subindex]]["pointing_to"]
-                    source_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][source_data[model_subindex]]["pointing_to"]
-                    source_end = js.pointer_addresses[TableNames.ActorGeometry]["entries"][source_data[model_subindex] + 1]["pointing_to"]
+                    dest_start = getPointerLocation(TableNames.ActorGeometry, dest_data[model_subindex])
+                    source_start = getPointerLocation(TableNames.ActorGeometry, source_data[model_subindex])
+                    source_end = getPointerLocation(TableNames.ActorGeometry, source_data[model_subindex] + 1)
                     source_size = source_end - source_start
                     ROM_COPY.seek(source_start)
                     file_bytes = ROM_COPY.readBytes(source_size)
                     ROM_COPY.seek(dest_start)
                     ROM_COPY.writeBytes(file_bytes)
                     # Write uncompressed size
-                    unc_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][5]["pointing_to"]
+                    unc_table = getPointerLocation(TableNames.UncompressedFileSizes, TableNames.ActorGeometry)
                     ROM_COPY.seek(unc_table + (source_data[model_subindex] * 4))
                     unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     ROM_COPY.seek(unc_table + (dest_data[model_subindex] * 4))
@@ -574,7 +572,7 @@ def darkenDPad():
             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
     px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[TableNames.TexturesHUD]["entries"][187]["pointing_to"])
+    ROM().seek(getPointerLocation(TableNames.TexturesHUD, 187))
     ROM().writeBytes(px_data)
 
 
@@ -674,7 +672,7 @@ def darkenPauseBubble(settings: Settings):
             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
     px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[TableNames.TexturesHUD]["entries"][107]["pointing_to"])
+    ROM().seek(getPointerLocation(TableNames.TexturesHUD, 107))
     ROM().writeBytes(px_data)
 
 
@@ -771,7 +769,7 @@ def randomizePlants(ROM_COPY: ROM, settings: Settings):
         Maps.BananaFairyRoom,
     ]
     for map_id in maps_that_contain_flowers:
-        setup_file = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
+        setup_file = getPointerLocation(TableNames.Setups, map_id)
         ROM_COPY.seek(setup_file)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         for model2_item in range(model2_count):

@@ -3,7 +3,7 @@
 import js
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import TableNames, getRawFile, writeRawFile
+from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 
 
 def FlipDisplayList(ROM_COPY: LocalROM, data: bytearray, start: int, end: int, table: int, file: int):

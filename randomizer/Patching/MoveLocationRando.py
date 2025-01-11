@@ -9,7 +9,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import setItemReferenceName
+from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.CompileHints import getHelmProgItems
 
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)

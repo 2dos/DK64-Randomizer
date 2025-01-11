@@ -1,10 +1,8 @@
 """All code associated with colorblind mode."""
 
-import js
 import gzip
-import zlib
 from randomizer.Settings import ColorblindMode
-from randomizer.Patching.LibImage import (
+from randomizer.Patching.Library.Image import (
     getRGBFromHash,
     TextureFormat,
     maskImage,
@@ -15,7 +13,7 @@ from randomizer.Patching.LibImage import (
     getBonusSkinOffset,
     rgba32to5551,
 )
-from randomizer.Patching.Lib import getRawFile, TableNames, writeRawFile
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile, writeRawFile
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from PIL import ImageEnhance
@@ -32,7 +30,7 @@ def changeVertexColor(num_data: list[int], offset: int, new_color: list[int]) ->
 
 def writeKasplatHairColorToROM(color: str, table_index: TableNames, file_index: int, format: str, ROM_COPY: ROM):
     """Write color to ROM for kasplats."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     mask = getRGBFromHash(color)
     if format == TextureFormat.RGBA32:
         color_lst = mask.copy()
@@ -60,7 +58,7 @@ def writeKasplatHairColorToROM(color: str, table_index: TableNames, file_index: 
 
 def writeWhiteKasplatHairColorToROM(color1: str, color2: str, table_index: TableNames, file_index: int, format: str, ROM_COPY: ROM):
     """Write color to ROM for white kasplats, giving them a black-white block pattern."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     mask = getRGBFromHash(color1)
     mask2 = getRGBFromHash(color2)
     if format == TextureFormat.RGBA32:
@@ -98,7 +96,7 @@ def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: st
     im_f = getImageFile(table_index, file_index, True, 32, 43, format)
     im_f = maskImage(im_f, color_index, 0, (color_index != 3), mode)
     pix = im_f.load()
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     if format == TextureFormat.RGBA32:
         null_color = [0] * 4
     else:
@@ -134,7 +132,7 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
             pixels_original[x].append(list(pix_original[x, y]).copy())
     im_f_masked = maskImage(im_f, color_index, 0, (color_index != 3), mode)
     pix = im_f_masked.load()
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     if format == TextureFormat.RGBA32:
         null_color = [0] * 4
     else:

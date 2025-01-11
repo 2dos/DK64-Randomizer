@@ -1,7 +1,7 @@
 """All code associated with updating textures for puzzles."""
 
 from randomizer.Settings import Settings
-from randomizer.Patching.LibImage import writeColorImageToROM, TextureFormat, getImageFile, getNumberImage
+from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile, getNumberImage
 from PIL import Image
 
 

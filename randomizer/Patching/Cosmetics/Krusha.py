@@ -6,15 +6,17 @@ import gzip
 from typing import TYPE_CHECKING
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import ColorblindMode
-from randomizer.Patching.Lib import TableNames, getObjectAddress, float_to_hex, intf_to_float, int_to_list, getRawFile, writeRawFile
+from randomizer.Patching.Library.Generic import getObjectAddress
+from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float, int_to_list
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.LibImage import (
+from randomizer.Patching.Library.Image import (
     writeColorImageToROM,
     getImageFile,
     getBonusSkinOffset,
     ExtraTextures,
     TextureFormat,
 )
+from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 from randomizer.Enums.Kongs import Kongs
 from PIL import Image
 

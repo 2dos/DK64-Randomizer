@@ -1,6 +1,5 @@
 """Image modification library functions."""
 
-import js
 import zlib
 import random
 import gzip
@@ -10,7 +9,7 @@ from PIL import Image, ImageEnhance
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import ColorblindMode
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Patching.Lib import TableNames
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from typing import Tuple
 
 
@@ -165,8 +164,8 @@ def getImageFromAddress(rom_address: int, width: int, height: int, compressed: b
 
 def getImageFile(table_index: TableNames, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat):
     """Grab image from file."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
+    file_end = getPointerLocation(table_index, file_index + 1)
     file_size = file_end - file_start
     return getImageFromAddress(file_start, width, height, compressed, file_size, format)
 
@@ -250,10 +249,10 @@ def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int
         pal_bin.extend([upper, lower])
     tex_bin_file = gzip.compress(bytearray(tex_bin), compresslevel=9)
     pal_bin_file = gzip.compress(bytearray(pal_bin), compresslevel=9)
-    tex_start = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][tex_index]["pointing_to"]
-    tex_end = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][tex_index + 1]["pointing_to"]
-    pal_start = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][pal_index]["pointing_to"]
-    pal_end = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][pal_index + 1]["pointing_to"]
+    tex_start = getPointerLocation(TableNames.TexturesGeometry, tex_index)
+    tex_end = getPointerLocation(TableNames.TexturesGeometry, tex_index + 1)
+    pal_start = getPointerLocation(TableNames.TexturesGeometry, pal_index)
+    pal_end = getPointerLocation(TableNames.TexturesGeometry, pal_index + 1)
     if (tex_end - tex_start) < len(tex_bin_file):
         return
     if (pal_end - pal_start) < len(pal_bin_file):
@@ -274,8 +273,8 @@ def writeColorImageToROM(
     format: TextureFormat,
 ) -> None:
     """Write texture to ROM."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
+    file_end = getPointerLocation(table_index, file_index + 1)
     file_size = file_end - file_start
     try:
         LocalROM().seek(file_start)
@@ -489,7 +488,7 @@ def hueShiftImageContainer(table: int, image: int, width: int, height: int, form
         px_data = gzip.compress(px_data, compresslevel=9)
     if ROM_COPY is None:
         ROM_COPY = ROM()
-    ROM_COPY.seek(js.pointer_addresses[table]["entries"][image]["pointing_to"])
+    ROM_COPY.seek(getPointerLocation(table, image))
     ROM_COPY.writeBytes(px_data)
 
 

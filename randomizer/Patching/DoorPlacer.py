@@ -1,6 +1,5 @@
 """Apply Door Locations."""
 
-import js
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
@@ -11,7 +10,9 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID, TableNames
+from randomizer.Patching.Library.Generic import IsItemSelected, addNewScript, getNextFreeID
+from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 LEVEL_MAIN_MAPS = (
@@ -207,7 +208,7 @@ def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict):
     if obj_id is None:
         raise Exception("Invalid Portal ID.")
     ROM_COPY = LocalROM()
-    script_table = js.pointer_addresses[TableNames.InstanceScripts]["entries"][cont_map_id]["pointing_to"]
+    script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     good_scripts = []
@@ -266,7 +267,7 @@ def remove_existing_indicators(spoiler):
         return
     ROM_COPY = LocalROM()
     for cont_map_id in range(216):
-        setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+        setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
         # Filter Setup
         ROM_COPY.seek(setup_table)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -329,7 +330,7 @@ def place_door_locations(spoiler):
         dk_portal_ids = {}
         # Handle Setup
         for cont_map_id in range(216):
-            setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+            setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
             # Filter Setup
             ROM_COPY.seek(setup_table)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -493,7 +494,7 @@ def place_door_locations(spoiler):
             for portal_map in dk_portal_locations:
                 if dk_portal_locations[portal_map][0] + dk_portal_locations[portal_map][1] + dk_portal_locations[portal_map][2] + dk_portal_locations[portal_map][3] != 0:
                     pushNewDKPortalScript(portal_map, dk_portal_ids)
-                    exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
+                    exit_start = getPointerLocation(TableNames.Exits, portal_map)
                     exits_to_alter = [-1]
                     if cont_map_id in LEVEL_MAIN_MAPS:
                         exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
@@ -572,7 +573,7 @@ def getStoryDestination(spoiler, level: Levels) -> dict:
 def alterStoryCutsceneWarps(spoiler, ROM_COPY: LocalROM):
     """Alter the story cutscene warp destinations."""
     for map_id in modifications:
-        cutscene_start = js.pointer_addresses[TableNames.Cutscenes]["entries"][map_id]["pointing_to"]
+        cutscene_start = getPointerLocation(TableNames.Cutscenes, map_id)
         info_l = 0x30
         ROM_COPY.seek(cutscene_start)
         for _ in range(0x18):

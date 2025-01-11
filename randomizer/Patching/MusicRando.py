@@ -15,7 +15,8 @@ from randomizer.Enums.Settings import MusicFilters, WinConditionComplex
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import IsItemSelected, Overlay, TableNames
+from randomizer.Patching.Library.Generic import IsItemSelected, Overlay
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.ASMPatcher import writeValue, populateOverlayOffsets, getROMAddress
 
 storage_banks = {
@@ -462,8 +463,7 @@ def insertUploaded(
                 song.output_name = new_song.name
                 song.output_name_short = new_song.name_short
                 song.shuffled = True
-                entry_data = js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx]
-                ROM_COPY.seek(entry_data["pointing_to"])
+                ROM_COPY.seek(getPointerLocation(TableNames.MusicMIDI, song.mem_idx))
                 zipped_data = gzip.compress(new_song_data, compresslevel=9)
                 ROM_COPY.writeBytes(zipped_data)
 

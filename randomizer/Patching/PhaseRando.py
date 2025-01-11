@@ -1,10 +1,8 @@
 """Apply K Rool Phase order."""
 
-import js
 from randomizer.Enums.Maps import Maps
-from randomizer.Patching.EntranceRando import intToArr
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import TableNames
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
 def randomize_krool(spoiler):
@@ -23,7 +21,7 @@ def randomize_krool(spoiler):
     if firstPhase != 0:  # If not starting with DK
 
         # Find Isles->DK Phase loading zone in Pointer table 18 and write new destination map
-        cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][Maps.Isles]["pointing_to"]
+        cont_map_lzs_address = getPointerLocation(TableNames.Triggers, Maps.Isles)
         ROM_COPY.seek(cont_map_lzs_address)
         lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         for lz_id in range(lz_count):
@@ -32,8 +30,7 @@ def randomize_krool(spoiler):
             lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
             if lz_map == Maps.KroolDonkeyPhase:
                 ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
-                map_bytes = intToArr(firstPhase, 2)
-                ROM_COPY.writeBytes(bytearray(map_bytes))
+                ROM_COPY.writeMultipleBytes(firstPhase, 2)
 
 
 def randomize_helm(spoiler):

@@ -6,7 +6,7 @@ import random
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Settings import RandomModels, ColorblindMode
-from randomizer.Patching.LibImage import (
+from randomizer.Patching.Library.Image import (
     getBonusSkinOffset,
     ExtraTextures,
     getRandomHueShift,
@@ -19,7 +19,8 @@ from randomizer.Patching.LibImage import (
     getLuma,
     hueShiftColor,
 )
-from randomizer.Patching.Lib import getRawFile, TableNames, getValueFromByteArray
+from randomizer.Patching.Library.Generic import getValueFromByteArray
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile
 from randomizer.Patching.Patcher import ROM
 from PIL import Image
 
@@ -296,7 +297,7 @@ def adjustFungiMushVertexColor(shift: int):
         fungi_geo[start + 3] = 0xFF
     file_data = gzip.compress(fungi_geo, compresslevel=9)
     ROM_COPY = ROM()
-    ROM_COPY.seek(js.pointer_addresses[TableNames.MapGeometry]["entries"][Maps.FungiForest]["pointing_to"])
+    ROM_COPY.seek(getPointerLocation(TableNames.MapGeometry, Maps.FungiForest))
     ROM_COPY.writeBytes(file_data)
 
 
@@ -342,7 +343,7 @@ def writeMiscCosmeticChanges(settings):
                     px_data = bytearray(bytes_array)
                     if table != TableNames.TexturesUncompressed:
                         px_data = gzip.compress(px_data, compresslevel=9)
-                    ROM_COPY.seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
+                    ROM_COPY.seek(getPointerLocation(table, img))
                     ROM_COPY.writeBytes(px_data)
 
         # Shockwave Particles
@@ -719,5 +720,5 @@ def writeMiscCosmeticChanges(settings):
                     channel = (new_rgb >> shift) & 0xFF
                     file_data[local_start + 0xC + x] = channel
             file_data = gzip.compress(file_data, compresslevel=9)
-            ROM_COPY.seek(js.pointer_addresses[TableNames.ActorGeometry]["entries"][enemy]["pointing_to"])
+            ROM_COPY.seek(getPointerLocation(TableNames.ActorGeometry, enemy))
             ROM_COPY.writeBytes(file_data)

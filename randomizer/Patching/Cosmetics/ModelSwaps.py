@@ -7,7 +7,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import KongModels, RandomModels
 from randomizer.Settings import Settings
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import applyCharacterSpawnerChanges, SpawnerChange
+from randomizer.Patching.Library.Generic import applyCharacterSpawnerChanges, SpawnerChange
 
 turtle_models = [
     Model.Diddy,  # Diddy

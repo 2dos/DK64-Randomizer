@@ -3,10 +3,10 @@
 import gzip
 import math
 
-import js
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import PaletteFillType, TableNames
-from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
+from randomizer.Patching.Library.Generic import PaletteFillType
+from randomizer.Patching.Library.Image import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
 def patchColorTranspose(x: int, y: int, patch_img, target_color: list, image_index: int):
@@ -258,6 +258,6 @@ def convertColors(color_palettes):
                                 pix_rgba = [0xFF, 0xFF, 0xFF, 1]
                         bytes_array.extend(convertRGBAToBytearray(pix_rgba))
 
-            write_point = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][zone["image"]]["pointing_to"]
+            write_point = getPointerLocation(TableNames.TexturesGeometry, zone["image"])
             ROM().seek(write_point)
             ROM().writeBytes(gzip.compress(bytearray(bytes_array), compresslevel=9))

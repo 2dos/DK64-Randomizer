@@ -6,7 +6,7 @@ import math
 from io import BytesIO
 
 from randomizer.Settings import Settings
-from randomizer.Patching.LibImage import writeColorImageToROM, TextureFormat, getImageFile
+from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile
 from PIL import Image
 
 

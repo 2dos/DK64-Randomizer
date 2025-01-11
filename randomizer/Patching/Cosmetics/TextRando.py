@@ -2,7 +2,7 @@
 
 import random
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import writeText, grabText
+from randomizer.Patching.Library.Assets import writeText, grabText
 
 boot_phrases = (
     "Removing Lanky Kong",

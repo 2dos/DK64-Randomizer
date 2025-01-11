@@ -5,8 +5,9 @@ import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
-from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress, ExtraTextures, getBonusSkinOffset
+from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
+from randomizer.Patching.Library.Image import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress, ExtraTextures, getBonusSkinOffset
+from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     FasterChecksSelected,

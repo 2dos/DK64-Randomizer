@@ -7,8 +7,10 @@ import random
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, KongModels
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import PaletteFillType, int_to_list, getRawFile, writeRawFile, TableNames
-from randomizer.Patching.LibImage import getKongItemColor
+from randomizer.Patching.Library.Generic import PaletteFillType
+from randomizer.Patching.Library.DataTypes import int_to_list
+from randomizer.Patching.Library.Image import getKongItemColor
+from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Cosmetics.Krusha import kong_index_mapping
 from randomizer.Patching.Cosmetics.ModelSwaps import model_texture_sections
