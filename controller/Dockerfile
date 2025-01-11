@@ -11,9 +11,11 @@ ARG REDIRECT=" "
 ENV REDIRECT=$REDIRECT
 ARG COPY_FILES="./"
 COPY ${COPY_FILES} /app/
+# set the timezone to UTC
+ENV TZ=UTC
+RUN apk update && apk add --no-cache tzdata git
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN if [ "$BRANCH" != "LOCAL" ]; then \
-        apk update && apk add --no-cache git && \
         rm -rf /app/ && \
         git config --global core.compression 0 && \
         git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app; \
