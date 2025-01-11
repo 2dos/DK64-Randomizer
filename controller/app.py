@@ -351,7 +351,7 @@ def admin_portal():
         session.pop("admin")
         return set_response("You do not have permission to access this page.", 403, "text/html")
     local_presets = update_presets()
-    return render_template("admin.html.jinja2", local_presets=local_presets)
+    return render_template("admin.html", local_presets=local_presets)
 
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])

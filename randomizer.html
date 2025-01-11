@@ -753,8 +753,8 @@
                                 // Append the KongZones to the selector_info
                                 selector_info["kong_zones"] = KongZones;
                                 // Render templates
-                                var renderedHTML = env.render("base.html.jinja2", selector_info);
-                                var navRenderedHTML = env.render("nav-tabs.html.jinja2", {});
+                                var renderedHTML = env.render("base.html", selector_info);
+                                var navRenderedHTML = env.render("nav-tabs.html", {});
                     
                                 // Inject into the DOM
                                 $("#tab-data").html(renderedHTML);
@@ -764,13 +764,11 @@
                                 loadAdditionalScripts();
                             } catch (error) {
                                 console.error("Error processing response data:", error);
-                                document.documentElement.innerHTML = error;
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             // Insert error to root of dom
                             console.error("AJAX request failed:", errorThrown);
-                            document.documentElement.innerHTML = errorThrown;
                         }})
                 } catch (error) {
                     console.error("Failed to load required modules:", error);

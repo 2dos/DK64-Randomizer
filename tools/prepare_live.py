@@ -42,7 +42,7 @@ def find_list_resources(tag, attribute, soup):
     return resources
 
 
-for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.getcwd(), "html", recursive=True)]:
+for f in [*get_files(os.getcwd(), "html", recursive=True), *get_files(os.getcwd(), "html", recursive=True)]:
     with open(f, "r") as reader:
         html = reader.read()
         soup = BeautifulSoup(html, features="html.parser")
