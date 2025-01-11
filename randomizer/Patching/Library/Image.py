@@ -10,7 +10,7 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import ColorblindMode
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from typing import Tuple
+from typing import Tuple, Union
 
 
 class TextureFormat(IntEnum):
@@ -130,14 +130,10 @@ def getBonusSkinOffset(offset: int):
     return 6026 + (3 * len(barrel_skins)) + offset
 
 
-def getImageFromAddress(rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):
+def getImageFromAddress(ROM_COPY: Union[LocalROM, ROM], rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):
     """Get image from a ROM address."""
-    try:
-        LocalROM().seek(rom_address)
-        data = LocalROM().readBytes(file_size)
-    except Exception:
-        ROM().seek(rom_address)
-        data = ROM().readBytes(file_size)
+    ROM_COPY.seek(rom_address)
+    data = ROM_COPY.readBytes(file_size)
     if compressed:
         data = zlib.decompress(data, (15 + 32))
     im_f = Image.new(mode="RGBA", size=(width, height))
@@ -162,12 +158,12 @@ def getImageFromAddress(rom_address: int, width: int, height: int, compressed: b
     return im_f
 
 
-def getImageFile(table_index: TableNames, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat):
+def getImageFile(ROM_COPY: Union[LocalROM, ROM], table_index: TableNames, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat):
     """Grab image from file."""
     file_start = getPointerLocation(table_index, file_index)
     file_end = getPointerLocation(table_index, file_index + 1)
     file_size = file_end - file_start
-    return getImageFromAddress(file_start, width, height, compressed, file_size, format)
+    return getImageFromAddress(ROM_COPY, file_start, width, height, compressed, file_size, format)
 
 
 def getRandomHueShift(min: int = -359, max: int = 359) -> int:
@@ -271,15 +267,13 @@ def writeColorImageToROM(
     height: int,
     transparent_border: bool,
     format: TextureFormat,
+    ROM_COPY: Union[LocalROM, ROM]
 ) -> None:
     """Write texture to ROM."""
     file_start = getPointerLocation(table_index, file_index)
     file_end = getPointerLocation(table_index, file_index + 1)
     file_size = file_end - file_start
-    try:
-        LocalROM().seek(file_start)
-    except Exception:
-        ROM().seek(file_start)
+    ROM_COPY.seek(file_start)
     pix = im_f.load()
     width, height = im_f.size
     bytes_array = []
@@ -330,24 +324,21 @@ def writeColorImageToROM(
         data = gzip.compress(data, compresslevel=9)
     if len(data) > file_size:
         print(f"File too big error: {table_index} > {file_index}")
-    try:
-        LocalROM().writeBytes(data)
-    except Exception:
-        ROM().writeBytes(data)
+    ROM_COPY.writeBytes(data)
 
 
-def getNumberImage(number: int):
+def getNumberImage(number: int, ROM_COPY: Union[LocalROM, ROM]):
     """Get Number Image from number."""
     if number < 5:
         num_0_bounds = [0, 20, 30, 45, 58, 76]
         x = number
-        return getImageFile(14, 15, True, 76, 24, TextureFormat.RGBA5551).crop((num_0_bounds[x], 0, num_0_bounds[x + 1], 24))
+        return getImageFile(ROM_COPY, 14, 15, True, 76, 24, TextureFormat.RGBA5551).crop((num_0_bounds[x], 0, num_0_bounds[x + 1], 24))
     num_1_bounds = [0, 15, 28, 43, 58, 76]
     x = number - 5
-    return getImageFile(14, 16, True, 76, 24, TextureFormat.RGBA5551).crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
+    return getImageFile(ROM_COPY, 14, 16, True, 76, 24, TextureFormat.RGBA5551).crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
 
 
-def numberToImage(number: int, dim: Tuple[int, int]):
+def numberToImage(number: int, dim: Tuple[int, int], ROM_COPY: Union[LocalROM, ROM]):
     """Convert multi-digit number to image."""
     digits = 1
     if number < 10:
@@ -362,7 +353,7 @@ def numberToImage(number: int, dim: Tuple[int, int]):
     max_height = 0
     sep_dist = 1
     for _ in range(digits):
-        base = getNumberImage(current % 10)
+        base = getNumberImage(current % 10, ROM_COPY)
         bbox = base.getbbox()
         base = base.crop(bbox)
         nums.append(base)
@@ -465,9 +456,9 @@ def maskImage(im_f, base_index, min_y, keep_dark=False, mode=ColorblindMode.off)
     return im_f
 
 
-def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int, ROM_COPY: ROM = None):
+def hueShiftImageContainer(table: int, image: int, width: int, height: int, format: TextureFormat, shift: int, ROM_COPY: ROM):
     """Load an image, shift the hue and rewrite it back to ROM."""
-    loaded_im = getImageFile(table, image, table != 7, width, height, format)
+    loaded_im = getImageFile(ROM_COPY, table, image, table != 7, width, height, format)
     loaded_im = hueShift(loaded_im, shift)
     loaded_px = loaded_im.load()
     bytes_array = []
@@ -486,8 +477,6 @@ def hueShiftImageContainer(table: int, image: int, width: int, height: int, form
     px_data = bytearray(bytes_array)
     if table != 7:
         px_data = gzip.compress(px_data, compresslevel=9)
-    if ROM_COPY is None:
-        ROM_COPY = ROM()
     ROM_COPY.seek(getPointerLocation(table, image))
     ROM_COPY.writeBytes(px_data)
 

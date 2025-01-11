@@ -5,10 +5,9 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
-def randomize_coins(spoiler):
+def randomize_coins(spoiler, ROM_COPY: LocalROM):
     """Place Coins into ROM."""
     if spoiler.settings.coin_rando:
-        ROM_COPY = LocalROM()
         for cont_map_id in range(216):
             # Wipe setup and paths of Coin information
             # SETUP

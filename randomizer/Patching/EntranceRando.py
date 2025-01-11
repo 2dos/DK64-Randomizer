@@ -43,10 +43,9 @@ def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: 
     ROM_COPY.write(exit_id & 0xFF)
 
 
-def randomize_entrances(spoiler):
+def randomize_entrances(spoiler, ROM_COPY: LocalROM):
     """Randomize Entrances based on shuffled_exit_instructions."""
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
-        ROM_COPY = LocalROM()
         for cont_map in spoiler.shuffled_exit_instructions:
             # Pointer table 18, use the map index detailed in cont_map["container_map"] to get the starting address of the map lz file
             cont_map_id = int(cont_map["container_map"])
@@ -137,9 +136,8 @@ banned_filtration = (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide, Maps.Hideo
 museum_exit_type = 13  # Maybe 9?
 
 
-def filterEntranceType():
+def filterEntranceType(ROM_COPY: LocalROM):
     """Change LZ Type for some entrances so that warps from crown pads work correctly."""
-    ROM_COPY = LocalROM()
     for cont_map_id in range(216):
         cont_map_lzs_address = getPointerLocation(TableNames.Triggers, cont_map_id)
         ROM_COPY.seek(cont_map_lzs_address)
@@ -178,10 +176,9 @@ ITEM_PREVIEW_CUTSCENES = [
 ]
 
 
-def enableTriggerText(spoiler):
+def enableTriggerText(spoiler, ROM_COPY: LocalROM):
     """Change the cutscene trigger in Spider Boss and Chunky Igloo to the specific item reward cutscene."""
     if spoiler.settings.item_reward_previews:
-        ROM_COPY = LocalROM()
         for cs in ITEM_PREVIEW_CUTSCENES:
             cont_map_lzs_address = getPointerLocation(TableNames.Triggers, cs.map)
             ROM_COPY.seek(cont_map_lzs_address)

@@ -182,22 +182,18 @@ def encodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int, dat
     writePointerFile(ROM_COPY, table, file_index, output_data, ref_data.is_compressed)
 
 
-def getRawFile(table_index: TableNames, file_index: int, compressed: bool):
+def getRawFile(ROM_COPY: Union[ROM, LocalROM], table_index: TableNames, file_index: int, compressed: bool):
     """Get raw file from ROM."""
     file_start = getPointerLocation(table_index, file_index)
     if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
-        file_size = getPointerLocation(table_index, file_index)
+        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
         if file_size is None:
             return bytes(bytearray([]))
     else:
         file_end = getPointerLocation(table_index, file_index + 1)
         file_size = file_end - file_start
-    try:
-        LocalROM().seek(file_start)
-        data = LocalROM().readBytes(file_size)
-    except Exception:
-        ROM().seek(file_start)
-        data = ROM().readBytes(file_size)
+    ROM_COPY.seek(file_start)
+    data = ROM_COPY.readBytes(file_size)
     if compressed:
         data = zlib.decompress(data, (15 + 32))
     return data
@@ -207,7 +203,7 @@ def writeRawFile(table_index: TableNames, file_index: int, compressed: bool, dat
     """Write raw file from ROM."""
     file_start = getPointerLocation(table_index, file_index)
     if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
-        file_size = getPointerLocation(table_index, file_index)
+        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
     else:
         file_end = getPointerLocation(table_index, file_index + 1)
         file_size = file_end - file_start
@@ -400,12 +396,8 @@ icon_db = {
 }
 
 
-def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, List[str]]]]:
+def grabText(ROM_COPY: Union[ROM, LocalROM], file_index: int) -> List[List[Dict[str, List[str]]]]:
     """Pull text from ROM with a particular file index."""
-    if cosmetic:
-        ROM_COPY = ROM()
-    else:
-        ROM_COPY = LocalROM()
     file_start = getPointerLocation(TableNames.Text, file_index)
     ROM_COPY.seek(file_start + 0)
     count = int.from_bytes(ROM_COPY.readBytes(1), "big")
@@ -515,13 +507,9 @@ def grabText(file_index: int, cosmetic: bool = False) -> List[List[Dict[str, Lis
     return formatted_text
 
 
-def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]], cosmetic: bool = False) -> None:
+def writeText(ROM_COPY: Union[ROM, LocalROM], file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]]) -> None:
     """Write the text to ROM."""
     text_start = getPointerLocation(TableNames.Text, file_index)
-    if cosmetic:
-        ROM_COPY = ROM()
-    else:
-        ROM_COPY = LocalROM()
     ROM_COPY.seek(text_start)
     ROM_COPY.writeBytes(bytearray([len(text)]))
     position = 0

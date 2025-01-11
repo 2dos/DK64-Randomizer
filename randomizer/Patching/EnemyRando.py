@@ -433,9 +433,8 @@ def getBalancedCrownEnemyRando(spoiler, crown_setting: CrownEnemyDifficulty, dam
     return enemy_swaps_library
 
 
-def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawner: Spawner, cont_map_id: Maps, crown_timer: int = 0):
+def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_enemy_id: int, spawner: Spawner, cont_map_id: Maps, crown_timer: int = 0):
     """Write enemy to ROM."""
-    ROM_COPY = LocalROM()
     ROM_COPY.seek(cont_map_spawner_address + spawner.offset)
     ROM_COPY.writeMultipleBytes(new_enemy_id, 1)
     # Enemy fixes
@@ -577,7 +576,7 @@ def randomize_enemies_0(spoiler):
     spoiler.pkmn_snap_data = pkmn
 
 
-def randomize_enemies(spoiler):
+def randomize_enemies(spoiler, ROM_COPY: LocalROM):
     """Write replaced enemies to ROM."""
     # Define Enemy Classes, Used for detection of if an enemy will be replaced
     enemy_classes = {}
@@ -632,7 +631,6 @@ def randomize_enemies(spoiler):
                     minigame_enemies_beatable.append(enemy)
                     if EnemyMetaData[enemy].simple:
                         minigame_enemies_simple.append(enemy)
-        ROM_COPY = LocalROM()
         for cont_map_id in range(216):
             cont_map_spawner_address = getPointerLocation(TableNames.Spawners, cont_map_id)
             vanilla_spawners = []
@@ -675,7 +673,7 @@ def randomize_enemies(spoiler):
                             referenced_spawner = spawner
                             break
                     if referenced_spawner is not None:
-                        writeEnemy(spoiler, cont_map_spawner_address, enemy["enemy"], referenced_spawner, cont_map_id, 0)
+                        writeEnemy(spoiler, ROM_COPY, cont_map_spawner_address, enemy["enemy"], referenced_spawner, cont_map_id, 0)
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
@@ -701,7 +699,7 @@ def randomize_enemies(spoiler):
                                 new_enemy_id = Enemies.BeaverBlue
                                 if selection < 0.2:
                                     new_enemy_id = Enemies.BeaverGold
-                        writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
+                        writeEnemy(spoiler, ROM_COPY, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
             if spoiler.settings.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla and cont_map_id in crown_maps:
                 # Determine Crown Timer
                 limits = {
@@ -716,7 +714,7 @@ def randomize_enemies(spoiler):
                 for spawner in vanilla_spawners:
                     if spawner.enemy_id in crown_enemies:
                         new_enemy_id = crown_enemies_library[cont_map_id].pop()
-                        writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, crown_timer)
+                        writeEnemy(spoiler, ROM_COPY, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, crown_timer)
                     elif spawner.enemy_id == Enemies.BattleCrownController:
                         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xB)
                         ROM_COPY.writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds

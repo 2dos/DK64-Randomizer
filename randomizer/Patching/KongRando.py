@@ -9,7 +9,7 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def apply_kongrando_cosmetic(spoiler):
+def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
     """Write kong cage changes for kong rando."""
     if Types.Kong in spoiler.settings.shuffled_location_types:
         kong_locations = [x for x in spoiler.item_assignment if x.location in (Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong)]
@@ -103,9 +103,6 @@ def apply_kongrando_cosmetic(spoiler):
                 "charspawner_changes": [{"type": Enemies.CutsceneChunky, "new_type": actors[factoryLockedKong]}],
             },
         ]
-
-        ROM_COPY = LocalROM()
-
         for kong_map in spoiler.shuffled_kong_placement.keys():
             for link_type in spoiler.shuffled_kong_placement[kong_map].keys():
                 ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map][link_type]["write"])

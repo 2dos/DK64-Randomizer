@@ -5,13 +5,13 @@ import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
+from typing import Union
 from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
 from randomizer.Patching.Library.Image import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress, ExtraTextures, getBonusSkinOffset
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     FasterChecksSelected,
-    CBRando,
     RemovedBarriersSelected,
     GalleonWaterSetting,
     ActivateAllBananaports,
@@ -38,7 +38,6 @@ from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs
 from PIL import Image
 
 HANDLED_OVERLAYS = (
@@ -416,7 +415,7 @@ def getActorIndex(input: int) -> int:
     return input
 
 
-def hueShiftImageFromAddress(address: int, width: int, height: int, format: TextureFormat, shift: int):
+def hueShiftImageFromAddress(ROM_COPY: Union[ROM, LocalROM], address: int, width: int, height: int, format: TextureFormat, shift: int):
     """Hue shift image located at a certain ROM address."""
     size_per_px = {
         TextureFormat.RGBA5551: 2,
@@ -425,7 +424,7 @@ def hueShiftImageFromAddress(address: int, width: int, height: int, format: Text
     data_size_per_px = size_per_px.get(format, None)
     if data_size_per_px is None:
         raise Exception(f"Texture Format unsupported by this function. Let the devs know if you see this. Attempted format: {format.name}")
-    loaded_im = getImageFromAddress(address, width, height, False, data_size_per_px * width * height, format)
+    loaded_im = getImageFromAddress(ROM_COPY, address, width, height, False, data_size_per_px * width * height, format)
     loaded_im = hueShift(loaded_im, shift)
     loaded_px = loaded_im.load()
     bytes_array = []
@@ -442,8 +441,8 @@ def hueShiftImageFromAddress(address: int, width: int, height: int, format: Text
                 value = red | green | blue | alpha
                 bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
-    ROM().seek(address)
-    ROM().writeBytes(px_data)
+    ROM_COPY.seek(address)
+    ROM_COPY.writeBytes(px_data)
 
 
 class ColorBlindCrosshair:
@@ -741,10 +740,10 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
                 if addr == 0x8003DA90:
                     width = 8
                 rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
-                hueShiftImageFromAddress(rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
+                hueShiftImageFromAddress(ROM_COPY, rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
             for addr in dk_addresses:
                 rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
-                hueShiftImageFromAddress(rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
+                hueShiftImageFromAddress(ROM_COPY, rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
 
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
@@ -833,13 +832,13 @@ class MinigameImageLoader:
             self.height = height
             self.tex_format = tex_format
 
-    def getImageBytes(self, sub_dir: str, targ_width: int, targ_height: int, output_format: TextureFormat, flip: bool = True) -> bytes:
+    def getImageBytes(self, ROM_COPY: Union[LocalROM, ROM], sub_dir: str, targ_width: int, targ_height: int, output_format: TextureFormat, flip: bool = True) -> bytes:
         """Convert associated image to bytes that can be written to ROM."""
         output_image = None
         if self.pull_from_repo:
             output_image = Image.open(io.BytesIO(js.getFile(f"./base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
         else:
-            new_im = getImageFile(self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
+            new_im = getImageFile(ROM_COPY, self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
             if self.width != self.height:
                 dim = max(self.width, self.height)
                 dx = int((dim - self.width) / 2)
@@ -953,7 +952,7 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             addr = 0x8002D868
             bytes_per_px = 1
             output_format = TextureFormat.I8
-        write = im_data[minigame].getImageBytes(minigame, dim, dim, output_format)
+        write = im_data[minigame].getImageBytes(ROM_COPY, minigame, dim, dim, output_format)
         output_addr = getROMAddress(addr, ovl, offset_dict)
         if len(write) > math.ceil(dim * dim * bytes_per_px):
             raise Exception(

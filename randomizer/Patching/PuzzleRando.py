@@ -18,10 +18,9 @@ def chooseSFX():
     return random.randint(bank[0], bank[1])
 
 
-def shiftCastleMinecartRewardZones():
+def shiftCastleMinecartRewardZones(ROM_COPY: LocalROM):
     """Shifts the triggers for the reward point in castle minecart."""
     cont_map_lzs_address = getPointerLocation(TableNames.Triggers, Maps.CastleMinecarts)
-    ROM_COPY = LocalROM()
     ROM_COPY.seek(cont_map_lzs_address)
     lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     for lz_id in range(lz_count):
@@ -277,7 +276,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
     ROM_COPY.writeBytes(bytearray(start_bytes))
 
 
-def shortenCastleMinecart(spoiler):
+def shortenCastleMinecart(spoiler, ROM_COPY: LocalROM):
     """Shorten Castle Minecart to end at the u-turn point."""
     if not IsItemSelected(
         spoiler.settings.faster_checks_enabled,
@@ -285,11 +284,10 @@ def shortenCastleMinecart(spoiler):
         FasterChecksSelected.castle_minecart,
     ):
         return
-    shiftCastleMinecartRewardZones()
+    shiftCastleMinecartRewardZones(ROM_COPY)
     new_squawks_coords = (3232, 482, 693)
     old_squawks_coords = (619, 690, 4134)
     cont_map_spawner_address = getPointerLocation(TableNames.Spawners, Maps.CastleMinecarts)
-    ROM_COPY = LocalROM()
     ROM_COPY.seek(cont_map_spawner_address)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     offset = 2
@@ -464,12 +462,11 @@ class PuzzleItem:
                 self.selected_bound = self.fast_bound
 
 
-def randomize_puzzles(spoiler):
+def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     sav = spoiler.settings.rom_data
     spoiler.coin_requirements = {}
     if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
-        ROM_COPY = LocalROM()
         coin_req_info = [
             PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 60)),
             PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13D, PuzzleRandoBound(20, 60)),

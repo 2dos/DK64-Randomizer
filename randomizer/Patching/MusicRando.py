@@ -347,6 +347,7 @@ def requestNewSong(
 
 
 def insertUploaded(
+    ROM_COPY: ROM,
     settings: Settings,
     uploaded_songs: list,
     uploaded_song_names: list,
@@ -420,7 +421,6 @@ def insertUploaded(
     location_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.location)
 
     # Place Songs
-    ROM_COPY = ROM()
     for song_enum in songs_to_be_replaced:
         song = song_data[song_enum]
         selected_bank = None
@@ -473,7 +473,7 @@ TYPE_ARRAY = 0x1FEE200
 TYPE_VALUES = [SongType.BGM, SongType.Event, SongType.MajorItem, SongType.MinorItem]
 
 
-def randomize_music(settings: Settings):
+def randomize_music(settings: Settings, ROM_COPY: ROM):
     """Randomize music passed from the misc music settings.
 
     Args:
@@ -498,8 +498,6 @@ def randomize_music(settings: Settings):
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
             settings.music_events_randomized = True
-
-    ROM_COPY = ROM()
 
     NON_BGM_DATA = [
         # Minor Items
@@ -580,6 +578,7 @@ def randomize_music(settings: Settings):
                 if settings.music_bgm_randomized:
                     # Insert all of the custom songs.
                     insertUploaded(
+                        ROM_COPY,
                         settings,
                         list(js.cosmetics.bgm),
                         list(js.cosmetic_names.bgm),
@@ -596,7 +595,7 @@ def randomize_music(settings: Settings):
                             assigned_songs.append(song)
                             assigned_names.append(name)
                             assigned_extensions.append(extension)
-                    insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, SongType.BGM)
+                    insertUploaded(ROM_COPY, settings, assigned_songs, assigned_names, assigned_extensions, SongType.BGM)
             # Generate the list of BGM songs
             song_list = []
             pre_shuffled_songs = []
@@ -647,7 +646,7 @@ def randomize_music(settings: Settings):
                     open_songs = open_locations.copy()
                 location_pool = open_locations + assigned_locations[channel_index] + pre_shuffled_songs[channel_index].copy()
                 song_pool = open_songs + assigned_songs[channel_index] + pre_shuffled_songs[channel_index].copy()
-                shuffle_music(settings, music_data, music_names, location_pool, song_pool, song_rom_data)
+                shuffle_music(ROM_COPY, settings, music_data, music_names, location_pool, song_pool, song_rom_data)
         # If the user was a poor sap and selected chaos put DK rap for everything
         # Don't assign songs, the user must learn from their mistake
         else:
@@ -683,6 +682,7 @@ def randomize_music(settings: Settings):
                 if type_data.setting:
                     # Insert all of the custom songs.
                     insertUploaded(
+                        ROM_COPY,
                         settings,
                         list(type_data.files),
                         list(type_data.names),
@@ -699,7 +699,7 @@ def randomize_music(settings: Settings):
                             assigned_songs.append(song)
                             assigned_names.append(name)
                             assigned_extensions.append(extension)
-                    insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, type_data.song_type)
+                    insertUploaded(ROM_COPY, settings, assigned_songs, assigned_names, assigned_extensions, type_data.song_type)
             # Load the list of items in that group
             group_items = []
             shuffled_group_items = []
@@ -740,11 +740,11 @@ def randomize_music(settings: Settings):
                 open_songs = open_locations.copy()
             location_pool = open_locations + assigned_item_locations + shuffled_group_items.copy()
             song_pool = open_songs + assigned_items + shuffled_group_items.copy()
-            shuffle_music(settings, music_data, music_names, location_pool, song_pool, song_rom_data)
+            shuffle_music(ROM_COPY, settings, music_data, music_names, location_pool, song_pool, song_rom_data)
     return music_data, music_names
 
 
-def shuffle_music(settings, music_data, music_names, pool_to_shuffle, shuffled_list, song_rom_data):
+def shuffle_music(ROM_COPY: ROM, settings, music_data, music_names, pool_to_shuffle, shuffled_list, song_rom_data):
     """Shuffle the music pool based on the OG list and the shuffled list.
 
     Args:
@@ -757,7 +757,6 @@ def shuffle_music(settings, music_data, music_names, pool_to_shuffle, shuffled_l
     stored_song_sizes = {}
     # For each song in the shuffled list, randomize it into the pool using the shuffled list as a base
     # First loop over all songs to read data from ROM
-    ROM_COPY = ROM()
     for song in pool_to_shuffle:
         ROM_COPY.seek(song["pointing_to"])
         stored_data = ROM_COPY.readBytes(song["compressed_size"])

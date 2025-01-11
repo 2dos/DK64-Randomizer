@@ -57,7 +57,7 @@ level_data = {
 PATH_CAP = 64
 
 
-def randomize_cbs(spoiler):
+def randomize_cbs(spoiler, ROM_COPY: LocalROM):
     """Place Colored Bananas into ROM."""
     if not spoiler.settings.cb_rando_enabled:
         return
@@ -66,7 +66,6 @@ def randomize_cbs(spoiler):
         is_level_placed = IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, level)
         if is_level_placed:
             levels_to_place.append(level)
-    ROM_COPY = LocalROM()
     for cont_map_id in range(216):
         # Wipe setup and paths of CB information
         level_id = None

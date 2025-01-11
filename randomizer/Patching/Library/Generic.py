@@ -250,9 +250,8 @@ class Overlay(IntEnum):
     Custom = 11  # Fake overlay used for patching
 
 
-def getNextFreeID(cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] = []) -> int:
+def getNextFreeID(ROM_COPY: LocalROM, cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] = []) -> int:
     """Get next available Model 2 ID."""
-    ROM_COPY = LocalROM()
     setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
     ROM_COPY.seek(setup_table)
     model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -274,9 +273,8 @@ def getNextFreeID(cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] =
     return 0  # Shouldn't ever hit this. This is a case if there's no vacant IDs in range [0,599]
 
 
-def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: ScriptTypes) -> None:
+def addNewScript(ROM_COPY: LocalROM, cont_map_id: Union[Maps, int], item_ids: List[int], type: ScriptTypes) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
-    ROM_COPY = LocalROM()
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -342,10 +340,9 @@ def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: Scrip
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def getObjectAddress(map: int, id: int, object_type: str) -> int:
+def getObjectAddress(ROM_COPY: LocalROM, map: int, id: int, object_type: str) -> int:
     """Get address of object in setup."""
     setup_start = getPointerLocation(TableNames.Setups, map)
-    ROM_COPY = LocalROM()
     ROM_COPY.seek(setup_start)
     model_2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     if object_type == "modeltwo":
@@ -369,28 +366,28 @@ def getObjectAddress(map: int, id: int, object_type: str) -> int:
     return None
 
 
-def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
+def getObjectAddressBrowser(ROM_COPY: ROM, map: int, id: int, object_type: str) -> int:
     """Get address of object in setup."""
     setup_start = getPointerLocation(TableNames.Setups, map)
-    ROM().seek(setup_start)
-    model_2_count = int.from_bytes(ROM().readBytes(4), "big")
+    ROM_COPY.seek(setup_start)
+    model_2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     if object_type == "modeltwo":
         for item in range(model_2_count):
             item_start = setup_start + 4 + (item * 0x30)
-            ROM().seek(item_start + 0x2A)
-            if int.from_bytes(ROM().readBytes(2), "big") == id:
+            ROM_COPY.seek(item_start + 0x2A)
+            if int.from_bytes(ROM_COPY.readBytes(2), "big") == id:
                 return item_start
     mystery_start = setup_start + 4 + (0x30 * model_2_count)
-    ROM().seek(mystery_start)
-    mystery_count = int.from_bytes(ROM().readBytes(4), "big")
+    ROM_COPY.seek(mystery_start)
+    mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     actor_start = mystery_start + 4 + (0x24 * mystery_count)
-    ROM().seek(actor_start)
-    actor_count = int.from_bytes(ROM().readBytes(4), "big")
+    ROM_COPY.seek(actor_start)
+    actor_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     if object_type == "actor":
         for item in range(actor_count):
             item_start = actor_start + 4 + (item * 0x38)
-            ROM().seek(item_start + 0x34)
-            if int.from_bytes(ROM().readBytes(2), "big") == id:
+            ROM_COPY.seek(item_start + 0x34)
+            if int.from_bytes(ROM_COPY.readBytes(2), "big") == id:
                 return item_start
     return None
 
@@ -433,9 +430,8 @@ class SpawnerChange:
         self.new_speed_1 = None
 
 
-def applyCharacterSpawnerChanges(changes: list[SpawnerChange], fence_speed_factor: float = None):
+def applyCharacterSpawnerChanges(ROM_COPY: ROM, changes: list[SpawnerChange], fence_speed_factor: float = None):
     """Apply a series of changes to character spawners."""
-    ROM_COPY = ROM()
     formatted_changes = {}
     id_changes_in_map = {}
     for change in changes:

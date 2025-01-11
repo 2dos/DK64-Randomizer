@@ -423,9 +423,8 @@ def getActorIndex(item):
     return actor_indexes[item.new_item]
 
 
-def place_randomized_items(spoiler, original_flut: list):
+def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""
-    ROM_COPY = LocalROM()
     sav = spoiler.settings.rom_data
     ROM_COPY.seek(sav + 0x1EC)
     ROM_COPY.writeMultipleBytes(0xF0, 1)

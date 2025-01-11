@@ -118,9 +118,8 @@ def pickChunkyCabinPadPositions():
     return {"picked": picked_pads.copy(), "index": 0}
 
 
-def SpeedUpFungiRabbit():
+def SpeedUpFungiRabbit(ROM_COPY: LocalROM):
     """Change the speed of the Fungi Rabbit."""
-    ROM_COPY = LocalROM()
     file_start = getPointerLocation(TableNames.Spawners, Maps.FungiForest)
     ROM_COPY.seek(file_start)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -187,10 +186,10 @@ def getRandomGalleonStarLocation() -> tuple:
     return tuple(coord)
 
 
-def randomize_setup(spoiler):
+def randomize_setup(spoiler, ROM_COPY: LocalROM):
     """Randomize setup."""
     if not spoiler.settings.disable_racing_patches:
-        SpeedUpFungiRabbit()
+        SpeedUpFungiRabbit(ROM_COPY)
     pickup_weights = [
         {"item": "orange", "type": 0x56, "weight": 3},
         {"item": "film", "type": 0x98, "weight": 1},
@@ -295,8 +294,6 @@ def randomize_setup(spoiler):
         [311.555, 138.167, 666.162],
         [398.472, 138.167, 668.426],
     ]
-
-    ROM_COPY = LocalROM()
     diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
     lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 5, 40)
     chunky_5dc_pads = pickChunkyCabinPadPositions()
@@ -575,10 +572,9 @@ def randomize_setup(spoiler):
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(155), 16), 4)
 
 
-def updateRandomSwitches(spoiler):
+def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
     """Update setup to account for random switch placement."""
     if spoiler.settings.alter_switch_allocation:
-        ROM_COPY = LocalROM()
         switches = {
             Kongs.donkey: [0x94, 0x16C, 0x167],
             Kongs.diddy: [0x93, 0x16B, 0x166],
@@ -612,10 +608,9 @@ def updateRandomSwitches(spoiler):
                                     ROM_COPY.writeMultipleBytes(switches[kong][switch_level], 2)
 
 
-def updateSwitchsanity(spoiler):
+def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
     """Update setup to account for switchsanity."""
     if spoiler.settings.switchsanity:
-        ROM_COPY = LocalROM()
         switches = {
             SwitchType.SlamSwitch: [
                 0x94,

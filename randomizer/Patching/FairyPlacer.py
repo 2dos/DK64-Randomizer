@@ -7,9 +7,8 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def ReplaceShipFairy(spoiler):
+def ReplaceShipFairy(ROM_COPY: LocalROM):
     """Replace the fairy inside 5DS with an easier to get fairy."""
-    ROM_COPY = LocalROM()
     file_start = getPointerLocation(TableNames.Spawners, Maps.Galleon5DShipDKTiny)
     ROM_COPY.seek(file_start)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -130,11 +129,10 @@ def ReplaceShipFairy(spoiler):
             ROM_COPY.writeMultipleBytes(y, 1)
 
 
-def PlaceFairies(spoiler):
+def PlaceFairies(spoiler, ROM_COPY: LocalROM):
     """Write Fairies to ROM."""
-    ReplaceShipFairy(spoiler)
+    ReplaceShipFairy(ROM_COPY)
     sav = spoiler.settings.rom_data
-    ROM_COPY = LocalROM()
     ROM_COPY.seek(sav + 0xE0)
     ROM_COPY.writeMultipleBytes(0, 2)
     if spoiler.settings.random_fairies:

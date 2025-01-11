@@ -12,10 +12,9 @@ from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def randomize_bananaport(spoiler):
+def randomize_bananaport(spoiler, ROM_COPY: LocalROM):
     """Rando write bananaport locations."""
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
-    ROM_COPY = LocalROM()
 
     if spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
         data_start = 0x1FF0000
@@ -46,9 +45,8 @@ def randomize_bananaport(spoiler):
 CAMERA_DISTANCE = 100
 
 
-def move_bananaports(spoiler):
+def move_bananaports(spoiler, ROM_COPY: LocalROM):
     """Move bananaports around in conjunction with custom bananaport location rando."""
-    ROM_COPY = LocalROM()
     MAPS_WITH_WARPS = {
         Maps.JungleJapes: Levels.JungleJapes,
         Maps.AngryAztec: Levels.AngryAztec,

@@ -23,7 +23,7 @@ class MelonCrateShortData:
         self.is_galleon_floating_crate = is_galleon_floating_crate
 
 
-def randomize_melon_crate(spoiler):
+def randomize_melon_crate(spoiler, ROM_COPY: LocalROM):
     """Place Melon Crates."""
     if spoiler.settings.random_crates:
         placements = []
@@ -40,7 +40,6 @@ def randomize_melon_crate(spoiler):
             Maps.CastleLowerCave,  # One in Crypt Hub
         ]
         keep_galleon_crate = False
-        ROM_COPY = LocalROM()
         for crate_item in spoiler.meloncrate_placement:
             for crate in CustomLocations[crate_item["level"]]:
                 if crate.name == crate_item["name"]:
@@ -87,7 +86,7 @@ def randomize_melon_crate(spoiler):
                     ignore_ids = crate_ids.copy()
                     if crate.map == Maps.CastleGreenhouse:
                         ignore_ids.append(9)  # Ban crate being placed on ID 9 in Greenhouse
-                    selected_id = getNextFreeID(cont_map_id, ignore_ids)
+                    selected_id = getNextFreeID(ROM_COPY, cont_map_id, ignore_ids)
                     crate_ids.append(selected_id)
                     persisted_m2.append(
                         [
@@ -105,7 +104,7 @@ def randomize_melon_crate(spoiler):
                             1 << 16,
                         ]
                     )
-                    addNewScript(cont_map_id, [selected_id], ScriptTypes.MelonCrate)
+                    addNewScript(ROM_COPY, cont_map_id, [selected_id], ScriptTypes.MelonCrate)
             ROM_COPY.seek(setup_table + 4 + (model2_count * 0x30))
             mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             extra_data = [mystery_count]

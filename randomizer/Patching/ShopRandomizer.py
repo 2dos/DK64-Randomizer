@@ -436,9 +436,8 @@ def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, lz_id:
     return script
 
 
-def pushNewShopLocationWrite(cont_map_id: Maps, obj_id: int, old_vendor: VendorType, new_vendor: VendorType):
+def pushNewShopLocationWrite(ROM_COPY: LocalROM, cont_map_id: Maps, obj_id: int, old_vendor: VendorType, new_vendor: VendorType):
     """Write new shop location script to ROM."""
-    ROM_COPY = LocalROM()
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -499,7 +498,7 @@ def pushNewShopLocationWrite(cont_map_id: Maps, obj_id: int, old_vendor: VendorT
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def ApplyShopRandomizer(spoiler):
+def ApplyShopRandomizer(spoiler, ROM_COPY: LocalROM):
     """Write shop locations to ROM."""
     if spoiler.settings.shuffle_shops:
         shop_assortment = spoiler.shuffled_shop_locations
@@ -509,7 +508,6 @@ def ApplyShopRandomizer(spoiler):
             for shop in shop_array:
                 if shop.map not in shop_placement_maps:
                     shop_placement_maps.append(shop.map)
-        ROM_COPY = LocalROM()
         for map in shop_placement_maps:
             setup_address = getPointerLocation(TableNames.Setups, map)
             lz_address = getPointerLocation(TableNames.Triggers, map)
@@ -701,4 +699,4 @@ def ApplyShopRandomizer(spoiler):
                     raise Exception(f"Original vendor could not be found (Model: {placement['original_model']})")
                 if new_vendor is None:
                     raise Exception(f"New vendor could not be found (Model: {placement['replace_model']})")
-                pushNewShopLocationWrite(map, placement["object_id"], original_vendor, new_vendor)
+                pushNewShopLocationWrite(ROM_COPY, map, placement["object_id"], original_vendor, new_vendor)
