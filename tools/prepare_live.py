@@ -44,6 +44,7 @@ def find_list_resources(tag, attribute, soup):
 
 
 def compress_jsonc():
+    """Combine all JSONC files in the randomizer Enums directory and output to a single JSON file."""
     DIR = "./randomizer/Enums/"
     OUTPUT_FILE = "./static/compiled.jsonc"
     combined_data = {}
