@@ -24,7 +24,7 @@ jobs:
     - name: NPM install 
       run: |
         npm install
-        node-modules/nunjucks/bin/precompile templates/ > ./static/js/compile_templates.js
+        node_modules/nunjucks/bin/precompile templates/ > ./static/js/compile_templates.js
 
     - name: Build minified versions
       run: python3 ./tools/prepare_live.py
