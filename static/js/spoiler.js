@@ -145,7 +145,7 @@ async function generateSpoiler(spoiler) {
           
             return isIterable && !isString && !isMapping;
           });
-        const rendered = await env.render("spoiler_new.html.jinja2", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
+        const rendered = await env.render("spoiler_new.html", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
         document.getElementById("spoiler_log_text").value = JSON.stringify(cloned_spoiler, null, 4);
         document.getElementById("spoiler_log_text").innerHTML = rendered;
     } catch (error) {
