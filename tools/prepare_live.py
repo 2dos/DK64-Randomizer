@@ -50,15 +50,15 @@ def compress_jsonc():
     for filename in os.listdir(DIR):
         if filename.endswith(".jsonc"):
             filepath = os.path.join(DIR, filename)
-            with open(filepath, 'r') as file:
+            with open(filepath, "r") as file:
                 content = file.read()
                 # Strip the comments from the JSONC file
                 content = re.sub(r"//.*?\n", "", content)
                 content = re.sub(r"/\*.*?\*/", "", content, flags=re.DOTALL)
                 content = json.loads(content)
                 combined_data[filename.replace(".jsonc", "")] = content
-    with open(OUTPUT_FILE, 'w') as output_file:
-        json.dump(combined_data, output_file, separators=(',', ':'))
+    with open(OUTPUT_FILE, "w") as output_file:
+        json.dump(combined_data, output_file, separators=(",", ":"))
 
 
 for f in [*get_files(os.getcwd(), "html", recursive=True), *get_files(os.getcwd(), "html", recursive=True)]:
@@ -93,7 +93,7 @@ for f in [*get_files(os.getcwd(), "html", recursive=True), *get_files(os.getcwd(
         # Write the modified HTML content back to the file
         with open(f, "w") as writer:
             writer.write(updated_html)
-compress_jsonc()
+# compress_jsonc()
 subprocess.run(["python3", "setup.py", "bdist_wheel"])
 shutil.copyfile("dist/dk64rando-1.0.0-py3-none-any.whl", "static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
 
