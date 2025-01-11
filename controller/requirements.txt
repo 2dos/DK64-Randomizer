@@ -8,8 +8,11 @@ requests
 waitress
 cryptography==43.0.1
 pyopenssl==24.2.1
+opentelemetry-instrumentation
+opentelemetry-api
+opentelemetry-instrumentation-wsgi
 opentelemetry-exporter-otlp
+opentelemetry-sdk
 opentelemetry-instrumentation-flask
-opentelemetry-instrumentation-rq
 swagger-ui-py
 flask-session
