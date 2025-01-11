@@ -274,7 +274,7 @@ def task_status(task_id):
     if task.result:
         # make sure we clear the task from the queue if it's done
         result = copy.copy(task.result)
-        task.delete()
+        # task.delete()
         return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     # If the task failed, return the error message
     if task.exc_info:
@@ -307,7 +307,6 @@ def get_presets():
     presets_to_return = []
     presets = update_presets()
     presets = presets.get(branch, [])
-    print(presets)
     if return_blank is None:
         presets_to_return = [preset for preset in presets if preset.get("settings_string") is not None]
     else:

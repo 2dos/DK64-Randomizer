@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-alpine
 # Define ARG and ENV variables
 ARG BRANCH=LOCAL
 ENV BRANCH=$BRANCH
@@ -9,10 +9,13 @@ ARG CLIENT_SECRET=" "
 ENV CLIENT_SECRET=$CLIENT_SECRET
 ARG REDIRECT=" "
 ENV REDIRECT=$REDIRECT
-COPY ./ /app/
+ARG COPY_FILES="./"
+COPY ${COPY_FILES} /app/
+# set the timezone to UTC
+ENV TZ=UTC
+RUN apk update && apk add --no-cache tzdata git
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN if [ "$BRANCH" != "LOCAL" ]; then \
-        apt-get update -y && apt-get install -y git && \
         rm -rf /app/ && \
         git config --global core.compression 0 && \
         git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app; \
