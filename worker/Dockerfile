@@ -5,7 +5,12 @@ ARG BRANCH=LOCAL
 ENV BRANCH=$BRANCH
 ARG COPY_FILES="./"
 
-RUN apk update && apk add --no-cache xdelta3 git
+RUN apk update && apk add --no-cache xdelta3 git gcc libc-dev wget \
+    && wget https://github.com/jmacd/xdelta/archive/refs/tags/v3.1.0.tar.gz \
+    && tar -xzf v3.1.0.tar.gz \
+    && cd xdelta-3.1.0/xdelta3 \
+    && cp xdelta3.h /usr/include \
+    && cp xdelta3.c /usr/include
 
 # Copy local files
 COPY $COPY_FILES /app/
