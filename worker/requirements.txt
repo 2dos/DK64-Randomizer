@@ -5,6 +5,6 @@ waitress==3.0.1
 redis
 rq
 vidua==0.4.5
-opentelemetry-exporter-otlp
+# opentelemetry-exporter-otlp
 opentelemetry-instrumentation-flask
 opentelemetry-instrumentation-rq
