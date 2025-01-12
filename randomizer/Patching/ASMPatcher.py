@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
     ExcludedSongs,
     ProgressiveHintItem,
 )
+from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -511,9 +512,11 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x8075F244, Overlay.Static, 0x282, offset_dict)
         writeValue(ROM_COPY, 0x806BE9B2, Overlay.Static, 0x287, offset_dict)
         writeValue(ROM_COPY, 0x806BED5E, Overlay.Static, 0x288, offset_dict)
+        SpeedUpFungiRabbit(ROM_COPY, 1.2)
         # Chunky 5DI
         writeValue(ROM_COPY, 0x8075F3F2, Overlay.Static, Model.Beetle + 1, offset_dict)
         writeValue(ROM_COPY, 0x806B23C6, Overlay.Static, 0x287, offset_dict)
+        
 
     # Misc Model Swaps
     writeValue(ROM_COPY, 0x8002A55E, Overlay.Bonus, settings.panic_klaptrap_model + 1, offset_dict)
@@ -1306,6 +1309,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x80704568, Overlay.Static, "spawnOverlayText", offset_dict)
 
     writeValue(ROM_COPY, 0x807563B4, Overlay.Static, 1, offset_dict, 1)  # Enable stack trace
+
+    writeFunction(ROM_COPY, 0x806DF3F8, Overlay.Static, "getHomingCountWithAbilityCheck", offset_dict)
 
     # Damage mask
     damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
@@ -3186,6 +3191,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
         writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
         writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
+        writeValue(ROM_COPY, 0x806BEB76, Overlay.Static, 0x3FE8, offset_dict)  # Tone down the rabbit race 1 speed to 0.75x rather than 1.0x
 
     # Expand Path Allocation
     writeValue(ROM_COPY, 0x80722E56, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)

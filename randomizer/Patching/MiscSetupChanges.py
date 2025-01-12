@@ -118,7 +118,7 @@ def pickChunkyCabinPadPositions():
     return {"picked": picked_pads.copy(), "index": 0}
 
 
-def SpeedUpFungiRabbit(ROM_COPY: LocalROM):
+def SpeedUpFungiRabbit(ROM_COPY: LocalROM, factor: float = 1.0):
     """Change the speed of the Fungi Rabbit."""
     file_start = getPointerLocation(TableNames.Spawners, Maps.FungiForest)
     ROM_COPY.seek(file_start)
@@ -164,7 +164,7 @@ def SpeedUpFungiRabbit(ROM_COPY: LocalROM):
         end_offset = offset
         if enemy_index == 2:
             # If enemy is the rabbit, adjust stats
-            speed_buff = 0.7
+            speed_buff = 0.7 * factor
             ROM_COPY.seek(file_start + init_offset + 0xD)
             ROM_COPY.write(int(136 * speed_buff))
 
