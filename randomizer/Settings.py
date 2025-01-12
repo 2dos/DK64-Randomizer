@@ -879,22 +879,16 @@ class Settings:
         # If we are *guaranteed* to start with a slam, place it in the training grounds reward slot and don't make it hintable, as before
         if Items.ProgressiveSlam in guaranteed_starting_moves:
             self.start_with_slam = True
-        elif not self.shuffle_items:
-            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-1")
         else:
             self.start_with_slam = False
         # If we are *guaranteed* to start with ALL training moves, put them in their vanilla locations and don't make them hintable, as before
         if Items.Vines in guaranteed_starting_moves and Items.Barrels in guaranteed_starting_moves and Items.Oranges in guaranteed_starting_moves and Items.Swim in guaranteed_starting_moves:
             self.training_barrels = TrainingBarrels.normal
-        elif not self.shuffle_items:
-            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-2")
         else:
             self.training_barrels = TrainingBarrels.shuffled
         # If Climbing is a guaranteed starting move, treat it like the others as well.
         if Items.Climbing in guaranteed_starting_moves:
             self.climbing_status = ClimbingStatus.normal
-        elif not self.shuffle_items:
-            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-3")
         else:
             self.climbing_status = ClimbingStatus.shuffled
 
@@ -2153,6 +2147,9 @@ class Settings:
         ]
         selected_region_world = random.choice(region_data)
         valid_starting_regions = []
+        banned_starting_regions = []
+        if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko):
+            banned_starting_regions.append(Regions.KremIsleMouth)
         if self.enable_plandomizer and self.plandomizer_dict["plando_starting_exit"] != -1:
             # Plandomizer code for random starting location
             planned_transition = self.plandomizer_dict["plando_starting_exit"]
@@ -2201,6 +2198,11 @@ class Settings:
                                 "exit_name": ShufflableExits[relevant_transition].back.name,
                             }
                         )
+        if any(banned_starting_regions):
+            valid_starting_regions = [region for region in valid_starting_regions if region["region"] not in banned_starting_regions]
+            # The only way for this to happen is if someone plandos a settings-banned region as their starting region
+            if len(valid_starting_regions) == 0:
+                raise Ex.PlandoIncompatibleException("Planned starting region is invalid.")
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
             spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
