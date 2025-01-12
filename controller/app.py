@@ -15,11 +15,13 @@ from flask import Blueprint, Flask, jsonify, make_response, redirect, render_tem
 from flask_cors import CORS
 from flask_session import Session
 from opentelemetry import trace
+
 # from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
+
 # from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
 from rq import Queue

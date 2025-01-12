@@ -8,11 +8,13 @@ import json
 import os
 from waitress import serve
 from opentelemetry import trace
+
 # from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
+
 # from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector
