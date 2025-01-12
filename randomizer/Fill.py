@@ -3775,7 +3775,7 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         if settings.climbing_status != ClimbingStatus.normal:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with Climbing. "
     if not settings.is_valid_item_pool():
-        found_incompatibilities +=  "Item pool is not a valid combination of items and cannot successfully fill the world. "
+        found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if found_incompatibilities != "":
         raise Ex.SettingsIncompatibleException(found_incompatibilities)
 
