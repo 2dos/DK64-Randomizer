@@ -38,6 +38,7 @@ services:
       - WORKER_URL_DEV=http://dev_worker:8000
       - WORKER_URL_MASTER=http://master_worker:8000
       - BRANCH=${BRANCH:-LOCAL}
+      - COPY_FILES=${COPY_FILES:-./}
     deploy:
       replicas: ${CONTROLLER_REPLICAS:-2}
       update_config:
@@ -114,6 +115,7 @@ services:
       - CLIENT_SECRET=${CLIENT_SECRET}
       - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
       - BRANCH=${BRANCH:-LOCAL}
+      - COPY_FILES=${COPY_FILES:-./}
     volumes:
       - ./dk64.z64:/app/worker/dk64.z64
       - ./generated_seeds/:/app/worker/generated_seeds/
