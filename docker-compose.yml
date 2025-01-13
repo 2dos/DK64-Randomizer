@@ -81,7 +81,7 @@ services:
       context: ./controller/
       dockerfile: ./nginx.Dockerfile
       args:
-        - BRANCH=${BRANCH:-LOCAL}
+        - NGINX=${NGINX:-LOCAL}
     env_file:
       - .env
     ports:
