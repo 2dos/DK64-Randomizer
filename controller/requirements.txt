@@ -8,7 +8,7 @@ requests
 waitress
 cryptography==43.0.1
 pyopenssl==24.2.1
-# opentelemetry-exporter-otlp
+opentelemetry-exporter-otlp-proto-http
 opentelemetry-instrumentation-flask
 opentelemetry-instrumentation-rq
 swagger-ui-py

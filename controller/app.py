@@ -16,13 +16,13 @@ from flask_cors import CORS
 from flask_session import Session
 from opentelemetry import trace
 
-# from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 
-# from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
 from rq import Queue
 from rq.job import Job, Retry
@@ -55,11 +55,11 @@ trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer_provider = trace.get_tracer_provider()
 
 # # Configure OTLP Exporter for sending traces to the collector
-# otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
+otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318")
 
 # # Add the BatchSpanProcessor to the TracerProvider
-# span_processor = BatchSpanProcessor(otlp_exporter)
-# tracer_provider.add_span_processor(span_processor)
+span_processor = BatchSpanProcessor(otlp_exporter)
+tracer_provider.add_span_processor(span_processor)
 
 app = Flask(__name__, static_folder="", template_folder="templates")
 FlaskInstrumentor().instrument_app(app)

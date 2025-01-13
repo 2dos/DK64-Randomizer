@@ -14,7 +14,7 @@ ENV REDIRECT=$REDIRECT
 ENV TZ=UTC
 RUN apk update && apk add --no-cache tzdata git
 
-RUN https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/controller/requirements.txt
+RUN pip install -r https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/controller/requirements.txt
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN git config --global core.compression 0 && \
     git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app
@@ -32,4 +32,4 @@ RUN mv /app/static /app/controller/static && \
 WORKDIR /app/controller
 
 # Command to run the application
-CMD ["waitress-serve", "--port=8000", "app:app"]
+CMD ["opentelemetry-instrument", "waitress-serve", "--port=8000", "app:app"]
