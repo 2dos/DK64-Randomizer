@@ -15,11 +15,13 @@ from flask import Blueprint, Flask, jsonify, make_response, redirect, render_tem
 from flask_cors import CORS
 from flask_session import Session
 from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
+
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
 from rq import Queue
@@ -52,10 +54,10 @@ resource = Resource(
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer_provider = trace.get_tracer_provider()
 
-# Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
+# # Configure OTLP Exporter for sending traces to the collector
+otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318")
 
-# Add the BatchSpanProcessor to the TracerProvider
+# # Add the BatchSpanProcessor to the TracerProvider
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 
@@ -274,7 +276,7 @@ def task_status(task_id):
     if task.result:
         # make sure we clear the task from the queue if it's done
         result = copy.copy(task.result)
-        task.delete()
+        # task.delete()
         return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     # If the task failed, return the error message
     if task.exc_info:
@@ -307,7 +309,6 @@ def get_presets():
     presets_to_return = []
     presets = update_presets()
     presets = presets.get(branch, [])
-    print(presets)
     if return_blank is None:
         presets_to_return = [preset for preset in presets if preset.get("settings_string") is not None]
     else:
