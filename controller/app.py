@@ -38,6 +38,7 @@ from oauth import DiscordAuth
 from functools import wraps
 from swagger_ui import flask_api_doc
 from werkzeug.middleware.proxy_fix import ProxyFix
+from opentelemetry_instrumentation_rq import RQInstrumentor
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
@@ -76,6 +77,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 app.config["SESSION_TYPE"] = "redis"
 redis_conn = Redis(host="redis", port=6379)
 app.config["SESSION_REDIS"] = redis_conn
+RQInstrumentor().instrument()
 
 # Create and initialize the Flask-Session object AFTER `app` has been configured
 server_session = Session(app)
