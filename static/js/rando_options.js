@@ -1148,8 +1148,8 @@ function toggle_item_rando() {
   if (disabled || !shopsInPool) {
     elements.smallerShops.checked = false;
   }
-  elements.moveVanilla.toggleAttribute("disabled", shopsInPool);
-  elements.moveRando.toggleAttribute("disabled", shopsInPool);
+  elements.moveVanilla.toggleAttribute("disabled", shopsInPool && !disabled);
+  elements.moveRando.toggleAttribute("disabled", shopsInPool && !disabled);
   elements.enemyDropRando.toggleAttribute("disabled", disabled);
   if (disabled) {
     elements.enemyDropRando.checked = false;

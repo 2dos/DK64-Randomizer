@@ -146,8 +146,6 @@ class Spoiler:
         self.tied_hint_regions = [HintRegion.NoRegion] * 35
         self.settings.finalize_world_settings(self)
         self.settings.update_valid_locations(self)
-        if not self.settings.is_valid_item_pool():
-            raise Ex.SettingsIncompatibleException("Item pool is not a valid combination of items and cannot successfully fill the world.")
 
     def FlushAllExcessSpoilerData(self):
         """Flush all spoiler data that is not needed for the final result."""

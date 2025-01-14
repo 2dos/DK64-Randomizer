@@ -106,21 +106,21 @@
 <div class="container border">
     {# The individual level tabs are populated here. Only one will show at a time. #}
     <div class="tab-content" id="nav-tabContent">
-        {% include 'plandomizer/plandomizer_introduction.html.jinja2' %}
-        {% include 'plandomizer/plandomizer_general.html.jinja2' %}
+        {% include 'plandomizer/plandomizer_introduction.html' %}
+        {% include 'plandomizer/plandomizer_general.html' %}
         {% for panelName, panel in plando_panels %}
             {% if panelName == "Shops" %}
-                {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
+                {% include 'plandomizer/plandomizer_shops.html' %}
             {% elif panelName == "Switches" %}
-                {% include 'plandomizer/plandomizer_switches.html.jinja2' %}
+                {% include 'plandomizer/plandomizer_switches.html' %}
             {% elif panelName == "Locations" %}
-                {% include 'plandomizer/plandomizer_locations.html.jinja2' %}
+                {% include 'plandomizer/plandomizer_locations.html' %}
             {% elif panelName == "Minigames" %}
-                {% include 'plandomizer/plandomizer_minigames.html.jinja2' %}
+                {% include 'plandomizer/plandomizer_minigames.html' %}
             {% elif panelName == "Hints" %}
-                {% include 'plandomizer/plandomizer_hints.html.jinja2' %}
+                {% include 'plandomizer/plandomizer_hints.html' %}
             {% else %}
-                {% include 'plandomizer/plandomizer_levels.html.jinja2' %}
+                {% include 'plandomizer/plandomizer_levels.html' %}
             {% endif %}
         {% endfor %}
     </div>

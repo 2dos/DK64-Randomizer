@@ -1,53 +1,33 @@
-FROM python:3.12-slim
+FROM python:3.12-alpine
 
 # Define ARG and ENV variables
 ARG BRANCH=LOCAL
 ENV BRANCH=$BRANCH
 
-# Install required dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libffi-dev \
-    libssl-dev \
-    make \
-    git \
-    build-essential \
-    wget \
-    autoconf
-
-# Install xdelta
-RUN wget https://github.com/jmacd/xdelta/archive/refs/tags/v3.1.0.tar.gz \
+RUN apk update && apk add --no-cache xdelta3 git gcc libc-dev wget tzdata \
+    && wget https://github.com/jmacd/xdelta/archive/refs/tags/v3.1.0.tar.gz \
     && tar -xzf v3.1.0.tar.gz \
     && cd xdelta-3.1.0/xdelta3 \
-    && autoreconf --install \
-    && ./configure \
-    && make \
-    && make install \
-    && cp xdelta3.c /usr/include/ \
-    && cd .. \
-    && rm -rf xdelta-3.1.0 v3.1.0.tar.gz \
-    && pip install pyxdelta
+    && cp xdelta3.h /usr/include \
+    && cp xdelta3.c /usr/include
 
+RUN pip install -r https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/worker/requirements.txt
+# set the timezone to UTC
+ENV TZ=UTC
 # Copy local files
-COPY ./ /app/
+# COPY ./ /app/
 
 # Conditionally clone the repository if BRANCH is not LOCAL
-RUN if [ "$BRANCH" != "LOCAL" ]; then \
-        rm -rf /app/ && \
-        git config --global core.compression 0 && \
-        git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app; \
-    fi
+RUN git config --global core.compression 0 && \
+    git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app
 WORKDIR /app/worker
 
 # Install dependencies
-RUN pip install -r requirements.txt && \
-    mv /app/static /app/worker/static && \
+RUN mv /app/static /app/worker/static && \
     mv /app/randomizer /app/worker/randomizer && \
     mv /app/version.py /app/worker/version.py && \
     mv /app/js.py /app/worker/js.py && \
     mv /app/base-hack /app/worker/base-hack/
-
-RUN opentelemetry-bootstrap --action=install
 
 # Command to run the application
 CMD ["opentelemetry-instrument", "python", "worker.py"]
