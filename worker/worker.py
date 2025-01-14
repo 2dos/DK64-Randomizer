@@ -87,9 +87,12 @@ class PriorityAwareWorker(Worker):
         if job_branch != BRANCH and BRANCH != "LOCAL":
             print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue
-            if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
-                print(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
-                job.cancel()
+            try:
+                if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
+                    print(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
+                    job.cancel()
+            except Exception:
+                print(f"Failed to check job duration, cancelling it")
             return
 
         print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip})")
