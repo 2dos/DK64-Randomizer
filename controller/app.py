@@ -17,6 +17,10 @@ from flask_session import Session
 from opentelemetry import trace
 
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry import metrics
+from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
@@ -55,12 +59,14 @@ trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer_provider = trace.get_tracer_provider()
 
 # # Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318")
+otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/traces")
 
 # # Add the BatchSpanProcessor to the TracerProvider
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
-
+reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
+meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
+metrics.set_meter_provider(meterProvider)
 app = Flask(__name__, static_folder="", template_folder="templates")
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)

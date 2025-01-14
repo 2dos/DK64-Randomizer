@@ -10,6 +10,10 @@ from waitress import serve
 from opentelemetry import trace
 
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry import metrics
+from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
@@ -55,13 +59,16 @@ trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer_provider = trace.get_tracer_provider()
 
 # # Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318")
+otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/traces")
 
 # # Add the BatchSpanProcessor to the TracerProvider
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 RQInstrumentor().instrument()
 
+reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
+meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
+metrics.set_meter_provider(meterProvider)
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 api = Blueprint("worker_api", __name__)
@@ -77,6 +84,13 @@ class PriorityAwareWorker(Worker):
         job_branch = job.meta.get("branch", "dev")
         if job_branch != BRANCH and BRANCH != "LOCAL":
             print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
+            # Check how long the job has been in the queue
+            try:
+                if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
+                    print(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
+                    job.cancel()
+            except Exception:
+                print(f"Failed to check job duration, cancelling it")
             return
 
         print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip})")
