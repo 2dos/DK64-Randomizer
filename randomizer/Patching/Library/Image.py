@@ -259,16 +259,7 @@ def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int
     ROM_COPY.write(pal_bin_file)
 
 
-def writeColorImageToROM(
-    im_f,
-    table_index: TableNames,
-    file_index: int,
-    width: int,
-    height: int,
-    transparent_border: bool,
-    format: TextureFormat,
-    ROM_COPY: Union[LocalROM, ROM]
-) -> None:
+def writeColorImageToROM(im_f, table_index: TableNames, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat, ROM_COPY: Union[LocalROM, ROM]) -> None:
     """Write texture to ROM."""
     file_start = getPointerLocation(table_index, file_index)
     file_end = getPointerLocation(table_index, file_index + 1)
