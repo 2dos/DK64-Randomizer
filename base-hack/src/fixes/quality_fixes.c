@@ -163,7 +163,7 @@ void initDingSprite(void) {
 }
 
 int getHomingCountWithAbilityCheck(item_ids item, int player) {
-	if (!MovesBase[0].weapon_bitfield & 2) {
+	if (!(MovesBase[0].weapon_bitfield & 2)) {
 		return 0;
 	}
 	return getItemCount(item, player);

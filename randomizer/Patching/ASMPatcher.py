@@ -1310,6 +1310,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x807563B4, Overlay.Static, 1, offset_dict, 1)  # Enable stack trace
 
     writeFunction(ROM_COPY, 0x806DF3F8, Overlay.Static, "getHomingCountWithAbilityCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x806EB560, Overlay.Static, "getHomingCountWithAbilityCheck", offset_dict)
 
     # Damage mask
     damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
