@@ -66,9 +66,7 @@ span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 RQInstrumentor().instrument()
 
-reader = PeriodicExportingMetricReader(
-    OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics")
-)
+reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
 meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
 metrics.set_meter_provider(meterProvider)
 FlaskInstrumentor().instrument_app(app)

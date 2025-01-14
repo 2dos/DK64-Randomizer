@@ -64,9 +64,7 @@ otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/t
 # # Add the BatchSpanProcessor to the TracerProvider
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
-reader = PeriodicExportingMetricReader(
-    OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics")
-)
+reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
 meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
 metrics.set_meter_provider(meterProvider)
 app = Flask(__name__, static_folder="", template_folder="templates")
