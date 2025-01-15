@@ -96,6 +96,7 @@ KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 FAIRY_LOAD_FIX = True
 CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
+REMOVE_CS_BARS = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1260,6 +1261,10 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if PAL_DOGADON_REMATCH_FIRE:
         writeValue(ROM_COPY, 0x80691E36, Overlay.Static, 166, offset_dict)  # PAL = 200 * (50 / 60)
+
+    if REMOVE_CS_BARS:
+        writeValue(ROM_COPY, 0x805FBC2C, Overlay.Static, 0x0060C825, offset_dict, 4) # Remove screen divisor capping
+        writeValue(ROM_COPY, 0x805FBC38, Overlay.Static, 0x00A04025, offset_dict, 4) # Remove screen divisor capping
 
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
