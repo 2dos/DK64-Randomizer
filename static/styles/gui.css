@@ -1120,3 +1120,9 @@ input[type=range][disabled]::-ms-fill-upper {
 .btn-custom-large {
   font-size: 20px;
 }
+
+.move_count_button {
+  width: 15%;
+  display: inline-block;
+  margin-top: 0;
+}
