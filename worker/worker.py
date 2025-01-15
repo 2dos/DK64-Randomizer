@@ -75,6 +75,7 @@ api = Blueprint("worker_api", __name__)
 RQInstrumentor().instrument()
 RedisInstrumentor().instrument()
 
+
 class PriorityAwareWorker(Worker):
     """Worker that processes high-priority tasks first."""
 
