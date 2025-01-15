@@ -472,7 +472,10 @@
                 <br/>
                 <em>Use the presets at the bottom as quick actions.</em>
                 <div class="flex-container" style="justify-content: space-around; margin-top: 15px;">
-                    <div class="flex-column-container">
+                    <div id="starting_moves_list_column_1" class="flex-column-container">
+                        <b id="starting_moves_list_all_1" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_1" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_1" style="font-style: italic; color: red;">Start with None</b>
                         <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_1">Pool 1</button>
                         <select id="starting_moves_list_1" name="starting_moves_list_1" class="starting_moves_list multi-select" multiple>
                             {% for item in custom_starting_moves %}
@@ -485,8 +488,7 @@
                                 display_name="Move Count"
                                 name="starting_moves_list_count_1"
                                 id="starting_moves_list_count_1"
-                                style="width: 15%; display: inline-block; margin-top: 0;"
-                                class="form-control center-div"
+                                class="form-control center-div move_count_button"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Amount of moves given from this item pool."
@@ -494,7 +496,10 @@
                                 placeholder="0"
                                 />
                     </div>
-                    <div class="flex-column-container">
+                    <div id="starting_moves_list_column_2" class="flex-column-container">
+                        <b id="starting_moves_list_all_2" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_2" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_2" style="font-style: italic; color: red;">Start with None</b>
                         <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_2">Pool 2</button>
                         <select id="starting_moves_list_2" name="starting_moves_list_2" class="starting_moves_list multi-select" multiple>
                         </select>
@@ -504,8 +509,7 @@
                                 display_name="Move Count"
                                 name="starting_moves_list_count_2"
                                 id="starting_moves_list_count_2"
-                                style="width: 15%; display: inline-block; margin-top: 0;"
-                                class="form-control center-div"
+                                class="form-control center-div move_count_button"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Amount of moves given from this item pool."
@@ -513,7 +517,10 @@
                                 placeholder="0"
                                 />
                     </div>
-                    <div class="flex-column-container">
+                    <div id="starting_moves_list_column_3" class="flex-column-container">
+                        <b id="starting_moves_list_all_3" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_3" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_3" style="font-style: italic; color: red;">Start with None</b>
                         <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_3">Pool 3</button>
                         <select id="starting_moves_list_3" name="starting_moves_list_3" class="starting_moves_list multi-select" multiple>
                         </select>
@@ -523,8 +530,7 @@
                                 display_name="Move Count"
                                 name="starting_moves_list_count_3"
                                 id="starting_moves_list_count_3"
-                                style="width: 15%; display: inline-block; margin-top: 0;"
-                                class="form-control center-div"
+                                class="form-control center-div move_count_button"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Amount of moves given from this item pool."
@@ -532,7 +538,10 @@
                                 placeholder="0"
                                 />
                     </div>
-                    <div class="flex-column-container">
+                    <div id="starting_moves_list_column_4" class="flex-column-container">
+                        <b id="starting_moves_list_all_4" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_4" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_4" style="font-style: italic; color: red;">Start with None</b>
                         <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_4">Pool 4</button>
                         <select id="starting_moves_list_4" name="starting_moves_list_4" class="starting_moves_list multi-select" multiple>
                         </select>
@@ -542,8 +551,7 @@
                                 display_name="Move Count"
                                 name="starting_moves_list_count_4"
                                 id="starting_moves_list_count_4"
-                                style="width: 15%; display: inline-block; margin-top: 0;"
-                                class="form-control center-div"
+                                class="form-control center-div move_count_button"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Amount of moves given from this item pool."
@@ -551,7 +559,10 @@
                                 placeholder="0"
                                 />
                     </div>
-                    <div class="flex-column-container">
+                    <div id="starting_moves_list_column_5" class="flex-column-container">
+                        <b id="starting_moves_list_all_5" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_5" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_5" style="font-style: italic; color: red;">Start with None</b>
                         <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_5">Pool 5</button>
                         <select id="starting_moves_list_5" name="starting_moves_list_5" class="starting_moves_list multi-select" multiple>
                         </select>
@@ -561,8 +572,7 @@
                                 display_name="Move Count"
                                 name="starting_moves_list_count_5"
                                 id="starting_moves_list_count_5"
-                                style="width: 15%; display: inline-block; margin-top: 0;"
-                                class="form-control center-div"
+                                class="form-control center-div move_count_button"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Amount of moves given from this item pool."
