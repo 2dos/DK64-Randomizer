@@ -11,5 +11,7 @@ pyopenssl==24.2.1
 opentelemetry-exporter-otlp-proto-http
 opentelemetry-instrumentation-flask
 opentelemetry-instrumentation-rq
+opentelemetry-instrumentation-requests
+opentelemetry-instrumentation-redis
 swagger-ui-py
 flask-session

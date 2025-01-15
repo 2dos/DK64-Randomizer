@@ -24,6 +24,8 @@ from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
 
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
@@ -78,7 +80,8 @@ app.config["SESSION_TYPE"] = "redis"
 redis_conn = Redis(host="redis", port=6379)
 app.config["SESSION_REDIS"] = redis_conn
 RQInstrumentor().instrument()
-
+RequestsInstrumentor().instrument()
+RedisInstrumentor().instrument()
 # Create and initialize the Flask-Session object AFTER `app` has been configured
 server_session = Session(app)
 

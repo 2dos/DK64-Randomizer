@@ -8,3 +8,4 @@ vidua==0.4.5
 opentelemetry-exporter-otlp-proto-http
 opentelemetry-instrumentation-flask
 opentelemetry-instrumentation-rq
+opentelemetry-instrumentation-redis
