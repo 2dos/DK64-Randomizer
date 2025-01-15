@@ -30,4 +30,4 @@ RUN mv /app/static /app/worker/static && \
     mv /app/base-hack /app/worker/base-hack/
 
 # Command to run the application
-CMD ["opentelemetry-instrument", "python", "worker.py"]
+CMD ["python", "worker.py"]

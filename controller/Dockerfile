@@ -32,4 +32,4 @@ RUN mv /app/static /app/controller/static && \
 WORKDIR /app/controller
 
 # Command to run the application
-CMD ["opentelemetry-instrument", "waitress-serve", "--port=8000", "app:app"]
+CMD ["waitress-serve", "--port=8000", "app:app"]
