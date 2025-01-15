@@ -1183,8 +1183,24 @@ function should_reset_select_on_preset(selectElement) {
 }
 
 // Bind click event for "apply_preset"
-function preset_select_changed(event) {
+async function preset_select_changed(event) {
   /** Trigger a change of the form via the JSON templates. */
+  // Disable the generate seed button
+  document.getElementById("generate_seed").disabled = true;
+  // Run trigger_presets_event in set timeout to allow the button to disable
+  setTimeout(() => {
+    trigger_preset_event(event);
+    // Pass in setting string
+    generateToast(
+      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+    );
+    setTimeout(() => {
+      document.getElementById("generate_seed").disabled = false;
+    }, 2000);
+  }, 0);
+
+  }
+function trigger_preset_event(event) {
   const element = document.getElementById("presets");
   let presets = null;
 
@@ -1209,10 +1225,6 @@ function preset_select_changed(event) {
     // Define a queue to batch DOM updates
     const updateQueue = [];
 
-    // Pass in setting string
-    generateToast(
-      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
-    );
     const settings = decrypt_settings_string_enum(presets.settings_string);
 
     for (const select of document.getElementsByTagName("select")) {
@@ -1333,6 +1345,7 @@ function preset_select_changed(event) {
     requestAnimationFrame(processQueue);
   }
 }
+
 
 document
   .getElementById("apply_preset")
