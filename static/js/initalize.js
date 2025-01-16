@@ -1190,29 +1190,6 @@ async function preset_select_changed(event) {
   // Run trigger_presets_event in set timeout to allow the button to disable
   setTimeout(() => {
     trigger_preset_event(event);
-const element = document.getElementById("presets");
-    // Pass in setting string
-let presets = null;
-
-  // if event is a string lets select the second option in the progressions_presets
-  if (typeof event === "string") {
-    for (const val of progression_presets) {
-      if (val.name === "Beginner Settings") {
-        presets = val;
-        break;
-      }
-    }
-  } else {
-    for (const val of progression_presets) {
-      if (val.name === element.value) {
-        presets = val;
-        break;
-      }
-    }
-  }
-    generateToast(
-      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
-    );
     setTimeout(() => {
       document.getElementById("generate_seed").disabled = false;
     }, 2000);
@@ -1363,6 +1340,9 @@ function trigger_preset_event(event) {
 
     requestAnimationFrame(processQueue);
   }
+  generateToast(
+    `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+  );
 }
 
 
