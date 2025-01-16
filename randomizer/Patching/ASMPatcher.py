@@ -688,11 +688,11 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     if GREATER_CAMERA_CONTROL:
         NULL_FUNCTION = 0x806E1864
         FUNCTION_TABLE = {
-            0x24: 0x806E607C, # R_FUNCTION
-            0x34: 0x806EA200, # CL_FUNCTION
-            0x38: 0x806EA26C, # CR_FUNCTION
+            0x24: 0x806E607C,  # R_FUNCTION
+            0x34: 0x806EA200,  # CL_FUNCTION
+            0x38: 0x806EA26C,  # CR_FUNCTION
         }
-        
+
         for x in range(107):
             if x == 0:
                 continue
@@ -703,7 +703,6 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
                 if original_function == NULL_FUNCTION:
                     ROM_COPY.seek(rom_base_addr + offset)
                     ROM_COPY.writeMultipleBytes(FUNCTION_TABLE[offset], 4)
-
 
     # Crosshair
     if settings.colorblind_mode != ColorblindMode.off:
@@ -1284,8 +1283,8 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80691E36, Overlay.Static, 166, offset_dict)  # PAL = 200 * (50 / 60)
 
     if REMOVE_CS_BARS:
-        writeValue(ROM_COPY, 0x805FBC2C, Overlay.Static, 0x0060C825, offset_dict, 4) # Remove screen divisor capping
-        writeValue(ROM_COPY, 0x805FBC38, Overlay.Static, 0x00A04025, offset_dict, 4) # Remove screen divisor capping
+        writeValue(ROM_COPY, 0x805FBC2C, Overlay.Static, 0x0060C825, offset_dict, 4)  # Remove screen divisor capping
+        writeValue(ROM_COPY, 0x805FBC38, Overlay.Static, 0x00A04025, offset_dict, 4)  # Remove screen divisor capping
 
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
