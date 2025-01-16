@@ -1190,10 +1190,6 @@ async function preset_select_changed(event) {
   // Run trigger_presets_event in set timeout to allow the button to disable
   setTimeout(() => {
     trigger_preset_event(event);
-    // Pass in setting string
-    generateToast(
-      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
-    );
     setTimeout(() => {
       document.getElementById("generate_seed").disabled = false;
     }, 2000);
@@ -1344,6 +1340,9 @@ function trigger_preset_event(event) {
 
     requestAnimationFrame(processQueue);
   }
+  generateToast(
+    `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+  );
 }
 
 
