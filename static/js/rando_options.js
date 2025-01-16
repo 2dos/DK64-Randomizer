@@ -1278,6 +1278,7 @@ function item_rando_list_changed(evt) {
   } else {
     kongRando.removeAttribute("disabled");
   }
+  savesettings();
 }
 
 // Validate Fast Start Status
@@ -2060,6 +2061,87 @@ document
     moveSelectedStartingMoves(5);
   });
 
+document
+  .getElementById("starting_moves_modal")
+  .addEventListener("click", function (event) {
+    assessAllItemPoolCounts();
+  });
+
+document
+  .getElementById("starting_moves_list_count_1").addEventListener("change", function (event) {
+    assessItemPoolCount(1);
+  });
+
+document
+  .getElementById("starting_moves_list_count_2").addEventListener("change", function (event) {
+    assessItemPoolCount(2);
+  });
+
+document
+  .getElementById("starting_moves_list_count_3").addEventListener("change", function (event) {
+    assessItemPoolCount(3);
+  });
+
+document
+  .getElementById("starting_moves_list_count_4").addEventListener("change", function (event) {
+    assessItemPoolCount(4);
+  });
+
+document
+  .getElementById("starting_moves_list_count_5").addEventListener("change", function (event) {
+    assessItemPoolCount(5);
+  });
+
+function assessAllItemPoolCounts() {
+  // Determine the label/coloring status of all item pools at once. This also shows and hides entire columns.
+  found_not_empty_item_pool = false;
+  for (let i = 5; i >= 1; i--) {
+    assessItemPoolCount(i);
+
+    const list_selector = document.getElementById("starting_moves_list_" + i);
+    const selector_column = document.getElementById("starting_moves_list_column_" + i);
+    selector_column.removeAttribute("hidden");
+    const number_of_moves_in_pool = Array.from(list_selector.options).filter(option => !option.hidden).length;
+    if (!found_not_empty_item_pool && number_of_moves_in_pool > 0) {
+      found_not_empty_item_pool = true;
+      for (let j = i+2; j <= 5; j++) {
+        const empty_selector_column = document.getElementById("starting_moves_list_column_" + j);
+        empty_selector_column.setAttribute("hidden", "hidden");
+      }
+    }
+  }
+}
+
+function assessItemPoolCount(target_list_id) {
+  // Determine if the given item pool is starting with all, some, or none of the item in the list and update the UI accordingly.
+  const move_count = document.getElementById("starting_moves_list_count_" + target_list_id);
+  const list_selector = document.getElementById("starting_moves_list_" + target_list_id);
+  const mover_button = document.getElementById("starting_moves_list_mover_" + target_list_id);
+  const all_label = document.getElementById("starting_moves_list_all_" + target_list_id);
+  all_label.setAttribute("hidden", "hidden");
+  const some_label = document.getElementById("starting_moves_list_some_" + target_list_id);
+  some_label.setAttribute("hidden", "hidden");
+  const none_label = document.getElementById("starting_moves_list_none_" + target_list_id);
+  none_label.setAttribute("hidden", "hidden");
+  const number_of_moves_in_pool = Array.from(list_selector.options).filter(option => !option.hidden).length;
+  if (move_count.value == 0 || number_of_moves_in_pool == 0) {
+    none_label.removeAttribute("hidden");
+    list_selector.style = "border-color: red";
+    move_count.style = "border-color: red";
+    mover_button.style = "border-color: red";
+  } else if (move_count.value >= number_of_moves_in_pool) {
+      all_label.removeAttribute("hidden");
+      list_selector.style = "border-color: green";
+      move_count.style = "border-color: green";
+      mover_button.style = "border-color: green";
+  } else {
+    some_label.removeAttribute("hidden");
+    list_selector.style = "border-color: orange";
+    move_count.style = "border-color: orange";
+    mover_button.style = "border-color: orange";
+  }
+}
+
 function moveSelectedStartingMoves(target_list_id) {
   let selected_moves = [];
   for (let i = 1; i <= 5; i++) {
@@ -2084,6 +2166,7 @@ function moveSelectedStartingMoves(target_list_id) {
     }
     target_selector.appendChild(moved_move);
   }
+  assessAllItemPoolCounts();
   savesettings();
 }
 

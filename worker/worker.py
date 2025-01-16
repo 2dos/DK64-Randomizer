@@ -36,6 +36,7 @@ from version import version
 from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
+from opentelemetry.instrumentation.redis import RedisInstrumentor
 
 
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
@@ -64,7 +65,6 @@ otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/t
 # # Add the BatchSpanProcessor to the TracerProvider
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
-RQInstrumentor().instrument()
 
 reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
 meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
@@ -72,6 +72,8 @@ metrics.set_meter_provider(meterProvider)
 FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 api = Blueprint("worker_api", __name__)
+RQInstrumentor().instrument()
+RedisInstrumentor().instrument()
 
 
 class PriorityAwareWorker(Worker):
