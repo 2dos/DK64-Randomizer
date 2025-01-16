@@ -10,7 +10,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import HardModeSelected, KongModels, SlamRequirement, HardBossesSelected
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Enums.Maps import Maps
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected
 
 BossMapList = [
     Maps.JapesBoss,

@@ -1,16 +1,14 @@
 """Apply Boss Locations."""
 
-import js
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import TableNames
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def randomize_barrels(spoiler):
+def randomize_barrels(spoiler, ROM_COPY: LocalROM):
     """Randomize barrel locations."""
     barrels = [28, 107, 134]
     if spoiler.settings.bonus_barrel_rando or spoiler.settings.minigames_list_selected:
-        ROM_COPY = LocalROM()
         barrel_replacements = []
         for location, minigame in spoiler.shuffled_barrel_data.items():
             container_map = int(BarrelMetaData[location].map)
@@ -28,7 +26,7 @@ def randomize_barrels(spoiler):
                 barrel_replacements.append({"containing_map": container_map, "barrels": [barrel_data]})
         for cont_map in barrel_replacements:
             cont_map_id = int(cont_map["containing_map"])
-            cont_map_setup_address = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+            cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
             ROM_COPY.seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30))

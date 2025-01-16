@@ -1,6 +1,5 @@
 """Rando write bananaport locations."""
 
-import js
 import math
 from randomizer.Enums.Settings import BananaportRando, ShufflePortLocations
 from randomizer.Lists.Warps import BananaportVanilla
@@ -9,13 +8,13 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Levels import Levels
-from randomizer.Patching.Lib import float_to_hex, TableNames
+from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def randomize_bananaport(spoiler):
+def randomize_bananaport(spoiler, ROM_COPY: LocalROM):
     """Rando write bananaport locations."""
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
-    ROM_COPY = LocalROM()
 
     if spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
         data_start = 0x1FF0000
@@ -30,7 +29,7 @@ def randomize_bananaport(spoiler):
                 maps_used.append(map_id)
             visual_warp_changes.append([map_id, obj_id, port_new[1]])
         for cont_map_id in maps_used:
-            cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
             ROM_COPY.seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             for x in range(model2_count):
@@ -46,9 +45,8 @@ def randomize_bananaport(spoiler):
 CAMERA_DISTANCE = 100
 
 
-def move_bananaports(spoiler):
+def move_bananaports(spoiler, ROM_COPY: LocalROM):
     """Move bananaports around in conjunction with custom bananaport location rando."""
-    ROM_COPY = LocalROM()
     MAPS_WITH_WARPS = {
         Maps.JungleJapes: Levels.JungleJapes,
         Maps.AngryAztec: Levels.AngryAztec,
@@ -65,9 +63,9 @@ def move_bananaports(spoiler):
     if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
         for cont_map_id in MAPS_WITH_WARPS:
             level_id = MAPS_WITH_WARPS[cont_map_id]
-            cutscene_table = js.pointer_addresses[TableNames.Cutscenes]["entries"][cont_map_id]["pointing_to"]
-            setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
-            exit_table = js.pointer_addresses[TableNames.Exits]["entries"][cont_map_id]["pointing_to"]
+            cutscene_table = getPointerLocation(TableNames.Cutscenes, cont_map_id)
+            setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
+            exit_table = getPointerLocation(TableNames.Exits, cont_map_id)
             modification_table = []
             for warp_id in spoiler.warp_locations:
                 if BananaportVanilla[warp_id].map_id == cont_map_id:

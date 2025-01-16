@@ -31,11 +31,8 @@ from randomizer.Patching.Cosmetics.Colorblind import (
     recolorKRoolShipSwitch,
     recolorRotatingRoomTiles,
 )
-from randomizer.Patching.Lib import (
-    compatible_background_textures,
-    TableNames,
-)
-from randomizer.Patching.LibImage import (
+from randomizer.Patching.Library.Generic import compatible_background_textures
+from randomizer.Patching.Library.Image import (
     getImageFile,
     TextureFormat,
     ExtraTextures,
@@ -47,6 +44,7 @@ from randomizer.Patching.LibImage import (
     getKongItemColor,
     hueShiftColor,
 )
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 from randomizer.Patching.Cosmetics.ModelSwaps import (
@@ -91,13 +89,13 @@ class HelmDoorImages:
 RECOLOR_MEDAL_RIM = False
 
 
-def changePatchFace(settings: Settings):
+def changePatchFace(settings: Settings, ROM_COPY: ROM):
     """Change the top of the dirt patch image."""
     if not settings.better_dirt_patch_cosmetic:
         return
-    dirt_im = getImageFile(25, 0x1379, True, 32, 32, TextureFormat.RGBA5551)
-    letd_im = getImageFile(14, 0x75, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32)).rotate(-5)
-    letk_im = getImageFile(14, 0x76, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32))
+    dirt_im = getImageFile(ROM_COPY, 25, 0x1379, True, 32, 32, TextureFormat.RGBA5551)
+    letd_im = getImageFile(ROM_COPY, 14, 0x75, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32)).rotate(-5)
+    letk_im = getImageFile(ROM_COPY, 14, 0x76, True, 40, 51, TextureFormat.RGBA5551).resize((18, 32))
     letter_ims = (letd_im, letk_im)
     for letter in letter_ims:
         imw, imh = letter.size
@@ -108,17 +106,16 @@ def changePatchFace(settings: Settings):
                 px[x, y] = (r, g, b, 150 if a > 128 else 0)
     dirt_im.paste(letd_im, (0, 0), letd_im)
     dirt_im.paste(letk_im, (16, 0), letk_im)
-    writeColorImageToROM(dirt_im, 25, 0x1379, 32, 32, False, TextureFormat.RGBA5551)
+    writeColorImageToROM(dirt_im, 25, 0x1379, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
-def apply_cosmetic_colors(settings: Settings):
+def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
     """Apply cosmetic skins to kongs."""
-    ROM_COPY = ROM()
     sav = settings.rom_data
 
     applyCosmeticModelSwaps(settings, ROM_COPY)
-    changePatchFace(settings)
-    writeKongColors(settings)
+    changePatchFace(settings, ROM_COPY)
+    writeKongColors(settings, ROM_COPY)
 
     settings.jetman_color = [0xFF, 0xFF, 0xFF]
     if settings.misc_cosmetics and settings.override_cosmetics:
@@ -145,9 +142,9 @@ def apply_cosmetic_colors(settings: Settings):
         settings.jetman_color = jetman_color.copy()
 
     if js.document.getElementById("override_cosmetics").checked or True:
-        writeTransition(settings)
-        writeCustomPortal(settings)
-        writeCustomPaintings(settings)
+        writeTransition(settings, ROM_COPY)
+        writeCustomPortal(settings, ROM_COPY)
+        writeCustomPaintings(settings, ROM_COPY)
         # randomizePlants(ROM_COPY, settings)  # Not sure how much I like how this feels
         settings.gb_colors = CharacterColors[js.document.getElementById("gb_colors").value]
         settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
@@ -184,7 +181,7 @@ def apply_cosmetic_colors(settings: Settings):
             dim_pattern_local = dim_pattern.get(tex, (44, 44))
             width = dim_pattern_local[0]
             height = dim_pattern_local[1]
-            shine_img = getImageFile(25, tex, True, width, height, TextureFormat.RGBA5551)
+            shine_img = getImageFile(ROM_COPY, 25, tex, True, width, height, TextureFormat.RGBA5551)
             gb_shine_img = maskImageGBSpin(shine_img, tuple(channels), tex)
             if tex == 0xB7B:
                 # Create fake GB shine img
@@ -209,8 +206,9 @@ def apply_cosmetic_colors(settings: Settings):
                     height,
                     False,
                     TextureFormat.RGBA5551,
+                    ROM_COPY,
                 )
-            writeColorImageToROM(gb_shine_img, 25, tex, width, height, False, TextureFormat.RGBA5551)
+            writeColorImageToROM(gb_shine_img, 25, tex, width, height, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
@@ -372,86 +370,86 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
         if mode in (ColorblindMode.prot, ColorblindMode.deut):
             recolorBells(ROM_COPY)
         # Preload DK single cb image to paste onto balloons
-        dk_single = getImageFile(7, 175, False, 44, 44, TextureFormat.RGBA5551)
+        dk_single = getImageFile(ROM_COPY, 7, 175, False, 44, 44, TextureFormat.RGBA5551)
         dk_single = dk_single.resize((21, 21))
         blueprint_lanky = []
         # Preload blueprint images. Lanky's blueprint image is so much easier to mask, because it is blue, and the frame is brown
         for file in range(8):
-            blueprint_lanky.append(getImageFile(25, 5519 + file, True, 48, 42, TextureFormat.RGBA5551))
+            blueprint_lanky.append(getImageFile(ROM_COPY, 25, 5519 + file, True, 48, 42, TextureFormat.RGBA5551))
         writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, TextureFormat.RGBA5551, ROM_COPY)
         recolorWrinklyDoors(mode, ROM_COPY)
         recolorSlamSwitches(galleon_switch_value, ROM_COPY, mode)
-        recolorRotatingRoomTiles(mode)
+        recolorRotatingRoomTiles(mode, ROM_COPY)
         recolorBlueprintModelTwo(mode, ROM_COPY)
         recolorKlaptraps(mode, ROM_COPY)
         recolorPotions(mode, ROM_COPY)
-        recolorMushrooms(mode)
+        recolorMushrooms(mode, ROM_COPY)
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
             # hair_im = getFile(25, file, True, 32, 44, TextureFormat.RGBA5551)
             # hair_im = maskImage(hair_im, kong_index, 0)
-            # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
+            # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False, ROM_COPY)
             writeKasplatHairColorToROM(getKongItemColor(mode, kong_index), 25, [4124, 4122, 4123, 4120, 4121][kong_index], TextureFormat.RGBA5551, ROM_COPY)
             for offset in range(8):
                 # Blueprint sprite
                 blueprint_im = blueprint_lanky[offset]
                 blueprint_im = maskBlueprintImage(blueprint_im, kong_index, mode)
-                writeColorImageToROM(blueprint_im, 25, BLUEPRINT_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551)
+                writeColorImageToROM(blueprint_im, 25, BLUEPRINT_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551, ROM_COPY)
             for offset in range(6):
                 # Shockwave
-                shockwave_im = getImageFile(25, SHOCKWAVE_START[kong_index] + offset, True, 32, 32, TextureFormat.RGBA32)
+                shockwave_im = getImageFile(ROM_COPY, 25, SHOCKWAVE_START[kong_index] + offset, True, 32, 32, TextureFormat.RGBA32)
                 shockwave_im = maskImage(shockwave_im, kong_index, 0, False, mode)
-                writeColorImageToROM(shockwave_im, 25, SHOCKWAVE_START[kong_index] + offset, 32, 32, False, TextureFormat.RGBA32)
+                writeColorImageToROM(shockwave_im, 25, SHOCKWAVE_START[kong_index] + offset, 32, 32, False, TextureFormat.RGBA32, ROM_COPY)
             for offset in range(12):
                 # Helm Laser (will probably also affect the Pufftoss laser and the Game Over laser)
-                laser_im = getImageFile(7, LASER_START[kong_index] + offset, False, 32, 32, TextureFormat.RGBA32)
+                laser_im = getImageFile(ROM_COPY, 7, LASER_START[kong_index] + offset, False, 32, 32, TextureFormat.RGBA32)
                 laser_im = maskLaserImage(laser_im, kong_index, mode)
-                writeColorImageToROM(laser_im, 7, LASER_START[kong_index] + offset, 32, 32, False, TextureFormat.RGBA32)
+                writeColorImageToROM(laser_im, 7, LASER_START[kong_index] + offset, 32, 32, False, TextureFormat.RGBA32, ROM_COPY)
             if kong_index in (Kongs.donkey, Kongs.tiny) or (kong_index == Kongs.lanky and mode != ColorblindMode.trit):  # Lanky (prot, deut only) or DK or Tiny
                 for offset in range(8):
                     # Single
-                    single_im = getImageFile(7, SINGLE_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
+                    single_im = getImageFile(ROM_COPY, 7, SINGLE_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     single_im = maskImageWithOutline(single_im, kong_index, 0, mode, "single")
-                    writeColorImageToROM(single_im, 7, SINGLE_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(single_im, 7, SINGLE_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551, ROM_COPY)
                 for offset in range(8):
                     # Coin
-                    coin_im = getImageFile(7, COIN_START[kong_index] + offset, False, 48, 42, TextureFormat.RGBA5551)
+                    coin_im = getImageFile(ROM_COPY, 7, COIN_START[kong_index] + offset, False, 48, 42, TextureFormat.RGBA5551)
                     coin_im = maskImageWithOutline(coin_im, kong_index, 0, mode)
-                    writeColorImageToROM(coin_im, 7, COIN_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(coin_im, 7, COIN_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551, ROM_COPY)
                 for offset in range(12):
                     # Bunch
-                    bunch_im = getImageFile(7, BUNCH_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
+                    bunch_im = getImageFile(ROM_COPY, 7, BUNCH_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     bunch_im = maskImageWithOutline(bunch_im, kong_index, 0, mode, "bunch")
-                    writeColorImageToROM(bunch_im, 7, BUNCH_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(bunch_im, 7, BUNCH_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551, ROM_COPY)
                 for offset in range(8):
                     # Balloon
-                    balloon_im = getImageFile(25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
+                    balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
                     balloon_im = maskImageWithOutline(balloon_im, kong_index, 33, mode)
                     balloon_im.paste(dk_single, balloon_single_frames[offset], dk_single)
-                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
             else:
                 for offset in range(8):
                     # Single
-                    single_im = getImageFile(7, SINGLE_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
+                    single_im = getImageFile(ROM_COPY, 7, SINGLE_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     single_im = maskImage(single_im, kong_index, 0, False, mode)
-                    writeColorImageToROM(single_im, 7, SINGLE_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(single_im, 7, SINGLE_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551, ROM_COPY)
                 for offset in range(8):
                     # Coin
-                    coin_im = getImageFile(7, COIN_START[kong_index] + offset, False, 48, 42, TextureFormat.RGBA5551)
+                    coin_im = getImageFile(ROM_COPY, 7, COIN_START[kong_index] + offset, False, 48, 42, TextureFormat.RGBA5551)
                     coin_im = maskImage(coin_im, kong_index, 0, False, mode)
-                    writeColorImageToROM(coin_im, 7, COIN_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(coin_im, 7, COIN_START[kong_index] + offset, 48, 42, False, TextureFormat.RGBA5551, ROM_COPY)
                 for offset in range(12):
                     # Bunch
-                    bunch_im = getImageFile(7, BUNCH_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
+                    bunch_im = getImageFile(ROM_COPY, 7, BUNCH_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     bunch_im = maskImage(bunch_im, kong_index, 0, True, mode)
-                    writeColorImageToROM(bunch_im, 7, BUNCH_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(bunch_im, 7, BUNCH_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551, ROM_COPY)
                 for offset in range(8):
                     # Balloon
-                    balloon_im = getImageFile(25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
+                    balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
                     balloon_im = maskImage(balloon_im, kong_index, 33, False, mode)
                     balloon_im.paste(dk_single, balloon_single_frames[offset], dk_single)
-                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551)
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
     else:
         # Recolor slam switch if colorblind mode is off
         if galleon_switch_value is not None:
@@ -463,11 +461,11 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
     if settings.head_balloons:
         for kong in range(5):
             for offset in range(8):
-                balloon_im = getImageFile(25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
-                kong_im = getImageFile(14, 190 + kong, True, 32, 32, TextureFormat.RGBA5551)
+                balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
+                kong_im = getImageFile(ROM_COPY, 14, 190 + kong, True, 32, 32, TextureFormat.RGBA5551)
                 kong_im = kong_im.transpose(Image.FLIP_TOP_BOTTOM).resize((20, 20))
                 balloon_im.paste(kong_im, (5, 39), kong_im)
-                writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551)
+                writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 ORANGE_SCALING = 0.7
@@ -492,9 +490,8 @@ LIME_COLORS = {
 }
 
 
-def applyKongModelSwaps(settings: Settings) -> None:
+def applyKongModelSwaps(settings: Settings, ROM_COPY: LocalROM) -> None:
     """Apply Krusha Kong setting."""
-    ROM_COPY = LocalROM()
     settings_values = [
         settings.kong_model_dk,
         settings.kong_model_diddy,
@@ -514,31 +511,31 @@ def applyKongModelSwaps(settings: Settings) -> None:
             source_data = model_index_mapping[value]
             for model_subindex in range(2):
                 if dest_data[model_subindex] is not None:
-                    dest_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][dest_data[model_subindex]]["pointing_to"]
-                    source_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][source_data[model_subindex]]["pointing_to"]
-                    source_end = js.pointer_addresses[TableNames.ActorGeometry]["entries"][source_data[model_subindex] + 1]["pointing_to"]
+                    dest_start = getPointerLocation(TableNames.ActorGeometry, dest_data[model_subindex])
+                    source_start = getPointerLocation(TableNames.ActorGeometry, source_data[model_subindex])
+                    source_end = getPointerLocation(TableNames.ActorGeometry, source_data[model_subindex] + 1)
                     source_size = source_end - source_start
                     ROM_COPY.seek(source_start)
                     file_bytes = ROM_COPY.readBytes(source_size)
                     ROM_COPY.seek(dest_start)
                     ROM_COPY.writeBytes(file_bytes)
                     # Write uncompressed size
-                    unc_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][5]["pointing_to"]
+                    unc_table = getPointerLocation(TableNames.UncompressedFileSizes, TableNames.ActorGeometry)
                     ROM_COPY.seek(unc_table + (source_data[model_subindex] * 4))
                     unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     ROM_COPY.seek(unc_table + (dest_data[model_subindex] * 4))
                     ROM_COPY.writeMultipleBytes(unc_size, 4)
-            changeModelTextures(settings, index)
+            changeModelTextures(settings, ROM_COPY, index)
             if value in (KongModels.krusha, KongModels.krool_cutscene, KongModels.krool_fight):
                 fixModelSmallKongCollision(index, ROM_COPY)
             if value == KongModels.krusha:
-                placeKrushaHead(settings, index)
+                placeKrushaHead(ROM_COPY, settings, index)
                 if index == Kongs.donkey:
                     fixBaboonBlasts(ROM_COPY)
                 # Orange Switches
                 switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
-                base_im = getImageFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
-                orange_im = getImageFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
+                base_im = getImageFile(ROM_COPY, 25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
+                orange_im = getImageFile(ROM_COPY, 7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
                 if settings.colorblind_mode == ColorblindMode.off:
                     orange_im = maskImageWithColor(orange_im, LIME_COLORS[index])
                 else:
@@ -547,12 +544,12 @@ def applyKongModelSwaps(settings: Settings) -> None:
                 dim_offset = int((32 - dim_length) / 2)
                 orange_im = orange_im.resize((dim_length, dim_length))
                 base_im.paste(orange_im, (dim_offset, dim_offset), orange_im)
-                writeColorImageToROM(base_im, 25, switch_faces[index], 32, 32, False, TextureFormat.RGBA5551)
+                writeColorImageToROM(base_im, 25, switch_faces[index], 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
-def darkenDPad():
+def darkenDPad(ROM_COPY: ROM):
     """Change the DPad cross texture for the DPad HUD."""
-    img = getImageFile(14, 187, True, 32, 32, TextureFormat.RGBA5551)
+    img = getImageFile(ROM_COPY, 14, 187, True, 32, 32, TextureFormat.RGBA5551)
     px = img.load()
     bytes_array = []
     for y in range(32):
@@ -574,11 +571,11 @@ def darkenDPad():
             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
     px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[TableNames.TexturesHUD]["entries"][187]["pointing_to"])
-    ROM().writeBytes(px_data)
+    ROM_COPY.seek(getPointerLocation(TableNames.TexturesHUD, 187))
+    ROM_COPY.writeBytes(px_data)
 
 
-def applyHelmDoorCosmetics(settings: Settings) -> None:
+def applyHelmDoorCosmetics(settings: Settings, ROM_COPY: LocalROM) -> None:
     """Apply Helm Door Cosmetic Changes."""
     crown_door_required_item = settings.crown_door_item
     coin_door_required_item = settings.coin_door_item
@@ -605,6 +602,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                 base_overlay = Image.new(mode="RGBA", size=image_data.dimensions)
                 for image_slot, image in enumerate(image_data.image_indexes):
                     item_im = getImageFile(
+                        ROM_COPY,
                         image_data.table,
                         image,
                         image_data.table in (14, 25),
@@ -641,23 +639,24 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
                             r, g, b, a = pearl_mask_im.getpixel((x, y))
                             if a > 128:
                                 pix_pearl[x, y] = (0, 0, 0, 0)
-                writeColorImageToROM(base, 25, door.item_image, 44, 44, True, TextureFormat.RGBA5551)
+                writeColorImageToROM(base, 25, door.item_image, 44, 44, True, TextureFormat.RGBA5551, ROM_COPY)
                 writeColorImageToROM(
-                    numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM),
+                    numberToImage(door.count, (44, 44), ROM_COPY).transpose(Image.FLIP_TOP_BOTTOM),
                     25,
                     door.number_image,
                     44,
                     44,
                     True,
                     TextureFormat.RGBA5551,
+                    ROM_COPY,
                 )
 
 
-def darkenPauseBubble(settings: Settings):
+def darkenPauseBubble(settings: Settings, ROM_COPY: ROM):
     """Change the brightness of the text bubble used for the pause menu for dark mode."""
     if not settings.dark_mode_textboxes:
         return
-    img = getImageFile(14, 107, True, 48, 32, TextureFormat.RGBA5551)
+    img = getImageFile(ROM_COPY, 14, 107, True, 48, 32, TextureFormat.RGBA5551)
     px = img.load()
     canary_px = list(px[24, 16])
     if canary_px[0] < 128 and canary_px[1] < 128 and canary_px[2] < 128:
@@ -674,8 +673,8 @@ def darkenPauseBubble(settings: Settings):
             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
     px_data = gzip.compress(px_data, compresslevel=9)
-    ROM().seek(js.pointer_addresses[TableNames.TexturesHUD]["entries"][107]["pointing_to"])
-    ROM().writeBytes(px_data)
+    ROM_COPY.seek(getPointerLocation(TableNames.TexturesHUD, 107))
+    ROM_COPY.writeBytes(px_data)
 
 
 class WinConData:
@@ -692,7 +691,7 @@ class WinConData:
         self.default_count = default_count
 
 
-def showWinCondition(settings: Settings):
+def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
     win_con = settings.win_condition_item
     if win_con == WinConditionComplex.beat_krool:
@@ -701,21 +700,21 @@ def showWinCondition(settings: Settings):
     if win_con == WinConditionComplex.get_key8:
         output_image = Image.open(BytesIO(js.getFile("./base-hack/assets/displays/key8.png")))
         output_image = output_image.resize((32, 32))
-        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         return
     if win_con == WinConditionComplex.req_bean:
         output_image = Image.open(BytesIO(js.getFile("./base-hack/assets/arcade_jetpac/arcade/bean.png")))
         output_image = output_image.resize((32, 32))
-        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         return
     if win_con == WinConditionComplex.krem_kapture:
-        item_im = getImageFile(14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
-        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        item_im = getImageFile(ROM_COPY, 14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
+        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         return
     if win_con == WinConditionComplex.dk_rap_items:
-        item_im = getImageFile(7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
+        item_im = getImageFile(ROM_COPY, 7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
         item_im = item_im.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
-        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         return
     win_con_data = {
         WinConditionComplex.req_bp: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
@@ -735,6 +734,7 @@ def showWinCondition(settings: Settings):
         base_im = Image.open(BytesIO(js.getFile("./base-hack/assets/arcade_jetpac/arcade/pearl.png")))
     else:
         item_im = getImageFile(
+            ROM_COPY,
             item_data.table,
             item_data.image,
             item_data.table != 7,
@@ -748,9 +748,9 @@ def showWinCondition(settings: Settings):
         base_im = Image.new(mode="RGBA", size=(dim, dim))
         base_im.paste(item_im, (int((dim - item_data.width) >> 1), int((dim - item_data.height) >> 1)), item_im)
     base_im = base_im.resize((32, 32))
-    num_im = numberToImage(settings.win_condition_count, (20, 20))
+    num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
     base_im.paste(num_im, (6, 6), num_im)
-    writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+    writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 def randomizePlants(ROM_COPY: ROM, settings: Settings):
@@ -771,7 +771,7 @@ def randomizePlants(ROM_COPY: ROM, settings: Settings):
         Maps.BananaFairyRoom,
     ]
     for map_id in maps_that_contain_flowers:
-        setup_file = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
+        setup_file = getPointerLocation(TableNames.Setups, map_id)
         ROM_COPY.seek(setup_file)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         for model2_item in range(model2_count):

@@ -1,10 +1,10 @@
 """Place Shuffled Shops."""
 
-import js
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.VendorType import VendorType
-from randomizer.Patching.Lib import float_to_hex, intf_to_float, TableNames
+from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.ShuffleShopLocations import available_shops
 
@@ -436,10 +436,9 @@ def getShopkeeperInstanceScript(vendor: VendorType, water_id: int = None, lz_id:
     return script
 
 
-def pushNewShopLocationWrite(cont_map_id: Maps, obj_id: int, old_vendor: VendorType, new_vendor: VendorType):
+def pushNewShopLocationWrite(ROM_COPY: LocalROM, cont_map_id: Maps, obj_id: int, old_vendor: VendorType, new_vendor: VendorType):
     """Write new shop location script to ROM."""
-    ROM_COPY = LocalROM()
-    script_table = js.pointer_addresses[TableNames.InstanceScripts]["entries"][cont_map_id]["pointing_to"]
+    script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     good_scripts = []
@@ -499,7 +498,7 @@ def pushNewShopLocationWrite(cont_map_id: Maps, obj_id: int, old_vendor: VendorT
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def ApplyShopRandomizer(spoiler):
+def ApplyShopRandomizer(spoiler, ROM_COPY: LocalROM):
     """Write shop locations to ROM."""
     if spoiler.settings.shuffle_shops:
         shop_assortment = spoiler.shuffled_shop_locations
@@ -509,10 +508,9 @@ def ApplyShopRandomizer(spoiler):
             for shop in shop_array:
                 if shop.map not in shop_placement_maps:
                     shop_placement_maps.append(shop.map)
-        ROM_COPY = LocalROM()
         for map in shop_placement_maps:
-            setup_address = js.pointer_addresses[TableNames.Setups]["entries"][map]["pointing_to"]
-            lz_address = js.pointer_addresses[TableNames.Triggers]["entries"][map]["pointing_to"]
+            setup_address = getPointerLocation(TableNames.Setups, map)
+            lz_address = getPointerLocation(TableNames.Triggers, map)
             shops_in_map = []
             map_level = 0
             for level in available_shops:
@@ -701,4 +699,4 @@ def ApplyShopRandomizer(spoiler):
                     raise Exception(f"Original vendor could not be found (Model: {placement['original_model']})")
                 if new_vendor is None:
                     raise Exception(f"New vendor could not be found (Model: {placement['replace_model']})")
-                pushNewShopLocationWrite(map, placement["object_id"], original_vendor, new_vendor)
+                pushNewShopLocationWrite(ROM_COPY, map, placement["object_id"], original_vendor, new_vendor)

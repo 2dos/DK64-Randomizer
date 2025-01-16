@@ -3,10 +3,10 @@
 import gzip
 import math
 
-import js
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import PaletteFillType, TableNames
-from randomizer.Patching.LibImage import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
+from randomizer.Patching.Library.Generic import PaletteFillType
+from randomizer.Patching.Library.Image import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
 def patchColorTranspose(x: int, y: int, patch_img, target_color: list, image_index: int):
@@ -73,7 +73,7 @@ def patchColorTranspose(x: int, y: int, patch_img, target_color: list, image_ind
             return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
 
 
-def convertColors(color_palettes):
+def convertColors(color_palettes, ROM_COPY: ROM):
     """Convert color into RGBA5551 format."""
     for palette in color_palettes:
         for zone in palette["zones"]:
@@ -154,7 +154,7 @@ def convertColors(color_palettes):
             elif zone["fill_type"] == PaletteFillType.patch:
                 if zone["image"] in (3725, 3734, 0xE6C):
                     # DK's tie, lanky's butt patch and diddy's back star, respectively
-                    patch_img = getImageFile(25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
+                    patch_img = getImageFile(ROM_COPY, 25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
 
                     safe = True
                     for y in range(64):
@@ -258,6 +258,6 @@ def convertColors(color_palettes):
                                 pix_rgba = [0xFF, 0xFF, 0xFF, 1]
                         bytes_array.extend(convertRGBAToBytearray(pix_rgba))
 
-            write_point = js.pointer_addresses[TableNames.TexturesGeometry]["entries"][zone["image"]]["pointing_to"]
-            ROM().seek(write_point)
-            ROM().writeBytes(gzip.compress(bytearray(bytes_array), compresslevel=9))
+            write_point = getPointerLocation(TableNames.TexturesGeometry, zone["image"])
+            ROM_COPY.seek(write_point)
+            ROM_COPY.writeBytes(gzip.compress(bytearray(bytes_array), compresslevel=9))

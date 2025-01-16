@@ -6,11 +6,12 @@ import math
 from io import BytesIO
 
 from randomizer.Settings import Settings
-from randomizer.Patching.LibImage import writeColorImageToROM, TextureFormat, getImageFile
+from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile
+from randomizer.Patching.Patcher import ROM
 from PIL import Image
 
 
-def writeTransition(settings: Settings) -> None:
+def writeTransition(settings: Settings, ROM_COPY: ROM) -> None:
     """Write transition cosmetic to ROM."""
     if js.cosmetics is None:
         return
@@ -25,7 +26,7 @@ def writeTransition(settings: Settings) -> None:
     selected_transition = random.choice(file_data)
     settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
-    writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4)
+    writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4, ROM_COPY)
 
 
 def getImageChunk(im_f, width: int, height: int):
@@ -60,7 +61,7 @@ def getImageChunk(im_f, width: int, height: int):
     return im_f.resize((width, height))
 
 
-def writeCustomPortal(settings: Settings) -> None:
+def writeCustomPortal(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom portal file to ROM."""
     if js.cosmetics is None:
         return
@@ -104,7 +105,7 @@ def writeCustomPortal(settings: Settings) -> None:
         y_min = portal_data[sub]["y_min"]
         local_img = im_f.crop((x_min, y_min, x_min + 32, y_min + 32))
         for idx in portal_data[sub]["writes"]:
-            writeColorImageToROM(local_img, 7, idx, 32, 32, False, TextureFormat.RGBA5551)
+            writeColorImageToROM(local_img, 7, idx, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 class PaintingData:
@@ -121,7 +122,7 @@ class PaintingData:
         self.name = None
 
 
-def writeCustomPaintings(settings: Settings) -> None:
+def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom painting files to ROM."""
     if js.cosmetics is None:
         return
@@ -175,7 +176,7 @@ def writeCustomPaintings(settings: Settings) -> None:
         border_imgs = []
         for x in range(8):
             border_tex = PAINTING_INFO[1].texture_order[x]
-            border_img = getImageFile(25, border_tex, True, 64, 32, TextureFormat.RGBA5551)
+            border_img = getImageFile(ROM_COPY, 25, border_tex, True, 64, 32, TextureFormat.RGBA5551)
             border_imgs.append(border_img)
         for chunk_index, chunk in enumerate(chunks):
             if painting.is_bordered:
@@ -197,7 +198,7 @@ def writeCustomPaintings(settings: Settings) -> None:
                     border_seg_img = border_img.crop((0, 20, 64, 32))
                     chunk.paste(border_seg_img, (0, 20), border_seg_img)
             img_index = painting.texture_order[chunk_index]
-            writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, False, TextureFormat.RGBA5551)
+            writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, False, TextureFormat.RGBA5551, ROM_COPY)
     settings.painting_isles = PAINTING_INFO[0].name
     settings.painting_museum_krool = PAINTING_INFO[1].name
     settings.painting_museum_knight = PAINTING_INFO[2].name

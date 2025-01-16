@@ -19,7 +19,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Time import Time
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected
 from randomizer.Lists.MapsAndExits import RegionMapList
 
 LEVEL_MAIN_MAPS = (
@@ -1583,6 +1583,7 @@ door_locations = {
             location=[1589.0, 1113.0, 816.2, 182.0],
             group=5,
             moveless=False,
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Block Tower Room - Air Vent Under Arcade Window",

@@ -1,6 +1,5 @@
 """Apply Door Locations."""
 
-import js
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.ScriptTypes import ScriptTypes
@@ -11,7 +10,9 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID, TableNames
+from randomizer.Patching.Library.Generic import IsItemSelected, addNewScript, getNextFreeID
+from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 LEVEL_MAIN_MAPS = (
@@ -192,7 +193,7 @@ DK_PORTAL_SCRIPT = [
 ]
 
 
-def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict):
+def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict, ROM_COPY: LocalROM):
     """Write new dk portal script to ROM."""
     id_pairings = {
         Maps.JungleJapes: 0x11B,
@@ -206,8 +207,7 @@ def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict):
     obj_id = portal_id_dict[cont_map_id]
     if obj_id is None:
         raise Exception("Invalid Portal ID.")
-    ROM_COPY = LocalROM()
-    script_table = js.pointer_addresses[TableNames.InstanceScripts]["entries"][cont_map_id]["pointing_to"]
+    script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     good_scripts = []
@@ -260,13 +260,12 @@ def pushNewDKPortalScript(cont_map_id: Maps, portal_id_dict: dict):
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def remove_existing_indicators(spoiler):
+def remove_existing_indicators(spoiler, ROM_COPY: LocalROM):
     """Remove all existing indicators."""
     if spoiler.settings.portal_numbers:
         return
-    ROM_COPY = LocalROM()
     for cont_map_id in range(216):
-        setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+        setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
         # Filter Setup
         ROM_COPY.seek(setup_table)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -302,7 +301,7 @@ def remove_existing_indicators(spoiler):
             ROM_COPY.writeMultipleBytes(data, 4)
 
 
-def place_door_locations(spoiler):
+def place_door_locations(spoiler, ROM_COPY: LocalROM):
     """Place Wrinkly Doors, and eventually T&S Doors."""
     enabled = False
     settings_enable = [
@@ -316,7 +315,6 @@ def place_door_locations(spoiler):
         if boolean:
             enabled = True
     if enabled:
-        ROM_COPY = LocalROM()
         wrinkly_doors = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
         # Also remove
         #   0x23C: Spinning Door (Az Lobby)
@@ -329,7 +327,7 @@ def place_door_locations(spoiler):
         dk_portal_ids = {}
         # Handle Setup
         for cont_map_id in range(216):
-            setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+            setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
             # Filter Setup
             ROM_COPY.seek(setup_table)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -413,7 +411,7 @@ def place_door_locations(spoiler):
                                 item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
                                 item_data.append(int(float_to_hex(door.rz), 16))  # rz
                                 item_data.append(0)
-                                id = getNextFreeID(cont_map_id, door_ids)
+                                id = getNextFreeID(ROM_COPY, cont_map_id, door_ids)
                                 map_wrinkly_ids.append(id)
                                 door_ids.append(id)
                                 item_data.append((wrinkly_doors[kong] << 16) | id)
@@ -440,7 +438,7 @@ def place_door_locations(spoiler):
                                 item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
                                 item_data.append(int(float_to_hex(door.rz), 16))  # rz
                                 item_data.append(0)
-                                id = getNextFreeID(cont_map_id, door_ids)
+                                id = getNextFreeID(ROM_COPY, cont_map_id, door_ids)
                                 portal_indicator_ids.append(id)
                                 door_ids.append(id)
                                 if k == 0:
@@ -471,16 +469,16 @@ def place_door_locations(spoiler):
                             if cont_map_id in PORTAL_MAP_ID_PAIRING:
                                 dk_portal_ids[cont_map_id] = PORTAL_MAP_ID_PAIRING[cont_map_id]
                             else:
-                                dk_portal_ids[cont_map_id] = getNextFreeID(cont_map_id, door_ids)
+                                dk_portal_ids[cont_map_id] = getNextFreeID(ROM_COPY, cont_map_id, door_ids)
                             item_data.append((0x2AD << 16) | dk_portal_ids[cont_map_id])
                             item_data.append(1 << 16)
                             retained_model2.append(item_data)
             if len(map_wrinkly_ids) > 0:
-                addNewScript(cont_map_id, map_wrinkly_ids, ScriptTypes.Wrinkly)
+                addNewScript(ROM_COPY, cont_map_id, map_wrinkly_ids, ScriptTypes.Wrinkly)
             if len(portal_ids) > 0:
-                addNewScript(cont_map_id, portal_ids, ScriptTypes.TnsPortal)
+                addNewScript(ROM_COPY, cont_map_id, portal_ids, ScriptTypes.TnsPortal)
             if len(indicator_ids) > 0:
-                addNewScript(cont_map_id, indicator_ids, ScriptTypes.TnsIndicator)
+                addNewScript(ROM_COPY, cont_map_id, indicator_ids, ScriptTypes.TnsIndicator)
             # Reconstruct setup file
             ROM_COPY.seek(setup_table)
             ROM_COPY.writeMultipleBytes(len(retained_model2), 4)
@@ -492,8 +490,8 @@ def place_door_locations(spoiler):
         if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             for portal_map in dk_portal_locations:
                 if dk_portal_locations[portal_map][0] + dk_portal_locations[portal_map][1] + dk_portal_locations[portal_map][2] + dk_portal_locations[portal_map][3] != 0:
-                    pushNewDKPortalScript(portal_map, dk_portal_ids)
-                    exit_start = js.pointer_addresses[TableNames.Exits]["entries"][portal_map]["pointing_to"]
+                    pushNewDKPortalScript(portal_map, dk_portal_ids, ROM_COPY)
+                    exit_start = getPointerLocation(TableNames.Exits, portal_map)
                     exits_to_alter = [-1]
                     if cont_map_id in LEVEL_MAIN_MAPS:
                         exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
@@ -572,7 +570,7 @@ def getStoryDestination(spoiler, level: Levels) -> dict:
 def alterStoryCutsceneWarps(spoiler, ROM_COPY: LocalROM):
     """Alter the story cutscene warp destinations."""
     for map_id in modifications:
-        cutscene_start = js.pointer_addresses[TableNames.Cutscenes]["entries"][map_id]["pointing_to"]
+        cutscene_start = getPointerLocation(TableNames.Cutscenes, map_id)
         info_l = 0x30
         ROM_COPY.seek(cutscene_start)
         for _ in range(0x18):

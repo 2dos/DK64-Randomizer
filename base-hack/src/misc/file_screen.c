@@ -998,7 +998,7 @@ int updateLevelIGT(void) {
 		}
 	}
 	previous_map_save = CurrentMap;
-	genericStatUpdate(EGD_KONGIGT);
+	updatePercentageKongStat();
 	SaveToGlobal();
 	return new_igt;
 }

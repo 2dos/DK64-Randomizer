@@ -168,7 +168,7 @@
 | Frantic Factory | Block Tower Room - Under Tunnel to Funky's | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | R and D Room - Dead End | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | R and D Room - Blind Corner Next to Tunnel to Car Race | Wrinkly |  | 
-| Frantic Factory | Funky's Room - Across from Melon Crate | Boss, Dk_Portal, Wrinkly |  | 
+| Frantic Factory | Funky's Room - Across from Melon Crate | Wrinkly |  | 
 | Frantic Factory | Block Tower Room - Air Vent Under Arcade Window | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Block Tower Room - Under Arcade Window - left | Boss, Dk_Portal, Wrinkly |  | 
 | Frantic Factory | Block Tower Room - Behind Tag Barrel | Boss, Dk_Portal, Wrinkly |  | 
