@@ -5,12 +5,13 @@ import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
-from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
-from randomizer.Patching.LibImage import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress, ExtraTextures, getBonusSkinOffset
+from typing import Union
+from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, compatible_background_textures, CustomActors, MenuTextDim, Holidays, getHoliday, getHolidaySetting
+from randomizer.Patching.Library.Image import getImageFile, TextureFormat, getRandomHueShift, hueShift, getImageFromAddress, ExtraTextures, getBonusSkinOffset
+from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     FasterChecksSelected,
-    CBRando,
     RemovedBarriersSelected,
     GalleonWaterSetting,
     ActivateAllBananaports,
@@ -28,6 +29,7 @@ from randomizer.Enums.Settings import (
     ExcludedSongs,
     ProgressiveHintItem,
 )
+from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -37,7 +39,6 @@ from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs
 from PIL import Image
 
 HANDLED_OVERLAYS = (
@@ -95,6 +96,8 @@ KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 FAIRY_LOAD_FIX = True
 CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
+REMOVE_CS_BARS = True
+GREATER_CAMERA_CONTROL = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -415,7 +418,7 @@ def getActorIndex(input: int) -> int:
     return input
 
 
-def hueShiftImageFromAddress(address: int, width: int, height: int, format: TextureFormat, shift: int):
+def hueShiftImageFromAddress(ROM_COPY: Union[ROM, LocalROM], address: int, width: int, height: int, format: TextureFormat, shift: int):
     """Hue shift image located at a certain ROM address."""
     size_per_px = {
         TextureFormat.RGBA5551: 2,
@@ -424,7 +427,7 @@ def hueShiftImageFromAddress(address: int, width: int, height: int, format: Text
     data_size_per_px = size_per_px.get(format, None)
     if data_size_per_px is None:
         raise Exception(f"Texture Format unsupported by this function. Let the devs know if you see this. Attempted format: {format.name}")
-    loaded_im = getImageFromAddress(address, width, height, False, data_size_per_px * width * height, format)
+    loaded_im = getImageFromAddress(ROM_COPY, address, width, height, False, data_size_per_px * width * height, format)
     loaded_im = hueShift(loaded_im, shift)
     loaded_px = loaded_im.load()
     bytes_array = []
@@ -441,8 +444,8 @@ def hueShiftImageFromAddress(address: int, width: int, height: int, format: Text
                 value = red | green | blue | alpha
                 bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
-    ROM().seek(address)
-    ROM().writeBytes(px_data)
+    ROM_COPY.seek(address)
+    ROM_COPY.writeBytes(px_data)
 
 
 class ColorBlindCrosshair:
@@ -511,6 +514,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x8075F244, Overlay.Static, 0x282, offset_dict)
         writeValue(ROM_COPY, 0x806BE9B2, Overlay.Static, 0x287, offset_dict)
         writeValue(ROM_COPY, 0x806BED5E, Overlay.Static, 0x288, offset_dict)
+        SpeedUpFungiRabbit(ROM_COPY, 1.2)
         # Chunky 5DI
         writeValue(ROM_COPY, 0x8075F3F2, Overlay.Static, Model.Beetle + 1, offset_dict)
         writeValue(ROM_COPY, 0x806B23C6, Overlay.Static, 0x287, offset_dict)
@@ -681,6 +685,25 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806EA2C2, Overlay.Static, camera_change_cooldown, offset_dict)
         writeValue(ROM_COPY, 0x806EA2CA, Overlay.Static, camera_change_amount, offset_dict, 2, True)
 
+    if GREATER_CAMERA_CONTROL:
+        NULL_FUNCTION = 0x806E1864
+        FUNCTION_TABLE = {
+            0x24: 0x806E607C,  # R_FUNCTION
+            0x34: 0x806EA200,  # CL_FUNCTION
+            0x38: 0x806EA26C,  # CR_FUNCTION
+        }
+
+        for x in range(107):
+            if x == 0:
+                continue
+            rom_base_addr = getROMAddress(0x80751004 + (0x44 * x), Overlay.Static, offset_dict)
+            for offset in FUNCTION_TABLE:
+                ROM_COPY.seek(rom_base_addr + offset)
+                original_function = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                if original_function == NULL_FUNCTION:
+                    ROM_COPY.seek(rom_base_addr + offset)
+                    ROM_COPY.writeMultipleBytes(FUNCTION_TABLE[offset], 4)
+
     # Crosshair
     if settings.colorblind_mode != ColorblindMode.off:
         writeValue(ROM_COPY, 0x8069E974, Overlay.Static, 0x1000, offset_dict)  # Force first option
@@ -740,10 +763,10 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
                 if addr == 0x8003DA90:
                     width = 8
                 rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
-                hueShiftImageFromAddress(rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
+                hueShiftImageFromAddress(ROM_COPY, rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
             for addr in dk_addresses:
                 rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
-                hueShiftImageFromAddress(rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
+                hueShiftImageFromAddress(ROM_COPY, rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
 
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
@@ -832,13 +855,13 @@ class MinigameImageLoader:
             self.height = height
             self.tex_format = tex_format
 
-    def getImageBytes(self, sub_dir: str, targ_width: int, targ_height: int, output_format: TextureFormat, flip: bool = True) -> bytes:
+    def getImageBytes(self, ROM_COPY: Union[LocalROM, ROM], sub_dir: str, targ_width: int, targ_height: int, output_format: TextureFormat, flip: bool = True) -> bytes:
         """Convert associated image to bytes that can be written to ROM."""
         output_image = None
         if self.pull_from_repo:
             output_image = Image.open(io.BytesIO(js.getFile(f"./base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
         else:
-            new_im = getImageFile(self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
+            new_im = getImageFile(ROM_COPY, self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
             if self.width != self.height:
                 dim = max(self.width, self.height)
                 dx = int((dim - self.width) / 2)
@@ -952,7 +975,7 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             addr = 0x8002D868
             bytes_per_px = 1
             output_format = TextureFormat.I8
-        write = im_data[minigame].getImageBytes(minigame, dim, dim, output_format)
+        write = im_data[minigame].getImageBytes(ROM_COPY, minigame, dim, dim, output_format)
         output_addr = getROMAddress(addr, ovl, offset_dict)
         if len(write) > math.ceil(dim * dim * bytes_per_px):
             raise Exception(
@@ -1259,6 +1282,10 @@ def patchAssembly(ROM_COPY, spoiler):
     if PAL_DOGADON_REMATCH_FIRE:
         writeValue(ROM_COPY, 0x80691E36, Overlay.Static, 166, offset_dict)  # PAL = 200 * (50 / 60)
 
+    if REMOVE_CS_BARS:
+        writeValue(ROM_COPY, 0x805FBC2C, Overlay.Static, 0x0060C825, offset_dict, 4)  # Remove screen divisor capping
+        writeValue(ROM_COPY, 0x805FBC38, Overlay.Static, 0x00A04025, offset_dict, 4)  # Remove screen divisor capping
+
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
     if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
@@ -1306,6 +1333,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x80704568, Overlay.Static, "spawnOverlayText", offset_dict)
 
     writeValue(ROM_COPY, 0x807563B4, Overlay.Static, 1, offset_dict, 1)  # Enable stack trace
+
+    writeFunction(ROM_COPY, 0x806DF3F8, Overlay.Static, "getHomingCountWithAbilityCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x806EB560, Overlay.Static, "getHomingCountWithAbilityCheck", offset_dict)
+    writeValue(ROM_COPY, 0x806F90C8, Overlay.Static, 0x24040000 | (20 * 150), offset_dict, 4)  # set min coconuts to 3000 (20 crystals)
 
     # Damage mask
     damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
@@ -2072,6 +2103,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806F9056, Overlay.Static, 5, offset_dict)  # Oranges: change from `(5 * ammo_belt) + 20` to `(5 * ammo_belt) + 5`
         writeValue(ROM_COPY, 0x806F90B6, Overlay.Static, 10 * 150, offset_dict)  # Crystals: change from `20 + fairy_count` to `10 + fairy_count`
         writeValue(ROM_COPY, 0x806F9186, Overlay.Static, 3, offset_dict)  # Film: change from `10 + fairy_count` to `3 + fairy_count`
+        writeValue(ROM_COPY, 0x806F90C8, Overlay.Static, 0x24040000 | (10 * 150), offset_dict, 4)  # set min coconuts to 1500 (10 crystals)
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
         writeValue(ROM_COPY, 0x806677C4, Overlay.Static, 0, offset_dict, 4)  # Dynamic Surfaces
@@ -3186,6 +3218,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
         writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
         writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
+        writeValue(ROM_COPY, 0x806BEB76, Overlay.Static, 0x3FE8, offset_dict)  # Tone down the rabbit race 1 speed to 0.75x rather than 1.0x
 
     # Expand Path Allocation
     writeValue(ROM_COPY, 0x80722E56, Overlay.Static, getHiSym("balloon_path_pointers"), offset_dict)

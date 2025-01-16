@@ -1,8 +1,5 @@
 """Apply item rando changes."""
 
-from enum import IntEnum, auto
-
-import js
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -11,10 +8,10 @@ from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
-from randomizer.Enums.Maps import Maps
-from randomizer.Patching.Lib import float_to_hex, intf_to_float
+from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
-from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName, CustomActors, TableNames
+from randomizer.Patching.Library.Generic import setItemReferenceName, CustomActors
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 
@@ -426,9 +423,8 @@ def getActorIndex(item):
     return actor_indexes[item.new_item]
 
 
-def place_randomized_items(spoiler, original_flut: list):
+def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""
-    ROM_COPY = LocalROM()
     sav = spoiler.settings.rom_data
     ROM_COPY.seek(sav + 0x1EC)
     ROM_COPY.writeMultipleBytes(0xF0, 1)
@@ -942,7 +938,7 @@ def place_randomized_items(spoiler, original_flut: list):
                 ROM_COPY.writeMultipleBytes(flag, 2)
         # Setup Changes
         for map_id in map_items:
-            cont_map_setup_address = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
+            cont_map_setup_address = getPointerLocation(TableNames.Setups, map_id)
             ROM_COPY.seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             for item in range(model2_count):

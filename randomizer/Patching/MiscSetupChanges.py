@@ -3,7 +3,6 @@
 import math
 import random
 
-import js
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -23,7 +22,9 @@ from randomizer.Enums.Settings import (
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
-from randomizer.Patching.Lib import IsItemSelected, float_to_hex, intf_to_float, TableNames
+from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -117,10 +118,9 @@ def pickChunkyCabinPadPositions():
     return {"picked": picked_pads.copy(), "index": 0}
 
 
-def SpeedUpFungiRabbit():
+def SpeedUpFungiRabbit(ROM_COPY: LocalROM, factor: float = 1.0):
     """Change the speed of the Fungi Rabbit."""
-    ROM_COPY = LocalROM()
-    file_start = js.pointer_addresses[TableNames.Spawners]["entries"][Maps.FungiForest]["pointing_to"]
+    file_start = getPointerLocation(TableNames.Spawners, Maps.FungiForest)
     ROM_COPY.seek(file_start)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     offset = 2
@@ -164,7 +164,7 @@ def SpeedUpFungiRabbit():
         end_offset = offset
         if enemy_index == 2:
             # If enemy is the rabbit, adjust stats
-            speed_buff = 0.7
+            speed_buff = 0.7 * factor
             ROM_COPY.seek(file_start + init_offset + 0xD)
             ROM_COPY.write(int(136 * speed_buff))
 
@@ -186,10 +186,10 @@ def getRandomGalleonStarLocation() -> tuple:
     return tuple(coord)
 
 
-def randomize_setup(spoiler):
+def randomize_setup(spoiler, ROM_COPY: LocalROM):
     """Randomize setup."""
     if not spoiler.settings.disable_racing_patches:
-        SpeedUpFungiRabbit()
+        SpeedUpFungiRabbit(ROM_COPY)
     pickup_weights = [
         {"item": "orange", "type": 0x56, "weight": 3},
         {"item": "film", "type": 0x98, "weight": 1},
@@ -294,8 +294,6 @@ def randomize_setup(spoiler):
         [311.555, 138.167, 666.162],
         [398.472, 138.167, 668.426],
     ]
-
-    ROM_COPY = LocalROM()
     diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
     lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 5, 40)
     chunky_5dc_pads = pickChunkyCabinPadPositions()
@@ -314,7 +312,7 @@ def randomize_setup(spoiler):
         RemovedBarriersSelected.castle_crypt_doors,
     )
     for cont_map_id in range(216):
-        cont_map_setup_address = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+        cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
         ROM_COPY.seek(cont_map_setup_address)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         # Puzzle Stuff
@@ -574,10 +572,9 @@ def randomize_setup(spoiler):
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(155), 16), 4)
 
 
-def updateRandomSwitches(spoiler):
+def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
     """Update setup to account for random switch placement."""
     if spoiler.settings.alter_switch_allocation:
-        ROM_COPY = LocalROM()
         switches = {
             Kongs.donkey: [0x94, 0x16C, 0x167],
             Kongs.diddy: [0x93, 0x16B, 0x166],
@@ -597,7 +594,7 @@ def updateRandomSwitches(spoiler):
                 if level == Levels.GloomyGalleon:
                     acceptable_maps.append(Maps.GloomyGalleonLobby)  # Galleon lobby internally in the game is galleon, but isn't in rando files. Quick fix for this
                 for map in acceptable_maps:
-                    file_start = js.pointer_addresses[TableNames.Setups]["entries"][map]["pointing_to"]
+                    file_start = getPointerLocation(TableNames.Setups, map)
                     ROM_COPY.seek(file_start)
                     model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     for model2_item in range(model2_count):
@@ -611,10 +608,9 @@ def updateRandomSwitches(spoiler):
                                     ROM_COPY.writeMultipleBytes(switches[kong][switch_level], 2)
 
 
-def updateSwitchsanity(spoiler):
+def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
     """Update setup to account for switchsanity."""
     if spoiler.settings.switchsanity:
-        ROM_COPY = LocalROM()
         switches = {
             SwitchType.SlamSwitch: [
                 0x94,
@@ -652,7 +648,7 @@ def updateSwitchsanity(spoiler):
                     obj_ids = spoiler.settings.switchsanity_data[slot].ids
                     ids_in_map.extend(obj_ids)
             # Handle setup
-            file_start = js.pointer_addresses[TableNames.Setups]["entries"][map_id]["pointing_to"]
+            file_start = getPointerLocation(TableNames.Setups, map_id)
             ROM_COPY.seek(file_start)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             for model2_item in range(model2_count):
@@ -794,7 +790,7 @@ def remove5DSCameraPoint(spoiler, ROM_COPY: LocalROM):
     """Remove the camera lock triggers for Tiny 5DS entry."""
     if not IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.vanilla_bug_fixes):
         return
-    file_start = js.pointer_addresses[TableNames.Cutscenes]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
+    file_start = getPointerLocation(TableNames.Cutscenes, Maps.Galleon5DShipDKTiny)
     ROM_COPY.seek(file_start)
     header_end = 0x30
     for x in range(0x18):

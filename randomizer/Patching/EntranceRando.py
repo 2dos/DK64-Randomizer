@@ -1,41 +1,13 @@
 """Randomize Entrances passed from Misc options."""
 
-import js
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Maps import Maps
-from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, MapExitTable
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import TableNames
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 valid_lz_types = [9, 12, 13, 16]
-
-
-def intToArr(val, size):
-    """Convert INT to an array.
-
-    Args:
-        val (int): Value to convert
-        size (int): Size to write as
-
-    Returns:
-        array: int array
-    """
-    tmp = val
-    arr = []
-    for x in range(size):
-        arr.append(0)
-    slot = size - 1
-    while slot > -1:
-        tmpv = tmp % 256
-        arr[slot] = tmpv
-        slot -= 1
-        tmp = int((tmp - tmpv) / 256)
-        if slot == -1:
-            break
-        elif tmp == 0:
-            break
-    return arr
 
 
 def getOneByteExit(back):
@@ -71,14 +43,13 @@ def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: 
     ROM_COPY.write(exit_id & 0xFF)
 
 
-def randomize_entrances(spoiler):
+def randomize_entrances(spoiler, ROM_COPY: LocalROM):
     """Randomize Entrances based on shuffled_exit_instructions."""
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
-        ROM_COPY = LocalROM()
         for cont_map in spoiler.shuffled_exit_instructions:
             # Pointer table 18, use the map index detailed in cont_map["container_map"] to get the starting address of the map lz file
             cont_map_id = int(cont_map["container_map"])
-            cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][cont_map_id]["pointing_to"]
+            cont_map_lzs_address = getPointerLocation(TableNames.Triggers, cont_map_id)
             ROM_COPY.seek(cont_map_lzs_address)
             lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             for lz_id in range(lz_count):
@@ -95,11 +66,9 @@ def randomize_entrances(spoiler):
                         if lz_map == zone["vanilla_map"]:
                             if lz_exit == zone["vanilla_exit"] or (lz_map == Maps.FactoryCrusher):
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
-                                map_bytes = intToArr(zone["new_map"], 2)
-                                ROM_COPY.writeBytes(bytearray(map_bytes))
+                                ROM_COPY.writeMultipleBytes(zone["new_map"], 2)
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
-                                exit_bytes = intToArr(zone["new_exit"], 2)
-                                ROM_COPY.writeBytes(bytearray(exit_bytes))
+                                ROM_COPY.writeMultipleBytes(zone["new_exit"], 2)
                                 if zone["new_map"] == Maps.HideoutHelm:
                                     # Set to LZ Type 9, which does the Helm filtering
                                     ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
@@ -167,11 +136,10 @@ banned_filtration = (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide, Maps.Hideo
 museum_exit_type = 13  # Maybe 9?
 
 
-def filterEntranceType():
+def filterEntranceType(ROM_COPY: LocalROM):
     """Change LZ Type for some entrances so that warps from crown pads work correctly."""
-    ROM_COPY = LocalROM()
     for cont_map_id in range(216):
-        cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][cont_map_id]["pointing_to"]
+        cont_map_lzs_address = getPointerLocation(TableNames.Triggers, cont_map_id)
         ROM_COPY.seek(cont_map_lzs_address)
         lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         for lz_id in range(lz_count):
@@ -208,12 +176,11 @@ ITEM_PREVIEW_CUTSCENES = [
 ]
 
 
-def enableTriggerText(spoiler):
+def enableTriggerText(spoiler, ROM_COPY: LocalROM):
     """Change the cutscene trigger in Spider Boss and Chunky Igloo to the specific item reward cutscene."""
     if spoiler.settings.item_reward_previews:
-        ROM_COPY = LocalROM()
         for cs in ITEM_PREVIEW_CUTSCENES:
-            cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][cs.map]["pointing_to"]
+            cont_map_lzs_address = getPointerLocation(TableNames.Triggers, cs.map)
             ROM_COPY.seek(cont_map_lzs_address)
             lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             for lz_id in range(lz_count):
@@ -261,7 +228,7 @@ def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
         altered_maps[lobbies[index]].append({"original_map": Maps.Isles, "original_exit": lobby_exits[index], "new_map": Maps.Isles, "new_exit": exit})
 
     for cont_map_id in altered_maps:
-        cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][cont_map_id]["pointing_to"]
+        cont_map_lzs_address = getPointerLocation(TableNames.Triggers, cont_map_id)
         ROM_COPY.seek(cont_map_lzs_address)
         lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         for lz_id in range(lz_count):
@@ -277,11 +244,9 @@ def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
                     if lz_map == zone["original_map"]:
                         if lz_exit == zone["original_exit"]:
                             ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
-                            map_bytes = intToArr(zone["new_map"], 2)
-                            ROM_COPY.writeBytes(bytearray(map_bytes))
+                            ROM_COPY.writeMultipleBytes(zone["new_map"], 2)
                             ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
-                            exit_bytes = intToArr(zone["new_exit"], 2)
-                            ROM_COPY.writeBytes(bytearray(exit_bytes))
+                            ROM_COPY.writeMultipleBytes(zone["new_exit"], 2)
                             if zone["new_map"] == Maps.HideoutHelm:
                                 # Set to LZ Type 9, which does the Helm filtering
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x10)

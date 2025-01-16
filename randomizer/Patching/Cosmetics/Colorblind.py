@@ -1,10 +1,8 @@
 """All code associated with colorblind mode."""
 
-import js
 import gzip
-import zlib
 from randomizer.Settings import ColorblindMode
-from randomizer.Patching.LibImage import (
+from randomizer.Patching.Library.Image import (
     getRGBFromHash,
     TextureFormat,
     maskImage,
@@ -15,7 +13,7 @@ from randomizer.Patching.LibImage import (
     getBonusSkinOffset,
     rgba32to5551,
 )
-from randomizer.Patching.Lib import getRawFile, TableNames, writeRawFile
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile, writeRawFile
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from PIL import ImageEnhance
@@ -32,7 +30,7 @@ def changeVertexColor(num_data: list[int], offset: int, new_color: list[int]) ->
 
 def writeKasplatHairColorToROM(color: str, table_index: TableNames, file_index: int, format: str, ROM_COPY: ROM):
     """Write color to ROM for kasplats."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     mask = getRGBFromHash(color)
     if format == TextureFormat.RGBA32:
         color_lst = mask.copy()
@@ -60,7 +58,7 @@ def writeKasplatHairColorToROM(color: str, table_index: TableNames, file_index: 
 
 def writeWhiteKasplatHairColorToROM(color1: str, color2: str, table_index: TableNames, file_index: int, format: str, ROM_COPY: ROM):
     """Write color to ROM for white kasplats, giving them a black-white block pattern."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     mask = getRGBFromHash(color1)
     mask2 = getRGBFromHash(color2)
     if format == TextureFormat.RGBA32:
@@ -95,10 +93,10 @@ def writeWhiteKasplatHairColorToROM(color1: str, color2: str, table_index: Table
 
 def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: str, mode: ColorblindMode, ROM_COPY: ROM):
     """Write color to ROM for klaptraps."""
-    im_f = getImageFile(table_index, file_index, True, 32, 43, format)
+    im_f = getImageFile(ROM_COPY, table_index, file_index, True, 32, 43, format)
     im_f = maskImage(im_f, color_index, 0, (color_index != 3), mode)
     pix = im_f.load()
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     if format == TextureFormat.RGBA32:
         null_color = [0] * 4
     else:
@@ -125,7 +123,7 @@ def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: st
 
 def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, format: str, pixels_to_ignore: list, mode: ColorblindMode, ROM_COPY: ROM):
     """Write color to ROM for klaptraps special texture(s)."""
-    im_f = getImageFile(table_index, file_index, True, 32, 43, format)
+    im_f = getImageFile(ROM_COPY, table_index, file_index, True, 32, 43, format)
     pix_original = im_f.load()
     pixels_original = []
     for x in range(32):
@@ -134,7 +132,7 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
             pixels_original[x].append(list(pix_original[x, y]).copy())
     im_f_masked = maskImage(im_f, color_index, 0, (color_index != 3), mode)
     pix = im_f_masked.load()
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    file_start = getPointerLocation(table_index, file_index)
     if format == TextureFormat.RGBA32:
         null_color = [0] * 4
     else:
@@ -342,7 +340,7 @@ def recolorWrinklyDoors(mode: ColorblindMode, ROM_COPY: ROM):
     file = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
     for kong in range(5):
         file_index = file[kong]
-        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
+        data = getRawFile(ROM_COPY, TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -376,7 +374,7 @@ def recolorKRoolShipSwitch(color: tuple, ROM_COPY: ROM):
         0x4C74,
         0x4C84,
     )
-    data = bytearray(getRawFile(TableNames.ModelTwoGeometry, 305, True))
+    data = bytearray(getRawFile(ROM_COPY, TableNames.ModelTwoGeometry, 305, True))
     for addr in addresses:
         for x in range(3):
             data[addr + x] = color[x]
@@ -425,7 +423,7 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
     file = [0x94, 0x93, 0x95, 0x96, 0xB8, 0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 0x167, 0x166, 0x168, 0x169, 0x165]
     written_galleon_ship = False
     for switch_index, file_index in enumerate(file):
-        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
+        data = getRawFile(ROM_COPY, TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -466,7 +464,7 @@ def recolorBlueprintModelTwo(mode: ColorblindMode, ROM_COPY: ROM):
     """Recolor the Blueprint Model2 items for colorblind mode."""
     file = [0xDE, 0xE0, 0xE1, 0xDD, 0xDF]
     for kong, file_index in enumerate(file):
-        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
+        data = getRawFile(ROM_COPY, TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -552,7 +550,7 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
     return im_f
 
 
-def recolorRotatingRoomTiles(mode):
+def recolorRotatingRoomTiles(mode: ColorblindMode, ROM_COPY: ROM):
     """Determine how to recolor the tiles rom the memory game in Donkey's Rotating Room in Caves."""
     question_mark_tiles = [900, 901, 892, 893, 896, 897, 890, 891, 898, 899, 894, 895]
     face_tiles = [
@@ -589,12 +587,12 @@ def recolorRotatingRoomTiles(mode):
     face_offsets = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [-5, -1], [-38, -1]]
 
     for tile in range(len(question_mark_tiles)):
-        tile_image = getImageFile(7, question_mark_tiles[tile], False, 32, 64, TextureFormat.RGBA5551)
-        mask = getImageFile(7, question_mark_tile_masks[(tile % 2)], False, 32, 64, TextureFormat.RGBA5551)
+        tile_image = getImageFile(ROM_COPY, 7, question_mark_tiles[tile], False, 32, 64, TextureFormat.RGBA5551)
+        mask = getImageFile(ROM_COPY, 7, question_mark_tile_masks[(tile % 2)], False, 32, 64, TextureFormat.RGBA5551)
         resize = question_mark_resize
         mask = mask.resize((resize[0], resize[1]))
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, question_mark_offsets[(tile % 2)], int(tile / 2), (tile % 2), mode)
-        writeColorImageToROM(masked_tile, 7, question_mark_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(masked_tile, 7, question_mark_tiles[tile], 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
     for tile_index, tile in enumerate(face_tiles):
         face_index = int(tile_index / 4)
         if face_index < 5:
@@ -603,17 +601,17 @@ def recolorRotatingRoomTiles(mode):
         else:
             width = 44
             height = 44
-        mask = getImageFile(25, face_tile_masks[int(tile_index / 2)], True, width, height, TextureFormat.RGBA5551)
+        mask = getImageFile(ROM_COPY, 25, face_tile_masks[int(tile_index / 2)], True, width, height, TextureFormat.RGBA5551)
         resize = face_resize[face_index]
         mask = mask.resize((resize[0], resize[1]))
-        tile_image = getImageFile(7, tile, False, 32, 64, TextureFormat.RGBA5551)
+        tile_image = getImageFile(ROM_COPY, 7, tile, False, 32, 64, TextureFormat.RGBA5551)
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile_index / 2)], face_index, (int(tile_index / 2) % 2), mode)
-        writeColorImageToROM(masked_tile, 7, tile, 32, 64, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(masked_tile, 7, tile, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 def recolorBells(ROM_COPY: ROM):
     """Recolor the Chunky Minecart bells for colorblind mode (prot/deut)."""
-    data = getRawFile(TableNames.ModelTwoGeometry, 693, True)
+    data = getRawFile(ROM_COPY, TableNames.ModelTwoGeometry, 693, True)
     num_data = []  # data, but represented as nums rather than b strings
     for d in data:
         num_data.append(d)
@@ -688,7 +686,7 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
     for type in range(2):
         for potion_color in range(6):
             file_index = file[type][potion_color]
-            data = getRawFile(TableNames.ActorGeometry, file_index, True)
+            data = getRawFile(ROM_COPY, TableNames.ActorGeometry, file_index, True)
             num_data = []  # data, but represented as nums rather than b strings
             for d in data:
                 num_data.append(d)
@@ -719,7 +717,7 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
     file = [91, 498, 89, 499, 501, 502]
     for potion_color in range(6):
         file_index = file[potion_color]
-        data = getRawFile(TableNames.ModelTwoGeometry, file_index, True)
+        data = getRawFile(ROM_COPY, TableNames.ModelTwoGeometry, file_index, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
@@ -756,7 +754,7 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
     #         color = "#FFFFFF"
     #     potion_image = getImageFile(6, file, False, 20, 20, TextureFormat.RGBA5551)
     #     potion_image = maskPotionImage(potion_image, color, secondary_color[index])
-    #     writeColorImageToROM(potion_image, 6, file, 20, 20, False, TextureFormat.RGBA5551)
+    #     writeColorImageToROM(potion_image, 6, file, 20, 20, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 def maskMushroomImage(im_f, reference_image, color, side_2=False):
@@ -792,24 +790,24 @@ def maskMushroomImage(im_f, reference_image, color, side_2=False):
     return im_f
 
 
-def recolorMushrooms(mode: ColorblindMode):
+def recolorMushrooms(mode: ColorblindMode, ROM_COPY: ROM):
     """Recolor the various colored mushrooms in the game for colorblind mode."""
-    reference_mushroom_image = getImageFile(7, 297, False, 32, 32, TextureFormat.RGBA5551)
-    reference_mushroom_image_side1 = getImageFile(25, 0xD64, True, 64, 32, TextureFormat.RGBA5551)
-    reference_mushroom_image_side2 = getImageFile(25, 0xD65, True, 64, 32, TextureFormat.RGBA5551)
+    reference_mushroom_image = getImageFile(ROM_COPY, 7, 297, False, 32, 32, TextureFormat.RGBA5551)
+    reference_mushroom_image_side1 = getImageFile(ROM_COPY, 25, 0xD64, True, 64, 32, TextureFormat.RGBA5551)
+    reference_mushroom_image_side2 = getImageFile(ROM_COPY, 25, 0xD65, True, 64, 32, TextureFormat.RGBA5551)
     files_table_7 = [296, 295, 297, 299, 298]
     files_table_25_side_1 = [0xD60, getBonusSkinOffset(ExtraTextures.MushTop0), 0xD64, 0xD62, 0xD66]
     files_table_25_side_2 = [0xD61, getBonusSkinOffset(ExtraTextures.MushTop1), 0xD65, 0xD63, 0xD67]
     for file in range(5):
         # Mushroom on the ceiling inside Fungi Forest Lobby
         file_color = getKongItemColor(mode, file)
-        mushroom_image = getImageFile(7, files_table_7[file], False, 32, 32, TextureFormat.RGBA5551)
+        mushroom_image = getImageFile(ROM_COPY, 7, files_table_7[file], False, 32, 32, TextureFormat.RGBA5551)
         mushroom_image = maskMushroomImage(mushroom_image, reference_mushroom_image, file_color)
-        writeColorImageToROM(mushroom_image, 7, files_table_7[file], 32, 32, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(mushroom_image, 7, files_table_7[file], 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         # Mushrooms in Lanky's colored mushroom puzzle (and possibly also the bouncy mushrooms)
-        mushroom_image_side_1 = getImageFile(25, files_table_25_side_1[file], True, 64, 32, TextureFormat.RGBA5551)
+        mushroom_image_side_1 = getImageFile(ROM_COPY, 25, files_table_25_side_1[file], True, 64, 32, TextureFormat.RGBA5551)
         mushroom_image_side_1 = maskMushroomImage(mushroom_image_side_1, reference_mushroom_image_side1, file_color)
-        writeColorImageToROM(mushroom_image_side_1, 25, files_table_25_side_1[file], 64, 32, False, TextureFormat.RGBA5551)
-        mushroom_image_side_2 = getImageFile(25, files_table_25_side_2[file], True, 64, 32, TextureFormat.RGBA5551)
+        writeColorImageToROM(mushroom_image_side_1, 25, files_table_25_side_1[file], 64, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+        mushroom_image_side_2 = getImageFile(ROM_COPY, 25, files_table_25_side_2[file], True, 64, 32, TextureFormat.RGBA5551)
         mushroom_image_side_2 = maskMushroomImage(mushroom_image_side_2, reference_mushroom_image_side2, file_color, True)
-        writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, TextureFormat.RGBA5551, ROM_COPY)

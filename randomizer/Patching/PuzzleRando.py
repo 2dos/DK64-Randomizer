@@ -2,12 +2,12 @@
 
 import random
 import math
-import js
-import gzip
 from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import IsItemSelected, float_to_hex, TableNames
+from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 
@@ -18,10 +18,9 @@ def chooseSFX():
     return random.randint(bank[0], bank[1])
 
 
-def shiftCastleMinecartRewardZones():
+def shiftCastleMinecartRewardZones(ROM_COPY: LocalROM):
     """Shifts the triggers for the reward point in castle minecart."""
-    cont_map_lzs_address = js.pointer_addresses[TableNames.Triggers]["entries"][Maps.CastleMinecarts]["pointing_to"]
-    ROM_COPY = LocalROM()
+    cont_map_lzs_address = getPointerLocation(TableNames.Triggers, Maps.CastleMinecarts)
     ROM_COPY.seek(cont_map_lzs_address)
     lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     for lz_id in range(lz_count):
@@ -250,7 +249,7 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         0x1A,
         0x11,
     ]
-    map_spawners = js.pointer_addresses[TableNames.Spawners]["entries"][Maps.CastleTinyRace]["pointing_to"]
+    map_spawners = getPointerLocation(TableNames.Spawners, Maps.CastleTinyRace)
     for point in range(len(checkpoint_ai_mapping)):
         slot = checkpoint_ai_mapping[point]
         ROM_COPY.seek(map_spawners + 36 + (slot * 0xA))
@@ -272,12 +271,12 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         diff = 0x10 - (len(start_bytes) & 0xF)
         for _ in range(diff):
             start_bytes.append(0)
-    map_checkpoints = js.pointer_addresses[TableNames.RaceCheckpoints]["entries"][Maps.CastleTinyRace]["pointing_to"]
+    map_checkpoints = getPointerLocation(TableNames.RaceCheckpoints, Maps.CastleTinyRace)
     ROM_COPY.seek(map_checkpoints)
     ROM_COPY.writeBytes(bytearray(start_bytes))
 
 
-def shortenCastleMinecart(spoiler):
+def shortenCastleMinecart(spoiler, ROM_COPY: LocalROM):
     """Shorten Castle Minecart to end at the u-turn point."""
     if not IsItemSelected(
         spoiler.settings.faster_checks_enabled,
@@ -285,11 +284,10 @@ def shortenCastleMinecart(spoiler):
         FasterChecksSelected.castle_minecart,
     ):
         return
-    shiftCastleMinecartRewardZones()
+    shiftCastleMinecartRewardZones(ROM_COPY)
     new_squawks_coords = (3232, 482, 693)
     old_squawks_coords = (619, 690, 4134)
-    cont_map_spawner_address = js.pointer_addresses[TableNames.Spawners]["entries"][Maps.CastleMinecarts]["pointing_to"]
-    ROM_COPY = LocalROM()
+    cont_map_spawner_address = getPointerLocation(TableNames.Spawners, Maps.CastleMinecarts)
     ROM_COPY.seek(cont_map_spawner_address)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     offset = 2
@@ -464,12 +462,11 @@ class PuzzleItem:
                 self.selected_bound = self.fast_bound
 
 
-def randomize_puzzles(spoiler):
+def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     sav = spoiler.settings.rom_data
     spoiler.coin_requirements = {}
     if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
-        ROM_COPY = LocalROM()
         coin_req_info = [
             PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 60)),
             PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13D, PuzzleRandoBound(20, 60)),
@@ -581,7 +578,7 @@ def randomize_puzzles(spoiler):
             # },
         }
         for map_index in race_data:
-            map_spawners = js.pointer_addresses[TableNames.Spawners]["entries"][map_index]["pointing_to"]
+            map_spawners = getPointerLocation(TableNames.Spawners, map_index)
             map_data = race_data[map_index]
             if map_data["start_angle"] is None:
                 initial_angle = random.randint(0, 359)

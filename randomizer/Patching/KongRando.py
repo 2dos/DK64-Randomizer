@@ -1,16 +1,15 @@
 """Apply cosmetic elements of Kong Rando."""
 
-import js
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import TableNames
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def apply_kongrando_cosmetic(spoiler):
+def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
     """Write kong cage changes for kong rando."""
     if Types.Kong in spoiler.settings.shuffled_location_types:
         kong_locations = [x for x in spoiler.item_assignment if x.location in (Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong)]
@@ -104,9 +103,6 @@ def apply_kongrando_cosmetic(spoiler):
                 "charspawner_changes": [{"type": Enemies.CutsceneChunky, "new_type": actors[factoryLockedKong]}],
             },
         ]
-
-        ROM_COPY = LocalROM()
-
         for kong_map in spoiler.shuffled_kong_placement.keys():
             for link_type in spoiler.shuffled_kong_placement[kong_map].keys():
                 ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map][link_type]["write"])
@@ -115,7 +111,7 @@ def apply_kongrando_cosmetic(spoiler):
         for cont_map in kongrando_changes:
             cont_map_id = int(cont_map["map_index"])
             # Setup
-            cont_map_setup_address = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+            cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
             ROM_COPY.seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             for x in range(model2_count):
@@ -132,7 +128,7 @@ def apply_kongrando_cosmetic(spoiler):
                     ROM_COPY.seek(start + 0x28)
                     ROM_COPY.writeMultipleBytes(new_type, 2)
             # Character Spawners
-            cont_map_spawner_address = js.pointer_addresses[TableNames.Spawners]["entries"][cont_map_id]["pointing_to"]
+            cont_map_spawner_address = getPointerLocation(TableNames.Spawners, cont_map_id)
             ROM_COPY.seek(cont_map_spawner_address)
             fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             offset = 2

@@ -15,7 +15,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected
 
 # Used when level order rando is ON
 LobbyEntrancePool = [

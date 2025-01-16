@@ -14,7 +14,7 @@ from randomizer.Enums.Settings import DKPortalRando
 from randomizer.Lists import Exceptions
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
-from randomizer.Patching.Lib import getHintRequirement
+from randomizer.Patching.Library.Generic import getHintRequirement
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves

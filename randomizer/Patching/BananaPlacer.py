@@ -1,6 +1,5 @@
 """Apply CB Rando changes."""
 
-import js
 import randomizer.Lists.CBLocations.AngryAztecCBLocations
 import randomizer.Lists.CBLocations.CreepyCastleCBLocations
 import randomizer.Lists.CBLocations.CrystalCavesCBLocations
@@ -10,8 +9,9 @@ import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
 import randomizer.Lists.CBLocations.DKIslesCBLocations
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Settings import CBRando
-from randomizer.Patching.Lib import float_to_hex, short_to_ushort, IsItemSelected, TableNames
+from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
+from randomizer.Patching.Library.DataTypes import float_to_hex, short_to_ushort
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Lists.MapsAndExits import LevelMapTable
 
@@ -57,7 +57,7 @@ level_data = {
 PATH_CAP = 64
 
 
-def randomize_cbs(spoiler):
+def randomize_cbs(spoiler, ROM_COPY: LocalROM):
     """Place Colored Bananas into ROM."""
     if not spoiler.settings.cb_rando_enabled:
         return
@@ -66,7 +66,6 @@ def randomize_cbs(spoiler):
         is_level_placed = IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, level)
         if is_level_placed:
             levels_to_place.append(level)
-    ROM_COPY = LocalROM()
     for cont_map_id in range(216):
         # Wipe setup and paths of CB information
         level_id = None
@@ -78,7 +77,7 @@ def randomize_cbs(spoiler):
         # SETUP
         modeltwo_cbs = [0xA, 0xD, 0x16, 0x1E, 0x1F, 0x2B, 0x205, 0x206, 0x207, 0x208]
         actor_cbs = [91, 111, 112, 113, 114]
-        setup_table = js.pointer_addresses[TableNames.Setups]["entries"][cont_map_id]["pointing_to"]
+        setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
         ROM_COPY.seek(setup_table)
         model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         # Model Two CBs
@@ -131,7 +130,7 @@ def randomize_cbs(spoiler):
                 if path_id not in remove_paths:
                     remove_paths.append(path_id)
         # PATHS
-        path_table = js.pointer_addresses[TableNames.Paths]["entries"][cont_map_id]["pointing_to"]
+        path_table = getPointerLocation(TableNames.Paths, cont_map_id)
         ROM_COPY.seek(path_table)
         path_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         persisted_paths = []

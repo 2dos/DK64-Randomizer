@@ -32,7 +32,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.LogicClasses import Collectible
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected
 from randomizer.Lists.MapsAndExits import RegionMapList, LevelMapTable
 
 level_data = {

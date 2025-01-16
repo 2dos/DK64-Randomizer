@@ -122,7 +122,7 @@ void setKongIgt(void) {
 void updatePercentageKongStat(void) {
     int current_kong_diff = (FrameReal / 60) - igt_running_lasttag;
     if (current_kong_diff > 0) {
-        int current_kong = 0;
+        int current_kong = Character;
         if (Player) {
             current_kong = Player->characterID - 2;
         }

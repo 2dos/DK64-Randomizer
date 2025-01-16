@@ -4,7 +4,6 @@ import asyncio
 import base64
 import io
 import json
-import math
 import random
 import zipfile
 import time
@@ -27,7 +26,8 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords, writeText, getHoliday, Holidays, TableNames
+from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 
 # from randomizer.Spoiler import Spoiler
@@ -120,19 +120,18 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     minor = split_data[1]
     patch = split_data[2]
 
+    ROM_COPY = ROM()
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False
         js.document.getElementById("patch_warning_message").innerHTML = (
             f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
         )
-        ROM_COPY = ROM()
         fixLankyIncompatibility(ROM_COPY)
     elif from_patch_gen is True:
         sav = settings.rom_data
         if from_patch_gen:
-            recalculatePointerJSON(ROM())
+            recalculatePointerJSON(ROM_COPY)
         js.document.getElementById("patch_version_warning").hidden = True
-        ROM_COPY = ROM()
         ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
         chunky_model_setting = int.from_bytes(ROM_COPY.readBytes(1), "big")  # 0 is default
         if settings.disco_chunky and chunky_model_setting == 0 and settings.override_cosmetics:
@@ -142,31 +141,31 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             chunky_slots = [11, 12]
             disco_slots = [0xD, 0xEC]
             for model_slot in range(2):
-                dest_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][chunky_slots[model_slot]]["pointing_to"]
-                source_start = js.pointer_addresses[TableNames.ActorGeometry]["entries"][disco_slots[model_slot]]["pointing_to"]
-                source_end = js.pointer_addresses[TableNames.ActorGeometry]["entries"][disco_slots[model_slot] + 1]["pointing_to"]
+                dest_start = getPointerLocation(TableNames.ActorGeometry, chunky_slots[model_slot])
+                source_start = getPointerLocation(TableNames.ActorGeometry, disco_slots[model_slot])
+                source_end = getPointerLocation(TableNames.ActorGeometry, disco_slots[model_slot] + 1)
                 source_size = source_end - source_start
                 ROM_COPY.seek(source_start)
                 file_bytes = ROM_COPY.readBytes(source_size)
                 ROM_COPY.seek(dest_start)
                 ROM_COPY.writeBytes(file_bytes)
                 # Write uncompressed size
-                unc_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][5]["pointing_to"]
+                unc_table = getPointerLocation(TableNames.UncompressedFileSizes, TableNames.ActorGeometry)
                 ROM_COPY.seek(unc_table + (disco_slots[model_slot] * 4))
                 unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
                 ROM_COPY.seek(unc_table + (chunky_slots[model_slot] * 4))
                 ROM_COPY.writeMultipleBytes(unc_size, 4)
         # Fetch hash images before they're altered by cosmetic changes
         loaded_hash = get_hash_images("browser", "hash")
-        apply_cosmetic_colors(settings)
+        apply_cosmetic_colors(settings, ROM_COPY)
 
         if settings.override_cosmetics:
             overwrite_object_colors(settings, ROM_COPY)
-            writeMiscCosmeticChanges(settings)
-            applyHolidayMode(settings)
-            darkenPauseBubble(settings)
+            writeMiscCosmeticChanges(settings, ROM_COPY)
+            applyHolidayMode(settings, ROM_COPY)
+            darkenPauseBubble(settings, ROM_COPY)
             if settings.misc_cosmetics:
-                writeCrownNames()
+                writeCrownNames(ROM_COPY)
 
             # Fog
             holiday = getHoliday(settings)
@@ -204,7 +203,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.write(int(settings.dpad_display))
 
             if settings.dpad_display == DPadDisplays.on and settings.dark_mode_textboxes:
-                darkenDPad()
+                darkenDPad(ROM_COPY)
 
             if settings.homebrew_header:
                 # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
@@ -302,7 +301,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM_COPY.writeMultipleBytes(write_data[0], 1)
 
             patchAssemblyCosmetic(ROM_COPY, settings)
-            music_data, music_names = randomize_music(settings)
+            music_data, music_names = randomize_music(settings, ROM_COPY)
             # Disable dynamic FXMix (reverb)
             # If this impacts non-BGM music in a way that produces unwanted behavior, we'll want to only apply this to BGM
             if settings.music_disable_reverb:
@@ -315,7 +314,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                     output_name = ""
                 music_text.append([{"text": ["".join([x for x in [*output_name.upper()] if x in accepted_characters])]}])
             if len(music_names) > 0:
-                writeText(46, music_text, True)
+                writeText(ROM_COPY, 46, music_text)
             if settings.show_song_name:
                 ROM_COPY.seek(sav + 0x1ED)
                 ROM_COPY.write(1)
@@ -354,8 +353,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.document.getElementById("download_unlocked_spoiler_button").hidden = True
         js.document.getElementById("download_unlocked_spoiler_button").onclick = None
     if from_patch_gen is True:
-        ROM().fixSecurityValue()
-        ROM().save(f"dk64r-rom-{seed_id}.z64")
+        ROM_COPY.fixSecurityValue()
+        ROM_COPY.save(f"dk64r-rom-{seed_id}.z64")
         loop.run_until_complete(ProgressBar().reset())
     js.jq("#nav-settings-tab").tab("show")
     js.check_seed_info_tab()
