@@ -97,6 +97,7 @@ FAIRY_LOAD_FIX = True
 CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
 REMOVE_CS_BARS = True
+GREATER_CAMERA_CONTROL = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -683,6 +684,26 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806EA25E, Overlay.Static, -camera_change_amount, offset_dict, 2, True)
         writeValue(ROM_COPY, 0x806EA2C2, Overlay.Static, camera_change_cooldown, offset_dict)
         writeValue(ROM_COPY, 0x806EA2CA, Overlay.Static, camera_change_amount, offset_dict, 2, True)
+
+    if GREATER_CAMERA_CONTROL:
+        NULL_FUNCTION = 0x806E1864
+        FUNCTION_TABLE = {
+            0x24: 0x806E607C, # R_FUNCTION
+            0x34: 0x806EA200, # CL_FUNCTION
+            0x38: 0x806EA26C, # CR_FUNCTION
+        }
+        
+        for x in range(107):
+            if x == 0:
+                continue
+            rom_base_addr = getROMAddress(0x80751004 + (0x44 * x), Overlay.Static, offset_dict)
+            for offset in FUNCTION_TABLE:
+                ROM_COPY.seek(rom_base_addr + offset)
+                original_function = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                if original_function == NULL_FUNCTION:
+                    ROM_COPY.seek(rom_base_addr + offset)
+                    ROM_COPY.writeMultipleBytes(FUNCTION_TABLE[offset], 4)
+
 
     # Crosshair
     if settings.colorblind_mode != ColorblindMode.off:
