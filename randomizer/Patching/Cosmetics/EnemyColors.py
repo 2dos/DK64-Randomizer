@@ -451,25 +451,25 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
             hueShiftImageContainer(7, 0x3D3 + x, 40, 40, TextureFormat.RGBA5551, headphones_shift, ROM_COPY)
         # Instruments
         trombone_sax_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0xEA2, 32, 32, TextureFormat.RGBA5551, trombone_sax_shift)  # Shin, ROM_COPYe
-        hueShiftImageContainer(25, 0x15AF, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0x15AD, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0xBCC, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBCD, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBD0, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBD1, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad, ROM_COPY)
+        hueShiftImageContainer(25, 0xEA2, 32, 32, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Shine
+        hueShiftImageContainer(25, 0x15AF, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Trombone Icon
+        hueShiftImageContainer(25, 0x15AD, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Sax Icon
+        hueShiftImageContainer(25, 0xBCC, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBCD, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBD0, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Trombone (Pad)
+        hueShiftImageContainer(25, 0xBD1, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Trombone (Pad)
         triangle_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0xEBF, 32, 32, TextureFormat.RGBA5551, triangle_shift)  # Shin, ROM_COPYe
-        hueShiftImageContainer(25, 0x15AE, 40, 40, TextureFormat.RGBA5551, triangle_shift)  # Triangle Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0xBCE, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBCF, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad, ROM_COPY)
+        hueShiftImageContainer(25, 0xEBF, 32, 32, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Shine
+        hueShiftImageContainer(25, 0x15AE, 40, 40, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Triangle Icon
+        hueShiftImageContainer(25, 0xBCE, 32, 64, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Triangle (Pad)
+        hueShiftImageContainer(25, 0xBCF, 32, 64, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Triangle (Pad)
         bongo_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0x1317, 1, 1372, TextureFormat.RGBA5551, bongo_shift)  # Ski, ROM_COPYn
-        hueShiftImageContainer(25, 0x1318, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Sid, ROM_COPYe
-        hueShiftImageContainer(25, 0x1319, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Side , ROM_COPY2
-        hueShiftImageContainer(25, 0x15AC, 40, 40, TextureFormat.RGBA5551, bongo_shift)  # Bongo Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0xBC8, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBC9, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad, ROM_COPY)
+        hueShiftImageContainer(25, 0x1317, 1, 1372, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Skin
+        hueShiftImageContainer(25, 0x1318, 1, 1404, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Side
+        hueShiftImageContainer(25, 0x1319, 1, 1404, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Side 2
+        hueShiftImageContainer(25, 0x15AC, 40, 40, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Bongo Icon
+        hueShiftImageContainer(25, 0xBC8, 32, 64, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Bongo (Pad)
+        hueShiftImageContainer(25, 0xBC9, 32, 64, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Bongo (Pad)
         if enemy_setting == RandomModels.extreme:
             # Beanstalk
             beanstalk_shift = getRandomHueShift()

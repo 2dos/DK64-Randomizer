@@ -602,7 +602,7 @@ def dump_plando_colors(format: str):
         "c": ["#132958", "#b5cdff"],
         "d": ["#275e1e", "#00ce0e"],
     }
-    with open("randomizer/Patching/Lib/Generic.py", "r") as fh:
+    with open("randomizer/Patching/Library/Generic.py", "r") as fh:
         lines = fh.readlines()
         text = "{"
         in_dict = False
