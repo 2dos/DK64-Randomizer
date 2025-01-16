@@ -1190,6 +1190,7 @@ async function preset_select_changed(event) {
   // Run trigger_presets_event in set timeout to allow the button to disable
   setTimeout(() => {
     trigger_preset_event(event);
+const element = document.getElementById("presets");
     // Pass in setting string
 let presets = null;
 
