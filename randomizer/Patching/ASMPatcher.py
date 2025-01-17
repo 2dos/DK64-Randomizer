@@ -695,7 +695,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         }
 
         for x in range(107):
-            if x == 0:
+            if x in (0, 4):
                 continue
             rom_base_addr = getROMAddress(0x80751004 + (0x44 * x), Overlay.Static, offset_dict)
             ROM_COPY.seek(rom_base_addr + 4)
