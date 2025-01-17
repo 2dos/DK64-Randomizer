@@ -480,6 +480,31 @@ document
   .getElementById("faster_checks_enabled")
   .addEventListener("click", disable_faster_checks);
 
+// Force Vanilla Door Rando on and enforce DK Portal Rando is enabled
+function toggle_dos_door_rando() {
+  const dosDoorRando  = document.getElementById("dos_door_rando");
+  const vanillaDoorShuffle = document.getElementById("vanilla_door_rando");
+  const dkPortalRandoSelect = document.getElementById("dk_portal_location_rando_v2");
+  const dkPortalRandoVanilla = document.querySelector("#dk_portal_location_rando_v2 option[id='off']");
+
+  if (dosDoorRando.checked) {
+    vanillaDoorShuffle.checked = true;
+    vanillaDoorShuffle.setAttribute("disabled", "disabled");
+    if (dkPortalRandoSelect.value == "off") {
+      dkPortalRandoSelect.value = "main_only";
+    }
+    dkPortalRandoVanilla.setAttribute("disabled", "disabled");
+    toggle_vanilla_door_rando();
+  } else {
+    vanillaDoorShuffle.removeAttribute("disabled");
+    dkPortalRandoVanilla.removeAttribute("disabled");
+  }
+}
+
+document
+  .getElementById("dos_door_rando")
+  .addEventListener("click", toggle_dos_door_rando);
+
 // Force Wrinkly and T&S Rando to be on when Vanilla Door Rando is on
 function toggle_vanilla_door_rando() {
   const vanillaDoorShuffle = document.getElementById("vanilla_door_rando");
@@ -2258,6 +2283,7 @@ function update_ui_states() {
   enable_plandomizer(null);
   toggle_medals_box(null);
   toggle_vanilla_door_rando(null);
+  toggle_dos_door_rando(null);
   validate_fast_start_status(null);
 
   const sliders = document.getElementsByClassName("pretty-slider");
