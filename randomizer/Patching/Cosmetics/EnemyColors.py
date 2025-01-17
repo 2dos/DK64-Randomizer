@@ -6,7 +6,7 @@ import random
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Settings import RandomModels, ColorblindMode
-from randomizer.Patching.LibImage import (
+from randomizer.Patching.Library.Image import (
     getBonusSkinOffset,
     ExtraTextures,
     getRandomHueShift,
@@ -19,7 +19,8 @@ from randomizer.Patching.LibImage import (
     getLuma,
     hueShiftColor,
 )
-from randomizer.Patching.Lib import getRawFile, TableNames, getValueFromByteArray
+from randomizer.Patching.Library.Generic import getValueFromByteArray
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile
 from randomizer.Patching.Patcher import ROM
 from PIL import Image
 
@@ -262,9 +263,9 @@ def convertColorIntToTuple(color: int) -> tuple:
     return ((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF)
 
 
-def adjustFungiMushVertexColor(shift: int):
+def adjustFungiMushVertexColor(shift: int, ROM_COPY):
     """Adjust the special vertex coloring on Fungi Giant Mushroom."""
-    fungi_geo = bytearray(getRawFile(TableNames.MapGeometry, Maps.FungiForest, True))
+    fungi_geo = bytearray(getRawFile(ROM_COPY, TableNames.MapGeometry, Maps.FungiForest, True))
     DEFAULT_MUSHROOM_COLOR = (255, 90, 82)
     for x in range(0x27DA, 0x2839):
         start = 0x25140 + (x * 0x10) + 0xC
@@ -295,14 +296,12 @@ def adjustFungiMushVertexColor(shift: int):
             fungi_geo[start + y] = luma
         fungi_geo[start + 3] = 0xFF
     file_data = gzip.compress(fungi_geo, compresslevel=9)
-    ROM_COPY = ROM()
-    ROM_COPY.seek(js.pointer_addresses[TableNames.MapGeometry]["entries"][Maps.FungiForest]["pointing_to"])
+    ROM_COPY.seek(getPointerLocation(TableNames.MapGeometry, Maps.FungiForest))
     ROM_COPY.writeBytes(file_data)
 
 
-def writeMiscCosmeticChanges(settings):
+def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
     """Write miscellaneous changes to the cosmetic colors."""
-    ROM_COPY = ROM()
     if settings.override_cosmetics:
         enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
     else:
@@ -310,9 +309,9 @@ def writeMiscCosmeticChanges(settings):
     if settings.misc_cosmetics:
         # Melon HUD
         data = {
-            7: [[0x13C, 0x147]],
-            14: [[0x5A, 0x5D]],
-            25: [
+            TableNames.TexturesUncompressed: [[0x13C, 0x147]],
+            TableNames.TexturesHUD: [[0x5A, 0x5D]],
+            TableNames.TexturesGeometry: [
                 [getBonusSkinOffset(ExtraTextures.MelonSurface), getBonusSkinOffset(ExtraTextures.MelonSurface)],
                 [0x144B, 0x1452],
             ],
@@ -322,11 +321,11 @@ def writeMiscCosmeticChanges(settings):
             table_data = data[table]
             for set in table_data:
                 for img in range(set[0], set[1] + 1):
-                    if table == 25:
+                    if table == TableNames.TexturesGeometry:
                         dims = (32, 32)
                     else:
                         dims = (48, 42)
-                    melon_im = getImageFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
+                    melon_im = getImageFile(ROM_COPY, table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
                     melon_im = hueShift(melon_im, shift)
                     melon_px = melon_im.load()
                     bytes_array = []
@@ -340,9 +339,9 @@ def writeMiscCosmeticChanges(settings):
                             value = red | green | blue | alpha
                             bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
                     px_data = bytearray(bytes_array)
-                    if table != 7:
+                    if table != TableNames.TexturesUncompressed:
                         px_data = gzip.compress(px_data, compresslevel=9)
-                    ROM_COPY.seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
+                    ROM_COPY.seek(getPointerLocation(table, img))
                     ROM_COPY.writeBytes(px_data)
 
         # Shockwave Particles
@@ -414,13 +413,13 @@ def writeMiscCosmeticChanges(settings):
             kosha_club_int = getEnemySwapColor(80, min_channel_variance=80)
             kosha_club_list = [(kosha_club_int >> 16) & 0xFF, (kosha_club_int >> 8) & 0xFF, kosha_club_int & 0xFF]
             for img in range(0x122E, 0x1230):
-                kosha_im = getImageFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
+                kosha_im = getImageFile(ROM_COPY, 25, img, True, 1, 1372, TextureFormat.RGBA5551)
                 kosha_im = maskImageWithColor(kosha_im, tuple(kosha_helmet_list))
-                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
+                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551, ROM_COPY)
             for img in range(0x1229, 0x122C):
-                kosha_im = getImageFile(25, img, True, 1, 1372, TextureFormat.RGBA5551)
+                kosha_im = getImageFile(ROM_COPY, 25, img, True, 1, 1372, TextureFormat.RGBA5551)
                 kosha_im = maskImageWithColor(kosha_im, tuple(kosha_club_list))
-                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551)
+                writeColorImageToROM(kosha_im, 25, img, 1, 1372, False, TextureFormat.RGBA5551, ROM_COPY)
             if settings.colorblind_mode == ColorblindMode.off:
                 # Kremling
 
@@ -452,25 +451,25 @@ def writeMiscCosmeticChanges(settings):
             hueShiftImageContainer(7, 0x3D3 + x, 40, 40, TextureFormat.RGBA5551, headphones_shift, ROM_COPY)
         # Instruments
         trombone_sax_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0xEA2, 32, 32, TextureFormat.RGBA5551, trombone_sax_shift)  # Shin, ROM_COPYe
-        hueShiftImageContainer(25, 0x15AF, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0x15AD, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0xBCC, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBCD, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Sax (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBD0, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBD1, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift)  # Trombone (Pad, ROM_COPY)
+        hueShiftImageContainer(25, 0xEA2, 32, 32, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Shine
+        hueShiftImageContainer(25, 0x15AF, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Trombone Icon
+        hueShiftImageContainer(25, 0x15AD, 40, 40, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Sax Icon
+        hueShiftImageContainer(25, 0xBCC, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBCD, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Sax (Pad)
+        hueShiftImageContainer(25, 0xBD0, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Trombone (Pad)
+        hueShiftImageContainer(25, 0xBD1, 32, 64, TextureFormat.RGBA5551, trombone_sax_shift, ROM_COPY)  # Trombone (Pad)
         triangle_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0xEBF, 32, 32, TextureFormat.RGBA5551, triangle_shift)  # Shin, ROM_COPYe
-        hueShiftImageContainer(25, 0x15AE, 40, 40, TextureFormat.RGBA5551, triangle_shift)  # Triangle Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0xBCE, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBCF, 32, 64, TextureFormat.RGBA5551, triangle_shift)  # Triangle (Pad, ROM_COPY)
+        hueShiftImageContainer(25, 0xEBF, 32, 32, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Shine
+        hueShiftImageContainer(25, 0x15AE, 40, 40, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Triangle Icon
+        hueShiftImageContainer(25, 0xBCE, 32, 64, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Triangle (Pad)
+        hueShiftImageContainer(25, 0xBCF, 32, 64, TextureFormat.RGBA5551, triangle_shift, ROM_COPY)  # Triangle (Pad)
         bongo_shift = getRandomHueShift()
-        hueShiftImageContainer(25, 0x1317, 1, 1372, TextureFormat.RGBA5551, bongo_shift)  # Ski, ROM_COPYn
-        hueShiftImageContainer(25, 0x1318, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Sid, ROM_COPYe
-        hueShiftImageContainer(25, 0x1319, 1, 1404, TextureFormat.RGBA5551, bongo_shift)  # Side , ROM_COPY2
-        hueShiftImageContainer(25, 0x15AC, 40, 40, TextureFormat.RGBA5551, bongo_shift)  # Bongo Ico, ROM_COPYn
-        hueShiftImageContainer(25, 0xBC8, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad, ROM_COPY)
-        hueShiftImageContainer(25, 0xBC9, 32, 64, TextureFormat.RGBA5551, bongo_shift)  # Bongo (Pad, ROM_COPY)
+        hueShiftImageContainer(25, 0x1317, 1, 1372, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Skin
+        hueShiftImageContainer(25, 0x1318, 1, 1404, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Side
+        hueShiftImageContainer(25, 0x1319, 1, 1404, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Side 2
+        hueShiftImageContainer(25, 0x15AC, 40, 40, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Bongo Icon
+        hueShiftImageContainer(25, 0xBC8, 32, 64, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Bongo (Pad)
+        hueShiftImageContainer(25, 0xBC9, 32, 64, TextureFormat.RGBA5551, bongo_shift, ROM_COPY)  # Bongo (Pad)
         if enemy_setting == RandomModels.extreme:
             # Beanstalk
             beanstalk_shift = getRandomHueShift()
@@ -501,9 +500,9 @@ def writeMiscCosmeticChanges(settings):
         krobot_color_list = [(krobot_color_int >> 16) & 0xFF, (krobot_color_int >> 8) & 0xFF, krobot_color_int & 0xFF]
         for tex_set in krobot_textures:
             for tex in tex_set[1]:
-                krobot_im = getImageFile(25, tex, True, tex_set[0][0], tex_set[0][1], TextureFormat.RGBA5551)
+                krobot_im = getImageFile(ROM_COPY, 25, tex, True, tex_set[0][0], tex_set[0][1], TextureFormat.RGBA5551)
                 krobot_im = maskImageWithColor(krobot_im, tuple(krobot_color_list))
-                writeColorImageToROM(krobot_im, 25, tex, tex_set[0][0], tex_set[0][1], False, TextureFormat.RGBA5551)
+                writeColorImageToROM(krobot_im, 25, tex, tex_set[0][0], tex_set[0][1], False, TextureFormat.RGBA5551, ROM_COPY)
         # Jetman
         for xi, x in enumerate(settings.jetman_color):
             ROM_COPY.seek(settings.rom_data + 0x1E8 + xi)
@@ -528,7 +527,7 @@ def writeMiscCosmeticChanges(settings):
             krool_data[0x114A] = skin_im
             krool_data[0x114D] = skin_im
         for index in krool_data:
-            writeColorImageToROM(krool_data[index], 25, index, 32, 32, False, TextureFormat.RGBA5551)
+            writeColorImageToROM(krool_data[index], 25, index, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         toe_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0x126E, 1, 1372, TextureFormat.RGBA5551, toe_shift, ROM_COPY)
         hueShiftImageContainer(25, 0x126F, 1, 1372, TextureFormat.RGBA5551, toe_shift, ROM_COPY)
@@ -581,6 +580,7 @@ def writeMiscCosmeticChanges(settings):
                 SPIDER_TEXTURE_DIMENSIONS[img_index][1],
                 TextureFormat.RGBA5551,
                 spider_shift,
+                ROM_COPY,
             )
 
         if enemy_setting == RandomModels.extreme:
@@ -607,7 +607,7 @@ def writeMiscCosmeticChanges(settings):
         for img_index in (0x67F, 0x680):
             hueShiftImageContainer(25, img_index, 32, 64, TextureFormat.RGBA5551, mush_man_shift, ROM_COPY)
         hueShiftImageContainer(25, 0x6F3, 4, 4, TextureFormat.RGBA5551, mush_man_shift, ROM_COPY)
-        adjustFungiMushVertexColor(mush_man_shift)
+        adjustFungiMushVertexColor(mush_man_shift, ROM_COPY)
 
         # Enemy Vertex Swaps
         blue_beaver_color = getEnemySwapColor(80, min_channel_variance=80)
@@ -704,7 +704,7 @@ def writeMiscCosmeticChanges(settings):
                 dogadon_color,
             )
         for enemy in enemy_changes:
-            file_data = bytearray(getRawFile(5, enemy, True))
+            file_data = bytearray(getRawFile(ROM_COPY, 5, enemy, True))
             vert_start = 0x28
             file_head = getValueFromByteArray(file_data, 0, 4)
             disp_list_end = (getValueFromByteArray(file_data, 4, 4) - file_head) + 0x28
@@ -719,5 +719,5 @@ def writeMiscCosmeticChanges(settings):
                     channel = (new_rgb >> shift) & 0xFF
                     file_data[local_start + 0xC + x] = channel
             file_data = gzip.compress(file_data, compresslevel=9)
-            ROM_COPY.seek(js.pointer_addresses[5]["entries"][enemy]["pointing_to"])
+            ROM_COPY.seek(getPointerLocation(TableNames.ActorGeometry, enemy))
             ROM_COPY.writeBytes(file_data)

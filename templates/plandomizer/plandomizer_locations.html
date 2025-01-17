@@ -1,0 +1,101 @@
+{# Variables and classes not defined here are in plandomizer.html #}
+<style>
+    .reward-label {
+        margin-top: 4px;
+    }
+</style>
+<div class="tab-pane plando-pane fade"
+     id="nav-plando-{{panelName}}"
+     role="tabpanel"
+     aria-labelledby="nav-plando-{{panelName}}-tab">
+    <h2 class="title">{{panel["name"]}}</h2>
+    {% for categoryName, categoryObj in panel["categories"] %}
+        <div id="plando_custom_location_panel_{{categoryObj["singular"] | lower}}"
+             style="display: none;">
+            <h3 class="title">{{categoryObj["name"]}}</h3>
+            <div class="flex-container flex-center">
+                {% for location in categoryObj["locations"] %}
+                    <div class="location-picker">
+                        <label for="{{location["location_id"]}}" class="location-label">
+                            {{location["name"]}} Location
+                        </label>
+                        <div id="{{location["location_id"]}}_wrapper"
+                            data-toggle="tooltip"
+                            title>
+                            <select id="{{location["location_id"]}}"
+                                    name="{{location["location_id"]}}"
+                                    class="form-select">
+                                <option value=""
+                                    {% if location["vanilla_value"] == "" %}selected{% endif %}>
+                                    -- Randomize --
+                                </option>
+                                {% if location["none_possible"] %}
+                                    <option value="none"
+                                        {% if location["vanilla_value"] == "none" %}selected{% endif %}>
+                                        -- None --
+                                    </option>
+                                {% endif %}
+                                {% if categoryName in ["CrownPad", "Fairy"] %}
+                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]]|plando_custom_loc_restrict(location["location_id"]) %}
+                                        <option value="{{selectLocation["value"]}}"
+                                            {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
+                                            {{selectLocation["name"]}}
+                                        </option>
+                                    {% endfor %}
+                                {% elif categoryName == "Kasplat" %}
+                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]][location["kong"]]|plando_custom_loc_restrict(location["location_id"]) %}
+                                        <option value="{{selectLocation["value"]}}"
+                                            {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
+                                            {{selectLocation["name"]}}
+                                        </option>
+                                    {% endfor %}
+                                {% elif categoryName == "WrinklyDoor" %}
+                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]][location["kong"]] %}
+                                        <option value="{{selectLocation}}"
+                                            {% if selectLocation == location["vanilla_value"] %}selected{% endif %}>
+                                            {{selectLocation}}
+                                        </option>
+                                    {% endfor %}
+                                {% elif categoryName == "TnsPortal" %}
+                                    {% for selectLocation in plando_custom_locations[categoryName][location["level"]] %}
+                                        <option value="{{selectLocation}}"
+                                            {% if selectLocation == location["vanilla_value"] %}selected{% endif %}>
+                                            {{selectLocation}}
+                                        </option>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for selectLocation in plando_custom_locations[categoryName]|plando_custom_loc_restrict(location["location_id"]) %}
+                                        <option value="{{selectLocation["value"]}}"
+                                            {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
+                                            {{selectLocation["name"]}}
+                                        </option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                        {% if categoryName not in ["WrinklyDoor", "TnsPortal"] %}
+                            <label for="{{location["reward_id"]}}" class="location-label reward-label">
+                                Reward
+                            </label>
+                            <div id="{{location["reward_id"]}}_wrapper"
+                                data-toggle="tooltip"
+                                title>
+                                <select id="{{location["reward_id"]}}"
+                                        name="{{location["reward_id"]}}"
+                                        class="form-select plando-item-select">
+                                    <option value="">-- Randomize --</option>
+                                    {% for item in plando_items|plando_custom_loc_item_restrict(categoryName) %}
+                                        <option value="{{item["value"]}}"
+                                            {{plando_option_class_annotation("", "", "", item["value"])}}>
+                                            {{item["name"]}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>

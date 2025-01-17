@@ -162,6 +162,13 @@ void initDingSprite(void) {
 	ding_sprite_timer = SPRITE_ALPHA_END;
 }
 
+int getHomingCountWithAbilityCheck(item_ids item, int player) {
+	if (!(MovesBase[0].weapon_bitfield & 2)) {
+		return 0;
+	}
+	return getItemCount(item, player);
+}
+
 void playCBDing(void) {
 	/**
 	 * @brief Play Bell Ding sound effect

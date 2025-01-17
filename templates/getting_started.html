@@ -1,0 +1,130 @@
+<div class="container">
+    <div class="row pt-4">
+        <div style="background:#b01d00; padding:8px;" id="spoiler_warning_4">
+            <h2 class="title" >DEV BRANCH</h2>
+            <p style="padding-bottom: 16px;max-width:700px;margin-left:auto;margin-right:auto">
+                This is the dev branch, and as such, there are a lot of frequent changes to options, functionality and support
+                for settings strings. Be sure to watch <em>#dev-branch-changes</em> on the
+                <a class="no-decoration" href="https://discord.dk64randomizer.com">Discord</a> to be up to date on the latest changes.
+            </p>
+            <p style="padding-bottom: 16px;max-width:700px;margin-left:auto;margin-right:auto">
+                If this is your first time playing DK64 Randomizer, we'd recommend using the stable site (<a href="https://dk64randomizer.com">dk64randomizer.com</a>) first.
+            </p>
+        </div>
+    </div>
+</div>
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border pb-3">
+            <h2 class="title">Presets</h2>
+            <div>Presets are settings that can selected and loaded from.</div>
+            <div>Applying a preset will overwrite all settings that have been selected.</div>
+            <div class="flex-container" style="justify-content: center;">
+                <div class="item-select">
+                    <label for="presets" class="select-title">Presets</label>
+                    <select class="form-select" id="presets"></select>
+                </div>
+                <input id="apply_preset" class="btn btn-secondary" type="button" value="Apply"/>
+            </div>
+            <p class="select-title" id="output" style="text-align:left;"></p>
+            
+            
+            {# <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip" title="Enable this option to start with the Randomizer tab open on startup">
+                        <input class="form-check-input" type="checkbox" name="startup" id="startup" value="True"/>
+                        Open Randomizer Tab on Startup
+                    </label>
+                </div>
+            </div> #}
+        </div>
+        <div class="col border pb-3">
+            <h2 class="title">Random Settings</h2>
+            <div>This option will randomize all non-cosmetic settings.</div>
+            <div class="flex-container" style="justify-content: center;">
+                <div class="item-select">
+                    <label for="random-weights" class="select-title">Random Setting Presets</label>
+                    <select class="form-select" id="random-weights"></select>
+                </div>
+                <input id="randomize_settings"
+                       name="randomize_settings"
+                       class="btn btn-secondary"
+                       type="button"
+                       value="Randomize Settings"/>
+            </div>
+        </div>
+        {# Removing for now. Links are covered in the nav bar at the top #}
+        {# <div class="col border pb-3">
+            <h2 class="title">HELPFUL LINKS</h2>
+            <div class="flex-container" style="justify-content: center;">
+                <div class="item-link">
+                    <h2 class="select-title">
+                        <img src="./static/img/discord.png" alt="Discord" />
+                        <a href="https://discord.dk64randomizer.com" target="_blank">DK64 Rando Discord</a>
+                    </h2>
+                </div>
+                <div class="item-link">
+                    <h2 class="select-title">
+                        <img src="./static/img/wiki.png" alt="Wiki" />
+                        <a href="./wiki/home.html">DK64 Rando Wiki</a>
+                    </h2>
+                </div>
+                <div class="item-link">
+                    <h2 class="select-title">
+                        <img src="./static/img/GodsIntendedConsole.png"
+                             alt="Setup"
+                             style="width:50px"/>
+                        <a href="./wiki/Consoles-and-Emulators.html">Console and Emulator Setup</a>
+                    </h2>
+                </div>
+                <div class="item-link">
+                    <h2 class="select-title">
+                        <img src="./static/img/EmoTracker.ico"
+                             alt="BananaTracker"
+                             style="width:50px"/>
+                        <a href="https://github.com/2dos/bananatracker" target="_blank">BananaTracker</a>
+                    </h2>
+                </div>
+            </div>
+        </div> #}
+    </div>
+    <div class="row">
+        <div class="col border pb-3">
+            <div id="plandomizer_container">
+                <h2 class="title">PLANDOMIZER</h2>
+                <div class="pb-3">
+                    This mode allows users to specify rewards, hints, and other settings. This is an advanced mode and is not recommended for beginners.
+                </div>
+                <div class="form-check form-switch">
+                    <label>
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="enable_plandomizer"
+                                id="enable_plandomizer"
+                                display_name="Enable Plandomizer"
+                                value="True"/>
+                        Enable Plandomizer
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col border pb-3"></div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    })
+    
+    $('#presets').on('change', function() {
+        var selected = $("#presets option:selected").text();
+        var selected_desc = $("#presets option:selected").attr("title");
+        if (selected == "Season 3 Race Settings") $("#output").html("- Season 3 Race Settings: Level Order Randomizer of medium length that starts you with keys 1, 3 and item randomizer. These settings are designed to give a well-rounded experience, accessible for veterans and newcomers alike. Optimized for races.")
+        else if (selected == "Hell Mode") $("#output").html("- Hell Mode: Absolute Hell. Decoupled Loading Zone Randomizer with all randomization options on. GB and Color Banana requirements are near maxed. Hints are Cryptic and you start with 1 Kong and need all 8 keys. Moves are in randomized locations with High prices. Also bonus barrels are really neat. Have Fun.")
+        else if (selected == "Vanilla Game But Better") $("#output").html("- Vanilla Game But Better: No randomization, only the quality of life settings enabled.")
+        else if (selected == "Hitlist") $("#output").html("- Hitlist: Complete the 8 of the worst checks in the game. You will <strong>NEED</strong> this <a href='https://github.com/Brian0255/Track-O-Matic/releases/latest' style='text-decoration:underline'>tracker</a> and read the specialized <a href='https://docs.google.com/document/d/1V2jj3bT18fTIuEbuqYDDC8pePBFSpVd_U__p2AvcNlc/edit' style='text-decoration:underline'>ruleset</a>.")
+        else $("#output").html(`- ${selected}: ${selected_desc}`)
+    })
+</script>

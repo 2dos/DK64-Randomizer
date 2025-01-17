@@ -56,9 +56,13 @@ jobs:
 
       - name: Get Cover 
         uses: orgoro/coverage@v3.1
+        continue-on-error: true
         with:
             coverageFile: ./coverage.xml
             token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Job Complete
+        run: echo "Job Complete"
 
   analyze:
     name: Analyze

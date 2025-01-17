@@ -68,6 +68,13 @@ async function generate_seed_from_patch(event) {
                 patchElement.classList.add("is-invalid");
             }
         } else {
+            if (typeof window.romFile === "undefined") {
+                document.getElementById("rom").select();
+                if (!document.getElementById("rom").classList.contains("is-invalid")) {
+                    document.getElementById("rom").classList.add("is-invalid");
+                    return;
+                }
+            }
             // Apply the patch
             await apply_patch(loaded_patch, true)
          }
@@ -362,6 +369,14 @@ function generate_seed(event) {
             document.getElementById("rom").classList.add("is-invalid");
         }
     } else {
+        // Do a double check that romFile var exists, if its not, then the rom file is not loaded, throw an invalid class on the rom file box.
+        if (typeof window.romFile === "undefined") {
+            document.getElementById("rom").select();
+            if (!document.getElementById("rom").classList.contains("is-invalid")) {
+                document.getElementById("rom").classList.add("is-invalid");
+                return;
+            }
+        }
         // The data is serialized outside of the loop, because validation occurs
         // here and we might stop before attempting to generate a seed.
         let plando_enabled = document.getElementById("enable_plandomizer").checked;

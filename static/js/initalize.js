@@ -25,9 +25,9 @@ $.ajax({
   async: false,
   success: function (data) {
     progression_presets.push({
-      "name": "-- Select a Preset --",
-      "description": " "
-    })
+      name: "-- Select a Preset --",
+      description: " ",
+    });
     data.forEach((file) => {
       progression_presets.push(file);
     });
@@ -86,7 +86,7 @@ function decrypt_settings_string_enum(settings_string) {
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings" + "?branch=" + branch,
-    data: JSON.stringify({ "settings": settings_string }),
+    data: JSON.stringify({ settings: settings_string }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -100,7 +100,7 @@ function encrypt_settings_string_enum(settings) {
   var response = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings" + "?branch=" + branch,
-    data: JSON.stringify({ "settings": JSON.stringify(settings) }),
+    data: JSON.stringify({ settings: JSON.stringify(settings) }),
     contentType: "application/json",
     async: false,
   }).responseText;
@@ -139,7 +139,9 @@ async function try_to_load_from_args() {
     let resp = await get_seed_from_server(argsDict["seed_id"]);
 
     // Assuming patchingResponse is available globally as an async function
-    window.apply_patch(resp, false);
+    setTimeout(() => {
+      window.apply_patch(resp, false);
+    }, 0);
   }
 
   // Update the DOM: hide visual indicator and show tab-data
@@ -463,13 +465,18 @@ async function update_music_select_options(isInitialLoad) {
       // Only remove the custom-song options by setting innerHTML directly if needed
       let customOptionsExist = dropdown.querySelector(".custom-song");
       if (customOptionsExist) {
-        dropdown.querySelectorAll(".custom-song").forEach(option => option.remove());
+        dropdown
+          .querySelectorAll(".custom-song")
+          .forEach((option) => option.remove());
         // Clear the dropdown value if it was set to a custom song
-        if (dropdown.value && dropdown.querySelector(`[value="${dropdown.value}"].custom-song`)) {
+        if (
+          dropdown.value &&
+          dropdown.querySelector(`[value="${dropdown.value}"].custom-song`)
+        ) {
           dropdown.value = "";
         }
       }
-    
+
       // Create a document fragment to hold the new custom options
       const fragment = document.createDocumentFragment();
       for (const song of songs) {
@@ -482,7 +489,6 @@ async function update_music_select_options(isInitialLoad) {
       // Append all custom options at once to the dropdown
       dropdown.appendChild(fragment);
     }
-    
   }
 
   // If this is the initial load, we want to read from the database and restore
@@ -499,63 +505,73 @@ async function update_music_select_options(isInitialLoad) {
 
 jq = $;
 
-function savesettings() {
-  var disabled = $("form").find(":input:disabled").removeAttr("disabled");
-  data = new FormData(document.querySelector("form"));
-  disabled.attr("disabled", "disabled");
-  json = Object.fromEntries(data.entries());
-  for (element of document.getElementsByTagName("select")) {
-    if (element.className.includes("selected")) {
-      length = element.options.length;
-      values = [];
-      for (let i = 0; i < length; i++) {
-        if (element.options.item(i).selected) {
-          values.push(element.options.item(i).value);
-        }
+async function savesettings() {
+  const form = document.querySelector("form");
+
+  // Collect form data and temporarily enable disabled inputs
+  const disabledInputs = Array.from(form.querySelectorAll(":disabled"));
+  disabledInputs.forEach((input) => input.removeAttribute("disabled"));
+
+  const formData = new FormData(form);
+
+  // Re-disable the inputs
+  disabledInputs.forEach((input) => input.setAttribute("disabled", "disabled"));
+
+  // Convert form data to JSON
+  const json = Object.fromEntries(formData.entries());
+
+  // Handle <select> elements
+  document.querySelectorAll("select").forEach((select) => {
+    if (select.classList.contains("selected")) {
+      json[select.name] = Array.from(select.options)
+        .filter((option) => option.selected)
+        .map((option) => option.value);
+    }
+
+    if (select.id.startsWith("starting_moves_list_")) {
+      json[select.id] = Array.from(select.options).map((option) =>
+        option.id.slice(14)
+      );
+    }
+  });
+
+  // Handle inputs with specific naming convention
+  document
+    .querySelectorAll("input[name^='starting_move_box_']:checked")
+    .forEach((input) => {
+      if (input.id.includes("start")) {
+        json[input.name] = "start";
+      } else if (input.id.includes("random")) {
+        json[input.name] = "random";
       }
-      json[element.name] = values;
-    }
-    if (element.id.startsWith("starting_moves_list_")) {
-      let moves = []
-      for (let option of element.options) {
-        moves.push(option.id.slice(14));
-      }
-      json[element.id] = moves;
-    }
-  }
-  var starting_move_box_buttons = $(
-    ":input[name^='starting_move_box_']:checked"
-  );
-  for (element of starting_move_box_buttons) {
-    if (element.id.includes("start")) {
-      json[element.name] = "start";
-    } else if (element.id.includes("random")) {
-      json[element.name] = "random";
-    }
-  }
-  saveDataToIndexedDB("saved_settings", JSON.stringify(json));
+    });
+
+  // Save JSON data to IndexedDB
+  await saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
 
 // Music settings have to be saved separately, because the value we're trying
 // to load may not exist on the page when load_data() is called.
-function savemusicsettings() {
-  music_json = {};
-  for (element of document.getElementsByTagName("select")) {
-    if (element.id.startsWith("music_select_")) {
-      music_json[element.id] = element.value;
-    }
-  }
-  saveDataToIndexedDB("saved_music", JSON.stringify(music_json));
+async function savemusicsettings() {
+  const musicJson = {};
+
+  document.querySelectorAll("select[id^='music_select_']").forEach((select) => {
+    musicJson[select.id] = select.value;
+  });
+
+  await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
 }
 
-$("#form input").on("input change", function (e) {
-  //This would be called if any of the input elements receive a change inside the form
-  savesettings();
+document.querySelectorAll("#form input").forEach((input) => {
+  input.addEventListener("input", savesettings);
+  input.addEventListener("change", savesettings);
 });
-$("#form select").on("change", function (e) {
-  //This would be called if any of the select elements receive a change inside the form
-  savesettings();
-  savemusicsettings();
+
+document.querySelectorAll("#form select").forEach((select) => {
+  select.addEventListener("change", () => {
+    savesettings();
+    savemusicsettings();
+  });
 });
 
 function filebox() {
@@ -622,7 +638,7 @@ function load_databases() {
     try {
       var settingsdb = settingsdatabase.result;
       settingsdb.createObjectStore("saved_settings");
-      preset_select_changed("default")
+      preset_select_changed("default");
     } catch {}
   };
   settingsdatabase.onsuccess = async function () {
@@ -763,18 +779,26 @@ async function load_file_from_db() {
     var getROM = store.get("N64");
     getROM.onsuccess = async function () {
       // When we pull it from the DB load it in as a global var
-      try {
-        romFile = new MarcFile(getROM.result.value, _parseROM);
-        $("#rom").attr("placeholder", "Using cached ROM");
-        $("#rom").val("Using cached ROM");
-        $("#rom_2").attr("placeholder", "Using cached ROM");
-        $("#rom_3").attr("placeholder", "Using cached ROM");
-        $("#rom_3").val("Using cached ROM");
-
-        try_to_load_from_args();
-      } catch {
-        try_to_load_from_args();
-      }
+      setTimeout(() => {
+        try {
+          // Disable the generate seed button if we have a ROM
+          romFile = new MarcFile(getROM.result.value);
+          window.romFile = romFile;
+            document.getElementById("rom").placeholder = "Using cached ROM";
+            document.getElementById("rom").value = "Using cached ROM";
+            document.getElementById("rom_2").placeholder = "Using cached ROM";
+            document.getElementById("rom_2").value = "Using cached ROM";
+            document.getElementById("rom_3").placeholder = "Using cached ROM";
+            document.getElementById("rom_3").value = "Using cached ROM";
+            // On each of these set the class to "is-valid" to show the user it's been loaded
+            document.getElementById("rom").classList.add("is-valid");
+            document.getElementById("rom_2").classList.add("is-valid");
+            document.getElementById("rom_3").classList.add("is-valid");
+          try_to_load_from_args();
+        } catch {
+          try_to_load_from_args();
+        }
+      }, 0);
     };
   } catch {
     try_to_load_from_args();
@@ -824,7 +848,14 @@ function pushToHistory(message, emphasize = false) {
 function postToastMessage(message, is_warning, progress_ratio) {
   // Write Toast
   $("#progress-text").text(message);
-  pushToHistory(message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'));
+  pushToHistory(
+    message
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+  );
   // Handle Progress Bar
   perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
@@ -888,7 +919,11 @@ function query_seed_status(url, task_id) {
           query_seed_status(url, task_id);
         }, 5000);
       } else if (data["status"] == "finished") {
-        postToastMessage("Seed Generation Complete, applying cosmetics", false, 0.8);
+        postToastMessage(
+          "Seed Generation Complete, applying cosmetics",
+          false,
+          0.8
+        );
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
@@ -902,16 +937,15 @@ function query_seed_status(url, task_id) {
       }
     },
     error: function (data, textStatus, xhr) {
-        resp = data["responseJSON"];
-        if (resp && resp["error"]) {
-          postToastMessage(resp["error"], true, 1);
-        } else {
-          postToastMessage("Something went wrong please try again", true, 1);
-        }
-      },
+      resp = data["responseJSON"];
+      if (resp && resp["error"]) {
+        postToastMessage(resp["error"], true, 1);
+      } else {
+        postToastMessage("Something went wrong please try again", true, 1);
+      }
+    },
   });
 }
-
 
 function submit_seed_generation(url, json, branch) {
   $.ajax({
@@ -924,12 +958,17 @@ function submit_seed_generation(url, json, branch) {
     success: function (data, textStatus, xhr) {
       task_id = data["task_id"];
       priority = data["priority"];
-      postToastMessage("Seed has been queued in the " + priority + " Priority Queue", false, 0.3);
+      postToastMessage(
+        "Seed has been queued in the " + priority + " Priority Queue",
+        false,
+        0.3
+      );
       query_seed_status(url, task_id);
     },
     error: function (data, textStatus, xhr) {
       postToastMessage("Something went wrong please try again", true, 1);
-    }});
+    },
+  });
 }
 function getStringFile(file) {
   return $.ajax({
@@ -1144,8 +1183,20 @@ function should_reset_select_on_preset(selectElement) {
 }
 
 // Bind click event for "apply_preset"
-function preset_select_changed(event) {
+async function preset_select_changed(event) {
   /** Trigger a change of the form via the JSON templates. */
+  // Disable the generate seed button
+  document.getElementById("generate_seed").disabled = true;
+  // Run trigger_presets_event in set timeout to allow the button to disable
+  setTimeout(() => {
+    trigger_preset_event(event);
+    setTimeout(() => {
+      document.getElementById("generate_seed").disabled = false;
+    }, 2000);
+  }, 0);
+
+  }
+function trigger_preset_event(event) {
   const element = document.getElementById("presets");
   let presets = null;
 
@@ -1157,8 +1208,7 @@ function preset_select_changed(event) {
         break;
       }
     }
-  }
-  else{
+  } else {
     for (const val of progression_presets) {
       if (val.name === element.value) {
         presets = val;
@@ -1168,10 +1218,9 @@ function preset_select_changed(event) {
   }
 
   if (presets && "settings_string" in presets) {
-    // Pass in setting string
-    generateToast(
-      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
-    );
+    // Define a queue to batch DOM updates
+    const updateQueue = [];
+
     const settings = decrypt_settings_string_enum(presets.settings_string);
 
     for (const select of document.getElementsByTagName("select")) {
@@ -1180,99 +1229,122 @@ function preset_select_changed(event) {
       }
     }
 
-    // Uncheck all starting move radio buttons for the import to then set them correctly
+    // Uncheck all starting move radio buttons
     for (const starting_move_button of document.querySelectorAll(
       "input[name^='starting_move_box_']"
     )) {
-      starting_move_button.checked = false;
+      updateQueue.push(() => {
+        if (starting_move_button.checked) {
+          starting_move_button.checked = false;
+          starting_move_button.dispatchEvent(new Event("click"));
+        }
+      });
     }
 
-    document.getElementById("presets").selectedIndex = 0;
+    // Reset the "presets" select to default
+    updateQueue.push(() => {
+      if (document.getElementById("presets").selectedIndex !== 0) {
+        document.getElementById("presets").selectedIndex = 0;
+      }
+    });
 
+    // Apply new settings
     for (let key in settings) {
-      try {
+      updateQueue.push(() => {
+        try {
+          const element =
+            document.getElementsByName(key)[0] || document.getElementById(key);
+          if (!element) return;
+
           if (typeof settings[key] === "boolean") {
-              if (settings[key] === false) {
-                  document.getElementsByName(key)[0].checked = false;
-              } else {
-                  document.getElementsByName(key)[0].checked = true;
-              }
-              document.getElementsByName(key)[0].removeAttribute("disabled");
+            if (element.checked !== settings[key]) {
+              element.checked = settings[key];
+              element.dispatchEvent(new Event("click"));
+            }
+            element.removeAttribute("disabled");
           } else if (Array.isArray(settings[key])) {
-              // Removed settings with the starting moves rework
-              if (key === "starting_move_list_selected" || key === "random_starting_move_list_selected") {
-                  continue;
-              }
-
-              if (key.startsWith("starting_moves_list_")) {
-                select = document.getElementById(key);
-                settings[key].forEach(value => {
-                    let existing_option = document.getElementById("starting_move_" + value);
-                    const parentSelect = existing_option.parentNode;
-                    parentSelect.removeChild(existing_option);
-                    select.appendChild(existing_option);
-                });
-                continue;
-              }
-
+            if (key.startsWith("starting_moves_list_")) {
+              const select = document.getElementById(key);
+              settings[key].forEach((value) => {
+                const existing_option = document.getElementById(
+                  "starting_move_" + value
+                );
+                if (existing_option.parentNode !== select) {
+                  existing_option.parentNode.removeChild(existing_option);
+                  select.appendChild(existing_option);
+                }
+              });
+            } else {
               const selector = document.getElementById(key);
+              if (selector && selector.tagName === "SELECT") {
+                const MapName = SettingsMap[key];
+                const flipped = Object.fromEntries(
+                  Object.entries(MapName).map(([k, v]) => [v, k])
+                );
+                const currentSelections = Array.from(
+                  selector.selectedOptions
+                ).map((opt) => opt.value);
+                const newSelections = settings[key].map(
+                  (item) => flipped[item]
+                );
 
-              if (selector.tagName === "SELECT") {
-                  let MapName = SettingsMap[key];
-                  // Flip the attributes so the value is the key and the key is the value
-                  let flipped = {};
-                  for (let key in MapName) {
-                      flipped[MapName[key]] = key;
-                  }
-                  // Pre clear all selections
-                  for (let option of selector.options) {
-                      option.selected = false;
-                  }
-                  settings[key].forEach(item => {
-                      // Find the selected option by the value of the option
-                      for (let option of selector.options) {
-                          if (option.value === flipped[item]) {
-                              option.selected = true;
-                          }
-                      }
+                if (
+                  JSON.stringify(currentSelections) !==
+                  JSON.stringify(newSelections)
+                ) {
+                  Array.from(selector.options).forEach((option) => {
+                    option.selected = newSelections.includes(option.value);
                   });
+                }
               }
+            }
           } else {
-              const selector = document.getElementById(key);
-              if (selector.tagName === "SELECT" && key !== "random-weights") {
-                  let MapName = SettingsMap[key];
-                  // Flip the attributes so the value is the key and the key is the value
-                  let flipped = {};
-                  for (let key in MapName) {
-                      flipped[MapName[key]] = key;
-                  }
-                  // Clear all selections
-                  for (let option of selector.options) {
-                      option.selected = false;
-                  }
-                  // Set the value of the select box to the value in the settings
-                  selector.value = flipped[settings[key]];
-                  // Set the selected attribute to true for the selected option we need to search by the name of the option
-                  for (let option of selector.options) {
-                      if (option.value === flipped[settings[key]]) {
-                          option.selected = true;
-                      }
-                  }
-
-              } else {
-                  document.getElementById(key).value = settings[key];
+            const selector = document.getElementById(key);
+            if (selector.tagName === "SELECT" && key !== "random-weights") {
+              const MapName = SettingsMap[key];
+              const flipped = Object.fromEntries(
+                Object.entries(MapName).map(([k, v]) => [v, k])
+              );
+              if (selector.value !== flipped[settings[key]]) {
+                selector.value = flipped[settings[key]];
+                Array.from(selector.options).forEach((option) => {
+                  option.selected = option.value === flipped[settings[key]];
+                });
               }
-              document.getElementById(key).removeAttribute("disabled");
+            } else if (selector.value !== settings[key]) {
+              selector.value = settings[key];
+            }
+            selector.removeAttribute("disabled");
           }
-      } catch (e) {
-          console.log(e);
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    }
+
+    // Process the update queue
+    function processQueue() {
+      const batchSize = 10; // Adjust batch size based on performance
+      for (let i = 0; i < batchSize && updateQueue.length; i++) {
+        const updateFn = updateQueue.shift();
+        updateFn();
+      }
+
+      if (updateQueue.length > 0) {
+        requestAnimationFrame(processQueue);
+      } else {
+        update_ui_states(null);
+        savesettings(); // Save settings after all updates
       }
     }
-  }
 
-  update_ui_states(null);
-  savesettings();
+    requestAnimationFrame(processQueue);
+  }
+  generateToast(
+    `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+  );
 }
+
 
 document
   .getElementById("apply_preset")
@@ -1366,15 +1438,7 @@ function load_data() {
         if (getRequest.result) {
           const json = JSON.parse(getRequest.result);
           if (json) {
-            new Promise((resolve) => {
-              setTimeout(() => {
-                load_settings(json);
-                savesettings();
-                trigger_ui_update();
-              }, 0); // Deferred load_settings to avoid blocking
-            });
-          } else {
-            savesettings();
+            load_settings(json);
           }
         } else {
           preset_select_changed();
@@ -1389,6 +1453,7 @@ function load_data() {
     console.error("Error initializing settings:", error);
     preset_select_changed();
   }
+  savesettings();
 }
 
 function initialize_sliders() {
@@ -1400,7 +1465,6 @@ function initialize_sliders() {
     }
   });
 }
-
 function load_settings(json) {
   // if enable_plandomizer is not checked, remove every setting from the json that starts with plando_
   if (!json["enable_plandomizer"]) {
@@ -1410,6 +1474,7 @@ function load_settings(json) {
       }
     }
   }
+
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [key, document.getElementsByName(key)])
   );
@@ -1424,48 +1489,79 @@ function load_settings(json) {
     const element = elements[0];
 
     updateQueue.push(() => {
+      let valueChanged = false;
+
       // Boolean values for checkboxes
       if (value === "True" || value === "False") {
-        element.checked = value === "True";
+        if (element.checked !== (value === "True")) {
+          element.checked = value === "True";
+          valueChanged = true;
+        }
         return;
       }
 
       // Radio button handling for "starting_move_box"
       if (key.includes("starting_move_box")) {
         elements.forEach((button) => {
-          button.checked = button.id.includes(value);
+          if (button.checked !== button.id.includes(value)) {
+            button.checked = button.id.includes(value);
+            valueChanged = true;
+          }
         });
         return;
       }
 
-      if (element.name.startsWith("starting_moves_list_") && !element.name.startsWith("starting_moves_list_count")) {
-        select = document.getElementById(key);
-        json[key].forEach(value => {
-            let existing_option = document.getElementById("starting_move_" + value);
-            const parentSelect = existing_option.parentNode;
+      if (
+        element.name.startsWith("starting_moves_list_") &&
+        !element.name.startsWith("starting_moves_list_count")
+      ) {
+        const select = document.getElementById(key);
+        json[key].forEach((value) => {
+          const existing_option = document.getElementById(
+            "starting_move_" + value
+          );
+          const parentSelect = existing_option.parentNode;
+          if (existing_option.parentNode !== select) {
             parentSelect.removeChild(existing_option);
             select.appendChild(existing_option);
+            valueChanged = true;
+          }
         });
         return;
       }
 
       try {
-        element.value = value;
-
-        // Handle noUiSlider if applicable
+        // Check for noUiSlider changes
         if (element.hasAttribute("data-slider-value")) {
           const slider = document.getElementById(key);
-          slider?.noUiSlider?.set(value);
+          if (slider?.noUiSlider?.get() != value) {
+            slider.noUiSlider.set(value);
+            valueChanged = true;
+          }
+        } else if (element.value !== value) {
+          element.value = value;
+          valueChanged = true;
         }
 
         // Multiple selection for elements with "selected" class
         if (element.classList.contains("selected")) {
-          Array.from(element.options).forEach((option) => {
-            option.selected = value.includes(option.value);
-          });
+          const currentValues = Array.from(element.options)
+            .filter((option) => option.selected)
+            .map((option) => option.value);
+          if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+            Array.from(element.options).forEach((option) => {
+              option.selected = value.includes(option.value);
+            });
+            valueChanged = true;
+          }
         }
       } catch (e) {
         console.error(`Error setting value for ${key}:`, e);
+      }
+
+      // Trigger a click event if the value has changed
+      if (valueChanged) {
+        element.dispatchEvent(new Event("click"));
       }
     });
   }
@@ -1480,8 +1576,7 @@ function load_settings(json) {
 
     if (updateQueue.length > 0) {
       requestAnimationFrame(processQueue);
-    }
-    else {
+    } else {
       trigger_ui_update();
     }
   }

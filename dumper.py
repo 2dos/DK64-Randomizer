@@ -485,7 +485,7 @@ def checkIfMatchingList(list1: list, list2: list) -> bool:
 def getDisplayName(internal_name: str):
     """Get the displayed name on the site for an internal name."""
     directory = "./templates"
-    templates = [x for x in os.listdir(directory) if ".html.jinja2" in x and x not in ["spoiler.html.jinja2", "spoiler_new.html.jinja2", "settings.html.jinja2"]]
+    templates = [x for x in os.listdir(directory) if ".html" in x and x not in ["spoiler.html", "spoiler_new.html", "settings.html"]]
     old_text = " ".join([x.capitalize() for x in internal_name.split("_")])
     for template in templates:
         with open(f"{directory}/{template}", "r") as jinja:
@@ -602,7 +602,7 @@ def dump_plando_colors(format: str):
         "c": ["#132958", "#b5cdff"],
         "d": ["#275e1e", "#00ce0e"],
     }
-    with open("randomizer/Patching/Lib.py", "r") as fh:
+    with open("randomizer/Patching/Library/Generic.py", "r") as fh:
         lines = fh.readlines()
         text = "{"
         in_dict = False

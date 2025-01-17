@@ -63,7 +63,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch
+from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
     updateKrushaMoveNames,
@@ -566,10 +566,10 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x1DB)
         ROM_COPY.write(fungi_times.index(time_val))
         if time_val == FungiTimeSetting.progressive:
-            addNewScript(Maps.FungiForest, progressive_removals, ScriptTypes.DeleteItem)
+            addNewScript(ROM_COPY, Maps.FungiForest, progressive_removals, ScriptTypes.DeleteItem)
         elif time_val == FungiTimeSetting.dusk:
             for map_val in dusk_removals:
-                addNewScript(map_val, dusk_removals[map_val], ScriptTypes.DeleteItem)
+                addNewScript(ROM_COPY, map_val, dusk_removals[map_val], ScriptTypes.DeleteItem)
 
     # Galleon Water Level
     if spoiler.settings.galleon_water_internal == GalleonWaterSetting.raised:
@@ -680,61 +680,61 @@ def patching_response(spoiler):
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         getHelmOrderHint(spoiler)
-    randomize_entrances(spoiler)
-    randomize_moves(spoiler)
-    randomize_prices(spoiler)
-    randomize_krool(spoiler)
-    randomize_helm(spoiler)
-    randomize_barrels(spoiler)
-    move_bananaports(spoiler)  # Has to be before randomize_bananaport
-    randomize_bananaport(spoiler)
-    randomize_kasplat_locations(spoiler)
-    randomize_enemies(spoiler)
-    apply_kongrando_cosmetic(spoiler)
-    randomize_setup(spoiler)
-    randomize_puzzles(spoiler)
-    randomize_cbs(spoiler)
-    randomize_coins(spoiler)
-    ApplyShopRandomizer(spoiler)
-    showWinCondition(spoiler.settings)
+    randomize_entrances(spoiler, ROM_COPY)
+    randomize_moves(spoiler, ROM_COPY)
+    randomize_prices(spoiler, ROM_COPY)
+    randomize_krool(spoiler, ROM_COPY)
+    randomize_helm(spoiler, ROM_COPY)
+    randomize_barrels(spoiler, ROM_COPY)
+    move_bananaports(spoiler, ROM_COPY)  # Has to be before randomize_bananaport
+    randomize_bananaport(spoiler, ROM_COPY)
+    randomize_kasplat_locations(spoiler, ROM_COPY)
+    randomize_enemies(spoiler, ROM_COPY)
+    apply_kongrando_cosmetic(spoiler, ROM_COPY)
+    randomize_setup(spoiler, ROM_COPY)
+    randomize_puzzles(spoiler, ROM_COPY)
+    randomize_cbs(spoiler, ROM_COPY)
+    randomize_coins(spoiler, ROM_COPY)
+    ApplyShopRandomizer(spoiler, ROM_COPY)
+    showWinCondition(spoiler.settings, ROM_COPY)
     remove5DSCameraPoint(spoiler, ROM_COPY)
     alterTextboxRequirements(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
-    place_randomized_items(spoiler, flut_items.copy())  # Has to be after kong rando cosmetic and moves
-    place_pregiven_moves(spoiler)
-    remove_existing_indicators(spoiler)
-    place_door_locations(spoiler)
-    randomize_crown_pads(spoiler)
-    randomize_melon_crate(spoiler)
-    PlaceFairies(spoiler)
-    filterEntranceType()
+    place_randomized_items(spoiler, flut_items.copy(), ROM_COPY)  # Has to be after kong rando cosmetic and moves
+    place_pregiven_moves(spoiler, ROM_COPY)
+    remove_existing_indicators(spoiler, ROM_COPY)
+    place_door_locations(spoiler, ROM_COPY)
+    randomize_crown_pads(spoiler, ROM_COPY)
+    randomize_melon_crate(spoiler, ROM_COPY)
+    PlaceFairies(spoiler, ROM_COPY)
+    filterEntranceType(ROM_COPY)
     updateKrushaMoveNames(spoiler)
-    updateSwitchsanity(spoiler)
-    updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
-    PushItemLocations(spoiler)
+    updateSwitchsanity(spoiler, ROM_COPY)
+    updateRandomSwitches(spoiler, ROM_COPY)  # Has to be after all setup changes that may alter the item type of slam switches
+    PushItemLocations(spoiler, ROM_COPY)
     parseMoveBlock(spoiler, ROM_COPY)  # Has to be after anything which messes with the move block, in this case, randomize_moves and place_randomized_items
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
-        PushHints(spoiler)
+        PushHints(spoiler, ROM_COPY)
         if spoiler.settings.dim_solved_hints:
             PushHelpfulHints(spoiler, ROM_COPY)
     if Types.Hint in spoiler.settings.shuffled_location_types and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off:
         PushHintTiedRegions(spoiler, ROM_COPY)
 
-    writeBootMessages()
-    enableTriggerText(spoiler)
-    shortenCastleMinecart(spoiler)
+    writeBootMessages(ROM_COPY)
+    enableTriggerText(spoiler, ROM_COPY)
+    shortenCastleMinecart(spoiler, ROM_COPY)
     alterStoryCutsceneWarps(spoiler, ROM_COPY)
 
     if "PYTEST_CURRENT_TEST" not in os.environ:
-        replaceIngameText(spoiler)
-        updateMillLeverTexture(spoiler.settings)
-        updateCryptLeverTexture(spoiler.settings)
-        updateDiddyDoors(spoiler.settings)
-        applyHelmDoorCosmetics(spoiler.settings)
-        applyKongModelSwaps(spoiler.settings)
+        replaceIngameText(spoiler, ROM_COPY)
+        updateMillLeverTexture(spoiler.settings, ROM_COPY)
+        updateCryptLeverTexture(spoiler.settings, ROM_COPY)
+        updateDiddyDoors(spoiler.settings, ROM_COPY)
+        applyHelmDoorCosmetics(spoiler.settings, ROM_COPY)
+        applyKongModelSwaps(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)

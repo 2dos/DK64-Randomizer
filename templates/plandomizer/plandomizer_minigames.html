@@ -1,0 +1,31 @@
+{# Variables and classes not defined here are in plandomizer.html #}
+<div class="tab-pane plando-pane fade"
+     id="nav-plando-{{panelName}}"
+     role="tabpanel"
+     aria-labelledby="nav-plando-{{panelName}}-tab">
+    <h2 class="title">{{panel["name"]}}</h2>
+    {% for _, levelObj in panel["levels"] %}
+        <h3 class="title">{{levelObj["name"]}}</h3>
+        <div class="flex-container flex-center">
+            {% for location in levelObj["locations"] %}
+                <div class="location-picker">
+                    <label for="plando_{{location["value"]}}_minigame" class="location-label">
+                        {{location["name"]}}
+                    </label>
+                    <div id="plando_{{location["value"]}}_minigame_wrapper"
+                         data-toggle="tooltip"
+                         title>
+                        <select id="plando_{{location["value"]}}_minigame"
+                                name="plando_{{location["value"]}}_minigame"
+                                class="form-select">
+                            <option value="">-- Randomize --</option>
+                            {% for game in plando_minigames|plando_minigame_restrict(location["kong"]) %}
+                                <option value="{{game["value"]}}">{{game["name"]}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

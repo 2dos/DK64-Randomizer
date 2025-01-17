@@ -1,0 +1,355 @@
+{% from 'macros.html' import list_selector, toggle_input %}
+<div class="container" style="margin-top: 20px;">
+    <div id="override_div"
+         class="form-check form-switch item-switch center-flex"
+         hidden>
+        <label data-toggle="tooltip"
+               title="Use Cosmetics set on UI instead of from the patch file.">
+            <input class="form-check-input"
+                   type="checkbox"
+                   name="override_cosmetics"
+                   id="override_cosmetics"
+                   value="True"
+                   display_name="Override Default Cosmetics"
+                   checked/>
+            Override Default Cosmetics
+        </label>
+    </div>
+    <div class="row">
+        <div class="col border panel">
+            <div class="row">
+                <h2 class="title">MISCELLANEOUS</h2>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">D-Pad Display</p>
+                        <select name="dpad_display"
+                                id="dpad_display"
+                                display_name="D-Pad Display"
+                                class="form-select center-div"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Displays a D-pad overlay for Tag Anywhere and a Homing Ammo Toggle.">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option value="on">
+                                On
+                            </option>
+                            <option value="minimal">
+                                Minimalistic
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Random Models</p>
+                        <select name="random_models"
+                                id="random_models"
+                                display_name="Random Models"
+                                class="form-select center-div"
+                                aria-label="Random Models"
+                                data-toggle="tooltip"
+                                title="Changes various models in the game">
+                            <option selected id="off" value="off" title="">
+                                Off
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="extreme" value="extreme">
+                                Extreme
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Random Enemy Colors</p>
+                        <select name="random_enemy_colors"
+                                id="random_enemy_colors"
+                                display_name="Random Enemy Colors"
+                                class="form-select center-div"
+                                aria-label="Random Enemy Colors"
+                                data-toggle="tooltip"
+                                title="Changes the colors of various enemies in the game">
+                            <option selected id="off" value="off" title="">
+                                Off
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="extreme" value="extreme">
+                                Extreme
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Head Size</p>
+                        <select name="big_head_mode"
+                                id="big_head_mode"
+                                display_name="Head Size"
+                                class="form-select center-div"
+                                aria-label="Head Size"
+                                data-toggle="tooltip"
+                                title="Changes the size of the various character's head to be bigger or smaller than usual">
+                            <option selected id="off" value="off" title="">
+                                Regular
+                            </option>
+                            <option id="big" value="big">
+                                Big Head Mode
+                            </option>
+                            <option id="small" value="small">
+                                Small Head Mode
+                            </option>
+                            <option id="random" value="random">
+                                Random Head Size
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-color-select">
+                        <div class="color-selector">
+                            <p class="select-title">Golden Banana Skin Color</p>
+                            <div id="gb_custom">
+                                <div class="input-group mb-3 gbColorPicker" style="display:flex">
+                                    <select name="gb_colors" id="gb_colors" class="form-select" aria-label="GB Skin">
+                                        <option selected value="vanilla">Vanilla</option>
+                                        <option value="randomized">Randomized</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                    <div class="color-input-container">
+                                        <input type="color"
+                                            name="gb_custom_color"
+                                            id="gb_custom_color"
+                                            default="#000000"
+                                            class="color-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-container">
+                    {{ toggle_input("misc_cosmetics", "Random Miscellaneous Cosmetics", "Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors") }}
+                    {{ toggle_input("dark_mode_textboxes", "Dark Mode UI", "Text bubbles will be darkened, with the font brightened. The DPad Graphic will be darkened.") }}
+                    {{ toggle_input("pause_hint_coloring", "Color Hints in Pause Menu", "Various important segments in hints on the pause menu will be colored to assist with parsing.", True) }}
+                    {{ toggle_input("disco_chunky", "Disco Chunky", "Gives Chunky his disco outfit. Will only work if his model is set to regular chunky.") }}
+                    {{ toggle_input("smoother_camera", "Smoother Camera", "Controlling the camera with the C Buttons behaves closer to how Banjo-Tooie operates.") }}
+                    <div class="spacer"></div>
+                    <div class="form-check form-switch item-switch holiday" data-toggle="tooltip" hidden
+                        title="Happy Holidays from the DK64 Randomizer dev team. Limited time option.">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            name="holiday_setting_offseason"
+                            id="holiday_setting_offseason"
+                            display_name="Holiday Mode"
+                            value="False" />
+                        <label class="form-check-label" for="holiday_setting_offseason">Holiday Mode</label>
+                    </div>
+                    <div class="spacer holiday hidden"></div>
+                    {# 
+                    HANDLING HOLIDAY MODE:
+                    Supported Holiday Mode (Is currently a holiday season)
+                    - Remove "hidden" from holiday spacer
+                    - Remove "hidden" from holiday item-switch
+                    - Set input name/id to "holiday_setting"
+                    - Set input value to "True"
+
+                    Off-season:
+                    - Add "hidden" from holiday spacer
+                    - Add "hidden" from holiday item-switch
+                    - Set input name/id to "holiday_setting_offseason"
+                    - Set input value to "False"
+                     #}
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <h2 class="title">ACCESSIBILITY</h2>
+                <div class="flex-container">
+                    {{ toggle_input("remove_water_oscillation", "Remove Water Oscillation", "Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.") }}
+                    {{ toggle_input("head_balloons", "Kong Head on Balloons", "Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.", True) }}
+                    {{ toggle_input("troff_brighten", "Brighten Boss Door Opening", "Brightens the door-opening sequence in Troff 'n' Scoff to make the reward easier to see.". True) }}
+                    {{ toggle_input("better_dirt_patch_cosmetic", "Higher contrast dirt patches", "Dirt Patches have the letters 'D' and 'K' colored yellow and red to make them more visible.". True) }}
+                    {{ toggle_input("crosshair_outline", "Outlined Crosshair", "The crosshair used in various situations, like shooting your gun, will have a black outline.") }}
+                    <div class="spacer"></div>
+                </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">
+                            Colorblind Mode
+                        </p>
+                        <select name="colorblind_mode"
+                                id="colorblind_mode"
+                                display_name="Colorblind Mode"
+                                class="form-select"
+                                aria-label="Colorblind Mode">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option value="prot">
+                                Red-Green (Protan)
+                            </option>
+                            <option value="deut">
+                                Red-Green (Deutan)
+                            </option>
+                            <option value="trit">
+                                Blue-Yellow (Tritan)
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col border panel">
+            <h2 class="title">COLORS
+                <label data-toggle="tooltip"
+                        title="Randomizes all Kong and Transformation Colors.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="random_colors"
+                            id="random_colors"
+                            value="True"/>
+                    <label for="random_colors"></label>
+                </label>
+            </h2>
+            <div class="flex-container">
+                {% for kong, object_data in kong_zones %}
+                    <div class="flex-container" style="flex-direction:column">
+                        <div class="item-color-select">
+                            <div class="color-selector">
+                                <p class="select-title">{{ kong }}</p>
+                                {% for zone in kong_zones[kong] %}
+                                    <div id="{{ kong | lower }}_{{ zone | lower }}_custom">
+                                        <div class="input-group mb-3 {{ kong | lower }}{{ zone | lower }}ColorPicker" style="display:flex">
+                                            <select name="{{ kong | lower }}_{{ zone | lower }}_colors" id="{{ kong | lower }}_{{ zone | lower }}_colors" class="form-select" aria-label="{{ kong }} {{ zone }}">
+                                                <option selected value="vanilla">{{ zone }}: Vanilla</option>
+                                                <option value="randomized">{{ zone }}: Randomized</option>
+                                                <option value="custom">{{ zone }}: Custom</option>
+                                            </select>
+                                            <div class="color-input-container">
+                                                <input type="color"
+                                                    name="{{ kong | lower }}_{{ zone | lower }}_custom_color"
+                                                    id="{{ kong | lower }}_{{ zone | lower }}_custom_color"
+                                                    default="#000000"
+                                                    class="color-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <hr />
+            <div class="row">
+                <h2 class="title">DEFAULT GAME SETTINGS</h2>
+                <div class="flex-container">
+                    {{ toggle_input("camera_is_not_inverted", "Disable Y-Inverted First Person Camera", "If enabled, the camera will look up when the player holds up on the stick, the opposite of how the vanilla game behaves.") }}
+                    {{ toggle_input("camera_is_follow", "Follow Cam", "Camera will always follow behind the player.") }}
+                </div>
+                {# <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">
+                            Sound Type
+                        </p>
+                        <select name="sound_type"
+                                id="sound_type"
+                                class="form-select"
+                                aria-label="Colorblind Mode">
+                            <option selected value="stereo">
+                                Stereo (Default)
+                            </option>
+                            <option value="surround">
+                                Surround
+                            </option>
+                            <option value="mono">
+                                Mono
+                            </option>
+                        </select>
+                    </div>
+                </div> #}
+                <div class="flex-container">
+                    <div class="item-group">
+                        <p class="select-title">Music Volume (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="music_volume"
+                            id="music_volume"
+                            display_name="Music Volume"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Music Volume"
+                            default="100"
+                            placeholder="100"/>
+                    </div>
+                    <div class="item-group">
+                        <p class="select-title">SFX Volume (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="sfx_volume"
+                            id="sfx_volume"
+                            display_name="SFX Volume"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="SFX Volume"
+                            default="100"
+                            placeholder="100"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    KONG_ZONES = {
+        "DK": ["Fur", "Tie"], 
+        "Diddy": ["Clothes"], 
+        "Lanky": ["Clothes", "Fur"], 
+        "Tiny": ["Clothes", "Hair"], 
+        "Chunky": ["Main", "Other"], 
+        "Rambi": ["Skin"], 
+        "Enguarde": ["Skin"]
+    }
+    
+    $('.nav-tabs').click(function() {
+        var settings = (document.cookie).split('saved_settings=')
+        if (typeof settings[1] !== 'undefined') {
+            var object = JSON.parse(settings[1])
+            Object.keys(KONG_ZONES).forEach(kong => {
+                KONG_ZONES[kong].forEach(zone => {
+                    const attribute = `${kong.toLowerCase()}_${zone.toLowerCase()}_custom_color`;
+                    const cls = `.${kong.toLowerCase()}${zone.toLowerCase()}ColorPicker`;
+                    if (object.hasOwnProperty(attribute)) {
+                        $(cls).attr('style', 'background-color:' + object[attribute] + ';')
+                    }
+                })
+            })
+            if (object.hasOwnProperty("gb_custom_color")) {
+                $(".gbColorPicker").attr("style", "background-color" + object["gb_custom_color"] + ";")
+            }
+        }
+    })
+    $(function() {
+        var pattern = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        var current = 0;
+
+        var keyHandler = function (event) {
+            // If the key isn't in the pattern, or isn't the current key in the pattern, reset
+            if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
+                current = 0;
+                return;
+            }
+            // Update how much of the pattern is complete
+            current++;
+            // If complete, remove hidden and reset
+            if (pattern.length === current) {
+                current = 0;
+                $('.holiday').removeAttr('hidden');
+            }
+        };
+        // Listen for keydown events
+        document.addEventListener('keydown', keyHandler, false);
+    })
+</script>

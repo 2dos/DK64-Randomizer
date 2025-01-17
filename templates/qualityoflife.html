@@ -1,0 +1,436 @@
+{% from 'macros.html' import list_selector, properties_selector %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border panel">
+            <h2 class="title">GAMEPLAY</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="This option enables various quality of life changes.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="quality_of_life"
+                               display_name="Misc Changes"
+                               value="True"
+                               checked/>
+                        Misc Changes
+                    </label>
+                    {{ list_selector(misc_changes, "misc_changes", "MISC CHANGES", "This will open a popup that will let you customize what Quality of Life Options are active.&#10;This defaults to All options.", 18, 1) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="This option shortens all of the longer boss fights in the game.&#10;">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="shorten_boss"
+                                id="shorten_boss"
+                                display_name="Shorten Boss Fights"
+                                value="True"/>
+                        Shorten Boss Fights
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right.&#10;You will still need to unlock the kong you want if Unlock All Kongs isn't enabled.&#10;You cannot switch kongs in rooms or areas that would otherwise break the puzzle.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="enable_tag_anywhere"
+                                id="enable_tag_anywhere"
+                                display_name="Enable Tag Anywhere"
+                                value="True"/>
+                        Enable Tag Anywhere
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="This option will add hints as to what move you are purchasing in shops.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="enable_shop_hints"
+                                display_name="Enable Shop Hints"
+                                value="True"/>
+                        Enable Shop Hints
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Will display the face of each Kong that has a move to purchase there or 'SOLD OUT' if all moves are purchased.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="shop_indicator"
+                                display_name="Shop Indicator"
+                                value="True"
+                                checked/>
+                        Shop Indicator
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Disables the check on Wrinkly Doors for having the appropriate kong unlocked.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="wrinkly_available"
+                                display_name="Kongless Hint Doors"
+                                value="True"/>
+                        Kongless Hint Doors
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Warping to the DK isles is directly allowed from the pause menu.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="warp_to_isles"
+                                display_name="Warp to Isles menu option"
+                                value="True"/>
+                        Warp to Isles menu option
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="Speeds up the Bananaport animation.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="fast_warps"
+                                display_name="Fast Warps"
+                                value="True"/>
+                        Fast Warps
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Automatically turns in keys once you collect them.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="auto_keys"
+                                display_name="Auto Key Turn Ins"
+                                value="True"/>
+                        Auto Key Turn ins
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="Training Barrels complete, start with Simian Slam, spawn in DK Isles, Japes lobby entrance open.">
+                        <input class="form-check-input" 
+                                type="checkbox" 
+                                name="fast_start_beginning_of_game" 
+                                id="fast_start_beginning_of_game" 
+                                display_name="Fast Start - Beginning of Game" 
+                                value="True"/>
+                        Fast Start - Beginning of Game
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Killing enemies in battle crowns will reduce the time remaining on a crown.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="enemy_kill_crown_timer"
+                                display_name="Enemy Crown Timer Reduction"
+                                value="True"/>
+                        Enemy Crown Timer Reduction
+                    </label>
+                </div>
+                <div class="spacer"></div>
+                <div class="item-select">
+                    <p class="select-title">Helm Start Location</p>
+                    <select name="helm_setting"
+                            id="helm_setting"
+                            display_name="Helm Start Location"
+                            class="form-select center-div"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="This option will shorten the time it takes to beat Hideout Helm.&#10;Skip Start adds the following changes:&#10;- You will spawn in the Blast o Matic room.&#10;- Opens the roman numeral doors to each Kong's room.&#10;- The gates in front of the music pads are gone.&#10;Skip All: Spawns you at the crown door.">
+                        <option selected value="default">
+                            Vanilla
+                        </option>
+                        <option value="skip_start">
+                            Skip Start
+                        </option>
+                        <option value="skip_all">
+                            Skip All
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Helm Room Bonus Count</p>
+                    <select name="helm_room_bonus_count"
+                            id="helm_room_bonus_count"
+                            display_name="Helm Room Bonus Count"
+                            class="form-select center-div"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines how many bonus barrels are required to beat a helm room. If set to zero, playing the instrument pad will complete a helm room.">
+                        <option selected value="two">
+                            Two
+                        </option>
+                        <option value="one">
+                            One
+                        </option>
+                        <option value="zero">
+                            Zero
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Cutscene Skips</p>
+                    <select name="more_cutscene_skips"
+                            id="more_cutscene_skips"
+                            display_name="Cutscene Skips"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="More cutscenes will be skipped. Selecting 'Press Start to Skip' will skip those cutscenes by pressing Start. Selecting Automatic will skip those cutscenes automatically.">
+                        <option value="off">
+                            Off
+                        </option>
+                        <option value="press">
+                            Press Start to Skip
+                        </option>
+                        <option value="auto" selected>
+                            Automatic
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col border panel">
+            <h2 class="title">HINTS</h2>
+            <a class="btn btn-secondary" href="./wiki/All-About-Hints.html" target="_blank">
+                All About Hints
+                <img class="icon" src="./static/img/external_link.png">
+            </a>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Wrinkly Hints</p>
+                    <select name="wrinkly_hints"
+                            id="wrinkly_hints"
+                            display_name="Wrinkly Hints"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Wrinkly hints are replaced with useful hints.&#10;Standard - The recommended default hint experience, flexible across all settings.&#10;Cryptic - Same as default, with phrasing tweaks to be less direct.&#10;Item Hinting - A simpler hint system hinting as many items as possible, prioritizing Kongs, Keys, and required moves.&#10;Advanced Item Hinting - Same as above, but hints are less direct about what they lead you to.&#10;Off - Wrinkly doors have vanilla text.">
+                        <option selected value="standard">
+                            Standard
+                        </option>
+                        <option value="cryptic">
+                            Cryptic
+                        </option>
+                        {#<option value="fixed_racing">
+                            Fixed (S2 Racing)
+                        </option>#}
+                        <option value="item_hinting">
+                            Item Hinting
+                        </option>
+                        <option value="item_hinting_advanced">
+                            Advanced Item Hinting
+                        </option>
+                        <option value="off">
+                            Off
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title" style="margin-bottom:5px;">Progressive Hints</p>
+                    <div class="d-flex select-number-container" id="progressive_hint_container">
+                        <select name="progressive_hint_item"
+                                id="progressive_hint_item"
+                                display_name="Progressive Hint Item"
+                                class="form-select center-div"
+                                aria-label="Progressive Hint Item"
+                                data-toggle="tooltip"
+                                title="The item required to obtain a hint through the progressive hint system, where hints are given on the pause menu for collecting x amount of a certain item rather than visiting Wrinkly..">
+                            <option selected id="off" value="off" title="">
+                                Off
+                            </option>
+                            <option id="req_gb" value="req_gb">
+                                Golden Bananas
+                            </option>
+                            <option id="req_bp" value="req_bp">
+                                Blueprints
+                            </option>
+                            <option id="req_key" value="req_key">
+                                Keys
+                            </option>
+                            <option id="req_medal" value="req_medal">
+                                Medals
+                            </option>
+                            <option id="req_crown" value="req_crown">
+                                Crowns
+                            </option>
+                            <option id="req_fairy" value="req_fairy">
+                                Fairies
+                            </option>
+                            <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                Rainbow Coins
+                            </option>
+                            {# <option id="req_bean" value="req_bean">
+                                Bean
+                            </option> #}
+                            <option id="req_pearl" value="req_pearl">
+                                Pearls
+                            </option>
+                            <option id="req_cb" value="req_cb">
+                                Colored Bananas
+                            </option>
+                        </select>
+                        <input min="1"
+                                max="3500"
+                                name="progressive_hint_count"
+                                id="progressive_hint_count"
+                                display_name="Progressive Hint 35 Requirement"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Item count requirement for the 35th hint with progressive Hints."
+                                default="1"
+                                placeholder="1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Hints are dimmed on the pause menu when a hint has been solved.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="dim_solved_hints"
+                                display_name="Dim Solved Hints"
+                                value="True"
+                                />
+                        Dim solved hints
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="No joke hints will be placed.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="serious_hints"
+                                display_name="No Joke Hints"
+                                value="True"
+                                />
+                        No Joke Hints
+                    </label>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Spoiler Hints</p>
+                    <select name="spoiler_hints"
+                            id="spoiler_hints"
+                            display_name="Spoiler Hints"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Adds hints to the spoiler log that reveals specific information about the seed.&#10;Vials - Kongs, Keys, and vials will be revealed for each level.&#10;Points - Each level has a number of points assigned to it based on the items the level contains. The point values for each item can be customized with the gear [TBD].">
+                        <option value="vial_colors">
+                            Vials
+                        </option>
+                        <option selected value="points">
+                            Points
+                        </option>
+                        <option selected value="off">
+                            Off
+                        </option>
+                    </select>
+                    <div>
+                    Customize Points
+                    {{ properties_selector(points_spread, "points_list", "POINTS SPREAD", "This will open a popup that will let you customize your points spread.") }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                    <div class="form-check form-switch" style="padding-top:10px;">
+                        <label data-toggle="tooltip"
+                                style="font-size:14px;"
+                                title="Spoiler hints will includes the count of spoiler-hinted WotH (strictly required) items in each level.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="spoiler_include_woth_count"
+                                    display_name="Include WotH Counts in Spoiler Hints"
+                                    value="True"/>
+                            Include WotH Counts
+                        </label>
+                    </div>
+                    <div class="form-check form-switch" style="padding-top:10px;">
+                        <label data-toggle="tooltip"
+                                style="font-size:14px;"
+                                title="Spoiler hints will includes the level order.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="spoiler_include_level_order"
+                                    display_name="Include Level Order in Spoiler Hints"
+                                    value="True"/>
+                            Include Level Order
+                        </label>
+                    </div>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Extra Hints</p>
+                    <select name="microhints_enabled"
+                            id="microhints_enabled"
+                            display_name="Extra Hints"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Extra hints are placed in late-game to provide extra information if you are stuck on where an item is.&#10;- Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with enough GBs to enter all of the first 7 levels.&#10;- Gorilla Gone will be hinted upon touching the pad inside Helm Lobby.&#10;- Instruments will be hinted upon touching their pad in Helm.&#10;'Some' will have Monkeyport and Gorilla Gone hints, while 'All' also includes Instrument hints.">
+                        <option value="all"
+                                title="Includes hints in Hideout Helm for the 5 instruments">
+                            All
+                        </option>
+                        <option selected value="base">
+                            Some
+                        </option>
+                        <option value="off">
+                            Off
+                        </option>
+                    </select>
+                </div>
+            </div>
+            
+            <hr />
+            <h2 class="title">OTHER</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Displays an FPS counter tracked by the game itself.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="fps_display"
+                                display_name="FPS Display"
+                                value="True"/>
+                        FPS Display
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Numbers are displayed on the outside portal of a troff n scoff zone of the amount of bananas still required.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="portal_numbers"
+                                value="True"
+                                display_name="Troff n Scoff Portal Numbers"
+                                checked/>
+                        Troff n Scoff portal numbers
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Enables indicators for some checks:&#10;- Bonus Barrel Skin will match the reward you get for beating the bonus barrel.&#10;- The reward for completing a boss will be shown behind the boss door once you open it.&#10;- The reward for completing a battle crown will be shown in the background during a crown battle.&#10;- Text-based reward hints in various locations before completing a race or otherwise lengthy quest.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="item_reward_previews"
+                                display_name="Item Reward Previews"
+                                value="True"
+                                checked/>
+                        Item Reward Previews
+                    </label>
+                </div>
+                <div class="spacer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger: 'hover'
+            })
+        })
+    </script>

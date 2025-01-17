@@ -1,0 +1,262 @@
+{% macro list_selector(list, name, title, tooltip, size, includeDisclaimer=0, overrideDisclaimer="") %}
+    <!-- Icon triggers modal -->
+    <input class="customize"
+           type="button"
+           href="#"
+           id="{{ name }}_modal"
+           data-bs-toggle="modal"
+           data-bs-target="#{{ name }}_Modal"
+           data-toggle="tooltip"
+           title="{{ tooltip }}"/>
+</div>
+<!-- Modal -->
+<div class="modal fade"
+     id="{{ name }}_Modal"
+     tabindex="-1"
+     aria-labelledby="{{ name }}_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="{{ name }}_ModalLabel">{{ title }}</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="item-multiselect" style="margin-left: 105px;">
+                    <div class="color-selector">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text search">
+                                    <input type="text"
+                                           class="form-control"
+                                           id="{{ name }}_search_box"
+                                           name="search"
+                                           placeholder="Search"/>
+                                </div>
+                            </div>
+                            <select name="{{ name }}_selected"
+                                    id="{{ name }}_selected"
+                                    class="form-select multi-select selected"
+                                    aria-label="List_Selector"
+                                    multiple
+                                    size="{{ size }}">
+                                {% for item in list %}
+                                    <option value="{{ item.value }}" title="{{ item.tooltip }}">
+                                        {{ item.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% if overrideDisclaimer != "" %}
+                    <div class="fst-italic">
+                        <div>{{ overrideDisclaimer }}</div>
+                    </div>
+                {% endif %}
+                {% if includeDisclaimer %}
+                    <div class="fst-italic">
+                        <div>If nothing is selected, all options are treated as selected.</div>
+                        <div>Disable the setting slider to disable all options.</div>
+                    </div>
+                {% endif %}
+                {% if name == "minigames_list" %}
+                    <div class="form-check form-switch" style="padding-left: 1.5em;">
+                        <label data-toggle="tooltip"
+                            style="font-size:14px;"
+                            title="The hardest variants of minigames are removed.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="disable_hard_minigames"
+                                id="disable_hard_minigames"
+                                value="True"/>
+                            No Hard Minigames
+                        </label>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="{{ name }}_select_all">Select All</button>
+                <button type="button" class="btn btn-secondary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#{{ name }}_selected option').mousedown(function(e) {
+        var el = e.target
+    
+        $(this).prop('selected', !$(this).prop('selected'));
+        $(this).trigger('change');
+    
+        // fixes erratic scroll behavior in Chrome
+        var scrollTop = el.parentNode.scrollTop;
+        setTimeout(() => el.parentNode.scrollTo(0, scrollTop), 0);
+    
+        return false;
+    });
+    
+    $('#{{ name }}_select_all').click(function() {
+        $('#{{ name }}_selected option').prop('selected', true);
+        $('#{{ name }}_selected').trigger('change');
+    });
+    
+    $('#{{ name }}_reset').click(function() {
+        $('#{{ name }}_selected option:selected').prop('selected', false);
+        $('#{{ name }}_selected').trigger('change');
+    });
+    
+    $('#{{ name }}_search_box').keyup(function() {
+        var keyword = document.getElementById("{{ name }}_search_box").value;
+        var select = document.getElementById("{{ name }}_selected");
+        for (var i = 0; i < select.length; i++) {
+            var txt = select.options[i].text;
+            if (txt.substring(0, keyword.length).toLowerCase() !== keyword.toLowerCase() && keyword.trim() !== "") {
+                select.options[i].style.display = 'none';
+            } else {
+                select.options[i].style.display = 'list-item';
+            }
+        }
+    });
+</script>
+{% endmacro %}
+{% macro properties_selector(list, name, title, tooltip) %}
+    <!-- Icon triggers modal -->
+    <input class="customize"
+           type="button"
+           href="#"
+           id="{{ name }}_modal"
+           data-bs-toggle="modal"
+           data-bs-target="#{{ name }}_Modal"
+           data-toggle="tooltip"
+           title="{{ tooltip }}"/>
+</div>
+<!-- Modal -->
+<div class="modal fade"
+     id="{{ name }}_Modal"
+     tabindex="-1"
+     aria-labelledby="{{ name }}_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width:700px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="{{ name }}_ModalLabel">{{ title }}</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="flex-container">
+                        {% for item in list %}
+                            <div class="item-select" style="margin:0;flex:0;min-width:150px;">
+                                <p class="select-title">{{ item.name }}</p>
+                                {% if item.name == "Starting Time" %}
+                                    <input 
+                                    min="0"
+                                    max="65535"
+                                    name="{{ name }}_{{ item.value }}"
+                                    id="{{ name }}_{{ item.value }}"
+                                    style="width:15%"
+                                    class="form-control center-div"
+                                    type="number"
+                                    value="{{ item.default }}"
+                                    default_val="{{ item.default }}">
+                                {% else %}
+                                    <input 
+                                    min="-32768"
+                                    max="32767"
+                                    name="{{ name }}_{{ item.value }}"
+                                    id="{{ name }}_{{ item.value }}"
+                                    style="width:15%"
+                                    class="form-control center-div"
+                                    type="number"
+                                    value="{{ item.default }}"
+                                    default_val="{{ item.default }}">
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#{{ name }}_reset').click(function() {
+        {% for item in list %}
+            $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'))
+            $('#{{ name }}_{{ item.value }}').trigger('change')
+        {% endfor %}
+    })
+</script>
+{% endmacro %}
+{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="") %}
+<div class="form-check form-switch item-switch" data-toggle="tooltip"
+            title="{{ tooltip }}">
+    {% if default_checked %}
+        <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            name="{{ id }}"
+            id="{{ id }}"
+            display_name="{{ name }}"
+            value="True" checked />
+    {% else %}
+        <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            name="{{ id }}"
+            id="{{ id }}"
+            display_name="{{ name }}"
+            value="True" />
+    {% endif %}
+    <label class="form-check-label" for="{{ id }}">
+        {% if altered_name == "" %}
+            {{ name }}
+        {% else %}
+            {{ altered_name }}
+        {% endif %}
+    </label>
+</div>
+{% endmacro %}
+
+{% macro slider_input(id, name, min_value, max_value) %}
+    <input type="range"
+        name="{{ id }}"
+        id="{{ id }}"
+        display_name="{{ name }}"
+        min="{{ min_value }}"
+        max="{{ max_value }}"
+        style="width: 80%"
+        class="pretty-slider"
+        list="{{ id }}_tickmarks">
+    <datalist id="{{ id }}_tickmarks" style="width: 80%; margin-top: -10px" class="d-flex justify-content-between mx-auto px-1">
+        {% for val in range(min_value, max_value + 1) %}
+            <option value="{{ val }}" label="{{ val }}"></option>
+        {% endfor %}
+    </datalist>
+    <script>
+        ["change", "input", "load"].forEach(evt => {
+            document.getElementById("{{ id }}").addEventListener(evt, (e) => {
+                const targ_value = e.target.value;
+                const targ_min = e.target.getAttribute("min");
+                const targ_max = e.target.getAttribute("max");
+                const targ_delta = targ_max - targ_min;
+                const value_delta = targ_value - targ_min;
+                e.target.style.setProperty("--p", `${parseInt(100 * (value_delta / targ_delta))}%`)
+            })
+        })
+    </script>
+{% endmacro %}

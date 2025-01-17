@@ -1,0 +1,139 @@
+<style>
+    .plando-pane {
+        padding-bottom: 24px;
+    }
+
+    .plando-pills {
+        padding: 24px 0;
+    }
+
+    .plando-pill {
+        flex: 0 0 16%;
+    }
+</style>
+{# TODO LIST #}
+{# De-duplicate validation functions. #}
+{# Double-check mobile styling. #}
+{# Allow the backend to pass tooltip errors back to the frontend. #}
+{# Add clickable icons next to error messages to take users directly to the incorrect setting. #}
+{# Fix h2 to h5 on the Getting Started page. #}
+{# Enforce word length limit on hint text (exact length TBD). #}
+<div class="container border" style="margin-top: 20px;">
+    <!-- The import/export/reset panel. -->
+    <label for="settings_string" class="select-title">
+            Plandomizer JSON
+    </label>
+    <div class="flex-container flex-center import-export-container">
+        <input id="import_plando_settings"
+               class="btn btn-secondary settings-button"
+               type="button"
+               onClick="plando_import_filebox()"
+               value="Import Settings from File"/>
+        <input id="export_plando_settings"
+               class="btn btn-secondary settings-button"
+               type="button"
+               value="Export Settings to File"/>
+        <input id="reset_plando_settings"
+               class="btn btn-secondary settings-button"
+               type="button"
+               value="Reset Plando Settings"/>
+    </div>
+    <div class="import-errors"
+         id="plando_import_errors"
+         style="display: none;">
+    </div>
+    <div id="plando_string_section" class="flex-container" style="justify-content: center;">
+        <div class="form-group item-select" style="min-width:300px;">
+            <span class="row settings-string-container">
+                <input name="plando_string"
+                        id="plando_string"
+                        placeholder="Click Export or Copy Settings to fill"/>
+                <img name="plando_string_copy"
+                        id="plando_string_copy"
+                        class="copy-icon"
+                        data-toggle="tooltip"
+                        title="Click to copy the plando json data string to your clipboard."
+                        src="./static/img/copy-to-clipboard.svg">
+            </span>
+        </div>
+        <div>
+            <input id="export_plando_string"
+                    class="btn btn-secondary plando-settings-button"
+                    style="margin-top: 6px;"
+                    type="button"
+                    value="Export Plan String"/>
+        </div>
+    </div>
+</div>
+<div class="container border">
+    <!-- The navigation panel. -->
+    <div class="nav nav-pills flex-container flex-center plando-pills" id="plando-nav-tab" role="tablist">
+        <button class="nav-link active nav-item plando-pill"
+                id="nav-plando-introduction-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-plando-introduction"
+                type="button"
+                role="tab"
+                aria-controls="nav-plando-introduction"
+                aria-selected="true">
+            <p class="select-title">Introduction</p>
+        </button>
+        <button class="nav-link nav-item plando-pill"
+                id="nav-plando-general-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-plando-general"
+                type="button"
+                role="tab"
+                aria-controls="nav-plando-general"
+                aria-selected="false">
+            <p class="select-title">General</p>
+        </button>
+        {% for panelName, panel in plando_panels %}
+            <button class="nav-link nav-item plando-pill"
+                    id="nav-plando-{{panelName}}-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-plando-{{panelName}}"
+                    type="button"
+                    role="tab"
+                    {% if panelName == "Locations" %}style="display: none;"{% endif %}
+                    aria-controls="nav-plando-{{panelName}}"
+                    aria-selected="false">
+                <p class="select-title">{{panel["name"]}}</p>
+            </button>
+        {% endfor %}
+    </div>
+</div>
+<div class="container border">
+    {# The individual level tabs are populated here. Only one will show at a time. #}
+    <div class="tab-content" id="nav-tabContent">
+        {% include 'plandomizer/plandomizer_introduction.html' %}
+        {% include 'plandomizer/plandomizer_general.html' %}
+        {% for panelName, panel in plando_panels %}
+            {% if panelName == "Shops" %}
+                {% include 'plandomizer/plandomizer_shops.html' %}
+            {% elif panelName == "Switches" %}
+                {% include 'plandomizer/plandomizer_switches.html' %}
+            {% elif panelName == "Locations" %}
+                {% include 'plandomizer/plandomizer_locations.html' %}
+            {% elif panelName == "Minigames" %}
+                {% include 'plandomizer/plandomizer_minigames.html' %}
+            {% elif panelName == "Hints" %}
+                {% include 'plandomizer/plandomizer_hints.html' %}
+            {% else %}
+                {% include 'plandomizer/plandomizer_levels.html' %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    })
+    $("#plando_string_copy").on('click', function (event) {
+        var input = $("#plando_string");
+        input.select();
+        navigator.clipboard.writeText(input.val());
+    })
+</script>

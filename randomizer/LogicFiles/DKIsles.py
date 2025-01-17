@@ -314,10 +314,10 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events), Transitions.IslesMainToHelmLobby),
         # These next two transitions are only necessary in LZR, so the assumption of level entry necessary for level 8 (that is never applied in LZR) is safe here
         TransitionFront(Regions.KremIsleTopLevel, lambda l: not l.assumeLevel8Entry and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events))),
-        # This fall could be a logical point of progression, but you have to surive the drop
-        TransitionFront(Regions.KremIsleBeyondLift, lambda l: not l.assumeLevel8Entry and l.CanSurviveFallDamage()),
-        # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration.
-        TransitionFront(Regions.IslesMain, lambda l: True),
+        # This fall could be a logical point of progression, but you have to survive the drop OR have the keys and crouch drop there - the Open Lobbies check effectively prevents keys from being on the path for this transition in very rare worlds
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.CanSurviveFallDamage() or l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
+        # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration (but only if dying isn't catastrophic!)
+        TransitionFront(Regions.IslesMain, lambda l: lambda l: not l.settings.perma_death),
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", HintRegion.KremIsles, Levels.DKIsles, True, None, [

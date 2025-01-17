@@ -20,6 +20,12 @@ jobs:
         pip install -r requirements-dev.txt
         pip install wheel setuptools
 
+    - name: NPM install 
+      run: |
+        npm install
+        node_modules/nunjucks/bin/precompile templates/ > ./static/js/compile_templates.js
+        rm -rf ./node_modules
+
     - name: Build minified versions
       run: python3 ./tools/prepare_live.py
     

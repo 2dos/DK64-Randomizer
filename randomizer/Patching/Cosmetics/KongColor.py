@@ -7,12 +7,14 @@ import random
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, KongModels
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import PaletteFillType, int_to_list, getRawFile, writeRawFile, TableNames
-from randomizer.Patching.LibImage import getKongItemColor
+from randomizer.Patching.Library.Generic import PaletteFillType
+from randomizer.Patching.Library.DataTypes import int_to_list
+from randomizer.Patching.Library.Image import getKongItemColor
+from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Cosmetics.Krusha import kong_index_mapping
 from randomizer.Patching.Cosmetics.ModelSwaps import model_texture_sections
-from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Patcher import LocalROM, ROM
 
 DEFAULT_COLOR = "#000000"
 
@@ -61,7 +63,7 @@ KONG_ZONES = {
 }
 
 
-def writeKongColors(settings: Settings):
+def writeKongColors(settings: Settings, ROM_COPY: ROM):
     """Write kong colors based on the settings."""
     color_palettes = []
     color_obj = {}
@@ -223,10 +225,10 @@ def writeKongColors(settings: Settings):
         for pal in color_palettes:
             if pal not in new_color_palettes:
                 new_color_palettes.append(pal)
-        convertColors(new_color_palettes)
+        convertColors(new_color_palettes, ROM_COPY)
 
 
-def changeModelTextures(settings: Settings, kong_index: int):
+def changeModelTextures(settings: Settings, ROM_COPY: LocalROM, kong_index: int):
     """Change the textures associated with a model."""
     settings_values = [
         settings.kong_model_dk,
@@ -240,12 +242,11 @@ def changeModelTextures(settings: Settings, kong_index: int):
     model = settings_values[kong_index]
     if model not in model_texture_sections:
         return
-    ROM_COPY = LocalROM()
     for x in range(2):
         file = kong_index_mapping[kong_index][x]
         if file is None:
             continue
-        data = getRawFile(TableNames.ActorGeometry, file, True)
+        data = getRawFile(ROM_COPY, TableNames.ActorGeometry, file, True)
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)

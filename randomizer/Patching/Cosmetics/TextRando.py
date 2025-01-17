@@ -1,8 +1,8 @@
 """All code associated with cosmetic tweaks to text."""
 
 import random
-from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import writeText, grabText
+from randomizer.Patching.Patcher import LocalROM, ROM
+from randomizer.Patching.Library.Assets import writeText, grabText
 
 boot_phrases = (
     "Removing Lanky Kong",
@@ -299,18 +299,17 @@ def getCrownNames() -> list:
     return names
 
 
-def writeCrownNames():
+def writeCrownNames(ROM_COPY: ROM):
     """Write Crown Names to ROM."""
     names = getCrownNames()
-    old_text = grabText(35, True)
+    old_text = grabText(ROM_COPY, 35)
     for name_index, name in enumerate(names):
         old_text[0x1E + name_index] = ({"text": [name]},)
-    writeText(35, old_text, True)
+    writeText(ROM_COPY, 35, old_text)
 
 
-def writeBootMessages() -> None:
+def writeBootMessages(ROM_COPY: LocalROM) -> None:
     """Write boot messages into ROM."""
-    ROM_COPY = LocalROM()
     placed_messages = random.sample(boot_phrases, 4)
     for message_index, message in enumerate(placed_messages):
         ROM_COPY.seek(0x1FFD000 + (0x40 * message_index))

@@ -8,7 +8,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Patching.Lib import getIceTrapCount
+from randomizer.Patching.Library.Generic import getIceTrapCount
 
 
 class LocationSelection:

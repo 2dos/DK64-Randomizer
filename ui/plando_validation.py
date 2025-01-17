@@ -42,7 +42,7 @@ from randomizer.Lists.Plandomizer import (
     WrinklyVanillaMap,
 )
 from randomizer.Lists.Switches import SwitchData
-from randomizer.Patching.Lib import plando_colors
+from randomizer.Patching.Library.Generic import plando_colors
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -330,6 +330,7 @@ def hint_text_validation_fn(hintString: str) -> str:
 @bind("change", "plando_place_crates")
 @bind("click", "starting_moves_reset")
 @bind("click", "starting_moves_start_all")
+@bind("click", "starting_moves_start_vanilla")
 def validate_item_limits(evt):
     """Raise an error if any item has been placed too many times."""
     count_dict = count_items()
@@ -340,7 +341,7 @@ def validate_item_limits(evt):
     for i in range(1, 6):
         moveListElem = js.document.getElementById(f"starting_moves_list_{i}")
         moveCountElem = js.document.getElementById(f"starting_moves_list_count_{i}")
-        givenMoveCount = int(moveCountElem.value)
+        givenMoveCount = 0 if moveCountElem.value == "" else int(moveCountElem.value)
         listedMoveCount = 0
         for opt in moveListElem.options:
             if not opt.hidden:
