@@ -305,6 +305,7 @@ class Spoiler:
         settings["Randomize Banana Fairies"] = self.settings.random_fairies
         settings["Randomize Battle Arenas"] = self.settings.crown_placement_rando
         settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
+        settings["Dos' Doors"] = self.settings.dos_door_rando
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando_difficulty.name

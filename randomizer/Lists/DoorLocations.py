@@ -81,6 +81,7 @@ class DoorData:
         default_kong=None,
         door_type: list[DoorType] = [DoorType.boss, DoorType.dk_portal, DoorType.wrinkly],
         dk_portal_logic=None,
+        dos_door=False,
     ):
         """Initialize with provided data."""
         self.name = name
@@ -100,6 +101,7 @@ class DoorData:
         self.placed = placed
         self.default_kong = default_kong
         self.default_placed = placed  # info about what door_type a door location is in vanilla
+        self.dos_door = dos_door  # We need extra doors in Japes to make Dos' Doors work - this flag is for specifically that
         self.door_type = door_type.copy()  # denotes what types it can be
         if dk_portal_logic is None:
             self.dk_portal_logic = lambda s: False
@@ -222,6 +224,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
+            dos_door=True,
         ),  # Tiny Door
         DoorData(
             name="Japes Lobby - Close Left",
@@ -323,6 +326,7 @@ door_locations = {
             location=[1857.0, 539.0, 3196.0, 79.5],
             group=6,
             moveless=False,
+            dos_door=True,
         ),
         DoorData(
             name="Behind Rambi Door - watery room - left",
@@ -602,6 +606,7 @@ door_locations = {
             location=[903.167, 280, 1044.455, 180],
             group=11,
             placed=DoorType.dk_portal,
+            dos_door=True,
         ),
         DoorData(
             name="Diddy Mountain - Next to the slam switch",
@@ -744,6 +749,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
+            dos_door=True,
         ),  # Tiny Door
         DoorData(
             name="Aztec Lobby - Behind Feather Door",
@@ -1384,6 +1390,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
+            dos_door=True,
         ),  # DK Door
         DoorData(
             name="Factory Lobby - Top Left",
@@ -1831,6 +1838,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
+            dos_door=True,
         ),  # Tiny Door
         DoorData(
             name="Galleon Lobby - Close Left",
@@ -2517,6 +2525,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
+            dos_door=True,
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Forest Lobby - Near Entrance",
@@ -3050,6 +3059,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
+            dos_door=True,
         ),  # Lanky Door
         DoorData(
             name="Caves Lobby - Far Right",
@@ -3740,6 +3750,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
+            dos_door=True,
         ),  # Chunky Door
         DoorData(
             name="Near Greenhouse",

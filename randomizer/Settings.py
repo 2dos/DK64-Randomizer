@@ -756,6 +756,7 @@ class Settings:
             "exit": 0,
         }
         self.vanilla_door_rando = False
+        self.dos_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
@@ -957,6 +958,12 @@ class Settings:
             ]
             ItemPool.JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt]
 
+        # Dos' Doors require all of these to be on - it's a variant on vanilla door shuffle
+        if self.dos_door_rando:
+            self.vanilla_door_rando = True
+            # The UI should force this, but DK Portal Rando must be at least somewhat enabled for Dos' Doors
+            if self.dk_portal_location_rando_v2 == DKPortalRando.off:
+                self.dk_portal_location_rando_v2 = DKPortalRando.main_only
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True

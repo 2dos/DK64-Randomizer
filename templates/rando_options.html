@@ -101,14 +101,8 @@
                 {{ toggle_input("random_patches", "Random Dirt Patch Locations", "Dirt Patches for Rainbow Coins are in random locations.", False, "Dirt Patches") }}
                 {{ toggle_input("coin_rando", "Random Banana Coin Locations", "Shuffle the locations of coins within each Level.", False, "Banana Coins") }}
                 {{ toggle_input("random_fairies", "Random Banana Fairy Locations", "Fairy checks are in random locations.", False, "Banana Fairies") }}
-                {{ toggle_input("wrinkly_location_rando", "Random Wrinkly Door Locations", "Wrinkly Door Locations are randomized.", False, "Wrinkly Doors") }}
-                {{ toggle_input("tns_location_rando", "Random Troff 'n' Scoff Portal Locations", "T&S Portal Locations are randomized.", False, "Troff 'n' Scoff Portals") }}
-                {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.") }}
                 {{ toggle_input("crown_placement_rando", "Random Battle Crown Pad Locations", "Crown Locations are randomized. There's 1 in each level, except Isles which has two.", False, "Battle Crowns") }}
                 {{ toggle_input("random_crates", "Random Melon Crate Locations", "Melon Crate Locations are randomized.", False, "Melon Crates") }}
-                <div class="spacer"></div>
-            </div>
-            <div class="flex-container">
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                             title="Colored Banana Locations are randomized.">
@@ -122,27 +116,8 @@
                     </label>
                     {{ list_selector(cb_rando_levels, "cb_rando_list", "LEVELS", "This will open a popup that will let you customize what levels have CB rando in the game.&#10;This defaults to All options.", 8, 1) }}
                 {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="spacer"></div>
-                <div class="item-select">
-                    <p class="select-title">DK Portals</p>
-                    <select name="dk_portal_location_rando_v2"
-                            id="dk_portal_location_rando_v2"
-                            display_name="Random DK Portal Locations"
-                            class="form-select"
-                            aria-label="Randomization type"
-                            data-toggle="tooltip"
-                            title="DK Portal Locations are randomized.">
-                        <option id="off" selected value="off">
-                            Vanilla
-                        </option>
-                        <option id="main_only" value="main_only" title="Will only place portals in the main level maps of the 7 levels">
-                            Main Maps only
-                        </option>
-                        <option id="on" value="on">
-                            On
-                        </option>
-                    </select>
-                </div>
+            </div>
+            <div class="flex-container">
                 <div class="item-select">
                     <p class="select-title">Kasplats</p>
                     <select name="kasplat_rando_setting"
@@ -190,6 +165,32 @@
                             {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10, 1) }}
                         {# Remove end </div> as it's included in the macro for formatting #}
                     </div>
+                </div>
+            </div>
+            <div class="flex-container" style="margin-top: 20px;">
+                {{ toggle_input("wrinkly_location_rando", "Random Wrinkly Door Locations", "Wrinkly Door Locations are randomized.", False, "Wrinkly Doors") }}
+                {{ toggle_input("tns_location_rando", "Random Troff 'n' Scoff Portal Locations", "T&S Portal Locations are randomized.", False, "Troff 'n' Scoff Portals") }}
+                {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.") }}
+                {{ toggle_input("dos_door_rando", "Dos' Doors", "Vanilla Door Shuffle with some restrictions:&#10;- One T&S per level&#10;- One hint door in each lobby&#10;- DK Portal Rando enabled") }}
+                <div class="item-select">
+                    <p class="select-title">DK Portals</p>
+                    <select name="dk_portal_location_rando_v2"
+                            id="dk_portal_location_rando_v2"
+                            display_name="Random DK Portal Locations"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="DK Portal Locations are randomized.">
+                        <option id="off" selected value="off">
+                            Vanilla
+                        </option>
+                        <option id="main_only" value="main_only" title="Will only place portals in the main level maps of the 7 levels">
+                            Main Maps only
+                        </option>
+                        <option id="on" value="on">
+                            On
+                        </option>
+                    </select>
                 </div>
             </div>
         </div>

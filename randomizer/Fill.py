@@ -3598,7 +3598,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         SetProgressiveHintDoorLogic(spoiler)
     # T&S and Wrinkly Door Shuffle
-    if spoiler.settings.vanilla_door_rando:
+    if spoiler.settings.vanilla_door_rando:  # Includes Dos' Doors
         ShuffleVanillaDoors(spoiler)
         if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             ShuffleDoors(spoiler, True)
