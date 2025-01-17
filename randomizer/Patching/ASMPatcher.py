@@ -96,7 +96,7 @@ KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 FAIRY_LOAD_FIX = True
 CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
-REMOVE_CS_BARS = True
+REMOVE_CS_BARS = False
 GREATER_CAMERA_CONTROL = True
 
 WARPS_JAPES = [
@@ -687,6 +687,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
 
     if GREATER_CAMERA_CONTROL:
         NULL_FUNCTION = 0x806E1864
+        TURN_FUNCTION = 0x806EA628
         FUNCTION_TABLE = {
             0x24: 0x806E607C,  # R_FUNCTION
             0x34: 0x806EA200,  # CL_FUNCTION
@@ -697,6 +698,11 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
             if x == 0:
                 continue
             rom_base_addr = getROMAddress(0x80751004 + (0x44 * x), Overlay.Static, offset_dict)
+            ROM_COPY.seek(rom_base_addr + 4)
+            always_function = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            if always_function == TURN_FUNCTION:
+                # If you can turn the camera with the control stick, ban using the C buttons for that
+                continue
             for offset in FUNCTION_TABLE:
                 ROM_COPY.seek(rom_base_addr + offset)
                 original_function = int.from_bytes(ROM_COPY.readBytes(4), "big")
