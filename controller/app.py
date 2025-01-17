@@ -57,21 +57,7 @@ resource = Resource(
     }
 )
 
-# Set up the TracerProvider and Span Exporter
-trace.set_tracer_provider(TracerProvider(resource=resource))
-tracer_provider = trace.get_tracer_provider()
-
-# # Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/traces")
-
-# # Add the BatchSpanProcessor to the TracerProvider
-span_processor = BatchSpanProcessor(otlp_exporter)
-tracer_provider.add_span_processor(span_processor)
-reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
-meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
-metrics.set_meter_provider(meterProvider)
 app = Flask(__name__, static_folder="", template_folder="templates")
-FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
@@ -79,9 +65,27 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 app.config["SESSION_TYPE"] = "redis"
 redis_conn = Redis(host="redis", port=6379)
 app.config["SESSION_REDIS"] = redis_conn
-RQInstrumentor().instrument()
-RequestsInstrumentor().instrument()
-RedisInstrumentor().instrument()
+
+# check the args we started the script with
+if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+    # Set up the TracerProvider and Span Exporter
+    trace.set_tracer_provider(TracerProvider(resource=resource))
+    tracer_provider = trace.get_tracer_provider()
+
+    # # Configure OTLP Exporter for sending traces to the collector
+    otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/traces")
+
+    # # Add the BatchSpanProcessor to the TracerProvider
+    span_processor = BatchSpanProcessor(otlp_exporter)
+    tracer_provider.add_span_processor(span_processor)
+    reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
+    meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
+    metrics.set_meter_provider(meterProvider)
+    RQInstrumentor().instrument()
+    RequestsInstrumentor().instrument()
+    RedisInstrumentor().instrument()
+    FlaskInstrumentor().instrument_app(app)
+
 # Create and initialize the Flask-Session object AFTER `app` has been configured
 server_session = Session(app)
 

@@ -55,6 +55,11 @@ resource = Resource(
     }
 )
 
+
+app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
+api = Blueprint("worker_api", __name__)
+
+
 span = trace.get_current_span()
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer_provider = trace.get_tracer_provider()
@@ -66,14 +71,13 @@ otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/t
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 
-reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
-meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
-metrics.set_meter_provider(meterProvider)
-FlaskInstrumentor().instrument_app(app)
-app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
-api = Blueprint("worker_api", __name__)
-RQInstrumentor().instrument()
-RedisInstrumentor().instrument()
+if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+    reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
+    meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
+    metrics.set_meter_provider(meterProvider)
+    FlaskInstrumentor().instrument_app(app)
+    RQInstrumentor().instrument()
+    RedisInstrumentor().instrument()
 
 
 class PriorityAwareWorker(Worker):

@@ -1346,6 +1346,17 @@ function trigger_preset_event(event) {
 }
 
 
+// on the id presets if the index is changed to not 0 enable the apply_preset button 
+// if its 0 disable the apply_preset button
+function disable_apply_preset_button() {
+  if (document.getElementById("presets").selectedIndex === 0) {
+    document.getElementById("apply_preset").disabled = true;
+  } else {
+    document.getElementById("apply_preset").disabled = false;
+  }
+}
+document.getElementById("presets").addEventListener("change", disable_apply_preset_button);
+
 document
   .getElementById("apply_preset")
   .addEventListener("click", preset_select_changed);
@@ -1379,7 +1390,8 @@ function set_preset_options() {
 
   // Set the default value of the dropdown
   $("#presets").val("-- Select a Preset --");
-
+  // Disable the apply_preset button
+  document.getElementById("apply_preset").disabled = true;
   // Toggle elements and update the page according to the preset
   toggle_counts_boxes(null);
   toggle_b_locker_boxes(null);
@@ -1604,6 +1616,7 @@ async function initialize() {
     });
   });
   await set_preset_options();
+  await disable_apply_preset_button();
   await set_random_weights_options();
 }
 // Initialize after ensuring all functions are loaded
