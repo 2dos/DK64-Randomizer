@@ -1303,7 +1303,6 @@ function item_rando_list_changed(evt) {
   } else {
     kongRando.removeAttribute("disabled");
   }
-  savesettings();
 }
 
 // Validate Fast Start Status
@@ -2192,7 +2191,6 @@ function moveSelectedStartingMoves(target_list_id) {
     target_selector.appendChild(moved_move);
   }
   assessAllItemPoolCounts();
-  savesettings();
 }
 
 // Move all starting moves back to list #1.

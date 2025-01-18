@@ -493,14 +493,14 @@ async function update_music_select_options(isInitialLoad) {
 
   // If this is the initial load, we want to read from the database and restore
   // custom song selections.
-  if (isInitialLoad) {
-    let musicDb = await loadDataFromIndexedDB("saved_music");
-    let musicDbContents = JSON.parse(musicDb);
-    for (const [selectName, selectValue] of Object.entries(musicDbContents)) {
-      selectElem = document.getElementById(selectName);
-      selectElem.value = selectValue;
-    }
-  }
+  // if (isInitialLoad) {
+  //   let musicDb = await loadDataFromIndexedDB("saved_music");
+  //   let musicDbContents = JSON.parse(musicDb);
+  //   for (const [selectName, selectValue] of Object.entries(musicDbContents)) {
+  //     selectElem = document.getElementById(selectName);
+  //     selectElem.value = selectValue;
+  //   }
+  // }
 }
 
 jq = $;
@@ -536,31 +536,32 @@ async function savesettings() {
   });
 
   // Handle inputs with specific naming convention
-  document
-    .querySelectorAll("input[name^='starting_move_box_']:checked")
-    .forEach((input) => {
-      if (input.id.includes("start")) {
-        json[input.name] = "start";
-      } else if (input.id.includes("random")) {
-        json[input.name] = "random";
-      }
-    });
-
+  // Changed with the new selectors list
+  // document
+  //   .querySelectorAll("input[name^='starting_move_box_']:checked")
+  //   .forEach((input) => {
+  //     if (input.id.includes("start")) {
+  //       json[input.name] = "start";
+  //     } else if (input.id.includes("random")) {
+  //       json[input.name] = "random";
+  //     }
+  //   });
+  console.log(json)
   // Save JSON data to IndexedDB
   await saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
 
 // Music settings have to be saved separately, because the value we're trying
 // to load may not exist on the page when load_data() is called.
-async function savemusicsettings() {
-  const musicJson = {};
+// async function savemusicsettings() {
+//   const musicJson = {};
 
-  document.querySelectorAll("select[id^='music_select_']").forEach((select) => {
-    musicJson[select.id] = select.value;
-  });
+//   document.querySelectorAll("select[id^='music_select_']").forEach((select) => {
+//     musicJson[select.id] = select.value;
+//   });
 
-  await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
-}
+//   await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
+// }
 
 document.querySelectorAll("#form input").forEach((input) => {
   input.addEventListener("input", savesettings);
@@ -568,10 +569,7 @@ document.querySelectorAll("#form input").forEach((input) => {
 });
 
 document.querySelectorAll("#form select").forEach((select) => {
-  select.addEventListener("change", () => {
-    savesettings();
-    savemusicsettings();
-  });
+  select.addEventListener("change", savesettings);
 });
 
 function filebox() {
@@ -1334,7 +1332,6 @@ function trigger_preset_event(event) {
         requestAnimationFrame(processQueue);
       } else {
         update_ui_states(null);
-        savesettings(); // Save settings after all updates
       }
     }
 
@@ -1465,7 +1462,6 @@ function load_data() {
     console.error("Error initializing settings:", error);
     preset_select_changed();
   }
-  savesettings();
 }
 
 function initialize_sliders() {
