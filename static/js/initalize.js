@@ -1197,8 +1197,6 @@ async function preset_select_changed(event) {
 function trigger_preset_event(event) {
   const element = document.getElementById("presets");
   let presets = null;
-  // if the element value is -- Select a Preset -- then we want to select the first option in the progressions_presets
-  console.log(event)
   // if event is a string lets select the second option in the progressions_presets
   if (typeof event === "string" || event === "default") {
     for (const val of progression_presets) {
