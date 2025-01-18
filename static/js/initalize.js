@@ -546,7 +546,6 @@ async function savesettings() {
   //       json[input.name] = "random";
   //     }
   //   });
-  console.log(json)
   // Save JSON data to IndexedDB
   await saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
@@ -570,6 +569,7 @@ document.querySelectorAll("#form input").forEach((input) => {
 
 document.querySelectorAll("#form select").forEach((select) => {
   select.addEventListener("change", savesettings);
+  select.addEventListener("click", savesettings);
 });
 
 function filebox() {
@@ -1197,9 +1197,8 @@ async function preset_select_changed(event) {
 function trigger_preset_event(event) {
   const element = document.getElementById("presets");
   let presets = null;
-
   // if event is a string lets select the second option in the progressions_presets
-  if (typeof event === "string") {
+  if (typeof event === "string" || event === "default") {
     for (const val of progression_presets) {
       if (val.name === "Beginner Settings") {
         presets = val;
@@ -1450,17 +1449,16 @@ function load_data() {
             load_settings(json);
           }
         } else {
-          preset_select_changed();
           trigger_ui_update();
         }
       } catch (error) {
         console.error("Error parsing settings:", error);
-        preset_select_changed();
+        preset_select_changed("default");
       }
     };
   } catch (error) {
     console.error("Error initializing settings:", error);
-    preset_select_changed();
+    preset_select_changed("default");
   }
 }
 
@@ -1482,14 +1480,14 @@ function load_settings(json) {
       }
     }
   }
-
+  all_elements = document.querySelectorAll("#form input, #form select");
   const elementsCache = Object.fromEntries(
-    Object.keys(json).map((key) => [key, document.getElementsByName(key)])
+    Object.keys(json).map((key) => [key, Array.from(all_elements).filter(el => el.name === key)])
   );
 
   // Define a queue to batch DOM updates
   const updateQueue = [];
-
+  let updated_values = []
   for (const [key, value] of Object.entries(json)) {
     const elements = elementsCache[key];
     if (!elements?.length) continue;
@@ -1569,7 +1567,7 @@ function load_settings(json) {
 
       // Trigger a click event if the value has changed
       if (valueChanged) {
-        element.dispatchEvent(new Event("click"));
+        updated_values.push(element);
       }
     });
   }
@@ -1590,6 +1588,27 @@ function load_settings(json) {
   }
 
   requestAnimationFrame(processQueue);
+  // // Dispatch all the click events after the values have been set
+  // // Batch dispatch click events to avoid performance issues
+  // function batchDispatchClickEvents(elements) {
+  //   const batchSize = 10; // Adjust batch size based on performance needs
+  //   let index = 0;
+
+  //   function processBatch() {
+  //     for (let i = 0; i < batchSize && index < elements.length; i++, index++) {
+  //       console.log("Triggering click event for", elements[index]);
+  //       elements[index].dispatchEvent(new Event("change"));
+  //     }
+
+  //     if (index < elements.length) {
+  //       requestAnimationFrame(processBatch);
+  //     }
+  //   }
+
+  //   requestAnimationFrame(processBatch);
+  // }
+
+  // batchDispatchClickEvents(updated_values);
 }
 
 function trigger_ui_update() {
