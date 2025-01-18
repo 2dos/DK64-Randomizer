@@ -552,7 +552,6 @@ async function import_settings_string(event) {
     }
 
     update_ui_states(null);
-    savesettings();
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
 }
 

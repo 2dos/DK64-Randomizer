@@ -979,7 +979,6 @@ def reset_plando_options(evt):
     """
     if js.window.confirm("Are you sure you want to reset all plandomizer settings?"):
         reset_plando_options_no_prompt()
-        js.savesettings()
 
 
 # Plando options where the value is of type Levels.
