@@ -158,9 +158,6 @@ async function import_music_selections(jsonString) {
           }
       }
   }
-
-  savesettings();
-  savemusicsettings();
 }
 
 function validate_music_file(fileContents) {
@@ -259,8 +256,6 @@ document
       window.confirm("Are you sure you want to reset all music selections?")
     ) {
       reset_music_selections_no_prompt();
-      savesettings();
-      savemusicsettings();
     }
   });
 
