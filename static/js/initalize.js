@@ -1450,9 +1450,13 @@ function load_data() {
         if (getRequest.result) {
           const json = JSON.parse(getRequest.result);
           if (json) {
+            console.log("If your cosmetic/music settings tend to be wiped on updates, please report the following console log output to the devs:");
+            console.log("Settings to load");
+            console.log(json);
             load_settings(json);
           }
         } else {
+          console.log("Failed to get settings. This shouldn't happen, because other settings ARE loading, but now you'll be guaranteed to see something in the console log to report.");
           preset_select_changed();
           trigger_ui_update();
         }
@@ -1502,6 +1506,7 @@ function load_settings(json) {
 
     updateQueue.push(() => {
       let valueChanged = false;
+      console.log(element.id);
 
       // Boolean values for checkboxes
       if (value === "True" || value === "False") {
