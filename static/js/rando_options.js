@@ -601,7 +601,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for major item music selection
@@ -618,7 +618,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for minor item music selection
@@ -635,7 +635,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for event music selection
@@ -652,7 +652,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 function toggle_key_settings() {
