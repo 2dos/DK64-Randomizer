@@ -56,7 +56,6 @@ def compress_jsonc():
                 # Strip the comments from the JSONC file
                 content = re.sub(r"//.*?\n", "", content)
                 content = re.sub(r"/\*.*?\*/", "", content, flags=re.DOTALL)
-                content = json.loads(content)
                 combined_data[filename.replace(".jsonc", "")] = content
     with open(OUTPUT_FILE, "w") as output_file:
         json.dump(combined_data, output_file, separators=(",", ":"))
