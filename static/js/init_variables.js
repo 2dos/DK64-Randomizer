@@ -482,9 +482,7 @@ function loadFiles(fileList) {
       );
       // For each section in the compiled file, print it
       for (const section in parsedData) {
-        console.log(section);
-        console.log(parsedData[section]);
-        loaded_json = JSON.parse(parsedData[section]);
+        let loaded_json = JSON.parse(parsedData[section]);
         parse_jsonc(loaded_json);
       }
     },
