@@ -94,7 +94,7 @@ for f in [*get_files(os.getcwd(), "html", recursive=True), *get_files(os.getcwd(
         # Write the modified HTML content back to the file
         with open(f, "w") as writer:
             writer.write(updated_html)
-# compress_jsonc()
+compress_jsonc()
 subprocess.run(["python3", "setup.py", "bdist_wheel"])
 shutil.copyfile("dist/dk64rando-1.0.0-py3-none-any.whl", "static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
 
