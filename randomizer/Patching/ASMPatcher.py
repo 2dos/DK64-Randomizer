@@ -689,7 +689,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         NULL_FUNCTION = 0x806E1864
         TURN_FUNCTION = 0x806EA628
         FUNCTION_TABLE = {
-            0x24: 0x806E607C,  # R_FUNCTION
+            # 0x24: 0x806E607C,  # R_FUNCTION
             0x34: 0x806EA200,  # CL_FUNCTION
             0x38: 0x806EA26C,  # CR_FUNCTION
         }
