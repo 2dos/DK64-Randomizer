@@ -482,8 +482,7 @@ function loadFiles(fileList) {
       );
       // For each section in the compiled file, print it
       for (const section in parsedData) {
-        let loaded_json = JSON.parse(parsedData[section]);
-        parse_jsonc(loaded_json);
+        parse_jsonc(parsedData[section]);
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
