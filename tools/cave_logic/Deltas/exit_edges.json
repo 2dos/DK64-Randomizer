@@ -6980,7 +6980,7 @@
                                 "isGlitch": true
                             },
                             {
-                                "Name": "balloon"
+                                "Name": "baboonballoon"
                             },
                             {
                                 "Name": "lanky"
@@ -9576,7 +9576,7 @@
                                         "combinator": "AND",
                                         "rules": [
                                             {
-                                                "Name": "balloon"
+                                                "Name": "baboonballoon"
                                             },
                                             {
                                                 "Name": "lanky"
@@ -9700,7 +9700,7 @@
                                 "combinator": "OR",
                                 "rules": [
                                     {
-                                        "Name": "balloon"
+                                        "Name": "baboonballoon"
                                     },
                                     {
                                         "Name": "advanced_platforming",
@@ -11084,7 +11084,7 @@
                                 "Name": "trombone"
                             },
                             {
-                                "Name": "balloon"
+                                "Name": "baboonballoon"
                             },
                             {
                                 "Name": "lanky"
@@ -11231,7 +11231,7 @@
                                 "combinator": "OR",
                                 "rules": [
                                     {
-                                        "Name": "balloon"
+                                        "Name": "baboonballoon"
                                     },
                                     {
                                         "Name": "lanky"
