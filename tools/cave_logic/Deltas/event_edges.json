@@ -11,6 +11,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32,6 +33,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -53,6 +55,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -74,6 +77,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -95,6 +99,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -116,6 +121,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -137,6 +143,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -158,6 +165,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -197,6 +205,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -218,6 +227,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -239,6 +249,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -274,6 +285,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -309,6 +321,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -337,6 +350,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -372,6 +386,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -407,6 +422,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -442,6 +458,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -477,6 +494,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -505,6 +523,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -526,6 +545,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -547,6 +567,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -568,6 +589,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -599,6 +621,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -620,6 +643,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -641,6 +665,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -662,6 +687,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -683,6 +709,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -704,6 +731,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -725,6 +753,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -782,6 +811,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -829,6 +859,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -876,6 +907,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -923,6 +955,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -987,6 +1020,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1032,6 +1066,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1053,6 +1088,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1074,6 +1110,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1095,6 +1132,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1116,6 +1154,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1137,6 +1176,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1167,6 +1207,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1188,6 +1229,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1209,6 +1251,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1238,6 +1281,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1259,6 +1303,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1296,6 +1341,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1345,6 +1391,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1394,6 +1441,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1443,6 +1491,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1492,6 +1541,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1513,6 +1563,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1534,6 +1585,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1573,6 +1625,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1621,6 +1674,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1642,6 +1696,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1663,6 +1718,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1735,6 +1791,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1756,6 +1813,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1777,6 +1835,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1798,6 +1857,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1852,6 +1912,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1873,6 +1934,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1894,6 +1956,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1915,6 +1978,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1936,6 +2000,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1957,6 +2022,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1986,6 +2052,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2014,6 +2081,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2049,6 +2117,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2079,6 +2148,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2100,6 +2170,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2121,6 +2192,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2142,6 +2214,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2163,6 +2236,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2184,6 +2258,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2205,6 +2280,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2226,6 +2302,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2247,6 +2324,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2268,6 +2346,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2319,6 +2398,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2340,6 +2420,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2361,6 +2442,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2382,6 +2464,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2413,6 +2496,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2441,6 +2525,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2462,6 +2547,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2483,6 +2569,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2504,6 +2591,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2532,6 +2620,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2564,6 +2653,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2600,6 +2690,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2636,6 +2727,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2672,6 +2764,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2708,6 +2801,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2729,6 +2823,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2750,6 +2845,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2801,6 +2897,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2852,6 +2949,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2885,6 +2983,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2918,6 +3017,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2951,6 +3051,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2972,6 +3073,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2993,6 +3095,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3026,6 +3129,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3059,6 +3163,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3080,6 +3185,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3135,6 +3241,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3167,6 +3274,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3200,6 +3308,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3233,6 +3342,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3272,6 +3382,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3293,6 +3404,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3314,6 +3426,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3335,6 +3448,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3356,6 +3470,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3384,6 +3499,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3405,6 +3521,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3433,6 +3550,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3472,6 +3590,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3514,6 +3633,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3560,6 +3680,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3610,6 +3731,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3660,6 +3782,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3706,6 +3829,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3727,6 +3851,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3748,6 +3873,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3769,6 +3895,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3802,6 +3929,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3835,6 +3963,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3863,6 +3992,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3896,6 +4026,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3929,6 +4060,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3958,6 +4090,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3979,6 +4112,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4012,6 +4146,7 @@
                     null
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4045,6 +4180,7 @@
                     null
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4098,6 +4234,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4119,6 +4256,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4140,6 +4278,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4161,6 +4300,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4182,6 +4322,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4215,6 +4356,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4236,6 +4378,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4257,6 +4400,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4312,6 +4456,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4348,6 +4493,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4369,6 +4515,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4390,6 +4537,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4411,6 +4559,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4445,6 +4594,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4476,6 +4626,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4528,6 +4679,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4562,6 +4714,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4583,6 +4736,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4615,6 +4769,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4636,6 +4791,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4667,6 +4823,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4688,6 +4845,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4709,6 +4867,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4740,6 +4899,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4761,6 +4921,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4790,6 +4951,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4811,6 +4973,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4832,6 +4995,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4870,6 +5034,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4891,6 +5056,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4912,6 +5078,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4947,6 +5114,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4968,6 +5136,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -4989,6 +5158,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5010,6 +5180,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5031,6 +5202,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5052,6 +5224,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5073,6 +5246,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5094,6 +5268,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5115,6 +5290,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5136,6 +5312,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5157,6 +5334,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5178,6 +5356,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5199,6 +5378,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5220,6 +5400,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5248,6 +5429,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5269,6 +5451,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5290,6 +5473,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5311,6 +5495,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5332,6 +5517,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5353,6 +5539,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5374,6 +5561,7 @@
             "Types": "Event",
             "Class": "Event",
             "Requires": true,
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5407,6 +5595,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5440,6 +5629,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5473,6 +5663,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5510,6 +5701,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5545,6 +5737,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5576,6 +5769,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5607,6 +5801,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5638,6 +5833,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5669,6 +5865,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5700,6 +5897,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -5745,6 +5943,7 @@
                     }
                 ]
             },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [

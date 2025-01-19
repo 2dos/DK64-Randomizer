@@ -159,7 +159,7 @@ class CheckEdge:
             "Types": self.Types,
             "Class": self.Class,
             "Requires": self.Requires,
-            # "Persona": self.Persona,
+            "Persona": self.Persona,
             "Rewards": rewards
         }
 

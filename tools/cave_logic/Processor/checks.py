@@ -13,6 +13,7 @@ from tools.cave_logic.Processor.Utils import parse_ast_by_separator, parse_ast_t
 from copy import deepcopy
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Lists.Location import LocationListOriginal
 from randomizer.Lists.Minigame import MinigameRequirements
@@ -36,18 +37,25 @@ for region_id, region in RegionsOriginalCopy.items():
             "logic": location.logic
         }
 
+medal_regions = [Regions.JungleJapesMedals, Regions.AngryAztecMedals, Regions.FranticFactoryMedals,
+          Regions.GloomyGalleonMedals, Regions.FungiForestMedals, Regions.CrystalCavesMedals, Regions.CreepyCastleMedals]
 
 def location_to_edge(id, location):
 
     region = checkList[id]["region"] if id in checkList else None
     source = RegionNode(region, '') if region else None
+    
+    if region in medal_regions:
+        logic_region = RegionsOriginal[region]
+        source = logic_region.level.name.lower()
+
     target = Items.NoItem
 
     logic = checkList[id]["logic"] if id in checkList else True
     if logic != True:
         logic = parse_ast_to_dict(logic,  None)
 
-    return CheckEdge('li-'+id.name.lower(), location.name, source, target, location.type.name, "Check", logic, {"Name": location.kong.name}).to_dict()
+    return CheckEdge('li-'+id.name.lower(), location.name, source, target, location.type.name, "Check", logic,location.kong.name).to_dict()
 
 
 def minigame_to_edge(id, minigame):
@@ -110,6 +118,9 @@ def collectible_to_edge(collectible, region, index):
 
     reward_name = reward_type + "_" + \
         get_level_name(portal_region.level.name) + "_" + collectible.kong.name
+    
+    if(reward_type == Collectibles.coin.name):
+        reward_name = reward_type + "_" + collectible.kong.name
 
     level_reward = reward_type + "_" + \
         get_level_name(portal_region.level.name) 
