@@ -26,7 +26,7 @@ typedef enum dpad_visual_enum {
     /* 2 */ DPADVISIBLE_MINIMAL,
 } dpad_visual_enum;
 
-static short race_maps[] = {
+static unsigned char race_maps[] = {
     MAP_JAPESMINECART,
     MAP_FUNGIMINECART,
     MAP_CASTLEMINECART,
@@ -460,7 +460,7 @@ int canUseDPad(void) {
     if (inShop(CurrentMap, 0)) {
         return 0; // In Shop
     }
-    if (inShortList(CurrentMap, &race_maps[0], 8)) {
+    if (inU8List(CurrentMap, &race_maps, 8)) {
         return 0; // In Race
     }
     if (inMinigame(CurrentMap)) {

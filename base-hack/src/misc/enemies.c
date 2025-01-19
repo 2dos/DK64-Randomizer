@@ -378,7 +378,7 @@ void kioskBugEnd(void) {
     renderActor(CurrentActorPointer_0, 0);
 }
 
-static short valid_stomp_states[] = {
+static unsigned char valid_stomp_states[] = {
     0x17, // Jumping
     0x30, // Bouncing
     0x19, // Bouncing (From Mushroom)
@@ -393,7 +393,7 @@ int stompHandler(void* unk0, playerData* player, int unk1) {
     if (!unkCollisionFunc(unk1, 1)) { // Not sure what this signifies?
         return 0;
     }
-    if (inShortList(player->control_state, &valid_stomp_states[0], sizeof(valid_stomp_states) >> 1)) {
+    if (inU8List(player->control_state, &valid_stomp_states[0], sizeof(valid_stomp_states))) {
         if (player->yVelocity < 0.0f) {
             // Player is descending
             return 1;

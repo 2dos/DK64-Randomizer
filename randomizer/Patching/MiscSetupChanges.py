@@ -149,19 +149,14 @@ def SpeedUpFungiRabbit(ROM_COPY: LocalROM, factor: float = 1.0):
     ROM_COPY.seek(spawner_count_location)
     spawner_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     offset += 2
-    spawner_bytes = []
-    fairy_spawner_id = None
     for x in range(spawner_count):
         # Parse spawners
-        ROM_COPY.seek(file_start + offset)
-        enemy_id = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(file_start + offset + 0x13)
         enemy_index = int.from_bytes(ROM_COPY.readBytes(1), "big")
         init_offset = offset
         ROM_COPY.seek(file_start + offset + 0x11)
         extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
         offset += 0x16 + (extra_count * 2)
-        end_offset = offset
         if enemy_index == 2:
             # If enemy is the rabbit, adjust stats
             speed_buff = 0.7 * factor
@@ -353,38 +348,37 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.seek(item_start + 0x1C)
                     ry = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     positions.append([x, y, z, ry])
-            elif item_type == 0x235 and (
-                (cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off)
-            ):
-                if cont_map_id == Maps.HideoutHelm:
-                    y_position = random.uniform(-131, 500)
-                    star_donut_center = [1055.704, 3446.966]
-                    if y_position < 0:
-                        star_donut_boundaries = [230, 300.971]
-                    else:
-                        star_donut_boundaries = [123.128, 235.971]
-                    star_height_boundaries = [y_position, y_position]
-                elif cont_map_id == Maps.GalleonBoss:
-                    star_donut_center = [1216, 1478]
-                    star_donut_boundaries = [200, 460]
-                    star_height_boundaries = []
-                star_pos = pickRandomPositionCircle(star_donut_center[0], star_donut_center[1], star_donut_boundaries[0], star_donut_boundaries[1])
-                star_a = random.uniform(0, 360)
-                if star_a == 360:
-                    star_a = 0
-                star_x = star_pos[0]
-                star_z = star_pos[1]
-                ROM_COPY.seek(item_start)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(star_x), 16), 4)
-                ROM_COPY.seek(item_start + 8)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(star_z), 16), 4)
-                ROM_COPY.seek(item_start + 0x1C)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
-                if len(star_height_boundaries) > 0:
-                    star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
-                    ROM_COPY.seek(item_start + 4)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
-            elif item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and lighthouse_on:
+            if item_type == 0x235:
+                if (cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off):
+                    if cont_map_id == Maps.HideoutHelm:
+                        y_position = random.uniform(-131, 500)
+                        star_donut_center = [1055.704, 3446.966]
+                        if y_position < 0:
+                            star_donut_boundaries = [230, 300.971]
+                        else:
+                            star_donut_boundaries = [123.128, 235.971]
+                        star_height_boundaries = [y_position, y_position]
+                    elif cont_map_id == Maps.GalleonBoss:
+                        star_donut_center = [1216, 1478]
+                        star_donut_boundaries = [200, 460]
+                        star_height_boundaries = []
+                    star_pos = pickRandomPositionCircle(star_donut_center[0], star_donut_center[1], star_donut_boundaries[0], star_donut_boundaries[1])
+                    star_a = random.uniform(0, 360)
+                    if star_a == 360:
+                        star_a = 0
+                    star_x = star_pos[0]
+                    star_z = star_pos[1]
+                    ROM_COPY.seek(item_start)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_x), 16), 4)
+                    ROM_COPY.seek(item_start + 8)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_z), 16), 4)
+                    ROM_COPY.seek(item_start + 0x1C)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
+                    if len(star_height_boundaries) > 0:
+                        star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
+                        ROM_COPY.seek(item_start + 4)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
+            if item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and lighthouse_on:
                 new_gb_coords = [407.107, 720, 501.02]
                 for coord_i, coord in enumerate(new_gb_coords):
                     ROM_COPY.seek(item_start + (coord_i * 4))

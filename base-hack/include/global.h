@@ -325,6 +325,7 @@ extern void giveOrange(void);
 extern void giveMelon(void);
 extern void giveCrystal(void);
 extern int inShortList(int target, short* list, int count);
+extern int inU8List(int target, unsigned char* list, int count);
 
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);

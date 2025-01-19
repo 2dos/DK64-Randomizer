@@ -82,7 +82,7 @@ static const unsigned char training_maps[] = {
 	MAP_TBARREL_DIVE,
 	MAP_TBARREL_ORANGE,
 };
-static short shop_maps[] = {
+static unsigned char shop_maps[] = {
 	MAP_CRANKY,
 	MAP_CANDY,
 	MAP_FUNKY,
@@ -797,7 +797,7 @@ int inMinigame(maps map) {
 }
 
 int inShop(maps map, int include_snide) {
-	return inShortList(map, &shop_maps[0], 3 + include_snide);
+	return inU8List(map, &shop_maps[0], 3 + include_snide);
 }
 
 void playSFX(short sfxIndex) {
@@ -1223,6 +1223,15 @@ int inShortList(int target, short* list, int count) {
 	return 0;
 }
 
+int inU8List(int target, unsigned char* list, int count) {
+	for (int i = 0; i < count; i++) {
+		if (list[i] == target) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 void giveCrystal(void) {
 	changeCollectableCount(5, 0, 150);
 }
@@ -1398,6 +1407,16 @@ int filterSong(int* song_write) {
 	return getTrackChannel(song);
 }
 
+static unsigned char galleon_underwater_maps[] = {
+	MAP_GALLEON2DS,
+	MAP_GALLEON5DSDIDDYLANKYCHUNKY,
+	MAP_GALLEON5DSDKTINY,
+	MAP_GALLEONMECHFISH,
+	MAP_GALLEONMERMAID,
+	MAP_GALLEONSUBMARINE,
+	MAP_GALLEONTREASURECHEST,
+};
+
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
 	if ((damage > 0) || (damage <= -12)) {
@@ -1411,6 +1430,9 @@ int applyDamageMask(int player_index, int damage) {
 		if (Player->grounded_bitfield & 4) {
 			// Underwater
 			applied_multiplier = 1;
+			if (inU8List(CurrentMap, &galleon_underwater_maps, sizeof(galleon_underwater_maps))) {
+				applied_multiplier = 0;
+			}
 		}
 	}
 	return applyDamage(player_index, damage * applied_multiplier);
