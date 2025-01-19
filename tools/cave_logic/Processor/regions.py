@@ -14,6 +14,7 @@ from tools.cave_logic.ast_logic import ast_to_json
 from tools.cave_logic.Processor.checks import parse_ast_to_dict
 from tools.cave_logic.Processor.Classes import RegionNode, RegionEdge
 from randomizer.Logic import RegionsOriginal
+from randomizer.Enums.Regions import Regions
 from randomizer.ShuffleExits import ShufflableExits
 # from randomizer.Enums.HintRegion import HINT_REGION_PAIRING
 
@@ -21,9 +22,20 @@ from randomizer.ShuffleExits import ShufflableExits
 def strip_name(name):
     return name.replace(" ", "").replace(":", "").replace("-", "").replace("'", "").lower()
 
+regionNameOverrides = {
+    Regions.HideoutHelmEntry: "Hideout Helm Entry",
+    Regions.HideoutHelmSwitchRoom: "Switch Room",
+    Regions.HideoutHelmMiniRoom: "Mini Room",
+    Regions.HideoutHelmDonkeyRoom: "Donkey Room",
+    Regions.HideoutHelmDiddyRoom: "Diddy Room",
+    Regions.HideoutHelmLankyRoom: "Lanky Room",
+    Regions.HideoutHelmTinyRoom: "Tiny Room",
+    Regions.HideoutHelmChunkyRoom: "Chunky Room",
+}
 
 def region_to_node(id, region):
-    node = RegionNode(id.name.lower(), region.name, "Region", "Region")
+    region_name = regionNameOverrides.get(id, region.name)
+    node = RegionNode(id.name.lower(), region_name, "Region", "Region")
 
     level_id = region.level.name.lower()
     edge_id = "rr-" + id.name.lower() + "-level"

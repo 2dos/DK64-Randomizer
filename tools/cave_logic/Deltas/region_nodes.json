@@ -1160,7 +1160,7 @@
         },
         "hideouthelmentry": {
             "id": "hideouthelmentry",
-            "Name": "Hideout Helm Entry Redirect",
+            "Name": "Hideout Helm Entry",
             "Class": "Region",
             "Type": "Region"
         },
@@ -1172,13 +1172,13 @@
         },
         "hideouthelmswitchroom": {
             "id": "hideouthelmswitchroom",
-            "Name": "Hideout Helm Start",
+            "Name": "Switch Room",
             "Class": "Region",
             "Type": "Region"
         },
         "hideouthelmminiroom": {
             "id": "hideouthelmminiroom",
-            "Name": "Hideout Helm Start",
+            "Name": "Mini Room",
             "Class": "Region",
             "Type": "Region"
         },
@@ -1190,31 +1190,31 @@
         },
         "hideouthelmdonkeyroom": {
             "id": "hideouthelmdonkeyroom",
-            "Name": "Hideout Helm Main",
+            "Name": "Donkey Room",
             "Class": "Region",
             "Type": "Region"
         },
         "hideouthelmchunkyroom": {
             "id": "hideouthelmchunkyroom",
-            "Name": "Hideout Helm Main",
+            "Name": "Chunky Room",
             "Class": "Region",
             "Type": "Region"
         },
         "hideouthelmtinyroom": {
             "id": "hideouthelmtinyroom",
-            "Name": "Hideout Helm Main",
+            "Name": "Tiny Room",
             "Class": "Region",
             "Type": "Region"
         },
         "hideouthelmlankyroom": {
             "id": "hideouthelmlankyroom",
-            "Name": "Hideout Helm Main",
+            "Name": "Lanky Room",
             "Class": "Region",
             "Type": "Region"
         },
         "hideouthelmdiddyroom": {
             "id": "hideouthelmdiddyroom",
-            "Name": "Hideout Helm Main",
+            "Name": "Diddy Room",
             "Class": "Region",
             "Type": "Region"
         },
