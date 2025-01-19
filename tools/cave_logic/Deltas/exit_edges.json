@@ -1804,7 +1804,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "Slam"
+                                "Name": "progressiveslam"
                             },
                             {
                                 "Name": "chunky"
@@ -2603,7 +2603,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "hunkyChunky"
+                                "Name": "hunkychunky"
                             },
                             {
                                 "Name": "chunky"
@@ -2630,7 +2630,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
                         "Name": "chunky"
@@ -3824,7 +3824,7 @@
                                 "Name": "chunky"
                             },
                             {
-                                "Name": "hunkyChunky"
+                                "Name": "hunkychunky"
                             }
                         ]
                     }
@@ -3961,7 +3961,7 @@
                                                 "Events": true
                                             },
                                             {
-                                                "Name": "strongKong"
+                                                "Name": "strongkong"
                                             }
                                         ]
                                     },
@@ -4055,7 +4055,7 @@
                                 "Name": "donkey"
                             },
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     },
@@ -5978,7 +5978,7 @@
                         "Events": true
                     },
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "chunky"
@@ -7631,7 +7631,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "chunky"
@@ -8936,7 +8936,7 @@
                                 "Name": "donkey"
                             },
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     },
@@ -12256,7 +12256,7 @@
                                 "Name": "donkey"
                             },
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     },
@@ -12290,7 +12290,7 @@
                                 "Name": "donkey"
                             },
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     },

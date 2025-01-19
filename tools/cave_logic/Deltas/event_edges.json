@@ -1002,13 +1002,13 @@
                                 ]
                             },
                             {
-                                "Name": "Slam"
+                                "Name": "progressiveslam"
                             },
                             {
-                                "Name": "gorillaGone"
+                                "Name": "gorillagone"
                             },
                             {
-                                "Name": "hunkyChunky"
+                                "Name": "hunkychunky"
                             },
                             {
                                 "Name": "primatepunch"
@@ -2521,7 +2521,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     }
                 ]
             },
@@ -5024,7 +5024,7 @@
                         "Events": true
                     },
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
                         "Name": "chunky"

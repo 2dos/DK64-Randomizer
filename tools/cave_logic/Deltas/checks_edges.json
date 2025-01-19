@@ -1228,10 +1228,10 @@
                         "Events": true
                     },
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "chunky"
@@ -2073,7 +2073,7 @@
                         ]
                     },
                     {
-                        "Name": "gorillaGone"
+                        "Name": "gorillagone"
                     },
                     {
                         "Name": "chunky"
@@ -2154,7 +2154,7 @@
                                         "Name": "chunky"
                                     },
                                     {
-                                        "Name": "strongKong"
+                                        "Name": "strongkong"
                                     }
                                 ]
                             },
@@ -3859,7 +3859,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
                         "Name": "chunky"
@@ -4110,7 +4110,7 @@
                                         ]
                                     },
                                     {
-                                        "Name": "Slam"
+                                        "Name": "progressiveslam"
                                     }
                                 ]
                             },
@@ -4167,7 +4167,7 @@
                                         ]
                                     },
                                     {
-                                        "Name": "Slam"
+                                        "Name": "progressiveslam"
                                     }
                                 ]
                             },
@@ -4733,7 +4733,7 @@
                                                 "combinator": "AND",
                                                 "rules": [
                                                     {
-                                                        "Name": "strongKong"
+                                                        "Name": "strongkong"
                                                     },
                                                     {
                                                         "Name": "donkey"
@@ -5194,7 +5194,7 @@
                                 "combinator": "AND",
                                 "rules": [
                                     {
-                                        "Name": "hunkyChunky"
+                                        "Name": "hunkychunky"
                                     },
                                     {
                                         "combinator": "OR",
@@ -6503,7 +6503,7 @@
                         "Name": "primatepunch"
                     },
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
                         "Name": "chunky"
@@ -7115,7 +7115,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             },
                             {
                                 "Name": "donkey"
@@ -7782,7 +7782,7 @@
                         "Name": "rocketbarrelboost"
                     },
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "diddy"
@@ -7923,7 +7923,7 @@
                                 "combinator": "AND",
                                 "rules": [
                                     {
-                                        "Name": "Pearls",
+                                        "Name": "pearl",
                                         "Amount": "1"
                                     },
                                     {
@@ -7936,7 +7936,7 @@
                                 ]
                             },
                             {
-                                "Name": "Pearls",
+                                "Name": "pearl",
                                 "Amount": "5"
                             }
                         ]
@@ -9320,7 +9320,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "combinator": "OR",
@@ -9973,7 +9973,7 @@
                         "Name": "donkey"
                     },
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "camera"
@@ -10048,7 +10048,7 @@
                         "Events": true
                     },
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
                         "Name": "chunky"
@@ -10575,7 +10575,7 @@
                         ]
                     },
                     {
-                        "Name": "gorillaGone"
+                        "Name": "gorillagone"
                     },
                     {
                         "Name": "chunky"
@@ -10755,7 +10755,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "combinator": "OR",
@@ -10924,7 +10924,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             },
                             {
                                 "Name": "donkey"
@@ -11073,7 +11073,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "tiny"
@@ -11105,7 +11105,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "tiny"
@@ -11175,7 +11175,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "Slam"
+                                "Name": "progressiveslam"
                             },
                             {
                                 "Name": "donkey"
@@ -11223,7 +11223,7 @@
                         ]
                     },
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "donkey"
@@ -11533,10 +11533,10 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "gorillaGone"
+                        "Name": "gorillagone"
                     },
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "chunky"
@@ -12472,7 +12472,7 @@
                                 "combinator": "AND",
                                 "rules": [
                                     {
-                                        "Name": "gorillaGone"
+                                        "Name": "gorillagone"
                                     },
                                     {
                                         "Name": "pineapple"
@@ -12984,7 +12984,7 @@
                                 "combinator": "AND",
                                 "rules": [
                                     {
-                                        "Name": "Slam"
+                                        "Name": "progressiveslam"
                                     },
                                     {
                                         "Name": "phasewalk",
@@ -13727,7 +13727,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "BaboonBlast"
+                            "baboonblast"
                         ],
                         "isFunction": true
                     }
@@ -13763,7 +13763,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "ChimpyCharge"
+                            "chimpycharge"
                         ],
                         "isFunction": true
                     }
@@ -13799,7 +13799,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "Orangstand"
+                            "orangstand"
                         ],
                         "isFunction": true
                     }
@@ -13835,7 +13835,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "MiniMonkey"
+                            "minimonkey"
                         ],
                         "isFunction": true
                     }
@@ -13871,7 +13871,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "HunkyChunky"
+                            "hunkychunky"
                         ],
                         "isFunction": true
                     }
@@ -14087,7 +14087,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "StrongKong"
+                            "strongkong"
                         ],
                         "isFunction": true
                     }
@@ -14123,7 +14123,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "RocketbarrelBoost"
+                            "rocketbarrelboost"
                         ],
                         "isFunction": true
                     }
@@ -14159,7 +14159,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "Bongos"
+                            "bongos"
                         ],
                         "isFunction": true
                     }
@@ -14195,7 +14195,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "Guitar"
+                            "guitar"
                         ],
                         "isFunction": true
                     }
@@ -14231,7 +14231,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "Trombone"
+                            "trombone"
                         ],
                         "isFunction": true
                     }
@@ -14267,7 +14267,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "Saxophone"
+                            "saxophone"
                         ],
                         "isFunction": true
                     }
@@ -14303,7 +14303,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "Triangle"
+                            "triangle"
                         ],
                         "isFunction": true
                     }
@@ -14339,7 +14339,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "GorillaGrab"
+                            "gorillagrab"
                         ],
                         "isFunction": true
                     }
@@ -14375,7 +14375,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "SimianSpring"
+                            "simianspring"
                         ],
                         "isFunction": true
                     }
@@ -14411,7 +14411,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "BaboonBalloon"
+                            "baboonballoon"
                         ],
                         "isFunction": true
                     }
@@ -14447,7 +14447,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "PonyTailTwirl"
+                            "ponytailtwirl"
                         ],
                         "isFunction": true
                     }
@@ -14483,7 +14483,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "PrimatePunch"
+                            "primatepunch"
                         ],
                         "isFunction": true
                     }
@@ -14615,7 +14615,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "HomingAmmo"
+                            "homingammo"
                         ],
                         "isFunction": true
                     }
@@ -14651,7 +14651,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "OrangstandSprint"
+                            "orangstandsprint"
                         ],
                         "isFunction": true
                     }
@@ -14687,7 +14687,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "Monkeyport"
+                            "monkeyport"
                         ],
                         "isFunction": true
                     }
@@ -14723,7 +14723,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "GorillaGone"
+                            "gorillagone"
                         ],
                         "isFunction": true
                     }
@@ -14855,7 +14855,7 @@
                     {
                         "Name": "CanBuy",
                         "Params": [
-                            "SniperSight"
+                            "snipersight"
                         ],
                         "isFunction": true
                     }
@@ -19595,7 +19595,7 @@
                                         "Name": "chunky"
                                     },
                                     {
-                                        "Name": "hunkyChunky"
+                                        "Name": "hunkychunky"
                                     }
                                 ]
                             },
@@ -32720,7 +32720,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     }
                 ]
             },
@@ -32754,7 +32754,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "Slam"
+                                "Name": "progressiveslam"
                             },
                             {
                                 "combinator": "AND",
@@ -32970,7 +32970,7 @@
                 "combinator": "AND",
                 "rules": [
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
                         "Name": "primatepunch"
@@ -34034,7 +34034,7 @@
                                         "combinator": "AND",
                                         "rules": [
                                             {
-                                                "Name": "strongKong"
+                                                "Name": "strongkong"
                                             },
                                             {
                                                 "Name": "donkey"
@@ -37300,10 +37300,10 @@
                         "Events": true
                     },
                     {
-                        "Name": "hunkyChunky"
+                        "Name": "hunkychunky"
                     },
                     {
-                        "Name": "Slam"
+                        "Name": "progressiveslam"
                     },
                     {
                         "Name": "chunky"
@@ -39983,7 +39983,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "hunkyChunky"
+                                "Name": "hunkychunky"
                             }
                         ]
                     }
@@ -41569,7 +41569,7 @@
                                 ]
                             },
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     }
@@ -41838,7 +41838,7 @@
                                 ]
                             },
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     }
@@ -43608,7 +43608,7 @@
                                 "Events": true
                             },
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     }
@@ -47025,7 +47025,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     }
@@ -53692,7 +53692,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "Slam"
+                                "Name": "progressiveslam"
                             }
                         ]
                     }
@@ -54082,7 +54082,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     }
@@ -54168,7 +54168,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     }
@@ -54207,7 +54207,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "Slam"
+                                "Name": "progressiveslam"
                             },
                             {
                                 "Name": "donkey"
@@ -56031,7 +56031,7 @@
                                 "Events": true
                             },
                             {
-                                "Name": "hunkyChunky"
+                                "Name": "hunkychunky"
                             },
                             {
                                 "Name": "barrels"
@@ -56596,7 +56596,7 @@
                                 "combinator": "OR",
                                 "rules": [
                                     {
-                                        "Name": "strongKong"
+                                        "Name": "strongkong"
                                     },
                                     {
                                         "Name": "CanMoonkick",
@@ -57756,10 +57756,10 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "gorillaGone"
+                                "Name": "gorillagone"
                             },
                             {
-                                "Name": "Slam"
+                                "Name": "progressiveslam"
                             }
                         ]
                     }
@@ -58651,7 +58651,7 @@
                         "combinator": "AND",
                         "rules": [
                             {
-                                "Name": "strongKong"
+                                "Name": "strongkong"
                             }
                         ]
                     }

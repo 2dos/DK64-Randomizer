@@ -33,7 +33,7 @@ with open("./tools/cave_logic/Utils/nameNormaliser.json", 'r') as f:
 def normalise_name(name):
     if not isinstance(name, str):
         return name
-    return nameNormaliser[name] if name in nameNormaliser else name
+    return nameNormaliser[name.lower()] if name.lower() in nameNormaliser else name
 
 
 def camel_to_spaces(s):
