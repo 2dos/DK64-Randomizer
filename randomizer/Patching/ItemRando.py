@@ -301,6 +301,7 @@ def alterTextboxRequirements(spoiler):
     for x in textboxes:
         if x.location == Locations.GalleonTinyPearls and x.textbox_index == 0:
             x.text_replace = plea_including_pearl_count
+            x.replacement_text = f"IF YOU HELP ME FIND {all_text}{NUMBERS_AS_WORDS[pearl_req]} OF THEM, I WILL REWARD YOU WITH A |"
     appendTextboxChange(spoiler, 23, 0, "PLEASE TRY AND GET THEM BACK", plea_including_pearl_count)
     fairy_req = spoiler.settings.rareware_gb_fairies
     if fairy_req != 20:
