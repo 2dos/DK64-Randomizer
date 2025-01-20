@@ -347,6 +347,8 @@ extern int getPatchWorld(int index);
 extern int getCrateWorld(int index);
 extern int getCrateFlag(int id);
 
+extern void initItemCheckDenominators(void);
+
 extern void initItemRando(void);
 extern void initQoL(void);
 extern void initCosmetic(void);

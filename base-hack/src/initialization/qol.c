@@ -126,6 +126,7 @@ void bootSpeedup(void) {
 				complexFreeWrapper(setup);
 			}
 		}
+        initItemCheckDenominators();
 	}
 }
 

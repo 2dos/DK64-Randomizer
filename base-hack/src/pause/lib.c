@@ -326,6 +326,5 @@ void initPauseMenu(void) {
      */
     
     initCarousel_onBoot();
-    initItemCheckDenominators();
     initHintFlags();
 }
