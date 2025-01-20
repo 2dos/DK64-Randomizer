@@ -81,11 +81,7 @@ void spawnEnemyDrops(actorData* actor) {
         }
     }
     if (!item_data) {
-        if ((Rando.hard_mode.lava_water) && (CurrentMap == MAP_CASTLEKUTOUT)) {
-            item_data = &default_drop;
-        } else {
-            return;
-        }
+        return;
     }
     int song = item_data->drop_music;
     if (song > 0) {
