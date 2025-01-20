@@ -3900,6 +3900,7 @@ door_locations = {
             group=8,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Moat - Under Drawing Drawbridge",
@@ -3909,6 +3910,7 @@ door_locations = {
             group=8,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Moat - Next to Tunnel Entrance - left",
@@ -3918,6 +3920,7 @@ door_locations = {
             group=8,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Moat - Next to Tunnel Entrance - right",
@@ -3927,6 +3930,7 @@ door_locations = {
             group=8,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Moat - Next to Ladder - left",
@@ -3936,6 +3940,7 @@ door_locations = {
             group=8,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Moat - Next to Ladder - right",
@@ -3945,6 +3950,7 @@ door_locations = {
             group=8,
             moveless=False,
             logic=lambda l: l.swim,
+            door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
             name="Inside the Tree",
