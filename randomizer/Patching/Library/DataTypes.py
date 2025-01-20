@@ -43,6 +43,7 @@ def int_to_list(num: int, size: int):
         arr[slot] = val
     return arr
 
+
 def arr_to_value(arr: bytearray, offset: int, size: int) -> int:
     """Read value from bytearray and convert it to a value."""
     print(arr, hex(len(arr)), offset, size)

@@ -9,6 +9,7 @@ import math
 
 ice_maze_file = "assets/Gong/ice_maze.bin"
 
+
 def is_clockwise(polygon):
     """
     Determines if the polygon is ordered in a clockwise direction.
@@ -20,10 +21,12 @@ def is_clockwise(polygon):
         total += (x2 - x1) * (y2 + y1)
     return total > 0
 
+
 def point_in_triangle(pt, v1, v2, v3):
     """
     Checks if a point is inside the triangle formed by vertices v1, v2, and v3.
     """
+
     def sign(p1, p2, p3):
         return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
 
@@ -31,6 +34,7 @@ def point_in_triangle(pt, v1, v2, v3):
     b2 = sign(pt, v2, v3) < 0.0
     b3 = sign(pt, v3, v1) < 0.0
     return b1 == b2 == b3
+
 
 def ear_clip_triangulation(polygon):
     """
@@ -79,6 +83,7 @@ def ear_clip_triangulation(polygon):
     # Add the remaining triangle
     triangles.append(vertices)
     return triangles
+
 
 maze = [
     (-127, 247),
@@ -129,6 +134,7 @@ maze = [
     (-284, 15),
     (-237, 152),
 ]
+
 
 def generateIceMaze():
     """Pull geo file from ROM and modify."""
