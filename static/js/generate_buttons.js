@@ -406,6 +406,7 @@ js.plando_errors = plando_errors
                 return;
             }
         }
+        apply_conversion();
 
         // Start the progress bar
         get_hash_images("browser", "loading-fairy")
@@ -423,8 +424,6 @@ js.plando_errors = plando_errors
         if (!form_data["seed"]) {
             form_data["seed"] = Math.floor(Math.random() * 900000 + 100000).toString();
         }
-
-        apply_conversion();
 
         let branch, url;
         if (window.location.hostname === "dev.dk64randomizer.com" || window.location.hostname === "dk64randomizer.com") {

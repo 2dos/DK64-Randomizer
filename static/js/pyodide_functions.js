@@ -182,12 +182,12 @@ async function apply_download() {
     }
   }
   console.log("Applying Download");
-  // Start the progress bar
-  // $("#progressmodal").modal("show");
-  // $("#patchprogress").width(0);
-  // $("#progress-text").text("Initializing");
-  // get_hash_images("browser", "loading-fairy")
-  // get_hash_images("browser", "loading-dead")
+  apply_conversion();
+  $("#progressmodal").modal("show");
+  $("#patchprogress").width(0);
+  $("#progress-text").text("Initializing");
+  get_hash_images("browser", "loading-fairy")
+  get_hash_images("browser", "loading-dead")
 
   apply_patch(window.event_response_data, true);
 }
