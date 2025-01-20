@@ -264,7 +264,6 @@ async def import_plando_options(jsonString):
     validate_no_kasplat_items_with_location_shuffle(None)
     full_validate_no_reward_with_random_location()
     validate_item_limits(None)
-    js.savesettings()
 
 
 def raise_plando_validation_error(err_string: str) -> None:

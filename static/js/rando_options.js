@@ -601,7 +601,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for major item music selection
@@ -618,7 +618,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for minor item music selection
@@ -635,7 +635,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for event music selection
@@ -652,7 +652,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 function toggle_key_settings() {
@@ -686,6 +686,8 @@ function toggle_medals_box() {
 async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
+    // Open up a Modal stating that we're loading the Plando tab
+    $("#plando-modal").modal("show");    
     try {
       await setup_pyodide();
     } catch (error) {
@@ -694,6 +696,7 @@ async function enable_plandomizer() {
     // Load ui.__init__.py
     await run_python_file("ui/__init__.py");
     plandoTab.style.display = "";
+    $("#plando-modal").modal("hide");
   } else {
     plandoTab.style.display = "none";
   }
@@ -1303,7 +1306,6 @@ function item_rando_list_changed(evt) {
   } else {
     kongRando.removeAttribute("disabled");
   }
-  savesettings();
 }
 
 // Validate Fast Start Status
@@ -2192,7 +2194,6 @@ function moveSelectedStartingMoves(target_list_id) {
     target_selector.appendChild(moved_move);
   }
   assessAllItemPoolCounts();
-  savesettings();
 }
 
 // Move all starting moves back to list #1.

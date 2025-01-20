@@ -493,14 +493,14 @@ async function update_music_select_options(isInitialLoad) {
 
   // If this is the initial load, we want to read from the database and restore
   // custom song selections.
-  if (isInitialLoad) {
-    let musicDb = await loadDataFromIndexedDB("saved_music");
-    let musicDbContents = JSON.parse(musicDb);
-    for (const [selectName, selectValue] of Object.entries(musicDbContents)) {
-      selectElem = document.getElementById(selectName);
-      selectElem.value = selectValue;
-    }
-  }
+  // if (isInitialLoad) {
+  //   let musicDb = await loadDataFromIndexedDB("saved_music");
+  //   let musicDbContents = JSON.parse(musicDb);
+  //   for (const [selectName, selectValue] of Object.entries(musicDbContents)) {
+  //     selectElem = document.getElementById(selectName);
+  //     selectElem.value = selectValue;
+  //   }
+  // }
 }
 
 jq = $;
@@ -536,31 +536,31 @@ async function savesettings() {
   });
 
   // Handle inputs with specific naming convention
-  document
-    .querySelectorAll("input[name^='starting_move_box_']:checked")
-    .forEach((input) => {
-      if (input.id.includes("start")) {
-        json[input.name] = "start";
-      } else if (input.id.includes("random")) {
-        json[input.name] = "random";
-      }
-    });
-
+  // Changed with the new selectors list
+  // document
+  //   .querySelectorAll("input[name^='starting_move_box_']:checked")
+  //   .forEach((input) => {
+  //     if (input.id.includes("start")) {
+  //       json[input.name] = "start";
+  //     } else if (input.id.includes("random")) {
+  //       json[input.name] = "random";
+  //     }
+  //   });
   // Save JSON data to IndexedDB
   await saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
 
 // Music settings have to be saved separately, because the value we're trying
 // to load may not exist on the page when load_data() is called.
-async function savemusicsettings() {
-  const musicJson = {};
+// async function savemusicsettings() {
+//   const musicJson = {};
 
-  document.querySelectorAll("select[id^='music_select_']").forEach((select) => {
-    musicJson[select.id] = select.value;
-  });
+//   document.querySelectorAll("select[id^='music_select_']").forEach((select) => {
+//     musicJson[select.id] = select.value;
+//   });
 
-  await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
-}
+//   await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
+// }
 
 document.querySelectorAll("#form input").forEach((input) => {
   input.addEventListener("input", savesettings);
@@ -568,10 +568,8 @@ document.querySelectorAll("#form input").forEach((input) => {
 });
 
 document.querySelectorAll("#form select").forEach((select) => {
-  select.addEventListener("change", () => {
-    savesettings();
-    savemusicsettings();
-  });
+  select.addEventListener("change", savesettings);
+  select.addEventListener("click", savesettings);
 });
 
 function filebox() {
@@ -592,14 +590,14 @@ function filebox() {
       var db = romdatabase.result;
       var tx = db.transaction("ROMStorage", "readwrite");
       var store = tx.objectStore("ROMStorage");
+      // Make sure we load the file into the rompatcher
+      romFile = await new MarcFile(file, _parseROM);
       // Store it in the database
       await store.put({ ROM: "N64", value: file });
       console.log("Successfully stored file in the database.");
     } catch (error) {
       console.log("Error storing file in the database:", error);
     }
-    // Make sure we load the file into the rompatcher
-    romFile = new MarcFile(file, _parseROM);
   };
 
   input.click();
@@ -779,26 +777,26 @@ async function load_file_from_db() {
     var getROM = store.get("N64");
     getROM.onsuccess = async function () {
       // When we pull it from the DB load it in as a global var
-      setTimeout(() => {
-        try {
-          // Disable the generate seed button if we have a ROM
-          romFile = new MarcFile(getROM.result.value);
-          window.romFile = romFile;
-            document.getElementById("rom").placeholder = "Using cached ROM";
-            document.getElementById("rom").value = "Using cached ROM";
-            document.getElementById("rom_2").placeholder = "Using cached ROM";
-            document.getElementById("rom_2").value = "Using cached ROM";
-            document.getElementById("rom_3").placeholder = "Using cached ROM";
-            document.getElementById("rom_3").value = "Using cached ROM";
-            // On each of these set the class to "is-valid" to show the user it's been loaded
-            document.getElementById("rom").classList.add("is-valid");
-            document.getElementById("rom_2").classList.add("is-valid");
-            document.getElementById("rom_3").classList.add("is-valid");
-          try_to_load_from_args();
-        } catch {
-          try_to_load_from_args();
-        }
-      }, 0);
+      try {
+        // Disable the generate seed button if we have a ROM
+        romFile = await new MarcFile(getROM.result.value);
+        window.romFile = romFile;
+        console.log("ROM Loaded from database");
+        document.getElementById("rom").placeholder = "Using cached ROM";
+        document.getElementById("rom").value = "Using cached ROM";
+        document.getElementById("rom_2").placeholder = "Using cached ROM";
+        document.getElementById("rom_2").value = "Using cached ROM";
+        document.getElementById("rom_3").placeholder = "Using cached ROM";
+        document.getElementById("rom_3").value = "Using cached ROM";
+        // On each of these set the class to "is-valid" to show the user it's been loaded
+        document.getElementById("rom").classList.add("is-valid");
+        document.getElementById("rom_2").classList.add("is-valid");
+        document.getElementById("rom_3").classList.add("is-valid");
+        try_to_load_from_args();
+      } catch {
+        console.log("Failed to load ROM from database");
+        try_to_load_from_args();
+      }
     };
   } catch {
     try_to_load_from_args();
@@ -1199,9 +1197,8 @@ async function preset_select_changed(event) {
 function trigger_preset_event(event) {
   const element = document.getElementById("presets");
   let presets = null;
-
   // if event is a string lets select the second option in the progressions_presets
-  if (typeof event === "string") {
+  if (typeof event === "string" || event === "default") {
     for (const val of progression_presets) {
       if (val.name === "Beginner Settings") {
         presets = val;
@@ -1334,7 +1331,6 @@ function trigger_preset_event(event) {
         requestAnimationFrame(processQueue);
       } else {
         update_ui_states(null);
-        savesettings(); // Save settings after all updates
       }
     }
 
@@ -1453,19 +1449,17 @@ function load_data() {
             load_settings(json);
           }
         } else {
-          preset_select_changed();
           trigger_ui_update();
         }
       } catch (error) {
         console.error("Error parsing settings:", error);
-        preset_select_changed();
+        preset_select_changed("default");
       }
     };
   } catch (error) {
     console.error("Error initializing settings:", error);
-    preset_select_changed();
+    preset_select_changed("default");
   }
-  savesettings();
 }
 
 function initialize_sliders() {
@@ -1486,14 +1480,18 @@ function load_settings(json) {
       }
     }
   }
-
+  // If enable_plandomizer is checked, remove just that setting from the json
+  if (json["enable_plandomizer"]) {
+    delete json["enable_plandomizer"];
+  }
+  all_elements = document.querySelectorAll("#form input, #form select");
   const elementsCache = Object.fromEntries(
-    Object.keys(json).map((key) => [key, document.getElementsByName(key)])
+    Object.keys(json).map((key) => [key, Array.from(all_elements).filter(el => el.name === key)])
   );
 
   // Define a queue to batch DOM updates
   const updateQueue = [];
-
+  let updated_values = []
   for (const [key, value] of Object.entries(json)) {
     const elements = elementsCache[key];
     if (!elements?.length) continue;
@@ -1573,7 +1571,7 @@ function load_settings(json) {
 
       // Trigger a click event if the value has changed
       if (valueChanged) {
-        element.dispatchEvent(new Event("click"));
+        updated_values.push(element);
       }
     });
   }
@@ -1594,6 +1592,27 @@ function load_settings(json) {
   }
 
   requestAnimationFrame(processQueue);
+  // // Dispatch all the click events after the values have been set
+  // // Batch dispatch click events to avoid performance issues
+  // function batchDispatchClickEvents(elements) {
+  //   const batchSize = 10; // Adjust batch size based on performance needs
+  //   let index = 0;
+
+  //   function processBatch() {
+  //     for (let i = 0; i < batchSize && index < elements.length; i++, index++) {
+  //       console.log("Triggering click event for", elements[index]);
+  //       elements[index].dispatchEvent(new Event("change"));
+  //     }
+
+  //     if (index < elements.length) {
+  //       requestAnimationFrame(processBatch);
+  //     }
+  //   }
+
+  //   requestAnimationFrame(processBatch);
+  // }
+
+  // batchDispatchClickEvents(updated_values);
 }
 
 function trigger_ui_update() {

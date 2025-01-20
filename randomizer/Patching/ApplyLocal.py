@@ -98,10 +98,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             "generate_seed"
         ).value != "Download Seed":
             js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
-        gif_fairy = get_hash_images("browser", "loading-fairy")
-        gif_dead = get_hash_images("browser", "loading-dead")
-        js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
-        js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
+        # gif_fairy = get_hash_images("browser", "loading-fairy")
+        # gif_dead = get_hash_images("browser", "loading-dead")
+        # js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
+        # js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
         # Apply the base patch
         await js.apply_patch(data)
         if gen_history is False:
@@ -327,6 +327,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             js.document.getElementById("hashdiv").innerHTML = ""
             # clear the innerHTML of the hash element
             js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
+            # Clear all the styles of the hash element
+            js.document.getElementById("hash" + str(order)).style.transform = "rotate(180deg)"
             order += 1
     # if the hash is not set, just put the text in the spoiler log
     if js.document.getElementById("hash0").src == "":
