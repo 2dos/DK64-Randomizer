@@ -1480,6 +1480,10 @@ function load_settings(json) {
       }
     }
   }
+  // If enable_plandomizer is checked, remove just that setting from the json
+  if (json["enable_plandomizer"]) {
+    delete json["enable_plandomizer"];
+  }
   all_elements = document.querySelectorAll("#form input, #form select");
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [key, Array.from(all_elements).filter(el => el.name === key)])
