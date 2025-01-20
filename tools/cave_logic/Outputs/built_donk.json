@@ -80062,7 +80062,7 @@
             "li-krooldonkey29": {
                 "id": "li-krooldonkey29",
                 "Name": "KRoolDonkey",
-                "source": "k.rool",
+                "source": "krool",
                 "target": "krooldonkey",
                 "type": "Location",
                 "sourceType": "Region",
@@ -80120,7 +80120,7 @@
             "li-krooldiddy29": {
                 "id": "li-krooldiddy29",
                 "Name": "KRoolDiddy",
-                "source": "k.rool",
+                "source": "krool",
                 "target": "krooldiddy",
                 "type": "Location",
                 "sourceType": "Region",
@@ -80168,7 +80168,7 @@
             "li-kroollanky29": {
                 "id": "li-kroollanky29",
                 "Name": "KRoolLanky",
-                "source": "k.rool",
+                "source": "krool",
                 "target": "kroollanky",
                 "type": "Location",
                 "sourceType": "Region",
@@ -80216,7 +80216,7 @@
             "li-krooltiny29": {
                 "id": "li-krooltiny29",
                 "Name": "KRoolTiny",
-                "source": "k.rool",
+                "source": "krool",
                 "target": "krooltiny",
                 "type": "Location",
                 "sourceType": "Region",
@@ -80264,7 +80264,7 @@
             "li-kroolchunky29": {
                 "id": "li-kroolchunky29",
                 "Name": "KRoolChunky",
-                "source": "k.rool",
+                "source": "krool",
                 "target": "kroolchunky",
                 "type": "Location",
                 "sourceType": "Region",
@@ -80329,7 +80329,7 @@
             "li-krooldefeated29": {
                 "id": "li-krooldefeated29",
                 "Name": "KRoolDefeated",
-                "source": "k.rool",
+                "source": "krool",
                 "target": "krooldefeated",
                 "type": "Location",
                 "sourceType": "Region",
@@ -81005,7 +81005,7 @@
             "li-aztecw1atagged50": {
                 "id": "li-aztecw1atagged50",
                 "Name": "AztecW1aTagged",
-                "source": "angryaztecbetweenvinesbyportal",
+                "source": "betweenvinesbyportal",
                 "target": "aztecw1atagged",
                 "type": "Location",
                 "sourceType": "Region",
@@ -81331,7 +81331,7 @@
             "li-aztecw5btagged57": {
                 "id": "li-aztecw5btagged57",
                 "Name": "AztecW5bTagged",
-                "source": "aztecdonkeysandtunnel",
+                "source": "aztecdonkeyquicksandcave",
                 "target": "aztecw5btagged",
                 "type": "Location",
                 "sourceType": "Region",
@@ -81751,7 +81751,7 @@
             "li-factoryw2btagged72": {
                 "id": "li-factoryw2btagged72",
                 "Name": "FactoryW2bTagged",
-                "source": "r&d",
+                "source": "randd",
                 "target": "factoryw2btagged",
                 "type": "Location",
                 "sourceType": "Region",
@@ -83868,7 +83868,7 @@
             "li-grinderactivated130": {
                 "id": "li-grinderactivated130",
                 "Name": "GrinderActivated",
-                "source": "millbackroom",
+                "source": "millchunkytinyarea",
                 "target": "grinderactivated",
                 "type": "Location",
                 "sourceType": "Region",
@@ -83903,7 +83903,7 @@
             "li-millboxbroken130": {
                 "id": "li-millboxbroken130",
                 "Name": "MillBoxBroken",
-                "source": "millbackroom",
+                "source": "millchunkytinyarea",
                 "target": "millboxbroken",
                 "type": "Location",
                 "sourceType": "Region",
@@ -84870,7 +84870,7 @@
             "li-helmdoorsopened194": {
                 "id": "li-helmdoorsopened194",
                 "Name": "HelmDoorsOpened",
-                "source": "hideouthelmentryredirect",
+                "source": "hideouthelmentry",
                 "target": "helmdoorsopened",
                 "type": "Location",
                 "sourceType": "Region",
@@ -84904,7 +84904,7 @@
             "li-helmgatespunched194": {
                 "id": "li-helmgatespunched194",
                 "Name": "HelmGatesPunched",
-                "source": "hideouthelmentryredirect",
+                "source": "hideouthelmentry",
                 "target": "helmgatespunched",
                 "type": "Location",
                 "sourceType": "Region",
@@ -84938,7 +84938,7 @@
             "li-helmfinished194": {
                 "id": "li-helmfinished194",
                 "Name": "HelmFinished",
-                "source": "hideouthelmentryredirect",
+                "source": "hideouthelmentry",
                 "target": "helmfinished",
                 "type": "Location",
                 "sourceType": "Region",

@@ -35,7 +35,8 @@ def build_events():
     for region_id, region in RegionsOriginalCopy.items():
         for event in region.events:
             source = region_id
-            source_name = strip_name(RegionsOriginal[source].name)
+            # source_name = strip_name(RegionsOriginal[source].name)
+            source_name = strip_name(source.name)
 
             logic = event.logic if event.logic else True
             if logic != True:
