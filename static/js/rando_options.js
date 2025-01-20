@@ -686,6 +686,8 @@ function toggle_medals_box() {
 async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
+    // Open up a Modal stating that we're loading the Plando tab
+    $("#plando-modal").modal("show");    
     try {
       await setup_pyodide();
     } catch (error) {
@@ -694,6 +696,7 @@ async function enable_plandomizer() {
     // Load ui.__init__.py
     await run_python_file("ui/__init__.py");
     plandoTab.style.display = "";
+    $("#plando-modal").modal("hide");
   } else {
     plandoTab.style.display = "none";
   }

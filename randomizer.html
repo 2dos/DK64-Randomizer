@@ -57,6 +57,35 @@
         <div class="modal fade"
             data-bs-backdrop="static"
             data-bs-keyboard="false"
+            id="plando-modal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="transform:translateY(0%)">
+                    <div class="modal-body center" style="width: 100%;">
+                        <h2>Loading Plando UI</h2>
+                        <p>This may take some time. Please be patient.</p>
+                        <div id="plando-loading-container">
+                            <img style="
+                            width: 10%;
+                            height: 10%;
+                            margin: 10%;
+                            top: 50%;
+                            left: 40%;
+                            " src="./static/img/loading-icon-black.svg" />
+                        </div>
+                        <div id="plando-progress-text" style="color:white" class="justify-content-center d-flex w-100">
+                            Initializing
+                        </div>
+                        <div id="plando-progress-history"></div>
+                        <div id="close-plando-modal" style="display:none">
+                            <button class="btn btn-secondary" id="close-plando-modal-btn">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
             id="progressmodal">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content" style="transform:translateY(0%)">
