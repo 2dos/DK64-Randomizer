@@ -66,7 +66,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearLowWarp5, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelBounceTag, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearGMRocketbarrel, lambda l: True),
-        LocationLogic(Locations.ForestMainEnemy_BetweenRBAndYellowTunnel, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_BetweenYellowTunnelAndRB, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearCranky, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelGM, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_GMRearTag, lambda l: True),

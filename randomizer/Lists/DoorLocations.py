@@ -136,12 +136,12 @@ class DoorData:
 
     def updateDoorTypeLogic(self, spoiler):
         """Update door type list depending on enabled settings."""
-        if spoiler.settings.dk_portal_location_rando_v2 == DKPortalRando.main_only:
-            if self.map not in LEVEL_MAIN_MAPS and DoorType.dk_portal in self.door_type:
-                self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
         if self.dk_portal_logic(spoiler) and self.logicregion not in UNDERWATER_LOGIC_REGIONS:
             if DoorType.dk_portal not in self.door_type:
                 self.door_type.append(DoorType.dk_portal)
+        if spoiler.settings.dk_portal_location_rando_v2 == DKPortalRando.main_only:
+            if self.map not in LEVEL_MAIN_MAPS and DoorType.dk_portal in self.door_type:
+                self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
 
     def assignDKPortal(self, spoiler, level):
         """Assign DK Portal to slot."""
